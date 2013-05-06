@@ -30,15 +30,22 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
+import org.geotools.feature.visitor.FeatureAttributeVisitor;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.spatial.DefaultCRSFilterVisitor;
 import org.geotools.filter.spatial.ReprojectingFilterVisitor;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -232,4 +239,23 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
         }
     }
 
+    @Override
+    protected boolean canDelegate(FeatureVisitor visitor) {
+        if (visitor instanceof FeatureAttributeVisitor) {
+            //pass through unless one of the expressions requires the geometry attribute
+            FilterAttributeExtractor extractor = new FilterAttributeExtractor(schema);
+            for (Expression e : ((FeatureAttributeVisitor) visitor).getExpressions()) {
+                e.accept(extractor, null);
+            }
+
+            for (PropertyName pname : extractor.getPropertyNameSet()) {
+                AttributeDescriptor att = (AttributeDescriptor) pname.evaluate(schema);
+                if (att instanceof GeometryDescriptor) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 }

@@ -16,9 +16,13 @@
  */
 package org.geotools.data.store;
 
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.visitor.UniqueVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+import static org.easymock.EasyMock.*;
 /**
  * 
  *
@@ -37,5 +41,42 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
 
         ReTypingFeatureCollection rtc = new ReTypingFeatureCollection(delegate, renamed);
         assertEquals(renamed, rtc.getSchema());
+    }
+
+    public void testDelegateAccepts() throws Exception {
+        SimpleFeatureTypeBuilder stb = new SimpleFeatureTypeBuilder();
+        stb.setName("test");
+        stb.add("foo", String.class);
+        stb.add("bar", Integer.class);
+
+        UniqueVisitor vis = new UniqueVisitor("bar");
+
+        SimpleFeatureCollection delegate = createMock(SimpleFeatureCollection.class);
+        delegate.accepts(vis, null);
+        expectLastCall().once();
+        replay(delegate);
+
+        ReTypingFeatureCollection rtc =
+            new ReTypingFeatureCollection(delegate, stb.buildFeatureType());
+        rtc.accepts(vis, null);
+        verify(delegate);
+
+        vis = new UniqueVisitor("baz");
+
+        SimpleFeatureIterator it = createNiceMock(SimpleFeatureIterator.class);
+        replay(it);
+
+        SimpleFeatureType ft = createNiceMock(SimpleFeatureType.class);
+        replay(ft);
+
+        delegate = createMock(SimpleFeatureCollection.class);
+        expect(delegate.features()).andReturn(it).once();
+        expect(delegate.getSchema()).andReturn(ft).once();
+
+        replay(delegate);
+        rtc =
+            new ReTypingFeatureCollection(delegate, stb.buildFeatureType());
+        rtc.accepts(vis, null);
+        verify(delegate);
     }
 }

@@ -521,6 +521,14 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             values = getValues(attMapping.isMultiValued(), sourceExpression, source);
         }
         boolean isHRefLink = isByReference(clientPropsMappings, isNestedFeature);
+        int newResolveDepth = resolveDepth;
+        //if resolving, no xlink:href for chained feature
+        boolean ignoreXlinkHref = false;
+        if (isHRefLink && newResolveDepth > 0) {
+        	isHRefLink = false;
+        	newResolveDepth--;
+        	ignoreXlinkHref = true;                
+        }
         if (isNestedFeature) {
         	if (values == null) {
                 // polymorphism use case, if the value doesn't match anything, don't encode
@@ -549,7 +557,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                                 .getInputFeatures(this, val, getIdValues(source), source, reprojection, selectedProperties, includeMandatory));
                     } else {
                         nestedFeatures.addAll(((NestedAttributeMapping) attMapping).getFeatures(
-                                this, val, getIdValues(source), reprojection, source, selectedProperties, includeMandatory));
+                                this, val, getIdValues(source), reprojection, source, selectedProperties, includeMandatory, newResolveDepth, resolveTimeOut));
                     }
                 }
                 values = nestedFeatures;
@@ -561,7 +569,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 values = ((NestedAttributeMapping) attMapping).getInputFeatures(this, values, getIdValues(source), source, reprojection, selectedProperties, includeMandatory);
             } else {
                 values = ((NestedAttributeMapping) attMapping).getFeatures(this, values, getIdValues(source), reprojection,
-                        source, selectedProperties, includeMandatory);
+                        source, selectedProperties, includeMandatory, newResolveDepth, resolveTimeOut);
             }
             if (isHRefLink) {
                 // only need to set the href link value, not the nested feature properties
@@ -597,9 +605,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 } else {
                     valueList.add(singleVal);
                 }
-                instance = xpathAttributeBuilder.set(target, xpath, valueList, id,
-                        targetNodeType, false, sourceExpression);
-                setClientProperties(instance, source, clientPropsMappings);
+                instance = setAttributeContent(target, xpath, valueList, id, targetNodeType, false, sourceExpression, source, clientPropsMappings, ignoreXlinkHref);
             }
         } else {
             if (values instanceof Attribute) {
@@ -612,9 +618,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 }
                 values = ((Attribute) values).getValue();
             }
-            instance = xpathAttributeBuilder.set(target, xpath, values, id,
-                    targetNodeType, false, sourceExpression);
-            setClientProperties(instance, source, clientPropsMappings);
+            instance = setAttributeContent(target, xpath, values, id, targetNodeType, false, sourceExpression, source, clientPropsMappings, ignoreXlinkHref);
 
         } 
         if (instance != null && attMapping.encodeIfEmpty()) {
@@ -981,7 +985,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                                     false, sourceExpr);
                         } else {
                             // simple attributes
-                            instance.setValue(valueString);
+                        	instance.setValue(valueString);
                         }
                     }
                 } else if (attMapping.isMultiValued()) {

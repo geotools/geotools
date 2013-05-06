@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import net.opengis.wfs20.ResolveValueType;
+
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
@@ -106,7 +108,7 @@ public class NestedAttributeMapping extends AttributeMapping {
      * true if the type is depending on a function value, i.e. could be a Function
      */
     private boolean isConditional;
-    
+        
     /**
      * Sole constructor
      * 
@@ -187,19 +189,34 @@ public class NestedAttributeMapping extends AttributeMapping {
             	return Collections.EMPTY_LIST;
             }
 
-            // find source expression on nested features side
-            List<AttributeMapping> mappings = featureTypeMapping
-                    .getAttributeMappingsIgnoreIndex(this.nestedTargetXPath);
-            if (mappings.size() < 1) {
-                throw new IllegalArgumentException("Mapping is missing for: '"
-                        + this.nestedTargetXPath + "'!");
-            }
-            AttributeMapping mapping = mappings.get(0);
-            nestedSourceExpression = mapping.getSourceExpression();
+            AttributeMapping mapping = getMapping(featureTypeMapping);
+        	nestedSourceExpression = mapping.getSourceExpression();
             isMultiple = mapping.isMultiValued();
         }    
                 
         return getFilteredFeatures(foreignKeyValue, isMultiple);        
+    }
+    
+    public AttributeMapping getMapping(FeatureTypeMapping featureTypeMapping) {
+    	// find source expression on nested features side
+        AttributeMapping mapping;
+        if (!ComplexFeatureConstants.FEATURE_CHAINING_LINK_STRING.equals(nestedTargetXPath.get(nestedTargetXPath.size()-1).getName().getLocalPart())) {
+        	List<AttributeMapping> mappings = featureTypeMapping
+                .getAttributeMappingsIgnoreIndex(this.nestedTargetXPath);
+        	if (mappings.size() < 1) {
+        		throw new IllegalArgumentException("Mapping is missing for: '"
+                    + this.nestedTargetXPath + "'!");
+        	}
+        	mapping = mappings.get(0);
+        }
+        else {
+        	mapping = featureTypeMapping.getAttributeMapping(this.nestedTargetXPath);
+        	if (mapping == null) {
+        		throw new IllegalArgumentException("Mapping is missing for: '"
+                    + this.nestedTargetXPath + "'!");
+        	}
+        }
+        return mapping;
     }
     
     /**
@@ -221,6 +238,7 @@ public class NestedAttributeMapping extends AttributeMapping {
     	
         Filter filter = filterFac.equals(this.nestedSourceExpression, filterFac
                 .literal(foreignKeyValue));
+                               
         // get all the nested features based on the link values
         FeatureCollection<FeatureType, Feature> fCollection = source.getFeatures(filter);
         FeatureIterator<Feature> it = fCollection.features();
@@ -308,14 +326,8 @@ public class NestedAttributeMapping extends AttributeMapping {
 
                 nestedIdExpression = fMapping.getFeatureIdExpression();
 
-                // find source expression on nested features side
-                List<AttributeMapping> mappings = fMapping
-                        .getAttributeMappingsIgnoreIndex(this.nestedTargetXPath);
-                if (mappings.size() < 1) {
-                    throw new IllegalArgumentException("Mapping is missing for: '"
-                            + this.nestedTargetXPath + "'!");
-                }
-                AttributeMapping mapping = mappings.get(0);
+                // find source expression on nested features side                
+                AttributeMapping mapping = getMapping(fMapping);
                 nestedSourceExpression = mapping.getSourceExpression();
                 isMultiple = mapping.isMultiValued();
             }
@@ -338,8 +350,8 @@ public class NestedAttributeMapping extends AttributeMapping {
      * @throws IOException
      */
     public List<Feature> getFeatures(Object foreignKeyValue,
-            CoordinateReferenceSystem reprojection, Feature feature) throws IOException{
-        return getFeatures(null, foreignKeyValue, null, reprojection, feature, null, true);
+            CoordinateReferenceSystem reprojection, Feature feature, int resolveDepth, Integer resolveTimeOut) throws IOException{
+        return getFeatures(null, foreignKeyValue, null, reprojection, feature, null, true, resolveDepth, resolveTimeOut);
     }
             
 
@@ -354,7 +366,7 @@ public class NestedAttributeMapping extends AttributeMapping {
      * @throws IOException
      */
     public List<Feature> getFeatures(Object source, Object foreignKeyValue,  List<Object> idValues, 
-            CoordinateReferenceSystem reprojection, Object feature, List<PropertyName> selectedProperties, boolean includeMandatory) throws IOException {
+            CoordinateReferenceSystem reprojection, Object feature, List<PropertyName> selectedProperties, boolean includeMandatory, int resolveDepth, Integer resolveTimeOut) throws IOException {
 
     	if (foreignKeyValue == null) {    		
     		return Collections.<Feature>emptyList();
@@ -387,6 +399,15 @@ public class NestedAttributeMapping extends AttributeMapping {
         
         final Hints hints = new Hints();
         hints.put(Query.INCLUDE_MANDATORY_PROPS, includeMandatory);
+        
+        if (resolveDepth > 0 ) {
+			hints.put(Hints.RESOLVE, ResolveValueType.ALL);
+			hints.put(Hints.ASSOCIATION_TRAVERSAL_DEPTH, resolveDepth);
+			hints.put(Hints.RESOLVE_TIMEOUT, resolveTimeOut);
+		} else {
+			hints.put(Hints.RESOLVE, ResolveValueType.NONE);
+		}
+        
         query.setHints(hints);
         
         query.setProperties(selectedProperties);

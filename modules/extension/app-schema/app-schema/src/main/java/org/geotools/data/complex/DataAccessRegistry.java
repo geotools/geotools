@@ -22,16 +22,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Repository;
+import org.geotools.factory.Hints;
 import org.geotools.util.InterpolationProperties;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.identity.FeatureId;
 
 /**
  * A registry that stores data access instances per application. This allows feature sources from
@@ -359,6 +362,25 @@ public class DataAccessRegistry implements Repository {
         throw new DataSourceException("Feature type " + featureTypeName + " not found."
                 + " Has the data access been registered in DataAccessRegistry?" + " Available: "
                 + typeNames.toString());
+    }
+    
+    
+    public Feature findFeature(FeatureId id, Hints hints, AtomicBoolean stopFlag) throws IOException {    	
+    	for (DataAccess<FeatureType, Feature> dataAccess : registry) {
+            if (dataAccess instanceof AppSchemaDataAccess) {
+                Feature feature = ((AppSchemaDataAccess) dataAccess).findFeature(id, hints, stopFlag);
+                if (feature != null) {
+                	return feature;
+                }
+                synchronized(stopFlag) {
+	                if (stopFlag.get()) {
+	                	return null;
+	                }
+                }
+            }
+        }
+    	return null;
+    	
     }
       
 

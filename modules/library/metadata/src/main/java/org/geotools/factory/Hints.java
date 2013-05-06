@@ -813,6 +813,20 @@ public class Hints extends RenderingHints {
     ////////                      Data stores                       ////////
     ////////                                                        ////////
     ////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * Resolve setting for resolving resources. ("local", "none", "remote" or "all")
+     * <p>
+     * This maps directly to the {@code resolve} parameter in a WFS query.
+     */
+    public static final Key RESOLVE = new Key("net.opengis.wfs20.ResolveValueType");
+    
+    /**
+     * The maximum time-out for resolving resources.
+     * <p>
+     * This maps directly to the {@code resolveTimeOut} parameter in a WFS query.
+     */
+    public static final Hints.Key RESOLVE_TIMEOUT = new Key(Integer.class);
 
     /**
      * The maximum number of associations traversed in a datastore query.

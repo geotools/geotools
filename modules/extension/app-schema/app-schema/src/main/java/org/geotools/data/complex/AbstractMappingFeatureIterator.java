@@ -19,25 +19,33 @@ package org.geotools.data.complex;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
+
+import net.opengis.wfs20.ResolveValueType;
+
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
 import org.geotools.feature.AppSchemaFeatureFactoryImpl;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
 import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
+import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.xlink.XLINK;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureTypeFactory;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.GeometryAttribute;
@@ -47,9 +55,11 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.NamespaceSupport;
+
 import com.vividsolutions.jts.geom.EmptyGeometry;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -114,6 +124,10 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     protected int featureCounter;
 
     protected NamespaceSupport namespaces;
+    
+    protected int resolveDepth;
+    
+    protected Integer resolveTimeOut;
 
     /**
      * True if hasNext has been called prior to calling next()
@@ -160,6 +174,19 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         xpathAttributeBuilder.setFeatureFactory(attf);
         initialiseSourceFeatures(mapping, unrolledQuery, query.getCoordinateSystemReproject());
         xpathAttributeBuilder.setFilterFactory(namespaceAwareFilterFactory);
+        
+        Hints hints = query.getHints();
+        ResolveValueType resolveVal = (ResolveValueType) hints.get( Hints.RESOLVE );
+        boolean resolve = ResolveValueType.ALL.equals(resolveVal) || ResolveValueType.LOCAL.equals(resolveVal);
+        
+        if (!resolve && !ResolveValueType.NONE.equals(resolveVal)) {
+            throw new IllegalArgumentException("Resolve:" + resolveVal.getName() + " is not supported in app-schema!");
+        }
+        
+        Integer atd = (Integer) hints.get(Hints.ASSOCIATION_TRAVERSAL_DEPTH);
+        
+        resolveDepth = resolve ? atd==null? 0 : atd  : 0;
+        resolveTimeOut = (Integer) hints.get( Hints.RESOLVE_TIMEOUT );
     }
     
     //properties can only be set by constructor, before initialising source features 
@@ -302,8 +329,120 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         return clientProperties;
     }
     
-    protected void setClientProperties(final Attribute target, final Object source,
-            final Map<Name, Expression> clientProperties) {
+    private class FeatureFinder implements Runnable {
+		private Feature feature = null;
+		private String refId;
+		private Hints hints;
+		public AtomicBoolean stopFlag = new AtomicBoolean(false);
+		
+		public synchronized Feature getFeature() {
+			return feature;
+		}
+		
+		private synchronized void setFeature (Feature feature) {
+			this.feature = feature;
+		}
+		
+		public FeatureFinder (String refId, Hints hints) {
+			this.refId = refId;
+			this.hints = hints;
+		}
+		
+		@Override
+	    public void run() {
+	    	try {
+	    		Feature feature = DataAccessRegistry.getInstance().findFeature(new FeatureIdImpl (refId), hints, stopFlag);
+		    	if (!stopFlag.get()) {
+		    		setFeature(feature);
+		    	}	    		
+			} catch (IOException e) { // ignore, no resolve
+			}    		
+	    }
+	};
+	
+	
+    protected static String referenceToIdentifier(String reference) {
+        
+        //TODO: support custom rules in mapping file
+        
+        String[] urn = reference.split(":");
+        
+        String lastPart = urn[urn.length - 1];
+        
+        if (lastPart.contains("#")) {
+            lastPart = lastPart.substring(lastPart.lastIndexOf("#"));
+        }
+        
+        if ("missing".equals(urn[urn.length - 1]) || "unknown".equals(urn[urn.length - 1])) {
+            return null;
+        }
+        
+        return lastPart;
+    }
+    
+    protected Attribute setAttributeContent(Attribute target, StepList xpath, Object value, String id, AttributeType targetNodeType, boolean isXlinkRef, Expression sourceExpression, Object source, final Map<Name, Expression> clientProperties, boolean ignoreXlinkHref){
+    	Attribute instance = null;
+    	
+    	Map<Name, Expression> properties = new HashMap<Name, Expression>(clientProperties);
+    	
+    	if (ignoreXlinkHref) {
+    	      properties.remove(XLINK_HREF_NAME);
+    	}
+    	
+        if (properties.containsKey(XLINK_HREF_NAME) && resolveDepth > 0) {
+            // local resolve
+
+            String refid = referenceToIdentifier(getValue(properties.get(XLINK_HREF_NAME), source).toString());
+
+            if (refid != null) {
+
+                final Hints hints = new Hints();
+                if (resolveDepth > 1) {
+                    hints.put(Hints.RESOLVE, ResolveValueType.ALL);
+                    hints.put(Hints.RESOLVE_TIMEOUT, resolveTimeOut);
+                    hints.put(Hints.ASSOCIATION_TRAVERSAL_DEPTH, resolveDepth - 1);
+                } else {
+                    hints.put(Hints.RESOLVE, ResolveValueType.NONE);
+                }
+
+                // let's try finding it
+                FeatureFinder finder = new FeatureFinder(refid, hints);
+                Thread thread = new Thread(finder);
+                long currentTime = System.currentTimeMillis();
+                thread.start();
+                while (thread.isAlive()
+                        && (System.currentTimeMillis() - currentTime) / 1000 < resolveTimeOut) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException t) {
+                    }
+                }
+                synchronized (finder.stopFlag) {
+                    finder.stopFlag.set(true);
+                }
+
+                if (finder.getFeature() != null) {
+                    // found it
+
+                    instance = xpathAttributeBuilder.set(target, xpath,
+                            Collections.singletonList(finder.getFeature()), id, targetNodeType,
+                            false, sourceExpression);
+                    properties.remove(XLINK_HREF_NAME);
+                }
+            }
+
+        }
+    	
+    	if (instance == null) {
+    		 instance = xpathAttributeBuilder.set(target, xpath, value, id, targetNodeType, false, sourceExpression);
+    	}
+    	
+        setClientProperties(instance, source, properties);     
+        
+        return instance;
+    }
+    
+    protected void setClientProperties(final Attribute target, final Object source, final Map<Name, Expression> clientProperties) {
         if (target == null) {
             return;
         }
@@ -311,33 +450,33 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         if (source == null && clientProperties.isEmpty()) {
             return;
         }
-
+        
         // NC - first calculate target attributes
         final Map<Name, Object> targetAttributes = new HashMap<Name, Object>();
         if (target.getUserData().containsValue(Attributes.class)) {
             targetAttributes.putAll((Map<? extends Name, ? extends Object>) target.getUserData()
                     .get(Attributes.class));
         }        
-        for (Map.Entry<Name, Expression> entry : clientProperties.entrySet()) {
-            Name propName = entry.getKey();
-            Object propExpr = entry.getValue();
-            Object propValue;
-            if (propExpr instanceof Expression) {
-                propValue = getValue((Expression) propExpr, source);
-            } else {
-                propValue = propExpr;
-            }
-            if (propValue != null) {
-                if (propValue instanceof Collection) {
-                    if (!((Collection)propValue).isEmpty()) {                
-                        propValue = ((Collection)propValue).iterator().next();
-                        targetAttributes.put(propName, propValue);
-                    }
-                } else {
-                    targetAttributes.put(propName, propValue);
-                }
-            } 
-        }
+		for (Map.Entry<Name, Expression> entry : clientProperties.entrySet()) {
+			Name propName = entry.getKey();
+			Object propExpr = entry.getValue();
+			Object propValue;
+			if (propExpr instanceof Expression) {
+				propValue = getValue((Expression) propExpr, source);
+			} else {
+				propValue = propExpr;
+			}
+			if (propValue != null) {
+				if (propValue instanceof Collection) {
+					if (!((Collection) propValue).isEmpty()) {
+						propValue = ((Collection) propValue).iterator().next();
+						targetAttributes.put(propName, propValue);
+					}
+				} else {
+					targetAttributes.put(propName, propValue);
+				}
+			}
+		}
         // FIXME should set a child Property.. but be careful for things that
         // are smuggled in there internally and don't exist in the schema, like
         // XSDTypeDefinition, CRS etc.
@@ -345,7 +484,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             target.getUserData().put(Attributes.class, targetAttributes);
         }
         
-        setGeometryUserData(target, targetAttributes);
+        setGeometryUserData(target, targetAttributes);        
     }
     
     protected void setGeometryUserData(Attribute target, Map<Name, Object> targetAttributes) {

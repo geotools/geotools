@@ -27,6 +27,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs20.ValueCollectionType;
 import net.opengis.wfs20.Wfs20Factory;
 
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -35,6 +36,7 @@ import org.geotools.wfs.PropertyValueCollection;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -45,6 +47,7 @@ import com.vividsolutions.jts.io.WKTReader;
 public class ValueCollectionTypeBindingTest extends WFSTestSupport {
 
     static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2();
 
     @Override
     protected void setUp() throws Exception {
@@ -82,7 +85,7 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
         features.add(b.buildFeature(null));
 
         ValueCollectionType vc = Wfs20Factory.eINSTANCE.createValueCollectionType();
-        PropertyValueCollection valueCollection = new PropertyValueCollection(features, featureType.getDescriptor("geom"));
+        PropertyValueCollection valueCollection = new PropertyValueCollection(features, featureType.getDescriptor("geom"), filterFac.property("geom"));
         vc.getMember().add(valueCollection);
 
         Document doc = encode(vc, WFS.ValueCollection);
@@ -96,7 +99,7 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
         assertNotNull(getElementByQName((Element)geoms.item(1), GML.Point));
         
         vc = Wfs20Factory.eINSTANCE.createValueCollectionType();
-        vc.getMember().add(new PropertyValueCollection(features, featureType.getDescriptor("str")));
+        vc.getMember().add(new PropertyValueCollection(features, featureType.getDescriptor("str"), filterFac.property("str")));
 
         doc = encode(vc, WFS.ValueCollection);
         assertEquals("wfs:ValueCollection", doc.getDocumentElement().getNodeName());
@@ -111,7 +114,7 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
         assertTrue(vals.isEmpty());
         
         vc = Wfs20Factory.eINSTANCE.createValueCollectionType();
-        vc.getMember().add(new PropertyValueCollection(features, featureType.getDescriptor("date")));
+        vc.getMember().add(new PropertyValueCollection(features, featureType.getDescriptor("date"), filterFac.property("date")));
 
         doc = encode(vc, WFS.ValueCollection);
         assertEquals("wfs:ValueCollection", doc.getDocumentElement().getNodeName());

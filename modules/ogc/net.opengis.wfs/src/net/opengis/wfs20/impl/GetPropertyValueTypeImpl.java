@@ -1,8 +1,4 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
  */
 package net.opengis.wfs20.impl;
 
@@ -13,20 +9,14 @@ import net.opengis.fes20.AbstractQueryExpressionType;
 import net.opengis.wfs20.GetPropertyValueType;
 import net.opengis.wfs20.ResolveValueType;
 import net.opengis.wfs20.ResultTypeType;
-import net.opengis.wfs20.Wfs20Factory;
 import net.opengis.wfs20.Wfs20Package;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.BasicFeatureMap;
-import org.eclipse.emf.ecore.util.FeatureMap;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -147,7 +137,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * @generated
      * @ordered
      */
-    protected static final Integer RESOLVE_DEPTH_EDEFAULT = null;
+    protected static final String RESOLVE_DEPTH_EDEFAULT = "*";
 
     /**
      * The cached value of the '{@link #getResolveDepth() <em>Resolve Depth</em>}' attribute.
@@ -157,7 +147,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * @generated
      * @ordered
      */
-    protected Integer resolveDepth = RESOLVE_DEPTH_EDEFAULT;
+    protected String resolveDepth = RESOLVE_DEPTH_EDEFAULT;
 
     /**
      * The default value of the '{@link #getResolvePath() <em>Resolve Path</em>}' attribute.
@@ -461,7 +451,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
      * @generated
      */
-    public Integer getResolveDepth() {
+    public String getResolveDepth() {
         return resolveDepth;
     }
 
@@ -470,8 +460,8 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setResolveDepth(Integer newResolveDepth) {
-        Integer oldResolveDepth = resolveDepth;
+    public void setResolveDepth(String newResolveDepth) {
+        String oldResolveDepth = resolveDepth;
         resolveDepth = newResolveDepth;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.GET_PROPERTY_VALUE_TYPE__RESOLVE_DEPTH, oldResolveDepth, resolveDepth));
@@ -711,7 +701,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
                 setResolve((ResolveValueType)newValue);
                 return;
             case Wfs20Package.GET_PROPERTY_VALUE_TYPE__RESOLVE_DEPTH:
-                setResolveDepth((Integer)newValue);
+                setResolveDepth((String)newValue);
                 return;
             case Wfs20Package.GET_PROPERTY_VALUE_TYPE__RESOLVE_PATH:
                 setResolvePath((String)newValue);

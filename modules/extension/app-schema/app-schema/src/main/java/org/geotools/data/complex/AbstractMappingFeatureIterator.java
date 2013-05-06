@@ -179,7 +179,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         ResolveValueType resolveVal = (ResolveValueType) hints.get( Hints.RESOLVE );
         boolean resolve = ResolveValueType.ALL.equals(resolveVal) || ResolveValueType.LOCAL.equals(resolveVal);
         
-        if (!resolve && !ResolveValueType.NONE.equals(resolveVal)) {
+        if (!resolve && resolveVal!=null && !ResolveValueType.NONE.equals(resolveVal)) {
             throw new IllegalArgumentException("Resolve:" + resolveVal.getName() + " is not supported in app-schema!");
         }
         

@@ -1,16 +1,10 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
  */
 package net.opengis.wfs20;
 
 import java.math.BigInteger;
 
 import net.opengis.fes20.AbstractQueryExpressionType;
-
-import org.eclipse.emf.ecore.util.FeatureMap;
 
 /**
  * <!-- begin-user-doc -->
@@ -38,19 +32,19 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  * @generated
  */
 public interface GetPropertyValueType extends BaseRequestType {
-
-  /**
-     * Returns the value of the '<em><b>Abstract Query Expression</b></em>' containment reference.
+    /**
+     * Returns the value of the '<em><b>Abstract Query Expression</b></em>' reference.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Abstract Query Expression</em>' containment reference isn't clear,
+     * If the meaning of the '<em>Abstract Query Expression</em>' reference isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Abstract Query Expression</em>' containment reference.
+     * @return the value of the '<em>Abstract Query Expression</em>' reference.
+     * @see #setAbstractQueryExpression(AbstractQueryExpressionType)
      * @see net.opengis.wfs20.Wfs20Package#getGetPropertyValueType_AbstractQueryExpression()
-     * @model 
-     * @generated NOT
+     * @model
+     * @generated
      */
     AbstractQueryExpressionType getAbstractQueryExpression();
 
@@ -214,14 +208,12 @@ public interface GetPropertyValueType extends BaseRequestType {
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Resolve Depth</em>' attribute.
-     * @see #isSetResolveDepth()
-     * @see #unsetResolveDepth()
-     * @see #setResolveDepth(Object)
+     * @see #setResolveDepth(String)
      * @see net.opengis.wfs20.Wfs20Package#getGetPropertyValueType_ResolveDepth()
-     * @model 
-     * @generated NOT
+     * @model default="*" dataType="org.eclipse.emf.ecore.xml.type.String"
+     * @generated
      */
-    Integer getResolveDepth();
+    String getResolveDepth();
 
     /**
      * Sets the value of the '{@link net.opengis.wfs20.GetPropertyValueType#getResolveDepth <em>Resolve Depth</em>}' attribute.
@@ -231,7 +223,7 @@ public interface GetPropertyValueType extends BaseRequestType {
      * @see #getResolveDepth()
      * @generated
      */
-    void setResolveDepth(Integer value);
+    void setResolveDepth(String value);
 
     /**
      * Returns the value of the '<em><b>Resolve Path</b></em>' attribute.

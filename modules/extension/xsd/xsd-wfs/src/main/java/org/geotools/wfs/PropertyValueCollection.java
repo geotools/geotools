@@ -73,7 +73,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
     public PropertyValueCollection(FeatureCollection delegate, AttributeDescriptor descriptor,
             PropertyName propName) {
         this.delegate = delegate;
-        this.descriptor = (AttributeDescriptor) propName.evaluate(delegate.getSchema());
+        this.descriptor = descriptor;
         this.typeMappingProfiles.add(XS.getInstance().getTypeMappingProfile());
         this.typeMappingProfiles.add(GML.getInstance().getTypeMappingProfile());
         this.propertyName = propName;

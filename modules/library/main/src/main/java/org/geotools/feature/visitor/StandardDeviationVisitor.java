@@ -16,6 +16,9 @@
  */
 package org.geotools.feature.visitor;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Expression;
@@ -42,7 +45,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class StandardDeviationVisitor implements FeatureCalc {
+public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVisitor {
 	private Expression expr;
 
     boolean visited = false;
@@ -77,7 +80,12 @@ public class StandardDeviationVisitor implements FeatureCalc {
 	public void init(SimpleFeatureCollection collection) {
 		//do nothing
 	}
-	
+
+    @Override
+    public List<Expression> getExpressions() {
+        return Arrays.asList(expr);
+    }
+
 	public CalcResult getResult() {
 		if(count == 0) {
     		return CalcResult.NULL_RESULT;

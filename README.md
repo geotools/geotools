@@ -9,8 +9,11 @@ See  http://www.autodesk.com/techpubs/autocad/acad2000/dxf/index.htm section Ext
 
 The previous versions of unsupported module "DXF" does not parse these blocks, ignoring the blocks.
 
-@TODO Add the 3 coordinates objects to Map
+Done a pull request for 10-SNAPSHOT
 
+- [ ] Add the all 3 coordinates objects to Map
+
+```JAVA
 Example:
 //read the file
 DXFFeatureReader features = new DXFFeatureReader(file.toURI().toURL(), new String(), "EPSG:" + epsg, geotype, new ArrayList<String>());
@@ -42,3 +45,4 @@ while (features.hasNext()) {
   }
 
 }
+```

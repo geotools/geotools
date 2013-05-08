@@ -104,24 +104,16 @@ public class PriorityQueue implements Collection, Queue {
     return(i);
   }
   
-  
-  public void update(Object value) {
-    Integer index = ((Integer)m_obj2index.get(value));
-    if (index == null) {
-      for (int i = 1; i < m_count; i++) {
-        Object o = (Object)m_values[i];
-        if (o == value) 
-          System.out.println();
-      }
-    }
-    update(index.intValue());
-    //TODO: improve performance, dont use a linear search
-//    for (int i = 1; i < m_values.length; i++) {
-//      if (m_values[i] == value) {
-//        update(i);
-//        return;
-//      }
-//    }
+  	/**
+	 * This method find index based on object value in parameter and call update
+	 * method on that index
+	 * 
+	 * @param value - object which will be updated
+	 */
+	public void update(Object value) {
+		Integer index = ((Integer) m_obj2index.get(value));
+		if (index != null)
+			update(index.intValue());
   }
   
   public boolean isEmpty() { return(m_count == 0); }

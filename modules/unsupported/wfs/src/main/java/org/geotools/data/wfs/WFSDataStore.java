@@ -103,4 +103,9 @@ public interface WFSDataStore extends DataStore {
     public boolean isPreferPostOverGet();
     
     public void setNamespaceOverride(String namespaceOverride);
+
+    /**
+     * @param useDefaultSRS
+     */
+    public void setUseDefaultSRS(Boolean useDefaultSRS);
 }

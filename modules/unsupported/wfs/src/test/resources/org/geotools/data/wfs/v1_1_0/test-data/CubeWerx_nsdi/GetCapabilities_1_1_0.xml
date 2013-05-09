@@ -395,6 +395,7 @@
       <Title>Governmental Unit (County or Equivalent)</Title>
       <DefaultSRS>EPSG:4269</DefaultSRS>
       <OtherSRS>EPSG:4326</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
       <ows:WGS84BoundingBox>
         <ows:LowerCorner>-179.14221197 18.9108417</ows:LowerCorner>
         <ows:UpperCorner>-66.94983061 71.35256069</ows:UpperCorner>

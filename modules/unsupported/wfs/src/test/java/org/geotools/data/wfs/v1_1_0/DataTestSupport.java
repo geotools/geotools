@@ -32,6 +32,8 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.SimpleHttpClient;
+import org.geotools.data.wfs.protocol.wfs.GetFeature;
+import org.geotools.data.wfs.protocol.wfs.WFSResponse;
 import org.geotools.test.TestData;
 
 @SuppressWarnings("nls")
@@ -70,6 +72,17 @@ public final class DataTestSupport {
          * The FeatureType CRS as declared in the capabilities
          */
         final String CRS;
+        
+        /**
+         * The FeatureType Alternative CRS (if available) as declared in the capabilities
+         */
+        final String ALTERNATIVECRS;
+        
+        /**
+         * The FeatureType Alternative CRS in URN format (if available) as declared in
+         * the capabilities
+         */
+        final String URNCRS;
 
         /**
          * Location of a sample GetFeature response for this feature type
@@ -92,6 +105,37 @@ public final class DataTestSupport {
             TYPENAME = qName;
             FEATURETYPENAME = featureTypeName;
             CRS = crs;
+            ALTERNATIVECRS = crs;
+            URNCRS = crs;
+            CAPABILITIES = folder + "/GetCapabilities_1_1_0.xml";
+            SCHEMA = folder + "/DescribeFeatureType_" + qName.getLocalPart() + ".xsd";
+            DATA = folder + "/GetFeature_" + qName.getLocalPart() + ".xml";
+
+            checkResource(CAPABILITIES);
+            checkResource(SCHEMA);
+            checkResource(DATA);
+        }
+        
+        /**
+         * @param folder
+         *            the folder name under {@code test-data} where the test files for this feature
+         *            type are stored
+         * @param qName
+         *            the qualified type name (ns + local name)
+         * @param featureTypeName
+         *            the name as stated in the capabilities
+         * @param crs
+         *            the default feature type CRS as stated in the capabilities
+         * @param alternativecrs
+         *            the default feature type CRS as stated in the capabilities
+         */
+        TestDataType(final String folder, final QName qName, final String featureTypeName,
+                final String crs, final String alternativecrs, final String urncrs) {
+            TYPENAME = qName;
+            FEATURETYPENAME = featureTypeName;
+            CRS = crs;
+            ALTERNATIVECRS = alternativecrs;
+            URNCRS = urncrs;
             CAPABILITIES = folder + "/GetCapabilities_1_1_0.xml";
             SCHEMA = folder + "/DescribeFeatureType_" + qName.getLocalPart() + ".xsd";
             DATA = folder + "/GetFeature_" + qName.getLocalPart() + ".xml";
@@ -132,7 +176,7 @@ public final class DataTestSupport {
 
     public static final TestDataType CUBEWERX_GOVUNITCE = new TestDataType("CubeWerx_nsdi",
             new QName("http://www.fgdc.gov/framework/073004/gubs", "GovernmentalUnitCE"),
-            "gubs:GovernmentalUnitCE", "EPSG:4269");
+            "gubs:GovernmentalUnitCE", "EPSG:4269", "EPSG:4326", "EPSG:3857");
 
     public static final TestDataType CUBEWERX_ROADSEG = new TestDataType("CubeWerx_nsdi",
             new QName("http://www.fgdc.gov/framework/073004/transportation", "RoadSeg"),
@@ -182,6 +226,7 @@ public final class DataTestSupport {
     public static class TestWFS_1_1_0_Protocol extends WFS_1_1_0_Protocol {
 
         private URL describeFeatureTypeUrlOverride;
+        private GetFeature request;
 
         public TestWFS_1_1_0_Protocol(InputStream capabilitiesReader, HTTPClient http)
                 throws IOException {
@@ -206,6 +251,28 @@ public final class DataTestSupport {
             }
             return describeFeatureTypeUrlOverride;
         }
+
+        @Override
+        public WFSResponse issueGetFeatureGET(GetFeature request)
+                throws IOException {
+            this.request = request;
+            return super.issueGetFeatureGET(request);
+        }
+
+        @Override
+        public WFSResponse issueGetFeaturePOST(GetFeature request)
+                throws IOException {
+            this.request = request;
+            return super.issueGetFeaturePOST(request);
+        }
+
+        /**
+         * @return the request
+         */
+        public GetFeature getRequest() {
+            return request;
+        }
+        
     }
 
     public static class TestHttpProtocol extends SimpleHttpClient {

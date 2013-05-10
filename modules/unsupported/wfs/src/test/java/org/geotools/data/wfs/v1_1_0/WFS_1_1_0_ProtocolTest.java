@@ -499,7 +499,7 @@ public class WFS_1_1_0_ProtocolTest {
         supportedCRSs = wfs.getSupportedCRSIdentifiers(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
         // capabilities defines more crs's for this ftype
         assertNotNull(supportedCRSs);
-        assertEquals(2, supportedCRSs.size());
+        assertEquals(3, supportedCRSs.size());
         assertTrue(supportedCRSs.contains("EPSG:4269"));
         assertTrue(supportedCRSs.contains("EPSG:4326"));
     }

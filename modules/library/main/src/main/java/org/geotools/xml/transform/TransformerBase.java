@@ -513,6 +513,26 @@ public abstract class TransformerBase {
                 return "CData(" + text + ")";
             }
         }
+        
+        /**
+         * The Comment class implements an Action corresponding to writing a
+         * comment block in the XML output
+         */
+        private class Comment implements Action {
+            private final String text;
+
+            public Comment(String text) {
+                this.text = text;
+            }
+
+            public void commit() {
+                _comment(text);
+            }
+
+            public String toString() {
+                return "Comment(" + text + ")";
+            }
+        }
 
         /**
          * The End class implements an Action corresponding to closing an XML
@@ -541,6 +561,7 @@ public abstract class TransformerBase {
             public void start(String element, Attributes attributes);
             public void chars(String text);
             public void cdata(String text);
+            public void comment(String text);
             public void end(String element);
         }
 
@@ -578,6 +599,13 @@ public abstract class TransformerBase {
                 }
                 pending.add(new End(element));
             }
+
+            public void comment(String text) {
+                if (text == null) {
+                    throw new NullPointerException("Attempted to add comment with null text");
+                }
+                pending.add(new Comment(text));
+            }
         }
 
         /**
@@ -598,6 +626,10 @@ public abstract class TransformerBase {
 
             public void end(String element) {
                 _end(element);
+            }
+
+            public void comment(String text) {
+                _comment(text);
             }
         }
 
@@ -822,6 +854,23 @@ public abstract class TransformerBase {
                     char[] carray = cdata.toCharArray();
                     contentHandler.characters(carray, 0, carray.length);
                     lexicalHandler.endCDATA();
+                }
+                catch( SAXException e ) {
+                    throw new RuntimeException( e );
+                }
+            }
+        }
+        
+        protected void comment(String comment) {
+            backend.comment(comment);
+        }
+        
+        private void _comment(String comment) {
+            if (contentHandler instanceof LexicalHandler) {
+                LexicalHandler lexicalHandler = (LexicalHandler) contentHandler;
+                try {
+                    char[] carray = comment.toCharArray();
+                    lexicalHandler.comment(carray, 0, carray.length);
                 }
                 catch( SAXException e ) {
                     throw new RuntimeException( e );

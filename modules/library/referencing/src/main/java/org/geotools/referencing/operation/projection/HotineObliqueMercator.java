@@ -128,7 +128,6 @@ public class HotineObliqueMercator extends ObliqueMercator {
                 new NamedIdentifier(Citations.OGC,      "Hotine_Oblique_Mercator"),
                 new NamedIdentifier(Citations.EPSG,     "Hotine Oblique Mercator"),
                 new NamedIdentifier(Citations.EPSG,     "Hotine Oblique Mercator (variant A)"),
-                new NamedIdentifier(Citations.EPSG,     "Hotine Oblique Mercator (variant B)"),
                 new NamedIdentifier(Citations.EPSG,     "Hotine Oblique Mercator"),
                 new NamedIdentifier(Citations.EPSG,     "9812"),
                 new NamedIdentifier(Citations.GEOTIFF,  "CT_ObliqueMercator_Hotine"),

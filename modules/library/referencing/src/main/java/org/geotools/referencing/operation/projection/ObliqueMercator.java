@@ -741,6 +741,7 @@ public class ObliqueMercator extends MapProjection {
         static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(new NamedIdentifier[] {
                 new NamedIdentifier(Citations.OGC,      "Oblique_Mercator"),
                 new NamedIdentifier(Citations.EPSG,     "Oblique Mercator"),
+                new NamedIdentifier(Citations.EPSG,     "Hotine Oblique Mercator (variant B)"),
                 new NamedIdentifier(Citations.EPSG,     "9815"),
                 new NamedIdentifier(Citations.GEOTIFF,  "CT_ObliqueMercator"),
                 new NamedIdentifier(Citations.ESRI,     "Hotine_Oblique_Mercator_Azimuth_Center"),

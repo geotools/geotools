@@ -24,6 +24,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -35,9 +36,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
 import org.geotools.factory.Hints;
 import org.geotools.factory.GeoTools;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -552,5 +555,20 @@ public class CRSTest extends TestCase {
         } finally {
             System.getProperties().remove("org.geotools.referencing.forceXY");
         }
+    }
+    
+    public void testCRS_CH1903_LV03() throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException, TransformException {
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326", false);// WGS84
+        CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:21781", false);// CH1903_LV03
+
+        MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS, true);
+        // test coordinate: Berne, old reference point
+        // see http://www.swisstopo.admin.ch/internet/swisstopo/en/home/topics/survey/sys/refsys/switzerland.html
+        DirectPosition2D source = new DirectPosition2D(sourceCRS, 46.9510827861504654, 7.4386324175389165);
+        DirectPosition2D result = new DirectPosition2D();
+
+        transform.transform(source, result);
+        assertEquals(600000.0, result.x, 0.1);
+        assertEquals(200000.0, result.y, 0.1);
     }
 }

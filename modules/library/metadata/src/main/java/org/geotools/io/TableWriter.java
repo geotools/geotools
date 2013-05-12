@@ -931,6 +931,10 @@ public class TableWriter extends FilterWriter {
     @Override
     public String toString() {
         synchronized (lock) {
+        	// Flush current cell
+        	if (buffer.length() > 0) {
+        		nextColumn();
+        	}
             int capacity = 2; // Room for EOL.
             for (int i=0; i<width.length; i++) {
                 capacity += width[i];

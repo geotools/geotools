@@ -142,13 +142,18 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
      */
     private TINTriangle searchTriangle(DirectPosition p)
         throws TransformException {
-        /* optimalization for finding triangles.
+        /* Optimization for finding triangles.
          * Assuming the point are close to each other -
          * so why not to check if next point is in the same triangle as previous one.
          */
-        if ((previousTriangle != null) && previousTriangle.containsOrIsVertex(p)) {
-            return previousTriangle;
-        }
+
+		// Take a reference to the previous triangle to avoid reentrancy
+		// problems.
+		TINTriangle potentialTriangle = previousTriangle;
+		if (potentialTriangle != null
+				&& potentialTriangle.containsOrIsVertex(p)) {
+			return potentialTriangle;
+		}
 
         for (Iterator i = trianglesToKeysMap.keySet().iterator(); i.hasNext();) {
             TINTriangle triangle = (TINTriangle) i.next();

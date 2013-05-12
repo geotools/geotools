@@ -81,6 +81,17 @@ The following connection parameters are defined for WFS.
 |                                            | You may relax this constraint when working with some WFS         |
 |                                            | implementations such as GeoServer.                               |
 +--------------------------------------------+------------------------------------------------------------------+
+| "WFSDataStoreFactory:USEDEFAULTSRS"        | Optional used override how GetFeature operations send srs to wfs |
+|                                            | server                                                           |
+|                                            |                                                                  |
+|                                            | * false use othersrs if query matches one of them                |
+|                                            | * true always use defaultsrs and reproject locally to query crs  |
+|                                            |                                                                  |
+|                                            | Choose if you prefer to always use DefaultSRS declared in        |
+|                                            | capabilities and reproject using GeoTools if necessary, or       |
+|                                            | use also OtherSRS if available.                                  |
+|                                            | The false value is currently supported in 1.1.0 protocol only.   |
++--------------------------------------------+------------------------------------------------------------------+
 
 Historical Note: We apologise for the long connection parameter keys, WFS was one of the first DataStores written and we were unsure at the
 time if they keys for each datastore would need to be unique or not. On the plus side you can see our devotion to stability.

@@ -176,7 +176,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
     }
 
     /** Access with {@link WFSDataStoreFactory#getParametersInfo() */
-    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[13];
+    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[14];
 
     /**
      * Mandatory DataStore parameter indicating the URL for the WFS GetCapabilities document.
@@ -369,6 +369,18 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         parametersInfo[12] = NAMESPACE = new WFSFactoryParam<String>(name, String.class,
                 description, null);
     }
+    
+    /**
+     * Optional {@code String} Flag to disable usage of OtherSRS in requests and
+     * always use DefaultSRS (eventually reprojecting locally the results)
+     */
+    public static final WFSFactoryParam<Boolean> USEDEFAULTSRS;
+    static {
+        String name = "usedefaultsrs";
+        String description = "Use always the declared DefaultSRS for requests and reproject locally if necessary";
+        parametersInfo[13] = USEDEFAULTSRS = new WFSFactoryParam<Boolean>(name,
+                Boolean.class, description, false);
+    }
 
     
     /**
@@ -400,6 +412,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         final String wfsStrategy = (String) WFS_STRATEGY.lookUp(params);
         final Integer filterCompliance = (Integer) FILTER_COMPLIANCE.lookUp(params);
         final String namespaceOverride = (String) NAMESPACE.lookUp(params);
+        final Boolean useDefaultSRS = (Boolean) USEDEFAULTSRS.lookUp(params);
         
         if (((user == null) && (pass != null)) || ((pass == null) && (user != null))) {
             throw new IOException(
@@ -446,6 +459,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             dataStore = new WFS_1_1_0_DataStore(wfs);
             dataStore.setMaxFeatures(maxFeatures);
             dataStore.setPreferPostOverGet(protocol);
+            dataStore.setUseDefaultSRS(useDefaultSRS);
         }
         dataStore.setNamespaceOverride(namespaceOverride);
 
@@ -609,6 +623,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      * @see #TRY_GZIP
      * @see #LENIENT
      * @see #ENCODING
+     * @see #USEDEFAULTSRS
      */
     public Param[] getParametersInfo() {
         int length = parametersInfo.length;

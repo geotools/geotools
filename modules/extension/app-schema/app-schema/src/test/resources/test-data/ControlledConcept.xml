@@ -45,7 +45,7 @@
 			<attributeMappings>
 			    <AttributeMapping>
 			        <targetAttribute>gsml:ControlledConcept</targetAttribute>
-			        <idExpression><OCQL>getID()</OCQL></idExpression>
+			        <idExpression><OCQL>GML_ID</OCQL></idExpression>
 			    </AttributeMapping>
 				<AttributeMapping>
 					<targetAttribute>gml:name</targetAttribute>

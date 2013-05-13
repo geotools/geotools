@@ -73,7 +73,7 @@
 			<attributeMappings>
 				<AttributeMapping>
 					<targetAttribute>gsml:CompositionPart</targetAttribute>
-					<idExpression><OCQL>getID()</OCQL></idExpression>
+					<idExpression><OCQL>ROW_ID</OCQL></idExpression>
 				</AttributeMapping>
 				<AttributeMapping>
 					<targetAttribute>gsml:role</targetAttribute>
@@ -96,7 +96,7 @@
 				<AttributeMapping>
 					<targetAttribute>gsml:lithology</targetAttribute>
 					<sourceExpression>
-						<OCQL>getID()</OCQL>
+						<OCQL>ROW_ID</OCQL>
 						<linkElement>gsml:ControlledConcept</linkElement>
 						<linkField>FEATURE_LINK</linkField>
 					</sourceExpression>
@@ -107,7 +107,7 @@
 					    FEATURE_LINK
 		            </targetAttribute>
 					<sourceExpression>
-						<OCQL>getId()</OCQL>
+						<OCQL>ROW_ID</OCQL>
 					</sourceExpression>
 				</AttributeMapping>
 			</attributeMappings>

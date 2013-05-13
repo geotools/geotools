@@ -344,13 +344,30 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                                 sort.add(new SortByImpl(filterFac.property(att), sortBy.getSortOrder()));
                             }
                         }
-                    }
+                    }  
                 }
             }
 
             if (query instanceof JoiningQuery) {
                 FilterAttributeExtractor extractor = new FilterAttributeExtractor();
                 mapping.getFeatureIdExpression().accept(extractor, null);
+                
+                if (!Expression.NIL.equals(mapping.getFeatureIdExpression())
+                        && extractor.getAttributeNameSet().isEmpty()) {
+                    // GEOS-5618: getID() and functions in idExpression aren't supported with joining
+                    String ns = mapping.namespaces.getPrefix(mapping.getTargetFeature().getName()
+                            .getNamespaceURI());
+                    String separator = mapping.getTargetFeature().getName().getSeparator();
+                    String typeName = mapping.getTargetFeature().getLocalName();
+                    throw new UnsupportedOperationException(
+                            String.format(
+                                    "idExpression '%s' for targetElement '%s%s%s' cannot be translated into SQL, "
+                                            + "therefore is not supported with joining!"
+                                            + "\nPlease make sure idExpression is mapped into existing database fields, "
+                                            + "and only use functions that are supported by your database."
+                                            + "\nIf this cannot be helped, you can turn off joining in app-schema.properties file.",
+                                    mapping.getFeatureIdExpression(), ns, separator, typeName));
+                }
 
                 for (String att : extractor.getAttributeNameSet()) {
                     sort.add(new SortByImpl(filterFac.property(att), SortOrder.ASCENDING));

@@ -115,7 +115,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         throw new UnsupportedOperationException(
                 "Internal error: Not Allowed to run this method for Joining Nested Attribute Mapping!");
     }
-
+   
     /**
      * Initialise a new iterator (for polymorphism, there could be multiple per instance)
      * 
@@ -159,7 +159,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         instance.mapping.getFeatureIdExpression().accept(extractor, null);
         for (String pn : extractor.getAttributeNameSet()) {
             join.addId(pn);
-        }    
+        }        
         
         joins.add(0, join);
         query.setQueryJoins(joins);
@@ -173,13 +173,12 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         hints.put(Query.INCLUDE_MANDATORY_PROPS, includeMandatory);
         
         if (resolveDepth > 0 ) {
-			hints.put(Hints.RESOLVE, ResolveValueType.ALL);
-			hints.put(Hints.ASSOCIATION_TRAVERSAL_DEPTH, resolveDepth);
-			hints.put(Hints.RESOLVE_TIMEOUT, resolveTimeOut);
-		} else {
-			hints.put(Hints.RESOLVE, ResolveValueType.NONE);
-		}
-        
+            hints.put(Hints.RESOLVE, ResolveValueType.ALL);
+            hints.put(Hints.ASSOCIATION_TRAVERSAL_DEPTH, resolveDepth);
+            hints.put(Hints.RESOLVE_TIMEOUT, resolveTimeOut);
+        } else {
+            hints.put(Hints.RESOLVE, ResolveValueType.NONE);
+        }
         
         query.setHints(hints);
 
@@ -214,12 +213,12 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         List<Expression> foreignIds = new ArrayList<Expression>();
         for (int i = 0; i < query.getQueryJoins().size(); i++) {
-            for (int j = 0; j < join.getIds().size(); j++) {
-                foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i
-                        + "_" + j));
-            }
-        }
-
+                for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
+                    foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i
+                            + "_" + j));
+                }
+        }      
+        
         daFeatureIterator.setForeignIds(foreignIds);
 
         instance.featureIterators.put(featureTypeName, daFeatureIterator);

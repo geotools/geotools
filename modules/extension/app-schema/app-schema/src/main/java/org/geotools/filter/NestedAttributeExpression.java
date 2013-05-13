@@ -280,9 +280,14 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
     }
 
     private Object getValue(Expression expression, Feature feature) {
-        Object value = expression.evaluate(feature);
-
-        return extractAttributeValue(value);
+        try {
+            Object value = expression.evaluate(feature);
+            return extractAttributeValue(value);
+        } catch (IllegalArgumentException e) {
+            // if the field doesn't exist in the feature
+            // i.e. if it's polymorphic
+            return null;
+        }
     }
 
     /**

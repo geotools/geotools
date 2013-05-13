@@ -68,7 +68,7 @@
 			<attributeMappings>
 			    <AttributeMapping>
 			        <targetAttribute>gsml:CGI_TermValue</targetAttribute>
-			        <idExpression><OCQL>getID()</OCQL></idExpression>
+			        <idExpression><OCQL>VALUE</OCQL></idExpression>
 			    </AttributeMapping>
 				<AttributeMapping>
 					<targetAttribute>gsml:value</targetAttribute>
@@ -86,7 +86,7 @@
 			            FEATURE_LINK
   		            </targetAttribute>
 					<sourceExpression>
-						<OCQL>getId()</OCQL>
+						<OCQL>VALUE</OCQL>
 					</sourceExpression>
 				</AttributeMapping>
 			</attributeMappings>
@@ -99,7 +99,7 @@
 			<attributeMappings>
 			    <AttributeMapping>
 			        <targetAttribute>gsml:CGI_TermValue</targetAttribute>
-			        <idExpression><OCQL>getID()</OCQL></idExpression>
+			        <idExpression><OCQL>VALUE</OCQL></idExpression>
 			    </AttributeMapping>
 				<AttributeMapping>
 					<targetAttribute>gsml:value</targetAttribute>
@@ -116,7 +116,7 @@
 			            FEATURE_LINK
   		            </targetAttribute>
 					<sourceExpression>
-						<OCQL>getId()</OCQL>
+						<OCQL>VALUE</OCQL>
 					</sourceExpression>
 				</AttributeMapping>
 			</attributeMappings>

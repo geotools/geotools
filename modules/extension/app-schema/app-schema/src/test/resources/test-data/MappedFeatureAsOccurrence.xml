@@ -45,7 +45,7 @@
 					<targetAttribute>
 						gsml:MappedFeature
 					</targetAttribute>
-					<idExpression><OCQL>getID()</OCQL></idExpression>
+					<idExpression><OCQL>ID</OCQL></idExpression>
 				</AttributeMapping>
 				<AttributeMapping>
 					<targetAttribute>gml:name</targetAttribute>
@@ -56,7 +56,7 @@
 				<AttributeMapping>
 					<targetAttribute>gml:name[2]</targetAttribute>
 					<sourceExpression>
-						<OCQL>strTrim(getId())</OCQL>
+						<OCQL>ID</OCQL>
 					</sourceExpression>
 				</AttributeMapping>
 				<AttributeMapping>

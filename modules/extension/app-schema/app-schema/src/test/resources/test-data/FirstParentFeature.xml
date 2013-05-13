@@ -36,12 +36,12 @@
 			<attributeMappings>
 			    <AttributeMapping>
 					<targetAttribute>ex:FirstParentFeature</targetAttribute>
-					<idExpression><OCQL>getID()</OCQL></idExpression>
+					<idExpression><OCQL>GML_ID</OCQL></idExpression>
 				</AttributeMapping>
 				<AttributeMapping>
 					<targetAttribute>ex:nestedFeature</targetAttribute>
 					<sourceExpression>
-						<OCQL>getID()</OCQL>
+						<OCQL>GML_ID</OCQL>
 						<linkElement>simpleContent</linkElement>
 						<linkField>FEATURE_LINK[1]</linkField>
 					</sourceExpression>
@@ -59,7 +59,7 @@
 			    <AttributeMapping>
 					<targetAttribute>ex:SimpleContent</targetAttribute>
 					<idExpression>
-					    <OCQL>strConcat('nestedFeature:', getID())</OCQL>
+					    <OCQL>strConcat('nestedFeature:', ID)</OCQL>
 					</idExpression>
 				</AttributeMapping>
 				<AttributeMapping>

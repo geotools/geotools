@@ -50,6 +50,13 @@ public interface WFSDataStore extends DataStore {
      * @since 2.7.5
      */
     public static final ClassKey WFS_VENDOR_PARAMETERS = new ClassKey(Map.class);
+    
+    /**
+     * Values for the AXIS_ORDER and AXIS_ORDER_FILTER connection parameters.
+     */
+    public static final String AXIS_ORDER_EAST_NORTH = "East / North";
+    public static final String AXIS_ORDER_NORTH_EAST = "North / East";
+    public static final String AXIS_ORDER_COMPLIANT = "Compliant";
 
     
     /**

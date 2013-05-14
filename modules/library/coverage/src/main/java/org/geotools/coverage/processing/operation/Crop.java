@@ -50,6 +50,7 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape2;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.crop.GTCropDescriptor;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -350,7 +351,7 @@ public class Crop extends Operation2D {
 
         // intersect the ROI with the intersection envelope and throw an error if they do not intersect
         if(cropRoi != null) {
-            final Geometry jis = JTS.shapeToGeometry(intersectionEnvelope.toRectangle2D(), cropRoi.getFactory());
+            final Geometry jis = JTS.toGeometry((com.vividsolutions.jts.geom.Envelope)new ReferencedEnvelope(intersectionEnvelope));
             if( ! IntersectUtils.intersects(cropRoi, jis))
                 throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
         }

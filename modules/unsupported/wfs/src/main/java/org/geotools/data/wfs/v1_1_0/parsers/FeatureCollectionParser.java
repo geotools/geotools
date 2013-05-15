@@ -73,7 +73,7 @@ public class FeatureCollectionParser implements WFSResponseParser {
         QName featureName = wfs.getFeatureTypeName(prefixedTypeName);
         InputStream in = response.getInputStream();
 
-        GetFeatureParser featureReader = new XmlSimpleFeatureParser(in, schema, featureName);
+        GetFeatureParser featureReader = new XmlSimpleFeatureParser(in, schema, featureName, wfs.getAxisOrderForOutput());
         return featureReader;
     }
 }

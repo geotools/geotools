@@ -83,6 +83,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
+
 /**
  * A WFS 1.1 DataStore implementation.
  * <p>
@@ -123,6 +125,9 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
     private String namespaceOverride;
     
     private Boolean useDefaultSRS = false;
+    
+    private String axisOrderOutput = AXIS_ORDER_COMPLIANT;
+    private String axisOrderFilter = AXIS_ORDER_COMPLIANT;
 
     /**
      * The WFS capabilities document.
@@ -138,6 +143,25 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         maxFeaturesHardLimit = Integer.valueOf(0); // not set
     }
 
+    /**
+     * Configure expected axis order for output and filters.
+     *  
+     * @param axisOrder
+     * @param axisOrderFilter
+     */
+    public void setAxisOrder(String axisOrderOutput, String axisOrderFilter) {
+        this.axisOrderOutput = axisOrderOutput;
+        this.axisOrderFilter = axisOrderFilter;
+    }
+    
+    public String getAxisOrderForOutput() {
+        return axisOrderOutput;
+    }
+    
+    public String getAxisOrderForFilter() {
+        return axisOrderFilter;
+    }
+    
     /**
      * @see org.geotools.data.wfs.WFSDataStore#setNamespaceOverride(java.lang.String)
      */
@@ -305,10 +329,60 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
 
         String srsName = adaptQueryForSupportedCrs((Query) query);
 
+        try {
+            invertAxisInFilterIfNeeded(query, CRS.decode(srsName));
+        } catch (NoSuchAuthorityCodeException e) {
+            LOGGER.log(Level.FINER, e.getMessage(), e);
+        } catch (FactoryException e) {
+            LOGGER.log(Level.FINER, e.getMessage(), e);
+        }
+        
         GetFeature request = new GetFeatureQueryAdapter(query, outputFormat, srsName, resultType);
 
         final WFSResponse response = sendGetFeatures(request);
         return response;
+    }
+    
+    /**
+     * Invert axis order in the given query filter, if needed.
+     * 
+     * @param query
+     */
+    private void invertAxisInFilterIfNeeded(Query query,
+            CoordinateReferenceSystem crs) {
+        boolean invertXY = invertAxisNeeded(axisOrderFilter, crs);
+        if (invertXY) {
+            Filter filter = query.getFilter();
+    
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+            InvertAxisFilterVisitor visitor = new InvertAxisFilterVisitor(ff,
+                    new GeometryFactory());
+            filter = (Filter) filter.accept(visitor, null);
+    
+            query.setFilter(filter);
+        }
+    }
+    
+    /**
+     * Checks if axis flipping is needed comparing axis order requested for the
+     * DataStore with query crs.
+     * 
+     * @param axisOrder
+     * @param coordinateSystem
+     * @return
+     */
+    public static boolean invertAxisNeeded(String axisOrder,
+            CoordinateReferenceSystem crs) {
+        boolean invertXY;
+    
+        if (axisOrder.equals(WFSDataStore.AXIS_ORDER_EAST_NORTH)) {
+            invertXY = false;
+        } else if (axisOrder.equals(WFSDataStore.AXIS_ORDER_NORTH_EAST)) {
+            invertXY = true;
+        } else {
+            invertXY = CRS.getAxisOrder(crs).equals(CRS.AxisOrder.NORTH_EAST);
+        }
+        return invertXY;
     }
 
     private Query createNewQuery(Query model, Filter filter) {
@@ -927,4 +1001,5 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
     public void setUseDefaultSRS(Boolean useDefaultSRS) {
         this.useDefaultSRS = useDefaultSRS;
     }
-}
+
+ }

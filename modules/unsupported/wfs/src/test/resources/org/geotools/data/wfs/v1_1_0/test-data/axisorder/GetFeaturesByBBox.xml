@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wfs:FeatureCollection
+ xmlns:comuni='http://www.tinyows.org/'
+ xmlns:wfs='http://www.opengis.net/wfs'
+ xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+ xmlns:gml='http://www.opengis.net/gml'
+ xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+ xmlns:ogc='http://www.opengis.net/ogc'
+ xmlns:xlink='http://www.w3.org/1999/xlink'
+ xmlns:ows='http://www.opengis.net/ows'
+ xsi:schemaLocation='http://www.tinyows.org/
+    http://127.0.0.1:8888/cgi-bin/tinyows?service=WFS&amp;version=1.1.0&amp;request=DescribeFeatureType&amp;Typename=comuni:comuni11   http://www.opengis.net/wfs
+   http://schemas.opengis.net/wfs/1.1.0/wfs.xsd
+   http://www.opengis.net/gml
+   http://schemas.opengis.net/gml/3.1.1/base/gml.xsd'
+>
+<gml:boundedBy>
+  <gml:Envelope srsName="urn:ogc:def:crs:EPSG::3857"><gml:lowerCorner>4609350 806127</gml:lowerCorner><gml:upperCorner>4635979 832177</gml:upperCorner></gml:Envelope>
+</gml:boundedBy>
+  <gml:featureMember>
+   <comuni:comuni11 gml:id="comuni11.2567">
+   <comuni:cod_reg>12</comuni:cod_reg>
+   <comuni:cod_pro>58</comuni:cod_pro>
+   <comuni:cod_istat>12058011</comuni:cod_istat>
+   <comuni:pro_com>58011</comuni:pro_com>
+   <comuni:nome>Artena</comuni:nome>
+   <comuni:shape_leng>59781.8596658</comuni:shape_leng>
+   <comuni:shape_area>54798022.7661</comuni:shape_area>
+   <comuni:the_geom><gml:MultiSurface srsName="urn:ogc:def:crs:EPSG::3857"><gml:surfaceMember><gml:Polygon><gml:exterior><gml:LinearRing><gml:posList srsDimension="2">4629462 819841 4629446 819894 4629416 819937 4629385 819984 4629332 820083 4629278 820110 4629198 820117 4629084 820118 4628969 820128 4628868 820133 4628746 820117 4628602 820127 4628535 820155 4628506 820172 4628474 820191 4628367 820216 4628290 820203 4628209 818914 4629530 818933 4629591 818924 4629664 818999 4629691 819036 4629747 819096 4629811 819173 4629904 819298 4629890 819330 4629852 819372 4629783 819446 4629698 819521 4629650 819595 4629619 819668 4629586 819738 4629512 819807 4629462 819841</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></comuni:the_geom>   
+   </comuni:comuni11>
+  </gml:featureMember>
+  <gml:featureMember>
+   <comuni:comuni11 gml:id="comuni11.2644">
+   <comuni:cod_reg>12</comuni:cod_reg>
+   <comuni:cod_pro>58</comuni:cod_pro>
+   <comuni:cod_istat>12058088</comuni:cod_istat>
+   <comuni:pro_com>58088</comuni:pro_com>
+   <comuni:nome>Rocca Priora</comuni:nome>
+   <comuni:shape_leng>30780.6196287</comuni:shape_leng>
+   <comuni:shape_area>28265042.0337</comuni:shape_area>
+   <comuni:the_geom><gml:MultiSurface srsName="urn:ogc:def:crs:EPSG::3857"><gml:surfaceMember><gml:Polygon><gml:exterior><gml:LinearRing><gml:posList srsDimension="2">4629462 819841 4629446 819894 4629416 819937 4629385 819984 4629332 820083 4629278 820110 4629198 820117 4629084 820118 4628969 820128 4628868 820133 4628746 820117 4628602 820127 4628535 820155 4628506 820172 4628474 820191 4628367 820216 4628290 820203 4628209 818914 4629530 818933 4629591 818924 4629664 818999 4629691 819036 4629747 819096 4629811 819173 4629904 819298 4629890 819330 4629852 819372 4629783 819446 4629698 819521 4629650 819595 4629619 819668 4629586 819738 4629512 819807 4629462 819841</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></comuni:the_geom>
+   </comuni:comuni11>
+  </gml:featureMember>
+  <gml:featureMember>
+   <comuni:comuni11 gml:id="comuni11.2642">
+   <comuni:cod_reg>12</comuni:cod_reg>
+   <comuni:cod_pro>58</comuni:cod_pro>
+   <comuni:cod_istat>12058086</comuni:cod_istat>
+   <comuni:pro_com>58086</comuni:pro_com>
+   <comuni:nome>Rocca di Papa</comuni:nome>
+   <comuni:shape_leng>31342.7418878</comuni:shape_leng>
+   <comuni:shape_area>39716959.7244</comuni:shape_area>
+   <comuni:the_geom><gml:MultiSurface srsName="urn:ogc:def:crs:EPSG::3857"><gml:surfaceMember><gml:Polygon><gml:exterior><gml:LinearRing><gml:posList srsDimension="2">4629462 819841 4629446 819894 4629416 819937 4629385 819984 4629332 820083 4629278 820110 4629198 820117 4629084 820118 4628969 820128 4628868 820133 4628746 820117 4628602 820127 4628535 820155 4628506 820172 4628474 820191 4628367 820216 4628290 820203 4628209 818914 4629530 818933 4629591 818924 4629664 818999 4629691 819036 4629747 819096 4629811 819173 4629904 819298 4629890 819330 4629852 819372 4629783 819446 4629698 819521 4629650 819595 4629619 819668 4629586 819738 4629512 819807 4629462 819841</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></comuni:the_geom>
+   </comuni:comuni11>
+  </gml:featureMember>
+  <gml:featureMember>
+   <comuni:comuni11 gml:id="comuni11.2667">
+   <comuni:cod_reg>12</comuni:cod_reg>
+   <comuni:cod_pro>58</comuni:cod_pro>
+   <comuni:cod_istat>12058111</comuni:cod_istat>
+   <comuni:pro_com>58111</comuni:pro_com>
+   <comuni:nome>Velletri</comuni:nome>
+   <comuni:shape_leng>74561.8400165</comuni:shape_leng>
+   <comuni:shape_area>118232949.855</comuni:shape_area>
+   <comuni:the_geom><gml:MultiSurface srsName="urn:ogc:def:crs:EPSG::3857"><gml:surfaceMember><gml:Polygon><gml:exterior><gml:LinearRing><gml:posList srsDimension="2">4629462 819841 4629446 819894 4629416 819937 4629385 819984 4629332 820083 4629278 820110 4629198 820117 4629084 820118 4628969 820128 4628868 820133 4628746 820117 4628602 820127 4628535 820155 4628506 820172 4628474 820191 4628367 820216 4628290 820203 4628209 818914 4629530 818933 4629591 818924 4629664 818999 4629691 819036 4629747 819096 4629811 819173 4629904 819298 4629890 819330 4629852 819372 4629783 819446 4629698 819521 4629650 819595 4629619 819668 4629586 819738 4629512 819807 4629462 819841</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></comuni:the_geom>
+   </comuni:comuni11>
+  </gml:featureMember>
+  <gml:featureMember>
+   <comuni:comuni11 gml:id="comuni11.2671">
+   <comuni:cod_reg>12</comuni:cod_reg>
+   <comuni:cod_pro>58</comuni:cod_pro>
+   <comuni:cod_istat>12058115</comuni:cod_istat>
+   <comuni:pro_com>58115</comuni:pro_com>
+   <comuni:nome>Lariano</comuni:nome>
+   <comuni:shape_leng>21384.1907457</comuni:shape_leng>
+   <comuni:shape_area>22534628.0401</comuni:shape_area>
+   <comuni:the_geom><gml:MultiSurface srsName="urn:ogc:def:crs:EPSG::3857"><gml:surfaceMember><gml:Polygon><gml:exterior><gml:LinearRing><gml:posList srsDimension="2">4629462 819841 4629446 819894 4629416 819937 4629385 819984 4629332 820083 4629278 820110 4629198 820117 4629084 820118 4628969 820128 4628868 820133 4628746 820117 4628602 820127 4628535 820155 4628506 820172 4628474 820191 4628367 820216 4628290 820203 4628209 818914 4629530 818933 4629591 818924 4629664 818999 4629691 819036 4629747 819096 4629811 819173 4629904 819298 4629890 819330 4629852 819372 4629783 819446 4629698 819521 4629650 819595 4629619 819668 4629586 819738 4629512 819807 4629462 819841</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></comuni:the_geom>
+   </comuni:comuni11>
+  </gml:featureMember>
+  <gml:featureMember>
+   <comuni:comuni11 gml:id="comuni11.2683">
+   <comuni:cod_reg>12</comuni:cod_reg>
+   <comuni:cod_pro>59</comuni:cod_pro>
+   <comuni:cod_istat>12059006</comuni:cod_istat>
+   <comuni:pro_com>59006</comuni:pro_com>
+   <comuni:nome>Cori</comuni:nome>
+   <comuni:shape_leng>51387.3929064</comuni:shape_leng>
+   <comuni:shape_area>85312851.2429</comuni:shape_area>
+   <comuni:the_geom><gml:MultiSurface srsName="urn:ogc:def:crs:EPSG::3857"><gml:surfaceMember><gml:Polygon><gml:exterior><gml:LinearRing><gml:posList srsDimension="2">4629462 819841 4629446 819894 4629416 819937 4629385 819984 4629332 820083 4629278 820110 4629198 820117 4629084 820118 4628969 820128 4628868 820133 4628746 820117 4628602 820127 4628535 820155 4628506 820172 4628474 820191 4628367 820216 4628290 820203 4628209 818914 4629530 818933 4629591 818924 4629664 818999 4629691 819036 4629747 819096 4629811 819173 4629904 819298 4629890 819330 4629852 819372 4629783 819446 4629698 819521 4629650 819595 4629619 819668 4629586 819738 4629512 819807 4629462 819841</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></comuni:the_geom>
+   </comuni:comuni11>
+  </gml:featureMember>
+</wfs:FeatureCollection>

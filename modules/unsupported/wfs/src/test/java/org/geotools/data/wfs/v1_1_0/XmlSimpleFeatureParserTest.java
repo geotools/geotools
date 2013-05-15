@@ -23,6 +23,7 @@ import java.net.URL;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.protocol.wfs.GetFeatureParser;
 import org.geotools.data.wfs.v1_1_0.parsers.XmlSimpleFeatureParser;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -39,7 +40,7 @@ public class XmlSimpleFeatureParserTest extends AbstractGetFeatureParserTest {
             final SimpleFeatureType featureType, final URL getFeaturesRequest) throws IOException {
 
         InputStream inputStream = new BufferedInputStream(getFeaturesRequest.openStream());
-        GetFeatureParser parser = new XmlSimpleFeatureParser(inputStream,  featureType, featureName);
+        GetFeatureParser parser = new XmlSimpleFeatureParser(inputStream,  featureType, featureName, WFSDataStore.AXIS_ORDER_COMPLIANT);
         return parser;
     }
 

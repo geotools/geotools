@@ -88,7 +88,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * Consider this reference as final; it is modified by {@link #clone} only.
      */
     private double[] ordinates;
-
+    
     /**
      * The coordinate reference system, or {@code null}.
      */
@@ -103,6 +103,9 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      */
     public GeneralEnvelope(final int dimension) {
         ordinates = new double[dimension * 2];
+        for (int i = 0; i < dimension*2; i++) {
+        	ordinates[i] = Double.NaN;
+        }
     }
 
     /**
@@ -846,7 +849,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
         return false;
     }
     /**
-     * Static method used to recognize an empty encoding of ordindates
+     * Static method used to recognize an empty encoding of ordinates
      * @param ordinates
      * @return true of the ordinates indicate an empty envelope
      * @see #isEmpty()
@@ -895,9 +898,9 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
         assert equalsIgnoreMetadata(crs, position.getCoordinateReferenceSystem()) : position;
         for (int i = 0; i < dim; i++) {
             final double value = position.getOrdinate(i);
-            if (value < ordinates[i])
+            if (value < ordinates[i] || Double.isNaN(ordinates[i]))
                 ordinates[i] = value;
-            if (value > ordinates[i + dim])
+            if (value > ordinates[i + dim] || Double.isNaN(ordinates[i + dim]))
                 ordinates[i + dim] = value;
         }
         assert isEmpty() || contains(position);

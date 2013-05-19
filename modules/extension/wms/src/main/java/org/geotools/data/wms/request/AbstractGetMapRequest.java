@@ -29,7 +29,9 @@ import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.StyleImpl;
 import org.geotools.factory.GeoTools;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.FactoryException;
@@ -192,9 +194,17 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
         try {
             if (srsName != null) {
                 if (forceXY) {
-                    return CRS.decode(srsName, true);
+                    CoordinateReferenceSystem crs = CRS.decode(srsName, true);
+                    // have we been requested a srs that cannot be forced to lon/lat?
+                    if(CRS.getAxisOrder(crs) == AxisOrder.NORTH_EAST) {
+                        Integer epsgCode = CRS.lookupEpsgCode(crs, false);
+                        if(epsgCode == null) {
+                            throw new IllegalArgumentException("Could not find EPSG code for " + srsName);
+                        }
+                        return CRS.decode("EPSG:" + epsgCode, true);
+                    }
                 } else if (srsName.startsWith("EPSG:")
-                        && Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)) {
+                        && isGeotoolsLongitudeFirstAxisOrderForced()) {
                     // how do we look up the unmodified axis order?
                     String explicit = srsName.replace("EPSG:", "urn:x-ogc:def:crs:EPSG::");
                     return CRS.decode(explicit, false);
@@ -210,6 +220,11 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
         }
         return DefaultEngineeringCRS.CARTESIAN_2D;
     }
+
+    private static boolean isGeotoolsLongitudeFirstAxisOrderForced() {
+        return Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER) ||
+                GeoTools.getDefaultHints().get(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER) == Boolean.TRUE;
+    }
     /**
      * Sets BBOX and SRS using the provided Envelope.
      */
@@ -217,7 +232,6 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
         String version = properties.getProperty(VERSION);
         boolean forceXY = version == null || !version.startsWith("1.3");
         String srsName = CRS.toSRS( envelope.getCoordinateReferenceSystem() );
-        setSRS( srsName );
         
         CoordinateReferenceSystem crs = toServerCRS( srsName, forceXY );
         Envelope bbox;

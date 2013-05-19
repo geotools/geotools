@@ -1,8 +1,10 @@
 package org.geotools.map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,9 +22,13 @@ import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.MockHttpClient;
 import org.geotools.data.ows.MockHttpResponse;
 import org.geotools.data.wms.WebMapServer;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.ows.ServiceException;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -39,9 +45,55 @@ public class WMSCoverageReaderTest {
         }
         return result;
     };
+    
+    @Before
+    public void setup() {
+        System.setProperty("org.geotools.referencing.forceXY", "true");
+        Hints.putSystemDefault(Hints.FORCE_AXIS_ORDER_HONORING, "http");
+        CRS.reset("all");
+    }
+    
+    @After
+    public void teardown() {
+        System.clearProperty("org.geotools.referencing.forceXY");
+        Hints.putSystemDefault(Hints.FORCE_AXIS_ORDER_HONORING, "");
+        CRS.reset("all");
+    }
 
     @Test
     public void test4326wms13() throws Exception {
+        WMSCoverageReader reader = getReader4326wms13();
+
+        // build a getmap request and check it
+        CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
+        ReferencedEnvelope worldEnvelope = new ReferencedEnvelope(-180, 180, -90, 90, wgs84);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 180, 90), worldEnvelope);
+        final Parameter<GridGeometry2D> ggParam = (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        ggParam.setValue(gg);
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { ggParam });
+        assertTrue(CRS.equalsIgnoreMetadata(wgs84, coverage.getCoordinateReferenceSystem()));
+        assertEquals(worldEnvelope, new ReferencedEnvelope(coverage.getEnvelope()));
+    }
+    
+    @Test
+    public void test4326wms13RequestFlipped() throws Exception {
+        WMSCoverageReader reader = getReader4326wms13();
+
+        // build a getmap request and check it
+        CoordinateReferenceSystem wgs84 = CRS.decode("urn:ogc:def:crs:EPSG::4326", true);
+        ReferencedEnvelope worldEnvelope = new ReferencedEnvelope(-90, 90, -180, 180, wgs84);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 180, 90), worldEnvelope);
+        final Parameter<GridGeometry2D> ggParam = (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        ggParam.setValue(gg);
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { ggParam });
+        assertTrue(CRS.equalsIgnoreMetadata(wgs84, coverage.getCoordinateReferenceSystem()));
+        assertEquals(worldEnvelope, new ReferencedEnvelope(coverage.getEnvelope()));
+    }
+
+    private WMSCoverageReader getReader4326wms13() throws IOException, ServiceException,
+            MalformedURLException {
         // prepare the responses
         MockHttpClient client = new MockHttpClient() {
 
@@ -68,17 +120,7 @@ public class WMSCoverageReaderTest {
         WebMapServer server = new WebMapServer(new URL("http://geoserver.org/geoserver/wms"),
                 client);
         WMSCoverageReader reader = new WMSCoverageReader(server, getLayer(server, "world4326"));
-
-        // build a getmap request and check it
-        CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
-        ReferencedEnvelope worldEnvelope = new ReferencedEnvelope(-180, 180, -90, 90, wgs84);
-        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 180, 90), worldEnvelope);
-        final Parameter<GridGeometry2D> ggParam = (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D
-                .createValue();
-        ggParam.setValue(gg);
-        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { ggParam });
-        assertTrue(CRS.equalsIgnoreMetadata(wgs84, coverage.getCoordinateReferenceSystem()));
-        assertEquals(worldEnvelope, new ReferencedEnvelope(coverage.getEnvelope()));
+        return reader;
     }
 
     @Test

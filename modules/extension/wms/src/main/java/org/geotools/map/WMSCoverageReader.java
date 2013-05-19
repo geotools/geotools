@@ -364,7 +364,6 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         }
         mapRequest.setDimensions(width, height);
         mapRequest.setFormat(format);
-        mapRequest.setSRS(requestSrs);
         if(backgroundColor == null) {
             mapRequest.setTransparent(true);
         } else {
@@ -380,12 +379,9 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
             throw new IOException("Could not decode request SRS " + requestSrs);
         }
         
-        // bbox might need flipping
         ReferencedEnvelope requestEnvelope = gridEnvelope;
-        if(axisFlipped(requestSrs)) {
-            requestEnvelope = flipEnvelope(requestEnvelope);
-        }
         mapRequest.setBBox(requestEnvelope);
+        mapRequest.setSRS(requestSrs);
         
         this.mapRequest = mapRequest;
         this.requestedEnvelope = gridEnvelope;
@@ -393,39 +389,6 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         this.height = height;
 
         return gridEnvelope;
-    }
-
-    private boolean axisFlipped(String srsName) {
-        Version version = new Version(wms.getCapabilities().getVersion());
-        if(version.compareTo(new Version("1.3.0")) < 0) {
-            // aah, sheer simplicity
-            return false;
-        } else {
-            // gah, hell gates breaking loose
-            if(srsName.startsWith("EPSG:")) {
-                try {
-                    String epsgNative =  "urn:x-ogc:def:crs:EPSG:".concat(srsName.substring(5));
-                    return CRS.getAxisOrder(CRS.decode(epsgNative)) == AxisOrder.NORTH_EAST;
-                } catch(Exception e) {
-                    LOGGER.log(Level.WARNING, "Failed to determine axis order for " 
-                            + srsName + ", assuming east/north", e);
-                    return false;
-                }
-            } else {
-                // CRS or AUTO, none of them is flipped so far
-                return false;
-            }
-        }
-    }
-
-    private ReferencedEnvelope flipEnvelope(ReferencedEnvelope requestEnvelope) {
-        double minx = requestEnvelope.getMinX();
-        double miny = requestEnvelope.getMinY();
-        double maxx = requestEnvelope.getMaxX();
-        double maxy = requestEnvelope.getMaxY();
-        CoordinateReferenceSystem crs = requestEnvelope.getCoordinateReferenceSystem();
-        requestEnvelope = new ReferencedEnvelope(miny, maxy, minx, maxx, requestCRS != null ? requestCRS : crs );
-        return requestEnvelope;
     }
 
     public Format getFormat() {
@@ -439,16 +402,9 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
      * @return
      */
     public void updateBounds() {
-        boolean axisFlipped = axisFlipped(srsName);
         ReferencedEnvelope result = reference(layers.get(0).getEnvelope(crs));
-        if(result.getCoordinateReferenceSystem() instanceof GeographicCRS && axisFlipped) {
-            result = flipEnvelope(result);
-        }
         for (int i = 1; i < layers.size(); i++) {
             ReferencedEnvelope layerEnvelope = reference(layers.get(i).getEnvelope(crs));
-            if(layerEnvelope.getCoordinateReferenceSystem() instanceof GeographicCRS && axisFlipped) {
-                layerEnvelope = flipEnvelope(layerEnvelope);
-            }
             result.expandToInclude(layerEnvelope);
         }
 

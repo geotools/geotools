@@ -24,9 +24,12 @@ import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.geotools.data.complex.ComplexFeatureConstants;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.Types;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.Property;
 
 /**
  * Special node pointer for {@link org.geotools.feature.Feature}.
@@ -84,6 +87,10 @@ public class AttributeNodePointer extends NodePointer {
     }
 
     public Object getImmediateNode() {
+        return ComplexFeatureConstants.unpack(feature);        
+    }
+       
+    public Attribute getImmediateAttribute() {
         return feature;
     }
 

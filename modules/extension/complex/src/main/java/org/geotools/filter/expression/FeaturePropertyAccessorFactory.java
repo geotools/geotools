@@ -23,9 +23,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.geotools.factory.Hints;
 import org.opengis.feature.IllegalAttributeException;
+import org.geotools.feature.xpath.AttributeNodePointer;
 import org.geotools.feature.xpath.AttributeNodePointerFactory;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
@@ -262,11 +264,17 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
                 context.registerNamespace(prefix, uri);
             }
             
-            Iterator it = context.iterate(xpath);
+            Iterator it = context.iteratePointers(xpath);
             List results = new ArrayList<Object>();
             while(it.hasNext()) {
-                results.add(it.next());
+                Pointer pointer = (Pointer) it.next();
+                if (pointer instanceof AttributeNodePointer) {
+                    results.add (((AttributeNodePointer) pointer).getImmediateAttribute());
+                } else {
+                    results.add(pointer.getValue());
+                }
             }
+            
             if (results.size()==0) {
                 throw new IllegalArgumentException("x-path gives no results.");
             } else if (results.size()==1) {

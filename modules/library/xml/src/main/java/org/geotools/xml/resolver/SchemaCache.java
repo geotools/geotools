@@ -114,6 +114,18 @@ public class SchemaCache {
      * True if query string components should be part of the discriminator for
      */
     private final boolean keepQuery;
+    
+    private static int downloadTimeout = 30000;
+    
+    static {
+        if(System.getProperty("schema.cache.download.timeout") != null) {
+            try {
+                downloadTimeout = Integer.parseInt(System.getProperty("schema.cache.download.timeout"));
+            } catch(NumberFormatException e) {
+                LOGGER.warning("schema.cache.download.timeout has a wrong format: should be a number");
+            }
+        }
+    }
 
     /**
      * A cache of XML schemas (or other file types) rooted in the given directory, with optional downloading.
@@ -253,8 +265,8 @@ public class SchemaCache {
                 return null;
             }
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setConnectTimeout(10000);
-            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(downloadTimeout);
+            connection.setReadTimeout(downloadTimeout);
             connection.setUseCaches(false);
             connection.connect();
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -306,7 +318,7 @@ public class SchemaCache {
             }
             return bytes;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 
@@ -394,17 +406,7 @@ public class SchemaCache {
     private void startDownload(String location, File file, boolean isTemp) {
         if(!isTemp) {
             synchronized(locationsInDownload) {
-                locationsInDownload.add(location);
-                try {
-                    // we create an empty placeholder to be sure the file exists
-                    // for other threads to check
-                    file.getParentFile().mkdirs();
-                    file.createNewFile();
-                } catch (IOException e) {
-                    locationsInDownload.remove(location);
-                    LOGGER.severe("Can't create cache file: "+file.getAbsolutePath());
-                    throw new RuntimeException(e);
-                }
+                locationsInDownload.add(location);                
             }
         }
     }

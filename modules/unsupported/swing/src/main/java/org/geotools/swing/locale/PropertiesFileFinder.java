@@ -20,7 +20,7 @@ package org.geotools.swing.locale;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,7 +69,7 @@ public class PropertiesFileFinder {
         
         String path = getSelfPath();
         if (isJarPath(path)) {
-            JarInputStream jarFile = getAsJarFile(path);
+            JarInputStream jarFile = getAsJarInputStream(path);
             JarEntry entry;
             while ((entry = jarFile.getNextJarEntry()) != null) {
                 String name = entry.getName();
@@ -103,26 +103,15 @@ public class PropertiesFileFinder {
      * @return path to this class
      */
     private String getSelfPath() {
-        try {
-            String className = getClass().getSimpleName() + ".class";
-            URL url = getClass().getResource(className);
-            
-            /*
-             * DataUtiltiies.urlToFile doesn't deal with the jar protocol
-             * so if that's what we've got we remove the "jar:" prefix. 
-             * TODO: It would be better to add proper support to the DataUtilities
-             * class.
-             */
-            if (url.getProtocol().equals("jar")) {
-                String urlStr = url.toExternalForm();
-                url = new URL(urlStr.substring(4));
-                
-            }
+        String className = getClass().getSimpleName() + ".class";
+        URL url = getClass().getResource(className);
+
+        //DataUtiltiies.urlToFile only deals with file protocol
+        if (url.getProtocol().equals("file")) {
             return DataUtilities.urlToFile(url).getPath();
-            
-        } catch (MalformedURLException ex) {
-            throw new RuntimeException(ex);
-        }
+        } else {
+            return url.toString();
+        }            
     }
     
     /**
@@ -143,23 +132,15 @@ public class PropertiesFileFinder {
      * @throws IllegalArgumentException if the jar cannot be found
      * @throws IOException on error opening file
      */
-    private JarInputStream getAsJarFile(String jarPath) throws IOException {
-        if (jarPath.startsWith("file:")) {
-            jarPath = jarPath.substring(5);
-        }
+    private JarInputStream getAsJarInputStream(String jarPath) throws IOException {
+        JarInputStream jis = null;
+
+        URL jarUrl = new URL(jarPath);
         
-        int pos = jarPath.indexOf(".jar!");
-        if (pos <= 0) {
-            throw new IllegalArgumentException("Not a valid jar path");
-        }
-        
-        jarPath = jarPath.substring(0, pos + 4);
-        File file = new File(jarPath);
-        if (!file.exists()) {
-            throw new IllegalArgumentException("File not found: " + file);
-        }
-        
-        return new JarInputStream(new FileInputStream(file));
+        InputStream is = jarUrl.openStream();
+        jis = new JarInputStream(is);
+                
+        return jis;
     }
     
     /**

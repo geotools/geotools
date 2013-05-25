@@ -63,14 +63,14 @@ public class AttributeNodeIterator implements NodeIterator {
 
     public AttributeNodeIterator(AttributeNodePointer pointer) {
         this.pointer = pointer;
-        feature = (ComplexAttribute) pointer.getImmediateNode();
+        feature = (ComplexAttribute) pointer.getImmediateAttribute();
         children = new ArrayList<Property>(feature.getValue());
         position = 1;
     }
 
     public AttributeNodeIterator(AttributeNodePointer pointer, Name name) {
         this.pointer = pointer;
-        feature = (ComplexAttribute) pointer.getImmediateNode();
+        feature = (ComplexAttribute) pointer.getImmediateAttribute();
 
         AttributeDescriptor descriptor = feature.getDescriptor();
         Name attName = descriptor == null ? feature.getType().getName() : descriptor.getName();

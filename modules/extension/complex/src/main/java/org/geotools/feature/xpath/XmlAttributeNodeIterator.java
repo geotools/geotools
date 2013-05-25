@@ -57,7 +57,7 @@ public class XmlAttributeNodeIterator implements NodeIterator {
     public XmlAttributeNodeIterator(AttributeNodePointer pointer, Name name) {
         this.pointer = pointer;
         this.name = name;
-        feature = (Attribute) pointer.getImmediateNode();
+        feature = pointer.getImmediateAttribute();
 
     }
 

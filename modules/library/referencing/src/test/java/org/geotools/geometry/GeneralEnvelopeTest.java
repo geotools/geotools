@@ -72,6 +72,12 @@ public final class GeneralEnvelopeTest {
         GeneralEnvelope geot3045 = new GeneralEnvelope(new double[]{0,0}, new double[]{-1,-1}); 
         assertTrue( geot3045.isEmpty() );
 
+        // See http://jira.codehaus.org/browse/GEOT-4261
+        GeneralEnvelope geot4261 = new GeneralEnvelope(2);
+        GeneralDirectPosition dp = new GeneralDirectPosition(new double[]{100.0, 200.0});
+        assertTrue(geot4261.isEmpty());
+        geot4261.add(dp);
+        assertEquals(new GeneralEnvelope(dp, dp), geot4261);
     }
 
     /**
@@ -80,12 +86,11 @@ public final class GeneralEnvelopeTest {
     @Test
     public void testEquals() {
         /*
-         * Initialize an empty envelope. The new envelope is empty but not null because initialized
-         * to 0, not NaN.
+         * Initialize an empty envelope. The new envelope is empty and null.
          */
         final GeneralEnvelope e1 = new GeneralEnvelope(4);
         assertTrue(e1.isEmpty());
-        assertFalse(e1.isNull());
+        assertTrue(e1.isNull());
         assertEquals(e1.getLowerCorner(), e1.getUpperCorner());
         /*
          * Initialize with arbitrary coordinate values. Should not be empty anymore.

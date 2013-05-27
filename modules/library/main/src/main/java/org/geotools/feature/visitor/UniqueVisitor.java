@@ -17,6 +17,7 @@
 package org.geotools.feature.visitor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -45,7 +46,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class UniqueVisitor implements FeatureCalc {
+public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
     Set set = new HashSet();
 
@@ -73,7 +74,12 @@ public class UniqueVisitor implements FeatureCalc {
     public void init(SimpleFeatureCollection collection) {
     	//do nothing
     }
-    
+
+    @Override
+    public List<Expression> getExpressions() {
+        return Arrays.asList(expr);
+    }
+
     public void visit(SimpleFeature feature) {
         visit(feature);
     }

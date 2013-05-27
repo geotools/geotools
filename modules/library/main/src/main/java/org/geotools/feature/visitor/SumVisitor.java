@@ -16,6 +16,9 @@
  */
 package org.geotools.feature.visitor;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.AverageVisitor.AverageResult;
@@ -39,7 +42,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class SumVisitor implements FeatureCalc {
+public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
     SumStrategy strategy;
 
@@ -66,7 +69,12 @@ public class SumVisitor implements FeatureCalc {
     public void init(SimpleFeatureCollection collection) {
     	//do nothing
     }
-    
+
+    @Override
+    public List<Expression> getExpressions() {
+        return Arrays.asList(expr);
+    }
+
     /**
      * Factory method
      *

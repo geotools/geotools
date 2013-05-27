@@ -25,8 +25,15 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
+import org.geotools.feature.visitor.FeatureAttributeVisitor;
+import org.geotools.filter.FilterAttributeExtractor;
+import org.opengis.feature.FeatureVisitor;
+import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 
 /**
  * SimpleFeatureCollection decorator which decorates a feature collection "re-typing" 
@@ -58,5 +65,24 @@ public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection
 	public SimpleFeatureIterator features() {
 		return new ReTypingFeatureIterator( delegate.features(), delegate.getSchema(), featureType );
 	}
-	
+
+    @Override
+    protected boolean canDelegate(FeatureVisitor visitor) {
+        if (visitor instanceof FeatureAttributeVisitor) {
+            //pass through if the target schema contains all the necessary attributes
+            FilterAttributeExtractor extractor = new FilterAttributeExtractor(featureType);
+            for (Expression e : ((FeatureAttributeVisitor) visitor).getExpressions()) {
+                e.accept(extractor, null);
+            }
+
+            for (PropertyName pname : extractor.getPropertyNameSet()) {
+                AttributeDescriptor att = (AttributeDescriptor) pname.evaluate(featureType);
+                if (att == null) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 }

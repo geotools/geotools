@@ -16,22 +16,29 @@
  */
 package org.geotools.data.store;
 
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform2D;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 
+import static org.easymock.EasyMock.*;
 /**
  * 
  *
@@ -123,6 +130,40 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
         
         SimpleFeatureIterator reproject = new ReprojectingFeatureCollection( delegate, lenientTarget ).features();
         reproject.close();
+    }
+    
+    public void testDelegateAccepts() throws Exception {
+        SimpleFeatureTypeBuilder stb = new SimpleFeatureTypeBuilder();
+        stb.setName("test");
+        stb.setCRS(DefaultGeographicCRS.WGS84);
+        stb.add("geo", Geometry.class);
+        stb.add("bar", Integer.class);
+        SimpleFeatureType ft = stb.buildFeatureType();
+
+        UniqueVisitor vis = new UniqueVisitor("bar");
+
+        SimpleFeatureCollection delegate = createMock(SimpleFeatureCollection.class);
+        expect(delegate.getSchema()).andReturn(ft).anyTimes();
+        delegate.accepts(vis, null);
+        expectLastCall().once();
+        replay(delegate);
+
+        ReprojectingFeatureCollection rfc = new ReprojectingFeatureCollection(delegate, target);
+        rfc.accepts(vis, null);
+        verify(delegate);
+
+        vis = new UniqueVisitor("geo");
+        SimpleFeatureIterator it = createNiceMock(SimpleFeatureIterator.class);
+        replay(it);
+
+        delegate = createMock(SimpleFeatureCollection.class);
+        expect(delegate.features()).andReturn(it).once();
+        expect(delegate.getSchema()).andReturn(ft).anyTimes();
+        replay(delegate);
+
+        rfc = new ReprojectingFeatureCollection(delegate, target);
+        rfc.accepts(vis, null);
+        verify(delegate);
     }
 
 }

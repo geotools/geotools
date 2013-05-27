@@ -17,6 +17,7 @@
 package org.geotools.feature.visitor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,7 +39,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class MedianVisitor implements FeatureCalc {
+public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
     private List list = new ArrayList();
     /**
@@ -74,7 +75,12 @@ public class MedianVisitor implements FeatureCalc {
     public void init(SimpleFeatureCollection collection) {
     	//do nothing
     }
-    
+
+    @Override
+    public List<Expression> getExpressions() {
+        return Arrays.asList(expr);
+    }
+
     public void visit(SimpleFeature feature) {
         visit((org.opengis.feature.Feature)feature);
     }

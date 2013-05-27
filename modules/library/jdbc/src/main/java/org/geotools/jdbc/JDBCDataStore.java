@@ -1935,7 +1935,31 @@ public final class JDBCDataStore extends ContentDataStore
             }
         }
         
-        return createTableSQL(featureType.getTypeName(), columnNames, sqlTypeNames, nillable, "fid", featureType);
+        return createTableSQL(featureType.getTypeName(), columnNames, sqlTypeNames, nillable, 
+            findPrimaryKeyColumnName(featureType), featureType);
+    }
+
+    /*
+     * search feature type looking for suitable unique column for primary key.
+     */
+    protected String findPrimaryKeyColumnName(SimpleFeatureType featureType) {
+        String[] suffix = new String[]{"", "_1", "_2"};
+        String[] base = new String[]{"fid", "id", "gt_id", "ogc_fid"};
+
+        for (String b : base) {
+            O: for (String s : suffix) {
+                String name = b + s;
+                for (AttributeDescriptor ad : featureType.getAttributeDescriptors()) {
+                    if (ad.getLocalName().equalsIgnoreCase(name)) {
+                        continue O;
+                    }
+                }
+                return name;
+            }
+        }
+
+        //practically should never get here, but just fall back and fail later 
+        return "fid";
     }
 
     /**

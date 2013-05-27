@@ -16,6 +16,9 @@
  */
 package org.geotools.feature.visitor;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
@@ -34,7 +37,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class MinVisitor implements FeatureCalc {
+public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
     Comparable minvalue;
     Comparable curvalue;
@@ -64,6 +67,12 @@ public class MinVisitor implements FeatureCalc {
     public void init(SimpleFeatureCollection collection) {
     	//do nothing
     }
+
+    @Override
+    public List<Expression> getExpressions() {
+        return Arrays.asList(expr);
+    }
+
     /**
      * Visitor function, which looks at each feature and finds the minimum.
      *

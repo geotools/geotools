@@ -38,7 +38,13 @@ Contributor Review (taken from pom.xml and source code files):
       
       [FIXED]
       
-  
+
+* resources
+  ~~~~~~~~~~~~~~
+    xsd files in org/w3/www/2001 folder are from the W3C Consortium
+    and can be downloaded from http://www.w3.org/2001/xml.xsd
+    (http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231)
+      
 * test resources
   ~~~~~~~~~~~~~~
   

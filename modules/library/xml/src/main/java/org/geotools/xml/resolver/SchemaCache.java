@@ -114,6 +114,21 @@ public class SchemaCache {
      * True if query string components should be part of the discriminator for
      */
     private final boolean keepQuery;
+    
+    /**
+     * Default download timeout. Change it with -Dschema.cache.download.timeout=<milliseconds>
+     */
+    private static int downloadTimeout = 60000;
+    
+    static {
+        if(System.getProperty("schema.cache.download.timeout") != null) {
+            try {
+                downloadTimeout = Integer.parseInt(System.getProperty("schema.cache.download.timeout"));
+            } catch(NumberFormatException e) {
+                LOGGER.warning("schema.cache.download.timeout has a wrong format: should be a number");
+            }
+        }
+    }
 
     /**
      * A cache of XML schemas (or other file types) rooted in the given directory, with optional downloading.
@@ -217,7 +232,7 @@ public class SchemaCache {
      * @param location and absolute http/https URL.
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
-    static byte[] download(String location) {        
+    static byte[] download(String location) throws IOException {        
         URI locationUri;
         try {
             locationUri = new URI(location);
@@ -233,7 +248,7 @@ public class SchemaCache {
      * @param location and absolute http/https URL.
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
-    static byte[] download(URI location) {
+    static byte[] download(URI location) throws IOException {
         return download(location, DEFAULT_DOWNLOAD_BLOCK_SIZE);
     }
 
@@ -244,7 +259,7 @@ public class SchemaCache {
      * @param blockSize download block size
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
-    static byte[] download(URI location, int blockSize) {        
+    static byte[] download(URI location, int blockSize) throws IOException {        
         try {
             URL url = location.toURL();
             String protocol = url.getProtocol();
@@ -253,8 +268,8 @@ public class SchemaCache {
                 return null;
             }
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setConnectTimeout(10000);
-            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(downloadTimeout);
+            connection.setReadTimeout(downloadTimeout);
             connection.setUseCaches(false);
             connection.connect();
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -306,7 +321,8 @@ public class SchemaCache {
             }
             return bytes;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+			throw new IOException("Error downloading location: "
+					+ location.toString(), e);
         }
     }
 
@@ -354,20 +370,23 @@ public class SchemaCache {
         if (isDownloadAllowed()) {
             // add location to downloading list
             startDownload(location, file, isTemp);
-    
-            byte[] bytes = download(location);
-            if (bytes == null) {
-                endDownload(location, isTemp);
-                return null;
-            }
-            store(file, bytes);
-            LOGGER.info("Cached XML schema: " + location);
-            endDownload(location, isTemp);
-            if (isTemp) {
-                file.deleteOnExit();
-            }
-    
-            return DataUtilities.fileToURL(file).toExternalForm();
+            try {
+            	byte[] bytes = download(location);
+            	if (bytes == null) {                    
+                    return null;
+                }
+            	store(file, bytes);
+                LOGGER.info("Cached XML schema: " + location);                
+                if (isTemp) {
+                    file.deleteOnExit();
+                }
+        
+                return DataUtilities.fileToURL(file).toExternalForm();
+            } catch(IOException e) {
+            	throw new RuntimeException(e);
+            } finally {
+            	endDownload(location, isTemp);
+            }            
         } else {
             return null;
         }
@@ -394,17 +413,7 @@ public class SchemaCache {
     private void startDownload(String location, File file, boolean isTemp) {
         if(!isTemp) {
             synchronized(locationsInDownload) {
-                locationsInDownload.add(location);
-                try {
-                    // we create an empty placeholder to be sure the file exists
-                    // for other threads to check
-                    file.getParentFile().mkdirs();
-                    file.createNewFile();
-                } catch (IOException e) {
-                    locationsInDownload.remove(location);
-                    LOGGER.severe("Can't create cache file: "+file.getAbsolutePath());
-                    throw new RuntimeException(e);
-                }
+                locationsInDownload.add(location);                
             }
         }
     }

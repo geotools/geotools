@@ -132,9 +132,9 @@ public class OverviewsControllerTest extends Assert{
     }
     
     private final static TestSet at1 = new TestSet(new OverviewConfig[]{
-            new OverviewConfig(OverviewPolicy.QUALITY, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 2)),
-            new OverviewConfig(OverviewPolicy.SPEED, new GranuleParams(4, 1, 1), new GranuleParams(2, 1, 2)),
-            new OverviewConfig(OverviewPolicy.NEAREST, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 2)),
+            new OverviewConfig(OverviewPolicy.QUALITY, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 1)),
+            new OverviewConfig(OverviewPolicy.SPEED, new GranuleParams(4, 1, 1), new GranuleParams(2, 1, 1)),
+            new OverviewConfig(OverviewPolicy.NEAREST, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 1)),
             new OverviewConfig(OverviewPolicy.IGNORE, new GranuleParams(0, 9, 8), new GranuleParams(0, 5, 5))});
     private final static TestSet at2 = new TestSet(new OverviewConfig[]{
             new OverviewConfig(OverviewPolicy.QUALITY, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 2)),

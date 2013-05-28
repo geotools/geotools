@@ -78,7 +78,6 @@ import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.imagemosaic.ImageMosaicReader.DomainDescriptor;
-import org.geotools.gce.imagemosaic.ImageMosaicReader.DomainManager;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.gce.imagemosaic.processing.ArtifactsFilterDescriptor;
@@ -325,8 +324,6 @@ class RasterLayerResponse{
 	 */
 	class MosaicBuilder implements GranuleCatalogVisitor{
 		
-
-                private final int maxNumberOfGranules;
 		private final List<Future<GranuleLoadingResult>> tasks= new ArrayList<Future<GranuleLoadingResult>>();
 		private int   granulesNumber;
 		private List<ROI> rois = new ArrayList<ROI>();
@@ -348,7 +345,6 @@ class RasterLayerResponse{
                 */
                 public MosaicBuilder(final RasterLayerRequest request) {
                     this.request=request;
-                    maxNumberOfGranules=request.getMaximumNumberOfGranules();
                 }
 		
 		public RenderedImage[] getSourcesAsArray() {
@@ -791,7 +787,7 @@ class RasterLayerResponse{
 			// level dimension and envelope. The grid to world transforms for
 			// the other levels can be computed accordingly knowing the scale
 			// factors.
-			if (request.getRequestedBBox() != null && request.getRequestedRasterArea() != null && !request.isHeterogeneousGranules())
+			if (request.getRequestedBBox() != null && request.getRequestedRasterArea() != null && !request.isHeterogeneousGranules()){
 				imageChoice = ReadParamsController.setReadParams(
 				        request.getRequestedResolution(),
 				        request.getOverviewPolicy(),
@@ -799,8 +795,9 @@ class RasterLayerResponse{
 				        baseReadParameters,
 				        request.rasterManager,
 				        request.rasterManager.overviewsController); // use general overviews controller
-			else
-				imageChoice = 0;
+			} else {
+			    imageChoice = 0;
+			}
 			assert imageChoice>=0;
 			if (LOGGER.isLoggable(Level.FINE))
 				LOGGER.fine(new StringBuffer("Loading level ").append(
@@ -819,29 +816,40 @@ class RasterLayerResponse{
 			//compute final world to grid
 			// base grid to world for the center of pixels
 			final AffineTransform g2w;
-			final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
-			final OverviewLevel selectedLevel = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
-			final double resX = baseLevel.resolutionX;
-			final double resY = baseLevel.resolutionY;
-			final double[] requestRes = request.getRequestedResolution();
-
-                        g2w = new AffineTransform((AffineTransform) baseGridToWorld);
-                        g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
-                        
-			if ((requestRes[0] < resX || requestRes[1] < resY) ) {
-			    // Using the best available resolution
-			    oversampledRequest = true;
+			
+			if(!request.isHeterogeneousGranules()){
+        			final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
+        			final OverviewLevel selectedLevel = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
+        			final double resX = baseLevel.resolutionX;
+        			final double resY = baseLevel.resolutionY;
+        			final double[] requestRes = request.getRequestedResolution();
+        
+                                g2w = new AffineTransform((AffineTransform) baseGridToWorld);
+                                g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+                                
+        			if ((requestRes[0] < resX || requestRes[1] < resY) ) {
+        			    // Using the best available resolution
+        			    oversampledRequest = true;
+        			} else {
+        				
+        			    // SG going back to working on a per level basis to do the composition
+        			    // g2w = new AffineTransform(request.getRequestedGridToWorld());
+        			    g2w.concatenate(AffineTransform.getScaleInstance(selectedLevel.scaleFactor,selectedLevel.scaleFactor));
+        			    g2w.concatenate(AffineTransform.getScaleInstance(baseReadParameters.getSourceXSubsampling(), baseReadParameters.getSourceYSubsampling()));
+        			}
 			} else {
-				
-			    // SG going back to working on a per level basis to do the composition
-			    // g2w = new AffineTransform(request.getRequestedGridToWorld());
-			    g2w.concatenate(AffineTransform.getScaleInstance(selectedLevel.scaleFactor,selectedLevel.scaleFactor));
-			    g2w.concatenate(AffineTransform.getScaleInstance(baseReadParameters.getSourceXSubsampling(), baseReadParameters.getSourceYSubsampling()));
+
+			    // use the requested transformation in case the granules are heterogeneous
+                            // move it to the corner
+                            g2w = new AffineTransform(request.getRequestedGridToWorld());
+                            g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);  			    
 			}
 
 			// move it to the corner
 			finalGridToWorldCorner = new AffineTransform2D(g2w);
 			finalWorldToGridCorner = finalGridToWorldCorner.inverse();// compute raster bounds
+			
+			
 			final GeneralEnvelope tempRasterBounds = CRS.transform(finalWorldToGridCorner, mosaicBBox);
 			rasterBounds=tempRasterBounds.toRectangle2D().getBounds();
 			

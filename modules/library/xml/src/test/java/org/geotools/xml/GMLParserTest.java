@@ -153,6 +153,7 @@ public class GMLParserTest extends TestCase {
             String path = "xml/patternfacet/states.xml";
             File f = TestData.copy(this,path);
             TestData.copy(this,"xml/patternfacet/states.xsd");
+            TestData.copy(this,"xml/wfs/WFS-basic.xsd");
             URI u = f.toURI();
 
             XMLSAXHandler xmlContentHandler = new XMLSAXHandler(u,null);

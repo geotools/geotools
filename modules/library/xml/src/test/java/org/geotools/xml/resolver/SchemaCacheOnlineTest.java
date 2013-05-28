@@ -86,7 +86,6 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
     public void after() throws Exception {
         super.after();
         SchemaCache.delete(CACHE_DIRECTORY);
-        SchemaCache.locationsInDownload.clear();
     }
 
     /**
@@ -175,37 +174,6 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
         }
     }
     
-    @Test
-    public void resolveAlreadyInDownload() throws Exception {        
-        File cacheDirectory = DataUtilities.urlToFile(SchemaCacheTest.class
-                .getResource("/test-data/cache"));
-        SchemaCache cache = new SchemaCache(cacheDirectory, true);
-        
-        String resolvedLocation = cache
-                .resolveLocation("http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd");
-        
-        Assert.assertTrue(resolvedLocation.startsWith("file:"));
-        Assert.assertTrue(resolvedLocation.endsWith("geosciml.xsd"));
-        Assert.assertTrue(resolvedLocation.startsWith(cacheDirectory
-                .getCanonicalFile().toURI().toString()));
-        Assert.assertTrue(DataUtilities.urlToFile(
-                (new URI(resolvedLocation)).toURL()).exists());
-        
-        // fake SchemaCache so that it thinks the location is in downloading
-        SchemaCache.locationsInDownload
-                .add("http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd");
-        
-        resolvedLocation = cache
-                .resolveLocation("http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd");
-        
-        Assert.assertTrue(resolvedLocation.startsWith("file:"));
-        Assert.assertTrue(resolvedLocation.endsWith("geosciml.xsd"));
-        // this time we have a temporary download
-        Assert.assertFalse(resolvedLocation.startsWith(cacheDirectory
-                .getCanonicalFile().toURI().toString()));
-        Assert.assertTrue(DataUtilities.urlToFile(
-                (new URI(resolvedLocation)).toURL()).exists());
-        
-    }
+    
 
 }

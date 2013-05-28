@@ -395,7 +395,7 @@ public class GranuleDescriptor {
 			    // Populating overviews and initializing overviewsController
 			    for (int i = 0; i < numberOfOvervies; i++){
 			        overviewsResolution[i][0]= (highestRes[0] * width) / reader.getWidth(i + 1);
-			        overviewsResolution[i][1]= (highestRes[1] * height) / reader.getWidth(i + 1);
+			        overviewsResolution[i][1]= (highestRes[1] * height) / reader.getHeight(i + 1);
 			    }
 			    overviewsController = new OverviewsController(highestRes, numberOfOvervies, overviewsResolution);
 			}

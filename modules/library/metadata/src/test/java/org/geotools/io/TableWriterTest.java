@@ -31,24 +31,25 @@ import static org.junit.Assert.*;
  * @source $URL$
  */
 public final class TableWriterTest {
-   
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
+
     /**
      * Format a very simple table as shown in the example.
      */
 	@Test
 	public void testExample() throws IOException {
 		String expectedTable = 
-				"Prénom      Nom    \n" +    
-				"-------------------\n" +
-				"Idéphonse   Laporte\n" + 
-				"Sarah       Coursi \n" +  
-				"Yvan        Dubois \n";
+				"Prénom      Nom    " + LINE_SEPARATOR +
+				"-------------------" + LINE_SEPARATOR +
+				"Idéphonse   Laporte" + LINE_SEPARATOR +
+				"Sarah       Coursi " + LINE_SEPARATOR +
+				"Yvan        Dubois " + LINE_SEPARATOR;
 
 		StringWriter writer = new StringWriter();
 		TableWriter out = new TableWriter(writer, 3);
-		out.write("Prénom\tNom\n");
+		out.write("Prénom\tNom" + LINE_SEPARATOR);
 		out.nextLine('-');
-		out.write("Idéphonse\tLaporte\nSarah\tCoursi\nYvan\tDubois");
+		out.write("Idéphonse\tLaporte" + LINE_SEPARATOR + "Sarah\tCoursi" + LINE_SEPARATOR + "Yvan\tDubois");
 		out.flush();
 		out.close();
 		
@@ -74,7 +75,7 @@ public final class TableWriterTest {
 		table.nextColumn();
 		table.write("2.345");
 
-		assertEquals("Source Point: 1.234\nTarget Point: 2.345\n", table.toString());
+		assertEquals("Source Point: 1.234" + LINE_SEPARATOR + "Target Point: 2.345" + LINE_SEPARATOR, table.toString());
 		table.close();
 	}
 }

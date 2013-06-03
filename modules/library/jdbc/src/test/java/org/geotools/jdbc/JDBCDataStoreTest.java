@@ -205,6 +205,24 @@ public abstract class JDBCDataStoreTest extends JDBCTestSupport {
         assertTrue(CRS.equalsIgnoreMetadata(CRS.decode("EPSG:26713"), ft2.getCoordinateReferenceSystem()));
     }
 
+    public void testCreateSchemaFidColumn() throws Exception {
+        //test a case where the feature type we are creating contains a column named "fid"
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName(tname("ft2"));
+        builder.setNamespaceURI(dataStore.getNamespaceURI());
+        builder.setCRS(CRS.decode("EPSG:26713"));
+        builder.add(aname("geometry"), Point.class);
+        builder.add(aname("intProperty"), Integer.class);
+        builder.add(aname("stringProperty"), String.class);
+        builder.add(aname("fid"), String.class);
+
+        SimpleFeatureType featureType = builder.buildFeatureType();
+        dataStore.createSchema(featureType);
+
+        SimpleFeatureType ft2 = dataStore.getSchema(tname("ft2"));
+        assertNotNull(ft2.getDescriptor(aname("fid")));
+    }
+
     void assertEqualsLax( SimpleFeatureType e, SimpleFeatureType a ) {
         if ( e.equals( a ) ) {
             return;  

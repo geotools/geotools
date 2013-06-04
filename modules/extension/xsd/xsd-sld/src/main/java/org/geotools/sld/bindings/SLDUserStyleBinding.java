@@ -16,6 +16,7 @@
  */
 package org.geotools.sld.bindings;
 
+import org.opengis.util.InternationalString;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -120,12 +121,14 @@ public class SLDUserStyleBinding extends AbstractComplexBinding {
 
         //&lt;xsd:element ref="sld:Title" minOccurs="0"/&gt;
         if (node.hasChild("Title")) {
-            style.setTitle((String) node.getChildValue("Title"));
+            style.getDescription().setTitle(
+                    (InternationalString) node.getChildValue("Title"));
         }
 
         //&lt;xsd:element ref="sld:Abstract" minOccurs="0"/&gt;
         if (node.hasChild("Abstract")) {
-            style.setAbstract((String) node.getChildValue("Abstract"));
+            style.getDescription().setAbstract(
+                    (InternationalString) node.getChildValue("Abstract"));
         }
 
         //&lt;xsd:element ref="sld:IsDefault" minOccurs="0"/&gt;

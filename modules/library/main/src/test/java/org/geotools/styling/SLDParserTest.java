@@ -30,6 +30,7 @@ import java.io.StringBufferInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -69,6 +70,36 @@ public class SLDParserTest {
         "  </UserStyle>"+
         " </NamedLayer>"+
         "</StyledLayerDescriptor>";
+    
+    public static String LocalizedSLD = 
+            "<StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\" version=\"1.0.0\">"+
+            " <NamedLayer>"+
+            "  <Name>layer</Name>"+
+            "  <UserStyle>"+
+            "   <Name>style</Name>"+
+            "   <FeatureTypeStyle>"+
+            "    <Rule>"+
+            "     <Title>sldtitle" +
+            "     <Localized lang=\"en\">english</Localized>" +
+            "     <Localized lang=\"it\">italian</Localized>" +
+            "     <Localized lang=\"fr\">french</Localized>" +
+            "     <Localized lang=\"fr_CA\">canada french</Localized>" +
+            "     </Title>"+
+            "     <Abstract>sld abstract" +
+            "     <Localized lang=\"en\">english abstract</Localized>" +
+            "     <Localized lang=\"it\">italian abstract</Localized>" +
+            "     <Localized lang=\"fr\">french abstract</Localized>" +
+            "     </Abstract>"+            
+            "     <PolygonSymbolizer>"+
+            "      <Fill>"+
+            "       <CssParameter name=\"fill\">#FF0000</CssParameter>"+
+            "      </Fill>"+
+            "     </PolygonSymbolizer>"+
+            "    </Rule>"+
+            "   </FeatureTypeStyle>"+
+            "  </UserStyle>"+
+            " </NamedLayer>"+
+            "</StyledLayerDescriptor>";
     
     static String SLD_DEFAULT_POINT = 
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
@@ -223,6 +254,26 @@ public class SLDParserTest {
     public void testBasic() throws Exception {
         SLDParser parser = new SLDParser(styleFactory, input(SLD));
         Style[] styles = parser.readXML();
+        assertStyles(styles);
+    }
+    
+    @Test
+    public void testLocalizedRuleTitle() throws Exception {
+        SLDParser parser = new SLDParser(styleFactory, input(LocalizedSLD));
+        Style[] styles = parser.readXML();
+        assertEquals("sldtitle", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getTitle().toString(Locale.JAPAN));
+        assertEquals("english", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getTitle().toString(Locale.ENGLISH));
+        assertEquals("english", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getTitle().toString(Locale.US));
+        assertEquals("english", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getTitle().toString(Locale.US));
+        assertEquals("italian", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getTitle().toString(Locale.ITALY));
+        assertEquals("french", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getTitle().toString(Locale.FRENCH));
+        assertEquals("canada french", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getTitle().toString(Locale.CANADA_FRENCH));
+        assertEquals("sld abstract", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getAbstract().toString(Locale.JAPAN));
+        assertEquals("english abstract", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getAbstract().toString(Locale.ENGLISH));
+        assertEquals("english abstract", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getAbstract().toString(Locale.US));
+        assertEquals("italian abstract", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getAbstract().toString(Locale.ITALY));
+        assertEquals("french abstract", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getAbstract().toString(Locale.FRENCH));
+        assertEquals("french abstract", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getAbstract().toString(Locale.CANADA_FRENCH));
         assertStyles(styles);
     }
 

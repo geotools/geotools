@@ -10,6 +10,10 @@ import org.geotools.jdbc.JDBCDateTestSetup;
  */
 public class PostgisDateOnlineTest extends JDBCDateOnlineTest {
 
+    public PostgisDateOnlineTest() {
+        testNegativeDates = true;
+    }
+
     @Override
     protected JDBCDateTestSetup createTestSetup() {
         return new PostgisDateTestSetup(new PostGISTestSetup());

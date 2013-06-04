@@ -5,10 +5,20 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.FeatureWriter;
+import org.geotools.data.Transaction;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.util.logging.Logging;
+import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -19,6 +29,8 @@ import org.opengis.filter.FilterFactory;
  * @source $URL$
  */
 public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
+
+    protected boolean testNegativeDates = false;
 
     @Override
     protected abstract JDBCDateTestSetup createTestSetup();
@@ -115,5 +127,49 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
         f = ff.greaterOrEqual(ff.property(aname("t")),
                 ff.literal(new SimpleDateFormat("ss:HH:mm").parse("12:13:10")));
         assertEquals(3, fs.getCount(new DefaultQuery(tname("dates"), f)));
+    }
+
+    public void testNegativeDates() throws Exception {
+        if (!testNegativeDates) {
+            return;
+        }
+        
+//        Logger.getLogger("").setLevel(Level.ALL);
+//        Logger.getLogger("").getHandlers()[0].setLevel(Level.ALL);
+//        Logging.getLogger(JDBCDataStore.class).setLevel(Level.ALL);
+        
+        // make our negative year, reset hours/minutes/seconds
+        // to allow test of date and datetime
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.clear();
+        cal.set(-500, 0, 1);
+        java.util.Date d = cal.getTime();
+        long ms = d.getTime();
+        
+        FeatureWriter writer = dataStore.getFeatureWriterAppend( tname("dates") , Transaction.AUTO_COMMIT);
+        writer.hasNext();
+        
+        // to avoid a timezone offset bug in the converter framework at the time
+        // of this writing, use the sql types to avoid conversion...
+        SimpleFeature f = (SimpleFeature) writer.next();
+        f.setAttribute("d", new java.sql.Date(ms));
+        f.setAttribute("dt", new java.sql.Timestamp(ms));
+        f.setAttribute("t", new java.sql.Time(ms));
+        writer.write();
+        
+        FeatureSource featureSource = dataStore.getFeatureSource( tname("dates") );
+        FeatureCollection features = featureSource.getFeatures(
+                dataStore.getFilterFactory().id(Collections.singleton(f.getIdentifier())));
+        Feature[] fa = new Feature[1];
+        features.toArray(fa);
+        
+        // output value should be same as input for both date and datetime
+        
+        cal.setTime((java.util.Date) fa[0].getProperty("d").getValue());
+        assertEquals(ms, cal.getTimeInMillis());
+        
+        cal.setTime((java.util.Date) fa[0].getProperty("dt").getValue());
+        assertEquals(ms, cal.getTimeInMillis());
+        writer.close();
     }
 }

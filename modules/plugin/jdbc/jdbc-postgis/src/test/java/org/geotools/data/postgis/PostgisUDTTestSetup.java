@@ -61,6 +61,9 @@ public class PostgisUDTTestSetup extends JDBCUDTTestSetup {
         run("CREATE TABLE \"udt\" (id integer PRIMARY KEY, ut foo, ut2 foo2, ut3 foo3, ut4 foo4, ut5 foo5, ut6 foo6, ut7 foo7, ut8 foo8, ut9 foo9, ut10 foo10, ut11 foo11, ut12 foo12, ut13 foo13);");
         run("INSERT INTO \"udt\" VALUES (0, '12ab', 6, 6.6, 85748957, true, 3, 3.3, 2, '14:30'::time, '15:30'::time, '2004-10-31 16:30'::timestamp, '2004-10-30 17:30'::timestamp, '00000000-0000-0000-0000-000000000000'::uuid);");
 
+        runSafe("CREATE DOMAIN bigdate AS bigint;");
+        run("CREATE TABLE \"bigdates\" (id integer PRIMARY KEY,d bigdate);");
+        run("INSERT INTO \"bigdates\" VALUES(1," + new java.util.Date().getTime() + ")");
     }
 
     @Override
@@ -79,6 +82,10 @@ public class PostgisUDTTestSetup extends JDBCUDTTestSetup {
         runSafe("DROP DOMAIN foo11");
         runSafe("DROP DOMAIN foo12");
         runSafe("DROP DOMAIN foo13");
+        
+        runSafe("DROP DOMAIN bigdate");
+        runSafe("DROP TABLE bigdates");
+        runSafe("DROP TABLE bigdates2");
     }
 
 }

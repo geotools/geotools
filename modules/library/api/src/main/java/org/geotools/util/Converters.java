@@ -16,9 +16,11 @@
  */
 package org.geotools.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,6 +56,14 @@ public final class Converters {
      * Will be initialized only when first needed.
      */
     private static FactoryRegistry registry;
+    
+    static final Converter IDENTITY = new Converter() {
+
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            return (T) source;
+        }
+    };
 
     /**
      * Returns the service registry. The registry will be created the first
@@ -183,6 +193,32 @@ public final class Converters {
             return target.cast( source.toString() );
         }
         return null;
+    }
+    
+    public static Converter getConverter(Class source, Class target, final Hints hints) {
+        if (target.isAssignableFrom(source)) {
+            return IDENTITY;
+        }
+        Set<ConverterFactory> factories = getConverterFactories(source, target);
+        if (factories.isEmpty()) {
+            return null;
+        }
+        final Converter[] converters = new Converter[factories.size()];
+        int i = 0;
+        for (ConverterFactory f: factories) {
+            converters[i] = f.createConverter(source, target, hints);
+        }
+        return new Converter() {
+
+            @Override
+            public <T> T convert(Object source, Class<T> target) throws Exception {
+                T result = null;
+                for (int i = 0; i < converters.length && result != null; i++) {
+                    result = converters[i].convert(source, target);
+                }
+                return result;
+            }
+        };
     }
 
     /**

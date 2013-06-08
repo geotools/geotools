@@ -517,7 +517,7 @@ public class DB2SQLDialect extends SQLDialect  {
     public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
         // since 9.7.2, Limit and offset is supported
         
-        if (isLimitOffsetSupported()) {
+        if (Boolean.TRUE.equals(isLimitOffsetSupported)) {
             if(limit >= 0 && limit < Integer.MAX_VALUE) {
                 if(offset > 0)
                     sql.append(" LIMIT " + offset + ", " + limit);

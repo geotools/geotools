@@ -27,6 +27,14 @@ public class DB2DialectInfo {
     private int MajorVersion,MinorVersion;
     private String ProductName,ProductVersion;
     private boolean  hasOGCWkbZTyps = false;
+    private boolean supportingPrecalculatedExtents=false;
+    
+    public boolean isSupportingPrecalculatedExtents() {
+        return supportingPrecalculatedExtents;
+    }
+    public void setSupportingPrecalculatedExtents(boolean supportingPrecalculatedExtents) {
+        this.supportingPrecalculatedExtents = supportingPrecalculatedExtents;
+    }
     public int getMajorVersion() {
         return MajorVersion;
     }

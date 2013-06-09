@@ -21,12 +21,14 @@ import java.io.Writer;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -227,6 +229,11 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
 
     public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
         delegate.setFunctionEncodingEnabled(functionEncodingEnabled);
+    }
+
+    public List<ReferencedEnvelope> getOptimizedBounds(String schema, SimpleFeatureType featureType,
+            Connection cx) throws SQLException, IOException {
+        return delegate.getOptimizedBounds(schema, featureType, cx);
     }
 
 }

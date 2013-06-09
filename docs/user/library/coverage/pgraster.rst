@@ -110,6 +110,7 @@ The plugin needs a xml configuration file. Since connect and mapping info can be
 	<coordsys name="EPSG:4326"/>
 	<!-- interpolation 1 = nearest neighbour, 2 = bipolar, 3 = bicubic -->
 	<scaleop  interpolation="1"/>
+   <axisOrder ignore="false"/>
 	&mapping;
 	&connect;
   </config>

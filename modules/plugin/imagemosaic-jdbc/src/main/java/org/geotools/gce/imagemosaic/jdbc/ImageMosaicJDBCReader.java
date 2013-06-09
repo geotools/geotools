@@ -353,26 +353,28 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
                     .getRequestedEnvelope()));
             state.getRequestEnvelopeTransformed().setCoordinateReferenceSystem(crs);
 
-            int indexX = indexOfX(crs);
-            int indexY = indexOfY(crs);
-            int indexRequestedX = indexOfX(state.getRequestedEnvelope()
-                    .getCoordinateReferenceSystem());
-            int indexRequestedY = indexOfY(state.getRequestedEnvelope()
-                    .getCoordinateReferenceSystem());
-
-            // x Axis problem ???
-            if (indexX == indexRequestedY && indexY == indexRequestedX) {
-                state.setXAxisSwitch(true);
-                Rectangle2D tmp = new Rectangle2D.Double(state.getRequestEnvelopeTransformed()
-                        .getMinimum(1), state.getRequestEnvelopeTransformed().getMinimum(0), state
-                        .getRequestEnvelopeTransformed().getSpan(1), state
-                        .getRequestEnvelopeTransformed().getSpan(0));
-                state.setRequestEnvelopeTransformed(new GeneralEnvelope(tmp));
-                state.getRequestEnvelopeTransformed().setCoordinateReferenceSystem(crs);
-            } else if (indexX == indexRequestedX && indexY == indexRequestedY) {
-                // everything is fine
-            } else {
-                throw new DataSourceException("Unable to resolve the X Axis problem");
+            if (config.getIgnoreAxisOrder()==false) { // check for axis order required
+                int indexX = indexOfX(crs);
+                int indexY = indexOfY(crs);
+                int indexRequestedX = indexOfX(state.getRequestedEnvelope()
+                        .getCoordinateReferenceSystem());
+                int indexRequestedY = indexOfY(state.getRequestedEnvelope()
+                        .getCoordinateReferenceSystem());
+    
+                // x Axis problem ???
+                if (indexX == indexRequestedY && indexY == indexRequestedX) {
+                    state.setXAxisSwitch(true);
+                    Rectangle2D tmp = new Rectangle2D.Double(state.getRequestEnvelopeTransformed()
+                            .getMinimum(1), state.getRequestEnvelopeTransformed().getMinimum(0), state
+                            .getRequestEnvelopeTransformed().getSpan(1), state
+                            .getRequestEnvelopeTransformed().getSpan(0));
+                    state.setRequestEnvelopeTransformed(new GeneralEnvelope(tmp));
+                    state.getRequestEnvelopeTransformed().setCoordinateReferenceSystem(crs);
+                } else if (indexX == indexRequestedX && indexY == indexRequestedY) {
+                    // everything is fine
+                } else {
+                    throw new DataSourceException("Unable to resolve the X Axis problem");
+                }
             }
 
             if (LOGGER.isLoggable(Level.FINE)) {

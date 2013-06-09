@@ -39,7 +39,7 @@ public class DB2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     	Connection con = getDataSource().getConnection();
         con.prepareStatement("CREATE TABLE "+DB2TestUtil.SCHEMA_QUOTED+".\"road\"(\"fid\" int  PRIMARY KEY not null GENERATED ALWAYS AS IDENTITY, \"id\" int, "
             + "\"geom\" db2gse.ST_LINESTRING, \"name\" varchar(255) ) ").execute();
-        DB2Util.executeRegister(DB2TestUtil.SCHEMA, "road", "geom", DB2TestUtil.SRSNAME,con);
+        //DB2Util.executeRegister(DB2TestUtil.SCHEMA, "road", "geom", DB2TestUtil.SRSNAME,con);
         
         String insertClause = "INSERT INTO "+DB2TestUtil.SCHEMA_QUOTED+".\"road\"(\"id\",\"geom\",\"name\")";
         con.prepareStatement(insertClause+" VALUES (0,"        		
@@ -48,6 +48,9 @@ public class DB2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
             + "db2gse.ST_LineFromText('LINESTRING(3 0, 3 2, 3 3, 3 4)',"+DB2TestUtil.SRID+")," + "'r2')").execute();
         con.prepareStatement(insertClause+" VALUES ( 2,"
             + "db2gse.ST_LineFromText('LINESTRING(3 2, 4 2, 5 3)',"+DB2TestUtil.SRID+")," + "'r3')").execute();
+              
+        // Configure for DBSQLDialect.getOptimizedBounds
+        DB2Util.executeRegisterAndCalculateExtent(DB2TestUtil.SCHEMA, "road", "geom", DB2TestUtil.SRSNAME,con);
         con.close();
     }
 

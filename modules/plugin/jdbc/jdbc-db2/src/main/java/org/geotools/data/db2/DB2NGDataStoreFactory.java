@@ -22,6 +22,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -51,6 +52,7 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
 
     public static String GetCurrentSchema = "select current sqlid from sysibm.sysdummy1";
     public static String GetWKBZTypes = "select db2gse.st_asbinary(db2gse.st_point(1,2,3,0)) from sysibm.sysdummy1";
+    public static String SelectGeometryColumns="select * from db2gse.st_geometry_columns";
     
     /** parameter for database type */
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "db2");
@@ -154,16 +156,31 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
     di.setMinorVersion(md.getDatabaseMinorVersion());
     di.setProductName(md.getDatabaseProductName());
     di.setProductVersion(md.getDatabaseProductVersion());
+    
+    
+    
+    PreparedStatement ps = con.prepareStatement(SelectGeometryColumns);
+    ResultSet rs=ps.executeQuery();
+    ResultSetMetaData rsmd=ps.getMetaData();
+    for (int i = 0; i < rsmd.getColumnCount();i++) {        
+        if ("MIN_X".equals(rsmd.getColumnName(i+1))) {
+            di.setSupportingPrecalculatedExtents(true);
+            break;
+        }
+    }
+    rs.close();
+    ps.close();
+    
     if (dataStore.getDatabaseSchema()==null) {
-        PreparedStatement ps = con.prepareStatement(GetCurrentSchema);
-        ResultSet  rs = ps.executeQuery();
+        ps = con.prepareStatement(GetCurrentSchema);
+        rs = ps.executeQuery();
         rs.next();
         dataStore.setDatabaseSchema(rs.getString(1));
         rs.close();        
         ps.close();
     }
-    PreparedStatement  ps = con.prepareStatement(GetWKBZTypes);
-    ResultSet rs = ps.executeQuery();
+    ps = con.prepareStatement(GetWKBZTypes);
+    rs = ps.executeQuery();
     rs.next();
     byte[] bytes = rs.getBytes(1);
     ByteOrderDataInStream dis = new ByteOrderDataInStream();

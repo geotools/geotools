@@ -21,13 +21,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.referencing.CRS;
@@ -37,6 +42,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -269,6 +275,80 @@ public class DB2SQLDialect extends SQLDialect  {
 //        sql.append("))");
     }
 
+    @Override
+    public List<ReferencedEnvelope> getOptimizedBounds(String schema, SimpleFeatureType featureType,
+            Connection cx) throws SQLException, IOException {
+        
+        if (getDb2DialectInfo().isSupportingPrecalculatedExtents()==false)
+            return null;
+        
+        if (dataStore.getVirtualTables().get(featureType.getTypeName()) != null)
+            return null;
+
+        if (schema == null || "".equals(schema))
+            return null; // no db schema 
+        
+        GeometryDescriptor descriptor = featureType.getGeometryDescriptor();
+        if (descriptor==null)
+            return null;
+         
+        String  tableName = featureType.getTypeName();
+        
+        Statement st = null;
+        ResultSet rs = null;
+
+        List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();        
+        try {
+            st = cx.createStatement();
+                                                    
+            StringBuffer sql = new StringBuffer();
+            sql.append("select min_x,min_y,max_x,max_y from db2gse.st_geometry_columns where  TABLE_SCHEMA='");
+            sql.append(schema).append("' AND TABLE_NAME='");                                        
+            sql.append(tableName).append("' AND COLUMN_NAME='");
+            sql.append(descriptor.getName().getLocalPart()).append("'");
+                                                    
+            LOGGER.log(Level.FINE, "Getting the full extent of the table using optimized search: {0}", sql);
+            rs = st.executeQuery(sql.toString());
+
+            if (rs.next()) {
+                Double min_x=rs.getDouble(1);
+                if(rs.wasNull()) return null;
+                Double min_y=rs.getDouble(2);
+                if(rs.wasNull()) return null;
+                Double max_x=rs.getDouble(3);
+                if(rs.wasNull()) return null;
+                Double max_y=rs.getDouble(4);
+                if(rs.wasNull()) return null;
+                                
+                Geometry geometry = new GeometryFactory().createPolygon(new Coordinate[] {
+                   new Coordinate(min_x,min_y),     
+                   new Coordinate(min_x,max_y),
+                   new Coordinate(max_x,max_y),
+                   new Coordinate(max_x,min_y),
+                   new Coordinate(min_x,min_y)
+                });
+                
+                
+                // Either a ReferencedEnvelope or ReferencedEnvelope3D will be generated here
+                ReferencedEnvelope env = JTS.bounds(geometry, descriptor.getCoordinateReferenceSystem() );
+
+                // reproject and merge
+                if (env != null && !env.isNull()) 
+                    result.add(env);
+                
+            }
+        } catch(SQLException e) {
+            LOGGER.log(Level.WARNING, "Failed to use extent from DB2GSE.ST_GEOMETRY_COLUMNS, falling back on envelope aggregation", e);
+            return null;
+        } finally {
+            dataStore.closeSafe(rs);
+            dataStore.closeSafe(st);
+        }
+        return result;
+    }
+
+    
+    
     @Override
     public Envelope decodeGeometryEnvelope(ResultSet rs, int column,
                 Connection cx) throws SQLException, IOException {

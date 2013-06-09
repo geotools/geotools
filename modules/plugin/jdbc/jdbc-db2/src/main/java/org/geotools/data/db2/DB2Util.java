@@ -56,15 +56,32 @@ public class DB2Util {
 		
 	    String s = "{" + stmt + "}";
 	    CallableStatement ps = con.prepareCall(s);
-		ps.setString(1, quote(schemaName));
-		ps.setString(2, quote(tableName));
-		ps.setString(3, quote(columnName));
-		ps.setString(4, srsName);
+	    ps.setString(1, quote(schemaName));
+	    ps.setString(2, quote(tableName));
+	    ps.setString(3, quote(columnName));
+	    ps.setString(4, srsName);
 	    ps.registerOutParameter(5, Types.INTEGER);
 	    ps.registerOutParameter(6, Types.CHAR);
 	    ps.executeUpdate();
 	    //DB2TestSetup.LOGGER.log(Level.INFO,ps.getInt(5) + "|" + ps.getString(6));
 	}
+	
+       public static void executeRegisterAndCalculateExtent(String schemaName,String tableName,String columnName, String srsName, Connection con) throws SQLException {
+           
+            String stmt = "call db2gse.ST_register_spatial_column(?,?,?,?,?,?,?)";
+	                
+            String s = "{" + stmt + "}";
+            CallableStatement ps = con.prepareCall(s);
+            ps.setString(1, quote(schemaName));
+            ps.setString(2, quote(tableName));
+            ps.setString(3, quote(columnName));
+            ps.setString(4, srsName);
+            ps.setInt(5, 1);
+            ps.registerOutParameter(6, Types.INTEGER);
+            ps.registerOutParameter(7, Types.CHAR);
+            ps.executeUpdate();	            //DB2TestSetup.LOGGER.log(Level.INFO,ps.getInt(5) + "|" + ps.getString(6));
+        }
+
 
 	public static void executeUnRegister(String schemaName,String tableName,String columnName,Connection con) throws SQLException {
 		

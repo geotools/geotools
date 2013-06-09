@@ -198,6 +198,7 @@ Here is an example config file::
         <coordsys name="EPSG:4326"/>
         <!-- interpolation 1 = nearest neighbour, 2 = bipolar, 3 = bicubic -->
         <scaleop  interpolation="1"/>
+        <axisOrder ignore="false"/>
         <spatialExtension name="custom"/>       
             <jdbcAccessClassName name="org.mycompany.jdbc.MyJDBCAccessImpl" />
         <connect>

@@ -109,6 +109,8 @@ public class Config {
     private String sqlUpdateResStatement;
 
     private Boolean verifyCardinality;
+    
+    private Boolean ignoreAxisOrder;
 
     private Integer interpolation;
 
@@ -166,6 +168,14 @@ public class Config {
         NamedNodeMap map = tmp.getAttributes();
         String s = map.getNamedItem("interpolation").getNodeValue();
         result.interpolation = new Integer(s);
+        
+        result.ignoreAxisOrder=Boolean.FALSE;
+        tmp = dom.getElementsByTagName("axisOrder").item(0);
+        if (tmp!=null) {
+            map = tmp.getAttributes();
+            s = map.getNamedItem("ignore").getNodeValue();
+            result.ignoreAxisOrder = new Boolean(s);
+        }
 
         // db mapping
         result.spatialExtension = SpatialExtension.fromString(readNameString(dom
@@ -226,6 +236,7 @@ public class Config {
             String s = map.getNamedItem("cardinality").getNodeValue();
             result.verifyCardinality = new Boolean(s);
         }
+        
 
         
     }
@@ -487,5 +498,10 @@ public class Config {
     public String getJdbcAccessClassName() {
         return jdbcAccessClassName;
     }
+    
+    public Boolean getIgnoreAxisOrder() {
+        return ignoreAxisOrder;
+    }
+
 
 }

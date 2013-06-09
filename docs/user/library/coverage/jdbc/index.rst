@@ -185,6 +185,7 @@ Example file map.xml::
      <coordsys name="EPSG:31287"/>
      <!-- interpolation 1 = nearest neighbour, 2 = bipolar, 3 = bicubic -->
      <scaleop interpolation="1"/>
+     <axisOrder ignore="false"/>
      <verify cardinality="false"/>
      &mapping;
      &connect;
@@ -206,6 +207,10 @@ coordsys
 scaleop
   The interpolation method to use (1 = nearest neighbour, 2 = bipolar, 3 = bicubic)
 
+axisOrder
+   The module compares the CRS from the read request to the CRS stored in the configuration. If the axis order differ, an x axis switch is performed.
+   Some clients are doing this before calling the module and the plugin switches again resulting in the original envelope. A value of "true" suppresses this switch.
+    
 verify
   if you have image data and georeferencing information in different tables and the the attribute cardinality is true , the plugin will check the number of records in each table. If the numbers are not equal, the image/pyramid will be removed and you see a warning in the log. This check is intended for testing environments, set the value to false in production environments to avoid bad performance.
 

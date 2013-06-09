@@ -24,23 +24,23 @@ Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin mo
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 
-+-------------+----------------------------------------------+
-| Parameter   | Description                                  |
-+=============+==============================================+
-| "dbtype"    | Must be the string "db2"                     |
-+-------------+----------------------------------------------+
-| "host"      | Machine name or IP address to connect to     |
-+-------------+----------------------------------------------+
-| "port"      | Port number to connect to, default 50000     |
-+-------------+----------------------------------------------+
-| "tabschema" | The database schema to access                |
-+-------------+----------------------------------------------+
-| "database"  | The database to connect to                   |
-+-------------+----------------------------------------------+
-| "user"      | User name                                    |
-+-------------+----------------------------------------------+
-| "passwd"    | Password                                     |
-+-------------+----------------------------------------------+
++-------------+------------------------------------------+
+| Parameter   | Description                              |
++=============+==========================================+
+| "dbtype"    | Must be the string "db2"                 |
++-------------+------------------------------------------+
+| "host"      | Machine name or IP address to connect to |
++-------------+------------------------------------------+
+| "port"      | Port number to connect to, default 50000 |
++-------------+------------------------------------------+
+| "tabschema" | The database schema to access            |
++-------------+------------------------------------------+
+| "database"  | The database to connect to               |
++-------------+------------------------------------------+
+| "user"      | User name                                |
++-------------+------------------------------------------+
+| "passwd"    | Password                                 |
++-------------+------------------------------------------+
 
 Creating
 ^^^^^^^^
@@ -68,4 +68,33 @@ For more information check the java docs for:
 
 * DB2NGJNDIDataStoreFactory
 * DB2NGDataStoreFactory
+
+Registering spatial columns
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is necessary to register the spatial columns of a table:: 
+
+   db2se register_spatial_column mydb
+        -tableName mytable -columnName mycolumn -srsName USA_SRS_1
+
+.. note::
+
+   If a SQL view includes a spatial column, the column has to be registered for this view.
+
+.. note::
+
+   If a historical table includes a spatial column, this column has to be registered too. (See DB2 temporal support, since DB2 version 10)
+
+
+Speeding up extent calculation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Since DB2 Spatial Extender V10 it is possible to store the extent of a geometry column during registration::
+
+   db2se register_spatial_column mydb
+        -tableName mytable -columnName mycolumn -srsName USA_SRS_1 -computeExtents 1
+        
+.. note::        
+        
+   This makes only sense if the table is populated before registration and there will be no future modifications altering the extent dramatically.        
 

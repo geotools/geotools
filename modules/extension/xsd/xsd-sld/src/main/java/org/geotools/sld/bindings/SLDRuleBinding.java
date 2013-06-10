@@ -28,6 +28,7 @@ import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.opengis.filter.Filter;
+import org.opengis.util.InternationalString;
 import org.picocontainer.MutablePicoContainer;
 
 
@@ -130,12 +131,14 @@ public class SLDRuleBinding extends AbstractComplexBinding {
 
         //&lt;xsd:element ref="sld:Title" minOccurs="0"/&gt;
         if (node.hasChild("Title")) {
-            rule.setTitle((String) node.getChildValue("Title"));
+            rule.getDescription().setTitle(
+                    (InternationalString) node.getChildValue("Title"));
         }
 
         //&lt;xsd:element ref="sld:Abstract" minOccurs="0"/&gt;
         if (node.hasChild("Abstract")) {
-            rule.setAbstract((String) node.getChildValue("Abstract"));
+            rule.getDescription().setAbstract(
+                    (InternationalString) node.getChildValue("Abstract"));
         }
 
         //&lt;xsd:element ref="sld:LegendGraphic" minOccurs="0"/&gt;

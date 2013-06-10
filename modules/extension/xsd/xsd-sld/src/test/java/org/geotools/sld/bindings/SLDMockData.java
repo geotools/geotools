@@ -399,6 +399,32 @@ public class SLDMockData {
 
         return rule;
     }
+    
+    static Element localizedRule(Document document, Node parent) {
+        Element rule = element(SLD.RULE, document, parent);
+        
+        element(SLD.NAME, document, rule, "theName");
+        Element title = element(SLD.TITLE, document, rule, "theTitle");
+        Element loc = element(SLD.LOCALIZED, document, title, "italian");
+        loc.setAttribute("lang", "it");
+        loc = element(SLD.LOCALIZED, document, title, "english");
+        loc.setAttribute("lang", "en");
+        element(SLD.ABSTRACT, document, rule, "theAbstract");
+        legendGraphic(document, rule);
+
+        filter(document, rule);
+
+        element(SLD.MINSCALEDENOMINATOR, document, rule, "1.0");
+        element(SLD.MAXSCALEDENOMINATOR, document, rule, "1.0");
+
+        pointSymbolizer(document, rule);
+        lineSymbolizer(document, rule);
+        polygonSymbolizer(document, rule);
+        rasterSymbolizer(document, rule);
+        textSymbolizer(document, rule);
+
+        return rule;
+    }
 
     static Element featureTypeStyle(Document document, Node parent) {
         Element featureTypeStyle = element(SLD.FEATURETYPESTYLE, document, parent);

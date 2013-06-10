@@ -22,6 +22,14 @@ import org.geotools.styling.StyleFactory;
 import org.opengis.util.InternationalString;
 
 /**
+ * <p>
+ *        <pre>
+ *         <code> 
+ *    &lt;xsd:element name="Title" type="sld:InternationalStringType"/&gt;
+ *          </code>
+ *         </pre>
+ * </p>
+ *  
  * @author "Mauro Bartolomeoli - mauro.bartolomeoli@geo-solutions.it"
  *
  */

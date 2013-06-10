@@ -21,6 +21,14 @@ import javax.xml.namespace.QName;
 import org.geotools.styling.StyleFactory;
 
 /**
+ * <p>
+ *        <pre>
+ *         <code> 
+ *    &lt;xsd:element name="Abstract" type="sld:InternationalStringType"/&gt;
+ *          </code>
+ *         </pre>
+ * </p>
+ *  
  * @author "Mauro Bartolomeoli - mauro.bartolomeoli@geo-solutions.it"
  *
  */

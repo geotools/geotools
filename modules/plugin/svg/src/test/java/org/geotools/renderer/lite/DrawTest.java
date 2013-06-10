@@ -23,7 +23,7 @@ import org.junit.Test;
  * @source $URL$
  */
 public class DrawTest {
-    private static final long TIME = 20000;
+    private static final long TIME = 4000;
     SimpleFeatureSource squareFS;
     SimpleFeatureSource lineFS;
     SimpleFeatureSource pointFS;

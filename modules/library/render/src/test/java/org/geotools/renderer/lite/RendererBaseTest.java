@@ -39,10 +39,18 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
+import org.geotools.sld.v1_1.SLDConfiguration;
+import org.geotools.styling.DefaultResourceLocator;
+import org.geotools.styling.NamedLayer;
+import org.geotools.styling.NamedStyle;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
+import org.geotools.xml.Parser;
 
 /**
  * Used to test a renderer implementation.
@@ -257,6 +265,62 @@ public abstract class RendererBaseTest {
         Style style = stylereader.readXML()[0];
         return style;
     }
+    
+    /**
+     * Load a Symbology Encoding style from the test-data directory associated with the object.
+     * 
+     * @param loader
+     * @param sldFilename
+     * @return
+     * @throws IOException
+     */
+    protected static Style loadSEStyle(Object loader, String sldFilename) throws IOException {
+        try {
+            final java.net.URL surl = TestData.getResource(loader, sldFilename);
+            SLDConfiguration configuration = new SLDConfiguration() {
+                protected void configureContext(org.picocontainer.MutablePicoContainer container) {
+                    DefaultResourceLocator locator = new DefaultResourceLocator();
+                    locator.setSourceUrl(surl);
+                    container.registerComponentInstance(ResourceLocator.class, locator);
+                };
+            };
+            Parser parser = new Parser(configuration);
+
+            StyledLayerDescriptor sld = (StyledLayerDescriptor) parser.parse(surl.openStream());
+            
+            for (int i = 0; i < sld.getStyledLayers().length; i++) {
+                Style[] styles = null;
+                
+                if (sld.getStyledLayers()[i] instanceof NamedLayer) {
+                    NamedLayer layer = (NamedLayer) sld.getStyledLayers()[i];
+                    styles = layer.getStyles();
+                }
+                else if(sld.getStyledLayers()[i] instanceof UserLayer) {
+                    UserLayer layer = (UserLayer) sld.getStyledLayers()[i];
+                    styles = layer.getUserStyles();
+                }
+                
+                if (styles != null) {
+                    for (int j = 0; j < styles.length; i++) {
+                        if (!(styles[j] instanceof NamedStyle)) {
+                            return styles[j];
+                        }
+                    }
+                }
+                
+            }
+
+            return null;
+            
+        } 
+        catch(Exception e) {
+            if (e instanceof IOException) throw (IOException) e;
+            throw (IOException) new IOException().initCause(e);
+        }
+    }
+    
+    
+
     
     /**
      * Checks the pixel i/j has the specified color

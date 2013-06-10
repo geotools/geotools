@@ -90,11 +90,6 @@
       <version>${project.version}</version>
     </dependency>    
     <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-render</artifactId>
-      <version>${project.version}</version>
-    </dependency>    
-    <dependency>
       <groupId>org.geotools.xsd</groupId>
       <artifactId>gt-xsd-core</artifactId>
       <version>${project.version}</version>

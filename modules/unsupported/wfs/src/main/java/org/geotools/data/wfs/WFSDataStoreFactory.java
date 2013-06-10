@@ -176,7 +176,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
     }
 
     /** Access with {@link WFSDataStoreFactory#getParametersInfo() */
-    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[16];
+    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[17];
 
     /**
      * Mandatory DataStore parameter indicating the URL for the WFS GetCapabilities document.
@@ -414,6 +414,15 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
                 String.class, description, null, Parameter.OPTIONS, options);
     }
     
+    public static final WFSFactoryParam<String> OUTPUTFORMAT;
+    static {
+        String name = "WFSDataStoreFactory:OUTPUTFORMAT";
+        String description = "This allows the user to specify an outputFormat, different from the default one.";
+    
+        parametersInfo[16] = OUTPUTFORMAT = new WFSFactoryParam<String>(name,
+                String.class, description, null);
+    }
+    
     /**
      * Requests the WFS Capabilities document from the {@link WFSDataStoreFactory#URL url} parameter
      * in {@code params} and returns a {@link WFSDataStore} according to the version of the
@@ -447,7 +456,8 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         final String axisOrder = (String) AXIS_ORDER.lookUp(params);
         final String axisOrderFilter = (String) AXIS_ORDER_FILTER.lookUp(params) == null ? (String) AXIS_ORDER
                 .lookUp(params) : (String) AXIS_ORDER_FILTER.lookUp(params);
-        
+        final String outputFormat = (String) OUTPUTFORMAT.lookUp(params);
+                
         if (((user == null) && (pass != null)) || ((pass == null) && (user != null))) {
             throw new IOException(
                     "Cannot define only one of USERNAME or PASSWORD, must define both or neither");
@@ -496,6 +506,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             dataStore.setUseDefaultSRS(useDefaultSRS);
             ((WFS_1_1_0_DataStore) dataStore).setAxisOrder(axisOrder,
                     axisOrderFilter);
+            ((WFS_1_1_0_DataStore) dataStore).setGetFeatureOutputFormat(outputFormat);
         }
         dataStore.setNamespaceOverride(namespaceOverride);
         

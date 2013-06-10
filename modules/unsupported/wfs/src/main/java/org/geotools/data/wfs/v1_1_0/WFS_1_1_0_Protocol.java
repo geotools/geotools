@@ -118,7 +118,7 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs");
 
     private WFSStrategy strategy;
-
+    
     /**
      * The WFS GetCapabilities document. Final by now, as we're not handling updatesequence, so will
      * not ask the server for an updated capabilities during the life-time of this datastore.
@@ -748,7 +748,7 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
     public String getDefaultOutputFormat(WFSOperationType operation) {
         return strategy.getDefaultOutputFormat(this, operation);
     }
-
+    
     public Filter[] splitFilters(Filter filter) {
         FilterCapabilities filterCapabilities = getFilterCapabilities();
         Capabilities filterCaps = new Capabilities();

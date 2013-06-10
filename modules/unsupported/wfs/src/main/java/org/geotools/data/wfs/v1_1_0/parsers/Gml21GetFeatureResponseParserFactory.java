@@ -16,25 +16,9 @@
  */
 package org.geotools.data.wfs.v1_1_0.parsers;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PushbackInputStream;
-import java.util.logging.Logger;
-
-import net.opengis.wfs.GetFeatureType;
-
-import org.eclipse.emf.ecore.EObject;
-import org.geotools.data.wfs.protocol.wfs.WFSOperationType;
-import org.geotools.data.wfs.protocol.wfs.WFSResponse;
-import org.geotools.data.wfs.protocol.wfs.WFSResponseParser;
-import org.geotools.data.wfs.protocol.wfs.WFSResponseParserFactory;
-import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_DataStore;
-import org.geotools.util.logging.Logging;
 
 /**
- * A WFS response parser factory for GetFeature requests in {@code text/xml; subtype=gml/3.1.1}
+ * A WFS response parser factory for GetFeature requests in {@code text/xml; subtype=gml/2.1.2}
  * output format.
  * 
  * @author Gabriel Roldan (OpenGeo)
@@ -48,16 +32,19 @@ import org.geotools.util.logging.Logging;
  *         /wfs/v1_1_0/parsers/Gml31GetFeatureResponseParserFactory.java $
  */
 @SuppressWarnings("nls")
-public class Gml31GetFeatureResponseParserFactory extends GmlAbstractGetFeatureResponseParserFactory {
+public class Gml21GetFeatureResponseParserFactory extends GmlAbstractGetFeatureResponseParserFactory {
 
-    private static final String SUPPORTED_OUTPUT_FORMAT1 = "text/xml; subtype=gml/3.1.1";
-    private static final String SUPPORTED_OUTPUT_FORMAT2 = "GML3";
-    private static final String SUPPORTED_OUTPUT_FORMAT3 = "text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0";
+    private static final String SUPPORTED_OUTPUT_FORMAT1 = "text/xml; subtype=gml/2.1.2";
+    private static final String SUPPORTED_OUTPUT_FORMAT2 = "GML2";
+    private static final String SUPPORTED_OUTPUT_FORMAT3 = "text/xml; subType=gml/2.1.2/profiles/gmlsf/1.0.0/0";
+    
 
     protected boolean isSupportedOutputFormat(String outputFormat) {
         boolean matches = SUPPORTED_OUTPUT_FORMAT1.equals(outputFormat)
                 || SUPPORTED_OUTPUT_FORMAT2.equals(outputFormat)
-                || SUPPORTED_OUTPUT_FORMAT3.equals(outputFormat);
+                || SUPPORTED_OUTPUT_FORMAT3.equals(outputFormat)
+                ;
         return matches;
     }
+
 }

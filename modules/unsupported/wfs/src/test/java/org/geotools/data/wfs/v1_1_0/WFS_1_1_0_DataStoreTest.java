@@ -16,6 +16,7 @@
  */
 package org.geotools.data.wfs.v1_1_0;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.CUBEWERX_GOVUNITCE;
+import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_ARCHSITES;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.createTestProtocol;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.wfs;
 import static org.junit.Assert.assertEquals;
@@ -120,6 +121,34 @@ public class WFS_1_1_0_DataStoreTest {
         assertNotNull(schema);
     }
 
+    @Test
+    public void testGetDefaultOutputFormat() throws IOException {
+        final InputStream schemaStream = TestData.openStream(this, "CubeWerx_nsdi/gml212.xml");
+        TestHttpResponse httpResponse = new TestHttpResponse("text/xml; subtype=gml/2.1.2", "UTF-8", schemaStream);
+        TestHttpProtocol mockHttp = new TestHttpProtocol(httpResponse);
+        createTestProtocol(CUBEWERX_GOVUNITCE.CAPABILITIES, mockHttp);
+
+        // override the describe feature type url so it loads from the test resource
+        URL describeUrl = TestData.getResource(this, CUBEWERX_GOVUNITCE.SCHEMA);
+        wfs.setDescribeFeatureTypeURLOverride(describeUrl);
+
+        WFS_1_1_0_DataStore ds = new WFS_1_1_0_DataStore(wfs);
+        
+        ds.setGetFeatureOutputFormat("text/xml; subtype=gml/2.1.2");
+
+        Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
+        
+        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader;
+        featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        while(featureReader.hasNext()) {
+            SimpleFeature feature = featureReader.next();
+            System.out.println(feature.getDefaultGeometry());
+        }
+        GetFeature request = wfs.getRequest();
+        assertEquals("text/xml; subtype=gml/2.1.2", request.getOutputFormat());
+    }
+
+    
     /**
      * Test for the useDefaultSRS parameter set to true. Query in a CRS different
      * from the DefaultSRS should be done in DefaultSRS and then reprojected.

@@ -115,4 +115,5 @@ public interface WFSDataStore extends DataStore {
      * @param useDefaultSRS
      */
     public void setUseDefaultSRS(Boolean useDefaultSRS);
+
 }

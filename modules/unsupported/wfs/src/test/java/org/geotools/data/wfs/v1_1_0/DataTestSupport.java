@@ -163,6 +163,9 @@ public final class DataTestSupport {
 
     public static final TestDataType GEOS_ROADS = new TestDataType("geoserver", new QName(
             "http://www.openplans.org/spearfish", "roads"), "sf:roads", "EPSG:26713");
+    
+    public static final TestDataType GEOS_CURVE_ROADS = new TestDataType("geoserver", new QName(
+            "http://www.openplans.org/spearfish", "curveroads"), "sf:curveroads", "EPSG:26713");
 
     public static final TestDataType GEOS_STATES = new TestDataType("geoserver", new QName(
             "http://www.openplans.org/topp", "states"), "topp:states", "EPSG:4326");

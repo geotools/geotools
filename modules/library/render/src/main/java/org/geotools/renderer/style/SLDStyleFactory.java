@@ -32,7 +32,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +43,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.renderer.VendorOptionParser;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -57,7 +59,6 @@ import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.StyleAttributeExtractorTruncated;
-import org.geotools.styling.StyleFactoryFinder;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
@@ -172,7 +173,7 @@ public class SLDStyleFactory {
 	RenderingHints renderingHints = new RenderingHints(
 			RenderingHints.KEY_ANTIALIASING,
 			RenderingHints.VALUE_ANTIALIAS_DEFAULT);
-
+	
 	/**
 	 * Whether to turn all line widths less than 1.5 pixels to 0 to speed up
 	 * line rendering.
@@ -194,6 +195,11 @@ public class SLDStyleFactory {
 	 * Holds value of property mapScaleDenominator.
 	 */
 	private double mapScaleDenominator = Double.NaN;
+
+	/**
+	 * Helper to parse significant vendor options
+	 */
+	VendorOptionParser voParser = new VendorOptionParser();
 
 	/**
 	 * The factory builds a fair number of buffered images to deal with external
@@ -402,9 +408,9 @@ public class SLDStyleFactory {
 
 		setScaleRange(style, scaleRange);
 		style.setStroke(getStroke(symbolizer.getStroke(), feature));
-		style.setGraphicStroke(getGraphicStroke(symbolizer.getStroke(),
+		style.setGraphicStroke(getGraphicStroke(symbolizer, symbolizer.getStroke(),
 				feature, scaleRange));
-		style.setContour(getStrokePaint(symbolizer.getStroke(), feature));
+		style.setContour(getStrokePaint(symbolizer, symbolizer.getStroke(), feature));
 		style.setContourComposite(getStrokeComposite(symbolizer.getStroke(),
 				feature));
 		setPolygonStyleFill(feature, style, symbolizer, scaleRange);
@@ -435,14 +441,14 @@ public class SLDStyleFactory {
 			if (isVectorRenderingEnabled() || size > MAX_RASTERIZATION_SIZE) {
 				// sets graphic fill if available and vector rendering is
 				// enabled
-				Style2D style2DFill = createPointStyle(feature, fill
+				Style2D style2DFill = createPointStyle(feature, symbolizer, fill
 						.getGraphicFill(), scaleRange, false);
 				style.setGraphicFill(style2DFill);
 				return;
 			}
 		}
 		// otherwise, sets regular fill using Java raster-based Paint objects
-		style.setFill(getPaint(symbolizer.getFill(), feature));
+		style.setFill(getPaint(symbolizer, symbolizer.getFill(), feature));
 		style.setFillComposite(getComposite(symbolizer.getFill(), feature));
 	}
 
@@ -462,9 +468,9 @@ public class SLDStyleFactory {
 		LineStyle2D style = new LineStyle2D();
 		setScaleRange(style, scaleRange);
 		style.setStroke(getStroke(symbolizer.getStroke(), feature));
-		style.setGraphicStroke(getGraphicStroke(symbolizer.getStroke(),
+		style.setGraphicStroke(getGraphicStroke(symbolizer, symbolizer.getStroke(),
 				feature, scaleRange));
-		style.setContour(getStrokePaint(symbolizer.getStroke(), feature));
+		style.setContour(getStrokePaint(symbolizer, symbolizer.getStroke(), feature));
 		style.setContourComposite(getStrokeComposite(symbolizer.getStroke(),
 				feature));
 
@@ -496,7 +502,7 @@ public class SLDStyleFactory {
 	 */
 	Style2D createPointStyle(Object feature, PointSymbolizer symbolizer,
 			Range scaleRange) {
-		return createPointStyle(feature, symbolizer.getGraphic(), scaleRange, false);
+		return createPointStyle(feature, symbolizer, symbolizer.getGraphic(), scaleRange, false);
 	}
 
 	/**
@@ -513,7 +519,7 @@ public class SLDStyleFactory {
 	 * @param scaleRange
 	 * @return
 	 */
-	Style2D createPointStyle(Object feature, Graphic sldGraphic, Range scaleRange, boolean forceVector) {
+	Style2D createPointStyle(Object feature, Symbolizer symbolizer, Graphic sldGraphic, Range scaleRange, boolean forceVector) {
 		Style2D retval = null;
 
 		// extract base properties
@@ -634,10 +640,10 @@ public class SLDStyleFactory {
 
 				ms2d = new MarkStyle2D();
 				ms2d.setShape(shape);
-				ms2d.setFill(getPaint(mark.getFill(), feature));
+				ms2d.setFill(getPaint(symbolizer, mark.getFill(), feature));
 				ms2d.setFillComposite(getComposite(mark.getFill(), feature));
 				ms2d.setStroke(getStroke(mark.getStroke(), feature));
-				ms2d.setContour(getStrokePaint(mark.getStroke(), feature));
+				ms2d.setContour(getStrokePaint(symbolizer, mark.getStroke(), feature));
 				ms2d.setContourComposite(getStrokeComposite(mark.getStroke(),
 						feature));
 				// in case of Mark we don't have a natural size, so we default
@@ -768,14 +774,14 @@ public class SLDStyleFactory {
 		ts2d.setDisplacementY(dispY);
 
 		// setup fill and composite
-		ts2d.setFill(getPaint(symbolizer.getFill(), feature));
+		ts2d.setFill(getPaint(symbolizer, symbolizer.getFill(), feature));
 		ts2d.setComposite(getComposite(symbolizer.getFill(), feature));
 
 		// compute halo parameters
 		Halo halo = symbolizer.getHalo();
 
 		if (halo != null) {
-			ts2d.setHaloFill(getPaint(halo.getFill(), feature));
+			ts2d.setHaloFill(getPaint(symbolizer, halo.getFill(), feature));
 			ts2d.setHaloComposite(getComposite(halo.getFill(), feature));
 			ts2d.setHaloRadius(evalToFloat(halo.getRadius(), feature, 1));
 		}
@@ -784,7 +790,7 @@ public class SLDStyleFactory {
 		if (symbolizer instanceof TextSymbolizer2) {
 			graphicShield = ((TextSymbolizer2) symbolizer).getGraphic();
 			if (graphicShield != null) {
-				Style2D shieldStyle = createPointStyle(feature, graphicShield, scaleRange, true);
+				Style2D shieldStyle = createPointStyle(feature, symbolizer, graphicShield, scaleRange, true);
 				ts2d.setGraphic(shieldStyle);
 			}
 		}
@@ -891,14 +897,14 @@ public class SLDStyleFactory {
 	// Builds an image version of the graphics with the proper size, no further
 	// scaling will
 	// be needed during rendering
-	private Style2D getGraphicStroke(org.geotools.styling.Stroke stroke,
+	private Style2D getGraphicStroke(Symbolizer symbolizer, org.geotools.styling.Stroke stroke,
 			Object feature, Range scaleRange) {
 		if ((stroke == null) || (stroke.getGraphicStroke() == null)) {
 			return null;
 		}
 
 		// sets graphic stroke if available and vector rendering is enabled
-		return createPointStyle(feature, stroke.getGraphicStroke(), scaleRange, false);
+		return createPointStyle(feature, symbolizer, stroke.getGraphicStroke(), scaleRange, false);
 	}
 
 	private Stroke getStroke(org.geotools.styling.Stroke stroke, Object feature) {
@@ -955,7 +961,7 @@ public class SLDStyleFactory {
 		return stroke2d;
 	}
 
-	private Paint getStrokePaint(org.geotools.styling.Stroke stroke,
+	private Paint getStrokePaint(Symbolizer symbolizer, org.geotools.styling.Stroke stroke,
 			Object feature) {
 		if (stroke == null) {
 			return null;
@@ -969,7 +975,7 @@ public class SLDStyleFactory {
 		org.geotools.styling.Graphic gr = stroke.getGraphicFill();
 
 		if (gr != null) {
-			contourPaint = getTexturePaint(gr, feature);
+			contourPaint = getTexturePaint(symbolizer, gr, feature);
 		}
 
 		return contourPaint;
@@ -989,7 +995,7 @@ public class SLDStyleFactory {
 		return composite;
 	}
 
-	protected Paint getPaint(Fill fill, Object feature) {
+	protected Paint getPaint(Symbolizer symbolizer, Fill fill, Object feature) {
 		if (fill == null) {
 			return null;
 		}
@@ -1001,7 +1007,7 @@ public class SLDStyleFactory {
 		org.geotools.styling.Graphic gr = fill.getGraphicFill();
 
 		if (gr != null) {
-			fillPaint = getTexturePaint(gr, feature);
+			fillPaint = getTexturePaint(symbolizer, gr, feature);
 		}
 
 		return fillPaint;
@@ -1034,11 +1040,9 @@ public class SLDStyleFactory {
 	 *            DOCUMENT ME!
 	 * @param feature
 	 *            DOCUMENT ME!
-	 * 
 	 * @return DOCUMENT ME!
 	 */
-	public TexturePaint getTexturePaint(org.geotools.styling.Graphic gr,
-			Object feature) {
+	TexturePaint getTexturePaint(Symbolizer symbolizer, org.geotools.styling.Graphic gr, Object feature) {
 		// -1 to have the image use its natural size if none was provided by the
 		// user
 		double graphicSize = evalToDouble(gr.getSize(), feature, -1);
@@ -1105,24 +1109,38 @@ public class SLDStyleFactory {
 				for (int j = -1; j < 2; j++) {
 					double tx = sizeX * 1.5 + sizeX * i;
 					double ty = sizeY * 1.5 + sizeY * j;
-					fillDrawMark(g2d, tx, ty, mark, size, rotation, feature);
+					fillDrawMark(g2d, tx, ty, symbolizer, mark, size, rotation, feature);
 				}
 			}
 			g2d.dispose();
 
 			iSizeX = (int) Math.floor(sizeX);
 			iSizeY = (int) Math.floor(sizeY);
-			image = image.getSubimage(iSizeX, iSizeY, iSizeX + 1, iSizeY + 1); // updated
-																				// to
-																				// use
-																				// the
-																				// new
-																				// sizes
+			// updated to use the new sizes
+			image = image.getSubimage(iSizeX, iSizeY, iSizeX, iSizeY); 
 		}
 
-		Rectangle2D.Double rect = new Rectangle2D.Double(0.0, 0.0, iSizeX,
-				iSizeY);
-		TexturePaint imagePaint = new TexturePaint(image, rect);
+		// do we have a graphic margin? (top,right,bottom,left order)
+		int[] margin = voParser.getGraphicMargin(symbolizer, "graphic-margin");
+		BufferedImage imageWithMargin;
+		if(margin == null) {
+		    imageWithMargin = image;
+		} else {
+		    int extraY = margin[0] + margin[2];
+		    int extraX = margin[1] + margin[3];
+		    int type = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType();
+            imageWithMargin = new BufferedImage(image.getWidth() + extraY, image.getHeight() + extraX, type);
+            int tx = margin[3];
+            int ty = margin[0];
+            AffineTransform at = AffineTransform.getTranslateInstance(tx, ty);
+            Graphics2D graphics = imageWithMargin.createGraphics();
+            graphics.drawRenderedImage(image, at);
+            graphics.dispose();
+		}
+		
+		Rectangle2D.Double rect = new Rectangle2D.Double(0.0, 0.0, imageWithMargin.getWidth(),
+		        imageWithMargin.getHeight());
+		TexturePaint imagePaint = new TexturePaint(imageWithMargin, rect);
 
 		if (LOGGER.isLoggable(Level.FINER)) {
 			LOGGER.finer("applied TexturePaint " + imagePaint);
@@ -1178,6 +1196,64 @@ public class SLDStyleFactory {
 	}
 
 	/**
+	 * Applies image displacement if necessary
+	 * @param image
+	 * @param displacement
+	 * @param feature 
+	 * @return
+	 */
+    private BufferedImage displaceImage(BufferedImage image, Displacement displacement, AnchorPoint anchor, Object feature, boolean fill) {
+        if(displacement == null && anchor == null) {
+            return image;
+        }
+        
+        int dx = 0; 
+        int dy = 0;
+        if(displacement != null) {
+            dx = evalToInt(displacement.getDisplacementX(), feature, 0);
+            dy = evalToInt(displacement.getDisplacementY(), feature, 0);
+        }
+        
+        double ax = 0.5;
+        double ay = 0.5;
+        if(anchor != null) {
+            ax = evalToDouble(anchor.getAnchorPointX(), feature, 0.5f);
+            ay = evalToDouble(anchor.getAnchorPointY(), feature, 0.5f);
+        }
+        
+        if(dx == 0 && dy == 0 && ax == 0.5 && ay == 0.5) {
+            return image;
+        }
+        
+        if(dx > MAX_RASTERIZATION_SIZE || dy > MAX_RASTERIZATION_SIZE) {
+            throw new IllegalArgumentException("Displacement is too large, max value is " + MAX_RASTERIZATION_SIZE);
+        }
+        
+        // prepare a drawing surface to contain the original image and its displacement
+        int type = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType(); 
+        BufferedImage bi;
+        AffineTransform at; 
+        if(fill) {
+            bi = new BufferedImage(image.getWidth() + Math.abs(dx), image.getHeight() + Math.abs(dy), type);
+            int tx = (int) Math.round((bi.getWidth() - image.getWidth()) * ax);
+            int ty = (int) Math.round((bi.getHeight() - image.getHeight()) * ay);
+            at = AffineTransform.getTranslateInstance(tx, ty);
+        } else {
+            int tx = dx > 0 ? dx : 0;
+            int ty = dy > 0 ? dy : 0;
+            tx += (ax - 0.5) * image.getWidth();
+            ty += (ay - 0.5) * image.getHeight();
+            at = AffineTransform.getTranslateInstance(tx, ty);
+            bi = new BufferedImage(image.getWidth() + Math.abs(tx), image.getHeight() + Math.abs(ty), type);
+        }
+        Graphics2D graphics = bi.createGraphics();
+        graphics.drawRenderedImage(image, at);
+        graphics.dispose();
+        
+        return bi;
+    }
+
+    /**
 	 * Tries to parse the provided external graphic into an Icon
 	 * 
 	 * @param eg
@@ -1306,7 +1382,7 @@ public class SLDStyleFactory {
 		return null;
 	}
 
-	private void fillDrawMark(Graphics2D g2d, double tx, double ty, Mark mark,
+	private void fillDrawMark(Graphics2D g2d, double tx, double ty, Symbolizer symbolizer, Mark mark,
 			double size, double rotation, Object feature) {
 		if (mark == null)
 			return;
@@ -1336,7 +1412,7 @@ public class SLDStyleFactory {
 				LOGGER.finer("applying fill to mark");
 			}
 
-			g2d.setPaint(getPaint(mark.getFill(), feature));
+			g2d.setPaint(getPaint(symbolizer, mark.getFill(), feature));
 			g2d.setComposite(getComposite(mark.getFill(), feature));
 			g2d.fill(shape);
 		}
@@ -1346,7 +1422,7 @@ public class SLDStyleFactory {
 				LOGGER.finer("applying stroke to mark");
 			}
 
-			g2d.setPaint(getStrokePaint(mark.getStroke(), feature));
+			g2d.setPaint(getStrokePaint(symbolizer, mark.getStroke(), feature));
 			g2d.setComposite(getStrokeComposite(mark.getStroke(), feature));
 			g2d.setStroke(getStroke(mark.getStroke(), feature));
 			g2d.draw(shape);

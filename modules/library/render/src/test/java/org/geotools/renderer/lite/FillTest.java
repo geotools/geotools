@@ -179,6 +179,6 @@ public class FillTest {
         renderer.setContext(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         
-        RendererBaseTest.showRender("TTF decorative", renderer, TIME, bounds);
+        RendererBaseTest.showRender("GEOT-3111", renderer, TIME, bounds);
     }
 }

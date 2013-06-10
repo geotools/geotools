@@ -16,12 +16,9 @@
  */
 package org.geotools.sld;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.picocontainer.MutablePicoContainer;
 import org.geotools.filter.v1_0.OGCConfiguration;
 import org.geotools.sld.bindings.SLD;
+import org.geotools.sld.bindings.SLDAbstractBinding;
 import org.geotools.sld.bindings.SLDAnchorPointBinding;
 import org.geotools.sld.bindings.SLDChannelSelectionBinding;
 import org.geotools.sld.bindings.SLDColorMapBinding;
@@ -66,6 +63,7 @@ import org.geotools.sld.bindings.SLDStyledLayerDescriptorBinding;
 import org.geotools.sld.bindings.SLDSymbolizerBinding;
 import org.geotools.sld.bindings.SLDSymbolizerTypeBinding;
 import org.geotools.sld.bindings.SLDTextSymbolizerBinding;
+import org.geotools.sld.bindings.SLDTitleBinding;
 import org.geotools.sld.bindings.SLDUserLayerBinding;
 import org.geotools.sld.bindings.SLDUserStyleBinding;
 import org.geotools.sld.bindings.SLDVendorOptionBinding;
@@ -75,6 +73,7 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Parser;
+import org.picocontainer.MutablePicoContainer;
 
 
 /**
@@ -166,6 +165,8 @@ public class SLDConfiguration extends Configuration {
         container.registerComponentImplementation(SLD.REMOTEOWS, SLDRemoteOWSBinding.class);
 
         container.registerComponentImplementation(SLD.RULE, SLDRuleBinding.class);
+        container.registerComponentImplementation(SLD.TITLE, SLDTitleBinding.class);
+        container.registerComponentImplementation(SLD.ABSTRACT, SLDAbstractBinding.class);
 
         container.registerComponentImplementation(SLD.SHADEDRELIEF, SLDShadedReliefBinding.class);
 

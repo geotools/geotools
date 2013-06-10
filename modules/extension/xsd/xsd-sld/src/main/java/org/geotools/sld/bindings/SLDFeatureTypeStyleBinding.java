@@ -16,6 +16,7 @@
  */
 package org.geotools.sld.bindings;
 
+import org.opengis.util.InternationalString;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -122,12 +123,14 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
 
         //&lt;xsd:element ref="sld:Title" minOccurs="0"/&gt;
         if (node.hasChild("Title")) {
-            featureTypeStyle.setTitle((String) node.getChildValue("Title"));
+            featureTypeStyle.getDescription().setTitle(
+                    (InternationalString) node.getChildValue("Title"));
         }
 
         //&lt;xsd:element ref="sld:Abstract" minOccurs="0"/&gt;
         if (node.hasChild("Abstract")) {
-            featureTypeStyle.setAbstract((String) node.getChildValue("Abstract"));
+            featureTypeStyle.getDescription().setAbstract(
+                    (InternationalString) node.getChildValue("Abstract"));
         }
 
         //&lt;xsd:element ref="sld:FeatureTypeName" minOccurs="0"/&gt;

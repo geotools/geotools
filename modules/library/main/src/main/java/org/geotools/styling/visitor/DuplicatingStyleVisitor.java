@@ -761,7 +761,8 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         Mark[] marksCopy = copy( gr.getMarks() );
         Expression opacityCopy = copy( gr.getOpacity() );
         Expression rotationCopy = copy( gr.getRotation() );
-        Expression sizeCopy = copy( gr.getSize() );        
+        Expression sizeCopy = copy( gr.getSize() );
+        AnchorPoint anchorCopy = copy( gr.getAnchorPoint() );
         
         // Looks like Symbols are a "view" of marks and external graphics?
         // Symbol[] symbolCopys = copy( gr.getSymbols() );
@@ -769,6 +770,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy = sf.createDefaultGraphic();
         
         copy.setDisplacement(displacementCopy);
+        copy.setAnchorPoint(anchorCopy);
         copy.setExternalGraphics(externalGraphicsCopy);
         copy.setMarks(marksCopy);
         copy.setOpacity((Expression) opacityCopy);

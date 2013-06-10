@@ -16,6 +16,8 @@
  */
 package org.geotools.sld.bindings;
 
+import java.util.List;
+
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -23,6 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.geotools.sld.CssParameter;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Stroke;
@@ -137,6 +140,11 @@ public class SLDPolygonSymbolizerBinding extends AbstractComplexBinding {
         //&lt;xsd:element ref="sld:Stroke" minOccurs="0"/&gt;
         if (node.hasChild(Stroke.class)) {
             ps.setStroke((Stroke) node.getChildValue(Stroke.class));
+        }
+        
+        //&lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
+        for (CssParameter param : (List<CssParameter>) node.getChildValues(CssParameter.class)) {
+            ps.getOptions().put(param.getName(), param.getExpression().evaluate(null, String.class));
         }
 
         return ps;

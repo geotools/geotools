@@ -16,6 +16,8 @@
  */
 package org.geotools.sld.bindings;
 
+import java.util.List;
+
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -23,6 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.geotools.sld.CssParameter;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.StyleFactory;
@@ -130,6 +133,11 @@ public class SLDPointSymbolizerBinding extends AbstractComplexBinding {
         //&lt;xsd:element ref="sld:Graphic" minOccurs="0"/&gt;
         if (node.hasChild("Graphic")) {
             ps.setGraphic((Graphic) node.getChildValue("Graphic"));
+        }
+        
+        //&lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
+        for (CssParameter param : (List<CssParameter>) node.getChildValues(CssParameter.class)) {
+            ps.getOptions().put(param.getName(), param.getExpression().evaluate(null, String.class));
         }
 
         return ps;

@@ -27,6 +27,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.ProcessException;
 import org.geotools.process.vector.PointStackerProcess;
+import org.geotools.process.vector.PointStackerProcess.PreserveLocation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
@@ -67,6 +68,7 @@ public class PointStackerProcessTest {
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
                 null, // normalize
+                null, // preserve location
                 bounds, // outputBBOX
                 1000, // outputWidth
                 1000, // outputHeight
@@ -93,6 +95,7 @@ public class PointStackerProcessTest {
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
                 true, // normalize
+                null, // preserve location
                 bounds, // outputBBOX
                 1000, // outputWidth
                 1000, // outputHeight
@@ -102,6 +105,72 @@ public class PointStackerProcessTest {
         assertEquals(2, result.size());
         checkResultPoint(result, new Coordinate(4, 4), 3, 2, 1.0d, 1.0d);
         checkResultPoint(result, new Coordinate(8, 8), 1, 1, 1.0d/3, 1.0d/2);
+    }
+    
+    @Test
+    public void testPreserveSingle() throws ProcessException, TransformException {
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        
+        // Simple dataset with some coincident points
+        Coordinate[] data = new Coordinate[] { new Coordinate(4, 4), new Coordinate(6.5, 6.5),
+                new Coordinate(6.5, 6.5), new Coordinate(8, 8), new Coordinate(8.3, 8.3) };
+        
+        
+        SimpleFeatureCollection fc = createPoints(data, bounds);
+        ProgressListener monitor = null;
+
+        PointStackerProcess psp = new PointStackerProcess();
+        SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
+                true, // normalize
+                PreserveLocation.Single, // preserve location
+                bounds, // outputBBOX
+                1000, // outputWidth
+                1000, // outputHeight
+                monitor);
+        
+        checkSchemaCorrect(result.getSchema(), true);
+        assertEquals(3, result.size());
+        checkStackedPoint(new Coordinate(4, 4), 1, 1, getResultPoint(result, new Coordinate(4, 4)));
+        checkStackedPoint(null, 2, 1, getResultPoint(result, new Coordinate(6.5, 6.5)));
+        checkStackedPoint(null, 2, 2, getResultPoint(result, new Coordinate(8, 8)));
+    }
+    
+    @Test
+    public void testPreserveSuperimposed() throws ProcessException, TransformException {
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        
+        // Simple dataset with some coincident points
+        Coordinate[] data = new Coordinate[] { new Coordinate(4, 4), new Coordinate(6.5, 6.5),
+                new Coordinate(6.5, 6.5), new Coordinate(8, 8), new Coordinate(8.3, 8.3) };
+        
+        
+        SimpleFeatureCollection fc = createPoints(data, bounds);
+        ProgressListener monitor = null;
+
+        PointStackerProcess psp = new PointStackerProcess();
+        SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
+                true, // normalize
+                PreserveLocation.Superimposed, // preserve location
+                bounds, // outputBBOX
+                1000, // outputWidth
+                1000, // outputHeight
+                monitor);
+        
+        checkSchemaCorrect(result.getSchema(), true);
+        assertEquals(3, result.size());
+        checkStackedPoint(new Coordinate(4, 4), 1, 1, getResultPoint(result, new Coordinate(4, 4)));
+        checkStackedPoint(new Coordinate(6.5, 6.5), 2, 1, getResultPoint(result, new Coordinate(6.5, 6.5)));
+        checkStackedPoint(null, 2, 2, getResultPoint(result, new Coordinate(8, 8)));
+    }
+
+    private void checkStackedPoint(Coordinate expectedCoordinate, int count, int countUnique, SimpleFeature f) {
+        if(expectedCoordinate != null) {
+            Point p = (Point) f.getDefaultGeometry();
+            assertEquals(expectedCoordinate, p.getCoordinate());
+        }
+        
+        assertEquals(count, f.getAttribute(PointStackerProcess.ATTR_COUNT));
+        assertEquals(countUnique, f.getAttribute(PointStackerProcess.ATTR_COUNT_UNIQUE));
     }
 
     /**
@@ -133,6 +202,7 @@ public class PointStackerProcessTest {
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
                 null, // normalize
+                null, // preserve location
                 outBounds, // outputBBOX
                 1810, // outputWidth
                 768, // outputHeight
@@ -142,6 +212,35 @@ public class PointStackerProcessTest {
         assertEquals(1, result.size());
         assertEquals(inBounds.getCoordinateReferenceSystem(), result.getBounds().getCoordinateReferenceSystem());
         checkResultPoint(result, new Coordinate(-121.813201, 48.777343), 2, 2, null, null);
+    }
+    
+    /**
+     * Get the stacked point closest to the provided coordinate
+     * 
+     * @param result
+     * @param coordinate
+     * @param i
+     * @param j
+     */
+    private SimpleFeature getResultPoint(SimpleFeatureCollection result, Coordinate testPt) {
+        /**
+         * Find closest point to loc pt, then check that the attributes match
+         */
+        double minDist = Double.MAX_VALUE;
+
+        // find nearest result to testPt
+        SimpleFeature closest = null;
+        for (SimpleFeatureIterator it = result.features(); it.hasNext();) {
+            SimpleFeature f = it.next();
+            Coordinate outPt = ((Point) f.getDefaultGeometry()).getCoordinate();
+            double dist = outPt.distance(testPt);
+            if (dist < minDist) {
+                closest = f;
+                minDist = dist;
+            }
+        }
+        
+        return closest;
     }
 
     /**
@@ -156,47 +255,26 @@ public class PointStackerProcessTest {
      */
     private void checkResultPoint(SimpleFeatureCollection result, Coordinate testPt,
             int expectedCount, int expectedCountUnique, Double expectedProportion, Double expectedProportionUnique) {
+        
+        SimpleFeature f = getResultPoint(result, testPt);
+        assertNotNull(f);
+        
         /**
          * Find closest point to loc pt, then check that the attributes match
          */
-        double minDist = Double.MAX_VALUE;
-        int count = -1;
-        int countunique = -1;
+        int count = (Integer) f.getAttribute(PointStackerProcess.ATTR_COUNT);
+        int countunique = (Integer) f.getAttribute(PointStackerProcess.ATTR_COUNT_UNIQUE);
         double normCount = Double.NaN;
         double normCountUnique = Double.NaN;
-
-        // find nearest result to testPt
-        for (SimpleFeatureIterator it = result.features(); it.hasNext();) {
-            SimpleFeature f = it.next();
-            Coordinate outPt = ((Point) f.getDefaultGeometry()).getCoordinate();
-            double dist = outPt.distance(testPt);
-            if (dist < minDist) {
-                minDist = dist;
-                count = (Integer) f.getAttribute(PointStackerProcess.ATTR_COUNT);
-                countunique = (Integer) f.getAttribute(PointStackerProcess.ATTR_COUNT_UNIQUE);
-                if(expectedProportion!=null){
-                    normCount = (Double) f.getAttribute(PointStackerProcess.ATTR_NORM_COUNT);
-                    normCountUnique = (Double) f.getAttribute(PointStackerProcess.ATTR_NORM_COUNT_UNIQUE);
-                }
-            }
+        if(expectedProportion!=null){
+            normCount = (Double) f.getAttribute(PointStackerProcess.ATTR_NORM_COUNT);
+            normCountUnique = (Double) f.getAttribute(PointStackerProcess.ATTR_NORM_COUNT_UNIQUE);
         }
+                
         assertEquals(expectedCount, count);
         assertEquals(expectedCountUnique, countunique);
         if(expectedProportion!=null) assertEquals(expectedProportion, normCount, 0.0001);
         if(expectedProportionUnique!=null) assertEquals(expectedProportionUnique, normCountUnique, 0.0001);
-    }
-
-    private void checkResultBounds(SimpleFeatureCollection result, ReferencedEnvelope bounds) {
-        boolean isInBounds = true;
-        for (SimpleFeatureIterator it = result.features(); it.hasNext();) {
-            SimpleFeature f = it.next();
-            Coordinate outPt = ((Point) f.getDefaultGeometry()).getCoordinate();
-            if (! bounds.contains(outPt)) {
-                isInBounds = false;
-                System.out.println("Found point out of bounds: " + f.getDefaultGeometry());
-            }
-        }
-        assertTrue(isInBounds);
     }
 
     private void checkSchemaCorrect(SimpleFeatureType ft, boolean includeProportionColumns) {

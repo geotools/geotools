@@ -79,6 +79,22 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  */
 @DescribeProcess(title = "Point Stacker", description = "Aggregates a collection of points over a grid into one point per grid cell.")
 public class PointStackerProcess implements GSProcess {
+    
+    
+    public enum PreserveLocation { 
+        /**
+         * Preserves the original point location in case there is a single point in the cell
+         */
+        Single,
+        /**
+         * Preserves the original point location in case there are multiple points, but all with the same coordinates in the cell
+         */
+        Superimposed,
+        /**
+         * Default value, averages the point locations with the cell center to try and avoid conflicts among the symbolizers for the 
+         */
+        Never};
+
 
     public static final String ATTR_GEOM = "geom";
     public static final String ATTR_COUNT = "count";
@@ -101,6 +117,8 @@ public class PointStackerProcess implements GSProcess {
 
             // process parameters
             @DescribeParameter(name = "cellSize", description = "Grid cell size to aggregate to, in pixels") Integer cellSize,
+            @DescribeParameter(name = "preserveLocation", description = "Indicates wheter to preserve the original location of points for single/superimposed points", min=0) PreserveLocation preserveLocation,
+
 
             // output image parameters
             @DescribeParameter(name = "outputBBOX", description = "Bounding box for target image extent") ReferencedEnvelope outputEnv,
@@ -139,7 +157,7 @@ public class PointStackerProcess implements GSProcess {
 
         for (StackedPoint sp : stackedPts) {
             // create feature for stacked point
-            Coordinate pt = sp.getLocation();
+            Coordinate pt = getStackedPointLocation(preserveLocation, sp);
             
             // transform back to src CRS, since RT rendering expects the output to be in the same CRS
             srcPt[0] = pt.x;
@@ -155,6 +173,29 @@ public class PointStackerProcess implements GSProcess {
             result.add(fb.buildFeature(null));
         }
         return result;
+    }
+
+    /**
+     * Extract the geometry depending on the location preservation flag
+     * @param preserveLocation
+     * @param sp
+     * @return
+     */
+    private Coordinate getStackedPointLocation(PreserveLocation preserveLocation, StackedPoint sp) {
+        Coordinate pt = null;
+        if(PreserveLocation.Single == preserveLocation) {
+            if(sp.getCount() == 1) {
+                pt = sp.getOriginalLocation();
+            } 
+        } else if(PreserveLocation.Superimposed == preserveLocation) {
+            if(sp.getCountUnique() == 1) {
+                pt = sp.getOriginalLocation();
+            }
+        }
+        if(pt == null) {
+            pt = sp.getLocation();
+        }
+        return pt;
     }
 
     /**
@@ -324,6 +365,19 @@ public class PointStackerProcess implements GSProcess {
 
             pickNearestLocation(pt);
             //pickCenterLocation(pt);
+        }
+        
+        /**
+         * The original location of the points, in case they are all superimposed (or there is a single
+         * point), otherwise null
+         * @return
+         */
+        public Coordinate getOriginalLocation() {
+            if(uniquePts != null && uniquePts.size() == 1) {
+                return uniquePts.iterator().next();
+            } else {
+                return null;
+            }
         }
 
         /**

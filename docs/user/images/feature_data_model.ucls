@@ -1,81 +1,97 @@
-<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.3" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
   realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
-  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.opengis.feature.Property" project="gt-opengis" 
-    file="/gt-opengis/src/main/java/org/opengis/feature/Property.java" binary="false">    
-    <position x="127" y="150" width="-1" height="-1"/>    
-    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false"/>      
-      <operations public="true" package="false" protected="false" private="false"/>    
+  <interface id="1" language="java" name="org.opengis.feature.Property" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/feature/Property.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="127" y="150"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="false" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.opengis.feature.Attribute" project="gt-opengis" 
-    file="/gt-opengis/src/main/java/org/opengis/feature/Attribute.java" binary="false">    
-    <position x="253" y="326" width="-1" height="-1"/>    
-    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false"/>      
-      <operations public="true" package="false" protected="false" private="false"/>    
+  <interface id="2" language="java" name="org.opengis.feature.Attribute" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/feature/Attribute.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="253" y="326"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" accessors="false" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.opengis.feature.Association" project="gt-opengis" 
-    file="/gt-opengis/src/main/java/org/opengis/feature/Association.java" binary="false">    
-    <position x="5" y="333" width="-1" height="-1"/>    
-    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false"/>      
-      <operations public="true" package="false" protected="false" private="false"/>    
+  <interface id="3" language="java" name="org.opengis.feature.Association" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/feature/Association.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5" y="333"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" accessors="false" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <interface id="4" corner="BOTTOM_RIGHT" language="java" name="org.opengis.feature.GeometryAttribute" 
-    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/feature/GeometryAttribute.java" binary="false">    
-    <position x="138" y="499" width="-1" height="-1"/>    
-    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false"/>      
-      <operations public="true" package="false" protected="false" private="false"/>    
+  <interface id="4" language="java" name="org.opengis.feature.GeometryAttribute" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/feature/GeometryAttribute.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="138" y="499"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" accessors="false" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <interface id="6" corner="BOTTOM_RIGHT" language="java" name="org.opengis.feature.Feature" project="gt-opengis" 
-    file="/gt-opengis/src/main/java/org/opengis/feature/Feature.java" binary="false">    
-    <position x="390" y="729" width="-1" height="-1"/>    
-    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false"/>      
-      <operations public="true" package="false" protected="false" private="false"/>    
+  <interface id="5" language="java" name="org.opengis.feature.Feature" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/feature/Feature.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="390" y="729"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" accessors="false" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="org.opengis.feature.ComplexAttribute" 
-    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/feature/ComplexAttribute.java" binary="false">    
-    <position x="393" y="537" width="-1" height="-1"/>    
-    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false"/>      
-      <operations public="true" package="false" protected="false" private="false"/>    
+  <interface id="6" language="java" name="org.opengis.feature.ComplexAttribute" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/feature/ComplexAttribute.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="393" y="537"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" accessors="false" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <generalization>    
-    <end type="SOURCE" nodeId="6"/>    
-    <end type="TARGET" nodeId="7"/>  
-  </generalization>  
-  <generalization>    
-    <end type="SOURCE" nodeId="3"/>    
-    <end type="TARGET" nodeId="1"/>  
-  </generalization>  
-  <generalization>    
-    <end type="SOURCE" nodeId="7"/>    
-    <end type="TARGET" nodeId="2"/>  
-  </generalization>  
-  <generalization>    
-    <end type="SOURCE" nodeId="4"/>    
-    <end type="TARGET" nodeId="2"/>  
-  </generalization>  
-  <dependency>    
-    <bendpoint x="396" y="153"/>    
-    <end type="SOURCE" nodeId="7"/>    
-    <end type="TARGET" nodeId="1"/>  
+  <dependency id="7">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
   </dependency>  
-  <generalization>    
-    <end type="SOURCE" nodeId="2"/>    
-    <end type="TARGET" nodeId="1"/>  
+  <generalization id="8">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="6"/>  
   </generalization>  
-  <classifier-display autosize="true" package="false" initial-value="false" signature="true" visibility="true">    
-    <attributes public="false" package="false" protected="false" private="false"/>    
-    <operations public="true" package="false" protected="false" private="false"/>  
+  <dependency id="9">    
+    <bendpoint x="396" y="153"/>    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="11">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <dependency id="12">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <generalization id="13">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="14">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+    accessors="false" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false" static="false"/>    
+    <operations public="true" package="false" protected="false" private="false" static="false"/>  
   </classifier-display>  
   <association-display labels="true" multiplicity="true"/>
 </class-diagram>

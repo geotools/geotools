@@ -342,8 +342,11 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
                 header.addColumn(colName, 'C', Math.min(254, fieldLen), 0);
             } else if (Geometry.class.isAssignableFrom(colType)) {
                 continue;
+            //skip binary data types
+            } else if (colType == byte[].class) {
+                continue;
             } else {
-                throw new IOException("Unable to write : " + colType.getName());
+                throw new IOException("Unable to write column " +colName + " : " + colType.getName());
             }
         }
 

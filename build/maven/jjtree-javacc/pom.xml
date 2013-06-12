@@ -18,7 +18,7 @@
     <artifactId>maven</artifactId>
     <version>10-SNAPSHOT</version>
   </parent>
-  
+
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -73,11 +73,10 @@
       <version>1.5.2</version>
     </dependency>
     <dependency>
-      <groupId>javacc</groupId>
+      <groupId>net.java.dev.javacc</groupId>
       <artifactId>javacc</artifactId>
       <version>4.0</version>
     </dependency>
   </dependencies>
-  
-  
+
 </project>

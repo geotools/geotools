@@ -67,19 +67,27 @@ public class DB2Util {
 	}
 	
        public static void executeRegisterAndCalculateExtent(String schemaName,String tableName,String columnName, String srsName, Connection con) throws SQLException {
+       
+            try {
            
-            String stmt = "call db2gse.ST_register_spatial_column(?,?,?,?,?,?,?)";
-	                
-            String s = "{" + stmt + "}";
-            CallableStatement ps = con.prepareCall(s);
-            ps.setString(1, quote(schemaName));
-            ps.setString(2, quote(tableName));
-            ps.setString(3, quote(columnName));
-            ps.setString(4, srsName);
-            ps.setInt(5, 1);
-            ps.registerOutParameter(6, Types.INTEGER);
-            ps.registerOutParameter(7, Types.CHAR);
-            ps.executeUpdate();	            //DB2TestSetup.LOGGER.log(Level.INFO,ps.getInt(5) + "|" + ps.getString(6));
+                String stmt = "call db2gse.ST_register_spatial_column(?,?,?,?,?,?,?)";
+    	                
+                String s = "{" + stmt + "}";
+                CallableStatement ps = con.prepareCall(s);
+                ps.setString(1, quote(schemaName));
+                ps.setString(2, quote(tableName));
+                ps.setString(3, quote(columnName));
+                ps.setString(4, srsName);
+                ps.setInt(5, 1);
+                ps.registerOutParameter(6, Types.INTEGER);
+                ps.registerOutParameter(7, Types.CHAR);
+                ps.executeUpdate();	            //DB2TestSetup.LOGGER.log(Level.INFO,ps.getInt(5) + "|" + ps.getString(6));
+                
+            } catch (SQLException ex) { // 
+                // may happen for spatial extender versions < 10
+                // fall back registering without extent calculation
+                executeRegisterAndCalculateExtent(schemaName,tableName,columnName, srsName, con);
+            }
         }
 
 

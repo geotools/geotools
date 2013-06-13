@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,28 +105,34 @@ public class DB2SQLDialect extends SQLDialect  {
     private String SELECT_SRS_NAME_FROM_ORG = 
     	"select srs_name,srs_id from db2gse.st_spatial_reference_systems where organization = ? and organization_coordsys_id=?";
 
-    private static String SELECT_INCLUDE_WITH_SCHEMA ="select table_schema,table_name  from db2gse.st_geometry_columns where table_schema = ? and table_name=?";
-    private static String SELECT_INCLUDE="select table_schema,table_name  from db2gse.st_geometry_columns where table_schema = current schema  and table_name=?";
-    
-    //private static String SELECT_ROWNUMBER="select rownumber() over () as rownum,ibmreqd from sysibm.sysdummy1";
+//    private static String SELECT_INCLUDE_WITH_SCHEMA ="select table_schema,table_name  from db2gse.st_geometry_columns where table_schema = ? and table_name=?";
+//    private static String SELECT_INCLUDE="select table_schema,table_name  from db2gse.st_geometry_columns where table_schema = current schema  and table_name=?";
+        
     private static String SELECT_ROWNUMBER="select * from sysibm.sysdummy1 where rownum = 1";
     private  Boolean isRowNumberSupported=null;
     private static String SELECT_LIMITOFFSET="select * from sysibm.sysdummy1 limit 0,1";
-    private  Boolean isLimitOffsetSupported=null;
-
+    private  Boolean isLimitOffsetSupported=null;    
+//    private static String SELECT_OLAP_ROWNUM= 
+//            "select  * from (select  row_number() over () as rownum , a.* from  (select * from sysibm.sysdummy1) a)   where rownum > 0 and rownum <= 1";
+//    private  Boolean isOLAPRowNumSupported=null;
     
     private  static String ROWNUMBER_MESSAGE=
-    	"DB2 handles paged select statements inefficiently\n"+
-    	"Since Version 9.5 you can do the following\n"+
-    	"dbstop\n"+
-    	"db2set DB2_COMPATIBILITY_VECTOR=01\n"+
-    	"db2start\n";
+            "Using Oracle ROWNUM for paging support";
     
     private  static String LIMITOFFSET_MESSAGE=
-            "DB2 handles paged select statements inefficiently\n"+
-            "Since Version 9.7.2 you can enable LIMIT OFFSET support\n";
+            "Using LIMIT OFFSET for paging support";
+            
+//    private  static String OLAPROWNUM_MESSAGE=
+//            "Using ROW_NUMBER () OVER () for paging support";
+            
+    private String NOPAGESUPPORT_MESSAGE=
+        "DB2 handles paged select statements inefficiently\n"+
+        "Try to set MySql or Oracle compatibility mode\n"+
+        "dbstop\n"+
+        "db2set DB2_COMPATIBILITY_VECTOR=MYS\n"+
+        "db2start\n";
 
-
+    
     private DB2DialectInfo db2DialectInfo;
     private boolean functionEncodingEnabled;
     
@@ -265,16 +270,38 @@ public class DB2SQLDialect extends SQLDialect  {
     @Override
     public void encodeGeometryEnvelope(String tableName,String geometryColumn, StringBuffer sql) {
 
+    /* becomes slow on large data sets
+     * 
         sql.append("db2gse.ST_AsBinary(db2gse.ST_GetAggrResult(MAX(db2gse.ST_BuildMBRAggr(");
         encodeColumnName(null, geometryColumn, sql);
         sql.append("))))");
         
-//        sql.append("db2gse.ST_AsBinary(");
-//        sql.append("db2gse.ST_Envelope(");
-//        encodeColumnName(geometryColumn, sql);
-//        sql.append("))");
+     */
+
+        sql.append("min(db2gse.st_minx(");
+        encodeColumnName(null, geometryColumn, sql);
+        sql.append("))");
+        sql.append(",min(db2gse.st_miny(");
+        encodeColumnName(null, geometryColumn, sql);
+        sql.append("))");
+        sql.append(",max(db2gse.st_maxx(");
+        encodeColumnName(null, geometryColumn, sql);
+        sql.append("))");
+        sql.append(",max(db2gse.st_maxy(");
+        encodeColumnName(null, geometryColumn, sql);
+        sql.append("))");
+        
     }
 
+    /**
+     * Since DB2 V10.
+     * 
+     * Look in the system view "db2gse.st_geometry_columns" and check for min_x,min_y,max_x,max_y
+     * 
+     * If ALL geometry attributes have precalculated extents, return the list of the envelopes.
+     * If only one of them has no precalculated extent, return null 
+     * 
+     */
     @Override
     public List<ReferencedEnvelope> getOptimizedBounds(String schema, SimpleFeatureType featureType,
             Connection cx) throws SQLException, IOException {
@@ -288,9 +315,6 @@ public class DB2SQLDialect extends SQLDialect  {
         if (schema == null || "".equals(schema))
             return null; // no db schema 
         
-        GeometryDescriptor descriptor = featureType.getGeometryDescriptor();
-        if (descriptor==null)
-            return null;
          
         String  tableName = featureType.getTypeName();
         
@@ -300,42 +324,46 @@ public class DB2SQLDialect extends SQLDialect  {
         List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();        
         try {
             st = cx.createStatement();
-                                                    
-            StringBuffer sql = new StringBuffer();
-            sql.append("select min_x,min_y,max_x,max_y from db2gse.st_geometry_columns where  TABLE_SCHEMA='");
-            sql.append(schema).append("' AND TABLE_NAME='");                                        
-            sql.append(tableName).append("' AND COLUMN_NAME='");
-            sql.append(descriptor.getName().getLocalPart()).append("'");
-                                                    
-            LOGGER.log(Level.FINE, "Getting the full extent of the table using optimized search: {0}", sql);
-            rs = st.executeQuery(sql.toString());
+                                                  
+            for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
+                if (att instanceof GeometryDescriptor) {
 
-            if (rs.next()) {
-                Double min_x=rs.getDouble(1);
-                if(rs.wasNull()) return null;
-                Double min_y=rs.getDouble(2);
-                if(rs.wasNull()) return null;
-                Double max_x=rs.getDouble(3);
-                if(rs.wasNull()) return null;
-                Double max_y=rs.getDouble(4);
-                if(rs.wasNull()) return null;
-                                
-                Geometry geometry = new GeometryFactory().createPolygon(new Coordinate[] {
-                   new Coordinate(min_x,min_y),     
-                   new Coordinate(min_x,max_y),
-                   new Coordinate(max_x,max_y),
-                   new Coordinate(max_x,min_y),
-                   new Coordinate(min_x,min_y)
-                });
-                
-                
-                // Either a ReferencedEnvelope or ReferencedEnvelope3D will be generated here
-                ReferencedEnvelope env = JTS.bounds(geometry, descriptor.getCoordinateReferenceSystem() );
-
-                // reproject and merge
-                if (env != null && !env.isNull()) 
-                    result.add(env);
-                
+                    StringBuffer sql = new StringBuffer();
+                    sql.append("select min_x,min_y,max_x,max_y from db2gse.st_geometry_columns where  TABLE_SCHEMA='");
+                    sql.append(schema).append("' AND TABLE_NAME='");                                        
+                    sql.append(tableName).append("' AND COLUMN_NAME='");
+                    sql.append(att.getName().getLocalPart()).append("'");
+                                                            
+                    LOGGER.log(Level.FINE, "Getting the full extent of the table using optimized search: {0}", sql);
+                    rs = st.executeQuery(sql.toString());
+        
+                    if (rs.next()) {
+                        Double min_x=rs.getDouble(1);
+                        if(rs.wasNull()) return null;
+                        Double min_y=rs.getDouble(2);
+                        if(rs.wasNull()) return null;
+                        Double max_x=rs.getDouble(3);
+                        if(rs.wasNull()) return null;
+                        Double max_y=rs.getDouble(4);
+                        if(rs.wasNull()) return null;
+                                        
+                        Geometry geometry = new GeometryFactory().createPolygon(new Coordinate[] {
+                           new Coordinate(min_x,min_y),     
+                           new Coordinate(min_x,max_y),
+                           new Coordinate(max_x,max_y),
+                           new Coordinate(max_x,min_y),
+                           new Coordinate(min_x,min_y)
+                        });
+                        
+                        
+                        // Either a ReferencedEnvelope or ReferencedEnvelope3D will be generated here
+                        ReferencedEnvelope env = JTS.bounds(geometry, ((GeometryDescriptor) att).getCoordinateReferenceSystem() );
+        
+                        // reproject and merge
+                        if (env != null && !env.isNull()) 
+                            result.add(env);
+                    }
+                }                       
             }
         } catch(SQLException e) {
             LOGGER.log(Level.WARNING, "Failed to use extent from DB2GSE.ST_GEOMETRY_COLUMNS, falling back on envelope aggregation", e);
@@ -352,19 +380,27 @@ public class DB2SQLDialect extends SQLDialect  {
     @Override
     public Envelope decodeGeometryEnvelope(ResultSet rs, int column,
                 Connection cx) throws SQLException, IOException {
-        byte[] wkb = rs.getBytes(column);
-
-        try {
-            if (wkb!=null) {
-                Geometry geom  =  new DB2WKBReader().read(wkb);            
-                return geom.getEnvelopeInternal();
-            } else {
-                return new Envelope();
-            }
-        } catch (ParseException e) {
-            String msg = "Error decoding wkb for envelope";
-            throw (IOException) new IOException(msg).initCause(e);
-        }
+//        byte[] wkb = rs.getBytes(column);
+//
+//        try {
+//            if (wkb!=null) {
+//                Geometry geom  =  new DB2WKBReader().read(wkb);            
+//                return geom.getEnvelopeInternal();
+//            } else {
+//                return new Envelope();
+//            }
+//        } catch (ParseException e) {
+//            String msg = "Error decoding wkb for envelope";
+//            throw (IOException) new IOException(msg).initCause(e);
+//        }
+        
+        if (column % 4 != 1) return null;
+        double minX=rs.getDouble(column);
+        if (rs.wasNull())
+            return null;
+        
+        return new Envelope(minX,rs.getDouble(3),rs.getDouble(2),rs.getDouble(4));
+        
     }
 
     
@@ -585,13 +621,32 @@ public class DB2SQLDialect extends SQLDialect  {
     @Override   
     public boolean isLimitOffsetSupported() {
         
+        boolean firstCall= isLimitOffsetSupported==null 
+                && isRowNumberSupported==null; //&& isOLAPRowNumSupported ==null;
+        
         if (isLimitOffsetSupported==null)
             setIsLimitOffsetSupported();
-        if (isLimitOffsetSupported) return true;
+        if (isLimitOffsetSupported) {            
+            return true;
+        }
         
     	if (isRowNumberSupported==null)
-    		setIsRowNumberSupported();
-        return isRowNumberSupported;
+    	    setIsRowNumberSupported();
+        if (isRowNumberSupported) {            
+            return true;
+        }
+        
+//        if (isOLAPRowNumSupported==null)
+//            setIsOLAPRowNumSupported();
+//        if (isOLAPRowNumSupported) {
+//            return true;
+//        }
+        
+        if (firstCall) {
+            LOGGER.warning(NOPAGESUPPORT_MESSAGE);
+        }
+        
+        return false;
     }
     @Override
     public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
@@ -614,15 +669,28 @@ public class DB2SQLDialect extends SQLDialect  {
     	// "db2set DB2_COMPATIBILITY_VECTOR=01"
     	// enabling the rownum pseudo column
     	
-        if(offset == 0) {
-            sql.insert(0, "SELECT * FROM (");
-            sql.append(") WHERE ROWNUM <= " + limit);
-        } else {
-            long max = (limit == Integer.MAX_VALUE ? Long.MAX_VALUE : limit + offset);
-            sql.insert(0, "SELECT * FROM (SELECT A.*, ROWNUM RNUM FROM ( ");
-            sql.append(") A WHERE ROWNUM <= " + max + ")");
-            sql.append("WHERE RNUM > " + offset);
+        if (Boolean.TRUE.equals(isRowNumberSupported)) {
+            if(offset == 0) {
+                sql.insert(0, "SELECT * FROM (");
+                sql.append(") WHERE ROWNUM <= " + limit);
+            } else {
+                long max = (limit == Integer.MAX_VALUE ? Long.MAX_VALUE : limit + offset);
+                sql.insert(0, "SELECT * FROM (SELECT A.*, ROWNUM RNUM FROM ( ");
+                sql.append(") A WHERE ROWNUM <= " + max + ")");
+                sql.append("WHERE RNUM > " + offset);
+            }
         }
+        
+//        if (Boolean.TRUE.equals(isOLAPRowNumSupported)) {
+//            sql.insert(0,"select  * from (select   a.* from  (");
+//            sql.append(") a ,row_number() over () as rownum )   where ");
+//            if(offset == 0) { 
+//                sql.append(" rownum <= " + limit);
+//            } else {
+//                long max = (limit == Integer.MAX_VALUE ? Long.MAX_VALUE : limit + offset);
+//                sql.append (" rownum > " + offset + " and rownum <= " + max);
+//            }
+//        }
     }
 
 
@@ -635,10 +703,10 @@ public class DB2SQLDialect extends SQLDialect  {
     		con = dataStore.getDataSource().getConnection();
     		ps = con.prepareStatement(SELECT_ROWNUMBER); 
     		rs = ps.executeQuery();
-    		if (rs.next()) isRowNumberSupported=Boolean.TRUE;    		
+    		if (rs.next()) isRowNumberSupported=Boolean.TRUE;
+    		LOGGER.info(ROWNUMBER_MESSAGE);
     	}
-    	catch (SQLException ex) {
-    		LOGGER.warning(ROWNUMBER_MESSAGE);
+    	catch (SQLException ex) {    		
     		isRowNumberSupported=Boolean.FALSE;    		
     	}
     	finally {
@@ -657,10 +725,10 @@ public class DB2SQLDialect extends SQLDialect  {
                 con = dataStore.getDataSource().getConnection();
                 ps = con.prepareStatement(SELECT_LIMITOFFSET); 
                 rs = ps.executeQuery();
-                if (rs.next()) isLimitOffsetSupported=Boolean.TRUE;               
+                if (rs.next()) isLimitOffsetSupported=Boolean.TRUE;
+                LOGGER.info(LIMITOFFSET_MESSAGE);
         }
-        catch (SQLException ex) {
-                LOGGER.warning(LIMITOFFSET_MESSAGE);
+        catch (SQLException ex) {                
                 isLimitOffsetSupported=Boolean.FALSE;             
         }
         finally {
@@ -669,6 +737,29 @@ public class DB2SQLDialect extends SQLDialect  {
             try {if (con!=null) con.close();} catch (SQLException ex1) {};
         }
     }
+    
+//    private void setIsOLAPRowNumSupported() {
+//        Connection con = null;
+//        PreparedStatement ps = null; 
+//        ResultSet rs = null;
+//        
+//        try {
+//                con = dataStore.getDataSource().getConnection();
+//                ps = con.prepareStatement(SELECT_OLAP_ROWNUM); 
+//                rs = ps.executeQuery();
+//                if (rs.next()) isOLAPRowNumSupported=Boolean.TRUE;
+//                LOGGER.info(OLAPROWNUM_MESSAGE);
+//        }
+//        catch (SQLException ex) {                
+//                isOLAPRowNumSupported=Boolean.FALSE;             
+//        }
+//        finally {
+//            try {if (rs!=null) rs.close(); } catch (SQLException ex1) {};
+//            try {if (ps!=null) ps.close();} catch (SQLException ex1) {};
+//            try {if (con!=null) con.close();} catch (SQLException ex1) {};
+//        }
+//    }
+
 
     
     public void encodeGeometryColumnGeneralized(GeometryDescriptor gatt, String prefix, int srid,  StringBuffer sql,Double distance) {

@@ -69,7 +69,7 @@ public class JDBCJoiningFeatureReader extends JDBCFeatureReader {
 
         for (JoinPart part : join.getParts()) {
             SimpleFeatureType ft = part.getQueryFeatureType();
-            joinReaders.add(new JDBCFeatureReader(rs, cx, offset, featureSource.getDataStore()
+            JDBCFeatureReader joinReader = new JDBCFeatureReader(rs, cx, offset, featureSource.getDataStore()
                     .getAbsoluteFeatureSource(ft.getTypeName()), ft, hints) {
                 @Override
                 protected void finalize() throws Throwable {
@@ -80,7 +80,9 @@ public class JDBCJoiningFeatureReader extends JDBCFeatureReader {
                     // delegate which uses resources that will be closed elsewhere, or so it
                     // is claimed in the comment in the close() method below. See GEOT-4204.
                 }
-            });
+            };
+            joinReaders.add(joinReader);
+            offset += ft.getAttributeCount() + joinReader.getPrimaryKey().getColumns().size();
         }
 
         //builder for the final joined feature

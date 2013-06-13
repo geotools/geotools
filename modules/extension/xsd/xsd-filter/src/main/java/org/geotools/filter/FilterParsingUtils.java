@@ -33,6 +33,7 @@ import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
+import org.opengis.filter.Not;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNull;
@@ -86,7 +87,7 @@ public class FilterParsingUtils {
         }
 
         //&lt;xsd:element ref="ogc:logicOps"/&gt;
-        if ("logicOps".equals(name) && filter instanceof BinaryLogicOperator) {
+        if ("logicOps".equals(name) && (filter instanceof BinaryLogicOperator || filter instanceof Not)) {
             return filter;
         }
 

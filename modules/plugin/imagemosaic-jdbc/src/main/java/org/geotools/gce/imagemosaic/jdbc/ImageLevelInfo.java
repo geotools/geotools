@@ -38,7 +38,7 @@ public class ImageLevelInfo implements Comparable<ImageLevelInfo> {
 	/**
 	 * Flag if ImageIO.read(InputStream in) does not return a null pointer
 	 */
-	private boolean canImageIOReadFromInputStream;
+	private boolean canImageIOReadFromInputStream =true;
 
 	/**
 	 * The Coordinate Reference System stored in the sql database (if supported)

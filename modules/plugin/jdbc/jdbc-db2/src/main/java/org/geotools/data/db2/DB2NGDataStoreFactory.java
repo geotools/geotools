@@ -52,7 +52,7 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
 
     public static String GetCurrentSchema = "select current sqlid from sysibm.sysdummy1";
     public static String GetWKBZTypes = "select db2gse.st_asbinary(db2gse.st_point(1,2,3,0)) from sysibm.sysdummy1";
-    public static String SelectGeometryColumns="select * from db2gse.st_geometry_columns";
+    public static String SelectGeometryColumns="select * from db2gse.st_geometry_columns where 0 = 1";
     
     /** parameter for database type */
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "db2");

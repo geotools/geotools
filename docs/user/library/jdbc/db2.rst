@@ -96,5 +96,41 @@ Since DB2 Spatial Extender V10 it is possible to store the extent of a geometry 
         
 .. note::        
         
-   This makes only sense if the table is populated before registration and there will be no future modifications altering the extent dramatically.        
+   This makes only sense if the table is populated before registration and there will be no future modifications altering the extent dramatically.
+   
 
+Paging Support
+^^^^^^^^^^^^^^
+
+Paging support is necessary to retrieve only a subset of a query result. (e. g. rows numbered 100 - 200). Many databases support the SQL keywords
+LIMIT and OFFSET, Oracle uses a pseudo column called ROWNUM. This plugin uses a strategy depending on the DB2 compatibility mode.          
+
+*  In MYSQL compatibility mode, LIMIT and OFFSET is used 
+
+*  In Oracle compatibility mode, ROWNUM is used
+
+*  Fetch needed rows and ignore the unneeded rows (e. g fetch rows 1 - 200 and ignore rows from 1-100). 
+   This may result in very bad performance. Using a scrollable cursor would not help since BLOBs (vector data) are
+   not supported for such cursors in DB2.
+   
+The strategy used can be found in the log file. If no paging support is enabled, the log file contains a warning::        
+   
+   Try to set MySql or Oracle compatibility mode
+   dbstop
+   db2set DB2_COMPATIBILITY_VECTOR=MYS
+   db2start
+   
+The above commands enable  MYSQL compatibility, the command for Oracle compatibility mode is::
+
+   db2set DB2_COMPATIBILITY_VECTOR=ORA
+   
+On success the log file contains::
+   
+    Using LIMIT OFFSET for paging support
+    
+or::
+
+   Using Oracle ROWNUM for paging support       
+    
+    
+   

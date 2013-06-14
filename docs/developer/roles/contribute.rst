@@ -8,7 +8,9 @@ Initially, newcomers to the project generally participate in an informal role. T
 Easy informal code contributions
 --------------------------------
 
-Informal participants can contribute small modifications to the project code by submitting a contributon (as a pull request or attachment to a JIRA task).
+We are happy to accept quick informal patches to existing files. To contribute a new file, please sign a code contribution agreement.
+
+Informal participants can contribute small modifications to the project as a GitHub pull request (preferred) or a patch attached to a JIRA task (or sent to the mailing list as a last resort).
 
 * pull-request
 
@@ -56,7 +58,7 @@ Informal participants can contribute small modifications to the project code by 
 Large contributions
 -------------------
 
-Informal participants can also submit larger contributions following essentially the same process as that just described for small code contributions but also including the formal transfer of the copyright over the contribution to the Open Source Geospatial Foundation (OSGeo).
+Informal participants can also submit larger contributions (such as those that add new files) following essentially the same process as that just described for small code contributions but also including the formal transfer of the copyright over the contribution to the Open Source Geospatial Foundation (OSGeo).
 
 Patches submitted to JIRA for large contributions should include the contributor name in the list of authors of the class documentation for any file in which the contributor has made significant changes. That is the contributor's name should be added using the @author javadoc tag.
 
@@ -74,7 +76,7 @@ These licenses are directly derived from the Apache code contribution licenses (
 
 #. Contributors must print out a copy of the Contribution License document(s) and either sign it themselves or have their employer sign the document, depending on the circumstances governing when and where the Contributor develops the code. It is up to the Contributor to understand the legal status of the code which the Contributor produces.
 #. Scan the document and email to **info@osgeo.org**. Once we have confirmation the document has
-   been recieved we are in position to review and accept your work.
+   been received we are in position to review and accept your work.
 #. Any questions should be addressed to the developers' mailing list.
 
 Signing a Contributor License is intended to serve several purposes such as shielding the contributor from a direct legal attack by users of the code, enabling the Foundation to represent the interests of the GeoTools project in a legal forum, and enabling the GeoTools project to switch licenses when necessary.

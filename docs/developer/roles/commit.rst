@@ -1,5 +1,5 @@
-Comitters
-=========
+Committers
+==========
 
 Contributors who give frequent and valuable contributions to GeoTools (docs and bug fixes) can have
 their status promoted to that of a formal "Committer" to GeoTools.

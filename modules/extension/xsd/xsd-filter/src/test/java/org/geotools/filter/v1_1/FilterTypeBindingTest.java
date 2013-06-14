@@ -82,6 +82,11 @@ public class FilterTypeBindingTest extends FilterTestSupport {
 
         assertEquals("ogc:Filter", doc.getDocumentElement().getNodeName());
         assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "And").getLength());
+
+        doc = encode(FilterMockData.not(), OGC.Filter);
+
+        assertEquals("ogc:Filter", doc.getDocumentElement().getNodeName());
+        assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "Not").getLength());
     }
     
     public void testEncodeDateTimeLiterals() throws Exception {

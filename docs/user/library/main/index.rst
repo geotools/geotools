@@ -16,7 +16,7 @@ The gt-main module is responsible for:
 * Abstract classes to help implementors of :doc:`gt-api <../api/index>` DataStore
 
 **Maven**::
-   
+
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
@@ -26,16 +26,16 @@ The gt-main module is responsible for:
 **Contents**
 
 .. sidebar:: Details
-   
+
    .. toctree::
       :maxdepth: 1
-      
+
       faq
       internal
 
 .. toctree::
    :maxdepth: 1
-   
+
    data
    filter
    feature
@@ -43,11 +43,11 @@ The gt-main module is responsible for:
    shape
    geometry
    repository
-   
-**SOSNOKILLLICENSE**
 
-The file **DateUtils** requires that this license be included with your GeoTools documentation.::
-   
+**BSD License**
+
+The file **DateUtils** requires that this BSD Style license be included with your GeoTools documentation.::
+
    Copyright (c) 2002-2004, Dennis M. Sosnoski.
    All rights reserved.
    Redistribution and use in source and binary forms, with or without modification,
@@ -61,7 +61,7 @@ The file **DateUtils** requires that this license be included with your GeoTools
    * Neither the name of JiBX nor the names of its contributors may be used
      to endorse or promote products derived from this software without specific
      prior written permission.
-   
+
    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE

@@ -3341,7 +3341,7 @@ public final class JDBCDataStore extends ContentDataStore
         for (Iterator a = featureType.getAttributeDescriptors().iterator(); a.hasNext();) {
             AttributeDescriptor attribute = (AttributeDescriptor) a.next();
             if (attribute instanceof GeometryDescriptor) {
-                String geometryColumn = featureType.getGeometryDescriptor().getLocalName();
+                String geometryColumn = attribute.getLocalName();
                 dialect.encodeGeometryEnvelope(featureType.getTypeName(), geometryColumn, sql);
                 sql.append(",");
             }

@@ -28,9 +28,6 @@ import org.junit.Test;
  * @author Simone Giannecchini
  * @since 2.3
  * 
- *
- *
- *
  * @source $URL$
  */
 public class ImagePyramidServiceTest extends Assert {

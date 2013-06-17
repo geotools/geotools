@@ -57,10 +57,6 @@ class Utils {
 
     static final Logger LOGGER = Logging.getLogger(Utils.class);
     
-    static URL checkSource(Object source) {
-    	return checkSource(source, null);
-    }
-
     static URL checkSource(Object source, Hints hints) {
         URL sourceURL = null;
         File sourceFile = null;
@@ -98,16 +94,16 @@ class Utils {
         } else {
             // we really don't know how to convert the thing... give up
             if(LOGGER.isLoggable(Level.WARNING)){
-                LOGGER.warning("we really don't know how to convert the thing:"+source!=null?source.toString():"null");
+                LOGGER.warning("we really don't know how to convert the thing: "+source!=null?source.toString():"null");
             }
             return null;
         }
 
         // logging
-        if(LOGGER.isLoggable(Level.INFO)){
+        if(LOGGER.isLoggable(Level.FINE)){
             if(sourceFile!=null){
                 final String message = fileStatus(sourceFile);
-                LOGGER.info(message);
+                LOGGER.fine(message);
             }
         }
 
@@ -115,25 +111,28 @@ class Utils {
         // Handle cases where the pyramid descriptor file already exists
         //
         // can't do anything with it
-        if(sourceFile == null || !sourceFile.exists())
+        if(sourceFile == null || !sourceFile.exists()){
             return sourceURL;
+        }
         
         // if it's already a file we don't need to adjust it, will try to open as is
-        if(!sourceFile.isDirectory())
+        if(!sourceFile.isDirectory()){
             return sourceURL;
+        }
         
         // it's a directory, let's see if it already has a pyramid description file inside
         File directory = sourceFile;
         sourceFile = new File(directory, directory.getName() + ".properties");
         // logging
-        if(LOGGER.isLoggable(Level.INFO)){
+        if(LOGGER.isLoggable(Level.FINE)){
             if(sourceFile!=null){
                 final String message = fileStatus(sourceFile);
-                LOGGER.info(message);
+                LOGGER.fine(message);
             }
         }        
-        if(sourceFile.exists())
+        if(sourceFile.exists()){
             return DataUtilities.fileToURL(sourceFile);
+        }
         
 
         //
@@ -146,10 +145,10 @@ class Utils {
         File[] numericDirectories = directory.listFiles(new NumericDirectoryFilter());
         File[] directories = directory.listFiles((FileFilter) directoryFilter);
         
-        // do we have at least one sub-directory?
-        if(directories.length == 0){
+        // do we have at least one numeric? sub-directory?
+        if(numericDirectories.length == 0){
             if(LOGGER.isLoggable(Level.INFO)){
-                LOGGER.info("I was unable to determine a structure similar to the GDAL Retile one!!");
+                LOGGER.info("I was unable to determine a structure similar to the GDAL Retile one for the provided path: "+directory);
             }
             return null;
         }
@@ -200,8 +199,9 @@ class Utils {
         }
         
         // do we have at least one level?
-        if(mosaics.size() == 0)
+        if(mosaics.size() == 0){
             return null;
+        }
      
         // sort the mosaics by resolution and check they are actually in ascending resolution order
         // for both X and Y resolutions
@@ -279,14 +279,14 @@ class Utils {
             throw new NullPointerException("Provided null input to fileStatus method");
         }
         final StringBuilder builder = new StringBuilder();
-        builder.append("Checking file:").append(FilenameUtils.getFullPath(sourceFile.getAbsolutePath())).append("\n");
-        builder.append("exists").append(sourceFile.exists()).append("\n");
-        builder.append("isFile").append(sourceFile.isFile()).append("\n");
-        builder.append("canRead:").append(sourceFile.canRead()).append("\n");
-        builder.append("canWrite").append(sourceFile.canWrite()).append("\n");
-        builder.append("canExecute").append(sourceFile.canExecute()).append("\n");        
-        builder.append("isHidden:").append(sourceFile.isHidden()).append("\n");
-        builder.append("lastModified").append(sourceFile.lastModified()).append("\n");
+        builder.append("Checking file: ").append(FilenameUtils.getFullPath(sourceFile.getAbsolutePath())).append("\n");
+        builder.append("exists: ").append(sourceFile.exists()).append("\n");
+        builder.append("isFile: ").append(sourceFile.isFile()).append("\n");
+        builder.append("canRead: ").append(sourceFile.canRead()).append("\n");
+        builder.append("canWrite: ").append(sourceFile.canWrite()).append("\n");
+        builder.append("canExecute: ").append(sourceFile.canExecute()).append("\n");        
+        builder.append("isHidden: ").append(sourceFile.isHidden()).append("\n");
+        builder.append("lastModified: ").append(sourceFile.lastModified()).append("\n");
         
         return builder.toString();
     }

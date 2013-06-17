@@ -173,13 +173,12 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 		//
 		// //
 		if (source == null) {
-
 			throw new DataSourceException("ImagePyramidReader:null source set to read this coverage.");
 		}
 		this.source = source;
 		this.sourceURL = Utils.checkSource(source, uHints);
 		if(sourceURL == null) {
-		    throw new IllegalArgumentException("This plugin accepts only File, URL and String pointing to a file");
+		    throw new DataSourceException("This plugin accepts only a URL, a File or a String pointing to a directory with a structure similar to the one of gdal_retile!");
 		} 
 		
 		// //

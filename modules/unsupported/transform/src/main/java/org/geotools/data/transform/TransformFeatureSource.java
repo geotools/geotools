@@ -60,15 +60,15 @@ import org.opengis.filter.sort.SortBy;
  * 
  * @author Andrea Aime - GeoSolutions
  */
-class TransformFeatureSource implements SimpleFeatureSource {
+public class TransformFeatureSource implements SimpleFeatureSource {
 
-    static final Logger LOGGER = Logging.getLogger(TransformFeatureSource.class);
+    protected static final Logger LOGGER = Logging.getLogger(TransformFeatureSource.class);
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    protected static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
-    Transformer transformer;
+    protected Transformer transformer;
 
-    SimpleFeatureSource source;
+    protected SimpleFeatureSource source;
 
     
     /**

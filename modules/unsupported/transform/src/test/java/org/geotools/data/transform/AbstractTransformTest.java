@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geotools.data.DataUtilities;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.transform.Definition;
@@ -43,7 +45,7 @@ public abstract class AbstractTransformTest {
                 "./src/test/resources/org/geotools/data/transform"));
         STATES = pds.getFeatureSource("states");
     }
-
+    
     SimpleFeatureSource transformWithSelection() throws IOException {
         List<Definition> definitions = new ArrayList<Definition>();
         definitions.add(new Definition("the_geom"));
@@ -72,6 +74,20 @@ public abstract class AbstractTransformTest {
         definitions.add(new Definition("logp", ECQL.toExpression("log(persons)")));
 
         SimpleFeatureSource transformed = TransformFactory.transform(STATES, "bstates", definitions);
+        return transformed;
+    }
+    
+    SimpleFeatureSource transformWithExpressionsWithEmptySource() throws Exception {
+        List<Definition> definitions = new ArrayList<Definition>();
+        definitions.add(new Definition("geom", ECQL.toExpression("buffer(the_geom, 1)")));
+        definitions.add(new Definition("name", ECQL.toExpression("strToLowercase(state_name)")));
+        definitions.add(new Definition("total", ECQL.toExpression("male + female")));
+        definitions.add(new Definition("logp", ECQL.toExpression("log(persons)")));
+        
+        ListFeatureCollection fc = new ListFeatureCollection(STATES.getSchema());
+        SimpleFeatureSource emptySource = DataUtilities.source(fc);
+
+        SimpleFeatureSource transformed = TransformFactory.transform(emptySource, "bstates", definitions);
         return transformed;
     }
 

@@ -103,8 +103,22 @@ class Transformer {
         return result;
     }
 
+    /**
+     * Computes the target schema, first trying a static analysis, and if that one does not work,
+     * evaluating the expressions against a sample feature
+     * 
+     * @param typeName
+     * @param definitions
+     * @return
+     * @throws IOException
+     */
     private SimpleFeatureType computeTargetSchema(Name typeName, List<Definition> definitions)
             throws IOException {
+        SimpleFeatureType target = computeTargetSchemaStatically(source.getSchema(), typeName, definitions);
+        if(target != null) {
+            return target;
+        }
+        
         // get a sample feature, used as a last resort in case we cannot get a fix on the type
         // by static analysis (we don't use it first since the feature coudl contain null
         // values that result the expression into returning us a null
@@ -120,6 +134,12 @@ class Transformer {
                 iterator.close();
             }
         }
+        
+        if(sample == null) {
+            throw new IllegalStateException("Cannot compute the target feature type from the " +
+            		"definitions by static analysis, and the source does not have any feature " +
+            		"that we can use as a sample to compute the target type dynamically");
+        }
 
         // build the output feature type
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
@@ -129,6 +149,22 @@ class Transformer {
             tb.add(ad);
         }
 
+        return tb.buildFeatureType();
+    }
+
+    private SimpleFeatureType computeTargetSchemaStatically(SimpleFeatureType originalSchema, Name typeName,
+            List<Definition> definitions) {
+        // build the output feature type
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName(typeName);
+        for (Definition definition : definitions) {
+            AttributeDescriptor ad = definition.getAttributeDescriptor(originalSchema);
+            if(ad == null) {
+                return null;
+            }
+            tb.add(ad);
+        }
+        
         return tb.buildFeatureType();
     }
 

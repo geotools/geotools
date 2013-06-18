@@ -28,6 +28,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
+import org.opengis.referencing.FactoryException;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -289,6 +290,17 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     @Test
     public void testSchemaTransform() throws Exception {
         SimpleFeatureSource transformed = transformWithExpressions();
+        checkTransfomedSchemaWithExpressions(transformed);
+    }
+    
+    @Test
+    public void testSchemaTransformFromEmptySource() throws Exception {
+        SimpleFeatureSource transformed = transformWithExpressionsWithEmptySource();
+        checkTransfomedSchemaWithExpressions(transformed);
+    }
+
+    private void checkTransfomedSchemaWithExpressions(SimpleFeatureSource transformed)
+            throws FactoryException {
         SimpleFeatureType schema = transformed.getSchema();
         SimpleFeatureType original = STATES.getSchema();
         assertEquals("bstates", schema.getTypeName());

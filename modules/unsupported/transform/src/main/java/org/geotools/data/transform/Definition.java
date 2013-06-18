@@ -146,21 +146,57 @@ public class Definition {
      * @return
      */
     public AttributeDescriptor getAttributeDescriptor(SimpleFeature originalFeature) {
+        // try the static analysis
+        AttributeDescriptor ad = getAttributeDescriptor(originalFeature.getFeatureType());
+        if(ad != null) {
+            return ad;
+        }
+        
+        // build it from the sample then
         AttributeTypeBuilder ab = new AttributeTypeBuilder();
-        SimpleFeatureType original = originalFeature.getFeatureType();
-        ExpressionTypeEvaluator typeEvaluator = new ExpressionTypeEvaluator(original);
+        Object result = expression.evaluate(originalFeature);
+        Class computedBinding = null;
+        if (result != null) {
+            computedBinding = result.getClass();
+        }
+
+        CoordinateReferenceSystem computedCRS = crs;
+        if (Geometry.class.isAssignableFrom(computedBinding) && computedCRS == null) {
+            computedCRS = evaluateCRS(originalFeature);
+        }
+
+        ab.setBinding(computedBinding);
+        ab.setName(name);
+        if (computedCRS != null) {
+            ab.setCRS(computedCRS);
+        }
+
+        return ab.buildDescriptor(name);
+    }
+    
+    /**
+     * Computes the output attribute descriptor for this {@link Definition} given only the original feature type. 
+     * The code will attempt a static analysis on the original
+     * feature type, if that fails it will return null
+     * 
+     * @param originalFeature
+     * @return
+     */
+    public AttributeDescriptor getAttributeDescriptor(SimpleFeatureType originalSchema) {
+        AttributeTypeBuilder ab = new AttributeTypeBuilder();
+        ExpressionTypeEvaluator typeEvaluator = new ExpressionTypeEvaluator(originalSchema);
 
         if (binding != null) {
 
-            CoordinateReferenceSystem computedCRS = crs;
-            if (Geometry.class.isAssignableFrom(binding) && computedCRS == null) {
-                computedCRS = evaluateCRS(originalFeature);
-            }
-
             ab.setBinding(binding);
             ab.setName(name);
-            if (computedCRS != null) {
-                ab.setCRS(computedCRS);
+            if (crs != null) {
+                ab.setCRS(crs);
+            } else {
+                // try to get it from the expression operands, under the assumption that
+                // the geometry crs are not getting modified by the filter functions
+                expression.accept(typeEvaluator, null);
+                ab.setCRS(typeEvaluator.getCoordinateReferenceSystem());
             }
 
             return ab.buildDescriptor(name);
@@ -171,7 +207,7 @@ public class Definition {
             // see if we are just passing a property trough
             if (expression instanceof PropertyName) {
                 PropertyName pn = (PropertyName) expression;
-                AttributeDescriptor descriptor = original.getDescriptor(pn.getPropertyName());
+                AttributeDescriptor descriptor = originalSchema.getDescriptor(pn.getPropertyName());
 
                 if (descriptor == null) {
                     throw new IllegalArgumentException(
@@ -184,18 +220,13 @@ public class Definition {
             } else {
                 // try static analysis
                 computedBinding = (Class) expression.accept(typeEvaluator, null);
-
-                if (computedBinding == null) {
-                    // all right, let's try the sample feature then
-                    Object result = expression.evaluate(originalFeature);
-                    if (result != null) {
-                        computedBinding = result.getClass();
-                    }
+                if(computedBinding == null) {
+                    return null;
                 }
 
                 CoordinateReferenceSystem computedCRS = crs;
                 if (Geometry.class.isAssignableFrom(computedBinding) && computedCRS == null) {
-                    computedCRS = evaluateCRS(originalFeature);
+                    computedCRS = evaluateCRS(originalSchema);
                 }
 
                 ab.setBinding(computedBinding);
@@ -211,10 +242,7 @@ public class Definition {
 
     private CoordinateReferenceSystem evaluateCRS(SimpleFeature originalFeature) {
         SimpleFeatureType originalSchema = originalFeature.getFeatureType();
-        CoordinateReferenceSystem computedCRS;
-        // try static analysis
-        computedCRS = (CoordinateReferenceSystem) expression.accept(
-                new CRSEvaluator(originalSchema), null);
+        CoordinateReferenceSystem computedCRS = evaluateCRS(originalSchema);
         if (computedCRS == null) {
             // all right, let's try the sample feature then
             Geometry g = expression.evaluate(originalFeature, Geometry.class);
@@ -229,6 +257,12 @@ public class Definition {
             }
         }
         return computedCRS;
+    }
+    
+    private CoordinateReferenceSystem evaluateCRS(SimpleFeatureType originalSchema) {
+        return (CoordinateReferenceSystem) expression
+                .accept(new CRSEvaluator(originalSchema), null);
+
     }
 
     @Override

@@ -35,11 +35,17 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
 
-class TransformFeatureStore extends TransformFeatureSource implements SimpleFeatureStore {
+/**
+ * A transforming feature store, will transform on the fly all attempts to write so that the
+ * underlying features are getting modified while exposing a different feature type to its callers.
+ * 
+ * @author Andrea Aime - GeoSolutions
+ */
+public class TransformFeatureStore extends TransformFeatureSource implements SimpleFeatureStore {
 
-    SimpleFeatureStore store;
+    protected SimpleFeatureStore store;
 
-    Transformer invertedTransformer;
+    protected Transformer invertedTransformer;
 
     public TransformFeatureStore(SimpleFeatureStore store, Name name, List<Definition> definitions)
             throws IOException {

@@ -123,7 +123,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>hsqldb</groupId>
+      <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>

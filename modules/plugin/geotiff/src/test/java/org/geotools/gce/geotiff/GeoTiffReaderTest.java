@@ -44,6 +44,8 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -62,6 +64,20 @@ public class GeoTiffReaderTest extends Assert {
 	private final static Logger LOGGER = org.geotools.util.logging.Logging
 			.getLogger(GeoTiffReaderTest.class.toString());
 
+	static boolean oldOverrideInnerCRS;
+	
+	@Before
+	public void saveGlobals() {
+	    oldOverrideInnerCRS = GeoTiffReader.OVERRIDE_INNER_CRS;
+	    GeoTiffReader.OVERRIDE_INNER_CRS = true;
+	}
+	
+	@After
+	public void cleanupGlobals() {
+        System.clearProperty(GeoTiffReader.OVERRIDE_CRS_SWITCH);
+        GeoTiffReader.OVERRIDE_INNER_CRS = oldOverrideInnerCRS; 
+	}
+	
 	/**
 	 * Testing proper CRS override with PRJ.
 	 * 
@@ -135,7 +151,6 @@ public class GeoTiffReaderTest extends Assert {
 		        reader.dispose();
 
 		        coverage1.dispose(true);
-		        System.setProperty(GeoTiffReader.OVERRIDE_CRS_SWITCH, "True");
 		    }
     /**
      * Test for reading bad/strange geotiff files

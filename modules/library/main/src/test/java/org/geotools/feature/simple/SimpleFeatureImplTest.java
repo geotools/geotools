@@ -16,14 +16,10 @@
  */
 package org.geotools.feature.simple;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import junit.framework.TestCase;
 
 import org.geotools.data.DataUtilities;
 import org.opengis.feature.GeometryAttribute;
-import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;

@@ -16,10 +16,14 @@
  */
 package org.geotools.feature.simple;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import junit.framework.TestCase;
 
 import org.geotools.data.DataUtilities;
 import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -80,5 +84,15 @@ public class SimpleFeatureImplTest extends TestCase {
         assertTrue(feature.getDescriptor().isNillable());
         assertEquals(0, feature.getDescriptor().getMinOccurs());
         assertEquals(Integer.MAX_VALUE, feature.getDescriptor().getMaxOccurs());
+    }
+    
+    public void testSetValue() {
+    	
+    	SimpleFeature myFeature = SimpleFeatureBuilder.build(schema, new Object[] {null, null, null}, "building.2");
+
+    	myFeature.setValue(feature.getProperties());
+    	for (int i = 0; i < feature.getAttributeCount(); i++) {
+    		assertEquals(feature.getAttribute(i), myFeature.getAttribute(i));
+    	}
     }
 }

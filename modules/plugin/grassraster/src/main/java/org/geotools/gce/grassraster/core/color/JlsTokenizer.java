@@ -1,68 +1,52 @@
- /*******************************************************************************
-            FILE:  JLSTokenizer.java
-   
-     DESCRIPTION:  Class providing much the same functionality as 
-                   java.util.StringTokenizer, but avoiding some of its
-                   more common problems. In particular:
-                   <ul>
-                   <li><pre>x,,y</pre> yields a blank token between x
-                   and y, whereas with StringTokenizer it is swallowed.
-                   <li><pre>,a,</pre> yields a blank token both before
-                   and after a, whereas with StringTokenizer both are
-                   swallowed.
-                   </ul>
-
-                   Some pieces of StringTokenizer aren't supported, such
-                   as returning delimiters and changing delimiters during
-                   operation.
-                   <p>
-                   This class is deliberately <b>not</b> a subclass of
-                   StringTokenizer as the behaviour is significantly 
-                   different. It can, however, be used in many places
-                   where StringTokenizer is appropriate.
-           NOTES:  
-          AUTHOR:  JSkeet
-           EMAIL:  
-         COMPANY:  
-       COPYRIGHT:  
-         VERSION:  
-         CREATED:  
-        REVISION:  ---
-
-  ******************************************************************************
-
-    This library is free software; you can redistribute it and/or 
-    modify it under the terms of the GNU Library General Public 
-    License as published by the Free Software Foundation; either 
-    version 2 of the License, or (at your option) any later version. 
- 
-    This library is distributed in the hope that it will be useful, 
-    but WITHOUT ANY WARRANTY; without even the implied warranty of 
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
-    Library General Public License for more details. 
- 
-    You should have received a copy of the GNU Library General Public 
-    License along with this library; if not, write to the Free 
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 
-    USA 
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions
-    are met:
-    1. Redistributions of source code must retain the above copyright
-       notice, this list of conditions and the following disclaimer.
-    2. Redistributions in binary form must reproduce the above copyright
-       notice, this list of conditions and the following disclaimer in the
-       documentation and/or other materials provided with the distribution.
-
-  *****************************************************************************/
-
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2006-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2002, http://www.yoda.arachsys.com/java/skeetutil/
+ *    
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */ 
 package org.geotools.gce.grassraster.core.color;
 
 import java.util.NoSuchElementException;
 
 //import java.util.NoSuchElementException;
-
+/**
+ * Providing much the same functionality as java.util.StringTokenizer, but avoiding some of its more common problems. In particular:
+ * <ul>
+ * <li>
+ * 
+ * <pre>
+ * x,,y
+ * </pre>
+ * 
+ * yields a blank token between x and y, whereas with StringTokenizer it is swallowed.
+ * <li>
+ * 
+ * <pre>
+ * ,a,
+ * </pre>
+ * 
+ * yields a blank token both before and after a, whereas with StringTokenizer both are swallowed.
+ * </ul>
+ * 
+ * Some pieces of StringTokenizer aren't supported, such as returning delimiters and changing delimiters during operation.
+ * <p>
+ * This class is deliberately <b>not</b> a subclass of StringTokenizer as the behaviour is significantly different. It can, however, be used in many
+ * places where StringTokenizer is appropriate.
+ * 
+ * @author JSkeet
+ * 
+ */
 public class JlsTokenizer
 {
   /* Data to parse */

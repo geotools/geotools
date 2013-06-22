@@ -421,6 +421,7 @@ public class CRSTest extends TestCase {
             CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
             assertEquals("EPSG:4326", CRS.toSRS(crs));
             Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+            CRS.reset("ALL");
             assertEquals("urn:ogc:def:crs:EPSG::4326", CRS.toSRS(crs));
         } finally {
             Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);

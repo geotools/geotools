@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -137,6 +138,8 @@ public final class CRS {
     
     static final Logger LOGGER = Logging.getLogger(CRS.class);
     
+    static volatile AtomicBoolean FORCED_LON_LAT = null;
+    
     /**
      * Enumeration describing axis order for geographic coordinate reference systems.
      */
@@ -247,18 +250,40 @@ public final class CRS {
             throws FactoryRegistryException
     {
         CRSAuthorityFactory factory = (longitudeFirst) ? xyFactory : defaultFactory;
-        if (factory == null) try {
-            factory = new DefaultAuthorityFactory(longitudeFirst);
-            if (longitudeFirst) {
-                xyFactory = factory;
-            } else {
-                defaultFactory = factory;
+        if (factory == null) 
+            try {
+                // what matters is the value of the flag when the factories are created,. do updated
+                updateForcedLonLat();
+                factory = new DefaultAuthorityFactory(longitudeFirst);
+                if (longitudeFirst) {
+                    xyFactory = factory;
+                } else {
+                    defaultFactory = factory;
+                }
+            } catch (NoSuchElementException exception) {
+                // No factory registered in FactoryFinder.
+                throw new FactoryNotFoundException(null, exception);
             }
-        } catch (NoSuchElementException exception) {
-            // No factory registered in FactoryFinder.
-            throw new FactoryNotFoundException(null, exception);
-        }
         return factory;
+    }
+    
+    private static void updateForcedLonLat() {
+        boolean forcedLonLat = false;
+        try {
+            forcedLonLat = Boolean.getBoolean("org.geotools.referencing.forceXY") || 
+                Boolean.TRUE.equals(Hints.getSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
+        } catch(Exception e) {
+            // all right it was a best effort attempt
+            LOGGER.log(Level.FINE, "Failed to determine if we are in forced lon/lat mode", e);
+        }
+        FORCED_LON_LAT = new AtomicBoolean(forcedLonLat);
+    }
+    
+    private static boolean isForcedLonLat() {
+        if(FORCED_LON_LAT == null) {
+            updateForcedLonLat();
+        }
+        return FORCED_LON_LAT.get();
     }
 
     /**
@@ -894,15 +919,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
         if (crs == null) {
             return null;
         }
-        boolean forcedLonLat = false;
-        try {
-            forcedLonLat = Boolean.getBoolean("org.geotools.referencing.forceXY") || 
-                Boolean.TRUE.equals(Hints.getSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
-        } catch(Exception e) {
-            // all right it was a best effort attempt
-            LOGGER.log(Level.FINE, "Failed to determine if we are in forced lon/lat mode", e);
-        }
-        if (forcedLonLat && CRS.getAxisOrder(crs, false) == AxisOrder.NORTH_EAST) {
+        if (isForcedLonLat() && CRS.getAxisOrder(crs, false) == AxisOrder.NORTH_EAST) {
             try {
                 // not usual axis order, check if we can have a EPSG code
                 Integer code = CRS.lookupEpsgCode(crs, false);
@@ -1798,6 +1815,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                 MapProjection.resetWarnings();
             }
         }
+        FORCED_LON_LAT = null;
         defaultFactory = null;
         xyFactory = null;
         strictFactory = null;

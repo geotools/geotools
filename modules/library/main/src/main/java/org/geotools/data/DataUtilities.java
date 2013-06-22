@@ -198,6 +198,8 @@ public class DataUtilities {
     static Map<Class, String> typeEncode = new HashMap<Class, String>();
 
     static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    
+    static final boolean IS_WINDOWS_OS;
 
     static {
         typeEncode.put(String.class, "String");
@@ -254,6 +256,10 @@ public class DataUtilities {
 
         typeEncode.put(Date.class, "Date");
         typeMap.put("Date", Date.class);
+        
+        // check if we are running on windows
+        String os = System.getProperty("os.name");
+        IS_WINDOWS_OS = os.toUpperCase().contains("WINDOWS");
     }
     
     /**
@@ -344,9 +350,8 @@ public class DataUtilities {
 
         String simplePrefix = "file:/";
         String standardPrefix = "file://";
-        String os = System.getProperty("os.name");
 
-        if (os.toUpperCase().contains("WINDOWS") && string.startsWith(standardPrefix)) {
+        if (IS_WINDOWS_OS && string.startsWith(standardPrefix)) {
             // win32: host/share reference
             path3 = string.substring(standardPrefix.length() - 2);
         } else if (string.startsWith(standardPrefix)) {

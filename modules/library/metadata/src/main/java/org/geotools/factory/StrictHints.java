@@ -36,6 +36,13 @@ class StrictHints extends Hints {
     public StrictHints(final Hints hints) {
         super(hints);
     }
+    
+    /**
+     * Creates a set of strict hints which is a copy of the specified hints.
+     */
+    public StrictHints(final Map<RenderingHints.Key, Object> hints) {
+        super(hints);
+    }
 
     /**
      * An immutable set of empty hints.
@@ -45,7 +52,7 @@ class StrictHints extends Hints {
          * Creates an empty instance.
          */
         Empty() {
-            super(null);
+            super((Hints) null);
         }
 
         /**
@@ -77,7 +84,7 @@ class StrictHints extends Hints {
          */
         @Override
         public StrictHints clone() {
-            return new StrictHints(null);
+            return new StrictHints((Hints) null);
         }
     }
 }

@@ -479,8 +479,7 @@ public final class GeoTools {
      * @return {@code true} if at least one hint changed as a result of this scan,
      *         or {@code false} otherwise.
      */
-    static boolean scanForSystemHints(final Hints hints) {
-        assert Thread.holdsLock(hints);
+    static boolean scanForSystemHints(final Map<RenderingHints.Key, Object> hints) {
         boolean changed = false;
         synchronized (BINDINGS) {
             for (final Map.Entry<String, RenderingHints.Key> entry : BINDINGS.entrySet()) {

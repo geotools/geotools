@@ -24,15 +24,13 @@ import java.util.ListIterator;
 import java.util.Properties;
 import java.util.Stack;
 
-import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.StyleImpl;
 import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -223,7 +221,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
 
     private static boolean isGeotoolsLongitudeFirstAxisOrderForced() {
         return Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER) ||
-                GeoTools.getDefaultHints().get(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER) == Boolean.TRUE;
+                GeoTools.getDefaultHints().get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER) == Boolean.TRUE;
     }
     /**
      * Sets BBOX and SRS using the provided Envelope.

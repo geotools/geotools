@@ -91,6 +91,27 @@ public class WMSCoverageReaderTest {
         assertTrue(CRS.equalsIgnoreMetadata(wgs84, coverage.getCoordinateReferenceSystem()));
         assertEquals(worldEnvelope, new ReferencedEnvelope(coverage.getEnvelope()));
     }
+    
+    @Test
+    public void test4326wms13RequestFlippedStandardEPSG() throws Exception {
+        // reset the CRS system to its defaults
+        System.clearProperty("org.geotools.referencing.forceXY");
+        Hints.putSystemDefault(Hints.FORCE_AXIS_ORDER_HONORING, "");
+        CRS.reset("all");
+        
+        WMSCoverageReader reader = getReader4326wms13();
+
+        // build a getmap request and check it
+        CoordinateReferenceSystem wgs84 = CRS.decode("urn:ogc:def:crs:EPSG::4326", true);
+        ReferencedEnvelope worldEnvelope = new ReferencedEnvelope(-90, 90, -180, 180, wgs84);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 180, 90), worldEnvelope);
+        final Parameter<GridGeometry2D> ggParam = (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        ggParam.setValue(gg);
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { ggParam });
+        assertTrue(CRS.equalsIgnoreMetadata(wgs84, coverage.getCoordinateReferenceSystem()));
+        assertEquals(worldEnvelope, new ReferencedEnvelope(coverage.getEnvelope()));
+    }
 
     private WMSCoverageReader getReader4326wms13() throws IOException, ServiceException,
             MalformedURLException {

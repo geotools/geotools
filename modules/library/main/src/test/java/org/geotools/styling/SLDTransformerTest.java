@@ -928,7 +928,15 @@ public class SLDTransformerTest {
     @Test
     public void testLocalizedTitle() throws Exception {
         RuleImpl rule = new RuleImpl();
-        GrowableInternationalString intString = new GrowableInternationalString("title");
+        GrowableInternationalString intString = new GrowableInternationalString("title")
+        {
+
+            @Override
+            public String toString() {
+                return super.toString(null);
+            }
+            
+        };
         intString.add(Locale.ITALIAN, "titolo");
         intString.add(Locale.FRENCH, "titre");
         intString.add(Locale.CANADA_FRENCH, "titre");

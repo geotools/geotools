@@ -114,8 +114,6 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
 
-import com.sun.imageio.plugins.jpeg.JPEGImageWriterSpi;
-import com.sun.imageio.plugins.png.PNGImageWriter;
 import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
@@ -146,9 +144,6 @@ public class ImageWorker {
     /** CODEC_LIB_AVAILABLE */
     private static final boolean CODEC_LIB_AVAILABLE = PackageUtil.isCodecLibAvailable();
 
-    /** JDK_JPEG_IMAGE_WRITER_SPI */
-    private static final JPEGImageWriterSpi JDK_JPEG_IMAGE_WRITER_SPI = new JPEGImageWriterSpi();
-
     /** IMAGEIO_JPEG_IMAGE_WRITER_SPI */
     private static final CLibJPEGImageWriterSpi IMAGEIO_JPEG_IMAGE_WRITER_SPI = new CLibJPEGImageWriterSpi();
 
@@ -168,7 +163,7 @@ public class ImageWorker {
      * Workaround class for compressing PNG using the default
      * PNGImageEncoder shipped with the JDK.
      * <p>
-     * {@link PNGImageWriter} does not support
+     * {@link com.sun.imageio.plugins.png.PNGImageWriter} does not support
      * {@link ImageWriteParam#setCompressionMode(int)} set to
      * {@link ImageWriteParam#MODE_EXPLICIT}, it only allows
      * {@link ImageWriteParam#MODE_DEFAULT}.
@@ -2775,7 +2770,11 @@ public class ImageWorker {
         } 
         // in case we want the JDK one or in case the native one is not at hand we use the JDK one
         if(writer==null){
-            writer = JDK_JPEG_IMAGE_WRITER_SPI.createWriterInstance();
+            final Iterator<ImageWriter> jpegImageWriters = ImageIO.getImageWritersByFormatName("jpeg");
+            if (!jpegImageWriters.hasNext()) {
+                throw new IllegalStateException(Errors.format(ErrorKeys.NO_IMAGE_WRITER));
+            }
+            writer = jpegImageWriters.next();
         }
         
         // only imageio IO does JPEG-LS compression

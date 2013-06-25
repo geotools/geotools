@@ -52,16 +52,6 @@ public abstract class ArcGridBaseTestCase extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		ImageIO.setUseCache(false);
-		JAI.getDefaultInstance().getTileCache().setMemoryCapacity(
-				10 * 1024 * 1024);
-		JAI.getDefaultInstance().getTileCache().setMemoryThreshold(1.0f);
-
-		JAI.getDefaultInstance().getTileScheduler().setParallelism(50);
-		JAI.getDefaultInstance().getTileScheduler().setPrefetchParallelism(50);
-		JAI.getDefaultInstance().getTileScheduler().setPrefetchPriority(5);
-		JAI.getDefaultInstance().getTileScheduler().setPriority(5);
-
 		// check that it exisits
 		File file = TestData.copy(this, "arcgrid/arcgrid.zip");
 		assertTrue(file.exists());
@@ -97,7 +87,7 @@ public abstract class ArcGridBaseTestCase extends TestCase {
 
 	public void testAll() throws Exception {
 
-		final StringBuffer errors = new StringBuffer();
+		final StringBuilder errors = new StringBuilder();
 		final int length = testFiles.length;
 		for (int i = 0; i < length; i++) {
 

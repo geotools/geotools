@@ -45,6 +45,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.grassraster.core.GrassBinaryRasterReadHandler;
 import org.geotools.gce.grassraster.core.color.JGrassColorTable;
 import org.geotools.gce.grassraster.format.GrassCoverageFormat;
@@ -57,7 +58,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
@@ -84,7 +84,7 @@ import org.opengis.util.ProgressListener;
  *
  * @source $URL$
  */
-public class GrassCoverageReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
+public class GrassCoverageReader extends AbstractGridCoverage2DReader implements GridCoverage2DReader {
     private GrassBinaryImageReader imageReader = null;
 
     private String name;
@@ -122,6 +122,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
             File file = (File) input;
             imageReader = new GrassBinaryImageReader(new GrassBinaryImageReaderSpi());
             imageReader.setInput(input);
+            
             jgMapEnvironment = new JGrassMapEnvironment(file);
             name = file.getName();
             try {
@@ -131,9 +132,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
                 originalEnvelope = new GeneralEnvelope(new ReferencedEnvelope(env.getMinX(), env.getMaxX(), env.getMinY(),
                         env.getMaxY(), crs));
                 originalGridRange = new GridEnvelope2D(0, 0, fileRegion.getCols(), fileRegion.getRows());
-                
             } catch (Exception e) {
-                e.printStackTrace();
                 throw new RuntimeException(e);
             }
         } else {

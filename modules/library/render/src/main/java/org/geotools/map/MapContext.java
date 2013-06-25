@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -36,7 +36,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.feature.type.FeatureType;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
@@ -279,7 +278,7 @@ public class MapContext extends MapContent {
      *            an AbstractGridCoverage2DReader with the new layer that will be added.
      * 
      */
-    public void addLayer(AbstractGridCoverage2DReader reader, Style style) {
+    public void addLayer(GridCoverage2DReader reader, Style style) {
         if (style == null) {
             throw new IllegalArgumentException("style cannot be null");
         }

@@ -20,9 +20,6 @@ package org.geotools.gce.gtopo30;
 import java.io.File;
 import java.net.URL;
 
-import javax.media.jai.JAI;
-import javax.media.jai.TileCache;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.test.TestData;
@@ -60,10 +57,6 @@ public class GT30ZipWriterTest extends GT30TestBase {
 		final AbstractGridFormat format = (AbstractGridFormat) new GTopo30FormatFactory()
 				.createFormat();
 
-		final TileCache defaultInstance = JAI.getDefaultInstance()
-				.getTileCache();
-		defaultInstance.setMemoryCapacity(1024 * 1024 * 64);
-		defaultInstance.setMemoryThreshold(1.0f);
 
 		final GTopo30WriteParams wp = new GTopo30WriteParams();
 		wp.setCompressionMode(GTopo30WriteParams.MODE_EXPLICIT);

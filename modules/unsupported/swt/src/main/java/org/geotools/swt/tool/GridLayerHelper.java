@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -70,8 +70,8 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
 
         GridCoverage2D cov = null;
         try {
-            if (AbstractGridCoverage2DReader.class.isAssignableFrom(rasterSource.getClass())) {
-                cov = ((AbstractGridCoverage2DReader) rasterSource).read(null);
+            if (GridCoverage2DReader.class.isAssignableFrom(rasterSource.getClass())) {
+                cov = ((GridCoverage2DReader) rasterSource).read(null);
             } else {
                 cov = (GridCoverage2D) rasterSource;
             }

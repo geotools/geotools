@@ -154,6 +154,7 @@ public final class JP2KTest extends BaseJP2K {
         final ParameterValue<Boolean> useJAI = JP2KFormat.USE_JAI_IMAGEREAD.createValue();
         useJAI.setValue(false);
         final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
+        checkReader(reader);
         gg.setValue(new GridGeometry2D(reader.getOriginalGridRange(), oldEnvelope));
         GridCoverage2D gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] { gg, useJAI});
         assertNotNull(gc);
@@ -173,15 +174,4 @@ public final class JP2KTest extends BaseJP2K {
         forceDataLoading(gc);
     }
     
-    @Before
-	public void setUp() throws Exception {
-	    ImageIO.setUseCache(false);
-	    JAI.getDefaultInstance().getTileCache().setMemoryCapacity(
-	            10 * 1024 * 1024);
-	    JAI.getDefaultInstance().getTileCache().setMemoryThreshold(1.0f);
-	    JAI.getDefaultInstance().getTileScheduler().setParallelism(2);
-	    JAI.getDefaultInstance().getTileScheduler().setPrefetchParallelism(2);
-	    JAI.getDefaultInstance().getTileScheduler().setPrefetchPriority(5);
-	    JAI.getDefaultInstance().getTileScheduler().setPriority(5);
-	}
 }

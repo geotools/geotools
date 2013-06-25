@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import javax.media.jai.ImageLayout;
 import javax.media.jai.RenderedOp;
 
 import junit.framework.TestSuite;
@@ -319,6 +320,20 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
 		
 		// get a reader
 		final WorldImageReader wiReader = new WorldImageReader(source);
+		
+                // layout checks
+                final ImageLayout layout = wiReader.getImageLayout();
+                assertNotNull(layout);
+                assertNotNull(layout.getColorModel(null));
+                assertNotNull(layout.getSampleModel(null));
+                assertEquals(0,layout.getMinX(null));
+                assertEquals(0,layout.getMinY(null));
+                assertTrue(layout.getWidth(null) > 0);
+                assertTrue(layout.getHeight(null) > 0);
+                assertEquals(0,layout.getTileGridXOffset(null));
+                assertEquals(0,layout.getTileGridYOffset(null));
+                assertTrue(layout.getTileHeight(null) > 0);
+                assertTrue(layout.getTileWidth(null) > 0);
 
 		// get the coverage
 		final GridCoverage2D coverage = (GridCoverage2D) wiReader.read(null);

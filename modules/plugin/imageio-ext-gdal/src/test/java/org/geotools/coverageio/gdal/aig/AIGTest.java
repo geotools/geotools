@@ -94,6 +94,8 @@ public final class AIGTest extends GDALTestCase {
         final URL url = file.toURI().toURL();
         final Object source = url;
         final BaseGDALGridCoverage2DReader reader = new AIGReader(source, hints);
+        checkReader(reader);
+        
         // Testing the getSource method
         Assert.assertEquals(reader.getSource(), source);
 

@@ -76,6 +76,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
@@ -97,7 +98,6 @@ import org.geotools.util.NumberRange;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -119,7 +119,7 @@ import org.opengis.referencing.operation.TransformException;
  * @since 2.1
  *
  */
-public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
+public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridCoverage2DReader {
 
 	/** Logger for the {@link GeoTiffReader} class. */
 	private Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffReader.class.toString());
@@ -315,6 +315,11 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             if (metadata.hasNoData()){
                 noData = metadata.getNoData();
             }
+            
+            // 
+            // parse and set layout
+            // 
+            setLayout(reader);
             
             // //
             //

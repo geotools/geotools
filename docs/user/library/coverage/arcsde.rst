@@ -37,7 +37,7 @@ And a code example::
   
   String connUrl = "sde://scott:tiger@localhost:5151/gis#SDE.MY_RASTER_TABLE";
   Format gridFormat = GridFormatFinder.findFormat(connUrl);
-  AbstractGridCoverage2DReader reader = format.getReader(connUrl);
+  GridCoverage2DReader reader = format.getReader(connUrl);
   ...
 
 Implementation Notes

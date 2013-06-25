@@ -70,6 +70,7 @@ public final class RasterLayerRequesTest extends BaseJP2K {
         }
         
         final JP2KReader reader = new JP2KReader(file);
+        checkReader(reader);
         final GeneralEnvelope envelope = reader.getOriginalEnvelope();
         final RasterManager manager = new RasterManager(reader);
         final ParameterValue<GridGeometry2D> gg = JP2KFormat.READ_GRIDGEOMETRY2D.createValue();

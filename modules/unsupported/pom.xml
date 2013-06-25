@@ -158,7 +158,12 @@
        </activation>
        <modules>
          <module>transform</module>
-
+       </modules>
+     </profile>
+     <profile>
+       <id>coveragex</id>
+       <modules>
+         <module>coverage-experiment</module>
        </modules>
      </profile>
      <profile>

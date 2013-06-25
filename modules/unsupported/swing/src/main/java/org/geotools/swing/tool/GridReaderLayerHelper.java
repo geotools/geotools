@@ -22,8 +22,8 @@ import java.lang.ref.WeakReference;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.map.Layer;
@@ -50,7 +50,7 @@ import org.opengis.referencing.operation.MathTransform;
 public class GridReaderLayerHelper extends InfoToolHelper {
 
     private static final int CACHED_RASTER_WIDTH = 20;
-    private WeakReference<AbstractGridCoverage2DReader> sourceRef;
+    private WeakReference<GridCoverage2DReader> sourceRef;
     private GridCoverage2D cachedCoverage;
 
     public GridReaderLayerHelper() {
@@ -68,7 +68,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         }
 
         super.setLayer(layer);
-        sourceRef = new WeakReference<AbstractGridCoverage2DReader>(
+        sourceRef = new WeakReference<GridCoverage2DReader>(
                 ((GridReaderLayer) layer).getReader());
     }
     
@@ -116,12 +116,12 @@ public class GridReaderLayerHelper extends InfoToolHelper {
             return false;
         }
 
-        final AbstractGridCoverage2DReader reader = sourceRef.get();
+        final GridCoverage2DReader reader = sourceRef.get();
         GeneralParameterValue parameter = new Parameter(
                 AbstractGridFormat.READ_GRIDGEOMETRY2D,
                 new GridGeometry2D(new GridEnvelope2D(queryRect),
                 reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
-                reader.getCrs()));
+                reader.getCoordinateReferenceSystem()));
         
         try {
             cachedCoverage = (GridCoverage2D) reader.read(new GeneralParameterValue[]{parameter});
@@ -133,7 +133,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
     }
 
     private Rectangle createQueryGridEnvelope(DirectPosition pos) {
-        final AbstractGridCoverage2DReader reader = sourceRef.get();
+        final GridCoverage2DReader reader = sourceRef.get();
         try {
             MathTransform worldToGridTransform =
                     reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER).inverse();

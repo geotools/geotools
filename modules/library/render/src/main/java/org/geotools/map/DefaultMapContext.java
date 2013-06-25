@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.memory.CollectionSource;
 import org.geotools.feature.FeatureCollection;
@@ -280,7 +280,7 @@ public class DefaultMapContext extends MapContext {
      * @param style
      *            a Style to be used when rendering the new layer
      */
-    public void addLayer(AbstractGridCoverage2DReader reader, Style style) {
+    public void addLayer(GridCoverage2DReader reader, Style style) {
         if (style == null) {
             throw new IllegalArgumentException("Style cannot be null");
         }

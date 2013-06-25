@@ -50,6 +50,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
@@ -61,9 +62,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.image.ImageUtilities;
 import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
@@ -90,7 +89,7 @@ import org.opengis.referencing.operation.TransformException;
  * @source $URL$
  */
 public final class WorldImageReader extends AbstractGridCoverage2DReader
-		implements GridCoverageReader {
+		implements GridCoverage2DReader {
 
 	/** Logger. */
 	private Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.gce.image");
@@ -295,6 +294,11 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
 		final ImageReader reader = (ImageReader) it.next();
 		readerSPI = reader.getOriginatingProvider();
 		reader.setInput(inStream);
+		
+		//
+                // parse and set layout
+		//
+                setLayout(reader);
 
 		// //
 		//

@@ -19,9 +19,12 @@ package org.geotools.gce.arcgrid;
 
 import java.awt.image.Raster;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
+
+import javax.media.jai.ImageLayout;
 
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -44,7 +47,6 @@ import org.opengis.parameter.ParameterValueGroup;
  *
  * @source $URL$
  */
-@SuppressWarnings("deprecation")
 public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
 	private final Random generator = new Random();
 
@@ -305,6 +307,32 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
 
 	public static final void main(String[] args) throws Exception {
 		junit.textui.TestRunner.run(ArcGridReadWriteTest.class);
+	}
+	
+	public void testImageLayout() throws Exception{
+	    // test ImageLayout
+            LOGGER.info("testImageLayout");
+            final File testFile = TestData.file(this, "arcgrid/precip30min.asc");
+            final ArcGridFormat af = new ArcGridFormat();
+            assertTrue("Unable to get an a reader for a file", af.accepts(testFile));
+            final ArcGridReader reader = af.getReader(testFile);
+            assertNotNull("Unable to get a reader for a file", reader);
+
+            // getting imagelayout
+            final ImageLayout layout1 = reader.getImageLayout();
+            assertNotNull("Unable to get a layout for this reader", layout1);
+            assertEquals(0, layout1.getMinX(null));
+            assertEquals(0, layout1.getMinY(null));
+            assertEquals(720, layout1.getWidth(null));
+            assertEquals(360, layout1.getHeight(null));
+            assertEquals(0, layout1.getTileGridXOffset(null));
+            assertEquals(0, layout1.getTileGridYOffset(null));
+            assertEquals(720, layout1.getTileWidth(null));
+            assertEquals(360, layout1.getTileHeight(null));  
+            
+            // make sure we get the same one with the name
+            assertEquals(layout1, reader.getImageLayout(reader.getGridCoverageNames()[0]));
+            
 	}
 
 }

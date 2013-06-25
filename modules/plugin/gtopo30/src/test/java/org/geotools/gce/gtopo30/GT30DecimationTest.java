@@ -20,10 +20,7 @@ package org.geotools.gce.gtopo30;
 import java.awt.Rectangle;
 import java.net.URL;
 
-import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
-import javax.media.jai.RecyclingTileFactory;
-import javax.media.jai.TileCache;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -62,29 +59,12 @@ public class GT30DecimationTest extends GT30TestBase {
 	 * 
 	 * @throws Exception
 	 */
-	@SuppressWarnings("deprecation")
 	public void test() throws Exception {
 
 		URL statURL = TestData.url(this, (new StringBuffer(this.fileName)
 				.append(".DEM").toString()));
 		AbstractGridFormat format = (AbstractGridFormat) new GTopo30FormatFactory()
 				.createFormat();
-
-		// using a big tile cache
-		final JAI jaiDef = JAI.getDefaultInstance();
-		final TileCache cache = jaiDef.getTileCache();
-		cache.setMemoryCapacity(64 * 1024 * 1024);
-		cache.setMemoryThreshold(1.0f);
-		// final TCTool tool= new TCTool();
-
-		// setting JAI wide hints
-		jaiDef.setRenderingHint(JAI.KEY_CACHED_TILE_RECYCLING_ENABLED,
-				Boolean.TRUE);
-
-		// tile factory and recycler
-		final RecyclingTileFactory recyclingFactory = new RecyclingTileFactory();
-		jaiDef.setRenderingHint(JAI.KEY_TILE_FACTORY, recyclingFactory);
-		jaiDef.setRenderingHint(JAI.KEY_TILE_RECYCLER, recyclingFactory);
 
 		if (format.accepts(statURL)) {
 

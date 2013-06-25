@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
@@ -301,7 +301,7 @@ public class Utils {
      *
      * @return a new Style object containing a raster symbolizer set up for RGB image
      */
-    public static Style createRGBStyle( AbstractGridCoverage2DReader reader ) {
+    public static Style createRGBStyle( GridCoverage2DReader reader ) {
         GridCoverage2D cov = null;
         try {
             cov = reader.read(null);

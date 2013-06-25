@@ -20,20 +20,16 @@ import java.util.Collection;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
-import org.geotools.data.DataUtilities;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.memory.CollectionSource;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapLayerListener;
 import org.geotools.styling.Style;
 import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.operation.TransformException;
 
@@ -181,7 +177,7 @@ public class MapLayer {
      * @throws FactoryRegistryException
      * @throws TransformException
      */
-    public MapLayer(AbstractGridCoverage2DReader reader, Style style, String title,
+    public MapLayer(GridCoverage2DReader reader, Style style, String title,
             GeneralParameterValue[] params) throws TransformException, FactoryRegistryException,
             SchemaException {
         internal = new GridReaderLayer(reader, style, title, params);
@@ -199,7 +195,7 @@ public class MapLayer {
      * @throws FactoryRegistryException
      * @throws TransformException
      */
-    public MapLayer(AbstractGridCoverage2DReader reader, Style style, String title) {
+    public MapLayer(GridCoverage2DReader reader, Style style, String title) {
         internal = new GridReaderLayer(reader, style, title);
     }
 
@@ -214,7 +210,7 @@ public class MapLayer {
      * @throws FactoryRegistryException
      * @throws TransformException
      */
-    public MapLayer(AbstractGridCoverage2DReader reader, Style style) {
+    public MapLayer(GridCoverage2DReader reader, Style style) {
         internal = new GridReaderLayer(reader, style);
     }
 

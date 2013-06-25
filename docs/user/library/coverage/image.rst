@@ -28,7 +28,7 @@ raster images with an associated world file.::
   File file = new File("test.jpg");
   
   AbstractGridFormat format = GridFormatFinder.findFormat( file );
-  AbstractGridCoverage2DReader reader = format.getReader( file );
+  GridCoverage2DReader reader = format.getReader( file );
 
 World files have the same name as the image (different file extension) and contain just
 enough information to convert pixel coordinates to real world coordinates. They do not

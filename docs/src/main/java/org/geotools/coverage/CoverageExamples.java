@@ -6,8 +6,8 @@ import java.io.File;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -29,7 +29,7 @@ void exampleGridFormat() throws Exception {
     File file = new File("test.tiff");
     
     AbstractGridFormat format = GridFormatFinder.findFormat(file);
-    AbstractGridCoverage2DReader reader = format.getReader(file);
+    GridCoverage2DReader reader = format.getReader(file);
     
     GridCoverage2D coverage = reader.read(null);
     // exampleGridFormat end
@@ -51,7 +51,7 @@ void exampleGridCoverageFactory() throws Exception {
 void exampleGridCoverageUsing() throws Exception {
     File file = new File("test.tiff");
     AbstractGridFormat format = GridFormatFinder.findFormat(file);
-    AbstractGridCoverage2DReader reader = format.getReader(file);
+    GridCoverage2DReader reader = format.getReader(file);
     // exampleGridCoverageUsing start
     GridCoverage2D coverage = reader.read(null);
     
@@ -68,7 +68,7 @@ void exampleGridCoverageDirect() throws Exception {
     
     File file = new File("test.tiff");
     AbstractGridFormat format = GridFormatFinder.findFormat(file);
-    AbstractGridCoverage2DReader reader = format.getReader(file);
+    GridCoverage2DReader reader = format.getReader(file);
     // exampleGridCoverageDirect start
     GridCoverage2D coverage = reader.read(null);
     

@@ -30,6 +30,7 @@ import javax.imageio.spi.ImageReaderSpi;
 
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverageio.BaseGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
@@ -37,7 +38,6 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
@@ -56,7 +56,7 @@ import org.opengis.referencing.operation.TransformException;
  * @source $URL$
  */
 public abstract class BaseGDALGridCoverage2DReader extends
-        BaseGridCoverage2DReader implements GridCoverageReader {
+        BaseGridCoverage2DReader implements GridCoverage2DReader {
 
     protected final static String DEFAULT_WORLDFILE_EXT = ".wld";
     

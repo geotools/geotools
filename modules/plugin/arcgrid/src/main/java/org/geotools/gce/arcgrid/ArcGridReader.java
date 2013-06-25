@@ -19,7 +19,6 @@ package org.geotools.gce.arcgrid;
 
 import it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageMetadata;
 import it.geosolutions.imageio.plugins.arcgrid.spi.AsciiGridsImageReaderSpi;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -60,6 +59,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
@@ -69,12 +69,10 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
@@ -99,7 +97,7 @@ import com.vividsolutions.jts.io.InStream;
  * @source $URL$
  */
 public final class ArcGridReader extends AbstractGridCoverage2DReader implements
-		GridCoverageReader {
+		GridCoverage2DReader {
 	/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.gce.arcgrid");
 
@@ -109,7 +107,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 	/** No data value for this dataset. */
 	private double inNoData = Double.NaN;
 
-	/**
+    /**
 	 * Creates a new instance of an ArcGridReader basing the decision on whether
 	 * the file is compressed or not. I assume nothing about file extension.
 	 * 
@@ -135,19 +133,15 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 	public ArcGridReader(Object input, final Hints hints)
 			throws DataSourceException {
 	    super(input,hints);
-		// /////////////////////////////////////////////////////////////////////
 		//
 		// Checking input
 		//
-		// /////////////////////////////////////////////////////////////////////
 		coverageName = "AsciiGrid";
 		try {
 
-			// /////////////////////////////////////////////////////////////////////
 			//
 			// Source management
 			//
-			// /////////////////////////////////////////////////////////////////////
 			checkSource(input,hints);
 
 			//
@@ -157,14 +151,13 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 		        if (tempCRS != null) {
 		            this.crs=(CoordinateReferenceSystem) tempCRS;
 		            LOGGER.log(Level.WARNING,"Using default coordinate reference system ");
-		        } else			
-		            getCoordinateReferenceSystem();
+		        } else {	     
+		            initCoordinateReferenceSystem();
+		        }
 
-			// /////////////////////////////////////////////////////////////////////
 			//
 			// Reader and metadata
 			//
-			// /////////////////////////////////////////////////////////////////////
 			// //
 			//
 			// Getting a reader for this format
@@ -173,43 +166,25 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 			final ImageReader reader = readerSPI.createReaderInstance();
 			reader.setInput(inStream);
 
-			// //
-			//
-			// Getting metadata
-			//
-			// //
-			final Object metadata = reader.getImageMetadata(0);
-			if (!(metadata instanceof AsciiGridsImageMetadata))
-				throw new DataSourceException(
-						"Unexpected error! Metadata are not of the expected class.");
-			// casting the metadata
-			final AsciiGridsImageMetadata gridMetadata = (AsciiGridsImageMetadata) metadata;
 
-			// /////////////////////////////////////////////////////////////////////
 			//
 			// Envelope and other metadata
 			//
-			// /////////////////////////////////////////////////////////////////////
-			parseMetadata(gridMetadata);
+			parseMetadata(reader);
 
-			// /////////////////////////////////////////////////////////////////////
 			//
 			// Informations about multiple levels and such
 			//
-			// /////////////////////////////////////////////////////////////////////
 			getResolutionInfo(reader);
 
 			// release the stream if we can.
 			finalStreamPreparation();
-		} catch (IOException e) {
-			if (LOGGER.isLoggable(Level.SEVERE))
-				LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		} catch (Exception e) {
+			if (LOGGER.isLoggable(Level.SEVERE)){
+			    LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			}
 			throw new DataSourceException(e);
-		} catch (TransformException e) {
-			if (LOGGER.isLoggable(Level.SEVERE))
-				LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			throw new DataSourceException(e);
-		}
+		} 
 
 	}
 
@@ -579,14 +554,29 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 	 * definition of the crs. It assumes that X coordinate on the ascii grid
 	 * itself maps to longitude and y coordinate maps to latitude.
 	 * 
-	 * @param gridMetadata
-	 *            The {@link AsciiGridsImageMetadata} to parse.
+	 * @param reader
+	 *            The {@link ImageReader} to parse.
 	 * 
 	 * @throws MismatchedDimensionException
 	 */
-	private void parseMetadata(AsciiGridsImageMetadata gridMetadata)
-			throws MismatchedDimensionException {
+	private void parseMetadata(ImageReader reader)
+			throws Exception {
 
+	        // parse and set layout
+	        setLayout(reader);
+	        
+                //
+                // Getting metadata
+                //
+                final Object metadata = reader.getImageMetadata(0);
+                if (!(metadata instanceof AsciiGridsImageMetadata)){
+                        throw new DataSourceException(
+                                        "Unexpected error! Metadata are not of the expected class.");
+                }
+            
+                // casting the metadata
+                final AsciiGridsImageMetadata gridMetadata = (AsciiGridsImageMetadata) metadata;
+                
 		// getting metadata
 		final Node root = gridMetadata
 				.getAsTree("it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageMetadata_1.0");
@@ -594,8 +584,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 		// getting Grid Properties
 		Node child = root.getFirstChild();
 		NamedNodeMap attributes = child.getAttributes();
-		final boolean grass = attributes.getNamedItem("GRASS").getNodeValue()
-				.equalsIgnoreCase("True");
+		final boolean grass = attributes.getNamedItem("GRASS").getNodeValue().equalsIgnoreCase("True");
 
 		// getting Grid Properties
 		child = child.getNextSibling();
@@ -604,8 +593,9 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 		final int hrHeight = Integer.parseInt(attributes.getNamedItem("nRows").getNodeValue());
 		originalGridRange = new GridEnvelope2D(new Rectangle(0, 0, hrWidth,hrHeight));
 		final boolean pixelIsArea = AsciiGridsImageMetadata.RasterSpaceType.valueOf(attributes.getNamedItem("rasterSpaceType").getNodeValue()).equals(AsciiGridsImageMetadata.RasterSpaceType.PixelIsArea);
-		if (!grass)
-			inNoData = Double.parseDouble(attributes.getNamedItem("noDataValue").getNodeValue());
+		if (!grass) {
+		    inNoData = Double.parseDouble(attributes.getNamedItem("noDataValue").getNodeValue());
+		}
 
 		// getting Envelope Properties
 		child = child.getNextSibling();
@@ -619,12 +609,10 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 		double yll = Double.parseDouble(attributes.getNamedItem("yll")
 				.getNodeValue());
 
-		// /////////////////////////////////////////////////////////////////////
 		//
 		// OGC specifications says that PixelIsArea map a pixel to the corner
 		// of the grid while PixelIsPoint map a pixel to the centre of the grid.
 		//
-		// /////////////////////////////////////////////////////////////////////
 		if (!pixelIsArea) {
 			final double correctionX = cellsizeX / 2d;
 			final double correctionY = cellsizeY / 2d;
@@ -641,7 +629,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 
 	}
 
-	/**
+    /**
 	 * Gets the coordinate system that will be associated to the
 	 * {@link GridCoverage}. The WGS84 coordinate system is used by default. It
 	 * is worth to point out that when reading from a stream which is not
@@ -655,7 +643,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
-	private void getCoordinateReferenceSystem() throws FileNotFoundException,
+	private void initCoordinateReferenceSystem() throws FileNotFoundException,
 			IOException {
 
 		// check to see if there is a projection file

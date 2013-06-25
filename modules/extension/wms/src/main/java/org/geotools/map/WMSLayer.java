@@ -199,7 +199,7 @@ public class WMSLayer extends GridReaderLayer {
      * @return
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-        return reader.getCrs();
+        return reader.getCoordinateReferenceSystem();
     }
 
     /**

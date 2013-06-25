@@ -59,6 +59,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
@@ -74,7 +75,6 @@ import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
 import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -100,8 +100,7 @@ import com.sun.media.imageioimpl.plugins.raw.RawImageReaderSpi;
  *
  * @source $URL$
  */
-public final class GTopo30Reader extends AbstractGridCoverage2DReader implements
-		GridCoverageReader {
+public final class GTopo30Reader extends AbstractGridCoverage2DReader implements GridCoverage2DReader {
 
 	/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.gce.gtopo30");
@@ -278,6 +277,23 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader implements
 		highestRes = getResolution(originalEnvelope, new Rectangle(0, 0, header.getNCols(), header.getNRows()), crs);
 		numOverviews = 0;
 		overViewResolutions = null;
+		
+		//
+		// ImageLayout
+		// 
+                // Prepare temporary colorModel and sample model, needed to build the
+                // RawImageInputStream
+                final ColorModel cm = new ComponentColorModel(ColorSpace
+                                .getInstance(ColorSpace.CS_GRAY), false, false,
+                                Transparency.OPAQUE, DataBuffer.TYPE_SHORT);
+                // building the final image layout
+                final Dimension tileSize = ImageUtilities.toTileSize(new Dimension(originalGridRange.getSpan(0), originalGridRange.getSpan(1)));
+                final SampleModel sm = cm .createCompatibleSampleModel(tileSize.width, tileSize.height);                
+
+                ImageLayout il = new ImageLayout(0, 0, originalGridRange.getSpan(0),originalGridRange.getSpan(1));
+                il.setTileGridXOffset(0).setTileGridYOffset(0).setTileWidth(tileSize.width).setTileHeight(tileSize.height);
+                il.setColorModel(cm).setSampleModel(sm);
+                setlayout(il);
 	}
 
 	/**
@@ -438,26 +454,24 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader implements
 			iis.setByteOrder(ByteOrder.LITTLE_ENDIAN);
 		}
 
-		// Prepare temporaray colorModel and sample model, needed to build the
+		// Prepare temporary colorModel and sample model, needed to build the
 		// RawImageInputStream
-		final ColorModel cm = new ComponentColorModel(ColorSpace
-				.getInstance(ColorSpace.CS_GRAY), false, false,
-				Transparency.OPAQUE, DataBuffer.TYPE_SHORT);
-		final SampleModel sm = cm
-				.createCompatibleSampleModel(hrWidth, hrHeight);
-		final ImageTypeSpecifier its = new ImageTypeSpecifier(cm, sm);
+		final ImageLayout layout = getImageLayout();
+		final ImageTypeSpecifier its = new ImageTypeSpecifier(layout.getColorModel(null), layout.getSampleModel(null));
+		
 		// Finally, build the image input stream
 		final RawImageInputStream raw = new RawImageInputStream(iis, its,
 				new long[] { 0 }, new Dimension[] { new Dimension(hrWidth,
 						hrHeight) });
 
 		// building the final image layout
-		final Dimension tileSize = ImageUtilities.toTileSize(new Dimension(
-				hrWidth, hrHeight));
 		final ImageLayout il = new ImageLayout(0, 0, hrWidth
 				/ readP.getSourceXSubsampling(), hrHeight
-				/ readP.getSourceYSubsampling(), 0, 0, (int) tileSize
-				.getWidth(), (int) tileSize.getHeight(), sm, cm);
+				/ readP.getSourceYSubsampling(), 0, 0, 
+				layout.getTileWidth(null), 
+				layout.getTileHeight(null), 
+				layout.getSampleModel(null), 
+				layout.getColorModel(null));
 
 		// First operator: read the image
 		final RenderingHints hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT,

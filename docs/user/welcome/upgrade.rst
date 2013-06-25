@@ -26,6 +26,26 @@ But first to upgrade - change your dependency to |release| (or an appropriate st
         ....
     </dependencies>
 
+GeoTools 10.0
+-------------
+
+.. sidebar:: Wiki
+
+   * `GeoTools 10.0 <http://docs.codehaus.org/display/GEOTOOLS/10.x>`_
+
+   For background details on any API changes review the change proposals above.
+
+GeoTools 10 add significant improvements in the coverage reading API.
+For those migrating the first visible benefit is that referring to a generic grid coverage reader does not require anymore to use AbstractGridCoverage2DReader (an abstract class) but tto the new GridCoverage2DReader interface. The old usage is still supported though, as most readers are still extending the same base class, but the usage of the interface allows for reader wrappers.
+
+BEFORE::
+
+  AbstractGridCoverage2DReader reader = format.getReader(source);
+  
+AFTER::
+ 
+  GridCoverage2DReader reader = format.getReader(source);
+
 GeoTools 9.0
 ------------
 

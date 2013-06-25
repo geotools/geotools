@@ -19,6 +19,7 @@ package org.geotools.map;
 import java.util.Collection;
 
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.memory.CollectionSource;
 import org.geotools.factory.FactoryRegistryException;
@@ -155,7 +156,7 @@ public class DefaultMapLayer extends MapLayer {
      * @throws FactoryRegistryException
      * @throws TransformException
      */
-    public DefaultMapLayer(AbstractGridCoverage2DReader reader, Style style, String title,
+    public DefaultMapLayer(GridCoverage2DReader reader, Style style, String title,
             GeneralParameterValue[] params) throws TransformException, FactoryRegistryException,
             SchemaException {
         super( reader, style, title, params );
@@ -173,7 +174,7 @@ public class DefaultMapLayer extends MapLayer {
      * @throws FactoryRegistryException
      * @throws TransformException
      */
-    public DefaultMapLayer(AbstractGridCoverage2DReader reader, Style style, String title) {
+    public DefaultMapLayer(GridCoverage2DReader reader, Style style, String title) {
         super( reader, style, title );
     }
 
@@ -188,7 +189,7 @@ public class DefaultMapLayer extends MapLayer {
      * @throws FactoryRegistryException
      * @throws TransformException
      */
-    public DefaultMapLayer(AbstractGridCoverage2DReader reader, Style style) {
+    public DefaultMapLayer(GridCoverage2DReader reader, Style style) {
         super( reader, style );
     }
 

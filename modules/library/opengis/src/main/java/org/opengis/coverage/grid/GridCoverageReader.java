@@ -18,7 +18,7 @@ import org.opengis.parameter.InvalidParameterValueException;
 
 
 /**
- * Support for reading grid coverages out of a persisten store. 
+ * Support for reading grid coverages out of a persistent store. 
  *
  * @author  Martin Desruisseaux (IRD)
  * @author Daniele Romagnoli, GeoSolutions SAS

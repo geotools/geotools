@@ -48,6 +48,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
 import org.geotools.data.DataSourceException;
@@ -62,7 +63,6 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
@@ -82,7 +82,7 @@ import org.opengis.referencing.operation.TransformException;
  * @source $URL$
  */
 public final class JP2KReader extends AbstractGridCoverage2DReader implements
-        GridCoverageReader {
+        GridCoverage2DReader {
 
 	/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JP2KReader.class);
@@ -476,6 +476,14 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
         if (reader == null)
             throw new DataSourceException("No reader found for that source " + sourceURL);
         reader.setInput(stream);
+        
+
+        // //
+        //
+        // ImageLayout
+        //
+        // //
+        setLayout(reader);
 
         coverageName = inputFile.getName();
 

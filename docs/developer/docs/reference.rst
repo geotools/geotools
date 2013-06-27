@@ -101,7 +101,7 @@ Each module is required to have one page of documetnation (preferably with a cod
                 File f = new File("ArcGrid.asc");
                 // Reading the coverage through a file
                 AbstractGridFormat format = GridFormatFinder.findFormat( f );
-                AbstractGridCoverage2DReader reader = format.getReader(f);
+                GridCoverage2DReader reader = format.getReader(f);
                 
                 GridCoverage2D gc = reader.read(null);
       

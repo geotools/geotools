@@ -30,8 +30,8 @@ import org.apache.commons.cli2.Option;
 import org.apache.commons.cli2.validation.InvalidArgumentException;
 import org.apache.commons.cli2.validation.Validator;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.UnknownFormat;
@@ -302,8 +302,8 @@ public class CoverageTiler extends BaseArgumentsManager implements
 			return;
 		}
 		// get a reader for this file
-		final AbstractGridCoverage2DReader inReader = 
-			(AbstractGridCoverage2DReader) format.getReader(inputLocation, new Hints(Hints.OVERVIEW_POLICY, OverviewPolicy.IGNORE));
+		final GridCoverage2DReader inReader = 
+			(GridCoverage2DReader) format.getReader(inputLocation, new Hints(Hints.OVERVIEW_POLICY, OverviewPolicy.IGNORE));
 		if (inReader == null) {
 			message = new StringBuilder(
 					"Unable to instantiate a reader for this coverage");

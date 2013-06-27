@@ -45,7 +45,7 @@ You can use GeoTiff files directly using GridFormatFinder::
   File file = new File("test.tiff");
   
   AbstractGridFormat format = GridFormatFinder.findFormat( file );
-  AbstractGridCoverage2DReader reader = format.getReader( file );
+  GridCoverage2DReader reader = format.getReader( file );
 
 You can also use GeoTiffReader directly::
   

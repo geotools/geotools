@@ -62,6 +62,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.ServiceInfo;
@@ -96,7 +97,7 @@ import org.opengis.referencing.operation.TransformException;
  *         /geotools/arcsde/gce/ArcSDEGridCoverage2DReaderJAI.java $
  */
 @SuppressWarnings("nls")
-public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DReader {
+public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DReader implements GridCoverage2DReader{
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
 

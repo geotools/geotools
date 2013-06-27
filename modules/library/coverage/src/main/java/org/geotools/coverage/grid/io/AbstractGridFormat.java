@@ -192,6 +192,12 @@ public abstract class AbstractGridFormat implements Format {
     public static final ParameterDescriptor<Color> BACKGROUND_COLOR = new DefaultParameterDescriptor<Color>(
                 "BackgroundColor", Color.class, null, null);
 
+    /** Optional Time value for this mosaic. */
+    public static final ParameterDescriptor<List> TIME = DefaultParameterDescriptor.create("TIME", "A list of time objects", List.class, null, false);
+
+    /** Optional Elevation value for this mosaic. */
+    public static final ParameterDescriptor<List> ELEVATION = DefaultParameterDescriptor.create("ELEVATION", "An elevation value", List.class, null, false);
+
         /**
 	 * @see org.opengis.coverage.grid.Format#getName()
 	 */

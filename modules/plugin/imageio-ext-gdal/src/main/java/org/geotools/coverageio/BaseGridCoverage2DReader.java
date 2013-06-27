@@ -39,6 +39,7 @@ import javax.media.jai.JAI;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultResourceInfo;
@@ -54,7 +55,6 @@ import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
@@ -72,7 +72,7 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @source $URL$
  */
-public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
+public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DReader implements GridCoverage2DReader {
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal");
@@ -171,6 +171,14 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
             reader = readerSPI.createReaderInstance();
             reader.setInput(inputFile);
             setCoverageProperties(reader);
+            
+
+            // //
+            //
+            // ImageLayout
+            //
+            // //
+            setLayout(reader);
 
             // //
             //

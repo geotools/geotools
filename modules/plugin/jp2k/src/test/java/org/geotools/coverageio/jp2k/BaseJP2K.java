@@ -16,15 +16,17 @@
  */
 package org.geotools.coverageio.jp2k;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
+import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.widget.ScrollingImagePanel;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverageio.jp2k.JP2KFormatFactory;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 
@@ -77,5 +79,29 @@ public class BaseJP2K extends Assert{
         }
 
         return available;
+    }
+    
+    /**
+     * @param reader
+     * @throws IOException 
+     */
+    protected void checkReader(GridCoverage2DReader reader) throws IOException {
+        Assert.assertNotNull(reader);
+        
+
+        // layout checks
+        final ImageLayout layout = reader.getImageLayout();
+        Assert.assertNotNull(layout);
+        Assert.assertNotNull(layout.getColorModel(null));
+        Assert.assertNotNull(layout.getSampleModel(null));
+        Assert.assertEquals(0,layout.getMinX(null));
+        Assert.assertEquals(0,layout.getMinY(null));
+        Assert.assertTrue(layout.getWidth(null) > 0);
+        Assert.assertTrue(layout.getHeight(null) > 0);
+        Assert.assertEquals(0,layout.getTileGridXOffset(null));
+        Assert.assertEquals(0,layout.getTileGridYOffset(null));
+        Assert.assertTrue(layout.getTileHeight(null) > 0);
+        Assert.assertTrue(layout.getTileWidth(null) > 0);
+        
     }
 }

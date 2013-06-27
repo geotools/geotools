@@ -20,15 +20,13 @@ package org.geotools.gce.gtopo30;
 import java.io.File;
 import java.net.URL;
 
-import javax.media.jai.JAI;
-import javax.media.jai.RecyclingTileFactory;
-import javax.media.jai.TileCache;
+import javax.media.jai.ImageLayout;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.test.TestData;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.resources.coverage.CoverageUtilities;
-import org.opengis.coverage.grid.GridCoverageReader;
+import org.geotools.test.TestData;
 import org.opengis.coverage.grid.GridCoverageWriter;
 
 /**
@@ -65,22 +63,6 @@ public class GT30ReaderWriterTest extends GT30TestBase {
 		AbstractGridFormat format = (AbstractGridFormat) new GTopo30FormatFactory()
 				.createFormat();
 
-		// using a big tile cache
-		final JAI jaiDef = JAI.getDefaultInstance();
-		final TileCache cache = jaiDef.getTileCache();
-		cache.setMemoryCapacity(64 * 1024 * 1024);
-		cache.setMemoryThreshold(1.0f);
-		// final TCTool tool= new TCTool();
-
-		// setting JAI wide hints
-		jaiDef.setRenderingHint(JAI.KEY_CACHED_TILE_RECYCLING_ENABLED,
-				Boolean.TRUE);
-
-		// tile factory and recycler
-		final RecyclingTileFactory recyclingFactory = new RecyclingTileFactory();
-		jaiDef.setRenderingHint(JAI.KEY_TILE_FACTORY, recyclingFactory);
-		jaiDef.setRenderingHint(JAI.KEY_TILE_RECYCLER, recyclingFactory);
-
 		if (format.accepts(statURL)) {
 
 			/**
@@ -90,7 +72,21 @@ public class GT30ReaderWriterTest extends GT30TestBase {
 			 * 
 			 */
 			// get a reader
-			GridCoverageReader reader = format.getReader(statURL);
+			GridCoverage2DReader reader = format.getReader(statURL);
+			
+                        // layout checks
+                        final ImageLayout layout = reader.getImageLayout();
+                        assertNotNull(layout);
+                        assertNotNull(layout.getColorModel(null));
+                        assertNotNull(layout.getSampleModel(null));
+                        assertEquals(0,layout.getMinX(null));
+                        assertEquals(0,layout.getMinY(null));
+                        assertTrue(layout.getWidth(null) > 0);
+                        assertTrue(layout.getHeight(null) > 0);
+                        assertEquals(0,layout.getTileGridXOffset(null));
+                        assertEquals(0,layout.getTileGridYOffset(null));
+                        assertTrue(layout.getTileHeight(null) > 0);
+                        assertTrue(layout.getTileWidth(null) > 0);
 
 			// get a grid coverage
 			gc = ((GridCoverage2D) reader.read(null));

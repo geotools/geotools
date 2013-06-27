@@ -23,8 +23,8 @@ import javax.swing.JOptionPane;
 
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
@@ -57,7 +57,7 @@ public class ImageLab {
     private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
     private JMapFrame frame;
-    private AbstractGridCoverage2DReader reader;
+    private GridCoverage2DReader reader;
 
     public static void main(String[] args) throws Exception {
         ImageLab me = new ImageLab();

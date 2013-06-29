@@ -125,9 +125,10 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
+        <version>${project.version}</version>
         <configuration>
           <schemaLocation>gml.xsd</schemaLocation>
-	      <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/</schemaSourceDirectory>
+          <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/</schemaSourceDirectory>
           <!--schemaLookupDirectories>
             <schemaLookupDirectory>${basedir}/../xsd-core/src/main/resources/org/geotools/xlink</schemaLookupDirectory>
             <!- -schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/</schemaLookupDirectory>

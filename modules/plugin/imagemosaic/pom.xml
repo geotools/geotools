@@ -106,7 +106,6 @@
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-postgis</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.vividsolutions</groupId>
@@ -138,11 +137,6 @@
       <artifactId>gt-shapefile</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-postgis</artifactId>
-      <version>${project.version}</version>
-    </dependency>   
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-geotiff</artifactId>
@@ -202,20 +196,23 @@
       <artifactId>commons-io</artifactId>
     </dependency>    
   </dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<forkMode>always</forkMode>
-					<argLine>-enableassertions</argLine>
-					<argLine>-enableassertions</argLine>
-					<excludes>
-						<exclude>*/.bak</exclude>
-					</excludes>					
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkCount>1</forkCount>
+          <reuseForks>false</reuseForks>
+          <argLine>-enableassertions</argLine>
+          <excludes>
+            <exclude>*/.bak</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
+

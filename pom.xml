@@ -40,7 +40,7 @@
   <!--                                                             -->
   <!--     interactive.tests  Allows tests to show up dialogs      -->
   <!--                                                             -->
-  <!--     image.tests        Run image comparison tests if        --> 
+  <!--     image.tests        Run image comparison tests if        -->
   <!--                        perceptualdiff in on the path        -->
   <!--                                                             -->
   <!--     interactive.image  Image comparison will show           -->
@@ -1096,10 +1096,11 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-eclipse-plugin</artifactId>
-          <version>2.5</version>
+          <version>2.9</version>
         </plugin>
       </plugins>
     </pluginManagement>
+
     <extensions>
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
@@ -1109,19 +1110,19 @@
     </extensions>
 
 
-
     <plugins>
-        <plugin>
-          <!-- groupId org.apache.maven.plugins is the default -->
-          <artifactId>maven-assembly-plugin</artifactId>
-          <configuration>
-            <descriptors>
-              <descriptor>build/maven/assembly/binaryDist.xml</descriptor>
-              <descriptor>build/maven/assembly/sourceDist.xml</descriptor>
-              <descriptor>build/maven/assembly/userDocDist.xml</descriptor>
-            </descriptors>
-          </configuration>
-        </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <descriptors>
+            <descriptor>build/maven/assembly/binaryDist.xml</descriptor>
+            <descriptor>build/maven/assembly/sourceDist.xml</descriptor>
+            <descriptor>build/maven/assembly/userDocDist.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>
 
       <!-- ======================================================= -->
       <!--     Compilation.                                        -->
@@ -1129,6 +1130,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
         <configuration>
           <source>1.6</source>  <!-- The -source argument for the Java compiler. -->
           <target>1.6</target>  <!-- The -target argument for the Java compiler. -->
@@ -1143,15 +1145,13 @@
         </configuration>
       </plugin>
 
-
-
       <!-- ======================================================= -->
       <!--     Resources.                                          -->
       <!-- ======================================================= -->
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
         <inherited>false</inherited>
         <executions>
           <execution>
@@ -1183,6 +1183,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.15</version>
         <configuration>
           <includes>
             <include>**/*Test.java</include>
@@ -1218,6 +1219,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
         <configuration>
           <archive>
             <manifest>
@@ -1232,15 +1234,14 @@
         </configuration>
       </plugin>
 
-
-
       <!-- ======================================================= -->
       <!--     Source packaging.                                      -->
       <!-- ======================================================= -->
       <plugin>
-        <inherited>true</inherited>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>2.2.1</version>
+        <inherited>true</inherited>
         <configuration>
           <attach>true</attach>
         </configuration>
@@ -1253,7 +1254,6 @@
           </execution>
         </executions>
       </plugin>
-
 
       <!-- ======================================================= -->
       <!--     Git revision info.                                  -->
@@ -1282,7 +1282,6 @@
           </gitDescribe>
         </configuration> 
       </plugin>
-
     </plugins>
   </build>
 
@@ -1295,7 +1294,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <!-- force version, maven 2.1 would use an earlier one -->
         <version>2.0</version>
       </plugin>
 
@@ -1305,7 +1303,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <!-- force version, maven 2.1 would use an earlier one -->
         <version>2.5</version>
         <reportSets>
           <reportSet>
@@ -1323,6 +1320,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.7</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -1348,6 +1346,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.3</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -1364,7 +1363,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <!-- not a maven core plugin, specify version -->
         <version>2.2</version>
       </plugin>
 
@@ -1374,7 +1372,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
-        <!-- not a maven core plugin, specify version -->
         <version>2.1</version>
       </plugin>
     </plugins>

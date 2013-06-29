@@ -72,7 +72,7 @@
       <groupId>org.geotools.xsd</groupId>
       <artifactId>gt-xsd-core</artifactId>
       <version>${project.version}</version>
-    </dependency>    
+    </dependency>
   </dependencies>
 
   <build>
@@ -80,9 +80,10 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
+        <version>${project.version}</version>
         <configuration>
           <schemaLocation>ogckml22.xsd</schemaLocation>
-  	      <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/kml/v22</schemaSourceDirectory>
+          <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/kml/v22</schemaSourceDirectory>
         </configuration>
       </plugin>
     </plugins>

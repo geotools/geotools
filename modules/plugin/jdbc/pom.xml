@@ -86,12 +86,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-sample-data</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>simple-jndi</groupId>
       <artifactId>simple-jndi</artifactId>
       <scope>test</scope>

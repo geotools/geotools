@@ -112,13 +112,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-render</artifactId>
-      <version>${project.version}</version>
-      <classifier>tests</classifier>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.geotools.xsd</groupId>
       <artifactId>gt-xsd-sld</artifactId>
       <version>${project.version}</version>

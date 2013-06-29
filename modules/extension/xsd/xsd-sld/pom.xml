@@ -109,15 +109,16 @@
   <build>
     <plugins>
       <plugin>
-	<groupId>org.codehaus.mojo</groupId>
+        <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-				<configuration>
-					<instrumentation>
-						<excludes>
-            	<exclude>**/*Test.class</exclude>
-						</excludes>
+        <version>2.5.2</version>
+        <configuration>
+          <instrumentation>
+            <excludes>
+              <exclude>**/*Test.class</exclude>
+            </excludes>
           </instrumentation>
-				</configuration>
+        </configuration>
         <executions>
           <execution>
             <goals>
@@ -129,6 +130,7 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
+        <version>${project.version}</version>
         <configuration>
           <schemaLocation>all.xsd</schemaLocation>
           <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/sld/v1_1</schemaSourceDirectory>

@@ -356,7 +356,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
     public void setValue(Collection<Property> values) {
         int i = 0;
         for ( Property p : values ) {
-            this.values[i] = p.getValue();
+            this.values[i++] = p.getValue();
         }
     }
 

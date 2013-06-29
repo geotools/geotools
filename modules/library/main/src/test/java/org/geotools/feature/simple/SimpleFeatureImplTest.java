@@ -81,4 +81,14 @@ public class SimpleFeatureImplTest extends TestCase {
         assertEquals(0, feature.getDescriptor().getMinOccurs());
         assertEquals(Integer.MAX_VALUE, feature.getDescriptor().getMaxOccurs());
     }
+    
+    public void testSetValue() {
+    	
+    	SimpleFeature myFeature = SimpleFeatureBuilder.build(schema, new Object[] {null, null, null}, "building.2");
+
+    	myFeature.setValue(feature.getProperties());
+    	for (int i = 0; i < feature.getAttributeCount(); i++) {
+    		assertEquals(feature.getAttribute(i), myFeature.getAttribute(i));
+    	}
+    }
 }

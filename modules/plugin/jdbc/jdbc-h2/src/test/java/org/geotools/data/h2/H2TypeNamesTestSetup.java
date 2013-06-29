@@ -28,7 +28,7 @@ public class H2TypeNamesTestSetup extends JDBCTypeNamesTestSetup {
 	protected void createTypes() throws Exception {
 		run("CREATE TABLE \"geotools\".\"ftntable\" ("
 				+ "\"id\" INT, \"name\" VARCHAR, \"geom\" GEOMETRY)");
-		run("CREATE VIEW \"geotools\".\"ftnview\" AS SELECT \"id\", \"geom\" FROM \"ftntable\"");
+		run("CREATE VIEW \"geotools\".\"ftnview\" AS SELECT \"id\", \"geom\" FROM \"geotools\".\"ftntable\"");
 	}
 
 	@Override

@@ -137,11 +137,12 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
+        <version>${project.version}</version>
         <configuration>
           <schemaLocation>filterAll.xsd</schemaLocation>
-  	  <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/filter/v2_0</schemaSourceDirectory>
+          <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/filter/v2_0</schemaSourceDirectory>
           <schemaLookupDirectories>
-  	         <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/filter/v2_0</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/filter/v2_0</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gco</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gmd</schemaLookupDirectory>
@@ -150,7 +151,6 @@
             <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gss</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gts</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/../xsd-ows/src/main/resources/org/geotools/ows/v1_1</schemaLookupDirectory>
-
           </schemaLookupDirectories>
           <!--destinationPackage>org.geotools.filter.v2_0</destinationPackage-->
           <generateTests>false</generateTests>
@@ -159,6 +159,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.5.2</version>
         <executions>
           <execution>
             <goals>
@@ -167,7 +168,6 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
 

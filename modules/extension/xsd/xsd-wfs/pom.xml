@@ -118,6 +118,7 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
+        <version>${project.version}</version>
         <configuration>
           <schemaLocation>wfs.xsd</schemaLocation>
           <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/wfs/v2_0</schemaSourceDirectory>
@@ -127,7 +128,7 @@
             <schemaLookupDirectory>${basedir}/../xsd-fes/src/main/resources/org/geotools/filter/v2_0</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/../xsd-ows/src/main/resources/org/geotools/ows/v1_1</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2</schemaLookupDirectory>
-           <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gco</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gco</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gmd</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gmx</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gsr</schemaLookupDirectory>
@@ -137,7 +138,6 @@
           <!--destinationPackage>org.geotools.wfs.v2_0</destinationPackage-->
         </configuration>
       </plugin>
-
     </plugins>
   </build>
 

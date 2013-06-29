@@ -122,6 +122,7 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
+        <version>${project.version}</version>
         <configuration>
           <schemaLocation>feature.xsd</schemaLocation>
           <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/gml2/</schemaSourceDirectory>
@@ -130,10 +131,8 @@
           </imports>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
-  
-  
+
 </project>
 

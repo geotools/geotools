@@ -130,9 +130,10 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
+        <version>${project.version}</version>
         <configuration>
           <schemaLocation>filterCapabilities.xsd</schemaLocation>
-  	  <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/filter/v1_1/capabilities</schemaSourceDirectory>
+          <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/filter/v1_1/capabilities</schemaSourceDirectory>
           <destinationPackage>org.geotools.filter.v1_1.capabilities</destinationPackage>
           <generateConfiguration>false</generateConfiguration>
           <generateTests>true</generateTests>
@@ -141,6 +142,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.5.2</version>
         <executions>
           <execution>
             <goals>
@@ -149,7 +151,6 @@
           </execution>
         </executions>
       </plugin>
-
       <plugin>
        <artifactId>maven-jar-plugin</artifactId>
        <executions>
@@ -161,7 +162,6 @@
         </execution>
        </executions>
       </plugin>
-
     </plugins>
   </build>
 

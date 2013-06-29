@@ -80,6 +80,7 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
+        <version>${project.version}</version>
         <configuration>
           <schemaLocation>capabilities_1_3_0.xsd</schemaLocation>
           <schemaSourceDirectory>src/main/resources/org/geotools/wms/v1_3</schemaSourceDirectory>
@@ -89,7 +90,6 @@
           <!--destinationPackage>org.geotools.wfs.v2_0</destinationPackage-->
         </configuration>
       </plugin>
-
     </plugins>
   </build>
 

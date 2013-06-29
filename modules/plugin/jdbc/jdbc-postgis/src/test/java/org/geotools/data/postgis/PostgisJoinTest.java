@@ -25,5 +25,4 @@ public class PostgisJoinTest extends JDBCJoinTest {
     protected JDBCJoinTestSetup createTestSetup() {
         return new PostgisJoinTestSetup();
     }
-
 }

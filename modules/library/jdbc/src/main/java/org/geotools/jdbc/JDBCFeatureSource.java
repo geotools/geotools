@@ -768,7 +768,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             ResultSetMetaData metadata = rs.getMetaData();
             for(int i = 1; i < metadata.getColumnCount() + 1; i++) {
                 ColumnMetadata column = new ColumnMetadata();
-                column.name = metadata.getColumnName(i);
+                column.name = metadata.getColumnLabel(i);
                 column.typeName = metadata.getColumnTypeName(i);
                 column.sqlType = metadata.getColumnType(i);
                 column.nullable = metadata.isNullable(i) != ResultSetMetaData.columnNoNulls;

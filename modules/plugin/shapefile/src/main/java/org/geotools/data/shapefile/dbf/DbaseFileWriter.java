@@ -469,17 +469,24 @@ public class DbaseFileWriter {
             buffer.delete(0, buffer.length());
 
             if (n != null) {
-                numFormat.setMaximumFractionDigits(decimalPlaces);
-                numFormat.setMinimumFractionDigits(decimalPlaces);
-                numFormat.format(n, buffer, new FieldPosition(
-                        NumberFormat.INTEGER_FIELD));
+            	
+            	int expRoom = size - decimalPlaces;
+            	int exponent = Math.getExponent(n.doubleValue());
+            	if (exponent > expRoom) {
+            		// JDK Javadoc: "DecimalFormat can be instructed to format and parse scientific notation only via a pattern; there is currently no factory method that creates a scientific notation format."
+            		// for the moment, bail out and use the native toString
+            		buffer.append(n.doubleValue());
+            	} else {
+            		numFormat.setMaximumFractionDigits(decimalPlaces);
+            		numFormat.setMinimumFractionDigits(decimalPlaces);
+            		numFormat.format(n, buffer, new FieldPosition(
+            				NumberFormat.INTEGER_FIELD));
+            	}
             }
 
             int diff = size - buffer.length();
-            if (diff >= 0) {
-                while (diff-- > 0) {
-                    buffer.insert(0, ' ');
-                }
+            if (diff > 0) {
+            	buffer.insert(0, emptyString.substring(0, diff));
             } else {
                 buffer.setLength(size);
             }

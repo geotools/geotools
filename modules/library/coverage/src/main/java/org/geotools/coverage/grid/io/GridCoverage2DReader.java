@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,17 +36,13 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
- * Provides access to named GridCoverage2D (along with any context information) from a persistent store.
- * 
- * Data access method take a <code>coverageName</code> supplied by {@link GridCoverageReader#getGridCoverageNames()} allowing
- * each data GridCoverage2D to be accessed independently.
- * 
- * In addition static keywords for use with {@link GridCoverageReader#getMetadataNames(String coverageName)} have been provided.
+ * Support for reading GridCoverage2D out of a persistent store with also
+ * geospatial context information retrieval.
  * 
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Andrea Aime, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
- * @since 10.0
+ *
  */
 @SuppressWarnings("rawtypes")
 public interface GridCoverage2DReader extends GridCoverageReader {

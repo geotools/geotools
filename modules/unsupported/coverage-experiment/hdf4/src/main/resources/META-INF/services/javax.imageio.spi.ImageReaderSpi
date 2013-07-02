@@ -1,0 +1,2 @@
+org.geotools.imageio.hdf4.aps.HDF4APSImageReaderSpi
+org.geotools.imageio.hdf4.terascan.HDF4TeraScanImageReader

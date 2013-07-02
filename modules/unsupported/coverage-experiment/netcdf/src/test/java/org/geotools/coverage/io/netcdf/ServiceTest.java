@@ -18,10 +18,11 @@ package org.geotools.coverage.io.netcdf;
 
 import java.util.Set;
 
-import junit.framework.TestCase;
+import junit.framework.Assert;
 
-import org.geotools.coverage.io.driver.CoverageIO;
-import org.geotools.coverage.io.driver.Driver;
+import org.geotools.coverage.io.Driver;
+import org.geotools.coverage.io.impl.CoverageIO;
+import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
@@ -31,21 +32,12 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Simone Giannecchini
  * @author Daniele Romagnoli
  *
- *
- *
  * @source $URL$
  */
-public class ServiceTest extends TestCase {
+public class ServiceTest extends Assert {
 
-    public ServiceTest(java.lang.String testName) {
-        super(testName);
-    }
-
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(ServiceTest.class);
-    }
-
-    public void testIsAvailable() throws NoSuchAuthorityCodeException,
+	@Test
+    public void isAvailable() throws NoSuchAuthorityCodeException,
             FactoryException {
         CoverageIO.scanForPlugins();
         Set<Driver> drivers = CoverageIO.getAvailableDrivers();

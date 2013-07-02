@@ -1,15 +1,13 @@
 package org.geotools.coverage.io.driver;
 
-import org.geotools.coverage.io.driver.DefaultDriver;
-import org.geotools.coverage.io.driver.Driver;
+import java.util.EnumSet;
+
+import org.geotools.coverage.io.Driver;
+import org.geotools.coverage.io.impl.DefaultDriver;
 import org.geotools.factory.Hints;
 /**
  * 
  * @author Simone Giannecchini, GeoSolutions
- *
- *
- *
- *
  * @source $URL$
  */
 public class TestDriver extends DefaultDriver implements Driver {
@@ -19,8 +17,8 @@ public class TestDriver extends DefaultDriver implements Driver {
         return true;
     }
 
-    protected TestDriver() {
-        super("test driver", "test driver", "test driver",new Hints());
+    public TestDriver() {
+        super("test driver", "test driver", "test driver",EnumSet.of(DriverCapabilities.CONNECT), new Hints());
     }
 
 

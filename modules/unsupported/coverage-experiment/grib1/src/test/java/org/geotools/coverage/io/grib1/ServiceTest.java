@@ -20,8 +20,8 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.geotools.coverage.io.driver.CoverageIO;
-import org.geotools.coverage.io.driver.Driver;
+import org.geotools.coverage.io.Driver;
+import org.geotools.coverage.io.impl.CoverageIO;
 import org.junit.Ignore;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;

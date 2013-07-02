@@ -815,7 +815,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 	 * @return the {@link GeneralGridEnvelope} that represents the raster grid
 	 *         dimensions of the highest resolution level in this dataset.
 	 */
-	public final GridEnvelope getOriginalGridRange() {
+	public GridEnvelope getOriginalGridRange() {
 	    assert originalGridRange.getDimension()==2;
 		return new GridEnvelope2D(
 		        originalGridRange.getLow(0),
@@ -831,7 +831,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 	 * @return the {@link GeneralEnvelope} for this
 	 *         {@link AbstractGridCoverage2DReader}.
 	 */
-	public final GeneralEnvelope getOriginalEnvelope() {
+	public GeneralEnvelope getOriginalEnvelope() {
 		return new GeneralEnvelope(originalEnvelope);
 	}
 	
@@ -843,7 +843,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 	 * @return the original grid to world transformation for this
 	 *         {@link AbstractGridCoverage2DReader}.
 	 */
-	public final MathTransform getOriginalGridToWorld(final PixelInCell pixInCell) {
+	public MathTransform getOriginalGridToWorld(final PixelInCell pixInCell) {
 	    synchronized (this) {
 	        if(raster2Model==null){
 	            final GridToEnvelopeMapper geMapper= new GridToEnvelopeMapper(this.originalGridRange,this.originalEnvelope);

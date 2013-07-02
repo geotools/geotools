@@ -18,9 +18,6 @@ package org.geotools.coverage.io;
 
 import java.util.Map;
 
-import org.geotools.coverage.io.impl.CoverageReadRequest;
-import org.geotools.coverage.io.impl.CoverageResponse;
-import org.geotools.coverage.io.impl.CoverageUpdateRequest;
 import org.geotools.data.Parameter;
 import org.opengis.util.ProgressListener;
 

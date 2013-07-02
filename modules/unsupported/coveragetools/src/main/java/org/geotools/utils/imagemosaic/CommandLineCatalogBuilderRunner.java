@@ -25,10 +25,11 @@ import java.util.logging.Logger;
 
 import org.geotools.console.CommandLine;
 import org.geotools.console.Option;
+import org.geotools.gce.imagemosaic.ImageMosaicWalker;
+import org.geotools.gce.imagemosaic.ImageMosaicWalker.ExceptionEvent;
+import org.geotools.gce.imagemosaic.ImageMosaicWalker.ProcessingEvent;
 import org.geotools.gce.imagemosaic.Utils;
-import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder;
-import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ExceptionEvent;
-import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ProcessingEvent;
+import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.utils.progress.ProcessingEventListener;
 
@@ -131,28 +132,38 @@ public class CommandLineCatalogBuilderRunner extends CommandLine {
         final CommandLineCatalogBuilderRunner runner = new CommandLineCatalogBuilderRunner(args);
         // prepare the configuration
         final CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
-        configuration.setAbsolute(runner.absolute);
-        configuration.setIndexName(runner.indexName);
-        configuration.setFootprintManagement(runner.footprintManagement);
-        configuration.setCaching(runner.caching);
-        configuration.setRootMosaicDirectory(runner.rootMosaicDirectory);
-        configuration.setWildcard(runner.wildcardString);
-        configuration.setLocationAttribute(runner.locationAttribute);
+        configuration.setParameter(Prop.ABSOLUTE_PATH, runner.absolute.toString());
+        configuration.setParameter(Prop.INDEX_NAME, runner.indexName);
+        configuration.setParameter(Prop.FOOTPRINT_MANAGEMENT, runner.footprintManagement.toString());
+        configuration.setParameter(Prop.CACHING, runner.caching.toString());
+        configuration.setParameter(Prop.ROOT_MOSAIC_DIR, runner.rootMosaicDirectory);
+        configuration.setParameter(Prop.WILDCARD, runner.wildcardString);
+        configuration.setParameter(Prop.LOCATION_ATTRIBUTE, runner.locationAttribute);
+        
+//        configuration.setAbsolute(runner.absolute);
+//        configuration.setIndexName(runner.indexName);
+//        configuration.setFootprintManagement(runner.footprintManagement);
+//        configuration.setCaching(runner.caching);
+//        configuration.setRootMosaicDirectory(runner.rootMosaicDirectory);
+//        configuration.setWildcard(runner.wildcardString);
+//        configuration.setLocationAttribute(runner.locationAttribute);
 
         final String directories = runner.indexingDirectoriesString;
         final String[] dirs_ = directories.split(",");
         final List<String> dirs = new ArrayList<String>();
         for (String dir : dirs_)
             dirs.add(dir);
-        configuration.setIndexingDirectories(dirs);
+//        configuration.setIndexingDirectories(dirs);
+        configuration.setParameter(Prop.INDEXING_DIRECTORIES, directories);
+        
         
         // prepare and run the index builder
-        final CatalogBuilder builder = new CatalogBuilder(configuration);
+        final ImageMosaicWalker builder = new ImageMosaicWalker(configuration);
      // this is going to help us with catching exceptions and logging them
         final Queue<Throwable> exceptions = new LinkedList<Throwable>();
         try {
 
-                final CatalogBuilder.ProcessingEventListener listener = new CatalogBuilder.ProcessingEventListener() {
+                final ImageMosaicWalker.ProcessingEventListener listener = new ImageMosaicWalker.ProcessingEventListener() {
 
                         @Override
                         public void exceptionOccurred(ExceptionEvent event) {

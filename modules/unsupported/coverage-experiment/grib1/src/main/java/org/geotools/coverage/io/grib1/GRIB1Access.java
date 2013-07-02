@@ -41,13 +41,13 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.CoverageSource;
 import org.geotools.coverage.io.CoverageStore;
-import org.geotools.coverage.io.driver.DefaultFileDriver;
-import org.geotools.coverage.io.driver.Driver;
+import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.grib1.GRIB1ProductFieldType.Product;
 import org.geotools.coverage.io.impl.DefaultCoverageAccess;
-import org.geotools.coverage.io.impl.range.DefaultRangeType;
+import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
+import org.geotools.coverage.io.range.impl.DefaultRangeType;
 import org.geotools.coverage.io.util.Utilities;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.Parameter;
@@ -57,11 +57,11 @@ import org.geotools.feature.NameImpl;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.SliceDescriptor;
-import org.geotools.imageio.SpatioTemporalImageReader;
 import org.geotools.imageio.VerticalExtent;
-import org.geotools.imageio.metadata.Band;
-import org.geotools.imageio.metadata.RectifiedGrid;
-import org.geotools.imageio.metadata.SpatioTemporalMetadata;
+import org.geotools.imageio.grib1.GRIB1ImageReader;
+import org.geotools.imageio.metadataold.Band;
+import org.geotools.imageio.metadataold.RectifiedGrid;
+import org.geotools.imageio.metadataold.SpatioTemporalMetadata;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.NullProgressListener;
@@ -204,7 +204,7 @@ public class GRIB1Access extends DefaultCoverageAccess {
     private void init() {
         // get the needed info from them to set the extent
         try {
-            final SpatioTemporalImageReader reader = (SpatioTemporalImageReader) GRIB1Driver.spi.createReaderInstance();
+            final GRIB1ImageReader reader = (GRIB1ImageReader) GRIB1Driver.spi.createReaderInstance();
             reader.setInput(this.input);
 
             int numCoverages = 0;

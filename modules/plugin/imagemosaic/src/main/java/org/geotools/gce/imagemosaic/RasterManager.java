@@ -17,12 +17,13 @@
 package org.geotools.gce.imagemosaic;
 
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.SoftReference;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,11 +45,14 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.DecimationPolicy;
+import org.geotools.coverage.grid.io.DefaultDimensionDescriptor;
+import org.geotools.coverage.grid.io.DimensionDescriptor;
+import org.geotools.coverage.grid.io.GranuleSource;
+import org.geotools.coverage.grid.io.GranuleStore;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.FeatureCalc;
@@ -57,24 +61,35 @@ import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
+import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
+import org.geotools.gce.imagemosaic.catalog.GranuleCatalogSource;
+import org.geotools.gce.imagemosaic.catalog.GranuleCatalogStore;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
+import org.geotools.gce.imagemosaic.catalog.HintedGranuleCatalog;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.referencing.operation.transform.IdentityTransform;
+import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.Range;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridCoverage;
+import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.Envelope;
 import org.opengis.metadata.Identifier;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
@@ -89,73 +104,72 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
+ * @author Daniele Romagnoli, GeoSolutions SAS
  *
  */
 @SuppressWarnings({"rawtypes","unchecked"})
-class RasterManager {
-    
-	/** Logger. */
-	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterManager.class);
-	
-	/**
-	 * This class is responsible for putting together all the 2D spatial information needed for a certain raster.
-	 * 
-	 * <p>
-	 * Notice that when this structure will be extended to work in ND this will become much more complex or as an 
-	 * alternative a sibling TemporalDomainManager will be created.
-	 * 
-	 * @author Simone Giannecchini, GeoSolutions SAS
-	 *
-	 */
-	static class SpatialDomainManager{
+public class RasterManager {
 
-	         /** The base envelope 2D */
-		ReferencedEnvelope coverageBBox;
-		
-		/** The CRS for the coverage */
-		CoordinateReferenceSystem coverageCRS;
-		
-		/** The CRS related to the base envelope 2D */
-		CoordinateReferenceSystem coverageCRS2D;
-		// ////////////////////////////////////////////////////////////////////////
-		//
-		// Base coverage properties
-		//
-		// ////////////////////////////////////////////////////////////////////////
-		/** The base envelope read from file */
-		GeneralEnvelope coverageEnvelope = null;
-		
-		double[] coverageFullResolution;
-		
-		/** WGS84 envelope 2D for this coverage */
-		ReferencedEnvelope coverageGeographicBBox;
-		
-		CoordinateReferenceSystem coverageGeographicCRS2D;
-		
-		MathTransform2D coverageGridToWorld2D;
-		
-		/** The base grid range for the coverage */
-		Rectangle coverageRasterArea;
-		 
+    /**
+     * This class is responsible for putting together all the 2D spatial information needed for a certain raster.
+     * 
+     * <p>
+     * Notice that when this structure will be extended to work in ND this will become much more complex or as an 
+     * alternative a sibling TemporalDomainManager will be created.
+     * 
+     * @author Simone Giannecchini, GeoSolutions SAS
+     *
+     */
+    static class SpatialDomainManager{
 
-		public SpatialDomainManager(final GeneralEnvelope envelope,
-				final GridEnvelope2D coverageGridrange,
-				final CoordinateReferenceSystem crs,
-				final MathTransform coverageGridToWorld2D,
-				final OverviewsController overviewsController) throws TransformException, FactoryException {
-		    this.coverageEnvelope = envelope.clone();
-		    this.coverageRasterArea =coverageGridrange.clone();
-		    this.coverageCRS = crs;
-		    this.coverageGridToWorld2D = (MathTransform2D) coverageGridToWorld2D;
-		    this.coverageFullResolution = new double[2];
-		    final OverviewLevel highestLevel= overviewsController.resolutionsLevels.get(0);
-		    coverageFullResolution[0] = highestLevel.resolutionX;
-		    coverageFullResolution[1] = highestLevel.resolutionY;
-		    
-		    prepareCoverageSpatialElements();
-		}
-			
-			
+        /** The base envelope 2D */
+       ReferencedEnvelope coverageBBox;
+       
+       /** The CRS for the coverage */
+       CoordinateReferenceSystem coverageCRS;
+       
+       /** The CRS related to the base envelope 2D */
+       CoordinateReferenceSystem coverageCRS2D;
+       // ////////////////////////////////////////////////////////////////////////
+       //
+       // Base coverage properties
+       //
+       // ////////////////////////////////////////////////////////////////////////
+       /** The base envelope read from file */
+       GeneralEnvelope coverageEnvelope = null;
+       
+       double[] coverageFullResolution;
+       
+       /** WGS84 envelope 2D for this coverage */
+       ReferencedEnvelope coverageGeographicBBox;
+       
+       CoordinateReferenceSystem coverageGeographicCRS2D;
+       
+       MathTransform2D coverageGridToWorld2D;
+       
+       /** The base grid range for the coverage */
+       Rectangle coverageRasterArea;
+       
+       GridEnvelope gridEnvelope;
+
+       public SpatialDomainManager(final GeneralEnvelope envelope,
+                       final GridEnvelope2D coverageGridrange,
+                       final CoordinateReferenceSystem crs,
+                       final MathTransform coverageGridToWorld2D,
+                       final OverviewsController overviewsController) throws TransformException, FactoryException {
+           this.coverageEnvelope = envelope.clone();
+           this.gridEnvelope = coverageGridrange.clone();
+           this.coverageRasterArea = (Rectangle) gridEnvelope;
+           this.coverageCRS = crs;
+           this.coverageGridToWorld2D = (MathTransform2D) coverageGridToWorld2D;
+           this.coverageFullResolution = new double[2];
+           final OverviewLevel highestLevel= overviewsController.resolutionsLevels.get(0);
+           coverageFullResolution[0] = highestLevel.resolutionX;
+           coverageFullResolution[1] = highestLevel.resolutionY;
+           
+           prepareCoverageSpatialElements();
+       }
+
         /**
          * Initialize the 2D properties (CRS and Envelope) of this coverage
          * 
@@ -170,7 +184,8 @@ class RasterManager {
             // basic initialization
             //
             coverageGeographicBBox = ImageUtilities.getWGS84ReferencedEnvelope(coverageEnvelope);
-            coverageGeographicCRS2D = coverageGeographicBBox!=null?coverageGeographicBBox.getCoordinateReferenceSystem():null;
+            coverageGeographicCRS2D = coverageGeographicBBox != null ? coverageGeographicBBox
+                    .getCoordinateReferenceSystem() : null;
 
             //
             // Get the original envelope 2d and its spatial reference system
@@ -188,8 +203,43 @@ class RasterManager {
                 coverageBBox = new ReferencedEnvelope(coverageEnvelope);
             }
         }
+        
+        public MathTransform getOriginalGridToWorld(final PixelInCell pixInCell) {
+            synchronized (this) {
+                if (coverageGridToWorld2D == null) {
+                    final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(gridEnvelope,
+                            coverageEnvelope);
+                    geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);
+                    coverageGridToWorld2D = (MathTransform2D) geMapper.createTransform();
+                }
+            }
+
+            // we do not have to change the pixel datum
+            if (pixInCell == PixelInCell.CELL_CENTER)
+                return coverageGridToWorld2D;
+
+            // we do have to change the pixel datum
+            if (coverageGridToWorld2D instanceof AffineTransform) {
+                final AffineTransform tr = new AffineTransform(
+                        (AffineTransform) coverageGridToWorld2D);
+                tr.concatenate(AffineTransform.getTranslateInstance(-0.5, -0.5));
+                return ProjectiveTransform.create(tr);
+            }
+            if (coverageGridToWorld2D instanceof IdentityTransform) {
+                final AffineTransform tr = new AffineTransform(1, 0, 0, 1, 0, 0);
+                tr.concatenate(AffineTransform.getTranslateInstance(-0.5, -0.5));
+                return ProjectiveTransform.create(tr);
+            }
+            throw new IllegalStateException("This reader's grid to world transform is invalud!");
+        }
     }
 
+    /** Logger. */
+        private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterManager.class);
+
+        /** The coverage factory producing a {@link GridCoverage} from an image */
+        private GridCoverageFactory coverageFactory;
+        
     /**
      * {@link DomainDescriptor} describe a single domain in terms of name and {@link ParameterDescriptor} that can be used to filter values during a
      * read operation.
@@ -209,9 +259,7 @@ class RasterManager {
 
         static final String HAS_PREFIX = "HAS_";
 
-        static final String TIME_DOMAIN = "TIME";
-
-        static final String ELEVATION_DOMAIN = "ELEVATION";
+        static final String DATATYPE_SUFFIX = "_DATATYPE";
 
         private DomainType domainType = DomainType.SINGLE_VALUE;
 
@@ -223,6 +271,9 @@ class RasterManager {
 
         /** additionalPropertyName for this domain. It won't be null ONLY in case of ranged domains. */
         private final String additionalPropertyName;
+
+        /** domain dataType */
+        private final String dataType;
 
         /** The {@link ParameterDescriptor} that can be used to filter on this domain during a read operation. */
         private final DefaultParameterDescriptor<List> domainParameterDescriptor;
@@ -238,6 +289,10 @@ class RasterManager {
             return additionalPropertyName != null;
         }
 
+        public String getDataType() {
+            return dataType;
+        }
+
         /**
          * @return the domainaParameterDescriptor
          */
@@ -245,11 +300,12 @@ class RasterManager {
             return domainParameterDescriptor;
         }
 
-        private DomainDescriptor(final String identifier, final DomainType domainType, 
+        private DomainDescriptor(final String identifier, final DomainType domainType, final String dataType,
                 final String propertyName, final String additionalPropertyName) {
             this.identifier = identifier;
             this.propertyName = propertyName;
             this.domainType = domainType;
+            this.dataType = dataType;
             this.additionalPropertyName = additionalPropertyName;
             final String name = identifier.toUpperCase();
             this.domainParameterDescriptor=
@@ -262,7 +318,7 @@ class RasterManager {
         }
         @Override
         public String toString() {
-            return "DomainDescriptor [identifier=" + identifier + ", propertyName=" + propertyName
+            return "DomainDescriptor [identifier=" + identifier + ", propertyName=" + propertyName + ", dataType=" + dataType
                     + ", additionalPropertyName=" + (additionalPropertyName != null ? additionalPropertyName : "__UNAVAILABLE__") +  "]";
         }
 
@@ -311,7 +367,7 @@ class RasterManager {
             } 
             return getRangeValues(); 
         }
-        
+
         /**
          * Retrieves the Range values for this domain
          * @return
@@ -366,7 +422,7 @@ class RasterManager {
                 return "";
             }
         }
-    
+
         /**
          * This method is responsible for creating {@link Filter} that encompasses the
          * provided {@link List} of values for this {@link DomainManager}.
@@ -460,6 +516,8 @@ class RasterManager {
     class DomainManager {
 
         private final Map<String, DomainDescriptor> domainsMap = new HashMap<String, DomainDescriptor>();
+        
+        private final List<DimensionDescriptor> dimensions = new ArrayList<DimensionDescriptor>();
 
         private final boolean attributeHasRange(String attribute) {
             return attribute.contains(Utils.RANGE_SPLITTER_CHAR);
@@ -489,16 +547,18 @@ class RasterManager {
 
                     // Domain with ranges management
                     if (attributeHasRange(propertyName)) {
-                        domainType = domainAttributes.containsKey(DomainDescriptor.TIME_DOMAIN) ? DomainType.TIME_RANGE
+                        domainType = domainAttributes.containsKey(Utils.TIME_DOMAIN) ? DomainType.TIME_RANGE
                                 : DomainType.NUMBER_RANGE;
-                        addDomain(domainName, propertyName, domainType);
+                        addDomain(domainName, propertyName, domainType, simpleFeatureType);
                         continue;
-                    } else if (simpleFeatureType.getDescriptor(propertyName) != null) {
-                        // add
-                        addDomain(domainName, propertyName, domainType);
-
-                        // continue
-                        continue;
+                    } else {
+                        propertyName = extractAttributes(propertyName);
+                        if (simpleFeatureType.getDescriptor(propertyName) != null) {
+                            // add
+                            addDomain(domainName, propertyName, domainType, simpleFeatureType);
+                            // continue
+                            continue;
+                        }
                     }
 
                 } catch (Exception e) {
@@ -512,10 +572,11 @@ class RasterManager {
                     // hakc for shapes
                     propertyName = propertyName.substring(0, 10);
                     // alias in provided type
+                    
                     try {
-                        if (simpleFeatureType.getDescriptor(propertyName) != null) {
+                        if ( simpleFeatureType.getDescriptor(propertyName) != null) {
                             // add
-                            addDomain(domainName, propertyName, domainType);
+                            addDomain(domainName, propertyName, domainType, simpleFeatureType);
 
                             // continue
                             continue;
@@ -569,8 +630,8 @@ class RasterManager {
          * @TODO We can surely improve it by making use of Regular Expressions
          */
         private String cleanupDomainName(String domainName) {
-            if (attributeHasRange(domainName) && domainName.contains("(")
-                    && domainName.contains(")")) {
+            if (attributeHasRange(domainName) || ( domainName.contains("(")
+                    && domainName.contains(")"))) {
                 // Getting rid of the attributes definition to get only the domain name
                 domainName = domainName.substring(0, domainName.indexOf("("));
             }
@@ -582,8 +643,9 @@ class RasterManager {
          * 
          * @param domain the name of the domain
          * @param propertyName
+         * @param featureType 
          */
-        private void addDomain(String name, String propertyName, final DomainType domainType) {
+        private void addDomain(String name, String propertyName, final DomainType domainType, final SimpleFeatureType featureType) {
             Utilities.ensureNonNull("name", name);
             Utilities.ensureNonNull("propertyName", propertyName);
 
@@ -601,11 +663,7 @@ class RasterManager {
             if (domainType != DomainType.SINGLE_VALUE) {
 
                 // Deal with a case like this: time(begin,endtime)
-                if (propertyName.contains("(") && propertyName.contains(")")) {
-                    // extract the ranges attributes
-                    propertyName = propertyName.substring(propertyName.indexOf("("))
-                            .replace("(", "").replace(")", "");
-                }
+                propertyName = extractAttributes(propertyName);
 
                 // Getting 2 attributes for this domain
                 String properties[] = propertyName.split(Utils.RANGE_SPLITTER_CHAR);
@@ -620,8 +678,31 @@ class RasterManager {
 
             // ad with uppercase and with suffix, the parameter that describes it will match this
             final String upperCase = name.toUpperCase();
+            final AttributeDescriptor descriptor = featureType.getDescriptor(basePropertyName);
+            final String type = descriptor.getType().getBinding().getName();
             domainsMap.put(upperCase + DomainDescriptor.DOMAIN_SUFFIX, new DomainDescriptor(name,
-                    domainType, basePropertyName, additionalPropertyName));
+                    domainType, type, basePropertyName, additionalPropertyName));
+            addDimensionDescriptor(name, upperCase, basePropertyName, additionalPropertyName);
+        }
+
+        private void addDimensionDescriptor(String name, String upperCase, String basePropertyName, String additionalPropertyName) {
+            final String unitsName = upperCase.equalsIgnoreCase(Utils.TIME_DOMAIN) ? CoverageUtilities.UCUM.TIME_UNITS.getName() 
+                    : upperCase.equalsIgnoreCase(Utils.ELEVATION_DOMAIN) ? CoverageUtilities.UCUM.ELEVATION_UNITS.getName() : 
+                        "FIXME"; //TODO: ADD UCUM units Management
+            final String unitsSymbol = upperCase.equalsIgnoreCase(Utils.TIME_DOMAIN) ? CoverageUtilities.UCUM.TIME_UNITS.getSymbol() 
+                    : upperCase.equalsIgnoreCase(Utils.ELEVATION_DOMAIN) ? CoverageUtilities.UCUM.ELEVATION_UNITS.getSymbol() : 
+                        "FIXME"; //TODO: ADD UCUM units Management
+            final DimensionDescriptor dimensionDescriptor = new DefaultDimensionDescriptor(name, unitsName, unitsSymbol, basePropertyName, additionalPropertyName);
+            dimensions.add(dimensionDescriptor);
+        }
+
+        private String extractAttributes(String propertyName) {
+            if (propertyName.contains("(") && propertyName.contains(")")) {
+                // extract the ranges attributes
+                propertyName = propertyName.substring(propertyName.indexOf("("))
+                        .replace("(", "").replace(")", "");
+            }
+            return propertyName;
         }
 
         /**
@@ -654,8 +735,10 @@ class RasterManager {
                 for (DomainDescriptor domain : domainsMap.values()) {
                     String domainName = domain.getIdentifier().toUpperCase();
                     metadataNames.add(domainName + DomainDescriptor.DOMAIN_SUFFIX);
-                    metadataNames.add(DomainDescriptor.HAS_PREFIX + domainName
-                            + DomainDescriptor.DOMAIN_SUFFIX);
+                    if (domain.getDataType() != null) {
+                        metadataNames.add(domainName + DomainDescriptor.DOMAIN_SUFFIX + DomainDescriptor.DATATYPE_SUFFIX);
+                    }
+                    metadataNames.add(DomainDescriptor.HAS_PREFIX + domainName + DomainDescriptor.DOMAIN_SUFFIX);
                 }
             }
             return metadataNames;
@@ -686,6 +769,8 @@ class RasterManager {
                         } else {
                             return Boolean.toString(Boolean.FALSE);
                         }
+                    } else if (name.endsWith(DomainDescriptor.DATATYPE_SUFFIX)) { 
+                        return domainsMap.get(name.substring(0, name.lastIndexOf(DomainDescriptor.DATATYPE_SUFFIX))).getDataType();
                     } else {
                         // MINUM or MAXIMUM
                         if (name.endsWith("MINIMUM") || name.endsWith("MAXIMUM")) {
@@ -742,18 +827,15 @@ class RasterManager {
     }
 
     enum DomainType {
-         SINGLE_VALUE, TIME_RANGE, NUMBER_RANGE
-     }
-
+        SINGLE_VALUE, TIME_RANGE, NUMBER_RANGE
+    }
+    
     /** Default {@link ColorModel}.*/
 	ColorModel defaultCM;
 	
 	/** Default {@link SampleModel}.*/
 	SampleModel defaultSM;
 	
-	/** The coverage factory producing a {@link GridCoverage} from an image */
-	private GridCoverageFactory coverageFactory;
-
 	/** The name of the input coverage 
 	 * TODO consider URI
 	 */
@@ -765,15 +847,13 @@ class RasterManager {
 	OverviewsController overviewsController;
 	OverviewPolicy overviewPolicy;
 	DecimationPolicy decimationPolicy;
-	ImageMosaicReader parent;
 	private PathType pathType;
 	boolean expandMe;
 	boolean heterogeneousGranules;
+	
+	double[][] levels;
 	SpatialDomainManager spatialDomainManager;
 
-	/** {@link SoftReference} to the index holding the tiles' envelopes. */
-	final GranuleCatalog granuleCatalog;
-	
 	ImageLayout defaultImageLayout;
 
     /** The inner {@link DomainManager} instance which allows to manage custom dimensions */
@@ -783,84 +863,146 @@ class RasterManager {
 
     DomainManager timeDomainManager;
 
-    public RasterManager(final ImageMosaicReader reader) throws IOException{
-        this(reader, null);
-    }
-	public RasterManager(final ImageMosaicReader reader, MosaicConfigurationBean configuration) throws IOException {
-		
-		Utilities.ensureNonNull("ImageMosaicReader", reader);
-		
-		this.parent=reader;
-		this.expandMe=parent.expandMe;
-		this.heterogeneousGranules = parent.heterogeneousGranules;
-        
-        //take ownership of the index
-        granuleCatalog = parent.catalog;
-        parent.catalog = null;
-        
-        coverageIdentifier=reader.getName();
-        hints = reader.getHints();
-        this.coverageIdentifier =reader.getName();
-        this.coverageFactory = reader.getGridCoverageFactory();
-        this.pathType=parent.pathType;
-        
-        //resolution values
-        
-        //instantiating controller for subsampling and overviews
-        overviewsController=new OverviewsController(
-        		reader.getHighestRes(),
-        		reader.getNumberOfOvervies(),
-        		reader.getOverviewsResolution());
-        try {
-			spatialDomainManager= new SpatialDomainManager(
-					reader.getOriginalEnvelope(),
-					(GridEnvelope2D)reader.getOriginalGridRange(),
-					reader.getCrs(),
-					reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
-					overviewsController);
-		} catch (TransformException e) {
-			throw new DataSourceException(e);
-		} catch (FactoryException e) {
-			throw new DataSourceException(e);
-		}
+    List<DimensionDescriptor> dimensionDescriptors = new ArrayList<DimensionDescriptor>();
+
+    ImageMosaicReader parentReader;
+
+    GranuleCatalog granuleCatalog;
+    
+    GranuleStore granuleStore;
+    
+    GranuleSource granuleSource;
+
+    String typeName;
+    
+    Envelope imposedEnvelope;
+    
+    MosaicConfigurationBean configuration;
+
+//        public RasterManager(final ImageMosaicReader parentReader) throws IOException {
+//            this(parentReader, null);
+//        }
+
+        public RasterManager(final ImageMosaicReader parentReader, MosaicConfigurationBean configuration)
+                throws IOException {
+
+            Utilities.ensureNonNull("ImageMosaicReader", parentReader);
+
+//            this.parentManager = manager;
+            this.parentReader = parentReader;
+            this.expandMe = parentReader.expandMe;
+            this.heterogeneousGranules = parentReader.heterogeneousGranules;
+            this.configuration = configuration;
+            hints = parentReader.getHints();
+            if (configuration != null && configuration.getAuxiliaryFilePath() != null) {
+                hints.add(new RenderingHints(Utils.AUXILIARY_FILES_PATH, configuration.getAuxiliaryFilePath()));
+            }
+            
+            // take ownership of the index : TODO: REMOVE THAT ONCE DEALING WITH MORE CATALOGS/RASTERMANAGERS
+            granuleCatalog = new HintedGranuleCatalog(parentReader.granuleCatalog, hints);
+//            parentReader.granuleCatalog = null;
+
+            
+            this.coverageFactory = parentReader.getGridCoverageFactory();
+            this.coverageIdentifier = configuration != null ? configuration.getName() : ImageMosaicReader.UNSPECIFIED;
+            this.pathType = parentReader.pathType;
+
+            // resolution values
+
+            // instantiating controller for subsampling and overviews
+            //TODO: DR rasterManager don't need to ask info from the reader. It should only deal with the config.
+            // is the reader which ask info from the rasterManager
+            
+//            overviewsController = new OverviewsController(parentReader.getHighestRes(),
+//                    parentReader.getNumberOfOvervies(), parentReader.getOverviewsResolution());
+//        try {
+//			spatialDomainManager= new SpatialDomainManager(
+//			        parentReader.getOriginalEnvelope(),
+//					(GridEnvelope2D)parentReader.getOriginalGridRange(),
+//					parentReader.getCoordinateReferenceSystem(),
+//					parentReader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
+//					overviewsController);
+//		} catch (TransformException e) {
+//			throw new DataSourceException(e);
+//		} catch (FactoryException e) {
+//			throw new DataSourceException(e);
+//		}
         extractOverviewPolicy();
         extractDecimationPolicy();
         
         // load defaultSM and defaultCM by using the sample_image if it was provided
-        loadSampleImage();   
+        loadSampleImage(configuration);
         
-        if(configuration!=null){
-            final SimpleFeatureType schema = granuleCatalog.getType();
-            if (configuration.getAdditionalDomainAttributes() != null) {
-                domainsManager = new DomainManager(configuration.getAdditionalDomainAttributes(),schema);
+        if (configuration != null) {
+            CatalogConfigurationBean catalogBean = configuration.getCatalogConfigurationBean();
+            typeName = catalogBean != null ? catalogBean.getTypeName() : null;
+            if (typeName != null) {
+                final SimpleFeatureType schema = granuleCatalog.getType(typeName);
+                if (configuration.getAdditionalDomainAttributes() != null) {
+                    domainsManager = new DomainManager(
+                            configuration.getAdditionalDomainAttributes(), schema);
+                    dimensionDescriptors.addAll(domainsManager.dimensions);
+                }
+
+                // time attribute
+                if (configuration.getTimeAttribute() != null) {
+                    final HashMap<String, String> init = new HashMap<String, String>();
+                    init.put(Utils.TIME_DOMAIN, configuration.getTimeAttribute());
+                    timeDomainManager = new DomainManager(init, schema);
+                    dimensionDescriptors.addAll(timeDomainManager.dimensions);
+                
+                }
+                // elevation attribute
+                if (configuration.getElevationAttribute() != null) {
+                    final HashMap<String, String> init = new HashMap<String, String>();
+                    init.put(Utils.ELEVATION_DOMAIN, configuration.getElevationAttribute());
+                    elevationDomainManager = new DomainManager(init, schema);
+                    dimensionDescriptors.addAll(elevationDomainManager.dimensions);
+                }
+            }
+            if (defaultSM == null) {
+                defaultSM = configuration.getSampleModel();
+            }
+
+            if (defaultCM == null) {
+                defaultCM = configuration.getColorModel();
             }
             
-            // time attribute
-            if(configuration.getTimeAttribute()!=null){
-                final HashMap<String, String> init=new HashMap<String, String>();
-                init.put(DomainDescriptor.TIME_DOMAIN, configuration.getTimeAttribute());
-                timeDomainManager= new DomainManager(init,schema);
+            if (defaultSM != null && defaultCM != null && defaultImageLayout == null) {
+                defaultImageLayout= new ImageLayout().setColorModel(defaultCM).setSampleModel(defaultSM);
             }
-            // elevation attribute
-            if(configuration.getElevationAttribute()!=null){
-                final HashMap<String, String> init=new HashMap<String, String>();
-                init.put(DomainDescriptor.ELEVATION_DOMAIN, configuration.getElevationAttribute());
-                elevationDomainManager= new DomainManager(init,schema);
-            }        
+            
+            levels = configuration.getLevels();
+            final double[] highRes = levels[0];
+            final int numOverviews = configuration.getLevelsNum() - 1;
+            double[][] overviews = null;
+            if (numOverviews > 0) {
+                overviews = new double[numOverviews][2];
+                for (int i = 0; i < numOverviews; i++) {
+                    overviews[i][0] = levels[i+1][0];
+                    overviews[i][1] = levels[i+1][1];
+                }
+            }
+            overviewsController = new OverviewsController(highRes,
+                  numOverviews, overviews);
+            imposedEnvelope = configuration.getEnvelope();
+            
+            //TODO: DR Parse more stuff from the configuration
         }
-      }
+    }
 
  	/**
 	 * This code tries to load the sample image from which we can extract SM and CM to use when answering to requests
 	 * that falls within a hole in the mosaic.
+ 	 * @param configuration 
 	 */
-	private void loadSampleImage() {
-	    if (this.parent.sourceURL == null) {
+	private void loadSampleImage(MosaicConfigurationBean configuration) {
+	    if (this.parentReader.sourceURL == null) {
 	        //TODO: I need to define the sampleImage somehow for the ImageMosaicDescriptor case
 	        return;
 	    }
 		
-			final URL baseURL=this.parent.sourceURL;
+			final URL baseURL=this.parentReader.sourceURL;
 			final File baseFile= DataUtilities.urlToFile(baseURL);
 			// in case we do not manage to convert the source URL we leave right awaycd sr
 			if (baseFile==null){
@@ -868,7 +1010,23 @@ class RasterManager {
 					LOGGER.fine("Unable to find sample image for path "+baseURL);
 				return;
 			}
-			final File sampleImageFile= new File(baseFile.getParent() + "/sample_image");			
+			String baseName = baseFile.getParent() + "/";
+			String fileName = null;
+			File sampleImageFile = null;
+			if (configuration != null) {
+			    String name = configuration.getName();
+			    if (name != null) {
+			        fileName = baseName + name + Utils.SAMPLE_IMAGE_NAME;
+			        sampleImageFile = new File (fileName);
+			        if (!sampleImageFile.exists() || !sampleImageFile.canRead()) {
+			            sampleImageFile = null;
+			        }
+			    }
+			}
+			
+			if (sampleImageFile == null) {
+			    sampleImageFile = new File(baseName + Utils.SAMPLE_IMAGE_NAME);
+			}
 			final RenderedImage sampleImage = Utils.loadSampleImage(sampleImageFile);
 			if(sampleImage!=null){
 				
@@ -956,17 +1114,6 @@ class RasterManager {
 		
 	}
 	
-	public void dispose() {
-	    synchronized (this) {
-                try {
-                    if (granuleCatalog != null)
-                        this.granuleCatalog.dispose();
-                } catch (Exception e) {
-                    if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-                }                
-            }
-	}
 
 	/**
 	 * Retrieves the list of features that intersect the provided envelope
@@ -979,7 +1126,7 @@ class RasterManager {
 	 *             In case loading the needed features failes.
 	 */
 	Collection<GranuleDescriptor> getGranules(final BoundingBox envelope)throws IOException {
-		final Collection<GranuleDescriptor> granules = granuleCatalog.getGranules(envelope);
+		final Collection<GranuleDescriptor> granules = granuleCatalog.getGranules(typeName, envelope);
 		if (granules != null)
 			return granules;
 		else
@@ -987,6 +1134,7 @@ class RasterManager {
 	}
 	
 	Collection<GranuleDescriptor> getGranules(final Query q)throws IOException {
+	        q.setTypeName(typeName);
 		final Collection<GranuleDescriptor> granules = granuleCatalog.getGranules(q);
 		if (granules != null)
 			return granules;
@@ -1010,7 +1158,7 @@ class RasterManager {
 	 *             In case loading the needed features fails.
 	 */
 	void getGranules(final BoundingBox envelope,final GranuleCatalogVisitor visitor)throws IOException {
-		granuleCatalog.getGranules(envelope,visitor);
+		granuleCatalog.getGranules(typeName, envelope,visitor);
 	}
 
 	public PathType getPathType() {
@@ -1031,6 +1179,10 @@ class RasterManager {
 		return coverageFactory;
 	}
 
+    public String getTypeName() {
+        return typeName;
+    }
+
     /**
      * @param metadataName
      * @param attributeName 
@@ -1038,7 +1190,7 @@ class RasterManager {
      * @throws IOException
      */
     FeatureCalc createExtremaQuery(String metadataName, String attributeName) throws IOException {
-        final Query query = new Query(granuleCatalog.getType().getTypeName());
+        final Query query = new Query(typeName);
         query.setPropertyNames(Arrays.asList(attributeName));
 
         final FeatureCalc visitor= 
@@ -1059,7 +1211,7 @@ class RasterManager {
          */
         private Set extractDomain(final String attribute)
                 throws IOException {
-            Query query = new Query(granuleCatalog.getType().getTypeName());
+            Query query = new Query(typeName);
             query.setPropertyNames(Arrays.asList(attribute));
             final UniqueVisitor visitor= new UniqueVisitor(attribute);
             granuleCatalog.computeAggregateFunction(query, visitor);
@@ -1078,14 +1230,14 @@ class RasterManager {
          */
         private Set extractDomain(final String attribute, final String secondAttribute, final DomainType domainType)
                 throws IOException {
-            final Query query = new Query(granuleCatalog.getType().getTypeName());
+            final Query query = new Query(typeName);
             
             final PropertyName propertyName = FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute);
             query.setPropertyNames(Arrays.asList(attribute, secondAttribute));
             
             final SortByImpl[] sb = new SortByImpl[]{new SortByImpl(propertyName, SortOrder.ASCENDING)};
             // Checking whether it supports sorting capabilities
-            if(granuleCatalog.getQueryCapabilities().supportsSorting(sb)){
+            if(granuleCatalog.getQueryCapabilities(typeName).supportsSorting(sb)){
                 query.setSortBy(sb);
             }
             
@@ -1094,5 +1246,210 @@ class RasterManager {
             return domainType == DomainType.TIME_RANGE ? ((DateRangeVisitor)visitor).getRange() : ((RangeVisitor)visitor).getRange() ;
             
         }
+
+
+    public GranuleCatalog getGranuleCatalog() {
+        return granuleCatalog;
+    }
+    
+    /**
+     * Create a store for the coverage related to this {@link RasterManager} using the 
+     * provided schema
+     *
+     * @param indexSchema
+     * @throws IOException
+     */
+    public void createStore (SimpleFeatureType indexSchema) throws IOException {
+        final String typeName = indexSchema.getTypeName();
+        final SimpleFeatureType type = typeName != null ? granuleCatalog.getType(typeName) : null;
+        if (type == null) {
+            granuleCatalog.createType(indexSchema);
+            this.typeName = typeName;
+        } else {
+            // remove them all, assuming the schema has not changed
+            final Query query = new Query(type.getTypeName());
+            query.setFilter(Filter.INCLUDE);
+            granuleCatalog.removeGranules(query);
+        }
+    }
+    
+    public GranuleSource getGranuleSource(final boolean readOnly, final Hints hints) {
+        synchronized (this) {
+            if (readOnly) {
+                if (granuleSource == null) {
+                    granuleSource = new GranuleCatalogSource(granuleCatalog, typeName, hints);
+                }
+                return granuleSource;
+            } else {
+                if (granuleStore == null) {
+                    granuleStore = new GranuleCatalogStore(granuleCatalog, typeName, hints);
+                }
+                return granuleStore;
+            }
+        }
+    }
+
+    public List<DimensionDescriptor> getDimensionDescriptors() {
+        return dimensionDescriptors;
+    }
+
+    public MosaicConfigurationBean getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(MosaicConfigurationBean configuration) {
+        this.configuration = configuration;
+    }
+
+    public void dispose() {
+        synchronized (this) {
+            try {
+                if (granuleCatalog != null) {
+                    this.granuleCatalog.dispose();
+                }
+            } catch (Exception e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+            } finally {
+                if (granuleSource != null) {
+                    granuleSource = null;
+                }
+                if (granuleStore != null) {
+                    granuleStore = null;
+                }
+                if (granuleCatalog != null) {
+                    granuleCatalog = null;
+                }
+            }
+        }
+    }
+
+    void initialize() throws IOException {
+        final BoundingBox bounds = granuleCatalog.getBounds(typeName);
+
+        if (bounds.isEmpty()) {
+            throw new IllegalArgumentException("Cannot create a mosaic out of an empty index");
+        }
+
+        // we might have an imposed bbox
+        CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
+        GeneralEnvelope originalEnvelope = null;
+
+        if (imposedEnvelope == null) {
+            originalEnvelope = new GeneralEnvelope(bounds);
+        } else {
+            originalEnvelope = new GeneralEnvelope(imposedEnvelope);
+            originalEnvelope.setCoordinateReferenceSystem(crs);
+        }
+
+        // original gridrange (estimated). I am using the floor here in order to make sure
+        // we always stays inside the real area that we have for the granule
+        OverviewLevel highResOvLevel = overviewsController.resolutionsLevels.get(0);
+        final double highestRes[] = new double[] { highResOvLevel.resolutionX, highResOvLevel.resolutionY };
+        GridEnvelope2D originalGridRange = new GridEnvelope2D(new Rectangle(
+                (int) (originalEnvelope.getSpan(0) / highestRes[0]),
+                (int) (originalEnvelope.getSpan(1) / highestRes[1])));
+        AffineTransform2D raster2Model = new AffineTransform2D(highestRes[0], 0, 0, -highestRes[1],
+                originalEnvelope.getLowerCorner().getOrdinate(0) + 0.5 * highestRes[0],
+                originalEnvelope.getUpperCorner().getOrdinate(1) - 0.5 * highestRes[1]);
+
+        try {
+            spatialDomainManager = new SpatialDomainManager(originalEnvelope,
+                    (GridEnvelope2D) originalGridRange, crs, raster2Model, overviewsController);
+        } catch (TransformException e) {
+            throw new IOException("Exception occurred while initializing the SpatialDomainManager", e);
+        } catch (FactoryException e) {
+            throw new IOException("Exception occurred while initializing the SpatialDomainManager", e);
+        }
+    }
+
+    /**
+     * Return the metadataNames for this manager
+     * 
+     * @return
+     */
+    String[] getMetadataNames() {
+        final List<String> metadataNames = new ArrayList<String>();
+        metadataNames.add(GridCoverage2DReader.TIME_DOMAIN);
+        metadataNames.add(GridCoverage2DReader.HAS_TIME_DOMAIN);
+        metadataNames.add(GridCoverage2DReader.TIME_DOMAIN_MINIMUM);
+        metadataNames.add(GridCoverage2DReader.TIME_DOMAIN_MAXIMUM);
+        metadataNames.add(GridCoverage2DReader.TIME_DOMAIN_RESOLUTION);
+        metadataNames.add(GridCoverage2DReader.TIME_DOMAIN + DomainDescriptor.DATATYPE_SUFFIX);
+
+        metadataNames.add(GridCoverage2DReader.ELEVATION_DOMAIN);
+        metadataNames.add(GridCoverage2DReader.ELEVATION_DOMAIN_MINIMUM);
+        metadataNames.add(GridCoverage2DReader.ELEVATION_DOMAIN_MAXIMUM);
+        metadataNames.add(GridCoverage2DReader.HAS_ELEVATION_DOMAIN);
+        metadataNames.add(GridCoverage2DReader.ELEVATION_DOMAIN_RESOLUTION);
+        metadataNames.add(GridCoverage2DReader.ELEVATION_DOMAIN + DomainDescriptor.DATATYPE_SUFFIX);
+
+        if (domainsManager != null) {
+            metadataNames.addAll(domainsManager.getMetadataNames());
+        }
+        return metadataNames.toArray(new String[metadataNames.size()]);
+    }
+
+    /** 
+     * Return the metadata value for the specified metadata name 
+     * @param name the name of the metadata to be returned
+     * @return
+     */
+    String getMetadataValue(String name) {
+        String value = null;
+        final boolean hasTimeDomain = timeDomainManager != null;
+        final boolean hasElevationDomain = elevationDomainManager != null;
+
+        if (name.equalsIgnoreCase(GridCoverage2DReader.HAS_ELEVATION_DOMAIN))
+            return String.valueOf(hasElevationDomain);
+
+        if (name.equalsIgnoreCase(GridCoverage2DReader.HAS_TIME_DOMAIN)) {
+            return String.valueOf(hasTimeDomain);
+        }
+
+        // NOT supported
+        if (name.equalsIgnoreCase(GridCoverage2DReader.TIME_DOMAIN_RESOLUTION)) {
+            return null;
+        }
+        // NOT supported
+        if (name.equalsIgnoreCase(GridCoverage2DReader.ELEVATION_DOMAIN_RESOLUTION)) {
+            return null;
+        }
+
+        if (hasTimeDomain) {
+            if (name.equalsIgnoreCase("time_domain")) {
+                return timeDomainManager.getMetadataValue(name);
+            }
+            if ((name.equalsIgnoreCase("time_domain_minimum") || name
+                    .equalsIgnoreCase("time_domain_maximum"))) {
+                return timeDomainManager.getMetadataValue(name);
+            }
+            if (name.equalsIgnoreCase("time_domain_datatype")) {
+                return timeDomainManager.getMetadataValue(name);
+            }
+        }
+
+        if (hasElevationDomain) {
+            if (name.equalsIgnoreCase("elevation_domain")) {
+                return elevationDomainManager.getMetadataValue(name);
+            }
+
+            if (name.equalsIgnoreCase("elevation_domain_minimum")
+                    || name.equalsIgnoreCase("elevation_domain_maximum")) {
+                return elevationDomainManager.getMetadataValue(name);
+            }
+            if (name.equalsIgnoreCase("elevation_domain_datatype")) {
+                return elevationDomainManager.getMetadataValue(name);
+            }
+        }
+
+        // check additional domains
+        if (domainsManager != null) {
+            return domainsManager.getMetadataValue(name);
+        }
+
+        //
+        return value;
+    }
 
 }

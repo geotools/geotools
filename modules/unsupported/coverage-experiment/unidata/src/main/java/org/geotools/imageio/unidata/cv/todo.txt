@@ -1,0 +1,4 @@
+- CoordinateVariables that are string
+- Caching for Lat and Lon especially
+- fill value support
+- improve read() method

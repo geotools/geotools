@@ -41,13 +41,13 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.CoverageSource;
 import org.geotools.coverage.io.CoverageStore;
-import org.geotools.coverage.io.driver.DefaultFileDriver;
-import org.geotools.coverage.io.driver.Driver;
+import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.hdf4.HDF4ProductFieldType.Product;
 import org.geotools.coverage.io.impl.DefaultCoverageAccess;
-import org.geotools.coverage.io.impl.range.DefaultRangeType;
+import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
+import org.geotools.coverage.io.range.impl.DefaultRangeType;
 import org.geotools.coverage.io.util.Utilities;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.Parameter;
@@ -58,9 +58,10 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.SliceDescriptor;
 import org.geotools.imageio.SpatioTemporalImageReader;
-import org.geotools.imageio.metadata.Band;
-import org.geotools.imageio.metadata.RectifiedGrid;
-import org.geotools.imageio.metadata.SpatioTemporalMetadata;
+import org.geotools.imageio.hdf4.HDF4ImageReader;
+import org.geotools.imageio.metadataold.Band;
+import org.geotools.imageio.metadataold.RectifiedGrid;
+import org.geotools.imageio.metadataold.SpatioTemporalMetadata;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.NullProgressListener;
@@ -196,7 +197,7 @@ public class HDF4Access extends DefaultCoverageAccess {
     private void init() {
         // get the needed info from them to set the extent
         try {
-            final SpatioTemporalImageReader reader = (SpatioTemporalImageReader) HDF4Driver.spi.createReaderInstance(this.input);
+            final HDF4ImageReader reader = (HDF4ImageReader) HDF4Driver.spi.createReaderInstance(this.input);
             reader.setInput(this.input);
 
             int numCoverages = 0;

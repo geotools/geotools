@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+    <schemas>
+        <schema name="default" >
+            <attributes>the_geom:Polygon,coverage:String,imageindex:Integer,time:java.util.Date,elevation:Double
+            </attributes>
+        </schema>
+    </schemas>
+    <coverages>
+        <coverage>
+			<name>NO2</name>
+            <schema ref="default"></schema>
+            <origName>z</origName>
+        </coverage>
+    </coverages>
+</Indexer>

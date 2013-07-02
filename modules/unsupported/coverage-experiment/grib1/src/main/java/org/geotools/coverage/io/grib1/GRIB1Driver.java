@@ -33,8 +33,8 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 
 import org.geotools.coverage.io.CoverageAccess;
-import org.geotools.coverage.io.driver.DefaultFileDriver;
-import org.geotools.coverage.io.driver.FileDriver;
+import org.geotools.coverage.io.FileDriver;
+import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.factory.Hints;
 import org.opengis.util.ProgressListener;
 
@@ -55,7 +55,7 @@ public class GRIB1Driver extends DefaultFileDriver implements FileDriver {
     static {
         try {
             Class<?> clazz = Class
-                    .forName("org.geotools.imageio.grib1.GRIB1SpatioTemporalImageReaderSpi");
+                    .forName("org.geotools.imageio.grib1.GRIB1ImageReaderSpi");
             spi = (ImageReaderSpi) clazz.newInstance();
         } catch (Throwable e) {
             if (LOGGER.isLoggable(Level.FINE))
@@ -90,7 +90,7 @@ public class GRIB1Driver extends DefaultFileDriver implements FileDriver {
             Class.forName("javax.media.jai.JAI");
             Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
             Class
-                    .forName("org.geotools.imageio.grib1.GRIB1SpatioTemporalImageReaderSpi");
+                    .forName("org.geotools.imageio.grib1.GRIB1ImageReaderSpi");
             if (available)
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine("GRIB1Driver is availaible.");

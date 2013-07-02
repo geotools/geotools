@@ -37,57 +37,58 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 
 import org.geotools.coverage.io.CoverageAccess;
-import org.geotools.coverage.io.driver.DefaultFileDriver;
-import org.geotools.coverage.io.driver.Driver;
-import org.geotools.coverage.io.driver.FileDriver;
+import org.geotools.coverage.io.Driver;
+import org.geotools.coverage.io.FileDriver;
+import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.factory.Hints;
-import org.geotools.imageio.netcdf.NetCDFSpatioTemporalImageReaderSpi;
+import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.opengis.util.ProgressListener;
 
 /**
+ * NetCDF Driver
  * 
- *
- * @source $URL$
  */
-public class NetCDFDriver extends DefaultFileDriver implements FileDriver,Driver {
+public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Driver {
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.coverage.io.netcdf");
 
     /** A static {@link ImageReaderSpi} to be used to call canDecodeInput */
-    final static ImageReaderSpi spi;
+    final static ImageReaderSpi SPI;
 
     static {
-
-    	ImageReaderSpi temp=null;
+        ImageReaderSpi temp = null;
         if (checkNetCDF()) {
             try {
-                temp = new NetCDFSpatioTemporalImageReaderSpi();
+                temp = new NetCDFImageReaderSpi();
             } catch (Throwable e) {
                 if (LOGGER.isLoggable(Level.SEVERE))
                     LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
                 temp = null;
             }
         }
-        // assing the SPI
-        spi=temp;
+        // assign the INTERNAL_STORE_SPI
+        SPI = temp;
     }
 
     public NetCDFDriver() {
-        super("NetCDF", "NetCDF Coverage Format", "NetCDF Coverage Format",null, Arrays.asList("nc"));
+        super(
+                "NetCDF", 
+                "NetCDF Coverage Format", 
+                "NetCDF Coverage Format", 
+                null, 
+                Arrays.asList("nc"),
+                EnumSet.of(DriverCapabilities.CONNECT));
     }
 
-
-
-    public CoverageAccess connect(java.net.URL source,
-            Map<String, Serializable> params, Hints hints,
-            ProgressListener listener) throws IOException {
+    public CoverageAccess connect(java.net.URL source, Map<String, Serializable> params,
+            Hints hints, ProgressListener listener) throws IOException {
         return new NetCDFAccess(this, source, params, hints, listener);
     }
 
-    public CoverageAccess connect(Map<String, Serializable> params,
-            Hints hints, ProgressListener listener) throws IOException {
+    public CoverageAccess connect(Map<String, Serializable> params, Hints hints,
+            ProgressListener listener) throws IOException {
         return new NetCDFAccess(this, null, params, hints, listener);
     }
 
@@ -105,18 +106,17 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver,Driver
             Class.forName("javax.media.jai.JAI");
             Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
             if (LOGGER.isLoggable(Level.FINE))
-            	LOGGER.fine("NetCDFDriver is availaible.");
+                LOGGER.fine("NetCDFDriver is available.");
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("NetCDFDriver is not availaible.");
+                LOGGER.fine("NetCDFDriver is not available.");
             available = false;
         }
         return available;
     }
 
-
-	@Override
-	protected boolean canConnect(URL url, Map<String, Serializable> params) {
+    @Override
+    protected boolean canConnect(URL url, Map<String, Serializable> params) {
 
         if (url == null) {
             return false;
@@ -124,7 +124,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver,Driver
         ImageInputStream inputStream = null;
         Object source = null;
         try {
-            // /////////////////////////////////////////////////////////////
+
             //
             // URL management
             // In case the URL points to a file we need to get to the file
@@ -132,44 +132,37 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver,Driver
             // or it is an open stream we have very small to do and we need
             // to enable caching.
             //
-            // /////////////////////////////////////////////////////////////
             if (url.getProtocol().equalsIgnoreCase("file")) {
                 File file = new File(URLDecoder.decode(url.getFile(), "UTF-8"));
-
                 if (file.exists()) {
-                    if (!file.canRead() || !file.isFile()){
+                    if (!file.canRead() || !file.isFile()) {
                         if (LOGGER.isLoggable(Level.FINE))
                             LOGGER.fine("File cannot be read or it is a directory");
                         return false;
                     }
-
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine("Provided URL is a file");
                     // setting source
                     source = file;
-
-                } else{
+                } else {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine("File doesn't exist");
                     return false;
                 }
-                    
-            }
-
-            else {
-            	if (url.getProtocol().toLowerCase().startsWith("http")
-            			  || url.getProtocol().equalsIgnoreCase("dods")) {
-            		URIImageInputStream uriInStream = new URIImageInputStreamImpl(url.toURI()); 
-            		source = uriInStream;
-            		if (!spi.canDecodeInput(source)){
-            			if (LOGGER.isLoggable(Level.FINE))
-            				LOGGER.fine("Unable to decode the inputStream");
-            			 return false;
-            		}
-            		return true;
-            	} else if (url.getProtocol().equalsIgnoreCase("ftp")) {
-            		source = url.openStream();
-                } else{
+            } else {
+                if (url.getProtocol().toLowerCase().startsWith("http")
+                        || url.getProtocol().equalsIgnoreCase("dods")) {
+                    URIImageInputStream uriInStream = new URIImageInputStreamImpl(url.toURI());
+                    source = uriInStream;
+                    if (!SPI.canDecodeInput(source)) {
+                        if (LOGGER.isLoggable(Level.FINE))
+                            LOGGER.fine("Unable to decode the inputStream");
+                        return false;
+                    }
+                    return true;
+                } else if (url.getProtocol().equalsIgnoreCase("ftp")) {
+                    source = url.openStream();
+                } else {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine("Unsupported protocol");
                     return false;
@@ -178,28 +171,25 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver,Driver
 
             // get a stream
             inputStream = (ImageInputStream) ((source instanceof ImageInputStream) ? source
-                    : (source instanceof File)? new FileImageInputStreamExtImpl((File)source) : ImageIO.createImageInputStream(source));
+                    : (source instanceof File) ? new FileImageInputStreamExtImpl((File) source)
+                            : ImageIO.createImageInputStream(source));
             if (inputStream == null) {
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine("Unable to get an ImageInputStream");
                 return false;
             }
-
             inputStream.mark();
-
-            if (!spi.canDecodeInput(inputStream)){
+            if (!SPI.canDecodeInput(inputStream)) {
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine("Unable to decode the inputStream");
                 return false;
             }
-                
             return true;
         } catch (Throwable e) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             return false;
         } finally {
-
             if (inputStream != null) {
                 try {
                     inputStream.close();
@@ -216,10 +206,5 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver,Driver
                 }
             }
         }
-	}
-
-
-	public EnumSet<DriverOperation> getDriverCapabilities() {
-		return EnumSet.of(DriverOperation.CONNECT);
-	}
+    }
 }

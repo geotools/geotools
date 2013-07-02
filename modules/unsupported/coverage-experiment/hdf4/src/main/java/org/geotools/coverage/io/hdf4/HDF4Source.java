@@ -35,12 +35,12 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.io.CoverageCapabilities;
+import org.geotools.coverage.io.CoverageReadRequest;
+import org.geotools.coverage.io.CoverageResponse;
+import org.geotools.coverage.io.CoverageResponse.Status;
 import org.geotools.coverage.io.CoverageSource;
-import org.geotools.coverage.io.domain.RasterLayout;
-import org.geotools.coverage.io.driver.DefaultFileDriver;
-import org.geotools.coverage.io.impl.CoverageReadRequest;
-import org.geotools.coverage.io.impl.CoverageResponse;
-import org.geotools.coverage.io.impl.CoverageResponse.Status;
+import org.geotools.coverage.io.RasterLayout;
+import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
@@ -49,7 +49,6 @@ import org.geotools.data.Parameter;
 import org.geotools.data.ResourceInfo;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.imageio.AbstractSliceDescriptor;
 import org.geotools.imageio.SliceDescriptor;
 import org.geotools.referencing.CRS;
 import org.geotools.util.NumberRange;
@@ -461,7 +460,7 @@ public class HDF4Source implements CoverageSource {
 //                }
 //            }
 //        } else {
-            final int imageIndex = ((AbstractSliceDescriptor) sd)
+            final int imageIndex = ((SliceDescriptor) sd)
                     .getImageIndex();
             GridCoverage gc = Utilities.compute(DefaultFileDriver.urlToFile(access
                     .getInput()), imageIndex, needTransformation, emptyRequest,

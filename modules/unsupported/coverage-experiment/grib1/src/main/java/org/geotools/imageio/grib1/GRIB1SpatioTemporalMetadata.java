@@ -16,10 +16,6 @@
  */
 package org.geotools.imageio.grib1;
 
-import it.geosolutions.imageio.ndplugin.BaseImageMetadata;
-import it.geosolutions.imageio.plugins.grib1.GRIB1ImageMetadata;
-import it.geosolutions.imageio.plugins.grib1.GRIB1Utilities;
-import it.geosolutions.imageio.plugins.netcdf.NetCDFUtilities;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -34,15 +30,17 @@ import javax.imageio.metadata.IIOMetadata;
 
 import org.geotools.coverage.io.util.Utilities;
 import org.geotools.imageio.SpatioTemporalImageReader;
-import org.geotools.imageio.metadata.Band;
-import org.geotools.imageio.metadata.BoundedBy;
-import org.geotools.imageio.metadata.CoordinateReferenceSystem;
-import org.geotools.imageio.metadata.Identification;
-import org.geotools.imageio.metadata.RectifiedGrid;
-import org.geotools.imageio.metadata.SpatioTemporalMetadata;
-import org.geotools.imageio.metadata.TemporalCRS;
-import org.geotools.imageio.metadata.VerticalCRS;
-import org.geotools.imageio.metadata.AbstractCoordinateReferenceSystem.Datum;
+import org.geotools.imageio.metadataold.Band;
+import org.geotools.imageio.metadataold.BoundedBy;
+import org.geotools.imageio.metadataold.CoordinateReferenceSystem;
+import org.geotools.imageio.metadataold.Identification;
+import org.geotools.imageio.metadataold.RectifiedGrid;
+import org.geotools.imageio.metadataold.SpatioTemporalMetadata;
+import org.geotools.imageio.metadataold.TemporalCRS;
+import org.geotools.imageio.metadataold.VerticalCRS;
+import org.geotools.imageio.metadataold.AbstractCoordinateReferenceSystem.Datum;
+import org.geotools.imageio.netcdf.NetCDFUtilities;
+import org.geotools.imageio.unidata.UnidataImageMetadata;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.util.NumberRange;
@@ -66,7 +64,7 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
 
     protected final static Logger LOGGER = Logger.getLogger(GRIB1SpatioTemporalMetadata.class.toString());
 
-    public GRIB1SpatioTemporalMetadata(SpatioTemporalImageReader reader,int imageIndex) {
+    public GRIB1SpatioTemporalMetadata( SpatioTemporalImageReader reader, int imageIndex ) {
         super(reader, imageIndex);
 
     }
@@ -78,7 +76,7 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
      * 
      * @param reader
      */
-    private Map<String, String> getAttributesMap(SpatioTemporalImageReader reader) {
+    private Map<String, String> getAttributesMap( SpatioTemporalImageReader reader ) {
         if (attributesMap == null) {
             buildAttributesMap(reader);
         }
@@ -92,12 +90,12 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
      * 
      * @param reader
      */
-    private void buildAttributesMap(SpatioTemporalImageReader reader) {
+    private void buildAttributesMap( SpatioTemporalImageReader reader ) {
         attributesMap = new HashMap<String, String>();
         IIOMetadata metadata;
         final int imageIndex = getImageIndex();
         try {
-            metadata = reader.getImageMetadata(imageIndex);
+            metadata = ((GRIB1ImageReader) reader).getImageMetadata(imageIndex);
             if (metadata instanceof GRIB1ImageMetadata) {
                 Node root = metadata.getAsTree(GRIB1ImageMetadata.nativeMetadataFormatName);
                 if (root != null) {
@@ -106,7 +104,7 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
                         final NamedNodeMap attributes = gdsNode.getAttributes();
                         if (attributes != null) {
                             final int numAttributes = attributes.getLength();
-                            for (int i = 0; i < numAttributes; i++) {
+                            for( int i = 0; i < numAttributes; i++ ) {
                                 final Node node = attributes.item(i);
                                 if (node != null) {
                                     attributesMap.put(node.getNodeName(), node.getNodeValue());
@@ -119,7 +117,7 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
                         final NamedNodeMap attributes = pdsNode.getAttributes();
                         if (attributes != null) {
                             final int numAttributes = attributes.getLength();
-                            for (int i = 0; i < numAttributes; i++) {
+                            for( int i = 0; i < numAttributes; i++ ) {
                                 Node node = attributes.item(i);
                                 if (node != null) {
                                     attributesMap.put(node.getNodeName(), node.getNodeValue());
@@ -132,7 +130,7 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
                         final NamedNodeMap attributes = pdsLevelNode.getAttributes();
                         if (attributes != null) {
                             final int numAttributes = attributes.getLength();
-                            for (int i = 0; i < numAttributes; i++) {
+                            for( int i = 0; i < numAttributes; i++ ) {
                                 Node node = attributes.item(i);
                                 if (node != null) {
                                     attributesMap.put(node.getNodeName(), node.getNodeValue());
@@ -148,8 +146,7 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
         }
     }
 
-    protected void setCoordinateReferenceSystemElement(
-            SpatioTemporalImageReader reader) {
+    protected void setCoordinateReferenceSystemElement( SpatioTemporalImageReader reader ) {
         Map<String, String> map = getAttributesMap(reader);
         final String gridTypeS = map.get(GRIB1ImageMetadata.GRID_TYPE);
         String projectionNameS = "";
@@ -159,15 +156,15 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
         if (gridTypeS != null)
             gridType = Integer.parseInt(gridTypeS);
 
-        switch (gridType) {
+        switch( gridType ) {
         case 0: // latlon
-            crs.setIdentification(new Identification("WGS 84", null, null,"EPSG:4326"));
-            crs.setCoordinateSystem(new Identification("WGS 84", null, null,null));
+            crs.setIdentification(new Identification("WGS 84", null, null, "EPSG:4326"));
+            crs.setCoordinateSystem(new Identification("WGS 84", null, null, null));
             break;
         case 10: // rotated latlon
             projectionNameS = "RotatedLatLon";
-            crs.setIdentification(new Identification("WGS 84", null, null,"EPSG:4326"));
-            crs.setCoordinateSystem(new Identification("WGS 84", null, null,null));
+            crs.setIdentification(new Identification("WGS 84", null, null, "EPSG:4326"));
+            crs.setCoordinateSystem(new Identification("WGS 84", null, null, null));
             break;
         case 3:
             projectionNameS = "LambertConformalConic";
@@ -181,25 +178,24 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
             final String lovS = map.get(GRIB1ImageMetadata.GRID_LOV);
             final String startXs = map.get(GRIB1ImageMetadata.GRID_STARTX);
             final String startYs = map.get(GRIB1ImageMetadata.GRID_STARTY);
-            if (latin1S != null && latin2S != null && lovS != null&& startXs != null && startYs != null) {
+            if (latin1S != null && latin2S != null && lovS != null && startXs != null && startYs != null) {
                 final double latin1 = Double.parseDouble(latin1S);
                 final double latin2 = Double.parseDouble(latin2S);
                 final double lov = Double.parseDouble(lovS);
                 final double startX = Double.parseDouble(startXs);
                 final double startY = Double.parseDouble(startYs);
                 final boolean sp2 = latin1 != latin2;
-                projectionNameS = sp2 ? "Lambert_Conformal_Conic_2SP": "Lambert_Conformal_Conic_1SP";
+                projectionNameS = sp2 ? "Lambert_Conformal_Conic_2SP" : "Lambert_Conformal_Conic_1SP";
 
-                crs.setDefinedByConversion(new Identification(projectionNameS),
-                        null, null, null);
+                crs.setDefinedByConversion(new Identification(projectionNameS), null, null, null);
                 if (sp2) {
                     crs.addParameterValue(new Identification("standard_parallel_1"), Double.toString(Math.toRadians(latin1)));
                     crs.addParameterValue(new Identification("standard_parallel_2"), Double.toString(Math.toRadians(latin2)));
                     crs.addParameterValue(new Identification("longitude_of_origin"), Double.toString(Math.toRadians(lov)));
                 }
-                crs.addParameterValue(new Identification("latitude_of_origin"),Double.toString(latin1));
-                crs.addParameterValue(new Identification("false_easting"),Double.toString(-startX));
-                crs.addParameterValue(new Identification("false_northing"),Double.toString(-startY));
+                crs.addParameterValue(new Identification("latitude_of_origin"), Double.toString(latin1));
+                crs.addParameterValue(new Identification("false_easting"), Double.toString(-startX));
+                crs.addParameterValue(new Identification("false_northing"), Double.toString(-startY));
 
             }
 
@@ -209,9 +205,9 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
         // //
         // Datum and Ellipsoid
         // //
-        crs.setDatum(Datum.GEODETIC_DATUM, new Identification("WGS_1984","World Geodetic System 1984", null, "EPSG:6326"));
-        crs.addPrimeMeridian("0.0", new Identification("Greenwich", null, null,"EPSG:8901"));
-        crs.addEllipsoid("6378137.0", null, "298.257223563", "meter",new Identification("WGS 84", null, null, "EPSG:7030"));
+        crs.setDatum(Datum.GEODETIC_DATUM, new Identification("WGS_1984", "World Geodetic System 1984", null, "EPSG:6326"));
+        crs.addPrimeMeridian("0.0", new Identification("Greenwich", null, null, "EPSG:8901"));
+        crs.addEllipsoid("6378137.0", null, "298.257223563", "meter", new Identification("WGS 84", null, null, "EPSG:7030"));
 
         crs.addAxis(new Identification("longitude"), "east", "degrees", null);
         crs.addAxis(new Identification("latitude"), "north", "degrees", null);
@@ -221,42 +217,41 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
         final String pdsLevelName = map.get(GRIB1ImageMetadata.PDSL_NAME);
         final String pdsLevelDescription = map.get(GRIB1ImageMetadata.PDSL_DESCRIPTION);
         String pdsUnits = map.get(GRIB1ImageMetadata.PDSL_UNITS);
-        if(pdsUnits==null || pdsUnits.length()==0)
-        	pdsUnits = "m";
-        
+        if (pdsUnits == null || pdsUnits.length() == 0)
+            pdsUnits = "m";
+
         // //
         //
         // Setting Vertical CRS
         //
         // //
         // TODO: Improve this
-        if (Integer.parseInt(pdsLevelId) >=0) {
+        if (Integer.parseInt(pdsLevelId) >= 0) {
             setHasVerticalCRS(true);
             VerticalCRS vCRS = getVerticalCRS();
             if (pdsLevelId != null) {
                 final int levelID = Integer.parseInt(pdsLevelId);
-                if ((levelID >= 1 && levelID <= 9)
-                        || (levelID >= 204 && levelID <= 254)) {
-                    vCRS.setIdentification(new Identification(pdsLevelDescription,null,null,null));
+                if ((levelID >= 1 && levelID <= 9) || (levelID >= 204 && levelID <= 254)) {
+                    vCRS.setIdentification(new Identification(pdsLevelDescription, null, null, null));
                     vCRS.setDatum(new Identification(pdsLevelName, null, null, null));
                     vCRS.addVerticalDatumType("other_surface");
-                    vCRS.addAxis(new Identification(pdsLevelName), "up", "m" ,null);
+                    vCRS.addAxis(new Identification(pdsLevelName), "up", "m", null);
                 } else if (levelID == 100) {
                     vCRS.setDatum(new Identification("Ground", null, null, null));
                     vCRS.setIdentification(new Identification("Isobaric Pressure", null, null, null));
                     vCRS.addVerticalDatumType("barometric");
                     vCRS.addAxis(new Identification("pressure"), "down", pdsUnits, null);
                 } else if (levelID == 101) {
-                	vCRS.setDatum(new Identification("Ground", null, null, null));
-                	vCRS.setIdentification(new Identification("Layer between two isobaric levels", null, null, null));
-                	vCRS.addVerticalDatumType("barometric");
-                    vCRS.addAxis(new Identification("pressure"), "down", pdsUnits,null);
+                    vCRS.setDatum(new Identification("Ground", null, null, null));
+                    vCRS.setIdentification(new Identification("Layer between two isobaric levels", null, null, null));
+                    vCRS.addVerticalDatumType("barometric");
+                    vCRS.addAxis(new Identification("pressure"), "down", pdsUnits, null);
                 } else if (levelID == 102) {
-	                vCRS.setDatum(new Identification("Mean Sea Level", null,null, "EPSG:5100"));
-	                vCRS.setIdentification(new Identification("Mean sea level height", null, null, "EPSG:5714"));
-	                vCRS.addVerticalDatumType("geoidal");
-	                vCRS.addAxis(new Identification("height"), "up", pdsUnits, null);
-	            }else if (levelID == 103) {
+                    vCRS.setDatum(new Identification("Mean Sea Level", null, null, "EPSG:5100"));
+                    vCRS.setIdentification(new Identification("Mean sea level height", null, null, "EPSG:5714"));
+                    vCRS.addVerticalDatumType("geoidal");
+                    vCRS.addAxis(new Identification("height"), "up", pdsUnits, null);
+                } else if (levelID == 103) {
                     vCRS.setDatum(new Identification("Mean Sea Level", null, null, "EPSG:5100"));
                     vCRS.setIdentification(new Identification("Altitude above MSL", null, null, null));
                     vCRS.addVerticalDatumType("geoidal");
@@ -268,7 +263,8 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
                     vCRS.addAxis(new Identification("height"), "up", pdsUnits, null);
                 } else if (levelID == 106) {
                     vCRS.setDatum(new Identification("Ground", null, null, null));
-                    vCRS.setIdentification(new Identification("Layer between 2 specified height level above ground", null, null, null));
+                    vCRS.setIdentification(new Identification("Layer between 2 specified height level above ground", null, null,
+                            null));
                     vCRS.addVerticalDatumType("geoidal");
                     vCRS.addAxis(new Identification("height"), "up", pdsUnits, null);
                 } else if (levelID == 109) {
@@ -277,27 +273,28 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
                     vCRS.addVerticalDatumType("other_surface");
                     vCRS.addAxis(new Identification("level"), "down", "m", null);
                 } else if (levelID == 112) {
-                	vCRS.setDatum(new Identification("Ground", null, null, null));
-                	vCRS.setIdentification(new Identification("Layer between two depths below surface", null, null, null));
-                	vCRS.addVerticalDatumType("other_surface");
-                    vCRS.addAxis(new Identification("depth"), "up", pdsUnits,null);
+                    vCRS.setDatum(new Identification("Ground", null, null, null));
+                    vCRS.setIdentification(new Identification("Layer between two depths below surface", null, null, null));
+                    vCRS.addVerticalDatumType("other_surface");
+                    vCRS.addAxis(new Identification("depth"), "up", pdsUnits, null);
                 } else if (levelID == 116) {
-                	vCRS.setDatum(new Identification("Ground", null, null, null));
-                	vCRS.setIdentification(new Identification("Layer between two pressure difference from ground", null, null, null));
-                	vCRS.addVerticalDatumType("barometric");
-                    vCRS.addAxis(new Identification("pressure"), "down", pdsUnits,null);
-                }else if (levelID == 160) {
+                    vCRS.setDatum(new Identification("Ground", null, null, null));
+                    vCRS.setIdentification(new Identification("Layer between two pressure difference from ground", null, null,
+                            null));
+                    vCRS.addVerticalDatumType("barometric");
+                    vCRS.addAxis(new Identification("pressure"), "down", pdsUnits, null);
+                } else if (levelID == 160) {
                     vCRS.setDatum(new Identification("Mean Sea Level", null, null, "EPSG:5100"));
                     vCRS.addVerticalDatumType("depth");
                     vCRS.setIdentification(new Identification("Mean sea level depth", null, null, "EPSG:5715"));
                     vCRS.addAxis(new Identification("depth"), "down", pdsUnits, null);
                 }
-                //TODO: XXX TEMP SOLUTION: ADD More VERTICAL CRSs
-                else{
-                	 vCRS.setIdentification(new Identification(pdsLevelDescription,null,null,null));
-                     vCRS.setDatum(new Identification(pdsLevelName, null, null, null));
-                     vCRS.addVerticalDatumType("other_surface");
-                     vCRS.addAxis(new Identification(pdsLevelName), "up", pdsUnits ,null);
+                // TODO: XXX TEMP SOLUTION: ADD More VERTICAL CRSs
+                else {
+                    vCRS.setIdentification(new Identification(pdsLevelDescription, null, null, null));
+                    vCRS.setDatum(new Identification(pdsLevelName, null, null, null));
+                    vCRS.addVerticalDatumType("other_surface");
+                    vCRS.addAxis(new Identification(pdsLevelName), "up", pdsUnits, null);
                 }
                 if (Boolean.parseBoolean(pdsIsNumeric)) {
 
@@ -314,33 +311,32 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
         // //
         setHasTemporalCRS(true);
         TemporalCRS tCRS = getTemporalCRS();
-        
+
         tCRS.setDatum(new Identification("ISO8601", null, null, null));
         String timeUnits = map.get(GRIB1ImageMetadata.PROD_TIME_UNITS);
         String timeName = map.get(GRIB1ImageMetadata.PROD_TIME_NAME);
-        tCRS.addAxis(new Identification(timeName),CF.POSITIVE_UP, timeUnits, null);
-        
+        tCRS.addAxis(new Identification(timeName), CF.POSITIVE_UP, timeUnits, null);
+
         String timeOrigin = null;
         final String[] unitsParts = timeUnits.split("(?i)\\s+since\\s+");
         if (unitsParts.length == 2) {
-        	timeUnits = unitsParts[0].trim();
-        	timeOrigin = unitsParts[1].trim();
-        	if (timeOrigin != null) {
-            	timeOrigin = NetCDFUtilities.trimFractionalPart(timeOrigin);
+            timeUnits = unitsParts[0].trim();
+            timeOrigin = unitsParts[1].trim();
+            if (timeOrigin != null) {
+                timeOrigin = NetCDFUtilities.trimFractionalPart(timeOrigin);
                 try {
-					Date epoch = (Date) NetCDFUtilities.getAxisFormat(AxisType.Time,
-                    		timeOrigin).parseObject(timeOrigin);
-                        GregorianCalendar cal = new GregorianCalendar();
-                        cal.setTime(epoch);
-                        DefaultInstant instant = new DefaultInstant(new DefaultPosition(cal.getTime()));
-                        final String originDate = instant.getPosition().getDateTime().toString();
-                        // TODO: Check this toString method
-                        tCRS.addOrigin(originDate);
+                    Date epoch = (Date) NetCDFUtilities.getAxisFormat(AxisType.Time, timeOrigin).parseObject(timeOrigin);
+                    GregorianCalendar cal = new GregorianCalendar();
+                    cal.setTime(epoch);
+                    DefaultInstant instant = new DefaultInstant(new DefaultPosition(cal.getTime()));
+                    final String originDate = instant.getPosition().getDateTime().toString();
+                    // TODO: Check this toString method
+                    tCRS.addOrigin(originDate);
                 } catch (ParseException e) {
                     throw new IllegalArgumentException(e);
                     // TODO: Change the handle this exception
                 }
-        	}
+            }
         }
     }
 
@@ -348,13 +344,14 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
     /**
      * TODO: HANDLE PDS LEVEL
      */
-    protected void setRectifiedGridElement(SpatioTemporalImageReader reader) {
+    protected void setRectifiedGridElement( SpatioTemporalImageReader reader ) {
         final RectifiedGrid rg = getRectifiedGrid();
         Map<String, String> map = getAttributesMap(reader);
         final int imageIndex = getImageIndex();
         try {
-            final int width = reader.getWidth(imageIndex);
-            final int height = reader.getHeight(imageIndex);
+            GRIB1ImageReader grib1Reader = ((GRIB1ImageReader) reader);
+            final int width = grib1Reader.getWidth(imageIndex);
+            final int height = grib1Reader.getHeight(imageIndex);
             final String gridTypeS = map.get(GRIB1ImageMetadata.GRID_TYPE);
             int gridType = 0;
             if (gridTypeS != null)
@@ -365,8 +362,8 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
             final String startY = map.get(GRIB1ImageMetadata.GRID_LAT_1);
 
             if (deltaX != null && deltaY != null && startX != null && startY != null) {
-                rg.setLow(new int[] { 0, 0 });
-                rg.setHigh(new int[] { width, height });
+                rg.setLow(new int[]{0, 0});
+                rg.setHigh(new int[]{width, height});
 
                 // Handle More Grid Types
 
@@ -375,13 +372,13 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
                 // Setting GridOrigin Point
                 //
                 // //
-                switch (gridType) {
+                switch( gridType ) {
                 case 10:
                     // TODO: Handle this
                 case 0:
-                    rg.setCoordinates(new double[] {Double.parseDouble(startX), Double.parseDouble(startY) });
-                    rg.addOffsetVector(new double[] {Double.parseDouble(deltaX), 0d });
-                    rg.addOffsetVector(new double[] { 0d, Double.parseDouble(deltaY) });
+                    rg.setCoordinates(new double[]{Double.parseDouble(startX), Double.parseDouble(startY)});
+                    rg.addOffsetVector(new double[]{Double.parseDouble(deltaX), 0d});
+                    rg.addOffsetVector(new double[]{0d, Double.parseDouble(deltaY)});
                     // TODO: Check this.
                     rg.addAxisName("Long");
                     rg.addAxisName("Lat");
@@ -401,15 +398,15 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
     }
 
     @Override
-    protected void setBandsElement(SpatioTemporalImageReader reader) {
-        GRIB1SpatioTemporalImageReader grib1Reader = ((GRIB1SpatioTemporalImageReader) reader);
+    protected void setBandsElement( SpatioTemporalImageReader reader ) {
+        GRIB1ImageReader grib1Reader = ((GRIB1ImageReader) reader);
         final int imageIndex = getImageIndex();
         Band band = addBand();
 
         try {
             IIOMetadata metadata = grib1Reader.getImageMetadata(imageIndex);
-            if (metadata instanceof BaseImageMetadata) {
-                final BaseImageMetadata commonMetadata = (BaseImageMetadata) metadata;
+            if (metadata instanceof UnidataImageMetadata) {
+                final UnidataImageMetadata commonMetadata = (UnidataImageMetadata) metadata;
                 setBandFromCommonMetadata(band, commonMetadata);
                 Node node = commonMetadata.getAsTree(GRIB1ImageMetadata.nativeMetadataFormatName);
                 node = node.getFirstChild();
@@ -437,12 +434,11 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
     }
 
     @Override
-    protected void setBoundedByElement(SpatioTemporalImageReader reader) {
+    protected void setBoundedByElement( SpatioTemporalImageReader reader ) {
         Map<String, String> map = getAttributesMap(reader);
         BoundedBy bb = getBoundedBy();
         if (bb == null)
-            throw new IllegalArgumentException(
-                    "Provided BoundedBy element is null");
+            throw new IllegalArgumentException("Provided BoundedBy element is null");
 
         final String typeS = map.get(GRIB1ImageMetadata.GRID_TYPE);
         // TODO: Add more check on grid types
@@ -450,7 +446,7 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
         // ////////////////////////////////////////////////////////////////////
         //
         // Setting Envelope
-        // 
+        //
         // ////////////////////////////////////////////////////////////////////
         if (typeS != null) {
             final int type = Integer.parseInt(typeS);
@@ -458,27 +454,19 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
             final String lat2s = map.get(GRIB1ImageMetadata.GRID_LAT_2);
             final String lon1s = map.get(GRIB1ImageMetadata.GRID_LON_1);
             final String lon2s = map.get(GRIB1ImageMetadata.GRID_LON_2);
-            if (lat1s != null && lat2s != null && lon1s != null
-                    && lon2s != null) {
-                double[] lc = new double[] { Double.parseDouble(lon1s),
-                        Double.parseDouble(lat1s) };
-                double[] uc = new double[] { Double.parseDouble(lon2s),
-                        Double.parseDouble(lat2s) };
+            if (lat1s != null && lat2s != null && lon1s != null && lon2s != null) {
+                double[] lc = new double[]{Double.parseDouble(lon1s), Double.parseDouble(lat1s)};
+                double[] uc = new double[]{Double.parseDouble(lon2s), Double.parseDouble(lat2s)};
 
-                switch (type) {
+                switch( type ) {
                 case 10:
-                    final String deltaX = map
-                            .get(GRIB1ImageMetadata.GRID_DELTA_X);
-                    final String deltaY = map
-                            .get(GRIB1ImageMetadata.GRID_DELTA_Y);
-                    final String latSP = map
-                            .get(GRIB1ImageMetadata.GRID_LAT_SP);
-                    final String lonSP = map
-                            .get(GRIB1ImageMetadata.GRID_LON_SP);
+                    final String deltaX = map.get(GRIB1ImageMetadata.GRID_DELTA_X);
+                    final String deltaY = map.get(GRIB1ImageMetadata.GRID_DELTA_Y);
+                    final String latSP = map.get(GRIB1ImageMetadata.GRID_LAT_SP);
+                    final String lonSP = map.get(GRIB1ImageMetadata.GRID_LON_SP);
                     final String nX = map.get(GRIB1ImageMetadata.GRID_N_X);
                     final String nY = map.get(GRIB1ImageMetadata.GRID_N_Y);
-                    if (deltaX != null && deltaY != null && lonSP != null
-                            && latSP != null && nY != null && nX != null) {
+                    if (deltaX != null && deltaY != null && lonSP != null && latSP != null && nY != null && nX != null) {
                         final double lonSp = Double.parseDouble(lonSP);
                         final double latSp = Double.parseDouble(latSP);
                         final double dX = Double.parseDouble(deltaX);
@@ -486,8 +474,7 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
                         final double x = Double.parseDouble(nX);
                         final double y = Double.parseDouble(nY);
 
-                        uc = getGridCoords(x * dX, y * dY, lc[0], lc[1], lonSp,
-                                latSp);
+                        uc = getGridCoords(x * dX, y * dY, lc[0], lc[1], lonSp, latSp);
                         lc = getGridCoords(0, 0, lc[0], lc[1], lonSp, latSp);
 
                     }
@@ -512,8 +499,7 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
             final String pdsValues = map.get(GRIB1ImageMetadata.PDSL_VALUES);
             final String isNumeric = map.get(GRIB1ImageMetadata.PDSL_ISNUMERIC);
             if (isNumeric != null && Boolean.parseBoolean(isNumeric)) {
-                final String[] values = pdsValues
-                        .split(GRIB1Utilities.VALUES_SEPARATOR);
+                final String[] values = pdsValues.split(GRIB1Utilities.VALUES_SEPARATOR);
                 if (values != null) {
                     if (values.length == 1)
                         bb.setVerticalExtent(Double.parseDouble(values[0]));
@@ -525,8 +511,7 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
                         else
                             bb.setVerticalExtent(d1);
                     } else {
-                        throw new IllegalArgumentException(
-                                "Unable to set a proper Vertical Extent");
+                        throw new IllegalArgumentException("Unable to set a proper Vertical Extent");
                     }
                 }
             } else {
@@ -542,12 +527,12 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
             // //
             final String time = map.get(GRIB1ImageMetadata.PROD_TIME);
             if (Utilities.ensureValidString(time)) {
-//                if (time.contains(GRIB1Utilities.DATE_SEPARATOR)) {
-//                    String beginEnd[] = time
-//                            .split(GRIB1Utilities.DATE_SEPARATOR);
-//                    bb.setTemporalExtent(beginEnd);
-//                } else
-//                    bb.setTemporalExtent(time);
+                // if (time.contains(GRIB1Utilities.DATE_SEPARATOR)) {
+                // String beginEnd[] = time
+                // .split(GRIB1Utilities.DATE_SEPARATOR);
+                // bb.setTemporalExtent(beginEnd);
+                // } else
+                // bb.setTemporalExtent(time);
             }
 
         }
@@ -559,9 +544,8 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
      * 
      * @returns longitide/latituide as doubles
      */
-    public double[] getGridCoords(final double x, final double y,
-            final double lon1, final double lat1, final double lonSp,
-            final double latSp) {
+    public double[] getGridCoords( final double x, final double y, final double lon1, final double lat1, final double lonSp,
+            final double latSp ) {
         double[] coords = new double[2];
 
         double longi = lon1 + x;
@@ -586,7 +570,7 @@ public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
         return coords;
     }
 
-    private double[] rtll(double lon, double lat, double lonSp, double latSp) {
+    private double[] rtll( double lon, double lat, double lonSp, double latSp ) {
         double[] all = new double[2];
 
         double dtr = Math.PI / 180.;

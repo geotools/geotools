@@ -16,12 +16,9 @@
  */
 package org.geotools.coverage.io.range;
 
-import java.util.List;
 import java.util.Set;
 
-import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
-import javax.measure.unit.Unit;
 
 import org.opengis.coverage.SampleDimension;
 import org.opengis.feature.type.Name;
@@ -71,58 +68,11 @@ public interface FieldType {
     public InternationalString getDescription();
 
     /**
-     * {@link List} of all the axes of the {@link FieldType}
-     * 
-     * @return a {@link List} of all the {@link Axis} instances for this
-     *         {@link FieldType}
-     */
-    public List<Axis<?,?>> getAxes();
-
-    /**
-     * {@link List} of all the {@link Axis} instances
-     * {@link org.opengis.feature.type.Name}s.
-     * 
-     * @return a {@link List} of all the {@link Axis} instances
-     *         {@link org.opengis.feature.type.Name}s.
-     */
-    public List<Name> getAxesNames();
-
-    /**
-     * Get the Axis by name
-     * 
-     * @param name
-     *                name of the Axis
-     * @return Axis instance or null if not found
-     */
-    public Axis<?,?> getAxis(Name name);
-
-    /**
      * List the SampleDimensions of the measure.
      * 
      * @return Set of {@link SampleDimension} instances
      */
     public Set<SampleDimension> getSampleDimensions();
 
-    /**
-     * Look up the SampleDimension by key (as described by Axis)
-     * 
-     * @param key
-     *                key of the SampleDimension
-     * @return {@link SampleDimension} instance or null if not found
-     */
-    public SampleDimension getSampleDimension(Measure<?,?> key);
-
-    /**
-     * Retrieves the Unit of measure for the values described by this field.
-     *  
-     * <p>
-     * In case this {@link FieldType} is not made of measurable quantities we
-     * return <code>null</code>
-     * 
-     * @return the Unit of measure for the values described by this field or
-     *         <code>null</code> in case this {@link FieldType} is not made of
-     *         measurable quantities
-     */
-    public Unit<?> getUnitOfMeasure();
 
 }

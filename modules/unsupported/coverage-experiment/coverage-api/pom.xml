@@ -75,11 +75,42 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-coverage</artifactId>
       <version>${project.version}</version>
-    </dependency> 
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-h2</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>    
+    <dependency>
+      <!-- for FilenameUtils -->
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
     <dependency>
       <groupId>com.vividsolutions</groupId>
       <artifactId>jts</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-imagereadmt</artifactId>
+      <version>${imageio.ext.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-utilities</artifactId>
+      <version>${imageio.ext.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-geocore</artifactId>
+      <version>${imageio.ext.version}</version>
+    </dependency>    
   </dependencies>
 </project>

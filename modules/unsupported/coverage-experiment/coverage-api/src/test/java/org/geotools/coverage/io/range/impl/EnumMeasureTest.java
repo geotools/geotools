@@ -15,8 +15,8 @@ import javax.measure.unit.Unit;
 
 import junit.framework.Assert;
 
-import org.geotools.coverage.io.impl.range.DefaultAxis;
-import org.geotools.coverage.io.impl.range.EnumMeasure;
+import org.geotools.coverage.io.range.impl.DefaultAxis;
+import org.geotools.coverage.io.range.impl.EnumMeasure;
 import org.geotools.feature.NameImpl;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;

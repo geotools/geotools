@@ -22,14 +22,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.geotools.coverage.io.driver.Driver;
 import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.data.Parameter;
 import org.geotools.data.ServiceInfo;
 import org.geotools.factory.Hints;
 import org.opengis.feature.type.Name;
-import org.opengis.geometry.Envelope;
-import org.opengis.metadata.extent.Extent;
 import org.opengis.util.ProgressListener;
 
 /**
@@ -48,7 +45,7 @@ import org.opengis.util.ProgressListener;
  * @source $URL$
  */
 public interface CoverageAccess {
-	
+    
     /**
      * Level of access supported.
      */
@@ -125,20 +122,6 @@ public interface CoverageAccess {
     // which would allow us to present a tree of data, rather than a flat list.
     // (not sure if this is a good idea - just getting it out there)
     //
-    
-	/**
-	 * This method can be used to acquire a rough description of a coverage
-	 * spatiotemporal domain.
-	 * 
-	 * @param coverageName
-	 * @param listener
-	 * @return {@link Envelope}
-	 * 
-	 * TODO @todo consider geoapi {@link Extent} which can in turn wrap the Envelope
-	 *       we are providing here In order to do so we need to resolve the
-	 *       ambiguity of the 3D inseparable CRSs between vertical and horizontal domain.
-	 */
-    public Envelope getExtent(Name coverageName, final ProgressListener listener);
     
     //
     // Data Access
@@ -278,9 +261,9 @@ public interface CoverageAccess {
     public void dispose();
     
 
-	public MetadataNode getStorageMetadata(String metadataDomain);
+    public MetadataNode getStorageMetadata(String metadataDomain);
 
-	public Set<String> getStorageMetadataDomains();
+    public Set<String> getStorageMetadataDomains();
 
 
 }

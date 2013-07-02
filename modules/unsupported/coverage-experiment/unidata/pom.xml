@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id: pom.xml 4778 2009-07-08 17:46:40Z simboss $              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>gt-coverage-experiment</artifactId>
+    <version>10-SNAPSHOT</version>
+  </parent>
+  
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-unidata</artifactId>
+  <packaging>jar</packaging>
+  <name>Unidata API</name>
+  <scm>
+    <connection>
+      scm:svn:https://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/
+    </connection>
+  <url>https://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/</url>
+ </scm>
+
+  <description>
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Simone Giannecchini</name>
+      <id>simboss</id>
+      <email>simone.giannecchini@geo-solutions.it</email>
+      <organization>GeoSolutions S.A.S.</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-coverage-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-imagemosaic</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-imagereadmt</artifactId>
+      <version>${imageio.ext.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-utilities</artifactId>
+      <version>${imageio.ext.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-geocore</artifactId>
+      <version>${imageio.ext.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.ucar</groupId>
+      <artifactId>netcdf</artifactId> 
+      <version>4.3.16</version>
+    </dependency>
+    <dependency>
+      <groupId>opendap</groupId>
+      <artifactId>opendap</artifactId>
+      <version>2.1</version>
+    </dependency>
+        <dependency>
+    <!-- required to read files remotely over HTTP -->
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.1</version>
+      <scope>runtime</scope>
+    </dependency> 
+         <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.5.6</version>
+      <scope>runtime</scope>
+    </dependency>
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

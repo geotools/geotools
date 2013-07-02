@@ -2,8 +2,8 @@ package org.geotools.coverage.io.driver;
 
 import java.util.Set;
 
-import org.geotools.coverage.io.driver.CoverageIO;
-import org.geotools.coverage.io.driver.Driver;
+import org.geotools.coverage.io.Driver;
+import org.geotools.coverage.io.impl.CoverageIO;
 import org.junit.Test;
 
 import junit.framework.Assert;

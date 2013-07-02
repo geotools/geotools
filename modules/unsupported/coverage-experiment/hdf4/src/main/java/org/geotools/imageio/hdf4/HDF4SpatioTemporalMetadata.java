@@ -16,14 +16,6 @@
  */
 package org.geotools.imageio.hdf4;
 
-import it.geosolutions.imageio.ndplugin.BaseImageMetadata;
-import it.geosolutions.imageio.plugins.hdf4.HDF4Utilities;
-import it.geosolutions.imageio.plugins.hdf4.aps.HDF4APSImageMetadata;
-import it.geosolutions.imageio.plugins.hdf4.aps.HDF4APSStreamMetadata;
-import it.geosolutions.imageio.plugins.hdf4.terascan.HDF4TeraScanImageMetadata;
-import it.geosolutions.imageio.plugins.hdf4.terascan.HDF4TeraScanProperties;
-import it.geosolutions.imageio.plugins.hdf4.terascan.HDF4TeraScanStreamMetadata;
-
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
@@ -36,24 +28,28 @@ import java.util.logging.Logger;
 import javax.imageio.metadata.IIOMetadata;
 
 import org.geotools.coverage.grid.GridEnvelope2D;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.io.hdf4.CRSUtilities;
 import org.geotools.coverage.io.util.Utilities;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.SpatioTemporalImageReader;
-import org.geotools.imageio.hdf4.HDF4SpatioTemporalImageReaderSpi.HDF4_TYPE;
-import org.geotools.imageio.metadata.Band;
-import org.geotools.imageio.metadata.BoundedBy;
-import org.geotools.imageio.metadata.CoordinateReferenceSystem;
-import org.geotools.imageio.metadata.Identification;
-import org.geotools.imageio.metadata.RectifiedGrid;
-import org.geotools.imageio.metadata.SpatioTemporalMetadata;
-import org.geotools.imageio.metadata.SpatioTemporalMetadataFormat;
-import org.geotools.imageio.metadata.TemporalCRS;
-import org.geotools.imageio.metadata.AbstractCoordinateReferenceSystem.Datum;
+import org.geotools.imageio.hdf4.HDF4ImageReaderSpi.HDF4_TYPE;
+import org.geotools.imageio.hdf4.aps.HDF4APSImageMetadata;
+import org.geotools.imageio.hdf4.aps.HDF4APSStreamMetadata;
+import org.geotools.imageio.hdf4.terascan.HDF4TeraScanImageMetadata;
+import org.geotools.imageio.hdf4.terascan.HDF4TeraScanProperties;
+import org.geotools.imageio.hdf4.terascan.HDF4TeraScanStreamMetadata;
+import org.geotools.imageio.metadataold.Band;
+import org.geotools.imageio.metadataold.BoundedBy;
+import org.geotools.imageio.metadataold.CoordinateReferenceSystem;
+import org.geotools.imageio.metadataold.Identification;
+import org.geotools.imageio.metadataold.RectifiedGrid;
+import org.geotools.imageio.metadataold.SpatioTemporalMetadata;
+import org.geotools.imageio.metadataold.SpatioTemporalMetadataFormat;
+import org.geotools.imageio.metadataold.TemporalCRS;
+import org.geotools.imageio.metadataold.AbstractCoordinateReferenceSystem.Datum;
+import org.geotools.imageio.unidata.UnidataImageMetadata;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
@@ -81,7 +77,7 @@ public class HDF4SpatioTemporalMetadata extends SpatioTemporalMetadata {
 	
     protected final static Logger LOGGER = Logger.getLogger(HDF4SpatioTemporalMetadata.class.toString());
 
-    public HDF4SpatioTemporalMetadata(HDF4SpatioTemporalImageReader reader,int imageIndex) {
+    public HDF4SpatioTemporalMetadata(HDF4ImageReader reader,int imageIndex) {
         super(reader, imageIndex);
         if (hdf4_type == HDF4_TYPE.UNDEFINED)
         	hdf4_type = reader.getHDF4Type();
@@ -144,8 +140,9 @@ public class HDF4SpatioTemporalMetadata extends SpatioTemporalMetadata {
         IIOMetadata streamMetadata;
         final int imageIndex = getImageIndex();
         try {
-            metadata = reader.getImageMetadata(imageIndex);
-            streamMetadata = reader.getStreamMetadata();
+            HDF4ImageReader hdf4ImageReader = (HDF4ImageReader) reader;
+            metadata = hdf4ImageReader.getImageMetadata(imageIndex);
+            streamMetadata = hdf4ImageReader.getStreamMetadata();
             switch (hdf4_type){
             case TeraScan:
             	setAttributesFromTerascanMetadata(metadata,streamMetadata);
@@ -480,8 +477,9 @@ public class HDF4SpatioTemporalMetadata extends SpatioTemporalMetadata {
         startX=startY=deltaX=deltaY=axisX=axisY = null;
         AffineTransform tempTransform = null;
 		try {
-			width = reader.getWidth(imageIndex);
-			height = reader.getHeight(imageIndex);
+		    HDF4ImageReader hdf4ImageReader = (HDF4ImageReader) reader;
+			width = hdf4ImageReader.getWidth(imageIndex);
+			height = hdf4ImageReader.getHeight(imageIndex);
             rg.setLow(new int[] { 0, 0 });
             rg.setHigh(new int[] { width, height });
             switch (hdf4_type){
@@ -530,7 +528,7 @@ public class HDF4SpatioTemporalMetadata extends SpatioTemporalMetadata {
     @Override
     protected void setBandsElement(SpatioTemporalImageReader reader) {
         init(reader);
-        final HDF4SpatioTemporalImageReader hdf4Reader = ((HDF4SpatioTemporalImageReader) reader);
+        final HDF4ImageReader hdf4Reader = ((HDF4ImageReader) reader);
         final Band band = addBand();
         final int imageIndex = getImageIndex();
 		String imageMetadataFormat=null;
@@ -559,8 +557,8 @@ public class HDF4SpatioTemporalMetadata extends SpatioTemporalMetadata {
     		//
     		// //
     		final IIOMetadata metadata = hdf4Reader.getImageMetadata(imageIndex,imageMetadataFormat);
-            if (metadata instanceof BaseImageMetadata) {
-                final BaseImageMetadata commonMetadata = (BaseImageMetadata) metadata;
+            if (metadata instanceof UnidataImageMetadata) {
+                final UnidataImageMetadata commonMetadata = (UnidataImageMetadata) metadata;
                 setBandFromCommonMetadata(band, commonMetadata);
                 Node node = commonMetadata.getAsTree(imageMetadataFormat);
                 node = node.getFirstChild();
@@ -588,7 +586,7 @@ public class HDF4SpatioTemporalMetadata extends SpatioTemporalMetadata {
 
 	private void init(SpatioTemporalImageReader reader) {
     	if ((hdf4_type == null || hdf4_type == HDF4_TYPE.UNDEFINED) && reader != null){
-        	hdf4_type = ((HDF4SpatioTemporalImageReader) reader).getHDF4Type();
+        	hdf4_type = ((HDF4ImageReader) reader).getHDF4Type();
         	if (hdf4_type == null || hdf4_type == HDF4_TYPE.UNDEFINED)
         		throw new IllegalArgumentException ("Unsupported HDF4 Type");
     	}
@@ -607,8 +605,9 @@ public class HDF4SpatioTemporalMetadata extends SpatioTemporalMetadata {
         int width;
         int height;
 		try {
-			width = reader.getWidth(imageIndex);
-			height = reader.getHeight(imageIndex);
+		    HDF4ImageReader hdf4ImageReader = (HDF4ImageReader) reader;
+			width = hdf4ImageReader.getWidth(imageIndex);
+			height = hdf4ImageReader.getHeight(imageIndex);
 			gridRange = new Rectangle(0,0,width,height);
 		} catch (IOException e) {
 			throw new IllegalArgumentException("Unable to set boundedBy"+e.getLocalizedMessage(), e);

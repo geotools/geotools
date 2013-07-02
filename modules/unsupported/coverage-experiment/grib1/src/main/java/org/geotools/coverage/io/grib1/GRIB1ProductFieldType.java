@@ -26,10 +26,10 @@ import javax.measure.quantity.Quantity;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
-import org.geotools.coverage.io.impl.range.BaseFieldType;
-import org.geotools.coverage.io.impl.range.SimpleScalarAxis;
 import org.geotools.coverage.io.range.Axis;
 import org.geotools.coverage.io.range.FieldType;
+import org.geotools.coverage.io.range.impl.BaseFieldType;
+import org.geotools.coverage.io.range.impl.SimpleScalarAxis;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.coverage.SampleDimension;

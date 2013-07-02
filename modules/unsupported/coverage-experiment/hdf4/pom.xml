@@ -75,13 +75,13 @@
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-coverage-core</artifactId>
+      <artifactId>gt-coverage-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>it.geosolutions.imageio-ext</groupId>
-      <artifactId>imageio-ext-hdf4</artifactId>
-      <version>${imageio.ext.version}</version>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-netcdf</artifactId>
+      <version>${project.version}</version>
     </dependency>
        <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>

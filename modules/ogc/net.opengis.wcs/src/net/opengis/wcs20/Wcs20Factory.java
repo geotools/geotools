@@ -319,6 +319,24 @@ public interface Wcs20Factory extends EFactory {
     InterpolationType createInterpolationType();
 
     /**
+     * Returns a new object of class '<em>Describe EO Coverage Set Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Describe EO Coverage Set Type</em>'.
+     * @generated
+     */
+    DescribeEOCoverageSetType createDescribeEOCoverageSetType();
+
+    /**
+     * Returns a new object of class '<em>Sections</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Sections</em>'.
+     * @generated
+     */
+    Sections createSections();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

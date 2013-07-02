@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.BasicFeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.opengis.filter.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,6 +34,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link net.opengis.wcs20.impl.GetCoverageTypeImpl#getDimensionSubset <em>Dimension Subset</em>}</li>
  *   <li>{@link net.opengis.wcs20.impl.GetCoverageTypeImpl#getFormat <em>Format</em>}</li>
  *   <li>{@link net.opengis.wcs20.impl.GetCoverageTypeImpl#getMediaType <em>Media Type</em>}</li>
+ *   <li>{@link net.opengis.wcs20.impl.GetCoverageTypeImpl#getFilter <em>Filter</em>}</li>
  * </ul>
  * </p>
  *
@@ -108,6 +110,26 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * @ordered
      */
     protected String mediaType = MEDIA_TYPE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getFilter() <em>Filter</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getFilter()
+     * @generated
+     * @ordered
+     */
+    protected static final Filter FILTER_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getFilter() <em>Filter</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getFilter()
+     * @generated
+     * @ordered
+     */
+    protected Filter filter = FILTER_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -217,6 +239,27 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
      * @generated
      */
+    public Filter getFilter() {
+        return filter;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setFilter(Filter newFilter) {
+        Filter oldFilter = filter;
+        filter = newFilter;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.GET_COVERAGE_TYPE__FILTER, oldFilter, filter));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
@@ -247,6 +290,8 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
                 return getFormat();
             case Wcs20Package.GET_COVERAGE_TYPE__MEDIA_TYPE:
                 return getMediaType();
+            case Wcs20Package.GET_COVERAGE_TYPE__FILTER:
+                return getFilter();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -276,6 +321,9 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
             case Wcs20Package.GET_COVERAGE_TYPE__MEDIA_TYPE:
                 setMediaType((String)newValue);
                 return;
+            case Wcs20Package.GET_COVERAGE_TYPE__FILTER:
+                setFilter((Filter)newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -303,6 +351,9 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
             case Wcs20Package.GET_COVERAGE_TYPE__MEDIA_TYPE:
                 setMediaType(MEDIA_TYPE_EDEFAULT);
                 return;
+            case Wcs20Package.GET_COVERAGE_TYPE__FILTER:
+                setFilter(FILTER_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -325,6 +376,8 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
                 return FORMAT_EDEFAULT == null ? format != null : !FORMAT_EDEFAULT.equals(format);
             case Wcs20Package.GET_COVERAGE_TYPE__MEDIA_TYPE:
                 return MEDIA_TYPE_EDEFAULT == null ? mediaType != null : !MEDIA_TYPE_EDEFAULT.equals(mediaType);
+            case Wcs20Package.GET_COVERAGE_TYPE__FILTER:
+                return FILTER_EDEFAULT == null ? filter != null : !FILTER_EDEFAULT.equals(filter);
         }
         return super.eIsSet(featureID);
     }
@@ -347,6 +400,8 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
         result.append(format);
         result.append(", mediaType: ");
         result.append(mediaType);
+        result.append(", filter: ");
+        result.append(filter);
         result.append(')');
         return result.toString();
     }

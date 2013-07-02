@@ -3,8 +3,8 @@
 package net.opengis.wcs20;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.util.FeatureMap;
+import org.opengis.filter.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  *   <li>{@link net.opengis.wcs20.GetCoverageType#getDimensionSubset <em>Dimension Subset</em>}</li>
  *   <li>{@link net.opengis.wcs20.GetCoverageType#getFormat <em>Format</em>}</li>
  *   <li>{@link net.opengis.wcs20.GetCoverageType#getMediaType <em>Media Type</em>}</li>
+ *   <li>{@link net.opengis.wcs20.GetCoverageType#getFilter <em>Filter</em>}</li>
  * </ul>
  * </p>
  *
@@ -136,5 +137,22 @@ public interface GetCoverageType extends RequestBaseType {
      * @generated
      */
     void setMediaType(String value);
+    
+    /**
+     * Custom extension allowing to apply a filter to a coverage content (for readers that can do 
+     * filtering, mostly StructuredCoverageGridReader ones).
+     * @model
+     */
+    Filter getFilter();
+
+    /**
+     * Sets the value of the '{@link net.opengis.wcs20.GetCoverageType#getFilter <em>Filter</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Filter</em>' attribute.
+     * @see #getFilter()
+     * @generated
+     */
+    void setFilter(Filter value);
 
 } // GetCoverageType

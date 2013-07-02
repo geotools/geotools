@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import net.opengis.wcs20.CapabilitiesType;
+import net.opengis.wcs20.ContainmentType;
 import net.opengis.wcs20.ContentsType;
 import net.opengis.wcs20.CoverageDescriptionType;
 import net.opengis.wcs20.CoverageDescriptionsType;
@@ -14,6 +15,7 @@ import net.opengis.wcs20.CoverageOfferingsType;
 import net.opengis.wcs20.CoverageSubtypeParentType;
 import net.opengis.wcs20.CoverageSummaryType;
 import net.opengis.wcs20.DescribeCoverageType;
+import net.opengis.wcs20.DescribeEOCoverageSetType;
 import net.opengis.wcs20.DimensionSliceType;
 import net.opengis.wcs20.DimensionSubsetType;
 import net.opengis.wcs20.DimensionTrimType;
@@ -37,6 +39,8 @@ import net.opengis.wcs20.ScaleByFactorType;
 import net.opengis.wcs20.ScaleToExtentType;
 import net.opengis.wcs20.ScaleToSizeType;
 import net.opengis.wcs20.ScalingType;
+import net.opengis.wcs20.Section;
+import net.opengis.wcs20.Sections;
 import net.opengis.wcs20.ServiceMetadataType;
 import net.opengis.wcs20.ServiceParametersType;
 import net.opengis.wcs20.TargetAxisExtentType;
@@ -53,6 +57,7 @@ import org.eclipse.emf.ecore.util.EObjectValidator;
 
 import org.eclipse.emf.ecore.xml.type.util.XMLTypeUtil;
 import org.eclipse.emf.ecore.xml.type.util.XMLTypeValidator;
+import org.opengis.filter.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -207,12 +212,22 @@ public class Wcs20Validator extends EObjectValidator {
                 return validateInterpolationMethodType((InterpolationMethodType)value, diagnostics, context);
             case Wcs20Package.INTERPOLATION_TYPE:
                 return validateInterpolationType((InterpolationType)value, diagnostics, context);
+            case Wcs20Package.DESCRIBE_EO_COVERAGE_SET_TYPE:
+                return validateDescribeEOCoverageSetType((DescribeEOCoverageSetType)value, diagnostics, context);
+            case Wcs20Package.SECTIONS:
+                return validateSections((Sections)value, diagnostics, context);
+            case Wcs20Package.CONTAINMENT_TYPE:
+                return validateContainmentType((ContainmentType)value, diagnostics, context);
+            case Wcs20Package.SECTION:
+                return validateSection((Section)value, diagnostics, context);
             case Wcs20Package.VERSION_STRING_TYPE:
                 return validateVersionStringType((String)value, diagnostics, context);
             case Wcs20Package.VERSION_STRING_TYPE_1:
                 return validateVersionStringType_1((String)value, diagnostics, context);
             case Wcs20Package.QNAME:
                 return validateQName((QName)value, diagnostics, context);
+            case Wcs20Package.FILTER:
+                return validateFilter((Filter)value, diagnostics, context);
             default:
                 return true;
         }
@@ -547,6 +562,42 @@ public class Wcs20Validator extends EObjectValidator {
      * <!-- end-user-doc -->
      * @generated
      */
+    public boolean validateDescribeEOCoverageSetType(DescribeEOCoverageSetType describeEOCoverageSetType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(describeEOCoverageSetType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateSections(Sections sections, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(sections, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateContainmentType(ContainmentType containmentType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return true;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateSection(Section section, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return true;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public boolean validateVersionStringType(String versionStringType, DiagnosticChain diagnostics, Map<Object, Object> context) {
         boolean result = validateVersionStringType_Pattern(versionStringType, diagnostics, context);
         return result;
@@ -590,6 +641,15 @@ public class Wcs20Validator extends EObjectValidator {
      * @generated
      */
     public boolean validateQName(QName qName, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return true;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateFilter(Filter filter, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return true;
     }
 

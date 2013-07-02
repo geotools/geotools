@@ -6,9 +6,19 @@
   <foreignModel>@model</foreignModel>
   <genPackages prefix="Wcs20" basePackage="net.opengis" resource="XML" disposableProviderFactory="true"
       ecorePackage="wcs20.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wcs20.ecore#//ContainmentType">
+      <genEnumLiterals ecoreEnumLiteral="wcs20.ecore#//ContainmentType/OVERLAPS"/>
+      <genEnumLiterals ecoreEnumLiteral="wcs20.ecore#//ContainmentType/CONTAINS"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wcs20.ecore#//Section">
+      <genEnumLiterals ecoreEnumLiteral="wcs20.ecore#//Section/COVERAGEDESCRIPTIONS"/>
+      <genEnumLiterals ecoreEnumLiteral="wcs20.ecore#//Section/DATASETSERIESDESCRIPTIONS"/>
+      <genEnumLiterals ecoreEnumLiteral="wcs20.ecore#//Section/ALL"/>
+    </genEnums>
     <genDataTypes ecoreDataType="wcs20.ecore#//VersionStringType"/>
     <genDataTypes ecoreDataType="wcs20.ecore#//VersionStringType_1"/>
     <genDataTypes ecoreDataType="wcs20.ecore#//QName"/>
+    <genDataTypes ecoreDataType="wcs20.ecore#//Filter"/>
     <genClasses ecoreClass="wcs20.ecore#//CapabilitiesType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CapabilitiesType/serviceMetadata"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CapabilitiesType/contents"/>
@@ -95,6 +105,7 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wcs20.ecore#//GetCoverageType/dimensionSubset"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//GetCoverageType/format"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//GetCoverageType/mediaType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//GetCoverageType/filter"/>
     </genClasses>
     <genClasses ecoreClass="wcs20.ecore#//OfferedCoverageType">
       <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference wcs20.ecore#//OfferedCoverageType/abstractCoverage"/>
@@ -178,6 +189,16 @@
     <genClasses ecoreClass="wcs20.ecore#//InterpolationType">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wcs20.ecore#//InterpolationType/interpolationMethod"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wcs20.ecore#//InterpolationType/interpolationAxes"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//DescribeEOCoverageSetType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DescribeEOCoverageSetType/eoId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DescribeEOCoverageSetType/containmentType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DescribeEOCoverageSetType/sections"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wcs20.ecore#//DescribeEOCoverageSetType/dimensionTrim"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DescribeEOCoverageSetType/count"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//Sections">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute wcs20.ecore#//Sections/section"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

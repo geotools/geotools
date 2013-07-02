@@ -7,6 +7,7 @@ import net.opengis.ows20.Ows20Package;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -1886,13 +1887,22 @@ public interface Wcs20Package extends EPackage {
     int GET_COVERAGE_TYPE__MEDIA_TYPE = REQUEST_BASE_TYPE_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Filter</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_COVERAGE_TYPE__FILTER = REQUEST_BASE_TYPE_FEATURE_COUNT + 5;
+
+    /**
      * The number of structural features of the '<em>Get Coverage Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int GET_COVERAGE_TYPE_FEATURE_COUNT = REQUEST_BASE_TYPE_FEATURE_COUNT + 5;
+    int GET_COVERAGE_TYPE_FEATURE_COUNT = REQUEST_BASE_TYPE_FEATURE_COUNT + 6;
 
     /**
      * The meta object id for the '{@link net.opengis.wcs20.impl.OfferedCoverageTypeImpl <em>Offered Coverage Type</em>}' class.
@@ -2617,6 +2627,154 @@ public interface Wcs20Package extends EPackage {
     int INTERPOLATION_TYPE_FEATURE_COUNT = 2;
 
     /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.DescribeEOCoverageSetTypeImpl <em>Describe EO Coverage Set Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.DescribeEOCoverageSetTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDescribeEOCoverageSetType()
+     * @generated
+     */
+    int DESCRIBE_EO_COVERAGE_SET_TYPE = 36;
+
+    /**
+     * The feature id for the '<em><b>Extension</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_EO_COVERAGE_SET_TYPE__EXTENSION = REQUEST_BASE_TYPE__EXTENSION;
+
+    /**
+     * The feature id for the '<em><b>Service</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_EO_COVERAGE_SET_TYPE__SERVICE = REQUEST_BASE_TYPE__SERVICE;
+
+    /**
+     * The feature id for the '<em><b>Version</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_EO_COVERAGE_SET_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
+
+    /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_EO_COVERAGE_SET_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Eo Id</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_EO_COVERAGE_SET_TYPE__EO_ID = REQUEST_BASE_TYPE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Containment Type</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_EO_COVERAGE_SET_TYPE__CONTAINMENT_TYPE = REQUEST_BASE_TYPE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Sections</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_EO_COVERAGE_SET_TYPE__SECTIONS = REQUEST_BASE_TYPE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Dimension Trim</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_EO_COVERAGE_SET_TYPE__DIMENSION_TRIM = REQUEST_BASE_TYPE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Count</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_EO_COVERAGE_SET_TYPE__COUNT = REQUEST_BASE_TYPE_FEATURE_COUNT + 4;
+
+    /**
+     * The number of structural features of the '<em>Describe EO Coverage Set Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_EO_COVERAGE_SET_TYPE_FEATURE_COUNT = REQUEST_BASE_TYPE_FEATURE_COUNT + 5;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.SectionsImpl <em>Sections</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.SectionsImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSections()
+     * @generated
+     */
+    int SECTIONS = 37;
+
+    /**
+     * The feature id for the '<em><b>Section</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SECTIONS__SECTION = 0;
+
+    /**
+     * The number of structural features of the '<em>Sections</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SECTIONS_FEATURE_COUNT = 1;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.ContainmentType <em>Containment Type</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.ContainmentType
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getContainmentType()
+     * @generated
+     */
+    int CONTAINMENT_TYPE = 38;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.Section <em>Section</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.Section
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSection()
+     * @generated
+     */
+    int SECTION = 39;
+
+    /**
      * The meta object id for the '<em>Version String Type</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2624,7 +2782,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType()
      * @generated
      */
-    int VERSION_STRING_TYPE = 36;
+    int VERSION_STRING_TYPE = 40;
 
 
     /**
@@ -2635,7 +2793,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType_1()
      * @generated
      */
-    int VERSION_STRING_TYPE_1 = 37;
+    int VERSION_STRING_TYPE_1 = 41;
 
 
     /**
@@ -2646,7 +2804,18 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getQName()
      * @generated
      */
-    int QNAME = 38;
+    int QNAME = 42;
+
+
+    /**
+     * The meta object id for the '<em>Filter</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.opengis.filter.Filter
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getFilter()
+     * @generated
+     */
+    int FILTER = 43;
 
 
     /**
@@ -3427,6 +3596,17 @@ public interface Wcs20Package extends EPackage {
     EAttribute getGetCoverageType_MediaType();
 
     /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.GetCoverageType#getFilter <em>Filter</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Filter</em>'.
+     * @see net.opengis.wcs20.GetCoverageType#getFilter()
+     * @see #getGetCoverageType()
+     * @generated
+     */
+    EAttribute getGetCoverageType_Filter();
+
+    /**
      * Returns the meta object for class '{@link net.opengis.wcs20.OfferedCoverageType <em>Offered Coverage Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4100,6 +4280,112 @@ public interface Wcs20Package extends EPackage {
     EReference getInterpolationType_InterpolationAxes();
 
     /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.DescribeEOCoverageSetType <em>Describe EO Coverage Set Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Describe EO Coverage Set Type</em>'.
+     * @see net.opengis.wcs20.DescribeEOCoverageSetType
+     * @generated
+     */
+    EClass getDescribeEOCoverageSetType();
+
+    /**
+     * Returns the meta object for the attribute list '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getEoId <em>Eo Id</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute list '<em>Eo Id</em>'.
+     * @see net.opengis.wcs20.DescribeEOCoverageSetType#getEoId()
+     * @see #getDescribeEOCoverageSetType()
+     * @generated
+     */
+    EAttribute getDescribeEOCoverageSetType_EoId();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getContainmentType <em>Containment Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Containment Type</em>'.
+     * @see net.opengis.wcs20.DescribeEOCoverageSetType#getContainmentType()
+     * @see #getDescribeEOCoverageSetType()
+     * @generated
+     */
+    EAttribute getDescribeEOCoverageSetType_ContainmentType();
+
+    /**
+     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getSections <em>Sections</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Sections</em>'.
+     * @see net.opengis.wcs20.DescribeEOCoverageSetType#getSections()
+     * @see #getDescribeEOCoverageSetType()
+     * @generated
+     */
+    EReference getDescribeEOCoverageSetType_Sections();
+
+    /**
+     * Returns the meta object for the reference list '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getDimensionTrim <em>Dimension Trim</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference list '<em>Dimension Trim</em>'.
+     * @see net.opengis.wcs20.DescribeEOCoverageSetType#getDimensionTrim()
+     * @see #getDescribeEOCoverageSetType()
+     * @generated
+     */
+    EReference getDescribeEOCoverageSetType_DimensionTrim();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getCount <em>Count</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Count</em>'.
+     * @see net.opengis.wcs20.DescribeEOCoverageSetType#getCount()
+     * @see #getDescribeEOCoverageSetType()
+     * @generated
+     */
+    EAttribute getDescribeEOCoverageSetType_Count();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.Sections <em>Sections</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Sections</em>'.
+     * @see net.opengis.wcs20.Sections
+     * @generated
+     */
+    EClass getSections();
+
+    /**
+     * Returns the meta object for the attribute list '{@link net.opengis.wcs20.Sections#getSection <em>Section</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute list '<em>Section</em>'.
+     * @see net.opengis.wcs20.Sections#getSection()
+     * @see #getSections()
+     * @generated
+     */
+    EAttribute getSections_Section();
+
+    /**
+     * Returns the meta object for enum '{@link net.opengis.wcs20.ContainmentType <em>Containment Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for enum '<em>Containment Type</em>'.
+     * @see net.opengis.wcs20.ContainmentType
+     * @generated
+     */
+    EEnum getContainmentType();
+
+    /**
+     * Returns the meta object for enum '{@link net.opengis.wcs20.Section <em>Section</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for enum '<em>Section</em>'.
+     * @see net.opengis.wcs20.Section
+     * @generated
+     */
+    EEnum getSection();
+
+    /**
      * Returns the meta object for data type '{@link java.lang.String <em>Version String Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4132,6 +4418,17 @@ public interface Wcs20Package extends EPackage {
      * @generated
      */
     EDataType getQName();
+
+    /**
+     * Returns the meta object for data type '{@link org.opengis.filter.Filter <em>Filter</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Filter</em>'.
+     * @see org.opengis.filter.Filter
+     * @model instanceClass="org.opengis.filter.Filter"
+     * @generated
+     */
+    EDataType getFilter();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -4762,6 +5059,14 @@ public interface Wcs20Package extends EPackage {
         EAttribute GET_COVERAGE_TYPE__MEDIA_TYPE = eINSTANCE.getGetCoverageType_MediaType();
 
         /**
+         * The meta object literal for the '<em><b>Filter</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute GET_COVERAGE_TYPE__FILTER = eINSTANCE.getGetCoverageType_Filter();
+
+        /**
          * The meta object literal for the '{@link net.opengis.wcs20.impl.OfferedCoverageTypeImpl <em>Offered Coverage Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -5308,6 +5613,94 @@ public interface Wcs20Package extends EPackage {
         EReference INTERPOLATION_TYPE__INTERPOLATION_AXES = eINSTANCE.getInterpolationType_InterpolationAxes();
 
         /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.DescribeEOCoverageSetTypeImpl <em>Describe EO Coverage Set Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.DescribeEOCoverageSetTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDescribeEOCoverageSetType()
+         * @generated
+         */
+        EClass DESCRIBE_EO_COVERAGE_SET_TYPE = eINSTANCE.getDescribeEOCoverageSetType();
+
+        /**
+         * The meta object literal for the '<em><b>Eo Id</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute DESCRIBE_EO_COVERAGE_SET_TYPE__EO_ID = eINSTANCE.getDescribeEOCoverageSetType_EoId();
+
+        /**
+         * The meta object literal for the '<em><b>Containment Type</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute DESCRIBE_EO_COVERAGE_SET_TYPE__CONTAINMENT_TYPE = eINSTANCE.getDescribeEOCoverageSetType_ContainmentType();
+
+        /**
+         * The meta object literal for the '<em><b>Sections</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference DESCRIBE_EO_COVERAGE_SET_TYPE__SECTIONS = eINSTANCE.getDescribeEOCoverageSetType_Sections();
+
+        /**
+         * The meta object literal for the '<em><b>Dimension Trim</b></em>' reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference DESCRIBE_EO_COVERAGE_SET_TYPE__DIMENSION_TRIM = eINSTANCE.getDescribeEOCoverageSetType_DimensionTrim();
+
+        /**
+         * The meta object literal for the '<em><b>Count</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute DESCRIBE_EO_COVERAGE_SET_TYPE__COUNT = eINSTANCE.getDescribeEOCoverageSetType_Count();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.SectionsImpl <em>Sections</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.SectionsImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSections()
+         * @generated
+         */
+        EClass SECTIONS = eINSTANCE.getSections();
+
+        /**
+         * The meta object literal for the '<em><b>Section</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute SECTIONS__SECTION = eINSTANCE.getSections_Section();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.ContainmentType <em>Containment Type</em>}' enum.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.ContainmentType
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getContainmentType()
+         * @generated
+         */
+        EEnum CONTAINMENT_TYPE = eINSTANCE.getContainmentType();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.Section <em>Section</em>}' enum.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.Section
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSection()
+         * @generated
+         */
+        EEnum SECTION = eINSTANCE.getSection();
+
+        /**
          * The meta object literal for the '<em>Version String Type</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -5336,6 +5729,16 @@ public interface Wcs20Package extends EPackage {
          * @generated
          */
         EDataType QNAME = eINSTANCE.getQName();
+
+        /**
+         * The meta object literal for the '<em>Filter</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.opengis.filter.Filter
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getFilter()
+         * @generated
+         */
+        EDataType FILTER = eINSTANCE.getFilter();
 
     }
 

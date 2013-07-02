@@ -127,6 +127,7 @@ public final class WCS extends XSD {
     /** @generated */
     public static final QName VersionStringType = 
         new QName(NAMESPACE,"VersionStringType");
+    
 
     /* Elements */
     /** @generated */
@@ -159,6 +160,8 @@ public final class WCS extends XSD {
     /** @generated */
     public static final QName DescribeCoverage = 
         new QName(NAMESPACE,"DescribeCoverage");
+    public static final QName DescribeEOCoverageSet = 
+        new QName(NAMESPACE,"DescribeEOCoverageSet");
     /** @generated */
     public static final QName DimensionSlice = 
         new QName(NAMESPACE,"DimensionSlice");

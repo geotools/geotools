@@ -26,7 +26,7 @@ public class RasterLayerRequestTest {
         // build the objects we need to get to build a raster layer request
         final ImageMosaicReader reader = (ImageMosaicReader) new ImageMosaicFormat().getReader(
                 testMosaic, null);
-        final RasterManager manager = new RasterManager(reader);
+        final RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
 
         GeneralEnvelope oe = reader.getOriginalEnvelope();
         System.out.println(oe);
@@ -47,7 +47,7 @@ public class RasterLayerRequestTest {
         // Creating a request
         final RasterLayerRequest request = new RasterLayerRequest(
                 new GeneralParameterValue[] { ggParam }, manager);
-        double[] rr = request.getRequestedResolution();
+        double[] rr = request.spatialRequestHelper.getRequestedResolution();
         // System.out.println(Arrays.toString(rr));
         double resolution = Math.min(rr[0], rr[1]);
         // System.out.println(resolution);

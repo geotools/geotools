@@ -120,9 +120,9 @@ public class OverviewsControllerTest extends Assert {
     }
 
     private final static TestSet at1 = new TestSet(new OverviewConfig[]{
-            new OverviewConfig(OverviewPolicy.QUALITY, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 1)),
-            new OverviewConfig(OverviewPolicy.SPEED, new GranuleParams(4, 1, 1), new GranuleParams(2, 1, 1)),
-            new OverviewConfig(OverviewPolicy.NEAREST, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 1)),
+            new OverviewConfig(OverviewPolicy.QUALITY, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 2)),
+            new OverviewConfig(OverviewPolicy.SPEED, new GranuleParams(4, 1, 1), new GranuleParams(2, 1, 2)),
+            new OverviewConfig(OverviewPolicy.NEAREST, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 2)),
             new OverviewConfig(OverviewPolicy.IGNORE, new GranuleParams(0, 9, 8), new GranuleParams(0, 5, 5))});
     private final static TestSet at2 = new TestSet(new OverviewConfig[]{
             new OverviewConfig(OverviewPolicy.QUALITY, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 2)),
@@ -173,9 +173,10 @@ public class OverviewsControllerTest extends Assert {
         final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(heterogeneousGranulesURL, hints);
         Assert.assertNotNull(reader);
 
-        final int nOv = reader.getNumberOfOvervies();
-        final double[] hRes = reader.getHighestRes();
-        final RasterManager rasterManager = new RasterManager(reader);
+        final String name = reader.getGridCoverageNames()[0];
+        final int nOv = reader.getNumOverviews();
+        final double[][] hRes = reader.getResolutionLevels();
+        final RasterManager rasterManager = reader.getRasterManager(name);
 
         // //
         //
@@ -212,9 +213,9 @@ public class OverviewsControllerTest extends Assert {
         final double requestedResolution[] = new double[]{XAffineTransform.getScaleX0(gridToWorld), XAffineTransform.getScaleY0(gridToWorld)}; 
 
         TestSet at = null;
-        if (nOv == 4 && Math.abs(hRes[0] - 0.833333333333) <= THRESHOLD) {
+        if (nOv == 4 && Math.abs(hRes[0][0] - 0.833333333333) <= THRESHOLD) {
             at = at1;
-        } else if (nOv == 2 && Math.abs(hRes[0] - 1.40625) <= THRESHOLD) {
+        } else if (nOv == 2 && Math.abs(hRes[0][1] - 1.40625) <= THRESHOLD) {
             at = at2;
         } else {
             return;

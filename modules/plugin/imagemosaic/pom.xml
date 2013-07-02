@@ -96,7 +96,7 @@
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-h2</artifactId>
       <version>${project.version}</version>
-    </dependency>      
+    </dependency>
     <dependency>
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-oracle</artifactId>
@@ -106,7 +106,14 @@
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-postgis</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
+          <dependency>
+            <artifactId>ojdbc14</artifactId>
+            <groupId>com.oracle</groupId>
+            <scope>provided</scope>
+            <!-- version specified in root pom -->
+          </dependency>
     <dependency>
       <groupId>com.vividsolutions</groupId>
       <artifactId>jts</artifactId>
@@ -138,8 +145,18 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-postgis</artifactId>
+      <version>${project.version}</version>
+    </dependency>   
+    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-geotiff</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-transform</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -155,7 +172,6 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-cql</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>        
     <dependency>
       <groupId>commons-beanutils</groupId>
@@ -196,23 +212,20 @@
       <artifactId>commons-io</artifactId>
     </dependency>    
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <forkCount>1</forkCount>
-          <reuseForks>false</reuseForks>
-          <argLine>-enableassertions</argLine>
-          <excludes>
-            <exclude>*/.bak</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<forkMode>always</forkMode>
+					<argLine>-enableassertions</argLine>
+					<argLine>-enableassertions</argLine>
+					<excludes>
+						<exclude>*/.bak</exclude>
+					</excludes>					
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
-

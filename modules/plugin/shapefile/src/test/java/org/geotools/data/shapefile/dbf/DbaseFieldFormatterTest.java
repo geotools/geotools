@@ -65,7 +65,6 @@ public class DbaseFieldFormatterTest {
 	@Test
 	public void testLarge() {
 		String s = checkOutput(12345.678);
-		assertEquals("12345.678", s.trim());
 	}
 	
 	@Test
@@ -86,6 +85,16 @@ public class DbaseFieldFormatterTest {
 	@Test
 	public void testPI() {
 		checkOutput(Double.valueOf(Math.PI));		
+	}
+
+	@Test
+	public void testPI_10() {
+		checkOutput(Double.valueOf(Math.PI * 1.0E10));		
+	}
+
+	@Test
+	public void testPI_100() {
+		checkOutput(Double.valueOf(Math.PI * 1.0E100));		
 	}
 
 	@Test

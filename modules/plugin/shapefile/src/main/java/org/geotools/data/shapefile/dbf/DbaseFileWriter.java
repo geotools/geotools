@@ -472,7 +472,8 @@ public class DbaseFileWriter {
             	
             	int expRoom = size - decimalPlaces;
             	int exponent = Math.getExponent(n.doubleValue());
-            	if (exponent > expRoom) {
+            	String expText = String.valueOf(exponent);
+            	if (expText.length() > expRoom) {
             		// JDK Javadoc: "DecimalFormat can be instructed to format and parse scientific notation only via a pattern; there is currently no factory method that creates a scientific notation format."
             		// for the moment, bail out and use the native toString
             		buffer.append(n.doubleValue());

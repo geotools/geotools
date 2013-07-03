@@ -21,9 +21,7 @@ public class DbaseFieldFormatterTest {
 		victim = new DbaseFileWriter.FieldFormatter(charset, timeZone);
 	}
 
-	private String checkOutput(Number n) {
-		int sz = 33;
-		int places = 31;
+	private String checkOutput(Number n, int sz, int places) {
 				
 		String s = victim.getFieldString(sz, places, n);
 		
@@ -40,91 +38,152 @@ public class DbaseFieldFormatterTest {
 		assertTrue("ascii ["+i+"]:" + c, ascii);
 		assertEquals("Length", sz, s.length());
 		
-		assertEquals("Value", n.doubleValue(), Double.valueOf(s), 0.001);
+		assertEquals("Value", n.doubleValue(), Double.valueOf(s), Math.pow(10.0, -places));
 		
-		System.out.printf("%33s->%33s%n%33s =%33s%n", n, s, "", n.toString());
+		System.out.printf("%36s->%36s%n", n, s);
 		
 		return s;
 	}
 		
 	@Test
 	public void testNaN() {
-		checkOutput(Double.NaN);
+		checkOutput(Double.NaN, 33, 31);
 	}
 	
 	@Test
 	public void testNegative() {
-		checkOutput(Double.valueOf(-1.0e39));
+		checkOutput(Double.valueOf(-1.0e39), 33, 31);
 	}
 	
 	@Test
 	public void testSmall() {
-		checkOutput(Double.valueOf(42.123));
+		checkOutput(Double.valueOf(42.123), 33, 31);
 	}
 	
 	@Test
 	public void testLarge() {
-		String s = checkOutput(12345.678);
+		String s = checkOutput(12345.678, 33, 31);
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void testNotFit_1() {
+		String s = checkOutput(12345.678, 6, 2);
+	}
+
+	@Test(expected=RuntimeException.class)
+	public void testNotFit_2() {
+		String s = checkOutput(Double.valueOf(Math.PI * 1.0E10), 4, 1);
+	}
+
+	@Test
+	public void testSqueeze_ok() {
+		String s = checkOutput(Double.valueOf(Math.PI), 3, 1);
+	}
+
+	@Test(expected=RuntimeException.class)
+	public void testSqueeze_x1() {
+		String s = checkOutput(Double.valueOf(Math.PI), 2, 1);
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void testSqueeze_x2() {
+		String s = checkOutput(Double.valueOf(-Math.PI), 3, 1);
 	}
 	
 	@Test
 	public void testMax() {
-		checkOutput(Double.MAX_VALUE);
+		checkOutput(Double.MAX_VALUE, 33, 31);
 	}
 
 	@Test
 	public void testMin() {
-		checkOutput(Double.MIN_VALUE);		
+		checkOutput(Double.MIN_VALUE, 33, 31);		
 	}
 
 	@Test
 	public void testIntegral() {
-		checkOutput(Double.valueOf(1999.0));		
+		checkOutput(Double.valueOf(1999.0), 33, 31);		
 	}
 	
 	@Test
 	public void testPI() {
-		checkOutput(Double.valueOf(Math.PI));		
+		checkOutput(Double.valueOf(Math.PI), 33, 31);		
 	}
 
 	@Test
 	public void testPI_10() {
-		checkOutput(Double.valueOf(Math.PI * 1.0E10));		
+		checkOutput(Double.valueOf(Math.PI * 1.0E10), 33, 31);		
 	}
 
 	@Test
 	public void testPI_100() {
-		checkOutput(Double.valueOf(Math.PI * 1.0E100));		
+		checkOutput(Double.valueOf(Math.PI * 1.0E100), 33, 31);		
 	}
 
 	@Test
-	public void testNoValue() {
+	public void testNoValue_1() {
 		// "Any floating point number smaller than –10e38 is considered by a shapefile reader to represent a "no data" value.", per ESRI
-		checkOutput(Double.valueOf(-1.00001e38));		
+		checkOutput(Double.valueOf(-1.00001e38), 33, 31);		
 	}
 
 	@Test
 	public void testInt_1999() {
-		checkOutput(Integer.valueOf(1999));
+		checkOutput(Integer.valueOf(1999), 33, 31);
 	}
 
 	@Test
 	public void testInt_0() {
-		checkOutput(Integer.valueOf(0));
+		checkOutput(Integer.valueOf(0), 33, 31);
 	}
 
 	@Test
 	public void testInt_12345678() {
-		checkOutput(Integer.valueOf(12345678));
+		checkOutput(Integer.valueOf(12345678), 33, 31);
 	}
 
 	@Test
 	public void testInt_m1() {
-		checkOutput(Integer.valueOf(-1));
+		checkOutput(Integer.valueOf(-1), 33, 31);
 	}
 
 	@Test
 	public void testInt_m987654321() {
-		checkOutput(Integer.valueOf(-987654321));
+		checkOutput(Integer.valueOf(-987654321), 33, 31);
+	}
+
+	@Test
+	public void testNoValue_2() {
+		// "Any floating point number smaller than –10e38 is considered by a shapefile reader to represent a "no data" value.", per ESRI
+		checkOutput(Double.valueOf(-1.00001e38), 12, 6);		
+	}
+
+	@Test
+	public void testI_1999() {
+		checkOutput(Integer.valueOf(1999), 8, 0);
+	}
+
+	@Test
+	public void testI_0() {
+		checkOutput(Integer.valueOf(0), 3, 0);
+	}
+
+	@Test(expected=RuntimeException.class)
+	public void testI_12345678_x() {
+		checkOutput(Integer.valueOf(12345678), 6, 0);
+	}
+	
+	@Test
+	public void testI_12345678_ok() {
+		checkOutput(Integer.valueOf(12345678), 8, 0);
+	}
+
+	@Test
+	public void testI_m1() {
+		checkOutput(Integer.valueOf(-1), 12, 0);
+	}
+
+	@Test
+	public void testI_m987654321() {
+		checkOutput(Integer.valueOf(-987654321), 10, 0);
 	}
 }

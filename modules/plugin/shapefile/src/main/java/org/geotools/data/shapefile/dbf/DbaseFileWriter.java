@@ -326,7 +326,7 @@ public class DbaseFileWriter {
 
     /** Utility for formatting Dbase fields. */
     public static class FieldFormatter {
-        private StringBuffer buffer = new StringBuffer(255);
+        // private StringBuffer buffer = new StringBuffer(255);
         private NumberFormat numFormat = NumberFormat.getNumberInstance(Locale.US);
         private Calendar calendar;
         private final long MILLISECS_PER_DAY = 24*60*60*1000;
@@ -354,6 +354,7 @@ public class DbaseFileWriter {
         }
 
         public String getFieldString(int size, String s) {
+        	StringBuffer buffer = new StringBuffer(size);
             try {
                 buffer.replace(0, size, emptyString);
                 buffer.setLength(size);
@@ -390,10 +391,9 @@ public class DbaseFileWriter {
             }
         }
 
-        public String getFieldString(Date d) {
-
+        public synchronized String getFieldString(Date d) {
+        	StringBuffer buffer = new StringBuffer(255);
             if (d != null) {
-                buffer.delete(0, buffer.length());
                 
                 calendar.setTime(d);
                 int year = calendar.get(Calendar.YEAR);
@@ -465,31 +465,51 @@ public class DbaseFileWriter {
             }       
         }
         
-        public String getFieldString(int size, int decimalPlaces, Number n) {
-            buffer.delete(0, buffer.length());
+        public synchronized String getFieldString(int size, int decimalPlaces, Number n) {
+        	StringBuffer buffer = new StringBuffer(255);
 
             if (n != null) {
+            	double dval = n.doubleValue();
             	
-            	int expRoom = size - decimalPlaces;
-            	int exponent = Math.getExponent(n.doubleValue());
-            	String expText = String.valueOf(exponent);
-            	if (expText.length() > expRoom) {
-            		// JDK Javadoc: "DecimalFormat can be instructed to format and parse scientific notation only via a pattern; there is currently no factory method that creates a scientific notation format."
-            		// for the moment, bail out and use the native toString
-            		buffer.append(n.doubleValue());
+        		/* DecimalFormat documentation:
+        		 * NaN is formatted as a string, which typically has a single character \uFFFD. 
+        		 * This string is determined by the DecimalFormatSymbols object. 
+        		 * This is the only value for which the prefixes and suffixes are not used.
+        		 * 
+        		 * Infinity is formatted as a string, which typically has a single character \u221E, 
+        		 * with the positive or negative prefixes and suffixes applied. 
+        		 * The infinity string is determined by the DecimalFormatSymbols object.
+        		 */
+        		/* However, the Double.toString method returns an ascii string, which is more ESRI-friendly */
+            	if (Double.isNaN(dval) || Double.isInfinite(dval)) {
+            		buffer.append(n.toString());
+            		/* Should we use toString for integral numbers as well? */
             	} else {
-            		numFormat.setMaximumFractionDigits(decimalPlaces);
-            		numFormat.setMinimumFractionDigits(decimalPlaces);
-            		numFormat.format(n, buffer, new FieldPosition(
-            				NumberFormat.INTEGER_FIELD));
+	            	
+	        		numFormat.setMaximumFractionDigits(decimalPlaces);
+	        		numFormat.setMinimumFractionDigits(decimalPlaces);
+	        		FieldPosition fp = new FieldPosition(NumberFormat.FRACTION_FIELD);
+	        		numFormat.format(n, buffer, fp);
+	        		
+	        		// large-magnitude numbers may overflow the field size in non-exponent notation,
+	        		// so do a safety check and fall back to native representation to preserve value
+	        		if (fp.getBeginIndex() >= size) {
+	        			buffer.delete(0, buffer.length());
+	        			buffer.append(n.toString());
+	        			if (buffer.length() > size) {
+	                    	// we have a grevious problem -- the value does not fit in the required size.
+	                    	// rather than truncate, and corrupt the data, we throw a Runtime
+	                    	throw new RuntimeException("Value "+n+" cannot be represented in size " + size);	        				
+	        			}
+	        		}
             	}
             }
 
             int diff = size - buffer.length();
             if (diff > 0) {
             	buffer.insert(0, emptyString.substring(0, diff));
-            } else {
-                buffer.setLength(size);
+            } else if (diff < 0) {
+            	buffer.setLength(size);
             }
             return buffer.toString();
         }

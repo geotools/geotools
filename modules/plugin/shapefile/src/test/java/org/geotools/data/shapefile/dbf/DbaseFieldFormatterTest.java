@@ -42,7 +42,7 @@ public class DbaseFieldFormatterTest {
 		
 		assertEquals("Value", n.doubleValue(), Double.valueOf(s), 0.001);
 		
-		System.out.printf("%g->%s%n", n, s);
+		System.out.printf("%33s->%33s%n%33s =%33s%n", n, s, "", n.toString());
 		
 		return s;
 	}
@@ -103,4 +103,28 @@ public class DbaseFieldFormatterTest {
 		checkOutput(Double.valueOf(-1.00001e38));		
 	}
 
+	@Test
+	public void testInt_1999() {
+		checkOutput(Integer.valueOf(1999));
+	}
+
+	@Test
+	public void testInt_0() {
+		checkOutput(Integer.valueOf(0));
+	}
+
+	@Test
+	public void testInt_12345678() {
+		checkOutput(Integer.valueOf(12345678));
+	}
+
+	@Test
+	public void testInt_m1() {
+		checkOutput(Integer.valueOf(-1));
+	}
+
+	@Test
+	public void testInt_m987654321() {
+		checkOutput(Integer.valueOf(-987654321));
+	}
 }

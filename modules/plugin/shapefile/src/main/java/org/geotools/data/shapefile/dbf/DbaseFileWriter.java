@@ -326,7 +326,6 @@ public class DbaseFileWriter {
 
     /** Utility for formatting Dbase fields. */
     public static class FieldFormatter {
-        // private StringBuffer buffer = new StringBuffer(255);
         private NumberFormat numFormat = NumberFormat.getNumberInstance(Locale.US);
         private Calendar calendar;
         private final long MILLISECS_PER_DAY = 24*60*60*1000;

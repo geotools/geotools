@@ -17,10 +17,12 @@
 package org.geotools.gce.netcdf.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.awt.Rectangle;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
@@ -196,6 +198,18 @@ public class TestUtil {
 	return ncd;
     }
 
+    public static File getTestFile(String fileName) {
+        File file = new File(fileName);
+        assertTestFileExists(file);
+        
+        return file;
+    }
+
+    public static void assertTestFileExists(File file) {
+        assertNotNull("Test setup problem - file is null for " + file + ".", file);
+        assertTrue("Test setup problem - file does not exist for " + file + ".", file.exists());
+    }
+    
     public static Date getTestDate(String dateStringInNetCdfFileFormat) {
 	Date date = null;
 

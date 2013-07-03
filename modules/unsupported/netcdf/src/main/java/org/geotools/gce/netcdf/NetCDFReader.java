@@ -57,6 +57,10 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
+/**
+ * Provides a GridCoverageReader for NetCDF data files.  
+ * NetCDF data files can contain many dimensions, and this currently handles elevation, time and analysis time.
+ */
 public class NetCDFReader extends AbstractGridCoverage2DReader implements
 	GridCoverageReader {
 

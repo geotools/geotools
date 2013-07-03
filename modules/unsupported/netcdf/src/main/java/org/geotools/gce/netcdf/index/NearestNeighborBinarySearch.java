@@ -19,13 +19,17 @@ package org.geotools.gce.netcdf.index;
 import ucar.ma2.Array;
 
 /**
- *
+ * A nearest neighbor implementation for the strategy for finding the index of
+ * the coordinate value in a coordinate array from a NetCDF file.
+ * Not currently implemented.
+ * 
+ * TODO Implement using Jon Blower's NCWMS code for reference.
+ * http://www.resc.rdg.ac.uk/trac/ncWMS/browser/trunk/src/java/uk/ac/rdg/resc/edal/coverage/grid/impl/ReferenceableAxisImpl.java?rev=836
+ * 
  * @author Yancy Matherne - Geocent
  */
 public class NearestNeighborBinarySearch implements IndexingStrategy {
 
-    // TODO: Implement using Jon Blower's NCWMS code for reference.
-    // http://www.resc.rdg.ac.uk/trac/ncWMS/browser/trunk/src/java/uk/ac/rdg/resc/edal/coverage/grid/impl/ReferenceableAxisImpl.java?rev=836
     public int getCoordinateIndex(Array coordArray, double desiredCoordinate) {
         throw new UnsupportedOperationException("Not supported yet.");
     }

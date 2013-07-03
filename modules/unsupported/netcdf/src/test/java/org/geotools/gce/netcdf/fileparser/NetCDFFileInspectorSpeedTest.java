@@ -26,8 +26,6 @@ import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import junit.framework.Assert;
-
 import org.geotools.gce.netcdf.GrdDataEncapsulator;
 import org.geotools.gce.netcdf.NetCdfUtil;
 import org.geotools.gce.netcdf.ParamInformation;
@@ -49,7 +47,7 @@ import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
 
 /**
- * Unit tests for named class to help analyze operation and speed. These are commented out as they
+ * Unit tests for NetCDFFileInspector to help analyze operation and speed. These are commented out as they
  * may rely on uncommitted data files and do not need to run on an ongoing basis. I did want to
  * commit these for our future use.
  *
@@ -65,11 +63,6 @@ public class NetCDFFileInspectorSpeedTest {
 
     @Before
     public void setUp() throws Exception {
-        // get rid of log4j warnings
-        org.apache.log4j.BasicConfigurator.configure();
-        org.apache.log4j.Logger logger = org.apache.log4j.Logger
-                .getRootLogger();
-        logger.setLevel(org.apache.log4j.Level.OFF);
     }
 
     @After
@@ -257,19 +250,19 @@ public class NetCDFFileInspectorSpeedTest {
 
         } catch (SecurityException e) {
             // e.printStackTrace();
-            Assert.fail("Test setup problem.");
+            fail("Test setup problem.");
         } catch (NoSuchMethodException e) {
             // e.printStackTrace();
-            Assert.fail("Test setup problem.");
+            fail("Test setup problem.");
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            Assert.fail("Test setup problem.");
+            fail("Test setup problem.");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            Assert.fail("Test setup problem.");
+            fail("Test setup problem.");
         } catch (InvocationTargetException e) {
             e.printStackTrace();
-            Assert.fail("Test setup problem.");
+            fail("Test setup problem.");
         }
 
         System.out.println("testBuildReadParameter result: "
@@ -329,10 +322,10 @@ public class NetCDFFileInspectorSpeedTest {
 
         } catch (IOException e) {
             e.printStackTrace();
-            Assert.fail("Test setup problem.");
+            fail("Test setup problem.");
         } catch (InvalidRangeException e) {
             e.printStackTrace();
-            Assert.fail("Test setup problem.");
+            fail("Test setup problem.");
         }
 
         LogUtil.logElapsedTime(LOG, methodBeginDate, String.valueOf(getValue)

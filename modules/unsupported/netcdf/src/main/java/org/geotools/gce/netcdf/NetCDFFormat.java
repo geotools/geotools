@@ -32,6 +32,10 @@ import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
 
+/**
+ * Provides a grid format for NetCDF data files.  
+ * NetCDF data files can contain many dimensions, and this currently handles elevation, time and analysis time.
+ */
 public class NetCDFFormat extends AbstractGridFormat implements Format {
 
     private static final String UNSUPPORTED_WRITING_OPERATION_MESSAGE = "Writing operations are not implemented";

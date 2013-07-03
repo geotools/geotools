@@ -20,6 +20,9 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Provides static utility logging objects for NetCDF project.  
+ */
 public class LogUtil {
 
     public static void logElapsedTime(Logger logger, Date beginDate,

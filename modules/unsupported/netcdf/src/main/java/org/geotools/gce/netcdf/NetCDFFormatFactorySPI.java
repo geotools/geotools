@@ -23,6 +23,9 @@ import java.util.Map;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
+/**
+ * Provides a GridFormatFactorySpi for NetCDF data files.  
+ */
 public class NetCDFFormatFactorySPI implements GridFormatFactorySpi {
 
 	/**

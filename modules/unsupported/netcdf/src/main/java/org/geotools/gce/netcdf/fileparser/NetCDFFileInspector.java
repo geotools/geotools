@@ -55,6 +55,12 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
 
+/**
+ * Provides file access to a NetCDF data file and a place to assemble data from that file.
+ * 
+ * Intended as a support object for the NetCDFReader, particularly to generate a GridCoverage2D object as
+ * the result of the NetCDFReader read method.
+ */
 public class NetCDFFileInspector {
     private static final int MIN_INDEX = 0;
     private static final int MAX_INDEX = 1;
@@ -780,8 +786,11 @@ public class NetCDFFileInspector {
 
 	return result;
     }
-
-    private Date getAnalysisTimeFromTauVariable(NetcdfFile ncFile) {
+    
+    /**
+     * protected instead of private only for unit test.
+     */
+    protected Date getAnalysisTimeFromTauVariable(NetcdfFile ncFile) {
 	Date result = null;
 
 	Variable tauVariable = NetCdfUtil.getFileVariableByName(ncFile,

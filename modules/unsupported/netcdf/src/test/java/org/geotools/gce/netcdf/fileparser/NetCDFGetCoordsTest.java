@@ -34,8 +34,7 @@ import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
 
 /**
- *
- * @author Yancy
+ * unit tests for implementations of IndexingStrategy class.
  */
 public class NetCDFGetCoordsTest {
     IndexingStrategy classUnderTest;

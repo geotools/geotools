@@ -17,6 +17,8 @@
 package org.geotools.gce.netcdf.fileparser;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Rectangle;
@@ -25,12 +27,12 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
 
+import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.gce.netcdf.GrdDataEncapsulator;
 import org.geotools.gce.netcdf.NetCdfUtil;
 import org.geotools.gce.netcdf.ParamInformation;
 import org.geotools.gce.netcdf.test.TestData;
 import org.geotools.gce.netcdf.test.TestUtil;
-import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.After;
@@ -127,11 +129,7 @@ public class NetCDFFileInspectorTest {
      */
     @Test
     public void testGetAnalysisTimeString_HasTauWithValidTimeOrigin() {
-        File testFile = new File(
-                TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_VALID_TIME_ORIGIN);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_VALID_TIME_ORIGIN);
         classUnderTest = new NetCDFFileInspector(testFile);
         String result = classUnderTest.getAnalysisTimeString();
         assertEquals(
@@ -146,14 +144,9 @@ public class NetCDFFileInspectorTest {
      */
     @Test
     public void testGetAnalysisTimeString_HasTauWithInvalidTimeOrigin_HasValidGlobalTimeOrigin() {
-        File testFile = new File(
-                TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_INVALID_TIME_ORIGIN);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_INVALID_TIME_ORIGIN);
         classUnderTest = new NetCDFFileInspector(testFile);
         String result = classUnderTest.getAnalysisTimeString();
-
         assertEquals(
                 "Unexpected analysis time.",
                 convertNetCdfDateStringToOutputDateString(TestData.TEST_GLOBAL_TIME_ORIGIN),
@@ -165,11 +158,7 @@ public class NetCDFFileInspectorTest {
      */
     @Test
     public void testGetAnalysisTimeString_HasTauWithNoTimeOrigin() {
-        File testFile = new File(
-                TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_NO_TIME_ORIGIN);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_NO_TIME_ORIGIN);
         classUnderTest = new NetCDFFileInspector(testFile);
         String result = classUnderTest.getAnalysisTimeString();
         assertEquals(
@@ -183,10 +172,7 @@ public class NetCDFFileInspectorTest {
      */
     @Test
     public void testGetAnalysisTimeString_HasNoTau_HasValidGlobalTimeOrigin() {
-        File testFile = new File(TestData.TEST_DATA_ANALYSIS_TIME_HAS_NO_TAU);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_NO_TAU);
         classUnderTest = new NetCDFFileInspector(testFile);
         String result = classUnderTest.getAnalysisTimeString();
         assertEquals(
@@ -195,101 +181,52 @@ public class NetCDFFileInspectorTest {
                 result);
     }
 
-    // TODO rework all these now that have re-arranged methods in the class
-    // under test.
-    // // TODO testFileHasMatchingAnalysisTime
-    // // add new test cases now that we check for runtime
-    // // var and for global time_origin attribute.
-    //
-    // /**
-    // * tau variable and its time_origin found, attribute is convertible to
-    // date.
-    // * attribute value matches the target analysis time.
-    // */
-    // @Test
-    // public void
-    // testFileHasMatchingAnalysisTime_HasTauWithValidTimeOrigin_MatchesTarget()
-    // {
-    // NetcdfFile testNcFile = TestUtil
-    // .getTestNetCdfFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_VALID_TIME_ORIGIN);
-    // Date testDate = TestUtil
-    // .getTestDate(TestData.TEST_TIME_ORIGIN_HAS_TAU_WITH_VALID_TIME_ORIGIN);
-    //
-    // classUnderTest = new NetCDFFileInspector();
-    // boolean result = classUnderTest.fileHasMatchingAnalysisTime(testNcFile,
-    // testDate, NetCdfUtil.NOT_FOUND);
-    // assertTrue("Expected analysis time match.", result);
-    // }
-    //
-    // /**
-    // * tau variable and its time_origin found, attribute is convertible to
-    // date.
-    // * attribute value does not match the target analysis time.
-    // */
-    // @Test
-    // public void
-    // testFileHasMatchingAnalysisTime_HasTauWithValidTimeOrigin_DoesNotMatchTarget()
-    // {
-    // NetcdfFile testNcFile = TestUtil
-    // .getTestNetCdfFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_VALID_TIME_ORIGIN);
-    // Date testDate = new Date();
-    //
-    // classUnderTest = new NetCDFFileInspector();
-    // boolean result = classUnderTest.fileHasMatchingAnalysisTime(testNcFile,
-    // testDate, NetCdfUtil.NOT_FOUND);
-    // assertFalse("Unexpected analysis time match.", result);
-    // }
-    //
-    // /**
-    // * tau variable and its time_origin found, attribute is not convertible to
-    // * date. attribute value does not match the target analysis time.
-    // */
-    // @Test
-    // public void
-    // testFileHasMatchingAnalysisTime_HasTauWithInvalidTimeOrigin_CannotMatchTarget()
-    // {
-    // NetcdfFile testNcFile = TestUtil
-    // .getTestNetCdfFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_INVALID_TIME_ORIGIN);
-    // Date testDate = new Date();
-    //
-    // classUnderTest = new NetCDFFileInspector();
-    // boolean result = classUnderTest.fileHasMatchingAnalysisTime(testNcFile,
-    // testDate, NetCdfUtil.NOT_FOUND);
-    // assertFalse("Unexpected analysis time match.", result);
-    // }
-    //
-    // /**
-    // * tau variable found, no time_origin attribute found.
-    // */
-    // @Test
-    // public void
-    // testFileHasMatchingAnalysisTime_HasTauWithNoTimeOrigin_CannotMatchTarget()
-    // {
-    // NetcdfFile testNcFile = TestUtil
-    // .getTestNetCdfFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_NO_TIME_ORIGIN);
-    // Date testDate = new Date();
-    //
-    // classUnderTest = new NetCDFFileInspector();
-    // boolean result = classUnderTest.fileHasMatchingAnalysisTime(testNcFile,
-    // testDate, NetCdfUtil.NOT_FOUND);
-    // assertFalse("Unexpected analysis time match.", result);
-    // }
-    //
-    // /**
-    // * tau variable not found.
-    // */
-    // @Test
-    // public void testFileHasMatchingAnalysisTime_HasNoTau_CannotMatchTarget()
-    // {
-    // NetcdfFile testNcFile = TestUtil
-    // .getTestNetCdfFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_NO_TAU);
-    // Date testDate = new Date();
-    //
-    // classUnderTest = new NetCDFFileInspector();
-    // boolean result = classUnderTest.fileHasMatchingAnalysisTime(testNcFile,
-    // testDate, NetCdfUtil.NOT_FOUND);
-    // assertFalse("Unexpected analysis time match.", result);
-    // }
+    /**
+     * tau variable and its time_origin found, attribute is convertible to date.
+     */
+    @Test
+    public void testGetAnalysisTimeFromTauVariable_HasTauWithValidTimeOrigin() {
+        NetcdfFile testNcFile = TestUtil.getTestNetCdfFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_VALID_TIME_ORIGIN);
+        Date expectedDate = TestUtil.getTestDate(TestData.TEST_TIME_ORIGIN_HAS_TAU_WITH_VALID_TIME_ORIGIN);
+        classUnderTest = new NetCDFFileInspector();
+        Date result = classUnderTest.getAnalysisTimeFromTauVariable(testNcFile);
+        assertNotNull("Unexpected null analysis time.", result);
+        assertEquals("Unexpected analysis time value.", expectedDate, result);
+     }
+    
+     /**
+      * tau variable and its time_origin found, attribute is not convertible to date.
+      */
+     @Test
+     public void testGetAnalysisTimeFromTauVariable_HasTauWithInvalidTimeOrigin() {
+         NetcdfFile testNcFile = TestUtil.getTestNetCdfFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_INVALID_TIME_ORIGIN);
+         classUnderTest = new NetCDFFileInspector();
+         Date result = classUnderTest.getAnalysisTimeFromTauVariable(testNcFile);
+         assertNull("Unexpected non-null analysis time.", result);
+     }
+
+     /**
+      * tau variable found, no time_origin attribute found.
+      */
+     @Test
+     public void testGetAnalysisTimeFromTauVariable_HasTauWithNoTimeOrigin() {
+         NetcdfFile testNcFile = TestUtil.getTestNetCdfFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_TAU_WITH_NO_TIME_ORIGIN);
+         classUnderTest = new NetCDFFileInspector();
+         Date result = classUnderTest.getAnalysisTimeFromTauVariable(testNcFile);
+         assertNull("Unexpected non-null analysis time.", result);
+     }
+
+     /**
+      * tau variable not found.
+      */
+     @Test
+     public void testGetAnalysisTimeFromTauVariable_HasNoTau() {
+         NetcdfFile testNcFile = TestUtil.getTestNetCdfFile(TestData.TEST_DATA_ANALYSIS_TIME_HAS_NO_TAU);
+         classUnderTest = new NetCDFFileInspector();
+         Date result = classUnderTest.getAnalysisTimeFromTauVariable(testNcFile);
+         assertNull("Unexpected non-null analysis time.", result);
+     }
+     
     /**
      * test that we can open and access NetcdfFile object created from both nc and ncml files with
      * the same file opening code.
@@ -301,11 +238,6 @@ public class NetCDFFileInspectorTest {
     public void testOpenAndAccessNetcdfFileObjectFromNcFileAndNcmlFile() {
         NetcdfFile testDataset = null;
 
-        File testFile = new File(TestData.TEST_DATA_AGG_MODEL_RUN_1);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
-
         // nc file.
         testDataset = TestUtil
                 .getTestNetCdfFileFromDataset(TestData.TEST_DATA_AGG_MODEL_RUN_1);
@@ -315,11 +247,6 @@ public class NetCDFFileInspectorTest {
         assertEquals("Unexpected analysis time match.", 1, ncResult);
 
         // ncml file.
-        testFile = new File(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
-
         testDataset = TestUtil
                 .getTestNetCdfFileFromDataset(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
 
@@ -338,10 +265,6 @@ public class NetCDFFileInspectorTest {
         NetcdfDataset testDataset = null;
 
         // nc file.
-        File testFile = new File(TestData.TEST_DATA_AGG_MODEL_RUN_1);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
         testDataset = TestUtil
                 .getTestNetcdfDatasetFromDataset(TestData.TEST_DATA_AGG_MODEL_RUN_1);
 
@@ -351,10 +274,6 @@ public class NetCDFFileInspectorTest {
         assertEquals("Unexpected analysis time match.", 1, ncResult);
 
         // ncml file.
-        testFile = new File(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
         testDataset = TestUtil
                 .getTestNetcdfDatasetFromDataset(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
 
@@ -369,10 +288,7 @@ public class NetCDFFileInspectorTest {
      */
     @Test
     public void testGetAnalysisTimeString_ForDatasetFromNcmlSingleRunPerFile() {
-        File testFile = new File(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
         classUnderTest = new NetCDFFileInspector(testFile);
         String result = classUnderTest.getAnalysisTimeString();
         String expectedResult = TestData.TEST_RUNTIME1_AGGREGATION + ","
@@ -385,10 +301,7 @@ public class NetCDFFileInspectorTest {
      */
     @Test
     public void testGetAnalysisTimeString_ForDatasetFromNcmlSingleTauPerFile() {
-        File testFile = new File(TestData.TEST_DATA_NCML_SINGLE_TAU_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_NCML_SINGLE_TAU_PER_FILE);
         classUnderTest = new NetCDFFileInspector(testFile);
         String result = classUnderTest.getAnalysisTimeString();
         String expectedResult = TestData.TEST_RUNTIME1_AGGREGATION + ","
@@ -401,10 +314,7 @@ public class NetCDFFileInspectorTest {
      */
     @Test
     public void testGetElevation_ForDatasetFromNcmlSingleRunPerFile() {
-        File testFile = new File(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
         classUnderTest = new NetCDFFileInspector(testFile);
         String result = classUnderTest.getElevationString();
         String expectedResult = "0.0,50.0,100.0,250.0,500.0";
@@ -416,10 +326,7 @@ public class NetCDFFileInspectorTest {
      */
     @Test
     public void testGetElevation_ForDatasetFromNcmlSingleTauPerFile() {
-        File testFile = new File(TestData.TEST_DATA_NCML_SINGLE_TAU_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_NCML_SINGLE_TAU_PER_FILE);
         classUnderTest = new NetCDFFileInspector(testFile);
         String result = classUnderTest.getElevationString();
         String expectedResult = "0.0,50.0,100.0,250.0,500.0";
@@ -428,10 +335,7 @@ public class NetCDFFileInspectorTest {
 
     @Test
     public void testParseFiles_DatasetFromNetcdfFile_NoRuntime() throws ParseException {
-        File testFile = new File(TestData.TEST_DATA_POSITIVE_LONGITUDE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_POSITIVE_LONGITUDE);
         classUnderTest = new NetCDFFileInspector(testFile);
         float[] testBounds = TestData.TEST_BOUNDS_NCML_FILES;
         ParamInformation pi = createTestParamInformation(testBounds, null,
@@ -445,10 +349,7 @@ public class NetCDFFileInspectorTest {
 
     @Test
     public void testParseFiles_DatasetFromNcmlSingleRunPerFile_FirstRuntime_FirstTime() {
-        File testFile = new File(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
         classUnderTest = new NetCDFFileInspector(testFile);
         float[] testBounds = TestData.TEST_BOUNDS_NCML_FILES;
         Date testDate = TestUtil
@@ -464,10 +365,7 @@ public class NetCDFFileInspectorTest {
 
     @Test
     public void testParseFiles_DatasetFromNcmlSingleRunPerFile_FirstRuntime_LastTime() {
-        File testFile = new File(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
         classUnderTest = new NetCDFFileInspector(testFile);
         float[] testBounds = TestData.TEST_BOUNDS_NCML_FILES;
         Date testDate = TestUtil
@@ -483,10 +381,7 @@ public class NetCDFFileInspectorTest {
 
     @Test
     public void testParseFiles_DatasetFromNcmlSingleRunPerFile_SecondRuntime_FirstTime() {
-        File testFile = new File(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
         classUnderTest = new NetCDFFileInspector(testFile);
         float[] testBounds = TestData.TEST_BOUNDS_NCML_FILES;
         Date testDate = TestUtil
@@ -502,10 +397,7 @@ public class NetCDFFileInspectorTest {
 
     @Test
     public void testParseFiles_DatasetFromNcmlSingleRunPerFile_SecondRuntime_LastTime() {
-        File testFile = new File(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
         classUnderTest = new NetCDFFileInspector(testFile);
         float[] testBounds = TestData.TEST_BOUNDS_NCML_FILES;
         Date testDate = TestUtil
@@ -525,10 +417,7 @@ public class NetCDFFileInspectorTest {
      */
     @Test
     public void testParseFiles_DatasetFromNcmlSingleRunPerFile_RuntimeNotSpecified_TimeInBoth() {
-        File testFile = new File(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_NCML_SINGLE_RUN_PER_FILE);
         classUnderTest = new NetCDFFileInspector(testFile);
         float[] testBounds = TestData.TEST_BOUNDS_NCML_FILES;
         Date testDate = TestUtil
@@ -544,10 +433,7 @@ public class NetCDFFileInspectorTest {
 
     @Test
     public void testParseFiles_DatasetFromNcmlSingleTauPerFile_FirstRuntime() {
-        File testFile = new File(TestData.TEST_DATA_NCML_SINGLE_TAU_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_NCML_SINGLE_TAU_PER_FILE);
         classUnderTest = new NetCDFFileInspector(testFile);
         float[] testBounds = TestData.TEST_BOUNDS_NCML_FILES;
         Date testDate = TestUtil
@@ -563,10 +449,7 @@ public class NetCDFFileInspectorTest {
 
     @Test
     public void testParseFiles_DatasetFromNcmlSingleTauPerFile_SecondRuntime() {
-        File testFile = new File(TestData.TEST_DATA_NCML_SINGLE_TAU_PER_FILE);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        File testFile = TestUtil.getTestFile(TestData.TEST_DATA_NCML_SINGLE_TAU_PER_FILE);
         classUnderTest = new NetCDFFileInspector(testFile);
         float[] testBounds = TestData.TEST_BOUNDS_NCML_FILES;
         Date testDate = TestUtil
@@ -598,20 +481,14 @@ public class NetCDFFileInspectorTest {
         ParamInformation pi = createTestParamInformation(testBounds, testDate,
                 new Date(), 0.0, "temp");
 
-        File testFile = new File(TestData.TEST_DATA_LAT_OUTER_LON);
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
         // use the latOuterLon data file to get the image data.
-        classUnderTest = new NetCDFFileInspector(testFile);
+        File testFileLatOuterLon = TestUtil.getTestFile(TestData.TEST_DATA_LAT_OUTER_LON);
+        classUnderTest = new NetCDFFileInspector(testFileLatOuterLon);
         GrdDataEncapsulator dataForLatOuterLon = classUnderTest.parseFiles(pi);
 
-        File testFile2 = new File(TestData.TEST_DATA_LON_OUTER_LAT);
-        if (null == testFile2 || !testFile2.exists()) {
-            return;
-        }
         // use the lonOuterLat data file to get the image data.
-        classUnderTest = new NetCDFFileInspector(testFile2);
+        File testFileLonOuterLat = TestUtil.getTestFile(TestData.TEST_DATA_LON_OUTER_LAT);
+        classUnderTest = new NetCDFFileInspector(testFileLonOuterLat);
         GrdDataEncapsulator dataForLonOuterLat = classUnderTest.parseFiles(pi);
 
         // test basic validity of each image data.
@@ -690,9 +567,7 @@ public class NetCDFFileInspectorTest {
     }
 
     private void testGetBounds(File testFile, float[] expectedResult) {
-        if (null == testFile || !testFile.exists()) {
-            return;
-        }
+        
         classUnderTest = new NetCDFFileInspector(testFile);
         float[] bounds = classUnderTest.getBounds();
         printBounds(bounds);

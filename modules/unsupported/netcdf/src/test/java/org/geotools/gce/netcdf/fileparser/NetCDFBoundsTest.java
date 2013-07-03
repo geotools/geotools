@@ -32,8 +32,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 /**
- *
- * @author Yancy
+ * unit tests for NetCDFFileInspector class specific to bounds.
  */
 public class NetCDFBoundsTest {
     NetCDFFileInspector classUnderTest;

@@ -33,8 +33,7 @@ import org.junit.rules.TestName;
 import ucar.nc2.NetcdfFile;
 
 /**
- * 
- * @author Yancy
+ * unit tests for NetCDFFileInspector class specific to elevation.
  */
 public class NetCDFElevationTest {
     NetCDFFileInspector classUnderTest;

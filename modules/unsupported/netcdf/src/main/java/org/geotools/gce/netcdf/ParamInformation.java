@@ -22,6 +22,9 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.geometry.GeneralEnvelope;
 import org.opengis.coverage.grid.GridEnvelope;
 
+/**
+ * Provides convenience object to contain request parameter information for NetCDF project.  
+ */
 public class ParamInformation {
     private GeneralEnvelope requestedEnvelope = null;
     private Double elevation = null;

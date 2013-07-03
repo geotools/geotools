@@ -173,7 +173,8 @@
      <profile>
        <id>netcdf</id>
        <activation>
-         <property><name>all</name></property>
+	     <!-- commenting this out per Jody's fdbk.  uncomment when ready for -Dall build to include this module. -->
+         <!-- <property><name>all</name></property> -->
        </activation>
        <modules>
          <module>netcdf</module>

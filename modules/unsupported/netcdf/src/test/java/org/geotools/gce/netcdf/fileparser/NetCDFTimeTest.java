@@ -16,23 +16,19 @@
  */
 package org.geotools.gce.netcdf.fileparser;
 
-import java.io.File;
-import java.util.SortedSet;
-import org.geotools.gce.netcdf.test.TestData;
-import org.geotools.gce.netcdf.test.TestUtil;
-import org.junit.After;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNull;
+
+import java.io.File;
+
+import org.geotools.gce.netcdf.test.TestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
 /**
- *
- * @author Yancy
+ * unit tests for NetCDFFileInspector class specific to time.
  */
 public class NetCDFTimeTest {
     NetCDFFileInspector classUnderTest;

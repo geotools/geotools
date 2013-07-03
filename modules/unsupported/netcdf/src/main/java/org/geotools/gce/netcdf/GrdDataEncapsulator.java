@@ -30,11 +30,19 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
 import javax.media.jai.DataBufferFloat;
+
 import org.geotools.geometry.Envelope2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.Envelope;
 
+/**
+ * Provides a place to assemble data and then generate a WritableRaster and Envelope based on that data.
+ * 
+ * Intended as a support object for the NetCDFReader, particularly to generate a GridCoverage2D object as
+ * the result of the NetCDFReader read method.
+ */
 @SuppressWarnings("unused")
 public class GrdDataEncapsulator implements Serializable {
 
@@ -143,6 +151,9 @@ public class GrdDataEncapsulator implements Serializable {
 		return lonList;
 	}
 
+	/**
+	 * Provides an Envelope based on this class's grid properties.
+	 */
 	public Envelope getGeneralEnvelope() {
 		final Envelope returnedEnv = new Envelope2D(DefaultGeographicCRS.WGS84,
 				gridLeftLon, gridLowLat, (gridRightLon - gridLeftLon),
@@ -150,6 +161,9 @@ public class GrdDataEncapsulator implements Serializable {
 		return returnedEnv;
 	}
 
+	/**
+	 * Provides a WritableRaster based on this class's imageArray and imageWidth and imageHeight.
+	 */
 	public WritableRaster getWritableRaster() {
 		int imageBufferLen = imageWidth * imageHeight;
 		float[] imageBuffer = new float[imageBufferLen];

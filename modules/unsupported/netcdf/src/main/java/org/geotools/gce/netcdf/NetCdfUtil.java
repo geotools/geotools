@@ -36,6 +36,9 @@ import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
+/**
+ * Provides static utility objects for NetCDF project.  
+ */
 public class NetCdfUtil {
 
     private static final Logger LOG = Logging.getLogger(NetCdfUtil.class);

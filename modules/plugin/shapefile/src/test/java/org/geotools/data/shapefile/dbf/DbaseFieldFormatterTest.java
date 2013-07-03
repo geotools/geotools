@@ -62,32 +62,32 @@ public class DbaseFieldFormatterTest {
 	
 	@Test
 	public void testLarge() {
-		String s = checkOutput(12345.678, 33, 31);
+		checkOutput(12345.678, 33, 31);
 	}
 	
 	@Test(expected=RuntimeException.class)
 	public void testNotFit_1() {
-		String s = checkOutput(12345.678, 6, 2);
+		checkOutput(12345.678, 6, 2);
 	}
 
 	@Test(expected=RuntimeException.class)
 	public void testNotFit_2() {
-		String s = checkOutput(Double.valueOf(Math.PI * 1.0E10), 4, 1);
+		checkOutput(Double.valueOf(Math.PI * 1.0E10), 4, 1);
 	}
 
 	@Test
 	public void testSqueeze_ok() {
-		String s = checkOutput(Double.valueOf(Math.PI), 3, 1);
+		checkOutput(Double.valueOf(Math.PI), 3, 1);
 	}
 
 	@Test(expected=RuntimeException.class)
 	public void testSqueeze_x1() {
-		String s = checkOutput(Double.valueOf(Math.PI), 2, 1);
+		checkOutput(Double.valueOf(Math.PI), 2, 1);
 	}
 	
 	@Test(expected=RuntimeException.class)
 	public void testSqueeze_x2() {
-		String s = checkOutput(Double.valueOf(-Math.PI), 3, 1);
+		checkOutput(Double.valueOf(-Math.PI), 3, 1);
 	}
 	
 	@Test

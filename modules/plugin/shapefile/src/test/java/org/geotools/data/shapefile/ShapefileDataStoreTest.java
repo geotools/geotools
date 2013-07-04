@@ -939,6 +939,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         build.add("l", BigInteger.class);
         build.add("m", Calendar.class);
         build.add("n", UUID.class);
+        build.add("o", byte[].class);
 
         return build.buildFeatureType();
     }

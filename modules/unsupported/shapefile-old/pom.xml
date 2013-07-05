@@ -157,7 +157,7 @@
     </dependency>
 
     <dependency>
-      <groupId>jdom</groupId>
+      <groupId>org.jdom</groupId>
       <artifactId>jdom</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>

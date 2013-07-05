@@ -65,12 +65,12 @@ public class DbaseFieldFormatterTest {
 		checkOutput(12345.678, 33, 31);
 	}
 	
-	@Test(expected=RuntimeException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testNotFit_1() {
 		checkOutput(12345.678, 6, 2);
 	}
 
-	@Test(expected=RuntimeException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testNotFit_2() {
 		checkOutput(Double.valueOf(Math.PI * 1.0E10), 4, 1);
 	}
@@ -80,12 +80,12 @@ public class DbaseFieldFormatterTest {
 		checkOutput(Double.valueOf(Math.PI), 3, 1);
 	}
 
-	@Test(expected=RuntimeException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testSqueeze_x1() {
 		checkOutput(Double.valueOf(Math.PI), 2, 1);
 	}
 	
-	@Test(expected=RuntimeException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testSqueeze_x2() {
 		checkOutput(Double.valueOf(-Math.PI), 3, 1);
 	}
@@ -167,7 +167,7 @@ public class DbaseFieldFormatterTest {
 		checkOutput(Integer.valueOf(0), 3, 0);
 	}
 
-	@Test(expected=RuntimeException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testI_12345678_x() {
 		checkOutput(Integer.valueOf(12345678), 6, 0);
 	}

@@ -326,6 +326,7 @@ public class DbaseFileWriter {
 
     /** Utility for formatting Dbase fields. */
     public static class FieldFormatter {
+        private StringBuffer buffer = new StringBuffer(255);
         private NumberFormat numFormat = NumberFormat.getNumberInstance(Locale.US);
         private Calendar calendar;
         private final long MILLISECS_PER_DAY = 24*60*60*1000;
@@ -352,8 +353,7 @@ public class DbaseFileWriter {
             emptyString = sb.toString();
         }
 
-        public String getFieldString(int size, String s) {
-        	StringBuffer buffer = new StringBuffer(size);
+        public synchronized String getFieldString(int size, String s) {
             try {
                 buffer.replace(0, size, emptyString);
                 buffer.setLength(size);
@@ -391,8 +391,9 @@ public class DbaseFileWriter {
         }
 
         public synchronized String getFieldString(Date d) {
-        	StringBuffer buffer = new StringBuffer(255);
-            if (d != null) {
+
+        	if (d != null) {
+                buffer.delete(0, buffer.length());
                 
                 calendar.setTime(d);
                 int year = calendar.get(Calendar.YEAR);
@@ -465,7 +466,7 @@ public class DbaseFileWriter {
         }
         
         public synchronized String getFieldString(int size, int decimalPlaces, Number n) {
-        	StringBuffer buffer = new StringBuffer(255);
+            buffer.delete(0, buffer.length());
 
             if (n != null) {
             	double dval = n.doubleValue();
@@ -498,7 +499,7 @@ public class DbaseFileWriter {
 	        			if (buffer.length() > size) {
 	                    	// we have a grevious problem -- the value does not fit in the required size.
 	                    	// rather than truncate, and corrupt the data, we throw a Runtime
-	                    	throw new RuntimeException("Value "+n+" cannot be represented in size " + size);	        				
+	                    	throw new IllegalArgumentException("Value "+n+" cannot be represented in size " + size);	        				
 	        			}
 	        		}
             	}

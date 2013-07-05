@@ -123,9 +123,7 @@ public enum MergeBehavior {
                               inputThreshold, 
                               backgroundValues, 
                               localHints);
-                        
                     }
-
                 }
             }
             

@@ -1,0 +1,15 @@
+==UnidataVariableAdapter==
+- it still builds the envelope for each variable right now
+- clean up creation of CRS, especially 3d
+- fix initialization of CRS
+- review creation of GridGeometry2D
+- review computation of AffineTransform, I don't think we are handling the size of the pixels correctly. As an instance
+I am not sure we are managing the size of the last pixel
+- we are creating VerticalCRS and TemporalCRS for each variable right now, which is useless:
+-- review creation of VerticalCRS
+-- review creation of TemporalCRS
+
+== General ==
+- introdurre un oggetto che gestisca le CoordinateVariables ed i CRS per le variabili
+- salvare il crs nell'indexer ?
+- supporto PRJ o simile

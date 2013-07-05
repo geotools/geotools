@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -50,7 +50,6 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape2;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.crop.GTCropDescriptor;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -351,7 +350,7 @@ public class Crop extends Operation2D {
 
         // intersect the ROI with the intersection envelope and throw an error if they do not intersect
         if(cropRoi != null) {
-            final Geometry jis = JTS.toGeometry((com.vividsolutions.jts.geom.Envelope)new ReferencedEnvelope(intersectionEnvelope));
+            final Geometry jis = JTS.shapeToGeometry(intersectionEnvelope.toRectangle2D(), cropRoi.getFactory());
             if( ! IntersectUtils.intersects(cropRoi, jis))
                 throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
         }

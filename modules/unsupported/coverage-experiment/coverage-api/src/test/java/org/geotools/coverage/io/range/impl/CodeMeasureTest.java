@@ -16,8 +16,8 @@ import javax.measure.unit.Unit;
 
 import junit.framework.Assert;
 
-import org.geotools.coverage.io.impl.range.CodeMeasure;
-import org.geotools.coverage.io.impl.range.DefaultAxis;
+import org.geotools.coverage.io.range.impl.CodeMeasure;
+import org.geotools.coverage.io.range.impl.DefaultAxis;
 import org.geotools.feature.NameImpl;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;

@@ -34,8 +34,8 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 
 import org.geotools.coverage.io.CoverageAccess;
-import org.geotools.coverage.io.driver.DefaultFileDriver;
-import org.geotools.coverage.io.driver.FileDriver;
+import org.geotools.coverage.io.FileDriver;
+import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.factory.Hints;
 import org.opengis.util.ProgressListener;
 
@@ -52,10 +52,17 @@ public class HDF4Driver extends DefaultFileDriver implements FileDriver {
 
     /** A static {@link ImageReaderSpi} to be used to call canDecodeInput */
     static ImageReaderSpi spi;
+    
+    static String classUsed;
 
     static {
         try {
-            Class<?> clazz = Class.forName("org.geotools.imageio.hdf4.HDF4SpatioTemporalImageReaderSpi");
+            classUsed = "org.geotools.imageio.hdf4.aps.HDF4APSImageReaderSpi";
+            Class< ? > clazz = Class.forName(classUsed);
+
+            // FIXME how to handle the fact that now we have two classes
+            // Class<?> clazz =
+            // Class.forName("org.geotools.imageio.hdf4.terascan.HDF4TeraScanImageReaderSpi");
             spi = (ImageReaderSpi) clazz.newInstance();
         } catch (Throwable e) {
             if (LOGGER.isLoggable(Level.WARNING))
@@ -86,7 +93,8 @@ public class HDF4Driver extends DefaultFileDriver implements FileDriver {
 
             Class.forName("javax.media.jai.JAI");
             Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
-            Class.forName("org.geotools.imageio.hdf4.HDF4SpatioTemporalImageReaderSpi");
+            Class.forName(classUsed);
+            
             if (available)
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine("HDF4Driver is availaible.");

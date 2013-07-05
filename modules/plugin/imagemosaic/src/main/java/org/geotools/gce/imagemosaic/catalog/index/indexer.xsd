@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified"
+	elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="Indexer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="schemas" maxOccurs="1" minOccurs="0" type="schemasType" />
+				<xs:element name="domains" maxOccurs="1" minOccurs="0" type="domainsType" />
+				<xs:element name="coverages" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="coverage" maxOccurs="unbounded" minOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="schema" type="schemaType" />
+										<xs:element name="origName" type="xs:string" />
+										<xs:element name="domains" type="domainsType" />
+										<xs:choice>
+											<xs:element name="name"
+												type="xs:string">
+											</xs:element>
+											<xs:element
+												name="nameCollector" type="xs:string">
+											</xs:element>
+										</xs:choice>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="datastore">
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="1">
+							<xs:element name="database" type="xs:string" />
+							<xs:element name="parameters" maxOccurs="1" minOccurs="0" type="parametersType">
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="collectors" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="collector" maxOccurs="unbounded" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="spi" type="xs:string" />
+										<xs:element name="type" type="xs:string" maxOccurs="1" minOccurs="0"/>
+										<xs:element name="value" type="xs:string" />
+										<xs:element name="mapped" type="xs:string" />
+									</xs:sequence>
+									<xs:attribute name="name" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="parameters" maxOccurs="1" minOccurs="0" type="parametersType">
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="parametersType">
+		<xs:sequence>
+			<xs:element name="parameter" maxOccurs="unbounded" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="value" type="xs:string" />
+					</xs:sequence>
+					<xs:attribute name="name" type="xs:string" use="required" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="schemasType">
+		<xs:sequence>
+			<xs:element name="schema" maxOccurs="unbounded" minOccurs="0" type="schemaType">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="schemaType">
+		<xs:sequence>
+			<xs:element name="attributes" type="xs:string" />
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="optional" />
+		<xs:attribute name="ref" type="xs:string" use="optional" />
+	</xs:complexType>
+	<xs:complexType name="domainsType">
+		<xs:sequence>
+			<xs:element name="domain" maxOccurs="unbounded" minOccurs="0" type="domainType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="domainType">
+		<xs:sequence>
+			<xs:element name="attributes" maxOccurs="1" minOccurs="1" type="attributesType" />
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="ref" type="xs:string" use="optional" />
+	</xs:complexType>
+	<xs:complexType name="attributesType">
+		<xs:sequence>
+			<xs:element name="attribute" maxOccurs="unbounded" minOccurs="1" type="attributeType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="attributeType">
+		<xs:attribute name="name" type="xs:string" />
+		<xs:attribute name="collectorRef" type="xs:string"/>
+	</xs:complexType>
+</xs:schema>
+

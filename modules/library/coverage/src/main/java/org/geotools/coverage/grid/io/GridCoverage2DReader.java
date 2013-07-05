@@ -46,7 +46,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Andrea Aime, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
- * @since 10.0
  */
 @SuppressWarnings("rawtypes")
 public interface GridCoverage2DReader extends GridCoverageReader {

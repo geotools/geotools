@@ -24,26 +24,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
-import org.geotools.coverage.io.domain.RasterLayout;
-import org.geotools.coverage.io.impl.CoverageReadRequest;
-import org.geotools.coverage.io.impl.CoverageResponse;
+import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.Parameter;
 import org.geotools.data.ResourceInfo;
 import org.geotools.referencing.CRS;
+import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.feature.type.Name;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.TransfiniteSet;
-import org.opengis.metadata.extent.Extent;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.TemporalCRS;
 import org.opengis.referencing.crs.VerticalCRS;
 import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.temporal.TemporalGeometricPrimitive;
 import org.opengis.util.ProgressListener;
 
 /**
@@ -56,15 +53,19 @@ import org.opengis.util.ProgressListener;
  *
  * @source $URL$
  */
-public interface CoverageSource {
+public interface CoverageSource{
+    
+    enum DomainType {
+        NUMBER, NUMBERRANGE, DATE, DATERANGE, STRING
+    }
 
-	public abstract class HorizontalDomain{
+	public abstract class SpatialDomain{
     
     	/**
     	 * The first {@link BoundingBox} of this {@link List} should contain the
     	 * overall bounding for the underlying coverage in its native coordinate
     	 * reference system. However, by setting the <code>global</code> param to
-    	 * true we can request additional bounding boxes in case the area covered by
+    	 * <code>false</code> we can request additional bounding boxes in case the area covered by
     	 * the mentioned coverage is poorly approximated by a single coverage, like
     	 * it could happen for a mosaic which has some holes.
     	 * 
@@ -118,19 +119,17 @@ public interface CoverageSource {
     
     	/**
     	 * Describes the temporal domain for the underlying {@link RasterDataset}
-    	 * by returning a {@link Set} of {@link TemporalGeometricPrimitive}s elements for
+    	 * by returning a {@link Set} of {@link DateRange} elements for
     	 * it.
-    	 * Note that the {@link TemporalCRS} for the listed {@link TemporalGeometricPrimitive}s
+    	 * Note that the {@link TemporalCRS} for the listed {@link DateRange} objects
     	 * can be obtained from the overall {@link CRS} for the underlying coverage.
     	 * 
-    	 * @todo should we change to something different than
-    	 *       {@link TemporalGeometricPrimitive}? Should we consider GML TimeSequence
     	 * @param listener
-    	 * @return a {@link Set} of {@link TemporalGeometricPrimitive}s elements.
+    	 * @return a {@link Set} of {@link DateRange}s elements.
     	 * @todo allow transfinite sets!
     	 * @throws IOException
     	 */
-    	public abstract SortedSet<? extends TemporalGeometricPrimitive> getTemporalElements(final ProgressListener listener) throws IOException;
+    	public abstract SortedSet<? extends DateRange> getTemporalElements(final boolean overall, final ProgressListener listener) throws IOException;
     
     	public abstract CoordinateReferenceSystem getCoordinateReferenceSystem();
     	
@@ -154,13 +153,32 @@ public interface CoverageSource {
     	 * @todo allow using an interval as well as a direct position
     	 * @todo allow transfinite sets!
     	 */
-    	public abstract SortedSet<? extends NumberRange<Double>> getVerticalElements(final boolean overall,final ProgressListener listener) throws IOException;
+    	public abstract SortedSet<? extends NumberRange<Double>> getVerticalElements(final boolean overall, final ProgressListener listener) throws IOException;
     
     	public abstract CoordinateReferenceSystem getCoordinateReferenceSystem();
     	
     }
+    
+    public abstract class AdditionalDomain {
+        
+        /**
+         * Describes the additional domain for the underlying {@link RasterDataset}
+         * by returning a {@link Set} of elements for it.
+         * 
+         * @param listener
+         * @return a {@link Set} of {@link DateRange}s elements.
+         * @todo allow transfinite sets!
+         * @throws IOException
+         */
+        public abstract Set<Object> getElements(final boolean overall, final ProgressListener listener) throws IOException;
 
-    /**
+        public abstract String getName();
+
+        public abstract DomainType getType();
+
+    }
+
+        /**
 	 * Name of the Coverage (ie data product) provided by this CoverageSource.
 	 * 
 	 * @since 2.5
@@ -259,21 +277,19 @@ public interface CoverageSource {
 
     public  CoordinateReferenceSystem getCoordinateReferenceSystem();
 
-    /**
-     * Envelope??? range????
-     * @return
-     */
-    public Extent getExtent();
-
-    public HorizontalDomain getHorizontalDomain() throws IOException;
+    public SpatialDomain getSpatialDomain() throws IOException;
 
     public TemporalDomain getTemporalDomain() throws IOException;
 
     public VerticalDomain getVerticalDomain() throws IOException;
 
+    public List<AdditionalDomain> getAdditionalDomains() throws IOException;
+
     public List<? extends RasterLayout> getOverviewsLayouts(final ProgressListener listener) throws IOException;
-    
+
     public int getOverviewsNumber (final ProgressListener listener) throws IOException;
+
+    public List<DimensionDescriptor> getDimensionDescriptors() throws IOException;
 	
 //	/**
 //	 * @todo TBD, I am not even sure this should leave at the general interface level!

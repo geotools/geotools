@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,10 +20,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageReader;
 
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.opengis.feature.simple.SimpleFeature;
 
 
@@ -61,11 +62,13 @@ public abstract class PropertiesCollector  {
 		return this;
 	}
 	
-	public PropertiesCollector collect(final AbstractGridCoverage2DReader  abstractGridCoverageReader){
+	public PropertiesCollector collect(final GridCoverage2DReader  gridCoverageReader){
 		return this;
 	}		
 	
 	abstract public void setProperties(final SimpleFeature feature);
+	
+	abstract public void setProperties(final Map<String,Object> map);
 	
 	public void reset(){
 		matches= new ArrayList<String>();

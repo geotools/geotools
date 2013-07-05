@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+    <coverages>
+        <coverage>
+            <name>O3</name>
+            <schema><attributes> the_geom:Polygon,imageindex:Integer,time:java.util.Date,elevation:Double </attributes></schema>
+        </coverage>
+        <coverage>
+            <name>NO2</name>
+            <schema><attributes>the_geom:Polygon,imageindex:Integer,time:java.util.Date</attributes></schema>
+        </coverage>
+    </coverages>
+</Indexer>

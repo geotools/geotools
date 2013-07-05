@@ -37,12 +37,12 @@ final  class OverviewsController {
      * Constructor.
      * 
      * @param highestRes The resolution values for the finest level, <b>This is treated as level 0.</b>
-     * @param numberOfOvervies number of overview levels.
+     * @param numberOfOverviews number of overview levels.
      * @param overviewsResolution resolutions for the various levels. <b>Implicitly, the index of the resolution is the index of the corresponding level.</b> 
      */
     public OverviewsController(
             final double[] highestRes,
-            final int numberOfOvervies, 
+            final int numberOfOverviews, 
             final double[][] overviewsResolution) {
 
         // notice that we assume what follows:
@@ -51,7 +51,7 @@ final  class OverviewsController {
         // -the aspect ratio for the overviews is constant
         // -the provided resolutions are taken directly from the grid
         resolutionsLevels.add(new OverviewLevel(1, highestRes[0], highestRes[1], 0));
-        if (numberOfOvervies > 0) {
+        if (numberOfOverviews > 0) {
             for (int i = 0; i < overviewsResolution.length; i++) {
                 resolutionsLevels.add(new OverviewLevel(overviewsResolution[i][0] / highestRes[0],
                         overviewsResolution[i][0], overviewsResolution[i][1], i + 1));

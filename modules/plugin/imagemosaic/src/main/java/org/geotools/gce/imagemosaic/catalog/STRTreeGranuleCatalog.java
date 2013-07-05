@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -64,8 +64,9 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  * @author Simone Giannecchini, S.A.S.
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  * @since 2.5
+ * @version 10.0
  *
-	 * @source $URL$
+ * @source $URL$
  */
 @SuppressWarnings("unused")
 class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
@@ -114,7 +115,7 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 		        return; //Skip
 		    }
 			if(o instanceof GranuleDescriptor){
-				final GranuleDescriptor g=(GranuleDescriptor) o;
+				final GranuleDescriptor g = (GranuleDescriptor) o;
 				final SimpleFeature originator = g.getOriginator();
 				if(originator!=null&&filter.evaluate(originator)){
 				    adaptee.visit(g,null);
@@ -130,8 +131,10 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 
 	private GranuleCatalog wrappedCatalogue;
 	
+	private String typeName;
+	
 	public STRTreeGranuleCatalog(final Map<String,Serializable> params, DataStoreFactorySpi spi) {
-	        this(new GTDataStoreGranuleCatalog(params,false,spi));
+	        this(new GTDataStoreGranuleCatalog(params, false, spi), null);
 	}
 	
 
@@ -145,9 +148,13 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
      * 
      * @param catalogue the {@link GranuleCatalog} to be wrapped.
      */
-    public STRTreeGranuleCatalog(GranuleCatalog catalogue) {
+    public STRTreeGranuleCatalog(final GranuleCatalog catalogue, final String typeName) {
         Utilities.ensureNonNull("catalogue", catalogue);
         this.wrappedCatalogue = catalogue;
+        this.typeName = typeName;
+        if (typeName == null) {
+            this.typeName =  ((GTDataStoreGranuleCatalog)wrappedCatalogue).typeNames.iterator().next();
+        }
     }
 
         /** The {@link STRtree} index. */
@@ -200,7 +207,7 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 		//
 		try{
 
-			features = wrappedCatalogue.getGranules();
+			features = wrappedCatalogue.getGranules(typeName);
 			if (features == null) 
 				throw new NullPointerException(
 						"The provided SimpleFeatureCollection is null, it's impossible to create an index!");
@@ -282,7 +289,7 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 		try{
 			l.lock();	        
 			 
-			// original index
+			// original index 
 			if(wrappedCatalogue!=null)
 			    try{
 			        wrappedCatalogue.dispose();
@@ -290,10 +297,10 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
                                 if(LOGGER.isLoggable(Level.FINE))
                                     LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
                             }
-	
+//	
 			
 		}finally{
-			wrappedCatalogue=null;
+//			wrappedCatalogue=null;
 			index= null;
 			l.unlock();
 		
@@ -343,23 +350,23 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 		final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
 		filter.accept(bboxExtractor, null);
 		ReferencedEnvelope requestedBBox=bboxExtractor.getBBox();
-		
+		BoundingBox bbox = wrappedCatalogue.getBounds(typeName);
 		// add eventual bbox from the underlying index to constrain search
 		if(requestedBBox!=null){
 			// intersection
-			final Envelope intersection = requestedBBox.intersection(ReferencedEnvelope.reference(wrappedCatalogue.getBounds()));
+			final Envelope intersection = requestedBBox.intersection(ReferencedEnvelope.reference(bbox));
 			
 			// create intersection
-			final ReferencedEnvelope referencedEnvelope= new ReferencedEnvelope(intersection,wrappedCatalogue.getBounds().getCoordinateReferenceSystem());
+			final ReferencedEnvelope referencedEnvelope= new ReferencedEnvelope(intersection,bbox.getCoordinateReferenceSystem());
 		}
 		else{
-		    return ReferencedEnvelope.reference(wrappedCatalogue.getBounds());
+		    return ReferencedEnvelope.reference(bbox);
 		}
 		return requestedBBox;
 	}
 
 	public List<GranuleDescriptor> getGranules() throws IOException {
-		return getGranules(this.getBounds());
+		return getGranules(this.getBounds(typeName));
 	}
 
 	public void getGranules(Query q, GranuleCatalogVisitor visitor)
@@ -383,13 +390,13 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 		}	
 	}
 
-	public BoundingBox getBounds() {
+	public BoundingBox getBounds(String typeName) {
 		final Lock lock=rwLock.readLock();
 		try{
 			lock.lock();
 			checkStore();
 			
-			return wrappedCatalogue.getBounds();
+			return wrappedCatalogue.getBounds(typeName);
 			
 		}finally{
 			lock.unlock();
@@ -404,18 +411,25 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 			throw new IllegalStateException("The underlying store has already been disposed!");
 	}
 
-	public SimpleFeatureType getType() throws IOException {
+	@Override
+	public SimpleFeatureType getType(final String typeName) throws IOException {
 		final Lock lock=rwLock.readLock();
 		try{
 			lock.lock();
 			checkStore();
-			return this.wrappedCatalogue.getType();
+			return this.wrappedCatalogue.getType(typeName);
 		}finally{
 			lock.unlock();
 		}
 	}
 
-	public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
+	@Override
+    public String[] getTypeNames() {
+        return typeName != null ? new String[]{typeName} : null;
+    }
+
+
+    public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
 		final Lock lock=rwLock.readLock();
 		try{
 			lock.lock();
@@ -432,7 +446,7 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 			lock.lock();
 			checkStore();
 			
-			return wrappedCatalogue.getQueryCapabilities();
+			return wrappedCatalogue.getQueryCapabilities(typeName);
 		
 		}finally{
 			lock.unlock();

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -52,37 +52,46 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
 	public Map<Key, ?> getImplementationHints() {
 		return Collections.emptyMap();
 	}
+	
+    public final static String REGEX_PREFIX = "regex=";
 
-        public PropertiesCollector create(
-                        final Object o,
-                        final List<String> propertyNames) {
-                URL source=null;
-                if (o instanceof URL){
-                    source = (URL)o;
-                } else if(o instanceof File) {
-                        source=DataUtilities.fileToURL((File) o);
+    public PropertiesCollector create(final Object o, final List<String> propertyNames) {
+        URL source = null;
+        String property = null;
+        if (o instanceof URL) {
+            source = (URL) o;
+        } else if (o instanceof File) {
+            source = DataUtilities.fileToURL((File) o);
+        } else if (o instanceof String) {
+            try {
+                source = new URL((String) o);
+            } catch (MalformedURLException e) {
+
+                String value = (String) o;
+                if (value.startsWith(REGEX_PREFIX)) {
+                    property = value.substring(REGEX_PREFIX.length());
+                } else {
+                    return null;
                 }
-                else
-                        if(o instanceof String)
-                                try {
-                                        source=new URL((String) o);
-                                } catch (MalformedURLException e) {
-                                        return null;
-                                }
-                        else
-                                return null;
-                // it is a url
-                final Properties properties = Utils.loadPropertiesFromURL(source);
-                if(properties.containsKey("regex")){
-                    final String property = properties.getProperty("regex");
-                    if(property!=null){
-                        return createInternal(this,propertyNames,property.trim());
-                    }
-                }
-                
-                return null;
-                
+            }
+        } else {
+            return null;
         }
+
+        // it is a url
+        if (source != null) {
+            final Properties properties = Utils.loadPropertiesFromURL(source);
+            if (properties.containsKey("regex")) {
+                property = properties.getProperty("regex");
+            }
+        }
+        if (property != null) {
+            return createInternal(this, propertyNames, property.trim());
+        }
+
+        return null;
+
+    }
 
         abstract protected PropertiesCollector createInternal(PropertiesCollectorSPI fileNameExtractorSPI, List<String> propertyNames, String string);	
 

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,13 +17,18 @@
 package org.geotools.gce.imagemosaic.catalogbuilder;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.geotools.console.Option;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.gce.imagemosaic.Utils.Prop;
+import org.geotools.gce.imagemosaic.catalog.index.Indexer;
+import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
+import org.geotools.gce.imagemosaic.catalog.index.ParametersType;
+import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
+import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
+import org.geotools.gce.imagemosaic.catalog.index.SchemasType;
 import org.geotools.util.Utilities;
 
 /**
@@ -42,73 +47,39 @@ public class CatalogBuilderConfiguration {
 
 	private String timeAttribute;
 
-	private String elevationAttribute;
-
 	private String runtimeAttribute;
 
-	private String additionalDomainAttribute;
-
-	private boolean absolute = Utils.DEFAULT_PATH_BEHAVIOR;
-	
-	private boolean caching = Utils.DEFAULT_CONFIGURATION_CACHING;
-
-	/**
-	 * Index file name. Default is index.
-	 */
-	private String indexName = Utils.DEFAULT_INDEX_NAME;
-
-	private String locationAttribute = Utils.DEFAULT_LOCATION_ATTRIBUTE;
-
-	private boolean footprintManagement = Utils.DEFAULT_FOOTPRINT_MANAGEMENT;
-
-	@Option(description = "Root directory where to place the index file", mandatory = true, name = "rootDirectory")
-	private String rootMosaicDirectory;
-
-	@Option(description = "Wildcard to use for building the index of this mosaic", mandatory = false, name = "wildcard")
-	private String wildcard = Utils.DEFAULT_WILCARD;
-
-	/**
-	 * String to pass to the featuretypebuilder for building the schema for the
-	 * index.
-	 */
-	private String schema;
-
-	private String propertyCollectors;
-	
-        private List<String> indexingDirectories;
-
+	private Indexer indexer;
 	
 	/**
-	 * Imposed BBOX
+	 * @deprecated parse indexer parameters instead.
+	 * @return
 	 */
-	private String envelope2D;
-	
-	public String getResolutionLevels() {
-		return resolutionLevels;
-	}
-
-	public void setResolutionLevels(String resolutionLevels) {
-		this.resolutionLevels = resolutionLevels;
-	}
-
-	/**
-	 * Imposed resolution levels
-	 */
-	private String resolutionLevels;
-
 	public String getEnvelope2D() {
-		return envelope2D;
+	    return getParameter(Prop.ENVELOPE2D);
 	}
 
-	public void setEnvelope2D(String bbox) {
-		this.envelope2D = bbox;
-	}
+    public CatalogBuilderConfiguration() {
+        initDefaultsParam();
+    }
 
-	public CatalogBuilderConfiguration() {
-	}
+    private void initDefaultsParam() {
+        final Indexer defaultIndexer = Utils.OBJECT_FACTORY.createIndexer();
+        final ParametersType parameters = Utils.OBJECT_FACTORY.createParametersType();
+        final List<Parameter> parameterList = parameters.getParameter();
+        defaultIndexer.setParameters(parameters);
+        setIndexer(defaultIndexer);
+        IndexerUtils.setParam(parameterList, Prop.LOCATION_ATTRIBUTE, Utils.DEFAULT_LOCATION_ATTRIBUTE);
+        IndexerUtils.setParam(parameterList, Prop.WILDCARD, Utils.DEFAULT_WILCARD);
+        IndexerUtils.setParam(parameterList, Prop.FOOTPRINT_MANAGEMENT, Boolean.toString(Utils.DEFAULT_FOOTPRINT_MANAGEMENT));
+        IndexerUtils.setParam(parameterList, Prop.ABSOLUTE_PATH, Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
+        IndexerUtils.setParam(parameterList, Prop.RECURSIVE, Boolean.toString(Utils.DEFAULT_RECURSION_BEHAVIOR));
+        IndexerUtils.setParam(parameterList, Prop.INDEX_NAME, Utils.DEFAULT_INDEX_NAME);
+    }
 
 	public CatalogBuilderConfiguration(final CatalogBuilderConfiguration that) {
 		Utilities.ensureNonNull("CatalogBuilderConfiguration", that);
+		initDefaultsParam();
 		try {
 			BeanUtils.copyProperties(this, that);
 		} catch (IllegalAccessException e) {
@@ -136,131 +107,134 @@ public class CatalogBuilderConfiguration {
 		this.hints = hints;
 	}
 
-	public void setIndexingDirectories(List<String> indexingDirectories) {
-		this.indexingDirectories = indexingDirectories;
-	}
 
-	private boolean recursive = Utils.DEFAULT_RECURSION_BEHAVIOR;
+    /**
+     * @deprecated parse indexer parameters instead.
+     * @return
+     */
+    public boolean isRecursive() {
+        return Boolean.parseBoolean(getParameter(Prop.RECURSIVE));
+    }
 
-	public boolean isRecursive() {
-		return recursive;
-	}
-
-	public void setRecursive(boolean recursive) {
-		this.recursive = recursive;
-	}
-
+        /**
+         * @deprecated parse indexer parameters instead.
+         * @return
+         */
 	public boolean isCaching() {
-		return caching;
+		return Boolean.parseBoolean(getParameter(Prop.CACHING));
 	}
 
-	public void setCaching(boolean caching) {
-		this.caching = caching;
-	}
+    /**
+     * Get the schema with the specified name
+     * 
+     * @param name
+     * @return
+     */
+    public String getSchema(String name) {
+        // return schema;
+        SchemasType schemas = indexer.getSchemas();
+        if (schemas != null) {
+            List<SchemaType> schemaList = schemas.getSchema();
+            for (SchemaType schema : schemaList) {
+                if (schema.getName().equalsIgnoreCase(name)) {
+                    return schema.getAttributes();
+                }
+            }
+        }
+        return null;
+    }
 
-	public String getPropertyCollectors() {
-		return propertyCollectors;
-	}
+    /**
+     * Set the indexer parameter
+     * @param parameterName
+     * @param parameterValue
+     */
+    public void setParameter(String parameterName, String parameterValue) {
+        List<Parameter> params = indexer.getParameters().getParameter();
+        parameterValue = IndexerUtils.refineParameterValue(parameterName, parameterValue);
+        for (Parameter param : params) {
+            if (param.getName().equalsIgnoreCase(parameterName)) {
+                param.setValue(parameterValue);
+                return;
+            }
+        }
+        Parameter param = Utils.OBJECT_FACTORY.createParametersTypeParameter();
+        param.setName(parameterName);
+        param.setValue(parameterValue);
+        params.add(param);
+    }
 
-	public void setPropertyCollectors(String propertyCollectors) {
-		this.propertyCollectors = propertyCollectors;
-	}
+    public String getParameter(String parameterName) {
+        return IndexerUtils.getParameter(parameterName, indexer);
+    }
 
-	public String getSchema() {
-		return schema;
-	}
+    public String getTimeAttribute() {
+        return timeAttribute;
+    }
 
-	public void setSchema(String schema) {
-		this.schema = schema;
-	}
+    public Indexer getIndexer() {
+        return indexer;
+    }
 
-	public String getTimeAttribute() {
-		return timeAttribute;
-	}
+    public void setIndexer(Indexer indexer) {
+        this.indexer = indexer;
+    }
 
-	public void setTimeAttribute(String timeAttribute) {
-		this.timeAttribute = timeAttribute;
-	}
+    public String getRuntimeAttribute() {
+        return runtimeAttribute;
+    }
 
-	public boolean isFootprintManagement() {
-		return footprintManagement;
-	}
+    public void setRuntimeAttribute(String runtimeAttribute) {
+        this.runtimeAttribute = runtimeAttribute;
+    }
 
-	public void setFootprintManagement(boolean footprintManagement) {
-		this.footprintManagement = footprintManagement;
-	}
-
-	public String getElevationAttribute() {
-		return elevationAttribute;
-	}
-
-	public void setElevationAttribute(String elevationAttribute) {
-		this.elevationAttribute = elevationAttribute;
-	}
-
-	public String getRuntimeAttribute() {
-		return runtimeAttribute;
-	}
-
-	public void setRuntimeAttribute(String runtimeAttribute) {
-		this.runtimeAttribute = runtimeAttribute;
-	}
-
-    public String getAdditionalDomainAttribute() {
-        return additionalDomainAttribute;
+    /**
+     * @deprecated parse indexer parameters instead.
+     * @return
+     */
+    public String getIndexName() {
+        return getParameter(Prop.INDEX_NAME);
     }
     
-    public void setAdditionalDomainAttribute(String additionalDomainAttribute) {
-        this.additionalDomainAttribute = additionalDomainAttribute;
+    /**
+     * @deprecated parse indexer parameters instead.
+     * @return
+     */
+    public boolean isFootprintManagement() {
+        return Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT));
+}
+
+    /**
+     * @deprecated parse indexer parameters instead.
+     * @return
+     */
+    public String getLocationAttribute() {
+        return getParameter(Prop.LOCATION_ATTRIBUTE);
     }
 
-	public List<String> getIndexingDirectories() {
-		return indexingDirectories;
-	}
+    /**
+     * @deprecated parse indexer parameters instead.
+     * @return
+     */
+    public String getRootMosaicDirectory() {
+        return getParameter(Prop.ROOT_MOSAIC_DIR);
+    }
 
-	public String getIndexName() {
-		return indexName;
-	}
+    /**
+     * @deprecated parse Indexer parameters instead.
+     * @return
+     */
+    public String getWildcard() {
+        return getParameter(Prop.WILDCARD);
+    }
 
-	public String getLocationAttribute() {
-		return locationAttribute;
-	}
-
-	public String getRootMosaicDirectory() {
-		return rootMosaicDirectory;
-	}
-
-	public String getWildcard() {
-		return wildcard;
-	}
-
-	public boolean isAbsolute() {
-		return absolute;
-	}
-
-	public void setAbsolute(boolean absolute) {
-		this.absolute = absolute;
-	}
-
-	public void setIndexName(String indexName) {
-		this.indexName = indexName;
-	}
-
-	public void setLocationAttribute(String locationAttribute) {
-		this.locationAttribute = locationAttribute;
-	}
-
-	public void setRootMosaicDirectory(final String rootMosaicDirectory) {
-		Utilities.ensureNonNull("rootMosaicDirectory", rootMosaicDirectory);
-		String testingDirectory = rootMosaicDirectory;
-		Utils.checkDirectory(testingDirectory,false);
-		this.rootMosaicDirectory = testingDirectory;
-
-	}
-
-	public void setWildcard(String wildcardString) {
-		this.wildcard = wildcardString;
-	}
+    /**
+     * @deprecated parse Indexer parameters instead.
+     * @return
+     */
+    public boolean isAbsolute() {
+        return Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH));
+    }
 
 	@Override
 	public CatalogBuilderConfiguration clone()
@@ -275,43 +249,45 @@ public class CatalogBuilderConfiguration {
 		if (!(obj instanceof CatalogBuilderConfiguration))
 			return false;
 		final CatalogBuilderConfiguration that = (CatalogBuilderConfiguration) obj;
-
-		if (this.absolute != that.absolute)
-			return false;
-		if (this.caching != that.caching)
-			return false;
-		if (this.recursive != that.recursive)
-			return false;
-		if (this.footprintManagement != that.footprintManagement)
-			return false;
-		if (!(this.indexName == null && that.indexName == null)
-				&& !this.indexName.equals(that.indexName))
-			return false;
-		if (!(this.locationAttribute == null && that.locationAttribute == null)
-				&& !this.locationAttribute.equals(that.locationAttribute))
-			return false;
-		if (!(this.rootMosaicDirectory == null && that.rootMosaicDirectory == null)
-				&& !this.rootMosaicDirectory.equals(that.rootMosaicDirectory))
-			return false;
-		if (!Utilities.deepEquals(this.indexingDirectories,
-				that.indexingDirectories))
-			return false;
-
+		if (!equalsParameter(this, that, Prop.ABSOLUTE_PATH)) 
+		    return false;
+		
+		if (!equalsParameter(this, that, Prop.CACHING)) 
+                    return false;
+		if (!equalsParameter(this, that, Prop.RECURSIVE)) 
+                    return false;
+		if (!equalsParameter(this, that, Prop.FOOTPRINT_MANAGEMENT)) 
+                    return false;
+                if (!equalsParameter(this, that, Prop.INDEX_NAME))
+                    return false;
+                if (!equalsParameter(this, that, Prop.LOCATION_ATTRIBUTE)) 
+                    return false;
+                if (!equalsParameter(this, that, Prop.ROOT_MOSAIC_DIR)) 
+                    return false;
 		return true;
 	}
 
-	@Override
+    private static boolean equalsParameter(CatalogBuilderConfiguration thisConfig,
+            CatalogBuilderConfiguration thatConfig, String parameterName) {
+        String thisValue = thisConfig.getParameter(parameterName);
+        String thatValue = thatConfig.getParameter(parameterName);
+        if (!(thisValue == null && thatValue == null) && !thisValue.equals(thatValue)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
 	public int hashCode() {
 		int seed = 37;
-		seed = Utilities.hash(absolute, seed);
-		seed = Utilities.hash(recursive, seed);
-		seed = Utilities.hash(caching, seed);
-		seed = Utilities.hash(footprintManagement, seed);
-		seed = Utilities.hash(locationAttribute, seed);
-		seed = Utilities.hash(indexName, seed);
-		seed = Utilities.hash(wildcard, seed);
-		seed = Utilities.hash(rootMosaicDirectory, seed);
-		seed = Utilities.hash(indexingDirectories, seed);
+		seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH)), seed);
+		seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.RECURSIVE)), seed);
+		seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.CACHING)), seed);
+		seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT)), seed);
+		seed = Utilities.hash(getParameter(Prop.LOCATION_ATTRIBUTE), seed);
+		seed = Utilities.hash(getParameter(Prop.INDEX_NAME), seed);
+		seed = Utilities.hash(getParameter(Prop.WILDCARD), seed);
+		seed = Utilities.hash(getParameter(Prop.ROOT_MOSAIC_DIR), seed);
 		return seed;
 	}
 
@@ -319,43 +295,52 @@ public class CatalogBuilderConfiguration {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("CatalogBuilderConfiguration").append("\n");
-		builder.append("wildcardString:\t\t\t").append(wildcard).append("\n");
-		builder.append("indexName:\t\t\t").append(indexName).append("\n");
-		builder.append("absolute:\t\t\t").append(absolute).append("\n");
-		builder.append("caching:\t\t\t").append(caching).append("\n");
-		builder.append("recursive:\t\t\t").append(recursive).append("\n");
-		builder.append("footprintManagement:\t\t\t")
-				.append(footprintManagement).append("\n");
-		builder.append("locationAttribute:\t\t\t").append(locationAttribute)
-				.append("\n");
-		builder.append("rootMosaicDirectory:\t\t\t")
-				.append(rootMosaicDirectory).append("\n");
-		builder.append("indexingDirectories:\t\t\t").append(
-				Utilities.deepToString(indexingDirectories)).append("\n");
+		builder.append("wildcardString:\t\t\t").append(getParameter(Prop.WILDCARD)).append("\n");
+		builder.append("indexName:\t\t\t").append(getParameter(Prop.INDEX_NAME)).append("\n");
+		builder.append("absolute:\t\t\t").append(Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH))).append("\n");
+		builder.append("caching:\t\t\t").append(Boolean.parseBoolean(getParameter(Prop.CACHING))).append("\n");
+		builder.append("recursive:\t\t\t").append(Boolean.parseBoolean(getParameter(Prop.RECURSIVE))).append("\n");
+		builder.append("footprintManagement:\t\t\t").append(Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT))).append("\n");
+		builder.append("locationAttribute:\t\t\t").append(getParameter(Prop.LOCATION_ATTRIBUTE)).append("\n");
+		builder.append("rootMosaicDirectory:\t\t\t").append(getParameter(Prop.ROOT_MOSAIC_DIR)).append("\n");
 		return builder.toString();
 	}
 
-	public void check() {
-		// check parameters
-		if (indexingDirectories == null || indexingDirectories.size() <= 0)
-			throw new IllegalStateException("Indexing directories are empty");
-		final List<String> directories = new ArrayList<String>();
-		for (String dir : indexingDirectories)
-			directories.add(Utils.checkDirectory(dir,false));
-		indexingDirectories = directories;
+    public void check() {
+        // check parameters
 
-		if (indexName == null || indexName.length() == 0)
-			throw new IllegalStateException("Index name cannot be empty");
+        // Check the indexing directories
+        String indexingDirs = getParameter(Prop.INDEXING_DIRECTORIES);
+        if (indexingDirs == null) {
+            
+            // check whether we are on harvesting so check the Harvest directory param.
+            String customDirs = getParameter(Prop.HARVEST_DIRECTORY);
+            indexingDirs = customDirs;
+        }
+        if (indexingDirs == null) {
+            throw new IllegalStateException("Indexing directories are empty");
+        } else {
+            String[] indexingDirectoriesString = indexingDirs.split("\\s*,\\s*");
+            if (indexingDirectoriesString == null || indexingDirectoriesString.length <= 0)
+                throw new IllegalStateException("Indexing directories are empty");
+            // final List<String> directories = new ArrayList<String>();
+            // for (String dir : indexingDirectoriesString)
+            // directories.add(Utils.checkDirectory(dir,false));
+            // indexingDirectories = directories;
+        }
+        String indexName = getParameter(Prop.INDEX_NAME);
+        if (indexName == null || indexName.length() == 0)
+            throw new IllegalStateException("Index name cannot be empty");
 
-		if (rootMosaicDirectory == null || rootMosaicDirectory.length() == 0)
-			throw new IllegalStateException(
-					"RootMosaicDirectory name cannot be empty");
+        // Check the root mosaic directory
+        String rootMosaicDirectory = getParameter(Prop.ROOT_MOSAIC_DIR);
+        if (rootMosaicDirectory == null || rootMosaicDirectory.length() == 0)
+            throw new IllegalStateException("RootMosaicDirectory name cannot be empty");
 
-		rootMosaicDirectory = Utils.checkDirectory(rootMosaicDirectory,true);
-		if (wildcard == null || wildcard.length() == 0)
-			throw new IllegalStateException(
-					"WildcardString name cannot be empty");
-
-	}
+        rootMosaicDirectory = Utils.checkDirectory(rootMosaicDirectory, true);
+        String wildcard = getParameter(Prop.WILDCARD);
+        if (wildcard == null || wildcard.length() == 0)
+            throw new IllegalStateException("WildcardString name cannot be empty");
+    }
 
 }

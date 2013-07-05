@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -83,11 +83,6 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 				throws IOException {
 			super(source, uHints);
 		}
-		
-		public RasterManager getRasterManager(){
-			return rasterManager;
-		}
-		
 	}
 
 	@Override
@@ -159,7 +154,7 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		
 		final String[] metadataNames = reader.getMetadataNames();
 		assertNotNull(metadataNames);
-		assertEquals(metadataNames.length,10);
+		assertEquals(12, metadataNames.length);
 		
 		assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
 		final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
@@ -260,7 +255,7 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		
 		final String[] metadataNames = reader.getMetadataNames();
 		assertNotNull(metadataNames);
-		assertEquals(metadataNames.length,10);
+		assertEquals(12, metadataNames.length);
 		
 		assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));		
 		assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
@@ -268,14 +263,14 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		// dispose and create new reader
 		reader.dispose();
 		final MyImageMosaicReader reader1 = new MyImageMosaicReader(timeElevURL);
-		final RasterManager rm = reader1.getRasterManager();
+		final RasterManager rm = reader1.getRasterManager(reader1.getGridCoverageNames()[0]);
 		
 		// query
-		final SimpleFeatureType type = rm.granuleCatalog.getType();
+		final SimpleFeatureType type = rm.granuleCatalog.getType("waterTempPG2");
 		Query query = null;
 		if (type != null){
 			// creating query
-			query= new Query(rm.granuleCatalog.getType().getTypeName());
+			query= new Query(rm.granuleCatalog.getType("waterTempPG2").getTypeName());
 			
 			// sorting and limiting
             // max number of elements

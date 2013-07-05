@@ -5,9 +5,9 @@ import javax.measure.unit.Unit;
 
 import junit.framework.Assert;
 
-import org.geotools.coverage.io.impl.range.BandIndexMeasure;
-import org.geotools.coverage.io.impl.range.DimensionlessAxis;
 import org.geotools.coverage.io.range.Axis;
+import org.geotools.coverage.io.range.impl.BandIndexMeasure;
+import org.geotools.coverage.io.range.impl.DimensionlessAxis;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.SimpleInternationalString;
 import org.junit.Test;

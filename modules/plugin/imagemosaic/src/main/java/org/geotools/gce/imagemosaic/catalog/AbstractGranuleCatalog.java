@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,14 +36,22 @@ import org.opengis.geometry.BoundingBox;
  */
 public class AbstractGranuleCatalog implements GranuleCatalog {
 
-    public void addGranule(SimpleFeature granule, Transaction transaction) throws IOException {
+    public void addGranule(final String typeName, SimpleFeature granule, Transaction transaction) throws IOException {
         throw new UnsupportedOperationException("This Catalog does not support adding granules ");
     }
 
-    public void addGranules(Collection<SimpleFeature> granules, Transaction transaction) throws IOException {
+    public void addGranules(final String typeName, Collection<SimpleFeature> granules, Transaction transaction) throws IOException {
         throw new UnsupportedOperationException("This Catalog does not support adding granules ");
     }
 
+//    public void addGranule(SimpleFeature granule, Transaction transaction) throws IOException {
+//        throw new UnsupportedOperationException("This Catalog does not support adding granules ");
+//    }
+//
+//    public void addGranules(Collection<SimpleFeature> granules, Transaction transaction) throws IOException {
+//        throw new UnsupportedOperationException("This Catalog does not support adding granules ");
+//    }
+    
     public void computeAggregateFunction(Query q, FeatureCalc function) throws IOException {
         throw new UnsupportedOperationException("This Catalog does not support Aggregate function");
     }
@@ -64,35 +72,59 @@ public class AbstractGranuleCatalog implements GranuleCatalog {
         throw new UnsupportedOperationException("This Catalog does not support this method");
     }
 
-    public BoundingBox getBounds(){
+    public BoundingBox getBounds(final String typeName) {
         throw new UnsupportedOperationException("This Catalog does not support this method");
     }
 
-    public Collection<GranuleDescriptor> getGranules(BoundingBox envelope) throws IOException{
+//    public BoundingBox getBounds(){
+//        throw new UnsupportedOperationException("This Catalog does not support this method");
+//    }
+//
+//    public Collection<GranuleDescriptor> getGranules(BoundingBox envelope) throws IOException{
+//        throw new UnsupportedOperationException("This Catalog does not support this method");
+//    }
+
+    public Collection<GranuleDescriptor> getGranules(final String typeName, BoundingBox envelope) throws IOException {
         throw new UnsupportedOperationException("This Catalog does not support this method");
     }
 
     public Collection<GranuleDescriptor> getGranules(Query q) throws IOException{
         throw new UnsupportedOperationException("This Catalog does not support this method");
     }
-
-    public  Collection<GranuleDescriptor> getGranules() throws IOException{
-        throw new UnsupportedOperationException("This Catalog does not support this method");
-    }
-
-    public  void getGranules(BoundingBox envelope, GranuleCatalogVisitor visitor) throws IOException{
-        throw new UnsupportedOperationException("This Catalog does not support this method");
-    }
-
+//
+//    public  Collection<GranuleDescriptor> getGranules() throws IOException{
+//        throw new UnsupportedOperationException("This Catalog does not support this method");
+//    }
+//
+//    public  void getGranules(BoundingBox envelope, GranuleCatalogVisitor visitor) throws IOException{
+//        throw new UnsupportedOperationException("This Catalog does not support this method");
+//    }
+//
     public  void getGranules(Query q, GranuleCatalogVisitor visitor) throws IOException{
         throw new UnsupportedOperationException("This Catalog does not support this method");
     }
 
-    public QueryCapabilities getQueryCapabilities(){
+    public Collection<GranuleDescriptor> getGranules(final String typeName) throws IOException{
+        throw new UnsupportedOperationException("This Catalog does not support this method");
+    }
+
+    public  void getGranules(final String typeName, BoundingBox envelope, GranuleCatalogVisitor visitor) throws IOException{
+        throw new UnsupportedOperationException("This Catalog does not support this method");
+    }
+
+    public QueryCapabilities getQueryCapabilities(final String typeName) {
         return null;
     }
 
-    public SimpleFeatureType getType() throws IOException {
+//    public QueryCapabilities getQueryCapabilities(){
+//        return null;
+//    }
+//
+//    public SimpleFeatureType getType() throws IOException {
+//        return null;
+//    }
+
+    public SimpleFeatureType getType(final String typeName) throws IOException {
         return null;
     }
 
@@ -100,4 +132,7 @@ public class AbstractGranuleCatalog implements GranuleCatalog {
         throw new UnsupportedOperationException("This Catalog does not support removing granules");        
     }
 
+    public String[] getTypeNames() {
+        throw new UnsupportedOperationException("This Catalog does not support removing granules");
+    }
 }

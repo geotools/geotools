@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,6 +27,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
+import javax.management.RuntimeErrorException;
 import javax.media.jai.BorderExtender;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
@@ -50,6 +52,7 @@ import javax.media.jai.ROIShape;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
 
+import org.apache.commons.beanutils.MethodUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
@@ -277,12 +280,12 @@ public class GranuleDescriptor {
 	private void init(final BoundingBox granuleBBOX, final URL granuleUrl,
                 final ImageReaderSpi suggestedSPI, final Geometry inclusionGeometry,
                 final boolean heterogeneousGranules) {
-	    init(granuleBBOX, granuleUrl, suggestedSPI, inclusionGeometry, heterogeneousGranules, false);
+	    init(granuleBBOX, granuleUrl, suggestedSPI, inclusionGeometry, heterogeneousGranules, false, null);
 	}
 	
 	private void init(final BoundingBox granuleBBOX, final URL granuleUrl,
 			final ImageReaderSpi suggestedSPI, final Geometry inclusionGeometry,
-			final boolean heterogeneousGranules, final boolean handleArtifactsFiltering) {
+			final boolean heterogeneousGranules, final boolean handleArtifactsFiltering, final Hints hints) {
 		this.granuleBBOX = ReferencedEnvelope.reference(granuleBBOX);
 		this.granuleUrl = granuleUrl;
 		this.inclusionGeometry = inclusionGeometry;
@@ -341,9 +344,11 @@ public class GranuleDescriptor {
 				
 			}
 			reader = cachedReaderSPI.createReaderInstance();
+			
 			if(reader == null)
 				throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleUrl.toString());
-			reader.setInput(inStream);
+			boolean ignoreMetadata = customizeReaderInitialization(reader, hints);
+			reader.setInput(inStream, false, ignoreMetadata);
 			//get selected level and base level dimensions
 			final Rectangle originalDimension = Utils.getDimension(0, reader);
 			
@@ -395,7 +400,7 @@ public class GranuleDescriptor {
 			    // Populating overviews and initializing overviewsController
 			    for (int i = 0; i < numberOfOvervies; i++){
 			        overviewsResolution[i][0]= (highestRes[0] * width) / reader.getWidth(i + 1);
-			        overviewsResolution[i][1]= (highestRes[1] * height) / reader.getHeight(i + 1);
+			        overviewsResolution[i][1]= (highestRes[1] * height) / reader.getWidth(i + 1);
 			    }
 			    overviewsController = new OverviewsController(highestRes, numberOfOvervies, overviewsResolution);
 			}
@@ -423,7 +428,29 @@ public class GranuleDescriptor {
 		}
 	}
 	
-	public GranuleDescriptor(
+	private boolean customizeReaderInitialization(ImageReader reader, Hints hints) {
+            String classString = reader.getClass().getName();
+            // Special Management for NetCDF readers to set external Auxiliary File
+            if (hints != null && hints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
+                if (classString.equalsIgnoreCase("org.geotools.imageio.netcdf.NetCDFImageReader")) {
+                    try {
+                        String auxiliaryFilePath = (String) hints.get(Utils.AUXILIARY_FILES_PATH);
+                        MethodUtils.invokeMethod(reader, "setAuxiliaryFilesPath", auxiliaryFilePath);
+                        return true;
+                    } catch (NoSuchMethodException e) {
+                        throw new RuntimeException(e);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    } catch (InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            return false;
+        
+    }
+
+    public GranuleDescriptor(
                 final String granuleLocation,
                 final BoundingBox granuleBBox, 
                 final ImageReaderSpi suggestedSPI,
@@ -481,7 +508,7 @@ public class GranuleDescriptor {
             }
     
             this.originator = null;
-            init (granuleBBox, rasterFile, suggestedSPI, inclusionGeometry, heterogeneousGranules, handleArtifactsFiltering);
+            init (granuleBBox, rasterFile, suggestedSPI, inclusionGeometry, heterogeneousGranules, handleArtifactsFiltering, null);
         
 	}
 	
@@ -504,8 +531,15 @@ public class GranuleDescriptor {
     
     public GranuleDescriptor(SimpleFeature feature, ImageReaderSpi suggestedSPI,
             PathType pathType, String locationAttribute, String parentLocation,
+            boolean heterogeneousGranules, Hints hints) {
+        this(feature,suggestedSPI,pathType,locationAttribute,parentLocation, null, heterogeneousGranules, hints);
+        
+    }
+    
+    public GranuleDescriptor(SimpleFeature feature, ImageReaderSpi suggestedSPI,
+            PathType pathType, String locationAttribute, String parentLocation,
             boolean heterogeneousGranules) {
-        this(feature,suggestedSPI,pathType,locationAttribute,parentLocation, null, heterogeneousGranules);
+        this(feature,suggestedSPI,pathType,locationAttribute,parentLocation, heterogeneousGranules, null);
     }
     
     /**
@@ -527,7 +561,7 @@ public class GranuleDescriptor {
             final String locationAttribute,
             final String parentLocation,
             final Geometry inclusionGeometry) {
-        this(feature,suggestedSPI,pathType,locationAttribute,parentLocation, inclusionGeometry, false);
+        this(feature,suggestedSPI,pathType,locationAttribute,parentLocation, inclusionGeometry, false, null);
     }
     
     /**
@@ -549,7 +583,8 @@ public class GranuleDescriptor {
 			final String locationAttribute,
 			final String parentLocation,
 			final Geometry inclusionGeometry,
-			final boolean heterogeneousGranules) {
+			final boolean heterogeneousGranules,
+			final Hints hints) {
 		// Get location and envelope of the image to load.
 		final String granuleLocation = (String) feature.getAttribute(locationAttribute);
 		final ReferencedEnvelope granuleBBox = ReferencedEnvelope.reference(feature.getBounds());
@@ -565,7 +600,7 @@ public class GranuleDescriptor {
 			LOGGER.fine("File found "+granuleLocation);
 
 		this.originator=feature;
-		init(granuleBBox,rasterFile,suggestedSPI, inclusionGeometry, heterogeneousGranules);
+		init(granuleBBox,rasterFile,suggestedSPI, inclusionGeometry, heterogeneousGranules, false, hints);
 		
 		
 	}
@@ -643,6 +678,7 @@ public class GranuleDescriptor {
 				return null;
 			}
 			// set input
+			customizeReaderInitialization(reader, hints);
 			reader.setInput(inStream);
 			
 			// Checking for heterogeneous granules
@@ -652,7 +688,7 @@ public class GranuleDescriptor {
 			    
 			    //override the overviews controller for the base layer
 			    imageIndex = ReadParamsController.setReadParams(
-			            request.getRequestedResolution(),
+			            request.spatialRequestHelper.getRequestedResolution(),
 			            request.getOverviewPolicy(),
 			            request.getDecimationPolicy(), 
 			            readParameters,
@@ -990,8 +1026,9 @@ public class GranuleDescriptor {
 				else
 					reader=cachedReaderSPI.createReaderInstance();
 				if(reader==null)
-					throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleUrl.toString());					
-				reader.setInput(inStream);
+					throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleUrl.toString());
+				final boolean ignoreMetadata = customizeReaderInitialization(reader, null);
+				reader.setInput(inStream, false, ignoreMetadata);
 				
 				// call internal method which will close everything
 				return getLevel(index, reader);

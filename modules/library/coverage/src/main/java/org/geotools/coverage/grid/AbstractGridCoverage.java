@@ -43,7 +43,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
 /**
- * Base class for Geotools implementation of grid coverage.
+ * Base class for GeoTools implementation of grid coverage.
  *
  * @since 2.1
  *

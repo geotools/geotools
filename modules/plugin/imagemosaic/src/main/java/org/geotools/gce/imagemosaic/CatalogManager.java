@@ -79,7 +79,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
- * An utility class which allows to create schema, catalogs, and populate them
+ * An utility class which allows to create schema, catalogs, and populate them.
  * 
  * @author Daniele Romagnoli, GeoSolutions SAS
  *

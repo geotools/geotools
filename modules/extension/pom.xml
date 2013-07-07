@@ -52,6 +52,7 @@
     <module>validation</module>
     <module>wms</module>
     <module>xsd</module>
+    <module>transform</module>
   </modules>
 </project>
 

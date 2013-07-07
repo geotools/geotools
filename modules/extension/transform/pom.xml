@@ -9,7 +9,7 @@
 
   <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>unsupported</artifactId>
+    <artifactId>extension</artifactId>
     <version>10-SNAPSHOT</version>
   </parent>
 

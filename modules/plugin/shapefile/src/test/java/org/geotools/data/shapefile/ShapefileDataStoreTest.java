@@ -1017,6 +1017,47 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         // store features
         File tmpFile = getTempFile();
         tmpFile.createNewFile();
+        System.clearProperty("org.geotools.data.shapefile.dbf.DbaseFileWriter.reportFieldSizeErrors");
+        ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
+        writeFeatures(s, features);
+
+        // read them back
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader();
+        try {
+            SimpleFeature f = reader.next();
+
+            assertEquals("big decimal", bigDecimal.doubleValue(), ((Number) f
+                    .getAttribute("b")).doubleValue(), 0.00001);
+            assertEquals("big integer", bigInteger.longValue(), ((Number) f
+                    .getAttribute("c")).longValue(), 0.00001);
+        } finally {
+            reader.close();
+        }
+        s.dispose();
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testWriteBiggerNumbersWithCheck() throws Exception {
+        // create feature type
+        SimpleFeatureType type = DataUtilities.createType("junk",
+                "a:Point,b:java.math.BigDecimal,c:java.math.BigInteger");
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+
+        BigInteger bigInteger = new BigInteger("12345678901234567890123456789");
+        BigDecimal bigDecimal = new BigDecimal(bigInteger, 2);
+
+        SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
+        build.add(new GeometryFactory().createPoint(new Coordinate(1, -1)));
+        build.add(bigDecimal);
+        build.add(bigInteger);
+
+        SimpleFeature feature = build.buildFeature(null);
+        features.add(feature);
+
+        // store features
+        File tmpFile = getTempFile();
+        tmpFile.createNewFile();
+        System.setProperty("org.geotools.data.shapefile.dbf.DbaseFileWriter.reportFieldSizeErrors",  "true");
         ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
         writeFeatures(s, features);
 

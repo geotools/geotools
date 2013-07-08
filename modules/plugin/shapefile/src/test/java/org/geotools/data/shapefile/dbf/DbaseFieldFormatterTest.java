@@ -18,7 +18,7 @@ public class DbaseFieldFormatterTest {
 		Charset charset = Charset.defaultCharset();
 		TimeZone timeZone = TimeZone.getDefault();
 
-		victim = new DbaseFileWriter.FieldFormatter(charset, timeZone);
+		victim = new DbaseFileWriter.FieldFormatter(charset, timeZone, false);
 	}
 
 	private String checkOutput(Number n, int sz, int places) {

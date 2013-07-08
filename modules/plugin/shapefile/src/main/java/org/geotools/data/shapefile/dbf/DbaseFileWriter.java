@@ -34,6 +34,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.resources.NIOUtilities;
@@ -71,6 +73,8 @@ public class DbaseFileWriter {
     private Charset charset;
     private TimeZone timeZone;
     
+    private boolean reportFieldSizeErrors = Boolean.getBoolean("org.geotools.data.shapefile.dbf.DbaseFileWriter.reportFieldSizeErrors");
+
     /**
      * Create a DbaseFileWriter using the specified header and writing to the
      * given channel.
@@ -123,7 +127,7 @@ public class DbaseFileWriter {
         this.channel = out;
         this.charset = charset == null ? Charset.defaultCharset() : charset;
         this.timeZone = timeZone == null ? TimeZone.getDefault() : timeZone;
-        this.formatter = new DbaseFileWriter.FieldFormatter(this.charset, this.timeZone);
+        this.formatter = new DbaseFileWriter.FieldFormatter(this.charset, this.timeZone, ! reportFieldSizeErrors);
         streamLogger.open();
 
         // As the 'shapelib' osgeo project does, we use specific values for
@@ -334,8 +338,12 @@ public class DbaseFileWriter {
         private String emptyString;
         private static final int MAXCHARS = 255;
         private Charset charset;
+        
+        private boolean swallowFieldSizeErrors = false;
+        private static Logger logger = org.geotools.util.logging.Logging
+                .getLogger("org.geotools.data.shapefile");
 
-        public FieldFormatter(Charset charset, TimeZone timeZone) {
+        public FieldFormatter(Charset charset, TimeZone timeZone, boolean swallowFieldSizeErrors) {
             // Avoid grouping on number format
             numFormat.setGroupingUsed(false);
 
@@ -351,6 +359,8 @@ public class DbaseFileWriter {
             this.calendar = Calendar.getInstance(timeZone, Locale.US);
 
             emptyString = sb.toString();
+            
+            this.swallowFieldSizeErrors = swallowFieldSizeErrors;
         }
 
         public String getFieldString(int size, String s) {
@@ -498,8 +508,12 @@ public class DbaseFileWriter {
 	        			buffer.append(n.toString());
 	        			if (buffer.length() > size) {
 	                    	// we have a grevious problem -- the value does not fit in the required size.
-	                    	// rather than truncate, and corrupt the data, we throw a Runtime
-	                    	throw new IllegalArgumentException("Value "+n+" cannot be represented in size " + size);	        				
+	        				logger.logp(Level.WARNING, this.getClass().getName(), "getFieldString", 
+	        						"Writing DBF data, value {0} cannot be represented in size {1,number}", new Object[] {n, size});
+	        				if ( ! swallowFieldSizeErrors) {
+		                    	// rather than truncate, and corrupt the data, we throw a Runtime
+		                    	throw new IllegalArgumentException("Value "+n+" cannot be represented in size " + size);	        				
+	        				}
 	        			}
 	        		}
             	}
@@ -515,4 +529,13 @@ public class DbaseFileWriter {
         }
     }
 
+	public boolean getReportFieldSizeErrors() {
+		return reportFieldSizeErrors;
+	}
+
+	public void setReportFieldSizeErrors(boolean reportFieldSizeErrors) {
+		this.reportFieldSizeErrors = reportFieldSizeErrors;
+	}
+
+	
 }

@@ -353,7 +353,7 @@ public class DbaseFileWriter {
             emptyString = sb.toString();
         }
 
-        public synchronized String getFieldString(int size, String s) {
+        public String getFieldString(int size, String s) {
             try {
                 buffer.replace(0, size, emptyString);
                 buffer.setLength(size);
@@ -390,7 +390,7 @@ public class DbaseFileWriter {
             }
         }
 
-        public synchronized String getFieldString(Date d) {
+        public String getFieldString(Date d) {
 
         	if (d != null) {
                 buffer.delete(0, buffer.length());
@@ -465,7 +465,7 @@ public class DbaseFileWriter {
             }       
         }
         
-        public synchronized String getFieldString(int size, int decimalPlaces, Number n) {
+        public String getFieldString(int size, int decimalPlaces, Number n) {
             buffer.delete(0, buffer.length());
 
             if (n != null) {

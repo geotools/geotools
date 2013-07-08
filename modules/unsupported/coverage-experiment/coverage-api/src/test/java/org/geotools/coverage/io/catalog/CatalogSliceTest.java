@@ -181,7 +181,10 @@ public class CatalogSliceTest extends Assert{
         // connect to test catalog
         final Map<String, Serializable> params= new HashMap<String ,Serializable>();
         params.put("ScanTypeNames", Boolean.valueOf(true));
-        final URL url = TestData.url(this, ".IASI_C_EUMP_20121120062959_31590_eps_o_l2");
+        // H2 database URLs must not be percent-encoded: see GEOT-4504
+        final URL url = new URL("file:"
+                + DataUtilities.urlToFile(TestData.url(this,
+                        ".IASI_C_EUMP_20121120062959_31590_eps_o_l2")));
         params.put("ParentLocation", url);
         params.put("database", url+"/IASI_C_EUMP_20121120062959_31590_eps_o_l2");
         params.put("dbtype", "h2");

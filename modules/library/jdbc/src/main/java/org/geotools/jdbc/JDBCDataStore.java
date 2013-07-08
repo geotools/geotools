@@ -35,12 +35,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -848,8 +849,25 @@ public final class JDBCDataStore extends ContentDataStore
 
         try {
             DatabaseMetaData metaData = cx.getMetaData();
-            ResultSet tables = metaData.getTables(cx.getCatalog(), databaseSchema, "%",
-                    new String[] { "TABLE", "VIEW" });
+            Set<String> availableTableTypes = new HashSet<String>();
+            String[] desiredTableTypes = new String[] { "TABLE", "VIEW", "SYNONYM" };
+            ResultSet tableTypes = null;
+            try{
+                tableTypes = metaData.getTableTypes();
+                while(tableTypes.next()){
+                    availableTableTypes.add(tableTypes.getString("TABLE_TYPE"));
+                }
+            }finally{
+                closeSafe(tableTypes);
+            }
+            Set<String> queryTypes = new HashSet<String>();
+            for (String desiredTableType : desiredTableTypes) {
+                if(availableTableTypes.contains(desiredTableType)){
+                    queryTypes.add(desiredTableType);
+                }
+            }
+            ResultSet tables = metaData.getTables(null, databaseSchema, "%",
+                    queryTypes.toArray(new String[0]));
             if(fetchSize > 1) {
                 tables.setFetchSize(fetchSize);
             }

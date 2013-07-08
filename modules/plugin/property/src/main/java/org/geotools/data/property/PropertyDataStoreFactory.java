@@ -148,16 +148,18 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
             IllegalArgumentException {
         File directory = (File) DIRECTORY.lookUp(params);
         if (!directory.exists()) {
-            File currentDir = new File(System.getProperty("user.dir"));
-            directory = new File(currentDir, (String) params.get(DIRECTORY.key));
+            if (!directory.isAbsolute()) { // for backwards compatibility, try current dir first
+                directory = new File(new File(System.getProperty("user.dir")),
+                        (String) params.get(DIRECTORY.key));
+                if (!directory.exists() && baseDirectory != null) {
+                    directory = new File(baseDirectory, (String) params.get(DIRECTORY.key));
+                }
+            }
             if (!directory.exists()) {
                 throw new FileNotFoundException(directory.getAbsolutePath());
             }
-            if (!directory.isDirectory()) {
-                throw new IllegalArgumentException(directory.getAbsolutePath()
-                        + " is not a directory");
-            }
-        } else if (!directory.isDirectory()) {
+        }
+        if (!directory.isDirectory()) {
             // check if they pointed to a properties file; and use the parent directory
             if( directory.getPath().endsWith(".properties")){
                 return directory.getParentFile();
@@ -167,5 +169,26 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
             }
         }
         return directory;
+    }
+    
+    /**
+     * base location to store h2 database files
+     */
+    File baseDirectory = null;
+
+    /**
+     * Sets the base location to store property files.
+     * 
+     * @param baseDirectory A directory.
+     */
+    public void setBaseDirectory(File baseDirectory) {
+        this.baseDirectory = baseDirectory;
+    }
+
+    /**
+     * The base location to store property files.
+     */
+    public File getBaseDirectory() {
+        return baseDirectory;
     }
 }

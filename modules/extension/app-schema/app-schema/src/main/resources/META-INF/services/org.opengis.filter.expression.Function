@@ -6,3 +6,4 @@ org.geotools.filter.expression.ToEnvelopeFunction
 org.geotools.filter.expression.ToDirectPositionFunction
 org.geotools.filter.expression.ToPointFunction
 org.geotools.filter.expression.ToXlinkHrefFunction
+org.geotools.filter.expression.FormatDateTimezoneFunction

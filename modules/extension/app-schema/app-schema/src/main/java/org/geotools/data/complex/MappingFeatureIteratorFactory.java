@@ -19,6 +19,7 @@ package org.geotools.data.complex;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.FeatureSource;
@@ -126,6 +127,13 @@ public class MappingFeatureIteratorFactory {
         	}
         }
 
+        // if we are dealing with denormalised data (isDenormalised==true) then throw away supplied
+        // query limit to trigger a full table/datasource scan.  For normalised data, the query
+        // limit is kept and applied during the SQL generation phase
+        if (mapping.isDenormalised()) {
+            query.setMaxFeatures(Query.DEFAULT_MAX);
+        }
+
         if (isJoining) {
             if (!(query instanceof JoiningQuery)) {
                 query = new JoiningQuery(query);
@@ -172,7 +180,6 @@ public class MappingFeatureIteratorFactory {
                 int maxFeatures = Query.DEFAULT_MAX;
                 if (filter != null && filter != Filter.INCLUDE) {
                     maxFeatures = query.getMaxFeatures();
-                    query.setMaxFeatures(Query.DEFAULT_MAX);
                 }
                 if (isJoining && isListFilter != null) {
                     // pass it on in JoiningQuery so it can be handled when the SQL is prepared

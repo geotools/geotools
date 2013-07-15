@@ -41,15 +41,11 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
+import java.util.Set;
 
-import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
-import javax.imageio.spi.ImageInputStreamSpi;
-import javax.imageio.spi.ImageReaderWriterSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.BorderExtender;
 import javax.media.jai.BorderExtenderCopy;
@@ -65,7 +61,6 @@ import javax.media.jai.RenderedOp;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -74,7 +69,6 @@ import org.geotools.util.Utilities;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.extent.GeographicBoundingBox;
 
-import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.jai.operator.ImageReadDescriptor;
 import com.sun.media.jai.util.Rational;
 
@@ -96,7 +90,6 @@ import com.sun.media.jai.util.Rational;
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini, GeoSolutions
  */
-@SuppressWarnings("unchecked")
 public final class ImageUtilities {
 	
 
@@ -108,7 +101,7 @@ public final class ImageUtilities {
 
     	// do we wrappers at hand?
         boolean mediaLib = false;
-        Class mediaLibImage = null;
+        Class<?> mediaLibImage = null;
         try {
             mediaLibImage = Class.forName("com.sun.medialib.mlib.Image");
         } catch (ClassNotFoundException e) {
@@ -127,12 +120,12 @@ public final class ImageUtilities {
 	            //native libs installed
 		        if(mediaLib)
 		        {
-		        	final Class mImage=mediaLibImage;
+		        	final Class<?> mImage=mediaLibImage;
 	                mediaLib=AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
 	                     public Boolean run() {
 	                    	 try {
 	                    		//get the method
-	                    		final Class params[] = {};
+	                    		final Class<?> params[] = {};
 								Method method= mImage.getDeclaredMethod("isAvailable", params);
 
 								//invoke
@@ -615,28 +608,6 @@ public final class ImageUtilities {
     }
 
     /**
-     * Allows or disallows native acceleration for the specified image format. By default, the
-     * image I/O extension for JAI provides native acceleration for PNG and JPEG. Unfortunatly,
-     * those native codec has bug in their 1.0 version. Invoking this method will force the use
-     * of standard codec provided in J2SE 1.4.
-     * <p>
-     * <strong>Implementation note:</strong> the current implementation assume that JAI codec
-     * class name start with "CLib". It work for Sun's 1.0 implementation, but may change in
-     * future versions. If this method doesn't recognize the class name, it does nothing.
-     *
-     * @param format The format name (e.g. "png").
-     * @param category {@code ImageReaderSpi.class} to set the reader, or
-     *        {@code ImageWriterSpi.class} to set the writer.
-     * @param allowed {@code false} to disallow native acceleration.
-     * @deprecated Use {@link ImageIOExt#allowNativeCodec(String, Class, boolean)} instead
-     */
-    public static synchronized <T extends ImageReaderWriterSpi> void allowNativeCodec(
-            final String format, final Class<T> category, final boolean allowed)
-    {
-        ImageIOExt.allowNativeCodec(format, category, allowed);
-    }
-
-    /**
      * Tiles the specified image.
      *
      * @todo Usually, the tiling doesn't need to be performed as a separated operation. The
@@ -799,41 +770,6 @@ public final class ImageUtilities {
 	}
 	
     /**
-     * Tells me whether or not the native libraries for JAI/ImageIO are active or not.
-     * 
-     * @return <code>false</code> in case the JAI/ImageIO native libs are not in the path, <code>true</code> otherwise.
-     * @deprecated Use {@link ImageIOExt#isCLibAvailable()} instead
-     */
-	public static boolean isCLibAvailable() {
-		return PackageUtil.isCodecLibAvailable();
-	}
-
-    /**
-     * Get a proper {@link ImageInputStreamSpi} instance for the provided {@link Object} input without
-     * trying to create an {@link ImageInputStream}.
-     *  
-     * @see #getImageInputStreamSPI(Object, boolean) 
-     * @deprecated Use {@link ImageIOExt#getImageInputStreamSPI(Object, boolean)} instead
-     */
-    public final static ImageInputStreamSpi getImageInputStreamSPI(final Object input) {
-        return ImageIOExt.getImageInputStreamSPI(input);
-    }
-
-    /**
-     * Get a proper {@link ImageInputStreamSpi} instance for the provided {@link Object} input.
-     *   
-     * @param input the input object for which we need to find a proper {@link ImageInputStreamSpi} instance
-     * @param streamCreationCheck if <code>true</code>, when a proper {@link ImageInputStreamSpi} have been found 
-     * for the provided input, use it to try creating an {@link ImageInputStream} on top of the input.  
-     * 
-     * @return an {@link ImageInputStreamSpi} instance.
-     * @deprecated Use {@link ImageIOExt#getImageInputStreamSPI(Object, boolean)} instead
-     */
-    public final static ImageInputStreamSpi getImageInputStreamSPI(final Object input, final boolean streamCreationCheck) {
-        return ImageIOExt.getImageInputStreamSPI(input, streamCreationCheck);
-    }
-    
-    /**
      * Dispose an image with all its ancestors.
      * 
      * @param pi the {@link PlanarImage} to dispose.
@@ -843,8 +779,8 @@ public final class ImageUtilities {
         disposePlanarImageChain(pi, new HashSet<PlanarImage>());
     }
     
-	private static void disposePlanarImageChain(PlanarImage pi, HashSet<PlanarImage> visited) {
-        Vector sinks = pi.getSinks();
+	private static void disposePlanarImageChain(PlanarImage pi, Set<PlanarImage> visited) {
+        List<?> sinks = pi.getSinks();
         // check all the sinks (the image might be in the middle of a chain)
         if(sinks != null) {
             for (Object sink: sinks) {
@@ -860,7 +796,7 @@ public final class ImageUtilities {
         visited.add(pi);
         
         // check the image sources
-        Vector sources = pi.getSources();
+        List<?> sources = pi.getSources();
         if(sources != null) {
             for (Object child : sources) {
                 if(child instanceof PlanarImage && !visited.contains(child))
@@ -1071,24 +1007,6 @@ public final class ImageUtilities {
             final Rectangle2D retValue= new Rectangle2D.Double();
             retValue.setFrame(l_x0, l_y0, l_x1 - l_x0 + 1, l_y1 - l_y0 + 1);
             return retValue;
-    }
-
-    /**
-     * Look for an {@link ImageReader} instance that is able to read the
-     * provided {@link ImageInputStream}, which must be non null.
-     * 
-     * <p>
-     * In case no reader is found, <code>null</code> is returned.
-     * 
-     * @param inStream
-     *            an instance of {@link ImageInputStream} for which we need to
-     *            find a suitable {@link ImageReader}.
-     * @return a suitable instance of {@link ImageReader} or <code>null</code>
-     *         if one cannot be found.
-     * @deprecated Use {@link ImageIOExt#getImageioReader(ImageInputStream)} instead
-     */
-    static public ImageReader getImageioReader(final ImageInputStream inStream) {
-    	return ImageIOExt.getImageioReader(inStream);
     }
 
     /**

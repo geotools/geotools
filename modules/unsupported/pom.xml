@@ -187,6 +187,7 @@
     <module>process</module>
     <module>wfs</module>
     <module>geojson</module>
+    <module>geopkg</module>
   </modules>
 
 </project>

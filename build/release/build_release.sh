@@ -66,10 +66,15 @@ if [ `is_primary_branch_num $tag` == "1" ]; then
   exit 1
 fi
 
+# split up the tag to find the major version of geotools
+geotools_pom_version=$( echo $tag | awk 'BEGIN { FS = "."} ; { print($1) }')-SNAPSHOT
+
+
 echo "Building release with following parameters:"
 echo "  branch = $branch"
 echo "  revision = $rev"
 echo "  tag = $tag"
+echo "  replace references to $geotools_pom_version with $tag"
 
 mvn -version
 
@@ -114,6 +119,11 @@ fi
 
 # create a release branch
 git checkout -b rel_$tag $rev
+
+# replace snapshot version references in pom.xml files with the version specified 
+# as the tag (eg 9-SNAPSHOT --> 9.3)
+find . -name pom.xml | xargs sed -i "s/<version>$geotools_pom_version<\/version>/<version>$tag<\/version>/g"
+
 
 # update versions
 pushd build > /dev/null

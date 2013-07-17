@@ -52,21 +52,16 @@ class AncillaryFileManager {
 
     private static ObjectFactory OBJECT_FACTORY = new ObjectFactory();
 
-    private static Marshaller MARSHALLER;
-
-    private static Unmarshaller UNMARSHALLER;
-    
     /** Default schema name */
     static final String DEFAULT_SCHEMA_NAME = "def";
     
     private static final Set<PropertiesCollectorSPI> pcSPIs = PropertiesCollectorFinder.getPropertiesCollectorSPI();
 
+    private static JAXBContext CONTEXT = null;
+
     static {
-        JAXBContext jc;
         try {
-            jc = JAXBContext.newInstance("org.geotools.gce.imagemosaic.catalog.index");
-            MARSHALLER = jc.createMarshaller();
-            UNMARSHALLER = jc.createUnmarshaller();
+            CONTEXT = JAXBContext.newInstance("org.geotools.gce.imagemosaic.catalog.index");
         } catch (Exception e) {
             LOGGER.log(Level.INFO, e.getMessage(), e);
         } 
@@ -250,7 +245,8 @@ class AncillaryFileManager {
             schema.setName(inputSchema.getName());
         }
         // Marshalling the indexer to XML on disk
-        MARSHALLER.marshal(indexer, indexerFile);
+        Marshaller marshaller = CONTEXT.createMarshaller();
+        marshaller.marshal(indexer, indexerFile);
     }
 
     /**
@@ -408,8 +404,9 @@ class AncillaryFileManager {
      */
     private void initIndexer() throws JAXBException {
         if (indexerFile.exists() && indexerFile.canRead()) {
-            if (UNMARSHALLER != null) {
-                indexer = (Indexer) UNMARSHALLER.unmarshal(indexerFile);
+            Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
+            if (unmarshaller != null) {
+                indexer = (Indexer) unmarshaller.unmarshal(indexerFile);
                 
                 // Parsing schemas
                 final SchemasType schemas = indexer.getSchemas();

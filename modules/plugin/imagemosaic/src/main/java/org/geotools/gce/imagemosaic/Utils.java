@@ -68,7 +68,6 @@ import javax.media.jai.TileScheduler;
 import javax.media.jai.remote.SerializableRenderedImage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import net.sf.ehcache.Cache;
@@ -88,7 +87,7 @@ import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.gce.imagemosaic.ImageMosaicWalker.ExceptionEvent;
 import org.geotools.gce.imagemosaic.ImageMosaicWalker.ProcessingEvent;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
-import org.geotools.gce.imagemosaic.catalog.index.AttributesType;
+import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.geotools.gce.imagemosaic.catalog.index.ObjectFactory;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
@@ -131,9 +130,7 @@ public class Utils {
 
     public final static String INDEXER_XML = "indexer.xml";
 
-    public static Marshaller MARSHALLER;
-
-    public static Unmarshaller UNMARSHALLER;
+    private static JAXBContext CONTEXT = null;
 
     static final String DEFAULT = "default";
 
@@ -162,11 +159,9 @@ public class Utils {
         } else {
             OPTIMIZE_CROP = true;
         }
-        JAXBContext jc;
+
         try {
-            jc = JAXBContext.newInstance("org.geotools.gce.imagemosaic.catalog.index");
-            MARSHALLER = jc.createMarshaller();
-            UNMARSHALLER = jc.createUnmarshaller();
+            CONTEXT = JAXBContext.newInstance("org.geotools.gce.imagemosaic.catalog.index");
         } catch (JAXBException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }
@@ -1564,5 +1559,22 @@ public class Utils {
             }
         }
         return true;
+    }
+
+    /**
+     * Unmarshal the file and return and Indexer object.
+     * 
+     * @param indexerFile
+     * @return
+     * @throws JAXBException
+     */
+    public static Indexer unmarshal(File indexerFile) throws JAXBException {
+        Unmarshaller unmarshaller = null;
+        Indexer indexer = null;
+        if (indexerFile != null) {
+            unmarshaller = CONTEXT.createUnmarshaller();
+            indexer = (Indexer) unmarshaller.unmarshal(indexerFile);
+        }
+        return indexer;
     }
 }

@@ -165,7 +165,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         boolean exists = !isNextSourceFeatureNull();
 
         if (!isHasNextCalled()) {
-            if (featureCounter < maxFeatures) {
+            if (featureCounter < requestMaxFeatures) {
                 if (!exists && getSourceFeatureIterator() != null
                         && getSourceFeatureIterator().hasNext()) {
                     this.curSrcFeature = getSourceFeatureIterator().next();
@@ -362,7 +362,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         
         //reproject target feature
         targetFeature = reprojectAttribute(mapping.getTargetFeature());
-        
+        query.setMaxFeatures(dataMaxFeatures);
         sourceFeatures = mappedSource.getFeatures(query);
         if (reprojection != null) {
             xpathAttributeBuilder.setCRS(reprojection);

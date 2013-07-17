@@ -127,13 +127,6 @@ public class MappingFeatureIteratorFactory {
         	}
         }
 
-        // if we are dealing with denormalised data (isDenormalised==true) then throw away supplied
-        // query limit to trigger a full table/datasource scan.  For normalised data, the query
-        // limit is kept and applied during the SQL generation phase
-        if (mapping.isDenormalised()) {
-            query.setMaxFeatures(Query.DEFAULT_MAX);
-        }
-
         if (isJoining) {
             if (!(query instanceof JoiningQuery)) {
                 query = new JoiningQuery(query);

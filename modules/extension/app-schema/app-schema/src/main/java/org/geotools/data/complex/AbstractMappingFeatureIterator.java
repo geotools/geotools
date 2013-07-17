@@ -116,9 +116,17 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     protected FilterFactory namespaceAwareFilterFactory;
 
     /**
-     * maxFeatures restriction value as provided by query
+     * maxFeatures restriction value as provided by query.  After the data query has run, *this*
+     * limit is also applied to the result.
      */
-    protected final int maxFeatures;
+    protected final int requestMaxFeatures;
+
+    /**
+     * maximum number of features to request when running the data(base?) query.  For denormalised
+     * data sources, this neesd to be be Query.DEFAULT_MAX to trigger a full table scan.  In all
+     * other cases it will be the same value as requestMaxFeatures
+     */
+    protected final int dataMaxFeatures;
 
     /** counter to ensure maxFeatures is not exceeded */
     protected int featureCounter;
@@ -165,7 +173,18 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                                     // this...
         }
         
-        this.maxFeatures = query.getMaxFeatures();
+        this.requestMaxFeatures = query.getMaxFeatures();
+        if (mapping.isDenormalised()) {
+            // we need to disable the max number of features retrieved so we can
+            // sort them manually just in case the data is denormalised.  Do this
+            // by overriding the max features for this query just before executing
+            // it.  Note that the original maxFeatures value was copied to
+            // this.requestMaxFeatures in the constructor and will be re-applied after
+            // the rows have been returned
+            this.dataMaxFeatures = Query.DEFAULT_MAX;
+        } else {
+            this.dataMaxFeatures = query.getMaxFeatures();
+        }
                 
         if (unrolledQuery==null) {
             unrolledQuery = getUnrolledQuery(query);
@@ -550,4 +569,13 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     protected abstract Feature computeNext() throws IOException;   
 
     public abstract boolean hasNext();
+
+    public int getRequestMaxFeatures() {
+        return requestMaxFeatures;
+    }
+
+    public int getDataMaxFeatures() {
+        return dataMaxFeatures;
+    }
+
 }

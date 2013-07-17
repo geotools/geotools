@@ -234,7 +234,7 @@ public class ImageWorker {
         ImageWriterSpi temp=null;
         try {
             
-            Class<?> clazz=Class.forName("IMAGEIO_EXT_TIFF_IMAGE_WRITER_SPI");
+            Class<?> clazz=Class.forName("it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi");
             if(clazz !=null){
                 temp=(ImageWriterSpi) clazz.newInstance();
             }else{
@@ -3017,6 +3017,8 @@ public class ImageWorker {
                 throw new IllegalStateException(Errors.format(ErrorKeys.NO_IMAGE_WRITER));
             }
             writer = it.next();            
+        } else {
+            writer= IMAGEIO_EXT_TIFF_IMAGE_WRITER_SPI.createWriterInstance();
         }
 
         // checks

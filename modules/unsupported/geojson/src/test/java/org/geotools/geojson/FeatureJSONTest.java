@@ -218,6 +218,26 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         assertEquals("one", f.getAttribute("string"));
     }
     
+    public void testFeatureWithDefaultGeometryEqualsNullRead() throws Exception {
+        SimpleFeature f = fjson.readFeature(reader(strip("{" +
+        "   'type': 'Feature'," +
+        "   'geometry': null," +
+        "   'properties': {" +
+        "     'int': 1," +
+        "     'double': 0.1," +
+        "     'string': 'one'" +
+        "   }," +
+        "   'id': 'feature.0'" +
+        " }")));
+
+        assertNotNull(f);
+        assertTrue(f.getDefaultGeometry() == null);
+
+        assertEquals(1, ((Number)f.getAttribute("int")).intValue());
+        assertEquals(0.1, ((Number)f.getAttribute("double")).doubleValue());
+        assertEquals("one", f.getAttribute("string"));
+    }
+
     public void testFeatureWithRegularGeometryAttributeNoDefaultGeometryRead() throws Exception {
         SimpleFeature f = fjson.readFeature(reader(strip("{" + 
         "   'type': 'Feature'," +

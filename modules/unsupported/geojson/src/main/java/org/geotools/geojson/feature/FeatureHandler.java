@@ -187,7 +187,11 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     
     @Override
     public boolean primitive(Object value) throws ParseException, IOException {
-        if ("".equals(id)) {
+        if (delegate instanceof GeometryHandler && value == null) {
+            delegate = NULL;
+            return true;
+        }
+        else if ("".equals(id)) {
             id = value.toString();
             return true;
         }

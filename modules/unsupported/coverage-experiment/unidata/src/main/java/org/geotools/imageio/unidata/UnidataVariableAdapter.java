@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -68,6 +69,7 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
+import org.geotools.util.Range;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.SampleDimension;
@@ -275,7 +277,45 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         private final Set<Object> domainExtent = new TreeSet<Object>();
         
         /** The merged domain extent */
-        private final Set<Object> globalDomainExtent = new TreeSet<Object>();
+        private final Set<Object> globalDomainExtent = new TreeSet<Object>(new Comparator<Object>() {
+          private NumberRangeComparator  numberRangeComparator = new NumberRangeComparator();
+          private DateRangeComparator    dateRangeComparator = new DateRangeComparator();
+
+          public int compare(Object o1, Object o2) {
+            boolean o1IsDateRange = true;
+            boolean o2IsDateRange = true;
+
+            if (o1 instanceof NumberRange) {
+              o1IsDateRange = false;
+            }
+            else if (!(o1 instanceof DateRange)) {
+              throw new ClassCastException(o1.getClass() + " is not an known range type");
+            }
+
+            if (o2 instanceof NumberRange) {
+              o2IsDateRange = false;
+            }
+            else if (!(o2 instanceof DateRange)) {
+              throw new ClassCastException(o2.getClass() + " is not an known range type");
+            }
+
+            if (o1IsDateRange && o2IsDateRange) {
+              return dateRangeComparator.compare((DateRange) o1, (DateRange) o2);
+            }
+            else if (!o1IsDateRange && !o2IsDateRange) {
+              return numberRangeComparator.compare((NumberRange<?>) o1, (NumberRange<?>) o2);
+            }
+            else if (o1IsDateRange && !o2IsDateRange) {
+              return 1;
+            }
+
+            return -1;
+          }
+
+          public boolean equals(Object o) {
+            return false;
+          }
+        });
 
         /** The domain name */
         private final String name;

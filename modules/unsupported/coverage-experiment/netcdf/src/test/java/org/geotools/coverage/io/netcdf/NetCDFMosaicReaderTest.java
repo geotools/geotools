@@ -64,6 +64,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
+import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -93,7 +94,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  */
 public class NetCDFMosaicReaderTest extends Assert {
 
-    private final static Logger LOGGER = Logger.getLogger(NetCDFMosaicReaderTest.class.toString());
+    private final static Logger LOGGER = Logging.getLogger(NetCDFMosaicReaderTest.class.toString());
 
     public static junit.framework.Test suite() {
         return new JUnit4TestAdapter(NetCDFMosaicReaderTest.class);
@@ -197,8 +198,8 @@ public class NetCDFMosaicReaderTest extends Assert {
     @Test
     public void testHarvestAddTime() throws IOException {
         // prepare a "mosaic" with just one NetCDF
-        File nc1 = new File("./src/test/resources/org/geotools/coverage/io/netcdf/test-data/polyphemus_20130301_test.nc");
-        File mosaic = new File("./target/nc_harvest");
+        File nc1 = TestData.file(this,"polyphemus_20130301_test.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_harvest");
         if(mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
@@ -211,7 +212,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
         
         // the datastore.properties file is also mandatory...
-        File dsp = new File("./src/test/resources/org/geotools/coverage/io/netcdf/test-data/datastore.properties");
+        File dsp = TestData.file(this,"datastore.properties");
         FileUtils.copyFileToDirectory(dsp, mosaic);
         
         // have the reader harvest it
@@ -245,7 +246,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             it.close();
             
             // now add another netcdf and harvest it
-            File nc2 = new File("./src/test/resources/org/geotools/coverage/io/netcdf/test-data/polyphemus_20130302_test.nc");
+            File nc2 = TestData.file(this,"polyphemus_20130302_test.nc");
             FileUtils.copyFileToDirectory(nc2, mosaic);
             File fileToHarvest = new File(mosaic, "polyphemus_20130302_test.nc");
             List<HarvestedSource> harvestSummary = reader.harvest(null, fileToHarvest, null);
@@ -289,8 +290,8 @@ public class NetCDFMosaicReaderTest extends Assert {
     @Test
     public void testReHarvest() throws Exception {
         // prepare a "mosaic" with just one NetCDF
-        File nc1 = new File("./src/test/resources/org/geotools/coverage/io/netcdf/test-data/polyphemus_20130301_test.nc");
-        File mosaic = new File("./target/nc_harvest");
+        File nc1 = TestData.file(this,"polyphemus_20130301_test.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_harvest");
         if(mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
@@ -303,7 +304,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
         
         // the datastore.properties file is also mandatory...
-        File dsp = new File("./src/test/resources/org/geotools/coverage/io/netcdf/test-data/datastore.properties");
+        File dsp =TestData.file(this,"datastore.properties");
         FileUtils.copyFileToDirectory(dsp, mosaic);
         
         // have the reader harvest it
@@ -345,7 +346,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             Thread.sleep(500);
             
             // now replace the netcdf file with a more up to date version of the same 
-            File nc2 = new File("./src/test/resources/org/geotools/coverage/io/netcdf/test-data/polyphemus_20130301_test_more_times.nc");
+            File nc2 = TestData.file(this,"polyphemus_20130301_test_more_times.nc");
             File target = new File(mosaic, "polyphemus_20130301_test.nc");
             FileUtils.copyFile(nc2, target, false);
             File fileToHarvest = new File(mosaic, "polyphemus_20130301_test.nc");
@@ -391,8 +392,8 @@ public class NetCDFMosaicReaderTest extends Assert {
     @Test
     public void testHarvestAddVariable() throws IOException {
         // prepare a "mosaic" with just one NetCDF
-        File nc1 = new File("./src/test/resources/org/geotools/coverage/io/netcdf/test-data/polyphemus_20130301_test.nc");
-        File mosaic = new File("./target/nc_harvest");
+        File nc1 = TestData.file(this,"polyphemus_20130301_test.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_harvest");
         if(mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
@@ -405,7 +406,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
         
         // the datastore.properties file is also mandatory...
-        File dsp = new File("./src/test/resources/org/geotools/coverage/io/netcdf/test-data/datastore.properties");
+        File dsp = TestData.file(this,"datastore.properties");
         FileUtils.copyFileToDirectory(dsp, mosaic);
         
         // have the reader harvest it
@@ -439,7 +440,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             it.close();
             
             // now add another netcdf and harvest it
-            File nc2 = new File("./src/test/resources/org/geotools/coverage/io/netcdf/test-data/polyphemus_20130301_NO2.nc");
+            File nc2 = TestData.file(this,"polyphemus_20130301_NO2.nc");
             FileUtils.copyFileToDirectory(nc2, mosaic);
             File fileToHarvest = new File(mosaic, "polyphemus_20130301_NO2.nc");
             List<HarvestedSource> harvestSummary = reader.harvest(null, fileToHarvest, null);
@@ -480,17 +481,15 @@ public class NetCDFMosaicReaderTest extends Assert {
     @Test
     public void testHarvest3Gome() throws IOException {
         // prepare a "mosaic" with just one NetCDF
-        File nc1 = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/20130101.METOPA.GOME2.NO2.DUMMY.nc");
-        File mosaic = new File("./target/nc_harvest");
+        File nc1 =  TestData.file(this,"20130101.METOPA.GOME2.NO2.DUMMY.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_harvest");
         if (mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
-        File xml = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/.DUMMY.GOME2.NO2.PGL/GOME2.NO2.xml");
+        File xml =  TestData.file(this,".DUMMY.GOME2.NO2.PGL/GOME2.NO2.xml");
         FileUtils.copyFileToDirectory(xml, mosaic);
 
         // The indexer
@@ -504,8 +503,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex);
 
         // the datastore.properties file is also mandatory...
-        File dsp = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/datastore.properties");
+        File dsp = TestData.file(this,"datastore.properties");
         FileUtils.copyFileToDirectory(dsp, mosaic);
 
         // have the reader harvest it
@@ -535,8 +533,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             it.close();
 
             // now add another netcdf and harvest it
-            File nc2 = new File(
-                    "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/20130116.METOPA.GOME2.NO2.DUMMY.nc");
+            File nc2 =  TestData.file(this,"20130116.METOPA.GOME2.NO2.DUMMY.nc");
             FileUtils.copyFileToDirectory(nc2, mosaic);
             File fileToHarvest = new File(mosaic, "20130116.METOPA.GOME2.NO2.DUMMY.nc");
             List<HarvestedSource> harvestSummary = reader.harvest("NO2", fileToHarvest, null);
@@ -549,8 +546,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             assertTrue(hf.success());
             assertEquals(1, reader.getGridCoverageNames().length);
 
-            File nc3 = new File(
-                    "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/20130108.METOPA.GOME2.NO2.DUMMY.nc");
+            File nc3 =  TestData.file(this,"20130108.METOPA.GOME2.NO2.DUMMY.nc");
             FileUtils.copyFileToDirectory(nc3, mosaic);
             fileToHarvest = new File(mosaic, "20130108.METOPA.GOME2.NO2.DUMMY.nc");
             harvestSummary = reader.harvest("NO2", fileToHarvest, null);
@@ -593,17 +589,15 @@ public class NetCDFMosaicReaderTest extends Assert {
     @Test
     public void testReadCoverageGome() throws IOException {
         // prepare a "mosaic" with just one NetCDF
-        File nc1 = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/20130101.METOPA.GOME2.NO2.DUMMY.nc");
-        File mosaic = new File("./target/nc_harvest");
+        File nc1 = TestData.file(this,"20130101.METOPA.GOME2.NO2.DUMMY.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_harvest");
         if (mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
-        File xml = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/.DUMMY.GOME2.NO2.PGL/GOME2.NO2.xml");
+        File xml = TestData.file(this,".DUMMY.GOME2.NO2.PGL/GOME2.NO2.xml");
         FileUtils.copyFileToDirectory(xml, mosaic);
 
         // The indexer
@@ -617,8 +611,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex);
 
         // the datastore.properties file is also mandatory...
-        File dsp = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/datastore.properties");
+        File dsp = TestData.file(this,"datastore.properties");
         FileUtils.copyFileToDirectory(dsp, mosaic);
 
         // have the reader harvest it
@@ -663,21 +656,18 @@ public class NetCDFMosaicReaderTest extends Assert {
     @Test
     public void testReadCoverageGome2Names() throws IOException {
         // prepare a "mosaic" with just one NetCDF
-        File nc1 = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/20130101.METOPA.GOME2.NO2.DUMMY.nc");
-        File mosaic = new File("./target/nc_gome2");
+        File nc1 =  TestData.file(this,"20130101.METOPA.GOME2.NO2.DUMMY.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_gome2");
         if (mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
         
-        nc1 = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/20130101.METOPA.GOME2.BrO.DUMMY.nc");
+        nc1 =  TestData.file(this,"20130101.METOPA.GOME2.BrO.DUMMY.nc");
         FileUtils.copyFileToDirectory(nc1, mosaic);
         
-        File xml = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/DUMMYGOME2.xml");
+        File xml =  TestData.file(this,"DUMMYGOME2.xml");
         FileUtils.copyFileToDirectory(xml, mosaic);
 
         // The indexer
@@ -691,8 +681,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex);
 
         // the datastore.properties file is also mandatory...
-        File dsp = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/datastore.properties");
+        File dsp = TestData.file(this,"datastore.properties");
         FileUtils.copyFileToDirectory(dsp, mosaic);
 
         // have the reader harvest it
@@ -738,21 +727,18 @@ public class NetCDFMosaicReaderTest extends Assert {
     @Test
     public void testCheckDifferentSampleImages() throws IOException {
         // prepare a "mosaic" with just one NetCDF
-        File nc1 = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/20130101.METOPA.GOME2.NO2.DUMMY.nc");
-        File mosaic = new File("./target/nc_sampleimages");
+        File nc1 = TestData.file(this,"20130101.METOPA.GOME2.NO2.DUMMY.nc");
+        File mosaic =new File(TestData.file(this,"."),"nc_sampleimages");
         if (mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
         
-        nc1 = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/20130101.METOPA.GOME2.BrO.DUMMY.nc");
+        nc1 =  TestData.file(this,"20130101.METOPA.GOME2.BrO.DUMMY.nc");
         FileUtils.copyFileToDirectory(nc1, mosaic);
         
-        File xml = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/DUMMYGOME2.xml");
+        File xml =  TestData.file(this,"DUMMYGOME2.xml");
         FileUtils.copyFileToDirectory(xml, mosaic);
 
         // The indexer
@@ -766,8 +752,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex);
 
         // the datastore.properties file is also mandatory...
-        File dsp = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/datastore.properties");
+        File dsp =  TestData.file(this,"datastore.properties");
         FileUtils.copyFileToDirectory(dsp, mosaic);
 
         // have the reader harvest it
@@ -776,8 +761,8 @@ public class NetCDFMosaicReaderTest extends Assert {
         assertNotNull(reader);
         
         // Checking whether different sample images have been created
-        final File sampleImage1 = new File("./target/nc_sampleimages/BrOsample_image");
-        final File sampleImage2 = new File("./target/nc_sampleimages/NO2sample_image");
+        final File sampleImage1 = new File(TestData.file(this,"."),"nc_sampleimages/BrOsample_image");
+        final File sampleImage2 = new File(TestData.file(this,"."),"nc_sampleimages/NO2sample_image");
         assertTrue(sampleImage1.exists());
         assertTrue(sampleImage2.exists());
         reader.dispose();

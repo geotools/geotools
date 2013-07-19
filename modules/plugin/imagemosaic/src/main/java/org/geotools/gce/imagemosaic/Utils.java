@@ -81,6 +81,7 @@ import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
@@ -99,6 +100,7 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.Utilities;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -115,6 +117,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 public class Utils {
+    
+    public final static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
     final private static double RESOLUTION_TOLERANCE_FACTOR = 1E-2;
 
@@ -270,32 +274,17 @@ public class Utils {
 
 		// create a mosaic index builder and set the relevant elements
 		final CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
-//		configuration.setAbsolute(absolutePath);
-//		configuration.setHints(hints);
-//		configuration.setRootMosaicDirectory(location);
-		
+		configuration.setHints(hints);// retain hints as this may contain an instance of an ImageMosaicReader
 		List<Parameter> parameterList = configuration.getIndexer().getParameters().getParameter();
-//             Indexer defaultIndexer = Utils.OBJECT_FACTORY.createIndexer();
-//             ParametersType parameters = Utils.OBJECT_FACTORY.createParametersType();
-//             List<Parameter> parameterList = parameters.getParameter();
-//             defaultIndexer.setParameters(parameters);
                
                IndexerUtils.setParam(parameterList, Prop.ABSOLUTE_PATH, Boolean.toString(absolutePath));
                IndexerUtils.setParam(parameterList, Prop.ROOT_MOSAIC_DIR, location);
                IndexerUtils.setParam(parameterList, Prop.INDEX_NAME, indexName);
                IndexerUtils.setParam(parameterList, Prop.WILDCARD, wildcard);
                IndexerUtils.setParam(parameterList, Prop.INDEXING_DIRECTORIES, location);
-               
-               configuration.setHints(hints);
-//             configuration.setDefaultParameters(parameters);
-               // TODO: CHECK THAT
-               
-//		configuration.setIndexingDirectories(Arrays.asList(location));
-//		configuration.setIndexName(indexName);
 
 		// create the builder
 		final ImageMosaicWalker catalogBuilder = new ImageMosaicWalker(configuration);
-//		final CatalogBuilder catalogBuilder = new CatalogBuilder(configuration);
 		
 		// this is going to help us with catching exceptions and logging them
 		final Queue<Throwable> exceptions = new LinkedList<Throwable>();

@@ -18,78 +18,91 @@ package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map.Entry;
 
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.Hints;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.visitor.FeatureCalc;
-import org.geotools.gce.imagemosaic.GranuleDescriptor;
-import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.BoundingBox;
+
 /**
- * The {@link GranuleCatalog} interface provides the basic capabilities for the class 
- * that is as an index for the granules.
  * 
- * @author Simone Giannecchini, GeoSolutions SAS
  *
  * @source $URL$
  */
-public interface GranuleCatalog {
-	
-	/**
-	 * Finds the granules that intersects the provided {@link BoundingBox}:
-	 * 
-	 * @param envelope
-	 *            The {@link BoundingBox} to test for intersection.
-	 * @return Collection of {@link Feature} that intersect the provided
-	 *         {@link BoundingBox}.
-	 * @throws IOException 
-	 */
-
-    public Collection<GranuleDescriptor> getGranules(final String typeName, final BoundingBox envelope) throws IOException;
-
-    public Collection<GranuleDescriptor> getGranules(final Query q) throws IOException;
-
-    public Collection<GranuleDescriptor> getGranules(final String typeName) throws IOException;
-	
-	/**
-	 * Finds the granules that intersects the provided {@link BoundingBox}:
-	 * 
-	 * @param envelope
-	 *            The {@link BoundingBox} to test for intersection.
-	 * @return List of {@link Feature} that intersect the provided
-	 *         {@link BoundingBox}.
-	 * @throws IOException 
-	 */
-
-    public void getGranules (final String typeName, final BoundingBox envelope, final  GranuleCatalogVisitor visitor) throws IOException;
-	
-	public void getGranules (final Query q, final GranuleCatalogVisitor visitor) throws IOException;
-
-	public void dispose();
-
-        public void addGranule(final String typeName, final SimpleFeature granule, final Transaction transaction) throws IOException;
-
-        public void addGranules(final String typeName, final Collection<SimpleFeature> granules, final Transaction transaction) throws IOException;
-
-	public void createType(String namespace, String typeName, String typeSpec) throws IOException, SchemaException;
-
-	public void createType(SimpleFeatureType featureType) throws IOException;
-
-	public void createType(String identification, String typeSpec) throws SchemaException, IOException;
-
-    public SimpleFeatureType getType(final String typeName) throws IOException;
-
-    public int removeGranules (final Query query);
-
-    public BoundingBox getBounds(final String typeName);
-
-	public void computeAggregateFunction(final Query q, final FeatureCalc function) throws IOException;
-
-    public QueryCapabilities getQueryCapabilities(final String typeName);
+public abstract class GranuleCatalog {
     
-    String[] getTypeNames();
+    /**
+     * @param hints
+     */
+    public GranuleCatalog(Hints hints) {
+        this.hints = hints;
+    }
+
+    protected final Hints hints;
+
+    public void addGranule(final String typeName, final SimpleFeature granule, final Transaction transaction) throws IOException {
+            addGranules(typeName, Collections.singleton(granule),transaction);
+    }
+
+    public abstract void addGranules(final String typeName, Collection<SimpleFeature> granules, Transaction transaction) throws IOException;
+    
+    public abstract void computeAggregateFunction(Query q, FeatureCalc function) throws IOException ;
+
+    public abstract void createType(String namespace, String typeName, String typeSpec) throws IOException, SchemaException ;
+
+    public abstract void createType(SimpleFeatureType featureType) throws IOException;
+
+    public abstract void createType(String identification, String typeSpec) throws SchemaException, IOException ;
+
+    public abstract void dispose() ;
+
+    public abstract BoundingBox getBounds(final String typeName) ;
+
+    public abstract SimpleFeatureCollection getGranules(Query q) throws IOException;
+    
+    public abstract int getGranulesCount(Query q) throws IOException;
+    
+    public abstract  void getGranuleDescriptors(Query q, GranuleCatalogVisitor visitor) throws IOException;
+    
+    public abstract QueryCapabilities getQueryCapabilities(final String typeName);
+    
+    public abstract SimpleFeatureType getType(final String typeName) throws IOException ;
+
+    public abstract int removeGranules(Query query);
+    
+    public abstract String[] getTypeNames() ;
+
+
+    /**
+     * Merges the wrapper hints with the query ones, making sure not to overwrite the query ones
+     * 
+     * @param q
+     * @return
+     */
+    protected Query mergeHints(Query q) {
+        if(this.hints==null||this.hints.isEmpty()){
+            return q;
+        }
+        Query clone = new Query(q);
+        Hints hints = clone.getHints();
+        if (hints == null || hints.isEmpty()) {
+            clone.setHints(this.hints);
+        } else {
+            for (Entry<Object, Object> entry : this.hints.entrySet()) {
+                if (!hints.containsKey(entry.getKey())) {
+                    hints.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+    
+        return clone;
+    }
 }

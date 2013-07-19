@@ -17,28 +17,22 @@
 package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.IOException;
-import java.util.Collection;
 
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.data.Query;
-import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.Hints;
-import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.resources.coverage.FeatureUtilities;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory2;
 
 /**
  * A {@link GranuleSource} implementation wrapping a {@link GranuleCatalog}.
  * 
  * @author Daniele Romagnoli, GeoSolutions SAS
+ * @author Simone Giannecchini, GeoSolutions SAS
  *
  */
 public class GranuleCatalogSource implements GranuleSource {
-
-    private final static FilterFactory2 FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
     
     /** The underlying {@link GranuleCatalog} */
     protected GranuleCatalog catalog;
@@ -58,15 +52,8 @@ public class GranuleCatalogSource implements GranuleSource {
     
     @Override
     public SimpleFeatureCollection getGranules(Query q) throws IOException {
-        Query updatedQuery = setupBaseQuery(q);
-        
-        // TODO: Optimize me
-        Collection<GranuleDescriptor> granules = catalog.getGranules(updatedQuery);
-        SimpleFeatureCollection collection = new ListFeatureCollection(catalog.getType(typeName));
-        for (GranuleDescriptor granule: granules) {
-            ((ListFeatureCollection)collection).add(granule.getOriginator());
-        }
-        return collection;
+        final Query updatedQuery = setupBaseQuery(q);
+        return catalog.getGranules(updatedQuery);
     }
 
     private Query setupBaseQuery(Query q) {
@@ -87,9 +74,7 @@ public class GranuleCatalogSource implements GranuleSource {
     @Override
     public int getCount(Query q) throws IOException {
         q = setupBaseQuery(q);
-        //TODO Optimize this call
-        Collection<GranuleDescriptor> granules = catalog.getGranules(q);
-        return granules.size();
+        return catalog.getGranulesCount(q);
     }
 
     @Override

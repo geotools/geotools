@@ -1232,7 +1232,8 @@ class RasterLayerResponse{
 
             // === collect granules
             final MosaicProducer visitor = new MosaicProducer();
-            rasterManager.getGranules(query, visitor);            
+            rasterManager.getGranuleDescriptors(query, visitor);   
+            
             // get those granules and create the final mosaic
             RenderedImage returnValue = visitor.produce();
 
@@ -1270,7 +1271,7 @@ class RasterLayerResponse{
                     FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.getGranuleCatalog().getType(rasterManager.getTypeName()).getGeometryDescriptor().getName()),
                     bboxExtractor.getBBox()));
             query.setMaxFeatures(1);
-            rasterManager.getGranules(query, dryRunVisitor);
+            rasterManager.getGranuleDescriptors(query, dryRunVisitor);
             if (dryRunVisitor.granulesNumber > 0) {
                 LOGGER.fine("Dry run got a target granule, returning null as the additional filters did filter all the granules out");
                 // It means the previous lack of granule was due to a filter excluding all the results. Then we return null

@@ -24,7 +24,6 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -258,7 +257,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
      * @throws DataSourceException
      */
     private void initReaderFromURL(final Object source, final Hints hints) throws Exception {
-//        final boolean hasIndex = Utils.minimalIndexCheck(source);
         this.sourceURL = Utils.checkSource(source, hints);
         
         // Preliminar check on source
@@ -327,7 +325,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.valueOf(true));
 //                params.put(Utils.SCAN_FOR_TYPENAMES, typeNamesProps.getProperty(Utils.SCAN_FOR_TYPENAMES));
                 
-                catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, beans.get(0).getCatalogConfigurationBean(), params);
+                catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, beans.get(0).getCatalogConfigurationBean(), params, getHints());
                 if (granuleCatalog == null) {
                     granuleCatalog = catalog;
                 }

@@ -146,14 +146,20 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             Query query) throws IOException {
         this(store, mapping, query, null);
     }
-    
+
+    public AbstractMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
+            Query query, Query unrolledQuery) throws IOException {
+        this(store, mapping, query, unrolledQuery, false);
+    }
+
+
     //NC - changed
     //possibility to pass on both query and unrolled query
     //so that property names can be taken out of query, also when a custom unrolled query is passed.    
     //one of them can be null, but not both!
     
     public AbstractMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query, Query unrolledQuery) throws IOException {
+            Query query, Query unrolledQuery, boolean removeQueryLimitIfDenormalised) throws IOException {
         this.store = store;
         this.attf = new AppSchemaFeatureFactoryImpl();
 
@@ -173,7 +179,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                                     // this...
         }
         
-        this.requestMaxFeatures = query.getMaxFeatures();
+        
         if (mapping.isDenormalised()) {
             // we need to disable the max number of features retrieved so we can
             // sort them manually just in case the data is denormalised.  Do this
@@ -182,8 +188,14 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             // this.requestMaxFeatures in the constructor and will be re-applied after
             // the rows have been returned
             this.dataMaxFeatures = Query.DEFAULT_MAX;
+            if (removeQueryLimitIfDenormalised) {
+                this.requestMaxFeatures = Query.DEFAULT_MAX;
+            } else {
+                this.requestMaxFeatures = query.getMaxFeatures();
+            }
         } else {
             this.dataMaxFeatures = query.getMaxFeatures();
+            this.requestMaxFeatures = query.getMaxFeatures();
         }
                 
         if (unrolledQuery==null) {

@@ -111,6 +111,7 @@ public class MappingFeatureIteratorFactory {
         }        
 
         boolean isJoining = AppSchemaDataAccessConfigurator.isJoining();
+        boolean removeQueryLimitIfDenormalised = false;
 
         FeatureSource mappedSource = mapping.getSource();            
         
@@ -173,6 +174,7 @@ public class MappingFeatureIteratorFactory {
                 int maxFeatures = Query.DEFAULT_MAX;
                 if (filter != null && filter != Filter.INCLUDE) {
                     maxFeatures = query.getMaxFeatures();
+                    removeQueryLimitIfDenormalised = true;
                 }
                 if (isJoining && isListFilter != null) {
                     // pass it on in JoiningQuery so it can be handled when the SQL is prepared
@@ -188,7 +190,7 @@ public class MappingFeatureIteratorFactory {
                 // need to flag if this is non joining and has pre filter because it needs
                 // to find denormalised rows that match the id (but doesn't match pre filter)
                 boolean isFiltered = !isJoining && preFilter != null && preFilter != Filter.INCLUDE;
-                iterator = new DataAccessMappingFeatureIterator(store, mapping, query, isFiltered);
+                iterator = new DataAccessMappingFeatureIterator(store, mapping, query, isFiltered, removeQueryLimitIfDenormalised);
                 // HACK HACK HACK
                 // experimental/temporary solution for isList subsetting by filtering
                 // Because subsetting should be done before the feature is built.. so we're not 

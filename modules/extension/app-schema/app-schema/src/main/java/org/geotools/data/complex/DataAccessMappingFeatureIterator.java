@@ -131,8 +131,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     private Filter listFilter;
 
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query, boolean isFiltered) throws IOException {
-        this(store, mapping, query, null);
+            Query query, boolean isFiltered, boolean removeQueryLimitIfDenormalised) throws IOException {
+        super(store, mapping, query, null, removeQueryLimitIfDenormalised);
         this.isFiltered = isFiltered;
         if (isFiltered) {
             filteredFeatures = new ArrayList<String>();

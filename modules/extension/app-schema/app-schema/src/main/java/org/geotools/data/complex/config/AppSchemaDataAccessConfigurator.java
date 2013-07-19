@@ -276,7 +276,7 @@ public class AppSchemaDataAccessConfigurator {
                 FeatureTypeMapping mapping;
 
                 mapping = FeatureTypeMappingFactory.getInstance(featureSource, target, attMappings,
-                        namespaces, dto.getItemXpath(), dto.isXmlDataStore());
+                        namespaces, dto.getItemXpath(), dto.isXmlDataStore(), dto.isDenormalised());
 
                 String mappingName = dto.getMappingName();
                 if (mappingName != null) {

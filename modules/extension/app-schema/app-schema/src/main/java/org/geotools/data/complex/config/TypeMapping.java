@@ -50,6 +50,12 @@ public class TypeMapping implements Serializable {
       * returned from the backend Data access.
       */
     private boolean isXmlDataStore;
+
+    /**
+     * True if data is denormalised (the default).  If flag is false its safe to apply the maxFeatures
+     * limit to any SQL queries that are generated
+     */
+    private boolean isDenormalised = true;
   
     private String targetElementName;
 
@@ -115,6 +121,14 @@ public class TypeMapping implements Serializable {
     public boolean isXmlDataStore() {
         return isXmlDataStore;
     } 
+
+    public boolean isDenormalised() {
+        return isDenormalised;
+    }
+
+    public void setIsDenormalised(String isDenormalised) {
+        this.isDenormalised = Boolean.valueOf(isDenormalised).booleanValue();
+    }
     
     public void setMappingName(final String mappingName) {
         this.mappingName = mappingName;   

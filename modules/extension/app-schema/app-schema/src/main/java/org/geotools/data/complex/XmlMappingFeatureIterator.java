@@ -519,7 +519,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
                 
         boolean exists = false;
         
-        if (featureCounter >= maxFeatures) {
+        if (featureCounter >= requestMaxFeatures) {
             return false;
         }
         if (isSourceFeatureIteratorNull()) {

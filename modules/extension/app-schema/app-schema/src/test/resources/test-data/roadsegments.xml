@@ -30,7 +30,6 @@
       <sourceType>RoadSegments</sourceType>
       <targetElement>sco:RoadSegment</targetElement>
       <groupBy/>
-      <isDenormalised>false</isDenormalised>
       <attributeMappings>
         <AttributeMapping>
           <targetAttribute>RoadSegment</targetAttribute>

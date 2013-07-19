@@ -956,7 +956,7 @@ public class ImageMosaicWalker implements Runnable {
         String ancillaryFile = null;
         if (Utils.checkFileReadable(indexerFile)) {
             try {
-                indexer = (Indexer) Utils.UNMARSHALLER.unmarshal(indexerFile);
+                indexer = (Indexer) Utils.unmarshal(indexerFile);
                 if (indexer != null) {
                     copyDefaultParams(params, indexer);
                 }

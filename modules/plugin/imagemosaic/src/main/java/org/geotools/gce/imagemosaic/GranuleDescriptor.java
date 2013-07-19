@@ -343,7 +343,9 @@ public class GranuleDescriptor {
 				}
 				
 			}
-			reader = cachedReaderSPI.createReaderInstance();
+			if (reader == null) {
+			    reader = cachedReaderSPI.createReaderInstance();
+			}
 			
 			if(reader == null)
 				throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleUrl.toString());
@@ -756,7 +758,7 @@ public class GranuleDescriptor {
 			final RenderedImage raster;
 			try {
 				// read
-				raster= request.getReadType().read(readParameters,imageIndex, granuleUrl, selectedlevel.rasterDimensions,reader, hints,false);
+				raster= request.getReadType().read(readParameters,imageIndex, granuleUrl, selectedlevel.rasterDimensions, reader, hints,false);
 				
 			} catch (Throwable e) {
 				if (LOGGER.isLoggable(java.util.logging.Level.FINE)){

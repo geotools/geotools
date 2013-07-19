@@ -14,6 +14,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.process.ProcessException;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.resources.ClassChanger;
 import org.geotools.util.Utilities;
 import org.jaitools.imageutils.ROIGeometry;
 import org.jaitools.media.jai.rangelookup.RangeLookupTable;
@@ -161,22 +162,86 @@ public class CoverageUtilities {
                 final Number noDataValue) {
             return getRangeLookupTable(classificationRanges, outputPixelValues, noDataValue, noDataValue.getClass());
         }
-        
-	public static RangeLookupTable getRangeLookupTable(
-	        final List<Range> classificationRanges, 
-	        final int[] outputPixelValues,
-	        final Number noDataValue,
-	        final Class clazz) {
-		
-	    final RangeLookupTable rlt = new RangeLookupTable(noDataValue); 
-	    final int size= classificationRanges.size();
-	    final boolean useCustomOutputPixelValues = outputPixelValues != null && outputPixelValues.length == size;
-	    for (int i = 0; i < size; i++) {
-	        final int reference = useCustomOutputPixelValues ? outputPixelValues [i] : i + 1;
-	        rlt.add(classificationRanges.get(i), convert(reference, noDataValue.getClass()));
-	    }
-	    return rlt;
-	}
+
+  public static RangeLookupTable getRangeLookupTable(List<Range> classificationRanges, final int[] outputPixelValues,
+      final Number noDataValue, final Class<? extends Number> clazz)
+  {
+    final RangeLookupTable.Builder rltBuilder = new RangeLookupTable.Builder();
+    final int size = classificationRanges.size();
+    final boolean useCustomOutputPixelValues = outputPixelValues != null && outputPixelValues.length == size;
+
+    Class<? extends Number> widestClass = noDataValue.getClass();
+
+    for (int i = 0; i < size; i++) {
+      final Range range = classificationRanges.get(i);
+      final Class<? extends Number> rangeClass = range.getMin().getClass();
+
+      if (widestClass != rangeClass) {
+        widestClass = ClassChanger.getWidestClass(widestClass, rangeClass);
+      }
+
+      final int reference = useCustomOutputPixelValues ? outputPixelValues [i] : i + 1;
+
+      rltBuilder.add(range, convert(reference, noDataValue.getClass()));
+    }
+
+    // Add the largest range that contains the no data value
+    rltBuilder.add(new Range(getClassMinimum(widestClass), true, getClassMaximum(widestClass), true), noDataValue);
+
+    return rltBuilder.build();
+  }
+
+  private static Number getClassMinimum(Class<? extends Number> numberClass) {
+    if (numberClass == null) {
+      return null;
+    }
+    else if (Double.class.equals(numberClass)) {
+      return Double.MIN_VALUE;
+    }
+    else if (Float.class.equals(numberClass)) {
+      return Float.MIN_VALUE;
+    }
+    else if (Long.class.equals(numberClass)) {
+      return Long.MIN_VALUE;
+    }
+    else if (Integer.class.equals(numberClass)) {
+      return Integer.MIN_VALUE;
+    }
+    else if (Short.class.equals(numberClass)) {
+      return Short.MIN_VALUE;
+    }
+    else if (Byte.class.equals(numberClass)) {
+      return Byte.MIN_VALUE;
+    }
+
+    throw new UnsupportedOperationException("Class " + numberClass + " can't be used in a value Range");
+  }
+
+  private static Number getClassMaximum(Class<? extends Number> numberClass) {
+    if (numberClass == null) {
+      return null;
+    }
+    else if (Double.class.equals(numberClass)) {
+      return Double.MAX_VALUE;
+    }
+    else if (Float.class.equals(numberClass)) {
+      return Float.MAX_VALUE;
+    }
+    else if (Long.class.equals(numberClass)) {
+      return Long.MAX_VALUE;
+    }
+    else if (Integer.class.equals(numberClass)) {
+      return Integer.MAX_VALUE;
+    }
+    else if (Short.class.equals(numberClass)) {
+      return Short.MAX_VALUE;
+    }
+    else if (Byte.class.equals(numberClass)) {
+      return Byte.MAX_VALUE;
+    }
+
+    throw new UnsupportedOperationException("Class " + numberClass + " can't be used in a value Range");
+  }
 
 //	@SuppressWarnings("unchecked")
 //	public static <T extends Number & Comparable> T guessNoDataValue(Class<T> type){
@@ -197,7 +262,7 @@ public class CoverageUtilities {
 //	                + " can't be used in a value Range");
 //	    }
 //	}
-	
+
 	public static Number convert(Number val, Class<? extends Number> type) {
 	    if (val == null) {
 	        return null;

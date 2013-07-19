@@ -201,6 +201,12 @@ public class XMLConfigDigester {
         digester.addCallMethod(typeMapping + "/isXmlDataStore", "setXmlDataStore", 1);
         digester.addCallParam(typeMapping + "/isXmlDataStore", 0);
 
+        // isDenormalised is a flag to indicate if its safe to apply the system configured
+        // maxFeatures limit when constructing SQL queries (isDenormalsed = false).
+        digester.addCallMethod(typeMapping + "/isDenormalised", "setIsDenormalised", 1);
+        digester.addCallParam(typeMapping + "/isDenormalised", 0);
+
+
         // create attribute mappings
         final String attMappings = typeMapping + "/attributeMappings";
         digester.addObjectCreate(attMappings, XMLConfigDigester.CONFIG_NS_URI, ArrayList.class);

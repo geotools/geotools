@@ -131,8 +131,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     private Filter listFilter;
 
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query, boolean isFiltered) throws IOException {
-        this(store, mapping, query, null);
+            Query query, boolean isFiltered, boolean removeQueryLimitIfDenormalised) throws IOException {
+        super(store, mapping, query, null, removeQueryLimitIfDenormalised);
         this.isFiltered = isFiltered;
         if (isFiltered) {
             filteredFeatures = new ArrayList<String>();
@@ -165,7 +165,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         boolean exists = !isNextSourceFeatureNull();
 
         if (!isHasNextCalled()) {
-            if (featureCounter < maxFeatures) {
+            if (featureCounter < requestMaxFeatures) {
                 if (!exists && getSourceFeatureIterator() != null
                         && getSourceFeatureIterator().hasNext()) {
                     this.curSrcFeature = getSourceFeatureIterator().next();
@@ -362,10 +362,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         
         //reproject target feature
         targetFeature = reprojectAttribute(mapping.getTargetFeature());
-
-        // we need to disable the max number of features retrieved so we can
-        // sort them manually just in case the data is denormalised
-        query.setMaxFeatures(Query.DEFAULT_MAX);
+        query.setMaxFeatures(dataMaxFeatures);
         sourceFeatures = mappedSource.getFeatures(query);
         if (reprojection != null) {
             xpathAttributeBuilder.setCRS(reprojection);

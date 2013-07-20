@@ -64,12 +64,41 @@
     </developers>
 
     <dependencies>
-        <!--   Third-party dependencies   -->
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-coverage</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+          <groupId>org.geotools</groupId>
+          <artifactId>gt-jdbc</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.geotools</groupId>
+          <artifactId>gt-jdbc</artifactId>
+          <version>${project.version}</version>
+          <classifier>tests</classifier>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.geotools</groupId>
+          <artifactId>gt-sample-data</artifactId>
+          <version>${project.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.geotools</groupId>
+          <artifactId>gt-epsg-hsql</artifactId>
+          <version>${project.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>simple-jndi</groupId>
+          <artifactId>simple-jndi</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <!--   Third-party dependencies   -->
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>

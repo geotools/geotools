@@ -14,8 +14,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.geotools.jdbc</groupId>
-    <artifactId>gt-jdbc</artifactId>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
     <version>10-SNAPSHOT</version>
   </parent>
 

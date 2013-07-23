@@ -55,6 +55,7 @@ import org.geotools.imageio.unidata.UnidataSlice2DIndex;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
+import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -72,7 +73,7 @@ import org.opengis.referencing.operation.MathTransform2D;
  */
 public final class NetCDFPolyphemusTest extends Assert {
 
-    private final static Logger LOGGER = Logger.getLogger(NetCDFPolyphemusTest.class.toString());
+    private final static Logger LOGGER = Logging.getLogger(NetCDFPolyphemusTest.class.toString());
 
     
     @Test

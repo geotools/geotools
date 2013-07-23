@@ -64,6 +64,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
+import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -93,7 +94,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  */
 public class NetCDFMosaicReaderTest extends Assert {
 
-    private final static Logger LOGGER = Logger.getLogger(NetCDFMosaicReaderTest.class.toString());
+    private final static Logger LOGGER = Logging.getLogger(NetCDFMosaicReaderTest.class.toString());
 
     public static junit.framework.Test suite() {
         return new JUnit4TestAdapter(NetCDFMosaicReaderTest.class);

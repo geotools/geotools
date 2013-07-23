@@ -282,6 +282,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
           private DateRangeComparator    dateRangeComparator = new DateRangeComparator();
 
           public int compare(Object o1, Object o2) {
+            // assume that o1 and o2 are both not null
             boolean o1IsDateRange = true;
             boolean o2IsDateRange = true;
 
@@ -305,11 +306,8 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
             else if (!o1IsDateRange && !o2IsDateRange) {
               return numberRangeComparator.compare((NumberRange<?>) o1, (NumberRange<?>) o2);
             }
-            else if (o1IsDateRange && !o2IsDateRange) {
-              return 1;
-            }
 
-            return -1;
+            throw new ClassCastException("Incompatible range types: " + o1.getClass() + " is not the same as " + o2.getClass());
           }
 
           public boolean equals(Object o) {

@@ -19,7 +19,6 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.geotools.data.DataUtilities;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors;
@@ -33,13 +32,10 @@ import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
-import org.geotools.imageio.unidata.utilities.UnidataCRSUtilities;
 import org.geotools.imageio.unidata.utilities.UnidataUtilities;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** 
  * A class used to store any auxiliary indexing information
@@ -90,7 +86,7 @@ class AncillaryFileManager {
     Map<Name, String> variablesMap = null;
 
     /** specify whether the auxiliary file contains explicit schema definition to be forced */
-    boolean hasImposedSchema = false;
+    boolean imposedSchema = false;
 
     /** A propertyCollectors map */
     private Map<String, PropertiesCollector> collectors = null;
@@ -264,47 +260,6 @@ class AncillaryFileManager {
         return null;
     }
 
-    /**
-     * Initialize the schema and return the {@link SimpleFeatureType} instance.
-     * @param params
-     * @param coverage
-     * @param cs 
-     * @return
-     * @throws IOException
-     * @throws Exception
-     */
-    SimpleFeatureType suggestSchema(
-            final Coverage coverage) throws Exception {
-
-        // Get the schema for that coverage (if any)
-        SchemaType schemaElement = coverage.getSchema();
-        if (schemaElement == null) {
-            schemaElement = OBJECT_FACTORY.createSchemaType();
-            coverage.setSchema(schemaElement);
-        }
-        
-        // Get attributes (if any) defining that schema
-        String schemaAttributes = schemaElement.getAttributes();
-
-        // for the moment we only handle data in 4326
-        final CoordinateReferenceSystem actualCRS = UnidataCRSUtilities.WGS84;
-        SimpleFeatureType indexSchema = null;
-        
-        // Setting up the simpleFeatureType
-        if (schemaAttributes != null) {
-            schemaAttributes = schemaAttributes.trim();
-            // get the schema
-            try {
-                indexSchema = DataUtilities.createType(schemaElement.getName(), schemaAttributes);
-                indexSchema = DataUtilities.createSubType(indexSchema,DataUtilities.attributeNames(indexSchema), actualCRS);
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-                indexSchema = null;
-            }
-        }
-        return indexSchema;
-    }
 
     /**
      * Dispose the Manager
@@ -460,7 +415,7 @@ class AncillaryFileManager {
                 String coverageSchemaRef = null;
                 String schemaAttributes = null;
                 if (coverageSchema != null) {
-                    hasImposedSchema = true;
+                    imposedSchema = true;
                     schemaAttributes = coverageSchema.getAttributes();
                     coverageSchemaRef = coverageSchema.getRef();
                 }
@@ -597,15 +552,6 @@ class AncillaryFileManager {
     }
     
     /**
-     * Add the default schema to this coverage
-     * @param coverage
-     * @return
-     */
-    public String setSchemaName(Coverage coverage, final String schemaName) {
-        return setSchema(coverage, schemaName,null);
-    }
-
-    /**
      * @param varName
      * @return
      */
@@ -623,7 +569,7 @@ class AncillaryFileManager {
         return false;
     }
 
-	public boolean isHasImposedSchema() {
-		return hasImposedSchema;
+	public boolean isImposedSchema() {
+		return imposedSchema;
 	}
 }

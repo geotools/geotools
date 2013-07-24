@@ -42,7 +42,7 @@ public class GranuleCatalogSource implements GranuleSource {
     protected Hints hints;
     
     public GranuleCatalogSource(GranuleCatalog catalog, final String typeName, final Hints hints) {
-        super();
+
         //TODO: once we allow to create different catalogs (based on different featureTypes) 
         // we can stop filtering by name 
         this.catalog = catalog;

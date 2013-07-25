@@ -669,7 +669,11 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 throw new NullPointerException(
                         "The provided SimpleFeatureSource is null, it's impossible to create an index!");
             }
-            return featureSource.getCount(q);
+            int count= featureSource.getCount(q);
+            if(count==-1){
+                return featureSource.getFeatures(q).size();
+            }
+            return count;
 
         } catch (Throwable e) {
             final IOException ioe = new IOException();

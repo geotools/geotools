@@ -202,6 +202,9 @@ public final class UnidataTest extends Assert {
 
     @After
     public void tearDown() throws FileNotFoundException, IOException {
+        if (TestData.isInteractiveTest()) {
+            return;
+        }
         cleanUp();
     }
 

@@ -848,7 +848,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
             UnsupportedOperationException {
         UnidataImageReader unidataReader = (UnidataImageReader) ((NetCDFAccess)access).reader;
         final CoverageSlicesCatalog catalog = unidataReader.getCatalog();
-        return new CoverageSlicesCatalogSource(catalog, unidataReader.getTypeName(coverageName));
+        return new CoverageSlicesCatalogSource(catalog, coverageName);
     }
     
     @Override

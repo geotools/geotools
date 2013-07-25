@@ -33,7 +33,12 @@ import java.util.logging.Logger;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
+import org.geotools.data.Transaction;
+import org.geotools.data.collection.ListFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.SchemaException;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
@@ -69,7 +74,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  * @source $URL$
  */
 @SuppressWarnings("unused")
-class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
+class STRTreeGranuleCatalog extends GranuleCatalog {
 	
 	/** Logger. */
 	final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(STRTreeGranuleCatalog.class);
@@ -133,29 +138,18 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 	
 	private String typeName;
 	
-	public STRTreeGranuleCatalog(final Map<String,Serializable> params, DataStoreFactorySpi spi) {
-	        this(new GTDataStoreGranuleCatalog(params, false, spi), null);
+	public STRTreeGranuleCatalog(final Map<String,Serializable> params, DataStoreFactorySpi spi, final Hints hints) {
+	    super(hints);
+	        Utilities.ensureNonNull("params", params);
+	        this.wrappedCatalogue = new GTDataStoreGranuleCatalog(params, false, spi,hints);
+	        this.typeName =  (String)params.get("TypeName");
+	        if(typeName==null){
+	            ((GTDataStoreGranuleCatalog)wrappedCatalogue).typeNames.iterator().next();
+	        }
 	}
 	
 
-    /**
-     * Constructor which simply expectes a catalogue. 
-     * 
-     * <p>
-     * Notice that this cached implementation will take ownership of
-     * the provided {@link GranuleCatalog}, which means it is responsible
-     * for closing it.
-     * 
-     * @param catalogue the {@link GranuleCatalog} to be wrapped.
-     */
-    public STRTreeGranuleCatalog(final GranuleCatalog catalogue, final String typeName) {
-        Utilities.ensureNonNull("catalogue", catalogue);
-        this.wrappedCatalogue = catalogue;
-        this.typeName = typeName;
-        if (typeName == null) {
-            this.typeName =  ((GTDataStoreGranuleCatalog)wrappedCatalogue).typeNames.iterator().next();
-        }
-    }
+
 
         /** The {@link STRtree} index. */
 	private STRtree index;
@@ -200,14 +194,21 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 	private void createIndex() {
 		
 		Iterator<GranuleDescriptor> it=null;
-		Collection<GranuleDescriptor> features=null;
+		final Collection<GranuleDescriptor> features=new ArrayList<GranuleDescriptor>();
 		//
 		// Load tiles informations, especially the bounds, which will be
 		// reused
 		//
 		try{
 
-			features = wrappedCatalogue.getGranules(typeName);
+			wrappedCatalogue.getGranuleDescriptors(new Query(typeName), new GranuleCatalogVisitor() {
+                            
+                            @Override
+                            public void visit(GranuleDescriptor granule, Object o) {
+                                features.add(granule);
+                                
+                            }
+                        });
 			if (features == null) 
 				throw new NullPointerException(
 						"The provided SimpleFeatureCollection is null, it's impossible to create an index!");
@@ -310,7 +311,8 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<GranuleDescriptor> getGranules(Query q) throws IOException {
+	public SimpleFeatureCollection getGranules(Query q) throws IOException {
+	        q=mergeHints(q);
 		Utilities.ensureNonNull("q",q);
 		final Lock lock=rwLock.readLock();
 		try{
@@ -324,11 +326,8 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 			
 			// load what we need to load
 			checkIndex(lock);
-			final List<GranuleDescriptor> features= index.query(requestedBBox);
-			if(q.equals(Query.ALL))
-				return features;
-			
-			final List<GranuleDescriptor> retVal= new ArrayList<GranuleDescriptor>();
+			final List<GranuleDescriptor> features= index.query(requestedBBox);			
+			final ListFeatureCollection retVal= new ListFeatureCollection(wrappedCatalogue.getType(typeName));
 			final int maxGranules= q.getMaxFeatures();
 			int numGranules=0;
 			for(GranuleDescriptor g :features)
@@ -338,7 +337,7 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 			            break;
 				final SimpleFeature originator = g.getOriginator();
 				if(originator!=null&&filter.evaluate(originator))
-					retVal.add(g);
+					retVal.add(originator);
 			}
 			return retVal;
 		}finally{
@@ -369,7 +368,7 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 		return getGranules(this.getBounds(typeName));
 	}
 
-	public void getGranules(Query q, GranuleCatalogVisitor visitor)
+	public void getGranuleDescriptors(Query q, GranuleCatalogVisitor visitor)
 			throws IOException {
 		Utilities.ensureNonNull("q",q);
 		final Lock lock=rwLock.readLock();
@@ -430,6 +429,7 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 
 
     public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
+                query=mergeHints(query);
 		final Lock lock=rwLock.readLock();
 		try{
 			lock.lock();
@@ -452,5 +452,60 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 			lock.unlock();
 		}	
 	}
+
+    @Override
+    public int getGranulesCount(Query q) throws IOException {
+        return wrappedCatalogue.getGranulesCount(mergeHints(q));
+    }
+
+
+    @Override
+    public void addGranule(String typeName, SimpleFeature granule, Transaction transaction)
+            throws IOException {
+        throw new UnsupportedOperationException("Unsupported operation");
+        
+    }
+
+
+    @Override
+    public void addGranules(String typeName, Collection<SimpleFeature> granules,
+            Transaction transaction) throws IOException {
+        throw new UnsupportedOperationException("Unsupported operation");
+        
+    }
+
+
+    @Override
+    public void createType(String namespace, String typeName, String typeSpec) throws IOException,
+            SchemaException {
+        throw new UnsupportedOperationException("Unsupported operation");
+        
+    }
+
+
+    @Override
+    public void createType(SimpleFeatureType featureType) throws IOException {
+        throw new UnsupportedOperationException("Unsupported operation");
+    }
+
+
+    @Override
+    public void createType(String identification, String typeSpec) throws SchemaException,
+            IOException {
+        throw new UnsupportedOperationException("Unsupported operation");
+        
+    }
+
+
+    @Override
+    public QueryCapabilities getQueryCapabilities(String typeName) {
+        throw new UnsupportedOperationException("Unsupported operation");
+    }
+
+
+    @Override
+    public int removeGranules(Query query) {
+        throw new UnsupportedOperationException("Unsupported operation");
+    }
 }
 

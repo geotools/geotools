@@ -555,20 +555,15 @@ public class ImageMosaicWalker implements Runnable {
                             (((fileIndex + 1) * 99.0) / numFiles));
 
                 }
-            } catch (IOException e) {
-                fireException(e);
-                return;
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (Exception e) {
                 fireException(e);
                 return;
             } finally {
-                // ////////////////////////////////////////////////////////
                 //
                 // STEP 5
                 //
                 // release resources
                 //
-                // ////////////////////////////////////////////////////////
                 try {
                     if (coverageReader != null)
                         // release resources
@@ -935,7 +930,6 @@ public class ImageMosaicWalker implements Runnable {
      */
     public ImageMosaicWalker(final CatalogBuilderConfiguration configuration) {
         Utilities.ensureNonNull("runConfiguration", configuration);
-//        Utilities.ensureNonNull("root location", configuration.getRootMosaicDirectory());
 
         Indexer defaultIndexer = configuration.getIndexer();
         ParametersType params = null;

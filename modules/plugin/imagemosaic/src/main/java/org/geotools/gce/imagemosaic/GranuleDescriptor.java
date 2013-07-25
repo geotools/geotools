@@ -276,13 +276,7 @@ public class GranuleDescriptor {
 	boolean filterMe = false;
 
         ImageInputStreamSpi cachedStreamSPI;
-	
-	private void init(final BoundingBox granuleBBOX, final URL granuleUrl,
-                final ImageReaderSpi suggestedSPI, final Geometry inclusionGeometry,
-                final boolean heterogeneousGranules) {
-	    init(granuleBBOX, granuleUrl, suggestedSPI, inclusionGeometry, heterogeneousGranules, false, null);
-	}
-	
+        
 	private void init(final BoundingBox granuleBBOX, final URL granuleUrl,
 			final ImageReaderSpi suggestedSPI, final Geometry inclusionGeometry,
 			final boolean heterogeneousGranules, final boolean handleArtifactsFiltering, final Hints hints) {

@@ -45,7 +45,6 @@ import org.geotools.data.DefaultTransaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.collection.AbstractFeatureVisitor;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -70,7 +69,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -111,7 +109,7 @@ public class CatalogManager {
         // GranuleCatalog catalog = null;
         if (Utils.checkFileReadable(datastoreProperties)) {
             // read the properties file
-            catalog = createGranuleCatalogFromDatastore(parent, datastoreProperties, true);
+            catalog = createGranuleCatalogFromDatastore(parent, datastoreProperties, true,runConfiguration.getHints());
         } else {
 
             // we do not have a datastore properties file therefore we continue with a shapefile datastore
@@ -124,7 +122,7 @@ public class CatalogManager {
             params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, Boolean.TRUE);
             params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
             params.put(Utils.Prop.LOCATION_ATTRIBUTE, runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE));
-            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, true, Utils.SHAPE_SPI);
+            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, true, Utils.SHAPE_SPI,runConfiguration.getHints());
         }
 
         return catalog;
@@ -143,10 +141,11 @@ public class CatalogManager {
      * @param parent
      * @param datastoreProperties
      * @param create
+     * @param hints 
      * @return
      * @throws IOException
      */
-    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create) throws IOException {
+    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, Hints hints) throws IOException {
         GranuleCatalog catalog = null;
         Utilities.ensureNonNull("datastoreProperties", datastoreProperties);
         Properties properties = createGranuleCatalogProperties(datastoreProperties);
@@ -161,17 +160,11 @@ public class CatalogManager {
             // to incorporate the path where to write the db
             params.put("ParentLocation", DataUtilities.fileToURL(parent).toExternalForm());
 
-            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, create, spi);
-        } catch (ClassNotFoundException e) {
+            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, create, spi,hints);
+        } catch (Exception e) {
             final IOException ioe = new IOException();
             throw (IOException) ioe.initCause(e);
-        } catch (InstantiationException e) {
-            final IOException ioe = new IOException();
-            throw (IOException) ioe.initCause(e);
-        } catch (IllegalAccessException e) {
-            final IOException ioe = new IOException();
-            throw (IOException) ioe.initCause(e);
-        }
+        } 
         return catalog;
     }
 
@@ -372,9 +365,8 @@ public class CatalogManager {
             collection.add(feature);
         }
 
-        // drop all the granules associated to the same 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Filter filter = ff.equal(ff.property(locationAttribute), ff.literal(fileLocation), 
+        // drop all the granules associated to the same         
+        Filter filter = Utils.FF.equal(Utils.FF.property(locationAttribute), Utils.FF.literal(fileLocation), 
                 !isCaseSensitiveFileSystem(fileBeingProcessed));
         store.removeGranules(filter);
         
@@ -472,7 +464,7 @@ public class CatalogManager {
 
         // First get all the common elements. Store them as a string,
         // and also count how many of them there are.
-        StringBuffer common = new StringBuffer();
+        StringBuilder common = new StringBuilder();
 
         int commonIndex = 0;
         while (commonIndex < target.length && commonIndex < base.length
@@ -510,7 +502,7 @@ public class CatalogManager {
             baseIsFile = false;
         }
 
-        StringBuffer relative = new StringBuffer();
+        StringBuilder relative = new StringBuilder();
 
         if (base.length != commonIndex) {
             int numDirsUp = baseIsFile ? base.length - commonIndex - 1 : base.length - commonIndex;
@@ -567,7 +559,7 @@ public class CatalogManager {
             }
         }
         // Create the catalog
-        return GranuleCatalogFactory.createGranuleCatalog(sourceURL, catalogBean, null);
+        return GranuleCatalogFactory.createGranuleCatalog(sourceURL, catalogBean, null,hints);
     }
 
 }

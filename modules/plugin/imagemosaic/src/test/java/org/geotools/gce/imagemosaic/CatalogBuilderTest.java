@@ -24,7 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
-import java.util.Arrays;
 import java.util.Properties;
 
 import javax.media.jai.PlanarImage;

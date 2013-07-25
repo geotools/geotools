@@ -374,6 +374,7 @@ public class ImageMosaicReaderTest extends Assert{
 	                
 		// Test the output coverage
 		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation ,direct}, "Time-Elevation Test");
+		reader.dispose();
 		
 		reader= TestUtils.getReader(timeElevURL, format);
                 elevation.setValue(Arrays.asList(NumberRange.create(0.0,10.0)));
@@ -1738,8 +1739,9 @@ public class ImageMosaicReaderTest extends Assert{
     @Test
     public void testHarvestSingleFile() throws Exception {
         File source = DataUtilities.urlToFile(timeURL);
-        File directory1 = new File("./target/singleHarvest1");
-        File directory2 = new File("./target/singleHarvest2");
+        File testDataDir= TestData.file(this, ".");
+        File directory1 = new File(testDataDir,"singleHarvest1");
+        File directory2 = new File(testDataDir,"singleHarvest2");
         if(directory1.exists()) {
             FileUtils.deleteDirectory(directory1);
         }            
@@ -1813,8 +1815,9 @@ public class ImageMosaicReaderTest extends Assert{
     @Test
     public void testHarvestDirectory() throws Exception {
         File source = DataUtilities.urlToFile(timeURL);
-        File directory1 = new File("./target/harvest1");
-        File directory2 = new File("./target/harvest2");
+        File testDataDir= TestData.file(this, ".");
+        File directory1 = new File(testDataDir,"harvest1");
+        File directory2 = new File(testDataDir,"harvest2");
         if(directory1.exists()) {
             FileUtils.deleteDirectory(directory1);
         }            
@@ -1865,7 +1868,8 @@ public class ImageMosaicReaderTest extends Assert{
     @Test
     public void testHarvestError() throws Exception {
         File source = DataUtilities.urlToFile(timeURL);
-        File directory = new File("./target/harvest-error");
+        File testDataDir= TestData.file(this, ".");
+        File directory = new File(testDataDir,"harvest-error");
         if(directory.exists()) {
             FileUtils.deleteDirectory(directory);
         }            
@@ -1906,8 +1910,9 @@ public class ImageMosaicReaderTest extends Assert{
     public void testHarvestWithExternalMosaicDir() throws Exception {
 
         File source = DataUtilities.urlToFile(timeURL);
-        File directory1 = new File("./target/externalindex");
-        File directory2 = new File("./target/singleHarvest2");
+        File testDataDir= TestData.file(this, ".");
+        File directory1 = new File(testDataDir,"externalindex");
+        File directory2 = new File(testDataDir,"singleHarvest2");
         if (directory1.exists()) {
             FileUtils.deleteDirectory(directory1);
         }
@@ -2011,8 +2016,9 @@ public class ImageMosaicReaderTest extends Assert{
     @Test
     public void testSetupExternalMosaicDir() throws Exception {
         File source = DataUtilities.urlToFile(timeURL);
-        File data = new File("./target/externaldata");
-        File mosaic = new File("./target/mosaicexternal");
+        File testDataDir= TestData.file(this, ".");
+        File data = new File(testDataDir,"externaldata");
+        File mosaic = new File(testDataDir,"mosaicexternal");
         if (data.exists()) {
             FileUtils.deleteDirectory(data);
         }

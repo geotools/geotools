@@ -881,11 +881,6 @@ public class NetCDFMosaicReaderTest extends Assert {
         CRS.reset("all");
 
         INTERACTIVE = TestData.isInteractiveTest();
-//        IIORegistry registry = IIORegistry.getDefaultInstance();
-//        DummyUnidataImageReaderSpi provider = registry.getServiceProviderByClass(DummyUnidataImageReaderSpi.class);
-//        if (provider != null) {
-//            registry.deregisterServiceProvider(provider);
-//        }
     }
 
     @Before

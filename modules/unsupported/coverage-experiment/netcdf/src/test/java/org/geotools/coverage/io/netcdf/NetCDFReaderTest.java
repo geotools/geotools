@@ -19,8 +19,6 @@ package org.geotools.coverage.io.netcdf;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
@@ -35,7 +33,7 @@ import javax.media.jai.PlanarImage;
 
 import junit.framework.Assert;
 
-import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -51,7 +49,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.TestData;
-import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -67,12 +64,19 @@ public class NetCDFReaderTest extends Assert {
 
     @Test
     public void NetCDFTestOn4Dcoverages() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+        File mosaic = new File(TestData.file(this,"."),"NetCDFTestOn4Dcoverages");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
         
-        final URL testURL = TestData.url(this, "O3-NO2.nc");
+        File file = TestData.file(this, "O3-NO2.nc");
+        FileUtils.copyFileToDirectory(file, mosaic);
+        file = new File(mosaic, "O3-NO2.nc");
         final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(testURL,hints);
-        final NetCDFReader reader = (NetCDFReader) format.getReader(testURL, hints);
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(),hints);
+        final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
         
         assertNotNull(format);
         try {
@@ -182,12 +186,20 @@ public class NetCDFReaderTest extends Assert {
 
     @Test
     public void NetCDFTestOnFilter() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+        File mosaic = new File(TestData.file(this,"."),"NetCDFTestOnFilter");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());             
         
-        final URL testURL = TestData.url(this, "O3-NO2.nc");
+        File file = TestData.file(this, "O3-NO2.nc");
+        FileUtils.copyFileToDirectory(file, mosaic);
+        file = new File(mosaic, "O3-NO2.nc");
+        
         final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(testURL,hints);
-        final NetCDFReader reader = (NetCDFReader) format.getReader(testURL, hints);
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(),hints);
+        final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
         
         assertNotNull(format);
         try {
@@ -267,12 +279,20 @@ public class NetCDFReaderTest extends Assert {
 
     @Test
     public void NetCDFTestOn4DcoveragesWithDifferentSchemas() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+        File mosaic = new File(TestData.file(this,"."),"NetCDFTestOn4DcoveragesWithDifferentSchemas");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());        
         
-        final URL testURL = TestData.url(this, "O3-NO2-noZ.nc");
+        File file = TestData.file(this, "O3-NO2-noZ.nc");
+        FileUtils.copyFileToDirectory(file, mosaic);
+        file = new File(mosaic, "O3-NO2-noZ.nc");
+        
         final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(testURL,hints);
-        final NetCDFReader reader = (NetCDFReader) format.getReader(testURL, hints);
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(),hints);
+        final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
         
         assertNotNull(format);
         try {
@@ -371,16 +391,24 @@ public class NetCDFReaderTest extends Assert {
     
     @Test
     public void NetCDFTestOn4DcoveragesWithImposedSchemas() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+        File mosaic = new File(TestData.file(this,"."),"NetCDFTestOn4DcoveragesWithImposedSchemas");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());          
         
-        final URL testURL = TestData.url(this, "O3NO2-noZ.nc");
-        final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
-        File auxFile = new File(
-                "./src/test/resources/org/geotools/coverage/io/netcdf/test-data/O3NO2-noZ.xml");
-        hints.put(Utils.AUXILIARY_FILES_PATH, auxFile.getAbsolutePath());
+        File file = TestData.file(this, "O3NO2-noZ.nc");
+        File auxFile = TestData.file(this, "O3NO2-noZ.xml");
+        FileUtils.copyFileToDirectory(file, mosaic);
+        FileUtils.copyFileToDirectory(auxFile, mosaic);
+        file = new File(mosaic, "O3NO2-noZ.nc");
+        
+        final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));      
+        hints.put(Utils.AUXILIARY_FILES_PATH, new File(mosaic,"O3NO2-noZ.xml").getAbsolutePath()); // impose def
 
         // Get format
-        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(testURL,hints);
-        final NetCDFReader reader = (NetCDFReader) format.getReader(testURL, hints);
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(),hints);
+        final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
         
         assertNotNull(format);
         try {
@@ -478,16 +506,22 @@ public class NetCDFReaderTest extends Assert {
     }
     
     @Test
-//  @Ignore
   public void NetCDFTestAscatL1() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
-      
-      final URL testURL = TestData.url(this, "ascatl1.nc");
+        File mosaic = new File(TestData.file(this,"."),"NetCDFTestAscatL1");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        File file = TestData.file(this, "ascatl1.nc");
+        FileUtils.copyFileToDirectory(file, mosaic);
+        file = new File(mosaic, "ascatl1.nc");
+        
       final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
       hints.add(new Hints(Utils.EXCLUDE_MOSAIC, true));
 
       // Get format
-      final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(testURL,hints);
-      final NetCDFReader reader = (NetCDFReader) format.getReader(testURL, hints);
+      final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(),hints);
+      final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
       
       assertNotNull(format);
       try {
@@ -570,12 +604,19 @@ public class NetCDFReaderTest extends Assert {
 
     @Test
     public void NetCDFGOME2() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+        File mosaic = new File(TestData.file(this,"."),"NetCDFGOME2");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        File file = TestData.file(this, "DUMMY.GOME2.NO2.PGL.nc");
+        FileUtils.copyFileToDirectory(file, mosaic);
+        file = new File(mosaic, "DUMMY.GOME2.NO2.PGL.nc");
         
-        final URL testURL = TestData.url(this, "DUMMY.GOME2.NO2.PGL.nc");
         final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(testURL,hints);
-        final NetCDFReader reader = (NetCDFReader) format.getReader(testURL, hints);
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(),hints);
+        final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
         
         assertNotNull(format);
         try {
@@ -610,23 +651,7 @@ public class NetCDFReaderTest extends Assert {
         }
     }
 
-    private void cleanUp() throws FileNotFoundException, IOException {
-        if (TestData.isInteractiveTest()) {
-            return;
-        }
-        final File dir = TestData.file(this, ".");
-        File[] files = dir.listFiles((FilenameFilter) FileFilterUtils.notFileFilter(FileFilterUtils
-                .or(FileFilterUtils.or(FileFilterUtils.suffixFileFilter(".nc")))));
-        for (File file : files) {
-            file.delete();
-        }
-    }
-
-    @After
-    public void tearDown() throws FileNotFoundException, IOException {
-        cleanUp();
-    }
-
+    
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Test
     @Ignore

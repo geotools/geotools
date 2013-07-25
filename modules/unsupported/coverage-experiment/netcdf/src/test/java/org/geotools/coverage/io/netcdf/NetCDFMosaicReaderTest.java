@@ -117,8 +117,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         final String dlrFolder = "/work/data/DLR/samplesForMosaic";
         final File file = new File(dlrFolder);
         final URL url = DataUtilities.fileToURL(file);
-        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode(
-                "EPSG:4326", true));
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         
         // Get format
         final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(url, hints);
@@ -199,7 +198,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testHarvestAddTime() throws IOException {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this,"polyphemus_20130301_test.nc");
-        File mosaic = new File(TestData.file(this,"."),"nc_harvest");
+        File mosaic = new File(TestData.file(this,"."),"nc_harvest1");
         if(mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
@@ -291,7 +290,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testReHarvest() throws Exception {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this,"polyphemus_20130301_test.nc");
-        File mosaic = new File(TestData.file(this,"."),"nc_harvest");
+        File mosaic = new File(TestData.file(this,"."),"nc_harvest4");
         if(mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
@@ -393,7 +392,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testHarvestAddVariable() throws IOException {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this,"polyphemus_20130301_test.nc");
-        File mosaic = new File(TestData.file(this,"."),"nc_harvest");
+        File mosaic = new File(TestData.file(this,"."),"nc_harvest2");
         if(mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
@@ -590,7 +589,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testReadCoverageGome() throws IOException {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this,"20130101.METOPA.GOME2.NO2.DUMMY.nc");
-        File mosaic = new File(TestData.file(this,"."),"nc_harvest");
+        File mosaic = new File(TestData.file(this,"."),"nc_harvest3");
         if (mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
@@ -841,8 +840,6 @@ public class NetCDFMosaicReaderTest extends Assert {
                 // Test the output coverage
                 GridCoverage2D coverage = reader.read(name, new GeneralParameterValue[] {gg, bkg, direct, sigmaValue, dateValue});
                 assertNotNull(coverage);
-                //coverage.show();
-                //System.in.read();
                 
                 
         }
@@ -881,30 +878,6 @@ public class NetCDFMosaicReaderTest extends Assert {
         CRS.reset("all");
 
         INTERACTIVE = TestData.isInteractiveTest();
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        // remove generated file
-
-        cleanUp();
-
-    }
-
-    /**
-     * Cleaning up the generated files (shape and properties so that we recreate them.
-     * 
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
-    private void cleanUp() throws FileNotFoundException, IOException {
-        if (INTERACTIVE)
-            return;
-    }
-
-    @After
-    public void tearDown() throws FileNotFoundException, IOException {
-        cleanUp();
     }
 
     @AfterClass

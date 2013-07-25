@@ -37,7 +37,10 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
 import ucar.ma2.DataType;
@@ -605,5 +608,28 @@ public class UnidataUtilities {
 //            }
         }
         return ct;
+    }
+
+    /**
+     * @param schemaDef
+     * @param crs
+     * @return
+     */
+    public static SimpleFeatureType createFeatureType(String schemaName,String schemaDef, CoordinateReferenceSystem crs) {
+        SimpleFeatureType indexSchema=null;
+        if (schemaDef == null) {
+            throw new IllegalArgumentException("Unable to create feature type from null definition!");
+        }
+        schemaDef = schemaDef.trim();
+        // get the schema
+        try {
+            indexSchema = DataUtilities.createType(schemaName, schemaDef);
+            indexSchema = DataUtilities.createSubType(indexSchema,DataUtilities.attributeNames(indexSchema), crs);
+        } catch (Throwable e) {
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+            indexSchema = null;
+        }
+        return indexSchema;
     }
 }

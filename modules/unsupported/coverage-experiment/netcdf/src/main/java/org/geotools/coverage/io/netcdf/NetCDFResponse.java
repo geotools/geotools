@@ -252,7 +252,7 @@ class NetCDFResponse extends CoverageResponse{
                 
                
                
-               query.setTypeName(request.source.reader.getTypeName(request.name));
+               query.setTypeName(request.name);
                List<Integer> indexes = request.source.reader.getImageIndex(query);
                if (indexes == null || indexes.isEmpty()) {
                    if (LOGGER.isLoggable(Level.FINE)) {

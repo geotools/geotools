@@ -57,7 +57,6 @@ import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.coverage.Coverage;
 import org.opengis.feature.type.Name;
@@ -77,12 +76,11 @@ public final class NetCDFPolyphemusTest extends Assert {
 
     
     @Test
-    @Ignore
     public void testImageReader() throws IllegalArgumentException, IOException, NoSuchAuthorityCodeException {
         final String[] files = TestData.file(this, ".").list(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
-                return name.equalsIgnoreCase("O3-NO2.nc");
+                return name.equalsIgnoreCase("polyphemus_20130301.nc");
             }
         });
 
@@ -128,7 +126,6 @@ public final class NetCDFPolyphemusTest extends Assert {
     }
 
     @Test
-    @Ignore
     public void geoToolsReader() throws IllegalArgumentException, IOException, NoSuchAuthorityCodeException {
         boolean isInteractiveTest = TestData.isInteractiveTest();
 

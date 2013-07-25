@@ -66,7 +66,6 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogSource;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogStore;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
-import org.geotools.gce.imagemosaic.catalog.HintedGranuleCatalog;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -862,6 +861,8 @@ public class RasterManager {
     DomainManager elevationDomainManager;
 
     DomainManager timeDomainManager;
+    
+    volatile boolean enableEvents=false;//start disabled
 
     List<DimensionDescriptor> dimensionDescriptors = new ArrayList<DimensionDescriptor>();
 
@@ -879,16 +880,11 @@ public class RasterManager {
     
     MosaicConfigurationBean configuration;
 
-//        public RasterManager(final ImageMosaicReader parentReader) throws IOException {
-//            this(parentReader, null);
-//        }
-
         public RasterManager(final ImageMosaicReader parentReader, MosaicConfigurationBean configuration)
                 throws IOException {
 
             Utilities.ensureNonNull("ImageMosaicReader", parentReader);
 
-//            this.parentManager = manager;
             this.parentReader = parentReader;
             this.expandMe = parentReader.expandMe;
             this.heterogeneousGranules = parentReader.heterogeneousGranules;
@@ -899,10 +895,8 @@ public class RasterManager {
             }
             
             // take ownership of the index : TODO: REMOVE THAT ONCE DEALING WITH MORE CATALOGS/RASTERMANAGERS
-            granuleCatalog = new HintedGranuleCatalog(parentReader.granuleCatalog, hints);
-//            parentReader.granuleCatalog = null;
-
-            
+//            granuleCatalog = new HintedGranuleCatalog(parentReader.granuleCatalog, hints);   
+            granuleCatalog = parentReader.granuleCatalog; 
             this.coverageFactory = parentReader.getGridCoverageFactory();
             this.coverageIdentifier = configuration != null ? configuration.getName() : ImageMosaicReader.UNSPECIFIED;
             this.pathType = parentReader.pathType;
@@ -1114,51 +1108,9 @@ public class RasterManager {
 		
 	}
 	
+	void getGranuleDescriptors(final Query q,final GranuleCatalogVisitor visitor)throws IOException {
+		granuleCatalog.getGranuleDescriptors(q,visitor);
 
-	/**
-	 * Retrieves the list of features that intersect the provided envelope
-	 * loading them inside an index in memory where needed.
-	 * 
-	 * @param envelope
-	 *            Envelope for selecting features that intersect.
-	 * @return A list of features.
-	 * @throws IOException
-	 *             In case loading the needed features failes.
-	 */
-	Collection<GranuleDescriptor> getGranules(final BoundingBox envelope)throws IOException {
-		final Collection<GranuleDescriptor> granules = granuleCatalog.getGranules(typeName, envelope);
-		if (granules != null)
-			return granules;
-		else
-			return Collections.emptyList();
-	}
-	
-	Collection<GranuleDescriptor> getGranules(final Query q)throws IOException {
-	        q.setTypeName(typeName);
-		final Collection<GranuleDescriptor> granules = granuleCatalog.getGranules(q);
-		if (granules != null)
-			return granules;
-		else
-			return Collections.emptyList();
-	}
-	
-	void getGranules(final Query q,final GranuleCatalogVisitor visitor)throws IOException {
-		granuleCatalog.getGranules(q,visitor);
-
-	}
-
-	/**
-	 * Retrieves the list of features that intersect the provided envelope
-	 * loading them inside an index in memory where needed.
-	 * 
-	 * @param envelope
-	 *            Envelope for selecting features that intersect.
-	 * @return A list of features.
-	 * @throws IOException
-	 *             In case loading the needed features fails.
-	 */
-	void getGranules(final BoundingBox envelope,final GranuleCatalogVisitor visitor)throws IOException {
-		granuleCatalog.getGranules(typeName, envelope,visitor);
 	}
 
 	public PathType getPathType() {
@@ -1248,6 +1200,10 @@ public class RasterManager {
         }
 
 
+        /**
+         * TODO this should not leak through
+         * @return
+         */
     public GranuleCatalog getGranuleCatalog() {
         return granuleCatalog;
     }
@@ -1451,5 +1407,4 @@ public class RasterManager {
         //
         return value;
     }
-
 }

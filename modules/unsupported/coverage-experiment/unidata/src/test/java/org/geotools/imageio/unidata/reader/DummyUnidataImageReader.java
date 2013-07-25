@@ -35,7 +35,6 @@ import org.geotools.imageio.unidata.UnidataImageReader;
  * {@link DummyUnidataImageReader} is a {@link ImageReader} able to create
  * {@link RenderedImage} from NetCDF-CF sources.
  * 
- * @author Alessio Fabiani, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  */
 public class DummyUnidataImageReader extends UnidataImageReader {

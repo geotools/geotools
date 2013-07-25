@@ -60,6 +60,7 @@ import org.geotools.factory.GeoTools;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
+import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.imageio.unidata.cv.CoordinateVariable;
 import org.geotools.imageio.unidata.utilities.UnidataCRSUtilities;
@@ -390,7 +391,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         // initialize rank and number of 2D slices
         initRange();
         
-        
+        // initialize info about slice
         initSlicesInfo();
     }
 
@@ -430,12 +431,14 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         final List<DimensionDescriptor> dimensions = new ArrayList<DimensionDescriptor>();
         List<CoordinateVariable<?>> otherAxes = initCRS(dimensions);
 
+        // SPATIAL DIMENSIONS
         initSpatialDomain();
 
         // ADDITIONAL DOMAINS
         addAdditionalDomain(otherAxes, dimensions);
+        
         setDimensionDescriptors(dimensions);
-        if (reader.ancillaryFileManager.isHasImposedSchema()) {
+        if (reader.ancillaryFileManager.isImposedSchema()) {
             updateDimensions(dimensions);
         }
     }
@@ -461,23 +464,30 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
                 // Get the mapped coverage name (as an instance, NO2 for a GOME2 with var = 'z')
                 final String coverageName = key.getLocalPart();
                 final Coverage coverage = reader.ancillaryFileManager.coveragesMapping.get(coverageName);
-                if (coverage.getSchema() != null) {
+                final SchemaType schema = coverage.getSchema();
+                if (schema != null) {
+                    // look up the name
+                    String schName= schema.getName();
                     final CoverageSlicesCatalog catalog = reader.getCatalog();
                     if (catalog != null) {
-                        // Current assumption is that we have a typeName for each coverage
-                        final String[] typeNames = catalog.getTypeNames();
-                        for (String typeName : typeNames) {
-
-                            // Look for matching schema 
-                            if (typeName.equalsIgnoreCase(coverageName)) {
-                                final SimpleFeatureType schemaType = catalog.getSchema(coverageName);
-                                if (schemaType != null) {
-                                    // Schema found: proceed with remapping attributes
-                                    updateMapping(schemaType, dimensionDescriptors);
-                                }
-                                break;
+                        // Current assumption is that we have a typeName for each coverage but we should keep on working
+                        // with shared schemas
+                        // try with coveragename
+                        SimpleFeatureType schemaType = null;
+                        try{
+                            if(schName!=null){
+                                schemaType=catalog.getSchema(schName);
                             }
+                        }catch (IOException e) {
+                            // ok, we did not use the schema name, let's use the coverage name
+                            schemaType = catalog.getSchema(coverageName);
                         }
+                        if (schemaType != null) {
+                            // Schema found: proceed with remapping attributes
+                            updateMapping(schemaType, dimensionDescriptors);
+                            break;
+                        }
+                        throw new IllegalStateException("Unable to find the table for this coverage: "+ coverageName);
                     }
                 }
                 break;

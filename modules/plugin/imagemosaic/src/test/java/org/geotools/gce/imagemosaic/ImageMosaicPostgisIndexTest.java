@@ -36,6 +36,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -45,11 +47,13 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.filter.SortByImpl;
+import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.test.TestData;
 import org.geotools.util.NumberRange;
+import org.geotools.util.logging.Logging;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -59,14 +63,18 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 
 /**
- * Testing index in postgis database
+ * Testing using a Postgis database for storing the index for the ImageMosaic
+ * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
  */
 public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
+    
+    private final static Logger LOGGER= Logging.getLogger(ImageMosaicPostgisIndexTest.class);
 	
-    final String tempFolderName1 = "waterTempPG";
-    final String tempFolderName2 = "waterTempPG2";
+    static final String tempFolderName1 = "waterTempPG";
+    
+    static final String tempFolderName2 = "waterTempPG2";
     
 	/**
 	 * Simple Class for better testing raster manager
@@ -202,17 +210,14 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		elevation.setValue(Arrays.asList(100.0));
 	                
 		// Test the output coverage
+                assertNotNull(reader.read(new GeneralParameterValue[] {gg,time,bkg ,elevation ,direct}));
 		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation ,direct}, "Time-Elevation Test");
 		
-		reader= TestUtils.getReader(timeElevURL, format);
                         
-        // Test the output coverage
+                // Test the output coverage
+                reader= TestUtils.getReader(timeElevURL, format);
 		elevation.setValue(Arrays.asList(NumberRange.create(0.0,10.0)));
-        TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },"Time-Elevation Test");
-                
-        reader.dispose();
-
-		
+                TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },"Time-Elevation Test");		
 	}
 
 	/**
@@ -263,14 +268,14 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		// dispose and create new reader
 		reader.dispose();
 		final MyImageMosaicReader reader1 = new MyImageMosaicReader(timeElevURL);
-		final RasterManager rm = reader1.getRasterManager(reader1.getGridCoverageNames()[0]);
+		final RasterManager rasterManager = reader1.getRasterManager(reader1.getGridCoverageNames()[0]);
 		
 		// query
-		final SimpleFeatureType type = rm.granuleCatalog.getType("waterTempPG2");
+		final SimpleFeatureType type = rasterManager.granuleCatalog.getType("waterTempPG2");
 		Query query = null;
 		if (type != null){
 			// creating query
-			query= new Query(rm.granuleCatalog.getType("waterTempPG2").getTypeName());
+			query= new Query(type.getTypeName());
 			
 			// sorting and limiting
             // max number of elements
@@ -286,7 +291,15 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		}
 		
 		// checking that we get a single feature and that feature is correct
-		Collection<GranuleDescriptor> features = rm.getGranules(query);
+		final Collection<GranuleDescriptor> features = new ArrayList<GranuleDescriptor>();
+		rasterManager.getGranuleDescriptors(query, new GranuleCatalogVisitor() {
+                    
+                    @Override
+                    public void visit(GranuleDescriptor granule, Object o) {
+                        features.add(granule);
+                        
+                    }
+                });
 		assertEquals(features.size(), 1);
 		GranuleDescriptor granule=features.iterator().next();
 		SimpleFeature sf=granule.getOriginator();
@@ -310,7 +323,15 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 	            query.setSortBy(clauses);
 	            
 	         // checking that we get a single feature and that feature is correct
-	                features = rm.getGranules(query);
+	                features.clear();
+	                rasterManager.getGranuleDescriptors(query, new GranuleCatalogVisitor() {
+	                    
+	                    @Override
+	                    public void visit(GranuleDescriptor granule, Object o) {
+	                        features.add(granule);
+	                        
+	                    }
+	                });
 	                assertEquals(features.size(), 1);
 	                granule=features.iterator().next();
 	                sf=granule.getOriginator();
@@ -335,24 +356,54 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 
 	@Override
 	protected void tearDownInternal() throws Exception {
-		
-        // clean up disk
-        if (!ImageMosaicReaderTest.INTERACTIVE){        	
-        	FileUtils.deleteDirectory( TestData.file(this, tempFolderName1));
-        	FileUtils.deleteDirectory( TestData.file(this, tempFolderName2));
-        }		
-        
+	        
         // delete tables
         Class.forName("org.postgresql.Driver");
-        Connection connection = DriverManager.getConnection(
-           "jdbc:postgresql://"+fixture.getProperty("host")+":"+fixture.getProperty("port")+"/"+fixture.getProperty("database"),fixture.getProperty("user"), fixture.getProperty("passwd"));
-        Statement st = connection.createStatement();
-        st.execute("DROP TABLE IF EXISTS " + tempFolderName1);
-        st.execute("DROP TABLE IF EXISTS " + tempFolderName2);
-        st.close();
-        connection.close();
-        
+        Connection connection=null;
+        Statement st =null;
+        try{
+            connection = DriverManager.getConnection(
+                "jdbc:postgresql://" + fixture.getProperty("host") + ":"
+                        + fixture.getProperty("port") + "/" + fixture.getProperty("database"),
+                fixture.getProperty("user"), fixture.getProperty("passwd"));
+            st = connection.createStatement();
+            st.execute("DROP TABLE IF EXISTS \"" + tempFolderName1+"\"");
+            st.execute("DROP TABLE IF EXISTS \"" + tempFolderName2+"\"");
+        } finally {
+
+            if(st!=null){
+                try{
+                    st.close();
+                }catch (Exception e) {
+                    LOGGER.log(Level.SEVERE,e.getLocalizedMessage(),e);
+                }
+            }
+            
+            if(connection!=null){
+                try{
+                    connection.close();
+                }catch (Exception e) {
+                    LOGGER.log(Level.SEVERE,e.getLocalizedMessage(),e);
+                }
+            }
+        }
+
+
         System.clearProperty("org.geotools.referencing.forceXY");
+	        
+        // clean up disk
+        if (!ImageMosaicReaderTest.INTERACTIVE){        	
+            File parent = TestData.file(this, ".");
+            File directory= new File(parent,tempFolderName1);
+            if(directory.isDirectory()&&directory.exists()){
+                FileUtils.deleteDirectory(directory );
+            }
+            directory= new File(parent,tempFolderName2);
+            if(directory.isDirectory()&&directory.exists()){
+                FileUtils.deleteDirectory(directory );
+            }
+        }		
+
         
 		super.tearDownInternal();
         

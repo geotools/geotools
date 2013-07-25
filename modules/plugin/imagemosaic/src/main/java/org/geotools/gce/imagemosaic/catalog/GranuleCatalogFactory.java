@@ -32,6 +32,7 @@ import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.Converters;
@@ -55,19 +56,24 @@ public abstract class GranuleCatalogFactory {
 	}
 	
 
-	public static GranuleCatalog createGranuleCatalog(final  Map<String, Serializable> params, final boolean caching, final boolean create, final DataStoreFactorySpi spi){
-		//TODO @todo this is a temporary hack before we have an even stupid SPI mechanism here
-	    final GranuleCatalog catalogue= new GTDataStoreGranuleCatalog(params,create,spi);
+	public static GranuleCatalog createGranuleCatalog(
+	        final  Map<String, Serializable> params, 
+	        final boolean caching, 
+	        final boolean create, 
+	        final DataStoreFactorySpi spi,
+	        final Hints hints){
 	    if (caching) {
-		    return new STRTreeGranuleCatalog(catalogue, (String)params.get("TypeName"));
+		    return new STRTreeGranuleCatalog(params,spi,hints);
+	    } else {
+	        return new CachingDataStoreGranuleCatalog(new GTDataStoreGranuleCatalog(params,create,spi,hints));
 	    }
-	    return  catalogue;
 	}
 
 	public static GranuleCatalog createGranuleCatalog(
 			final URL sourceURL,
 			final CatalogConfigurationBean catalogConfigurationBean,
-			final Map<String, Serializable> overrideParams){
+			final Map<String, Serializable> overrideParams,
+	                final Hints hints){
 		final File sourceFile=DataUtilities.urlToFile(sourceURL);
 		final String extension= FilenameUtils.getExtension(sourceFile.getAbsolutePath());	
 		
@@ -135,11 +141,15 @@ public abstract class GranuleCatalogFactory {
 				return null;
 			}
 		}		
-		// istantiate
+		// Instantiate
 		if (overrideParams != null && !overrideParams.isEmpty()) {
 		    params.putAll(overrideParams);
 		}
-		return catalogConfigurationBean.isCaching()?new STRTreeGranuleCatalog(params,spi):new GTDataStoreGranuleCatalog(params,false,spi);
+		final GranuleCatalog catalog = catalogConfigurationBean.isCaching()?
+		        new STRTreeGranuleCatalog(params,spi,hints):
+		            new CachingDataStoreGranuleCatalog(new GTDataStoreGranuleCatalog(params,false,spi,hints));
+
+		return catalog;
 	}
 
 }

@@ -342,7 +342,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             source = reader.getGranules("O3", true);
             
             // wait a bit, we have to make sure the old indexes are recognized as old
-            Thread.sleep(500);
+            Thread.sleep(1000);
             
             // now replace the netcdf file with a more up to date version of the same 
             File nc2 = TestData.file(this,"polyphemus_20130301_test_more_times.nc");

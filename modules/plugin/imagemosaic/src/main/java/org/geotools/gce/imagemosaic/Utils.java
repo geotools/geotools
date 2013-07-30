@@ -20,11 +20,14 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
@@ -103,6 +106,7 @@ import org.geotools.util.Utilities;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 
+import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -1565,5 +1569,116 @@ public class Utils {
             indexer = (Indexer) unmarshaller.unmarshal(indexerFile);
         }
         return indexer;
+    }
+
+    /**
+     * This method checks the {@link ColorModel} of the current image with the one of the first image in order to check if they are compatible or
+     * not in order to perform a mosaic operation.
+     * 
+     * <p>
+     * It is worth to point out that we also check if, in case we have two index color model image, we also try to suggest whether or not we
+     * should do a color expansion.
+     * 
+     * @param defaultCM
+     * @param defaultPalette
+     * @param actualCM
+     * @return a boolean asking to skip this feature.
+     */
+    static boolean checkColorModels(ColorModel defaultCM, byte[][] defaultPalette, MosaicConfigurationBean configuration, ColorModel actualCM) {
+        //
+        //
+        // ComponentColorModel
+        //
+        //
+        
+        if (defaultCM instanceof ComponentColorModel && actualCM instanceof ComponentColorModel) {
+            final ComponentColorModel defCCM = (ComponentColorModel) defaultCM, actualCCM = (ComponentColorModel) actualCM;
+            
+            // color space
+//            final ColorSpace defCS = defCCM.getColorSpace();
+//            final ColorSpace actualCS = actualCCM.getColorSpace();
+//            final boolean isBogusDef = defCS instanceof BogusColorSpace;
+//            final boolean isBogusActual = actualCS instanceof BogusColorSpace;
+//            final boolean colorSpaceIsOk;
+//            if (isBogusDef && isBogusActual) {
+//                final BogusColorSpace def = (BogusColorSpace) defCS;
+//                final BogusColorSpace act = (BogusColorSpace) actualCS;
+//                colorSpaceIsOk = def.getNumComponents() == act.getNumComponents()
+//                        && def.isCS_sRGB() == act.isCS_sRGB() && def.getType() == act.getType();
+//            } else
+//                colorSpaceIsOk = defCS.equals(actualCS);
+            
+            // number of color components
+            final int numColorComponents = defCCM.getNumColorComponents();
+            if(numColorComponents != actualCCM.getNumColorComponents()){
+                return false;
+            }
+            
+            // componets size
+            for(int i=0;i<numColorComponents;i++){
+                if(defaultCM.getComponentSize(i)!=defaultCM.getComponentSize(i)){
+                    return false;
+                }
+            }
+            return !(defCCM.hasAlpha() == actualCCM.hasAlpha() 
+                    &&defCCM.isAlphaPremultiplied() == actualCCM.isAlphaPremultiplied()//&& colorSpaceIsOk
+                    && defCCM.getTransparency() == actualCCM.getTransparency()
+                    && defCCM.getTransferType() == actualCCM.getTransferType()
+                    && defCCM.getPixelSize() == actualCCM.getPixelSize());
+            
+        }
+    
+        //
+        //
+        // IndexColorModel
+        //
+        //
+    
+        if (defaultCM instanceof IndexColorModel && actualCM instanceof IndexColorModel) {
+            final IndexColorModel defICM = (IndexColorModel) defaultCM, actualICM = (IndexColorModel) actualCM;
+            if (defICM.getNumColorComponents() != actualICM.getNumColorComponents()
+                    || defICM.hasAlpha() != actualICM.hasAlpha()
+                    || !defICM.getColorSpace().equals(actualICM.getColorSpace())
+                    || defICM.getTransferType() != actualICM.getTransferType())
+                return true;
+    
+            //
+            // Suggesting expansion in the simplest case
+            //
+            if (defICM.getMapSize() != actualICM.getMapSize()
+                    || defICM.getTransparency() != actualICM.getTransparency()
+                    || defICM.getTransferType() != actualICM.getTransferType()
+                    || defICM.getTransparentPixel() != actualICM.getTransparentPixel()) {
+                configuration.setExpandToRGB(true);
+                return false;
+            }
+    
+            //
+            // Now checking palettes to see if we need to do a color convert
+            //
+            // get the palette for this color model
+            int numBands = actualICM.getNumColorComponents();
+            byte[][] actualPalette = new byte[3][actualICM.getMapSize()];
+            actualICM.getReds(actualPalette[0]);
+            actualICM.getGreens(actualPalette[0]);
+            actualICM.getBlues(actualPalette[0]);
+            if (numBands == 4)
+                actualICM.getAlphas(defaultPalette[0]);
+            // compare them
+            for (int i = 0; i < defICM.getMapSize(); i++)
+                for (int j = 0; j < numBands; j++)
+                    if (actualPalette[j][i] != defaultPalette[j][i]) {
+                        configuration.setExpandToRGB(true);
+                        break;
+                    }
+            return false;
+    
+        }
+    
+        //
+        // if we get here this means that the two color models where completely
+        // different, hence skip this feature.
+        //
+        return true;
     }
 }

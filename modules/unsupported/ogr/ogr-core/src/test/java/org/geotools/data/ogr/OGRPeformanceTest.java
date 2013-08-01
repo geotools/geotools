@@ -63,7 +63,7 @@ public abstract class OGRPeformanceTest extends TestCaseSupport {
     
     public void testShapefilePerformance() throws Exception {
         URL url = TestData.url(STATE_POP);
-        ShapefileDataStore sds = new ShapefileDataStore(url, false);
+        ShapefileDataStore sds = new ShapefileDataStore(url);
         long start = System.currentTimeMillis();
         sds.getSchema();
         long end = System.currentTimeMillis();

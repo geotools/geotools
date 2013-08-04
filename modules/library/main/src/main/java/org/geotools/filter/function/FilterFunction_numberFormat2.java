@@ -72,6 +72,10 @@ public class FilterFunction_numberFormat2 extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function dateFormat argument #1 - expected type java.util.Date");
         }
+        
+        if(format == null || number == null) {
+            return null;
+        }
 
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         

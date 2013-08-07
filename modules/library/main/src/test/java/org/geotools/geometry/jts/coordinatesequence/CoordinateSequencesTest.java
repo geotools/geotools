@@ -2,6 +2,7 @@ package org.geotools.geometry.jts.coordinatesequence;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.junit.Test;
@@ -17,7 +18,15 @@ public class CoordinateSequencesTest {
     static LiteCoordinateSequenceFactory liteCSF = new LiteCoordinateSequenceFactory();
 
     static GeometryFactory liteGF = new GeometryFactory(liteCSF);
+    
+    static GeometryBuilder geomBuilder = new GeometryBuilder();
 
+    @Test
+    public void testCoordinateDimensionPointLite1D() {
+        Geometry geom = geomBuilder.point(1);
+        assertEquals(1, CoordinateSequences.coordinateDimension(geom));
+    }
+    
     @Test
     public void testCoordinateDimensionPointLite2D() {
         Geometry geom = liteGF.createPoint(new LiteCoordinateSequence(new double[] { 1, 2 }, 2));
@@ -29,6 +38,14 @@ public class CoordinateSequencesTest {
         Geometry geom = liteGF
                 .createPoint(new LiteCoordinateSequence(new double[] { 1, 2, 99 }, 3));
         assertEquals(3, CoordinateSequences.coordinateDimension(geom));
+    }
+    
+    @Test
+    public void testCoordinateDimensionLineString1D() {
+        Geometry geom = gf.createLineString(new Coordinate[] {
+                new Coordinate(1, Coordinate.NULL_ORDINATE),
+                new Coordinate(3, Coordinate.NULL_ORDINATE) });
+        assertEquals(1, CoordinateSequences.coordinateDimension(geom));
     }
 
     @Test
@@ -44,7 +61,7 @@ public class CoordinateSequencesTest {
                 new double[] { 1, 2, 100, 3, 4, 200 }, 3));
         assertEquals(3, CoordinateSequences.coordinateDimension(geom));
     }
-
+    
     @Test
     public void testCoordinateDimensionPolygonLite2D() {
         Geometry geom = liteGF.createPolygon(liteGF.createLinearRing(liteCSF.create(new double[] {

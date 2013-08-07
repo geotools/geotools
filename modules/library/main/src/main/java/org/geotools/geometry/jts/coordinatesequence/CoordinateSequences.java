@@ -184,6 +184,8 @@ public class CoordinateSequences extends com.vividsolutions.jts.geom.CoordinateS
         // check if a Z value is NaN - if so, assume dim is 2
         if (seq instanceof CoordinateArraySequence) {
             if (seq.size() > 0) {
+                if (Double.isNaN(seq.getOrdinate(0, CoordinateSequence.Y)))
+                    return 1;
                 if (Double.isNaN(seq.getOrdinate(0, CoordinateSequence.Z)))
                     return 2;
             }

@@ -109,8 +109,44 @@ public class GML3EncodingUtils {
     static CoordinateReferenceSystem getCRS(Geometry g) {
         return GML2EncodingUtils.getCRS(g);
     }
+    
+    /**
+     * Get uomLabels for the geometry if set in app-schema mapping configuration.
+     */
+    public static String getUomLabels(Geometry g) {
+        Object userData = g.getUserData();
+        if (userData != null && userData instanceof Map) {
+            Object attributes = ((Map) userData).get(Attributes.class);
+            if (attributes != null && attributes instanceof Map) {
+                Name attribute = new NameImpl("uomLabels");
+                Object uomLabels = ((Map) attributes).get(attribute);
+                if (uomLabels != null) {
+                    return uomLabels.toString();
+                }
+            }
+        }
+        return null;
+    }
 
-    static String getID(Geometry g) {
+    /**
+     * Get axisLabels for the geometry if set in app-schema mapping configuration.
+     */
+    public static String getAxisLabels(Geometry g) {
+        Object userData = g.getUserData();
+        if (userData != null && userData instanceof Map) {
+            Object attributes = ((Map) userData).get(Attributes.class);
+            if (attributes != null && attributes instanceof Map) {
+                Name attribute = new NameImpl("axisLabels");
+                Object axisLabels = ((Map) attributes).get(attribute);
+                if (axisLabels != null) {
+                    return axisLabels.toString();
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String getID(Geometry g) {
         return GML2EncodingUtils.getID(g);
     }
 

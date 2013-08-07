@@ -35,7 +35,6 @@ import org.geotools.feature.Types;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.GeometryAttributeImpl;
-import org.geotools.feature.Types;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
@@ -178,29 +177,27 @@ public class XPath extends XPathUtil {
                 } else {
                     // except when the xpath is the root itself 
                     // where it is done for feature chaining for simple content
-					if (Types.isSimpleContentType(parent.getType())) {
-						return setSimpleContentValue(parent, value);
-					} else if (Types.isGeometryType(parent.getType())) {
-						ComplexFeatureTypeFactoryImpl typeFactory = new ComplexFeatureTypeFactoryImpl();
-						GeometryType geomType;
-						if (parent.getType() instanceof GeometryType) {
-							geomType = (GeometryType) parent.getType();
-						} else {
-							geomType = (GeometryType) ((NonFeatureTypeProxy) parent
-									.getType()).getSubject();
-						}
-						GeometryDescriptor geomDescriptor = typeFactory
-								.createGeometryDescriptor(geomType, rootName,
-										parentDescriptor.getMinOccurs(),
-										parentDescriptor.getMaxOccurs(),
-										parentDescriptor.isNillable(),
-										parentDescriptor.getDefaultValue());
-						GeometryAttributeImpl geom = new GeometryAttributeImpl(
-								value, geomDescriptor, null);
-						ArrayList<Property> geomAtts = new ArrayList<Property>();
-						geomAtts.add(geom);
-						parent.setValue(geomAtts);
-						return geom;
+                    if (Types.isSimpleContentType(parent.getType())) {
+                        return setSimpleContentValue(parent, value);
+                    } else if (Types.isGeometryType(parent.getType())) {
+                        ComplexFeatureTypeFactoryImpl typeFactory = new ComplexFeatureTypeFactoryImpl();
+                        GeometryType geomType;
+                        if (parent.getType() instanceof GeometryType) {
+                            geomType = (GeometryType) parent.getType();
+                        } else {
+                            geomType = (GeometryType) ((NonFeatureTypeProxy) parent.getType())
+                                    .getSubject();
+                        }
+                        GeometryDescriptor geomDescriptor = typeFactory.createGeometryDescriptor(
+                                geomType, rootName, parentDescriptor.getMinOccurs(),
+                                parentDescriptor.getMaxOccurs(), parentDescriptor.isNillable(),
+                                parentDescriptor.getDefaultValue());
+                        GeometryAttributeImpl geom = new GeometryAttributeImpl(value,
+                                geomDescriptor, null);
+                        ArrayList<Property> geomAtts = new ArrayList<Property>();
+                        geomAtts.add(geom);
+                        parent.setValue(geomAtts);
+                        return geom;
                     }
                 }
             }
@@ -631,13 +628,18 @@ public class XPath extends XPathUtil {
         Class<?> binding = type.getBinding();
 
         if (type instanceof ComplexType && binding == Collection.class) {
-            if (!(value instanceof Collection) && Types.isSimpleContentType(type)) {
-                ArrayList<Property> list = new ArrayList<Property>();
-                if (value == null && !descriptor.isNillable()) {
+            if (!(value instanceof Collection)) {
+                if (Types.isSimpleContentType(type)) {
+                    ArrayList<Property> list = new ArrayList<Property>();
+                    if (value == null && !descriptor.isNillable()) {
+                        return list;
+                    }
+                    list.add(buildSimpleContent(type, value));
                     return list;
                 }
-                list.add(buildSimpleContent(type, value));
-                return list;
+            } else {
+                // no conversion required
+                return value;
             }
         }
         if (binding == String.class && value instanceof Collection) {

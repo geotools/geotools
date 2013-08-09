@@ -262,6 +262,8 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
             geom = parseMultiLineString(dimension, crs);
         } else if (GML.MultiSurface.equals(startingGeometryTagName)) {
             geom = parseMultiSurface(dimension, crs);
+        } else if (GML.MultiCurve.equals(startingGeometryTagName)) {
+            geom = parseMultiCurve(dimension, crs);
         } else if (GML.MultiPolygon.equals(startingGeometryTagName)) {
             geom = parseMultiPolygon(dimension, crs);
         } else {
@@ -387,6 +389,58 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
         return geom;
     }
 
+    /**
+     * Parses a MultiLineString out of a MultiCurve element (because our geometry model only supports
+     * MultiLineString).
+     * <p>
+     * Precondition: parser positioned at a {@link GML#MultiSurface MultiCurve} start tag
+     * </p>
+     * <p>
+     * Postcondition: parser positioned at the {@link GML#MultiSurface MultiCurve} end tag of the
+     * starting tag
+     * </p>
+     */
+    private Geometry parseMultiCurve(int dimension, CoordinateReferenceSystem crs)
+            throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
+            FactoryException {
+        Geometry geom;
+        parser.nextTag();
+        final QName memberTag = new QName(parser.getNamespace(), parser.getName());
+        List<LineString> lineStrings = new ArrayList<LineString>(2);
+        if (GML.curveMembers.equals(memberTag)) {
+            while (true) {
+                parser.nextTag();
+                if (XmlPullParser.END_TAG == parser.getEventType()
+                        && GML.curveMembers.getLocalPart().equals(parser.getName())) {
+                    // we're done
+                    break;
+                }
+                LineString l = parseLineString(dimension, crs);
+                lineStrings.add(l);
+            }
+            parser.nextTag();
+        } else if (GML.curveMember.equals(memberTag)) {
+            while (true) {
+                parser.nextTag();
+                LineString l = parseLineString(dimension, crs);
+                lineStrings.add(l);
+                parser.nextTag();
+                parser.require(XmlPullParser.END_TAG, GML.NAMESPACE, GML.curveMember
+                        .getLocalPart());
+                parser.nextTag();
+                if (XmlPullParser.END_TAG == parser.getEventType()
+                        && GML.MultiCurve.getLocalPart().equals(parser.getName())) {
+                    // we're done
+                    break;
+                }
+            }
+        }
+        parser.require(XmlPullParser.END_TAG, GML.NAMESPACE, GML.MultiCurve.getLocalPart());
+
+        geom = geomFac.createMultiLineString(lineStrings.toArray(new LineString[lineStrings.size()]));
+        return geom;
+    }
+    
     /**
      * Parses a MultiPolygon out of a MultiSurface element (because our geometry model only supports
      * MultiPolygon).
@@ -573,13 +627,16 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
     private LineString parseLineString(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
             FactoryException {
-        LineString geom;
+        LineString geom = null;
         parser.nextTag();
-        parser.require(XmlPullParser.START_TAG, GML.NAMESPACE, GML.posList.getLocalPart());
-        crs = crs(crs);
-        Coordinate[] coords = parseCoordList(dimension, crs);
-        geom = geomFac.createLineString(coords);
-        geom.setUserData(crs);
+        final QName memberTag = new QName(parser.getNamespace(), parser.getName());
+        if (GML.coordinates.equals(memberTag) || GML.posList.equals(memberTag)) {
+            crs = crs(crs);
+            Coordinate[] coords = parseCoordList(dimension, crs);
+            geom = geomFac.createLineString(coords);
+            geom.setUserData(crs);
+        }
+        
         parser.nextTag();
         parser.require(XmlPullParser.END_TAG, GML.NAMESPACE, GML.LineString.getLocalPart());
         return geom;
@@ -635,7 +692,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
         rawTextValue = rawTextValue.trim();
         rawTextValue = rawTextValue.replaceAll("\n", " ");
         rawTextValue = rawTextValue.replaceAll("\r", " ");
-        String[] split = rawTextValue.trim().split(" +");
+        String[] split = rawTextValue.trim().split("[ ,]+");
         final int ordinatesLength = split.length;
         if (ordinatesLength % dimension != 0) {
             throw new IllegalArgumentException("Number of ordinates (" + ordinatesLength

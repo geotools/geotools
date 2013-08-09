@@ -128,6 +128,8 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
     
     private String axisOrderOutput = AXIS_ORDER_COMPLIANT;
     private String axisOrderFilter = AXIS_ORDER_COMPLIANT;
+    
+    private String outputFormat = null;
 
     /**
      * The WFS capabilities document.
@@ -324,8 +326,8 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
 
     private WFSResponse executeGetFeatures(final Query query, final Transaction transaction,
             final ResultType resultType) throws IOException {
-        // TODO: handle output format preferences
-        final String outputFormat = wfs.getDefaultOutputFormat(GET_FEATURE);
+        final String outputFormat = this.outputFormat == null ? wfs
+                .getDefaultOutputFormat(GET_FEATURE) : this.outputFormat;
 
         String srsName = adaptQueryForSupportedCrs((Query) query);
 
@@ -1000,6 +1002,12 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
     @Override
     public void setUseDefaultSRS(Boolean useDefaultSRS) {
         this.useDefaultSRS = useDefaultSRS;
+    }
+    
+    public void setGetFeatureOutputFormat(String outputFormat) {
+        if (outputFormat != null && !outputFormat.equals("")) {
+            this.outputFormat = outputFormat;
+        }
     }
 
  }

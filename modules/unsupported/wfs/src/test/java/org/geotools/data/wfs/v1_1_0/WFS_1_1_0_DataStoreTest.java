@@ -90,6 +90,34 @@ public class WFS_1_1_0_DataStoreTest {
         assertEquals(expectedTypeNames, names);
     }
 
+    public void testGetDefaultOutputFormat() throws IOException {
+        final InputStream schemaStream = TestData.openStream(this,
+                "CubeWerx_nsdi/gml212.xml");
+        TestHttpResponse httpResponse = new TestHttpResponse(
+                "text/xml; subtype=gml/2.1.2", "UTF-8", schemaStream);
+        TestHttpProtocol mockHttp = new TestHttpProtocol(httpResponse);
+        createTestProtocol(CUBEWERX_GOVUNITCE.CAPABILITIES, mockHttp);
+    
+        // override the describe feature type url so it loads from the test resource
+        URL describeUrl = TestData.getResource(this, CUBEWERX_GOVUNITCE.SCHEMA);
+        wfs.setDescribeFeatureTypeURLOverride(describeUrl);
+    
+        WFS_1_1_0_DataStore ds = new WFS_1_1_0_DataStore(wfs);
+    
+        ds.setGetFeatureOutputFormat("text/xml; subtype=gml/2.1.2");
+    
+        Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
+    
+        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader;
+        featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        while (featureReader.hasNext()) {
+            SimpleFeature feature = featureReader.next();
+            System.out.println(feature.getDefaultGeometry());
+        }
+        GetFeature request = wfs.getRequest();
+        assertEquals("text/xml; subtype=gml/2.1.2", request.getOutputFormat());
+    }
+    
     /**
      * Test method for
      * {@link org.geotools.wfs.v_1_1_0.data.WFS_1_1_0_DataStore#getSchema(java.lang.String)}.

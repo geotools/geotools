@@ -261,7 +261,7 @@ public class ImageWorker {
         ImageWriterSpi temp=null;
         try {
             
-            Class<?> clazz=Class.forName("com.sun.media.imageioimpl.plugins.png.CLibPNGImageWriterSp");
+            Class<?> clazz=Class.forName("com.sun.media.imageioimpl.plugins.png.CLibPNGImageWriterSpi");
             if(clazz !=null){
                 temp=(ImageWriterSpi) clazz.newInstance();
             }else{
@@ -2713,7 +2713,7 @@ public class ImageWorker {
             }
             writer = it.next();
             // check that this is not the native one
-            if (writer.getOriginatingProvider().getClass().equals(IMAGEIO_PNG_IMAGE_WRITER_SPI)){
+            if (writer.getOriginatingProvider().getClass().equals(IMAGEIO_PNG_IMAGE_WRITER_SPI.getClass())){
                 if(it.hasNext()){
                     writer = it.next();
                 }else{

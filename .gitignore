@@ -7,3 +7,5 @@ target
 *.pyc
 nb-configuration.xml
 *.*~
+eclipse
+/modules/unsupported/jtinv2/lib

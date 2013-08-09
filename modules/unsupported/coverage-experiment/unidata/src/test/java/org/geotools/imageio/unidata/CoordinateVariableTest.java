@@ -37,17 +37,13 @@ import ucar.nc2.dataset.CoordinateAxis1D;
 import ucar.nc2.dataset.NetcdfDataset;
 
 /**
- * @author User
+ * @author Simone Giannecchini, GeoSolutions SAS
  *
  */
 public class CoordinateVariableTest extends Assert{
     
     @Test
     public void polyphemus() throws Exception{
-        //
-        // IASI does not have time or runtime, it only contains double variables besides lat e long
-        //
-        
         
         // acquire dataset
         final NetcdfDataset dataset = NetcdfDataset.openDataset(TestData.url(this, "O3-NO2.nc").toExternalForm());

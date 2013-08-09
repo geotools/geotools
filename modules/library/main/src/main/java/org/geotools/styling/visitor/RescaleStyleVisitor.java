@@ -178,7 +178,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
         Expression opacityCopy = copy( gr.getOpacity() );
         Expression rotationCopy = copy( gr.getRotation() );
-        Expression sizeCopy = rescale( gr.getSize() );
+        Expression sizeCopy = rescaleGraphicSize(gr);
         
         Symbol[] symbols = gr.getSymbols();
         length=symbols.length;
@@ -200,6 +200,10 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         pages.push(copy);
     }
     
+    protected Expression rescaleGraphicSize(Graphic gr) {
+        return rescale(gr.getSize());
+    }
+
     @Override
     public void visit(TextSymbolizer text) {
         super.visit(text);

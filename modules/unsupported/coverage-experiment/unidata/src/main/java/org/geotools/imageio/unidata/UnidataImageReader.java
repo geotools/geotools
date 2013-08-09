@@ -55,7 +55,6 @@ import org.geotools.data.DefaultTransaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
-import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
 import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -65,12 +64,12 @@ import org.geotools.imageio.unidata.utilities.UnidataCRSUtilities;
 import org.geotools.imageio.unidata.utilities.UnidataUtilities;
 import org.geotools.imageio.unidata.utilities.UnidataUtilities.CheckType;
 import org.geotools.util.SoftValueHashMap;
+import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import ucar.ma2.Array;
 import ucar.ma2.IndexIterator;
@@ -305,9 +304,7 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
                         if (indexSchema == null) {
                             throw new IllegalStateException("Unable to created index schema for coverage:"+coverageName);
                         }
-                        // create 
-                        checkSchema(indexSchema);
-                        // get variable
+                        // get variable adapter which maps to a coverage in the end
                         final UnidataVariableAdapter vaAdapter= getCoverageDescriptor(coverageName);
                         final int variableImageStartIndex = numImages;
                         final int numberOfSlices = vaAdapter.getNumberOfSlices();
@@ -397,7 +394,7 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
      * @param indexSchema
      * @throws IOException
      */
-    private void checkSchema(SimpleFeatureType indexSchema) throws IOException {
+    private void forceSchemaCreation(SimpleFeatureType indexSchema) throws IOException {
         final String typeName = indexSchema.getTypeName();
         final CoverageSlicesCatalog catalog = getCatalog();
         if (typeName != null) {
@@ -415,28 +412,33 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
     }
 
     private SimpleFeatureType getIndexSchema(Name name,CoordinateSystem cs) throws Exception {
-        // Getting the schema for this coverage
-        SimpleFeatureType indexSchema = null;
-        final String coverageName = name.toString();
-        Coverage coverage = ancillaryFileManager.coveragesMapping.get(coverageName);
+        
+        // get the name for this variable to check his coveragename
+        final String variableName = name.toString();
+        // get the coverage definition for this variable, at this stage this exists otherwise we would have skipped it!
+        final Coverage coverage = ancillaryFileManager.coveragesMapping.get(variableName);
+        
+        // now check the schema creation
         SchemaType schema = coverage.getSchema();
-        String schemaName = null;
-        if (schema != null) {
-            schemaName = schema.getName();
-        }
+        String schemaDef=schema!=null?schema.getAttributes():null;
         
         // no schema was defined yet, let's create a default one
-        if (schemaName == null) {
-            ancillaryFileManager.setSchemaName(coverage,coverageName);
-        } else {
-            // we might have a schema suggested from the indexer
-            indexSchema = ancillaryFileManager.suggestSchema(coverage);
-        }
-        
-        if (indexSchema==null){
+        if (schema == null||schema.getAttributes()==null) {
             // TODO incapsulate in coveragedescriptor
-            indexSchema = createSchema(coverage, cs);
-        }
+            schemaDef = suggestSchemaFromCoordinateSystem(coverage, cs);
+            
+            //set the schema name to be the coverageName
+            ancillaryFileManager.setSchema(coverage,coverage.getName(),schemaDef);   
+            schema = coverage.getSchema();
+        } 
+        
+        // create featuretype, the name is the CoverageName
+        final SimpleFeatureType indexSchema = UnidataUtilities.createFeatureType(coverage.getName(),schemaDef,UnidataCRSUtilities.WGS84);
+        
+        // create 
+        forceSchemaCreation(indexSchema);
+        
+        // return
         return indexSchema;
     }
 
@@ -469,7 +471,7 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
      * @return
      * @throws SchemaException 
      */
-    SimpleFeatureType createSchema(Coverage coverage, CoordinateSystem cs) throws SchemaException {
+    String suggestSchemaFromCoordinateSystem(Coverage coverage, CoordinateSystem cs) throws SchemaException {
 
         // init with base
         String schemaAttributes = CoverageSlice.Attributes.BASE_SCHEMA;
@@ -485,16 +487,7 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
             }
             schemaAttributes+=("," + name + ":" + cv.getType().getName());
         }
-
-        final SchemaType schema = coverage.getSchema();
-        schema.setAttributes(schemaAttributes);
-        final CoordinateReferenceSystem actualCRS = UnidataCRSUtilities.WGS84;
-        
-        SimpleFeatureType indexSchema = DataUtilities.createType(schema.getName(), schemaAttributes);
-        return DataUtilities.createSubType(indexSchema,
-                        DataUtilities.attributeNames(indexSchema), actualCRS);
-        
-        
+        return schemaAttributes;       
     }
 
     private Name getCoverageName(String varName) {
@@ -536,21 +529,22 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
         feature.setAttribute(CoverageSlice.Attributes.GEOMETRY, UnidataCRSUtilities.GEOM_FACTORY.toGeometry(boundingBox));
         feature.setAttribute(CoverageSlice.Attributes.INDEX, imageIndex);
 
+        // TIME management
         // Check if we have time and elevation domain and set the attribute if needed
         if (date != null) {
             feature.setAttribute(dimensionsMapping.get(UnidataUtilities.TIME_DIM), date);
         }
 
-        final String elevationAttribute = dimensionsMapping.get(UnidataUtilities.ELEVATION_DIM);
+        // ELEVATION or other dimension
+        final String elevationCVName = dimensionsMapping.get(UnidataUtilities.ELEVATION_DIM);
         if (!Double.isNaN(verticalValue.doubleValue())) {
             List<AttributeDescriptor> descriptors = indexSchema.getAttributeDescriptors();
             String attribute = null;
             
-
             // Once we don't deal anymore with old coverage APIs, we can consider directly use the dimension name as attribute
             for (AttributeDescriptor descriptor: descriptors) {
-                if (descriptor.getLocalName().equalsIgnoreCase(elevationAttribute)) {
-                    attribute = elevationAttribute;
+                if (descriptor.getLocalName().equalsIgnoreCase(elevationCVName)) {
+                    attribute = elevationCVName;
                     break;
                 }
             }
@@ -751,6 +745,7 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
 
     @Override
     public UnidataVariableAdapter getCoverageDescriptor(Name name) {
+        Utilities.ensureNonNull("name", name);
         final String name_ = name.toString();
         synchronized (coverageSourceDescriptorsCache) {
             if(coverageSourceDescriptorsCache.containsKey(name_)){
@@ -763,7 +758,10 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
                 String origName = ancillaryFileManager.variablesMap.get(name);
                 if (origName == null) {
                     origName = name.getLocalPart();
-                }
+                } 
+//                else {
+//                    throw new IllegalArgumentException("Unable to locate descriptor for Coverage: "+name);
+//                }
                 cd = new UnidataVariableAdapter(this, (VariableDS) getVariableByName(origName));
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -968,40 +966,6 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
             }
         }
     }
-    
-    public String getTypeName(final String coverageName) {
-        return ancillaryFileManager.getTypeName(coverageName);
-    }
-
-    /**
-     * Utility method to retrieve the z-index of a Variable coverageDescriptor stored on
-     * {@link NetCDFImageReader} NetCDF Flat Reader {@link HashMap} indexMap.
-     * 
-     * @param var
-     *                {@link Variable}
-     * @param range
-     *                {@link Range}
-     * @param imageIndex
-     *                {@link int}
-     * 
-     * @return z-index {@link int} -1 if variable rank &lt; 3
-     * @deprecated
-     */
-    public static int getZIndex(Variable var, Range range, int imageIndex) {
-        final int rank = var.getRank();
-    
-        if (rank > 2) {
-            if (rank == 3) {
-                return (imageIndex - range.first());
-            } else {
-                // return (int) Math.ceil((imageIndex - range.first()) /
-                // var.getDimension(rank - (Z_DIMENSION + 1)).getLength());
-                return (imageIndex - range.first()) % UnidataUtilities.getZDimensionLength(var);
-            }
-        }
-    
-        return -1;
-    }
 
     /** Return the zIndex-th value of the vertical dimension of the specified variable, as a double, or {@link Double#NaN} 
      * in case that variable doesn't have a vertical axis.
@@ -1023,37 +987,6 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
             return (Number)coordinatesVariables.get(verticalDimension.getFullName()).read(zIndex);
         }
         return ve;
-    }
-
-    /**
-     * Utility method to retrieve the t-index of a Variable coverageDescriptor stored on
-     * {@link NetCDFImageReader} NetCDF Flat Reader {@link HashMap} indexMap.
-     * 
-     * @param var
-     *                {@link Variable}
-     * @param range
-     *                {@link Range}
-     * @param imageIndex
-     *                {@link int}
-     * 
-     * @return t-index {@link int} -1 if variable rank > 4
-     * @deprecated
-     */
-    public static int getTIndex(Variable var, Range range, int imageIndex) {
-        final int rank = var.getRank();
-    
-        if (rank > 2) {
-            if (rank == 3) {
-                return (imageIndex - range.first());
-            } else {
-                // return (imageIndex - range.first()) % var.getDimension(rank -
-                // (Z_DIMENSION + 1)).getLength();
-                return (int) Math.ceil((imageIndex - range.first())
-                        / UnidataUtilities.getZDimensionLength(var));
-            }
-        }
-    
-        return -1;
     }
 
     /** Return the timeIndex-th value of the time dimension of the specified variable, as a Date, or null in case that

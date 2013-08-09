@@ -2291,7 +2291,7 @@ public class StreamingRenderer implements GTRenderer {
         double standardDpi = RendererUtilities.getDpi(Collections.emptyMap());
         if(dpi != standardDpi) {
             double scaleFactor = dpi / standardDpi;
-            DpiRescaleStyleVisitor dpiVisitor = new DpiRescaleStyleVisitor(scaleFactor);
+            DpiRescaleStyleVisitor dpiVisitor = new GraphicsAwareDpiRescaleStyleVisitor(scaleFactor);
             for(LiteFeatureTypeStyle fts : lfts) {
                 rescaleFeatureTypeStyle(fts, dpiVisitor);
             }

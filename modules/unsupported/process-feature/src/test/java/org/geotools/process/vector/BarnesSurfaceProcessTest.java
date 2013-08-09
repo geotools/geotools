@@ -16,6 +16,7 @@
  */
 package org.geotools.process.vector;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Point2D;
@@ -90,6 +91,8 @@ public class BarnesSurfaceProcessTest {
             assertTrue(error < ERROR_TOL);
         }
 
+        assertEquals(1, cov.getSampleDimensions().length);
+        assertEquals("values", cov.getSampleDimensions()[0].getDescription().toString());
     }
 
     private float coverageValue(GridCoverage2D cov, double x, double y)

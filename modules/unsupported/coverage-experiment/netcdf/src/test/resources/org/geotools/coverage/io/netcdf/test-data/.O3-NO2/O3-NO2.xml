@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Indexer>
-    <!--  schemas>
-        <schema name="default" >
-            <attributes>
-the_geom:Polygon,coverage:String,imageindex:Integer,time:java.util.Date,elevation:Double
-            </attributes>
-        </schema>
-    </schemas -->
     <coverages>
         <coverage>
 			<name>O3</name>

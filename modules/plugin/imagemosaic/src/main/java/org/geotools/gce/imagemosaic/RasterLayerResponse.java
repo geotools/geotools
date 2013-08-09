@@ -105,7 +105,6 @@ import org.opengis.coverage.SampleDimensionType;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
@@ -128,8 +127,6 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 @SuppressWarnings("rawtypes")
 class RasterLayerResponse{
-
-    FilterFactory2 FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
 
     private static final class SimplifiedGridSampleDimension extends GridSampleDimension implements SampleDimension{
 
@@ -852,7 +849,7 @@ class RasterLayerResponse{
                     }
 
                     // Anding all filters together
-                    Filter andFilter = filters.size() > 0 ? FF.and(filters) : null;
+                    Filter andFilter = filters.size() > 0 ? FeatureUtilities.DEFAULT_FILTER_FACTORY.and(filters) : null;
 
                     if (multipleSelectionEntry == null) {
                         // Simpler case... no multiple selections. All filter have already been combined
@@ -868,7 +865,7 @@ class RasterLayerResponse{
                             Filter valueFilter = rasterManager.domainsManager.createFilter(domainName, Arrays.asList(o));
 
                             // combine that filter with the previously merged ones
-                            Filter combinedFilter = andFilter == null ? valueFilter : FF.and(andFilter, valueFilter);
+                            Filter combinedFilter = andFilter == null ? valueFilter : FeatureUtilities.DEFAULT_FILTER_FACTORY.and(andFilter, valueFilter);
                             granuleCollectors.add(new GranuleCollector(combinedFilter, dryRun));
                         }
                     }
@@ -1232,7 +1229,8 @@ class RasterLayerResponse{
 
             // === collect granules
             final MosaicProducer visitor = new MosaicProducer();
-            rasterManager.getGranules(query, visitor);            
+            rasterManager.getGranuleDescriptors(query, visitor);   
+            
             // get those granules and create the final mosaic
             RenderedImage returnValue = visitor.produce();
 
@@ -1270,7 +1268,7 @@ class RasterLayerResponse{
                     FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.getGranuleCatalog().getType(rasterManager.getTypeName()).getGeometryDescriptor().getName()),
                     bboxExtractor.getBBox()));
             query.setMaxFeatures(1);
-            rasterManager.getGranules(query, dryRunVisitor);
+            rasterManager.getGranuleDescriptors(query, dryRunVisitor);
             if (dryRunVisitor.granulesNumber > 0) {
                 LOGGER.fine("Dry run got a target granule, returning null as the additional filters did filter all the granules out");
                 // It means the previous lack of granule was due to a filter excluding all the results. Then we return null

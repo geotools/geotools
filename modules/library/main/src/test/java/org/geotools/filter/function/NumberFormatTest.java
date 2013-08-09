@@ -49,4 +49,49 @@ public class NumberFormatTest extends TestCase {
         assertEquals("x123;456:79", f.evaluate(null, String.class));
         
     }
+    
+    public void testNumberFormatNullValue() {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Literal pattern = ff.literal("###,###.##");
+        Literal number = ff.literal(null);
+        
+        Function f = ff.function("numberFormat", new Expression[]{pattern, number});
+        assertEquals(null, f.evaluate(null, String.class));
+    }
+    
+    public void testNumberFormatNullPattern() {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Literal pattern = ff.literal(null);
+        Literal number = ff.literal("-123456.7891");
+        
+        Function f = ff.function("numberFormat", new Expression[]{pattern, number});
+        assertEquals(null, f.evaluate(null, String.class));
+    }
+    
+    public void testNumber2FormatNullValue() {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Literal pattern = ff.literal("###,###.##");
+        Literal number = ff.literal(null);
+        Literal minus = ff.literal("x");
+        Literal ds = ff.literal(":");
+        Literal gs = ff.literal(";");
+
+        
+        Function f = ff.function("numberFormat2", new Expression[]{pattern, number, minus, ds, gs});
+        assertEquals(null, f.evaluate(null, String.class));
+    }
+    
+    public void testNumber2FormatNullPattern() {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Literal pattern = ff.literal(null);
+        Literal number = ff.literal("-123456.7891");
+        Literal minus = ff.literal("x");
+        Literal ds = ff.literal(":");
+        Literal gs = ff.literal(";");
+
+        
+        Function f = ff.function("numberFormat2", new Expression[]{pattern, number, minus, ds, gs});
+        assertEquals(null, f.evaluate(null, String.class));
+    }
+
 }

@@ -245,7 +245,7 @@ public class BarnesSurfaceProcess implements VectorProcess {
         
         // convert to the GridCoverage2D required for output
         GridCoverageFactory gcf = CoverageFactoryFinder.getGridCoverageFactory(null);
-        GridCoverage2D gridCov = gcf.create("Process Results", outGrid, outputEnv);
+        GridCoverage2D gridCov = gcf.create("values", outGrid, outputEnv);
         
         //System.out.println("**************  Barnes Surface computed in " + sw.getTimeString());
         

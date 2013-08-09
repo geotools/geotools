@@ -2,7 +2,7 @@
 <Indexer>
     <schemas>
         <schema name="default" >
-            <attributes>the_geom:Polygon,coverage:String,imageindex:Integer,time:java.util.Date,elevation:Double
+            <attributes>the_geom:Polygon,imageindex:Integer,time:java.util.Date,elevation:Double
             </attributes>
         </schema>
     </schemas>

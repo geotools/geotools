@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -60,6 +61,7 @@ import org.geotools.factory.GeoTools;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
+import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.imageio.unidata.cv.CoordinateVariable;
 import org.geotools.imageio.unidata.utilities.UnidataCRSUtilities;
@@ -68,6 +70,7 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
+import org.geotools.util.Range;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.SampleDimension;
@@ -275,7 +278,43 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         private final Set<Object> domainExtent = new TreeSet<Object>();
         
         /** The merged domain extent */
-        private final Set<Object> globalDomainExtent = new TreeSet<Object>();
+        private final Set<Object> globalDomainExtent = new TreeSet<Object>(new Comparator<Object>() {
+          private NumberRangeComparator  numberRangeComparator = new NumberRangeComparator();
+          private DateRangeComparator    dateRangeComparator = new DateRangeComparator();
+
+          public int compare(Object o1, Object o2) {
+            // assume that o1 and o2 are both not null
+            boolean o1IsDateRange = true;
+            boolean o2IsDateRange = true;
+
+            if (o1 instanceof NumberRange) {
+              o1IsDateRange = false;
+            }
+            else if (!(o1 instanceof DateRange)) {
+              throw new ClassCastException(o1.getClass() + " is not an known range type");
+            }
+
+            if (o2 instanceof NumberRange) {
+              o2IsDateRange = false;
+            }
+            else if (!(o2 instanceof DateRange)) {
+              throw new ClassCastException(o2.getClass() + " is not an known range type");
+            }
+
+            if (o1IsDateRange && o2IsDateRange) {
+              return dateRangeComparator.compare((DateRange) o1, (DateRange) o2);
+            }
+            else if (!o1IsDateRange && !o2IsDateRange) {
+              return numberRangeComparator.compare((NumberRange<?>) o1, (NumberRange<?>) o2);
+            }
+
+            throw new ClassCastException("Incompatible range types: " + o1.getClass() + " is not the same as " + o2.getClass());
+          }
+
+          public boolean equals(Object o) {
+            return false;
+          }
+        });
 
         /** The domain name */
         private final String name;
@@ -390,7 +429,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         // initialize rank and number of 2D slices
         initRange();
         
-        
+        // initialize info about slice
         initSlicesInfo();
     }
 
@@ -430,12 +469,14 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         final List<DimensionDescriptor> dimensions = new ArrayList<DimensionDescriptor>();
         List<CoordinateVariable<?>> otherAxes = initCRS(dimensions);
 
+        // SPATIAL DIMENSIONS
         initSpatialDomain();
 
         // ADDITIONAL DOMAINS
         addAdditionalDomain(otherAxes, dimensions);
+        
         setDimensionDescriptors(dimensions);
-        if (reader.ancillaryFileManager.isHasImposedSchema()) {
+        if (reader.ancillaryFileManager.isImposedSchema()) {
             updateDimensions(dimensions);
         }
     }
@@ -461,23 +502,30 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
                 // Get the mapped coverage name (as an instance, NO2 for a GOME2 with var = 'z')
                 final String coverageName = key.getLocalPart();
                 final Coverage coverage = reader.ancillaryFileManager.coveragesMapping.get(coverageName);
-                if (coverage.getSchema() != null) {
+                final SchemaType schema = coverage.getSchema();
+                if (schema != null) {
+                    // look up the name
+                    String schName= schema.getName();
                     final CoverageSlicesCatalog catalog = reader.getCatalog();
                     if (catalog != null) {
-                        // Current assumption is that we have a typeName for each coverage
-                        final String[] typeNames = catalog.getTypeNames();
-                        for (String typeName : typeNames) {
-
-                            // Look for matching schema 
-                            if (typeName.equalsIgnoreCase(coverageName)) {
-                                final SimpleFeatureType schemaType = catalog.getSchema(coverageName);
-                                if (schemaType != null) {
-                                    // Schema found: proceed with remapping attributes
-                                    updateMapping(schemaType, dimensionDescriptors);
-                                }
-                                break;
+                        // Current assumption is that we have a typeName for each coverage but we should keep on working
+                        // with shared schemas
+                        // try with coveragename
+                        SimpleFeatureType schemaType = null;
+                        try{
+                            if(schName!=null){
+                                schemaType=catalog.getSchema(schName);
                             }
+                        }catch (IOException e) {
+                            // ok, we did not use the schema name, let's use the coverage name
+                            schemaType = catalog.getSchema(coverageName);
                         }
+                        if (schemaType != null) {
+                            // Schema found: proceed with remapping attributes
+                            updateMapping(schemaType, dimensionDescriptors);
+                            break;
+                        }
+                        throw new IllegalStateException("Unable to find the table for this coverage: "+ coverageName);
                     }
                 }
                 break;

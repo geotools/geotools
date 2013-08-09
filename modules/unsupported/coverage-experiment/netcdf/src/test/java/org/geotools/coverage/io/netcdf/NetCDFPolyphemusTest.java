@@ -17,8 +17,7 @@
 package org.geotools.coverage.io.netcdf;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
@@ -34,7 +33,8 @@ import javax.media.jai.PlanarImage;
 
 import junit.framework.Assert;
 
-import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.CoverageAccess.AccessType;
@@ -49,15 +49,12 @@ import org.geotools.coverage.io.Driver.DriverCapabilities;
 import org.geotools.coverage.io.GridCoverageResponse;
 import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.coverage.io.util.DateRangeTreeSet;
-import org.geotools.imageio.netcdf.NetCDFImageReader;
-import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
-import org.geotools.imageio.unidata.UnidataSlice2DIndex;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.Coverage;
 import org.opengis.feature.type.Name;
@@ -74,77 +71,32 @@ import org.opengis.referencing.operation.MathTransform2D;
 public final class NetCDFPolyphemusTest extends Assert {
 
     private final static Logger LOGGER = Logging.getLogger(NetCDFPolyphemusTest.class.toString());
+    private File testDirectory;
 
     
     @Test
-    @Ignore
-    public void testImageReader() throws IllegalArgumentException, IOException, NoSuchAuthorityCodeException {
-        final String[] files = TestData.file(this, ".").list(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.equalsIgnoreCase("O3-NO2.nc");
-            }
-        });
-
-        for (String filePath : files) {
-
-            final File file = new File(TestData.file(this, "."), filePath);
-
-            final NetCDFImageReaderSpi netCDFImageReaderSpi = new NetCDFImageReaderSpi();
-            assertTrue(netCDFImageReaderSpi.canDecodeInput(file));
-            NetCDFImageReader reader = null;
-            try {
-                reader = (NetCDFImageReader) netCDFImageReaderSpi.createReaderInstance();
-                reader.setInput(file);
-                int numImages = reader.getNumImages(true);
-                for (int i = 0; i < numImages; i++) {
-                    UnidataSlice2DIndex sliceIndex = reader.getSlice2DIndex(i);
-                    String variableName = sliceIndex.getVariableName();
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("\n").append("\n").append("\n");
-                    sb.append("IMAGE: ").append(i).append("\n");
-                    sb.append(" Variable Name = ").append(variableName);
-                    sb.append(" ( Z = ");
-                    sb.append(sliceIndex.getZIndex());
-                    sb.append("; T = ");
-                    sb.append(sliceIndex.getTIndex());
-                    sb.append(")");
-                    LOGGER.info(sb.toString());
-                }
-            } catch (Throwable t) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, t.getLocalizedMessage(), t);
-                }
-            } finally {
-                if (reader != null) {
-                    try {
-                        reader.dispose();
-                    } catch (Throwable t) {
-                        // Does nothing
-                    }
-                }
-            }
-        }
-    }
-
-    @Test
-    @Ignore
     public void geoToolsReader() throws IllegalArgumentException, IOException, NoSuchAuthorityCodeException {
         boolean isInteractiveTest = TestData.isInteractiveTest();
 
         // create a base driver
         final DefaultFileDriver driver = new NetCDFDriver();
-        final String[] files = TestData.file(this, ".").list(new FilenameFilter(){
+        final File[] files = TestData.file(this, ".").listFiles(new FileFilter(){
 
             @Override
-            public boolean accept( File dir, String name ) {
-                return name.equalsIgnoreCase("O3-NO2.nc");
+            public boolean accept(File pathname) {
+                return FilenameUtils.getName(pathname.getAbsolutePath()).equalsIgnoreCase("O3-NO2.nc");
             }
+
+           
         });
 
-        for( String filePath : files ) {
+        for( File f : files ) {
+            
+            // move to test directory
+            final File file = new File(testDirectory,"O3-NO2.nc");
+            FileUtils.copyFile(f, file);
 
-            final File file = new File(TestData.file(this, "."), filePath);
+            // get the file
             final URL source = file.toURI().toURL();
             assertTrue(driver.canProcess(DriverCapabilities.CONNECT, source, null));
             
@@ -308,22 +260,28 @@ public final class NetCDFPolyphemusTest extends Assert {
                 }
             }
         }
-    }
-    
-    private void cleanUp() throws FileNotFoundException, IOException {
+    }    
+
+    @After
+    public void tearDown() throws Exception {
         if (TestData.isInteractiveTest()) {
             return;
         }
-        final File dir = TestData.file(this, ".");
-        File[] files = dir.listFiles((FilenameFilter) FileFilterUtils.notFileFilter(FileFilterUtils
-                .or(FileFilterUtils.or(FileFilterUtils.suffixFileFilter(".nc")))));
-        for (File file : files) {
-            file.delete();
+        if(testDirectory.exists()){
+            FileUtils.deleteDirectory(testDirectory);
+            testDirectory.delete();
         }
     }
 
-    @After
-    public void tearDown() throws FileNotFoundException, IOException {
-        cleanUp();
+    @Before
+    public void before() throws Exception {
+        File testDir= TestData.file(this, null);
+        testDirectory= new File(testDir,Long.toString(System.nanoTime()));
+        if(testDirectory.exists()){
+            FileUtils.deleteDirectory(testDirectory);
+            testDirectory.delete();
+        }
+        testDirectory.mkdir();
+        
     }
 }

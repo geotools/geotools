@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Indexer>
+    <coverages>
+        <coverage>
+            <name>cell_index</name>
+        </coverage>
+        <!-- coverage>
+            <name>swath_index</name>
+            <schema ref="default"></schema>
+        </coverage>
+        <coverage>
+            <name>atmospheric_height</name>
+            <schema ref="default"></schema>
+        </coverage>
+        <coverage>
+            <name>atmospheric_loss</name>
+            <schema ref="default"></schema>
+        </coverage>
+        <coverage>
+            <name>nrcs</name>
+            <schema ref="numSigma"></schema>
+        </coverage>
+        <coverage>
+            <name>kp</name>
+            <schema ref="numSigma"></schema>
+        </coverage>
+        <coverage>
+            <name>inc_angle</name>
+            <schema ref="numSigma"></schema>
+        </coverage>
+        <coverage>
+            <name>azi_angle</name>
+            <schema ref="numSigma"></schema>
+        </coverage>
+        <coverage>
+            <name>f_kp</name>
+            <schema ref="numSigma"></schema>
+        </coverage>
+        <coverage>
+            <name>f_use</name>
+            <schema ref="numSigma"></schema>
+        </coverage>
+        <coverage>
+            <name>f_f</name>
+            <schema ref="numSigma"></schema>
+        </coverage>
+        <coverage>
+            <name>f_v</name>
+            <schema ref="numSigma"></schema>
+        </coverage>
+        <coverage>
+            <name>f_oa</name>
+            <schema ref="numSigma"></schema>
+        </coverage>
+        <coverage>
+            <name>f_sa</name>
+            <schema ref="numSigma"></schema>
+        </coverage>
+        <coverage>
+            <name>f_tel</name>
+            <schema ref="numSigma"></schema>
+        </coverage>
+        <coverage>
+            <name>f_ext_fil</name>
+            <schema ref="numSigma"></schema>
+        </coverage -->
+        <coverage>
+            <name>f_land</name>
+        </coverage>
+    </coverages>
+</Indexer>

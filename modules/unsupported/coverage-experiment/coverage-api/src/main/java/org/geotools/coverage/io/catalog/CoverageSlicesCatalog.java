@@ -165,7 +165,6 @@ public class CoverageSlicesCatalog {
 
             throw new IllegalArgumentException(e);
         }
-
     }
 
     /**
@@ -290,7 +289,6 @@ public class CoverageSlicesCatalog {
             lock.lock();
             // check if the index has been cleared
             checkStore();
-            
 
             final SimpleFeatureStore store = (SimpleFeatureStore) slicesIndexStore.getFeatureSource(typeName);
             store.setTransaction(transaction);

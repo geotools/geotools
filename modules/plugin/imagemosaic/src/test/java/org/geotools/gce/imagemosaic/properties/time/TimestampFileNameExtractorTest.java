@@ -1,14 +1,12 @@
 package org.geotools.gce.imagemosaic.properties.time;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -51,7 +49,7 @@ public class TimestampFileNameExtractorTest {
     @Test
     public void testParseCustomTimestamp() {
         PropertiesCollectorSPI spi = getTimestampSpi();
-        PropertiesCollector collector = spi.create("format=yyyyMMddHHmmss,regex=[0-9]{14}", Arrays.asList("time"));
+        PropertiesCollector collector = spi.create("regex=[0-9]{14},format=yyyyMMddHHmmss", Arrays.asList("time"));
         File file = new File("polyphemus_20130301000000.nc");
         collector.collect(file);
         collector.setProperties(feature);

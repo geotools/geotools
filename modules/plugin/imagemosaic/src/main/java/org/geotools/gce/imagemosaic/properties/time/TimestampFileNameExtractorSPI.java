@@ -70,24 +70,22 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
 
                 String value = (String) o;
                 
-                // look for the optional format
-                if(value.startsWith(FORMAT_PREFIX)) {
-                    String tmp = value.substring(FORMAT_PREFIX.length());
-                    if(tmp.contains("," + REGEX_PREFIX)) {
-                        int idx = tmp.indexOf("," + REGEX_PREFIX);
-                        format = tmp.substring(0, idx);
+                // look for the regex
+                if(value.startsWith(REGEX_PREFIX)) {
+                    String tmp = value.substring(REGEX_PREFIX.length());
+                    if(tmp.contains("," + FORMAT_PREFIX)) {
+                        int idx = tmp.indexOf("," + FORMAT_PREFIX);
+                        regex = tmp.substring(0, idx);
                         value = tmp.substring(idx + 1);
                     } else {
-                        format = tmp;
+                        regex = tmp;
                     }
                 }
                 
-                // look for the regex
-                if (value.startsWith(REGEX_PREFIX)) {
-                    regex = value.substring(REGEX_PREFIX.length());
-                } else {
-                    return null;
-                }
+                // look for the format
+                if (value.startsWith(FORMAT_PREFIX)) {
+                    format = value.substring(FORMAT_PREFIX.length());
+                } 
             }
         } else {
             return null;

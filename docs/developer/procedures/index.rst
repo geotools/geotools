@@ -16,3 +16,4 @@ Project Procedures
    supported
    stable
    git
+   pull_requests

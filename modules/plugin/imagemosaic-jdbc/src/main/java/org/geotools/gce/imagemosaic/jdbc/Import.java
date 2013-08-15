@@ -504,7 +504,7 @@ public class Import extends AbstractCmd {
 			geometryParam = "db2gse.st_tomultipolygon(db2gse.st_geometry(cast (? as BLOB(4096)),"
 					+ srs + "))";
 		} else if (config.getSpatialExtension() == SpatialExtension.POSTGIS) {
-			geometryParam = "geomfromwkb(?," + srs + ")";
+			geometryParam = "st_geomfromwkb(?," + srs + ")";
 		} else if (config.getSpatialExtension() == SpatialExtension.MYSQL) {
 			geometryParam = "geomfromwkb(?)";
 		} else if (config.getSpatialExtension() == SpatialExtension.ORACLE) {

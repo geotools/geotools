@@ -109,7 +109,7 @@ class JDBCAccessPostGis extends JDBCAccessBase {
 
         // ////////////
         final String spatialSelectClause = "select s." + config.getKeyAttributeNameInSpatialTable()
-                + "," + "asbinary(" + functionPrefix + "envelope(s." + geomAttr + "))";
+                + "," + "st_asbinary(" + functionPrefix + "envelope(s." + geomAttr + "))";
 
         allSelect = spatialSelectClause + ",s." + config.getBlobAttributeNameInTileTable()
                 + " from {0} s";
@@ -118,7 +118,7 @@ class JDBCAccessPostGis extends JDBCAccessBase {
         allSelectJoined += (" s." + config.getKeyAttributeNameInSpatialTable() + " = t." + config
                 .getKeyAttributeNameInTileTable());
 
-        String whereClause = functionPrefix + "intersects(" + geomAttr + "," + "GeomFromWKB(?,?))";
+        String whereClause = functionPrefix + "intersects(" + geomAttr + "," + "st_geomfromwkb(?,?))";
 
         gridSelect = allSelect + " WHERE " + whereClause;
         gridSelectJoined = allSelectJoined + " AND " + whereClause;

@@ -36,13 +36,18 @@ The developer list is used by the development team of GeoTools solely to discuss
 
 Please do not send general questions regarding the use of GeoTools to this list, but to geotools-gt2-users above.
 
-geotools-commits
-^^^^^^^^^^^^^^^^
+Commit Tracker
+--------------
 
-A read only list to which all SVN (was CVS) commit statements are posted.
+To follow new commits and pull requests to the GeoTools repository, GitHub provides a tracking feature called
+`Watching Repositories <https://help.github.com/articles/watching-repositories>`_. Following the instructions provided
+by GitHub you are able to customise the feed of information you are able to receive. Note that GeoTools doesn't utilise
+the issue feature of GitHub; see the `Issue tracker <http://docs.geotools.org/latest/developer/communication.html#issue-tracker>`_
+in the next section.
 
-* http://lists.sourceforge.net/lists/listinfo/geotools-commits
-* http://sourceforge.net/mailarchive/forum.php?forum_name=geotools-commits
+Other pages that may be helpful in following GeoTools are the `pulse <https://github.com/geotools/geotools/pulse>`_ and
+the `commits <https://github.com/geotools/geotools/commits>`_. Both are pages that provide summary information about the
+current activity of the project.
 
 Issue Tracker
 ---------------
@@ -56,7 +61,7 @@ This is where all bugs should be reported, in addition to requested features and
 Filling out all fields is specially important for bug reports:
 
 * including component(s)
-* affected versions of geotools ( a release or code from SVN? )
+* affected versions of geotools (a release or git commit hash)
 * A description of what caused the problem (example code that reproduces the problem) along with any stack traces
 * The Java Version and the type of operating system you are using
 * You may wish to attach log files, or screen snapshots to the Jira task

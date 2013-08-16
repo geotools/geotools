@@ -141,6 +141,8 @@ public class ImageMosaicReaderTest extends Assert{
 	private URL timeAdditionalDomainsRangeURL;
 
 	private URL imposedEnvelopeURL;
+
+    private URL timeFormatURL;
 	
 	/**
 	 * Testing crop capabilities.
@@ -640,6 +642,22 @@ public class ImageMosaicReaderTest extends Assert{
                 TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,time}, "time test");
 		
 	}	
+	
+	
+    @Test
+    public void testTimeFormat() throws IOException, NoSuchAuthorityCodeException, FactoryException, ParseException {
+        final AbstractGridFormat format = TestUtils.getFormat(timeFormatURL);
+        ImageMosaicReader reader = TestUtils.getReader(timeFormatURL, format);
+        
+        final String[] metadataNames = reader.getMetadataNames();
+        assertNotNull(metadataNames);
+        assertEquals(metadataNames.length, 12);
+        assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+        assertEquals("2004-02-01T12:05:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
+        assertEquals("2004-05-30T12:15:59.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
+        assertEquals("2004-02-01T12:05:00.000Z,2004-03-01T15:07:00.000Z,2004-04-15T19:05:00.000Z,2004-05-30T12:15:59.000Z", reader.getMetadataValue(metadataNames[0]));     
+        assertEquals("java.sql.Timestamp", reader.getMetadataValue("TIME_DOMAIN_DATATYPE"));
+    }
 	
     /**
      * Simple test method accessing time and 2 custom dimensions for the sample
@@ -1514,6 +1532,7 @@ public class ImageMosaicReaderTest extends Assert{
 		rgbURL = TestData.url(this, "rgb");
 		heterogeneousGranulesURL = TestData.url(this, "heterogeneous");
 		timeURL = TestData.url(this, "time_geotiff");
+		timeFormatURL = TestData.url(this, "time_format_geotiff");
 		timeAdditionalDomainsURL = TestData.url(this, "time_additionaldomains");
 		timeAdditionalDomainsRangeURL = TestData.url(this, "time_domainsRanges");
 		

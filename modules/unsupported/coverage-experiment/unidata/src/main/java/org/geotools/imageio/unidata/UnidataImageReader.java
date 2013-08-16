@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -50,9 +49,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.collection.ListFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
@@ -68,7 +67,6 @@ import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
 
 import ucar.ma2.Array;
@@ -76,7 +74,6 @@ import ucar.ma2.IndexIterator;
 import ucar.ma2.InvalidRangeException;
 import ucar.ma2.Range;
 import ucar.ma2.Section;
-import ucar.nc2.Dimension;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
@@ -295,74 +292,42 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
                         // COVERAGE NAME
                         // Add the accepted variable to the list of coverages name
                         final Name coverageName = getCoverageName(varName);
-                        // TODO wrap this into an object that wraps a Unidata CoordinateSystem
-                        CoordinateSystem cs = UnidataCRSUtilities.getCoordinateSystem(variable);
-                        // SCHEMA
-                        // TODO push into VariableWrapper
-                        final SimpleFeatureType indexSchema = getIndexSchema(coverageName,cs);
+                        final CoordinateSystem cs = UnidataCRSUtilities.getCoordinateSystem(variable);
+
+                        final SimpleFeatureType indexSchema = getIndexSchema(coverageName, cs);
+                        // get variable adapter which maps to a coverage in the end
+                        final UnidataVariableAdapter vaAdapter = getCoverageDescriptor(coverageName);
 
                         if (indexSchema == null) {
                             throw new IllegalStateException("Unable to created index schema for coverage:"+coverageName);
                         }
-                        // get variable adapter which maps to a coverage in the end
-                        final UnidataVariableAdapter vaAdapter= getCoverageDescriptor(coverageName);
+
                         final int variableImageStartIndex = numImages;
                         final int numberOfSlices = vaAdapter.getNumberOfSlices();
-                        final int variableImageNum = variableImageStartIndex + numberOfSlices;
-                        final int rank = variable.getRank();
-                        numImages+=numberOfSlices;
+                        numImages += numberOfSlices;
 
-                        // 2D SLICE INDEX PREPARATION
-                        // TODO Embed into variable wrapper
-                        final boolean hasVerticalAxis = cs.hasVerticalAxis();
-                        final int bandDimension = rank - UnidataUtilities.Z_DIMENSION;
-                        final ListFeatureCollection collection= new ListFeatureCollection(indexSchema);
-                        int features = 0;
-                        for (int imageIndex = variableImageStartIndex; imageIndex < variableImageNum; imageIndex++) {
-                            int zIndex = -1;
-                            int tIndex = -1;
-                            for (int i = 0; i < rank; i++) {
-                                switch (rank - i) {
-                                case UnidataUtilities.X_DIMENSION:
-                                case UnidataUtilities.Y_DIMENSION:
-                                    break;
-                                default: {
-                                    if (i == bandDimension && hasVerticalAxis) {
-                                        zIndex = vaAdapter.getZIndex(imageIndex-variableImageStartIndex);
-                                    } else {
-                                        tIndex =  vaAdapter.getTIndex(imageIndex-variableImageStartIndex);
-                                    }
-                                    break;
-                                }
-                                }
+                        int startPagingIndex = 0;
+                        final int limit = INTERNAL_INDEX_CREATION_PAGE_SIZE;
+                        final ListFeatureCollection collection = new ListFeatureCollection(indexSchema);
+
+                        int writtenFeatures = 0;
+                        while (writtenFeatures < numberOfSlices) {
+                            // Get a bunch of features 
+                            vaAdapter.getFeatures(startPagingIndex, limit, collection);
+                            if (variableImageStartIndex != 0) {
+                                // Need to updated the imageIndex of the features since all indexes 
+                                // are zero based inside each variable but we need to index them inside
+                                // the whole NetCDF dataset. 
+                                updateFeaturesIndex(collection, variableImageStartIndex);
                             }
-
-                            //Put a new sliceIndex in the list
-                            final UnidataSlice2DIndex variableIndex = new UnidataSlice2DIndex(tIndex, zIndex, varName);
-                            ancillaryFileManager.addSlice(variableIndex);
-
-                            // Create a feature for that index to be put in the CoverageSlicesCatalog
-                            final SimpleFeature feature = createFeature(
-                                    variable, 
-                                    coverageName.toString(), 
-                                    tIndex, 
-                                    zIndex, 
-                                    cs, 
-                                    imageIndex, 
-                                    indexSchema);
-                            collection.add(feature);
-                            features++;
-                            
-                            // write down in pages
-                            if (features % INTERNAL_INDEX_CREATION_PAGE_SIZE == 0) {
+                            final int features = collection.size();
+                            if (features > 0) {
+                                // adding granules to the catalog and updating the number of written features
                                 getCatalog().addGranules(indexSchema.getTypeName(), collection, transaction);
                                 collection.clear();
+                                startPagingIndex += features;
                             }
-                        }
-                        // add residual features
-                        if (collection.size() > 0) {
-                            getCatalog().addGranules(indexSchema.getTypeName(), collection, transaction);
-                            collection.clear();
+                            writtenFeatures += features;
                         }
                     }
                 }
@@ -389,57 +354,19 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
         return numImages;
     }
 
-    /** 
-     * Create the schema in case not already defined
-     * @param indexSchema
-     * @throws IOException
+    /**
+     * Update features imageIndex by referring them to a specific offset
+     * @param collection
+     * @param offset
      */
-    private void forceSchemaCreation(SimpleFeatureType indexSchema) throws IOException {
-        final String typeName = indexSchema.getTypeName();
-        final CoverageSlicesCatalog catalog = getCatalog();
-        if (typeName != null) {
-            // Check if already existing
-            String[] typeNames = catalog.getTypeNames();
-            if (typeNames != null) {
-                for (String tn : typeNames) {
-                    if (tn.equalsIgnoreCase(typeName)) {
-                        return;
-                    }
-                }
-            }
-            catalog.createType(indexSchema);
+    private void updateFeaturesIndex(final ListFeatureCollection collection, final int offset) {
+        final SimpleFeatureIterator featuresIt = collection.features();
+        SimpleFeature feature = null;
+        while (featuresIt.hasNext()) {
+            feature = featuresIt.next();
+            Integer index = (Integer) feature.getAttribute(CoverageSlice.Attributes.INDEX);
+            feature.setAttribute(CoverageSlice.Attributes.INDEX, index + offset);
         }
-    }
-
-    private SimpleFeatureType getIndexSchema(Name name,CoordinateSystem cs) throws Exception {
-        
-        // get the name for this variable to check his coveragename
-        final String variableName = name.toString();
-        // get the coverage definition for this variable, at this stage this exists otherwise we would have skipped it!
-        final Coverage coverage = ancillaryFileManager.coveragesMapping.get(variableName);
-        
-        // now check the schema creation
-        SchemaType schema = coverage.getSchema();
-        String schemaDef=schema!=null?schema.getAttributes():null;
-        
-        // no schema was defined yet, let's create a default one
-        if (schema == null||schema.getAttributes()==null) {
-            // TODO incapsulate in coveragedescriptor
-            schemaDef = suggestSchemaFromCoordinateSystem(coverage, cs);
-            
-            //set the schema name to be the coverageName
-            ancillaryFileManager.setSchema(coverage,coverage.getName(),schemaDef);   
-            schema = coverage.getSchema();
-        } 
-        
-        // create featuretype, the name is the CoverageName
-        final SimpleFeatureType indexSchema = UnidataUtilities.createFeatureType(coverage.getName(),schemaDef,UnidataCRSUtilities.WGS84);
-        
-        // create 
-        forceSchemaCreation(indexSchema);
-        
-        // return
-        return indexSchema;
     }
 
     private void initMapping(CoordinateSystem cs) {
@@ -465,31 +392,6 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
         }
     }
 
-    /**
-     * @param coverage
-     * @param cs
-     * @return
-     * @throws SchemaException 
-     */
-    String suggestSchemaFromCoordinateSystem(Coverage coverage, CoordinateSystem cs) throws SchemaException {
-
-        // init with base
-        String schemaAttributes = CoverageSlice.Attributes.BASE_SCHEMA;
-
-        // check other dimensions
-        for (CoordinateAxis axis:cs.getCoordinateAxes()) {
-            // get from coordinate vars
-            final CoordinateVariable<?> cv = this.coordinatesVariables.get(axis.getFullName()); 
-            final String name = cv.getName();
-            switch(cv.getAxisType()){
-            case GeoX: case GeoY: case Lat: case Lon:
-                continue;
-            }
-            schemaAttributes+=("," + name + ":" + cv.getType().getName());
-        }
-        return schemaAttributes;       
-    }
-
     private Name getCoverageName(String varName) {
         Name coverageName = ancillaryFileManager.getCoverageName(varName);
         if (coverageName == null) {
@@ -500,67 +402,7 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
         return coverageName;
     }
 
-    /**
-     * Create a SimpleFeature on top of the provided variable and indexes.
-     * 
-     * @param variable the input variable 
-     * @param tIndex the time index 
-     * @param zIndex the zeta index
-     * @param cs the {@link CoordinateSystem} associated with that variable
-     * @param imageIndex the index to be associated to the feature in the index
-     * @param indexSchema the schema to be used to create the feature
-     * @param geometry the geometry to be attached to the feature
-     * @return the created {@link SimpleFeature}
-     * TODO move to variable wrapper
-     */
-    private SimpleFeature createFeature(
-            final Variable variable,
-            final String coverageName,
-            final int tIndex,
-            final int zIndex,
-            final CoordinateSystem cs,
-            final int imageIndex, 
-            final SimpleFeatureType indexSchema) {
-        
-        final Date date = getTimeValueByIndex(variable, tIndex, cs);
-        final Number verticalValue = getVerticalValueByIndex(variable, zIndex, cs);
-
-        final SimpleFeature feature = DataUtilities.template(indexSchema);
-        feature.setAttribute(CoverageSlice.Attributes.GEOMETRY, UnidataCRSUtilities.GEOM_FACTORY.toGeometry(boundingBox));
-        feature.setAttribute(CoverageSlice.Attributes.INDEX, imageIndex);
-
-        // TIME management
-        // Check if we have time and elevation domain and set the attribute if needed
-        if (date != null) {
-            feature.setAttribute(dimensionsMapping.get(UnidataUtilities.TIME_DIM), date);
-        }
-
-        // ELEVATION or other dimension
-        final String elevationCVName = dimensionsMapping.get(UnidataUtilities.ELEVATION_DIM);
-        if (!Double.isNaN(verticalValue.doubleValue())) {
-            List<AttributeDescriptor> descriptors = indexSchema.getAttributeDescriptors();
-            String attribute = null;
-            
-            // Once we don't deal anymore with old coverage APIs, we can consider directly use the dimension name as attribute
-            for (AttributeDescriptor descriptor: descriptors) {
-                if (descriptor.getLocalName().equalsIgnoreCase(elevationCVName)) {
-                    attribute = elevationCVName;
-                    break;
-                }
-            }
-            
-            // custom dimension, mapped to an attribute using its name
-            if (attribute == null) {
-                // Assuming the custom dimension is always the last attribute
-                attribute = variable.getDimension(0).getShortName();
-            }
-            feature.setAttribute(attribute, verticalValue);
-        }
-        return feature;
-    }
-
     private void extractCoordinatesVariable( ) throws IOException {
-        
         // get the coordinate variables
         for( CoordinateAxis axis : dataset.getCoordinateAxes() ) {
             if (axis instanceof CoordinateAxis1D) {
@@ -585,11 +427,11 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
             if (dataset != null) {
                 dataset.close();
             }
-           
+
             if (ancillaryFileManager != null) {
                 ancillaryFileManager.dispose();
             }
-            
+
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.WARNING))
                 LOGGER.warning("Errors closing NetCDF dataset." + e.getLocalizedMessage());
@@ -762,7 +604,7 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
 //                else {
 //                    throw new IllegalArgumentException("Unable to locate descriptor for Coverage: "+name);
 //                }
-                cd = new UnidataVariableAdapter(this, (VariableDS) getVariableByName(origName));
+                cd = new UnidataVariableAdapter(this, name, (VariableDS) getVariableByName(origName));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -966,49 +808,82 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
             }
         }
     }
-
-    /** Return the zIndex-th value of the vertical dimension of the specified variable, as a double, or {@link Double#NaN} 
-     * in case that variable doesn't have a vertical axis.
-     * 
-     * @param unidataReader the reader to be used for that search
-     * @param variable the variable to be accessed
-     * @param timeIndex the requested index
-     * @param cs the coordinateSystem to be scan
-     * @return
-     * TODO move to variable wrapper
-     */
-    public Number getVerticalValueByIndex(Variable variable, final int zIndex,
-            final CoordinateSystem cs ) {
-        double ve = Double.NaN;
-        if (cs != null && cs.hasVerticalAxis()) {
-            final int rank = variable.getRank();
     
-            final Dimension verticalDimension = variable.getDimension(rank - UnidataUtilities.Z_DIMENSION);
-            return (Number)coordinatesVariables.get(verticalDimension.getFullName()).read(zIndex);
+    /** 
+     * Create the schema in case not already defined
+     * @param indexSchema
+     * @throws IOException
+     */
+    private void forceSchemaCreation(SimpleFeatureType indexSchema) throws IOException {
+        final String typeName = indexSchema.getTypeName();
+        final CoverageSlicesCatalog catalog = getCatalog();
+        if (typeName != null) {
+            // Check if already existing
+            String[] typeNames = catalog.getTypeNames();
+            if (typeNames != null) {
+                for (String tn : typeNames) {
+                    if (tn.equalsIgnoreCase(typeName)) {
+                        return;
+                    }
+                }
+            }
+            catalog.createType(indexSchema);
         }
-        return ve;
     }
 
-    /** Return the timeIndex-th value of the time dimension of the specified variable, as a Date, or null in case that
-     * variable doesn't have a time axis.
-     * 
-     * @param unidataReader the reader to be used for that search
-     * @param variable the variable to be accessed
-     * @param timeIndex the requested index
-     * @param cs the coordinateSystem to be scan
-     * @return
-     * TODO move to variable wrapper
-     */
-    public Date getTimeValueByIndex( Variable variable, int timeIndex,
-            final CoordinateSystem cs ) {
-    
-        if (cs != null && cs.hasTimeAxis()) {
-            final int rank = variable.getRank();
-            final Dimension temporalDimension = variable.getDimension(rank
-                    - ((cs.hasVerticalAxis() ? UnidataUtilities.Z_DIMENSION : 2) + 1));
-            return (Date) coordinatesVariables.get(temporalDimension.getFullName()).read(timeIndex);
-        }
-    
-        return null;
+    public SimpleFeatureType getIndexSchema(Name coverageName, CoordinateSystem coordinateSystem) throws Exception {
+                // get the name for this variable to check his coveragename
+        final String _coverageName = coverageName.toString();
+        // get the coverage definition for this variable, at this stage this exists otherwise we would have skipped it!
+        final Coverage coverage = ancillaryFileManager.coveragesMapping.get(_coverageName);
+        
+        // now check the schema creation
+        SchemaType schema = coverage.getSchema();
+        String schemaDef=schema!=null?schema.getAttributes():null;
+        
+        // no schema was defined yet, let's create a default one
+        if (schema == null||schema.getAttributes()==null) {
+            // TODO incapsulate in coveragedescriptor
+            schemaDef = suggestSchemaFromCoordinateSystem(coverage, coordinateSystem);
+            
+            //set the schema name to be the coverageName
+            ancillaryFileManager.setSchema(coverage,coverage.getName(),schemaDef);   
+            schema = coverage.getSchema();
+        } 
+        
+        // create featuretype, the name is the CoverageName
+        final SimpleFeatureType indexSchema = UnidataUtilities.createFeatureType(coverage.getName(),schemaDef,UnidataCRSUtilities.WGS84);
+        
+        // create 
+        forceSchemaCreation(indexSchema);
+        
+        // return
+        return indexSchema;
     }
+
+    /**
+     * @param coverage
+     * @param cs
+     * @return
+     * @throws SchemaException 
+     */
+    String suggestSchemaFromCoordinateSystem(Coverage coverage, CoordinateSystem cs) throws SchemaException {
+
+        // init with base
+        String schemaAttributes = CoverageSlice.Attributes.BASE_SCHEMA;
+
+        // check other dimensions
+        for (CoordinateAxis axis:cs.getCoordinateAxes()) {
+            // get from coordinate vars
+            final CoordinateVariable<?> cv = coordinatesVariables.get(axis.getFullName()); 
+            final String name = cv.getName();
+            switch(cv.getAxisType()){
+            case GeoX: case GeoY: case Lat: case Lon:
+                continue;
+            }
+            schemaAttributes+=("," + name + ":" + cv.getType().getName());
+        }
+        return schemaAttributes;
+    }
+  
 }

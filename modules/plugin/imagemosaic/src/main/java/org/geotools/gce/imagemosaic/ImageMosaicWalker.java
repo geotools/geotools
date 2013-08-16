@@ -1161,10 +1161,16 @@ public class ImageMosaicWalker implements Runnable {
                 }
 
                 // property names
-                final String regex = DefaultPropertiesCollectorSPI.REGEX_PREFIX + collector.getValue();
+                String collectorValue = collector.getValue();
+                final String config;
+                if(!collectorValue.startsWith(DefaultPropertiesCollectorSPI.REGEX_PREFIX)) {
+                    config = DefaultPropertiesCollectorSPI.REGEX_PREFIX + collector.getValue();
+                } else {
+                    config = collector.getValue();
+                }
 
                 // create the PropertiesCollector
-                final PropertiesCollector pc = selectedSPI.create(regex, Arrays.asList(collector.getMapped()));
+                final PropertiesCollector pc = selectedSPI.create(config, Arrays.asList(collector.getMapped()));
                 if (pc != null) {
                     pcs.add(pc);
                 } else {

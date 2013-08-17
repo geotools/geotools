@@ -17,6 +17,7 @@
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -56,7 +57,7 @@ public class ZipUtil {
         new FileInputStream(filenames[i])    
       );
       
-      ZipEntry entry = new ZipEntry(StringUtil.stripPath(archFilenames[i]));
+      ZipEntry entry = new ZipEntry(new File(archFilenames[i]).getName());
       zout.putNextEntry(entry);
 
       while ((bc = fin.read(data, 0, 512)) != -1) {

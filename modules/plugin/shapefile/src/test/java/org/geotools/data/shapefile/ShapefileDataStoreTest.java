@@ -646,6 +646,45 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     }
     
     @Test
+    public void testCreateSchemaWithPolarStereographics() throws Exception {
+        File file = new File("test.shp");
+        URL toURL = file.toURI().toURL();
+        ShapefileDataStore ds = new ShapefileDataStore(toURL);
+        SimpleFeatureType featureType = DataUtilities.createType("test", "geom:MultiPolygon:srid=3031");
+        CoordinateReferenceSystem crs = featureType.getGeometryDescriptor().getCoordinateReferenceSystem(); 
+        assertNotNull( crs );
+        
+        ds.createSchema(featureType);
+        
+        assertEquals("test", ds.getSchema().getTypeName());
+
+        CoordinateReferenceSystem crs2 = ds.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem();
+        assertNotNull( crs2 );
+        assertEquals( crs.getName().getCode(), crs2.getName().getCode() );
+        ds.dispose();
+        
+        file.deleteOnExit();
+        file = new File("test.dbf");
+        file.deleteOnExit();
+        file = new File("test.shp");
+        file.deleteOnExit();
+
+        file = new File("test.prj");
+        if (file.exists())
+            file.deleteOnExit();
+
+        file = new File("test.shx");
+        if (file.exists()){
+            file.deleteOnExit();
+        }
+        
+        file = new File("test.prj");
+        if( file.exists()){
+            file.deleteOnExit();
+        }
+    }
+    
+    @Test
     public void testForceCRS() throws Exception {
         File file = new File("test.shp");
         URL toURL = file.toURI().toURL();

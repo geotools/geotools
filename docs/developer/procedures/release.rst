@@ -72,27 +72,22 @@ If you are cutting the first RC of a series, create the stable branch
 
 When creating the first release candidate of a series some extra steps need to be taken care of:
 
-  * check out locally the master branch, make sure it's up to date
-  * create the new stable branch and push it to GitHub (e.g., let's assume trunk as ``10-SNAPSHOT`` and that the remote for the official GeoTools is called ``geotools``):
+* check out locally the master branch, make sure it's up to date
+* create the new stable branch and push it to GitHub (e.g., let's assume trunk as ``10-SNAPSHOT`` and that the remote for the official GeoTools is called ``geotools``)::
+
+      git checkout -b 10.x
+      git push geotools 10.x
+
+
+* checkout the master branch, update the version in all the pom.xml files (e.g., let's assume we need to switch from ``10-SNAPSHOT`` to ``11-SNAPSHOT``)::
     
-    
-.. code-block ::
-
-    git checkout -b 10.x
-    git push geotools 10.x
-
-
-  * checkout the master branch, update the version in all the pom.xml files (e.g., let's assume we need to switch from ``10-SNAPSHOT`` to ``11-SNAPSHOT``):
-    
-.. code-block ::
-    
-    git checkout master
-    find . -name pom.xml -exec sed -i 's/10-SNAPSHOT/11-SNAPSHOT/g' {} \;
-    git commit . -m "Updating version numbers to 11-SNAPSHOT"
-    git push geotools master
+      git checkout master
+      find . -name pom.xml -exec sed -i 's/10-SNAPSHOT/11-SNAPSHOT/g' {} \;
+      git commit . -m "Updating version numbers to 11-SNAPSHOT"
+      git push geotools master
 
 
-  * Announce on the mailing list that the new stable branch has been created and that the feature freeze on master is over
+* Announce on the mailing list that the new stable branch has been created and that the feature freeze on master is over
 
 Build the Release
 -----------------

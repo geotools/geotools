@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.LayerDescription;
 import org.geotools.data.ows.Response;
@@ -45,24 +46,27 @@ public class DescribeLayerResponse extends Response {
     private LayerDescription[] layerDescs;
 
 
-    public DescribeLayerResponse( HTTPResponse httpResponse ) throws IOException, ServiceException {
+    public DescribeLayerResponse(HTTPResponse httpResponse) throws IOException, ServiceException {
         super(httpResponse);
-        
+
         try {
-	        Map hints = new HashMap();
-	        hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
-	
-	        Object object;
-			try {
-				InputStream inputStream = getInputStream();
-                                object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
-			} catch (SAXException e) {
-				throw (IOException) new IOException().initCause(e);
-			}
-	        
-	        layerDescs = (LayerDescription[]) object;
+            Map hints = new HashMap();
+            hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
+
+            Object object;
+            InputStream inputStream = null;
+            try {
+                inputStream = getInputStream();
+                object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
+            } catch (SAXException e) {
+                throw (IOException) new IOException().initCause(e);
+            } finally {
+                IOUtils.closeQuietly(inputStream);
+            }
+
+            layerDescs = (LayerDescription[]) object;
         } finally {
-        	dispose();
+            dispose();
         }
     }
 

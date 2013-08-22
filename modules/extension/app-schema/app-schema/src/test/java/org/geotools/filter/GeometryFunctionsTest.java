@@ -244,14 +244,41 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
 
     @Test
     /**
-     * Test ToLineString when it's successful.
+     * Test ToLineString with EPSG SRS.
      */
-    public void testToLineString() {
-        Function function = ff.function("toLineString", pointOne, pointTwo);
+    public void testToLineStringEPSG() {
+        Function function = ff.function("toLineString", ff.literal("EPSG:9902"), pointOne, pointTwo);
         Object value = function.evaluate(feature);
         assertTrue(value instanceof LineString);
         LineString linestring = (LineString) value;
         assertEquals(linestring.getDimension(), 1);
+        // 1D SRS should be created
+        CoordinateReferenceSystem crs = (CoordinateReferenceSystem) linestring.getUserData();
+        assertEquals(1, crs.getCoordinateSystem().getDimension());
+        assertEquals("EPSG:9902", crs.getName().getCode());
+        assertEquals(linestring.getCoordinateN(0).x, 5.0, 0);
+        assertEquals(linestring.getCoordinateN(0).y, Coordinate.NULL_ORDINATE, 0);
+        assertEquals(linestring.getCoordinateN(0).z, Coordinate.NULL_ORDINATE, 0);
+        assertEquals(linestring.getCoordinateN(1).x, 2.5, 0);
+        assertEquals(linestring.getCoordinateN(1).y, Coordinate.NULL_ORDINATE, 0);
+        assertEquals(linestring.getCoordinateN(1).z, Coordinate.NULL_ORDINATE, 0);
+    }
+    
+    @Test
+    /**
+     * Test ToLineString with non EPSG SRS.
+     */
+    public void testToLineStringCustomSRS() {
+        String customSRS = "#borehole.GA.1";
+        Function function = ff.function("toLineString", ff.literal(customSRS), pointOne, pointTwo);
+        Object value = function.evaluate(feature);
+        assertTrue(value instanceof LineString);
+        LineString linestring = (LineString) value;
+        assertEquals(linestring.getDimension(), 1);
+        // 1D SRS should be created
+        CoordinateReferenceSystem crs = (CoordinateReferenceSystem) linestring.getUserData();
+        assertEquals(1, crs.getCoordinateSystem().getDimension());
+        assertEquals(customSRS, crs.getName().getCode());
         assertEquals(linestring.getCoordinateN(0).x, 5.0, 0);
         assertEquals(linestring.getCoordinateN(0).y, Coordinate.NULL_ORDINATE, 0);
         assertEquals(linestring.getCoordinateN(0).z, Coordinate.NULL_ORDINATE, 0);
@@ -270,7 +297,7 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
             function.evaluate(feature);
             fail();
         } catch (IllegalArgumentException e) {
-            String msg = "Invalid parameters for toLineString function: [null, null]. Usage: toLineString(point 1, point 2)";
+            String msg = "Invalid parameters for toLineString function: [null, null]. Usage: toLineString(srsName, point 1, point 2)";
             assertEquals(msg, e.getMessage());
         }
     }
@@ -280,12 +307,12 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
      * Test ToLineString with invalid parameters.
      */
     public void testToLineStringInvalidParams() {
-        Function function = ff.function("toLineString", Literal.NIL, ff.literal("something"));
+        Function function = ff.function("toLineString", ff.literal("#GA.borehole.100"), Literal.NIL, ff.literal("something"));
         try {
             function.evaluate(feature);
             fail();
         } catch (IllegalArgumentException e) {
-            String msg = "Error converting the parameters for toLineString function: [Expression.NIL, something]. Usage: toLineString(point 1, point 2)";
+            String msg = "Error converting the parameters for toLineString function: [#GA.borehole.100, Expression.NIL, something]. Usage: toLineString(srsName, point 1, point 2)";
             assertEquals(msg, e.getMessage());
             assertTrue(e.getCause() instanceof NumberFormatException);
         }

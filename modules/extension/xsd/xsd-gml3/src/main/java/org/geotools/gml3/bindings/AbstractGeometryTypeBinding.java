@@ -20,6 +20,7 @@ import javax.xml.namespace.QName;
 
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml2.SrsSyntax;
+import org.geotools.gml2.bindings.GMLEncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.AbstractComplexBinding;
@@ -136,6 +137,10 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
         }
 
         if ("srsDimension".equals(name.getLocalPart())) {
+            if (GMLEncodingUtils.isEmpty(geometry)) {
+                return null;
+            }
+            
             //check if srsDimension is turned off
             if (config.hasProperty(GMLConfiguration.NO_SRS_DIMENSION)) {
                 return null;
@@ -165,6 +170,13 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
         // Refactor bindings or introduce a new one for GML 3.2
         if ("description".equals(name.getLocalPart())) {
             return GML3EncodingUtils.getDescription(geometry);
+        }   
+        if ("uomLabels".equals(name.getLocalPart())) {
+            return GML3EncodingUtils.getUomLabels(geometry);
+        }
+
+        if ("axisLabels".equals(name.getLocalPart())) {
+            return GML3EncodingUtils.getAxisLabels(geometry);
         }
 
         return null;

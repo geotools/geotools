@@ -416,7 +416,7 @@ public class GMLEncodingUtils {
         return null;
     }
     
-    private boolean isEmpty( Geometry geometry ) {
+    public static boolean isEmpty( Geometry geometry ) {
         if ( geometry.isEmpty() ) {
             //check for case of multi geometry, if it has > 0 goemetries 
             // we consider this to be not empty

@@ -100,6 +100,16 @@ public class GeometryBuilder {
     }
     
     /**
+     * Creates a 1D Point.
+     * 
+     * @param x the X ordinate
+     * @return a Point
+     */
+    public Point point(double x) {
+        return geomFact.createPoint(createCS(new double[] { x }, 1));
+    }
+    
+    /**
      * Creates a 2D Point.
      * 
      * @param x the X ordinate

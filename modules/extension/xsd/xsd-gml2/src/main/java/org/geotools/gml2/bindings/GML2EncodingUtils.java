@@ -125,7 +125,11 @@ public class GML2EncodingUtils {
 
             return srsSyntax.getPrefix() + code;
         }
-
+        
+        // allow for non epsg codes to be encoded
+        if (crs != null && !crs.getIdentifiers().isEmpty()) {
+            return crs.getIdentifiers().iterator().next().getCode();
+        }
         return null;
     }
 

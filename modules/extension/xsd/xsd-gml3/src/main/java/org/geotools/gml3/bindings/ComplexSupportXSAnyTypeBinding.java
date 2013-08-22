@@ -41,6 +41,7 @@ import org.geotools.xs.XS;
 import org.geotools.xs.bindings.XSAnyTypeBinding;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -199,6 +200,33 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                              */
                             if (property instanceof ComplexAttribute) {
                                 properties.add(new Object[] { substitutedChildParticle, property });
+                            } else if (property instanceof GeometryAttribute) {
+                                Object attType = complex.getType().getUserData()
+                                        .get(XSDTypeDefinition.class);
+                                boolean duplicate = false;
+                                // handle substitution group for geometries too, but make sure
+                                // it's not already handled in BindingPropertyExtractor
+                                // otherwise it would be encoded as xlink:href as the id has already
+                                // been seen
+                                if (attType != null && attType instanceof XSDTypeDefinition) {
+                                    XSDTypeDefinition attTypeDef = (XSDTypeDefinition) attType;
+                                    for (XSDParticle attChild : (List<XSDParticle>) Schemas
+                                            .getChildElementParticles(attTypeDef, true)) {
+                                        XSDElementDeclaration childEl = (XSDElementDeclaration) attChild
+                                                .getContent();
+                                        if (childEl.isElementDeclarationReference()) {
+                                            childEl = childEl.getResolvedElementDeclaration();
+                                        }
+                                        if (childEl.equals(e)) {
+                                            duplicate = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (!duplicate) {
+                                    properties.add(new Object[] { substitutedChildParticle,
+                                            property.getValue() });
+                                }
                             }
                         }
                     }

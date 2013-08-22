@@ -284,26 +284,29 @@ public class FeatureTypeMapping {
         // @attName or propA/propB@attName
         if (candidates.size() == 0 && propertyName.size() > 0) {
             XPath.Step clientPropertyStep = (Step) propertyName.get(propertyName.size() - 1);
-            Name clientPropertyName = Types.toTypeName(clientPropertyStep.getName());
-            XPath.StepList parentPath;
+            if (clientPropertyStep.isXmlAttribute()) {
+                Name clientPropertyName = Types.toTypeName(clientPropertyStep.getName());
+                XPath.StepList parentPath;
 
-            if (propertyName.size() == 1) {
-                parentPath = XPath.rootElementSteps(this.target, this.namespaces);
-            } else {  
-                parentPath = new XPath.StepList(propertyName);
-                parentPath.remove(parentPath.size() - 1);
-            }
+                if (propertyName.size() == 1) {
+                    parentPath = XPath.rootElementSteps(this.target, this.namespaces);
+                } else {
+                    parentPath = new XPath.StepList(propertyName);
+                    parentPath.remove(parentPath.size() - 1);
+                }
 
-            candidates = getAttributeMappingsIgnoreIndex(parentPath);
-            expressions = getClientPropertyExpressions(candidates, clientPropertyName, parentPath);
-            if (expressions.isEmpty()) {
-                // this might be a wrapper mapping for another complex mapping
-                // look for the client properties there
-                FeatureTypeMapping inputMapping = getUnderlyingComplexMapping();
-                if (inputMapping != null) {
-                    return getClientPropertyExpressions(inputMapping
-                            .getAttributeMappingsIgnoreIndex(parentPath), clientPropertyName,
-                            parentPath);
+                candidates = getAttributeMappingsIgnoreIndex(parentPath);
+                expressions = getClientPropertyExpressions(candidates, clientPropertyName,
+                        parentPath);
+                if (expressions.isEmpty()) {
+                    // this might be a wrapper mapping for another complex mapping
+                    // look for the client properties there
+                    FeatureTypeMapping inputMapping = getUnderlyingComplexMapping();
+                    if (inputMapping != null) {
+                        return getClientPropertyExpressions(
+                                inputMapping.getAttributeMappingsIgnoreIndex(parentPath),
+                                clientPropertyName, parentPath);
+                    }
                 }
             }
         }

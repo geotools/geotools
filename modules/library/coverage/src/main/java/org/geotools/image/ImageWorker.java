@@ -2748,10 +2748,6 @@ public class ImageWorker {
             }
         }  
         
-        // do we have a writer?
-        if(writer==null){
-            throw new IllegalStateException("Unable to find a valid PNG Encoder!");
-        }
         LOGGER.fine("Using ImageIO Writer with SPI: "+originatingProvider.getClass().getCanonicalName());
 
         // Getting a stream.

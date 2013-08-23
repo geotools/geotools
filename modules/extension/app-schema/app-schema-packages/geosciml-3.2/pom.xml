@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geotools.schemas</groupId>
+	<artifactId>geosciml-3.2</artifactId>
+	<version>3.2.0-1</version>
+	<name>Geoscience Markup Language (GeoSciML) 3.0 application schema</name>
+	<scm>
+		<connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/geosciml-3.2/</connection>
+		<url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/geosciml-3.2/</url>
+	</scm>
+	<developers>
+		<developer>
+			<name>Rini Angreani</name>
+			<id>riniangreani</id>
+			<email>Rini.Angreani@csiro.au</email>
+			<organization>CSIRO Earth Science and Resource Engineering </organization>
+			<roles>
+				<role>Schema Packager</role>
+			</roles>
+			<timezone>8</timezone>
+		</developer>
+	</developers>
+	<dependencies>
+		<dependency>
+			<groupId>org.geotools.schemas</groupId>
+			<artifactId>gml-3.2</artifactId>
+			<version>3.2.1-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools.schemas</groupId>
+			<artifactId>sweCommon-2.0</artifactId>
+			<version>2.0-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools.schemas</groupId>
+			<artifactId>samplingSpatial-2.0</artifactId>
+			<version>2.0-1</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>1.0-beta-7</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<configuration>
+							<tasks>
+								<property name="srcdir" value="http://schemas.geosciml.org" />
+								<property name="destdir"
+									value="${project.build.outputDirectory}/org/geosciml/schemas" />
+								<mkdir dir="${destdir}/borehole/3.2/" />
+								<mkdir dir="${destdir}/cgiutilities/3.2/" />
+								<mkdir dir="${destdir}/collection/3.2/" />
+								<mkdir dir="${destdir}/earthmaterial/3.2/" />
+								<mkdir dir="${destdir}/geologicage/3.2/" />
+								<mkdir dir="${destdir}/geologicstructure/3.2/" />
+								<mkdir dir="${destdir}/geologicunit/3.2/" />
+								<mkdir dir="${destdir}/geomorphology/3.2/" />
+								<mkdir dir="${destdir}/geosciml/3.2/" />
+								<mkdir dir="${destdir}/geosciml-core/3.2/" />
+								<mkdir dir="${destdir}/geotime/3.2/" />
+								<mkdir dir="${destdir}/laboratoryanalysis-specimen/3.2/" />
+								<mkdir dir="${destdir}/physicalproperties/3.2/" />
+								<mkdir dir="${destdir}/temporalreferencesystem/3.2/" />
+								<get src="${srcdir}/borehole/3.2/borehole.xsd" dest="${destdir}/borehole/3.2/borehole.xsd" />
+								<get src="${srcdir}/cgiutilities/3.2/cgiUtilities.xsd" dest="${destdir}/cgiutilities/3.2/cgiUtilities.xsd" />
+								<get src="${srcdir}/collection/3.2/collection.xsd" dest="${destdir}/collection/3.2/collection.xsd" />
+								<get src="${srcdir}/earthmaterial/3.2/earthMaterial.xsd"
+									dest="${destdir}/earthmaterial/3.2/earthMaterial.xsd" />
+								<get src="${srcdir}/geologicage/3.2/geologicAge.xsd" dest="${destdir}/geologicage/3.2/geologicAge.xsd" />
+								<get src="${srcdir}/geologicstructure/3.2/geologicStructure.xsd"
+									dest="${destdir}/geologicstructure/3.2/geologicStructure.xsd" />
+								<get src="${srcdir}/geologicunit/3.2/geologicUnit.xsd" dest="${destdir}/geologicunit/3.2/geologicUnit.xsd" />
+								<get src="${srcdir}/geomorphology/3.2/geomorphology.xsd"
+									dest="${destdir}/geomorphology/3.2/geomorphology.xsd" />
+								<get src="${srcdir}/geosciml/3.2/geosciml.xsd" dest="${destdir}/geosciml/3.2/geosciml.xsd" />
+								<get src="${srcdir}/geosciml-core/3.2/geosciml-core.xsd"
+									dest="${destdir}/geosciml-core/3.2/geosciml-core.xsd" />
+								<get src="${srcdir}/geosciml-core/3.2/geologicFeature.xsd"
+									dest="${destdir}/geosciml-core/3.2/geologicFeature.xsd" />
+								<get src="${srcdir}/geosciml-core/3.2/geologicRelation.xsd"
+									dest="${destdir}/geosciml-core/3.2/geologicRelation.xsd" />
+								<get src="${srcdir}/laboratoryanalysis-specimen/3.2/dating.xsd"
+									dest="${destdir}/laboratoryanalysis-specimen/3.2/dating.xsd" />
+								<get
+									src="${srcdir}/laboratoryanalysis-specimen/3.2/geologicSpecimen.xsd"
+									dest="${destdir}/laboratoryanalysis-specimen/3.2/geologicSpecimen.xsd" />
+								<get
+									src="${srcdir}/laboratoryanalysis-specimen/3.2/laboratoryAnalysis.xsd"
+									dest="${destdir}/laboratoryanalysis-specimen/3.2//aboratoryAnalysis.xsd" />
+								<get
+									src="${srcdir}/laboratoryanalysis-specimen/3.2/laboratoryAnalysis-Specimen.xsd"
+									dest="${destdir}/laboratoryanalysis-specimen/3.2/aboratoryAnalysis-Specimen.xsd" />
+								<get src="${srcdir}/physicalproperties/3.2/physicalProperties.xsd"
+									dest="${destdir}/physicalproperties/3.2/physicalProperties.xsd" />
+								<get src="${srcdir}/temporalreferencesystem/3.2/trs.xsd"
+									dest="${destdir}/temporalreferencesystem/3.2/trs.xsd" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

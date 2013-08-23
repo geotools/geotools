@@ -1,90 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-    <modelVersion>4.0.0</modelVersion>
-
-    <groupId>org.geotools.schemas</groupId>
-    <artifactId>samplingSpatial-2.0</artifactId>
-    <version>2.0-1</version>
-    <name>SpatialSamplingFeature.xsd Observations and Measurements - schema</name>
-
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/samplingSpatial-2.0/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/samplingSpatial-2.0/</url>
-    </scm>
-
-    <developers>
-        <developer>
-           <name>Rini Angreani</name>
-            <id>riniangreani</id>
-            <email>Rini.Angreani@csiro.au</email>
-            <organization>CSIRO Earth Science and Resource Engineering </organization>
-            <roles>
-                <role>Schema Packager</role>
-            </roles>
-            <timezone>8</timezone>
-        </developer>
-    </developers>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.geotools.schemas</groupId>
-            <artifactId>gml-3.2</artifactId>
-            <version>3.2.1-1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools.schemas</groupId>
-            <artifactId>om-2.0</artifactId>
-            <version>2.0.0-1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools.schemas</groupId>
-            <artifactId>sampling-2.0</artifactId>
-            <version>2.0.0-1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools.schemas</groupId>
-            <artifactId>iso-19139-2007</artifactId>
-            <version>1.0.0-1</version>
-        </dependency>
-    </dependencies>
-
-    <build>
-
-        <plugins>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <tasks>
-                                <property name="srcdir" value="http://schemas.opengis.net/samplingSpatial/2.0" />
-                                <property name="destdir"
-                                    value="${project.build.outputDirectory}/net/opengis/schemas/samplingSpatial/2.0" />
-                                <mkdir dir="${destdir}" />
-                                <get src="${srcdir}/spatialSamplingFeature.xsd" dest="${destdir}/spatialSamplingFeature.xsd" />
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-        </plugins>
-
-    </build>
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geotools.schemas</groupId>
+	<artifactId>samplingSpatial-2.0</artifactId>
+	<version>2.0-1</version>
+	<name>SpatialSamplingFeature.xsd Observations and Measurements - schema</name>
+	<scm>
+		<connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/samplingSpatial-2.0/</connection>
+		<url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/samplingSpatial-2.0/</url>
+	</scm>
+	<developers>
+		<developer>
+			<name>Rini Angreani</name>
+			<id>riniangreani</id>
+			<email>Rini.Angreani@csiro.au</email>
+			<organization>CSIRO Earth Science and Resource Engineering </organization>
+			<roles>
+				<role>Schema Packager</role>
+			</roles>
+			<timezone>8</timezone>
+		</developer>
+	</developers>
+	<dependencies>
+		<dependency>
+			<groupId>org.geotools.schemas</groupId>
+			<artifactId>gml-3.2</artifactId>
+			<version>3.2.1-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools.schemas</groupId>
+			<artifactId>om-2.0</artifactId>
+			<version>2.0.0-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools.schemas</groupId>
+			<artifactId>sampling-2.0</artifactId>
+			<version>2.0.0-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools.schemas</groupId>
+			<artifactId>iso-19139-2007</artifactId>
+			<version>1.0.0-1</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>1.0-beta-7</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<configuration>
+							<tasks>
+								<property name="srcdir" value="http://schemas.opengis.net/samplingSpatial/2.0"/>
+								<property name="destdir" value="${project.build.outputDirectory}/net/opengis/schemas/samplingSpatial/2.0"/>
+								<mkdir dir="${destdir}"/>
+								<get src="${srcdir}/spatialSamplingFeature.xsd" dest="${destdir}/spatialSamplingFeature.xsd"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

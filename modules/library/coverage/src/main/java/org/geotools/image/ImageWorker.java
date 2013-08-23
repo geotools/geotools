@@ -2744,7 +2744,7 @@ public class ImageWorker {
         if(memOutStream==null){
             throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,"stream"));        
         }
-        if (originatingProvider.getClass().equals(CLIB_PNG_IMAGE_WRITER_SPI.getClass()))
+        if (CLIB_PNG_IMAGE_WRITER_SPI!=null&&originatingProvider.getClass().equals(CLIB_PNG_IMAGE_WRITER_SPI.getClass()))
         {
             // Compressing with native.
             LOGGER.fine("Writer is native");

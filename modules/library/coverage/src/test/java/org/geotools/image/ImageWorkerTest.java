@@ -453,7 +453,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         
         // create random data
         WritableRaster data = com.sun.media.jai.codecimpl.util.RasterFactory.createWritableRaster(
-        		icm.createCompatibleSampleModel(512,152), 
+        		icm.createCompatibleSampleModel(32,32), 
         		new Point(0,0));
         for(int x=data.getMinX();x<data.getMinX()+data.getWidth();x++){
         	for(int y=data.getMinY();y<data.getMinY()+data.getHeight();y++){

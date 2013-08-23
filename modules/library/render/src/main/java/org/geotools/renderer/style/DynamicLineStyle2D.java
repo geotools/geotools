@@ -142,7 +142,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
         SLDStyleFactory fac = new SLDStyleFactory();
 
         if (gr != null) {
-            contourPaint = fac.getTexturePaint(ls, gr, feature);
+            contourPaint = fac.getTexturePaint(gr, feature, ls);
         }
 
         return contourPaint;

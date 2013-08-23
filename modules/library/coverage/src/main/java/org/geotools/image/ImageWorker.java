@@ -2768,22 +2768,22 @@ public class ImageWorker {
         }
         LOGGER.fine("About to write png image");
         try{
-	        writer.setOutput(memOutStream);
-	        writer.write(null, new IIOImage(image, null, null), iwp);
+                writer.setOutput(memOutStream);
+                writer.write(null, new IIOImage(image, null, null), iwp);
         }
         finally{
-        	try{
-        		writer.dispose();
-        	}catch (Throwable e) {
-        		if(LOGGER.isLoggable(Level.FINEST))
-					LOGGER.log(Level.FINEST,e.getLocalizedMessage(),e);
-			}
-        	try{
-        		memOutStream.close();
-        	}catch (Throwable e) {
-        		if(LOGGER.isLoggable(Level.FINEST))
-					LOGGER.log(Level.FINEST,e.getLocalizedMessage(),e);
-			}        	
+                try{
+                        writer.dispose();
+                }catch (Throwable e) {
+                        if(LOGGER.isLoggable(Level.FINEST))
+                                        LOGGER.log(Level.FINEST,e.getLocalizedMessage(),e);
+                        }
+                try{
+                        memOutStream.close();
+                }catch (Throwable e) {
+                        if(LOGGER.isLoggable(Level.FINEST))
+                                        LOGGER.log(Level.FINEST,e.getLocalizedMessage(),e);
+                        }               
             
             
         }

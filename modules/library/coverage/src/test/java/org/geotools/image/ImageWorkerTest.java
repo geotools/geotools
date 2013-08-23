@@ -440,6 +440,46 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
     
     @Test
+    public void test16BitGIF() throws Exception {
+        // the resource has been compressed since the palette is way larger than the image itself, 
+        // and the palette does not get compressed
+        InputStream gzippedStream = ImageWorkerTest.class.getResource("test-data/sf-sfdem.tif.gz").openStream();
+        GZIPInputStream is = new GZIPInputStream(gzippedStream);
+        try {
+            ImageInputStream iis = ImageIO.createImageInputStream(is);
+            ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
+            reader.setInput(iis);
+            BufferedImage bi = reader.read(0);
+            if(TestData.isInteractiveTest()){
+                ImageIOUtilities.visualize(bi,"before");
+            }
+            reader.dispose();
+            iis.close();
+            IndexColorModel icm = (IndexColorModel) bi.getColorModel();
+            assertEquals(65536, icm.getMapSize());
+            
+            final File outFile = TestData.temp(this, "temp.gif");
+            ImageWorker worker = new ImageWorker(bi);
+            worker.writeGIF(outFile, "LZW", 0.75f);
+
+            // Read it back.
+            bi=ImageIO.read(outFile);
+            if(TestData.isInteractiveTest()){
+                ImageIOUtilities.visualize(bi,"after");
+            }
+            ColorModel cm = bi.getColorModel();
+            assertTrue("wrong color model", cm instanceof IndexColorModel);
+            assertEquals("wrong transparency model", Transparency.OPAQUE, cm.getTransparency());
+            final IndexColorModel indexColorModel = (IndexColorModel)cm;
+            assertEquals("wrong transparent color index", -1, indexColorModel.getTransparentPixel());
+            assertEquals("wrong component size", 8, indexColorModel.getComponentSize(0));
+            outFile.delete();
+        } finally {
+            is.close();
+        }
+    }
+    
+    @Test
     public void test16BitPNG() throws Exception {
         // the resource has been compressed since the palette is way larger than the image itself, 
         // and the palette does not get compressed
@@ -450,6 +490,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
             reader.setInput(iis);
             BufferedImage bi = reader.read(0);
+            reader.dispose();
+            iis.close();
             IndexColorModel icm = (IndexColorModel) bi.getColorModel();
             assertEquals(65536, icm.getMapSize());
             
@@ -464,6 +506,20 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             // we expect a RGB one
             ComponentColorModel ccm = (ComponentColorModel) back.getColorModel();
             assertEquals(3, ccm.getNumColorComponents());
+            
+            
+            // now ask to write paletted
+            worker = new ImageWorker(bi);
+            worker.writePNG(outFile, "FILTERED", 0.75f, true, true);
+            worker.dispose();
+            
+            // make sure we can read it 
+            back = ImageIO.read(outFile);
+            
+            // we expect a RGB one
+            icm =  (IndexColorModel) back.getColorModel();
+            assertEquals(3, icm.getNumColorComponents());
+            assertEquals(256, icm.getMapSize());  
         } finally {
             is.close();
         }

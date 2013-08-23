@@ -54,6 +54,7 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ImageOutputStreamSpi;
 import javax.imageio.spi.ImageWriterSpi;
 import javax.imageio.stream.ImageOutputStream;
@@ -2717,23 +2718,36 @@ public class ImageWorker {
                 }
                 
                 // let me check if the native writer can encode this image (paranoiac checks this was already performed by the ImageIO search
-                if(!originatingProvider.canEncodeImage(new ImageTypeSpecifier(image))){
-                    LOGGER.fine("The following encoder cannot encode this image: "+originatingProvider.getClass().getCanonicalName());
-                    
-                    // kk, last resort reformat the image
-                    forceComponentColorModel(true, true);
-                    rescaleToBytes();
-                    if(!originatingProvider.canEncodeImage(image)){
-                        LOGGER.severe("Unable to find a valid PNG Encoder!");
-                    }
-                }                
+                if(originatingProvider.canEncodeImage(new ImageTypeSpecifier(image))){
+                    break; // leave loop
+                }   
+                
+                // clean
+                writer=null;
+                originatingProvider=null;
             }
         }
         
-        // do we have a writer?
+        // ok, last resort use the JDK one and reformat the image
         if(writer==null){
-            throw new IllegalStateException("Unable to find a valid PNG Encoder!");
-        }
+            List providers = com.sun.media.imageioimpl.common.ImageUtil.getJDKImageReaderWriterSPI(
+                    IIORegistry.getDefaultInstance(), 
+                    "PNG",
+                    false);
+            if(providers==null||providers.isEmpty()){
+                throw new IllegalStateException("Unable to find JDK Png encoder!");
+            }
+            originatingProvider=(ImageWriterSpi) providers.get(0);
+            writer=originatingProvider.createWriterInstance();
+            
+            // kk, last resort reformat the image
+            forceComponentColorModel(true, true);
+            rescaleToBytes();
+            if(!originatingProvider.canEncodeImage(image)){
+                throw new IllegalArgumentException("Unable to find a valid PNG Encoder! And believe me, we tried hard!");
+            }
+        }  
+        
         LOGGER.fine("Using ImageIO Writer with SPI: "+originatingProvider.getClass().getCanonicalName());
 
         // Getting a stream.
@@ -2768,22 +2782,22 @@ public class ImageWorker {
         }
         LOGGER.fine("About to write png image");
         try{
-	        writer.setOutput(memOutStream);
-	        writer.write(null, new IIOImage(image, null, null), iwp);
+                writer.setOutput(memOutStream);
+                writer.write(null, new IIOImage(image, null, null), iwp);
         }
         finally{
-        	try{
-        		writer.dispose();
-        	}catch (Throwable e) {
-        		if(LOGGER.isLoggable(Level.FINEST))
-					LOGGER.log(Level.FINEST,e.getLocalizedMessage(),e);
-			}
-        	try{
-        		memOutStream.close();
-        	}catch (Throwable e) {
-        		if(LOGGER.isLoggable(Level.FINEST))
-					LOGGER.log(Level.FINEST,e.getLocalizedMessage(),e);
-			}        	
+                try{
+                        writer.dispose();
+                }catch (Throwable e) {
+                        if(LOGGER.isLoggable(Level.FINEST))
+                                        LOGGER.log(Level.FINEST,e.getLocalizedMessage(),e);
+                        }
+                try{
+                        memOutStream.close();
+                }catch (Throwable e) {
+                        if(LOGGER.isLoggable(Level.FINEST))
+                                        LOGGER.log(Level.FINEST,e.getLocalizedMessage(),e);
+                        }               
             
             
         }

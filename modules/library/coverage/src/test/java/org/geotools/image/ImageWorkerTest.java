@@ -440,60 +440,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
     
     @Test
-    public void test4BitPNG() throws Exception {
-
-        // create test image
-        IndexColorModel icm =new IndexColorModel(
-        		4, 
-        		16, 
-        		new byte[]{(byte)255,0,        0,        0,16,32,64,(byte)128,1,2,3,4,5,6,7,8}, 
-        		new byte[]{0,        (byte)255,0,        0,16,32,64,(byte)128,1,2,3,4,5,6,7,8}, 
-        		new byte[]{0,        0,        (byte)255,0,16,32,64,(byte)128,1,2,3,4,5,6,7,8});
-        assertEquals(16, icm.getMapSize());
-        
-        // create random data
-        WritableRaster data = com.sun.media.jai.codecimpl.util.RasterFactory.createWritableRaster(
-        		icm.createCompatibleSampleModel(32,32), 
-        		new Point(0,0));
-        for(int x=data.getMinX();x<data.getMinX()+data.getWidth();x++){
-        	for(int y=data.getMinY();y<data.getMinY()+data.getHeight();y++){
-        		data.setSample(x, y, 0, (x+y)%8);
-        	}
-        }
-        
-
-        final BufferedImage bi = new BufferedImage(
-        		icm,
-        		data,
-        		false,
-        		null);
-        assertEquals(16, ((IndexColorModel)bi.getColorModel()).getMapSize());
-        assertEquals(4, bi.getSampleModel().getSampleSize(0));
-        bi.setData(data);
-        if(TestData.isInteractiveTest()){
-        	ImageIOUtilities.visualize(bi,"before");
-        }
-        
-        // encode as png
-        ImageWorker worker = new ImageWorker(bi);
-        final File outFile = TestData.temp(this, "temp4.png");
-        worker.writePNG(outFile, "FILTERED", 0.75f, true, false);
-        worker.dispose();
-        
-        // make sure we can read it 
-        BufferedImage back = ImageIO.read(outFile);
-        
-        // we expect an IndexColorMolde one matching the old one
-        IndexColorModel ccm =  (IndexColorModel) back.getColorModel();
-        assertEquals(3, ccm.getNumColorComponents());
-        assertEquals(16, ccm.getMapSize());
-        assertEquals(4, ccm.getPixelSize());
-        if(TestData.isInteractiveTest()){
-        	ImageIOUtilities.visualize(back,"after");
-        }
-    }
-    
-    @Test
     public void test16BitPNG() throws Exception {
         // the resource has been compressed since the palette is way larger than the image itself, 
         // and the palette does not get compressed
@@ -520,6 +466,60 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             assertEquals(3, ccm.getNumColorComponents());
         } finally {
             is.close();
+        }
+    }
+    
+    @Test
+    public void test4BitPNG() throws Exception {
+
+        // create test image
+        IndexColorModel icm =new IndexColorModel(
+                        4, 
+                        16, 
+                        new byte[]{(byte)255,0,        0,        0,16,32,64,(byte)128,1,2,3,4,5,6,7,8}, 
+                        new byte[]{0,        (byte)255,0,        0,16,32,64,(byte)128,1,2,3,4,5,6,7,8}, 
+                        new byte[]{0,        0,        (byte)255,0,16,32,64,(byte)128,1,2,3,4,5,6,7,8});
+        assertEquals(16, icm.getMapSize());
+        
+        // create random data
+        WritableRaster data = com.sun.media.jai.codecimpl.util.RasterFactory.createWritableRaster(
+                        icm.createCompatibleSampleModel(32,32), 
+                        new Point(0,0));
+        for(int x=data.getMinX();x<data.getMinX()+data.getWidth();x++){
+                for(int y=data.getMinY();y<data.getMinY()+data.getHeight();y++){
+                        data.setSample(x, y, 0, (x+y)%8);
+                }
+        }
+        
+
+        final BufferedImage bi = new BufferedImage(
+                        icm,
+                        data,
+                        false,
+                        null);
+        assertEquals(16, ((IndexColorModel)bi.getColorModel()).getMapSize());
+        assertEquals(4, bi.getSampleModel().getSampleSize(0));
+        bi.setData(data);
+        if(TestData.isInteractiveTest()){
+                ImageIOUtilities.visualize(bi,"before");
+        }
+        
+        // encode as png
+        ImageWorker worker = new ImageWorker(bi);
+        final File outFile = TestData.temp(this, "temp4.png");
+        worker.writePNG(outFile, "FILTERED", 0.75f, true, false);
+        worker.dispose();
+        
+        // make sure we can read it 
+        BufferedImage back = ImageIO.read(outFile);
+        
+        // we expect an IndexColorMolde one matching the old one
+        IndexColorModel ccm =  (IndexColorModel) back.getColorModel();
+        assertEquals(3, ccm.getNumColorComponents());
+        assertEquals(16, ccm.getMapSize());
+        assertEquals(4, ccm.getPixelSize());
+        if(TestData.isInteractiveTest()){
+                ImageIOUtilities.visualize(back,"after");
         }
     }
     

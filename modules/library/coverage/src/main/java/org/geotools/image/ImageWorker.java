@@ -2679,8 +2679,8 @@ public class ImageWorker {
         // PNG does not support all kinds of index color models
         if(image.getColorModel() instanceof IndexColorModel) {
             IndexColorModel icm = (IndexColorModel) image.getColorModel();
-            // PNG supports up to 256 colors, beyond that we have to expand to RGB 
-            if(icm.getMapSize() > 256) {
+            // PNG writer only supports 8 bit palette 
+            if(!isBytes()) {
                 forceComponentColorModel(true, true);
                 rescaleToBytes();
             }
@@ -2755,8 +2755,10 @@ public class ImageWorker {
             // Define compression mode
             iwp.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
         }
-        if(LOGGER.isLoggable(Level.FINER))
-			LOGGER.finer("About to write png image");
+        if(LOGGER.isLoggable(Level.FINER)) {
+            LOGGER.finer("About to write png image");
+            LOGGER.finer("Color Model: " + image.getColorModel().toString());
+        }
         try{
 	        writer.setOutput(memOutStream);
 	        writer.write(null, new IIOImage(image, null, null), iwp);

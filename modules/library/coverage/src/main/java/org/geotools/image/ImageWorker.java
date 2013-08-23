@@ -2669,26 +2669,36 @@ public class ImageWorker {
             throws IOException
     {
         // Reformatting this image for PNG.
-        if (paletted && !(image.getColorModel() instanceof IndexColorModel)) {
+        final boolean hasPalette = image.getColorModel() instanceof IndexColorModel;
+        final boolean hasColorModel = hasPalette?false:image.getColorModel() instanceof ComponentColorModel;
+        if (paletted && !hasPalette) {
             // we have to reduce colors
             forceIndexColorModelForGIF(true);
-        } else if(!(image.getColorModel() instanceof ComponentColorModel) && !(image.getColorModel() instanceof IndexColorModel)) {
-            // png supports gray, rgb, rgba and paletted 8 bit, but not, for example, double and float values, or 16 bits palettes
-            forceComponentColorModel();
+        } else {
+            if(!hasColorModel && !hasPalette) {
+                if(LOGGER.isLoggable(Level.FINER)){
+                    LOGGER.fine("Forcing input image to be compatible with PNG: No palette, no component color model");
+                }
+                // png supports gray, rgb, rgba and paletted 8 bit, but not, for example, double and float values, or 16 bits palettes
+                forceComponentColorModel();
+            }
         }
         
         // PNG does not support all kinds of index color models
-        if(image.getColorModel() instanceof IndexColorModel) {
+        if(hasPalette) {
             IndexColorModel icm = (IndexColorModel) image.getColorModel();
             // PNG supports palettes with up to 256 colors, beyond that we have to expand to RGB 
             if(icm.getMapSize() > 256) {
+                if(LOGGER.isLoggable(Level.FINER)){
+                    LOGGER.fine("Forcing input image to be compatible with PNG: Palette with > 256 color is not supported.");
+                }
                 forceComponentColorModel(true, true);
                 rescaleToBytes();
             }
         }        
         
         if(LOGGER.isLoggable(Level.FINER)){
-            LOGGER.finer("Encoded input image for png writer");
+            LOGGER.fine("Encoded input image for png writer");
         }
 
         // Getting a writer.
@@ -2708,14 +2718,14 @@ public class ImageWorker {
                     LOGGER.fine("The ImageIO PNG native encode cannot encode this image!");
                 }
             }else{
-                LOGGER.fine("Unable to use Native ImageIO PNG writer");
+                LOGGER.fine("Unable to use Native ImageIO PNG writer.");
             }
         }
 
-        // other writers
+        // move on with the writer quest
         if(!nativeAcc||writer==null){
 
-            final Iterator<ImageWriter> it = ImageIO.getImageWritersByFormatName("PNG");
+            final Iterator<ImageWriter> it = ImageIO.getImageWriters(new ImageTypeSpecifier(image),"PNG");
             if (!it.hasNext()) {
                 throw new IllegalStateException(Errors.format(ErrorKeys.NO_IMAGE_WRITER));
             }
@@ -2727,21 +2737,29 @@ public class ImageWorker {
                         originatingProvider.getClass().equals(IMAGEIO_PNG_IMAGE_WRITER_SPI.getClass())){
                     if(it.hasNext()){
                         writer = it.next();
+                        originatingProvider = writer.getOriginatingProvider();
                     }else{
-                        LOGGER.fine("Unable to use PNG writer different than ImageIO one");
+                        LOGGER.fine("Unable to use PNG writer different than ImageIO CLib one");
                     }
                 }
                 
-                // let me check if the native writer can encode this image
+                // let me check if the native writer can encode this image (paranoiac checks this was already performed by the ImageIO search
                 if(!originatingProvider.canEncodeImage(image)){
-                    LOGGER.fine("The following encode cannot encode this image: "+originatingProvider.getClass().getCanonicalName());
+                    LOGGER.fine("The following encoder cannot encode this image: "+originatingProvider.getClass().getCanonicalName());
+                    
+                    // kk, last resort reformat the image
+                    forceComponentColorModel(true, true);
+                    rescaleToBytes();
+                    if(!originatingProvider.canEncodeImage(image)){
+                        LOGGER.severe("Unable to find a valid PNG Encoder!");
+                    }
                 }                
             }
         }
         
         // do we have a writer?
         if(writer==null){
-            throw new IllegalStateException("Unable to create PNG Encoder!");
+            throw new IllegalStateException("Unable to find a valid PNG Encoder!");
         }
         LOGGER.fine("Using ImageIO Writer with SPI: "+originatingProvider.getClass().getCanonicalName());
 

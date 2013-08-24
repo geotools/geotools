@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                                 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.geotools</groupId>
+        <artifactId>unsupported</artifactId>
+        <version>10-SNAPSHOT</version>
+    </parent>
+  
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+    <groupId>org.geotools</groupId>
+    <artifactId>gt-netcdf</artifactId>
+    <packaging>jar</packaging>
+    <name>NetCDF Coverage Store</name>
+
+    <scm>
+        <connection>
+            scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/netcdf/
+        </connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/netcdf/</url>
+    </scm>
+
+    <description>
+	  Datasource created to read NetCDF format. 
+    </description>
+  
+    <licenses>
+        <license>
+            <name>Lesser General Public License (LGPL)</name>
+            <url>http://www.gnu.org/copyleft/lesser.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+	
+	
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+    <developers>
+        <developer>
+            <id>geocent-yancy</id>
+            <name>Yancy Matherne</name>
+            <email>yancy.matherne@geocent.com</email>
+            <organization>Geocent</organization>
+            <roles>
+                <role>Module Maintainer</role>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+ 
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                    -->
+  <!-- =========================================================== --> 
+    <properties>
+		<netcdf.version>4.2-min</netcdf.version>
+		<joda-time.version>1.5.2</joda-time.version>
+        <slf4j.version>1.5.8</slf4j.version>
+        <junit.version>4.10</junit.version>
+    </properties>
+  
+    <dependencies>
+		<dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-coverage</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-geometry</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-opengis</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-xml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <!--  accept version from parent pom.  --> 
+        </dependency>
+        <dependency>
+            <groupId>edu.ucar</groupId>
+            <artifactId>netcdf</artifactId>
+            <!-- version in parent pom(2.2.20), this project uses 4.2-min. -->
+            <version>${netcdf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <!-- no version specified in parent pom. -->
+            <version>${joda-time.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <!-- no version specified in parent pom. -->
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <!--  accept version from parent pom.  --> 
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <!-- cannot accept version from parent pom(4.4), need Rule introduced in v4.7. -->
+            <scope>test</scope>
+        </dependency>
+        <!--  Logging system used by NetCDF. --> 
+        <!--  we were using slf4j-log4j12, revise to slf4j-jdk14 for consistency with GeoTools parent pom. --> 
+        <dependency>
+            <groupId>org.slf4j</groupId> 
+            <artifactId>slf4j-jdk14</artifactId> 
+            <!--  accept version from parent pom.  --> 
+            <scope>test</scope>
+        </dependency>        
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-epsg-hsql</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

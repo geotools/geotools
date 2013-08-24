@@ -445,13 +445,17 @@ public final class StyledShapePainter {
 
         // I suppose the image has been already scaled and its square
         double imageSize;
+        double graphicRotation = 0;
         if(graphicStroke instanceof MarkStyle2D) {
             imageSize = ((MarkStyle2D) graphicStroke).getSize();
+            graphicRotation = ((MarkStyle2D) graphicStroke).getRotation();
         } else if(graphicStroke instanceof IconStyle2D) {
             imageSize = ((IconStyle2D) graphicStroke).getIcon().getIconWidth();
+            graphicRotation = ((IconStyle2D) graphicStroke).getRotation();
         } else {
             GraphicStyle2D gs = (GraphicStyle2D) graphicStroke;
             imageSize = gs.getImage().getWidth() - gs.getBorder();
+            graphicRotation = ((GraphicStyle2D) graphicStroke).getRotation();
         }
 
         double[] first = new double[2];
@@ -527,7 +531,7 @@ public final class StyledShapePainter {
                                 + Math.sqrt((dx * dx) + (dy * dy)));
                     }
     
-                    double rotation = -(theta - (Math.PI / 2d));
+                    double rotation = -(theta - (Math.PI / 2d)) + graphicRotation;
                     double x = previous[0] + (Math.sin(theta) * remainder);
                     double y = previous[1] + (Math.cos(theta) * remainder);
     

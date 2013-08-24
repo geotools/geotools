@@ -21,16 +21,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Graphic;
+import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.NamedLayer;
+import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.TextSymbolizer;
 import org.geotools.xml.Parser;
 import org.opengis.style.ExternalGraphic;
 import org.xml.sax.EntityResolver;
@@ -117,6 +121,14 @@ public class SLDExampleTest extends TestCase {
         return new Parser(sld).parse(location);
     }
     
+    List validate(String filename) throws Exception {
+        SLDConfiguration sld = new SLDConfiguration();
+        InputStream location = getClass().getResourceAsStream(filename);
+        Parser p = new Parser(sld);
+        p.validate(location);
+        return p.getValidationErrors();
+    }
+    
     public void testParseSldWithExternalEntities() throws Exception {
         // this SLD file references as external entity a file on the local filesystem
         String file = "../example-textsymbolizer-externalentities.xml";
@@ -144,5 +156,42 @@ public class SLDExampleTest extends TestCase {
             fail("parsing should fail with a MalformedURLException because the EntityResolver blocked entity resolution");
         } catch (MalformedURLException e) {
         }        
+    }
+    
+    public void testParseValidateVendorOptions() throws Exception {
+        String file = "example-sld-vendor-option.xml";
+        StyledLayerDescriptor sld = (StyledLayerDescriptor) parse(file);
+        
+        // basic drill down
+        assertEquals(1, sld.getStyledLayers().length);
+        NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
+        assertEquals(1, layer.getStyles().length);
+        Style style = layer.getStyles()[0];
+        assertEquals(1, style.featureTypeStyles().size());
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        assertEquals(1, fts.rules().size());
+        Rule rule = fts.rules().get(0);
+        assertEquals(4,  rule.symbolizers().size());
+        
+        // every symbolizer has the vendor option
+        PolygonSymbolizer poly = (PolygonSymbolizer) rule.symbolizers().get(0);
+        assertEquals(1, poly.getOptions().size());
+        assertEquals("true", poly.getOptions().get("labelObstacle"));
+        
+        LineSymbolizer line = (LineSymbolizer) rule.symbolizers().get(1);
+        assertEquals(1, line.getOptions().size());
+        assertEquals("true", line.getOptions().get("labelObstacle"));
+        
+        PointSymbolizer point = (PointSymbolizer) rule.symbolizers().get(2);
+        assertEquals(1, point.getOptions().size());
+        assertEquals("true", point.getOptions().get("labelObstacle"));
+        
+        TextSymbolizer text = (TextSymbolizer) rule.symbolizers().get(3);
+        assertEquals(1, text.getOptions().size());
+        assertEquals("100", text.getOptions().get("repeat"));
+        
+        // check it passes validation
+        List errors = validate(file);
+        assertEquals(0, errors.size());
     }
 }

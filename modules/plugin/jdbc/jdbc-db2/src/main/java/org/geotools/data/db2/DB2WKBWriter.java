@@ -1,7 +1,8 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    (C) Copyright IBM Corporation, 2005-2007. All rights reserved.
+ *
+ *    (C) 2011-2012, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,15 +17,6 @@
  */
 
 package org.geotools.data.db2;
-
-/**
- * This is a modified JTS WKBWriter suiting for DB2
- * 
- * @author Christian Mueller
- *
- */
-
-
 import java.io.*;
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.io.ByteOrderValues;

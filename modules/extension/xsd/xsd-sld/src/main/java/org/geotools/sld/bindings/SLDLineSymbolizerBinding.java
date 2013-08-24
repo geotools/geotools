@@ -16,13 +16,17 @@
  */
 package org.geotools.sld.bindings;
 
+import java.util.List;
+
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 import javax.xml.namespace.QName;
 
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.geotools.sld.CssParameter;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.StyleFactory;
@@ -129,6 +133,11 @@ public class SLDLineSymbolizerBinding extends AbstractComplexBinding {
         //&lt;xsd:element ref="sld:Stroke" minOccurs="0"/&gt;
         if (node.hasChild(Stroke.class)) {
             ls.setStroke((Stroke) node.getChildValue(Stroke.class));
+        }
+        
+        //&lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
+        for (CssParameter param : (List<CssParameter>) node.getChildValues(CssParameter.class)) {
+            ls.getOptions().put(param.getName(), param.getExpression().evaluate(null, String.class));
         }
 
         return ls;

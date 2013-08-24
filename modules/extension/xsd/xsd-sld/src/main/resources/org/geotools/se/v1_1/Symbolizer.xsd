@@ -65,6 +65,9 @@
 					<xsd:element ref="se:Geometry" minOccurs="0"/>
 					<xsd:element ref="se:Stroke" minOccurs="0"/>
 					<xsd:element ref="se:PerpendicularOffset" minOccurs="0"/>
+          
+                    <!-- geotools specific extension -->
+                    <xsd:element ref="se:VendorOption" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -195,6 +198,9 @@
 					<xsd:element ref="se:Stroke" minOccurs="0"/>
 					<xsd:element ref="se:Displacement" minOccurs="0"/>
 					<xsd:element ref="se:PerpendicularOffset" minOccurs="0"/>
+          
+                    <!-- geotools specific extension -->
+                    <xsd:element ref="se:VendorOption" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -233,6 +239,9 @@
 				<xsd:sequence>
 					<xsd:element ref="se:Geometry" minOccurs="0"/>
 					<xsd:element ref="se:Graphic" minOccurs="0"/>
+          
+                    <!-- geotools specific extension -->
+                    <xsd:element ref="se:VendorOption" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -341,7 +350,6 @@
  
 					<!-- geotools specific extension -->
 					<xsd:element ref="se:VendorOption" minOccurs="0" maxOccurs="unbounded"/>
-
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>

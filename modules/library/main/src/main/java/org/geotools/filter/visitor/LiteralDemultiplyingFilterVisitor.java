@@ -56,16 +56,28 @@ import org.opengis.filter.temporal.TOverlaps;
  */
 public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor {
     
+    /**
+     * This interface is in support of a generic function (demultiply) that gets rid of the multi-valued literals, with any type of filter
+     * that takes two expressions.
+     */
     protected static interface FilterReplacer<F extends MultiValuedFilter> {
-        
+                
         public Expression getExpression1(F filter);
         
         public Expression getExpression2(F filter);
         
+        /**
+         * Replace the expressions in a filter
+         */
         public Filter replaceExpressions(F filter, Expression expression1, Expression expression2);
         
     }
     
+    /**
+     * An implementation for Binary Comparison Operators
+     * Takes the method name in the FilterFactory to create the filter
+     *
+     */
     protected class BinaryComparisonOperatorReplacer implements FilterReplacer<BinaryComparisonOperator> {
         
         protected Method method;
@@ -100,6 +112,11 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
         
     }
     
+    /**
+     * An implementation for Binary Spatial Operators
+     * Takes the method name in the FilterFactory to create the filter
+     *
+     */
     protected class BinarySpatialOperatorReplacer implements FilterReplacer<BinarySpatialOperator> {
         
         protected Method method;
@@ -134,6 +151,11 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
         
     }
     
+    /**
+     * An implementation for Binary Temporal Operators
+     * Takes the method name in the FilterFactory to create the filter
+     *
+     */
     protected class BinaryTemporalOperatorReplacer implements FilterReplacer<BinaryTemporalOperator> {
         
         protected Method method;
@@ -168,6 +190,13 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
         
     }
     
+    /**
+     * demultiplies the first expression
+     * 
+     * @param filter The filter
+     * @param replacer The filter replacer
+     * @return the new filter
+     */
     protected<T extends MultiValuedFilter> Filter demultiplyFirst( T filter, FilterReplacer<T> replacer) {
         
         Expression one = replacer.getExpression1(filter);
@@ -176,12 +205,14 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
         if (one instanceof Literal) {
             Literal l = (Literal) one;
             Object value = l.getValue();
-            if (value instanceof Collection) {
-                List<Filter> filters = new ArrayList<Filter>();
-                for (Object valueElement : (Collection) value) {
+            if (value instanceof Collection) { //demultiplying is necessary
+                List<Filter> filters = new ArrayList<Filter>(); //list of all filters
+                for (Object valueElement : (Collection) value) { 
+                    //create a single-valued new filter
                     filters.add(replacer.replaceExpressions(filter, ff.literal(valueElement), two));
                 }
-                if (filter.getMatchAction() == MatchAction.ANY) {
+                //merge the filters depending on match action
+                if (filter.getMatchAction() == MatchAction.ANY) { 
                     return ff.or(filters);
                 } else if (filter.getMatchAction() == MatchAction.ALL) {
                     return ff.and(filters);
@@ -206,6 +237,13 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
         return filter;
     }
     
+    /**
+     * Demultiplies first and second expression
+     * 
+     * @param filter
+     * @param replacer
+     * @return
+     */
     protected<T extends MultiValuedFilter> Filter demultiply( T filter, FilterReplacer<T> replacer) {
          
         Expression one = replacer.getExpression1(filter);
@@ -214,12 +252,14 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
         if (two instanceof Literal) {
             Literal l = (Literal) two;
             Object value = l.getValue();
-            if (value instanceof Collection) {
-                List<Filter> filters = new ArrayList<Filter>();
-                for (Object valueElement : (Collection) value) {
+            if (value instanceof Collection) { //demultiplying is necessary
+                List<Filter> filters = new ArrayList<Filter>(); //list of all filters
+                for (Object valueElement : (Collection) value) {  
+                    //create a single-valued new filter
                     filters.add(demultiplyFirst((T) replacer.replaceExpressions(filter, one, ff.literal(valueElement)), replacer));
                 }
-                if (filter.getMatchAction() == MatchAction.ANY) {
+              //merge the filters depending on match action
+                if (filter.getMatchAction() == MatchAction.ANY) {  
                     return ff.or(filters);
                 } else if (filter.getMatchAction() == MatchAction.ALL) {
                     return ff.and(filters);
@@ -287,7 +327,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
 
     @Override
     public Object visit(Beyond filter, Object extraData) {
-        return demultiply(filter, new FilterReplacer<Beyond>(){
+        return demultiply(filter, new FilterReplacer<Beyond>(){ //beyond filter takes extra properties, therefore needs its own filterreplacer
 
             @Override
             public Expression getExpression1(Beyond filter) {
@@ -324,7 +364,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
 
     @Override
     public Object visit(DWithin filter, Object extraData) {
-        return demultiply(filter, new FilterReplacer<DWithin>(){
+        return demultiply(filter, new FilterReplacer<DWithin>(){ //DWithin filter takes extra properties, therefore needs its own filterreplacer
 
             @Override
             public Expression getExpression1(DWithin filter) {

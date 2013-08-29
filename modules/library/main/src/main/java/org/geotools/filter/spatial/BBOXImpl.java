@@ -161,8 +161,8 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
 
     private void updateExpression2() {
         // this is temporary until set...XY are removed
-        setExpression2(new BBoxExpressionImpl(buildEnvelope(minx, maxx, miny, maxy, srs)) {
-        });
+        BBoxExpressionImpl expression = new BBoxExpressionImpl(buildEnvelope(minx, maxx, miny, maxy, srs)) {};
+        super.setExpression2(expression);
     }
 
     @Override

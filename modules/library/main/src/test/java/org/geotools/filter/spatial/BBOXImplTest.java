@@ -1,20 +1,27 @@
 package org.geotools.filter.spatial;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.referencing.CRS;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
@@ -24,14 +31,13 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  *
  * @source $URL$
  */
-public class BBOXImplTest extends TestCase {
+public class BBOXImplTest {
 
-    public static Test suite() {
-        return new TestSuite(BBOXImplTest.class);
-    }
+    FilterFactoryImpl ff = new FilterFactoryImpl();
 
+    @Test
     public void testBbox() {
-        FilterFactoryImpl ff = new FilterFactoryImpl();
+        
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         Coordinate coords[] = new Coordinate[6];
         coords[0] = new Coordinate(0, 1.5);
@@ -64,6 +70,18 @@ public class BBOXImplTest extends TestCase {
                 e2.getMinY(), e2.getMaxX(), e2.getMaxY(), "");
         assertFalse(bbox2.evaluate(f));
         assertFalse(bbox1.evaluate(f));
+    }
+    
+    @Test
+    public void testPreserveOriginalSRS() throws NoSuchAuthorityCodeException, FactoryException {
+        String srs = "AUTO:42004,9001,0,33";
+        CoordinateReferenceSystem crs = CRS.decode(srs);
+        BBOX bbox = ff.bbox(ff.property(""), 0, 1000, 2000, 3000, srs);
+        Geometry geom = bbox.getExpression2().evaluate(null, Geometry.class);
+        assertEquals(crs, geom.getUserData());
+        assertEquals(srs, bbox.getSRS());
+        
+        
     }
 
 }

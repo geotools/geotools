@@ -519,7 +519,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             // we expect a RGB one
             icm =  (IndexColorModel) back.getColorModel();
             assertEquals(3, icm.getNumColorComponents());
-            assertEquals(256, icm.getMapSize());  
+            assertTrue(icm.getMapSize() <= 256);  
         } finally {
             is.close();
         }

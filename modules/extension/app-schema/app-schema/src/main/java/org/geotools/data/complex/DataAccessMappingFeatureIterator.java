@@ -114,8 +114,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     protected FeatureCollection<? extends FeatureType, ? extends Feature> sourceFeatures;
 
     protected List<Expression> foreignIds = null;
-    
-	protected AttributeDescriptor targetFeature;
+
+    protected AttributeDescriptor targetFeature;
 
     /**
      * True if joining is turned off and pre filter exists. There's a need to run extra query to get
@@ -319,8 +319,11 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         }
         String version=(String)this.mapping.getTargetFeature().getType().getUserData().get("targetVersion");
-        //might be because top level feature has no geometry
-        if (targetCRS == null && version!=null) {
+        // might be because top level feature has no geometry
+        // GEOT-4550: exclude this part for WMS requests because the reprojection happens during rendering
+        // not at ReprojectingFilterVisitor.
+        // The original CRS should be preserved so the reprojection could happen at rendering.
+        if (targetCRS == null && version != null && !version.contains("wms")) {
             // figure out the crs the data is in
             CoordinateReferenceSystem crs=null;
             try{

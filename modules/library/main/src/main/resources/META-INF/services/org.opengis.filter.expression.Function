@@ -167,3 +167,4 @@ org.geotools.filter.function.math.ModuloFunction
 org.geotools.filter.function.math.PiFunction
 org.geotools.filter.function.string.ConcatenateFunction
 org.geotools.filter.function.JenksNaturalBreaksFunction
+org.geotools.filter.function.FilterFunction_list

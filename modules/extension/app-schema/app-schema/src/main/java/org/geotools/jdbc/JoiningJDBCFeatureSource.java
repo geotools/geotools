@@ -488,7 +488,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 
                 toSQL = createFilterToSQL(getDataStore().getSchema(lastTableName));
                 
-                if (lastSortBy != null) {
+                if (lastSortBy != null && lastSortBy.length > 0) {
                     //we will use another join for the filter
                     //assuming that the last sort by specifies the ID of the parent feature                   
                     //this way we will ensure that if the table is denormalized, that all rows

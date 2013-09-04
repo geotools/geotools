@@ -70,10 +70,10 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
         assertTrue( "Shape NG supported", factory.canProcess(params) );
         
         params.put(FSTYPE.key, "shape" );
-        assertFalse( "Plain shape not supported", factory.canProcess(params) );
+        assertTrue( "Plain shape supported", factory.canProcess(params) );
         
         params.put(FSTYPE.key, "index" );
-        assertFalse( "Plain index not supported", factory.canProcess(params) );
+        assertTrue( "Plain index supported", factory.canProcess(params) );
         
         params.put( FSTYPE.key, "smurf" );
         assertFalse( "Feeling blue; don't try a smruf", factory.canProcess(params) );

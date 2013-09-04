@@ -115,8 +115,8 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
      * of DataStore to use).
      */
     public static final Param FSTYPE = new Param("fstype",
-            String.class, "Enable using a setting of 'shape-ng'.", false, "shape-ng",
-            new KVP(Param.LEVEL, "advanced", Param.OPTIONS,Arrays.asList(new String[]{"shape-ng"})));
+            String.class, "Enable using a setting of 'shape'.", false, "shape",
+            new KVP(Param.LEVEL, "advanced", Param.OPTIONS,Arrays.asList(new String[]{"shape-ng", "shape", "index"})));
     /**
      * Optional - timezone to decode dates from the DBF file
      */

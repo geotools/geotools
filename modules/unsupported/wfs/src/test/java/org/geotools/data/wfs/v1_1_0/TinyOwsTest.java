@@ -46,7 +46,7 @@ public class TinyOwsTest {
         
         byte[] wfsCapabilitiesRawData = IOUtils.toByteArray(inputStream);
         InputStream capsIn = new ByteArrayInputStream(wfsCapabilitiesRawData);
-        WFS_1_1_0_DataStore wfs = new WFS_1_1_0_DataStore(new WFS_1_1_0_Protocol(capsIn, httpClient, null) {
+        WFS_1_1_0_DataStore wfs = new WFS_1_1_0_DataStore(new WFS_1_1_0_Protocol(capsIn, httpClient, null, null) {
             @Override
             public URL getDescribeFeatureTypeURLGet(String typeName) {
                 return TestData.getResource(this, "tinyows/DescribeFeatureType.xsd");

@@ -23,6 +23,7 @@ import static org.junit.Assert.assertSame;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -122,7 +123,7 @@ public class EmfAppSchemaParserTest {
 
         SimpleFeatureType featureType;
         featureType = EmfAppSchemaParser.parseSimpleFeatureType(configuration, featureTypeName,
-                schemaLocation, crs);
+                schemaLocation, crs, new HashMap<String, String>(), null, false);
 
         assertNotNull(featureType);
         assertSame(crs, featureType.getCoordinateReferenceSystem());

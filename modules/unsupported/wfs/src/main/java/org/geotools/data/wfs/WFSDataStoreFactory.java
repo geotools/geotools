@@ -60,6 +60,7 @@ import org.geotools.data.wfs.v1_1_0.CubeWerxStrategy;
 import org.geotools.data.wfs.v1_1_0.DefaultWFSStrategy;
 import org.geotools.data.wfs.v1_1_0.GeoServerStrategy;
 import org.geotools.data.wfs.v1_1_0.IonicStrategy;
+import org.geotools.data.wfs.v1_1_0.MapServerStrategy;
 import org.geotools.data.wfs.v1_1_0.WFSStrategy;
 import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_DataStore;
 import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_Protocol;
@@ -496,10 +497,10 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         } else {
             InputStream capsIn = new ByteArrayInputStream(wfsCapabilitiesRawData);
 
-            WFS_1_1_0_Protocol wfs = new WFS_1_1_0_Protocol(capsIn, http, defaultEncoding);
-
             WFSStrategy strategy = determineCorrectStrategy(getCapabilitiesRequest, capsDoc, wfsStrategy );
-            wfs.setStrategy(strategy);
+            
+            WFS_1_1_0_Protocol wfs = new WFS_1_1_0_Protocol(capsIn, http, defaultEncoding, strategy);
+
             dataStore = new WFS_1_1_0_DataStore(wfs);
             dataStore.setMaxFeatures(maxFeatures);
             dataStore.setPreferPostOverGet(protocol);
@@ -507,6 +508,8 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             ((WFS_1_1_0_DataStore) dataStore).setAxisOrder(axisOrder,
                     axisOrderFilter);
             ((WFS_1_1_0_DataStore) dataStore).setGetFeatureOutputFormat(outputFormat);
+            ((WFS_1_1_0_DataStore) dataStore).setMappedURIs(strategy
+                    .getNamespaceURIMappings());
         }
         dataStore.setNamespaceOverride(namespaceOverride);
         
@@ -571,6 +574,9 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         if( override != null ){
             if( override.equalsIgnoreCase("geoserver")){
                 strategy = new GeoServerStrategy();
+            }
+            else if( override.equalsIgnoreCase("mapserver")){
+                strategy = new MapServerStrategy();
             }
             else if( override.equalsIgnoreCase("arcgis")){
                 strategy = new ArcGISServerStrategy();

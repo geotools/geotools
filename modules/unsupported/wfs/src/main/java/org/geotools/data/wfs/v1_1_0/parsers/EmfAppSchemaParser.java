@@ -88,8 +88,13 @@ public class EmfAppSchemaParser {
 
     public static SimpleFeatureType parseSimpleFeatureType(final QName featureName,
             final URL schemaLocation, final CoordinateReferenceSystem crs,
-            final Configuration wfsConfiguration) throws IOException {
-        return parseSimpleFeatureType(wfsConfiguration, featureName, schemaLocation, crs);
+            final Configuration wfsConfiguration,
+            final Map<String, String> mappedURIs,
+            final Map<QName, Class<?>> mappedBindings,
+            final boolean ignoreMissingElementDeclaration) throws IOException {
+        return parseSimpleFeatureType(wfsConfiguration, featureName,
+                schemaLocation, crs, mappedURIs, mappedBindings,
+                ignoreMissingElementDeclaration);
     }
 
     /**
@@ -117,10 +122,14 @@ public class EmfAppSchemaParser {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
-    public static SimpleFeatureType parseSimpleFeatureType( final Configuration wfsConfiguration,
-            final QName featureName, final URL schemaLocation, final CoordinateReferenceSystem crs )
-            throws IOException {
-        final SimpleFeatureType realType = parse(wfsConfiguration, featureName, schemaLocation, crs);
+    public static SimpleFeatureType parseSimpleFeatureType(
+            final Configuration wfsConfiguration, final QName featureName,
+            final URL schemaLocation, final CoordinateReferenceSystem crs,
+            final Map<String, String> mappedURIs,
+            final Map<QName, Class<?>> mappedBindings,
+            final boolean ignoreMissingElementDeclaration) throws IOException {
+        final SimpleFeatureType realType = parse(wfsConfiguration, featureName,
+                schemaLocation, crs, mappedURIs, mappedBindings, ignoreMissingElementDeclaration);
         SimpleFeatureType subsetType = toSimpleFeatureType(realType);
         return subsetType;
     }
@@ -204,12 +213,19 @@ public class EmfAppSchemaParser {
      * @return
      * @throws IOException
      */
-    public static SimpleFeatureType parse( final Configuration wfsConfiguration,
-            final QName featureName, final URL schemaLocation, final CoordinateReferenceSystem crs )
-            throws IOException {
-        XSDElementDeclaration elementDecl = parseFeatureType(featureName, schemaLocation);
+    public static SimpleFeatureType parse(final Configuration wfsConfiguration,
+            final QName featureName, final URL schemaLocation,
+            final CoordinateReferenceSystem crs,
+            final Map<String, String> mappedURIs,
+            final Map<QName, Class<?>> mappedBindings,
+            final boolean ignoreMissingElementDeclaration) throws IOException {
+        XSDElementDeclaration elementDecl = parseFeatureType(featureName,
+                schemaLocation, mappedURIs, ignoreMissingElementDeclaration);
 
         Map bindings = wfsConfiguration.setupBindings();
+        if(mappedBindings != null) {
+            bindings.putAll(mappedBindings);
+        }
         BindingLoader bindingLoader = new BindingLoader(bindings);
 
         // create the document handler + root context
@@ -274,11 +290,17 @@ public class EmfAppSchemaParser {
      * @param schemaLocation
      * @return
      */
-    private static XSDElementDeclaration parseFeatureType(final QName featureTypeName,
-            final URL schemaLocation ) throws DataSourceException {
+    private static XSDElementDeclaration parseFeatureType(QName featureTypeName,
+            final URL schemaLocation, final Map<String, String> mappedURIs,
+            final boolean ignoreMissingElementDeclaration)
+            throws DataSourceException {
         ApplicationSchemaConfiguration configuration;
         {
             String namespaceURI = featureTypeName.getNamespaceURI();
+            if(mappedURIs.containsKey(namespaceURI)) {
+                namespaceURI = mappedURIs.get(namespaceURI);
+                featureTypeName = new QName(namespaceURI, featureTypeName.getLocalPart());
+            }
             String uri = schemaLocation.toExternalForm();
             configuration = new ApplicationSchemaConfiguration(namespaceURI, uri);
         }
@@ -292,7 +314,7 @@ public class EmfAppSchemaParser {
         XSDElementDeclaration elementDeclaration;
         elementDeclaration = schemaIndex.getElementDeclaration(featureTypeName);
         schemaIndex.destroy();
-        if (elementDeclaration == null) {
+        if (elementDeclaration == null && !ignoreMissingElementDeclaration) {
             throw new DataSourceException("No XSDElementDeclaration found for " + featureTypeName);
         }
         return elementDeclaration;

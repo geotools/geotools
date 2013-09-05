@@ -89,7 +89,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
 
     private SimpleFeatureBuilder builder;
 
-    final String featureNamespace;
+    private String featureNamespace;
 
     final String featureName;
 
@@ -100,9 +100,14 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
     private final String axisOrder;
 
     public XmlSimpleFeatureParser(final InputStream getFeatureResponseStream,
-            final SimpleFeatureType targetType, QName featureDescriptorName, String axisOrder) throws IOException {
+            final SimpleFeatureType targetType, QName featureDescriptorName,
+            String axisOrder, final Map<String, String> mappedURIs)
+            throws IOException {
         this.inputStream = getFeatureResponseStream;
         this.featureNamespace = featureDescriptorName.getNamespaceURI();
+        if(mappedURIs.containsKey(this.featureNamespace)) {
+            this.featureNamespace = mappedURIs.get(this.featureNamespace);
+        }
         this.featureName = featureDescriptorName.getLocalPart();
         this.targetType = targetType;
         this.builder = new SimpleFeatureBuilder(targetType);

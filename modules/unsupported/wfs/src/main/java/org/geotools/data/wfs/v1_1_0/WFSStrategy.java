@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
 import net.opengis.wfs.GetFeatureType;
 
 import org.geotools.data.wfs.WFSDataStore;
@@ -148,4 +150,36 @@ public interface WFSStrategy {
             this.kvpParameters = kvpParameters;
         }
     }
+
+    /**
+     * Gets the textual representation of the given QName.
+     * 
+     * @param typeName
+     * @return
+     */
+    public String getPrefixedTypeName(QName typeName);
+
+    /**
+     * Returns an optional namespace URIs map that a strategy can build
+     * to force namespace remapping in response parsing.
+     * 
+     * @return
+     */
+    public Map<String, String> getNamespaceURIMappings();
+
+    /**
+     * A strategy can decide to ignore missing element declarations in XSD.
+     * 
+     * @return
+     */
+    public boolean canIgnoreMissingElementDeclaration();
+
+    /**
+     * Extra bindings to be mapped to standard XS types.
+     * A strategy can add extra not standard types to be handled
+     * as aliases of standard ones.
+     * 
+     * @return
+     */
+    public Map<QName, Class<?>> getFieldTypeMappings();
 }

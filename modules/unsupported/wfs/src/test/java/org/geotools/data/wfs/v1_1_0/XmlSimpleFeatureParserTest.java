@@ -20,6 +20,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
 
 import javax.xml.namespace.QName;
 
@@ -40,7 +41,9 @@ public class XmlSimpleFeatureParserTest extends AbstractGetFeatureParserTest {
             final SimpleFeatureType featureType, final URL getFeaturesRequest) throws IOException {
 
         InputStream inputStream = new BufferedInputStream(getFeaturesRequest.openStream());
-        GetFeatureParser parser = new XmlSimpleFeatureParser(inputStream,  featureType, featureName, WFSDataStore.AXIS_ORDER_COMPLIANT);
+        GetFeatureParser parser = new XmlSimpleFeatureParser(inputStream,
+                featureType, featureName, WFSDataStore.AXIS_ORDER_COMPLIANT,
+                new HashMap<String, String>());
         return parser;
     }
 

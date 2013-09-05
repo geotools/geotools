@@ -68,9 +68,8 @@ public class CubeWerxStrategyTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        createTestProtocol(CUBEWERX_GOVUNITCE.CAPABILITIES);
         strategy = new CubeWerxStrategy();
-        wfs.setStrategy(strategy);
+        createTestProtocol(CUBEWERX_GOVUNITCE.CAPABILITIES, strategy);
     }
 
     @Test

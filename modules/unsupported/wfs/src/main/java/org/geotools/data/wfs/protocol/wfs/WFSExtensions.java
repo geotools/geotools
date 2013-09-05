@@ -19,6 +19,7 @@ package org.geotools.data.wfs.protocol.wfs;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import javax.imageio.spi.ServiceRegistry;
@@ -26,6 +27,7 @@ import javax.imageio.spi.ServiceRegistry;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_DataStore;
+import org.geotools.data.wfs.v1_1_0.parsers.FeatureCollectionParser;
 import org.geotools.factory.FactoryNotFoundException;
 
 /**
@@ -71,13 +73,16 @@ public class WFSExtensions {
      * @return
      * @throws IOException
      */
-    public static Object process(WFS_1_1_0_DataStore wfs, WFSResponse response) throws IOException {
+    public static Object process(WFS_1_1_0_DataStore wfs, WFSResponse response,
+            Map<String, String> mappedURIs) throws IOException {
 
         EObject originatingRequest = response.getOriginatingRequest();
         WFSResponseParserFactory pf = findParserFactory(originatingRequest);
 
         WFSResponseParser parser = pf.createParser(wfs, response);
-
+        if(parser instanceof FeatureCollectionParser) {
+            ((FeatureCollectionParser)parser).setMappedURIs(mappedURIs);
+        }
         Object result = parser.parse(wfs, response);
         return result;
     }

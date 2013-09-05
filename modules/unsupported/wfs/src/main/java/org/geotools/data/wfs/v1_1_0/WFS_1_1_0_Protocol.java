@@ -136,9 +136,12 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
     protected final Charset defaultEncoding;
 
     public WFS_1_1_0_Protocol(InputStream capabilitiesReader, HTTPClient http,
-            Charset defaultEncoding) throws IOException {
+            Charset defaultEncoding, WFSStrategy strategy) throws IOException {
         this.defaultEncoding = defaultEncoding;
-        this.strategy = new DefaultWFSStrategy();
+        this.strategy = strategy;
+        if(this.strategy == null) {
+            this.strategy = new DefaultWFSStrategy();
+        }
         this.capabilities = parseCapabilities(capabilitiesReader);
         this.http = http;
         this.typeInfos = new HashMap<String, FeatureTypeType>();
@@ -147,8 +150,7 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
         QName typeName;
         for (FeatureTypeType ftype : ftypes) {
             typeName = ftype.getName();
-            assert !("".equals(typeName.getPrefix()));
-            String prefixedTypeName = typeName.getPrefix() + ":" + typeName.getLocalPart();
+            String prefixedTypeName = this.strategy.getPrefixedTypeName(typeName);
             typeInfos.put(prefixedTypeName, ftype);
         }
     }
@@ -794,7 +796,10 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
         SimpleFeatureType featureType;
         try {
             featureType = EmfAppSchemaParser.parseSimpleFeatureType(wfsConfiguration,
-                    featureDescriptorName, describeUrl, crs);
+                    featureDescriptorName, describeUrl, crs,
+                    strategy.getNamespaceURIMappings(),
+                    strategy.getFieldTypeMappings(),
+                    strategy.canIgnoreMissingElementDeclaration());
         } finally {
             if (tmpFile != null) {
                 tmpFile.delete();

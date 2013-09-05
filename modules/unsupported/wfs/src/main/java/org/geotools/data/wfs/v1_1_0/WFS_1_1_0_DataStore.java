@@ -130,6 +130,8 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
     private String axisOrderFilter = AXIS_ORDER_COMPLIANT;
     
     private String outputFormat = null;
+    
+    private Map<String, String> mappedURIs = new HashMap<String, String>();
 
     /**
      * The WFS capabilities document.
@@ -144,6 +146,17 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         byTypeNameTypes = Collections.synchronizedMap(new HashMap<String, SimpleFeatureType>());
         maxFeaturesHardLimit = Integer.valueOf(0); // not set
     }
+    
+    
+
+    /**
+     * @param mappedURIs the mappedURIs to set
+     */
+    public void setMappedURIs(Map<String, String> mappedURIs) {
+        this.mappedURIs = mappedURIs;
+    }
+
+
 
     /**
      * Configure expected axis order for output and filters.
@@ -419,7 +432,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
 
         WFSResponse response = executeGetFeatures(query, transaction, ResultType.RESULTS);
 
-        Object result = WFSExtensions.process(this, response);
+        Object result = WFSExtensions.process(this, response, mappedURIs);
 
         GetFeatureParser parser;
         if (result instanceof WFSException) {
@@ -872,7 +885,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         
         WFSResponse response = executeGetFeatures(query, Transaction.AUTO_COMMIT, ResultType.HITS);
 
-        Object process = WFSExtensions.process(this, response);
+        Object process = WFSExtensions.process(this, response, mappedURIs);
         if (!(process instanceof GetFeatureParser)) {
             LOGGER.info("GetFeature with resultType=hits resulted in " + process);
         }

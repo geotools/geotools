@@ -18,7 +18,9 @@ package org.geotools.data.wfs.v1_1_0.parsers;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
@@ -49,6 +51,19 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 public class FeatureCollectionParser implements WFSResponseParser {
 
+    private Map<String, String> mappedURIs = new HashMap<String, String>();
+
+    
+    
+    /**
+     * @param mappedURIs the mappedURIs to set
+     */
+    public void setMappedURIs(Map<String, String> mappedURIs) {
+        this.mappedURIs = mappedURIs;
+    }
+
+
+
     /**
      * @return a {@link GetFeatureParser} to stream the contents of the GML 3.1 response
      */
@@ -73,7 +88,7 @@ public class FeatureCollectionParser implements WFSResponseParser {
         QName featureName = wfs.getFeatureTypeName(prefixedTypeName);
         InputStream in = response.getInputStream();
 
-        GetFeatureParser featureReader = new XmlSimpleFeatureParser(in, schema, featureName, wfs.getAxisOrderForOutput());
+        GetFeatureParser featureReader = new XmlSimpleFeatureParser(in, schema, featureName, wfs.getAxisOrderForOutput(), mappedURIs);
         return featureReader;
     }
 }

@@ -906,13 +906,7 @@ public class ShpFiles {
     public String getTypeName() {
         String path = SHP.toBase(urls.get(SHP));
         int slash = Math.max(0, path.lastIndexOf('/') + 1);
-        int dot = path.indexOf('.', slash);
-
-        if (dot < 0) {
-            dot = path.length();
-        }
-
-        return path.substring(slash, dot);
+        return path.substring(slash);
     }
 
     /**

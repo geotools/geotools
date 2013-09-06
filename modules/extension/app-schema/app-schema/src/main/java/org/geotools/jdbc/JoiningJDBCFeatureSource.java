@@ -243,17 +243,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                         addMultiValuedSort(join.getJoiningTypeName(), orderByFields, query
                                 .getQueryJoins().get(j + 1), sql);
                     }
-                    try {
-                        // sort by primary key to cater for multi valued rows
-                        JDBCDataStore ds = getDataStore();
-                        PrimaryKey key = ds.getPrimaryKey(ds.getSchema(join.getJoiningTypeName()));
-                        pkColumnNames = new HashSet<String>();
-                        for (PrimaryKeyColumn pkCol : key.getColumns()) {
-                            pkColumnNames.add(pkCol.getName());
-                        }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
                 }
             }
         }

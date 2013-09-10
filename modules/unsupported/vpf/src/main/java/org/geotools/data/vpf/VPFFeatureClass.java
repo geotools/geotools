@@ -16,6 +16,13 @@
  */
 package org.geotools.data.vpf;
 
+import static org.geotools.data.vpf.ifc.FileConstants.CONNECTED_NODE_PRIMITIVE;
+import static org.geotools.data.vpf.ifc.FileConstants.EDGE_PRIMITIVE;
+import static org.geotools.data.vpf.ifc.FileConstants.ENTITY_NODE_PRIMITIVE;
+import static org.geotools.data.vpf.ifc.FileConstants.FACE_PRIMITIVE;
+import static org.geotools.data.vpf.ifc.FileConstants.TABLE_FCS;
+import static org.geotools.data.vpf.ifc.FileConstants.TEXT_PRIMITIVE;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -24,34 +31,25 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
-import org.geotools.data.vpf.ifc.DataTypesDefinition;
-import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.data.vpf.readers.AreaGeometryFactory;
 import org.geotools.data.vpf.readers.ConnectedNodeGeometryFactory;
 import org.geotools.data.vpf.readers.EntityNodeGeometryFactory;
 import org.geotools.data.vpf.readers.LineGeometryFactory;
 import org.geotools.data.vpf.readers.TextGeometryFactory;
 import org.geotools.data.vpf.readers.VPFGeometryFactory;
-
 import org.geotools.feature.AttributeTypeBuilder;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AnnotationFeatureType;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
-
 import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
@@ -71,8 +69,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @source $URL$
  */
-public class VPFFeatureClass implements DataTypesDefinition, FileConstants,
-    SimpleFeatureType {
+public class VPFFeatureClass implements SimpleFeatureType {
     /**
      * The contained feature type
      */

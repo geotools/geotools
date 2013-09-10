@@ -30,11 +30,13 @@ import org.geotools.data.AbstractDataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
-import org.geotools.data.vpf.ifc.FileConstants;
-import org.geotools.data.vpf.ifc.VPFLibraryIfc;
-import org.geotools.feature.IllegalAttributeException;
+
+import static org.geotools.data.vpf.ifc.FileConstants.*;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.*;
+
 import org.geotools.feature.SchemaException;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -42,29 +44,36 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /*
  * A data store for a VPF library. A library is identified by
  * an LHT file.
- * 
+ * <pre>
  * VPF 101: 
  * Product: a profile of VPF data
- * Examples include DNC, VMAP, and VITD.<b>
+ * Examples include DNC, VMAP, and VITD.
+ * 
  * Database: the world is separated into different databases. 
- * A database typically fits on one CD.<b>
+ * A database typically fits on one CD.
+ * 
  * Library: each database is subdivided into libraries. 
  * Libraries may be organized into coverage groups 
  * which have different scales.
- * The BROWSE library typically has information on the other libraries.<b>
+ * The BROWSE library typically has information on the other libraries.
+ * 
  * Coverage: associated feature types are grouped in coverages.
- * Coverages share a common topological model.<b>
+ * Coverages share a common topological model.
+ * 
  * Feature class: Feature types are grouped into classes.
  * Feature types in a class share a common set of attributes
- * and are stored together on disk. <b>
+ * and are stored together on disk.
+ * 
  * Feature type: Feature types are denoted by a five-character FACC code.
  * Feature types and feature classes are stored 
- * at the same directory level, inside their containing coverages.<b>
+ * at the same directory level, inside their containing coverages.
+ * 
  * File: VPF data is stored on disk in a complex hierarchy of flat files.
  * The VPFFile AbstractDataStore can be used to extract the contents of
- * an individual file, but this is typically useful only for testing.<b>
- *
- * Created on 19. april 2004, 14:53
+ * an individual file, but this is typically useful only for testing.
+ * </pre>
+ * 
+ * @since April 2004, 14:53
  *
  * @author  <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
  * @source $URL$
@@ -74,7 +83,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @source $URL$
  */
-public class VPFLibrary extends AbstractDataStore implements FileConstants, VPFLibraryIfc {
+public class VPFLibrary extends AbstractDataStore {
 
     /**
      * Part of bounding box.

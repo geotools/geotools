@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
-import org.geotools.data.vpf.ifc.FCode;
+import static org.geotools.data.vpf.ifc.FCode.*;
 
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -47,7 +47,7 @@ import org.opengis.feature.type.AttributeDescriptor;
  * @source $URL$
  */
 public class VPFFeatureReader
-    implements FeatureReader<SimpleFeatureType, SimpleFeature>, FCode {
+    implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     private boolean hasNext = true;
     private boolean nextCalled = true;
     private SimpleFeature currentFeature = null;

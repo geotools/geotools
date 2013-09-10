@@ -16,7 +16,9 @@
  */
 package org.geotools.data.vpf.file;
 
+import java.awt.RenderingHints;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
 
@@ -50,7 +52,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
-    public DataStore createDataStore(Map params) throws IOException {
+    public DataStore createDataStore(Map<String,Serializable> params) throws IOException {
         return store;
     }
 
@@ -66,7 +68,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     /* (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#createNewDataStore(java.util.Map)
      */
-    public DataStore createNewDataStore(Map params) throws IOException {
+    public DataStore createNewDataStore(Map<String,Serializable> params) throws IOException {
         throw new UnsupportedOperationException(
             "Only existing data stores may be created.");
     }
@@ -99,7 +101,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     /* (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#canProcess(java.util.Map)
      */
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String,Serializable> params) {
         //        boolean result = false;
         //        Object object;
         //        File file;
@@ -141,8 +143,8 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     /**
      * Returns the implementation hints. The default implementation returns en empty map.
      */
-    public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    public Map<RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }
 
     /**

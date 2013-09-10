@@ -16,45 +16,65 @@
  */
 package org.geotools.data.vpf.file;
 
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_2_COORD_F;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_2_COORD_R;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_3_COORD_F;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_3_COORD_R;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_LEVEL1_TEXT;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_LEVEL2_TEXT;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_LEVEL3_TEXT;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_LONG_FLOAT;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_LONG_FLOAT_LEN;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_LONG_INTEGER;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_LONG_INTEGER_LEN;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_NULL_FIELD;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_SHORT_FLOAT;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_SHORT_FLOAT_LEN;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_SHORT_INTEGER;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_SHORT_INTEGER_LEN;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_TEXT;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_TRIPLET_ID;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.LEAST_SIGNIF_FIRST;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.LITTLE_ENDIAN_ORDER;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.STRING_NULL_VALUE;
+import static org.geotools.data.vpf.ifc.FileConstants.FEATURE_CLASS_SCHEMA_TABLE;
+import static org.geotools.data.vpf.ifc.FileConstants.TEXT_PRIMITIVE;
+import static org.geotools.data.vpf.ifc.FileConstants.VPF_ELEMENT_SEPARATOR;
+import static org.geotools.data.vpf.ifc.FileConstants.VPF_FIELD_SEPARATOR;
+import static org.geotools.data.vpf.ifc.FileConstants.VPF_RECORD_SEPARATOR;
+
 import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.net.URI;
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 
 import org.geotools.data.vpf.VPFColumn;
 import org.geotools.data.vpf.exc.VPFHeaderFormatException;
-import org.geotools.data.vpf.ifc.DataTypesDefinition;
-import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.data.vpf.io.TripletId;
 import org.geotools.data.vpf.io.VPFInputStream;
 import org.geotools.data.vpf.io.VariableIndexInputStream;
 import org.geotools.data.vpf.io.VariableIndexRow;
 import org.geotools.data.vpf.util.DataUtils;
 import org.geotools.feature.FeatureTypes;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AnnotationFeatureType;
-import org.geotools.filter.CompareFilter;
-import org.geotools.filter.Filter;
-import org.geotools.filter.LengthFunction;
-import org.geotools.filter.LiteralExpression;
+import org.geotools.text.Text;
+import org.opengis.feature.IllegalAttributeException;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.GeometryType;
-import org.opengis.feature.type.Name;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -62,8 +82,8 @@ import org.opengis.util.InternationalString;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateList;
-import com.vividsolutions.jts.geom.DefaultCoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 
 /**
@@ -77,7 +97,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  *
  * @source $URL$
  */
-public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefinition {
+public class VPFFile implements SimpleFeatureType {
     //    private final TableInputStream stream;
     private static String ACCESS_MODE = "r";
 
@@ -98,7 +118,7 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
     /**
      * The columns of the file. This list shall contain objects of type <code>VPFColumn</code>
      */
-    private final List columns = new Vector();
+    private final List<VPFColumn> columns = new Vector<VPFColumn>();
 
     /**
      * Variable <code>description</code> keeps value of text description of the
@@ -149,7 +169,7 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
         GeometryDescriptor gat = null;
         VPFColumn geometryColumn = null;
 
-        Iterator iter = columns.iterator();
+        Iterator<VPFColumn> iter = columns.iterator();
         while (iter.hasNext()) {
             geometryColumn = (VPFColumn) iter.next();
 
@@ -168,9 +188,14 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
          
         SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
         b.setName( cPathName );
+        b.setDescription( Text.text( description ) );
         b.setNamespaceURI("VPF");
         b.setSuperType(superType);
-        b.addAll( columns );
+        if(columns != null){
+            for ( VPFColumn ad : columns ) {
+                b.add( (AttributeDescriptor) ad );
+            }
+        }
         b.setDefaultGeometry(gat.getLocalName());
         featureType = b.buildFeatureType();
     }
@@ -280,7 +305,7 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
     protected int getRecordSize() {
         int size = 0;
 
-        Iterator iter = columns.iterator();
+        Iterator<VPFColumn> iter = columns.iterator();
 
         
         while (iter.hasNext()) {
@@ -305,8 +330,7 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
      * @throws IllegalAttributeException The feature can not be created due to
      *         illegal attributes in the source file
      */
-    public SimpleFeature getRowFromId(String idName, int id)
-        throws IllegalAttributeException {
+    public SimpleFeature getRowFromId(String idName, int id) {
         SimpleFeature result = null;
 
         try {
@@ -326,7 +350,7 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
             }
 
             if (result == null) {
-                Iterator joinedIter = readAllRows().iterator();
+                Iterator<SimpleFeature> joinedIter = readAllRows().iterator();
                 result = getRowFromIterator(joinedIter, idName, id);
             }
         } catch (IOException exc) {
@@ -346,7 +370,7 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
      *
      * @return a TableRow that matches the other parameters
      */
-    private SimpleFeature getRowFromIterator(Iterator iter, String idName, int id) {
+    private SimpleFeature getRowFromIterator(Iterator<SimpleFeature> iter, String idName, int id) {
         SimpleFeature result = null;
         SimpleFeature currentFeature;
         int value = -1;
@@ -418,8 +442,8 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
      *
      * @exception IOException if an error occurs
      */
-    public AbstractList readAllRows() throws IOException {
-        AbstractList list = new LinkedList();
+    public AbstractList<SimpleFeature> readAllRows() throws IOException {
+        AbstractList<SimpleFeature> list = new LinkedList<SimpleFeature>();
 
         try {
             setPosition(1);
@@ -519,6 +543,7 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
      * @return the constructed object
      * @throws IOException on any file IO errors
      */
+    @SuppressWarnings("unchecked")
     protected Object readGeometry(int instancesCount, int dimensionality,
         boolean readDoubles) throws IOException {
         Object result = null;
@@ -561,9 +586,8 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
         if (instancesCount == 1) {
             result = factory.createPoint(coordinate);
         } else {
-            result = factory.createLineString(DefaultCoordinateSequenceFactory.instance()
-                                                                              .create(coordinates
-                        .toCoordinateArray()));
+            result = factory.createLineString(new CoordinateArraySequence(coordinates
+                    .toCoordinateArray()));
         }
 
         return result;
@@ -591,7 +615,7 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
      */
     public SimpleFeature readFeature() throws IOException, IllegalAttributeException {
         SimpleFeature result = null;
-        Iterator iter = columns.iterator();
+        //Iterator<VPFColumn> iter = columns.iterator();
         VPFColumn column;
         boolean textPrimitive = pathName.endsWith(TEXT_PRIMITIVE);
         int size = columns.size();
@@ -992,7 +1016,7 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
 		return featureType.getType( index );
 	}
 
-	public List getTypes() {
+	public List<AttributeType> getTypes() {
 		return featureType.getTypes();
 	}
 
@@ -1004,11 +1028,11 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
 		return featureType.getGeometryDescriptor();
 	}
 
-	public Class getBinding() {
+	public Class<Collection<Property>> getBinding() {
 		return featureType.getBinding();
 	}
 
-	public Collection getDescriptors() {
+	public Collection<PropertyDescriptor> getDescriptors() {
 		return featureType.getDescriptors();
 	}
 
@@ -1016,7 +1040,7 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
 		return featureType.isInline();
 	}
 
-	public List getRestrictions() {
+	public List<org.opengis.filter.Filter> getRestrictions() {
 		return featureType.getRestrictions();
 	}
 

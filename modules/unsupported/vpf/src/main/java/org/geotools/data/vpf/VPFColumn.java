@@ -18,7 +18,7 @@ package org.geotools.data.vpf;
 
 import java.util.Map;
 
-import org.geotools.data.vpf.ifc.DataTypesDefinition;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.*;
 import org.geotools.data.vpf.io.TripletId;
 import org.geotools.data.vpf.util.DataUtils;
 import org.geotools.feature.AttributeTypeBuilder;
@@ -35,11 +35,9 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
  *
- *
- *
  * @source $URL$
  */
-public class VPFColumn implements AttributeDescriptor, DataTypesDefinition {
+public class VPFColumn implements AttributeDescriptor {
     /**
      * If the value is a short integer, that often means it has
      * an accompanying value in a string lookup table.

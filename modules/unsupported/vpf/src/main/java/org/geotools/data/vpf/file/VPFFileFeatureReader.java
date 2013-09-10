@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.FeatureReader;
-import org.geotools.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -56,7 +55,7 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
      * @see org.geotools.data.FeatureReader#next()
      */
     public SimpleFeature next()
-        throws IOException, IllegalAttributeException, NoSuchElementException {
+        throws IOException, NoSuchElementException {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }

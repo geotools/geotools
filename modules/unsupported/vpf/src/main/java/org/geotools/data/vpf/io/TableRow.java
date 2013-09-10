@@ -42,7 +42,7 @@ public class TableRow implements VPFRow {
      * Describe variable <code>fieldsMap</code> here.
      *
      */
-    private Map fieldsMap = null;
+    private Map<String,RowField> fieldsMap = null;
 
     /**
      * Creates a new <code>TableRow</code> instance.
@@ -50,7 +50,7 @@ public class TableRow implements VPFRow {
      * @param fieldsArr a <code>RowField[]</code> value
      * @param fieldsMap a <code>HashMap</code> value
      */
-    public TableRow(RowField[] fieldsArr, Map fieldsMap) {
+    public TableRow(RowField[] fieldsArr, Map<String,RowField> fieldsMap) {
         this.fieldsArr = fieldsArr;
         this.fieldsMap = fieldsMap;
     }

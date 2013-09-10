@@ -33,6 +33,8 @@ import org.geotools.data.vpf.exc.VPFDataFormatException;
  * @source $URL$
  */
 public class TripletId extends Number {
+    /** serialVersionUID */
+    private static final long serialVersionUID = -3584133713173893007L;
     /**
      * The raw data that can be decomposed into as many as three separate
      * numbers

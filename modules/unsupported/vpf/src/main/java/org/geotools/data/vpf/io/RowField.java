@@ -30,6 +30,9 @@ import org.geotools.data.vpf.ifc.DataTypesDefinition;
  * @version $Id$
  */
 public class RowField extends Number implements DataTypesDefinition {
+    /** serialVersionUID */
+    private static final long serialVersionUID = -4223958125941532737L;
+
     /**
      * Describe variable <code>value</code> here.
      *

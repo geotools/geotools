@@ -282,13 +282,17 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * aren't interpreted as one feature and merged.
      */
     public List<Object> getIdValues(Object source) {   
-        List<Object> ids = new ArrayList<Object>();
-        FilterAttributeExtractor extractor = new FilterAttributeExtractor();
-        mapping.getFeatureIdExpression().accept(extractor, null);
-        for (String att : extractor.getAttributeNameSet()) {
-            ids.add(peekValue(source, namespaceAwareFilterFactory.property( att)));
+        List<Object> ids = new ArrayList<Object>();        
+        if (Expression.NIL.equals(mapping.getFeatureIdExpression())) {
+            // GEOT-4554: if idExpression is not specified, should use PK
+            ids.add(peekValue(source, namespaceAwareFilterFactory.property("@id")));
+        } else {
+            FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+            mapping.getFeatureIdExpression().accept(extractor, null);
+            for (String att : extractor.getAttributeNameSet()) {
+                ids.add(peekValue(source, namespaceAwareFilterFactory.property(att)));
+            }
         }
-        
         if (foreignIds != null) {
             ids.addAll(getForeignIdValues(source));
         }

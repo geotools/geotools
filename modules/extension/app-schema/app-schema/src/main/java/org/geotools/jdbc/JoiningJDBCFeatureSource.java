@@ -24,6 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
@@ -130,23 +131,24 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     /**
      * Create order by field for specific table name
      * 
-     * @param tableName
+     * @param typeName
+     * @param alias
      * @param sort
      * @param orderByFields
      * @param sql 
      * @throws IOException
      * @throws SQLException
      */
-    protected void sort(String tableName, SortBy[] sort , Set<String> orderByFields, boolean alias, StringBuffer sql) throws IOException, SQLException {        
+    protected void sort(String typeName, String alias, SortBy[] sort , Set<String> orderByFields, StringBuffer sql) throws IOException, SQLException {                
         for (int i = 0; i < sort.length; i++) {
             if(SortBy.NATURAL_ORDER.equals(sort[i])|| SortBy.REVERSE_ORDER.equals(sort[i])) {
                 throw new IOException("Cannot do natural order in joining queries");                    
-            } else {
+            } else {                
                 StringBuffer mySql = new StringBuffer();
-                if (alias) {
-                   encodeColumnName2(sort[i].getPropertyName().getPropertyName(), tableName, mySql, null);
+                if (alias != null) {
+                   encodeColumnName2(sort[i].getPropertyName().getPropertyName(), alias, mySql, null);
                 } else {
-                   encodeColumnName(sort[i].getPropertyName().getPropertyName(), tableName, mySql, null);
+                   encodeColumnName(sort[i].getPropertyName().getPropertyName(), typeName, mySql, null);
                 }
                 if (!mySql.toString().isEmpty() && orderByFields.add(mySql.toString())) {
                 	// if it's not already in ORDER BY (because you can't have duplicate column names in order by)
@@ -161,6 +163,34 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     } else {
                         sql.append(" ASC");
                     }                	
+                }
+            }
+        }
+        // GEOT-4554: sort by PK if idExpression is not there
+        if (sort.length == 0) {
+            PrimaryKey joinKey = null;
+            SimpleFeatureType joinFeatureType = getDataStore().getSchema(typeName);
+            try {
+                joinKey = getDataStore().getPrimaryKey(joinFeatureType);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            for (PrimaryKeyColumn col : joinKey.getColumns()) {
+                StringBuffer mySql = new StringBuffer();
+                if (alias != null) {
+                    encodeColumnName2(col.getName(), alias, mySql, null);
+                } else {
+                    encodeColumnName(col.getName(), typeName, mySql, null);
+                }
+                if (!mySql.toString().isEmpty() && orderByFields.add(mySql.toString())) {
+                    // if it's not already in ORDER BY (because you can't have duplicate column names in order by)
+                    // add it to the query buffer
+                    if (orderByFields.size() > 1) {
+                        sql.append(", ");
+                    }
+                    sql.append(mySql);
+                    // this is what's used in AppSchemaDataAccess 
+                    sql.append(" ASC");
                 }
             }
         }
@@ -208,13 +238,13 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             JoiningQuery.QueryJoin join = j<0 ? null : query.getQueryJoins().get(j);
             SortBy[] sort = j<0? query.getSortBy() : join.getSortBy();
         
-            if ((sort != null) && (sort.length > 0)) {
+            if ((sort != null)) {
                 if (!orderby) {
                     orderby = true;
                     sql.append(" ORDER BY ");
                 }    
                 if (j < 0) {
-                    sort(query.getTypeName(), sort, orderByFields, false, sql);
+                    sort(query.getTypeName(), null, sort, orderByFields, sql);
                     if (query.getQueryJoins() != null && query.getQueryJoins().size() > 0) {
                         addMultiValuedSort(query.getTypeName(), orderByFields, query.getQueryJoins().get(0), sql);
                     }
@@ -235,9 +265,9 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     }
                 } else {
                     if (aliases != null && aliases[j] != null) {
-                        sort(aliases[j], sort, orderByFields, true, sql);
+                        sort(join.getJoiningTypeName(), aliases[j], sort, orderByFields,sql);
                     } else {
-                        sort(join.getJoiningTypeName(), sort, orderByFields, false, sql);
+                        sort(join.getJoiningTypeName(), null, sort, orderByFields, sql);
                     }
                     if (query.getQueryJoins().size() > j + 1) {
                         addMultiValuedSort(join.getJoiningTypeName(), orderByFields, query
@@ -409,6 +439,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             sql.append(",");
             pkColumnNames.add(colName);
         }
+        Set<String> lastPkColumnNames = pkColumnNames;
         
         //other columns
         for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
@@ -433,7 +464,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         
         if (query.getQueryJoins() != null && query.getQueryJoins().size() > 0) {
             for (int i = 0; i < query.getQueryJoins().size(); i++) {
-                for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
+                List<String> ids = query.getQueryJoins().get(i).getIds();
+                for (int j = 0; j < ids.size(); j++) {
                     if (aliases[i] != null) {
                         getDataStore().dialect.encodeColumnName(aliases[i], query.getQueryJoins()
                                 .get(i).getIds().get(j), sql);
@@ -443,6 +475,32 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                         
                     }
                     sql.append(" ").append(FOREIGN_ID + "_" + i + "_" + j).append(",");                    
+                }
+                // GEOT-4554: handle PK as default idExpression
+                if (ids.isEmpty()) {
+                    PrimaryKey joinKey = null;
+                    String joinTypeName = query.getQueryJoins().get(i).getJoiningTypeName();
+                    SimpleFeatureType joinFeatureType = getDataStore().getSchema(joinTypeName);
+
+                    try {
+                        joinKey = getDataStore().getPrimaryKey(joinFeatureType);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    if (!joinKey.getColumns().isEmpty()) {
+                        lastPkColumnNames.clear();
+                    }
+                    int j = 0;
+                    for (PrimaryKeyColumn col : joinKey.getColumns()) {
+                        if (aliases[i] != null) {
+                            getDataStore().dialect.encodeColumnName(aliases[i], col.getName(), sql);
+                        } else {
+                            encodeColumnName(col.getName(), joinTypeName, sql, query.getHints());
+                        }
+                        sql.append(" ").append(FOREIGN_ID + "_" + i + "_" + j).append(",");
+                        j++;
+                        lastPkColumnNames.add(col.getName());
+                    }
                 }
             }
         }
@@ -477,7 +535,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 
                 toSQL = createFilterToSQL(getDataStore().getSchema(lastTableName));
                 
-                if (lastSortBy != null) {
+                if (lastSortBy != null 
+                        && (lastSortBy.length > 0 || !lastPkColumnNames.isEmpty())) {
                     //we will use another join for the filter
                     //assuming that the last sort by specifies the ID of the parent feature                   
                     //this way we will ensure that if the table is denormalized, that all rows
@@ -487,6 +546,16 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     for (int i=0; i < lastSortBy.length; i++) {
                          getDataStore().dialect.encodeColumnName(null, lastSortBy[i].getPropertyName().getPropertyName(), sql);
                          if (i < lastSortBy.length-1) sql.append(",");
+                    }
+                    if (lastSortBy.length == 0) {
+                        // GEOT-4554: if ID expression is not specified, use PK
+                        int i = 0;
+                        for (String pk : lastPkColumnNames) {
+                            getDataStore().dialect.encodeColumnName(null, pk, sql);
+                            if (i < lastPkColumnNames.size() - 1)
+                                sql.append(",");
+                            i++;
+                        }
                     }
                     sql.append(" FROM ");
                     getDataStore().encodeTableName(lastTableName, sql, query.getHints());                                        
@@ -499,6 +568,18 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                         sql.append(" = ");
                         encodeColumnName2(lastSortBy[i].getPropertyName().getPropertyName(), TEMP_FILTER_ALIAS , sql, null);
                         if (i < lastSortBy.length-1) sql.append(" AND ");
+                    }
+                    if (lastSortBy.length == 0) {
+                        // GEOT-4554: if ID expression is not specified, use PK
+                        int i = 0;
+                        for (String pk : lastPkColumnNames) {
+                            encodeColumnName2(pk, lastTableAlias, sql, null);
+                            sql.append(" = ");
+                            encodeColumnName2(pk, TEMP_FILTER_ALIAS, sql, null);
+                            if (i < lastPkColumnNames.size() - 1)
+                                sql.append(" AND ");
+                            i++;
+                        }
                     }
                     sql.append(" ) ");                    
                 }
@@ -585,9 +666,17 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         AttributeTypeBuilder ab = new AttributeTypeBuilder();
         
         for (int i=0; i<query.getQueryJoins().size(); i++) {
-            for (int j=0; j<query.getQueryJoins().get(i).getIds().size(); j++) {
+            if (query.getQueryJoins().get(i).getIds().isEmpty()) {
+                // GEOT-4554: PK as default idExpression
                 ab.setBinding(String.class);
-                builder.add(ab.buildDescriptor(new NameImpl(FOREIGN_ID) + "_" + i + "_" + j, ab.buildType() ) );
+                builder.add(ab.buildDescriptor(new NameImpl(FOREIGN_ID) + "_" + i + "_" + 0,
+                        ab.buildType()));
+            } else {
+                for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
+                    ab.setBinding(String.class);
+                    builder.add(ab.buildDescriptor(new NameImpl(FOREIGN_ID) + "_" + i + "_" + j,
+                            ab.buildType()));
+                }
             }
         }
         

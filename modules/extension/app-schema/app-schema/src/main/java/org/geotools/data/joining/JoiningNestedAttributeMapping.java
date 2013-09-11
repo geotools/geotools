@@ -38,13 +38,11 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.SortByImpl;
 import org.geotools.jdbc.JoiningJDBCFeatureSource;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -213,11 +211,21 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         List<Expression> foreignIds = new ArrayList<Expression>();
         for (int i = 0; i < query.getQueryJoins().size(); i++) {
+            // GEOT-4554: handle PK as default idExpression
+            if (query.getQueryJoins().get(i).getIds().isEmpty()) {
+                String joinTypeName = query.getQueryJoins().get(i).getJoiningTypeName();
+                Expression idValue = filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_"
+                        + i + "_" + 0);
+                // prefixed with type name as done in SimpleFeature id
+                foreignIds.add(filterFac.function("strConcat",
+                        filterFac.literal(joinTypeName + "."), idValue));
+            } else {
                 for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
                     foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i
                             + "_" + j));
                 }
-        }      
+            }
+        }
         
         daFeatureIterator.setForeignIds(foreignIds);
 

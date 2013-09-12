@@ -36,10 +36,8 @@ The text of the license itself is included with the library as a "LICENSE" file.
 
 In addition several modules contain code made available to us under a different license:
 
-* :doc:`gt-main </library/main/index>` (SOSNOKILLLICENSE)
-* :doc:`gt-xsd-core </extension/xsd/core>` (Apache License)
+* :doc:`gt-xsd-core </extension/xsd/core>` (Apache License from xsdlib)
 * :doc:`gt-brewer </extension/brewer/index>` (Apache License)
-* :doc:`gt-geotiff </library/coverage/geotiff>` (Happy Fun Ball License)
 * :doc:`gt-referencing3d </library/referencing/3d>` (some code available from nasa for unlimited distribution) 
 
 Document License

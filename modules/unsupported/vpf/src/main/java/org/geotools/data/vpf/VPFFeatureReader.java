@@ -28,6 +28,7 @@ import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
+
 import static org.geotools.data.vpf.ifc.FCode.*;
 
 import org.geotools.feature.IllegalAttributeException;
@@ -36,6 +37,7 @@ import org.geotools.feature.type.AnnotationFeatureType;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.Name;
 
 /**
  *
@@ -237,7 +239,7 @@ public class VPFFeatureReader
                 secondFile = getVPFFile(column); 
                 SimpleFeature tempRow = (SimpleFeature) rows.get(secondFile);
                 if(tempRow != null){
-                    value = tempRow.getAttribute(column.getLocalName());
+                    value = tempRow.getAttribute(column.getName());
                     if (column.isAttemptLookup()){
                         try {
                             // Attempt to perform a lookup and conversion
@@ -249,7 +251,7 @@ public class VPFFeatureReader
                                 SimpleFeature intVdtRow = (SimpleFeature)intVdtIter.next();
                                 if(intVdtRow.getAttribute("table").toString().trim().equals(featureClassName) && 
                                         (Short.parseShort(intVdtRow.getAttribute("value").toString()) == Short.parseShort(value.toString()) &&
-                                        (intVdtRow.getAttribute("attribute").toString().trim().equals(column.getLocalName())))){
+                                        (intVdtRow.getAttribute("attribute").toString().trim().equals(column.getName())))){
                                     value = intVdtRow.getAttribute("description").toString().trim();
                                     break;
                                 }
@@ -291,13 +293,35 @@ public class VPFFeatureReader
      * @param column the column to search for 
      * @return the VPFFile that owns this column
      */
-    private VPFFile getVPFFile(AttributeDescriptor column){
+    private VPFFile getVPFFile(VPFColumn column){
+        String columnName = column.getName();
         VPFFile result = null;
         VPFFile temp;
         Iterator iter = featureType.getFeatureClass().getFileList().iterator();
         while(iter.hasNext()){
             temp = (VPFFile)iter.next();
-            if((temp != null) && (temp.indexOf(column.getName()) >= 0)){
+            if((temp != null) && (temp.indexOf(columnName) >= 0)){
+                result = temp;
+                break;
+            }
+        }
+        return result;
+    }
+    /**
+     * Returns the VPFFile for a particular column.
+     * It will only find the first match, but that should be okay
+     * because duplicate columns will cause even bigger problems elsewhere.
+     * @param column the column to search for 
+     * @return the VPFFile that owns this column
+     */
+    private VPFFile getVPFFile(AttributeDescriptor column){
+        Name columnName = column.getName();
+        VPFFile result = null;
+        VPFFile temp;
+        Iterator iter = featureType.getFeatureClass().getFileList().iterator();
+        while(iter.hasNext()){
+            temp = (VPFFile)iter.next();
+            if((temp != null) && (temp.indexOf(columnName) >= 0)){
                 result = temp;
                 break;
             }

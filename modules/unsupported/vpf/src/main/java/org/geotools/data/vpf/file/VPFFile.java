@@ -166,16 +166,15 @@ public class VPFFile implements SimpleFeatureType {
         inputStream = new RandomAccessFile(cPathName, ACCESS_MODE);
         readHeader();
 
-        GeometryDescriptor gat = null;
-        VPFColumn geometryColumn = null;
-
+        VPFColumn column = null;
+        String geometryName = null;
+        
         Iterator<VPFColumn> iter = columns.iterator();
         while (iter.hasNext()) {
-            geometryColumn = (VPFColumn) iter.next();
+            column = (VPFColumn) iter.next();
 
-            if (geometryColumn.isGeometry()) {
-                gat = geometryColumn.getGeometryAttributeType();
-
+            if (column.isGeometry()) {
+                geometryName = column.getName();
                 break;
             }
         }
@@ -193,10 +192,10 @@ public class VPFFile implements SimpleFeatureType {
         b.setSuperType(superType);
         if(columns != null){
             for ( VPFColumn ad : columns ) {
-                b.add( (AttributeDescriptor) ad );
+                b.add( ad.getDescriptor() );
             }
         }
-        b.setDefaultGeometry(gat.getLocalName());
+        b.setDefaultGeometry(geometryName);
         featureType = b.buildFeatureType();
     }
 
@@ -310,7 +309,7 @@ public class VPFFile implements SimpleFeatureType {
         
         while (iter.hasNext()) {
             VPFColumn column = (VPFColumn) iter.next();
-            int length = FeatureTypes.getFieldLength(column);
+            int length = FeatureTypes.getFieldLength(column.getDescriptor());
             if ( length > -1 ) {
                 size += length;    
             }
@@ -335,7 +334,7 @@ public class VPFFile implements SimpleFeatureType {
 
         try {
             // This speeds things up mightily
-            String firstColumnName = ((VPFColumn) columns.get(0)).getLocalName();
+            String firstColumnName = ((VPFColumn) columns.get(0)).getName();
 
             if (idName.equals(firstColumnName)) {
                 setPosition(id);
@@ -625,9 +624,10 @@ public class VPFFile implements SimpleFeatureType {
         try {
             for (int inx = 0; inx < columns.size(); inx++) {
                 column = (VPFColumn) columns.get(inx);
-
-                if ( column.getType().getRestrictions().isEmpty() || 
-                        column.getType().getRestrictions().contains( org.opengis.filter.Filter.INCLUDE )) {
+                AttributeDescriptor descriptor = column.getDescriptor();
+                
+                if ( descriptor.getType().getRestrictions().isEmpty() || 
+                        descriptor.getType().getRestrictions().contains( org.opengis.filter.Filter.INCLUDE )) {
                     values[inx] = readVariableSizeData(column.getTypeChar());
                 }
                 else {

@@ -78,7 +78,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
     /**
      * The columns that are part of this feature class
      */
-    private final List columns = new Vector();
+    private final List<VPFColumn> columns = new Vector<VPFColumn>();
 
     /** The coverage this feature class is part of */
     private final VPFCoverage coverage;
@@ -147,7 +147,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
         try {
             VPFFile fcsFile = (VPFFile) VPFFileFactory.getInstance().getFile(fcsFileName);
-            Iterator iter = fcsFile.readAllRows().iterator();
+            Iterator<SimpleFeature> iter = fcsFile.readAllRows().iterator();
 
             while (iter.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) iter.next();
@@ -160,20 +160,15 @@ public class VPFFeatureClass implements SimpleFeatureType {
             }
 
             // Deal with the geometry column
-            iter = columns.iterator();
-
-            GeometryDescriptor gat = null;
+            Iterator<VPFColumn> iter2 = columns.iterator();
+            VPFColumn column;
+            String geometryName = null;
             AttributeDescriptor geometryColumn = null;
 
-            while (iter.hasNext()) {
-                geometryColumn = (AttributeDescriptor) iter.next();
-
-                if(Geometry.class.isAssignableFrom(geometryColumn.getType().getBinding())){
-                    if(geometryColumn instanceof GeometryDescriptor){
-                        gat = (GeometryDescriptor)geometryColumn;
-                    }else if (geometryColumn instanceof VPFColumn){
-                        gat = ((VPFColumn)geometryColumn).getGeometryAttributeType();
-                    }
+            while (iter2.hasNext()) {
+                column = (VPFColumn) iter.next();
+                if( column.isGeometry() ){
+                    geometryName = column.getName();
                     break;
                 }
             }
@@ -188,8 +183,10 @@ public class VPFFeatureClass implements SimpleFeatureType {
             b.setName(cName);
             b.setNamespaceURI(namespace);
             b.setSuperType(superType);
-            b.addAll(columns);
-            b.setDefaultGeometry(gat.getLocalName());
+            for( VPFColumn col : columns ){
+                b.add( col.getDescriptor() );
+            }
+            b.setDefaultGeometry(geometryName);
             
             featureType = b.buildFeatureType();
         } catch (IOException exp) {
@@ -217,14 +214,14 @@ public class VPFFeatureClass implements SimpleFeatureType {
             addFileToTable(vpfFile1);
 
             VPFFile vpfFile2 = null;
-            AttributeDescriptor joinColumn1 = (VPFColumn) vpfFile1.getDescriptor(table1Key);
+            AttributeDescriptor joinColumn1 = vpfFile1.getDescriptor(table1Key);
             AttributeDescriptor joinColumn2;
 
             try {
                 vpfFile2 = VPFFileFactory.getInstance().getFile(directoryName.concat(
                             File.separator).concat(table2));
                 addFileToTable(vpfFile2);
-                joinColumn2 = (VPFColumn) vpfFile2.getDescriptor(table2Key);
+                joinColumn2 = vpfFile2.getDescriptor(table2Key);
             } catch (IOException exc) {
                 fileList.add(null);
 

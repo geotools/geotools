@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
@@ -260,6 +261,12 @@ public class MultithreadedHttpClient implements HTTPClient {
         public InputStream getResponseStream() throws IOException {
             if (responseBodyAsStream == null) {
                 responseBodyAsStream = methodResponse.getResponseBodyAsStream();
+                // commons httpclient does not handle gzip encoding automatically, we have to check
+                // ourselves: https://issues.apache.org/jira/browse/HTTPCLIENT-816
+                Header header = methodResponse.getResponseHeader("Content-Encoding");
+                if(header != null && "gzip".equals(header.getValue())) {
+                    responseBodyAsStream = new GZIPInputStream(responseBodyAsStream);
+                }
             }
             return responseBodyAsStream;
         }

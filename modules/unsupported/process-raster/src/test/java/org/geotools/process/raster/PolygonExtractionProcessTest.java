@@ -35,22 +35,24 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 
 import org.jaitools.numeric.Range;
-
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.process.Process;
+import org.geotools.process.ProcessFactory;
+import org.geotools.process.Processors;
 import org.geotools.process.raster.PolygonExtractionProcess;
-
 import org.opengis.feature.simple.SimpleFeature;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 
@@ -78,21 +80,10 @@ public class PolygonExtractionProcessTest {
 
     @Test
     public void simpleSmallCoverage() throws Exception {
-        // small raster with 3 non-zero regions
-        final float[][] DATA = {
-            {2, 2, 0, 3},
-            {0, 2, 0, 0},
-            {0, 2, 2, 2},
-            {1, 0, 0, 2}
-        };
+        GridCoverage2D cov = buildSmallCoverage();
         
         final int perimeters[] = { 4, 16, 4 };
         final int areas[] = {1, 7, 1};
-
-        GridCoverage2D cov = covFactory.create(
-                "coverage",
-                DATA,
-                new ReferencedEnvelope(0, DATA[0].length, 0, DATA.length, null));
 
         int band = 0;
         Set<Double> outsideValues = Collections.singleton(0D);
@@ -111,6 +102,23 @@ public class PolygonExtractionProcessTest {
         } finally {
             iter.close();
         }
+    }
+
+
+    private GridCoverage2D buildSmallCoverage() {
+        // small raster with 3 non-zero regions
+        final float[][] DATA = {
+            {2, 2, 0, 3},
+            {0, 2, 0, 0},
+            {0, 2, 2, 2},
+            {1, 0, 0, 2}
+        };
+
+        GridCoverage2D cov = covFactory.create(
+                "coverage",
+                DATA,
+                new ReferencedEnvelope(0, DATA[0].length, 0, DATA.length, null));
+        return cov;
     }
 
     @Test
@@ -459,5 +467,20 @@ public class PolygonExtractionProcessTest {
         } finally {
             iter.close();
         }
+    }
+    
+    @Test
+    public void testCallViaProcessFactory() {
+        Process process = Processors.createProcess(new NameImpl("ras", "PolygonExtraction"));
+        assertNotNull(process);
+        
+        Map<String, Object> inputs = new HashMap<String, Object>();
+        inputs.put("data", buildSmallCoverage());
+        inputs.put("ranges", Arrays.asList(new Range<Integer>(0, true, 1, true), new Range<Integer>(2, true, 3, true)));
+        Map<String, Object> results = process.execute(inputs, null);
+        Object result = results.get("result");
+        assertTrue(result instanceof SimpleFeatureCollection);
+        SimpleFeatureCollection fc = (SimpleFeatureCollection) result;
+        assertEquals(4, fc.size());
     }
 }

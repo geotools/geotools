@@ -114,7 +114,7 @@ public class PolygonExtractionProcess implements RasterProcess {
             @DescribeParameter(name = "insideEdges", description = "Indicates whether to vectorize boundaries between adjacent regions with non-outside values", min = 0) Boolean insideEdges,
             @DescribeParameter(name = "roi", description = "Geometry delineating the region of interest (in raster coordinate system)", min = 0) Geometry roi,
             @DescribeParameter(name = "nodata", description = "Value to treat as NODATA (default is 0)",
-            collectionType = Number.class, min = 0, defaultValue = "0") Collection<Number> noDataValues,
+            collectionType = Number.class, min = 0) Collection<Number> noDataValues,
             @DescribeParameter(name = "ranges", description = "Specifier for a value range in the format ( START ; END ).  START and END values are optional. [ and ] can also be used as brackets, to indicate inclusion of the relevant range endpoint.", 
             collectionType = Range.class, min = 0) List<Range> classificationRanges,
             ProgressListener progressListener)

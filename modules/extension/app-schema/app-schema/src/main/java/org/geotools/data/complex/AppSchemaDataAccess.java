@@ -61,6 +61,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.sort.SortBy;
@@ -353,6 +354,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                 mapping.getFeatureIdExpression().accept(extractor, null);
                 
                 if (!Expression.NIL.equals(mapping.getFeatureIdExpression())
+                        && !(mapping.getFeatureIdExpression() instanceof Literal)
                         && extractor.getAttributeNameSet().isEmpty()) {
                     // GEOS-5618: getID() and functions in idExpression aren't supported with joining
                     String ns = mapping.namespaces.getPrefix(mapping.getTargetFeature().getName()

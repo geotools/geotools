@@ -1598,7 +1598,7 @@ class RasterLayerResponse{
                 	        }
                 	        
                 	        bandName = colorInterpretation.name();
-                                if(bandNames.contains(bandName)) {// make sure we create no duplicate band names
+                                if(colorInterpretation == ColorInterpretation.UNDEFINED || bandNames.contains(bandName)) {// make sure we create no duplicate band names
                                     bandName = "Band" + (i + 1);
                                 }
         	        } else { // no color model

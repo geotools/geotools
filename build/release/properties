@@ -17,11 +17,11 @@ if [ -z $rev ]; then
 fi
 
 if [ -z $DIST_PATH ]; then
-  DIST_PATH=/var/www/html/geotools/release
+  DIST_PATH=/var/www/geotools/release
 fi
 
 if [ -z $DIST_HOST ]; then
-  DIST_HOST=gridlock.opengeo.org
+  DIST_HOST=ares.boundlessgeo.com
 fi
 
 if [ -z $DIST_URL ]; then

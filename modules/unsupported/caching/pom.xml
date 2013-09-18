@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+???<?xml version="1.0" encoding="UTF-8"?>
 <!-- =======================================================================
         Maven Project Configuration File
 
@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>10-SNAPSHOT</version>
+    <version>10.0</version>
   </parent>
 
 
@@ -72,7 +72,7 @@
       <roles>
         <role>Java developer</role>
       </roles>
-      <organization>Université Laval - Département des Sciences géomatiques</organization>
+      <organization>Universit?? Laval - D??partement des Sciences g??omatiques</organization>
       <organizationUrl>http://www.scg.ulaval.ca</organizationUrl>
       <email>christophe.rousson@gmail.com</email>
       <timezone>EDT</timezone>

@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>10-SNAPSHOT</version>
+    <version>10.0</version>
   </parent>
 
 
@@ -115,17 +115,17 @@
       </roles>
     </contributor> 
     <contributor>
-      <name>Rémi Eve</name>
+      <name>R??mi Eve</name>
       <organization>
-        Institut de Recherche pour le Développement (IRD)
+        Institut de Recherche pour le D??veloppement (IRD)
       </organization>
       <roles>
         <role>Java developper</role>
       </roles>
     </contributor>
     <contributor>
-      <name>Yann Cézard</name>
-      <organization>Université de Montpellier II</organization>
+      <name>Yann C??zard</name>
+      <organization>Universit?? de Montpellier II</organization>
       <roles>
         <role>Java developper</role>
       </roles>

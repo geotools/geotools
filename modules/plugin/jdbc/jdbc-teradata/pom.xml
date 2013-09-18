@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.jdbc</groupId>
     <artifactId>gt-jdbc</artifactId>
-    <version>10-SNAPSHOT</version>
+    <version>10.0</version>
   </parent>
 
 
@@ -62,7 +62,7 @@
       </roles>
     </developer>
     <developer>
-      <name>Stéphane Brunner</name>
+      <name>St??phane Brunner</name>
       <id>stephane.brunner</id>
       <email>stephane.brunner@camptocamp.com</email>
       <organization>Camptocamp</organization>

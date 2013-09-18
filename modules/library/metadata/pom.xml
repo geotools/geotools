@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>10-SNAPSHOT</version>
+    <version>10.0</version>
   </parent>
 
 
@@ -65,9 +65,9 @@
 
   <contributors>
     <contributor>
-      <name>Touraïvane</name>
+      <name>Toura??vane</name>
       <organization>
-        Institut de Recherche pour le Développement (IRD)
+        Institut de Recherche pour le D??veloppement (IRD)
       </organization>
       <roles>
         <role>Java developper</role>
@@ -85,7 +85,7 @@
       </roles>
     </contributor>
     <contributor>
-      <name>Cédric Briançon</name>
+      <name>C??dric Brian??on</name>
       <email>cedric.briancon@geomatys.fr</email>
       <organization>Geomatys</organization>
       <timezone>+1</timezone>

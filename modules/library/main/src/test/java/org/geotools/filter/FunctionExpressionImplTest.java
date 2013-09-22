@@ -237,6 +237,9 @@ public class FunctionExpressionImplTest extends TestCase {
             throws InstantiationException, IllegalAccessException {
         final String functionClass = function.getClass().getName();
         int argCount = function.getArgCount();
+        if (argCount < 0) { //unlimited parameters
+            argCount = 5; //we'll try 5
+        }
 
         final org.geotools.filter.Expression[] expected = new org.geotools.filter.Expression[argCount];
         for (int i = 0; i < argCount; i++) {

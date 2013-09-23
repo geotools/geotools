@@ -100,13 +100,9 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
     
     private final static double RGB_TO_GRAY_MATRIX [][]= {{ 0.114, 0.587, 0.299, 0 }};
 
-    private final static byte FILL_VALUE = 1; 
-    
     private RoiAccessor roiAccessor;
     
     private RoiAccessor thresholdRoiAccessor;
-    
-    private RoiAccessor zeroRoiAccessor;
     
     private RandomIter iter;
     
@@ -146,8 +142,7 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
         
         // Save the ROI array.
         ROI thresholdRoi = null;
-        ROI zeroRoi = null;
-        if (sourceROI != null) {
+        if (sourceROI != null){            
             RenderedImage image = inputRI;
             if (threshold != Integer.MAX_VALUE){
                 if (numBands == 3) {
@@ -167,7 +162,6 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
                 }
                     thresholdRoi = new ROI(image, threshold);
                     thresholdRoi = thresholdRoi.intersect(sourceROI);
-                    zeroRoi = new ROI(image, 1);
             }
         } 
         
@@ -208,12 +202,11 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
             sourceExtensionConstant = -Double.MAX_VALUE;
         }
         this.sourceExtender = sourceExtensionConstant == 0.0 ? BorderExtender
-                .createInstance(BorderExtender.BORDER_ZERO) : new BorderExtenderConstant(
-                new double[] { sourceExtensionConstant });
+                .createInstance(BorderExtender.BORDER_ZERO)
+                : new BorderExtenderConstant(new double[] { sourceExtensionConstant });
 
         roiAccessor = buildRoiAccessor(sourceROI);
         thresholdRoiAccessor = buildRoiAccessor(thresholdRoi);
-        zeroRoiAccessor = buildRoiAccessor(zeroRoi);
     }
 
     private RoiAccessor buildRoiAccessor(ROI sourceROI) {
@@ -323,6 +316,7 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
         int dstScanlineOffset[] = new int[dnumBands];
         int val[]= new int[dnumBands];
         int valueCount = 0;
+        boolean readOriginalValues = false;
         for (int k = 0; k < dnumBands; k++) {
             dstScanlineOffset[k] = dstBandOffsets[k];
         }
@@ -333,6 +327,7 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
 
             for (int i = 0; i < dwidth; i++) {
                 valueCount = 0;
+                readOriginalValues = false;
                 for (int k = 0;k<dnumBands;k++){
                     val[k] = Integer.MIN_VALUE;
                 }
@@ -342,17 +337,17 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
                 // Pixels outside the ROI will be forced to background color
                 //
                 // //
-                boolean outsideRoi = !contains(roiAccessor, x+i, y+j);
+                boolean insideRoi = contains(roiAccessor, x+i, y+j);
                 
-                if (!outsideRoi){
+                if (insideRoi){
                     
                     // // 
                     //
                     // Artifact filtering is applied only on ROI border 
                     //
                     // //
-                    boolean isBorder = isBorder(roiAccessor, x+i, y+j);
-                    if (isBorder) {
+//                    boolean isBorder = isBorder(roiAccessor, x+i, y+j);
+//                    if (isBorder) {
                         
                         // //
                         //
@@ -388,7 +383,7 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
                             }
                             
                             if (valueCount == 0){
-                                //Last attempt to get more valid pixels by looking at the 
+                                //Last attempt to get more valid pixels by looking at the borders
                                 for (int u = min - 1; u <= max + 1; u += (filterSize+1) ) {
                                     for (int v = min-1 ; v <= max +1; v += (filterSize+1)) {
                                         boolean set = false;
@@ -408,43 +403,25 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
                             // //
                             if (valueCount > 0) {
                                 computeValueAtOnce(valuess, valueCount, val);
+                            } else {
+                                readOriginalValues = true;
                             }
+                        } else {
+                            readOriginalValues = true;
                         }
-                    } else {
-                        // //
-                        //
-                        // Pixel within ROI is all zero. Force to almost black value
-                        // 
-                        // //
-                        if (!contains(zeroRoiAccessor,x+i, y+j)){
-                            for (int k = 0; k < dnumBands; k++){
-                                val[k] = FILL_VALUE;
-                            }
-                        }
-                    }
-                    int zeros=0;
-                    for (int k = 0; k < dnumBands; k++){
-                        // //
-                        //
-                        // In case some pixels haven't been computed, provide them a proper value
-                        //
-                        // //
-                        if (val[k] == Integer.MIN_VALUE) {
-                            val[k] = (int) iter.getSample(x+i, y+j, k) & 0xff;
-                        }
-                        if (val[k] == 0){
-                            zeros++;
-                        }
-                    }
-                    if (zeros == dnumBands){
-                        for (int k = 0; k < dnumBands; k++){
-                            val[k] = FILL_VALUE;
-                        }
-                    }
                     for (int k = 0; k < dnumBands; k++){
                         dstDataArrays[k][dstPixelOffset[k]] = (byte) val[k];
                     }    
+                } else {
+                    readOriginalValues = true;
                 }
+                if (readOriginalValues){
+                    for (int k = 0; k < dnumBands; k++){
+                        val[k] = (int) iter.getSample(x+i, y+j, k) & 0xff;
+                        dstDataArrays[k][dstPixelOffset[k]] = (byte) val[k];
+                    }
+                }
+                
                 for (int k = 0; k < dnumBands; k++){
                     dstPixelOffset[k] += dstPixelStride;
                 }    
@@ -497,78 +474,12 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
     
     /**
      * 
-     * @param roi
-     * @param dstX
-     * @param dstY
-     * @return
-     */
-    private boolean isBorder(RoiAccessor roi, int dstX, int dstY) {
-        int leftX = dstX - 1;
-        int lowerY = dstY - 1;
-        int rightX = dstX + 1;
-        int upperY = dstY + 1;
-        
-        if (!contains(roi, leftX, lowerY))
-            return true;
-        if (!contains(roi, leftX, dstY))
-            return true;
-        if (!contains(roi, leftX, upperY))
-            return true;
-        if (!contains(roi, dstX, lowerY))
-            return true;
-        if (!contains(roi, dstX, upperY))
-            return true;
-        if (!contains(roi, rightX, lowerY))
-            return true;
-        if (!contains(roi, rightX, dstY))
-            return true;
-        if (!contains(roi, rightX, upperY))
-            return true;
-        
-        int leftX2 = dstX - 2;
-        int lowerY2 = dstY - 2;
-        int rightX2 = dstX + 2;
-        int upperY2 = dstY + 2;
-        
-        if (!contains(roi, rightX2, dstY))
-            return true;
-        if (!contains(roi, leftX2, dstY))
-            return true;
-        if (!contains(roi, dstX, upperY2))
-            return true;
-        if (!contains(roi, dstX, lowerY2))
-            return true;
-        
-        if (!contains(roi, rightX, lowerY2))
-            return true;
-        if (!contains(roi, leftX, lowerY2))
-            return true;
-        if (!contains(roi, rightX, upperY2))
-            return true;
-        if (!contains(roi, leftX, upperY2))
-            return true;
-        
-        if (!contains(roi, rightX2, upperY))
-            return true;
-        if (!contains(roi, leftX2, upperY))
-            return true;
-        
-        if (!contains(roi, rightX2, lowerY))
-            return true;
-        if (!contains(roi, leftX2, lowerY))
-            return true;
-        
-        return false;
-    }
-
-    /**
-     * 
      * @param roiAccessor
      * @param x
      * @param y
      * @return
      */
-    private final static boolean contains(RoiAccessor roiAccessor, int x, int y) {
+    private final boolean contains(RoiAccessor roiAccessor, int x, int y) {
         return (x >= roiAccessor.minX && x < roiAccessor.minX + roiAccessor.w)
                 && (y >= roiAccessor.minY && y < roiAccessor.minY + roiAccessor.h)
                 && (roiAccessor.iterator.getSample(x, y, 0) >= 1);
@@ -579,6 +490,7 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
      */
     public void dispose(){
         super.dispose();
+        
         if (roiAccessor != null){
             roiAccessor.dispose();
             roiAccessor = null;
@@ -589,10 +501,6 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
             thresholdRoiAccessor = null;
         }
 
-        if (zeroRoiAccessor != null){
-            zeroRoiAccessor.dispose();
-            zeroRoiAccessor = null;
-        }
         iter.done();
 
     }

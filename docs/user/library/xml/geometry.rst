@@ -85,9 +85,8 @@ Here is a complete example::
   
   xsd.close();
 
-  SimpleFeatureCollection collection = FeatureCollections.newCollection("internal");
   WKTReader2 wkt = new WKTReader2();
-  
+  List<SimpleFeature> collection = new LinkedList<SimpleFeature>();
   collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"),"name1" }, null));
   collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (4 4)"),"name2" }, null));
   
@@ -97,7 +96,7 @@ Here is a complete example::
   encode2.setLegacy(true);
   encode2.setBaseURL(baseURL);
   encode2.setNamespace("location", "location.xsd");
-  encode2.encode(xml, collection);
+  encode2.encode(xml,  new ListFeatureCollection(TYPE, collection));
   
   xml.close();
 

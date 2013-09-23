@@ -97,7 +97,7 @@ Here is a complete example::
   encode2.setLegacy(true);
   encode2.setBaseURL(baseURL);
   encode2.setNamespace("location", "location.xsd");
-  encode2.encode(out2, collection);
+  encode2.encode(xml, collection);
   
   xml.close();
 

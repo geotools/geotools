@@ -31,6 +31,8 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.IIOException;
 import javax.imageio.IIOImage;
@@ -47,7 +49,6 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverageWriter;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
 import org.geotools.coverage.grid.io.imageio.geotiff.CRS2GeoTiffMetadataAdapter;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffException;
@@ -61,6 +62,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.logging.Logging;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -85,7 +87,8 @@ import org.opengis.util.ProgressListener;
  */
 public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 		GridCoverageWriter {
-
+    private final static Logger LOGGER= Logging.getLogger(GeoTiffWriter.class);
+    
 	private final Map<String, String> metadataKeyValue = new HashMap<String, String>(); 
 	
 	/**
@@ -419,31 +422,32 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 			}
 			writer.write(writer.getDefaultStreamMetadata(params), new IIOImage(image, null, metadata), params);
 
-
+			// flush then close
+                        outputStream.flush();
 
 		}finally{
 			//
 			// release resources
-			//
-			try{
-				if(outputStream!=null)
-					outputStream.flush();
-			}catch (Throwable e) {
-				// eat me
-			}
+		        //
 			
 			try{
 				if (!(destination instanceof ImageOutputStream)&&outputStream!=null)
 					outputStream.close();
 			}catch (Throwable e) {
-				// eat me
+                            // eat me
+                            if(LOGGER.isLoggable(Level.WARNING)){
+                                LOGGER.log(Level.WARNING,e.getLocalizedMessage(),e);
+                            }
 			}
 			
 			try{
 				if (writer!=null)
 					writer.dispose();
 			}catch (Throwable e) {
-				// eat me
+                            // eat me
+                            if(LOGGER.isLoggable(Level.WARNING)){
+                                LOGGER.log(Level.WARNING,e.getLocalizedMessage(),e);
+                            }
 			}			
 		}
 

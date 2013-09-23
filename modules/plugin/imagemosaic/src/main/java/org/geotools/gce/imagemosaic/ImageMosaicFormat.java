@@ -154,6 +154,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     /** Control the interpolation to be used in mosaicking */
     public static final ParameterDescriptor<Interpolation> INTERPOLATION = new DefaultParameterDescriptor<Interpolation>(
             "Interpolation", Interpolation.class, null, DEFAULT_INTERPOLATION);
+    /** Control the requested resolution calculation. */
+    public static final ParameterDescriptor<Boolean> ACCURATE_RESOLUTION = new DefaultParameterDescriptor<Boolean>("Accurate resolution computation", Boolean.class, new Boolean[]{Boolean.TRUE,Boolean.FALSE}, Boolean.FALSE);
 
     /** Optional Sorting for the granules of the mosaic.
      * 
@@ -201,6 +203,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 TIME,
                 ELEVATION,
                 FILTER,
+                ACCURATE_RESOLUTION,
                 SORT_BY,
                 MERGE_BEHAVIOR
         }));

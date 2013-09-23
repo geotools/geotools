@@ -107,6 +107,8 @@ class RasterLayerRequest {
 	private List<?> elevation;
 	
 	private Filter filter;
+
+    private boolean accurateResolution;
 	
         private final Map<String,List> requestedAdditionalDomains = new HashMap<String,List>();
 
@@ -209,7 +211,8 @@ class RasterLayerRequest {
         // imageReadParams
         //
         // //
-        checkReadType();        
+        checkReadType();
+        spatialRequestHelper.setAccurateResolution(accurateResolution);
         spatialRequestHelper.prepare();
     }
 
@@ -420,6 +423,12 @@ class RasterLayerRequest {
 	            }
 	        }
 	        
+            if (name.equals(ImageMosaicFormat.ACCURATE_RESOLUTION.getName())) {
+                if (value == null)
+                    continue;
+                accurateResolution = ((Boolean) value).booleanValue();
+                return;
+            }
     	}
 		
 	}
@@ -622,6 +631,14 @@ class RasterLayerRequest {
                     setRoiProperty = ((Boolean) value).booleanValue();
                     return;
                 }    
+		if (name.equals(ImageMosaicFormat.ACCURATE_RESOLUTION.getName())) {
+            final Object value = param.getValue();
+            if (value == null) {
+                    return;
+            }
+            accurateResolution = ((Boolean) value).booleanValue();
+            return;
+        } 
        
         // //
         //
@@ -723,9 +740,19 @@ class RasterLayerRequest {
         }
     }
 
-   
+    /**
+     * @return the accurateResolution
+     */
+    public boolean isAccurateResolution() {
+        return accurateResolution;
+    }
 
-    
+    /**
+     * @param accurateResolution the accurateResolution to set
+     */
+    public void setAccurateResolution(boolean accurateResolution) {
+        this.accurateResolution = accurateResolution;
+    }            
 
 	/**
      * Check the type of read operation which will be performed and return

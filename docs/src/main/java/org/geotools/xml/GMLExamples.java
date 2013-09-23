@@ -93,20 +93,24 @@ private void saxExample2() throws Exception {
 }
 
 private void transformExample() throws Exception {
-    SimpleFeatureCollection collection = null;
-    
-    Charset charset = null;
-    String collectionPrefix = null;
-    String collectionNamespace = null;
-    OutputStream out = null;
     // transformExample start
-    FeatureTransformer transform = new FeatureTransformer();
-    transform.setEncoding(charset);
-    transform.setIndentation(4);
-    transform.setGmlPrefixing(true);
-    
+    SimpleFeatureType TYPE = DataUtilities.createType("urn:org.geotools.xml.examples", "location", "geom:Point,name:String");
+	TYPE.getUserData().put("prefix", "ex"); 
+		
+	WKTReader2 wkt = new WKTReader2();
+	List<SimpleFeature> collection = new LinkedList<SimpleFeature>();
+	collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"), "name1" }, null));
+	collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (4 4)"), "name2" }, null));
+
+	SimpleFeatureCollection featureCollection = new ListFeatureCollection(TYPE, collection);
+		
+	FeatureTransformer transform = new FeatureTransformer();
+	transform.setEncoding(Charset.defaultCharset());
+	transform.setIndentation(4);
+	transform.setGmlPrefixing(true);
+	    
     // define feature information
-    final SimpleFeatureType schema = collection.getSchema();
+    final SimpleFeatureType schema = featureCollection.getSchema();
     String prefix = (String) schema.getUserData().get("prefix");
     String namespace = schema.getName().getNamespaceURI();
     transform.getFeatureTypeNamespaces().declareDefaultNamespace(prefix, namespace);
@@ -118,13 +122,17 @@ private void transformExample() throws Exception {
     }
     
     // define feature collection
-    transform.setCollectionPrefix(collectionPrefix);
-    transform.setCollectionNamespace(collectionNamespace);
+    transform.setCollectionPrefix("col");
+    transform.setCollectionNamespace("urn:org.geotools.xml.example.collection");
     
     // other configuration
     transform.setCollectionBounding(true); // include bbox info
     
-    transform.transform(collection, out);
+    ByteArrayOutputStream xml = new ByteArrayOutputStream();
+    transform.transform(featureCollection, xml);
+    xml.close();
+    
+    System.out.println(xml.toString());
     // transformExample end
 }
 

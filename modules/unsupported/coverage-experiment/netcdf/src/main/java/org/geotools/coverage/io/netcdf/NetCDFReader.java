@@ -113,6 +113,8 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class NetCDFReader extends AbstractGridCoverage2DReader implements StructuredGridCoverage2DReader{
 
+    static final String UNSPECIFIED = "_UN$PECIFIED_";
+
     static final String DOMAIN_SUFFIX = "_DOMAIN";
 
     static final String HAS_PREFIX = "HAS_";
@@ -135,6 +137,8 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     private Set<String> setNames = null;
 
     private URL sourceURL;
+
+    String defaultName = null;
 
     private SoftValueHashMap<String, CoverageSource> coverages = new SoftValueHashMap<String, CoverageSource>();
 
@@ -162,7 +166,11 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
         names = access.getNames(null);
         setNames = new HashSet<String>();
         for (Name name: names) {
-            setNames.add(name.toString());
+            String nameString = name.toString();
+            if (defaultName == null) {
+                defaultName = nameString;
+            }
+            setNames.add(nameString);
         }
     }
 
@@ -723,8 +731,31 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
         return buff.toString();
     }
 
+    private String checkUnspecifiedCoverage(String coverageName) {
+        if (coverageName.equalsIgnoreCase(UNSPECIFIED)) {
+            if (getGridCoverageCount() > 1) {
+                throw new IllegalArgumentException(
+                        "Need to specify the coverageName for a reader related to multiple coverages");
+            } else {
+                return defaultName;
+            }
+        } else {
+            if (!setNames.contains(coverageName)) {
+                throw new IllegalArgumentException("The specified coverageName is unavailable");
+            } else {
+                return coverageName;
+            }
+        }
+    }
+
     @Override
-    public GeneralEnvelope getOriginalEnvelope(final String coverageName) {
+    public GeneralEnvelope getOriginalEnvelope() {
+        return getOriginalEnvelope(UNSPECIFIED);
+    }
+
+    @Override
+    public GeneralEnvelope getOriginalEnvelope(String coverageName) {
+        coverageName = checkUnspecifiedCoverage(coverageName);
         try {
             CoverageSource source = getGridCoverageSource(coverageName);
             UnidataVariableAdapter.UnidataSpatialDomain spatialDomain = (UnidataSpatialDomain) source.getSpatialDomain();
@@ -737,7 +768,13 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     }
 
     @Override
-    public GridEnvelope getOriginalGridRange(final String coverageName) {
+    public GridEnvelope getOriginalGridRange() {
+        return getOriginalGridRange(UNSPECIFIED);
+    }
+
+    @Override
+    public GridEnvelope getOriginalGridRange(String coverageName) {
+        coverageName = checkUnspecifiedCoverage(coverageName);
         try {
             final CoverageSource source = getGridCoverageSource(coverageName);
             UnidataVariableAdapter.UnidataSpatialDomain spatialDomain = (UnidataSpatialDomain) source.getSpatialDomain();
@@ -748,9 +785,20 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     }
 
     @Override
-    public double[] getReadingResolutions(final String coverageName, OverviewPolicy policy,
+    public double[] getReadingResolutions(OverviewPolicy policy,
+            double[] requestedResolution) {
+        try {
+            return getReadingResolutions(UNSPECIFIED, policy, requestedResolution);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+    
+    @Override
+    public double[] getReadingResolutions(String coverageName, OverviewPolicy policy,
             double[] requestedResolution) throws IOException {
             // Currently we have no overviews support so we will return the highest resolution
+        coverageName = checkUnspecifiedCoverage(coverageName);
         final CoverageSource source = getGridCoverageSource(coverageName);
         UnidataVariableAdapter.UnidataSpatialDomain spatialDomain = (UnidataSpatialDomain) source.getSpatialDomain();
         GeneralGridGeometry gridGeometry2D = spatialDomain.getGridGeometry();
@@ -759,8 +807,14 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     }
 
     @Override
+    public int getNumOverviews() {
+        return getNumOverviews(UNSPECIFIED);
+        
+    }
+    
+    @Override
     public int getNumOverviews(String coverageName) {
-        // TODO Improve that
+        coverageName = checkUnspecifiedCoverage(coverageName);
         try {
             final CoverageSource source = getGridCoverageSource(coverageName);
             // Make sure that coverageName exists
@@ -771,7 +825,13 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     }
 
     @Override
+    public double[][] getResolutionLevels() throws IOException {
+        return getResolutionLevels(UNSPECIFIED);
+    }
+
+    @Override
     public double[][] getResolutionLevels(String coverageName) throws IOException {
+        coverageName = checkUnspecifiedCoverage(coverageName);
         double[][] res = new double[1][2];
         double[] readRes = getReadingResolutions(coverageName, null, null);
         res[0][0] = readRes[0];
@@ -779,9 +839,14 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
         return res;
     }
 
+    @Override
+    public ImageLayout getImageLayout() throws IOException {
+        return getImageLayout(UNSPECIFIED);
+    }
 
     @Override
     public ImageLayout getImageLayout(String coverageName) throws IOException {
+        coverageName = checkUnspecifiedCoverage(coverageName);
         try {
             final CoverageSource source = getGridCoverageSource(coverageName);
             UnidataVariableAdapter.UnidataSpatialDomain spatialDomain = (UnidataSpatialDomain) source.getSpatialDomain();
@@ -804,7 +869,13 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     }
 
     @Override
-    public CoordinateReferenceSystem getCoordinateReferenceSystem(final String coverageName) {
+    public CoordinateReferenceSystem getCoordinateReferenceSystem() {
+        return getCoordinateReferenceSystem(UNSPECIFIED);
+    }
+
+    @Override
+    public CoordinateReferenceSystem getCoordinateReferenceSystem(String coverageName) {
+        coverageName = checkUnspecifiedCoverage(coverageName);
         try {
             final CoverageSource source = getGridCoverageSource(coverageName);
             UnidataVariableAdapter.UnidataSpatialDomain spatialDomain = (UnidataSpatialDomain) source.getSpatialDomain();
@@ -815,7 +886,13 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     }
 
     @Override
+    public MathTransform getOriginalGridToWorld(PixelInCell pixInCell) {
+        return getOriginalGridToWorld(UNSPECIFIED, pixInCell);
+    }
+    
+    @Override
     public MathTransform getOriginalGridToWorld(String coverageName, PixelInCell pixInCell) {
+        coverageName = checkUnspecifiedCoverage(coverageName);
         try {
             final CoverageSource source = getGridCoverageSource(coverageName);
             UnidataVariableAdapter.UnidataSpatialDomain spatialDomain = (UnidataSpatialDomain) source.getSpatialDomain();

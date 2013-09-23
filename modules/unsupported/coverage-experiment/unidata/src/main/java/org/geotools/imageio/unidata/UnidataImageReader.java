@@ -405,7 +405,7 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
     private void extractCoordinatesVariable( ) throws IOException {
         // get the coordinate variables
         for( CoordinateAxis axis : dataset.getCoordinateAxes() ) {
-            if (axis instanceof CoordinateAxis1D) {
+            if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null) {
                 coordinatesVariables.put(axis.getFullName(), CoordinateVariable.create((CoordinateAxis1D)axis));
             }
         }

@@ -170,7 +170,7 @@ Direct use of FactoryRegistry
    
    GeoTools already has a FactoryRegistry for handling FunctionFactory, as part of
    CommonFactory finder. There is however nothing stopping you from using your
-   own FactoryRegistry (other than wasing resources).
+   own FactoryRegistry (other than wasting resources).
 
 Defining your own FactoryFinder
 '''''''''''''''''''''''''''''''

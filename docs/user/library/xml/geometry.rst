@@ -94,6 +94,7 @@ Here is a complete example::
   ByteArrayOutputStream xml = new ByteArrayOutputStream();
   
   GML encode2 = new GML(Version.GML2);
+  encode2.setLegacy(true);
   encode2.setBaseURL(baseURL);
   encode2.setNamespace("location", "location.xsd");
   encode2.encode(out2, collection);

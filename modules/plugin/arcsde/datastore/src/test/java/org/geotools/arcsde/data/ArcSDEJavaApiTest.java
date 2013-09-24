@@ -377,7 +377,8 @@ public class ArcSDEJavaApiTest {
     public void testCalculateBoundsSpatialFilter() throws Exception {
         final String typeName = testData.getTempTableName();
 
-        // String where = null;
+        String where = "1 = 1";
+        
         String[] cols = { "SHAPE" };
         final SeFilter[] spatFilters;
         try {
@@ -393,7 +394,7 @@ public class ArcSDEJavaApiTest {
             throw new ArcSdeException(eek);
         }
         SeSqlConstruct sqlCons = new SeSqlConstruct(typeName);
-        // sqlCons.setWhere(where);
+        sqlCons.setWhere(where);
 
         final SeQueryInfo seQueryInfo = new SeQueryInfo();
         seQueryInfo.setColumns(cols);

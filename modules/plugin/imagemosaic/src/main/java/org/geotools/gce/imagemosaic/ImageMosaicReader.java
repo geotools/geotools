@@ -241,12 +241,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         if (schema == null) {
             throw new DataSourceException("Unable to create reader for this mosaic since the inner catalog schema is null.");
         }
+        
+        granuleCatalog = catalog;
 
         // grid geometry
         setGridGeometry(typeName);
 
         // raster manager
-        addRasterManager(configuration, false);
+        addRasterManager(configuration, true);
     }
 
     /**

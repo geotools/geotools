@@ -52,6 +52,7 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape2;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.crop.GTCropDescriptor;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -182,6 +183,7 @@ public class Crop extends Operation2D {
     public static final String PARAMNAME_ENVELOPE = "Envelope";
     public static final String PARAMNAME_ROI = "ROI";
     public static final String PARAMNAME_ROITOLERANCE = "ROITolerance";
+    public static final String PARAMNAME_FORCEMOSAIC = "ForceMosaic";
 
 	/**
 	 * The parameter descriptor used to pass this operation the envelope to use
@@ -230,6 +232,20 @@ public class Crop extends Operation2D {
 			1.0,  // Maximal value
 			null, // Unit of measure
 			true); // Parameter is optional
+	
+	/**
+	 * The parameter descriptor used to tell this operation to force the usage of 
+	 * a mosaic by avoiding any kind of optimization
+	 */
+	public static final ParameterDescriptor<Boolean> FORCE_MOSAIC = new DefaultParameterDescriptor<Boolean>(
+			Citations.GEOTOOLS, PARAMNAME_FORCEMOSAIC,
+			Boolean.class, // Value class
+			null, // Array of valid values
+			false,  // Default value
+			null,  // Minimal value
+			null,  // Maximal value
+			null, // Unit of measure
+			true); // Parameter is optional
 
     /**
      * Constructs a default {@code "Crop"} operation.
@@ -238,7 +254,8 @@ public class Crop extends Operation2D {
 		super(new DefaultParameterDescriptorGroup(Citations.GEOTOOLS,
 				"CoverageCrop", new ParameterDescriptor[] { SOURCE_0,
 						CROP_ENVELOPE, CROP_ROI,
-						ROI_OPTIMISATION_TOLERANCE }));
+						ROI_OPTIMISATION_TOLERANCE,
+						FORCE_MOSAIC}));
 
 	}
 
@@ -255,6 +272,7 @@ public class Crop extends Operation2D {
         GeneralEnvelope cropEnvelope = null; // extracted from parameters
         final GridCoverage2D source; // extracted from parameters
         final double roiTolerance = parameters.parameter(Crop.PARAMNAME_ROITOLERANCE).doubleValue();
+        final boolean forceMosaic = parameters.parameter(Crop.PARAMNAME_FORCEMOSAIC).booleanValue();
 
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -352,7 +370,7 @@ public class Crop extends Operation2D {
 
         // intersect the ROI with the intersection envelope and throw an error if they do not intersect
         if(cropRoi != null) {
-            final Geometry jis = JTS.shapeToGeometry(intersectionEnvelope.toRectangle2D(), cropRoi.getFactory());
+            final Geometry jis = JTS.toGeometry((com.vividsolutions.jts.geom.Envelope)new ReferencedEnvelope(intersectionEnvelope));
             if( ! IntersectUtils.intersects(cropRoi, jis))
                 throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
         }
@@ -381,6 +399,7 @@ public class Crop extends Operation2D {
 					cropEnvelope, 
 					cropRoi, 
 					roiTolerance,
+					forceMosaic,
                     (hints instanceof Hints) ? (Hints) hints: new Hints(hints),
                     source,
                     sourceCornerGridToWorld);
@@ -421,6 +440,7 @@ public class Crop extends Operation2D {
 			final GeneralEnvelope cropEnvelope,
             final Geometry cropROI,
             final double roiTolerance,
+            final boolean forceMosaic,
 			final Hints hints,
 			final GridCoverage2D sourceCoverage,
 			final AffineTransform sourceGridToWorldTransform) {
@@ -560,7 +580,7 @@ public class Crop extends Operation2D {
 				if(rasterSpaceROI==null||rasterSpaceROI.getBounds().isEmpty())
 		            if(finalRasterArea.isEmpty())
 		            	throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
-				final boolean doMosaic = decideJAIOperation(roiTolerance, rasterSpaceROI.getBounds2D(), points);
+				final boolean doMosaic = forceMosaic ? true : decideJAIOperation(roiTolerance, rasterSpaceROI.getBounds2D(), points);
 				if (doMosaic || cropROI != null) {
 					// prepare the params for the mosaic
                     final ROI[] roiarr;
@@ -590,7 +610,7 @@ public class Crop extends Operation2D {
 
 					// we do not have to crop in this case (should not really happen at
                     // this time)
-                    if (bounds.getBounds().equals(sourceGridRange) && isSimpleTransform)
+                    if (!doMosaic && bounds.getBounds().equals(sourceGridRange) && isSimpleTransform)
                             return sourceCoverage;
 
 

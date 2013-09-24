@@ -40,6 +40,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.IllegalAttributeException;
@@ -324,6 +325,7 @@ public class SpatialFilterTest {
      * TODO: resurrect testEqualFilter
      */
     @Test
+    @Ignore
     public void testEqualFilter() throws Exception {
         FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
 

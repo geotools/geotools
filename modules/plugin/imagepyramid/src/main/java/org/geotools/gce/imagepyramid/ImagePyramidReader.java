@@ -22,8 +22,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -480,39 +484,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
                     throw new IllegalStateException("This ImagePyramidReader has already been disposed");
                 }
 		
-                ImageMosaicReader reader = readers.get(imageChoice);
-                if (reader == null) {
-        
-                    //
-                    // we must create the underlying mosaic 
-                    //
-                    final String levelDirName = levelsDirs[imageChoice.intValue()];
-                    final URL parentUrl = DataUtilities.getParentUrl(sourceURL);
-                    // look for a shapefile first
-                    final String extension = new StringBuilder(levelDirName).append("/").append(coverageName).append(".shp").toString();
-                    final URL shpFileUrl = DataUtilities.extendURL(parentUrl, extension);
-                    if (shpFileUrl.getProtocol() != null
-                            && shpFileUrl.getProtocol().equalsIgnoreCase("file")
-                            && !DataUtilities.urlToFile(shpFileUrl).exists())
-                        reader = new ImageMosaicReader(DataUtilities.extendURL(parentUrl, levelDirName), hints);
-                    else
-                        reader = new ImageMosaicReader(shpFileUrl, hints);
-                    final ImageMosaicReader putByOtherThreadJustNow =readers.putIfAbsent(imageChoice, reader);
-                    if(putByOtherThreadJustNow!=null){
-                        // some other thread just did inserted this
-                        try{
-                            reader.dispose();
-                        } catch (Exception e) {
-                            if(LOGGER.isLoggable(Level.FINE)){
-                                LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
-                            }
-                        }
-                        
-                        //use the other one
-                        reader=putByOtherThreadJustNow;
-                    }
-        
-		}
+                ImageMosaicReader reader = getImageMosaicReaderForLevel(imageChoice);
 
 	
 		//
@@ -558,6 +530,134 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 	 * */
 	double[] getHighestRes() {
 		return highestRes;
+	}
+	
+	/**
+	 * Retrieve data value for requested metadata
+	 */
+	public String getMetadataValue(final String name) {
+	    String value=super.getMetadataValue(name);
+	    if(value!=null){
+	        return value;
+	    }
+	    ImageMosaicReader firstLevelReader=null;
+		try {
+			firstLevelReader= getImageMosaicReaderForLevel(0);
+		} catch (IOException e) {
+            if(LOGGER.isLoggable(Level.WARNING)){
+                LOGGER.log(Level.WARNING,"Could not get reader for datasource.",e);
+            }
+            return null;
+		}
+    	
+        if (name.equalsIgnoreCase(HAS_TIME_DOMAIN)){
+        	return String.valueOf(this.hasTimeDomain(firstLevelReader));
+        } 
+        
+    	if(TIME_DOMAIN.equalsIgnoreCase(name)||
+				TIME_DOMAIN_MAXIMUM.equalsIgnoreCase(name)||
+				TIME_DOMAIN_MINIMUM.equalsIgnoreCase(name)) 
+		{
+	        if (this.hasTimeDomain(firstLevelReader)){
+	           return this.getTimeDomain(firstLevelReader, name);
+	        }
+		}
+		if(firstLevelReader!=null) {
+			return firstLevelReader.getMetadataValue(name);
+		} else {
+			return null;
+		}
+	}
+	
+	public String[] getMetadataNames() {
+	    final String []parentNames = super.getMetadataNames();
+            final List<String> metadataNames = new ArrayList<String>();
+            metadataNames.add(TIME_DOMAIN);
+            metadataNames.add(HAS_TIME_DOMAIN);
+            metadataNames.add(TIME_DOMAIN_MINIMUM);
+            metadataNames.add(TIME_DOMAIN_MAXIMUM);
+            metadataNames.add(TIME_DOMAIN_RESOLUTION);
+
+            if(parentNames!=null)
+                metadataNames.addAll(Arrays.asList(parentNames));
+            return metadataNames.toArray(new String[metadataNames.size()]);
+	}
+	/**
+	 * Verify if the requested Mosaic has a time domain configuration
+	 * @param reader
+	 * @return True if has time domain configuration
+	 */
+	private boolean hasTimeDomain(ImageMosaicReader reader) 
+	{
+		if(reader!=null) {
+			String strHasTimeDomain= reader.getMetadataValue(HAS_TIME_DOMAIN);
+			return Boolean.parseBoolean(strHasTimeDomain);
+		}
+		return false;
+	}
+	/**
+	 * Retrieve time domains metadata values for the requested ImageMosaicReader
+	 * @param reader
+	 * @param name 
+	 * @return
+	 */
+	private String getTimeDomain(ImageMosaicReader reader, final String name)
+	{
+		if(hasTimeDomain(reader))
+		{
+			if(reader!=null) {
+				String timeDomain= reader.getMetadataValue(name);
+				return timeDomain;
+			}	
+		}
+		return null;
+	}
+    /**
+     * Retrieve the ImageMosaicReader for the requested Level and load if necessary
+     * @return ImageMosaicReader for level
+	 * */
+	public ImageMosaicReader getImageMosaicReaderForLevel(Integer imageChoice) throws MalformedURLException, IOException
+	{
+		ImageMosaicReader reader = readers.get(imageChoice);
+
+        if(reader==null) 
+        {
+	            //
+	        // we must create the underlying mosaic 
+	        //
+	        final String levelDirName = levelsDirs[imageChoice.intValue()];
+	        final URL parentUrl = DataUtilities.getParentUrl(sourceURL);
+	        // look for a shapefile first
+	        final String extension = new StringBuilder(levelDirName).append("/").append(coverageName).append(".shp").toString();
+	        final URL shpFileUrl = DataUtilities.extendURL(parentUrl, extension);
+	        if (shpFileUrl.getProtocol() != null
+	                && shpFileUrl.getProtocol().equalsIgnoreCase("file")
+	                && !DataUtilities.urlToFile(shpFileUrl).exists())
+	            reader = new ImageMosaicReader(DataUtilities.extendURL(parentUrl, levelDirName), hints);
+	        else
+	            reader = new ImageMosaicReader(shpFileUrl, hints);
+	        final ImageMosaicReader putByOtherThreadJustNow =readers.putIfAbsent(imageChoice, reader);
+	        if(putByOtherThreadJustNow!=null){
+	            // some other thread just did inserted this
+	            try{
+	                reader.dispose();
+	            } catch (Exception e) {
+	                if(LOGGER.isLoggable(Level.FINE)){
+	                    LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
+	                }
+	            }
+	            
+	            //use the other one
+	            reader=putByOtherThreadJustNow;
+	        }
+	        // light check to see if this reader had been disposed, not synching for performance. 
+	        if (readers == null) {
+	            throw new IllegalStateException("This ImagePyramidReader has already been disposed");
+	        }
+	        
+        }
+        return reader;
+         
 	}
 
 }

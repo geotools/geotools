@@ -17,12 +17,18 @@
 package org.geotools.gce.imagepyramid;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.PlanarImage;
@@ -44,9 +50,11 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
+import org.geotools.util.DateRange;
 import org.junit.Test;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
@@ -684,6 +692,78 @@ public class ImagePyramidReaderTest extends Assert {
         final ImagePyramidReader reader = (ImagePyramidReader) format.getReader(sourceDir, hints);
         assertNull(reader);
     }
+    
+    @Test
+	public void timePyramid() throws IOException,
+			MismatchedDimensionException, NoSuchAuthorityCodeException, InvalidParameterValueException, ParseException {
+
+		//
+		// Get the resource.
+		//
+		final URL testFile = TestData.getResource(this, "timepyramid/timepyramid.properties");
+		assertNotNull(testFile);
+	
+		//
+		// Get the reader
+		//
+		final ImagePyramidReader reader = new ImagePyramidReader(
+				testFile,
+				new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+		assertNotNull(reader);
+		
+		assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+		final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
+		assertNotNull(timeMetadata);
+		assertEquals(timeMetadata.split(",")[0],reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
+		assertEquals(timeMetadata.split(",")[timeMetadata.split(",").length-1],reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
+
+		//
+		// alpha on output
+		//
+		final ParameterValue<Color> transp = ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
+		transp.setValue(Color.black);
+
+		//
+		// Show the coverage
+		//
+		GridCoverage2D coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] {  transp });
+		assertNotNull(coverage);
+		assertTrue("coverage dimensions different from what we expected",coverage.getGridGeometry().getGridRange().getSpan(0) == 200&& coverage.getGridGeometry().getGridRange().getSpan(1) == 200);
+		if (TestData.isInteractiveTest())
+			coverage.show("testComplete");
+		else
+			PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage()).getTiles();
+		
+		// limit yourself to reading just a bit of it
+		final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+		final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+		final Dimension dim= new Dimension();
+		dim.setSize(reader.getOriginalGridRange().getSpan(0)/2.0, reader.getOriginalGridRange().getSpan(1)/2.0);
+		final Rectangle rasterArea=(( GridEnvelope2D)reader.getOriginalGridRange());
+		rasterArea.setSize(dim);
+		final GridEnvelope2D range= new GridEnvelope2D(rasterArea);
+		gg.setValue(new GridGeometry2D(range,envelope));
+		
+		final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
+		
+		// use imageio with defined tiles
+		final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+		useJai.setValue(false);
+		
+		
+		// specify time
+		final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+        time.setValue(
+                new ArrayList(){{
+                    add(new DateRange(formatD.parse("2004-01-01T00:00:00.000Z"), formatD.parse("2004-07-01T00:00:00.000Z")));
+                    }}
+        );		
+        // Testing output coverage for level 0
+        TestUtils.checkCoverage(reader.getImageMosaicReaderForLevel(0), new GeneralParameterValue[] {gg,useJai ,time}, "time test");
+	}
+    
+ 
 	
 
 //	/**

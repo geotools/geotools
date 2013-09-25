@@ -95,19 +95,19 @@ private void saxExample2() throws Exception {
 private void transformExample() throws Exception {
     // transformExample start
     SimpleFeatureType TYPE = DataUtilities.createType("urn:org.geotools.xml.examples", "location", "geom:Point,name:String");
-	TYPE.getUserData().put("prefix", "ex"); 
+    TYPE.getUserData().put("prefix", "ex"); 
 		
-	WKTReader2 wkt = new WKTReader2();
-	List<SimpleFeature> collection = new LinkedList<SimpleFeature>();
-	collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"), "name1" }, null));
-	collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (4 4)"), "name2" }, null));
+    WKTReader2 wkt = new WKTReader2();
+    List<SimpleFeature> collection = new LinkedList<SimpleFeature>();
+    collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"), "name1" }, null));
+    collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (4 4)"), "name2" }, null));
 
-	SimpleFeatureCollection featureCollection = new ListFeatureCollection(TYPE, collection);
-		
-	FeatureTransformer transform = new FeatureTransformer();
-	transform.setEncoding(Charset.defaultCharset());
-	transform.setIndentation(4);
-	transform.setGmlPrefixing(true);
+    SimpleFeatureCollection featureCollection = new ListFeatureCollection(TYPE, collection);
+	
+    FeatureTransformer transform = new FeatureTransformer();
+    transform.setEncoding(Charset.defaultCharset());
+    transform.setIndentation(4);
+    transform.setGmlPrefixing(true);
 	    
     // define feature information
     final SimpleFeatureType schema = featureCollection.getSchema();

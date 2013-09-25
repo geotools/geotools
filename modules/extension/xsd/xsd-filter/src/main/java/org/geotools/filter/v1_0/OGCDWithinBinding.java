@@ -85,7 +85,7 @@ public class OGCDWithinBinding extends AbstractComplexBinding {
         //TODO: units
         Expression[] operands = OGCUtils.spatial(node, filterFactory, geometryFactory);
         double distance = ((Double) node.getChildValue("Distance")).doubleValue();
-        String units = (String) node.getChild("Distance").getAttributeValue("units");
+        String units = node.getChild("Distance").getAttributeValue("units").toString();
         return filterFactory.dwithin(operands[0], operands[1], distance, units);
     }
 }

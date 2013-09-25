@@ -142,6 +142,20 @@ public class FilterMockData {
     public static Function function() {
         return f.function("abs", f.property("foo"));
     }
+    
+    static Element propertyIsLike(Document document, Node parent) {
+        Element isLike = element(document, parent, OGC.PropertyIsLike);
+
+        propertyName(document, isLike);
+        literal(document, isLike);
+
+        isLike.setAttribute("wildCard", "x");
+        isLike.setAttribute("singleChar", "y");
+        isLike.setAttribute("escape", "z");
+        isLike.setAttribute("matchCase", "false");
+
+        return isLike;
+    }
 
     public static Element propertyIsEqualTo(Document document, Node parent) {
         return binaryComparisonOp(document, parent, OGC.PropertyIsEqualTo);

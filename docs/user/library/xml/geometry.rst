@@ -127,7 +127,7 @@ This method depends on you doing everything exactly right as it blindly writes o
 Internally you can use the GMLTransform code directly for greater control
 over this process:
 
-.. literalinclude:: ../../../src/main/java/org/geotools/xml/GMLExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/xml/GMLExamples.java
    :language: java
    :start-after: // transformExample start
    :end-before: // transformExample end

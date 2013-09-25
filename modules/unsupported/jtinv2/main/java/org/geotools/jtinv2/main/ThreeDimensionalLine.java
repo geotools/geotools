@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -13,11 +13,17 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
+ *    
+ *    @author Julian Padilla
  */
+
+
 
 package org.geotools.jtinv2.main;
 
-import net.surveyos.sourceforge.jtswarped.angles.BasicSurveyorsDirection;
+import java.util.List;
+
+//import net.surveyos.sourceforge.jtswarped.angles.BasicSurveyorsDirection;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
@@ -204,15 +210,15 @@ public class ThreeDimensionalLine
 		return elevationAtDistance;
 	}
 	
-	public BasicSurveyorsDirection getHorizontalDirection()
-	{
-		
-	}
-	
-	public BasicSurveyorsDirection getHorizontalDirectionAsDouble()
-	{
-		
-	}
+//	public BasicSurveyorsDirection getHorizontalDirection()
+//	{
+//		
+//	}
+//	
+//	public BasicSurveyorsDirection getHorizontalDirectionAsDouble()
+//	{
+//		
+//	}
 	
 	public double getZenithAngleAsDouble()
 	{

@@ -16,34 +16,33 @@
  */
 package org.geotools.geometry.jts;
 
-import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.DirectPosition;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
+import java.util.List;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeocentricCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-
 import org.junit.Test;
+import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import static org.junit.Assert.*;
-
 import org.opengis.referencing.operation.MathTransform;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * Unit tests for the JTS utility class.
@@ -266,5 +265,74 @@ public class JTSTest extends JTSTestBase {
         Point world = (Point) JTS.toGeographic( point, gda94 );
         assertEquals( point.getX(), world.getY(), 0.00000005 );
         assertEquals( point.getY(), world.getX(), 0.00000005 );
+    }
+
+    @Test
+    public void testRemoveCollinear() throws Exception {
+        // This polygon (* = vertix)
+        //
+        // ******
+        // |    |
+        // *-*--*
+        //
+        // should become like this after the remove collinear
+        //
+        // *----*
+        // |    |
+        // *----*
+
+        final int[] xPoints = {0, 1, 2, 3, 4, 5, 5, 2, 0};
+
+        final int[] yPoints = {0, 0, 0, 0, 0, 0, 2, 2, 2};
+
+        final int nPoints = xPoints.length;
+        final Shape shape = new Polygon(xPoints, yPoints, nPoints);
+        final Geometry original = JTS.toGeometry(shape);
+        final Geometry reduced = JTS.removeCollinearVertices(original);
+        assertEquals(10, original.getNumPoints());
+        assertEquals(5, reduced.getNumPoints());
+        final double DELTA = 1E-9;
+
+        final Coordinate[] coords = reduced.getCoordinates();
+        assertEquals(0, coords[0].x, DELTA);
+        assertEquals(0, coords[0].y, DELTA);
+        assertEquals(5, coords[1].x, DELTA);
+        assertEquals(0, coords[1].y, DELTA);
+        assertEquals(5, coords[2].x, DELTA);
+        assertEquals(2, coords[2].y, DELTA);
+        assertEquals(0, coords[3].x, DELTA);
+        assertEquals(2, coords[3].y, DELTA);
+        assertEquals(0, coords[4].x, DELTA);
+        assertEquals(0, coords[4].y, DELTA);
+    }
+
+    @Test
+    public void testMakeValid() throws Exception {
+        // An invalid polygon similar to this one
+        //
+        // *----*
+        // |    |
+        // *----*----*
+        //      |    |
+        //      *----*
+        // 
+        // Will be split into 2 separate polygons through the makeValid method 
+        final int[] xPoints = {0, 5, 5, 5, 10, 10, 5, 0};
+        final int[] yPoints = {0, 0, 5, 10, 10, 5, 5, 5};
+        final int nPoints = xPoints.length;
+
+        final Shape shape = new java.awt.Polygon(xPoints, yPoints, nPoints);
+        final LinearRing geom = (LinearRing) JTS.toGeometry(shape);
+        final GeometryFactory factory = new GeometryFactory();
+        final com.vividsolutions.jts.geom.Polygon polygon = factory.createPolygon(geom);
+        assertFalse(polygon.isValid());
+
+        final List<com.vividsolutions.jts.geom.Polygon> validPols = JTS.makeValid(polygon, false);
+
+        assertEquals(2, validPols.size());
+        com.vividsolutions.jts.geom.Polygon polygon1 = validPols.get(0);
+        com.vividsolutions.jts.geom.Polygon polygon2 = validPols.get(1);
+        assertEquals(5, polygon1.getNumPoints());
+        assertEquals(5, polygon2.getNumPoints());
     }
 }

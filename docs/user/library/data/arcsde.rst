@@ -162,7 +162,7 @@ If that is not the case, the following are the full dependencies of the GeoTools
     +- org.geotools:gt-jdbc:jar:<VERSION>    
     |  +- org.geotools:gt-api:jar:<VERSION>    
     |  +- org.geotools:gt-main:jar:<VERSION>    
-    |  |  \- jdom:jdom:jar:1.0    
+    |  |  \- org.jdom:jdom:jar:1.1.3    
     |  +- org.geotools:gt-data:jar:<VERSION>    
     |  +- commons-dbcp:commons-dbcp:jar:1.3    
     |  \- commons-collections:commons-collections:jar:3.1    

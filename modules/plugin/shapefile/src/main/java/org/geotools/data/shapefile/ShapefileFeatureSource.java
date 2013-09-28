@@ -415,7 +415,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             prj = shpManager.openPrjReader();
 
             if (prj != null) {
-                crs = prj.getCoodinateSystem();
+                crs = prj.getCoordinateReferenceSystem();
             }
         } catch (FactoryException fe) {
             crs = null;

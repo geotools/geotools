@@ -1,0 +1,9 @@
+language: java
+jdk:
+  - oraclejdk7
+  - openjdk7
+script:
+  - mvn clean test -Dall -T2
+notifications:
+  email: false
+

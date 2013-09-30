@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,7 @@ public class H2JoinTestSetup extends JDBCJoinTestSetup {
 
     @Override
     protected void createJoinTable() throws Exception {
-        run( "CREATE TABLE \"geotools\".\"ftjoin\" ( \"id\" int, " + "\"name\" VARCHAR, \"geom\" GEOMETRY, \"join1intProperty\" int)" );
+        run( "CREATE TABLE \"geotools\".\"ftjoin\" ( \"id\" int primary key, " + "\"name\" VARCHAR, \"geom\" GEOMETRY, \"join1intProperty\" int)" );
         run("CALL AddGeometryColumn('geotools', 'ftjoin', 'geom', 4326, 'GEOMETRY', 2)");
         
         run( "INSERT INTO \"geotools\".\"ftjoin\" VALUES (0, 'zero', ST_GeomFromText('POLYGON ((-0.1 -0.1, -0.1 0.1, 0.1 0.1, 0.1 -0.1, -0.1 -0.1))', 4326), 0)");
@@ -34,7 +34,7 @@ public class H2JoinTestSetup extends JDBCJoinTestSetup {
         run( "INSERT INTO \"geotools\".\"ftjoin\" VALUES (2, 'two', ST_GeomFromText('POLYGON ((-10 -10, -10 10, 10 10, 10 -10, -10 -10))', 4326), 2)");
         run( "INSERT INTO \"geotools\".\"ftjoin\" VALUES (3, 'three', NULL, 3)");
         
-        run( "CREATE TABLE \"geotools\".\"ftjoin2\"(\"id\" int, \"join2intProperty\" int, \"stringProperty2\" varchar)");
+        run( "CREATE TABLE \"geotools\".\"ftjoin2\"(\"id\" int primary key, \"join2intProperty\" int, \"stringProperty2\" varchar)");
         run( "INSERT INTO \"geotools\".\"ftjoin2\" VALUES (0, 0, '2nd zero')");
         run( "INSERT INTO \"geotools\".\"ftjoin2\" VALUES (1, 1, '2nd one')");
         run( "INSERT INTO \"geotools\".\"ftjoin2\" VALUES (2, 2, '2nd two')");

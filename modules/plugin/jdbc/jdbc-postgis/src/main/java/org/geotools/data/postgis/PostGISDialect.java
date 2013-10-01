@@ -336,8 +336,13 @@ public class PostGISDialect extends BasicSQLDialect {
             throws SQLException {
         
         String typeName = columnMetaData.getString("TYPE_NAME");
+        
         if("uuid".equalsIgnoreCase(typeName)) {
             return UUID.class;
+        }
+        
+        if("citext".equalsIgnoreCase(typeName)) {
+    	    return String.class;
         }
         
         String gType = null;

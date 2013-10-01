@@ -16,15 +16,9 @@
  */
 package org.geotools.jdbc;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.geotools.data.Join;
-import org.geotools.data.Query;
 import org.geotools.data.Join.Type;
+import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
@@ -33,6 +27,10 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class JDBCJoinTest extends JDBCTestSupport {
 
@@ -111,8 +109,8 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
             assertEquals("two", f.getAttribute(aname("stringProperty")));
             
             SimpleFeature g = (SimpleFeature) f.getAttribute(aname("ftjoin"));
-            assertEquals(4, g.getAttributeCount());
-            assertEquals(2, ((Number)g.getAttribute(aname("id"))).intValue());
+            assertEquals(3, g.getAttributeCount());
+
             assertEquals("two", g.getAttribute(aname("name")));
         }
         finally {
@@ -164,7 +162,7 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
         Query q = new Query(tname("ft1"));
         Join j = new Join(tname("ftjoin"), 
             ff.equal(ff.property(aname("stringProperty")), ff.property(aname("name")), true));
-        j.filter(ff.greater(ff.property(aname("id")), ff.literal(1)));
+        j.filter(ff.greater(ff.property(aname("join1intProperty")), ff.literal(1)));
         q.getJoins().add(j);
         q.setFilter(ff.less(ff.property(aname("intProperty")), ff.literal(3)));
         
@@ -419,7 +417,7 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
             
             while(it.hasNext()) {
                 SimpleFeature f = it.next();
-                assertEquals(5, f.getAttributeCount());
+                assertEquals(4, f.getAttributeCount());
                 
                 SimpleFeature g = (SimpleFeature) f.getAttribute(tname("ft1"));
                 if ("three".equals(f.getAttribute(aname("name")))) {
@@ -460,7 +458,7 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
             
             while(it.hasNext()) {
                 SimpleFeature f = it.next();
-                assertEquals(6, f.getAttributeCount());
+                assertEquals(5, f.getAttributeCount());
                 Number nmb = (Number) f.getAttribute(aname("join1intProperty"));
                 Integer idx = nmb.intValue(); 
                 assertTrue(idx < 3);

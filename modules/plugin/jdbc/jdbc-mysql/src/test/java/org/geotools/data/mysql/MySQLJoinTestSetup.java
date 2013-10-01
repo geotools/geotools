@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@ public class MySQLJoinTestSetup extends JDBCJoinTestSetup {
     protected void createJoinTable() throws Exception {
       //create some data  
         StringBuffer sb = new StringBuffer();
-        sb.append("CREATE TABLE ftjoin ").append("(id int, ")
+        sb.append("CREATE TABLE ftjoin ").append("(id int primary key, ")
           .append("name VARCHAR(255) COLLATE latin1_general_cs, geom POLYGON, join1intProperty int) ENGINE=InnoDB;");
         run(sb.toString());
 
@@ -53,7 +53,7 @@ public class MySQLJoinTestSetup extends JDBCJoinTestSetup {
         .append("3, 'three', NULL, 3);");
         run(sb.toString());
         
-        run( "CREATE TABLE ftjoin2(id int, join2intProperty int, stringProperty2 varchar(255))");
+        run( "CREATE TABLE ftjoin2(id int primary key, join2intProperty int, stringProperty2 varchar(255))");
         run( "INSERT INTO ftjoin2 VALUES (0, 0, '2nd zero')");
         run( "INSERT INTO ftjoin2 VALUES (1, 1, '2nd one')");
         run( "INSERT INTO ftjoin2 VALUES (2, 2, '2nd two')");

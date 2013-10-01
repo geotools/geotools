@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,14 +16,13 @@
  */
 package org.geotools.jdbc;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * 
@@ -32,8 +31,8 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public abstract class JDBCFeatureReaderTest extends JDBCTestSupport {
 
-    public void testNext() throws Exception {
-        Query query = new DefaultQuery( tname("ft1") );
+    protected void doTestNext(Query query, boolean exposePrimaryKeys) throws Exception {
+        dataStore.setExposePrimaryKeyColumns(exposePrimaryKeys);
         FeatureReader reader = dataStore.getFeatureReader( query, Transaction.AUTO_COMMIT );
         
         assertTrue( reader.hasNext() );
@@ -44,6 +43,12 @@ public abstract class JDBCFeatureReaderTest extends JDBCTestSupport {
         
         assertTrue( g.getUserData() instanceof CoordinateReferenceSystem );
         reader.close();
+    }
+
+    public void testNext() throws Exception {
+        Query query = new DefaultQuery( tname("ft1") );
+        doTestNext(query, false);
+        doTestNext(query, true);
     }
 
 }

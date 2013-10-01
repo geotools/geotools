@@ -17,6 +17,13 @@
 
 package org.geotools.jdbc;
 
+import org.geotools.factory.Hints;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.jdbc.JoinInfo.JoinPart;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,13 +31,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-
-import org.geotools.factory.Hints;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.jdbc.JoinInfo.JoinPart;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Feature reader that wraps multiple feature readers in a join query.
@@ -65,7 +65,12 @@ public class JDBCJoiningFeatureReader extends JDBCFeatureReader {
     void init(Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, 
         JoinInfo join, Hints hints) throws SQLException, IOException {
         joinReaders = new ArrayList<JDBCFeatureReader>();
-        int offset = featureType.getAttributeCount() + getPrimaryKey().getColumns().size();
+
+        int offset = featureType.getAttributeCount();
+
+        if(!featureSource.getState().isExposePrimaryKeyColumns()){
+            offset += getPrimaryKey().getColumns().size();
+        }
 
         for (JoinPart part : join.getParts()) {
             SimpleFeatureType ft = part.getQueryFeatureType();
@@ -82,7 +87,11 @@ public class JDBCJoiningFeatureReader extends JDBCFeatureReader {
                 }
             };
             joinReaders.add(joinReader);
-            offset += ft.getAttributeCount() + joinReader.getPrimaryKey().getColumns().size();
+            offset += ft.getAttributeCount();
+
+            if(!featureSource.getState().isExposePrimaryKeyColumns()){
+                 offset += joinReader.getPrimaryKey().getColumns().size();
+            }
         }
 
         //builder for the final joined feature

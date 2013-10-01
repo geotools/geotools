@@ -101,6 +101,46 @@ public class SLDParserTest {
             " </NamedLayer>"+
             "</StyledLayerDescriptor>";
     
+    public static String EmptyTitleSLD = 
+            "<StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\" version=\"1.0.0\">"+
+            " <NamedLayer>"+
+            "  <Name>layer</Name>"+
+            "  <UserStyle>"+
+            "   <Name>style</Name>"+
+            "   <FeatureTypeStyle>"+
+            "    <Rule>"+
+            "     <Title></Title>"+
+            "     <PolygonSymbolizer>"+
+            "      <Fill>"+
+            "       <CssParameter name=\"fill\">#FF0000</CssParameter>"+
+            "      </Fill>"+
+            "     </PolygonSymbolizer>"+
+            "    </Rule>"+
+            "   </FeatureTypeStyle>"+
+            "  </UserStyle>"+
+            " </NamedLayer>"+
+            "</StyledLayerDescriptor>";
+    
+    public static String EmptyAbstractSLD = 
+            "<StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\" version=\"1.0.0\">"+
+            " <NamedLayer>"+
+            "  <Name>layer</Name>"+
+            "  <UserStyle>"+
+            "   <Name>style</Name>"+
+            "   <FeatureTypeStyle>"+
+            "    <Rule>"+
+            "     <Abstract></Abstract>"+
+            "     <PolygonSymbolizer>"+
+            "      <Fill>"+
+            "       <CssParameter name=\"fill\">#FF0000</CssParameter>"+
+            "      </Fill>"+
+            "     </PolygonSymbolizer>"+
+            "    </Rule>"+
+            "   </FeatureTypeStyle>"+
+            "  </UserStyle>"+
+            " </NamedLayer>"+
+            "</StyledLayerDescriptor>";
+    
     static String SLD_DEFAULT_POINT = 
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
         "<StyledLayerDescriptor version=\"1.0.0\" \n" + 
@@ -275,6 +315,20 @@ public class SLDParserTest {
         assertEquals("french abstract", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getAbstract().toString(Locale.FRENCH));
         assertEquals("french abstract", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getAbstract().toString(Locale.CANADA_FRENCH));
         assertStyles(styles);
+    }
+    
+    @Test
+    public void testEmptyTitle() throws Exception {
+        SLDParser parser = new SLDParser(styleFactory, input(EmptyTitleSLD));
+        Style[] styles = parser.readXML();
+        assertEquals("", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getTitle().toString());                
+    }
+    
+    @Test
+    public void testEmptyAbstract() throws Exception {
+        SLDParser parser = new SLDParser(styleFactory, input(EmptyAbstractSLD));
+        Style[] styles = parser.readXML();
+        assertEquals("", styles[0].getFeatureTypeStyles()[0].getRules()[0].getDescription().getAbstract().toString());                
     }
 
     @Test

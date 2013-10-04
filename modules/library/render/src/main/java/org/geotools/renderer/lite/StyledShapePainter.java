@@ -31,11 +31,13 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
-
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.GeomCollectionIterator;
 import org.geotools.geometry.jts.LiteShape2;
@@ -46,9 +48,13 @@ import org.geotools.renderer.style.LineStyle2D;
 import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.PolygonStyle2D;
 import org.geotools.renderer.style.Style2D;
+import org.opengis.filter.expression.Literal;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
-
+import org.opengis.style.ExternalGraphic;
+import org.opengis.style.GraphicLegend;
+import org.opengis.style.GraphicalSymbol;
+import org.opengis.style.Mark;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -121,7 +127,7 @@ public final class StyledShapePainter {
 
             return;
         }
-
+        
         // Is the current scale within the style scale range?
         if (!style.isScaleInRange(scale)) {
             LOGGER.fine("Out of scale");
@@ -304,6 +310,62 @@ public final class StyledShapePainter {
             }
         }
     }
+    
+    /**
+     * Paints a shape, applying a GraphicLegend.
+     * 
+     * @param graphics
+     *            The graphics in which to draw.
+     * @param shape
+     *            The polygon to draw.
+     * @param legend
+     *            The legend to apply.
+     * @param scale
+     *            The scale denominator for the current zoom level
+     */
+    public void paint(final Graphics2D graphics, final LiteShape2 shape, final GraphicLegend legend, final double scale, boolean isLabelObstacle) {
+        if (legend == null) {
+            // TODO: what's going on? Should not be reached...
+            throw new NullPointerException("ShapePainter has been asked to paint a null legend!!");
+        }
+        Iterator<GraphicalSymbol> symbolIter = legend.graphicalSymbols().iterator();
+        
+        while(symbolIter.hasNext()) {
+        
+            GraphicalSymbol symbol = symbolIter.next();
+
+            if (symbol instanceof ExternalGraphic) {
+                // This chunk of logic was inspired by the paint(...,Style2D,...) method in this class
+                float[] coords = new float[2];
+                PathIterator iter = getPathIterator(shape);
+                iter.currentSegment(coords);
+
+                // getRotation() and getOpacity() seem to always at least have a default
+                double rotation = Double.parseDouble(((Literal)legend.getRotation()).getValue().toString());
+                float opacity = Float.parseFloat(((Literal)legend.getOpacity()).getValue().toString());
+
+                ExternalGraphic graphic = (ExternalGraphic) symbol;
+
+                while (!(iter.isDone())) {
+                    iter.currentSegment(coords);
+                    try {
+                        URL imageURL = graphic.getOnlineResource().getLinkage().toURL();
+                            renderImage(graphics, coords[0], coords[1], 
+                                    ImageIO.read(imageURL), 
+                                    rotation, 
+                                    opacity,
+                                    isLabelObstacle);
+                    } catch (IOException ex) {
+                            Logger.getLogger(StyledShapePainter.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    iter.next();
+                }
+            } else if (symbol instanceof Mark) {
+                // TODO This would need to be completed to fully implement the SLD spec
+            }
+        }
+    } 
+
 
     Shape dashShape(Shape shape, Stroke stroke) {
         if(!(stroke instanceof BasicStroke)) {

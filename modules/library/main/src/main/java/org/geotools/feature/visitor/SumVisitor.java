@@ -102,11 +102,13 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     public void visit(Feature feature) {
         Object value = expr.evaluate(feature);
 
-        if (strategy == null) {
-            strategy = createStrategy(value.getClass());
-        }
+        if (value != null) {
+            if (strategy == null) {
+                strategy = createStrategy(value.getClass());
+            }
 
-        strategy.add(value);
+            strategy.add(value);
+        }
     }
 
     public Expression getExpression() {

@@ -40,7 +40,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
@@ -61,7 +63,6 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.DefaultDimensionDescriptor;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GridFormatFinder;
@@ -760,88 +761,96 @@ public class ImageMosaicReaderTest extends Assert{
         final AbstractGridFormat format = TestUtils
                 .getFormat(timeAdditionalDomainsRangeURL);
         ImageMosaicReader reader = TestUtils.getReader(timeAdditionalDomainsRangeURL, format);
-
-        final String[] metadataNames = reader.getMetadataNames();
-        assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 18);
-        assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-        assertEquals("2008-10-31T00:00:00.000Z/2008-11-04T00:00:00.000Z/PT1S,2008-11-05T00:00:00.000Z/2008-11-07T00:00:00.000Z/PT1S",reader.getMetadataValue("TIME_DOMAIN"));
-        assertEquals("2008-10-31T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
-        assertEquals("2008-11-07T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
-        assertEquals("java.sql.Timestamp", reader.getMetadataValue("TIME_DOMAIN_DATATYPE"));
-
-        assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
-        assertEquals("20/99,100/150",reader.getMetadataValue("ELEVATION_DOMAIN"));
-        assertEquals("20", reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM"));
-        assertEquals("150", reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM"));
-        assertEquals("java.lang.Integer", reader.getMetadataValue("ELEVATION_DOMAIN_DATATYPE"));
-
-        assertEquals("true", reader.getMetadataValue("HAS_DATE_DOMAIN"));
-        assertEquals("20081031T000000,20081101T000000,20081105T000000",reader.getMetadataValue("DATE_DOMAIN"));
-        assertEquals("java.lang.String", reader.getMetadataValue("DATE_DOMAIN_DATATYPE"));
-
-        assertEquals("true", reader.getMetadataValue("HAS_WAVELENGTH_DOMAIN"));
-        assertEquals("12/24,25/80", reader.getMetadataValue("WAVELENGTH_DOMAIN"));
-        assertEquals("12", reader.getMetadataValue("WAVELENGTH_DOMAIN_MINIMUM"));
-        assertEquals("80", reader.getMetadataValue("WAVELENGTH_DOMAIN_MAXIMUM"));
-        assertEquals("java.lang.Integer", reader.getMetadataValue("WAVELENGTH_DOMAIN_DATATYPE"));
-
-        // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD .createValue();
-        useJai.setValue(false);
+        try {
     
-        // specify time
-        final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final Date timeD = parseTimeStamp("2008-11-01T00:00:00.000Z");
-        time.setValue(new ArrayList() {
-            {
-                add(timeD);
-            }
-        });
+            final String[] metadataNames = reader.getMetadataNames();
+            assertNotNull(metadataNames);
+            assertEquals(metadataNames.length, 18);
+            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            assertEquals("2008-10-31T00:00:00.000Z/2008-11-04T00:00:00.000Z/PT1S,2008-11-05T00:00:00.000Z/2008-11-07T00:00:00.000Z/PT1S",reader.getMetadataValue("TIME_DOMAIN"));
+            assertEquals("2008-10-31T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
+            assertEquals("2008-11-07T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
+            String expectedType = Boolean.getBoolean("org.geotools.shapefile.datetime") ? "java.sql.Timestamp" : "java.util.Date"; 
+            assertEquals(expectedType, reader.getMetadataValue("TIME_DOMAIN_DATATYPE"));
     
-        final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
-        elevation.setValue(new ArrayList() {
-            {
-                add(34); // Elevation
-            }
-        });
+            assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
+            assertEquals("20/99,100/150",reader.getMetadataValue("ELEVATION_DOMAIN"));
+            assertEquals("20", reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM"));
+            assertEquals("150", reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM"));
+            assertEquals("java.lang.Integer", reader.getMetadataValue("ELEVATION_DOMAIN_DATATYPE"));
+    
+            assertEquals("true", reader.getMetadataValue("HAS_DATE_DOMAIN"));
+            assertEquals("20081031T000000,20081101T000000,20081105T000000",reader.getMetadataValue("DATE_DOMAIN"));
+            assertEquals("java.lang.String", reader.getMetadataValue("DATE_DOMAIN_DATATYPE"));
+    
+            assertEquals("true", reader.getMetadataValue("HAS_WAVELENGTH_DOMAIN"));
+            assertEquals("12/24,25/80", reader.getMetadataValue("WAVELENGTH_DOMAIN"));
+            assertEquals("12", reader.getMetadataValue("WAVELENGTH_DOMAIN_MINIMUM"));
+            assertEquals("80", reader.getMetadataValue("WAVELENGTH_DOMAIN_MAXIMUM"));
+            assertEquals("java.lang.Integer", reader.getMetadataValue("WAVELENGTH_DOMAIN_DATATYPE"));
+    
+            // use imageio with defined tiles
+            final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD .createValue();
+            useJai.setValue(false);
         
-        // specify additional Dimensions
-        Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
-        ParameterValue<List<String>> dateValue = null;
-        ParameterValue<List<String>> waveLength = null;
-        final String selectedWaveLength = "20";
-        final String selectedDate = "20081031T000000";
-        for (ParameterDescriptor param : params) {
-            if (param.getName().getCode().equalsIgnoreCase("DATE")) {
-                dateValue = param.createValue();
-                dateValue.setValue(new ArrayList<String>() {
-                    {
-                        add(selectedDate);
-                    }
-                });
-            } else if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
-                waveLength = param.createValue();
-                waveLength.setValue(new ArrayList<String>() {
-                    {
-                        add(selectedWaveLength);
-                    }
-                });
+            // specify time
+            final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+            final Date timeD = parseTimeStamp("2008-11-01T00:00:00.000Z");
+            time.setValue(new ArrayList() {
+                {
+                    add(timeD);
+                }
+            });
+        
+            final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
+            elevation.setValue(new ArrayList() {
+                {
+                    add(34); // Elevation
+                }
+            });
+            
+            // specify additional Dimensions
+            Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
+            ParameterValue<List<String>> dateValue = null;
+            ParameterValue<List<String>> waveLength = null;
+            final String selectedWaveLength = "20";
+            final String selectedDate = "20081031T000000";
+            for (ParameterDescriptor param : params) {
+                if (param.getName().getCode().equalsIgnoreCase("DATE")) {
+                    dateValue = param.createValue();
+                    dateValue.setValue(new ArrayList<String>() {
+                        {
+                            add(selectedDate);
+                        }
+                    });
+                } else if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
+                    waveLength = param.createValue();
+                    waveLength.setValue(new ArrayList<String>() {
+                        {
+                            add(selectedWaveLength);
+                        }
+                    });
+                }
+            }
+            assertNotNull(waveLength);
+            assertNotNull(dateValue);
+            
+            // Test the output coverage
+            GeneralParameterValue[] values = new GeneralParameterValue[] { useJai, dateValue, time, waveLength, elevation};
+            final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, true);
+            final String fileSource = (String) coverage
+                    .getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
+        
+            // Check the proper granule has been read
+            final String baseName = FilenameUtils.getBaseName(fileSource);
+            assertEquals(baseName, "temp_020_099_20081031T000000_20081103T000000_12_24");
+            TestUtils.testCoverage(reader, values, "domain test", coverage, null);
+        } finally {
+            if(reader != null) {
+                reader.dispose();
             }
         }
-        assertNotNull(waveLength);
-        assertNotNull(dateValue);
-        
-        // Test the output coverage
-        GeneralParameterValue[] values = new GeneralParameterValue[] { useJai, dateValue, time, waveLength, elevation};
-        final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, true);
-        final String fileSource = (String) coverage
-                .getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
-    
-        // Check the proper granule has been read
-        final String baseName = FilenameUtils.getBaseName(fileSource);
-        assertEquals(baseName, "temp_020_099_20081031T000000_20081103T000000_12_24");
-        TestUtils.testCoverage(reader, values, "domain test", coverage, null);
+            
     }
     
     /**
@@ -965,25 +974,30 @@ public class ImageMosaicReaderTest extends Assert{
         List<DimensionDescriptor> descriptors = ((StructuredGridCoverage2DReader)reader).getDimensionDescriptors("time_domainsRanges");
         assertNotNull(descriptors);
         assertEquals(4, descriptors.size());
+        
+        Map<String, DimensionDescriptor> dds = new HashMap<String, DimensionDescriptor>();
+        for (DimensionDescriptor dd : descriptors) {
+            dds.put(dd.getName(), dd);
+        }
 
-        DimensionDescriptor descriptor = descriptors.get(0);
+        DimensionDescriptor descriptor = dds.get("wavelength");
         assertEquals("wavelength", descriptor.getName());
         assertEquals("loww", descriptor.getStartAttribute());
         assertEquals("highw", descriptor.getEndAttribute());
 
-        descriptor = descriptors.get(1);
+        descriptor = dds.get("date");
         assertEquals("date", descriptor.getName());
         assertEquals("date", descriptor.getStartAttribute());
         assertNull(descriptor.getEndAttribute());
 
-        descriptor = descriptors.get(2);
+        descriptor = dds.get("TIME");
         assertEquals("TIME", descriptor.getName());
         assertEquals("time", descriptor.getStartAttribute());
         assertEquals("endtime", descriptor.getEndAttribute());
         assertEquals(CoverageUtilities.UCUM.TIME_UNITS.getName(), descriptor.getUnits());
         assertEquals(CoverageUtilities.UCUM.TIME_UNITS.getSymbol(), descriptor.getUnitSymbol());
         
-        descriptor = descriptors.get(3);
+        descriptor = dds.get("ELEVATION");
         assertEquals("ELEVATION", descriptor.getName());
         assertEquals("lowz", descriptor.getStartAttribute());
         assertEquals("highz", descriptor.getEndAttribute());
@@ -1585,6 +1599,19 @@ public class ImageMosaicReaderTest extends Assert{
 			for(File file:files){
 				file.delete();
 			}
+			
+			dir = TestData.file(this, "time_domainsRanges");
+			files = dir.listFiles((FilenameFilter)
+                    FileFilterUtils.or(
+                            FileFilterUtils.suffixFileFilter("shp"),
+                            FileFilterUtils.suffixFileFilter("dbf"),
+                            FileFilterUtils.suffixFileFilter("qix"),
+                            FileFilterUtils.suffixFileFilter("shx"),
+                            FileFilterUtils.suffixFileFilter("prj")
+                    ));
+            for(File file:files){
+                file.delete();
+            }
 	}
 	
 	@After

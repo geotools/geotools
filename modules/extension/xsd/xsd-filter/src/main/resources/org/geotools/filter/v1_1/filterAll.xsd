@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+   targetNamespace="http://www.opengis.net/ogc"
+   xmlns:ogc="http://www.opengis.net/ogc"
+   xmlns:gml="http://www.opengis.net/gml"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+   elementFormDefault="qualified"
+   version="1.1.3">
+   <!-- This version of filter/1.1.0 was previously versioned as '1.1.2' . -->
+
+   <xsd:annotation>
+      <xsd:documentation>
+         This XML Schema document includes and imports, directly or indirectly,
+         all the XML Schema defined by the Filter Encoding Standard.
+
+         Filter Encoding is an OGC Standard.
+         Copyright (c) 2010 Open Geospatial Consortium.
+         To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+      </xsd:documentation>
+   </xsd:annotation>
+
+   <xsd:include schemaLocation="filter.xsd"/>
+   <xsd:include schemaLocation="expr.xsd"/>
+   <xsd:include schemaLocation="sort.xsd"/>
+   <xsd:include schemaLocation="filterCapabilities.xsd"/>
+</xsd:schema>

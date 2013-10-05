@@ -1060,6 +1060,10 @@ public class SLDStyleFactory {
                 }
             }
         }
+        
+        if(icon == null && shape == null) {
+            return null;
+        }
 		
         // grab the major vendor options
         boolean random = voParser.getBooleanOption(symbolizer, "random", false);

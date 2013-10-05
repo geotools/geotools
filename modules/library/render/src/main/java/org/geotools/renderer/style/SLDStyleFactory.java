@@ -1062,6 +1062,10 @@ public class SLDStyleFactory {
                 }
             }
         }
+        
+        if(icon == null && shape == null) {
+            return null;
+        }
 		
         // grab the major vendor options
         PositionRandomizer randomizer = (PositionRandomizer) voParser.getEnumOption(symbolizer, "random", PositionRandomizer.NONE);

@@ -34,21 +34,21 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @source $URL$
  */
 public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
-    private final VPFFile featureType;
+    private final VPFFile file;
     private SimpleFeature currentFeature;
 
     public VPFFileFeatureReader(VPFFile type) {
-        featureType = type;
+        file = type;
         currentFeature = null;
 
-        featureType.reset();
+        file.reset();
     }
 
     /* (non-Javadoc)
      * @see org.geotools.data.FeatureReader#getFeatureType()
      */
     public SimpleFeatureType getFeatureType() {
-        return featureType;
+        return file.getFeatureType();
     }
 
     /* (non-Javadoc)
@@ -59,7 +59,7 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        currentFeature = featureType.readFeature();
+        currentFeature = file.readFeature();
 
         return currentFeature;
     }
@@ -71,7 +71,7 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
         boolean result = false;
 
         // Ask the stream if it has space for another object
-        result = featureType.hasNext();
+        result = file.hasNext();
         return result;
     }
 

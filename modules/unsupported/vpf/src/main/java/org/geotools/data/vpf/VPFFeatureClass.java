@@ -50,6 +50,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
@@ -79,7 +80,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
      * The columns that are part of this feature class
      */
     private final List<VPFColumn> columns = new Vector<VPFColumn>();
-
+    
     /** The coverage this feature class is part of */
     private final VPFCoverage coverage;
 
@@ -87,7 +88,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
     private final String directoryName;
 
     /** A list of files which are read to retrieve data for this feature class */
-    private final AbstractList fileList = new Vector();
+    private final AbstractList<VPFFile> fileList = new Vector<VPFFile>();
 
     /** A list of ColumnPair objects which identify the file joins */
     private final AbstractList joinList = new Vector();
@@ -214,17 +215,16 @@ public class VPFFeatureClass implements SimpleFeatureType {
             addFileToTable(vpfFile1);
 
             VPFFile vpfFile2 = null;
-            AttributeDescriptor joinColumn1 = vpfFile1.getDescriptor(table1Key);
-            AttributeDescriptor joinColumn2;
+            VPFColumn joinColumn1 = vpfFile1.getColumn(table1Key);
+            VPFColumn joinColumn2;
 
             try {
                 vpfFile2 = VPFFileFactory.getInstance().getFile(directoryName.concat(
                             File.separator).concat(table2));
                 addFileToTable(vpfFile2);
-                joinColumn2 = vpfFile2.getDescriptor(table2Key);
+                joinColumn2 = vpfFile2.getColumn(table2Key);
             } catch (IOException exc) {
                 fileList.add(null);
-
                 // We need to add a geometry column 
                 joinColumn2 = buildGeometryColumn(table2);
             }
@@ -247,26 +247,24 @@ public class VPFFeatureClass implements SimpleFeatureType {
      * @param table The name of the table containing the geometric primitives
      * @return An <code>AttributeType</code> for the geometry column which is actually a <code>GeometryAttributeType</code>
      */
-    private AttributeDescriptor buildGeometryColumn(String table) {
-        AttributeDescriptor result = null;
-
+    private VPFColumn buildGeometryColumn(String table) {
+        AttributeDescriptor descriptor = null;
         table = table.trim().toLowerCase();
 
         // Why would the fileList already contain a null?
         //      if(!fileList.contains(null)){
         CoordinateReferenceSystem crs = getCoverage().getLibrary().getCoordinateReferenceSystem();
         if(crs != null){
-            result = new AttributeTypeBuilder().binding( Geometry.class )
+            descriptor = new AttributeTypeBuilder().binding( Geometry.class )
                 .nillable(true).length(-1).crs(crs).buildDescriptor("GEOMETRY");
         }else{
-            result = new AttributeTypeBuilder().binding( Geometry.class )
+            descriptor = new AttributeTypeBuilder().binding( Geometry.class )
                 .nillable(true).buildDescriptor("GEOMETRY");
         }
+        VPFColumn result = null; // how to construct
         columns.add(result);
-
         setGeometryFactory(table);
 
-        //      }
         return result;
     }
     /**
@@ -309,7 +307,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
             // Except for the first file, ignore the first column since it is a join column
             for (int inx = addPrimaryKey ? 0 : 1;
                     inx < vpfFile.getAttributeCount(); inx++) {
-                columns.add(vpfFile.getDescriptor(inx));
+                columns.add(vpfFile.getColumn(inx));
             }
         }
     }
@@ -336,7 +334,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
      *
      * @return a <code>List</code> containing <code>VPFFile</code> objects.
      */
-    public List getFileList() {
+    public List<VPFFile> getFileList() {
         return fileList;
     }
 

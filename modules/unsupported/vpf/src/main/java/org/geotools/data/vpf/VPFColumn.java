@@ -61,7 +61,7 @@ public class VPFColumn {
 
     /** Describe variable <code>valDescTableName</code> here. */
     private final String valDescTableName;
-
+   
     /**
      * Constructor with all of the elements of a VPF column
      * 

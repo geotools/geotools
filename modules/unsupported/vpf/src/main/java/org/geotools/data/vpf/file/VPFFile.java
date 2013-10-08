@@ -63,6 +63,7 @@ import org.geotools.data.vpf.io.VariableIndexInputStream;
 import org.geotools.data.vpf.io.VariableIndexRow;
 import org.geotools.data.vpf.util.DataUtils;
 import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -87,17 +88,15 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 
 /**
- * This class encapsulates VPF files. By implementing the <code>FeatureType</code> interface,
- * it serves as a factory for VPFColumns. Instances of this class should
- * be created by VPFFileFactory.
+ * This class encapsulates VPF files, serving as a factory for VPFColumns.
+ * Instances of this class should be created by VPFFileFactory.
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
  *
- *
- *
  * @source $URL$
  */
-public class VPFFile implements SimpleFeatureType {
+public class VPFFile {
+    
     //    private final TableInputStream stream;
     private static String ACCESS_MODE = "r";
 
@@ -125,6 +124,7 @@ public class VPFFile implements SimpleFeatureType {
      * table's contents.
      */
     private String description = null;
+    
     /**
      * The contained Feature Type
      */
@@ -209,6 +209,10 @@ public class VPFFile implements SimpleFeatureType {
         return this.headerLength + 4;
     }
 
+    public SimpleFeatureType getFeatureType() {
+        return featureType;
+    }
+    
     /*
      *  (non-Javadoc)
      * @see org.geotools.feature.FeatureType#getAttributeCount()
@@ -986,91 +990,21 @@ public class VPFFile implements SimpleFeatureType {
 
         return result;
     }
-
-	public List<AttributeDescriptor> getAttributeDescriptors() {
-	    return featureType.getAttributeDescriptors();
-	}
-	
-	public AttributeDescriptor getDescriptor(String name) {
-		return featureType.getDescriptor(name);
-	}
-	
-	public AttributeDescriptor getDescriptor(Name name) {
-	    return featureType.getDescriptor(name);
-	}
-
-	public AttributeDescriptor getDescriptor(int index) {
-		return featureType.getDescriptor(index);
-	}
-	
-	public org.opengis.feature.type.AttributeType getType(Name name) {
-		return featureType.getType( name );
-	}
-
-	public org.opengis.feature.type.AttributeType getType(String name) {
-        return featureType.getType( name );
-	}
-
-	   
-	public org.opengis.feature.type.AttributeType getType(int index) {
-		return featureType.getType( index );
-	}
-
-	public List<AttributeType> getTypes() {
-		return featureType.getTypes();
-	}
-
-	public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-		return featureType.getCoordinateReferenceSystem();
-	}
-
-	public GeometryDescriptor getGeometryDescriptor() {
-		return featureType.getGeometryDescriptor();
-	}
-
-	public Class<Collection<Property>> getBinding() {
-		return featureType.getBinding();
-	}
-
-	public Collection<PropertyDescriptor> getDescriptors() {
-		return featureType.getDescriptors();
-	}
-
-	public boolean isInline() {
-		return featureType.isInline();
-	}
-
-	public List<org.opengis.filter.Filter> getRestrictions() {
-		return featureType.getRestrictions();
-	}
-
-	public org.opengis.feature.type.AttributeType getSuper() {
-		return featureType.getSuper();
-	}
-
-	public boolean isIdentified() {
-		return featureType.isIdentified();
-	}
-
-	public InternationalString getDescription() {
-		return featureType.getDescription();
-	}
-
-	public Name getName() {
-		return featureType.getName();
-	}
-
-	public int indexOf(String name) {
-		return featureType.indexOf(name);
-	}
-
-	public int indexOf(Name name) {
-	    return featureType.indexOf(name);
-	}
-	
-	public Map<Object, Object> getUserData() {
-	    return featureType.getUserData();
-	}
-	
-	
+    public VPFColumn getColumn(int index) {
+        return columns.get(index);
+    }
+    public VPFColumn getColumn(String name) {
+        if( name == null ) return null;
+        
+        for( VPFColumn col : columns ){
+            if( name.equals( col.getName() ) ){
+                return col;
+            }
+        }
+        return null; // not found
+    }
+    public AttributeDescriptor getDescriptor(String name ){
+        VPFColumn col = getColumn(name);
+        return col == null ? null : col.getDescriptor();
+    }
 }

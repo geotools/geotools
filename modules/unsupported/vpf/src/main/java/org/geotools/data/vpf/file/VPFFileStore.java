@@ -86,7 +86,8 @@ public class VPFFileStore extends AbstractDataStore {
             result = (SimpleFeatureType) files.get(pathName);
         } else {
             try {
-                result = findFile(pathName);
+                VPFFile file = findFile(pathName);
+                result = file.getFeatureType();
             } catch (SchemaException exc) {
                 throw new IOException("Schema error in path: " + pathName
                     + "\n" + exc.getMessage());

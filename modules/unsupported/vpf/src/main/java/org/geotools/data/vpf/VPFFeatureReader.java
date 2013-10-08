@@ -90,8 +90,8 @@ public class VPFFeatureReader
                 SimpleFeature joinRow = (SimpleFeature) rows.get(primaryFile);
     
                 try {
-                    int joinID = Integer.parseInt(joinRow.getAttribute(columnPair.column1.getLocalName()).toString());
-                    rows.put(joinFile, getVPFFile(columnPair.column2).getRowFromId(columnPair.column2.getLocalName(), joinID));
+                    int joinID = Integer.parseInt(joinRow.getAttribute(columnPair.column1.getName()).toString());
+                    rows.put(joinFile, getVPFFile(columnPair.column2).getRowFromId(columnPair.column2.getName(), joinID));
                 } catch (NullPointerException exc) {
                     // Non-matching joins - just put in a NULL
                     rows.put(joinFile, null);
@@ -297,10 +297,10 @@ public class VPFFeatureReader
         String columnName = column.getName();
         VPFFile result = null;
         VPFFile temp;
-        Iterator iter = featureType.getFeatureClass().getFileList().iterator();
+        Iterator<VPFFile> iter = featureType.getFeatureClass().getFileList().iterator();
         while(iter.hasNext()){
             temp = (VPFFile)iter.next();
-            if((temp != null) && (temp.indexOf(columnName) >= 0)){
+            if((temp != null) && (temp.getColumn(columnName) != null)){
                 result = temp;
                 break;
             }
@@ -318,10 +318,10 @@ public class VPFFeatureReader
         Name columnName = column.getName();
         VPFFile result = null;
         VPFFile temp;
-        Iterator iter = featureType.getFeatureClass().getFileList().iterator();
+        Iterator<VPFFile> iter = featureType.getFeatureClass().getFileList().iterator();
         while(iter.hasNext()){
-            temp = (VPFFile)iter.next();
-            if((temp != null) && (temp.indexOf(columnName) >= 0)){
+            temp = iter.next();
+            if((temp != null) && (temp.getColumn(columnName.getLocalPart()) != null)){
                 result = temp;
                 break;
             }

@@ -6,10 +6,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Collections;
 
 import org.geotools.TestData;
-import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.data.shapefile.ShapefileDirectoryFactory;
 import org.junit.After;
 
 /**
@@ -36,8 +35,7 @@ public class DirectoryTestSupport {
     }
     
     FileStoreFactory getFileStoreFactory() {
-        return new ShapefileDataStoreFactory.ShpFileStoreFactory(new ShapefileDataStoreFactory(),
-                Collections.singletonMap(ShapefileDataStoreFactory.NAMESPACEP.key, NSURI));
+        return new ShapefileDirectoryFactory();
     }
     
     /**

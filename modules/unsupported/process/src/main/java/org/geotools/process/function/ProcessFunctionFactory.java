@@ -141,7 +141,7 @@ public class ProcessFunctionFactory implements FunctionFactory {
                     Map<String, Parameter<?>> resultInfo = factory.getResultInfo(processName, null);
                     
                     // check there is a single output
-                    if(getPrimary(resultInfo) != null) {
+                    if (resultInfo != null && getPrimary(resultInfo) != null) {
                         Map<String, Parameter<?>> parameterInfo = factory.getParameterInfo(processName);
                         List<String> argumentNames = new ArrayList<String>(parameterInfo.keySet());
 

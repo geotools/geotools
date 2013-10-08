@@ -1019,7 +1019,8 @@ public class SLDParser {
             }
             return intString;
         } else {
-            return new SimpleInternationalString(getFirstChildValue(root));
+            String simpleText = getFirstChildValue(root);
+            return new SimpleInternationalString(simpleText  == null ? "" : simpleText);
         }
     }
 

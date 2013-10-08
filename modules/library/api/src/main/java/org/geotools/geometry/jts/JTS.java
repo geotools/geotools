@@ -37,8 +37,6 @@ import org.geotools.resources.Classes;
 import org.geotools.resources.geometry.ShapeUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
-import org.opengis.annotation.Specification;
-import org.opengis.annotation.UML;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -49,20 +47,23 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.TransformException;
 
+import com.vividsolutions.jts.algorithm.CGAlgorithms;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
  * JTS Geometry utility methods, bringing Geotools to JTS.
@@ -1356,8 +1357,7 @@ public final class JTS {
         }
         if( crs == null ){
             return new ReferencedEnvelope( geometry.getEnvelopeInternal(), null ); // CRS is not known
-        }
-        else if( crs.getCoordinateSystem().getDimension() >= 3 ){
+        } else if (crs.getCoordinateSystem().getDimension() >= 3) {
             ReferencedEnvelope bounds = new ReferencedEnvelope3D( crs );
             
             // Note we are visiting all coordinates (rather than just the outer rings
@@ -1366,9 +1366,218 @@ public final class JTS {
                 bounds.expandToInclude( coordinate );
             }
             return bounds;
+        } else {
+            return new ReferencedEnvelope(geometry.getEnvelopeInternal(), crs);
         }
-        else {
-            return new ReferencedEnvelope( geometry.getEnvelopeInternal(), crs );
+    }
+
+    /**
+     * Removes collinear points from the provided linestring.
+     * 
+     * @param ls the {@link LineString} to be simplified.
+     * @return a new version of the provided {@link LineString} with collinear points removed.
+     */
+    static LineString removeCollinearVertices(final LineString ls) {
+        if (ls == null) {
+            throw new NullPointerException("The provided linestring is null");
         }
+
+        final int N = ls.getNumPoints();
+        final boolean isLinearRing = ls instanceof LinearRing;
+
+        List<Coordinate> retain = new ArrayList<Coordinate>();
+        retain.add(ls.getCoordinateN(0));
+
+        int i0 = 0, i1 = 1, i2 = 2;
+        Coordinate firstCoord = ls.getCoordinateN(i0);
+        Coordinate midCoord;
+        Coordinate lastCoord;
+        while (i2 < N) {
+            midCoord = ls.getCoordinateN(i1);
+            lastCoord = ls.getCoordinateN(i2);
+
+            final int orientation = CGAlgorithms
+                    .computeOrientation(firstCoord, midCoord, lastCoord);
+            // Colllinearity test
+            if (orientation != CGAlgorithms.COLLINEAR) {
+                // add midcoord and change head
+                retain.add(midCoord);
+                i0 = i1;
+                firstCoord = ls.getCoordinateN(i0);
+            }
+            i1++;
+            i2++;
+        }
+        retain.add(ls.getCoordinateN(N - 1));
+
+        //
+        // Return value
+        //
+        final int size = retain.size();
+        // nothing changed?
+        if (size == N) {
+            // free everything and return original
+            retain.clear();
+
+            return ls;
+        }
+
+        return isLinearRing ? ls.getFactory()
+                .createLinearRing(retain.toArray(new Coordinate[size])) : ls.getFactory()
+                .createLineString(retain.toArray(new Coordinate[size]));
+    }
+
+    /**
+     * Removes collinear vertices from the provided {@link Polygon}.
+     * 
+     * @param polygon the instance of a {@link Polygon} to remove collinear vertices from.
+     * @return a new instance of the provided {@link Polygon} without collinear vertices.
+     */
+    static Polygon removeCollinearVertices(final Polygon polygon) {
+        if (polygon == null) {
+            throw new NullPointerException("The provided Polygon is null");
+        }
+
+        // reuse existing factory
+        final GeometryFactory gf = polygon.getFactory();
+
+        // work on the exterior ring
+        LineString exterior = polygon.getExteriorRing();
+        LineString shell = removeCollinearVertices(exterior);
+        if ((shell == null) || shell.isEmpty()) {
+            return null;
+        }
+
+        // work on the holes
+        List<LineString> holes = new ArrayList<LineString>();
+        final int size = polygon.getNumInteriorRing();
+        for (int i = 0; i < size; i++) {
+            LineString hole = polygon.getInteriorRingN(i);
+            hole = removeCollinearVertices(hole);
+            if ((hole != null) && !hole.isEmpty()) {
+                holes.add(hole);
+            }
+        }
+
+        return gf.createPolygon((LinearRing) shell, holes.toArray(new LinearRing[holes.size()]));
+    }
+
+    /**
+     * Removes collinear vertices from the provided {@link Geometry}.
+     * 
+     * <p>
+     * For the moment this implementation only accepts, {@link Polygon}, {@link LineString} and {@link MultiPolygon} It will throw an exception if the
+     * geometry is not one of those types
+     * 
+     * @param g the instance of a {@link Geometry} to remove collinear vertices from.
+     * @return a new instance of the provided {@link Geometry} without collinear vertices.
+     */
+    public static Geometry removeCollinearVertices(final Geometry g) {
+        if (g == null) {
+            throw new NullPointerException("The provided Geometry is null");
+        }
+        if (g instanceof LineString) {
+            return removeCollinearVertices((LineString) g);
+        } else if (g instanceof Polygon) {
+            return removeCollinearVertices((Polygon) g);
+        } else if (g instanceof MultiPolygon) {
+            MultiPolygon mp = (MultiPolygon) g;
+            Polygon[] parts = new Polygon[mp.getNumGeometries()];
+            for (int i = 0; i < mp.getNumGeometries(); i++) {
+                Polygon part = (Polygon) mp.getGeometryN(i);
+                part = removeCollinearVertices(part);
+                parts[i] = part;
+            }
+
+            return g.getFactory().createMultiPolygon(parts);
+        }
+
+        throw new IllegalArgumentException(
+                "This method can work on LineString, Polygon and Multipolygon: " + g.getClass());
+    }
+
+    /**
+     * Removes collinear vertices from the provided {@link Geometry} if the number of point exceeds the requested minPoints.
+     * 
+     * <p>
+     * For the moment this implementation only accepts, {@link Polygon}, {@link LineString} and {@link MultiPolygon} It will throw an exception if the
+     * geometry is not one of those types
+     * 
+     * @param geometry the instance of a {@link Geometry} to remove collinear vertices from.
+     * @param minPoints perform removal of collinear points if num of vertices exceeds minPoints.
+     * @return a new instance of the provided {@link Geometry} without collinear vertices.
+     */
+    public static Geometry removeCollinearVertices(final Geometry geometry, int minPoints) {
+        ensureNonNull("geometry", geometry);
+
+        if ((minPoints <= 0) || (geometry.getNumPoints() < minPoints)) {
+            return geometry;
+        }
+
+        if (geometry instanceof LineString) {
+            return removeCollinearVertices((LineString) geometry);
+        } else if (geometry instanceof Polygon) {
+            return removeCollinearVertices((Polygon) geometry);
+        } else if (geometry instanceof MultiPolygon) {
+            MultiPolygon mp = (MultiPolygon) geometry;
+            Polygon[] parts = new Polygon[mp.getNumGeometries()];
+            for (int i = 0; i < mp.getNumGeometries(); i++) {
+                Polygon part = (Polygon) mp.getGeometryN(i);
+                part = removeCollinearVertices(part);
+                parts[i] = part;
+            }
+
+            return geometry.getFactory().createMultiPolygon(parts);
+        }
+
+        throw new IllegalArgumentException(
+                "This method can work on LineString, Polygon and Multipolygon: "
+                        + geometry.getClass());
+    }
+
+    /**
+     * Given a potentially invalid polygon it rebuilds it as a list of valid polygons, eventually removing the holes
+     * 
+     * @param polygon
+     * @return
+     */
+    public static List<Polygon> makeValid(Polygon polygon, boolean removeHoles) {
+        // add all segments into the polygonizer
+        final Polygonizer p = new Polygonizer();
+        polygon.apply(new CoordinateSequenceFilter() {
+
+            public boolean isGeometryChanged() {
+                return false;
+            }
+
+            public boolean isDone() {
+                return false;
+            }
+
+            public void filter(CoordinateSequence seq, int i) {
+                if (i == 0) {
+                    return;
+                }
+                p.add(new GeometryFactory().createLineString(new Coordinate[] {
+                        seq.getCoordinate(i - 1), seq.getCoordinate(i) }));
+            }
+        });
+
+        List<Polygon> result = new ArrayList<Polygon>(p.getPolygons());
+
+        // if necessary throw away the holes and return just the shells
+        if (removeHoles) {
+            for (int i = 0; i < result.size(); i++) {
+                Polygon item = result.get(i);
+                if (item.getNumInteriorRing() > 0) {
+                    GeometryFactory factory = item.getFactory();
+                    Polygon noHoles = factory.createPolygon((LinearRing) item.getExteriorRing(),
+                            null);
+                    result.set(i, noHoles);
+                }
+            }
+        }
+
+        return result;
     }
 }

@@ -20,7 +20,6 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
-import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
@@ -106,7 +105,6 @@ import org.geotools.util.Utilities;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 
-import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -123,6 +121,8 @@ import com.vividsolutions.jts.geom.Geometry;
 public class Utils {
     
     public final static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    
+    final private static String DATABASE_KEY = "database";
 
     final private static double RESOLUTION_TOLERANCE_FACTOR = 1E-2;
 
@@ -1680,5 +1680,45 @@ public class Utils {
         // different, hence skip this feature.
         //
         return true;
+    }
+    
+    
+    /*
+     * Checks if the provided factory spi builds a H2 store
+     */
+    public static boolean isH2Store(DataStoreFactorySpi spi) {
+        String spiName = spi == null ? null : spi.getClass().getName();
+        return "org.geotools.data.h2.H2DataStoreFactory".equals(spiName) || 
+        "org.geotools.data.h2.H2JNDIDataStoreFactory".equals(spiName);
+    }
+    
+    public static void fixH2DatabaseLocation(Map<String, Serializable> params, String parentLocation) throws MalformedURLException {
+        if(params.containsKey(DATABASE_KEY)){
+            String dbname = (String) params.get(DATABASE_KEY);
+            // H2 database URLs must not be percent-encoded: see GEOT-4262.
+            params.put(DATABASE_KEY,
+                    "file:" + (new File(DataUtilities.urlToFile(new URL(parentLocation)),
+                                    dbname)).getPath());
+    }
+    
+    }
+    
+    /**
+     * Checks if the provided factory spi builds a Oracle store
+     */
+    public static boolean isOracleStore(DataStoreFactorySpi spi) {
+        String spiName = spi == null ? null : spi.getClass().getName();
+        return "org.geotools.data.oracle.OracleNGOCIDataStoreFactory".equals(spiName) ||
+                "org.geotools.data.oracle.OracleNGJNDIDataStoreFactory".equals(spiName) ||
+                "org.geotools.data.oracle.OracleNGDataStoreFactory".equals(spiName);
+    }
+    
+    /**
+     * Checks if the provided factory spi builds a Postgis store
+     */
+    public static boolean isPostgisStore(DataStoreFactorySpi spi) {
+        String spiName = spi == null ? null : spi.getClass().getName();
+        return "org.geotools.data.postgis.PostgisNGJNDIDataStoreFactory".equals(spiName) ||
+               "org.geotools.data.postgis.PostgisNGDataStoreFactory".equals(spiName);
     }
 }

@@ -6,14 +6,16 @@ import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.File;
 
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.image.test.ImageAssert;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Stroke;
@@ -27,13 +29,16 @@ import org.opengis.filter.FilterFactory2;
 
 /**
  * 
- *
+ * 
  * @source $URL$
  */
 public class FillTest {
-    private static final long TIME = 4000;
+    private static final long TIME = 40000;
+
     SimpleFeatureSource fs;
+
     SimpleFeatureSource bfs;
+
     ReferencedEnvelope bounds;
 
     @Before
@@ -44,141 +49,142 @@ public class FillTest {
         bfs = ds.getFeatureSource("bigsquare");
         bounds = fs.getBounds();
         bounds.expandBy(0.2, 0.2);
-        
+
         // load font
-        Font f = Font.createFont(Font.TRUETYPE_FONT, TestData.getResource(this, "recreate.ttf").openStream());
+        Font f = Font.createFont(Font.TRUETYPE_FONT, TestData.getResource(this, "recreate.ttf")
+                .openStream());
         FontCache.getDefaultInstance().registerFont(f);
-        
+
         // System.setProperty("org.geotools.test.interactive", "true");
-        
+
     }
     
+    private void runSingleLayerTest(String styleName) throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, styleName);
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        
+        BufferedImage image = RendererBaseTest.showRender(styleName, renderer, TIME, bounds);
+        ImageAssert.assertEquals(new File("./src/test/resources/org/geotools/renderer/lite/test-data/" + styleName +  ".png"), image, 100);
+    }
+    
+
     @Test
     public void testSolidFill() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "fillSolid.sld");
-        
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
-        
-        StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
-        
-        RendererBaseTest.showRender("SolidFill", renderer, TIME, bounds);
+        runSingleLayerTest("fillSolid.sld");
     }
 
     @Test
     public void testCrossFill() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "fillCross.sld");
-        
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
-        
-        StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
-        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        
-        RendererBaseTest.showRender("CrossFill", renderer, TIME, bounds);
+        runSingleLayerTest("fillCross.sld");
     }
-    
+
     @Test
     public void testTriangleFill() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "fillTriangle.sld");
-        
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
-        
-        StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
-        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        
-        RendererBaseTest.showRender("TriangleFill", renderer, TIME, bounds);
+        runSingleLayerTest("fillTriangle.sld");
     }
-    
+
     @Test
     public void testCircleFill() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "fillCircle.sld");
-        
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
-        
-        StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
-        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        
-        RendererBaseTest.showRender("CircleFill", renderer, TIME, bounds);
+        runSingleLayerTest("fillCircle.sld");
     }
-    
+
     @Test
     public void testSlash() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "fillSlash.sld");
-        
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
-        
-        StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
-        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        
-        RendererBaseTest.showRender("SlashFill", renderer, TIME, bounds);
+        runSingleLayerTest("fillSlash.sld");
     }
-    
+
     @Test
     public void testImageFill() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "fillImage.sld");
-        
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
-        
-        StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
-        
-        RendererBaseTest.showRender("ImageFill", renderer, TIME, bounds);
+        runSingleLayerTest("fillImage.sld");
+    }
+
+    @Test
+    public void testFontFill() throws Exception {
+        runSingleLayerTest("fillTTFDecorative.sld");
     }
     
     @Test
-    public void testFontFill() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "fillTTFDecorative.sld");
-        
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
-        
-        StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
-        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        
-        RendererBaseTest.showRender("TTF decorative", renderer, TIME, bounds);
+    public void testRandomSlash() throws Exception {
+        runSingleLayerTest("fillRandomSlash.sld");
     }
     
+    @Test
+    public void testRandomRotatedSlash() throws Exception {
+        runSingleLayerTest("fillRandomRotatedSlash.sld");
+    }
+    
+    @Test
+    public void testFillRandomGraphic() throws Exception {
+        runSingleLayerTest("fillRandomGraphic.sld");
+    }
+    
+    @Test
+    public void testFillRandomRotatedGraphic() throws Exception {
+        runSingleLayerTest("fillRandomRotatedGraphic.sld");
+    }
+    
+    @Test
+    public void testFillRandomTwoMarks() throws Exception {
+        runSingleLayerTest("fillRandomTwoMarks.sld");
+    }
+    
+    @Test
+    public void testFillRandomGridSlash() throws Exception {
+        runSingleLayerTest("fillRandomGridSlash.sld");
+    }
+    
+    @Test
+    public void testFillRandomGridGraphic() throws Exception {
+        runSingleLayerTest("fillRandomGridGraphic.sld");
+    }
+    
+    @Test
+    public void testFillRandomGridRotatedSlash() throws Exception {
+        runSingleLayerTest("fillRandomGridRotatedSlash.sld");
+    }
+    
+    @Test
+    public void testFillRandomGridRotatedGraphic() throws Exception {
+        runSingleLayerTest("fillRandomGridRotatedGraphic.sld");
+    }
+
     @Test
     public void testFTSComposition() throws Exception {
         Style bgStyle = RendererBaseTest.loadStyle(this, "fillSolid.sld");
         Style fgStyle = RendererBaseTest.loadStyle(this, "fillSolidFTS.sld");
-        
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(bfs, bgStyle);
-        mc.addLayer(fs, fgStyle);
-        
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(bfs, bgStyle));
+        mc.addLayer(new FeatureLayer(fs, fgStyle));
+
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        renderer.setContext(mc);
-        
+        renderer.setMapContent(mc);
+
         RendererBaseTest.showRender("FTS composition", renderer, TIME, bounds);
     }
-    
+
     @Test
     public void testGEOT3111() throws Exception {
         FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-        Symbolizer sym = sf.createPolygonSymbolizer(Stroke.NULL, sf.createFill(ff2.literal(Color.CYAN)), null);
+        Symbolizer sym = sf.createPolygonSymbolizer(Stroke.NULL,
+                sf.createFill(ff2.literal(Color.CYAN)), null);
         Style style = SLD.wrapSymbolizers(sym);
-        
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
-        
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs, style));
+
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        
+
         RendererBaseTest.showRender("GEOT-3111", renderer, TIME, bounds);
     }
 }

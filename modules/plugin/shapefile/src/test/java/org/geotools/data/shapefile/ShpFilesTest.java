@@ -106,6 +106,12 @@ public class ShpFilesTest {
         
         
     }
+
+    @Test
+    public void testGetTypeName() throws Exception {
+        assertEquals("shape", new ShpFiles("dir/shape.shp").getTypeName());
+        assertEquals(".shape", new ShpFiles("dir/.shape.shp").getTypeName());
+    }
     
     public static Map<ShpFileType, File> createFiles(String string,
             ShpFileType[] values, boolean uppercase) throws IOException {

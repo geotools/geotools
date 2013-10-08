@@ -1,0 +1,12 @@
+language: java
+jdk:
+  - oraclejdk7
+  - openjdk7
+script:
+  - mvn clean test -Dall -T2 -Djava.awt.headless=true
+notifications:
+  email: false
+  on_failure: never
+branches:
+  only:
+    - master

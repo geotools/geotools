@@ -35,8 +35,6 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFactorySpi;
-import org.geotools.data.directory.DirectoryDataStore;
-import org.geotools.data.directory.FileStoreFactory;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.util.KVP;
 import org.geotools.util.logging.Logging;
@@ -77,12 +75,6 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
             Boolean.class, "only memory map a file one, then cache and reuse the map", false, true,
             new KVP(Param.LEVEL, "advanced"));
 
-    /**
-     * Optional - discriminator for directory stores
-     */
-    public static final Param FILE_TYPE = new Param("filetype", String.class,
-            "Discriminator for directory stores", false, "shapefile", new KVP(Param.LEVEL,
-                    "advanced"));
 
     /**
      * Optional - Enable/disable the automatic creation of spatial index
@@ -150,7 +142,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
 
     public Param[] getParametersInfo() {
         return new Param[] { URLP, NAMESPACEP, ENABLE_SPATIAL_INDEX, CREATE_SPATIAL_INDEX, DBFCHARSET, DBFTIMEZONE,
-                MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE, FSTYPE };
+                MEMORY_MAPPED, CACHE_MEMORY_MAPS, FSTYPE };
     }
 
     public boolean isAvailable() {
@@ -175,32 +167,25 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
             isEnableSpatialIndex = Boolean.TRUE;
         }
         
-        // are we creating a directory of shapefiles store, or a single one?
-        File dir = DataUtilities.urlToFile(url);
-        if (dir != null && dir.isDirectory()) {
-            return new DirectoryDataStore(DataUtilities.urlToFile(url), new ShpFileStoreFactory(
-                    this, params));
-        } else {
-            ShpFiles shpFiles = new ShpFiles(url);
+        ShpFiles shpFiles = new ShpFiles(url);
 
-            boolean isLocal = shpFiles.isLocal();
-            boolean useMemoryMappedBuffer = isLocal && isMemoryMapped.booleanValue();
-            boolean enableIndex = isEnableSpatialIndex.booleanValue() && isLocal;
-            boolean createIndex = isCreateSpatialIndex.booleanValue() && enableIndex;
+        boolean isLocal = shpFiles.isLocal();
+        boolean useMemoryMappedBuffer = isLocal && isMemoryMapped.booleanValue();
+        boolean enableIndex = isEnableSpatialIndex.booleanValue() && isLocal;
+        boolean createIndex = isCreateSpatialIndex.booleanValue() && enableIndex;
 
-            // build the store
-            ShapefileDataStore store = new ShapefileDataStore(url);
-            if(namespace != null) {
-                store.setNamespaceURI(namespace.toString());
-            }
-            store.setMemoryMapped(useMemoryMappedBuffer);
-            store.setBufferCachingEnabled(cacheMemoryMaps);
-            store.setCharset(dbfCharset);
-            store.setTimeZone(dbfTimeZone);
-            store.setIndexed(enableIndex);
-            store.setIndexCreationEnabled(createIndex);
-            return store;
+        // build the store
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        if(namespace != null) {
+            store.setNamespaceURI(namespace.toString());
         }
+        store.setMemoryMapped(useMemoryMappedBuffer);
+        store.setBufferCachingEnabled(cacheMemoryMaps);
+        store.setCharset(dbfCharset);
+        store.setTimeZone(dbfTimeZone);
+        store.setIndexed(enableIndex);
+        store.setIndexCreationEnabled(createIndex);
+        return store;
     }
 
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
@@ -235,15 +220,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
         }
         try {
             URL url = (URL) URLP.lookUp(params);
-            if (canProcess(url)) {
-                return true;
-            } else {
-                // maybe it's a directory?
-                Object fileType = FILE_TYPE.lookUp(params);
-                File dir = DataUtilities.urlToFile(url);
-                // check for null fileType for backwards compatibility
-                return dir.isDirectory() && (fileType == null || "shapefile".equals(fileType));
-            }
+            return canProcess(url);
         } catch (IOException e) {
             return false;
         }
@@ -253,34 +230,6 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
         return f != null && f.getFile().toUpperCase().endsWith("SHP");
     }
 
-    /**
-     * A delegates that allow to build a directory of shapfiles store
-     * 
-     * @author Andrea Aime - OpenGeo
-     */
-    public static class ShpFileStoreFactory implements FileStoreFactory {
-
-        ShapefileDataStoreFactory shpFactory;
-
-        Map originalParams;
-
-        public ShpFileStoreFactory(ShapefileDataStoreFactory factory, Map originalParams) {
-            this.shpFactory = factory;
-            this.originalParams = originalParams;
-        }
-
-        public DataStore getDataStore(File file) throws IOException {
-            final URL url = DataUtilities.fileToURL(file);
-            if (shpFactory.canProcess(url)) {
-                Map<String,Serializable> params = new HashMap<String,Serializable>(originalParams);
-                params.put(URLP.key, url);
-                return shpFactory.createDataStore(params);
-            } else {
-                return null;
-            }
-        }
-
-    }
 
     @Override
     public String[] getFileExtensions() {

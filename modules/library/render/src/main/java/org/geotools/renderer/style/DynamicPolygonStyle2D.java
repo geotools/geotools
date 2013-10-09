@@ -64,7 +64,7 @@ public class DynamicPolygonStyle2D extends org.geotools.renderer.style.PolygonSt
 
         if (gr != null) {
             SLDStyleFactory fac = new SLDStyleFactory();
-            fillPaint = fac.getTexturePaint(ps, gr, feature);
+            fillPaint = fac.getTexturePaint(gr, feature, ps);
         }
 
         return fillPaint;

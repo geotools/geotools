@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 
 import org.geotools.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.hsqldb.jdbc.jdbcDataSource;
+import org.hsqldb.jdbc.JDBCDataSource;
 import org.opengis.referencing.FactoryException;
 
 
@@ -95,7 +95,7 @@ public class HsqlEpsgDatabase {
         }
     }
     public static javax.sql.DataSource createDataSource(File directory) throws SQLException {
-        jdbcDataSource dataSource = new jdbcDataSource();
+        JDBCDataSource dataSource = new JDBCDataSource();
         /*
          * Constructs the full path to the HSQL database. Note: we do not use
          * File.toURI() because HSQL doesn't seem to expect an encoded URL (e.g.

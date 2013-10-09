@@ -130,7 +130,6 @@ public class DirectoryDataStoreTest extends DirectoryTestSupport {
         
         Map params = new HashMap();
         params.put(ShapefileDataStoreFactory.URLP.key, DataUtilities.fileToURL(tempDir));
-        params.put(ShapefileDataStoreFactory.FILE_TYPE.key, "shapefile");
         DataStore store = DataStoreFinder.getDataStore(params);
         
         assertNotNull(store);
@@ -142,17 +141,4 @@ public class DirectoryDataStoreTest extends DirectoryTestSupport {
         dds.dispose();
     }
     
-    @Test
-    public void testFactoryWithWrongType() throws Exception {
-        copyShapefiles("shapes/archsites.shp");
-        File f = copyShapefiles("shapes/bugsites.shp");
-        tempDir = f.getParentFile();
-        
-        Map params = new HashMap();
-        params.put(ShapefileDataStoreFactory.URLP.key, DataUtilities.fileToURL(tempDir));
-        params.put(ShapefileDataStoreFactory.FILE_TYPE.key, "abcdef...");
-        DataStore store = DataStoreFinder.getDataStore(params);
-        
-        assertNull(store);
-     }
 }

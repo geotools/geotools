@@ -16,10 +16,8 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -41,11 +39,6 @@ import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.h2.H2DataStoreFactory;
-import org.geotools.data.h2.H2JNDIDataStoreFactory;
-import org.geotools.data.oracle.OracleNGDataStoreFactory;
-import org.geotools.data.oracle.OracleNGJNDIDataStoreFactory;
-import org.geotools.data.oracle.OracleNGOCIDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
@@ -131,15 +124,8 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             }
 
             // H2 workadound
-            if (spi instanceof H2DataStoreFactory || spi instanceof H2JNDIDataStoreFactory) {
-                if (params.containsKey(H2DataStoreFactory.DATABASE.key)) {
-                    String dbname = (String) params.get(H2DataStoreFactory.DATABASE.key);
-                    // H2 database URLs must not be percent-encoded: see GEOT-4262.
-                    params.put(H2DataStoreFactory.DATABASE.key,
-                            "file:"
-                                    + (new File(DataUtilities.urlToFile(new URL(parentLocation)),
-                                            dbname)).getPath());
-                }
+            if (Utils.isH2Store(spi)) {
+                Utils.fixH2DatabaseLocation(params, parentLocation);
             }
 
             // creating a store, this might imply creating it for an existing underlying store or
@@ -156,9 +142,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 }
             }
 
-            if (spi instanceof OracleNGOCIDataStoreFactory
-                    || spi instanceof OracleNGJNDIDataStoreFactory
-                    || spi instanceof OracleNGDataStoreFactory) {
+            if(Utils.isOracleStore(spi)) {
                 tileIndexStore = new OracleDatastoreWrapper(tileIndexStore,
                         FilenameUtils.getFullPath(parentLocation));
             }

@@ -42,8 +42,6 @@ import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.h2.H2DataStoreFactory;
-import org.geotools.data.h2.H2JNDIDataStoreFactory;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.Hints;
@@ -361,14 +359,10 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     						}
     				}						
     				// H2 workadound
-    				if(spi instanceof H2DataStoreFactory || spi instanceof H2JNDIDataStoreFactory){
-    					if(params.containsKey(H2DataStoreFactory.DATABASE.key)){
-    						String dbname = (String) params.get(H2DataStoreFactory.DATABASE.key);
-    						// H2 database URLs must not be percent-encoded: see GEOT-4262.
-    						params.put(H2DataStoreFactory.DATABASE.key,
-    						        "file:" + (new File(sourceF.getParentFile(), dbname)).getPath());
-    					}
-    				}   
+                    if (Utils.isH2Store(spi)) {
+                        Utils.fixH2DatabaseLocation(params,
+                                DataUtilities.fileToURL(sourceF.getParentFile()).toExternalForm());
+                    }
     				
     				tileIndexStore=spi.createDataStore(params);
         			if(tileIndexStore==null)

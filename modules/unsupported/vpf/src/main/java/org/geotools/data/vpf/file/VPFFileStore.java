@@ -117,7 +117,8 @@ public class VPFFileStore extends AbstractDataStore {
         VPFFile file = null;
         while(iter.hasNext()){
             try {
-                file = (VPFFile)iter.next();
+                SimpleFeatureType schema = iter.next();
+                file = (VPFFile) schema.getUserData().get(VPFFile.class);
                 file.close();
             } catch (Exception exc) {
                 // No idea why this might happen

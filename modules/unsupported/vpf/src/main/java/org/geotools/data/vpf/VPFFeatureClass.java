@@ -167,7 +167,8 @@ public class VPFFeatureClass implements SimpleFeatureType {
             AttributeDescriptor geometryColumn = null;
 
             while (iter2.hasNext()) {
-                column = (VPFColumn) iter.next();
+                column = (VPFColumn) iter2.next();
+                if( column == null ) continue;
                 if( column.isGeometry() ){
                     geometryName = column.getName();
                     break;
@@ -185,6 +186,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
             b.setNamespaceURI(namespace);
             b.setSuperType(superType);
             for( VPFColumn col : columns ){
+                if( col == null ) continue;
                 b.add( col.getDescriptor() );
             }
             b.setDefaultGeometry(geometryName);

@@ -197,6 +197,8 @@ public class VPFFile {
         }
         b.setDefaultGeometry(geometryName);
         featureType = b.buildFeatureType();
+        
+        featureType.getUserData().put(VPFFile.class, this );
     }
 
     /**

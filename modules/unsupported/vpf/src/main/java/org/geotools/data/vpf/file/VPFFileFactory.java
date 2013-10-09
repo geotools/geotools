@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 
 /**
@@ -137,7 +138,10 @@ public class VPFFileFactory implements DataStoreFactorySpi {
         return instance;
     }
     public VPFFile getFile(String pathName) throws IOException{
-        return (VPFFile)store.getSchema(pathName);
+        SimpleFeatureType schema = store.getSchema(pathName);
+        
+        VPFFile file = (VPFFile) schema.getUserData().get( VPFFile.class);
+        return file;
     }
 
     /**

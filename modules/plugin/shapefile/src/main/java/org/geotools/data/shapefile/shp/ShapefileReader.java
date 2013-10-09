@@ -16,6 +16,7 @@
  */
 package org.geotools.data.shapefile.shp;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -257,9 +258,9 @@ public class ShapefileReader implements FileReader {
         if(!onlyRandomAccess) {
             try {
                 shxReader = new IndexFile(shapefileFiles, this.useMemoryMappedBuffer);
-            } catch(Exception e) {
+            } catch(FileNotFoundException e) {
                 LOGGER.log(Level.WARNING, "Could not open the .shx file, continuing " +
-                        "assuming the .shp file is not sparse", e);
+                        "assuming the .shp file is not sparse");
                 currentShape = UNKNOWN;
             }
         }

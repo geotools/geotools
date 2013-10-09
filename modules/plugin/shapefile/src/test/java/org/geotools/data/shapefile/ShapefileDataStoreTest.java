@@ -1282,9 +1282,10 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         s.createSchema(type);
         
         // was failing in GEOT-2427
-        Transaction t= new DefaultTransaction();
+        Transaction t = new DefaultTransaction();
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = s.getFeatureWriter(s.getTypeNames()[0], t);
         SimpleFeature feature1 = writer.next();
+        t.close();
         writer.close();
         s.dispose();
     }
@@ -1466,30 +1467,36 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         // http://jira.codehaus.org/browse/GEOT-2357
         
         final ShapefileDataStore ds = createDataStore();
-        SimpleFeatureStore store;
-        store = (SimpleFeatureStore) ds.getFeatureSource();
         Transaction t = new DefaultTransaction();
-        store.setTransaction(t);
-        
-        int initialCount = store.getCount(Query.ALL);
-        
-        SimpleFeatureIterator features = store.getFeatures().features();
-        String fid = features.next().getID();
-        features.close();
-        
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        String typeName = store.getSchema().getTypeName();
-        Id id = ff.id(Collections.singleton(ff.featureId(fid)));
-        
-        assertEquals(-1, store.getCount(new Query(typeName, id)));
-        assertEquals(1, count(ds, typeName, id, t));
-        
-        store.removeFeatures(id);
-        
-        assertEquals(-1, store.getCount(new Query(store.getSchema().getTypeName(), id)));
-        assertEquals(initialCount - 1, count(ds, typeName, Filter.INCLUDE, t));
-        assertEquals(0, count(ds, typeName, id, t));
-        ds.dispose();
+        try {
+	        SimpleFeatureStore store;
+	        store = (SimpleFeatureStore) ds.getFeatureSource();
+	        
+	        store.setTransaction(t);
+	        
+	        int initialCount = store.getCount(Query.ALL);
+	        
+	        SimpleFeatureIterator features = store.getFeatures().features();
+	        String fid = features.next().getID();
+	        features.close();
+	        
+	        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+	        String typeName = store.getSchema().getTypeName();
+	        Id id = ff.id(Collections.singleton(ff.featureId(fid)));
+	        
+	        assertEquals(-1, store.getCount(new Query(typeName, id)));
+	        assertEquals(1, count(ds, typeName, id, t));
+	        
+	        store.removeFeatures(id);
+	        
+	        assertEquals(-1, store.getCount(new Query(store.getSchema().getTypeName(), id)));
+	        assertEquals(initialCount - 1, count(ds, typeName, Filter.INCLUDE, t));
+	        assertEquals(0, count(ds, typeName, id, t));
+        }
+        finally {
+	        t.close();
+	        ds.dispose();
+        }
     }
     
     private int count(DataStore ds, String typeName, Filter filter) throws Exception {

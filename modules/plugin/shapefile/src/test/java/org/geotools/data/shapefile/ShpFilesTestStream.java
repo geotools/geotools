@@ -198,7 +198,7 @@ public class ShpFilesTestStream implements
         URL url = TestData.url("shapes/statepop.shp");
         ShpFiles files = new ShpFiles(url);
         
-        assertFalse(files.isLocal());
+        assertTrue(files.isLocal());
         
         ReadableByteChannel read = files.getReadChannel(SHP, this);
         

@@ -34,7 +34,6 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
-import org.geotools.gce.imagemosaic.ImageMosaicReaderTest;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;

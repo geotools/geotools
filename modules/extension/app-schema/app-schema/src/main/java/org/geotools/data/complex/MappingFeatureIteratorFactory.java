@@ -19,7 +19,6 @@ package org.geotools.data.complex;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.FeatureSource;
@@ -37,6 +36,8 @@ import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
@@ -130,7 +131,9 @@ public class MappingFeatureIteratorFactory {
 
         if (isJoining) {
             if (!(query instanceof JoiningQuery)) {
-                query = new JoiningQuery(query);
+                boolean hasIdColumn = !Expression.NIL.equals(mapping.getFeatureIdExpression())
+                        && !(mapping.getFeatureIdExpression() instanceof Literal);
+                query = new JoiningQuery(query, hasIdColumn);
             }
         }
         IMappingFeatureIterator iterator;

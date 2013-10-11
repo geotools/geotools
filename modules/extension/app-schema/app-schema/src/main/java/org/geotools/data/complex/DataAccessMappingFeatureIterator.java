@@ -67,6 +67,7 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -282,13 +283,20 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * aren't interpreted as one feature and merged.
      */
     public List<Object> getIdValues(Object source) {   
-        List<Object> ids = new ArrayList<Object>();        
-        if (Expression.NIL.equals(mapping.getFeatureIdExpression())) {
+        List<Object> ids = new ArrayList<Object>();
+        Expression idExpression = mapping.getFeatureIdExpression();
+        if (Expression.NIL.equals(idExpression) || idExpression instanceof Literal) {
             // GEOT-4554: if idExpression is not specified, should use PK
-            ids.add(peekValue(source, namespaceAwareFilterFactory.property("@id")));
+            if (source instanceof Feature) {
+                for (Property p : ((Feature) source).getProperties()) {
+                    if (p.getName().getLocalPart().startsWith(JoiningJDBCFeatureSource.PRIMARY_KEY)) {
+                        ids.add(p.getValue());
+                    }
+                }
+            }
         } else {
             FilterAttributeExtractor extractor = new FilterAttributeExtractor();
-            mapping.getFeatureIdExpression().accept(extractor, null);
+            idExpression.accept(extractor, null);
             for (String att : extractor.getAttributeNameSet()) {
                 ids.add(peekValue(source, namespaceAwareFilterFactory.property(att)));
             }

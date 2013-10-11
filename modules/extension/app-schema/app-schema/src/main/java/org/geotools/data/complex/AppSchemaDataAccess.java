@@ -375,7 +375,9 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                     sort.add(new SortByImpl(filterFac.property(att), SortOrder.ASCENDING));
                 }
 
-                JoiningQuery jQuery = new JoiningQuery(newQuery);
+                JoiningQuery jQuery = new JoiningQuery(newQuery,
+                        (!Expression.NIL.equals(mapping.getFeatureIdExpression()) && !(mapping
+                                .getFeatureIdExpression() instanceof Literal)));
                 jQuery.setQueryJoins(((JoiningQuery) query).getQueryJoins());
                 jQuery.setSubset(((JoiningQuery) query).isSubset());
                 unrolledQuery = jQuery;

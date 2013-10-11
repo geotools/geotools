@@ -75,6 +75,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     
     private static final String TEMP_FILTER_ALIAS = "temp_alias_used_for_filter"; 
     public static final String FOREIGN_ID = "FOREIGN_ID" ;
+    // attribute to indicate primary key column, so it can be retrieved from the feature type
+    public static final String PRIMARY_KEY = "PARENT_TABLE_PKEY";
     
     public JoiningJDBCFeatureSource(JDBCFeatureSource featureSource) throws IOException {     
         super(featureSource);        
@@ -499,11 +501,20 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                         } else {
                             encodeColumnName(col.getName(), joinTypeName, sql, query.getHints());
                         }
+                        query.getQueryJoins().get(i).addId(col.getName());
                         sql.append(" ").append(FOREIGN_ID + "_" + i + "_" + j).append(",");
                         j++;
                         lastPkColumnNames.add(col.getName());
                     }
                 }
+            }
+        }
+        if (!query.hasIdColumn() && !pkColumnNames.isEmpty()) {
+            int pkIndex = 0;
+            for (String pk : pkColumnNames) {
+                encodeColumnName(pk, featureType.getTypeName(), sql, query.getHints());
+                sql.append(" ").append(PRIMARY_KEY).append("_").append(pkIndex).append(",");
+                pkIndex++;
             }
         }
         
@@ -666,19 +677,49 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         builder.init(origType);
         
         AttributeTypeBuilder ab = new AttributeTypeBuilder();
-        
-        for (int i=0; i<query.getQueryJoins().size(); i++) {
-            if (query.getQueryJoins().get(i).getIds().isEmpty()) {
-                // GEOT-4554: PK as default idExpression
-                ab.setBinding(String.class);
-                builder.add(ab.buildDescriptor(new NameImpl(FOREIGN_ID) + "_" + i + "_" + 0,
-                        ab.buildType()));
-            } else {
-                for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
-                    ab.setBinding(String.class);
-                    builder.add(ab.buildDescriptor(new NameImpl(FOREIGN_ID) + "_" + i + "_" + j,
-                            ab.buildType()));
+        if (query.getQueryJoins() != null) {
+            for (int i = 0; i < query.getQueryJoins().size(); i++) {
+                if (query.getQueryJoins().get(i).getIds().isEmpty()) {
+                    // GEOT-4554: handle PK as default idExpression
+                    PrimaryKey joinKey = null;
+                    String joinTypeName = query.getQueryJoins().get(i).getJoiningTypeName();
+                    SimpleFeatureType joinFeatureType = getDataStore().getSchema(joinTypeName);
+
+                    try {
+                        joinKey = getDataStore().getPrimaryKey(joinFeatureType);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    int j = 0;
+                    for (PrimaryKeyColumn col : joinKey.getColumns()) {
+                        query.getQueryJoins().get(i).addId(col.getName());
+                        ab.setBinding(String.class);
+                        builder.add(ab.buildDescriptor(new NameImpl(FOREIGN_ID) + "_" + i + "_" + j,
+                                ab.buildType()));
+                        j++;
+                    }
+                } else {
+                    for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
+                        ab.setBinding(String.class);
+                        builder.add(ab.buildDescriptor(new NameImpl(FOREIGN_ID) + "_" + i + "_" + 0,
+                                ab.buildType()));
+                    }
                 }
+            }
+        }
+        if (!query.hasIdColumn()) {
+            // add primary key for the case where idExpression is not specified
+            PrimaryKey key = null;
+
+            try {
+                key = getDataStore().getPrimaryKey(origType);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            for (int j = 0; j < key.getColumns().size(); j++) {
+                ab.setBinding(String.class);
+                builder.add(ab.buildDescriptor(PRIMARY_KEY + "_" + j,
+                        ab.buildType()));
             }
         }
         
@@ -707,7 +748,10 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         } else {
             querySchema = SimpleFeatureTypeBuilder.retype(getSchema(), query.getPropertyNames());            
         }
-        SimpleFeatureType fullSchema = query.getQueryJoins() == null? querySchema : getFeatureType(querySchema, query);
+        // rebuild and add primary key column if there's no idExpression pointing to a database column
+        // this is so we can retrieve the PK later to use for feature chaining grouping
+        SimpleFeatureType fullSchema = (query.hasIdColumn() && query.getQueryJoins() == null) ? querySchema
+                : getFeatureType(querySchema, query);
         
         //grab connection
         Connection cx = getDataStore().getConnection(getState());
@@ -768,7 +812,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             return query;
         }
         else if (query instanceof JoiningQuery) {            
-            JoiningQuery jQuery = new JoiningQuery (super.joinQuery(query));            
+            JoiningQuery jQuery = new JoiningQuery(super.joinQuery(query),
+                    ((JoiningQuery) query).hasIdColumn());   
             jQuery.setQueryJoins(((JoiningQuery)query).getQueryJoins());            
             return jQuery;            
         }

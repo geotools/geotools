@@ -34,6 +34,10 @@ import org.opengis.filter.sort.SortBy;
  */
 public class JoiningQuery extends Query {
     
+    // true if idExpression has been mapped to a database column
+    // false if it's a string constant or has been omitted, and PK should be used if available
+    private boolean hasIdColumn;
+    
     public static class QueryJoin {
         protected String joiningTypeName;    
         protected Expression foreignKeyName;    
@@ -93,12 +97,14 @@ public class JoiningQuery extends Query {
     
     public JoiningQuery(JoiningQuery query) {
         super(query);
+        this.hasIdColumn = query.hasIdColumn;
         setQueryJoins(query.getQueryJoins());
         setSubset(query.isSubset);
     }
     
-    public JoiningQuery(Query query){
+    public JoiningQuery(Query query, boolean hasIdColumn){
         super(query);
+        this.hasIdColumn = hasIdColumn;
     }
     
     public JoiningQuery() {
@@ -118,6 +124,10 @@ public class JoiningQuery extends Query {
     
     public boolean isSubset() {
         return isSubset;
+    }
+    
+    public boolean hasIdColumn() {
+        return hasIdColumn;
     }
 
 }

@@ -36,6 +36,11 @@ public class DXFSpLine extends DXFPolyline {
         super(name, flag, c, l, v, visibility, lineType, thickness);
         setName("DXFSpLine");
     }
+    public DXFSpLine(String name, int flag, int c, DXFLayer l, Vector<DXFVertex> v, int visibility, DXFLineType lineType, double thickness, DXFExtendedData extData) {
+    	super(name, flag, c, l, v, visibility, lineType, thickness);
+    	_extendedData = extData;
+    	setName("DXFSpLine");
+    }
 
     public static DXFSpLine read(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
         DXFLayer l = null;
@@ -49,6 +54,7 @@ public class DXFSpLine extends DXFPolyline {
 
         DXFCodeValuePair cvp = null;
         DXFGroupCode gc = null;
+        DXFExtendedData _extData = null;
 
         boolean doLoop = true;
         while (doLoop) {
@@ -84,11 +90,14 @@ public class DXFSpLine extends DXFPolyline {
                     lv.set(lastIndex, lastCoord);
                     break;
                 default:
+                	String appName = cvp.getStringValue();
+            		_extData = DXFExtendedData.getExtendedData(br);
+            		_extData.setAppName(appName);
                     break;
             }
         }
 
-        DXFSpLine e = new DXFSpLine(name, 4, c, l, lv, visibility, lineType, DXFTables.defaultThickness);
+        DXFSpLine e = new DXFSpLine(name, 4, c, l, lv, visibility, lineType, DXFTables.defaultThickness, _extData);
         e.setType(GeometryType.LINE);
         e.setStartingLineNumber(sln);
         e.setUnivers(univers);

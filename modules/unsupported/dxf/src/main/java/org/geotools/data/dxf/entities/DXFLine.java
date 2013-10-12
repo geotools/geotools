@@ -43,6 +43,13 @@ public class DXFLine extends DXFEntity {
         _b = b;
         setName("DXFLine");
     }
+    public DXFLine(DXFPoint a, DXFPoint b, int c, DXFLayer l, DXFLineType lineType, double thickness, int visibility, DXFExtendedData extData) {
+    	super(c, l, visibility, lineType, thickness);
+    	_a = a;
+    	_b = b;
+    	setName("DXFLine");
+    	_extendedData = extData;
+    }
 
     public static DXFLine read(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
         DXFLayer l = null;
@@ -55,6 +62,7 @@ public class DXFLine extends DXFEntity {
 
         DXFCodeValuePair cvp = null;
         DXFGroupCode gc = null;
+        DXFExtendedData _extData = null;
 
         boolean doLoop = true;
         while (doLoop) {
@@ -102,6 +110,11 @@ public class DXFLine extends DXFEntity {
                 case VISIBILITY: //"60"
                     visibility = cvp.getShortValue();
                     break;
+            	case XDATA_APPLICATION_NAME:
+                	String appName = cvp.getStringValue();
+            		_extData = DXFExtendedData.getExtendedData(br);
+            		_extData.setAppName(appName);
+                    break;
                 default:
                     break;
             }
@@ -113,7 +126,8 @@ public class DXFLine extends DXFEntity {
                 l,
                 lineType,
                 thickness,
-                visibility);
+                visibility,
+                _extData);
         e.setType(GeometryType.LINE);
         e.setStartingLineNumber(sln);
         e.setUnivers(univers);

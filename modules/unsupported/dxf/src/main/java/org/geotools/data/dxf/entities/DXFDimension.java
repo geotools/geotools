@@ -44,6 +44,14 @@ public class DXFDimension extends DXFBlockReference {
         _point_WCS = new DXFPoint(x, y, c, null, visibility, 1);
         setName("DXFDimension");
     }
+    public DXFDimension(double a, String dim, double x, double y, DXFBlock refBlock, String nomBlock, DXFLayer l, int visibility, int c, DXFLineType lineType, DXFExtendedData extData) {
+    	super(c, l, visibility, null, nomBlock, refBlock);
+    	_angle = a;
+    	_dimension = dim;
+    	_point_WCS = new DXFPoint(x, y, c, null, visibility, 1);
+    	setName("DXFDimension");
+    	_extendedData = extData;
+    }
 
     public static DXFDimension read(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
         String dimension = "", nomBlock = "";
@@ -59,6 +67,7 @@ public class DXFDimension extends DXFBlockReference {
 
         DXFCodeValuePair cvp = null;
         DXFGroupCode gc = null;
+        DXFExtendedData _extData = null;
 
         boolean doLoop = true;
         while (doLoop) {
@@ -106,12 +115,17 @@ public class DXFDimension extends DXFBlockReference {
                 case COLOR: //"62"
                     c = cvp.getShortValue();
                     break;
+                case XDATA_APPLICATION_NAME:
+                	String appName = cvp.getStringValue();
+            		_extData = DXFExtendedData.getExtendedData(br);
+            		_extData.setAppName(appName);
+                    break;
                 default:
                     break;
             }
         }
 
-        d = new DXFDimension(angle, dimension, x, y, refBlock, nomBlock, l, visibility, c, lineType);
+        d = new DXFDimension(angle, dimension, x, y, refBlock, nomBlock, l, visibility, c, lineType, _extData);
         d.setType(GeometryType.UNSUPPORTED);
         d.setStartingLineNumber(sln);
         d.setUnivers(univers);

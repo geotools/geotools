@@ -54,6 +54,16 @@ public class DXFEllipse extends DXFEntity {
         _start = s;
         setName("DXFEllipse");
     }
+    public DXFEllipse(DXFPoint centre, DXFPoint p, double r, double s, double e, int c, DXFLayer l, int visibility, DXFLineType typeLine, DXFExtendedData extData) {
+    	super(c, l, visibility, typeLine, DXFTables.defaultThickness);
+    	_centre = centre;
+    	_point = p;
+    	_ratio = r;
+    	_end = e;
+    	_start = s;
+    	setName("DXFEllipse");
+    	_extendedData = extData;
+    }
 
     public static DXFEllipse read(DXFLineNumberReader br, DXFUnivers univers) throws NumberFormatException, IOException {
 
@@ -67,6 +77,7 @@ public class DXFEllipse extends DXFEntity {
 
         DXFCodeValuePair cvp = null;
         DXFGroupCode gc = null;
+        DXFExtendedData _extData = null;
 
         boolean doLoop = true;
         while (doLoop) {
@@ -120,6 +131,11 @@ public class DXFEllipse extends DXFEntity {
                 case Y_2: //"21"
                     y1 = cvp.getDoubleValue();
                     break;
+                case XDATA_APPLICATION_NAME:
+                	String appName = cvp.getStringValue();
+            		_extData = DXFExtendedData.getExtendedData(br);
+            		_extData.setAppName(appName);
+                    break;
                 default:
                     break;
             }
@@ -128,7 +144,7 @@ public class DXFEllipse extends DXFEntity {
         DXFEllipse m = new DXFEllipse(
                 new DXFPoint(x, y, c, l, visibility, 1),
                 new DXFPoint(x1, y1, c, l, visibility, 1),
-                r, s, e, c, l, visibility, lineType);
+                r, s, e, c, l, visibility, lineType, _extData);
         m.setType(GeometryType.POLYGON);
         m.setStartingLineNumber(sln);
         m.setUnivers(univers);

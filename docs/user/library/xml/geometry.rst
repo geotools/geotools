@@ -85,18 +85,18 @@ Here is a complete example::
   
   xsd.close();
 
-  SimpleFeatureCollection collection = FeatureCollections.newCollection("internal");
   WKTReader2 wkt = new WKTReader2();
-  
+  List<SimpleFeature> collection = new LinkedList<SimpleFeature>();
   collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"),"name1" }, null));
   collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (4 4)"),"name2" }, null));
   
   ByteArrayOutputStream xml = new ByteArrayOutputStream();
   
   GML encode2 = new GML(Version.GML2);
+  encode2.setLegacy(true);
   encode2.setBaseURL(baseURL);
   encode2.setNamespace("location", "location.xsd");
-  encode2.encode(out2, collection);
+  encode2.encode(xml,  new ListFeatureCollection(TYPE, collection));
   
   xml.close();
 

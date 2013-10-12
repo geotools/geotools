@@ -29,11 +29,10 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.And;
-import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
-import org.opengis.filter.IncludeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -456,6 +455,16 @@ public final class ECQLTest  {
 
         ECQL.toExpression("attName", ff);
         Assert.assertTrue("Provided FilterFactory was not called", called[0]);
+    }
+    
+    @Test
+    public void testDivideEncode() throws Exception {
+        final FilterFactory2 filterFactory2 = CommonFactoryFinder.getFilterFactory2();
+        final Filter javaFilter = filterFactory2.less(
+          filterFactory2.divide(filterFactory2.property("population"), filterFactory2.literal(2)),
+          filterFactory2.divide(filterFactory2.property("pop2000"), filterFactory2.literal(2))
+        );
+        Assert.assertEquals("population/2<pop2000/2", ECQL.toCQL(javaFilter).replace(" ", ""));
     }
     
 }

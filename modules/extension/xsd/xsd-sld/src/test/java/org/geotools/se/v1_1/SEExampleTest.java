@@ -522,10 +522,4 @@ public class SEExampleTest extends SETestSupport {
         assertEquals("Band.band1", sym.getChannelSelection().getGrayChannel().getChannelName());
     }
     
-    
-    Object parse(String filename) throws Exception {
-        SEConfiguration se = new SEConfiguration();
-        Parser p = new Parser(se);
-        return p.parse(getClass().getResourceAsStream(filename));
-    }
 }

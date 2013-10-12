@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 /*
- *    This file was orginally copyright of Rob Hrananc in 2002 and was released
+ *    This file was orginally copyright of Rob Harder in 2002 and was released
  *    with the additional statement:
  *
  *    I am placing this code in the Public Domain. Do with it as you will.

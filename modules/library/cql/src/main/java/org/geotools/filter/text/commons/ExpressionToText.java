@@ -118,7 +118,7 @@ public class ExpressionToText implements ExpressionVisitor {
 
         StringBuilder output = asStringBuilder(extraData);        
         expression.getExpression1().accept(this, output );
-        output.append( " - " );
+        output.append( " / " );
         expression.getExpression2().accept(this, output );
         
         return output;

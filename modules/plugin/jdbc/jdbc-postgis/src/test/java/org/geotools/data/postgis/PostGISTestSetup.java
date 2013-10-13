@@ -89,6 +89,7 @@ public class PostGISTestSetup extends JDBCTestSetup {
         runSafe("DELETE FROM GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'ft1'");
         runSafe("DROP TABLE \"ft1\"");
         runSafe("DROP TABLE \"ft2\"");
+        runSafe("DROP TABLE \"ft3\"");
         
         run("CREATE TABLE \"ft1\"(" //
                 + "\"id\" serial primary key, " //
@@ -111,7 +112,14 @@ public class PostGISTestSetup extends JDBCTestSetup {
         // analyze so that the stats will be up to date
         run("ANALYZE \"ft1\"");
         
-
+        // ft3: like ft1 but no srid registered
+        run("CREATE TABLE \"ft3\"(" //
+                + "\"id\" serial primary key, " //
+                + "\"gEoMeTrY\" geometry, " //
+                + "\"intProperty\" int," //
+                + "\"doubleProperty\" double precision, " // 
+                + "\"stringProperty\" varchar)");
+        run("INSERT INTO \"ft3\" VALUES(0, ST_GeometryFromText('POINT(0 0)', 4326), 0, 0.0, 'zero')"); 
     }
 
     @Override

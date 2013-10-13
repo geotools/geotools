@@ -32,7 +32,7 @@ public class DB2JoinTestSetup extends JDBCJoinTestSetup {
         Connection con = getDataSource().getConnection();
         
         String stmt = "create table "+DB2TestUtil.SCHEMA_QUOTED+
-                        ".\"ftjoin\" (\"id\" int primary key," +
+                        ".\"ftjoin\" (\"id\" int primary key not null," +
                         "\"name\" varchar(255), " +
                         " \"geom\" DB2GSE.ST_GEOMETRY, \"join1intProperty\" INT ) ";
                         
@@ -60,7 +60,7 @@ public class DB2JoinTestSetup extends JDBCJoinTestSetup {
                 .execute();
 
         stmt = "create table "+DB2TestUtil.SCHEMA_QUOTED+
-                ".\"ftjoin2\" (\"id\" int primary key," +
+                ".\"ftjoin2\" (\"id\" int primary key not null," +
                 "\"join2intProperty\" int, " +
                 "\"stringProperty2\" VARCHAR(255)) ";
                 

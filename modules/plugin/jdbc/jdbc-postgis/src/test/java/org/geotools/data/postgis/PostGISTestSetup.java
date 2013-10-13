@@ -16,15 +16,14 @@
  */
 package org.geotools.data.postgis;
 
-import java.sql.Connection;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.util.Version;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.util.Properties;
 
 /**
  * 
@@ -86,9 +85,9 @@ public class PostGISTestSetup extends JDBCTestSetup {
     
     @Override
     protected void setUpData() throws Exception {
-        runSafe("DELETE FROM GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'ft1'");
-        runSafe("DROP TABLE \"ft1\"");
-        runSafe("DROP TABLE \"ft2\"");
+        run("DELETE FROM GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'ft1'");
+        run("DROP TABLE IF EXISTS \"ft1\"");
+        run("DROP TABLE IF EXISTS \"ft2\"");
         
         run("CREATE TABLE \"ft1\"(" //
                 + "\"id\" serial primary key, " //

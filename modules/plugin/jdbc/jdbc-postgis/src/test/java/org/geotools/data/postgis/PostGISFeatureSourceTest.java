@@ -21,6 +21,8 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCFeatureSourceTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.CRS;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
@@ -75,5 +77,10 @@ public class PostGISFeatureSourceTest extends JDBCFeatureSourceTest {
         assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
     }
     
+    public void testSridFirstGeometry() throws Exception {
+        SimpleFeatureType schema = dataStore.getSchema(tname("ft3"));
+        GeometryDescriptor gd = schema.getGeometryDescriptor();
+        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), gd.getCoordinateReferenceSystem()));
+    }
 
 }

@@ -56,7 +56,7 @@ public class CQLExistenceTest {
         this(Language.CQL);
     }
 
-    public CQLExistenceTest(final Language language){
+    protected CQLExistenceTest(final Language language){
         
         assert language != null: "language cannot be null value";
         

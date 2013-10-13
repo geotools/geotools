@@ -94,7 +94,7 @@ public class CQLGeoOperationTest {
      * New instance of CQLTemporalPredicateTest
      * @param language
      */
-    public CQLGeoOperationTest(final Language language){
+    protected CQLGeoOperationTest(final Language language){
         
         assert language != null: "language cannot be null value";
         

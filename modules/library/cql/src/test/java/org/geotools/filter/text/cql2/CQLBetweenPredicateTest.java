@@ -53,7 +53,7 @@ public class CQLBetweenPredicateTest {
         this(Language.CQL);
     }
 
-    public CQLBetweenPredicateTest(final Language language){
+    protected CQLBetweenPredicateTest(final Language language){
         
         assert language != null: "language cannot be null value";
         

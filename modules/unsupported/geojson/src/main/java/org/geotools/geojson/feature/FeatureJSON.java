@@ -338,7 +338,8 @@ public class FeatureJSON {
         }
 
         //check for the case of a crs specified post features in the json
-        if (features.getSchema().getCoordinateReferenceSystem() == null 
+        if (features.getSchema() != null
+                && features.getSchema().getCoordinateReferenceSystem() == null 
                 && it.getHandler().getCRS() != null ) {
             try {
                 return new ForceCoordinateSystemFeatureResults(features, it.getHandler().getCRS());

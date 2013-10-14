@@ -579,6 +579,13 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         it.close();
     }
 
+    public void testEmptyFeatureCollection() throws Exception {
+        String json = strip("{'type':'FeatureCollection','features':[]}");
+        FeatureCollection fcol = fjson.readFeatureCollection(json);
+        assertNull(fcol.getSchema());
+        assertTrue(fcol.isEmpty());
+    }
+
     public void testCRSWrite() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
         StringWriter writer = new StringWriter();

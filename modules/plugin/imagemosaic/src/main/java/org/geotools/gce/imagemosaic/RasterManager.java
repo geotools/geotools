@@ -930,30 +930,7 @@ public class RasterManager {
         if (configuration != null) {
             CatalogConfigurationBean catalogBean = configuration.getCatalogConfigurationBean();
             typeName = catalogBean != null ? catalogBean.getTypeName() : null;
-            if (typeName != null) {
-                final SimpleFeatureType schema = granuleCatalog.getType(typeName);
-                if (configuration.getAdditionalDomainAttributes() != null) {
-                    domainsManager = new DomainManager(
-                            configuration.getAdditionalDomainAttributes(), schema);
-                    dimensionDescriptors.addAll(domainsManager.dimensions);
-                }
-
-                // time attribute
-                if (configuration.getTimeAttribute() != null) {
-                    final HashMap<String, String> init = new HashMap<String, String>();
-                    init.put(Utils.TIME_DOMAIN, configuration.getTimeAttribute());
-                    timeDomainManager = new DomainManager(init, schema);
-                    dimensionDescriptors.addAll(timeDomainManager.dimensions);
-                
-                }
-                // elevation attribute
-                if (configuration.getElevationAttribute() != null) {
-                    final HashMap<String, String> init = new HashMap<String, String>();
-                    init.put(Utils.ELEVATION_DOMAIN, configuration.getElevationAttribute());
-                    elevationDomainManager = new DomainManager(init, schema);
-                    dimensionDescriptors.addAll(elevationDomainManager.dimensions);
-                }
-            }
+            initDomains(configuration);
             if (defaultSM == null) {
                 defaultSM = configuration.getSampleModel();
             }
@@ -980,12 +957,41 @@ public class RasterManager {
             overviewsController = new OverviewsController(highRes,
                   numOverviews, overviews);
             imposedEnvelope = configuration.getEnvelope();
-            
-            //TODO: DR Parse more stuff from the configuration
         }
     }
 
- 	/**
+    private void initDomains(MosaicConfigurationBean configuration) throws IOException {
+        if (typeName != null) {
+            final SimpleFeatureType schema = granuleCatalog.getType(typeName);
+
+            // additional domain attributes
+            final String additionalDomainConfig = configuration.getAdditionalDomainAttributes();
+            if (additionalDomainConfig != null && domainsManager == null) {
+                domainsManager = new DomainManager(additionalDomainConfig, schema);
+                dimensionDescriptors.addAll(domainsManager.dimensions);
+            }
+
+            // time attribute
+            final String timeDomain = configuration.getTimeAttribute();
+            if (timeDomain != null && timeDomainManager == null) {
+                final HashMap<String, String> init = new HashMap<String, String>();
+                init.put(Utils.TIME_DOMAIN, timeDomain);
+                timeDomainManager = new DomainManager(init, schema);
+                dimensionDescriptors.addAll(timeDomainManager.dimensions);
+            }
+
+            // elevation attribute
+            final String elevationAttribute = configuration.getElevationAttribute();
+            if (elevationAttribute != null && elevationDomainManager == null) {
+                final HashMap<String, String> init = new HashMap<String, String>();
+                init.put(Utils.ELEVATION_DOMAIN, elevationAttribute);
+                elevationDomainManager = new DomainManager(init, schema);
+                dimensionDescriptors.addAll(elevationDomainManager.dimensions);
+            }
+        }
+    }
+
+    /**
 	 * This code tries to load the sample image from which we can extract SM and CM to use when answering to requests
 	 * that falls within a hole in the mosaic.
  	 * @param configuration 
@@ -1280,8 +1286,11 @@ public class RasterManager {
         }
     }
 
-    void initialize() throws IOException {
+    void initialize(final boolean checkDomains) throws IOException {
         final BoundingBox bounds = granuleCatalog.getBounds(typeName);
+        if (checkDomains) {
+            initDomains(configuration);
+        }
 
         if (bounds.isEmpty()) {
             throw new IllegalArgumentException("Cannot create a mosaic out of an empty index");

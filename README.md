@@ -9,7 +9,8 @@ GeoTools licensed under the [LGPL](http://www.gnu.org/licenses/lgpl.html).
 
 ## Building
 
-GeoTools uses [Apache Maven](http://maven.apache.org/) for a build system. 
+GeoTools uses [Apache Maven](http://maven.apache.org/) for a build system. To 
+build the library run maven from the root of the repository.
 
     % mvn clean install
 
@@ -19,14 +20,14 @@ for more details.
 ## Bugs
 
 GeoTools uses [JIRA](http://www.codehaus.org/), hosted by 
-[CodeHaus](http://www.codehaus.org/) for issue tracking.
+[CodeHaus](http://www.codehaus.org/), for issue tracking.
 
 ## Mailing Lists
 
-The [user list](geotools-gt2-users@lists.sourceforge.net) is for all questions 
+The [user list](mailto:geotools-gt2-users@lists.sourceforge.net) is for all questions 
 related to GeoTools usage. 
 
-The [dev list](geotools-devel@lists.sourceforge.net) is for questions relateded 
+The [dev list](mailto:geotools-devel@lists.sourceforge.net) is for questions relateded 
 to hacking on the GeoTools library itself.
 
 ## More Information

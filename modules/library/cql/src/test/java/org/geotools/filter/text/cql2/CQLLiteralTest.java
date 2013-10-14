@@ -48,7 +48,7 @@ public class CQLLiteralTest {
         this(Language.CQL);
     }
 
-    public CQLLiteralTest(final Language language){
+    protected CQLLiteralTest(final Language language){
         
         assert language != null: "language cannot be null value";
         

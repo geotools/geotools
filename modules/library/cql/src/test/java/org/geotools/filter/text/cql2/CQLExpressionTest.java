@@ -44,7 +44,7 @@ public class CQLExpressionTest {
         this(Language.CQL);
     }
 
-    public CQLExpressionTest(final Language language) {
+    protected CQLExpressionTest(final Language language) {
 
         assert language != null : "language cannot be null value";
 

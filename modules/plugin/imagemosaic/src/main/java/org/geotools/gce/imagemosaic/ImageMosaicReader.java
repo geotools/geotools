@@ -120,7 +120,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     Map<String, RasterManager> rasterManagers = new ConcurrentHashMap<String, RasterManager>();
 
     public RasterManager getRasterManager(String name) {
-          if(rasterManagers.containsKey(name)){
+          if(name != null && rasterManagers.containsKey(name)){
               return rasterManagers.get(name);
           }
           return null;
@@ -326,8 +326,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 // Since we are dealing with a catalog from an existing store, make sure to scan for all the typeNames on initialization
                 params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.valueOf(true));
 //                params.put(Utils.SCAN_FOR_TYPENAMES, typeNamesProps.getProperty(Utils.SCAN_FOR_TYPENAMES));
-                
-                catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, beans.get(0).getCatalogConfigurationBean(), params, getHints());
+                if (beans.size() > 0) {
+                    catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, beans.get(0).getCatalogConfigurationBean(), params, getHints());
+                } else {
+                    catalog = CatalogManager.createGranuleCatalogFromDatastore(parent, datastoreProperties, true, getHints());
+                } 
                 if (granuleCatalog == null) {
                     granuleCatalog = catalog;
                 }
@@ -709,7 +712,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     public String[] getMetadataNames(String coverageName) {
         String name = checkUnspecifiedCoverage(coverageName);
         RasterManager manager = getRasterManager(name);
-        return manager.getMetadataNames();
+        return manager != null ? manager.getMetadataNames() : null;
     }
 
     @Override
@@ -794,7 +797,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
             defaultName = name;
         }
         if (init) {
-            rasterManager.initialize();
+            rasterManager.initialize(false);
         }
         return rasterManager;
     }
@@ -937,7 +940,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         String indexingPath = directory.getAbsolutePath();
         configuration.setParameter(Prop.HARVEST_DIRECTORY, indexingPath);
         if(defaultCoverage == null) {
-            defaultCoverage = getGridCoverageNames()[0];
+            String[] coverageNames = getGridCoverageNames();
+            defaultCoverage = (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
         } 
         configuration.setParameter(Prop.INDEX_NAME, defaultCoverage);
         configuration.setHints(new Hints(Utils.MOSAIC_READER, this));

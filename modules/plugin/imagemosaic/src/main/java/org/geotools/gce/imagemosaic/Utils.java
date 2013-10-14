@@ -197,6 +197,7 @@ public class Utils {
         public final static String ROOT_MOSAIC_DIR = "RootMosaicDirectory";
         public final static String INDEXING_DIRECTORIES = "IndexingDirectories";
         public final static String HARVEST_DIRECTORY = "HarvestingDirectory";
+        public final static String CAN_BE_EMPTY = "CanBeEmpty";
         
         //Indexer Properties specific properties
         public  static final String RECURSIVE = "Recursive";
@@ -1048,6 +1049,7 @@ public class Utils {
                         // TODO: Refactor these checks once we integrate datastore on indexer.xml
                         //
                         File dataStoreProperties = new File(locationPath,"datastore.properties");
+//                        File emptyFile = new File(locationPath,"empty");
 
                         // this can be used to look for properties files that do NOT
                         // define a datastore
@@ -1146,10 +1148,7 @@ public class Utils {
                                                 defaultIndexName + ".properties");
                                 if (!Utils.checkFileReadable(propertiesFile)) {
                                         // retrieve a null so that we shows that a problem occurred
-                                        final File mosaicFile = new File(locationPath,
-                                                defaultIndexName + ".xml");
-                                        
-                                        if (!Utils.checkFileReadable(mosaicFile)) {
+                                        if (!checkMosaicHasBeenInitialized(locationPath, defaultIndexName)) {
                                             sourceURL = null;
                                             return sourceURL;
                                         }
@@ -1157,26 +1156,8 @@ public class Utils {
 
                                 // check that the shapefile was correctly created in case it
                                 // was needed
-                                if (!datastoreFound) {
-                                        shapeFile = new File(locationPath, defaultIndexName+ ".shp");
-
-                                        if (!Utils.checkFileReadable(shapeFile))
-                                                sourceURL = null;
-                                        else
-                                                // now set the new source and proceed
-                                                sourceURL = DataUtilities.fileToURL(shapeFile);
-                                } else {
-                                        dataStoreProperties = new File(locationPath,"datastore.properties");
-
-                                        // datastore.properties as the source
-                                        if (!Utils.checkFileReadable(dataStoreProperties)){
-                                            sourceURL = null;
-                                        }
-                                        else {
-                                            sourceURL = DataUtilities.fileToURL(dataStoreProperties);
-                                        }
-                                }
-
+                                sourceURL = updateSourceURL(sourceURL, datastoreFound, locationPath, defaultIndexName/*, emptyFile*/);
+                                
                         } else
                                 // now set the new source and proceed
                                 sourceURL = datastoreFound ? DataUtilities.fileToURL(dataStoreProperties) : DataUtilities.fileToURL(shapeFile); 
@@ -1190,6 +1171,60 @@ public class Utils {
         return sourceURL;
     }
     
+
+    /**
+     * Look for a proper sourceURL to be returned.
+     * 
+     * @param sourceURL
+     * @param datastoreFound 
+     * @param locationPath
+     * @param defaultIndexName
+     * @param emptyFile
+     * @return
+     */
+    private static URL updateSourceURL(URL sourceURL, boolean datastoreFound, String locationPath, String defaultIndexName/*,
+            File emptyFile*/) {
+        if (!datastoreFound) {
+            File shapeFile = new File(locationPath, defaultIndexName + ".shp");
+
+            if (!Utils.checkFileReadable(shapeFile)) {
+//                if (!Utils.checkFileReadable(emptyFile)) {
+                    sourceURL = null;
+//                } else {
+//                    sourceURL = DataUtilities.fileToURL(emptyFile);
+//                }
+            } else {
+                // now set the new source and proceed
+                sourceURL = DataUtilities.fileToURL(shapeFile);
+            }
+        } else {
+                File dataStoreProperties = new File(locationPath,"datastore.properties");
+
+                // datastore.properties as the source
+                if (!Utils.checkFileReadable(dataStoreProperties)){
+                    sourceURL = null;
+                }
+                else {
+                    sourceURL = DataUtilities.fileToURL(dataStoreProperties);
+                }
+        }
+
+       
+        return sourceURL;
+    }
+
+    private static boolean checkMosaicHasBeenInitialized(String locationPath, String defaultIndexName) {
+        File mosaicFile = new File(locationPath, defaultIndexName + ".xml");
+        if (Utils.checkFileReadable(mosaicFile)) {
+            return true;
+        }
+        mosaicFile = new File(locationPath, defaultIndexName + ".properties");
+        if (Utils.checkFileReadable(mosaicFile)) {
+            return true;
+        }
+        
+        return false;
+    }
 
     static final double SAMEBBOX_THRESHOLD_FACTOR = 20;
 

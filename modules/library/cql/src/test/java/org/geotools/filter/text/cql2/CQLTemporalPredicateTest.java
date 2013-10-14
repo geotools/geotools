@@ -69,7 +69,7 @@ public class CQLTemporalPredicateTest {
      * New instance of CQLTemporalPredicateTest
      * @param language
      */
-    public CQLTemporalPredicateTest(final Language language){
+    protected CQLTemporalPredicateTest(final Language language){
         
         assert language != null: "language cannot be null value";
         

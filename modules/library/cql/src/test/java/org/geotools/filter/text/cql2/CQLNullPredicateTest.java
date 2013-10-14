@@ -47,7 +47,7 @@ public class CQLNullPredicateTest  {
         this(Language.CQL);
     }
 
-    public CQLNullPredicateTest(final Language language) {
+    protected CQLNullPredicateTest(final Language language) {
         
         assert language != null: "language cannot be null";
         

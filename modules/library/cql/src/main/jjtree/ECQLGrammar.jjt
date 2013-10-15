@@ -97,6 +97,19 @@ public class ECQLParser {
             && RELGEOOP.contains(getToken(1).image.toUpperCase());
   }
   
+  
+  /**
+   * True if the current token matches with the allowed characters: "0,1,2,*,T,F". 
+   * The length of of intersection pattern is limited to 9 characters. 
+   */   
+  protected boolean isDE9IM() {
+  
+    String tokenImage = getToken(1).image.toUpperCase(); 
+
+    return tokenImage.matches("[012*TF]{9}");
+  }
+  
+  
 }
 
 PARSER_END(ECQLParser)
@@ -119,13 +132,6 @@ TOKEN:
 {
 	  < STRING_LITERAL: "'" ( "''" | ~["'"] )* "'" > : DEFAULT
 }
-
-TOKEN [IGNORE_CASE]:
-{
-    < #DIMENSION_SYMBOL: "*"| "T" | "F" | "0" | "1" | "2"> |
-    < DE9IM_PATTERN: <DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL> >
-}
-
 
 /*
  * keywords
@@ -269,7 +275,10 @@ TOKEN [IGNORE_CASE]: /* Literals */
 	< #ANY: ~[" "] > |
   	< #LETTER: [ "a"-"z", "A"-"Z" , "_"] > |
   	< #DIGIT: [ "0"-"9"] > |
-  	< #EXPONENT: ["e","E"] (["+","-"])? (<DIGIT>)+ > 
+  	< #EXPONENT: ["e","E"] (["+","-"])? (<DIGIT>)+ > |
+  	
+    < #DIMENSION_SYMBOL: "*"| "T" | "F" | "0" | "1" | "2"> |
+    < DE9IM_PATTERN: (<DIMENSION_SYMBOL>){9} >
 }
 
 
@@ -513,17 +522,6 @@ void RelateTail() #void:
 }
 
 
-void RelateArgumentList() #void:
-{}
-{
-    <LP> Attribute() <COMMA> GeometryLiteral() <COMMA> DE9IM() <RP>
-}
-
-void DE9IM() #DE9IM_Node:
-{}
-{
-    <DE9IM_PATTERN>
-}
 /*
  *<relate pattern> ::=  <quote>
  *                        <relate flag><relate flag><relate flag><relate flag>
@@ -531,13 +529,25 @@ void DE9IM() #DE9IM_Node:
  *                        <relate flag>
  *                       <quote>
  * <relate flag> ::= "T" | "F" | "*" | "0" | "1" | "2"
- *
-void Pattern9IM() #Pattern9IM_Node:
+ */
+void RelateArgumentList() #void:
 {}
 {
-	CharacterPattern()
+    <LP> Attribute() <COMMA> GeometryLiteral() <COMMA> LOOKAHEAD( { isDE9IM() } ) DE9IM() <RP>
 }
-*/
+
+/**
+ * Checks the intersection matrix. 
+ *
+ * This pattern is guard by the isDE9IM() function. 
+ */ 
+void DE9IM() #DE9IM_Node:
+{}
+{
+        <DE9IM_PATTERN>
+    |   <INTEGER_LITERAL> 
+}
+
 
 /*
  * <georoutine argument list> ::=

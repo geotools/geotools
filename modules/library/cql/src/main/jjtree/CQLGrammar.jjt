@@ -131,6 +131,17 @@ public class CQLParser {
 	}
   }
   
+  /**
+   * True if the current token matches with the allowed characters: "0,1,2,*,T,F". 
+   * The length of of intersection pattern is limited to 9 characters. 
+   */   
+  protected boolean isDE9IM() {
+  
+    String tokenImage = getToken(1).image.toUpperCase(); 
+
+    return tokenImage.matches("[012*TF]{9}");
+  }
+  
 }
 
 PARSER_END(CQLParser)
@@ -153,11 +164,6 @@ SKIP : /* WHITE SPACE */
 TOKEN:
 {
     < STRING_LITERAL: "'" ( "''" | ~["'"] )* "'" > : DEFAULT
-}
-TOKEN [IGNORE_CASE]:
-{
-    < #DIMENSION_SYMBOL: "*"| "T" | "F" | "0" | "1" | "2"> |
-    < DE9IM_PATTERN: <DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL> >
 }
 
 /*
@@ -297,7 +303,10 @@ TOKEN [IGNORE_CASE]: /* Literals */
     
   	< LETTER: [ "a"-"z", "A"-"Z" , "_"] > |
   	< DIGIT: [ "0"-"9"] > |
-  	< #EXPONENT: ["e","E"] (["+","-"])? (<DIGIT>)+ > 
+  	< #EXPONENT: ["e","E"] (["+","-"])? (<DIGIT>)+ > |
+
+    < #DIMENSION_SYMBOL: "*"| "T" | "F" | "0" | "1" | "2"> |
+    < DE9IM_PATTERN: (<DIMENSION_SYMBOL>){9} >
 }
 
 
@@ -457,16 +466,27 @@ void GeoRoutineArgumentList() #void:
 {
 	<LP> Attribute() <COMMA> GeometryLiteral() <RP>
 }
+/**
+ * <relate flag> ::= "T" | "F" | "*" | "0" | "1" | "2"
+ */
 void RelateArgumentList() #void:
 {}
 {
-    <LP> Attribute() <COMMA> GeometryLiteral() <COMMA> DE9IM() <RP>
+    <LP> Attribute() <COMMA> GeometryLiteral() <COMMA> LOOKAHEAD( { isDE9IM() } ) DE9IM() <RP>
 }
 
+/**
+ * Checks the intersection matrix.
+ * 
+ * <relate flag> ::= "T" | "F" | "*" | "0" | "1" | "2"
+ *
+ * This pattern is guard by the isDE9IM() function. 
+ */ 
 void DE9IM() #DE9IM_Node:
 {}
 {
-    <DE9IM_PATTERN>
+        <DE9IM_PATTERN>
+    |   <INTEGER_LITERAL> 
 }
 
 /*

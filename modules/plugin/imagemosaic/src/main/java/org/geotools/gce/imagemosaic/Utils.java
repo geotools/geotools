@@ -984,7 +984,7 @@ public class Utils {
 	 */
 	static final Color TRANSPARENT = new Color(0,0,0,0);
         
-	final static Boolean IGNORE_FOOTPRINT = Boolean.getBoolean("org.geotools.footprint.ignore");
+	// final static Boolean IGNORE_FOOTPRINT = Boolean.getBoolean("org.geotools.footprint.ignore");
 	
     public static final boolean DEFAULT_FOOTPRINT_MANAGEMENT = true;
 	
@@ -1364,7 +1364,7 @@ public class Utils {
          * Check if the provided granule's footprint covers the same area of the granule's bbox.
          * @param granuleFootprint the granule Footprint
          * @param granuleBBOX the granule bbox
-         * @return {@code true} in case the footprint isn't covering the full granule's bbox. 
+         * @return {@code true} in case the footprint isn't covering the FULL granule's bbox. 
          */
         static boolean areaIsDifferent(
                 final Geometry granuleFootprint,

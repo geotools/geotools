@@ -31,7 +31,7 @@ import javax.media.jai.registry.RenderedRegistryMode;
  * A Artifacts Filter operation descriptor.
  * 
  * Given an input image and a ROI, set the values of pixels outside the ROI
- * to the background value and transform the pixels along the border of the ROI, if less than a
+ * to the background value and transform the pixels along the BORDER of the ROI, if less than a
  * specified Luminance threshold value, to a mean of all sourrounding pixels within ROI, having 
  * Luminance greater than threshold. 
  * 
@@ -69,7 +69,7 @@ import javax.media.jai.registry.RenderedRegistryMode;
                 {"GlobalName", "ArtifactsFilter"},
                 {"LocalName", "ArtifactsFilter"},
                 {"Vendor", "org.geotools.gce.imagemosaic.processing"},
-                {"Description", "Filter pixels along the ROI border with Luminance value less than threshold"},
+                {"Description", "Filter pixels along the ROI BORDER with Luminance value less than threshold"},
                 {"DocURL", ""},
                 {"Version", "1.0.0"},
                 {"arg0Desc", String.format("%s (default %s) - a ROI defining working area",

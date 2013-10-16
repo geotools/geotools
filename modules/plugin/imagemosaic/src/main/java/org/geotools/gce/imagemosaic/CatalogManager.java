@@ -52,6 +52,8 @@ import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
+import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProvider;
+import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderFactory;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
@@ -123,6 +125,8 @@ public class CatalogManager {
             params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
             params.put(Utils.Prop.LOCATION_ATTRIBUTE, runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE));
             catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, true, Utils.SHAPE_SPI,runConfiguration.getHints());
+            MultiLevelROIProvider roi = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+            catalog.setMultiScaleROIProvider(roi);
         }
 
         return catalog;
@@ -161,6 +165,8 @@ public class CatalogManager {
             params.put("ParentLocation", DataUtilities.fileToURL(parent).toExternalForm());
 
             catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, create, spi,hints);
+            MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+            catalog.setMultiScaleROIProvider(rois);
         } catch (Exception e) {
             final IOException ioe = new IOException();
             throw (IOException) ioe.initCause(e);
@@ -559,7 +565,12 @@ public class CatalogManager {
             }
         }
         // Create the catalog
-        return GranuleCatalogFactory.createGranuleCatalog(sourceURL, catalogBean, null,hints);
+        GranuleCatalog catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, catalogBean, null,hints);
+        File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
+        MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+        catalog.setMultiScaleROIProvider(rois);
+        
+        return catalog;
     }
 
 }

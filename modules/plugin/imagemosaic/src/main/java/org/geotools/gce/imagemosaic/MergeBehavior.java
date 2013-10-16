@@ -84,7 +84,7 @@ public enum MergeBehavior {
                 }
             }
             if(performMosaic){
-                // border extender
+                // BORDER extender
                 final BorderExtender borderExtenderConstant= new BorderExtenderConstant(backgroundValues);
                 // loop on sources
                 for (int i = 0; i < sources.length; i++) {
@@ -94,7 +94,7 @@ public enum MergeBehavior {
                             // current extent
                             Rectangle currentExtent = PlanarImage.wrapRenderedImage(sources[0]).getBounds();
                             
-                            // add border to the current source
+                            // add BORDER to the current source
                             sources[i]=BorderDescriptor.create(
                                     sources[i], 
                                     union.x-currentExtent.x, 

@@ -769,6 +769,8 @@ public class ImageMosaicWalker implements Runnable {
                 .makeFileOnly(FileFilterUtils.and(specialWildCardFileFilter,
                         HiddenFileFilter.VISIBLE))), FileFilterUtils.suffixFileFilter("shp"),
                 FileFilterUtils.suffixFileFilter("dbf"), FileFilterUtils.suffixFileFilter("shx"),
+                FileFilterUtils.suffixFileFilter("sbn"),FileFilterUtils.suffixFileFilter("sbx"),
+                FileFilterUtils.suffixFileFilter("xml"),
                 FileFilterUtils.suffixFileFilter("qix"), FileFilterUtils.suffixFileFilter("lyr"),
                 FileFilterUtils.suffixFileFilter("prj"), FileFilterUtils
                         .nameFileFilter("error.txt"), FileFilterUtils

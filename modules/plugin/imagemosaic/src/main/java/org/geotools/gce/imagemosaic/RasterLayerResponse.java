@@ -348,7 +348,7 @@ class RasterLayerResponse{
             this.granuleFilter = granuleFilter;
             this.dryRun = dryRun;
             inputTransparentColor = request.getInputTransparentColor();
-            doInputTransparency = inputTransparentColor != null&&!footprintManagement;
+            doInputTransparency = inputTransparentColor != null && !footprintBehavior.handleFootprints();
         }
 
         /** The number of collected granules.**/
@@ -387,10 +387,12 @@ class RasterLayerResponse{
             Utilities.ensureNonNull("granuleDescriptor", granuleDescriptor);
             
             if (granuleFilter.evaluate(granuleDescriptor.originator)) {
+
                 Object imageIndex = granuleDescriptor.originator.getAttribute("imageindex");
                 if(imageIndex != null && imageIndex instanceof Integer) {
                     imageChoice = ((Integer) imageIndex).intValue();
                 }
+                
                 final GranuleLoader loader = new GranuleLoader(baseReadParameters, imageChoice, mosaicBBox, finalWorldToGridCorner, granuleDescriptor, request, hints);
                 if (!dryRun) {
                     if (multithreadingAllowed && rasterManager.parentReader.multiThreadedLoader != null) {
@@ -591,7 +593,7 @@ class RasterLayerResponse{
             Geometry mask = JTS.toGeometry(new Envelope(bounds.getMinX(), bounds.getMaxX(), bounds.getMinY(), bounds.getMaxY()));
             ROI imageROI = new ROIGeometry(mask); // TODO can we leave this to null?                   
             // we need to add its roi in order to avoid problems with the mosaic overlapping
-            if (footprintManagement){                         
+            if (footprintBehavior.handleFootprints()){                         
                 final ROI footprint = result.getFootprint();
                 if (footprint != null) {
                     if (imageROI.contains(footprint.getBounds2D().getBounds())) {
@@ -746,7 +748,7 @@ class RasterLayerResponse{
                             imageBounds = PlanarImage.wrapRenderedImage(mosaic).getBounds();
                         }
 
-                        // and, do we need to add a border around the image?
+                        // and, do we need to add a BORDER around the image?
                         if (!imageBounds.contains(rasterBounds)) {
                             mosaic = MergeBehavior.FLAT
                                     .process(
@@ -776,19 +778,17 @@ class RasterLayerResponse{
             final PlanarImage[] alphas = new PlanarImage[size];
             final ROI[] rois = new ROI[size];
             final PAMDataset[] pams = new PAMDataset[size];
-            ROI overallROI = null; // final ROI
+            int realROIs=0;
             for (int i = 0; i < size; i++) {
                 final MosaicElement mosaicElement = inputs.get(i);
                 sources[i] = mosaicElement.source;
                 alphas[i] = mosaicElement.alphaChannel;
                 rois[i] = mosaicElement.roi;
                 pams[i] = mosaicElement.pamDataset;
-                if (overallROI == null) {
-                    overallROI = new ROIGeometry(((ROIGeometry) mosaicElement.roi).getAsGeometry());
-                } else {
-                    if (mosaicElement.roi != null) {
-                        overallROI = overallROI.add(mosaicElement.roi);
-                    }
+
+                // compose the overall ROI if needed
+                if (mosaicElement.roi != null) {
+                    realROIs++;
                 }
             }
 
@@ -802,21 +802,55 @@ class RasterLayerResponse{
                         rois, 
                         request.isBlend() ? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
                         localHints);
-
-            if (setRoiProperty) {
+            
+            ROI overallROI = mosaicROIs(rois);
+            if (footprintBehavior != FootprintBehavior.None) {
                 // Adding globalRoi to the output
                 RenderedOp rop = (RenderedOp) mosaic;
 
                 assert overallROI!=null;
                 rop.setProperty("ROI", overallROI);
             }
-
+            
+            final RenderedImage postProcessed = footprintBehavior.postProcessMosaic(mosaic, overallROI);
+    
             // prepare for next step
             if(hasAlpha || doInputTransparency){
-                return new MosaicElement(new ImageWorker(mosaic).retainLastBand().getPlanarImage(), overallROI, mosaic, Utils.mergePamDatasets(pams));
+                return new MosaicElement(new ImageWorker(postProcessed).retainLastBand().getPlanarImage(), overallROI, postProcessed, Utils.mergePamDatasets(pams));
              } else {
-                return new MosaicElement(null, overallROI, mosaic, Utils.mergePamDatasets(pams));
-             }
+                return new MosaicElement(null, overallROI, postProcessed, Utils.mergePamDatasets(pams));
+             }            
+        }
+
+        private ROI mosaicROIs(ROI[] inputROIArray) {
+            if (inputROIArray == null || inputROIArray.length == 0) {
+                return null;
+            }
+
+            List<ROI> rois = new ArrayList<ROI>();
+            for (ROI roi : inputROIArray) {
+                if (roi != null) {
+                    rois.add(roi);
+                }
+            }
+
+            int roiCount = rois.size();
+            if (roiCount == 0) {
+                return null;
+            } else if (roiCount == 1) {
+                return rois.get(0);
+            } else {
+                PlanarImage[] images = new PlanarImage[rois.size()];
+                int i = 0;
+                for (ROI roi : rois) {
+                    images[i++] = roi.getAsImage();
+                }
+                ROI[] roisArray = (ROI[]) rois.toArray(new ROI[rois.size()]);
+                RenderedOp overallROI = MosaicDescriptor.create(images,
+                        MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, roisArray,
+                        new double[][] { { 1.0 } }, new double[] { 0.0 }, hints);
+                return new ROI(overallROI);
+            }
         }
     }
 
@@ -954,8 +988,8 @@ class RasterLayerResponse{
             //
             // create a granuleDescriptor loader
             final Geometry bb = JTS.toGeometry((BoundingBox) mosaicBBox);
-            final Geometry inclusionGeometry = granuleDescriptor.inclusionGeometry;
-            if (!footprintManagement || inclusionGeometry == null || footprintManagement && inclusionGeometry.intersects(bb)) {
+            final Geometry inclusionGeometry = granuleDescriptor.getFootprint();
+            if (!footprintBehavior.handleFootprints() || inclusionGeometry == null || (footprintBehavior.handleFootprints() && inclusionGeometry.intersects(bb))) {
 
                 // find the right filter for this granule
                 boolean found = false;
@@ -1002,22 +1036,35 @@ class RasterLayerResponse{
             LOGGER.fine("Producing the final mosaic, step 1, loop through granule collectors");   
             final List<MosaicElement> mosaicInputs = new ArrayList<RasterLayerResponse.MosaicElement>();
             GranuleCollector first = null; // we take this apart to steal some val
-            final int size = granuleCollectors.size();
+            int size = granuleCollectors.size();
             for (GranuleCollector collector : granuleCollectors) {
                 if(LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Using collector with filter:" + collector.granuleFilter.toString());
                 }
                 final MosaicElement preparedMosaic = new Mosaicker(collector.collectGranules(), MergeBehavior.FLAT).createMosaic();
-                mosaicInputs.add(preparedMosaic);
-                if (first == null) {
-                    first = collector;
+                if(preparedMosaic != null) {
+                    mosaicInputs.add(preparedMosaic);
+                    if (first == null) {
+                        first = collector;
+                    }
+                }else{
+                    // we were not able to mosaic these granules, e.g. we have ROIs and the requested area
+                    // fell outside the ROI
+                    size--;
                 }
             }
             LOGGER.fine("Producing the final mosaic, step 2, final mosaicking"); 
+            // optimization 
             if (size == 1) {
                 // we don't need to mosaick again
                 return new MosaicOutput(mosaicInputs.get(0));
             }
+            
+            // no mosaics produced, it might happen, see above
+            if(size==0){
+                return null;
+            }
+            
             MosaicInputs mosaickingInputs = new MosaicInputs(
                     first.doInputTransparency,
                     first.hasAlpha,
@@ -1061,7 +1108,7 @@ class RasterLayerResponse{
 
 	private boolean multithreadingAllowed;
 	
-	private boolean footprintManagement = !Utils.IGNORE_FOOTPRINT;
+	private FootprintBehavior footprintBehavior = FootprintBehavior.None;
 	
 	private int defaultArtifactsFilterThreshold = Integer.MIN_VALUE;
 	
@@ -1108,7 +1155,7 @@ class RasterLayerResponse{
 		finalTransparentColor=request.getOutputTransparentColor();
 		// are we doing multithreading?
 		multithreadingAllowed= request.isMultithreadingAllowed();
-		footprintManagement = request.isFootprintManagement();
+		footprintBehavior = request.getFootprintBehavior();
 		setRoiProperty = request.isSetRoiProperty();
 		backgroundValues = request.getBackgroundValues();
 		interpolation = request.getInterpolation();
@@ -1305,7 +1352,8 @@ class RasterLayerResponse{
             final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
             query.getFilter().accept(bboxExtractor, null);
             query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(
-                    FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.getGranuleCatalog().getType(rasterManager.getTypeName()).getGeometryDescriptor().getName()),
+                    FeatureUtilities.DEFAULT_FILTER_FACTORY.property(
+                            rasterManager.getGranuleCatalog().getType(rasterManager.getTypeName()).getGeometryDescriptor().getName()),
                     bboxExtractor.getBBox()));
             query.setMaxFeatures(1);
             rasterManager.getGranuleDescriptors(query, dryRunVisitor);
@@ -1603,11 +1651,16 @@ class RasterLayerResponse{
             } 
             il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(tileSize.width, tileSize.height));
             il.setTileGridXOffset(0).setTileGridYOffset(0).setTileWidth((int)tileSize.getWidth()).setTileHeight((int)tileSize.getHeight());
-            return new MosaicOutput(FormatDescriptor.create(
+            finalImage = FormatDescriptor.create(
                     finalImage,
                     Integer.valueOf(il.getSampleModel(null).getDataType()),
-                    new RenderingHints(JAI.KEY_IMAGE_LAYOUT,il)), null);
+                    new RenderingHints(JAI.KEY_IMAGE_LAYOUT,il));
         }
+        
+        if(footprintBehavior != null) {
+            finalImage = footprintBehavior.postProcessBlankResponse(finalImage);
+        }
+        
         return new MosaicOutput(finalImage, null);
     }
 

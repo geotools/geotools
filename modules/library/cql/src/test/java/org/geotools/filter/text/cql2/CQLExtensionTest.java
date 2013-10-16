@@ -18,6 +18,9 @@ package org.geotools.filter.text.cql2;
 
 import java.util.List;
 
+import org.geotools.filter.function.FilterFunction_relatePattern;
+import org.geotools.filter.function.FilterFunction_strConcat;
+import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.ExcludeFilter;
@@ -443,8 +446,9 @@ public class CQLExtensionTest{
 
         expected = FilterCQLSample.getSample(cqlUnaryExp);
 
-        // TODO BUG There is a bug in function "equals"' strConcat
-        // assertEquals( "Functions", expected, result);
+        Assert.assertTrue( "Functions", result instanceof PropertyIsEqualTo);
+        Assert.assertTrue( "Attribute is expecteced", ((PropertyIsEqualTo)result).getExpression1() instanceof PropertyName );  
+        Assert.assertTrue( "Attribute is expecteced", ((PropertyIsEqualTo)result).getExpression2() instanceof FilterFunction_strConcat );  
 
         // test for improvement Key: GEOT-1168
         cqlUnaryExp = "A = strConcat(B, 'testParam')";
@@ -467,5 +471,27 @@ public class CQLExtensionTest{
         Assert.assertEquals("B", ((PropertyName) arg1).getPropertyName());
         Assert.assertEquals("testParam", ((Literal) arg2).getValue());
     }
+    
+    @Test
+    public void relateFunction() throws CQLException{
+        
+        Filter resultFilter = ECQL.toFilter(
+                "ATTR = relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') " );
+
+        Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
+
+        // relate function in an equal predicate 
+        resultFilter = ECQL.toFilter(
+                "relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') = TRUE" );
+
+        Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
+
+        // relate function to expression
+        Expression resultExpression = ECQL.toExpression(
+                "relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') " );
+
+        Assert.assertTrue(resultExpression instanceof FilterFunction_relatePattern);
+    }
+
     
 }

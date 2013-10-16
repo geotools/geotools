@@ -218,7 +218,7 @@ public class CQLComparisonPredicateTest {
     }
 
     @Test
-    public void LongLiteral() throws Exception {
+    public void longLiteral() throws Exception {
        
         Filter filter;
         PropertyIsEqualTo eqFilter;

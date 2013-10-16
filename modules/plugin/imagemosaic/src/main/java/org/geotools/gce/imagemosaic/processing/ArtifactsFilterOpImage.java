@@ -45,7 +45,7 @@ import com.sun.media.jai.util.ImageUtil;
 /**
  * An Artifacts Filter operation.
  * 
- * Given an input image and a ROI, transform the pixels along the inner border of the ROI, if less than a
+ * Given an input image and a ROI, transform the pixels along the inner BORDER of the ROI, if less than a
  * specified Luminance threshold value, to a mean of all sourrounding pixels within ROI, having 
  * Luminance greater than threshold. 
  * 
@@ -179,7 +179,7 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
 
         final int dataType = sampleModel.getDataType();
 
-        // Determine constant value for source border extension.
+        // Determine constant value for source BORDER extension.
         double sourceExtensionConstant;
         switch (dataType) {
         case DataBuffer.TYPE_BYTE:
@@ -343,7 +343,7 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
                     
                     // // 
                     //
-                    // Artifact filtering is applied only on ROI border 
+                    // Artifact filtering is applied only on ROI BORDER 
                     //
                     // //
 //                    boolean isBorder = isBorder(roiAccessor, x+i, y+j);

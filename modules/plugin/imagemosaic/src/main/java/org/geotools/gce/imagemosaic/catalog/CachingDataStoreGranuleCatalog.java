@@ -30,12 +30,17 @@ import org.geotools.feature.collection.AbstractFeatureVisitor;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
+import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.DefaultProgressListener;
 import org.geotools.util.SoftValueHashMap;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.BoundingBox;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * This class simply builds an SRTREE spatial index in memory for fast indexed
@@ -109,7 +114,10 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     @Override
     public void dispose() {
         adaptee.dispose();
-        
+        if(multiScaleROIProvider != null) {
+            multiScaleROIProvider.dispose();
+            multiScaleROIProvider = null;
+        }
     }
 
     @Override
@@ -131,12 +139,19 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     public void getGranuleDescriptors(final Query q, final GranuleCatalogVisitor visitor) throws IOException {
 
         final SimpleFeatureCollection features = adaptee.getGranules(q);
-        if (features == null)
+        if (features == null){
             throw new NullPointerException(
                     "The provided SimpleFeatureCollection is null, it's impossible to create an index!");
-
-        if (LOGGER.isLoggable(Level.FINE))
+        }
+        if (LOGGER.isLoggable(Level.FINE)){
             LOGGER.fine("Index Loaded");
+        }
+
+        // ROI
+        final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
+        q.getFilter().accept(bboxExtractor, null);
+        ReferencedEnvelope requestedBBox=bboxExtractor.getBBox();
+        final Geometry intersectionGeometry=requestedBBox!=null?JTS.toGeometry(requestedBBox):null;
 
         // visiting the features from the underlying store
         final DefaultProgressListener listener = new DefaultProgressListener();
@@ -145,27 +160,42 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
                 if (feature instanceof SimpleFeature) {
                     // get the feature
                     final SimpleFeature sf = (SimpleFeature) feature;
-                    final GranuleDescriptor granule;
+                    GranuleDescriptor granule = null;
 
                     // caching by granule's location
 //                    synchronized (descriptorsCache) {
                         String featureId = sf.getID();
                         if(descriptorsCache.containsKey(featureId)){
-                            granule=descriptorsCache.get(featureId);
+                            granule = descriptorsCache.get(featureId);
                         } else{
                             // create the granule descriptor
-                            granule= new GranuleDescriptor(
-                                            sf,
-                                            adaptee.suggestedRasterSPI,
-                                            adaptee.pathType,
-                                            adaptee.locationAttribute,
-                                            adaptee.parentLocation,
-                                            adaptee.heterogeneous, 
-                                            adaptee.hints); // retain hints since this may contain a reader or anything
-                            descriptorsCache.put(featureId, granule);
+                            MultiLevelROI footprint = getGranuleFootprint(sf);
+                            if(footprint == null || !footprint.isEmpty()) {
+                                // caching only if the footprint is eithery absent or present and NON-empty
+                                granule = new GranuleDescriptor(
+                                                sf,
+                                                adaptee.suggestedRasterSPI,
+                                                adaptee.pathType,
+                                                adaptee.locationAttribute,
+                                                adaptee.parentLocation,
+                                                footprint,
+                                                adaptee.heterogeneous, 
+                                                adaptee.hints); // retain hints since this may contain a reader or anything
+                                descriptorsCache.put(featureId, granule);
+                            }
                         }
-
-                        visitor.visit(granule, null);
+                        
+                        if(granule != null) {
+                            // check ROI inclusion
+                            final Geometry footprint = granule.getFootprint();
+                            if(intersectionGeometry==null||footprint==null||footprint.intersects(intersectionGeometry)){
+                                visitor.visit(granule, null);
+                            }else{
+                                if(LOGGER.isLoggable(Level.FINE)){
+                                    LOGGER.fine("Skipping granule "+granule+"\n since its ROI does not intersect the requested area");
+                                }
+                            }
+                        }
     
                         // check if something bad occurred
                         if (listener.isCanceled() || listener.hasExceptions()) {
@@ -176,7 +206,6 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
                                         + " has been canceled");
                             }
                         }
-//                    }
                 }
             }
         }, listener);

@@ -42,6 +42,7 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
+import org.geotools.gce.imagemosaic.catalog.MultiLevelROI;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -190,8 +191,8 @@ public class OverviewsControllerTest extends Assert {
         int imageIndexG1 = 0;
         int imageIndexG2 = 0;
 
-        final GranuleDescriptor granuleDescriptor1 = new GranuleDescriptor(g1File.getAbsolutePath(), TEST_BBOX_A, spi, (Geometry) null, true);
-        final GranuleDescriptor granuleDescriptor2 = new GranuleDescriptor(g2File.getAbsolutePath(), TEST_BBOX_B, spi, (Geometry) null, true);
+        final GranuleDescriptor granuleDescriptor1 = new GranuleDescriptor(g1File.getAbsolutePath(), TEST_BBOX_A, spi, (MultiLevelROI) null, true);
+        final GranuleDescriptor granuleDescriptor2 = new GranuleDescriptor(g2File.getAbsolutePath(), TEST_BBOX_B, spi, (MultiLevelROI) null, true);
         assertNotNull(granuleDescriptor1.toString());
         assertNotNull(granuleDescriptor2.toString());
 

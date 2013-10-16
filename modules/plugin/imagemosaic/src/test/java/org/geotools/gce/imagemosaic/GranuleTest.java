@@ -36,6 +36,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleOverviewLevelDescriptor;
+import org.geotools.gce.imagemosaic.catalog.MultiLevelROI;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -97,7 +98,7 @@ public class GranuleTest extends Assert {
 		
 		//Create a GranuleDescriptor
 		final GranuleDescriptor granuleDescriptor = new GranuleDescriptor(DataUtilities.urlToFile(testUrl).getAbsolutePath()
-		        , TEST_BBOX, spi, (Geometry) null);
+		        , TEST_BBOX, spi, (MultiLevelROI) null);
 		assertNotNull(granuleDescriptor.toString());
 		
 		//Get a GranuleOverviewLevelDescriptor
@@ -152,7 +153,7 @@ public class GranuleTest extends Assert {
 		testUrl.openStream().close();
 		
 		final GranuleDescriptor granuleDescriptor = new GranuleDescriptor(DataUtilities.urlToFile(testUrl).getAbsolutePath()
-                        , TEST_BBOX, spi, (Geometry) null);
+                        , TEST_BBOX, spi, (MultiLevelROI) null);
 		final GranuleOverviewLevelDescriptor granuleOverviewLevelDescriptor = granuleDescriptor.getLevel(0);
 		assertNotNull(granuleOverviewLevelDescriptor);
 		

@@ -277,13 +277,19 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
         try {
             l.lock();
             try {
-                if (tileIndexStore != null)
+                if (tileIndexStore != null) {
                     tileIndexStore.dispose();
+                }
+                if(multiScaleROIProvider != null) {
+                    multiScaleROIProvider.dispose();
+                }
             } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINE))
+                if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                }
             } finally {
                 tileIndexStore = null;
+                multiScaleROIProvider = null;
             }
 
         } finally {
@@ -398,11 +404,15 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                     if (feature instanceof SimpleFeature) {
                         // get the feature
                         final SimpleFeature sf = (SimpleFeature) feature;
-                        final GranuleDescriptor granule = new GranuleDescriptor(sf,
-                                suggestedRasterSPI, pathType, locationAttribute, parentLocation,
-                                heterogeneous, q.getHints());
-
-                        visitor.visit(granule, null);
+                        MultiLevelROI footprint = getGranuleFootprint(sf);
+                        if(footprint == null || !footprint.isEmpty()) {
+                            final GranuleDescriptor granule = new GranuleDescriptor(sf,
+                                    suggestedRasterSPI, pathType, locationAttribute, parentLocation,
+                                    footprint,
+                                    heterogeneous, q.getHints());
+    
+                            visitor.visit(granule, null);
+                        }
 
                         // check if something bad occurred
                         if (listener.isCanceled() || listener.hasExceptions()) {

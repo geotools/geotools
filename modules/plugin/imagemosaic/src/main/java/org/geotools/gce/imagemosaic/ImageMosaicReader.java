@@ -63,6 +63,8 @@ import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
+import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProvider;
+import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderFactory;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -331,6 +333,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 } else {
                     catalog = CatalogManager.createGranuleCatalogFromDatastore(parent, datastoreProperties, true, getHints());
                 } 
+                MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+                catalog.setMultiScaleROIProvider(rois);
                 if (granuleCatalog == null) {
                     granuleCatalog = catalog;
                 }
@@ -348,6 +352,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 
                 // Old style code: we have a single MosaicConfigurationBean. Use that to create the catalog 
                 granuleCatalog = CatalogManager.createCatalog(sourceURL, configuration, this.hints);
+                File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
+                MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+                granuleCatalog.setMultiScaleROIProvider(rois);
                 addRasterManager(configuration, true);
             }
         } catch (Throwable e) {

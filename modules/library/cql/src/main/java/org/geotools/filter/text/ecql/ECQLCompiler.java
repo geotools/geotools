@@ -223,15 +223,6 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 return this.builder.bulidNegativeNumber();
             
                 // ----------------------------------------
-                // Date, Time and Timestamp Strings
-                // ----------------------------------------
-//				TODO under debate in ogc csw list
-//            case   JJTDATESTRING_NODE:
-//            case   JJTTIMESTRING_NODE:
-//            case   JJTTIMESTAMPSTRING_NODE:
-//            	return this.builder.buildDateTimeExpression(getTokenInPosition(0));            	
-            	
-                // ----------------------------------------
                 // String
                 // ----------------------------------------
             case JJTSTRINGNODE:

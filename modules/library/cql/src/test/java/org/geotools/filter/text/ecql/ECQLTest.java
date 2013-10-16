@@ -21,6 +21,7 @@ import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.filter.IsEqualsToImpl;
 import org.geotools.filter.IsNullImpl;
 import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.function.PropertyExistsFunction;
@@ -43,6 +44,7 @@ import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.opengis.filter.spatial.Intersects;
@@ -134,26 +136,15 @@ public final class ECQLTest  {
     }
 
     @Test
-    public void relateFuncion() throws Exception{
-// FIXME replace by the new relate operation    	
-    	// relate function in an equal predicate 
-        Filter resultFilter = ECQL.toFilter(
-                "ATTR = relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') " );
-
-        Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
-
-    	// relate function in an equal predicate 
-        resultFilter = ECQL.toFilter(
-                "relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') = TRUE" );
-
-        Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
-
-        // relate function to expression
-        Expression resultExpression = ECQL.toExpression(
-                "relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') " );
-
-        Assert.assertTrue(resultExpression instanceof FilterFunction_relatePattern);
+    public void relateGeoOperation() throws CQLException{
+        
+        PropertyIsEqualTo filter = (PropertyIsEqualTo) ECQL.toFilter( "RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+        
+        Assert.assertTrue("Relate Pattern Function was expected", filter.getExpression1() instanceof FilterFunction_relatePattern);
+        
+        Assert.assertTrue("Literal TRUE was expected", filter.getExpression2() instanceof Literal);
     }
+    
     
 
     /**
@@ -178,7 +169,7 @@ public final class ECQLTest  {
     }
     
     @Test
-    public void functionDwithinGeometry() throws Exception{
+    public void dwithinGeometry() throws Exception{
         Filter resultFilter;
 
         // DWITHIN

@@ -47,7 +47,7 @@ public class NetCDFImageReaderSpi extends UnidataImageReaderSpi {
 
     static final String[] formatNames = { "netcdf", "NetCDF" };
 
-    static final String[] MIMETypes = { "image/netcdf", "image/x-netcdf", "image/x-nc" };
+    static final String[] MIMETypes = { "application/x-netcdf", "image/netcdf", "image/x-netcdf", "image/x-nc" };
 
     static final String version = "1.0";
 

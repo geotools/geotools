@@ -148,7 +148,7 @@ public class CQLLiteralTest {
      * Test error at geometry literal
      * @throws CQLException 
      */
-    // FIXME @Test(expected=CQLException.class)
+    @Test(expected=CQLException.class)
     public void geometryLiteralsError() throws CQLException {
 
         final String filterError = "WITHIN(ATTR1, POLYGON(1 2, 10 15), (10 15, 1 2)))";
@@ -307,8 +307,13 @@ public class CQLLiteralTest {
         }
     
     }
+
     
-    
+    /**
+     * Tests that the ambiguous syntax between Integer and relate pattern is solved by the parser.
+     *  
+     * @throws Exception
+     */
     @Test
     public void clashLongLiteralandDE9IM() throws Exception{
 
@@ -338,9 +343,7 @@ public class CQLLiteralTest {
     }
     
     /**
-     * FIXME remove it
-     */
-    /**
+     * Test the pattern that represent the intersection matrix that is required by the Relate predicate.
      * 
      * @throws CQLException
      */
@@ -369,29 +372,6 @@ public class CQLLiteralTest {
         Assert.assertTrue(trueLiteral.getValue() instanceof Boolean); 
     }
 
-    
-    /**
-     * The length of relate pattern must be 9 (nine) dimension characters 
-     * @throws CQLException
-     */
-    @Test(expected=CQLException.class)
-    public void relateBadLongitudInPattern() throws CQLException {
-        CQL.toFilter( "RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), **1******T)");
-    }
-    
-    /**
-     * The illegal dimension character in relate pattern
-     * @throws CQLException
-     */
-    @Test(expected=CQLException.class)
-    public void relateIlegalPattern() throws CQLException {
-        CQL.toFilter( "RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), **1*****X)");
-    }    
-    /**
-     * end FIXME
-     * @throws Exception
-     */
-    
     
     @Test
     public void dateLiteral() throws Exception{

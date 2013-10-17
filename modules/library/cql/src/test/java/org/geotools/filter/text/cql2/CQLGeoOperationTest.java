@@ -151,6 +151,32 @@ public class CQLGeoOperationTest {
         Assert.assertTrue(trueLiteral.getValue() instanceof Boolean); 
     }
 
+    @Test 
+    public void relatePatterns() throws CQLException {
+        
+        testRelatePatten("T******F*");
+
+        testRelatePatten("T012**FF*");
+            
+        testRelatePatten("100000001");
+
+        testRelatePatten("200000000");
+    }
+    
+    private void testRelatePatten(final String pattern) throws CQLException {
+        
+        PropertyIsEqualTo resultFilter;
+        
+        resultFilter = (PropertyIsEqualTo) CompilerUtil.parseFilter(language,"RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), "+pattern+")");
+
+        Expression relateFunction = resultFilter.getExpression1();
+        Assert.assertTrue(relateFunction instanceof FilterFunction_relatePattern); 
+        
+        Literal trueLiteral = (Literal) resultFilter.getExpression2();
+        Assert.assertTrue(trueLiteral.getValue() instanceof Boolean); 
+    }
+
+    
     
     /**
      * The length of relate pattern must be 9 (nine) dimension characters 

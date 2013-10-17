@@ -44,6 +44,7 @@ import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Disjoint;
 import org.opengis.filter.spatial.DistanceBufferOperator;
@@ -118,38 +119,26 @@ public class CQLTest {
         Assert.assertTrue("Disjoint was expected", filter instanceof Disjoint);
     }
     
-    @Test 
+    @Test
     public void relateGeoOperation() throws CQLException{
-    	Filter filter = CQL.toFilter("RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
-    	
-    	Assert.assertTrue(filter instanceof PropertyIsEqualTo);
+        
+        PropertyIsEqualTo filter = (PropertyIsEqualTo) CQL.toFilter( "RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+        
+        Assert.assertTrue("Relate Pattern Function was expected", filter.getExpression1() instanceof FilterFunction_relatePattern);
+        
+        Assert.assertTrue("Literal TRUE was expected", filter.getExpression2() instanceof Literal);
     }
     
     @Test
-    public void functionDwithinGeometry() throws Exception{
+    public void dwithinGeometry() throws Exception{
         Filter resultFilter;
 
         // DWITHIN
-        resultFilter = CQL.toFilter(
-                "DWITHIN(the_geom, POINT(1 2), 10, kilometers)");
+        resultFilter = CQL.toFilter("DWITHIN(the_geom, POINT(1 2), 10, kilometers)");
 
         Assert.assertTrue(resultFilter instanceof DistanceBufferOperator);
     }
-    @Test
-    public void relateFuncion() throws Exception{
-    	
-    	// relate function in an equal predicate 
-        Filter resultFilter = CQL.toFilter(
-                "ATTR = relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') " );
-
-        Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
-
-        // relate function to expression
-        Expression resultExpression = CQL.toExpression(
-                "relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') " );
-
-        Assert.assertTrue(resultExpression instanceof FilterFunction_relatePattern);
-    }
+    
 
     /**
      * Temporal predicate sample

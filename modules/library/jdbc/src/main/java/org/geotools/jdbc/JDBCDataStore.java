@@ -797,7 +797,11 @@ public final class JDBCDataStore extends ContentDataStore
         if (Boolean.TRUE.equals(readOnlyMarker)) {
             return new JDBCFeatureSource(entry, null);
         }
-        return new JDBCFeatureStore(entry, null);
+
+        JDBCFeatureStore featureStore = new JDBCFeatureStore(entry, null);
+        featureStore.setExposePrimaryKeyColumns(this.exposePrimaryKeyColumns);
+
+        return featureStore;
     }
 
 //    /**

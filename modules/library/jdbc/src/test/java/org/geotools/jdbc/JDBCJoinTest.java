@@ -63,7 +63,11 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
             
             while(it.hasNext()) {
                 SimpleFeature f = it.next();
-                assertEquals(5, f.getAttributeCount());
+                if(exposePrimaryKeys){
+                    assertEquals(6, f.getAttributeCount());
+                }else{
+                    assertEquals(5, f.getAttributeCount());
+                }
                 
                 SimpleFeature g = (SimpleFeature) f.getAttribute(tname("ftjoin"));
                 
@@ -104,12 +108,25 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
         SimpleFeatureIterator it = features.features();
         try {
             SimpleFeature f = it.next();
-            assertEquals(5, f.getAttributeCount());
+
+            if(exposePrimaryKeys){
+                assertEquals(6, f.getAttributeCount());
+            }else{
+                assertEquals(5, f.getAttributeCount());
+            }
+
             assertEquals(2, ((Number)f.getAttribute(aname("intProperty"))).intValue());
             assertEquals("two", f.getAttribute(aname("stringProperty")));
             
             SimpleFeature g = (SimpleFeature) f.getAttribute(aname("ftjoin"));
-            assertEquals(3, g.getAttributeCount());
+
+            if(exposePrimaryKeys){
+                assertEquals(4, g.getAttributeCount());
+            }else{
+                assertEquals(3, g.getAttributeCount());
+            }
+
+            assertEquals(2, ((Number)f.getAttribute(aname("intProperty"))).intValue());
 
             assertEquals("two", g.getAttribute(aname("name")));
         }
@@ -139,7 +156,13 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
         SimpleFeatureIterator it = features.features();
         try {
             SimpleFeature f = it.next();
-            assertEquals(5, f.getAttributeCount());
+
+            if(exposePrimaryKeys){
+                assertEquals(6, f.getAttributeCount());
+            }else{
+                assertEquals(5, f.getAttributeCount());
+            }
+
             assertEquals(2, ((Number)f.getAttribute(aname("intProperty"))).intValue());
             assertEquals("two", f.getAttribute(aname("stringProperty")));
             
@@ -318,12 +341,26 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
             assertTrue(it.hasNext());
             
             SimpleFeature f = it.next();
-            assertEquals(5, f.getAttributeCount());
+
+            if(exposePrimaryKeys){
+                assertEquals(6, f.getAttributeCount());
+            }else{
+                assertEquals(5, f.getAttributeCount());
+            }
+
+            assertEquals(2, ((Number)f.getAttribute(aname("intProperty"))).intValue());
             assertEquals(2, ((Number)f.getAttribute(aname("intProperty"))).intValue());
             assertEquals("two", f.getAttribute(aname("stringProperty")));
             
             SimpleFeature g = (SimpleFeature) f.getAttribute(aname("foo"));
-            assertEquals(4, g.getAttributeCount());
+
+            if(exposePrimaryKeys){
+                assertEquals(5, g.getAttributeCount());
+            }else{
+                assertEquals(4, g.getAttributeCount());
+            }
+
+            assertEquals(2, ((Number)f.getAttribute(aname("intProperty"))).intValue());
             assertEquals(2, ((Number)g.getAttribute(aname("intProperty"))).intValue());
             assertEquals("two", g.getAttribute(aname("stringProperty")));
         }
@@ -341,7 +378,6 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
         dataStore.setExposePrimaryKeyColumns(exposePrimaryKeys);
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         Query q = new Query(tname("ft1"));
-        q.setPropertyNames(Arrays.asList(aname("geometry"), aname("intProperty")));
         q.setSortBy(new SortBy[]{ff.sort(aname("intProperty"), SortOrder.ASCENDING)});
         q.getJoins().add(new Join(tname("ftjoin"),
             ff.contains(ff.property(aname("geom")), ff.property(aname("geometry")))));
@@ -417,14 +453,29 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
             
             while(it.hasNext()) {
                 SimpleFeature f = it.next();
-                assertEquals(4, f.getAttributeCount());
-                
+
+                if(exposePrimaryKeys){
+                    assertEquals(5, f.getAttributeCount());
+                }else{
+                    assertEquals(4, f.getAttributeCount());
+                }
+
                 SimpleFeature g = (SimpleFeature) f.getAttribute(tname("ft1"));
-                if ("three".equals(f.getAttribute(aname("name")))) {
+
+                String name = f.getAttribute(aname("name")).toString();
+
+                if ("three".equals(name)) {
                     assertNull(g);
                 }
                 else {
                     assertNotNull(g);
+                    if("zero".equals(name)){
+                        assertEquals(0, g.getAttribute(aname("intProperty")));
+                    }else if("one".equals(name)){
+                        assertEquals(1, g.getAttribute(aname("intProperty")));
+                    }else if("two".equals(name)){
+                        assertEquals(2, g.getAttribute(aname("intProperty")));
+                    }
                 }
             }
         }
@@ -458,9 +509,15 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
             
             while(it.hasNext()) {
                 SimpleFeature f = it.next();
-                assertEquals(5, f.getAttributeCount());
+
+                if(exposePrimaryKeys){
+                    assertEquals(6, f.getAttributeCount());
+                }else{
+                    assertEquals(5, f.getAttributeCount());
+                }
+
                 Number nmb = (Number) f.getAttribute(aname("join1intProperty"));
-                Integer idx = nmb.intValue(); 
+                Integer idx = nmb.intValue();
                 assertTrue(idx < 3);
                 SimpleFeature g = (SimpleFeature) f.getAttribute(tname("ft1"));
                 assertNotNull(g);

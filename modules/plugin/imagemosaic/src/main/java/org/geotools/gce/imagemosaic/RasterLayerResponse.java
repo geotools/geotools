@@ -323,13 +323,29 @@ class RasterLayerResponse{
 	 *
 	 */
 	class MosaicBuilder implements GranuleCatalogVisitor{
-		
+	    
+        public MosaicBuilder(boolean dryRun) {
+            this.dryRun = dryRun;
+        }
+
+        public MosaicBuilder() {
+            this(false);
+        }
+        
+        /**
+         * Account for the need of simply counting the granules that would fall within a provided 
+         * request. 
+         * 
+         * No processing should be performed!
+         * 
+         */
+        private final boolean dryRun;
+        
 		private final List<Future<GranuleLoadingResult>> tasks= new ArrayList<Future<GranuleLoadingResult>>();
 		private int   granulesNumber;
 		private List<ROI> rois = new ArrayList<ROI>();
 		private Color inputTransparentColor;
 		private PlanarImage[] alphaChannels;
-		private RasterLayerRequest request;
         
                 private ROI[] sourceRoi;
         
@@ -339,14 +355,6 @@ class RasterLayerResponse{
 		
 		private List<RenderedImage> sources = new ArrayList<RenderedImage>();
 
-
-                /**
-                * Default {@link Constructor}
-                */
-                public MosaicBuilder(final RasterLayerRequest request) {
-                    this.request=request;
-                }
-		
 		public RenderedImage[] getSourcesAsArray() {
 		    RenderedImage []imageSources = new RenderedImage[sources.size()];
     	            sources.toArray(imageSources);
@@ -370,20 +378,27 @@ class RasterLayerResponse{
             final Geometry inclusionGeometry = granuleDescriptor.inclusionGeometry;
             if (!footprintManagement || inclusionGeometry == null || footprintManagement
                     && inclusionGeometry.intersects(bb)) {
-                final GranuleLoader loader = new GranuleLoader(baseReadParameters, imageChoice,
-                        mosaicBBox, finalWorldToGridCorner, granuleDescriptor, request, hints);
-                if (multithreadingAllowed && rasterManager.parent.multiThreadedLoader != null)
-                    tasks.add(rasterManager.parent.multiThreadedLoader.submit(loader));
-                else
-                    tasks.add(new FutureTask<GranuleLoadingResult>(loader));
-
+                if(!dryRun){
+                    // during a dry run we don't load anything, we just count granules
+                    final GranuleLoader loader = new GranuleLoader(baseReadParameters, imageChoice,
+                            mosaicBBox, finalWorldToGridCorner, granuleDescriptor, request, hints);
+                    if (multithreadingAllowed && rasterManager.parent.multiThreadedLoader != null)
+                        tasks.add(rasterManager.parent.multiThreadedLoader.submit(loader));
+                    else
+                        tasks.add(new FutureTask<GranuleLoadingResult>(loader));
+                }
                 granulesNumber++;
             }
         }
 		
 		
 		public void produce(){
-			
+			// dry run?
+		        if(dryRun){
+
+	                    // during a dry run we don't load anything, we just count granules
+		            return;
+		        }
 			// reusable parameters
 			alphaChannels = new PlanarImage[granulesNumber];
 			int granuleIndex=0;
@@ -871,7 +886,7 @@ class RasterLayerResponse{
                         XRectangle2D.intersect(levelRasterArea, rasterBounds, rasterBounds);
 			
 			// create the index visitor and visit the feature
-			final MosaicBuilder visitor = new MosaicBuilder(request);
+			final MosaicBuilder visitor = new MosaicBuilder();
 			final List times = request.getRequestedTimes();
 			final List elevations=request.getElevation();
 			final Map<String, List> additionalDomains = request.getRequestedAdditionalDomains();
@@ -1036,10 +1051,13 @@ class RasterLayerResponse{
                         // to a filter. In that case we need to return null
                         if (hasTime || hasElevation || hasFilter || hasAdditionalDomains) {
                             query.setFilter(bbox);
-                            rasterManager.getGranules(query, visitor);
+                            query.setMaxFeatures(1);
+                            // dry run!
+                            final MosaicBuilder visitor2 = new MosaicBuilder(true);
+                            rasterManager.getGranules(query, visitor2);
                             // get those granules
-                            visitor.produce();
-                            if (visitor.granulesNumber >= 1) {
+                            visitor2.produce();
+                            if (visitor2.granulesNumber >= 1) {
                                 // It means the previous lack of granule was due to a filter excluding all the results. Then we return null
                                 return null;
                             }

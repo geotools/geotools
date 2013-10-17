@@ -613,6 +613,16 @@ public class ImageMosaicReaderTest extends Assert{
                             }}
                 );		
                 TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,time}, "time test");
+                
+                // empty
+                final Date timeD1=formatD.parse("2001-02-01T00:00:00.000Z");
+                time.setValue(new ArrayList(){{add(timeD1);}});
+                
+                // Test the output coverage
+                reader = TestUtils.getReader(timeURL, format);
+                final GridCoverage2D coverage = TestUtils.getCoverage(reader,  new GeneralParameterValue[] {gg,useJai ,time}, false);
+                assertNull(coverage);
+               
 		
 	}	
 	

@@ -19,7 +19,7 @@ Prerequisites
 The following are necessary to perform a GeoTools release:
 
 #. Commit access to the GeoTools `Git repository <https://Github.com/geotools/geotools>`_
-#. Build access to `Hudson <http://hudson.opengeo.org/hudson>`_
+#. Build access to `Jenkins <http://ares.boundlessgeo.com/jenkins/>`_
 #. Edit access to the GeoTools `Blog <http://www.blogger.com/blogger.g?blogID=5176900881057973693#overview>`_
 #. Administration rights to `GeoTools JIRA <https://jira.codehaus.org/browse/GEOT>`__
 #. Release/file management privileges in `SourceForge <https://sourceforge.net/projects/geotools/>`_
@@ -29,9 +29,9 @@ Versions and revisions
 
 When performing a release we don't require a "code freeze" in which no developers can commit to the repository. Instead we release from a revision that is known to pass all tests, including unit/integration tests as well as CITE tests on the GeoServer side. These instructions are valid in case you are making a release in combination with GeoServer, if you are making a stand alone release it's up to you to choose the proper GIT revision number for the GeoTools released to be picked from.
 
-To obtain the GeoServer and Geotools revisions that have passed the `CITE test <http://hudson.opengeo.org/hudson/view/cite/>`_, navigate to the latest Hudson run of the CITE test  and view it's console output and select to view its full log. For example::
+To obtain the GeoServer and Geotools revisions that have passed the `CITE test <http://ares.boundlessgeo.com/jenkins/view/geoserver-cite/>`_, navigate to the latest Jenkins run of the CITE test  and view it's console output and select to view its full log. For example::
 	
-	 http://hudson.opengeo.org/hudson/view/cite/job/cite-wfs-1.1/813/consoleFull
+	 http://ares.boundlessgeo.com/jenkins/view/geoserver-cite/job/2.4-cite-wfs-1.1/8/consoleText
 	
 Perform a search on the log for 'Git revision' and you should obtain the following.::
 
@@ -47,7 +47,7 @@ Since we don't make any release from master, ensure you select the right CITE te
 Release in JIRA
 ---------------
 
-Run the `geotools-release-jira <http://hudson.opengeo.org/hudson/job/geotools-release-jira/>`_ job in Hudson. The job takes the following parameters:
+Run the `geotools-release-jira <http://ares.boundlessgeo.com/jenkins/job/geotools-release-jira/>`_ job in Jenkins. The job takes the following parameters:
 
 **VERSION**
 
@@ -92,7 +92,7 @@ When creating the first release candidate of a series some extra steps need to b
 Build the Release
 -----------------
 
-Run the `geotools-release <http://hudson.opengeo.org/hudson/job/geotools-release/>`_ job in Hudson. The job takes the following parameters:
+Run the `geotools-release <http://ares.boundlessgeo.com/jenkins/job/geotools-release/>`_ job in Jenkins. The job takes the following parameters:
 
 **BRANCH**
 
@@ -118,7 +118,7 @@ This job will checkout the specified branch/revision and build the GeoTools
 release artifacts. When successfully complete all release artifacts will be 
 uploaded to the following location::
 
-   http://gridlock.opengeo.org/geotools/release/<RELEASE> 
+   http://ares.boundlessgeo.com/geotools/release/<RELEASE> 
 
 Test the Artifacts
 ------------------
@@ -139,7 +139,7 @@ A simple way to do so is:
 Publish the Release
 -------------------
 
-Run the `geotools-release-publish <http://hudson.opengeo.org/hudson/job/geotools-release-publish/>`_ in Hudson. The job takes the following parameters:
+Run the `geotools-release-publish <http://ares.boundlessgeo.com/jenkins/job/geotools-release-publish/>`_ in Jenkins. The job takes the following parameters:
 
 **VERSION** 
 

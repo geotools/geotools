@@ -35,6 +35,7 @@ import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.factory.Hints;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Assert;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -132,7 +133,9 @@ final class TestUtils extends Assert {
 	 */
 	static AbstractGridFormat getFormat(URL testURL) throws NoSuchAuthorityCodeException, FactoryException {
 	
-		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+
+	        Hints hints=new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER,Boolean.TRUE);
+		hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
 		// Get format
 		final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(testURL,hints);
 		Assert.assertNotNull(format);
@@ -156,8 +159,8 @@ final class TestUtils extends Assert {
 		static ImageMosaicReader getReader(URL testURL,
 				final AbstractGridFormat format) throws NoSuchAuthorityCodeException, FactoryException {
 	
-	//		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
-			return getReader(testURL, format, null);
+			final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
+			return getReader(testURL, format, hints);
 	
 		}
 

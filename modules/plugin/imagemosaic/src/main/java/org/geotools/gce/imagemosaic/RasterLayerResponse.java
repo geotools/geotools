@@ -29,7 +29,6 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1017,7 +1016,9 @@ class RasterLayerResponse{
 
             // collect granules
             rasterManager.getGranules(query, visitor);
-
+            if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+                LOGGER.fine("Query for index: "+query.toString());
+            }
 			// get those granules
 			visitor.produce();
 			
@@ -1029,7 +1030,9 @@ class RasterLayerResponse{
 			//
 			RenderedImage returnValue=null;
 			if (visitor.granulesNumber>=1) {
-
+			    if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+			        LOGGER.fine(visitor.granulesNumber+" granules found");
+			    }
 				//
 				// Create the mosaic image by doing a crop if necessary and also
 				// managing the transparent color if applicable. Be aware that
@@ -1038,13 +1041,15 @@ class RasterLayerResponse{
 				// 			
 				returnValue= buildMosaic(visitor);
 				if(returnValue!=null){
-				    if (LOGGER.isLoggable(Level.FINE))
+				    if (LOGGER.isLoggable(Level.FINE)){
 				        LOGGER.fine("Loaded bbox "+mosaicBBox.toString()+" while crop bbox "+request.getCropBBox().toString());
+				    }
 				    return returnValue;
 				}
-			
+				 if (LOGGER.isLoggable(Level.FINE)){
+				     LOGGER.fine("No granules created");
+				 }
 			}
-			
 			
 			
                         // Redo the query without filter to check whether we got no granules due

@@ -1,7 +1,5 @@
 package org.geotools.gce.imagemosaic;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -10,12 +8,13 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 
-public class RasterLayerRequestTest {
+public class RasterLayerRequestTest extends Assert{
 
     @Test
     public void testResolutions() throws Exception {

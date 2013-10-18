@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -41,9 +40,6 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
-import javax.media.jai.PlanarImage;
-import javax.swing.JFrame;
-
 import junit.framework.JUnit4TestAdapter;
 import junit.textui.TestRunner;
 
@@ -58,11 +54,9 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
@@ -118,13 +112,13 @@ public class ImageMosaicReaderTest extends Assert{
 
 	private URL overviewURL;
 
-	static boolean INTERACTIVE;
-
 	private URL timeURL;
 
 	private URL timeAdditionalDomainsURL;
 
 	private URL imposedEnvelopeURL;
+
+    static boolean INTERACTIVE;
 	
 	/**
 	 * Testing crop capabilities.
@@ -264,27 +258,26 @@ public class ImageMosaicReaderTest extends Assert{
 	
 	@Test
 	public void timeElevationH2() throws Exception {
-	    
-    	final File workDir=new File(TestData.file(this, "."),"water temp3");
+    	final File workDir=new File(TestData.file(this, "."),"watertemp3");
         if(!workDir.mkdir()){
             FileUtils.deleteDirectory(workDir);
             assertTrue("Unable to create workdir:"+workDir,workDir.mkdir());
         }
     	FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir,"watertemp.zip"));
-    	TestData.unzipFile(this, "water temp3/watertemp.zip");
-	    final URL timeElevURL = TestData.url(this, "water temp3");
+    	TestData.unzipFile(this, "watertemp3/watertemp.zip");
+	    final URL timeElevURL = TestData.url(this, "watertemp3");
 	    
 	    //place H2 file in the dir
 	    FileWriter out=null;
 	    try{
-	    	out = new FileWriter(new File(TestData.file(this, "."),"/water temp3/datastore.properties"));
+	    	out = new FileWriter(new File(TestData.file(this, "."),"/watertemp3/datastore.properties"));
 	    	out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n");
 	    	out.write("database=imagemosaic\n");
 	    	out.write("dbtype=h2\n");
 	    	out.write("Loose\\ bbox=true #important for performances\n");
 	    	out.write("Estimated\\ extends=false #important for performances\n");
 	    	out.write("user=geosolutions\n");
-	    	out.write("passwd=fucktheworld\n");
+	    	out.write("passwd=gs\n");
 	    	out.write("validate \\connections=true #important for avoiding errors\n");
 	    	out.write("Connection\\ timeout=3600\n");
 	    	out.write("max \\connections=10 #important for performances, internal pooling\n");
@@ -313,6 +306,7 @@ public class ImageMosaicReaderTest extends Assert{
 		assertEquals(2,timeMetadata.split(",").length);
 		assertEquals(timeMetadata.split(",")[0],reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
 		assertEquals(timeMetadata.split(",")[1],reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
+		System.out.println("TimeMetada: "+timeMetadata);
 		
 		assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
 		final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
@@ -320,17 +314,12 @@ public class ImageMosaicReaderTest extends Assert{
 		assertEquals(2,elevationMetadata.split(",").length);
 	        assertEquals(Double.parseDouble(elevationMetadata.split(",")[0]),Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM")),1E-6);
 	        assertEquals(Double.parseDouble(elevationMetadata.split(",")[1]),Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM")),1E-6);
-		
+		System.out.println("ElevationMetada: "+elevationMetadata);
 		
 		// limit yourself to reading just a bit of it
 		final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
 		final GeneralEnvelope envelope = reader.getOriginalEnvelope();
-		final Dimension dim= new Dimension();
-		dim.setSize(reader.getOriginalGridRange().getSpan(0)/2.0, reader.getOriginalGridRange().getSpan(1)/2.0);
-		final Rectangle rasterArea=(( GridEnvelope2D)reader.getOriginalGridRange());
-		rasterArea.setSize(dim);
-		final GridEnvelope2D range= new GridEnvelope2D(rasterArea);
-		gg.setValue(new GridGeometry2D(range,envelope));
+		gg.setValue(new GridGeometry2D(reader.getOriginalGridRange(),envelope));
 		
 		
 		// use imageio with defined tiles
@@ -364,7 +353,7 @@ public class ImageMosaicReaderTest extends Assert{
                 
          // clean up
          if (!INTERACTIVE){        	
-         	FileUtils.deleteDirectory( TestData.file(this, "water temp3"));
+         	FileUtils.deleteDirectory( TestData.file(this, "watertemp3"));
          }
 	}	
 
@@ -980,20 +969,6 @@ public class ImageMosaicReaderTest extends Assert{
 	}
 
 	/**
-	 * Shows the provided {@link RenderedImage} ina {@link JFrame} using the
-	 * provided <code>title</code> as the frame's title.
-	 * 
-	 * @param image
-	 *            to show.
-	 * @param title
-	 *            to use.
-	 */
-	static void show(RenderedImage image, String title) {
-	    ImageIOUtilities.visualize(image,title);
-
-	}
-
-	/**
 	 * Tests {@link ImageMosaicReader} asking to crop the lower left quarter of
 	 * the input coverage.
 	 * 
@@ -1117,17 +1092,6 @@ public class ImageMosaicReaderTest extends Assert{
 
 	}
 	
-	@BeforeClass
-	public static void init(){
-		
-		//make sure CRS ordering is correct
-		System.setProperty("org.geotools.referencing.forceXY", "true");
-	    System.setProperty("user.timezone", "GMT");
-		System.setProperty("org.geotools.shapefile.datetime", "true");
-
-		INTERACTIVE = TestData.isInteractiveTest();
-	}
-
 	@Before
 	public void setUp() throws Exception {
 		//remove generated file
@@ -1350,10 +1314,29 @@ public class ImageMosaicReaderTest extends Assert{
 //        ImageIO.write(image, "TIFF", new File("C:\\test.tif"));
     }
 
+    @BeforeClass
+    public static void init() {
+    	
+    	//make sure CRS ordering is correct
+    	System.setProperty("org.geotools.referencing.forceXY", "true");
+        System.setProperty("user.timezone", "GMT");
+    	System.setProperty("org.geotools.shapefile.datetime", "true");
+    	CRS.reset("all");
+    	INTERACTIVE = TestData.isInteractiveTest();
+    }
+
     @AfterClass
-	public static void close(){
-		System.clearProperty("org.geotools.referencing.forceXY");
-	}
+    public static void close() {
+            System.clearProperty("user.timezone");
+            System.clearProperty("org.geotools.shapefile.datetime");
+    
+            // unset axis ordering hint
+            System.clearProperty("org.geotools.referencing.forceXY");
+            Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
+            
+            CRS.reset("all");            
+    
+    }
 
 
 }

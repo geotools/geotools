@@ -351,10 +351,17 @@ public class GranuleDescriptor {
 			// somehow from the tile itself or from the index, but at the moment
 			// we do not have such info, hence we assume that it is a simple
 			// scale and translate
-			final GridToEnvelopeMapper geMapper= new GridToEnvelopeMapper(new GridEnvelope2D(originalDimension), granuleBBOX);
+			final GridToEnvelopeMapper geMapper= new GridToEnvelopeMapper(
+			        new GridEnvelope2D(originalDimension), 
+			        granuleBBOX);
 			geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);//this is the default behavior but it is nice to write it down anyway
 			this.baseGridToWorld = geMapper.createAffineTransform();
-			
+			if(LOGGER.isLoggable(Level.FINE)){
+			    LOGGER.fine("Granule: "+granuleUrl+"\n bbox: "+granuleBBOX+
+	                                "\n granuleCRS: "+granuleBBOX.getCoordinateReferenceSystem()+
+	                                "\n dimensions: "+originalDimension+
+	                                "\n grdi2world: "+baseGridToWorld);
+			}
 			try {
 				if (inclusionGeometry != null) {
 				        geMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
@@ -367,7 +374,9 @@ public class GranuleDescriptor {
 			}
 			
 			// add the base level
-			this.granuleLevels.put(Integer.valueOf(0), new GranuleOverviewLevelDescriptor(1, 1, originalDimension.width, originalDimension.height));
+			this.granuleLevels.put(
+			        Integer.valueOf(0), 
+			        new GranuleOverviewLevelDescriptor(1, 1, originalDimension.width, originalDimension.height));
 			
 			////////////////////// Setting overviewController ///////////////////////
 			if (heterogeneousGranules) {
@@ -402,11 +411,9 @@ public class GranuleDescriptor {
                         //////////////////////////////////////////////////////////////////////////
 			
 
-		} catch (IllegalStateException e) {
+		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 			
-		} catch (IOException e) {
-			throw new IllegalArgumentException(e);
 		} finally {
 		    // close/dispose stream and readers
 			try {
@@ -590,6 +597,7 @@ public class GranuleDescriptor {
 			final RasterLayerRequest request,
 			final Hints hints) throws IOException {
 		
+	        
 		if (LOGGER.isLoggable(java.util.logging.Level.FINER)){
 		    final String name = Thread.currentThread().getName();
 			LOGGER.finer("Thread:" + name + " Loading raster data for granuleDescriptor "+this.toString());
@@ -665,35 +673,50 @@ public class GranuleDescriptor {
 			
 			//get selected level and base level dimensions
 			final GranuleOverviewLevelDescriptor selectedlevel= getLevel(imageIndex,reader);
-	
+			if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+                            LOGGER.fine("granule before: "+this.toString());
+                            LOGGER.fine("selectedlevel before: "+selectedlevel.toString());
+			}
 			
 			// now create the crop grid to world which can be used to decide
 			// which source area we need to crop in the selected level taking
 			// into account the scale factors imposed by the selection of this
 			// level together with the base level grid to world transformation
-            AffineTransform2D cropWorldToGrid= new AffineTransform2D(selectedlevel.gridToWorldTransformCorner);
-            cropWorldToGrid=(AffineTransform2D) cropWorldToGrid.inverse();
+                        AffineTransform2D cropWorldToGrid= new AffineTransform2D(selectedlevel.gridToWorldTransformCorner);
+                        cropWorldToGrid=(AffineTransform2D) cropWorldToGrid.inverse();
 			// computing the crop source area which lives into the
 			// selected level raster space, NOTICE that at the end we need to
 			// take into account the fact that we might also decimate therefore
 			// we cannot just use the crop grid to world but we need to correct
 			// it.
-			final Rectangle sourceArea = CRS.transform(cropWorldToGrid, intersection).toRectangle2D().getBounds();
+			final Rectangle sourceArea = CRS.transform(
+			        cropWorldToGrid, 
+			        intersection).toRectangle2D().getBounds();
+                        if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+                            LOGGER.fine("SourceArea before: "+sourceArea);
+                        }			
 			//gutter
-			if(selectedlevel.baseToLevelTransform.isIdentity())
-			        			sourceArea.grow(2, 2);
+			if(selectedlevel.baseToLevelTransform.isIdentity()){
+			    sourceArea.grow(2, 2);
+			    if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+			        LOGGER.fine("Growing read area by 2");
+			    }
+			}
 			XRectangle2D.intersect(sourceArea, selectedlevel.rasterDimensions, sourceArea);//make sure roundings don't bother us
+                        if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+                            LOGGER.fine("Corrected SourceArea before: "+sourceArea);
+                        }
 			// is it empty??
 			if (sourceArea.isEmpty()) {
-				if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
-					LOGGER.fine("Got empty area for granuleDescriptor "+this.toString()+
+				if (LOGGER.isLoggable(java.util.logging.Level.INFO)){
+					LOGGER.info("Got empty area for granuleDescriptor "+this.toString()+
 					        " with request "+request.toString()+" Resulting in no granule loaded: Empty result");
 					
 				}
 				return null;
 
-			} else if (LOGGER.isLoggable(java.util.logging.Level.FINER)){
-				LOGGER.finer( "Loading level " + imageIndex + " with source region: "
+			} else if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+				LOGGER.fine( "Loading level " + imageIndex + " with source region: "
 				        + sourceArea + " subsampling: " 
 				        + readParameters.getSourceXSubsampling() + "," 
 				        + readParameters.getSourceYSubsampling() + " for granule:" 
@@ -734,6 +757,9 @@ public class GranuleDescriptor {
 
 			// use fixed source area
 			sourceArea.setRect(readParameters.getSourceRegion());
+			if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+			    LOGGER.fine("SourceArea after: "+sourceArea);
+			}
 			
 			//
 			// setting new coefficients to define a new affineTransformation
@@ -752,7 +778,9 @@ public class GranuleDescriptor {
 
 			// keep into account translation  to work into the selected level raster space
 			final AffineTransform afterDecimationTranslateTranform =XAffineTransform.getTranslateInstance(sourceArea.x, sourceArea.y);
-			
+			if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+			    LOGGER.fine("afterDecimationTranslateTranform: "+afterDecimationTranslateTranform);
+			}
 			// now we need to go back to the base level raster space
 			final AffineTransform backToBaseLevelScaleTransform =selectedlevel.baseToLevelTransform;
 			
@@ -762,15 +790,33 @@ public class GranuleDescriptor {
 			final double x = finalRaster2Model.getTranslateX();
                         final double y = finalRaster2Model.getTranslateY();
                         
-			if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform, Utils.AFFINE_IDENTITY_EPS))
-				finalRaster2Model.concatenate(backToBaseLevelScaleTransform);
-			if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform, Utils.AFFINE_IDENTITY_EPS))
-				finalRaster2Model.concatenate(afterDecimationTranslateTranform);
-			if(!XAffineTransform.isIdentity(decimationScaleTranform, Utils.AFFINE_IDENTITY_EPS))
-				finalRaster2Model.concatenate(decimationScaleTranform);
+			if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform, Utils.AFFINE_IDENTITY_EPS)){
+			    finalRaster2Model.concatenate(backToBaseLevelScaleTransform);
+			}else {
+			    if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+			        LOGGER.fine("skipping backToBaseLevelScaleTransform");
+			    }
+			}
+			if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform, Utils.AFFINE_IDENTITY_EPS)){
+			    finalRaster2Model.concatenate(afterDecimationTranslateTranform);
+			}else {
+			    if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+			        LOGGER.fine("skipping afterDecimationTranslateTranform");
+			    }
+                        }
+			if(!XAffineTransform.isIdentity(decimationScaleTranform, Utils.AFFINE_IDENTITY_EPS)){
+			    finalRaster2Model.concatenate(decimationScaleTranform);
+			}else {
+			    if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+			        LOGGER.fine("skipping decimationScaleTranform");
+			    }
+                        }
 
 			// keep into account translation factors to place this tile
 			finalRaster2Model.preConcatenate((AffineTransform) mosaicWorldToGrid);
+			if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+			    LOGGER.fine("finalRaster2Model: "+finalRaster2Model);
+			}
 			final Interpolation interpolation = request.getInterpolation();
 			//paranoiac check to avoid that JAI freaks out when computing its internal layouT on images that are too small
 			Rectangle2D finalLayout= ImageUtilities.layoutHelper(
@@ -1045,7 +1091,7 @@ public class GranuleDescriptor {
 			i++;
 			buffer.append("Description of level ").append(i++).append("\n");
 			buffer.append(granuleOverviewLevelDescriptor.toString()).append("\n");
-		}
+		}     
 		return buffer.toString();
 	}
 

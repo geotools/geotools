@@ -46,6 +46,7 @@ import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.filter.SortByImpl;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.test.TestData;
@@ -330,14 +331,19 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 	protected void setUpInternal() throws Exception {
 		super.setUpInternal();
 		
-		//make sure CRS ordering is correct
-		System.setProperty("org.geotools.referencing.forceXY", "true");
-	    System.setProperty("user.timezone", "GMT");
+	    //make sure CRS ordering is correct
+            System.setProperty("org.geotools.referencing.forceXY", "true");
+            System.setProperty("user.timezone", "GMT");
+            CRS.reset("all");
 	}
 
 	@Override
 	protected void tearDownInternal() throws Exception {
-		
+            System.clearProperty("user.timezone");
+            // unset axis ordering hint
+            System.clearProperty("org.geotools.referencing.forceXY");
+            Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
+            
         // clean up disk
         if (!ImageMosaicReaderTest.INTERACTIVE){        	
         	FileUtils.deleteDirectory( TestData.file(this, "watertemp4"));
@@ -352,7 +358,6 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
         st.close();
         connection.close();
         
-        System.clearProperty("org.geotools.referencing.forceXY");
         
 		super.tearDownInternal();
         

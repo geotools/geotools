@@ -32,7 +32,7 @@ import org.junit.Test;
  *
  * @source $URL$
  */
-public class ImageMosaicServiceTest  {
+public class ImageMosaicServiceTest extends Assert {
 	@Test
 	public void isAvailable() {
 		final Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();

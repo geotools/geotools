@@ -29,6 +29,7 @@ import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -219,6 +220,20 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         try {
             geopkg.addGeoPackageContentsEntry(fe);
             geopkg.addGeometryColumnsEntry(fe);
+
+            //other geometry columns are possible
+            for (PropertyDescriptor descr : featureType.getDescriptors()) {
+                if (descr instanceof GeometryDescriptor) {
+                    GeometryDescriptor gd1 = (GeometryDescriptor) descr;
+                    if (gd1.getLocalName() != fe.getGeometryColumn()) {
+                        FeatureEntry fe1 = new FeatureEntry();
+                        fe1.init(fe);
+                        fe1.setGeometryColumn(gd1.getLocalName());
+                        fe1.setGeometryType(Geometries.getForBinding((Class) gd1.getType().getBinding()));
+                        geopkg.addGeometryColumnsEntry(fe1);
+                    }
+                }
+            }
         } catch (IOException e) {
             throw new SQLException(e);
         }

@@ -36,6 +36,7 @@ import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.jdbc.datasource.ManageableDataSource;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -522,41 +523,32 @@ public class GeoPackage {
      * Adds a new feature dataset to the geopackage.
      *
      * @param entry Contains metadata about the feature entry.
-     * @param source The dataset to add to the geopackage.
-     * @param filter Filter specifying what subset of feature dataset to include, may be 
-     *  <code>null</code> to specify no filter. 
+     * @param collection The simple feature collection to add to the geopackage. 
      * 
      * @throws IOException Any errors occurring while adding the new feature dataset.  
      */
-    public void add(FeatureEntry entry, SimpleFeatureSource source, Filter filter) throws IOException {
+    public void add(FeatureEntry entry, SimpleFeatureCollection collection) throws IOException {
         FeatureEntry e = new FeatureEntry();
         e.init(entry);
 
         if (e.getBounds() == null) {
-            e.setBounds(source.getBounds());
+            e.setBounds(collection.getBounds());
         }
 
-        create(e, source.getSchema());
-
-        //copy over features
-        //TODO: make this more robust, won't handle case issues going between datasources, etc...
-        //TODO: for big datasets we need to break up the transaction
-        if (filter == null) {
-            filter = Filter.INCLUDE;
-        }
+        create(e, collection.getSchema());
 
         Transaction tx = new DefaultTransaction();
         SimpleFeatureWriter w = writer(e, true, null, tx);
-        SimpleFeatureIterator it = source.getFeatures(filter).features();
+        SimpleFeatureIterator it = collection.features();
         try {
             while(it.hasNext()) {
                 SimpleFeature f = it.next(); 
                 SimpleFeature g = w.next();
-                for (PropertyDescriptor pd : source.getSchema().getDescriptors()) {
+                for (PropertyDescriptor pd : collection.getSchema().getDescriptors()) {
                     String name = pd.getName().getLocalPart();
                     g.setAttribute(name, f.getAttribute(name));
                 }
-                g.setDefaultGeometry(f.getDefaultGeometry());
+                                             
                 w.write();
             }
             tx.commit();
@@ -572,6 +564,28 @@ public class GeoPackage {
         }
 
         entry.init(e);
+    }
+
+    /**
+     * Adds a new feature dataset to the geopackage.
+     *
+     * @param entry Contains metadata about the feature entry.
+     * @param source The dataset to add to the geopackage.
+     * @param filter Filter specifying what subset of feature dataset to include, may be 
+     *  <code>null</code> to specify no filter. 
+     * 
+     * @throws IOException Any errors occurring while adding the new feature dataset.  
+     */
+    public void add(FeatureEntry entry, SimpleFeatureSource source, Filter filter) throws IOException {
+        
+        //copy over features
+        //TODO: make this more robust, won't handle case issues going between datasources, etc...
+        //TODO: for big datasets we need to break up the transaction
+        if (filter == null) {
+            filter = Filter.INCLUDE;
+        }
+
+        add(entry, source.getFeatures(filter));
     }
 
     /**

@@ -316,14 +316,6 @@ public class ImagePyramidReaderTest extends Assert {
 
 		} catch (UnsupportedOperationException e) {
 			try {
-				String[] names = reader.getMetadataNames();
-				assertNull(names);
-
-			} catch (UnsupportedOperationException e1) {
-				
-			}
-			
-			try {
 				String value = reader.getMetadataValue("");
 				assertNull(value);
 				return;

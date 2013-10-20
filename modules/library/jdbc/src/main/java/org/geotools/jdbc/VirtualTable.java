@@ -81,6 +81,10 @@ public class VirtualTable implements Serializable {
      */
     public VirtualTable(String name, String sql) {
         this.name = name;
+        // make sure we end the query with a newline to handle eventual comments in the last line
+        if(!sql.endsWith("\n") && !sql.endsWith("\r")) {
+            sql = sql + "\n";
+        }
         this.sql = sql;
     }
     
@@ -103,8 +107,7 @@ public class VirtualTable implements Serializable {
      * @param other
      */
     public VirtualTable(String name, VirtualTable other) {
-        this.name = name;
-        this.sql = other.sql;
+        this(name, other.sql);
         this.geometryTypes = new ConcurrentHashMap<String, Class<? extends Geometry>>(other.geometryTypes);
         this.nativeSrids = new ConcurrentHashMap<String, Integer>(other.nativeSrids);
         this.parameters = new ConcurrentHashMap<String, VirtualTableParameter>(other.parameters);
@@ -118,8 +121,7 @@ public class VirtualTable implements Serializable {
      * @param other
      */
     public VirtualTable(VirtualTable other) {
-        this.name = other.name;
-        this.sql = other.sql;
+        this(other.name, other.sql);
         this.geometryTypes = new ConcurrentHashMap<String, Class<? extends Geometry>>(other.geometryTypes);
         this.nativeSrids = new ConcurrentHashMap<String, Integer>(other.nativeSrids);
         this.parameters = new ConcurrentHashMap<String, VirtualTableParameter>(other.parameters);

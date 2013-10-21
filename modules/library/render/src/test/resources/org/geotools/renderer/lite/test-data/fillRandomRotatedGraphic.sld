@@ -20,12 +20,11 @@
               </GraphicFill>
             </Fill>
             <Stroke/>
-            <VendorOption name="random">true</VendorOption>
+            <VendorOption name="random">free</VendorOption>
             <VendorOption name="random-symbol-count">30</VendorOption>
             <VendorOption name="random-seed">5</VendorOption>
             <VendorOption name="random-tile-size">100</VendorOption>
-            <VendorOption name="random-rotation">true</VendorOption>
-            <VendorOption name="random-grid">false</VendorOption>
+            <VendorOption name="random-rotation">free</VendorOption>
           </PolygonSymbolizer>
 
         </Rule>

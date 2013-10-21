@@ -36,12 +36,11 @@
               </GraphicFill>
             </Fill>
             <Stroke/>
-            <VendorOption name="random">true</VendorOption>
+            <VendorOption name="random">grid</VendorOption>
             <VendorOption name="random-symbol-count">9</VendorOption>
             <VendorOption name="random-seed">5</VendorOption>
             <VendorOption name="random-tile-size">120</VendorOption>
-            <VendorOption name="random-rotation">true</VendorOption>
-            <VendorOption name="random-grid">true</VendorOption>
+            <VendorOption name="random-rotation">free</VendorOption>
           </PolygonSymbolizer>
 
         </Rule>

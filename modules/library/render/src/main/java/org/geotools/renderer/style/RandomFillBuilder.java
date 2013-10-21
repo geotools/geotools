@@ -27,10 +27,8 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import javax.swing.Icon;
@@ -43,12 +41,10 @@ import org.geotools.renderer.VendorOptionParser;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
 import org.geotools.styling.Symbolizer;
-import org.geotools.util.SoftValueHashMap;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.algorithm.MinimumDiameter;
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
@@ -59,6 +55,31 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
  * @author Andrea Aime - GeoSolutions
  */
 class RandomFillBuilder {
+    
+    public enum PositionRandomizer {
+        /**
+         * No random symbol distribution
+         */
+        NONE,
+        /**
+         * Freeform random distribution
+         */
+        FREE,
+        /**
+         * Grid based random distribution
+         */
+        GRID };
+        
+    public enum RotationRandomizer {
+        /**
+         * No angle randomization
+         */
+        NONE,
+        /**
+         * Freeform angle randomizer
+         */
+        FREE
+    }
 
     private static final int MAX_RANDOM_COUNT = Integer.getInteger(
             "org.geotools.render.random.maxCount", 1024);
@@ -89,12 +110,13 @@ class RandomFillBuilder {
     BufferedImage buildRandomTilableImage(Symbolizer symbolizer, Graphic gr, Icon icon, Mark mark,
             Shape shape, double markSize, Object feature) {
         // grab the random generation options
+        PositionRandomizer randomizer = (PositionRandomizer) voParser.getEnumOption(symbolizer, "random", PositionRandomizer.NONE);
         int seed = voParser.getIntOption(symbolizer, "random-seed", 0);
         int tileSize = voParser.getIntOption(symbolizer, "random-tile-size", 256);
         int count = voParser.getIntOption(symbolizer, "random-symbol-count", 16);
         int spaceAround = voParser.getIntOption(symbolizer, "random-space-around", 0);
-        boolean randomRotation = voParser.getBooleanOption(symbolizer, "random-rotation", false);
-        boolean useGrid = voParser.getBooleanOption(symbolizer, "random-grid", true);
+        RotationRandomizer rotation = (RotationRandomizer) voParser.getEnumOption(symbolizer, "random-rotation", RotationRandomizer.NONE);
+        boolean randomRotation = rotation == RotationRandomizer.FREE;
 
         // minimum validation
         if (tileSize <= 0) {
@@ -131,11 +153,7 @@ class RandomFillBuilder {
         // build the point sequence generator
         Random random = new Random(seed);
         PositionSequence ps;
-        Envelope conflictSymbolSize = new Envelope();
-        if(conflictBounds != null) {
-            conflictSymbolSize = conflictBounds.getEnvelopeInternal();
-        }
-        if(useGrid) {
+        if(randomizer == PositionRandomizer.GRID) {
             ps = new GridBasedPositionGenerator(random, rac, count, targetArea, randomRotation);
         } else {
             ps = new FullyRandomizedPositionGenerator(random, rac, count, targetArea, randomRotation);

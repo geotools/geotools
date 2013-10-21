@@ -35,6 +35,7 @@ import java.net.MalformedURLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +45,7 @@ import javax.swing.ImageIcon;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.VendorOptionParser;
+import org.geotools.renderer.style.RandomFillBuilder.PositionRandomizer;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -1062,10 +1064,10 @@ public class SLDStyleFactory {
         }
 		
         // grab the major vendor options
-        boolean random = voParser.getBooleanOption(symbolizer, "random", false);
+        PositionRandomizer randomizer = (PositionRandomizer) voParser.getEnumOption(symbolizer, "random", PositionRandomizer.NONE);
         
         BufferedImage image;
-        if(random) {
+        if(randomizer != null && randomizer != PositionRandomizer.NONE) {
             // we pass the mark instead of turning it into an image as an attempt to get
             // a higher quality result, if we turn it into an image and then start moving/rotating
             // it around we're going to antialias it more than once

@@ -140,6 +140,8 @@ public class ImageMosaicReaderTest extends Assert{
 	private URL timeAdditionalDomainsURL;
 	
 	private URL timeAdditionalDomainsRangeURL;
+	
+	private URL timeRangesURL;
 
 	private URL imposedEnvelopeURL;
 
@@ -854,6 +856,101 @@ public class ImageMosaicReaderTest extends Assert{
     }
     
     /**
+     * Simple test method to test emptyMosaic creation support followed by harvesting.
+     * dataset
+     * @throws IOException
+     * @throws FactoryException 
+     * @throws NoSuchAuthorityCodeException 
+     * @throws ParseException +
+     */
+    @Test
+     //@Ignore
+    @SuppressWarnings("rawtypes")
+    public void testEmpytMosaic() throws Exception {
+    
+        final File workDir=new File(TestData.file(this, "."),"emptyMosaic");
+        if(!workDir.mkdir()){
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:"+workDir,workDir.mkdir());
+        }
+        File zipFile = new File(workDir,"temperature.zip");
+        FileUtils.copyFile(TestData.file(this, "temperature.zip"), zipFile);
+        TestData.unzipFile(this, "emptyMosaic/temperature.zip");
+        FileWriter out = new FileWriter(new File(TestData.file(this, "."),"/emptyMosaic/datastore.properties"));
+        out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n");
+        out.write("database=imagemosaic\n");
+        out.write("dbtype=h2\n");
+        out.write("Loose\\ bbox=true #important for performances\n");
+        out.write("Estimated\\ extends=false #important for performances\n");
+        out.write("user=geosolutions\n");
+        out.write("passwd=fucktheworld\n");
+        out.write("validate \\connections=true #important for avoiding errors\n");
+        out.write("Connection\\ timeout=3600\n");
+        out.write("max \\connections=10 #important for performances, internal pooling\n");
+        out.write("min \\connections=5  #important for performances, internal pooling\n");
+        out.flush();
+        
+        FileUtils.deleteQuietly(zipFile);
+        
+        final URL emptyMosaicURL = TestData.url(this, "emptyMosaic");
+        final AbstractGridFormat mosaicFormat = TestUtils.getFormat(emptyMosaicURL);
+        ImageMosaicReader reader = TestUtils.getReader(emptyMosaicURL, mosaicFormat);
+
+        String[] metadataNames = reader.getMetadataNames();
+        assertNull(metadataNames);
+
+        File source = DataUtilities.urlToFile(timeRangesURL);
+        File testDataDir= TestData.file(this, ".");
+        File directory1 = new File(testDataDir,"singleHarvest1");
+        if(directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }            
+        FileUtils.copyDirectory(source, directory1);
+        
+        // ok, let's create a mosaic with a single granule and check its times
+        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        File renamed = new File(directory1, "temp_020_099_20081101T000000_20081104T000000.tiff");
+        
+        
+        try {
+            // now go and harvest the other file
+            List<HarvestedSource> summary = reader.harvest(null, renamed, null);
+            assertEquals(1, summary.size());
+            HarvestedSource hf = summary.get(0);
+            assertEquals(renamed.getCanonicalFile(), ((File) hf.getSource()).getCanonicalFile());
+            assertTrue(hf.success());
+            
+            // the harvest put the file in the same coverage
+            reader = TestUtils.getReader(emptyMosaicURL, mosaicFormat);
+            assertEquals(1, reader.getGridCoverageNames().length);
+            metadataNames = reader.getMetadataNames();
+            assertNotNull(metadataNames);
+            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            assertEquals("2008-11-01T00:00:00.000Z/2008-11-04T00:00:00.000Z/PT1S", reader.getMetadataValue(metadataNames[0]));
+            
+            // check the granule catalog
+            String coverageName = reader.getGridCoverageNames()[0];
+            GranuleSource granules = reader.getGranules(coverageName, true);
+            assertEquals(1, granules.getCount(Query.ALL));
+            Query q = new Query(Query.ALL);
+            SimpleFeatureIterator fi = granules.getGranules(q).features();
+            try {
+                assertTrue(fi.hasNext());
+                SimpleFeature f = fi.next();
+                String expected = "../singleHarvest1/temp_020_099_20081101T000000_20081104T000000.tiff".replace('/', File.separatorChar);
+                assertEquals(expected, f.getAttribute("location"));
+                assertEquals("2008-11-01T00:00:00.000Z", ConvertersHack.convert(f.getAttribute("time"), String.class));
+            } finally {
+                fi.close();
+            }
+            
+        } finally {
+            reader.dispose();
+        }
+    }
+    
+    
+    /**
      * Simple test method accessing time and 2 custom dimensions for the sample
      * dataset
      * @throws IOException
@@ -1549,7 +1646,7 @@ public class ImageMosaicReaderTest extends Assert{
 		timeFormatURL = TestData.url(this, "time_format_geotiff");
 		timeAdditionalDomainsURL = TestData.url(this, "time_additionaldomains");
 		timeAdditionalDomainsRangeURL = TestData.url(this, "time_domainsRanges");
-		
+		timeRangesURL = TestData.url(this, "time_ranges");
 		overviewURL = TestData.url(this, "overview/");
 		rgbAURL = TestData.url(this, "rgba/");
 		

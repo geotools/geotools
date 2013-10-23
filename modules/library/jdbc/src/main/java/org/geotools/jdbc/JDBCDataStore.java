@@ -1164,7 +1164,7 @@ public final class JDBCDataStore extends ContentDataStore
                 }
                 }
         } catch (Exception e) {
-            String msg = "Error occured calculating bounds";
+            String msg = "Error occured calculating bounds for " + featureType.getTypeName();
             throw (IOException) new IOException(msg).initCause(e);
         } finally {
             closeSafe(rs);

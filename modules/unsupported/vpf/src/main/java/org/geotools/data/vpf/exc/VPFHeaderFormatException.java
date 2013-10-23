@@ -31,6 +31,9 @@ package org.geotools.data.vpf.exc;
  * @version 1.0.0
  */
 public class VPFHeaderFormatException extends VPFDataException {
+    /** serialVersionUID */
+    private static final long serialVersionUID = 4680952037855445222L;
+
     /**
      * Creates a new VPFHeaderFormatException object.
      */

@@ -37,8 +37,11 @@ import org.geotools.data.vpf.io.VPFDate;
  * @version $Id$
  */
 public class DataUtils implements DataTypesDefinition {
+    
     /**
-     * Describe <code>toBigEndian</code> method here.
+     * Converts the provided array to big endian.
+     * <p>
+     * As java is BigEndian the implementation just makes a copy.
      *
      * @param source a <code>byte[]</code> value
      * @return a <code>byte[]</code> value
@@ -288,16 +291,16 @@ public class DataUtils implements DataTypesDefinition {
         return res;
     }
 
-    //   public static int littleEndianToInt(byte[] fourBytes)
-    //   {
-    //     int res = 0;
-    //     int limit = Math.min(fourBytes.length, 4);
-    //     for (int i = 0; i < limit; i++)
-    //     {
-    //       res |= (fourBytes[i] & 0xFF) << (i*8);
-    //     } // end of for (int i = 0; i < limit-1; i++)
-    //     return res;
-    //   }
+       public static int littleEndianToInt(byte[] fourBytes)
+       {
+         int res = 0;
+         int limit = Math.min(fourBytes.length, 4);
+         for (int i = 0; i < limit; i++)
+         {
+           res |= (fourBytes[i] & 0xFF) << (i*8);
+         } // end of for (int i = 0; i < limit-1; i++)
+         return res;
+       }
 
     /**
      * Describe <code>decodeInt</code> method here.

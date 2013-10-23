@@ -75,7 +75,7 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
      * definitions found in table header. This list keeps objects of type
      * <code>TableColumnDef</code> class.
      */
-    private List columnDefs = null;
+    private List<TableColumnDef> columnDefs = null;
 
     /**
      * Creates a new <code>TableHeader</code> instance.
@@ -91,7 +91,7 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
      *        for this table.
      */
     public TableHeader(int length, char byteOrder, String description, 
-                       String narrativeTable, List columnDefs) {
+                       String narrativeTable, List<TableColumnDef> columnDefs) {
         this.headerLength = length;
         this.byteOrder = byteOrder;
         this.description = description;
@@ -206,7 +206,7 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
      *
      * @return the value of columnDefs
      */
-    public List getColumnDefs() {
+    public List<TableColumnDef> getColumnDefs() {
         return Collections.unmodifiableList(this.columnDefs);
     }
 }

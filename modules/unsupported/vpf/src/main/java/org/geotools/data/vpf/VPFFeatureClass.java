@@ -16,6 +16,13 @@
  */
 package org.geotools.data.vpf;
 
+import static org.geotools.data.vpf.ifc.FileConstants.CONNECTED_NODE_PRIMITIVE;
+import static org.geotools.data.vpf.ifc.FileConstants.EDGE_PRIMITIVE;
+import static org.geotools.data.vpf.ifc.FileConstants.ENTITY_NODE_PRIMITIVE;
+import static org.geotools.data.vpf.ifc.FileConstants.FACE_PRIMITIVE;
+import static org.geotools.data.vpf.ifc.FileConstants.TABLE_FCS;
+import static org.geotools.data.vpf.ifc.FileConstants.TEXT_PRIMITIVE;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -24,32 +31,24 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
-import org.geotools.data.vpf.ifc.DataTypesDefinition;
-import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.data.vpf.readers.AreaGeometryFactory;
 import org.geotools.data.vpf.readers.ConnectedNodeGeometryFactory;
 import org.geotools.data.vpf.readers.EntityNodeGeometryFactory;
 import org.geotools.data.vpf.readers.LineGeometryFactory;
 import org.geotools.data.vpf.readers.TextGeometryFactory;
 import org.geotools.data.vpf.readers.VPFGeometryFactory;
-
 import org.geotools.feature.AttributeTypeBuilder;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AnnotationFeatureType;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
-
 import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.GeometryType;
-import org.opengis.feature.type.Name;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
@@ -71,8 +70,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @source $URL$
  */
-public class VPFFeatureClass implements DataTypesDefinition, FileConstants,
-    SimpleFeatureType {
+public class VPFFeatureClass implements SimpleFeatureType {
     /**
      * The contained feature type
      */
@@ -81,8 +79,8 @@ public class VPFFeatureClass implements DataTypesDefinition, FileConstants,
     /**
      * The columns that are part of this feature class
      */
-    private final List columns = new Vector();
-
+    private final List<VPFColumn> columns = new Vector<VPFColumn>();
+    
     /** The coverage this feature class is part of */
     private final VPFCoverage coverage;
 
@@ -90,7 +88,7 @@ public class VPFFeatureClass implements DataTypesDefinition, FileConstants,
     private final String directoryName;
 
     /** A list of files which are read to retrieve data for this feature class */
-    private final AbstractList fileList = new Vector();
+    private final AbstractList<VPFFile> fileList = new Vector<VPFFile>();
 
     /** A list of ColumnPair objects which identify the file joins */
     private final AbstractList joinList = new Vector();
@@ -150,7 +148,7 @@ public class VPFFeatureClass implements DataTypesDefinition, FileConstants,
 
         try {
             VPFFile fcsFile = (VPFFile) VPFFileFactory.getInstance().getFile(fcsFileName);
-            Iterator iter = fcsFile.readAllRows().iterator();
+            Iterator<SimpleFeature> iter = fcsFile.readAllRows().iterator();
 
             while (iter.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) iter.next();
@@ -163,20 +161,16 @@ public class VPFFeatureClass implements DataTypesDefinition, FileConstants,
             }
 
             // Deal with the geometry column
-            iter = columns.iterator();
-
-            GeometryDescriptor gat = null;
+            Iterator<VPFColumn> iter2 = columns.iterator();
+            VPFColumn column;
+            String geometryName = null;
             AttributeDescriptor geometryColumn = null;
 
-            while (iter.hasNext()) {
-                geometryColumn = (AttributeDescriptor) iter.next();
-
-                if(Geometry.class.isAssignableFrom(geometryColumn.getType().getBinding())){
-                    if(geometryColumn instanceof GeometryDescriptor){
-                        gat = (GeometryDescriptor)geometryColumn;
-                    }else if (geometryColumn instanceof VPFColumn){
-                        gat = ((VPFColumn)geometryColumn).getGeometryAttributeType();
-                    }
+            while (iter2.hasNext()) {
+                column = (VPFColumn) iter2.next();
+                if( column == null ) continue;
+                if( column.isGeometry() ){
+                    geometryName = column.getName();
                     break;
                 }
             }
@@ -191,8 +185,11 @@ public class VPFFeatureClass implements DataTypesDefinition, FileConstants,
             b.setName(cName);
             b.setNamespaceURI(namespace);
             b.setSuperType(superType);
-            b.addAll(columns);
-            b.setDefaultGeometry(gat.getLocalName());
+            for( VPFColumn col : columns ){
+                if( col == null ) continue;
+                b.add( col.getDescriptor() );
+            }
+            b.setDefaultGeometry(geometryName);
             
             featureType = b.buildFeatureType();
         } catch (IOException exp) {
@@ -220,17 +217,16 @@ public class VPFFeatureClass implements DataTypesDefinition, FileConstants,
             addFileToTable(vpfFile1);
 
             VPFFile vpfFile2 = null;
-            AttributeDescriptor joinColumn1 = (VPFColumn) vpfFile1.getDescriptor(table1Key);
-            AttributeDescriptor joinColumn2;
+            VPFColumn joinColumn1 = vpfFile1.getColumn(table1Key);
+            VPFColumn joinColumn2;
 
             try {
                 vpfFile2 = VPFFileFactory.getInstance().getFile(directoryName.concat(
                             File.separator).concat(table2));
                 addFileToTable(vpfFile2);
-                joinColumn2 = (VPFColumn) vpfFile2.getDescriptor(table2Key);
+                joinColumn2 = vpfFile2.getColumn(table2Key);
             } catch (IOException exc) {
                 fileList.add(null);
-
                 // We need to add a geometry column 
                 joinColumn2 = buildGeometryColumn(table2);
             }
@@ -253,26 +249,24 @@ public class VPFFeatureClass implements DataTypesDefinition, FileConstants,
      * @param table The name of the table containing the geometric primitives
      * @return An <code>AttributeType</code> for the geometry column which is actually a <code>GeometryAttributeType</code>
      */
-    private AttributeDescriptor buildGeometryColumn(String table) {
-        AttributeDescriptor result = null;
-
+    private VPFColumn buildGeometryColumn(String table) {
+        AttributeDescriptor descriptor = null;
         table = table.trim().toLowerCase();
 
         // Why would the fileList already contain a null?
         //      if(!fileList.contains(null)){
         CoordinateReferenceSystem crs = getCoverage().getLibrary().getCoordinateReferenceSystem();
         if(crs != null){
-            result = new AttributeTypeBuilder().binding( Geometry.class )
+            descriptor = new AttributeTypeBuilder().binding( Geometry.class )
                 .nillable(true).length(-1).crs(crs).buildDescriptor("GEOMETRY");
         }else{
-            result = new AttributeTypeBuilder().binding( Geometry.class )
+            descriptor = new AttributeTypeBuilder().binding( Geometry.class )
                 .nillable(true).buildDescriptor("GEOMETRY");
         }
+        VPFColumn result = null; // how to construct
         columns.add(result);
-
         setGeometryFactory(table);
 
-        //      }
         return result;
     }
     /**
@@ -315,7 +309,7 @@ public class VPFFeatureClass implements DataTypesDefinition, FileConstants,
             // Except for the first file, ignore the first column since it is a join column
             for (int inx = addPrimaryKey ? 0 : 1;
                     inx < vpfFile.getAttributeCount(); inx++) {
-                columns.add(vpfFile.getDescriptor(inx));
+                columns.add(vpfFile.getColumn(inx));
             }
         }
     }
@@ -342,7 +336,7 @@ public class VPFFeatureClass implements DataTypesDefinition, FileConstants,
      *
      * @return a <code>List</code> containing <code>VPFFile</code> objects.
      */
-    public List getFileList() {
+    public List<VPFFile> getFileList() {
         return fileList;
     }
 

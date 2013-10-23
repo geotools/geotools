@@ -17,11 +17,10 @@
 package org.geotools.data.vpf.ifc;
 
 /**
- * FileConstants.java Created: Fri Dec 27 23:16:01 2002
- *
+ * VPF File file constants.
+ * 
+ * @since Fri Dec 27 23:16:01 2002
  * @author <a href="mailto:kobit@users.sf.net">Artur Hefczyc</a>
- *
- *
  *
  * @source $URL$
  * @version $Id$

@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.geotools.feature.FeatureTypes;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -182,6 +183,9 @@ public class VPFFeatureType implements SimpleFeatureType {
     }
 	
     public boolean equals(Object obj) {
+        if( obj instanceof SimpleFeatureType){
+            return FeatureTypes.equals( this,  (SimpleFeatureType)obj);
+        }
         return featureClass.equals(obj);
     }
     

@@ -30,6 +30,9 @@ import java.io.IOException;
  * @version $Id$
  */
 public class VPFDataException extends IOException {
+    /** serialVersionUID */
+    private static final long serialVersionUID = 7229469219001998383L;
+
     /**
      * Creates a new VPFDataException object.
      */

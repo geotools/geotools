@@ -30,17 +30,17 @@ class ColumnPair {
     /**
      * The first column to join
      */
-    public AttributeDescriptor column1;
+    public VPFColumn column1;
     /**
      * The second column to join
      */
-    public AttributeDescriptor column2;
+    public VPFColumn column2;
     /**
      * The only constructor
      * @param c1 the first column
      * @param c2 the second column
      */
-    public ColumnPair(AttributeDescriptor c1, AttributeDescriptor c2) {
+    public ColumnPair(VPFColumn c1, VPFColumn c2) {
         column1 = c1;
         column2 = c2;
     }

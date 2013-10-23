@@ -17,14 +17,13 @@
 package org.geotools.data.vpf.ifc;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Defines constants related to FACC Code processing.  
  *
  * @author John Meagher
- *
- *
  *
  * @source $URL$
  * @version $Id$
@@ -44,5 +43,5 @@ public interface FCode {
      * The ALLOWED_FCODE_ATTRIBUTES array in list form.
      * @see #ALLOWED_FCODE_ATTRIBUTES
      **/
-    public static final List ALLOWED_FCODE_ATTRIBUTES_LIST = Arrays.asList( ALLOWED_FCODE_ATTRIBUTES );
+    public static final List<String> ALLOWED_FCODE_ATTRIBUTES_LIST = Collections.unmodifiableList(Arrays.asList( ALLOWED_FCODE_ATTRIBUTES ));
 }

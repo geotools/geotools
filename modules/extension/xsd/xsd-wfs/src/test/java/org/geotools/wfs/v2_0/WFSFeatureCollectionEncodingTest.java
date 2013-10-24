@@ -32,6 +32,8 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.gml3.GMLConfiguration;
+import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -101,6 +103,33 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         TransformerFactory.newInstance().newTransformer().transform(
             new DOMSource(d), new StreamResult(System.out));
         
+        assertEquals( 1, d.getElementsByTagName( "wfs:boundedBy" ).getLength() );
+        assertEquals( 2, d.getElementsByTagName( "gml:boundedBy" ).getLength() );
+        assertEquals( 2, d.getElementsByTagName( "wfs:member" ).getLength() );
+        assertEquals( 2, d.getElementsByTagName( "gml:Point" ).getLength() );
+        assertEquals( 2, d.getElementsByTagName( "gml:pos" ).getLength() );
+        assertEquals( 0, d.getElementsByTagName( "gml:coord" ).getLength() );
+        
+        assertEquals( 2, d.getElementsByTagName( "geotools:feature" ).getLength() );
+        assertNotNull( ((Element)d.getElementsByTagName( "geotools:feature").item( 0 )).getAttribute("gml:id") );
+    }
+    
+    public void testEncodeFeatureCollectionWithoutBBOX() throws Exception {
+        FeatureCollectionType fc = WfsFactory.eINSTANCE.createFeatureCollectionType();
+        FeatureCollection features = store.getFeatureSource("feature").getFeatures();
+        fc.getFeature().add( features );
+        Configuration wfsConfiguration = new org.geotools.wfs.v2_0.WFSConfiguration();
+        wfsConfiguration.getProperties().add(GMLConfiguration.NO_FEATURE_BOUNDS);
+        Encoder e = encoder(wfsConfiguration);
+        e.getNamespaces().declarePrefix( "geotools", "http://geotools.org");
+        e.setIndenting(true);
+        
+        Document d = e.encodeAsDOM( fc, WFS.FeatureCollection );
+        TransformerFactory.newInstance().newTransformer().transform(
+            new DOMSource(d), new StreamResult(System.out));
+        
+        assertEquals( 0, d.getElementsByTagName( "wfs:boundedBy" ).getLength() );
+        assertEquals( 0, d.getElementsByTagName( "gml:boundedBy" ).getLength() );
         assertEquals( 2, d.getElementsByTagName( "wfs:member" ).getLength() );
         assertEquals( 2, d.getElementsByTagName( "gml:Point" ).getLength() );
         assertEquals( 2, d.getElementsByTagName( "gml:pos" ).getLength() );
@@ -160,6 +189,10 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         return elements;
     }
 
+    Encoder encoder(Configuration configuration) {
+        return new Encoder(configuration);
+    }
+    
     Encoder encoder() {
         return new Encoder(new org.geotools.wfs.v2_0.WFSConfiguration());
     }

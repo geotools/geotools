@@ -20,6 +20,8 @@ import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.io.WKTWriter;
+
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
 import org.geotools.factory.Hints;
@@ -414,7 +416,11 @@ public class SQLServerDialect extends BasicSQLDialect {
             return;
         }
         
-        sql.append( "geometry::STGeomFromText('").append( value.toText() ).append( "',").append( srid ).append(")");
+        GeometryDimensionFinder finder = new GeometryDimensionFinder();
+        value.apply(finder);
+        WKTWriter writer = new WKTWriter(finder.hasZ() ? 3 : 2);
+        String wkt = writer.write(value);
+        sql.append( "geometry::STGeomFromText('").append( wkt ).append( "',").append( srid ).append(")");
     }
     
     @Override

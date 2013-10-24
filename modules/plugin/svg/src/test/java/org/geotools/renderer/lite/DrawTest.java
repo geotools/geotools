@@ -61,7 +61,7 @@ public class DrawTest {
         BufferedImage image = RendererBaseTest.showRender(styleName, renderer, TIME, bounds);
         ImageAssert.assertEquals(new File(
                 "./src/test/resources/org/geotools/renderer/lite/test-data/" + styleName + ".png"),
-                image, 100);
+                image, 1000);
     }
 
     @Test
@@ -97,6 +97,6 @@ public class DrawTest {
         BufferedImage image = RendererBaseTest.showRender("PointHouse", renderer, TIME, bounds);
         ImageAssert.assertEquals(new File(
                 "./src/test/resources/org/geotools/renderer/lite/test-data/pointHouse.png"), image,
-                100);
+                1000);
     }
 }

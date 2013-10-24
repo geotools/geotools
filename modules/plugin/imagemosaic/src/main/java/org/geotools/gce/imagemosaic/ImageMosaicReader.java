@@ -56,9 +56,9 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
-import org.geotools.gce.imagemosaic.ImageMosaicWalker.ExceptionEvent;
-import org.geotools.gce.imagemosaic.ImageMosaicWalker.FileProcessingEvent;
-import org.geotools.gce.imagemosaic.ImageMosaicWalker.ProcessingEvent;
+import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.ExceptionEvent;
+import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.FileProcessingEvent;
+import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.ProcessingEvent;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
@@ -961,9 +961,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         configuration.setParameter(Prop.ROOT_MOSAIC_DIR, mosaicSource.getAbsolutePath());
         
         // run the walker and collect information
-        ImageMosaicWalker walker = new ImageMosaicWalker(configuration);
-        walker.setFileFilter(filter);
-        walker.addProcessingEventListener(new ImageMosaicWalker.ProcessingEventListener() {
+        ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
+        final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration,
+                eventHandler);
+        // build the index
+        ImageMosaicDirectoryWalker walker = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler,filter);
+        eventHandler.addProcessingEventListener(new ImageMosaicEventHandlers.ProcessingEventListener() {
             
             @Override
             public void getNotification(ProcessingEvent event) {

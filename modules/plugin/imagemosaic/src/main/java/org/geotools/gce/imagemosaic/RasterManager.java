@@ -962,31 +962,33 @@ public class RasterManager {
 
     private void initDomains(MosaicConfigurationBean configuration) throws IOException {
         if (typeName != null) {
+
             final SimpleFeatureType schema = granuleCatalog.getType(typeName);
+            if (schema != null) {
+                // additional domain attributes
+                final String additionalDomainConfig = configuration.getAdditionalDomainAttributes();
+                if (additionalDomainConfig != null && domainsManager == null) {
+                    domainsManager = new DomainManager(additionalDomainConfig, schema);
+                    dimensionDescriptors.addAll(domainsManager.dimensions);
+                }
 
-            // additional domain attributes
-            final String additionalDomainConfig = configuration.getAdditionalDomainAttributes();
-            if (additionalDomainConfig != null && domainsManager == null) {
-                domainsManager = new DomainManager(additionalDomainConfig, schema);
-                dimensionDescriptors.addAll(domainsManager.dimensions);
-            }
+                // time attribute
+                final String timeDomain = configuration.getTimeAttribute();
+                if (timeDomain != null && timeDomainManager == null) {
+                    final HashMap<String, String> init = new HashMap<String, String>();
+                    init.put(Utils.TIME_DOMAIN, timeDomain);
+                    timeDomainManager = new DomainManager(init, schema);
+                    dimensionDescriptors.addAll(timeDomainManager.dimensions);
+                }
 
-            // time attribute
-            final String timeDomain = configuration.getTimeAttribute();
-            if (timeDomain != null && timeDomainManager == null) {
-                final HashMap<String, String> init = new HashMap<String, String>();
-                init.put(Utils.TIME_DOMAIN, timeDomain);
-                timeDomainManager = new DomainManager(init, schema);
-                dimensionDescriptors.addAll(timeDomainManager.dimensions);
-            }
-
-            // elevation attribute
-            final String elevationAttribute = configuration.getElevationAttribute();
-            if (elevationAttribute != null && elevationDomainManager == null) {
-                final HashMap<String, String> init = new HashMap<String, String>();
-                init.put(Utils.ELEVATION_DOMAIN, elevationAttribute);
-                elevationDomainManager = new DomainManager(init, schema);
-                dimensionDescriptors.addAll(elevationDomainManager.dimensions);
+                // elevation attribute
+                final String elevationAttribute = configuration.getElevationAttribute();
+                if (elevationAttribute != null && elevationDomainManager == null) {
+                    final HashMap<String, String> init = new HashMap<String, String>();
+                    init.put(Utils.ELEVATION_DOMAIN, elevationAttribute);
+                    elevationDomainManager = new DomainManager(init, schema);
+                    dimensionDescriptors.addAll(elevationDomainManager.dimensions);
+                }
             }
         }
     }

@@ -2458,9 +2458,10 @@ public final class SDO {
         final int STARTING_OFFSET = STARTING_OFFSET(elemInfo, element);
         final int etype = ETYPE(elemInfo, element);
         final int INTERPRETATION = INTERPRETATION(elemInfo, element);
-
-        if (!(STARTING_OFFSET >= 1) || !(STARTING_OFFSET <= coords.size()))
-            throw new IllegalArgumentException("ELEM_INFO STARTING_OFFSET "+STARTING_OFFSET+" inconsistent with ORDINATES length "+coords.size());
+        final int LENGTH = coords.size()*D(GTYPE); 
+        
+        if (!(STARTING_OFFSET >= 1) || !(STARTING_OFFSET <= LENGTH)) 
+            throw new IllegalArgumentException("Invalid ELEM_INFO STARTING_OFFSET ");
         if (etype != ETYPE.POINT)
             throw new IllegalArgumentException("ETYPE "+etype+" inconsistent with expected POINT");
         if (INTERPRETATION != 1){

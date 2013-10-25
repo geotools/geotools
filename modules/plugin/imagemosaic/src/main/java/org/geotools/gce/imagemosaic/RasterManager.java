@@ -41,7 +41,9 @@ import java.util.logging.Logger;
 
 import javax.media.jai.ImageLayout;
 
+
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -54,7 +56,9 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.Hints;
+import org.geotools.feature.collection.AbstractFeatureVisitor;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.feature.visitor.MaxVisitor;
@@ -82,6 +86,8 @@ import org.geotools.util.Range;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridEnvelope;
+import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
@@ -900,7 +906,7 @@ public class RasterManager {
             granuleCatalog = parentReader.granuleCatalog; 
             this.coverageFactory = parentReader.getGridCoverageFactory();
             this.coverageIdentifier = configuration != null ? configuration.getName() : ImageMosaicReader.UNSPECIFIED;
-            this.pathType = parentReader.pathType;
+            this.pathType = configuration.getCatalogConfigurationBean().isAbsolutePath() ? PathType.ABSOLUTE : PathType.RELATIVE;
 
             // resolution values
 
@@ -1254,15 +1260,16 @@ public class RasterManager {
             granuleCatalog.removeGranules(query);
         }
     }
-    
+
     /**
      * Create a store for the coverage related to this {@link RasterManager} using the 
      * provided schema
+     * @param forceDelete 
      *
      * @param indexSchema
      * @throws IOException
      */
-    public void removeStore (String typeName) throws IOException {
+    public void removeStore (String typeName, boolean forceDelete) throws IOException {
         Utilities.ensureNonNull("typeName", typeName);
         if (typeName != null) {
             // Preliminar granules removal...
@@ -1270,9 +1277,37 @@ public class RasterManager {
             // still contain some granules before allowing for a removal??
             final Query query = new Query(typeName);
             query.setFilter(Filter.INCLUDE);
+            if (forceDelete) {
+                deleteGranulesFromDisk(query);
+            }
+            
             granuleCatalog.removeGranules(query);
             granuleCatalog.removeType(typeName);
         }
+    }
+
+    /**
+     * Delete granules from query.
+     * @param query
+     * @throws IOException
+     */
+    private void deleteGranulesFromDisk(Query query) throws IOException {
+        final SimpleFeatureCollection collection = granuleCatalog.getGranules(query);
+        
+        collection.accepts(new AbstractFeatureVisitor() {
+            public void visit(Feature feature) {
+                if (feature instanceof SimpleFeature) {
+                    // get the feature
+                    final SimpleFeature sf = (SimpleFeature) feature;
+                    final String location = (String) sf.getAttribute(parentReader.locationAttributeName);
+                    URL rasterPath = pathType.resolvePath(DataUtilities.fileToURL(parentReader.parentDirectory).toString(), location);
+                    boolean removed = FileUtils.deleteQuietly(DataUtilities.urlToFile(rasterPath));
+                    if (removed && LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("File: " + rasterPath + " has been removed:");
+                    }
+                }
+            }
+        }, null);
     }
 
     public GranuleSource getGranuleSource(final boolean readOnly, final Hints hints) {

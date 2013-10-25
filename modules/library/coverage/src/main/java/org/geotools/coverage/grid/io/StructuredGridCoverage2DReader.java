@@ -59,7 +59,7 @@ public interface StructuredGridCoverage2DReader extends GridCoverage2DReader {
     /**
      * removes a granule store for the specified coverageName
      */
-    boolean removeCoverage(String coverageName) throws IOException, UnsupportedOperationException;
+    boolean removeCoverage(String coverageName, boolean forceDelete) throws IOException, UnsupportedOperationException;
     
     /**
      * Harvests the specified source into the reader. Depending on the implementation, the original source

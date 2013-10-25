@@ -979,6 +979,31 @@ public abstract class SQLDialect {
     }
 
     /**
+     * Callback which executes before a table is about to be dropped.
+     * <p>
+     * This base implementation does nothing, subclasses should override as need be.
+     * </p>
+     * @param schemaName The database schema containing the table.
+     * @param featureType The featureType/table being dropped.
+     * @param cx The database connection.
+     */
+    public void preDropTable(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {
+    }
+
+    /**
+     * Callback which executes after a table has been dropped.
+     *
+     * <p>
+     * This base implementation does nothing, subclasses should override as need be.
+     * </p>
+     * @param schemaName The database schema containing the table.
+     * @param featureType The featureType/table being dropped.
+     * @param cx The database connection.
+     */
+    public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {
+    }
+
+    /**
      * Controls whether keys are looked up post or pre insert.
      * <p>
      * When a row is inserted into a table, and a key is automatically generated

@@ -598,7 +598,18 @@ public abstract class ContentDataStore implements DataStore {
 
         return entry;
     }
-    
+
+    /**
+     * Helper method to remove an entry from the cached entry map.
+     *
+     * @param name The name of the entry.
+     */
+    final protected void removeEntry(Name name) {
+        if (entries.containsKey(name)) {
+            entries.remove(name);
+        }
+    }
+
     /**
      * Creates a set of qualified names corresponding to the types that the
      * datastore provides.
@@ -687,5 +698,19 @@ public abstract class ContentDataStore implements DataStore {
      */
     public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
         updateSchema(typeName.getLocalPart(), featureType);
+    }
+
+    /**
+     * @see DataAccess#removeSchema(Name)
+     */
+    public void removeSchema(Name typeName) throws IOException {
+        throw new UnsupportedOperationException("Schema removal not supported");
+    }
+
+    /**
+     * @see DataStore#removeSchema(String)
+     */
+    public void removeSchema(String typeName) throws IOException {
+        throw new UnsupportedOperationException("Schema removal not supported");
     }
 }

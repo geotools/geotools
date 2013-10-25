@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic.catalog.oracle;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.geotools.data.DataStore;

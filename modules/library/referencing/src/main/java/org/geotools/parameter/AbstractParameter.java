@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
@@ -64,6 +66,11 @@ public abstract class AbstractParameter extends Formattable
     final GeneralParameterDescriptor descriptor;
 
     /**
+     * The hints Map<String, String> of this parameter or group of parameters.
+     */
+    Map<String, String> hints;
+    
+    /**
      * Constructs a parameter value from the specified descriptor.
      *
      * @param descriptor The abstract definition of this parameter or group of parameters.
@@ -78,6 +85,18 @@ public abstract class AbstractParameter extends Formattable
      */
     public GeneralParameterDescriptor getDescriptor() {
         return descriptor;
+    }
+
+    /**
+     * Returns the hints Map<String, String> of this parameter or group of parameters.
+     * 
+     * @return the hints
+     */
+    public Map<String, String> getHints() {
+        if (hints == null) {
+            hints = new HashMap<String,String>();
+        }
+        return hints;
     }
 
     /**

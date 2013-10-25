@@ -9,6 +9,8 @@
  */
 package org.opengis.parameter;
 
+import java.util.Map;
+
 import org.opengis.util.Cloneable;
 import org.opengis.annotation.UML;
 
@@ -43,4 +45,11 @@ public interface GeneralParameterValue extends Cloneable {
      * @return A copy of this parameter value or group.
      */
     GeneralParameterValue clone();
+
+    /**
+     * Returns the hints Map<String, String> of this parameter or group of parameters.
+     * 
+     * @return Map<String, String>
+     */
+    Map<String, String> getHints();
 }

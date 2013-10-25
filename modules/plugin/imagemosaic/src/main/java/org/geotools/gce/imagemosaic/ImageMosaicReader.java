@@ -830,9 +830,24 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     }
 
     @Override
-    public boolean removeCoverage(String coverageName) throws IOException,
-            UnsupportedOperationException {
-        throw new UnsupportedOperationException("Operation currently not implement");
+    public boolean removeCoverage(String coverageName) throws IOException {
+        RasterManager manager = getRasterManager(coverageName);
+        if (manager != null) {
+           manager.removeStore(coverageName);
+           
+           // Should I preserve managers for future re-harvesting or it's ok
+           // to remove them
+           manager.dispose();
+           rasterManagers.remove(coverageName);
+           names.remove(coverageName);
+           if (defaultName == coverageName) {
+               defaultName = names.iterator().next();
+           }
+
+           return true;
+        } else {
+            throw new IOException("No Raster manager have been found for the specified coverageName. " + coverageName);
+        }
     }
     
     @Override

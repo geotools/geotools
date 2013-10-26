@@ -188,7 +188,7 @@ public class DbaseFileTest extends TestCaseSupport {
 
     @Test
     public void testFieldFormatter() throws Exception {
-        DbaseFileWriter.FieldFormatter formatter = new DbaseFileWriter.FieldFormatter(Charset.defaultCharset(), TimeZone.getDefault());
+        DbaseFileWriter.FieldFormatter formatter = new DbaseFileWriter.FieldFormatter(Charset.defaultCharset(), TimeZone.getDefault(), false);
 
         String stringWithInternationChars = "hello " + '\u20ac';
         // if (verbose) {

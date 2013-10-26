@@ -65,9 +65,9 @@ public class SchemaFactoryResolveTest extends TestCase {
     }
     
     public void testCachedPathResolve() throws Exception {
-        File folder = new File(tempFolder.getAbsolutePath() + File.separator
+        File folder = new File(tempFolder + File.separator
                 + "org" + File.separator + "geotools" + File.separator + "xml");
-        folder.mkdirs();
+        assertTrue(folder.mkdirs());
         
         copy("/org/geotools/xml/test.xsd", "cached.xsd", folder);
         copy("/org/geotools/xml/XMLSchema.dtd", "XMLSchema.dtd", folder);

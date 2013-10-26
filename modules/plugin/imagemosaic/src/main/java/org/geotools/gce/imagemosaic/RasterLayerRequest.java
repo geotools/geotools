@@ -160,6 +160,8 @@ class RasterLayerRequest {
 	private List<?> elevation;
 	
 	private Filter filter;
+	
+    private boolean ignoreColorMap = AbstractGridFormat.IGNORE_COLOR_MAP.getDefaultValue();
 
 	/** Sort clause on shapefile attributes.*/
 	private String sortClause;
@@ -168,7 +170,11 @@ class RasterLayerRequest {
 		return elevation;
 	}
 
-	public String getSortClause() {
+    public boolean isIgnoreColorMap() {
+        return ignoreColorMap;
+    }
+
+        public String getSortClause() {
 		return sortClause;
 	}
 
@@ -464,6 +470,10 @@ class RasterLayerRequest {
 	                }
 	            }
 	        }	
+            // ignore the colormap (false by default)
+            if (name.equals(ImageMosaicFormat.IGNORE_COLOR_MAP.getName())) {
+                ignoreColorMap = value != null ? (Boolean) value : false;
+            }
     	}
 		
 	}
@@ -736,7 +746,15 @@ class RasterLayerRequest {
             filter = (Filter) value;
             return;
         }            
-
+        // //
+        //
+        // ignore the colormap (false by default)
+        //
+        // //
+        if (name.equals(ImageMosaicFormat.IGNORE_COLOR_MAP.getName())) {
+            final Object value = param.getValue();
+            ignoreColorMap = value != null ? (Boolean) value : false;
+        }
     }
 
     /**

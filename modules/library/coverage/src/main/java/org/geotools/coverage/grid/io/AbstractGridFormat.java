@@ -192,6 +192,11 @@ public abstract class AbstractGridFormat implements Format {
     public static final ParameterDescriptor<Color> BACKGROUND_COLOR = new DefaultParameterDescriptor<Color>(
                 "BackgroundColor", Color.class, null, null);
 
+    /** Can be used to ignore the ColorMap if set to true. (Default is: false) */
+    public static final ParameterDescriptor<Boolean> IGNORE_COLOR_MAP = new DefaultParameterDescriptor<Boolean>(
+                "IGNORE_COLOR_MAP", Boolean.class, new Boolean[] {
+                                Boolean.TRUE, Boolean.FALSE }, Boolean.FALSE);
+
         /**
 	 * @see org.opengis.coverage.grid.Format#getName()
 	 */

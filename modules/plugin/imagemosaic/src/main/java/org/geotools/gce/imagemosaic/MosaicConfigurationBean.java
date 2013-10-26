@@ -157,7 +157,8 @@ public class MosaicConfigurationBean {
 	public void setExpandToRGB(final boolean expandToRGB) {
 		this.expandToRGB = expandToRGB;
 	}
-	public String getName() {
+
+        public String getName() {
 		return name;
 	}
 	public void setName(final String name) {

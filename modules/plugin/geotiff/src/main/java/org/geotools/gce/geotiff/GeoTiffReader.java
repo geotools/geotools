@@ -454,6 +454,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 		Color inputTransparentColor=null;
 		OverviewPolicy overviewPolicy=null;
 		int[] suggestedTileSize=null;
+        boolean ignoreColorMap = AbstractGridFormat.IGNORE_COLOR_MAP.getDefaultValue();
 		if (params != null) {
 
 			//
@@ -492,7 +493,12 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                                                 }
                                             }
                                             continue;
-                                        }                                               
+                                        }
+                                        if (name.equals(AbstractGridFormat.IGNORE_COLOR_MAP.getName())) {
+                                            Boolean icm=(Boolean)param.getValue();
+                                            ignoreColorMap=icm!=null?icm.booleanValue():ignoreColorMap;
+                                            continue;
+                                        }
 				}
 			}
 		}
@@ -547,6 +553,14 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 		if(inputTransparentColor!=null){
 		    coverageRaster= new ImageWorker(coverageRaster).setRenderingHints(newHints).makeColorTransparent(inputTransparentColor).getRenderedOperation();
 		}
+		
+        //
+        // IGNORE THE COLORMAP
+        //
+        if (ignoreColorMap) {
+            coverageRaster = new ImageWorker(coverageRaster).ignoreColorMap()
+                    .getRenderedOperation();
+        }
 		
 		//
 		// BUILDING COVERAGE

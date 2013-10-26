@@ -21,6 +21,7 @@ import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
+import java.awt.PageAttributes.ColorType;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -103,6 +104,7 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ColorUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.logging.Logging;
+import org.jaitools.imageutils.ImageLayout2;
 
 import com.sun.imageio.plugins.jpeg.JPEGImageWriterSpi;
 import com.sun.imageio.plugins.png.PNGImageWriter;
@@ -1212,6 +1214,41 @@ public class ImageWorker {
         return forceComponentColorModel(false);
     }
     
+    /**
+     * If the source image color model is an {@link IndexColorModel} it will transform the image using a {@link ComponentColorModel} with
+     * {@link ColorSpace#CS_GRAY}
+     * 
+     * @return this {@link ImageWorker}.
+     * @throws IOException If the image, ColorModel or SampleModel are null
+     * @since 8.8
+     */
+    public final ImageWorker ignoreColorMap() throws IOException {
+        if (image == null) {
+            throw new IOException("image is null");
+        }
+        final ColorModel cm = image.getColorModel();
+        if (cm == null) {
+            throw new IOException("image has null color model");
+        }
+        final SampleModel sm = image.getSampleModel();
+        if (sm == null) {
+            throw new IOException("image has null sample model");
+        }
+        if (cm instanceof IndexColorModel) {
+            final RenderingHints newHints = getRenderingHints();
+            final ImageLayout layout = new ImageLayout2();
+
+            final ColorModel newCm = new ComponentColorModel(
+                    ColorSpace.getInstance(ColorSpace.CS_GRAY), false,
+                    false, Transparency.OPAQUE, cm.getTransferType());
+
+            layout.setColorModel(newCm);
+            newHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+            image = FormatDescriptor.create(image, sm.getDataType(), newHints);
+        }
+        return this;
+    }
+
     /**
      * Reformats the {@linkplain ColorModel color model} to a
      * {@linkplain ComponentColorModel component color model} preserving

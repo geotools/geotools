@@ -52,6 +52,7 @@ import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.RasterFactory;
+import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.BandMergeDescriptor;
 import javax.media.jai.operator.ConstantDescriptor;
 
@@ -716,6 +717,51 @@ public final class ImageWorkerTest {
         assertTrue  (     image.getColorModel() instanceof ComponentColorModel);         
         
         
+    }
+    
+    /**
+     * Testing {@link ImageWorker#ignoreColorMap()}
+     * 
+     * @throws IOException If an error occured while writting the image.
+     */
+    @Test
+    public void testIgnoreColorMap() throws IOException {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+
+        // /////////////////////////////////////////////////////////////////////
+        // Check conversion from a paletted image to ComponentColorModel
+        // Get the image of the world
+        final ImageWorker worker = new ImageWorker(sstImage);
+        show(worker, "Input file");
+
+        // before
+        assertTrue(worker.isIndexed());
+        assertTrue(worker.isColorSpaceRGB());
+        assertFalse(worker.isColorSpaceGRAYScale());
+
+        worker.setImage(worker.ignoreColorMap().getRenderedImage());
+
+        // after
+        assertFalse(worker.isIndexed());
+        assertFalse(worker.isColorSpaceRGB());
+        assertTrue(worker.isColorSpaceGRAYScale());
+
+        // /////////////////////////////////////////////////////////////////////
+        // check transparency and alpha
+        worker.setImage(getSyntheticTranslucentIndexed());
+
+        ColorModel colorModel = worker.getRenderedImage().getColorModel();
+
+        // before
+        assertTrue(colorModel.hasAlpha());
+        assertEquals(colorModel.getTransparency(), Transparency.TRANSLUCENT);
+
+        colorModel = worker.ignoreColorMap().getRenderedImage().getColorModel();
+
+        // after
+        assertFalse(colorModel.hasAlpha());
+        assertEquals(colorModel.getTransparency(), Transparency.OPAQUE);
+
     }
     
     /**

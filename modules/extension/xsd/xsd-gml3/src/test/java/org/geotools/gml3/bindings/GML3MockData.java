@@ -36,7 +36,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -81,6 +80,23 @@ public class GML3MockData {
 
         Element pos = element(qName("pos"), document, point);
         pos.appendChild(document.createTextNode("1.0 2.0 "));
+
+        return point;
+    }
+    
+    public static Element point3D(Document document, Node parent) {
+        return point3D(document, parent, true);
+    }
+    
+    public static Element point3D(Document document, Node parent, boolean addDimension) {
+        Element point = element(GML.Point, document, parent);
+        point.setAttribute("srsName", "urn:x-ogc:def:crs:EPSG:6.11.2:4326");
+        if(addDimension) {
+            point.setAttribute("srsDimension", "3");
+        }
+
+        Element pos = element(qName("pos"), document, point);
+        pos.appendChild(document.createTextNode("1.0 2.0 10.0"));
 
         return point;
     }
@@ -185,11 +201,39 @@ public class GML3MockData {
 
         return lineString;
     }
+    
+    public static Element lineStringWithPos3D(Document document, Node parent) {
+        Element lineString = element(qName("LineString"), document, parent);
+        lineString.setAttribute("srsDimension", "3");
+
+        Element pos = element(qName("pos"), document, lineString);
+        pos.appendChild(document.createTextNode("1.0 2.0 10.0"));
+
+        pos = element(qName("pos"), document, lineString);
+        pos.appendChild(document.createTextNode("3.0 4.0 20.0"));
+        
+        return lineString;
+    }
 
     public static Element lineStringWithPosList(Document document, Node parent) {
         Element lineString = element(qName("LineString"), document, parent);
         Element posList = element(qName("posList"), document, lineString);
         posList.appendChild(document.createTextNode("1.0 2.0 3.0 4.0"));
+
+        return lineString;
+    }
+    
+    public static Element lineStringWithPosList3D(Document document, Node parent) {
+        return lineStringWithPosList3D(document, parent, true);
+    }
+    
+    public static Element lineStringWithPosList3D(Document document, Node parent, boolean addSrsDimension) {
+        Element lineString = element(qName("LineString"), document, parent);
+        if(addSrsDimension) {
+            lineString.setAttribute("srsDimension", "3");
+        }
+        Element posList = element(qName("posList"), document, lineString);
+        posList.appendChild(document.createTextNode("1.0 2.0 10.0 3.0 4.0 20.0"));
 
         return lineString;
     }
@@ -238,6 +282,27 @@ public class GML3MockData {
 
         return linearRing;
     }
+    
+    public static Element linearRingWithPos3D(Document document, Node parent, boolean addSrsDimension) {
+        Element linearRing = element(qName("LinearRing"), document, parent);
+        if(addSrsDimension) {
+            linearRing.setAttribute("srsDimension", "3");
+        }
+
+        Element pos = element(qName("pos"), document, linearRing);
+        pos.appendChild(document.createTextNode("1.0 2.0 10.0"));
+
+        pos = element(qName("pos"), document, linearRing);
+        pos.appendChild(document.createTextNode("3.0 4.0 20.0"));
+
+        pos = element(qName("pos"), document, linearRing);
+        pos.appendChild(document.createTextNode("5.0 6.0 30.0"));
+
+        pos = element(qName("pos"), document, linearRing);
+        pos.appendChild(document.createTextNode("1.0 2.0 10.0"));
+
+        return linearRing;
+    }
 
     public static Element linearRingWithPosList(Document document, Node parent) {
         Element linearRing = element(qName("LinearRing"), document, parent);
@@ -246,6 +311,20 @@ public class GML3MockData {
 
         linearRing.appendChild(posList);
         posList.appendChild(document.createTextNode("1.0 2.0 3.0 4.0 5.0 6.0 1.0 2.0"));
+
+        return linearRing;
+    }
+    
+    public static Element linearRingWithPosList3D(Document document, Node parent, boolean addSrsDimension) {
+        Element linearRing = element(qName("LinearRing"), document, parent);
+        if(addSrsDimension) {
+            linearRing.setAttribute("srsDimension", "3");
+        }
+
+        Element posList = element(qName("posList"), document, linearRing);
+
+        linearRing.appendChild(posList);
+        posList.appendChild(document.createTextNode("1.0 2.0 10.0 3.0 4.0 20.0 5.0 6.0 30.0 1.0 2.0 10.0"));
 
         return linearRing;
     }
@@ -288,6 +367,10 @@ public class GML3MockData {
         return polygonWithPosList(document,parent,qName("Polygon"),false); 
     }
     
+    public static Element polygonWithPosList3D(Document document, Node parent) {
+        return polygonWithPosList3D(document,parent,qName("Polygon"),false); 
+    }
+    
     public static Element polygon(Document document, Node parent, QName name, boolean withInterior) {
         Element polygon = element(name, document, parent);
 
@@ -302,6 +385,25 @@ public class GML3MockData {
         return polygon;
     }
     
+    public static Element polygon3D(Document document, Node parent, boolean addSrsDimension) {
+        return polygonWithPos3D(document, parent, qName("Polygon"), true);
+    }
+    
+    public static Element polygonWithPos3D(Document document, Node parent, QName name, boolean addSrsDimension) {
+        Element polygon = element(name, document, parent);
+        if(addSrsDimension) {
+            polygon.setAttribute("srsDimension", "3");
+        }
+
+        Element exterior = element(qName("exterior"), document, polygon);
+        linearRingWithPos3D(document, exterior, false);
+        
+        Element interior = element(qName("interior"), document, polygon);
+        linearRingWithPos3D(document, interior, false);
+
+        return polygon;
+    }
+    
     public static Element polygonWithPosList(Document document, Node parent, QName name, boolean withInterior) {
         Element polygon = element(name, document, parent);
 
@@ -312,6 +414,25 @@ public class GML3MockData {
             Element interior = element(qName("interior"), document, polygon);
             linearRingWithPosList(document,interior);
         }
+
+        return polygon;
+    }
+    
+    public static Element polygonWithPosList3D(Document document, Node parent, boolean addSrsDimension) {
+        return polygonWithPosList3D(document, parent, qName("Polygon"), true);
+    }
+    
+    public static Element polygonWithPosList3D(Document document, Node parent, QName name, boolean addSrsDimension) {
+        Element polygon = element(name, document, parent);
+        if(addSrsDimension) {
+            polygon.setAttribute("srsDimension", "3");
+        }
+
+        Element exterior = element(qName("exterior"), document, polygon);
+        linearRingWithPosList3D(document, exterior, false);
+        
+        Element interior = element(qName("interior"), document, polygon);
+        linearRingWithPosList3D(document, interior, false);
 
         return polygon;
     }
@@ -337,6 +458,25 @@ public class GML3MockData {
 
         return multiPoint;
     }
+    
+    public static Element multiPoint3D(Document document, Node parent) {
+        Element multiPoint = element(qName("MultiPoint"), document, parent);
+        multiPoint.setAttribute("srsDimensions", "3");
+
+        // 2 pointMember elements
+        Element pointMember = element(qName("pointMember"), document, multiPoint);
+        point3D(document, pointMember, false);
+
+        pointMember = element(qName("pointMember"), document, multiPoint);
+        point3D(document, pointMember, false);
+
+        //1 pointMembers element with 2 members
+        Element pointMembers = element(qName("pointMembers"), document, multiPoint);
+        point3D(document, pointMembers, false);
+        point3D(document, pointMembers, false);
+
+        return multiPoint;
+    }
 
     public static MultiLineString multiLineString() {
         return gf.createMultiLineString(new LineString[] { lineString(), lineString() });
@@ -350,6 +490,19 @@ public class GML3MockData {
 
         lineStringMember = element(qName("lineStringMember"), document, multiLineString);
         lineString(document, lineStringMember);
+
+        return multiLineString;
+    }
+    
+    public static Element multiLineString3D(Document document, Node parent) {
+        Element multiLineString = element(qName("MultiLineString"), document, parent);
+        multiLineString.setAttribute("srsDimension", "3");
+
+        Element lineStringMember = element(qName("lineStringMember"), document, multiLineString);
+        lineStringWithPosList3D(document, lineStringMember, false);
+
+        lineStringMember = element(qName("lineStringMember"), document, multiLineString);
+        lineStringWithPosList3D(document, lineStringMember, false);
 
         return multiLineString;
     }
@@ -392,6 +545,21 @@ public class GML3MockData {
 
         return multiPolygon;
     }
+    
+    public static Element multiPolygon3D(Document document, Node parent) {
+        Element multiPolygon = element(qName("MultiPolygon"), document, parent);
+        multiPolygon.setAttribute("srsDimension", "3");
+        
+
+        Element polygonMember = element(qName("polygonMember"), document, multiPolygon);
+        polygon3D(document, polygonMember, false);
+
+        polygonMember = element(qName("polygonMember"), document, multiPolygon);
+        polygon3D(document, polygonMember, false);
+
+        return multiPolygon;
+    }
+
     
     public static Element multiSurface(Document document, Node parent) {
         return multiSurface(document, parent, true);

@@ -32,12 +32,23 @@ import com.vividsolutions.jts.geom.Point;
  * @source $URL$
  */
 public class PointTypeBindingTest extends GML3TestSupport {
+    
     public void testPos() throws Exception {
         GML3MockData.point(document, document);
 
         Point p = (Point) parse();
         assertNotNull(p);
         assertEquals(new Coordinate(1d, 2d), p.getCoordinate());
+
+        assertTrue(p.getUserData() instanceof CoordinateReferenceSystem);
+    }
+    
+    public void testPos3D() throws Exception {
+        GML3MockData.point3D(document, document);
+
+        Point p = (Point) parse();
+        assertNotNull(p);
+        assertTrue(new Coordinate(1d, 2d, 10d).equals3D(p.getCoordinate()));
 
         assertTrue(p.getUserData() instanceof CoordinateReferenceSystem);
     }

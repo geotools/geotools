@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.DirectPosition3D;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
@@ -98,11 +99,7 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        int crsDimension = 2;
-        Node dimensions = (Node) node.getAttribute("srsDimension");
-        if (dimensions != null) {
-            crsDimension = ((Number) dimensions.getValue()).intValue();
-        }
+        int crsDimension = GML3ParsingUtils.dimensions(node);
         CoordinateReferenceSystem crs = GML3ParsingUtils.crs(node);
 
         // double[] values = (double[]) value;
@@ -132,7 +129,7 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
                 dps[i] = new DirectPosition1D(crs);
                 dps[i].setOrdinate(0, values[i].doubleValue());
             }
-        } else {
+        } else if(dim == 2){
             int ordinateIdx = 0;
             // HACK: not sure if its correct to assign ordinates 0 to 0 and 1 to
             // 1 or it should be inferred from the crs
@@ -142,6 +139,18 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
                 dps[coordIndex].setOrdinate(1, values[ordinateIdx + 1].doubleValue());
                 ordinateIdx += crsDimension;
             }
+        } else {
+            int ordinateIdx = 0;
+            // HACK: not sure if its correct to assign ordinates 0 to 0 and 1 to
+            // 1 or it should be inferred from the crs
+            for (int coordIndex = 0; coordIndex < coordCount; coordIndex++) {
+                dps[coordIndex] = new DirectPosition3D(crs); 
+                dps[coordIndex].setOrdinate(0, values[ordinateIdx].doubleValue());
+                dps[coordIndex].setOrdinate(1, values[ordinateIdx + 1].doubleValue());
+                dps[coordIndex].setOrdinate(2, values[ordinateIdx + 2].doubleValue());
+                ordinateIdx += crsDimension;
+            }
+
         }
 
         return dps;

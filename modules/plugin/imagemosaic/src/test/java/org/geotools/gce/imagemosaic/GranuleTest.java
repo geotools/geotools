@@ -56,8 +56,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Testing {@link GranuleDescriptor} class.
  * 

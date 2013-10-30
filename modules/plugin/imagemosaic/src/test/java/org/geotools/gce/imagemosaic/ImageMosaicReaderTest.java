@@ -77,7 +77,6 @@ import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
-import org.geotools.renderedimage.viewer.RenderedImageBrowser;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;

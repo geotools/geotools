@@ -41,6 +41,8 @@ import java.util.logging.Logger;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.ImageLayout;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -1013,5 +1015,20 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     public List<DimensionDescriptor> getDimensionDescriptors(String coverageName) throws IOException {
             RasterManager manager = getRasterManager(coverageName);
             return manager.getDimensionDescriptors();
+    }
+
+    @Override
+    public void delete() throws IOException {
+        // TODO: Should we make it synchronized?
+        
+        String[] coverageNames = getGridCoverageNames();
+        for (String coverageName: coverageNames) {
+            removeCoverage(coverageName, true);
+        }
+        
+        final String[] list = parentDirectory.list();
+        for (String file: list) {
+            FileUtils.deleteQuietly(new File(file));
+        }
     }
 }

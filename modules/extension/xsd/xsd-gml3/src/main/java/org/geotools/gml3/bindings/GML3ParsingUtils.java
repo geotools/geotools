@@ -89,6 +89,27 @@ public class GML3ParsingUtils {
     static CoordinateReferenceSystem crs(Node node) {
         return GML2ParsingUtils.crs(node);
     }
+    
+    /**
+     * Returns the number of dimensions for the specified node, eventually recursing up to find
+     * the parent node that has the indication of the dimensions (normally the top-most geometry
+     * element has it, not the posList). Returns 2 if no srsDimension attribute could be found. 
+     * 
+     * @param node
+     * @return
+     */
+    public static int dimensions(Node node) {
+        Node current = node;
+        while(current != null) {
+            Node dimensions = (Node) current.getAttribute("srsDimension");
+            if (dimensions != null) {
+                return ((Number) dimensions.getValue()).intValue();
+            }
+            current = current.getParent();
+        }
+        
+        return 2;
+    }
 
     static LineString lineString(Node node, GeometryFactory gf, CoordinateSequenceFactory csf) {
         return line(node, gf, csf, false);
@@ -165,4 +186,6 @@ public class GML3ParsingUtils {
 
         return null;
     }
+
+    
 }

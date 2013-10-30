@@ -21,8 +21,10 @@ import org.geotools.gml3.GML3TestSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.Point;
 
 
 /**
@@ -31,6 +33,7 @@ import com.vividsolutions.jts.geom.MultiPoint;
  * @source $URL$
  */
 public class MultiPointTypeBindingTest extends GML3TestSupport {
+    
     public void test() throws Exception {
         GML3MockData.multiPoint(document, document);
 
@@ -38,6 +41,17 @@ public class MultiPointTypeBindingTest extends GML3TestSupport {
         assertNotNull(multiPoint);
 
         assertEquals(4, multiPoint.getNumPoints());
+    }
+    
+    public void test3D() throws Exception {
+        GML3MockData.multiPoint3D(document, document);
+
+        MultiPoint multiPoint = (MultiPoint) parse();
+        assertNotNull(multiPoint);
+
+        assertEquals(4, multiPoint.getNumPoints());
+        Point p = (Point) multiPoint.getGeometryN(0);
+        assertTrue(new Coordinate(1d, 2d, 10d).equals3D(p.getCoordinate()));
     }
 
     public void testEncode() throws Exception {

@@ -27,7 +27,9 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
@@ -624,6 +626,19 @@ public class Crop extends Operation2D {
             }
 
 		    //conserve the input grid to world transformation
+            Map sourceProperties = sourceCoverage.getProperties();
+            Map properties = null;
+            if (sourceProperties != null && !sourceProperties.isEmpty()) {
+                properties = new HashMap(sourceProperties);
+            }
+            if (rasterSpaceROI != null) {
+                if (properties != null) {
+                    properties.put("GC_ROI", rasterSpaceROI); 
+                } else {
+                    properties = Collections.singletonMap("GC_ROI", rasterSpaceROI); 
+                }
+            }
+            
             return new GridCoverageFactory(hints).create(
             		sourceCoverage.getName(), 
             		croppedImage,
@@ -633,10 +648,7 @@ public class Crop extends Operation2D {
 		                    sourceCoverage.getCoordinateReferenceSystem()
 		            ),
                     (GridSampleDimension[]) (actionTaken == 1 ?null :sourceCoverage.getSampleDimensions().clone()),
-                    new GridCoverage[] { sourceCoverage },
-                    rasterSpaceROI != null ?Collections.singletonMap("GC_ROI", rasterSpaceROI) :null
-            
-            );
+                    new GridCoverage[] { sourceCoverage }, properties);
       
 		} catch (TransformException e) {
 			throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP), e);

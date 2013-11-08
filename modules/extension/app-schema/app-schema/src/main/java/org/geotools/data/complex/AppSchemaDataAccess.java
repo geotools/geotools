@@ -667,27 +667,25 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             throws IOException {
         return new MappingFeatureSource(this, getMappingByName(typeName));
     }
-        
-	public Feature findFeature(FeatureId id, Hints hints, AtomicBoolean stopFlag) throws IOException {    	
-    	Feature result = null;
-    	for (Entry<Name, FeatureTypeMapping> mapping: mappings.entrySet()) {
-    		Filter filter = filterFac.id(id);
-    		FeatureCollection<FeatureType, Feature> fCollection = new MappingFeatureSource(this, mapping.getValue()).getFeatures(filter, hints);    		
-    		FeatureIterator<Feature> iterator = fCollection.features();    		
-	    	if (iterator.hasNext()) {
-	    		result = iterator.next();
-	    	}    		
-	    	iterator.close();    		
-	    	if (result != null){
-	    		return result;
-	    	}    		
 
-            synchronized(stopFlag) {
-                if (stopFlag.get()) {
-                	return null;
-                }
+    public Feature findFeature(FeatureId id, Hints hints) throws IOException {
+        for (Entry<Name, FeatureTypeMapping> mapping : mappings.entrySet()) {
+            if (Thread.currentThread().isInterrupted()) {
+                return null;
             }
-    	}    	     	   	
-    	return null;
+            Filter filter = filterFac.id(id);
+            FeatureCollection<FeatureType, Feature> fCollection = new MappingFeatureSource(this,
+                    mapping.getValue()).getFeatures(filter, hints);
+            FeatureIterator<Feature> iterator = fCollection.features();
+            try {
+                if (iterator.hasNext()) {
+                    return iterator.next();
+                }
+            } finally {
+                iterator.close();
+            }
+        }
+        return null;
     }
+
 }

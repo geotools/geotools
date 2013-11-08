@@ -364,24 +364,19 @@ public class DataAccessRegistry implements Repository {
                 + typeNames.toString());
     }
     
-    
-    public Feature findFeature(FeatureId id, Hints hints, AtomicBoolean stopFlag) throws IOException {    	
-    	for (DataAccess<FeatureType, Feature> dataAccess : registry) {
+    public Feature findFeature(FeatureId id, Hints hints) throws IOException {
+        for (DataAccess<FeatureType, Feature> dataAccess : registry) {
+            if (Thread.currentThread().isInterrupted()) {
+                return null;
+            }
             if (dataAccess instanceof AppSchemaDataAccess) {
-                Feature feature = ((AppSchemaDataAccess) dataAccess).findFeature(id, hints, stopFlag);
+                Feature feature = ((AppSchemaDataAccess) dataAccess).findFeature(id, hints);
                 if (feature != null) {
-                	return feature;
-                }
-                synchronized(stopFlag) {
-	                if (stopFlag.get()) {
-	                	return null;
-	                }
+                    return feature;
                 }
             }
         }
-    	return null;
-    	
+        return null;
     }
-      
 
 }

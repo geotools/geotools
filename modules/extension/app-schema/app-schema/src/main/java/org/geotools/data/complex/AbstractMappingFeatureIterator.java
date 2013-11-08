@@ -88,6 +88,11 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     public static final Name XLINK_HREF_NAME = Types.toTypeName(XLINK.HREF);
 
     /**
+     * Milliseconds between polls of resolver thread.
+     */
+    public static final long RESOLVE_TIMEOUT_POLL_INTERVAL = 100;
+
+    /**
      * The mappings for the source and target schemas
      */
     protected FeatureTypeMapping mapping;
@@ -359,39 +364,36 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         }
         return clientProperties;
     }
-    
+
     private class FeatureFinder implements Runnable {
-		private Feature feature = null;
-		private String refId;
-		private Hints hints;
-		public AtomicBoolean stopFlag = new AtomicBoolean(false);
-		
-		public synchronized Feature getFeature() {
-			return feature;
-		}
-		
-		private synchronized void setFeature (Feature feature) {
-			this.feature = feature;
-		}
-		
-		public FeatureFinder (String refId, Hints hints) {
-			this.refId = refId;
-			this.hints = hints;
-		}
-		
-		@Override
-	    public void run() {
-	    	try {
-	    		Feature feature = DataAccessRegistry.getInstance().findFeature(new FeatureIdImpl (refId), hints, stopFlag);
-		    	if (!stopFlag.get()) {
-		    		setFeature(feature);
-		    	}	    		
-			} catch (IOException e) { // ignore, no resolve
-			}    		
-	    }
-	};
-	
-	
+
+        private Feature feature = null;
+
+        private String refId;
+
+        private Hints hints;
+
+        public Feature getFeature() {
+            return feature;
+        }
+
+        public FeatureFinder(String refId, Hints hints) {
+            this.refId = refId;
+            this.hints = hints;
+        }
+
+        @Override
+        public void run() {
+            try {
+                feature = DataAccessRegistry.getInstance().findFeature(new FeatureIdImpl(refId),
+                        hints);
+            } catch (IOException e) {
+                // ignore, no resolve
+            }
+        }
+
+    };
+
     protected static String referenceToIdentifier(String reference) {
         
         //TODO: support custom rules in mapping file
@@ -411,19 +413,23 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         return lastPart;
     }
     
-    protected Attribute setAttributeContent(Attribute target, StepList xpath, Object value, String id, AttributeType targetNodeType, boolean isXlinkRef, Expression sourceExpression, Object source, final Map<Name, Expression> clientProperties, boolean ignoreXlinkHref){
-    	Attribute instance = null;
-    	
-    	Map<Name, Expression> properties = new HashMap<Name, Expression>(clientProperties);
-    	
-    	if (ignoreXlinkHref) {
-    	      properties.remove(XLINK_HREF_NAME);
-    	}
-    	
+    protected Attribute setAttributeContent(Attribute target, StepList xpath, Object value,
+            String id, AttributeType targetNodeType, boolean isXlinkRef,
+            Expression sourceExpression, Object source,
+            final Map<Name, Expression> clientProperties, boolean ignoreXlinkHref) {
+        Attribute instance = null;
+
+        Map<Name, Expression> properties = new HashMap<Name, Expression>(clientProperties);
+
+        if (ignoreXlinkHref) {
+            properties.remove(XLINK_HREF_NAME);
+        }
+
         if (properties.containsKey(XLINK_HREF_NAME) && resolveDepth > 0) {
             // local resolve
 
-            String refid = referenceToIdentifier(getValue(properties.get(XLINK_HREF_NAME), source).toString());
+            String refid = referenceToIdentifier(getValue(properties.get(XLINK_HREF_NAME), source)
+                    .toString());
 
             if (refid != null) {
 
@@ -438,38 +444,44 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
 
                 // let's try finding it
                 FeatureFinder finder = new FeatureFinder(refid, hints);
+                // this will be null if joining or sleeping is interrupted
+                Feature foundFeature = null;
                 Thread thread = new Thread(finder);
-                long currentTime = System.currentTimeMillis();
+                long startTime = System.currentTimeMillis();
                 thread.start();
-                while (thread.isAlive()
-                        && (System.currentTimeMillis() - currentTime) / 1000 < resolveTimeOut) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException t) {
+                try {
+                    while (thread.isAlive()
+                            && (System.currentTimeMillis() - startTime) / 1000 < resolveTimeOut) {
+                        Thread.sleep(RESOLVE_TIMEOUT_POLL_INTERVAL);
                     }
-                }
-                synchronized (finder.stopFlag) {
-                    finder.stopFlag.set(true);
+                    thread.interrupt();
+                    // joining ensures synchronisation
+                    thread.join();
+                    foundFeature = finder.getFeature();
+                } catch (InterruptedException e) {
+                    // clean up as best we can
+                    thread.interrupt();
+                    throw new RuntimeException("Interrupted while resolving resource " + refid);
                 }
 
-                if (finder.getFeature() != null) {
+                if (foundFeature != null) {
                     // found it
-
                     instance = xpathAttributeBuilder.set(target, xpath,
-                            Collections.singletonList(finder.getFeature()), id, targetNodeType,
-                            false, sourceExpression);
+                            Collections.singletonList(foundFeature), id, targetNodeType, false,
+                            sourceExpression);
                     properties.remove(XLINK_HREF_NAME);
                 }
             }
 
         }
-    	
-    	if (instance == null) {
-    		 instance = xpathAttributeBuilder.set(target, xpath, value, id, targetNodeType, false, sourceExpression);
-    	}
-    	
-        setClientProperties(instance, source, properties);     
-        
+
+        if (instance == null) {
+            instance = xpathAttributeBuilder.set(target, xpath, value, id, targetNodeType, false,
+                    sourceExpression);
+        }
+
+        setClientProperties(instance, source, properties);
+
         return instance;
     }
     

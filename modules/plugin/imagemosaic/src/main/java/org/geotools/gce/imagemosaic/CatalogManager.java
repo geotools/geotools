@@ -99,6 +99,17 @@ public class CatalogManager {
      * @throws IOException
      */
     public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration) throws IOException {
+        return createCatalog(runConfiguration, true);
+    }
+    
+    /**
+     * Create or load a GranuleCatalog on top of the provided configuration
+     * @param runConfiguration
+     * @param create if true create a new catalog, otherwise it is loaded
+     * @return
+     * @throws IOException
+     */
+    public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration, boolean create) throws IOException {
         //
         // create the index
         //
@@ -111,7 +122,7 @@ public class CatalogManager {
         // GranuleCatalog catalog = null;
         if (Utils.checkFileReadable(datastoreProperties)) {
             // read the properties file
-            catalog = createGranuleCatalogFromDatastore(parent, datastoreProperties, true,runConfiguration.getHints());
+            catalog = createGranuleCatalogFromDatastore(parent, datastoreProperties, create,runConfiguration.getHints());
         } else {
 
             // we do not have a datastore properties file therefore we continue with a shapefile datastore
@@ -124,7 +135,7 @@ public class CatalogManager {
             params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, Boolean.TRUE);
             params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
             params.put(Utils.Prop.LOCATION_ATTRIBUTE, runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE));
-            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, true, Utils.SHAPE_SPI,runConfiguration.getHints());
+            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, create, Utils.SHAPE_SPI,runConfiguration.getHints());
             MultiLevelROIProvider roi = MultiLevelROIProviderFactory.createFootprintProvider(parent);
             catalog.setMultiScaleROIProvider(roi);
         }

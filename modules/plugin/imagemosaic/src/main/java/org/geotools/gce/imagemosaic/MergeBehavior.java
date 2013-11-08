@@ -34,10 +34,14 @@ import org.geotools.image.ImageWorker;
 import org.jaitools.imageutils.ImageLayout2;
 
 /**
+ * This class is responsible for implementing the strategies for the mosaicking which can be
+ * a flat merge of band-stacking merge.
+ * 
  * @author Simone Giannecchini, GeoSolutions
  * TODO check more conditions to use {@link MosaicDescriptor}
  */
 public enum MergeBehavior {
+    
     STACK {
         @Override
         public RenderedImage process(

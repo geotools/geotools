@@ -19,7 +19,7 @@ package org.geotools.renderer.lite;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.awt.image.WritableRaster;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -34,8 +34,12 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.GraphicImpl;
 import org.geotools.styling.GraphicLegend;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
+import org.geotools.test.TestData;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.referencing.operation.MathTransform;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -59,8 +63,76 @@ public class StyledShapePainterTest extends TestCase {
             assertEquals("ShapePainter has been asked to paint a null legend!!", e.getMessage());
         }
     }
-
+    
+    @Test
     public void testGraphicLegend() throws Exception {
+        
+        // Load image directly from file, for comparison with painter output
+        final URL imageURL = TestData.getResource(this, "icon64.png");
+        final BufferedImage testImage = ImageIO.read(imageURL);        
+        final int width = testImage.getWidth();
+        final int height = testImage.getHeight();
+        
+        // Get graphic legend from style
+        final Style style = RendererBaseTest.loadStyle(
+                this, "testGraphicLegend.sld");
+        final Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        final GraphicLegend legend = (GraphicLegend) rule.getLegend();
+        
+        // Paint legend using StyledShapePainter
+        final Point point = new GeometryFactory().createPoint(
+                new Coordinate(width / 2, height / 2));
+        final LiteShape2 shape = new LiteShape2(point, null, null, false);
+        
+        int imageType = testImage.getType();
+        if(imageType == BufferedImage.TYPE_CUSTOM) {
+            imageType = BufferedImage.TYPE_INT_RGB;
+        }
+        final BufferedImage paintedImage =
+                new BufferedImage(width, height, imageType);
+        final Graphics2D graphics = paintedImage.createGraphics();
+        final StyledShapePainter painter = new StyledShapePainter();
+        painter.paint(graphics, shape, legend, 1, false);
+        graphics.dispose();
+        
+        // Ensure painted legend matches image from file
+        Assert.assertTrue(imagesIdentical(paintedImage, testImage));
+    }
+    
+    /** Determines whether two buffered images are identical. */
+    private static boolean imagesIdentical(BufferedImage image1,
+                                           BufferedImage image2) {
+        final WritableRaster raster1 = image1.getRaster();
+        final WritableRaster raster2 = image2.getRaster();
+        final int numBands = raster1.getNumBands();
+        if (raster2.getNumBands() != numBands) {
+            return false;
+        }
+        final int width = raster1.getWidth();
+        if (raster2.getWidth() != width) {
+            return false;
+        }
+        final int height = raster1.getHeight();
+        if (raster2.getHeight() != height) {
+            return false;
+        }
+        final int[] pixel1 = new int[numBands];
+        final int[] pixel2 = new int[numBands];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                raster1.getPixel(x, y, pixel1);
+                raster2.getPixel(x, y, pixel2);
+                for (int i = 0; i < numBands; i++) {
+                    if (pixel1[i] != pixel2[i]) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public void testGraphicLegend2() throws Exception {
 
         StyledShapePainter painter = new StyledShapePainter();
         GraphicImpl legend = new GraphicImpl(CommonFactoryFinder.getFilterFactory(GeoTools

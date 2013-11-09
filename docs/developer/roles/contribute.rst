@@ -5,41 +5,51 @@ Anyone can contribute to the GeoTools project by editing the web site, by writin
 
 Initially, newcomers to the project generally participate in an informal role. These types of contributors have no long term responsibility to the project.
 
+Talk first policy
+-----------------
+
+Unless you intend to provide a trivial change (fixing typos in the documentation, easy bugfix with test) the very first thing you
+should do is to subscribe to the `GeoTools developer list <http://docs.geotools.org/latest/developer/communication.html#geotools-devel>`_ and
+explain what you're about to do. This is a very important step:
+  
+  * It lets core developers assess your suggestions and propose alternate/better ways of getting the desired results
+  * It makes it easier to review the pull request/patch as its content are already known and agreed upon
+
 Easy informal code contributions
 --------------------------------
 
 We are happy to accept quick informal patches to existing files. To contribute a new file, please sign a code contribution agreement.
 
 Informal participants can contribute small modifications to the project as a GitHub pull request (preferred) or a patch attached to a JIRA task (or sent to the mailing list as a last resort).
+Regardless of what you want to achieve, there are some common steps to consider:
 
-* pull-request
+* Create a local branch::
 
-  For instructions on submitting a pull request see `Using Pull
-  Requests <https://help.github.com/articles/using-pull-requests>`_ on GitHub.
+   git checkout -b fix_featureLock
 
-  **Please remember to include a test case**.
+* Work on the fix, using commit as needed. **Please remember to always include a test case, most pull requests/patches will be rejected if they don't contain one.**.
 
-* patch
+* Please make sure you're following the `coding conventions <http://docs.geotools.org/latest/developer/conventions/code/style.html>`_, and otherwise avoid any reformats to the existing code, as they make it harder to review your changes. If you find sections not following the coding convetions and you want to amend their formatting, that's fine, please do so in a separate commit/patch from the real code changes.
 
-  #. Create a local branch::
+* Review the work that was done, make sure the changes contain all the files you need, and no other extraneous change (in case you're making a pull request, single commit ones are preferred, you can use ``rebase -i`` to squash multiple commits into one, it's fine to have two commits if one is used to isolate code formatting changes)::
 
-       git checkout -b fix_featureLock
+   git status
 
-  #. Work on the fix, using commit as needed.
+* Rebase the branch from master so you get a nice clean set of changes::
 
-     **Please remember to include a test case**.
+   git pull --rebase master
 
-  #. Review the work that was done::
+* Do a full maven build (with tests) to make sure your fix compiles cleanly::
 
-       git log --pretty=oneline -3
+   mvn clean install -Dall
 
-  #. Rebase the branch from master so you get a nice clean set of changes::
+The next step will depend on your preference between pull request and patch. Mind, pull requests are normally 
+processed faster as the review is easier and we have discussion tools, but a patch is ok as well.
 
-       git pull --rebase master
+* Pull-request: for instructions on submitting a pull request see `Using Pull Requests <https://help.github.com/articles/using-pull-requests>`_ on GitHub.
 
-  #. Do a full maven build (with tests) to make sure your fix compiles cleanly::
+* Patch:
 
-       mvn clean install -Dall
 
   #. Create the patch::
 
@@ -55,10 +65,30 @@ Informal participants can contribute small modifications to the project as a Git
      find someone else competent to review the code and integrate the contribution into the code
      base or provide a request for improvements to the patch.
 
-Large contributions
+Adding a new module
 -------------------
 
-Informal participants can also submit larger contributions (such as those that add new files) following essentially the same process as that just described for small code contributions but also including the formal transfer of the copyright over the contribution to the Open Source Geospatial Foundation (OSGeo).
+You may be reaching out to GeoTools in order to add a new module to the library. That is fine and appreciated, in this case you should follow two extra steps:
+
+* You need to ask for a new community module on the developer mailing list
+* Since you're certainly adding new files, you'll have to sign a contributor agreement (see the "Large contributions" section below).
+
+See the `Creating your own module page <http://docs.geotools.org/latest/developer/procedures/create.html>`_ for more information.
+
+Breaking published API or performing major changes on existing modules
+----------------------------------------------------------------------
+
+Any change involving a break in existing API (e.g., changing an interface, adding abstract methods to an abstract class) and
+any significant change affecting more than one module should go through a formal proposal, that will be discussed and voted
+on the developer mailing list.
+
+Please consult the "proposal procedure page <http://docs.geotools.org/latest/developer/procedures/proposal.html>`_ for more details.
+
+
+Large contributions (new files)
+-------------------------------
+
+Informal participants can also submit larger contributions following essentially the same process as that just described for small code contributions but also including the formal transfer of the copyright over the contribution to the Open Source Geospatial Foundation (OSGeo). A contribution is considered to be "large" if it adds at least one new file to the repository.
 
 Patches submitted to JIRA for large contributions should include the contributor name in the list of authors of the class documentation for any file in which the contributor has made significant changes. That is the contributor's name should be added using the @author javadoc tag.
 

@@ -411,6 +411,11 @@ public class StreamingRenderer implements GTRenderer {
     private PainterThread painterThread;
 
     /**
+     * The meta buffer for the current layer
+     */
+    private int metaBuffer;
+
+    /**
      * Creates a new instance of LiteRenderer without a context. Use it only to
      * gain access to utility methods of this class or if you want to render
      * random feature collections instead of using the map context interface
@@ -1002,11 +1007,11 @@ public class StreamingRenderer implements GTRenderer {
         // if map extent are not already expanded by a constant buffer, try to compute a layer
         // specific one based on stroke widths
         if(getRenderingBuffer() == 0) {
-            int buffer = findRenderingBuffer(styles);
-            if (buffer > 0) {
+            metaBuffer = findRenderingBuffer(styles);
+            if (metaBuffer > 0) {
                 mapArea = expandEnvelope(mapArea, worldToScreenTransform,
-                        buffer);
-                LOGGER.fine("Expanding rendering area by " + buffer 
+                        metaBuffer);
+                LOGGER.fine("Expanding rendering area by " + metaBuffer 
                         + " pixels to consider stroke width");
             }
         }
@@ -1471,7 +1476,7 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         if(!rbe.isEstimateAccurate())
-            LOGGER.warning("Assuming rendering buffer = " + rbe.getBuffer() 
+            LOGGER.fine("Assuming rendering buffer = " + rbe.getBuffer() 
                     + ", but estimation is not accurate, you may want to set a buffer manually");
         
         // the actual amount we have to grow the rendering area by is half of the stroke/symbol sizes
@@ -2761,12 +2766,14 @@ public class StreamingRenderer implements GTRenderer {
                     
                     // clip to the visible area + the size of the symbolizer (with some extra 
                     // to make sure we get no artefacts from polygon new borders)
-                    double size = RendererUtilities.getStyle2DSize(style) + 10;
+                    double size = RendererUtilities.getStyle2DSize(style);
+                    // take into account the meta buffer to try and clip all geometries by the same
+                    // amount
+                    double clipBuffer = Math.max(size / 2, metaBuffer) + 10;
                     Envelope env = new Envelope(screenSize.getMinX(), screenSize.getMaxX(), screenSize.getMinY(), screenSize.getMaxY());
-                    env.expandBy(size);
+                    env.expandBy(clipBuffer);
                     final GeometryClipper clipper = new GeometryClipper(env);
                     Geometry g = clipper.clip(shape.getGeometry(), false);
-                    //System.out.println(g);
                     if(g == null) 
                         continue;
                     if(g != shape.getGeometry()) {

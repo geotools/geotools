@@ -312,12 +312,27 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                             + name;
                         getDataStore().getLogger().log(Level.WARNING, msg, e);
                     }
+                    
+                    // compute the dimension too
+                    int dimension = 2;
+                    try {
+                        if(virtualTable != null) {
+                            srid = virtualTable.getDimension(name);
+                        } else {
+                            dimension = dialect.getGeometryDimension(databaseSchema, tableName, name, cx);
+                        }
+                    } catch(Exception e) {
+                        String msg = "Error occured determing dimension for " + tableName + "."
+                                + name;
+                        getDataStore().getLogger().log(Level.WARNING, msg, e);
+                    }
 
                     ab.setBinding(binding);
                     ab.setName(name);
                     ab.setCRS(crs);
                     if(srid != null)
                         ab.addUserData(JDBCDataStore.JDBC_NATIVE_SRID, srid);
+                    ab.addUserData(Hints.COORDINATE_DIMENSION, dimension);
                     att = ab.buildDescriptor(name, ab.buildGeometryType());
                 } else {
                     //add the attribute

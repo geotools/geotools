@@ -24,6 +24,7 @@ import java.sql.Statement;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.expression.Literal;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -95,7 +96,7 @@ public abstract class BasicSQLDialect extends SQLDialect {
      * they cannot be encoded in WKB and several databases fail to handle them property.
      * Common treatment is to equate them to NULL</p>
      */
-    public abstract void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
+    public abstract void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql)
         throws IOException;
 
     /**

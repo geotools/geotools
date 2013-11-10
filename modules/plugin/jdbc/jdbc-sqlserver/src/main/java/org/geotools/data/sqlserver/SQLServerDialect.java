@@ -48,9 +48,6 @@ import java.util.logging.Level;
  * 
  * @author Justin Deoliveira, OpenGEO
  *
- *
- *
- *
  * @source $URL$
  */
 public class SQLServerDialect extends BasicSQLDialect {
@@ -353,7 +350,6 @@ public class SQLServerDialect extends BasicSQLDialect {
         return null;
     }
     
-    
     @Override
     public Integer getGeometrySRID(String schemaName, String tableName,
             String columnName, Connection cx) throws SQLException {
@@ -397,6 +393,81 @@ public class SQLServerDialect extends BasicSQLDialect {
             dataStore.closeSafe( st );
         }
     }
+    
+    public Integer getGeometryDimensionFromMetadataTable(String schemaName, String tableName,
+            String columnName, Connection cx) throws SQLException {
+        
+        if(geometryMetadataTable == null) {
+            return null;
+        }
+
+        Statement statement = null;
+        ResultSet result = null;
+
+        try {
+            String schema = dataStore.getDatabaseSchema();
+            String sql = "SELECT COORD_DIMENSION FROM " + geometryMetadataTable + " WHERE " //
+                    + (schema == null ? "" : "F_TABLE_SCHEMA = '" + dataStore.getDatabaseSchema() + "' AND ") 
+                    + "F_TABLE_NAME = '" + tableName + "' ";//
+
+            LOGGER.log(Level.FINE, "Geometry dimension check; {0} ", sql);
+            statement = cx.createStatement();
+            result = statement.executeQuery(sql);
+
+            if (result.next()) {
+                return result.getInt(1);
+            }
+        } finally {
+            dataStore.closeSafe(result);
+            dataStore.closeSafe(statement);
+        }
+
+        return null;
+    }
+    
+    @Override
+    public int getGeometryDimension(String schemaName, String tableName, String columnName,
+            Connection cx) throws SQLException {
+        // try retrieve the dimension from geometryMetadataTable
+        Integer dimension = getGeometryDimensionFromMetadataTable(schemaName, tableName, columnName, cx);
+        if (dimension != null) {
+            return dimension;
+        }
+
+        // try retrieve dimension from the feature table
+        StringBuffer sql = new StringBuffer("SELECT TOP 1 ");
+        encodeColumnName(null, columnName, sql);
+        sql.append( ".STPointN(1).Z");
+        
+        sql.append( " FROM ");
+        encodeTableName(schemaName, tableName, sql, true);
+        
+        sql.append( " WHERE ");
+        encodeColumnName(null, columnName, sql );
+        sql.append( " IS NOT NULL");
+        
+        dataStore.getLogger().fine( sql.toString() );
+        
+        Statement st = cx.createStatement();
+        try {
+            
+            ResultSet rs = st.executeQuery( sql.toString() );
+            try {
+                if ( rs.next() ) {
+                    Object z = rs.getObject( 1 );
+                    return z == null ? 2 : 3;
+                }
+                // no dimension found, return the default 
+                return 2;
+            }
+            finally {
+                dataStore.closeSafe( rs );
+            }
+        }
+        finally {
+            dataStore.closeSafe( st );
+        }
+    }
 
     @Override
     public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix,
@@ -408,7 +479,7 @@ public class SQLServerDialect extends BasicSQLDialect {
     }
 
     @Override
-    public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
+    public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql)
             throws IOException {
         
         if ( value == null ) {

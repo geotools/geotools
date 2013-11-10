@@ -2764,8 +2764,9 @@ HOLES:
         final int STARTING_OFFSET = STARTING_OFFSET(elemInfo, triplet);
         final int eTYPE = ETYPE(elemInfo, triplet);
         final int INTERPRETATION = INTERPRETATION(elemInfo, triplet);
-
-        if (!(STARTING_OFFSET >= 1) || !(STARTING_OFFSET <= coords.size()))
+        final int LENGTH = coords.size() * D(GTYPE); 
+        
+        if (!(STARTING_OFFSET >= 1) || !(STARTING_OFFSET <= LENGTH))
             throw new IllegalArgumentException("ELEM_INFO STARTING_OFFSET "+STARTING_OFFSET+" inconsistent with ORDINATES length "+coords.size());
         if(!(eTYPE == ETYPE.POINT))
             throw new IllegalArgumentException("ETYPE "+eTYPE+" inconsistent with expected POINT");

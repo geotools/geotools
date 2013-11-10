@@ -22,20 +22,16 @@ package org.geotools.data.oracle.sdo;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import junit.framework.TestCase;
 import oracle.jdbc.OracleConnection;
 import oracle.sql.STRUCT;
 
 import org.geotools.data.jdbc.datasource.DataSourceFinder;
 import org.geotools.data.jdbc.datasource.UnWrapper;
-import org.geotools.data.oracle.Oracle3DTestSetup;
 import org.geotools.data.oracle.OracleTestSetup;
-import org.geotools.jdbc.JDBC3DTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
 /**
@@ -335,6 +331,19 @@ public class SDOOnlineTest extends JDBCTestSupport {
             return;
         
         String wkt = "GEOMETRYCOLLECTION (POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0)), POINT (5 5))"; 
+        Geometry original = new WKTReader().read(wkt);
+        original.setSRID(4326);
+        STRUCT datum = converter.toSDO(original);
+        Geometry geom = (Geometry) converter.asGeometry(datum);
+        assertEquals(4326, geom.getSRID());
+        assertEquals(original, geom);
+    }
+    
+    final public void testGeometryCollectionMultipoint() throws Exception {
+        if(this.connection == null)
+            return;
+        
+        String wkt = "GEOMETRYCOLLECTION (POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0)), MULTIPOINT ((5 5), (10 10)))"; 
         Geometry original = new WKTReader().read(wkt);
         original.setSRID(4326);
         STRUCT datum = converter.toSDO(original);

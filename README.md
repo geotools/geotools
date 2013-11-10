@@ -7,6 +7,10 @@
 
 GeoTools licensed under the [LGPL](http://www.gnu.org/licenses/lgpl.html).
 
+## Contributing
+
+Before getting down to code your next pull request please consult the [contributor guidelines](http://docs.geotools.org/latest/developer/roles/contribute.html)
+
 ## Building
 
 GeoTools uses [Apache Maven](http://maven.apache.org/) for a build system. To 

@@ -12,7 +12,9 @@ import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
-import org.geotools.map.DefaultMapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
+import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
@@ -53,15 +55,27 @@ public class LineTest {
         BufferedImage image = RendererBaseTest.showRender("Lines with circl stroke", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("circle"), image, 10);
     }
+    
+    @Test
+    public void testLineDoubleDash() throws Exception {
+        StreamingRenderer renderer = setupLineMap("lineDoubleDash.sld");
+        MapViewport viewport = renderer.getMapContent().getViewport();
+        ReferencedEnvelope re = viewport.getBounds();
+        ReferencedEnvelope shifted = new ReferencedEnvelope(re.getMinX() + 2, re.getMaxX() - 3, re.getMinY() + 2, re.getMaxY() - 3, re.getCoordinateReferenceSystem());
+        viewport.setBounds(shifted);
+        
+        BufferedImage image = RendererBaseTest.showRender("Lines with double dash array (2 fts)", renderer, TIME, shifted);
+        ImageAssert.assertEquals(file("doubleDash"), image, 10);
+    }
 
     private StreamingRenderer setupLineMap(String styleFile) throws IOException {
         Style style = RendererBaseTest.loadStyle(this, styleFile);
         
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs, style));
         
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         return renderer;
     }

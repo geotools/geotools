@@ -58,11 +58,12 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * just appends the default placeholder: '?'.
      * </p>
      * @param g The geometry value.
-     * @param srid The spatial reference system of the geometry.
+     * @param srid The spatial reference system of the geometry, or -1 if unknown
+     * @param dimension The dimensions (2,3,4) of the coordinates, or -1 if unknown
      * @param binding The class of the geometry.
      * @param sql The prepared sql statement buffer. 
      */
-    public void prepareGeometryValue(Geometry g, int srid, Class binding, StringBuffer sql ) {
+    public void prepareGeometryValue(Geometry g, int dimension, int srid, Class binding, StringBuffer sql ) {
         sql.append( "?" );
     }
     
@@ -85,7 +86,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param column the column index where the geometry is to be set
      * @throws SQLException
      */
-    public abstract void setGeometryValue(Geometry g, int srid,
+    public abstract void setGeometryValue(Geometry g, int dimension, int srid,
             Class binding, PreparedStatement ps, int column) throws SQLException;
 
     /**

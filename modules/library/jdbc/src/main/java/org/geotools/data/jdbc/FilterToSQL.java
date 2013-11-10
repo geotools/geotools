@@ -199,6 +199,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /** the srid corresponding to the current binary spatial filter being encoded */
     protected Integer currentSRID;
 
+    /** The dimension corresponding to the current binary spatial filter being encoded */
+    protected Integer currentDimension;
+
     /** inline flag, controlling whether "WHERE" will prefix the SQL encoded filter */
     protected boolean inline = false;
 
@@ -976,6 +979,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             // handle native srid
             currentGeometry = null;
             currentSRID = null;
+            currentDimension = null;
             if (featureType != null) {
                 // going thru evaluate ensures we get the proper result even if the
                 // name has
@@ -985,6 +989,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                     currentGeometry = (GeometryDescriptor) descriptor;
                     currentSRID = (Integer) descriptor.getUserData().get(
                             JDBCDataStore.JDBC_NATIVE_SRID);
+                    currentDimension = (Integer) descriptor.getUserData().get(
+                            Hints.COORDINATE_DIMENSION);
                 }
             }
         }

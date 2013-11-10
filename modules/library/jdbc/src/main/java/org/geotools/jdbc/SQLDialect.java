@@ -573,6 +573,27 @@ public abstract class SQLDialect {
     }
     
     /**
+     * Returns the dimension of the coordinates in the geometry. Defaults to 2, subclasses
+     * can override it.
+     * <p>
+     * This method is given a direct connection to the database. The connection
+     * must not be closed. However any statements or result sets instantiated
+     * from the connection must be closed.
+     * </p>
+     * <p>
+     * In the event that the dimension cannot be determined, this method should return 2
+     * </p>
+     * @param schemaName The database schema, could be <code>null</code>.
+     * @param tableName The table, never <code>null</code>.
+     * @param columnName The column name, never <code>null</code>
+     * @param cx The database connection.
+     */
+    public int getGeometryDimension(String schemaName, String tableName, String columnName,
+        Connection cx) throws SQLException {
+        return 2;
+    }
+    
+    /**
      * Turns the specified srid into a {@link CoordinateReferenceSystem}, or returns <code>null</code> if not possible.
      * <p>
      * The implementation might just use <code>CRS.decode("EPSG:" + srid)</code>, but most spatial databases will have 

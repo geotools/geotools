@@ -14,8 +14,9 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.postgis;
+package org.geotools.data.postgis.ps;
 
+import org.geotools.data.postgis.PostGIS3DTestSetup;
 import org.geotools.jdbc.JDBC3DTest;
 import org.geotools.jdbc.JDBC3DTestSetup;
 
@@ -28,7 +29,7 @@ public class PostGIS3DTest extends JDBC3DTest {
 
     @Override
     protected JDBC3DTestSetup createTestSetup() {
-        return new PostGIS3DTestSetup(new PostGISTestSetup());
+        return new PostGIS3DTestSetup(new PostGISPSTestSetup());
     }
     
 }

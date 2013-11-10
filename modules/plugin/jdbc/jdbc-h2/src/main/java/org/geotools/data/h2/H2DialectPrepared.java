@@ -184,7 +184,7 @@ public class H2DialectPrepared extends PreparedStatementSQLDialect {
     //prepared statement api
     //
     @Override
-    public void setGeometryValue(Geometry g, int srid,
+    public void setGeometryValue(Geometry g, int dimension, int srid,
             Class binding, PreparedStatement ps, int column)
             throws SQLException {
         if ( g == null || g.isEmpty() ) {

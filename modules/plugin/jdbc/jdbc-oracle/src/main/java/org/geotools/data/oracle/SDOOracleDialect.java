@@ -66,7 +66,7 @@ class SDOOracleDialect extends OracleDialect {
     }
 
     @Override
-    public void setGeometryValue(Geometry g, int srid, Class binding, PreparedStatement ps,
+    public void setGeometryValue(Geometry g, int dimension, int srid, Class binding, PreparedStatement ps,
             int column) throws SQLException {
         // Handle the null geometry case.
         // Surprisingly, using setNull(column, Types.OTHER) does not work...

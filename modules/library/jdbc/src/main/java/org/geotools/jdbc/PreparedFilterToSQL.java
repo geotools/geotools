@@ -16,6 +16,7 @@
  */
 package org.geotools.jdbc;
 
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
     protected List<Object> literalValues = new ArrayList<Object>();
     protected List<Class> literalTypes = new ArrayList<Class>();
     protected List<Integer> SRIDs = new ArrayList<Integer>();
+    protected List<Integer> dimensions = new ArrayList<Integer>();
     protected PreparedStatementSQLDialect dialect;
     boolean prepareEnabled = true;
     
@@ -99,6 +101,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
         Object literalValue = evaluateLiteral( expression, (context instanceof Class ? (Class) context : null) );
         literalValues.add(literalValue);
         SRIDs.add(currentSRID);
+        dimensions.add(currentDimension);
         
         Class clazz = null;
         if(context instanceof Class)
@@ -115,7 +118,8 @@ public class PreparedFilterToSQL extends FilterToSQL {
                 StringBuffer sb = new StringBuffer();
                 if ( Geometry.class.isAssignableFrom(literalValue.getClass()) ) {
                     int srid = currentSRID != null ? currentSRID : -1;
-                    dialect.prepareGeometryValue((Geometry) literalValue, srid, Geometry.class, sb);
+                    int dimension = currentDimension != null ? currentDimension : -1;
+                    dialect.prepareGeometryValue((Geometry) literalValue, dimension, srid, Geometry.class, sb);
                 }
                 else if ( encodingFunction ) {
                     dialect.prepareFunctionArgument(clazz,sb);
@@ -172,6 +176,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
                     literalValues.add(attValues[j]);
                     // no srid, pk are not formed with geometry values
                     SRIDs.add(-1);
+                    dimensions.add(-1);
                     // if it's not null, we can also infer the type
                     literalTypes.add(attValues[j] != null ?  attValues[j].getClass() : null);
 
@@ -207,6 +212,14 @@ public class PreparedFilterToSQL extends FilterToSQL {
      */
     public List<Integer> getSRIDs() {
         return SRIDs;
+    }
+
+    /**
+     * Returns the list of dimensions for each literal tha happens to be a geometry, or null otherwise
+     * @return
+     */
+    public List<Integer> getDimensions() {
+        return dimensions;
     }
 
 }

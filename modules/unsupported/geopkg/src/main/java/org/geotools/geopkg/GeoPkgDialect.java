@@ -97,7 +97,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public void setGeometryValue(Geometry g, int srid, Class binding,
+    public void setGeometryValue(Geometry g, int dimension, int srid, Class binding,
             PreparedStatement ps, int column) throws SQLException {
         if (g == null) {
             ps.setNull(1, Types.BLOB);

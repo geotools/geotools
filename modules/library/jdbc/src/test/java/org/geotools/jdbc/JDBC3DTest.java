@@ -117,6 +117,8 @@ public abstract class JDBC3DTest extends JDBCTestSupport {
         assertEquals(new Integer(4326), CRS.lookupEpsgCode(crs, false));
         assertEquals(getNativeSRID(),
                 schema.getGeometryDescriptor().getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID));
+        assertEquals(3,
+                schema.getGeometryDescriptor().getUserData().get(Hints.COORDINATE_DIMENSION));
     }
 
     public void testReadPoint() throws Exception {

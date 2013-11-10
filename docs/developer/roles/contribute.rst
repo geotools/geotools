@@ -1,45 +1,55 @@
 Contributors
 ============
 
-Anyone can contribute to the GeoTools project by editing the web site, by writing documentation, by answering questions on the email list, or by contributing code directly into the project.
+Initially, newcomers to the project generally participate in an informal role as a contributor. These types of contributors have no long term responsibility to the project.
 
-Initially, newcomers to the project generally participate in an informal role. These types of contributors have no long term responsibility to the project.
+Contributions take several forms:
 
-Easy informal code contributions
---------------------------------
+* Small Contribution / Single Source Code File
+  
+  We are happy to accept quick informal patches to an existing file as a GitHub pull request or a patch attached to a JIRA task.
+  
+  We understand you may have to update several test cases to verify your change fixes its intended problem.
 
-We are happy to accept quick informal patches to existing files. To contribute a new file, please sign a code contribution agreement.
+* Large Contributions / Multiple Files / New Files
+  
+  To  contribute a new file, or if your change effects several files, sign a :doc:`/procedures/contribution_license`.
+  
+  Large contributions should include the contributor name in the list of authors of the class documentation for any file in which the contributor has made significant changes. That is the contributor's name should be added using the @author javadoc tag.
 
-Informal participants can contribute small modifications to the project as a GitHub pull request (preferred) or a patch attached to a JIRA task (or sent to the mailing list as a last resort).
+Code Contributions
+------------------
 
-* pull-request
+Regardless of what you want to achieve, there are some common steps to consider:
 
-  For instructions on submitting a pull request see `Using Pull
-  Requests <https://help.github.com/articles/using-pull-requests>`_ on GitHub.
+* Create a local branch::
 
-  **Please remember to include a test case**.
+   git checkout -b fix_featureLock
 
-* patch
+* Work on the fix, using commit as needed. **Please remember to always include a test case, most pull requests/patches will be rejected if they don't contain one.**.
 
-  #. Create a local branch::
+* Please make sure you're following the `coding conventions <http://docs.geotools.org/latest/developer/conventions/code/style.html>`_, and otherwise avoid any reformats to the existing code, as they make it harder to review your changes. If you find sections not following the coding convetions and you want to amend their formatting, that's fine, please do so in a separate commit/patch from the real code changes.
 
-       git checkout -b fix_featureLock
+* Review the work that was done, make sure the changes contain all the files you need, and no other extraneous change (in case you're making a pull request, single commit ones are preferred, you can use ``rebase -i`` to squash multiple commits into one, it's fine to have two commits if one is used to isolate code formatting changes)::
 
-  #. Work on the fix, using commit as needed.
+   git status
 
-     **Please remember to include a test case**.
+* Rebase the branch from master so you get a nice clean set of changes::
 
-  #. Review the work that was done::
+   git pull --rebase master
 
-       git log --pretty=oneline -3
+* Do a full maven build (with tests) to make sure your fix compiles cleanly::
 
-  #. Rebase the branch from master so you get a nice clean set of changes::
+   mvn clean install -Dall
 
-       git pull --rebase master
+The next step will depend on your preference between pull request and patch. Mind, pull requests are normally 
+processed faster as the review is easier and we have discussion tools, but a patch is ok as well.
 
-  #. Do a full maven build (with tests) to make sure your fix compiles cleanly::
+* Pull-request: for instructions on submitting a pull request see `Using Pull Requests <https://help.github.com/articles/using-pull-requests>`_ on GitHub.
+  
+  Pull requests are reviewed by module maintainers as outlined in :doc:`/procedures/pull_requests`.
 
-       mvn clean install -Dall
+* Patch:
 
   #. Create the patch::
 
@@ -54,29 +64,3 @@ Informal participants can contribute small modifications to the project as a Git
      contributor can contact the developers' mailing list to let everyone know about the patch and
      find someone else competent to review the code and integrate the contribution into the code
      base or provide a request for improvements to the patch.
-
-Large contributions
--------------------
-
-Informal participants can also submit larger contributions (such as those that add new files) following essentially the same process as that just described for small code contributions but also including the formal transfer of the copyright over the contribution to the Open Source Geospatial Foundation (OSGeo).
-
-Patches submitted to JIRA for large contributions should include the contributor name in the list of authors of the class documentation for any file in which the contributor has made significant changes. That is the contributor's name should be added using the @author javadoc tag.
-
-Code Contribution License
----------------------------
-
-GeoTools has adopted a formal policy as part of the process of joining the Open Source Geospatial Foundation (OSGeo).
-
-All new contributors will be required to grant copyright to the foundation using a `Contributor Licenses <http://www.osgeo.org/content/foundation/legal/licenses.html>`_:
-
-* :download:`individual_contributor.txt </artifacts/individual_contributor.txt>`
-* :download:`corporate_contributor.txt </artifacts/corporate_contributor.txt>`
-
-These licenses are directly derived from the Apache code contribution licenses (CLA V2.0 and CCLA v r190612).
-
-#. Contributors must print out a copy of the Contribution License document(s) and either sign it themselves or have their employer sign the document, depending on the circumstances governing when and where the Contributor develops the code. It is up to the Contributor to understand the legal status of the code which the Contributor produces.
-#. Scan the document and email to **info@osgeo.org**. Once we have confirmation the document has
-   been received we are in position to review and accept your work.
-#. Any questions should be addressed to the developers' mailing list.
-
-Signing a Contributor License is intended to serve several purposes such as shielding the contributor from a direct legal attack by users of the code, enabling the Foundation to represent the interests of the GeoTools project in a legal forum, and enabling the GeoTools project to switch licenses when necessary.

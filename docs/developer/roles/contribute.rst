@@ -5,17 +5,17 @@ Initially, newcomers to the project generally participate in an informal role as
 
 Contributions take several forms:
 
-* Small Contribution / Single File
+* Small Contribution / Single Source Code File
   
-  We are happy to accept quick informal patches to an existing file as a GitHub pull request (preferred) or a patch attached to a JIRA task (or sent to the mailing list as a last resort).
+  We are happy to accept quick informal patches to an existing file as a GitHub pull request or a patch attached to a JIRA task.
+  
+  We understand you may have to update several test cases to verify your change fixes its intended problem.
 
-* Large Contributions / New Files
-   
+* Large Contributions / Multiple Files / New Files
+  
   To  contribute a new file, or if your change effects several files, sign a :doc:`/procedures/contribution_license`.
-   
-  Patches submitted to JIRA for large contributions should include the contributor name in the list
-  of authors of the class documentation for any file in which the contributor has made significant
-  changes. That is the contributor's name should be added using the @author javadoc tag.
+  
+  Large contributions should include the contributor name in the list of authors of the class documentation for any file in which the contributor has made significant changes. That is the contributor's name should be added using the @author javadoc tag.
 
 Code Contributions
 ------------------

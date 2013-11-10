@@ -1,11 +1,12 @@
 Contribute
 ==========
 
-If you submit a patch or :doc:`pull request </procedures/pull_requests>` you are a GeoTools :doc:`contributor </roles/contribute>`:
+When submitting a patch or :doc:`pull request </procedures/pull_requests>`:
 
 * Small: Fix to one existing file, reviewer has your permission to apply the change
 * Large: Greater than a file, :doc:`contribution_license` is required
-* Module: Ask the email list for :doc:`committer </roles/commit>` access.
+
+For details check the :doc:`contributor </roles/contribute>` role and responsibility page.
 
 .. admonition:: Talk first policy
 
@@ -64,6 +65,6 @@ See the :doc:`create` procedure for more information.
 Work on existing Module
 -----------------------
 
-Talk to the module maintainer first, they may already have plans, or be in position to help. At the very least they will be reviewing your work at the end of the day!
+Be sure to discuss any change with the module maintainer on the developer list before starting work. Module maintainers have volunteered to look after the module and may be aware of other development teams working in this area or know of plans that can effect your work.
 
 You can check the module :file:`pom.xml` to determine the module maintainer.

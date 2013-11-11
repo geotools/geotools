@@ -32,7 +32,7 @@ When submitting your pull request:
 * Note any associated JIRA number
 * Link to any change proposal related to the pull request
 * Include a test case
-* If the change less than a file in size the reviewer can commit it on your behalf, over a file in size you will need to sign a :doc:`code contribution </roles/contribute>` agreement.
+* If the change less than a file in size the reviewer can commit it on your behalf, over a file in size you will need to sign a :doc:`contribution license <contribution_license>`
 
 .. note:: Jira is used as the project issue tracker. You can include a link to a pull request
    in JIRA as an alternative to a patch.

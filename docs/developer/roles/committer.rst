@@ -8,13 +8,13 @@ Advantages
 ----------
 
 * Work on your own unsupported module
-* Apply your own patches - after they have been reviewed
+* Apply your own pull requests / patches - after they have been reviewed
 
 Responsibilities
 ----------------
 A Committer has write access to the whole source code repository which entails certain responsibilities.
 
-* Committers must coordinate their efforts with the maintainers of any modules they wish to modify or extend, i.e. committers need to ask permission. Contact details for each module's maintainer can be found in the source code as part of the pom.xml file or in the Module Matrix. If committers are working in their own module, then they are themselves maintainers of that module and they can do as they wish in that module only.
+* Committers must coordinate their efforts with the maintainers of any modules they wish to modify or extend, i.e. committers need to ask permission. Contact details for each module's maintainer can be found in the source code as part of the :file:`pom.xml` file or in the Module Matrix. If committers are working in their own module, then they are themselves maintainers of that module and they can do as they wish in that module only.
 
 * Committers are expected to follow GeoTools conventions. They are required to read this developer's guide. Committers are responsible for any code they submit which means they are required to know and correctly document the origin of any code they submit and required to ensure they are legally allowed to submit and share that code.
 
@@ -30,7 +30,7 @@ This means that all code should be run through a full maven install and test cyc
 
    mvn clean install -Dall
 
-prior to commit. Yes, this takes time; yes, it is necessary.
+Prior to commit. Yes, this takes time; yes, it is necessary.
 
 Process
 -------
@@ -83,7 +83,6 @@ Process
 
        * :download:`individual_contributor.txt </artifacts/individual_contributor.txt>`
        * :download:`corporate_contributor.txt </artifacts/corporate_contributor.txt>`
-
 
 4. Getting write access to the repository
 

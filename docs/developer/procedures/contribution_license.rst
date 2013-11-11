@@ -3,7 +3,7 @@ Code Contribution License
 
 GeoTools has adopted a formal policy as part of the process of joining the Open Source Geospatial Foundation (OSGeo).
 
-All new :doc:`contributors </roles/contribute>` will be required to grant copyright to the foundation using a `Contributor Licenses <http://www.osgeo.org/content/foundation/legal/licenses.html>`_:
+All new :doc:`contributors </roles/contributor>` will be required to grant copyright to the foundation using a `Contributor Licenses <http://www.osgeo.org/content/foundation/legal/licenses.html>`_:
 
 * :download:`individual_contributor.txt </artifacts/individual_contributor.txt>`
 * :download:`corporate_contributor.txt </artifacts/corporate_contributor.txt>`

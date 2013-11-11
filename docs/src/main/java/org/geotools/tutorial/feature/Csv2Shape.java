@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2012, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This file is hereby placed into the Public Domain. This means anyone is
  *    free to do whatever they wish with this file. Use it well and enjoy!
@@ -63,10 +63,11 @@ public class Csv2Shape {
          * See also the createFeatureType method below for another, more flexible approach.
          */
         final SimpleFeatureType TYPE = DataUtilities.createType("Location",
-                "location:Point:srid=4326," + // <- the geometry attribute: Point type
-                        "name:String," + // <- a String attribute
-                        "number:Integer" // a number attribute
+                "the_geom:Point:srid=4326," + // <- the geometry attribute: Point type
+                "name:String," +   // <- a String attribute
+                "number:Integer"   // a number attribute
         );
+        System.out.println("TYPE:"+TYPE);
         // docs break feature collection
         /*
          * A list to collect features as we create them.
@@ -74,8 +75,8 @@ public class Csv2Shape {
         List<SimpleFeature> features = new ArrayList<SimpleFeature>();
         
         /*
-         * GeometryFactory will be used to create the geometry attribute of each feature (a Point
-         * object for the location)
+         * GeometryFactory will be used to create the geometry attribute of each feature,
+         * using a Point object for the location.
          */
         GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
 
@@ -109,7 +110,6 @@ public class Csv2Shape {
         } finally {
             reader.close();
         }
-
         // docs break new shapefile
         /*
          * Get an output file name and create the new shapefile
@@ -123,14 +123,12 @@ public class Csv2Shape {
         params.put("create spatial index", Boolean.TRUE);
 
         ShapefileDataStore newDataStore = (ShapefileDataStore) dataStoreFactory.createNewDataStore(params);
-        newDataStore.createSchema(TYPE);
 
         /*
-         * You can comment out this line if you are using the createFeatureType method (at end of
-         * class file) rather than DataUtilities.createType
+         * TYPE is used as a template to describe the file contents
          */
-        newDataStore.forceSchemaCRS(DefaultGeographicCRS.WGS84);
-
+        newDataStore.createSchema(TYPE);
+        
         // docs break transaction
         /*
          * Write the features to the shapefile
@@ -139,10 +137,17 @@ public class Csv2Shape {
 
         String typeName = newDataStore.getTypeNames()[0];
         SimpleFeatureSource featureSource = newDataStore.getFeatureSource(typeName);
+        SimpleFeatureType SHAPE_TYPE = featureSource.getSchema();
+        /*
+         * The Shapefile format has a couple limitations:
+         * - "the_geom" is always used for the geometry attribute name
+         * - "the_geom' must be of type Point, Line or Polygon
+         * - Attribute names are limited in length 
+         */
+        System.out.println("SHAPE:"+SHAPE_TYPE);
 
         if (featureSource instanceof SimpleFeatureStore) {
             SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
-            
             /*
              * SimpleFeatureStore has a method to add features from a
              * SimpleFeatureCollection object, so we use the ListFeatureCollection
@@ -153,11 +158,9 @@ public class Csv2Shape {
             try {
                 featureStore.addFeatures(collection);
                 transaction.commit();
-
             } catch (Exception problem) {
                 problem.printStackTrace();
                 transaction.rollback();
-
             } finally {
                 transaction.close();
             }

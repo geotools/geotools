@@ -109,10 +109,10 @@ Create features
 
 We can now read the CSV file and create a feature for each record. Please note the following:
 
- * Use of GeometryFactory to create new Points
- * Creation of features (SimpleFeature objects) using SimpleFeatureBuilder
+* Use of GeometryFactory to create new Points
+* Creation of features (SimpleFeature objects) using SimpleFeatureBuilder
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
+  .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
       :language: java
       :start-after: // docs break feature collection
       :end-before: // docs break new shapefile
@@ -128,27 +128,31 @@ Create a shapefile From a FeatureCollection
 
 Things to note as we create the shapefile:
 
- * Use of DataStoreFactory with a parameter indicating we want a spatial index
- * The createSchema( SimpleFeatureType ) method to set up the shapefile
- * Our SimpleFeatureType did not include map projection (coordinate reference system) information
-   needed to make a .prj file, so we call forceSchemaCRS to do this
-
- .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
-    :language: java
-    :start-after: // docs break new shapefil
-    :end-before: // docs break transaction
+* Use of DataStoreFactory with a parameter indicating we want a spatial index
+* The use of createSchema( SimpleFeatureType ) method to set up the shapefile
+ 
+  .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
+     :language: java
+     :start-after: // docs break new shapefil
+     :end-before: // docs break transaction
 
 Write the feature data to the shapefile
 ---------------------------------------
 
-Here we use a Transaction to safely add all of our features in one go. The SimpleFeatureStore that
-we use to do this expects a FeatureCollection object, so we wrap our list of features in a
-ListFeatureCollection:
+Things to note:
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
-      :language: java
-      :start-after: // docs break transaction
-      :end-before: // end main
+* We check that we have read-write access by confirming our FeatureSource object
+  implements the FeatureStore methods
+* Taking a moment to check how closely shapefile was able to match our
+  template (the SimpleFeatureType TYPE). Compare this output to see how they are different.
+* The SimpleFeatureStore that we use to do this expects a FeatureCollection object,
+  so we wrap our list of features in a ListFeatureCollection.
+* The use of transaction commit() to safely write out the features in one go.
+
+  .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
+     :language: java
+     :start-after: // docs break transaction
+     :end-before: // end main
 
 This completes the main method.
 
@@ -217,12 +221,12 @@ Other things to try
   
 * Use the Geometry "buffer" method to create circles based on the population size of the each city.
 
-    .. code-block:: java
+  .. code-block:: java
 
-       Polygon polygon = location.buffer( 0.1 );
+     Polygon polygon = location.buffer( 0.1 );
 
-   .. instructor note: the code above is a trick; to see if they can correctly change their
-      feature type to be a polgon
+  .. instructor note: the code above is a trick; to see if they can correctly change their
+     feature type to be a polgon
          
 * It is easy to write a quick CSVReader as we have done here; but harder to write a good one that
   can handle quotation marks correctly. JavaCSV is an open source library to read CSV files with
@@ -279,8 +283,8 @@ into fields.
    The "feature types" for a map are listed in the map key.
    
    .. image:: images/key.png
-       :scale: 40
-   
+      :width: 200
+
 Occasionally you have two features that have a lot in common. You may have the LAX airport in Los
 Angeles and the SYD airport in Sydney. Because these two features have a couple of things in common
 it is nice to group them together  - in Java we would create a Class called Airport. On a map we

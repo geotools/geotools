@@ -140,9 +140,12 @@ public class Csv2Shape {
         SimpleFeatureType SHAPE_TYPE = featureSource.getSchema();
         /*
          * The Shapefile format has a couple limitations:
-         * - "the_geom" is always used for the geometry attribute name
-         * - "the_geom' must be of type Point, Line or Polygon
+         * - "the_geom" is always first, and used for the geometry attribute name
+         * - "the_geom" must be of type Point, MultiPoint, MuiltiLineString, MultiPolygon
          * - Attribute names are limited in length 
+         * - Not all data types are supported (example Timestamp represented as Date)
+         * 
+         * Each data store has different limitations so check the resulting SimpleFeatureType.
          */
         System.out.println("SHAPE:"+SHAPE_TYPE);
 
@@ -224,9 +227,10 @@ public class Csv2Shape {
         builder.setCRS(DefaultGeographicCRS.WGS84); // <- Coordinate reference system
 
         // add attributes in order
-        builder.add("Location", Point.class);
+        builder.add("the_geom", Point.class);
         builder.length(15).add("Name", String.class); // <- 15 chars width for name field
-
+        builder.add("number",Integer.class);
+        
         // build the type
         final SimpleFeatureType LOCATION = builder.buildFeatureType();
 

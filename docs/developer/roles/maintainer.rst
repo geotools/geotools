@@ -8,6 +8,10 @@ Module Maintainer Advantages
 
 * Contact point for your module
 * Review proposed changes pull requests / patches
+* Commit to your module without having to go through review.
+  
+  If a committer shows a good understanding of the module and coding conventions you can extend them this opportunity as well.
+   
 * Supported modules
   
   * Include module in GeoTools Release

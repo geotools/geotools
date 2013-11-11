@@ -72,8 +72,6 @@ class RasterLayerRequest {
     
     private double artifactsFilterPTileThreshold;
     
-    private boolean setRoiProperty;
-    
     private boolean heterogeneousGranules = false; 
 
     RasterManager rasterManager;
@@ -381,12 +379,6 @@ class RasterLayerRequest {
                 continue;
             }
 			
-			if (name.equals(ImageMosaicFormat.SET_ROI_PROPERTY.getName())) {
-			   if (value == null)
-                                continue;
-	                    setRoiProperty = ((Boolean) value).booleanValue();
-	                    return;
-	                }  
 	       
 	        // //
 	        //
@@ -622,15 +614,7 @@ class RasterLayerRequest {
             return;
         }
 		
-		if (name.equals(ImageMosaicFormat.SET_ROI_PROPERTY.getName())) {
-                    final Object value = param.getValue();
-                    if (value == null) {
-                            return;
-                    }
-                    setRoiProperty = ((Boolean) value).booleanValue();
-                    return;
-                }    
-		if (name.equals(ImageMosaicFormat.ACCURATE_RESOLUTION.getName())) {
+        if (name.equals(ImageMosaicFormat.ACCURATE_RESOLUTION.getName())) {
             final Object value = param.getValue();
             if (value == null) {
                     return;
@@ -816,11 +800,6 @@ class RasterLayerRequest {
     public double getArtifactsFilterPTileThreshold() {
         return artifactsFilterPTileThreshold;
     }
-
-    public boolean isSetRoiProperty() {
-        return setRoiProperty;
-    }
-
 	public boolean isBlend() {
 		return blend;
 	}

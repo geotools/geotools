@@ -237,15 +237,15 @@ public class GranuleDescriptor {
         public boolean isDoFiltering() {
             return doFiltering;
         }
-        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint) {
-            this(loadedImage, footprint, null);
+        GranuleLoadingResult(RenderedImage loadedImage) {
+            this(loadedImage, null, false);
         }
     
-        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl) {
-            this(loadedImage, footprint, granuleUrl, false);
+        GranuleLoadingResult(RenderedImage loadedImage, URL granuleUrl) {
+            this(loadedImage, granuleUrl, false);
         }
     
-        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl, final boolean doFiltering) {
+        GranuleLoadingResult(RenderedImage loadedImage, URL granuleUrl, final boolean doFiltering) {
             this.loadedImage = loadedImage;
             Object roi = loadedImage.getProperty("ROI");
             if(roi instanceof ROI) {
@@ -253,6 +253,8 @@ public class GranuleDescriptor {
             }            
             this.granuleUrl = granuleUrl;
             this.doFiltering = doFiltering;
+            
+            
         }
     }
 
@@ -812,9 +814,11 @@ public class GranuleDescriptor {
                         // inset might have killed the geometry fully
                         return null;
                     }
+
                     PlanarImage pi = PlanarImage.wrapRenderedImage(raster);
                     pi.setProperty("ROI", transformed);
                     raster = pi;
+
                 } catch (NoninvertibleTransformException e) {
                     if (LOGGER.isLoggable(java.util.logging.Level.INFO))
                         LOGGER.info("Unable to create a granuleDescriptor " + this.toString()
@@ -847,7 +851,7 @@ public class GranuleDescriptor {
 			// apply the affine transform  conserving indexed color model
 			final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, interpolation instanceof InterpolationNearest? Boolean.FALSE:Boolean.TRUE);
 			if(XAffineTransform.isIdentity(finalRaster2Model,Utils.AFFINE_IDENTITY_EPS)) {
-			    return new GranuleLoadingResult(raster, null, granuleUrl, doFiltering);
+			    return new GranuleLoadingResult(raster, granuleUrl, doFiltering);
 			} else {
 				//
 				// In case we are asked to use certain tile dimensions we tile
@@ -894,7 +898,7 @@ public class GranuleDescriptor {
                 ImageWorker iw = new ImageWorker(raster);
                 iw.setRenderingHints(localHints);
                 iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());
-				return new GranuleLoadingResult(iw.getRenderedImage(), null, granuleUrl, doFiltering);
+				return new GranuleLoadingResult(iw.getRenderedImage(), granuleUrl, doFiltering);
 			}
 		
 		} catch (IllegalStateException e) {

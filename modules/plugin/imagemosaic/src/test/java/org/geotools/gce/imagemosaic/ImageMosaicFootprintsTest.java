@@ -27,9 +27,12 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderFactory;
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.referencing.CRS;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
@@ -358,5 +361,19 @@ public class ImageMosaicFootprintsTest {
         } finally {
             IOUtils.closeQuietly(fos);
         }
+    }
+
+    @AfterClass
+    public static void close(){
+    	System.clearProperty("org.geotools.referencing.forceXY");
+            CRS.reset("all");
+    }
+
+    @BeforeClass
+    public static void init(){
+    	
+    	//make sure CRS ordering is correct
+        CRS.reset("all");
+        System.setProperty("org.geotools.referencing.forceXY", "true");
     }
 }

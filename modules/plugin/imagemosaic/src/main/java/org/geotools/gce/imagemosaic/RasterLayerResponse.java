@@ -117,6 +117,7 @@ import org.opengis.util.InternationalString;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.util.Assert;
 /**
  * A RasterLayerResponse. An instance of this class is produced everytime a
  * requestCoverage is called to a reader.
@@ -550,11 +551,14 @@ class RasterLayerResponse{
             //
             // ROI
             //
+            // we need to add its roi in order to avoid problems with the mosaics sources overlapping
             final Rectangle bounds = PlanarImage.wrapRenderedImage(granule).getBounds();
             Geometry mask = JTS.toGeometry(new Envelope(bounds.getMinX(), bounds.getMaxX(), bounds.getMinY(), bounds.getMaxY()));
-            ROI imageROI = new ROIGeometry(mask); // TODO can we leave this to null?                   
-            // we need to add its roi in order to avoid problems with the mosaic overlapping
-            if (footprintBehavior.handleFootprints()){                         
+            ROI imageROI = new ROIGeometry(mask);            
+            if (footprintBehavior.handleFootprints()){ 
+
+                
+                // get the real footprint
                 final ROI footprint = result.getFootprint();
                 if (footprint != null) {
                     if (imageROI.contains(footprint.getBounds2D().getBounds())) {
@@ -624,6 +628,7 @@ class RasterLayerResponse{
             if (tileDimensions == null) {
                 tileDimensions=(Dimension) JAI.getDefaultTileSize().clone();
             }
+            layout.setTileGridXOffset(0).setTileGridYOffset(0);
             layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
             final RenderingHints localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
             
@@ -685,50 +690,53 @@ class RasterLayerResponse{
                 }
     
                 // the roi is exactly equal to the image
-                final ROI roi = in.roi;
-                Rectangle bounds = Utils.toRectangle(roi.getAsShape());
-                if (bounds != null) {
-                    RenderedImage mosaic = in.source;
-                    Rectangle imageBounds = PlanarImage.wrapRenderedImage(mosaic).getBounds();
-                    if (imageBounds.equals(bounds)) {
-
-                        // do we need to crop? (image is bigger than requested?)
-                        if (!rasterBounds.contains(imageBounds)) {
-                            // we have to crop
-                            XRectangle2D.intersect(imageBounds, rasterBounds, imageBounds);
-
-                            if (imageBounds.isEmpty()) {
-                                // return back a constant image
-                                return null;
+                ROI roi = in.roi;
+                if (roi != null) {
+                    Rectangle bounds = Utils.toRectangle(roi.getAsShape());
+                    if(bounds!=null){
+                        RenderedImage mosaic = in.source;
+                        Rectangle imageBounds = PlanarImage.wrapRenderedImage(mosaic).getBounds();
+                        if (imageBounds.equals(bounds)) {
+    
+                            // do we need to crop? (image is bigger than requested?)
+                            if (!rasterBounds.contains(imageBounds)) {
+                                // we have to crop
+                                XRectangle2D.intersect(imageBounds, rasterBounds, imageBounds);
+    
+                                if (imageBounds.isEmpty()) {
+                                    // return back a constant image
+                                    return null;
+                                }
+                                // crop
+                                ImageWorker iw = new ImageWorker(mosaic);
+                                iw.setRenderingHints(localHints);
+                                iw.crop(imageBounds.x, imageBounds.y, imageBounds.width, imageBounds.height);
+                                mosaic = iw.getRenderedImage();
+                                imageBounds = PlanarImage.wrapRenderedImage(mosaic).getBounds();
                             }
-                            // crop
-                            ImageWorker iw = new ImageWorker(mosaic);
-                            iw.setRenderingHints(localHints);
-                            iw.crop(imageBounds.x, imageBounds.y, imageBounds.width, imageBounds.height);
-                            mosaic = iw.getRenderedImage();
-                            imageBounds = PlanarImage.wrapRenderedImage(mosaic).getBounds();
-                        }
-
-                        // and, do we need to add a BORDER around the image?
-                        if (!imageBounds.contains(rasterBounds)) {
-                            mosaic = MergeBehavior.FLAT
-                                    .process(
-                                            new RenderedImage[] { mosaic },
-                                            backgroundValues,
-                                            sourceThreshold,
-                                            (hasAlpha || doInputTransparency) ? new PlanarImage[] { in.alphaChannel }: new PlanarImage[] { null },
-                                            new ROI[] { in.roi },
-                                            request.isBlend() ? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
-                                            localHints);
-                            if (setRoiProperty) {
-                                // Adding globalRoi to the output
-                                RenderedOp rop = (RenderedOp) mosaic;
-                                rop.setProperty("ROI", in.roi);
+    
+                            // and, do we need to add a BORDER around the image?
+                            if (!imageBounds.contains(rasterBounds)) {
+                                mosaic = MergeBehavior.FLAT
+                                        .process(
+                                                new RenderedImage[] { mosaic },
+                                                backgroundValues,
+                                                sourceThreshold,
+                                                (hasAlpha || doInputTransparency) ? new PlanarImage[] { in.alphaChannel }: new PlanarImage[] { null },
+                                                new ROI[] { in.roi },
+                                                request.isBlend() ? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
+                                                localHints);
+                                roi=roi.add(new ROIGeometry(JTS.toGeometry(new ReferencedEnvelope(rasterBounds, null))));
+                                if (footprintBehavior!=FootprintBehavior.None) {
+                                    // Adding globalRoi to the output
+                                    RenderedOp rop = (RenderedOp) mosaic;
+                                    rop.setProperty("ROI", in.roi);
+                                }
                             }
+    
+                            // add to final list
+                            return new MosaicElement(in.alphaChannel, roi, mosaic);
                         }
-
-                        // add to final list
-                        return new MosaicElement(in.alphaChannel, roi, mosaic);
                     }
                 }
             }
@@ -737,21 +745,29 @@ class RasterLayerResponse{
             // prepare sources for the mosaic operation
             final RenderedImage[] sources = new RenderedImage[size];
             final PlanarImage[] alphas = new PlanarImage[size];
-            final ROI[] rois = new ROI[size];
+            ROI[] rois = new ROI[size];
             ROI overallROI = null; // final ROI
+            int realROIs=0;
             for (int i = 0; i < size; i++) {
                 final MosaicElement mosaicElement = inputs.get(i);
                 sources[i] = mosaicElement.source;
                 alphas[i] = mosaicElement.alphaChannel;
                 rois[i] = mosaicElement.roi;
-                if (overallROI == null) {
-                    overallROI = new ROIGeometry(((ROIGeometry) mosaicElement.roi).getAsGeometry());
-                } else {
-                    if (mosaicElement.roi != null) {
+
+                // compose the overall ROI if needed
+                if (mosaicElement.roi != null) {
+                    realROIs++;
+                    if (overallROI == null) {
+                        overallROI = new ROIGeometry(((ROIGeometry) mosaicElement.roi).getAsGeometry());
+                    } else {
                         overallROI = overallROI.add(mosaicElement.roi);
                     }
                 }
             }
+            if(realROIs==0){
+                rois=null;
+            }
+
 
             // execute mosaic
             final RenderedImage mosaic = 
@@ -764,15 +780,13 @@ class RasterLayerResponse{
                         request.isBlend() ? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
                         localHints);
             
-            if (setRoiProperty) {
+            if (footprintBehavior!=FootprintBehavior.None) {
                 // Adding globalRoi to the output
-                RenderedOp rop = (RenderedOp) mosaic;
-                
-                assert overallROI!=null;
+                RenderedOp rop = (RenderedOp) mosaic;                
                 rop.setProperty("ROI", overallROI);
             }
             
-            final RenderedImage postProcessed = footprintBehavior.postProcessMosaic(mosaic, overallROI);
+            final RenderedImage postProcessed = footprintBehavior.postProcessMosaic(mosaic, overallROI,localHints);
     
             // prepare for next step
             if(hasAlpha || doInputTransparency){
@@ -1044,8 +1058,6 @@ class RasterLayerResponse{
 	
 	private double artifactsFilterPTileThreshold = ImageMosaicFormat.DEFAULT_ARTIFACTS_FILTER_PTILE_THRESHOLD;
 	
-	private boolean setRoiProperty;
-	
 	private boolean oversampledRequest;
 
 	private MathTransform baseGridToWorld;
@@ -1086,7 +1098,6 @@ class RasterLayerResponse{
 		// are we doing multithreading?
 		multithreadingAllowed= request.isMultithreadingAllowed();
 		footprintBehavior = request.getFootprintBehavior();
-		setRoiProperty = request.isSetRoiProperty();
 		backgroundValues = request.getBackgroundValues();
 		interpolation = request.getInterpolation();
 		needsReprojection = request.spatialRequestHelper.isNeedsReprojection();
@@ -1562,33 +1573,66 @@ class RasterLayerResponse{
         // if provided (defaulting to 0), as well as the compute raster
         // bounds, envelope and grid to world.
         LOGGER.fine("Creating constant image for area with no data");
-        final Number[] values = ImageUtilities.getBackgroundValues(rasterManager.defaultSM, backgroundValues);
-        // create a constant image with a proper layout
-        RenderedImage finalImage = ConstantDescriptor.create(
-                Float.valueOf(rasterBounds.width),
-                Float.valueOf(rasterBounds.height),
-                values,
-                null);
-        if (rasterBounds.x != 0 || rasterBounds.y != 0) {
-            finalImage = TranslateDescriptor.create(finalImage, Float.valueOf(rasterBounds.x), Float.valueOf(rasterBounds.y), Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
-        }
-        if (rasterManager.defaultCM != null) {
-            final ImageLayout2 il= new ImageLayout2();
-            il.setColorModel(rasterManager.defaultCM);
-            Dimension tileSize= request.getTileDimensions();
-            if(tileSize==null){
-                tileSize=JAI.getDefaultTileSize();
-            } 
-            il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(tileSize.width, tileSize.height));
-            il.setTileGridXOffset(0).setTileGridYOffset(0).setTileWidth((int)tileSize.getWidth()).setTileHeight((int)tileSize.getHeight());
-            finalImage = FormatDescriptor.create(
-                    finalImage,
-                    Integer.valueOf(il.getSampleModel(null).getDataType()),
-                    new RenderingHints(JAI.KEY_IMAGE_LAYOUT,il));
-        }
         
-        if(footprintBehavior != null) {
-            finalImage = footprintBehavior.postProcessBlankResponse(finalImage);
+        final ImageLayout2 il= new ImageLayout2();
+        il.setColorModel(rasterManager.defaultCM);
+        Dimension tileSize= request.getTileDimensions();
+        if(tileSize==null){
+            tileSize=JAI.getDefaultTileSize();
+        } 
+
+        il.setTileGridXOffset(0).setTileGridYOffset(0).setTileWidth((int)tileSize.getWidth()).setTileHeight((int)tileSize.getHeight());
+        final RenderingHints renderingHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT,il);
+        
+        
+        final Number[] values = ImageUtilities.getBackgroundValues(rasterManager.defaultSM,
+                backgroundValues);
+        RenderedImage finalImage;
+        if (ImageUtilities.isMediaLibAvailable()) {
+            // create a constant image with a proper layout
+            finalImage = ConstantDescriptor.create(Float.valueOf(rasterBounds.width),
+                    Float.valueOf(rasterBounds.height), values, renderingHints);
+            if (rasterBounds.x != 0 || rasterBounds.y != 0) {
+                finalImage = TranslateDescriptor.create(finalImage, Float.valueOf(rasterBounds.x),
+                        Float.valueOf(rasterBounds.y),
+                        Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
+            }
+
+            // impose the color model and samplemodel as the constant operation does not take them
+            // into account!
+            if (rasterManager.defaultCM != null) {
+                il.setColorModel(rasterManager.defaultCM);
+                il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(
+                        tileSize.width, tileSize.height));
+                finalImage = FormatDescriptor.create(finalImage,
+                        Integer.valueOf(il.getSampleModel(null).getDataType()), renderingHints);
+            }
+        } else {
+            il.setWidth(rasterBounds.width).setHeight(rasterBounds.height);
+            if (rasterBounds.x != 0 || rasterBounds.y != 0) {
+                il.setMinX(rasterBounds.x).setMinY(rasterBounds.y);
+            }
+            // impose the color model and samplemodel as the constant operation does not take them
+            // into account!
+            if (rasterManager.defaultCM != null) {
+                il.setColorModel(rasterManager.defaultCM);
+                il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(
+                        tileSize.width, tileSize.height));
+
+            }
+            final double[] bkgValues = new double[values.length];
+            for (int i = 0; i < values.length; i++) {
+                bkgValues[i] = values[i].doubleValue();
+            }
+            Assert.isTrue(il.isValid(ImageLayout.WIDTH_MASK | ImageLayout.HEIGHT_MASK
+                    | ImageLayout.SAMPLE_MODEL_MASK));
+            finalImage = MosaicDescriptor.create(new RenderedImage[0],
+                    MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, null,
+                    new double[][] { { CoverageUtilities.getMosaicThreshold(il.getSampleModel(null)
+                            .getDataType()) } }, bkgValues, renderingHints);
+        }
+        if (footprintBehavior != null) {
+            finalImage = footprintBehavior.postProcessBlankResponse(finalImage, renderingHints);
         }
         
         return finalImage;

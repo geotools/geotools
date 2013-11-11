@@ -794,6 +794,27 @@ public class PostGISDialect extends BasicSQLDialect {
     }
 
     @Override
+    public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx)
+            throws SQLException {
+        Statement st = cx.createStatement();
+        String tableName = featureType.getTypeName();
+
+        try {
+            //remove all the geometry_column entries
+            String sql = 
+                "DELETE FROM GEOMETRY_COLUMNS"
+                    + " WHERE f_table_catalog=''" //
+                    + " AND f_table_schema = '" + schemaName + "'" 
+                    + " AND f_table_name = '" + tableName + "'";
+            LOGGER.fine( sql );
+            st.execute( sql );
+        }
+        finally {
+            dataStore.closeSafe(st);
+        }
+    }
+
+    @Override
     public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
             throws IOException {
     	if (value == null || value.isEmpty()) {

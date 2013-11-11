@@ -798,4 +798,14 @@ public class ArcSDEDataStore implements DataStore {
             errors.add(construct);
         }
     }
+
+    @Override
+    public void removeSchema(Name typeName) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void removeSchema(String typeName) throws IOException {
+        throw new UnsupportedOperationException();
+    }
 }

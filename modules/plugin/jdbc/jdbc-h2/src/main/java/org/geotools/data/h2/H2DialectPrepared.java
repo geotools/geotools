@@ -108,13 +108,25 @@ public class H2DialectPrepared extends PreparedStatementSQLDialect {
             SimpleFeatureType featureType, Connection cx) throws SQLException {
         delegate.postCreateTable(schemaName, featureType, cx);
     }
-    
+
     @Override
     public void postCreateFeatureType(SimpleFeatureType featureType, DatabaseMetaData metadata,
             String schemaName, Connection cx) throws SQLException {
         delegate.postCreateFeatureType(featureType, metadata, schemaName, cx);
     }
-        
+
+    @Override
+    public void preDropTable(String schemaName, SimpleFeatureType featureType, Connection cx)
+            throws SQLException {
+        delegate.preDropTable(schemaName, featureType, cx);
+    }
+
+    @Override
+    public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx)
+            throws SQLException {
+        delegate.postDropTable(schemaName, featureType, cx);
+    }
+
     @Override
     public Integer getGeometrySRID(String schemaName, String tableName, String columnName,
         Connection cx) throws SQLException {
@@ -131,7 +143,7 @@ public class H2DialectPrepared extends PreparedStatementSQLDialect {
             String columnName, Connection cx) throws SQLException {
         return delegate.getSequenceForColumn(schemaName, tableName, columnName, cx);
     }
-    
+
     @Override
     public Object getNextSequenceValue(String schemaName, String sequenceName,
             Connection cx) throws SQLException {

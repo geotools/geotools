@@ -81,6 +81,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
@@ -683,6 +684,53 @@ public final class JDBCDataStore extends ContentDataStore
             String msg = "Error occurred creating table";
             throw (IOException) new IOException(msg).initCause(e);
         } finally {
+            closeSafe(cx);
+        }
+    }
+
+    public void removeSchema(String typeName) throws IOException {
+        removeSchema(name(typeName));
+    }
+
+    public void removeSchema(Name typeName) throws IOException {
+        if (entry(typeName) == null) {
+            String msg = "Schema '" + typeName + "' does not exist";
+            throw new IllegalArgumentException(msg);
+        }
+
+        //check for virtual table
+        if (virtualTables.containsKey(typeName.getLocalPart())) {
+            removeVirtualTable(typeName.getLocalPart());
+            return;
+        }
+
+        SimpleFeatureType featureType = getSchema(typeName);
+
+        //execute the drop table statement
+        Connection cx = createConnection();
+        try {
+            //give the dialect a chance to cleanup pre
+            dialect.preDropTable(databaseSchema, featureType, cx);
+
+            String sql = dropTableSQL(featureType, cx);
+            LOGGER.log(Level.FINE, "Drop schema: {0}", sql);
+
+            Statement st = cx.createStatement();
+
+            try {
+                st.execute(sql);
+            } finally {
+                closeSafe(st);
+            }
+
+            dialect.postDropTable(databaseSchema, featureType, cx);
+            removeEntry(typeName);
+        }
+        catch(Exception e) {
+            String msg = "Error occurred dropping table";
+            throw (IOException) new IOException(msg).initCause(e);
+        }
+        finally {
             closeSafe(cx);
         }
     }
@@ -1978,6 +2026,19 @@ public final class JDBCDataStore extends ContentDataStore
 
         //practically should never get here, but just fall back and fail later 
         return "fid";
+    }
+
+    /**
+     * Generates a 'DROP TABLE' sql statement.
+     */
+    protected String dropTableSQL(SimpleFeatureType featureType, Connection cx)
+        throws Exception {
+        StringBuffer sql = new StringBuffer();
+        sql.append("DROP TABLE ");
+
+        encodeTableName(featureType.getTypeName(), sql, null);
+
+        return sql.toString();
     }
 
     /**

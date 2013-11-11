@@ -347,6 +347,9 @@ public class DataAccessFinderTest extends TestCase {
 
         public void updateSchema(Name typeName, FeatureType featureType) throws IOException {
         }
+
+        public void removeSchema(Name typeName) throws IOException {
+        }
     };
 
     /**
@@ -394,6 +397,9 @@ public class DataAccessFinderTest extends TestCase {
         public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
         }
 
+        public void removeSchema(String typeName) throws IOException {
+        }
+
         public void createSchema(SimpleFeatureType featureType) throws IOException {
         }
 
@@ -418,6 +424,9 @@ public class DataAccessFinderTest extends TestCase {
         }
 
         public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
+        }
+
+        public void removeSchema(Name typeName) throws IOException {
         }
     };
 }

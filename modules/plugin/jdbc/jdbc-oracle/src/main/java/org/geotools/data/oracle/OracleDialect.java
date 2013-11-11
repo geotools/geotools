@@ -43,7 +43,6 @@ import org.geotools.data.oracle.sdo.TT;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
@@ -56,7 +55,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -957,6 +955,23 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             dataStore.closeSafe( st );
         }
         
+    }
+
+    @Override
+    public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx)
+            throws SQLException {
+        Statement st = cx.createStatement();
+        String tableName = featureType.getTypeName();
+
+        try {
+            // remove all the geometry metadata (no need for schema as we can only play against
+            // the current user's table)
+            String sql = "DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME = '" + tableName + "'";
+            LOGGER.fine( sql );
+            st.execute( sql );
+        } finally {
+            dataStore.closeSafe(st);
+        }
     }
 
     /**

@@ -57,6 +57,17 @@ public interface DataStore extends DataAccess<SimpleFeatureType, SimpleFeature>{
         throws IOException;
 
     /**
+     * Used to permanently remove a schema from the underlying storage
+     * <p>
+     * This functionality is similar to an "drop table" statement in SQL. Implementation
+     * is optional; it may not be supported by all servers or files.
+     * @param typeName
+     * @throws IOException if the operation failed
+     * @throws UnsupportedOperation if functionality is not available
+     */
+    void removeSchema(String typeName) throws IOException;
+
+    /**
      * Gets the names of feature types available in this {@code DataStore}.
      * Please note that this is not guaranteed to return a list of unique
      * names since the same unqualified name may be present in separate

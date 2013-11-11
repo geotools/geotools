@@ -654,6 +654,15 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
+     * Not a supported operation.
+     * 
+     * @see org.geotools.data.DataAccess#removeSchema(org.opengis.feature.type.Name)
+     */
+    public void removeSchema(Name typeName) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * Return a feature source that can be used to obtain features of a particular name. This name
      * would be the mappingName in the TypeMapping if it exists, otherwise it's the target element
      * name.

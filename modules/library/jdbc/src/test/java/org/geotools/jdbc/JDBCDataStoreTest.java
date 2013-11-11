@@ -128,24 +128,24 @@ public abstract class JDBCDataStoreTest extends JDBCTestSupport {
         builder.setCRS(CRS.decode("EPSG:4326"));
         builder.add(aname("geometry"), Geometry.class);
         builder.nillable(false).add(aname("intProperty"), Integer.class);
-        
+
         builder.length(5).add(aname("stringProperty"), String.class);
-        
+
         SimpleFeatureType featureType = builder.buildFeatureType();
         dataStore.createSchema(featureType);
-        
+
         SimpleFeatureType ft2 = dataStore.getSchema(tname("ft2"));
         //assertEquals(ft2, featureType);
-        
+
         //grab a writer
         FeatureWriter w = dataStore.getFeatureWriter( tname("ft2"),Transaction.AUTO_COMMIT);
         w.hasNext();
-        
+
         SimpleFeature f = (SimpleFeature) w.next();
         f.setAttribute( 1, new Integer(0));
         f.setAttribute( 2, "hello");
         w.write();
-        
+
         w.hasNext();
         f = (SimpleFeature) w.next();
         f.setAttribute( 1, null );
@@ -155,7 +155,7 @@ public abstract class JDBCDataStoreTest extends JDBCTestSupport {
         }
         catch( Exception e ) {
         }
-        
+
         f.setAttribute( 1, new Integer(1) );
         f.setAttribute( 2, "hello!");
         try {
@@ -164,8 +164,21 @@ public abstract class JDBCDataStoreTest extends JDBCTestSupport {
         }
         catch( Exception e ) {
         }
-        
+
         w.close();
+    }
+
+    public void testRemoveSchema() throws Exception {
+        SimpleFeatureType ft = dataStore.getSchema(tname("ft1"));
+        assertNotNull(ft);
+
+        dataStore.removeSchema(tname("ft1"));
+        try {
+            dataStore.getSchema(tname("ft1"));
+            fail("getSchema() should fail if table was deleted");
+        }
+        catch(Exception e) {
+        }
     }
 
     public void testCreateSchemaUTMCRS() throws Exception {

@@ -206,4 +206,13 @@ public class PreGeneralizedDataStore implements DataStore {
 
     }
 
+    @Override
+    public void removeSchema(Name typeName) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void removeSchema(String typeName) throws IOException {
+        throw new UnsupportedOperationException();
+    }
 }

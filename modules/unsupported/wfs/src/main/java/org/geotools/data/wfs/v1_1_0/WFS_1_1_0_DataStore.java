@@ -1024,4 +1024,13 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         }
     }
 
+    @Override
+    public void removeSchema(String typeName) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void removeSchema(Name typeName) throws IOException {
+        throw new UnsupportedOperationException();
+    }
  }

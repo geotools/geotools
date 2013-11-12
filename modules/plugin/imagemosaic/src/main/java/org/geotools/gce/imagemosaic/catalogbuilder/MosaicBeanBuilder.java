@@ -47,6 +47,11 @@ public class MosaicBeanBuilder {
      */
     private boolean expandToRGB;
 
+    /**
+     * <code>true</code> if we need to look for PAM auxiliary metadata xml files.
+     */
+    private boolean checkAuxiliaryMetadata;
+
     /** OverviewLevel levels */
     private double[][] levels;
 
@@ -155,6 +160,14 @@ public class MosaicBeanBuilder {
         bean = null;
     }
 
+    public boolean isCheckAuxiliaryMetadata() {
+        return checkAuxiliaryMetadata;
+    }
+
+    public void setCheckAuxiliaryMetadata(boolean checkAuxiliaryMetadata) {
+        this.checkAuxiliaryMetadata = checkAuxiliaryMetadata;
+    }
+
     public String getName() {
         return name;
     }
@@ -233,6 +246,7 @@ public class MosaicBeanBuilder {
             bean.setLevelsNum(levelsNum);
             bean.setName(name);
             bean.setAuxiliaryFilePath(auxiliaryFilePath);
+            bean.setCheckAuxiliaryMetadata(checkAuxiliaryMetadata);
         }
         return bean;
     }

@@ -888,11 +888,15 @@ public class RasterManager {
 
             this.parentReader = parentReader;
             this.expandMe = parentReader.expandMe;
+            boolean checkAuxiliaryMetadata = configuration.isCheckAuxiliaryMetadata();
             this.heterogeneousGranules = parentReader.heterogeneousGranules;
             this.configuration = configuration;
             hints = parentReader.getHints();
             if (configuration != null && configuration.getAuxiliaryFilePath() != null) {
                 hints.add(new RenderingHints(Utils.AUXILIARY_FILES_PATH, configuration.getAuxiliaryFilePath()));
+            }
+            if (checkAuxiliaryMetadata) {
+                hints.add(new RenderingHints(Utils.CHECK_AUXILIARY_METADATA, checkAuxiliaryMetadata));
             }
             
             // take ownership of the index : TODO: REMOVE THAT ONCE DEALING WITH MORE CATALOGS/RASTERMANAGERS

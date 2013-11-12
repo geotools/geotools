@@ -552,18 +552,20 @@ public class ImageMosaicConfigHandler {
         }
         
         if (props.containsKey(Prop.INDEXING_DIRECTORIES)) {
-            IndexerUtils.setParam(params.getParameter(), props, Prop.INDEXING_DIRECTORIES);
+            IndexerUtils.setParam(parameters, props, Prop.INDEXING_DIRECTORIES);
         }
         if (props.containsKey(Prop.AUXILIARY_FILE)) {
-            IndexerUtils.setParam(params.getParameter(), props, Prop.AUXILIARY_FILE);
+            IndexerUtils.setParam(parameters, props, Prop.AUXILIARY_FILE);
         }
         if (props.containsKey(Prop.CAN_BE_EMPTY)) {
-            IndexerUtils.setParam(params.getParameter(), props, Prop.CAN_BE_EMPTY);
+            IndexerUtils.setParam(parameters, props, Prop.CAN_BE_EMPTY);
         }
         if (props.containsKey(Prop.USE_EXISTING_SCHEMA)) {
-            IndexerUtils.setParam(params.getParameter(), props, Prop.USE_EXISTING_SCHEMA);
+            IndexerUtils.setParam(parameters, props, Prop.USE_EXISTING_SCHEMA);
         }
-        
+        if (props.containsKey(Prop.CHECK_AUXILIARY_METADATA)) {
+            IndexerUtils.setParam(parameters, props, Prop.CHECK_AUXILIARY_METADATA);
+        }
         return indexer;
     }
 
@@ -641,6 +643,8 @@ public class ImageMosaicConfigHandler {
         properties.setProperty(Utils.Prop.TYPENAME, mosaicConfiguration.getName());
         properties.setProperty(Utils.Prop.EXP_RGB,
                 Boolean.toString(mosaicConfiguration.isExpandToRGB()));
+        properties.setProperty(Utils.Prop.CHECK_AUXILIARY_METADATA,
+                Boolean.toString(mosaicConfiguration.isCheckAuxiliaryMetadata()));
         properties.setProperty(Utils.Prop.HETEROGENEOUS,
                 Boolean.toString(catalogConfigurationBean.isHeterogeneous()));
 
@@ -817,6 +821,7 @@ public class ImageMosaicConfigHandler {
             catalogConfigurationBean.setTypeName(coverageName);
             
             configBuilder.setCatalogConfigurationBean(catalogConfigurationBean);
+            configBuilder.setCheckAuxiliaryMetadata(IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));
 
             currentConfigurationBean = configBuilder.getMosaicConfigurationBean();
 

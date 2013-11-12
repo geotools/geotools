@@ -44,6 +44,14 @@ void exampleCreateSchema() throws Exception {
     
 }
 
+void exampleRemoveSchema() throws Exception {
+    // exampleRemoveSchema start
+    Name schemaName = new NameImpl("myTable");
+    dataStore.removeSchema(schemaName);
+    // exampleRemoveSchema end
+
+}
+
 void exampleAllCount() throws Exception {
     // all start
     int count = featureSource.getCount( Query.ALL );

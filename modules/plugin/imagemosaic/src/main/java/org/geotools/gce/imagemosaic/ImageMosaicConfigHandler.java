@@ -387,14 +387,15 @@ public class ImageMosaicConfigHandler {
                 if (supportsEmpty || keySize > 1
                         || (keySize > 0 && !base.equals(keys.iterator().next()))) {
                     File mosaicFile = null;
+                    File originFile = null;
                     if (indexerFile.getAbsolutePath().endsWith("xml")) {
                         mosaicFile = new File(indexerFile.getAbsolutePath().replace(
                                 Utils.INDEXER_XML, (base + ".xml")));
-                        FileUtils.copyFile(indexerFile, mosaicFile);
+                        originFile = indexerFile;
                     } else if (indexerFile.getAbsolutePath().endsWith("properties")) {
                         mosaicFile = new File(indexerFile.getAbsolutePath().replace(
                                 Utils.INDEXER_PROPERTIES, (base + ".properties")));
-                        FileUtils.copyFile(indexerFile, mosaicFile);
+                        originFile = indexerFile;
                     } else {
                         final String source = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR)
                                 + File.separatorChar
@@ -402,7 +403,10 @@ public class ImageMosaicConfigHandler {
                                 + ".properties";
                         mosaicFile = new File(indexerFile.getAbsolutePath().replace(
                                 Utils.INDEXER_PROPERTIES, (base + ".properties")));
-                        FileUtils.copyFile(new File(source), mosaicFile);
+                        originFile = new File(source);
+                    }
+                    if (!mosaicFile.exists()) {
+                        FileUtils.copyFile(originFile, mosaicFile);
                     }
                 }
 
@@ -565,17 +569,17 @@ public class ImageMosaicConfigHandler {
 
     private void closeIndexObjects() {
 
-        // TODO: We may consider avoid disposing the catalog to allow the reader to use the already available catalog
-        try {
-            if (catalog != null) {
-                catalog.dispose();
-            }
-        } catch (Throwable e) {
-            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-        }
-
-        catalog = null;
-        getParentReader().granuleCatalog = null;
+//        // TODO: We may consider avoid disposing the catalog to allow the reader to use the already available catalog
+//        try {
+//            if (catalog != null) {
+//                catalog.dispose();
+//            }
+//        } catch (Throwable e) {
+//            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//        }
+//
+//        catalog = null;
+//        getParentReader().granuleCatalog = null;
     }
 
     /**

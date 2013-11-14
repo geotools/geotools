@@ -335,9 +335,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 } 
                 MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
                 catalog.setMultiScaleROIProvider(rois);
-                if (granuleCatalog == null) {
-                    granuleCatalog = catalog;
+                if (granuleCatalog != null) {
+                    granuleCatalog.dispose();
                 }
+                granuleCatalog = catalog;
 
                 if (granuleCatalog == null) {
                     throw new DataSourceException("Unable to create index for this URL " + sourceURL);

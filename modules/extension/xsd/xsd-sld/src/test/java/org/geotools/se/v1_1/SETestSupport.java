@@ -17,10 +17,12 @@
 package org.geotools.se.v1_1;
 
 import org.geotools.xml.Configuration;
+import org.geotools.xml.Parser;
 import org.geotools.xml.test.XMLTestSupport;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
+
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -64,4 +66,11 @@ public class SETestSupport extends XMLTestSupport {
             }
         }
     }
+    
+    protected Object parse(String filename) throws Exception {
+        SEConfiguration se = new SEConfiguration();
+        Parser p = new Parser(se);
+        return p.parse(getClass().getResourceAsStream(filename));
+    }
+
 }

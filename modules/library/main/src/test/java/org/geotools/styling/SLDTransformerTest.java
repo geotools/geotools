@@ -1140,4 +1140,59 @@ public class SLDTransformerTest {
         ExternalGraphic egCopy = (ExternalGraphic) psCopy.getGraphic().graphicalSymbols().get(0);
         assertEquals(chartURI, egCopy.getLocation().toExternalForm());
     }
+    
+    @Test
+    public void testLocalUomPoint() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        PointSymbolizer ps = sb.createPointSymbolizer();
+        ps.getGraphic().setSize(ff.literal("1m"));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ps);
+        
+        String xml = transformer.transform(sld);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+        
+        assertXpathEvaluatesTo("1m", "//sld:Graphic/sld:Size", doc);
+    }
+    
+    @Test
+    public void testLocalUomLine() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        LineSymbolizer ls = sb.createLineSymbolizer();
+        ls.getStroke().setWidth(ff.literal("1m"));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ls);
+        
+        String xml = transformer.transform(sld);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+        
+        assertXpathEvaluatesTo("1m", "//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-width']", doc);
+    }
+    
+    @Test
+    public void testLocalUomText() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.getFont().setSize(ff.literal("1m"));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+        
+        String xml = transformer.transform(sld);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+        
+        assertXpathEvaluatesTo("1m", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name='font-size']", doc);
+    }
+
+    private StyledLayerDescriptor buildSLDAroundSymbolizer(org.geotools.styling.Symbolizer symbolizer) {
+        StyleBuilder sb = new StyleBuilder();
+        Style s = sb.createStyle(symbolizer);
+        s.setDefault(true);
+        StyleFactory sf = sb.getStyleFactory();
+        StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
+        NamedLayer layer = sf.createNamedLayer();
+        layer.setName("layerName");
+        layer.addStyle(s);
+        sld.addStyledLayer(layer);
+        return sld;
+    }
 }

@@ -19,6 +19,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -78,6 +79,15 @@ public class LineTest {
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         return renderer;
+    }
+    
+    @Test
+    @Ignore
+    public void testPerPropertyUOM10() throws Exception {
+        StreamingRenderer renderer = setupLineMap("linePerPropertyUom.sld");
+        
+        BufferedImage image = RendererBaseTest.showRender("linePerPropertyUom", renderer, TIME, bounds);
+        ImageAssert.assertEquals(file("linePerPropertyUom10"), image, 10);
     }
     
     @Test

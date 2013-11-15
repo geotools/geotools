@@ -16,9 +16,12 @@
  */
 package org.geotools.styling.visitor;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.awt.Color;
 
-import junit.framework.TestCase;
+import javax.measure.unit.SI;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
@@ -36,6 +39,8 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 
 
@@ -47,7 +52,7 @@ import org.opengis.filter.FilterFactory2;
  *
  * @source $URL$
  */
-public class RescaleStyleVisitorTest extends TestCase {
+public class RescaleStyleVisitorTest {
     StyleBuilder sb;
     StyleFactory sf;
     FilterFactory2 ff;
@@ -55,11 +60,8 @@ public class RescaleStyleVisitorTest extends TestCase {
     RescaleStyleVisitor visitor;
     double scale;
     
-    public RescaleStyleVisitorTest(String testName) {
-        super(testName);
-    }
-
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
     	sf = CommonFactoryFinder.getStyleFactory(null);
         ff = CommonFactoryFinder.getFilterFactory2(null);
         sb = new StyleBuilder(sf, ff);
@@ -67,6 +69,7 @@ public class RescaleStyleVisitorTest extends TestCase {
         visitor = new RescaleStyleVisitor( scale );
     }
     
+    @Test
     public void testStyleDuplication() throws IllegalFilterException {
     	//create a style
     	Style oldStyle = sb.createStyle("FTSName", sf.createPolygonSymbolizer());
@@ -79,6 +82,7 @@ public class RescaleStyleVisitorTest extends TestCase {
     	assertNotNull(newStyle);
     }
 
+    @Test
     public void testStyle() throws Exception {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
         fts.setFeatureTypeName("feature-type-1");
@@ -107,6 +111,7 @@ public class RescaleStyleVisitorTest extends TestCase {
         return fts2;
     }
 
+    @Test
     public void testRule() throws Exception {
         Symbolizer symb1 = sf.createLineSymbolizer(sf
                 .getDefaultStroke(), "geometry");
@@ -125,16 +130,18 @@ public class RescaleStyleVisitorTest extends TestCase {
         assertNotNull( clone );
     }
     
+    @Test
     public void testStroke() throws Exception {
         Stroke original = sb.createStroke(Color.RED, 2, new float[] {5, 10});
         original.accept(visitor);
         Stroke clone = (Stroke) visitor.getCopy();
         
-        assertEquals(4.0d, clone.getWidth().evaluate(null));
-        assertEquals(10.0f, clone.getDashArray()[0]);
-        assertEquals(20.0f, clone.getDashArray()[1]);
+        assertEquals(4.0d, clone.getWidth().evaluate(null, Double.class), 0d);
+        assertEquals(10.0f, clone.getDashArray()[0], 0d);
+        assertEquals(20.0f, clone.getDashArray()[1], 0d);
     }
     
+    @Test
     public void testTextSymbolizer() throws Exception {
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "label");
         ts.getOptions().put(TextSymbolizer.MAX_DISPLACEMENT_KEY, "10");
@@ -146,6 +153,7 @@ public class RescaleStyleVisitorTest extends TestCase {
         assertEquals("20 40", clone.getOptions().get(TextSymbolizer.GRAPHIC_MARGIN_KEY));
     }
     
+    @Test
     public void testTextSymbolizerArraySingleValue() throws Exception {
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "label");
         ts.getOptions().put(TextSymbolizer.GRAPHIC_MARGIN_KEY, "10");
@@ -155,6 +163,7 @@ public class RescaleStyleVisitorTest extends TestCase {
         assertEquals("20", clone.getOptions().get(TextSymbolizer.GRAPHIC_MARGIN_KEY));
     }
     
+    @Test
     public void testRescaleGraphicFillStrokes() {
         // create a graphic that needs rescaling
         StyleBuilder sb = new StyleBuilder();
@@ -176,9 +185,9 @@ public class RescaleStyleVisitorTest extends TestCase {
         ps.accept(visitor);
         PolygonSymbolizer rps = (PolygonSymbolizer) visitor.getCopy();
         Mark rm = (Mark) rps.getStroke().getGraphicStroke().graphicalSymbols().get(0);
-        assertEquals(2.0, rm.getStroke().getWidth().evaluate(null));
+        assertEquals(2.0, rm.getStroke().getWidth().evaluate(null, Double.class), 0d);
         rm = (Mark) rps.getFill().getGraphicFill().graphicalSymbols().get(0);
-        assertEquals(4.0, rm.getStroke().getWidth().evaluate(null));
+        assertEquals(4.0, rm.getStroke().getWidth().evaluate(null, Double.class), 0d);
 
         
         // a line symbolizer that uses a graphic stroke
@@ -188,7 +197,42 @@ public class RescaleStyleVisitorTest extends TestCase {
         ls.accept(visitor);
         LineSymbolizer lps = (LineSymbolizer) visitor.getCopy();
         rm = (Mark) lps.getStroke().getGraphicStroke().graphicalSymbols().get(0);
-        assertEquals(2.0, rm.getStroke().getWidth().evaluate(null));
+        assertEquals(2.0, rm.getStroke().getWidth().evaluate(null, Double.class), 0d);
     }
+    
+    @Test
+    public void testRescaleLocalUOM() throws Exception {
+        Stroke original = sb.createStroke(Color.RED, 2, new float[] {5, 10});
+        original.setWidth(ff.literal("2m"));
+        original.accept(visitor);
+        Stroke clone = (Stroke) visitor.getCopy();
+        
+        assertEquals("4m", clone.getWidth().evaluate(null, String.class));
+    }
+    
+    @Test
+    public void testRescaleLocalPixelInMetersSymbolizer() throws Exception {
+        Stroke stroke = sb.createStroke(Color.RED, 2, new float[] {5, 10});
+        stroke.setWidth(ff.literal("2px"));
+        LineSymbolizer ls = sb.createLineSymbolizer(stroke);
+        ls.setUnitOfMeasure(SI.METER);
+        ls.accept(visitor);
+        LineSymbolizer clone = (LineSymbolizer) visitor.getCopy();
+        
+        assertEquals("4px", clone.getStroke().getWidth().evaluate(null, String.class));
+    }
+    
+    @Test
+    public void testRescaleLocalPixelInPixelSymbolizer() throws Exception {
+        Stroke stroke = sb.createStroke(Color.RED, 2, new float[] {5, 10});
+        stroke.setWidth(ff.literal("2px"));
+        LineSymbolizer ls = sb.createLineSymbolizer(stroke);
+        ls.accept(visitor);
+        LineSymbolizer clone = (LineSymbolizer) visitor.getCopy();
+        
+        assertEquals("4", clone.getStroke().getWidth().evaluate(null, String.class));
+    }
+    
+    
     
 }

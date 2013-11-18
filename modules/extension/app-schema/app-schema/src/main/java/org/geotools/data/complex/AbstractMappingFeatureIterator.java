@@ -436,7 +436,8 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                 final Hints hints = new Hints();
                 if (resolveDepth > 1) {
                     hints.put(Hints.RESOLVE, ResolveValueType.ALL);
-                    hints.put(Hints.RESOLVE_TIMEOUT, resolveTimeOut);
+                    // only the top-level resolve thread should monitor timeout
+                    hints.put(Hints.RESOLVE_TIMEOUT, Integer.MAX_VALUE);
                     hints.put(Hints.ASSOCIATION_TRAVERSAL_DEPTH, resolveDepth - 1);
                 } else {
                     hints.put(Hints.RESOLVE, ResolveValueType.NONE);
@@ -446,22 +447,28 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                 FeatureFinder finder = new FeatureFinder(refid, hints);
                 // this will be null if joining or sleeping is interrupted
                 Feature foundFeature = null;
-                Thread thread = new Thread(finder);
-                long startTime = System.currentTimeMillis();
-                thread.start();
-                try {
-                    while (thread.isAlive()
-                            && (System.currentTimeMillis() - startTime) / 1000 < resolveTimeOut) {
-                        Thread.sleep(RESOLVE_TIMEOUT_POLL_INTERVAL);
-                    }
-                    thread.interrupt();
-                    // joining ensures synchronisation
-                    thread.join();
+                if (resolveTimeOut == Integer.MAX_VALUE) {
+                    // not the top-level resolve thread so do not monitor timeout
+                    finder.run();
                     foundFeature = finder.getFeature();
-                } catch (InterruptedException e) {
-                    // clean up as best we can
-                    thread.interrupt();
-                    throw new RuntimeException("Interrupted while resolving resource " + refid);
+                } else {
+                    Thread thread = new Thread(finder);
+                    long startTime = System.currentTimeMillis();
+                    thread.start();
+                    try {
+                        while (thread.isAlive()
+                                && (System.currentTimeMillis() - startTime) / 1000 < resolveTimeOut) {
+                            Thread.sleep(RESOLVE_TIMEOUT_POLL_INTERVAL);
+                        }
+                        thread.interrupt();
+                        // joining ensures synchronisation
+                        thread.join();
+                        foundFeature = finder.getFeature();
+                    } catch (InterruptedException e) {
+                        // clean up as best we can
+                        thread.interrupt();
+                        throw new RuntimeException("Interrupted while resolving resource " + refid);
+                    }
                 }
 
                 if (foundFeature != null) {

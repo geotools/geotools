@@ -169,7 +169,18 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         this.attf = new AppSchemaFeatureFactoryImpl();
 
         this.mapping = mapping;
-        
+
+        // validate and initialise resolve options
+        Hints hints = query.getHints();
+        ResolveValueType resolveVal = (ResolveValueType) hints.get( Hints.RESOLVE );
+        boolean resolve = ResolveValueType.ALL.equals(resolveVal) || ResolveValueType.LOCAL.equals(resolveVal);
+        if (!resolve && resolveVal!=null && !ResolveValueType.NONE.equals(resolveVal)) {
+            throw new IllegalArgumentException("Resolve:" + resolveVal.getName() + " is not supported in app-schema!");
+        }
+        Integer atd = (Integer) hints.get(Hints.ASSOCIATION_TRAVERSAL_DEPTH);
+        resolveDepth = resolve ? atd==null? 0 : atd  : 0;
+        resolveTimeOut = (Integer) hints.get( Hints.RESOLVE_TIMEOUT );
+
         namespaces = mapping.getNamespaces();
         namespaceAwareFilterFactory = new FilterFactoryImplNamespaceAware(namespaces);
         
@@ -210,19 +221,6 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         xpathAttributeBuilder.setFeatureFactory(attf);
         initialiseSourceFeatures(mapping, unrolledQuery, query.getCoordinateSystemReproject());
         xpathAttributeBuilder.setFilterFactory(namespaceAwareFilterFactory);
-        
-        Hints hints = query.getHints();
-        ResolveValueType resolveVal = (ResolveValueType) hints.get( Hints.RESOLVE );
-        boolean resolve = ResolveValueType.ALL.equals(resolveVal) || ResolveValueType.LOCAL.equals(resolveVal);
-        
-        if (!resolve && resolveVal!=null && !ResolveValueType.NONE.equals(resolveVal)) {
-            throw new IllegalArgumentException("Resolve:" + resolveVal.getName() + " is not supported in app-schema!");
-        }
-        
-        Integer atd = (Integer) hints.get(Hints.ASSOCIATION_TRAVERSAL_DEPTH);
-        
-        resolveDepth = resolve ? atd==null? 0 : atd  : 0;
-        resolveTimeOut = (Integer) hints.get( Hints.RESOLVE_TIMEOUT );
     }
     
     //properties can only be set by constructor, before initialising source features 

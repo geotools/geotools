@@ -20,7 +20,6 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -53,7 +52,6 @@ import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.ExceptionEvent;
@@ -316,18 +314,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 
                 // Catalog initialization from datastore
                 GranuleCatalog catalog = null;
-                final Properties props = CatalogManager.createGranuleCatalogProperties(datastoreProperties);
-                
-                // SPI
-                final String SPIClass = props.getProperty("SPI");
-
-                // create a datastore as instructed
-                final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
-                final Map<String, Serializable> params = Utils.createDataStoreParamsFromPropertiesFile(props, spi);
+                final Properties params = CatalogManager.createGranuleCatalogProperties(datastoreProperties);
 
                 // Since we are dealing with a catalog from an existing store, make sure to scan for all the typeNames on initialization
                 params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.valueOf(true));
 //                params.put(Utils.SCAN_FOR_TYPENAMES, typeNamesProps.getProperty(Utils.SCAN_FOR_TYPENAMES));
+                
                 if (beans.size() > 0) {
                     catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, beans.get(0).getCatalogConfigurationBean(), params, getHints());
                 } else {

@@ -307,7 +307,7 @@ public class ImageMosaicReaderTest extends Assert{
 	    	out.write("Loose\\ bbox=true #important for performances\n");
 	    	out.write("Estimated\\ extends=false #important for performances\n");
 	    	out.write("user=geosolutions\n");
-	    	out.write("passwd=fucktheworld\n");
+	    	out.write("passwd=geosolutions\n");
 	    	out.write("validate \\connections=true #important for avoiding errors\n");
 	    	out.write("Connection\\ timeout=3600\n");
 	    	out.write("max \\connections=10 #important for performances, internal pooling\n");
@@ -393,6 +393,86 @@ public class ImageMosaicReaderTest extends Assert{
          	FileUtils.deleteDirectory( TestData.file(this, "water_temp3"));
          }
 	}	
+	
+	/**
+	 * This test is used to check backward compatibility with old imagemosaics wich does not include
+	 * the TypeName=MOSAICNAME into the generated MOSAICNAME.properties file
+	 * 
+	 * @throws Exception
+	 */
+    @Test
+    // @Ignore
+    public void testTypeNameBackwardsCompatibility() throws Exception {
+
+        final File workDir = new File(TestData.file(this, "."), "water_temp3");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        FileUtils
+                .copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+        TestData.unzipFile(this, "water_temp3/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, "water_temp3");
+
+        // place H2 file in the dir
+        FileWriter out = null;
+        try {
+            out = new FileWriter(new File(TestData.file(this, "."),
+                    "/water_temp3/datastore.properties"));
+            out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n");
+            out.write("database=imagemosaic\n");
+            out.write("dbtype=h2\n");
+            out.write("Loose\\ bbox=true #important for performances\n");
+            out.write("Estimated\\ extends=false #important for performances\n");
+            out.write("user=geosolutions\n");
+            out.write("passwd=geosolutions\n");
+            out.write("validate\\ connections=true #important for avoiding errors\n");
+            out.write("Connection\\ timeout=3600\n");
+            out.write("max\\ connections=10 #important for performances, internal pooling\n");
+            out.write("min\\ connections=5  #important for performances, internal pooling\n");
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
+
+        // now start the test
+        AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+        reader.dispose();
+        format=null;
+        
+        // remove the TypeName=MOSAICNAME from MOSAICNAME.properties
+        FileInputStream fin=null;
+        FileWriter fw=null;
+        try {
+            File mosaicFile=new File(TestData.file(this, "."),
+                    "/water_temp3/water_temp3.properties");
+            fin = new FileInputStream(mosaicFile);
+            Properties properties=new Properties();
+            properties.load(fin);
+            assertNotNull(properties.remove("TypeName"));
+            fw = new FileWriter(mosaicFile);
+            properties.store(fw, "");
+        } finally {
+            IOUtils.closeQuietly(fin);
+            IOUtils.closeQuietly(fw);
+        }
+        
+        // we should be able to load the mosaic also without the TypeName=MOSAICNAME
+        format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+        
+        // clean up
+        if (!INTERACTIVE) {
+            FileUtils.deleteDirectory(TestData.file(this, "water_temp3"));
+        }
+    }
 
 	@Test
 //	@Ignore

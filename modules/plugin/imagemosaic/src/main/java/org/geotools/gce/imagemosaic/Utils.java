@@ -999,6 +999,23 @@ public class Utils {
 		
 		return params;
 	}
+            
+    public static Map<String, Serializable> filterDataStoreParams(
+            Properties properties, DataStoreFactorySpi spi) throws IOException {
+        // get the params
+        final Map<String, Serializable> params = new HashMap<String, Serializable>();
+        final Param[] paramsInfo = spi.getParametersInfo();
+        for (Param p : paramsInfo) {
+            // search for this param and set the value if found
+            if (properties.containsKey(p.key)) {
+                params.put(p.key,
+                        (Serializable) Converters.convert(properties.get(p.key), p.type));
+            } else if (p.required && p.sample == null)
+                throw new IOException("Required parameter missing: " + p.toString());
+        }
+
+        return params;
+    }
 
     static URL checkSource(Object source, Hints hints) {
         URL sourceURL = null;

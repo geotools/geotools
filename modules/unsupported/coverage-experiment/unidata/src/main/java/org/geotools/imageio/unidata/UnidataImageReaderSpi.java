@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
+
 import org.geotools.imageio.GeoSpatialImageReaderSpi;
 import org.geotools.util.logging.Logging;
 
@@ -95,7 +98,20 @@ public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
         }
         if (input != null) {
             NetcdfFile file = null;
+            FileImageInputStream fis = null;
             try {
+
+                // Checking Magic Number
+                fis = new FileImageInputStream(input);
+                byte[] b = new byte[3];
+                fis.mark();
+                fis.readFully(b);
+                fis.reset();
+                boolean cdfCheck = (b[0] == (byte)0x43 && b[1] == (byte)0x44 && b[2] == (byte)0x46);
+
+                if (!cdfCheck) {
+                    return false;
+                }
                 file = NetcdfDataset.open(input.getPath());
                 if (file != null) {
                     if (LOGGER.isLoggable(Level.FINE))
@@ -105,6 +121,14 @@ public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
             } catch (IOException ioe) {
                 canDecode = false;
             } finally {
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (Throwable t) {
+                        
+                    }
+                }
+
                 if (file != null)
                     file.close();
             }

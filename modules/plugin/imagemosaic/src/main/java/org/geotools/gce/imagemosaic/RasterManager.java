@@ -41,6 +41,7 @@ import java.util.logging.Logger;
 
 import javax.media.jai.ImageLayout;
 
+import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -961,6 +962,7 @@ public class RasterManager {
     }
 
     private void initDomains(MosaicConfigurationBean configuration) throws IOException {
+        checkTypeName();
         if (typeName != null) {
 
             final SimpleFeatureType schema = granuleCatalog.getType(typeName);
@@ -990,6 +992,22 @@ public class RasterManager {
                     dimensionDescriptors.addAll(elevationDomainManager.dimensions);
                 }
             }
+        }
+    }
+    
+    private void checkTypeName() throws IOException {
+        if (typeName == null) {
+            URL sourceURL = parentReader.sourceURL;
+            if (sourceURL.getPath().endsWith("shp")) {
+                typeName = FilenameUtils.getBaseName(DataUtilities.urlToFile(sourceURL)
+                        .getCanonicalPath());
+            } else {
+                typeName = configuration.getName();
+            }
+        }
+        if (typeName == null && granuleCatalog != null) {
+            String[] typeNames = granuleCatalog.getTypeNames();
+            typeName = (typeNames != null && typeNames.length > 0) ? typeNames[0] : null;
         }
     }
 

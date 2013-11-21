@@ -59,7 +59,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         //PreparedStatement ps = cx.prepareStatement("SELECT * FROM geopackage_contents WHERE" +
         //    " table_name = ? AND data_type = ?");
         try {
-            ResultSet rs = st.executeQuery(String.format("SELECT * FROM geopackage_contents WHERE" +
+            ResultSet rs = st.executeQuery(String.format("SELECT * FROM gpkg_contents WHERE" +
                 " table_name = '%s' AND data_type = '%s'", tableName, DataType.Feature.value()));
             //ps.setString(1, tableName);
             //ps.setString(2, DataType.Feature.value());
@@ -149,11 +149,11 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             String col = columns.getString("COLUMN_NAME"); 
 
             String sql = format(
-                "SELECT b.geometry_type" +
+                "SELECT b.geometry_type_name" +
                  " FROM %s a, %s b" + 
-                " WHERE a.table_name = b.f_table_name" +
-                  " AND b.f_table_name = ?" + 
-                  " AND b.f_geometry_column = ?", GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS);
+                " WHERE a.table_name = b.table_name" +
+                  " AND b.table_name = ?" + 
+                  " AND b.column_name = ?", GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS);
 
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine(String.format("%s; 1=%s, 2=%s", sql, tbl, col));
@@ -202,7 +202,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             fe.setGeometryType(Geometries.getForBinding((Class) gd.getType().getBinding()));
         }
 
-        fe.setCoordDimension(2);
         CoordinateReferenceSystem crs = featureType.getCoordinateReferenceSystem(); 
         if (crs != null) {
             Integer epsgCode = null;
@@ -257,7 +256,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             
             //try looking up in spatial ref sys
             String sql = 
-                String.format("SELECT srtext FROM %s WHERE auth_srid = %d", SPATIAL_REF_SYS, srid);
+                String.format("SELECT definition FROM %s WHERE auth_srid = %d", SPATIAL_REF_SYS, srid);
             LOGGER.fine(sql);
 
             Statement st = cx.createStatement();

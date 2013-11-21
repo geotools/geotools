@@ -404,21 +404,21 @@ public class ImageMosaicReaderTest extends Assert{
     // @Ignore
     public void testTypeNameBackwardsCompatibility() throws Exception {
 
-        final File workDir = new File(TestData.file(this, "."), "water_temp3");
+        final File workDir = new File(TestData.file(this, "."), "water_temp5");
         if (!workDir.mkdir()) {
             FileUtils.deleteDirectory(workDir);
             assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
         }
         FileUtils
                 .copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
-        TestData.unzipFile(this, "water_temp3/watertemp.zip");
-        final URL timeElevURL = TestData.url(this, "water_temp3");
+        TestData.unzipFile(this, "water_temp5/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, "water_temp5");
 
         // place H2 file in the dir
         FileWriter out = null;
         try {
             out = new FileWriter(new File(TestData.file(this, "."),
-                    "/water_temp3/datastore.properties"));
+                    "/water_temp5/datastore.properties"));
             out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n");
             out.write("database=imagemosaic\n");
             out.write("dbtype=h2\n");
@@ -450,7 +450,7 @@ public class ImageMosaicReaderTest extends Assert{
         FileWriter fw=null;
         try {
             File mosaicFile=new File(TestData.file(this, "."),
-                    "/water_temp3/water_temp3.properties");
+                    "/water_temp5/water_temp5.properties");
             fin = new FileInputStream(mosaicFile);
             Properties properties=new Properties();
             properties.load(fin);
@@ -467,10 +467,11 @@ public class ImageMosaicReaderTest extends Assert{
         assertNotNull(format);
         reader = TestUtils.getReader(timeElevURL, format);
         assertNotNull(reader);
-        
+
         // clean up
+        reader.dispose();
         if (!INTERACTIVE) {
-            FileUtils.deleteDirectory(TestData.file(this, "water_temp3"));
+            FileUtils.deleteDirectory(TestData.file(this, "water_temp5"));
         }
     }
 
@@ -2395,15 +2396,15 @@ public class ImageMosaicReaderTest extends Assert{
     @Test
     public void testExistingSchema() throws Exception {
 
-        final File workDir = new File(TestData.file(this, "."), "water_temp3");
+        final File workDir = new File(TestData.file(this, "."), "water_temp4");
         if (!workDir.mkdir()) {
             FileUtils.deleteDirectory(workDir);
             assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
         }
         FileUtils
                 .copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
-        TestData.unzipFile(this, "water_temp3/watertemp.zip");
-        final URL timeElevURL = TestData.url(this, "water_temp3");
+        TestData.unzipFile(this, "water_temp4/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, "water_temp4");
 //
 
 
@@ -2419,7 +2420,7 @@ public class ImageMosaicReaderTest extends Assert{
         FileWriter out = null;
         try {
             out = new FileWriter(new File(TestData.file(this, "."),
-                    "/water_temp3/indexer.properties"),true);
+                    "/water_temp4/indexer.properties"),true);
             out.write("UseExistingSchema=true\n");
             out.flush();
         } finally {
@@ -2429,10 +2430,10 @@ public class ImageMosaicReaderTest extends Assert{
         }
         
         // remove existing properties file and sample_image
-        File sampleImage=new File(TestData.file(this, "."),"/water_temp3/sample_image");
+        File sampleImage=new File(TestData.file(this, "."),"/water_temp4/sample_image");
         assertTrue(sampleImage.exists());
         sampleImage.delete();
-        File mosaicProperties=new File(TestData.file(this, "."),"/water_temp3/water_temp3.properties");
+        File mosaicProperties=new File(TestData.file(this, "."),"/water_temp4/water_temp4.properties");
         assertTrue(mosaicProperties.exists());
         mosaicProperties.delete();
         
@@ -2447,8 +2448,9 @@ public class ImageMosaicReaderTest extends Assert{
         assertTrue(mosaicProperties.exists());
 
         // clean up
+        reader.dispose();
         if (!INTERACTIVE) {
-            FileUtils.deleteDirectory(TestData.file(this, "water_temp3"));
+            FileUtils.deleteDirectory(TestData.file(this, "water_temp4"));
         }
     }
 

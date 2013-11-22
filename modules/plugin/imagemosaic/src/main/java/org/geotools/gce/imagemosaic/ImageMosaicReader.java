@@ -328,9 +328,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 final Properties params = CatalogManager.createGranuleCatalogProperties(datastoreProperties);
 
                 // Since we are dealing with a catalog from an existing store, make sure to scan for all the typeNames on initialization
-                params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.valueOf(true));
-//                params.put(Utils.SCAN_FOR_TYPENAMES, typeNamesProps.getProperty(Utils.SCAN_FOR_TYPENAMES));
-                
+                final Object typeNames=params.get(Utils.SCAN_FOR_TYPENAMES);
+                if (typeNames!=null){
+                    params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.valueOf(typeNames.toString()));
+                } else {
+                    params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.TRUE);
+                }
                 if (beans.size() > 0) {
                     catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, beans.get(0).getCatalogConfigurationBean(), params, getHints());
                 } else {

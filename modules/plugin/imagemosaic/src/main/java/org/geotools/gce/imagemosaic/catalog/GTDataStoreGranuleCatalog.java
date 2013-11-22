@@ -259,7 +259,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             }
 
             final FeatureType schema = featureSource.getSchema();
-            if (schema != null) {
+            if (schema != null && schema.getGeometryDescriptor()!=null) {
                 geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): geometryPropertyName is set to \'"

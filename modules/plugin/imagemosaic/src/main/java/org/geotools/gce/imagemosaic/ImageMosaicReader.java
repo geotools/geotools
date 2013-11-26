@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -140,8 +139,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 	 * {@link ImageMosaicReader}.
 	 */
 	URL sourceURL;
-	
-        File parentDirectory;
 
 	boolean expandMe;
 	
@@ -217,12 +214,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 initReaderFromURL(source, localHints);
             } catch (Exception e) {
                 throw new DataSourceException(e);
-            }
-        }
-        if (sourceURL != null) {
-            parentDirectory = DataUtilities.urlToFile(sourceURL);
-            if (!parentDirectory.isDirectory()) {
-                    parentDirectory = parentDirectory.getParentFile();
             }
         }
     }
@@ -842,10 +833,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     }
 
     @Override
-    public boolean removeCoverage(String coverageName, final boolean forceDelete) throws IOException {
+    public boolean removeCoverage(String coverageName) throws IOException {
         RasterManager manager = getRasterManager(coverageName);
         if (manager != null) {
-           manager.removeStore(coverageName, forceDelete);
+           manager.removeStore(coverageName);
            
            // Should I preserve managers for future re-harvesting or it's ok
            // to remove them
@@ -853,12 +844,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
            rasterManagers.remove(coverageName);
            names.remove(coverageName);
            if (defaultName == coverageName) {
-               Iterator<String> iterator = names.iterator();
-               if (iterator.hasNext()) {
-                   defaultName = iterator.next();
-               } else {
-                   defaultName = null;
-               }
+               defaultName = names.iterator().next();
            }
 
            return true;

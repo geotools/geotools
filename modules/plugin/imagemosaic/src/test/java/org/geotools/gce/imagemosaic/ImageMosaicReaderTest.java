@@ -16,6 +16,9 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 import java.awt.Color;
@@ -112,6 +115,8 @@ import org.opengis.referencing.datum.PixelInCell;
  */
 public class ImageMosaicReaderTest extends Assert{
 
+    private final static double DELTA = 10E-6;
+    
     private final static Logger LOGGER = Logger.getLogger(ImageMosaicReaderTest.class.toString());
     
 	public static junit.framework.Test suite() { 
@@ -2511,6 +2516,39 @@ public class ImageMosaicReaderTest extends Assert{
         if (!INTERACTIVE) {
             FileUtils.deleteDirectory(TestData.file(this, folder));
         }
+    }
+
+    @Test
+    public void testPAMAuxiliaryFiles() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
+        final URL timePamURL = TestData.url(this, "pam");
+
+        final AbstractGridFormat format = TestUtils.getFormat(timePamURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timePamURL, format);
+        assertNotNull(format);
+
+        final String[] metadataNames = reader.getMetadataNames();
+        assertNotNull(metadataNames);
+
+        // use imageio with defined tiles
+        final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+        final List<Date> timeValues= new ArrayList<Date>();
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+        Date date = sdf.parse("2008-11-01T00:00:00.000Z");
+        timeValues.add(date);
+        time.setValue(timeValues);
+
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[]{time});
+        Object object = coverage.getProperty(Utils.PAM_DATASET);
+        assertNotNull(object);
+        assertTrue(object instanceof PAMDataset);
+        PAMDataset dataset = (PAMDataset) object;
+        PAMRasterBand band = dataset.getPAMRasterBand().get(0);
+
+        PAMParser parser = PAMParser.getInstance();
+        assertEquals(0, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MINIMUM")), DELTA);
+        assertEquals(255.0, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MAXIMUM")), DELTA);
     }
 
 

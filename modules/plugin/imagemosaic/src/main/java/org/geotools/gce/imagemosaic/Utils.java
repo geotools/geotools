@@ -16,6 +16,8 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.pam.PAMDataset;
+
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -125,6 +127,8 @@ public class Utils {
     final private static double RESOLUTION_TOLERANCE_FACTOR = 1E-2;
 
     public final static Key EXCLUDE_MOSAIC = new Key(Boolean.class);
+    
+    public final static Key CHECK_AUXILIARY_METADATA = new Key(Boolean.class);
 
     public final static Key AUXILIARY_FILES_PATH = new Key(String.class);
 
@@ -137,6 +141,8 @@ public class Utils {
     public final static String INDEXER_XML = "indexer.xml";
 
     private static JAXBContext CONTEXT = null;
+    
+    public final static String PAM_DATASET = "PamDataset";
 
     static final String DEFAULT = "default";
 
@@ -202,7 +208,10 @@ public class Utils {
         public final static String INDEXING_DIRECTORIES = "IndexingDirectories";
         public final static String HARVEST_DIRECTORY = "HarvestingDirectory";
         public final static String CAN_BE_EMPTY = "CanBeEmpty";
-        
+
+        /** Sets if the reader should look for auxiliary metadata PAM files */
+        public static final String CHECK_AUXILIARY_METADATA = "CheckAuxiliaryMetadata";
+
         //Indexer Properties specific properties
         public  static final String RECURSIVE = "Recursive";
         public static final String WILDCARD = "Wildcard";
@@ -429,6 +438,13 @@ public class Utils {
                         || !ignorePropertiesSet.contains(Prop.AUXILIARY_FILE)) {
                     retValue.setAuxiliaryFilePath(properties.getProperty(Prop.AUXILIARY_FILE));
         }
+
+                if (!ignoreSome || !ignorePropertiesSet.contains(Prop.CHECK_AUXILIARY_METADATA)) {
+                    final boolean checkAuxiliaryMetadata = Boolean.valueOf(properties.getProperty(
+                            Prop.CHECK_AUXILIARY_METADATA, "false").trim());
+                    retValue.setCheckAuxiliaryMetadata(checkAuxiliaryMetadata);
+                }
+                
 		
 		//
 		// resolutions levels
@@ -1785,5 +1801,12 @@ public class Utils {
         String spiName = spi == null ? null : spi.getClass().getName();
         return "org.geotools.data.postgis.PostgisNGJNDIDataStoreFactory".equals(spiName) ||
                "org.geotools.data.postgis.PostgisNGDataStoreFactory".equals(spiName);
+    }
+
+    public static PAMDataset mergePamDatasets (PAMDataset[] pamDatasets) {
+        // TODO: Need to merge all the stats by doing something like 
+        // minimum = min (min0, min1, min2, ...)
+        // maximum = max (max0, max1, max2, ...)
+        return pamDatasets[0];
     }
 }

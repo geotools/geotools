@@ -245,10 +245,5 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     public GranuleCatalog getAdaptee() {
         return adaptee;
     }
-
-    @Override
-    public void removeType(String typeName) throws IOException {
-        adaptee.removeType(typeName);
-    }
 }
 

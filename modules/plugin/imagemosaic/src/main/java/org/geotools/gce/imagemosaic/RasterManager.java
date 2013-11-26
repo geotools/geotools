@@ -1233,7 +1233,7 @@ public class RasterManager {
     public GranuleCatalog getGranuleCatalog() {
         return granuleCatalog;
     }
-
+    
     /**
      * Create a store for the coverage related to this {@link RasterManager} using the 
      * provided schema
@@ -1255,26 +1255,6 @@ public class RasterManager {
         }
     }
     
-    /**
-     * Create a store for the coverage related to this {@link RasterManager} using the 
-     * provided schema
-     *
-     * @param indexSchema
-     * @throws IOException
-     */
-    public void removeStore (String typeName) throws IOException {
-        Utilities.ensureNonNull("typeName", typeName);
-        if (typeName != null) {
-            // Preliminar granules removal...
-            // Should we send a message instead reporting that the catalog
-            // still contain some granules before allowing for a removal??
-            final Query query = new Query(typeName);
-            query.setFilter(Filter.INCLUDE);
-            granuleCatalog.removeGranules(query);
-            granuleCatalog.removeType(typeName);
-        }
-    }
-
     public GranuleSource getGranuleSource(final boolean readOnly, final Hints hints) {
         synchronized (this) {
             if (readOnly) {

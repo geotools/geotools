@@ -76,13 +76,12 @@ public abstract class GranuleCatalog {
 
     public abstract int getGranulesCount(Query q) throws IOException;
 
-    public abstract  void getGranuleDescriptors(Query q, GranuleCatalogVisitor visitor) throws IOException;
+    public abstract void getGranuleDescriptors(Query q, GranuleCatalogVisitor visitor)
+            throws IOException;
 
     public abstract QueryCapabilities getQueryCapabilities(final String typeName);
 
-    public abstract SimpleFeatureType getType(final String typeName) throws IOException ;
-
-    public abstract void removeType(final String typeName) throws IOException ;
+    public abstract SimpleFeatureType getType(final String typeName) throws IOException;
 
     public abstract int removeGranules(Query query);
 

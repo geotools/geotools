@@ -508,17 +508,5 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     public int removeGranules(Query query) {
         throw new UnsupportedOperationException("Unsupported operation");
     }
-
-    @Override
-    public void removeType(String typeName) throws IOException {
-        final Lock lock=rwLock.readLock();
-        try{
-                lock.lock();
-                checkStore();
-                this.wrappedCatalogue.removeType(typeName);
-        }finally{
-                lock.unlock();
-        }        
-    }
 }
 

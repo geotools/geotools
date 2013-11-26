@@ -525,12 +525,6 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
         this.typeNames.add(typeName);
     }
 
-    private void removeTypeName(String typeName) {
-        if (this.typeNames.contains(typeName)) {
-            typeNames.remove(typeName);
-        }
-    }
-
     @Override
     public String[] getTypeNames() {
         if (this.typeNames != null && !this.typeNames.isEmpty()) {
@@ -553,22 +547,6 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 addTypeName(typeName, true);
             }
             extractBasicProperties(typeName);
-        } finally {
-            lock.unlock();
-        }
-
-    }
-    
-    public void removeType(String typeName) throws IOException {
-        Utilities.ensureNonNull("featureType", typeName);
-        final Lock lock = rwLock.writeLock();
-        try {
-            lock.lock();
-            checkStore();
-
-            tileIndexStore.removeSchema(typeName);
-            removeTypeName(typeName);
-            
         } finally {
             lock.unlock();
         }

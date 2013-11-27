@@ -49,6 +49,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.media.jai.Interpolation;
+import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 
@@ -182,6 +183,8 @@ import com.vividsolutions.jts.geom.Point;
  * @version $Id$
  */
 public class StreamingRenderer implements GTRenderer {
+    private static final int REPROJECTION_RASTER_GUTTER = 10;
+
     private final static int defaultMaxFiltersToSendToDatastore = 5; // default
 
     /**
@@ -2009,9 +2012,7 @@ public class StreamingRenderer implements GTRenderer {
                 Query definitionQuery = getDefinitionQuery(currLayer, featureSource, sourceCrs);
                 if(transform != null) {
                     // prepare the stage for the raster transformations
-                    GridEnvelope2D ge = new GridEnvelope2D(screenSize);
-                    ReferencedEnvelope re = new ReferencedEnvelope(mapArea, destinationCrs);
-                    GridGeometry2D gridGeometry = new GridGeometry2D(ge, re);
+                    GridGeometry2D gridGeometry = getRasterGridGeometry(destinationCrs, sourceCrs);
                     // vector transformation wise, we have to account for two separate queries,
                     // the one attached to the layer and then one coming from SLD.
                     // The first source attributes, the latter talks tx output attributes
@@ -2728,10 +2729,16 @@ public class StreamingRenderer implements GTRenderer {
                         coverage = (GridCoverage2D) grid;
                     } else if (grid instanceof GridCoverage2DReader) {
                         final Object params = paramsPropertyName.evaluate(drawMe.content);
-                        GridGeometry2D readGG = new GridGeometry2D(new GridEnvelope2D(screenSize), mapExtent);
                         GridCoverage2DReader reader = (GridCoverage2DReader) grid;
+                        CoordinateReferenceSystem sourceCRS = reader.getCoordinateReferenceSystem();
+                        GridGeometry2D readGG = getRasterGridGeometry(destinationCrs, sourceCRS);
                         coverage = readCoverage(reader, params, readGG);
                         disposeCoverage = true;
+                        
+                       
+                        
+                        
+                        
                     }
                 } catch (IllegalArgumentException e) {
                     LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
@@ -2791,6 +2798,41 @@ public class StreamingRenderer implements GTRenderer {
             }
         }
         fireFeatureRenderedEvent(drawMe.content);
+    }
+
+    /**
+     * Builds a raster grid geometry that will be used for reading, taking into account
+     * the original map extent and target paint area, and expanding the target raster area
+     * by {@link #REPROJECTION_RASTER_GUTTER}
+     * @param destinationCrs
+     * @param sourceCRS
+     * @return
+     * @throws NoninvertibleTransformException
+     */
+    GridGeometry2D getRasterGridGeometry(CoordinateReferenceSystem destinationCrs,
+            CoordinateReferenceSystem sourceCRS) throws NoninvertibleTransformException {
+        GridGeometry2D readGG;
+        if (sourceCRS == null || destinationCrs == null ||
+                CRS.equalsIgnoreMetadata(destinationCrs, sourceCRS)) {
+            readGG = new GridGeometry2D(new GridEnvelope2D(screenSize),
+                    originalMapExtent);
+        } else {
+            // reprojection involved, read a bit more pixels to account for rotation
+            Rectangle bufferedTargetArea = (Rectangle) screenSize.clone();
+            bufferedTargetArea.add( // exand top/right
+                    screenSize.x + screenSize.width + REPROJECTION_RASTER_GUTTER, 
+                    screenSize.y + screenSize.height + REPROJECTION_RASTER_GUTTER);
+            bufferedTargetArea.add( // exand bottom/left
+                    screenSize.x - REPROJECTION_RASTER_GUTTER,
+                    screenSize.y - REPROJECTION_RASTER_GUTTER);
+
+            // now create the final envelope accordingly
+            readGG = new GridGeometry2D(new GridEnvelope2D(bufferedTargetArea),
+                    PixelInCell.CELL_CORNER, new AffineTransform2D(
+                            worldToScreenTransform.createInverse()),
+                    originalMapExtent.getCoordinateReferenceSystem(), null);
+        }
+        return readGG;
     }
 
 

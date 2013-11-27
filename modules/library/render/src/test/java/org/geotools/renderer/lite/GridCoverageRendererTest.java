@@ -31,13 +31,18 @@ import java.util.Collections;
 
 import javax.imageio.ImageIO;
 
+import org.geotools.TestData;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.factory.GeoTools;
+import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DefaultMapContext;
+import org.geotools.map.GridReaderLayer;
+import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
@@ -46,7 +51,6 @@ import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.test.TestData;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.parameter.ParameterValueGroup;
@@ -245,6 +249,22 @@ public class GridCoverageRendererTest  {
 		RendererBaseTest.showRender("testGridCoverageReprojection", renderer, 1000, newbounds);
 
 	}
+	
+	@Test
+    public void testRenderingBuffer() throws Exception {
+	    // prepare the layer
+	    GeoTiffReader reader = new GeoTiffReader(TestData.copy(this, "geotiff/world.tiff"));
+        MapContent content = new MapContent();
+        final Style style = getStyle();
+        content.addLayer(new GridReaderLayer(reader, style));
+        
+        final StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(content);
+        renderer.setRendererHints(Collections.singletonMap("renderingBuffer", 1024));
+
+        BufferedImage image = RendererBaseTest.showRender("testGridCoverageReprojection", renderer, 1000, content.getViewport().getBounds());
+        ImageAssert.assertEquals(new File("src/test/resources/org/geotools/renderer/lite/rescaled.png"), image, 1000);
+    }
 
 	private static Style getStyle() {
 		StyleBuilder sb = new StyleBuilder();

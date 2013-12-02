@@ -177,6 +177,7 @@ public class Utils {
         } catch (JAXBException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }
+        CLEANUP_FILTER = initCleanUpFilter(); 
     }
     
     public static class Prop {
@@ -351,7 +352,23 @@ public class Utils {
 		return true;
 	}
 
-	public static String getMessageFromException(Exception exception) {
+    private static IOFileFilter initCleanUpFilter() {
+        IOFileFilter filesFilter = FileFilterUtils.or(
+                FileFilterUtils.suffixFileFilter("properties"),
+                FileFilterUtils.suffixFileFilter("shp"), FileFilterUtils.suffixFileFilter("dbf"),
+                FileFilterUtils.suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"),
+                FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"),
+                FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"),
+                FileFilterUtils.nameFileFilter("error.txt"),
+                FileFilterUtils.nameFileFilter("_metadata"),
+                FileFilterUtils.suffixFileFilter("sample_image"),
+                FileFilterUtils.nameFileFilter("error.txt.lck"),
+                FileFilterUtils.suffixFileFilter("db"));
+
+        return filesFilter;
+    }
+
+    public static String getMessageFromException(Exception exception) {
 		if (exception.getLocalizedMessage() != null)
 			return exception.getLocalizedMessage();
 		else
@@ -1296,6 +1313,8 @@ public class Utils {
 
     public static ObjectFactory OBJECT_FACTORY = new ObjectFactory();
 
+    private static IOFileFilter CLEANUP_FILTER;
+
     /**
      * Private constructor to initialize the ehCache instance. It can be configured through a Bean.
      * 
@@ -1675,20 +1694,6 @@ public class Utils {
         if (defaultCM instanceof ComponentColorModel && actualCM instanceof ComponentColorModel) {
             final ComponentColorModel defCCM = (ComponentColorModel) defaultCM, actualCCM = (ComponentColorModel) actualCM;
             
-            // color space
-//            final ColorSpace defCS = defCCM.getColorSpace();
-//            final ColorSpace actualCS = actualCCM.getColorSpace();
-//            final boolean isBogusDef = defCS instanceof BogusColorSpace;
-//            final boolean isBogusActual = actualCS instanceof BogusColorSpace;
-//            final boolean colorSpaceIsOk;
-//            if (isBogusDef && isBogusActual) {
-//                final BogusColorSpace def = (BogusColorSpace) defCS;
-//                final BogusColorSpace act = (BogusColorSpace) actualCS;
-//                colorSpaceIsOk = def.getNumComponents() == act.getNumComponents()
-//                        && def.isCS_sRGB() == act.isCS_sRGB() && def.getType() == act.getType();
-//            } else
-//                colorSpaceIsOk = defCS.equals(actualCS);
-            
             // number of color components
             final int numColorComponents = defCCM.getNumColorComponents();
             if(numColorComponents != actualCCM.getNumColorComponents()){
@@ -1808,5 +1813,9 @@ public class Utils {
         // minimum = min (min0, min1, min2, ...)
         // maximum = max (max0, max1, max2, ...)
         return pamDatasets[0];
+    }
+
+    public static IOFileFilter getCleanupFilter() {
+       return CLEANUP_FILTER;
     }
 }

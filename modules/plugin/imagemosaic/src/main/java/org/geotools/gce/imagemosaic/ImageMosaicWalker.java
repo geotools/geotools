@@ -134,7 +134,6 @@ abstract class ImageMosaicWalker implements Runnable {
             // Getting a coverage reader for this coverage.
             //
             final AbstractGridFormat format;
-
             if (cachedFormat == null) {
                 // When looking for formats which may parse this file, make sure to exclude the ImageMosaicFormat as return
                 format = (AbstractGridFormat) GridFormatFinder.findFormat(fileBeingProcessed,

@@ -150,6 +150,14 @@ public class ImageMosaicReaderTest extends Assert{
 	private URL timeRangesURL;
 
 	private URL imposedEnvelopeURL;
+	
+    private final static String H2_SAMPLE_PROPERTIES = "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
+            + "dbtype=h2\n" + "Loose\\ bbox=true #important for performances\n"
+            + "Estimated\\ extends=false #important for performances\n" + "user=gs\n"
+            + "passwd=gs\n" + "validate \\connections=true #important for avoiding errors\n"
+            + "Connection\\ timeout=3600\n"
+            + "max \\connections=10 #important for performances, internal pooling\n"
+            + "min \\connections=5  #important for performances, internal pooling\n";
 
     private URL timeFormatURL;
 	
@@ -2112,6 +2120,210 @@ public class ImageMosaicReaderTest extends Assert{
             reader.dispose();
         }
     }
+
+    @Test
+    public void testRemoveCoverageNoDelete() throws Exception {
+
+        final String referenceDir = "testRemove";
+        final File workDir = new File(TestData.file(this, "."), referenceDir);
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        final File zipFile = new File(workDir, "watertemp.zip");
+        FileUtils.copyFile(TestData.file(this, "watertemp.zip"), zipFile);
+
+        TestData.unzipFile(this, referenceDir + "/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, referenceDir);
+
+        // place H2 file in the dir
+        FileWriter out = null;
+        try {
+            out = new FileWriter(new File(TestData.file(this, "."),
+                    referenceDir + "/datastore.properties"));
+            out.write("database=imagemosaicremove\n");
+            out.write(H2_SAMPLE_PROPERTIES);
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
+
+        // now start the test
+        final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+
+        try {
+
+            // the harvest put the file in the same coverage
+            assertEquals(1, reader.getGridCoverageNames().length);
+            File[] files = workDir.listFiles();
+            assertNotNull(files);
+            assertEquals(16, files.length);
+
+            reader.removeCoverage(reader.getGridCoverageNames()[0], false);
+            assertEquals(0, reader.getGridCoverageNames().length);
+            assertEquals(16, files.length);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testRemoveCoverageDelete() throws Exception {
+
+        final String referenceDir = "testRemove2";
+        final File workDir = new File(TestData.file(this, "."), referenceDir);
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        final File zipFile = new File(workDir, "watertemp.zip");
+        FileUtils.copyFile(TestData.file(this, "watertemp.zip"), zipFile);
+
+        TestData.unzipFile(this, referenceDir + "/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, referenceDir);
+
+        // place H2 file in the dir
+        FileWriter out = null;
+        try {
+            out = new FileWriter(new File(TestData.file(this, "."),
+                    referenceDir + "/datastore.properties"));
+            out.write("database=imagemosaicremove2\n");
+            out.write(H2_SAMPLE_PROPERTIES);
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
+
+        // now start the test
+        final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+
+        try {
+            assertEquals(1, reader.getGridCoverageNames().length);
+            File[] files = workDir.listFiles();
+            assertNotNull(files);
+            assertEquals(16, files.length);
+
+            reader.removeCoverage(reader.getGridCoverageNames()[0], true);
+            assertEquals(0, reader.getGridCoverageNames().length);
+            files = workDir.listFiles();
+            assertEquals(12, files.length);
+
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testReaderDeleteAll() throws Exception {
+
+        final String referenceDir = "testRemove3";
+        final File workDir = new File(TestData.file(this, "."), referenceDir);
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        final File zipFile = new File(workDir, "watertemp.zip");
+        FileUtils.copyFile(TestData.file(this, "watertemp.zip"), zipFile);
+
+        TestData.unzipFile(this, referenceDir + "/watertemp.zip");
+        FileUtils.deleteQuietly(new File(workDir + "/watertemp.zip"));
+        final URL timeElevURL = TestData.url(this, referenceDir);
+
+        // place H2 file in the dir
+        FileWriter out = null;
+        try {
+            out = new FileWriter(new File(TestData.file(this, "."),
+                    referenceDir + "/datastore.properties"));
+            out.write("database=imagemosaicremove3\n");
+            out.write(H2_SAMPLE_PROPERTIES);
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
+
+        // now start the test
+        final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+
+        StructuredGridCoverage2DReader reader = null;
+        try {
+
+            // the harvest put the file in the same coverage
+            reader = new ImageMosaicReader(timeElevURL);
+
+            // delete all files associated to that mosaic (granules, auxiliary files, DB entries, ...)
+            File[] files = workDir.listFiles();
+            assertEquals(15, files.length);
+            reader.delete(true);
+            files = workDir.listFiles();
+            assertEquals(0, files.length);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testReaderDeleteNoGranules() throws Exception {
+
+        final String referenceDir = "testRemove4";
+        final File workDir = new File(TestData.file(this, "."), referenceDir);
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        final File zipFile = new File(workDir, "watertemp.zip");
+        FileUtils.copyFile(TestData.file(this, "watertemp.zip"), zipFile);
+
+        TestData.unzipFile(this, referenceDir + "/watertemp.zip");
+        FileUtils.deleteQuietly(new File(workDir + "/watertemp.zip"));
+        final URL timeElevURL = TestData.url(this, referenceDir);
+
+        // place H2 file in the dir
+        FileWriter out = null;
+        try {
+            out = new FileWriter(new File(TestData.file(this, "."),
+                    referenceDir + "/datastore.properties"));
+            out.write("database=imagemosaicremove4\n");
+            out.write(H2_SAMPLE_PROPERTIES);
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
+
+        // now start the test
+        final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+
+        StructuredGridCoverage2DReader reader = null;
+        try {
+
+            reader = new ImageMosaicReader(timeElevURL);
+
+            // delete all files associated to that mosaic (granules, auxiliary files, DB entries, ...)
+            File[] files = workDir.listFiles();
+            assertEquals(15, files.length);
+            reader.delete(false);
+            files = workDir.listFiles();
+            assertEquals(4, files.length);
+        } finally {
+            reader.dispose();
+        }
+    }
+
     
     @Test
     public void testHarvestError() throws Exception {

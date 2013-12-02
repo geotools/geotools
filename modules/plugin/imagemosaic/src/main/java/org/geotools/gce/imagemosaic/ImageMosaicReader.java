@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -40,6 +41,7 @@ import java.util.logging.Logger;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.ImageLayout;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -113,10 +115,11 @@ import org.opengis.referencing.operation.MathTransform;
 @SuppressWarnings("rawtypes")
 public class ImageMosaicReader extends AbstractGridCoverage2DReader implements StructuredGridCoverage2DReader {
 
+
     Set<String> names = new HashSet<String>();
-    
+
     String defaultName = null;
-    
+
     public static final String UNSPECIFIED = "_UN$PECIFIED_";
 
     Map<String, RasterManager> rasterManagers = new ConcurrentHashMap<String, RasterManager>();
@@ -141,6 +144,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 	 * {@link ImageMosaicReader}.
 	 */
 	URL sourceURL;
+	
+        File parentDirectory;
 
 	boolean expandMe;
 	
@@ -356,6 +361,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
                 granuleCatalog.setMultiScaleROIProvider(rois);
                 addRasterManager(configuration, true);
+            }
+            if (sourceURL != null) {
+                parentDirectory = DataUtilities.urlToFile(sourceURL);
+                if (!parentDirectory.isDirectory()) {
+                        parentDirectory = parentDirectory.getParentFile();
+                }
             }
         } catch (Throwable e) {
             
@@ -618,37 +629,35 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         return getRasterManager(coverageName).read(params);
     }
 
-	/**
-	 * Package private accessor for {@link Hints}.
-	 * 
-	 * @return this {@link Hints} used by this reader.
-	 */
-	Hints getHints(){
-		return super.hints;
-	}
+    /**
+     * Package private accessor for {@link Hints}.
+     * 
+     * @return this {@link Hints} used by this reader.
+     */
+    Hints getHints() {
+        return super.hints;
+    }
+
+    /**
+     * Package private accessor for the highest resolution values.
+     * 
+     * @return the highest resolution values.
+     */
+    double[] getHighestRes() {
+        return super.highestRes;
+    }
 	
-	/**
-	 * Package private accessor for the highest resolution values.
-	 * 
-	 * @return the highest resolution values.
-	 */
-	double[] getHighestRes(){
-		return super.highestRes;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	double[][] getOverviewsResolution(){
-		return super.overViewResolutions;
-	}
-	
-	int getNumberOfOvervies(){
-		return super.numOverviews;
-	}
-	
-	
+    /**
+     * 
+     * @return
+     */
+    double[][] getOverviewsResolution() {
+        return super.overViewResolutions;
+    }
+
+    int getNumberOfOvervies() {
+        return super.numOverviews;
+    }
 
     /** Package scope grid to world transformation accessor */
     MathTransform getRaster2Model() {
@@ -875,11 +884,47 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     }
 
     @Override
-    public boolean removeCoverage(String coverageName) throws IOException,
-            UnsupportedOperationException {
-        throw new UnsupportedOperationException("Operation currently not implement");
+    public boolean removeCoverage(String coverageName, final boolean delete) throws IOException {
+        return removeCoverage(coverageName, delete, true);
+    }
+
+    /**
+     * 
+     * @param coverageName
+     * @param forceDelete
+     * @param checkForReferences
+     *          {@code true} true in case, when deleting, we need to check whether the file is being referred by some
+     *          other coverage or not. In the latter case, we can safely delete it
+     *          
+     * @return
+     * @throws IOException
+     */
+    private boolean removeCoverage(String coverageName, final boolean forceDelete, final boolean checkForReferences) throws IOException {
+        RasterManager manager = getRasterManager(coverageName);
+        if (manager != null) {
+           manager.removeStore(coverageName, forceDelete, checkForReferences);
+           
+           // Should I preserve managers for future re-harvesting or it's ok
+           // to remove them
+           rasterManagers.remove(coverageName);
+           names.remove(coverageName);
+           if (defaultName == coverageName) {
+               Iterator<String> iterator = names.iterator();
+               if (iterator.hasNext()) {
+                   defaultName = iterator.next();
+               } else {
+                   defaultName = null;
+               }
+           }
+
+           return true;
+        } else {
+            throw new IOException("No Raster manager have been found for the specified coverageName. " + coverageName);
+        }
     }
     
+    
+
     @Override
     public GeneralEnvelope getOriginalEnvelope() {
         return getOriginalEnvelope(UNSPECIFIED);
@@ -1019,9 +1064,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 // nothing to do
             }
         });
-        
+
         walker.run();
-        
+
         return result;
     }
 
@@ -1029,5 +1074,45 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     public List<DimensionDescriptor> getDimensionDescriptors(String coverageName) throws IOException {
             RasterManager manager = getRasterManager(coverageName);
             return manager.getDimensionDescriptors();
+    }
+
+    @Override
+    public void delete(boolean deleteData) throws IOException {
+        // TODO: Should we make it synchronized?
+
+        String[] coverageNames = getGridCoverageNames();
+        for (String coverageName: coverageNames) {
+            removeCoverage(coverageName, deleteData, false);
+        }
+
+        // Dispose before deleting to make sure any lock on files or resources is released
+        dispose();
+        if (deleteData) {
+            // quick way: delete everything
+            final File[] list = parentDirectory.listFiles();
+            for (File file: list) {
+                FileUtils.deleteQuietly(file);
+            }
+        } else {
+            finalizeCleanup();
+        }
+    }
+
+    /**
+     * Finalize the clean up by removing any file returned by the cleanup filter.
+     * Note that some H2 .db files change their name during life cycle. So they won't be stored inside the fileset manager
+     */
+    private void finalizeCleanup() {
+        IOFileFilter filesFilter = Utils.getCleanupFilter();
+        Collection<File> files = FileUtils.listFiles(parentDirectory, filesFilter, null);
+        for (File file : files) {
+            FileUtils.deleteQuietly(file);
+        }
+
+    }
+
+    @Override
+    public boolean removeCoverage(String coverageName) throws IOException, UnsupportedOperationException {
+        return removeCoverage(coverageName, false);
     }
 }

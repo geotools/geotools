@@ -111,7 +111,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author Daniele Romagnoli, GeoSolutions SAS
  *
  */
-public class NetCDFReader extends AbstractGridCoverage2DReader implements StructuredGridCoverage2DReader{
+public class NetCDFReader extends AbstractGridCoverage2DReader implements StructuredGridCoverage2DReader {
 
     static final String UNSPECIFIED = "_UN$PECIFIED_";
 
@@ -517,40 +517,6 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
             return;
         }
 
-
-        // // //
-        // //
-        // // Interpolation parameter
-        // //
-        // // //
-        // if (name.equals(ImageMosaicFormat.INTERPOLATION.getName())) {
-        // final Object value = param.getValue();
-        // if(value==null)
-        // return;
-        // interpolation = (Interpolation) value;
-        // return;
-        // }
-        //
-        //
-        // if (name.equals(
-        // ImageMosaicFormat.BACKGROUND_VALUES.getName())) {
-        // final Object value = param.getValue();
-        // if(value==null)
-        // return;
-        // backgroundValues = (double[]) value;
-        // return;
-        //
-        // }
-        //
-        //
-        // if (name.equals(ImageMosaicFormat.ALLOW_MULTITHREADING.getName())) {
-        // final Object value = param.getValue();
-        // if(value==null)
-        // return;
-        // multithreadingAllowed = ((Boolean) value).booleanValue();
-        // return;
-        // }
-        //
         // //
         //
         // Time parameter
@@ -940,12 +906,6 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     }
 
     @Override
-    public boolean removeCoverage(String coverageName) throws IOException,
-            UnsupportedOperationException {
-        throw new UnsupportedOperationException("This operation is not supported on this reader");
-    }
-
-    @Override
     public List<HarvestedSource> harvest(String defaultCoverage, Object source, Hints hints) throws IOException, UnsupportedOperationException {
         throw new UnsupportedOperationException("This operation is not supported on this reader");
     }
@@ -954,5 +914,41 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     public List<DimensionDescriptor> getDimensionDescriptors(String coverageName) throws IOException {
         final CoverageSource source = (CoverageSource) getGridCoverageSource(coverageName);
         return source.getDimensionDescriptors();
+    }
+
+    @Override
+    public boolean removeCoverage(String coverageName, boolean forceDelete) throws IOException,
+            UnsupportedOperationException {
+        if (setNames.contains(coverageName)) {
+            setNames.remove(coverageName);
+        }
+        Name name = new NameImpl(coverageName);
+        if (names.contains(name)) {
+            access.delete(name, null, hints);
+        } else {
+            return false;
+        }
+        if (defaultName == coverageName) {
+            Iterator<Name> iterator = names.iterator();
+            if (iterator.hasNext()) {
+                defaultName = iterator.next().toString();
+            } else {
+                defaultName = null;
+            }
+        }
+        if (forceDelete) {
+            delete(true);
+        }
+        return true;
+    }
+
+    @Override
+    public void delete(boolean deleteData) throws IOException {
+        ((NetCDFAccess) access).purge();
+    }
+
+    @Override
+    public boolean removeCoverage(String coverageName) throws IOException, UnsupportedOperationException {
+        return removeCoverage(coverageName, false);
     }
 }

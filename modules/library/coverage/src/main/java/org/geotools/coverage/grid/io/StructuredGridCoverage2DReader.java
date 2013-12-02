@@ -57,10 +57,21 @@ public interface StructuredGridCoverage2DReader extends GridCoverage2DReader {
                                                IOException, UnsupportedOperationException;
 
     /**
-     * removes a granule store for the specified coverageName
+     * @deprecated use {@link #removeCoverage(String, boolean)}
      */
     boolean removeCoverage(String coverageName) throws IOException, UnsupportedOperationException;
-    
+
+    /**
+     * removes a granule store for the specified coverageName
+     */
+    boolean removeCoverage(String coverageName, boolean delete) throws IOException, UnsupportedOperationException;
+
+    /**
+     * delete all stuff (database content, indexer files, property files, associated auxiliary files and so on).
+     * @param deleteData specifies whether data (granules) should be deleted too. 
+     */
+    void delete(boolean deleteData) throws IOException;
+
     /**
      * Harvests the specified source into the reader. Depending on the implementation, the original source
      * is harvested in place (e.g., image mosaic), or might be copied into the reader persistent storage (e.g., database raster handling)
@@ -76,7 +87,7 @@ public interface StructuredGridCoverage2DReader extends GridCoverage2DReader {
      */
     List<HarvestedSource> harvest(String defaultTargetCoverage, Object source, Hints hints) throws IOException,
             UnsupportedOperationException;
-    
+
     /**
      * Describes the dimensions supported by the specified coverage, if any.
      * (coverageName might be null, if there is only one supported coverage)

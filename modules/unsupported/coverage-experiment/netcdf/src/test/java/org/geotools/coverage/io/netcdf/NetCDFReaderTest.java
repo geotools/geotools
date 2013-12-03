@@ -44,8 +44,10 @@ import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.TestData;
@@ -61,6 +63,55 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 public class NetCDFReaderTest extends Assert {
+
+    /**
+     * Test using this netcdf image:
+     *  data:
+     * LAI=
+     * 20,20,20,30,30,
+     * 40,40,40,50,50,
+     * 60,60,60,70,70,
+     * 80,80,80,90,90;
+     * lon=
+     *         10,15,20,25,30;
+     * lat=    70,60,50,40;
+     *
+     * @throws IOException
+     */
+    @Test  public void test2DImage() throws IOException, FactoryException {
+        final File testURL = TestData.file(this, "2DLatLonCoverage.nc");
+        // Get format
+        //final AbstractGridFormat format = (AbstractGridFormat)
+        GridFormatFinder.findFormat(testURL.toURI().toURL(),null);
+        final NetCDFReader reader = new NetCDFReader(testURL, null);
+        //assertNotNull(format);
+        assertNotNull(reader);
+        try {
+            String[] names = reader.getGridCoverageNames();
+            assertNotNull(names);
+            assertEquals(names.length, 1);
+            assertEquals("LAI",names[0]);
+            GridCoverage2D grid = reader.read("LAI", null);
+            assertNotNull(grid);
+            byte[] byteValue = grid.evaluate(new
+                    DirectPosition2D(DefaultGeographicCRS.WGS84, 12, 65), new byte[1]);
+            assertEquals(20,byteValue[0]);
+
+            byteValue = grid.evaluate(new
+                    DirectPosition2D(DefaultGeographicCRS.WGS84, 23, 44), new byte[1]);
+            assertEquals(80,byteValue[0]);
+
+
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
 
     @Test
     public void NetCDFTestOn4Dcoverages() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {

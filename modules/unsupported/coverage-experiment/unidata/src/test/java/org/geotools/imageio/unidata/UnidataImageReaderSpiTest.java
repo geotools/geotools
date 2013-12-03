@@ -21,9 +21,9 @@ public class UnidataImageReaderSpiTest {
 		DummyUnidataImageReaderSpi readerSpi = new DummyUnidataImageReaderSpi();
 		 File file=null;
 	        try{
-	            file = TestData.file(this, "2DLatLonCoverage.nc");
+	            file = TestData.file(this, "2DLatLonCoverageHDF5.nc");
 	        } catch (IOException e) {
-	            LOGGER.warning("Unable to find file 2DLatLonCoverage.nc");
+	            LOGGER.warning("Unable to find file 2DLatLonCoverageHDF5.nc");
 	            return;
 	        }
 		assertTrue(readerSpi.canDecodeInput(file));

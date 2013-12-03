@@ -113,8 +113,8 @@ public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
                 fis.readFully(b);
                 fis.reset();
                 boolean cdfCheck = (b[0] == (byte)0x43 && b[1] == (byte)0x44 && b[2] == (byte)0x46);
-
-                if (!cdfCheck) {
+                boolean hdf5Check = (b[0] == (byte)0x89 && b[1] == (byte)0x48 && b[2] == (byte)0x44);
+                if (!cdfCheck && ! hdf5Check) {
                     if (!isNcML(input)) return false;
                 }
                 file = NetcdfDataset.openDataset(input.getPath());

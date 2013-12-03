@@ -42,4 +42,21 @@ public class UnidataImageReaderSpiTest {
 		assertTrue(readerSpi.canDecodeInput(file));
 	}
 
+    /**
+     * We can NOT read a CDL file
+     * @throws IOException
+     */
+    @Test
+    public void testReadCDL() throws IOException {
+        DummyUnidataImageReaderSpi readerSpi = new DummyUnidataImageReaderSpi();
+        File file=null;
+        try{
+            file = TestData.file(this, "2DLatLonCoverage.cdl");
+        } catch (IOException e) {
+            LOGGER.warning("Unable to find file 2DLatLonCoverage.cdl");
+            return;
+        }
+        assertFalse(readerSpi.canDecodeInput(file));
+    }
+
 }

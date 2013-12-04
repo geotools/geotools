@@ -2797,7 +2797,7 @@ public class StreamingRenderer implements GTRenderer {
 
             }
         }
-        fireFeatureRenderedEvent(drawMe.content);
+        requests.put(new FeatureRenderedRequest(drawMe.content));
     }
 
     /**
@@ -3450,6 +3450,24 @@ public class StreamingRenderer implements GTRenderer {
             } catch(Throwable t) {
                 fireErrorEvent(t);
             }
+        }
+    }
+    
+    /**
+     * A request to paint a shape with a specific Style2D
+     * @author aaime
+     *
+     */
+    class FeatureRenderedRequest extends RenderingRequest {
+        Object content; 
+        
+        public FeatureRenderedRequest(Object content) {
+            this.content = content;
+        }
+
+        @Override
+        void execute() {
+            fireFeatureRenderedEvent(content);
         }
     }
     

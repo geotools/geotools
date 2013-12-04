@@ -32,7 +32,9 @@ import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -44,7 +46,6 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.FeatureLayer;
@@ -54,7 +55,6 @@ import org.geotools.map.MapContext;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.renderer.lite.StreamingRenderer.RenderingBlockingQueue;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
@@ -157,6 +157,56 @@ public class StreamingRendererTest {
         sr.setContext(mapContext);
         sr.addRenderListener(new RenderListener() {
             public void featureRenderer(SimpleFeature feature) {
+                features++;
+            }
+            public void errorOccurred(Exception e) {
+                errors++;
+            }
+        });
+        errors = 0;
+        features = 0;
+        sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200),reUtm);
+        
+        // we should get two errors since there are two features that cannot be
+        // projected but the renderer itself should not throw exceptions
+        assertTrue( features > 0 );
+    }
+    
+    @Test
+    public void testEventAfterDrawing() throws Exception {
+        // build map context
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(createLineCollection(), createLineStyle()));
+
+        // build projected envelope to work with (small one around the area of
+        // validity of utm zone 1, which being a Gauss projection is a vertical 
+        // slice parallel to the central meridian, -177°)
+        ReferencedEnvelope reWgs = new ReferencedEnvelope(new Envelope(-180,
+                -170, 20, 40), DefaultGeographicCRS.WGS84);
+        CoordinateReferenceSystem utm1N = CRS.decode("EPSG:32601");
+        ReferencedEnvelope reUtm = reWgs.transform(utm1N, true);
+
+        BufferedImage image = new BufferedImage(200, 200,BufferedImage.TYPE_4BYTE_ABGR);
+
+        // setup the renderer and listen for errors
+        final AtomicInteger commandsCount = new AtomicInteger(0);
+        final BlockingQueue<RenderingRequest> queue = new ArrayBlockingQueue<RenderingRequest>(10) {
+            @Override
+            public void put(RenderingRequest e) throws InterruptedException {
+                commandsCount.incrementAndGet();
+                super.put(e);
+            }
+        };
+        StreamingRenderer sr = new StreamingRenderer() {
+         @Override
+        protected BlockingQueue<RenderingRequest> getRequestsQueue() {
+            return queue;
+        }  
+        };
+        sr.setMapContent(mc);
+        sr.addRenderListener(new RenderListener() {
+            public void featureRenderer(SimpleFeature feature) {
+                assertTrue(commandsCount.get() > 0);
                 features++;
             }
             public void errorOccurred(Exception e) {

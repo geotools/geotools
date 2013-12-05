@@ -1,13 +1,12 @@
 package org.geotools.geopkg;
 
 import static java.lang.String.format;
-import static org.geotools.geopkg.PreparedStatementBuilder.prepare;
+import static org.geotools.sql.SqlUtil.prepare;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,9 +44,9 @@ import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.geopkg.RasterEntry.Rectification;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
+import org.geotools.sql.SqlUtil;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -705,7 +704,7 @@ public class GeoPackage {
         try {
             Connection cx = connPool.getConnection();
             try {
-                PreparedStatementBuilder psb = prepare(cx, sb.toString())
+                SqlUtil.PreparedStatementBuilder psb = prepare(cx, sb.toString())
                     .set(e.getTableName())
                     .set(e.getDataType().value())
                     .set(e.getIdentifier());
@@ -1387,56 +1386,8 @@ public class GeoPackage {
         }
     }
 
-    void runScript(String filename, Connection cx) throws SQLException{
-        
-        InputStream stream = getClass().getResourceAsStream(filename);
-        List<String> lines;
-        try {
-            lines = IOUtils.readLines(stream);
-        }
-        catch(IOException e) {
-            throw new SQLException(e);
-        }
-        finally {
-            try {
-                stream.close();
-            } catch (IOException e) {
-                LOGGER.log(Level.FINER, e.getMessage(), e);
-            }
-        }
-
-        Statement st = cx.createStatement();
-        
-        try {
-            StringBuilder buf = new StringBuilder();
-            for (String sql : lines) {
-                sql = sql.trim();
-                if (sql.isEmpty()) {
-                    continue;
-                }
-                if (sql.startsWith("--")) {
-                    continue;
-                }
-                buf.append(sql).append(" ");
-    
-                if (sql.endsWith(";")) {
-                    String stmt = buf.toString();
-                    boolean skipError = stmt.startsWith("?");
-                    if (skipError) {
-                        stmt = stmt.replaceAll("^\\? *" ,"");
-                    }
-    
-                    LOGGER.fine(stmt);
-                    st.addBatch(stmt);
-
-                    buf.setLength(0);
-                }
-            }
-            st.executeBatch();
-        }
-        finally {
-            close(st);
-        }
+    void runScript(String filename, Connection cx) throws SQLException{        
+        SqlUtil.runScript(getClass().getResourceAsStream(filename), cx);        
     }
     
     void close(Connection cx) {

@@ -68,7 +68,8 @@ public class GradientColorMapGenerator {
         ColorMap colorMap = new ColorMapImpl();
 
         // Adding transparent color entry before the min
-        ColorMapEntry entry = entries[0].getColorMapEntry(min - 10E-2);
+        double start = min - (intervals ? 0 : 1E-2);
+        ColorMapEntry entry = entries[0].getColorMapEntry(start);
         entry.setOpacity(filterFactory.literal(0));
         colorMap.addColorMapEntry(entry);
 
@@ -86,7 +87,7 @@ public class GradientColorMapGenerator {
         colorMap.addColorMapEntry(entries[numEntries - 1].getColorMapEntry(max));
 
         // Adding transparent color entry after the max
-        ColorMapEntry entryEnd = entries[numEntries - 1].getColorMapEntry(max + 10E-2);
+        ColorMapEntry entryEnd = entries[numEntries - 1].getColorMapEntry(max + 1E-2);
         entryEnd.setOpacity(filterFactory.literal(0));
         colorMap.addColorMapEntry(entryEnd);
 

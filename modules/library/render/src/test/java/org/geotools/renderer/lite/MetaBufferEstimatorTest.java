@@ -2,8 +2,12 @@ package org.geotools.renderer.lite;
 
 import static org.junit.Assert.*;
 
+import org.geotools.styling.Graphic;
+import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Style;
+import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
+import org.opengis.filter.expression.NilExpression;
 
 public class MetaBufferEstimatorTest {
 
@@ -100,6 +104,20 @@ public class MetaBufferEstimatorTest {
     @Test
     public void testInlineContent() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "base64.sld");
+        MetaBufferEstimator estimator = new MetaBufferEstimator();
+        style.accept(estimator);
+        assertTrue(estimator.isEstimateAccurate());
+        assertEquals(16, estimator.getBuffer());
+    }
+    
+    @Test
+    public void testMarkNoSize() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        Graphic graphic = sb.createGraphic(null, sb.createMark("square"), null);
+        graphic.setSize(NilExpression.NIL);
+        PointSymbolizer ps = sb.createPointSymbolizer(graphic);
+        Style style = sb.createStyle(ps);
+        
         MetaBufferEstimator estimator = new MetaBufferEstimator();
         style.accept(estimator);
         assertTrue(estimator.isEstimateAccurate());

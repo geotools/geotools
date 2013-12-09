@@ -235,6 +235,17 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
     	    		leftObj = leftObj.toString();
     	    		rightObj = rightObj.toString();
     	    	}
+    	    } else {
+                //Check for case of strings that can both be converted to Numbers
+                try {
+                    leftObj = new Double( Double.parseDouble( (String) leftObj ) );
+                    rightObj = new Double( Double.parseDouble( (String) rightObj ));
+                }
+                catch(Exception e)
+    	    	{
+    	    		leftObj = leftObj.toString();
+    	    		rightObj = rightObj.toString();
+    	    	}
     	    }
     		return leftObj.compareTo(rightObj);
     	} else {

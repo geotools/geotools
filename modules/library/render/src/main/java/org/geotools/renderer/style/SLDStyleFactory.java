@@ -146,6 +146,12 @@ public class SLDStyleFactory {
 	/** This one is used as the observer object in image tracks */
 	private static final Canvas obs = new Canvas();
 
+	/**
+	 * The default size for Marks when a mark is used, but no size is provided (got from
+	 * the default size to be used for SVGs and other scalable graphics when no size is provided)
+	 */
+    public static final int DEFAULT_MARK_SIZE = 16;
+
 	static { // static block to populate the lookups
 		joinLookup.put("miter", new Integer(BasicStroke.JOIN_MITER));
 		joinLookup.put("bevel", new Integer(BasicStroke.JOIN_BEVEL));
@@ -654,7 +660,7 @@ public class SLDStyleFactory {
 				// in case of Mark we don't have a natural size, so we default
 				// to 16
 				if (size <= 0)
-					size = 16;
+					size = DEFAULT_MARK_SIZE;
 				ms2d.setSize(size);
 				ms2d.setRotation(rotation);
 				retval = ms2d;

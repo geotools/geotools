@@ -26,6 +26,7 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
 import org.geotools.renderer.style.ExpressionExtractor;
 import org.geotools.renderer.style.ExternalGraphicFactory;
+import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
@@ -324,11 +325,12 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                         if(imageSize > buffer) {
                             buffer = imageSize;
                         }
-                        return;
                     } else {
-                        estimateAccurate = false;
-                        return;
+                        if(SLDStyleFactory.DEFAULT_MARK_SIZE > buffer) {
+                            buffer = SLDStyleFactory.DEFAULT_MARK_SIZE;
+                        }
                     }
+                    return;
                 }
 
                 // if we got here we could not find a way to actually estimate the graphic size

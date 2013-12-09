@@ -256,7 +256,32 @@ public class FilterTest extends TestCase {
                 PropertyIsGreaterThanOrEqualTo.class, true, true, false);
         compareNumberRunner(testAttribute,
                 PropertyIsLessThanOrEqualTo.class, false, true, true);
-        
+
+        // Test all permutations of integers as strings
+        compareStringToIntegerRunner(testAttribute, PropertyIsEqualTo.class,
+                false, true, false);
+        compareStringToIntegerRunner(testAttribute, PropertyIsGreaterThan.class,
+                true, false, false);
+        compareStringToIntegerRunner(testAttribute, PropertyIsLessThan.class,
+                false, false, true);
+        compareStringToIntegerRunner(testAttribute,
+                PropertyIsGreaterThanOrEqualTo.class, true, true, false);
+        compareStringToIntegerRunner(testAttribute,
+                PropertyIsLessThanOrEqualTo.class, false, true, true);
+
+
+        // Test all permutations of integers as doubles
+        compareIntegerToDoubleRunner(testAttribute, PropertyIsEqualTo.class,
+                false, true, false);
+        compareIntegerToDoubleRunner(testAttribute, PropertyIsGreaterThan.class,
+                true, false, false);
+        compareIntegerToDoubleRunner(testAttribute, PropertyIsLessThan.class,
+                false, false, true);
+        compareIntegerToDoubleRunner(testAttribute,
+                PropertyIsGreaterThanOrEqualTo.class, true, true, false);
+        compareIntegerToDoubleRunner(testAttribute,
+                PropertyIsLessThanOrEqualTo.class, false, true, true);
+
         // test all date permutations, with string/date conversion included
         testAttribute = new AttributeExpressionImpl(testSchema, "date");
         compareSqlDateRunner(testAttribute, PropertyIsEqualTo.class,
@@ -303,11 +328,11 @@ public class FilterTest extends TestCase {
         // Test for false positive.
         testLiteral = new LiteralExpressionImpl("zebra");
         filter = compare(PropertyIsLessThan.class, testAttribute, testLiteral);
-	assertTrue(filter.evaluate(testFeature));
+	    assertTrue(filter.evaluate(testFeature));
 
-	testLiteral = new LiteralExpressionImpl("blorg");
-	filter = compare(PropertyIsLessThan.class, testAttribute, testLiteral);
-	assertTrue(!filter.evaluate(testFeature));
+	    testLiteral = new LiteralExpressionImpl("blorg");
+	    filter = compare(PropertyIsLessThan.class, testAttribute, testLiteral);
+	    assertTrue(!filter.evaluate(testFeature));
     }
     
     
@@ -345,6 +370,56 @@ public class FilterTest extends TestCase {
         filter = compare(filterType, testAttribute, testLiteral);
 
         //LOGGER.finer( filter.toString());            
+        //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
+        assertEquals(filter.evaluate(testFeature), test3);
+    }
+
+    public void compareStringToIntegerRunner(PropertyName testAttribute,
+                                             Class filterType, boolean test1, boolean test2, boolean test3)
+            throws IllegalFilterException {
+        Literal testLiteral = new LiteralExpressionImpl(new String("1001.0"));
+        org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
+
+        //LOGGER.finer( filter.toString());
+        //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
+        assertEquals(filter.evaluate(testFeature), test1);
+
+        testLiteral = new LiteralExpressionImpl(new String("1002.0"));
+        filter = compare(filterType, testAttribute, testLiteral);
+
+        //LOGGER.finer( filter.toString());
+        //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
+        assertEquals(filter.evaluate(testFeature), test2);
+
+        testLiteral = new LiteralExpressionImpl(new String("1003.0"));
+        filter = compare(filterType, testAttribute, testLiteral);
+
+        //LOGGER.finer( filter.toString());
+        //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
+        assertEquals(filter.evaluate(testFeature), test3);
+    }
+
+    public void compareIntegerToDoubleRunner(PropertyName testAttribute,
+                                             Class filterType, boolean test1, boolean test2, boolean test3)
+            throws IllegalFilterException {
+        Literal testLiteral = new LiteralExpressionImpl(new Double(1001.0));
+        org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
+
+        //LOGGER.finer( filter.toString());
+        //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
+        assertEquals(filter.evaluate(testFeature), test1);
+
+        testLiteral = new LiteralExpressionImpl(new Double(1002.0));
+        filter = compare(filterType, testAttribute, testLiteral);
+
+        //LOGGER.finer( filter.toString());
+        //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
+        assertEquals(filter.evaluate(testFeature), test2);
+
+        testLiteral = new LiteralExpressionImpl(new Double(1003.0));
+        filter = compare(filterType, testAttribute, testLiteral);
+
+        //LOGGER.finer( filter.toString());
         //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
         assertEquals(filter.evaluate(testFeature), test3);
     }

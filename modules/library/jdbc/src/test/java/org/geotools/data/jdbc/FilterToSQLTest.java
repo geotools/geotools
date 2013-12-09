@@ -90,7 +90,7 @@ public class FilterToSQLTest extends TestCase {
         LOGGER.fine("testAttr is an Integer " + filter + " -> " + output.getBuffer().toString());
         assertEquals(output.getBuffer().toString(), "WHERE testAttr = 5");
     }
-    
+
     public void testStringContext() throws Exception {
         Expression literal = filterFac.literal(5);
         Expression prop = filterFac.property(stringFType.getAttributeDescriptors().get(0).getLocalName());
@@ -103,7 +103,22 @@ public class FilterToSQLTest extends TestCase {
         LOGGER.fine("testAttr is a String " + filter + " -> " + output.getBuffer().toString());
         assertEquals(output.getBuffer().toString(), "WHERE testAttr = '5'");
     }
-    
+
+
+    public void testIntegerToNumberContext() throws Exception {
+
+        Expression literal = filterFac.literal(5.0);
+        Expression prop = filterFac.property(integerFType.getAttributeDescriptors().get(0).getLocalName());
+        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+
+        encoder.setFeatureType(integerFType);
+        encoder.encode(filter);
+
+        LOGGER.fine("testAttr is an Integer " + filter + " -> " + output.getBuffer().toString());
+        assertEquals(output.getBuffer().toString(), "WHERE testAttr = 5.0");
+    }
+
+
     public void testInclude() throws Exception {
         encoder.encode(Filter.INCLUDE);
         assertEquals(output.getBuffer().toString(), "WHERE 1 = 1");

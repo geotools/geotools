@@ -898,7 +898,9 @@ public final class JDBCDataStore extends ContentDataStore
         try {
             DatabaseMetaData metaData = cx.getMetaData();
             Set<String> availableTableTypes = new HashSet<String>();
-            String[] desiredTableTypes = new String[] { "TABLE", "VIEW", "SYNONYM" };
+            String[] desiredTableTypes = new String[] {
+                "TABLE", "VIEW", "MATERIALIZED VIEW", "SYNONYM"
+            };
             ResultSet tableTypes = null;
             try{
                 tableTypes = metaData.getTableTypes();

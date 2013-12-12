@@ -19,6 +19,7 @@ package org.geotools.renderer.lite;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
@@ -32,18 +33,23 @@ import java.util.Collections;
 import javax.imageio.ImageIO;
 
 import org.geotools.TestData;
+import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.factory.GeoTools;
 import org.geotools.gce.geotiff.GeoTiffReader;
+import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.GridReaderLayer;
+import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
@@ -61,6 +67,8 @@ import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.datum.GeodeticDatum;
 import org.opengis.referencing.operation.MathTransform;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * @author Simone Giannecchini
@@ -273,6 +281,49 @@ public class GridCoverageRendererTest  {
 		rasterstyle.featureTypeStyles().add(sb.createFeatureTypeStyle(raster));
 		rasterstyle.featureTypeStyles().get(0).setName("GridCoverage");
 		return rasterstyle;
+	}
+	
+	@Test
+	public void testReprojectBuffer() throws Exception {
+	    
+	    // create a solid color 1m coverage in EPSG:26915
+	    BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_BYTE_GRAY);
+	    Graphics2D graphics = bi.createGraphics();
+	    graphics.setColor(Color.DARK_GRAY);
+	    graphics.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+	    graphics.dispose();
+	    
+	    double baseX = 529687;
+	    double baseY = 3374773;
+	    CoordinateReferenceSystem nativeCrs = CRS.decode("EPSG:26915", true);
+	    GridCoverage2D coverage = CoverageFactoryFinder.getGridCoverageFactory(null).create("test", bi, 
+	            new ReferencedEnvelope(baseX, baseX + bi.getWidth(), baseY, baseY + bi.getHeight(), nativeCrs));
+	    
+	    // write out as geotiff
+	    File testFile = new File("./target/testReprojection.tiff");
+	    GeoTiffWriter writer = new GeoTiffWriter(testFile);
+	    writer.write(coverage, null);
+	    
+	    // setup to read only a block 50x50 in the middle
+	    MathTransform r2m = coverage.getGridGeometry().getGridToCRS();
+	    Envelope env = new Envelope(25, 75, 25, 75);
+	    ReferencedEnvelope read26915 = new ReferencedEnvelope(JTS.transform(env, r2m), nativeCrs);
+	    CoordinateReferenceSystem mapCRS = CRS.decode("EPSG:3857", true);
+	    ReferencedEnvelope read3857 = read26915.transform(mapCRS, true);
+	    
+	    // setup map content
+	    StyleBuilder sb = new StyleBuilder();
+        Layer layer = new GridReaderLayer(new GeoTiffReader(testFile), sb.createStyle(sb.createRasterSymbolizer()));
+        MapContent mc = new MapContent();
+        mc.getViewport().setBounds(read3857);
+        mc.addLayer(layer);
+        
+        StreamingRenderer sr = new StreamingRenderer();
+        sr.setMapContent(mc);
+        BufferedImage result = RendererBaseTest.showRender("testGridCoverageBoundsReprojection", sr, 1000, read3857);
+        
+        // there used to be a white triangle in the lower right corner of the output
+        ImageAssert.assertEquals(new File("src/test/resources/org/geotools/renderer/lite/reprojectBuffer.png"), result, 0);
 	}
 
 

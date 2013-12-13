@@ -154,7 +154,7 @@ public class Drawer {
  
     Symbolizer[] getSymbolizers(Style style){
         List<Symbolizer> symbs=new ArrayList<Symbolizer>();
-        FeatureTypeStyle[] styles=style.        ;
+        FeatureTypeStyle[] styles=style.getFeatureTypeStyles();
         for( int i = 0; i < styles.length; i++ ) {
             FeatureTypeStyle fstyle = styles[i];
             Rule[] rules=fstyle.getRules();

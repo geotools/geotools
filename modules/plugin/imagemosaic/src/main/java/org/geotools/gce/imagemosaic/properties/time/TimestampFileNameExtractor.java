@@ -76,8 +76,10 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
 
         // set the properties, only if we have matches!
         if (dates.size() <= 0) {
-            if (LOGGER.isLoggable(Level.FINE))
+            if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("No matches found for this property extractor:");
+            }
+            throw new IllegalArgumentException("No matches found for this property extractor");
         }
         int index = 0;
         for (String propertyName : getPropertyNames()) {

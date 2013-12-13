@@ -55,9 +55,12 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+
 import java.io.IOException;
 import java.util.Iterator;
+
 import javax.imageio.ImageIO;
+
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.ExternalGraphic;
 import org.opengis.style.GraphicLegend;
@@ -342,8 +345,9 @@ public final class StyledShapePainter {
                 PathIterator iter = getPathIterator(shape);
                 iter.currentSegment(coords);
                 
-                double rotation = Double.parseDouble(((Literal)legend.getRotation()).getValue().toString());
-                float opacity = Float.parseFloat(((Literal)legend.getOpacity()).getValue().toString());
+                // Note: Converting to Radians here due to direct use of SLD Expressions which uses degrees
+                double rotation = Math.toRadians( ((Literal)legend.getRotation()).evaluate(null,  Double.class));
+                float opacity = ((Literal)legend.getOpacity()).evaluate(null,  Float.class);
 
                 ExternalGraphic graphic = (ExternalGraphic) symbol;
 
@@ -445,7 +449,7 @@ public final class StyledShapePainter {
 
         // I suppose the image has been already scaled and its square
         double imageSize;
-        double graphicRotation = 0;
+        double graphicRotation = 0; // rotation in radians
         if(graphicStroke instanceof MarkStyle2D) {
             imageSize = ((MarkStyle2D) graphicStroke).getSize();
             graphicRotation = ((MarkStyle2D) graphicStroke).getRotation();
@@ -578,11 +582,11 @@ public final class StyledShapePainter {
      * @param y
      *            the image
      * @param image
-     *            DOCUMENT ME!
+     *            image to draw
      * @param rotation
-     *            the image rotatation
+     *            the image rotation in radians
      * @param opacity
-     *            DOCUMENT ME!
+     *            opacity between 0.0 and 1.0
      */
     private void renderImage(Graphics2D graphics, double x, double y,
             BufferedImage image, double rotation, float opacity, boolean isLabelObstacle) {

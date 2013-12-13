@@ -44,6 +44,7 @@ public class MarkStyle2D extends PolygonStyle2D {
     /**
      * Returns the shape rotation, in radians
      *
+     * @return shape rotation, in radians
      */
     public float getRotation() {
         return rotation;

@@ -65,10 +65,14 @@ public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
 	
 	//@Override
         public boolean evaluate(Object feature) {
-	    //NC - support for multiple values
+            //NC - support for multiple values
             final Object object0 = eval(expression, feature);
             final Object object1 = eval(expression1, feature);
             final Object object2 = eval(expression2, feature);
+            
+            if(object0 == null) {
+                return false;
+            }
             
             if (!(object0 instanceof Collection) && !(object1 instanceof Collection) && !(object2 instanceof Collection)) {
                 return evaluateInternal(object0, object1, object2);
@@ -111,6 +115,10 @@ public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
 	public boolean evaluateInternal(Object value, Object lower, Object upper) {
 		//first try to evaluate the bounds in terms of the middle
 		Object o = value;
+		if(o == null) {
+		    return false;
+		}
+		
 		Object l = Converters.convert(lower, o.getClass());
 		Object u = Converters.convert(upper, o.getClass());
 		if ( l == null || u == null ) {

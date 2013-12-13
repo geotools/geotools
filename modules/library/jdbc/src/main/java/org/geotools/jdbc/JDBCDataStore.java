@@ -3995,15 +3995,7 @@ public final class JDBCDataStore extends ContentDataStore
         }
         
         if ( toSQL != null ) {
-            setPreparedFilterValues(ps, toSQL, i, cx);
-            //for ( int j = 0; j < toSQL.getLiteralValues().size(); j++, i++)  {
-            //    Object value = toSQL.getLiteralValues().get( j );
-            //    Class binding = toSQL.getLiteralTypes().get( j );
-            //    
-            //    dialect.setValue( value, binding, ps, i+1, cx );
-            //    if ( LOGGER.isLoggable( Level.FINE ) ) {
-            //        LOGGER.fine( (i+1) + " = " + value );
-            //}
+            setPreparedFilterValues(ps, toSQL, j, cx);
         }
         
         return ps;

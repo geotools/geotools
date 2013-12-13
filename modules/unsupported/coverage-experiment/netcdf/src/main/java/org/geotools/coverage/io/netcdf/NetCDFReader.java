@@ -688,7 +688,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     @Override
     public void dispose() {
         super.dispose();
-        synchronized (coverages) {
+        synchronized (this) {
             if (coverages != null && !coverages.isEmpty()) {
                 Iterator<String> keysIt = coverages.keySet().iterator();
                 while (keysIt.hasNext()) {

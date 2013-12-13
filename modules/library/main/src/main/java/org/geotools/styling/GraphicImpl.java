@@ -304,11 +304,6 @@ public class GraphicImpl implements Graphic, Cloneable {
         this.displacement = DisplacementImpl.cast( offset );
     }
 
-    /**
-     * Graphic opacity.
-     * 
-     * @param opacity New value of property opacity.
-     */
     public void setOpacity(Expression opacity) {
         this.opacity = opacity;
     }

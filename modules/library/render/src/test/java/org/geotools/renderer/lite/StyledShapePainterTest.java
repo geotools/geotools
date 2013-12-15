@@ -29,6 +29,7 @@ import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.Decimator;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.styling.ExternalGraphic;
@@ -40,6 +41,7 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Test;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.operation.MathTransform;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -97,6 +99,44 @@ public class StyledShapePainterTest extends TestCase {
         
         // Ensure painted legend matches image from file
         Assert.assertTrue(imagesIdentical(paintedImage, testImage));
+    }
+    public void testGraphicLegendRotation() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
+        
+        // Load image directly from file, for comparison with painter output
+        final URL imageURL = TestData.getResource(this, "icon64.png");
+        final BufferedImage testImage = ImageIO.read(imageURL);        
+        final int width = testImage.getWidth();
+        final int height = testImage.getHeight();
+        
+        // Get graphic legend from style
+        final Style style = RendererBaseTest.loadStyle(
+                this, "testGraphicLegend.sld");
+        final Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        final GraphicLegend legend = (GraphicLegend) rule.getLegend();
+        
+        
+        // Set rotation to 45 degrees
+        legend.setRotation( ff.literal(45.0) );
+        
+        // Paint legend using StyledShapePainter
+        final Point point = gf.createPoint(new Coordinate(width / 2, height / 2));
+        final LiteShape2 shape = new LiteShape2(point, null, null, false);
+        
+        int imageType = testImage.getType();
+        if(imageType == BufferedImage.TYPE_CUSTOM) {
+            imageType = BufferedImage.TYPE_INT_RGB;
+        }
+        final BufferedImage paintedImage =
+                new BufferedImage(width, height, imageType);
+        final Graphics2D graphics = paintedImage.createGraphics();
+        final StyledShapePainter painter = new StyledShapePainter();
+        painter.paint(graphics, shape, legend, 1, false);
+        graphics.dispose();
+        
+        // Ensure painted legend does not match image from file
+        Assert.assertFalse(imagesIdentical(paintedImage, testImage));
     }
     
     /** Determines whether two buffered images are identical. */

@@ -560,9 +560,8 @@ public class SLDStyleFactory {
 		} catch (NumberFormatException nfe) {
 			// nothing to do
 		}
-
-		float rotation = (float) ((evalToFloat(sldGraphic.getRotation(),
-				feature, 0) * Math.PI) / 180);
+		
+		float rotation = (float) Math.toRadians( evalToDouble(sldGraphic.getRotation(), feature, 0));
 
 		// Extract the sequence of external graphics and symbols and process
 		// them in order
@@ -761,8 +760,7 @@ public class SLDStyleFactory {
 				// don't rotate labels that are being placed on shields.
 				rotation = 0.0;
 			} else {
-				rotation = evalToDouble(p.getRotation(), feature, 0);
-				rotation *= (Math.PI / 180.0);
+				rotation = Math.toRadians( evalToDouble(p.getRotation(), feature, 0));
 			}
 
 			ts2d.setPointPlacement(true);
@@ -1156,7 +1154,7 @@ public class SLDStyleFactory {
         		.ceil(sizeY * 3), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = image.createGraphics();
         g2d.setRenderingHints(renderingHints);
-        double rotation = evalToDouble(gr.getRotation(), feature, 0.0);
+        double rotation = Math.toRadians(evalToDouble(gr.getRotation(), feature, 0.0)); // fix for GEOS-6217
         for (int i = -1; i < 2; i++) {
         	for (int j = -1; j < 2; j++) {
         		double tx = sizeX * 1.5 + sizeX * i;
@@ -1327,7 +1325,16 @@ public class SLDStyleFactory {
 
 		return null;
 	}
-
+	/**
+	 * 
+	 * @param g2d graphics context
+	 * @param tx x offset
+	 * @param ty y offset
+	 * @param mark mark used for fill pattern
+	 * @param size size of mark
+	 * @param rotation rotation in radians
+	 * @param feature feature used for expression evaulation
+	 */
 	void fillDrawMark(Graphics2D g2d, double tx, double ty, Mark mark,
 			double size, double rotation, Object feature) {
 		if (mark == null)
@@ -1487,7 +1494,7 @@ public class SLDStyleFactory {
 		}
 		return fallback;
 	}
-
+	
 	private float evalToFloat(Expression exp, Object f, float fallback) {
 		if (exp == null) {
 			return fallback;

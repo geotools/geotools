@@ -1103,8 +1103,8 @@ public class SLDStyleFactory {
                 int extraY = margin[0] + margin[2];
                 int extraX = margin[1] + margin[3];
                 int type = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType();
-                BufferedImage imageWithMargin = new BufferedImage(image.getWidth() + extraY, image.getHeight() + extraX, type);
-                int tx = margin[3];
+                BufferedImage imageWithMargin = new BufferedImage(image.getWidth() + extraX, image.getHeight() + extraY, type);
+                int tx = margin[1];
                 int ty = margin[0];
                 AffineTransform at = AffineTransform.getTranslateInstance(tx, ty);
                 Graphics2D graphics = imageWithMargin.createGraphics();

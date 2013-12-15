@@ -225,7 +225,7 @@ public final class LabelCacheImpl implements LabelCache {
     }
 
     /**
-     * @see org.geotools.renderer.lite.LabelCache#startLayer()
+     * @see org.geotools.renderer.lite.LabelCache#startLayer(String)
      */
     public void startLayer(String layerId) {
         enabledLayers.add(layerId);
@@ -255,8 +255,8 @@ public final class LabelCacheImpl implements LabelCache {
     }
 
     /**
-     * @see org.geotools.renderer.lite.LabelCache#put(org.geotools.renderer.style.TextStyle2D,
-     *      org.geotools.renderer.lite.LiteShape)
+     * @see org.geotools.renderer.lite.LabelCache#put(String,TextSymbolizer,Feature,
+     *      LiteShape2,NumberRange)
      */
     public void put(String layerId, TextSymbolizer symbolizer, Feature feature,
             LiteShape2 shape, NumberRange scaleRange) {
@@ -338,14 +338,15 @@ public final class LabelCacheImpl implements LabelCache {
         item.setPolygonAlign((PolygonAlignOptions) voParser.getEnumOption(symbolizer, POLYGONALIGN_KEY, DEFAULT_POLYGONALIGN));
         item.setGraphicsResize((GraphicResize) voParser.getEnumOption(symbolizer, "graphic-resize", GraphicResize.NONE));
         item.setGraphicMargin(voParser.getGraphicMargin(symbolizer, "graphic-margin"));
+        item.setPartialsEnabled(voParser.getBooleanOption(symbolizer, PARTIALS_KEY, DEFAULT_PARTIALS));
+
         return item;
     }
     
     
 
     /**
-     * @see org.geotools.renderer.lite.LabelCache#endLayer(java.awt.Graphics2D,
-     *      java.awt.Rectangle)
+     * @see org.geotools.renderer.lite.LabelCache#endLayer(String,Graphics2D,Rectangle)
      */
     public void endLayer(String layerId, Graphics2D graphics, Rectangle displayArea) {
         activeLayers.remove(layerId);
@@ -505,12 +506,9 @@ public final class LabelCacheImpl implements LabelCache {
      * SO, use a sample method - make a few points inside the label and see if
      * they're "close to" the polygon The method sucks, but works well...
      * 
-     * @param glyphVector
-     * @param representativeGeom
-     */
-    /**
-     * @param glyphBounds
-     * @param representativeGeom
+     * @param painter
+     * @param transform
+     *
      * @return
      */
     private double goodnessOfFit(LabelPainter painter, AffineTransform transform,
@@ -573,8 +571,9 @@ public final class LabelCacheImpl implements LabelCache {
     private boolean paintLineLabels(LabelPainter painter, AffineTransform originalTransform,
             Rectangle displayArea, LabelIndex paintedBounds) throws Exception {
         final LabelCacheItem labelItem = painter.getLabel();
-        List<LineString> lines = (List<LineString>) getLineSetRepresentativeLocation(labelItem
-                .getGeoms(), displayArea, labelItem.removeGroupOverlaps());
+        List<LineString> lines = (List<LineString>) getLineSetRepresentativeLocation(
+                labelItem.getGeoms(), displayArea, labelItem.removeGroupOverlaps(),
+                labelItem.isPartialsEnabled());
 
         if (lines == null || lines.size() == 0)
             return false;
@@ -691,7 +690,7 @@ public final class LabelCacheImpl implements LabelCache {
 
                     // try to paint the label, the condition under which this
                     // happens are complex
-                    if (displayArea.contains(labelEnvelope)
+                    if ((displayArea.contains(labelEnvelope) || labelItem.isPartialsEnabled())
                             && !(labelItem.isConflictResolutionEnabled() && paintedBounds.labelsWithinDistance(labelEnvelope, extraSpace))
                             && !groupLabels.labelsWithinDistance(labelEnvelope, minDistance)) {
                         if (labelItem.isFollowLineEnabled()) {
@@ -792,7 +791,7 @@ public final class LabelCacheImpl implements LabelCache {
      * @param tempTransform
      * @param centroid
      * @param textStyle
-     * @param textBounds
+     * @param painter
      */
     private void setupPointTransform(AffineTransform tempTransform, Point centroid,
             TextStyle2D textStyle, LabelPainter painter) {
@@ -824,10 +823,11 @@ public final class LabelCacheImpl implements LabelCache {
      * location of the line string, using the positioning information loaded
      * from the the text style
      * 
-     * @param tempTransform
+     * @param painter
+     * @param cursor
      * @param centroid
-     * @param textStyle
-     * @param textBounds
+     * @param tempTransform
+     * @param followLine
      */
     private void setupLineTransform(LabelPainter painter, LineStringCursor cursor,
             Coordinate centroid, AffineTransform tempTransform, boolean followLine) {
@@ -876,7 +876,8 @@ public final class LabelCacheImpl implements LabelCache {
             Rectangle displayArea, LabelIndex glyphs) throws Exception {
         LabelCacheItem labelItem = painter.getLabel();
         // get the point onto the shape has to be painted
-        Point point = getPointSetRepresentativeLocation(labelItem.getGeoms(), displayArea);
+        Point point = getPointSetRepresentativeLocation(labelItem.getGeoms(),
+                displayArea, labelItem.isPartialsEnabled());
         if (point == null)
             return false;
 
@@ -985,7 +986,7 @@ public final class LabelCacheImpl implements LabelCache {
         // check for overlaps and paint
         Rectangle2D transformed = tempTransform
                 .createTransformedShape(painter.getFullLabelBounds()).getBounds2D();
-        if (!displayArea.contains(transformed)
+        if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
                 || (labelItem.isConflictResolutionEnabled() && 
                         glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))) {
             return false;
@@ -1011,7 +1012,7 @@ public final class LabelCacheImpl implements LabelCache {
     private boolean paintPolygonLabel(LabelPainter painter, AffineTransform tempTransform,
             Rectangle displayArea, LabelIndex glyphs) throws Exception {
         LabelCacheItem labelItem = painter.getLabel();
-        Polygon geom = getPolySetRepresentativeLocation(labelItem.getGeoms(), displayArea);
+        Polygon geom = getPolySetRepresentativeLocation(labelItem.getGeoms(), displayArea, labelItem.isPartialsEnabled());
         if (geom == null) {
             return false;
         }
@@ -1132,7 +1133,7 @@ public final class LabelCacheImpl implements LabelCache {
 
         Rectangle2D transformed = tempTransform
                 .createTransformedShape(painter.getFullLabelBounds()).getBounds2D();
-        if (!displayArea.contains(transformed)
+        if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
                 || (labelItem.isConflictResolutionEnabled() 
                         && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))
                 || goodnessOfFit(painter, tempTransform, pg) < painter.getLabel().getGoodnessOfFit()) {
@@ -1142,7 +1143,7 @@ public final class LabelCacheImpl implements LabelCache {
                 setupPointTransform(tempTransform, centroid, textStyle, painter);
 
                 transformed = tempTransform.createTransformedShape(painter.getFullLabelBounds()).getBounds2D();
-                if (!displayArea.contains(transformed)
+                if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
                         || (labelItem.isConflictResolutionEnabled() 
                                 && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))
                         || goodnessOfFit(painter, tempTransform, pg) < painter.getLabel().getGoodnessOfFit()) {
@@ -1199,10 +1200,11 @@ public final class LabelCacheImpl implements LabelCache {
      * @param geoms
      *            list of Point or MultiPoint (any other geometry types are
      *            rejected
-     * @param displayGeometry
+     * @param displayArea
+     * @param partialsEnabled true if we don't want to exclude points out of the displayArea
      * @return a point or null (if there's nothing to draw)
      */
-    Point getPointSetRepresentativeLocation(List<Geometry> geoms, Rectangle displayArea) {
+    Point getPointSetRepresentativeLocation(List<Geometry> geoms, Rectangle displayArea, boolean partialsEnabled) {
         // points that are inside the displayGeometry
         ArrayList<Point> pts = new ArrayList<Point>();
 
@@ -1212,13 +1214,12 @@ public final class LabelCacheImpl implements LabelCache {
                 g = g.getCentroid(); // will be point
             if (g instanceof Point) {
                 Point point = (Point) g;
-                if (displayArea.contains(point.getX(), point.getY())) // this is
-                                                                      // robust!
+                if (displayArea.contains(point.getX(), point.getY()) || partialsEnabled) // this is robust!
                     pts.add(point); // possible label location
             } else if (g instanceof MultiPoint) {
                 for (int t = 0; t < g.getNumGeometries(); t++) {
                     Point gg = (Point) g.getGeometryN(t);
-                    if (displayArea.contains(gg.getX(), gg.getY()))
+                    if (displayArea.contains(gg.getX(), gg.getY()) || partialsEnabled)
                         pts.add(gg); // possible label location
                 }
             }
@@ -1248,12 +1249,12 @@ public final class LabelCacheImpl implements LabelCache {
      * 
      * 
      * @param geoms
+     * @param displayArea must be poly
      * @param removeOverlaps
-     * @param displayGeometry
-     *            must be poly
+     * @param partialsEnabled true if we don't want to clip lines on the displayArea
      */
     List<LineString> getLineSetRepresentativeLocation(List<Geometry> geoms, Rectangle displayArea,
-            boolean removeOverlaps) {
+                boolean removeOverlaps, boolean partialsEnabled) {
 
         // go through each geometry in the set.
         // if its a polygon or multipolygon, get the boundary (reduce to a line)
@@ -1269,11 +1270,18 @@ public final class LabelCacheImpl implements LabelCache {
         // clip all the lines to the current bounds
         List<LineString> clippedLines = new ArrayList<LineString>();
         for (LineString ls : lines) {
-            // more robust clipper -- see its dox
-            MultiLineString ll = clipLineString(ls);
-            if ((ll != null) && (!(ll.isEmpty()))) {
-                for (int t = 0; t < ll.getNumGeometries(); t++)
-                    clippedLines.add((LineString) ll.getGeometryN(t));
+            // If we want labels to be entirely in the display area, clip the linestring
+            if (!partialsEnabled) {
+                // more robust clipper -- see its dox
+                MultiLineString ll = clipLineString(ls);
+                if ((ll != null) && (!(ll.isEmpty()))) {
+                    for (int t = 0; t < ll.getNumGeometries(); t++)
+                        clippedLines.add((LineString) ll.getGeometryN(t));
+                }
+            }
+            // If we want to draw partial labels on border, keep the whole linestring
+            else {
+                clippedLines.add(ls);
             }
         }
 
@@ -1363,8 +1371,7 @@ public final class LabelCacheImpl implements LabelCache {
      * does. It might return the unclipped line if there's a problem!
      * 
      * @param line
-     * @param bbox
-     *            MUST BE A BOUNDING BOX
+     *
      */
     public MultiLineString clipLineString(LineString line) {
 
@@ -1403,9 +1410,11 @@ public final class LabelCacheImpl implements LabelCache {
      * geometries
      * 
      * @param geoms
-     * @param displayGeometry
+     * @param displayArea
+     * @param partialsEnabled true if we don't want to clip lines on the displayArea
      */
-    Polygon getPolySetRepresentativeLocation(List<Geometry> geoms, Rectangle displayArea) {
+    Polygon getPolySetRepresentativeLocation(List<Geometry> geoms,
+                Rectangle displayArea, boolean partialsEnabled) {
         List<Polygon> polys = new ArrayList<Polygon>(); // points that are
                                                         // inside the
         Geometry displayGeometry = gf.toGeometry(toEnvelope(displayArea));
@@ -1435,10 +1444,17 @@ public final class LabelCacheImpl implements LabelCache {
         List<Polygon> clippedPolys = new ArrayList<Polygon>();
         Envelope displayGeomEnv = displayGeometry.getEnvelopeInternal();
         for (Polygon p : polys) {
-            MultiPolygon pp = clipPolygon(p, (Polygon) displayGeometry, displayGeomEnv);
-            if ((pp != null) && (!(pp.isEmpty()))) {
-                for (int t = 0; t < pp.getNumGeometries(); t++)
-                    clippedPolys.add((Polygon) pp.getGeometryN(t)); 
+            // If we want labels to be entirely in the display area, clip polygons
+            if (!partialsEnabled) {
+                MultiPolygon pp = clipPolygon(p, (Polygon) displayGeometry, displayGeomEnv);
+                if ((pp != null) && (!(pp.isEmpty()))) {
+                    for (int t = 0; t < pp.getNumGeometries(); t++)
+                        clippedPolys.add((Polygon) pp.getGeometryN(t));
+                }
+            }
+            // If we want to draw partial labels on border, keep the whole polygon
+            else {
+                clippedPolys.add(p);
             }
         }
         
@@ -1573,7 +1589,6 @@ public final class LabelCacheImpl implements LabelCache {
      * 
      * @param edges
      * @param nodes
-     * @param result
      * 
      */
     public List<LineString> processNodes(List<LineString> edges,

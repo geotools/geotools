@@ -286,6 +286,17 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
      * Default value for the polygonAlign
      */
     public static final PolygonAlignOptions DEFAULT_POLYGONALIGN = PolygonAlignOptions.NONE;
+
+    /**
+     * Option to truncate labels placed on the border of the displayArea.
+     */
+    String TRUNCATE_LABEL_ENABLED_KEY = "truncateLabelEnabled";
+
+    /**
+     * Default behaviour is to not truncate labels on the border of the display area.
+     * Instead, labels are hidden or moved to be fully displayed inside the area.
+     */
+    boolean DEFAULT_TRUNCATE_LABEL_ENABLED = false;
     
     /**
      * Returns the expression that will be evaluated to determine what text is

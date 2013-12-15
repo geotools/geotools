@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.xml.Parser;
@@ -41,22 +42,22 @@ public class XSUnsignedBindingsTest extends TestCase {
     }
 
     public void testParseUnsignedInt() throws Exception {
-        Long l = (Long) p.parse(new ByteArrayInputStream(doc("unsignedInt", "12").getBytes()));
+        Long l = (Long) p.parse(new ByteArrayInputStream(doc("unsignedInt", "12").getBytes(Charset.forName("UTF-8"))));
         assertEquals(12l, l.longValue());
     }
 
     public void testParseUnsignedByte() throws Exception {
-        Short s = (Short) p.parse(new ByteArrayInputStream(doc("unsignedByte", "12").getBytes()));
+        Short s = (Short) p.parse(new ByteArrayInputStream(doc("unsignedByte", "12").getBytes(Charset.forName("UTF-8"))));
         assertEquals(12, s.shortValue());
     }
 
     public void testParseUnsignedShort() throws Exception {
-        Integer i = (Integer) p.parse(new ByteArrayInputStream(doc("unsignedShort", "12").getBytes()));
+        Integer i = (Integer) p.parse(new ByteArrayInputStream(doc("unsignedShort", "12").getBytes(Charset.forName("UTF-8"))));
         assertEquals(12, i.longValue());
     }
     
     public void testParseUnsignedLong() throws Exception {
-        BigDecimal l = (BigDecimal) p.parse(new ByteArrayInputStream(doc("unsignedLong", "12").getBytes()));
+        BigDecimal l = (BigDecimal) p.parse(new ByteArrayInputStream(doc("unsignedLong", "12").getBytes(Charset.forName("UTF-8"))));
         assertEquals(12l, l.longValue());
     }
 

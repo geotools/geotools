@@ -90,6 +90,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         return goodnessOfFit;
     }
 
+    boolean truncateLabelEnabled = false;
+
     /**
      * A value between 0 and 1 representing the portion of the label
      * that overlaps with the geometry (atm used only for polygons)
@@ -381,6 +383,10 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     PolygonAlignOptions getPolygonAlign() {
         return polygonAlign;
     }
+
+    public boolean isTruncateLabelEnabled() { return truncateLabelEnabled; }
+
+    public void setTruncateLabelEnabled(boolean truncateLabelEnabled) { this.truncateLabelEnabled = truncateLabelEnabled; }
     
 }
 

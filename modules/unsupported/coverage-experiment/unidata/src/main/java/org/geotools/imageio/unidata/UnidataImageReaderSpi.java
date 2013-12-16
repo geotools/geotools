@@ -26,6 +26,11 @@ import java.util.logging.Logger;
 
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stream.StreamSource;
 
 import org.geotools.imageio.GeoSpatialImageReaderSpi;
 import org.geotools.util.logging.Logging;
@@ -35,11 +40,11 @@ import ucar.nc2.dataset.NetcdfDataset;
 
 /**
  * Service provider interface for the NetCDF Image
- * 
+ *
  * @author Alessio Fabiani, GeoSolutions
  */
 public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
-    
+
     /**
      * @param version
      * @param names
@@ -108,11 +113,11 @@ public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
                 fis.readFully(b);
                 fis.reset();
                 boolean cdfCheck = (b[0] == (byte)0x43 && b[1] == (byte)0x44 && b[2] == (byte)0x46);
-
-                if (!cdfCheck) {
-                    return false;
+                boolean hdf5Check = (b[0] == (byte)0x89 && b[1] == (byte)0x48 && b[2] == (byte)0x44);
+                if (!cdfCheck && ! hdf5Check) {
+                    if (!isNcML(input)) return false;
                 }
-                file = NetcdfDataset.open(input.getPath());
+                file = NetcdfDataset.openDataset(input.getPath());
                 if (file != null) {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine("File successfully opened");
@@ -125,7 +130,7 @@ public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
                     try {
                         fis.close();
                     } catch (Throwable t) {
-                        
+
                     }
                 }
 
@@ -135,6 +140,34 @@ public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
 
         }
         return canDecode;
+    }
+
+    private boolean isNcML(File input) throws IOException {
+        final StreamSource streamSource = new StreamSource(input);
+        XMLStreamReader reader = null;
+        try {
+            reader = XMLInputFactory.newInstance().createXMLStreamReader(streamSource);
+            reader.nextTag();
+            if ("netcdf".equals(reader.getName().getLocalPart())) {
+                return true;
+            }
+        } catch (XMLStreamException e) {
+
+        } catch (FactoryConfigurationError e) {
+
+        } finally {
+            if (reader != null) {
+                if (streamSource.getInputStream() != null) {
+                    streamSource.getInputStream().close();
+                }
+                try {
+                    reader.close();
+                } catch (XMLStreamException e) {
+                }
+            }
+
+        }
+        return false;
     }
 
 }

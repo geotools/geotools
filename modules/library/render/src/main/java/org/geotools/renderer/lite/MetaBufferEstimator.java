@@ -321,15 +321,26 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                         }
                     }
                 } else if(gs instanceof Mark) {
+                    Mark mark = (Mark) gs;
+                    int markSize;
                     if(isSizeLiteral) {
-                        if(imageSize > buffer) {
-                            buffer = imageSize;
-                        }
+                        markSize = imageSize;
                     } else {
-                        if(SLDStyleFactory.DEFAULT_MARK_SIZE > buffer) {
-                            buffer = SLDStyleFactory.DEFAULT_MARK_SIZE;
+                        markSize = SLDStyleFactory.DEFAULT_MARK_SIZE;
+                    }
+                    if(mark.getStroke() != null) {
+                        int strokeWidth = getWidth(mark.getStroke().getWidth());
+                        if(strokeWidth < 0) {
+                            estimateAccurate = false;
+                        } else {
+                            markSize += strokeWidth;
                         }
                     }
+                    
+                    if(markSize > buffer) {
+                        this.buffer = markSize;
+                    }
+
                     return;
                 }
 
@@ -347,20 +358,26 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     }
 
     private void evaluateWidth(Expression width) {
+        int value = getWidth(width);
+        if(value < 0) {
+            estimateAccurate = false;
+        } else if(value > buffer) {
+            buffer = value;
+        }
+    }
+    
+    private int getWidth(Expression width) {
         attributeExtractor.clear();
         width.accept(attributeExtractor, null);
         if (attributeExtractor.isConstantExpression()) {
             Double result = width.evaluate(null, Double.class);
             if(result != null) {
-                int size = (int) Math.ceil(result);
-                if (size > buffer) {
-                    buffer = size;
-                }
+                return (int) Math.ceil(result);
             } else {
-                estimateAccurate = false;
+                return -1;
             }
         } else {
-            estimateAccurate = false;
+            return -1;
         }
     }
 

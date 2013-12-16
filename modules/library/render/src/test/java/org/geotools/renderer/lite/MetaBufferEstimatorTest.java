@@ -3,6 +3,7 @@ package org.geotools.renderer.lite;
 import static org.junit.Assert.*;
 
 import org.geotools.styling.Graphic;
+import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
@@ -72,7 +73,7 @@ public class MetaBufferEstimatorTest {
         MetaBufferEstimator estimator = new MetaBufferEstimator();
         style.accept(estimator);
         assertTrue(estimator.isEstimateAccurate());
-        assertEquals(8, estimator.getBuffer());
+        assertEquals(10, estimator.getBuffer());
     }
     
     @Test
@@ -111,9 +112,11 @@ public class MetaBufferEstimatorTest {
     }
     
     @Test
-    public void testMarkNoSize() throws Exception {
+    public void testMarkNoSizeNoStroke() throws Exception {
         StyleBuilder sb = new StyleBuilder();
-        Graphic graphic = sb.createGraphic(null, sb.createMark("square"), null);
+        Mark mark = sb.createMark("square");
+        mark.setStroke(null);
+        Graphic graphic = sb.createGraphic(null, mark, null);
         graphic.setSize(NilExpression.NIL);
         PointSymbolizer ps = sb.createPointSymbolizer(graphic);
         Style style = sb.createStyle(ps);
@@ -122,6 +125,22 @@ public class MetaBufferEstimatorTest {
         style.accept(estimator);
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(16, estimator.getBuffer());
+    }
+    
+    @Test
+    public void testMarkStroke() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        Mark mark = sb.createMark("square");
+        mark.getStroke().setWidth(sb.getFilterFactory().literal(10));
+        Graphic graphic = sb.createGraphic(null, mark, null);
+        graphic.setSize(NilExpression.NIL);
+        PointSymbolizer ps = sb.createPointSymbolizer(graphic);
+        Style style = sb.createStyle(ps);
+        
+        MetaBufferEstimator estimator = new MetaBufferEstimator();
+        style.accept(estimator);
+        assertTrue(estimator.isEstimateAccurate());
+        assertEquals(26, estimator.getBuffer());
     }
 
 }

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.media.jai.Interpolation;
@@ -43,6 +44,7 @@ import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * A class to handle coverage requests to a reader for a single 2D layer..
@@ -149,16 +151,32 @@ class NetCDFRequest extends CoverageReadRequest{
         
         
         if (requestedRasterArea == null || requestedBoundingBox == null) {
+            boolean bothNull = true;
             if (requestedRasterArea == null) {
                 requestedRasterArea = horizontalDomain.getGridGeometry().getGridRange2D().getBounds();
+            }else{
+                bothNull = false;
             }
             if (requestedBoundingBox == null) {
                 requestedBoundingBox = horizontalDomain.getReferencedEnvelope();
 
+            }else{
+                bothNull = false;
             }
 
-            // TODO: Check for center/corner anchor point
-            request.setDomainSubset(requestedRasterArea, ReferencedEnvelope.reference(requestedBoundingBox));
+            if (bothNull) {
+                try {
+                    request.setDomainSubset(requestedRasterArea,horizontalDomain.getGridGeometry().getGridToCRS2D(),horizontalDomain.getCoordinateReferenceSystem2D());
+                } catch (TransformException e) {
+                    request.setDomainSubset(requestedRasterArea, ReferencedEnvelope.reference(requestedBoundingBox));
+                    LOGGER.log(Level.SEVERE,"Transform exception while setting the domain subset to: "+requestedRasterArea,e);
+                }
+            } else {
+                // TODO: Check for center/corner anchor point
+                request.setDomainSubset(requestedRasterArea, ReferencedEnvelope.reference(requestedBoundingBox));
+
+            }
+
         }
 
         // //

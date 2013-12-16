@@ -44,8 +44,10 @@ import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.TestData;
@@ -54,6 +56,7 @@ import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
@@ -61,6 +64,90 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 public class NetCDFReaderTest extends Assert {
+
+    /**
+     * Test using this netcdf image:
+     *  data:
+     * LAI=
+     * 20,20,20,30,30,
+     * 40,40,40,50,50,
+     * 60,60,60,70,70,
+     * 80,80,80,90,90;
+     * lon=
+     *         10,15,20,25,30;
+     * lat=    70,60,50,40;
+     *
+     * @throws IOException
+     */
+    @Test  public void testHDF5Image() throws IOException, FactoryException {
+        final File testURL = TestData.file(this, "2DLatLonCoverage.nc");
+        // Get format
+        //final AbstractGridFormat format = (AbstractGridFormat)
+        GridFormatFinder.findFormat(testURL.toURI().toURL(),null);
+        final NetCDFReader reader = new NetCDFReader(testURL, null);
+        //assertNotNull(format);
+        assertNotNull(reader);
+        try {
+            String[] names = reader.getGridCoverageNames();
+            assertNotNull(names);
+            assertEquals(2,names.length);
+            assertEquals("ROOT/LEVEL1/V2",names[0]);
+            GridCoverage2D grid = reader.read("ROOT/LAI", null);
+            assertNotNull(grid);
+            byte[] byteValue = grid.evaluate(new
+                    DirectPosition2D(DefaultGeographicCRS.WGS84, 12, 70 ), new byte[1]);
+            assertEquals(20,byteValue[0]);
+
+            byteValue = grid.evaluate(new
+                    DirectPosition2D(DefaultGeographicCRS.WGS84, 23, 40), new byte[1]);
+            assertEquals(90,byteValue[0]);
+
+
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    @Test  public void testFullReadOnCoverageWithIncreasingLat() throws IOException, FactoryException {
+        final File testURL = TestData.file(this, "O3-NO2.nc");
+        // Get format
+        //final AbstractGridFormat format = (AbstractGridFormat)
+        GridFormatFinder.findFormat(testURL.toURI().toURL(),null);
+        final NetCDFReader reader = new NetCDFReader(testURL, null);
+        //assertNotNull(format);
+        assertNotNull(reader);
+        try {
+            String[] names = reader.getGridCoverageNames();
+            assertNotNull(names);
+            assertEquals(2,names.length);
+
+            GridCoverage2D grid = reader.read("O3", null);
+            assertNotNull(grid);
+            float[] value = grid.evaluate((DirectPosition) new
+                    DirectPosition2D(DefaultGeographicCRS.WGS84, 5, 45 ), new float[1]);
+            assertEquals(47.63341f,value[0],0.00001);
+
+            value = grid.evaluate((DirectPosition) new
+                    DirectPosition2D(DefaultGeographicCRS.WGS84, 5, 45.125), new float[1]);
+            assertEquals(52.7991f, value[0],0.000001);
+
+
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
 
     @Test
     public void NetCDFTestOn4Dcoverages() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {

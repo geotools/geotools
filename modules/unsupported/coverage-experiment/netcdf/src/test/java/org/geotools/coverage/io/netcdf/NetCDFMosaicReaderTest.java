@@ -387,6 +387,38 @@ public class NetCDFMosaicReaderTest extends Assert {
             reader.dispose();
         }
     }
+
+    @Test
+    public void testHarvestHDF5Data() throws IOException {
+        File nc1 = TestData.file(this,"2DLatLonCoverage.nc");
+        File nc2 = TestData.file(this,"2DLatLonCoverage2.nc");
+        File mosaic = new File(TestData.file(this,"."),"simpleMosaic");
+        if(mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+        FileUtils.copyFileToDirectory(nc2, mosaic);
+
+        // the datastore.properties file is also mandatory...
+        File dsp = TestData.file(this,"datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+
+        File xml =  TestData.file(this,"hdf5Coverage2D.xml");
+        FileUtils.copyFileToDirectory(xml, mosaic);
+
+        // The indexer
+        String indexer = "TimeAttribute=time\n"
+                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+              //  + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
+        indexer += Prop.AUXILIARY_FILE + "=" + "hdf5Coverage2D.xml";
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+
+        //simply test if the mosaic can be read without exceptions
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(mosaic);
+        reader.read("L1_V2",null);
+    }
     
     @Test
     public void testHarvestAddVariable() throws IOException {

@@ -799,6 +799,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
                 // model space
                 if(cv.isRegular()){
                     // regular model space
+                    //TODO should we support a decreasing longitude?
                     origin[0]=cv.getStart();
                     scaleX=cv.getIncrement();
                 } else {
@@ -837,8 +838,16 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
                 
                 // model space
                 if(cv.isRegular()){
-                    scaleY=-cv.getIncrement();
-                    origin[1]=cv.getStart()-scaleY*high[1];
+
+                    if(cv.getIncrement()>0){
+                        //the latitude axis is increasing! This is a special case so we flip it around
+                        scaleY=-cv.getIncrement();
+                        origin[1]=cv.getStart()-scaleY*(high[1]-1);
+                    }else{
+
+                        scaleY=cv.getIncrement();
+                        origin[1]=cv.getStart();
+                    }
                 } else {
                     
                     // model space is not declared to be regular, but we kind of assume it is!!!
@@ -880,7 +889,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
                 high[0]-low[0], 
                 high[1]-low[1]);
         final MathTransform raster2Model = ProjectiveTransform.create(at);
-        return new GridGeometry2D(gridRange,PixelInCell.CELL_CORNER ,raster2Model, coordinateReferenceSystem,GeoTools.getDefaultHints());
+        return new GridGeometry2D(gridRange,PixelInCell.CELL_CENTER,raster2Model, coordinateReferenceSystem,GeoTools.getDefaultHints());
     }
 
     public int getNumBands() {

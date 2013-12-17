@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"  location="2DLatLonCoverageHDF5.nc">
+  <variable name="MyLAI" orgName="LAI" type="double" />
+</netcdf>

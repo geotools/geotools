@@ -302,9 +302,10 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                         }
                         
                         Iterator<ExternalGraphicFactory> it  = DynamicSymbolFactoryFinder.getExternalGraphicFactories();
-                        while(it.hasNext()) {
+                        while(it.hasNext() && icon == null) {
                             try {
-                                icon = it.next().getIcon(null, expanded, eg.getFormat(), imageSize);
+                                ExternalGraphicFactory factory = it.next();
+                                icon = factory.getIcon(null, expanded, eg.getFormat(), imageSize);
                             } catch(Exception e) {
                                 LOGGER.log(Level.FINE, "Error occurred evaluating external graphic", e);
                             }

@@ -831,14 +831,14 @@ public final class JDBCDataStore extends ContentDataStore
      *
      * @see ContentDataStore#createFeatureSource(ContentEntry)
      */
-    protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
+    protected ContentFeatureSource createFeatureSource(ContentEntry entry, Transaction tx) throws IOException {
         // grab the schema, it carries a flag telling us if the feature type is read only
-        SimpleFeatureType schema = entry.getState(Transaction.AUTO_COMMIT).getFeatureType();
+        SimpleFeatureType schema = entry.getState(tx).getFeatureType();
         if (schema == null) {
             // if the schema still haven't been computed, force its computation so
             // that we can decide if the feature type is read only
             schema = new JDBCFeatureSource(entry, null).buildFeatureType();
-            entry.getState(Transaction.AUTO_COMMIT).setFeatureType(schema);
+            entry.getState(tx).setFeatureType(schema);
         }
 
         Object readOnlyMarker = schema.getUserData().get(JDBC_READ_ONLY);
@@ -847,6 +847,7 @@ public final class JDBCDataStore extends ContentDataStore
         }
 
         JDBCFeatureStore featureStore = new JDBCFeatureStore(entry, null);
+        featureStore.setTransaction(tx);
         featureStore.setExposePrimaryKeyColumns(this.exposePrimaryKeyColumns);
 
         return featureStore;

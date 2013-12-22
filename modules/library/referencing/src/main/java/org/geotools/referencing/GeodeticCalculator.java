@@ -21,46 +21,49 @@
  */
 package org.geotools.referencing;
 
-import java.awt.Shape;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.GeneralPath;
-import java.text.Format;
-import javax.measure.unit.NonSI;
 import static java.lang.Math.*;
 
+import java.awt.Shape;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.text.Format;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.measure.unit.NonSI;
+
+import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.TransformedDirectPosition;
+import org.geotools.io.TableWriter;
+import org.geotools.measure.Angle;
+import org.geotools.measure.CoordinateFormat;
+import org.geotools.measure.Latitude;
+import org.geotools.measure.Longitude;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.cs.DefaultEllipsoidalCS;
+import org.geotools.referencing.datum.DefaultEllipsoid;
+import org.geotools.referencing.datum.DefaultGeodeticDatum;
+import org.geotools.referencing.datum.DefaultPrimeMeridian;
+import org.geotools.resources.CRSUtilities;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.i18n.Vocabulary;
+import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.logging.Logging;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.coordinate.Position;
+import org.opengis.referencing.crs.CompoundCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.cs.AxisDirection;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.datum.Datum;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.datum.GeodeticDatum;
 import org.opengis.referencing.operation.TransformException;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.crs.CompoundCRS;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.geometry.coordinate.Position;
-import org.opengis.geometry.DirectPosition;
-
-import org.geotools.measure.Angle;
-import org.geotools.measure.Latitude;
-import org.geotools.measure.Longitude;
-import org.geotools.measure.CoordinateFormat;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.geometry.TransformedDirectPosition;
-import org.geotools.referencing.datum.DefaultEllipsoid;
-import org.geotools.referencing.datum.DefaultPrimeMeridian;
-import org.geotools.referencing.datum.DefaultGeodeticDatum;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.referencing.cs.DefaultEllipsoidalCS;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.io.TableWriter;
-import org.geotools.util.logging.Logging;
 
 
 /**
@@ -1144,28 +1147,15 @@ public class GeodeticCalculator {
      * @todo We should check for cases where the path cross the 90°N, 90°S, 90°E or 90°W boundaries.
      */
     public Shape getGeodeticCurve(final int numberOfPoints) {
-        checkNumberOfPoints(numberOfPoints);
-        if (!directionValid) {
-            computeDirection();
+        List<Point2D> points = getGeodeticPath(numberOfPoints);
+        final GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, numberOfPoints + 1);
+        Point2D start = points.get(0);
+        path.moveTo(start.getX(), start.getY());
+        for (int i = 1; i < points.size(); i++) {
+            Point2D p = points.get(i);
+            path.lineTo(p.getX(), p.getY());
         }
-        if (!destinationValid) {
-            computeDestinationPoint();
-        }
-        final double         long2 = this.long2;
-        final double          lat2 = this.lat2;
-        final double      distance = this.distance;
-        final double deltaDistance = distance / numberOfPoints;
-        final GeneralPath     path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, numberOfPoints+1);
-        path.moveTo((float) toDegrees(long1), (float) toDegrees(lat1));
-        for (int i=1; i<numberOfPoints; i++) {
-            this.distance = i*deltaDistance;
-            computeDestinationPoint();
-            path.lineTo((float) toDegrees(this.long2), (float) toDegrees(this.lat2));
-        }
-        this.long2    = long2;
-        this.lat2     = lat2;
-        this.distance = distance;
-        path.lineTo((float) toDegrees(long2), (float) toDegrees(lat2));
+        
         return path;
     }
 
@@ -1183,6 +1173,57 @@ public class GeodeticCalculator {
     public Shape getGeodeticCurve() {
         return getGeodeticCurve(10);
     }
+    
+    /**
+     * Calculates the geodetic curve between two points in the referenced ellipsoid.
+     * A curve in the ellipsoid is a path which points contain the longitude and latitude
+     * of the points in the geodetic curve. The geodetic curve is computed from the
+     * {@linkplain #getStartingGeographicPoint starting point} to the
+     * {@linkplain #getDestinationGeographicPoint destination point}.
+     *
+     * @param  numPoints The number of vertices <strong>between</strong> the start
+     *         and destination points
+     * 
+     * @return vertices approximating the curve
+     *
+     * @todo We should check for cases where the path cross the 90Â°N, 90Â°S, 90Â°E or 90Â°W boundaries.
+     */
+    public List<Point2D> getGeodeticPath(int numPoints) {
+        if (numPoints < 0) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,
+                        "numPoints", numPoints));
+        }
+        
+        List<Point2D> points = new ArrayList<Point2D>(numPoints + 2);
+        
+        if (!directionValid) {
+            computeDirection();
+        }
+        
+        if (!destinationValid) {
+            computeDestinationPoint();
+        }
+        
+        final double         long2 = this.long2;
+        final double          lat2 = this.lat2;
+        final double      distance = this.distance;
+        final double delta = distance / (numPoints + 1);
+    
+        points.add(new Point2D.Double(toDegrees(long1), toDegrees(lat1)));
+        
+        for (int i = 1; i <= numPoints; i++) {
+            this.distance = i * delta;
+            computeDestinationPoint();
+            points.add(new Point2D.Double(toDegrees(this.long2), toDegrees(this.lat2)));
+        }
+        points.add(new Point2D.Double(toDegrees(long2), toDegrees(lat2)));
+        this.long2    = long2;
+        this.lat2     = lat2;
+        this.distance = distance;
+        
+        return points;
+    }
+    
 
     /**
      * Calculates the loxodromic curve between two points in the referenced ellipsoid.

@@ -549,7 +549,9 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         }
         
         try {
-            if(cx instanceof Wrapper) {
+            // try to use java 6 unwrapping the first time, it can fail, if so, the unwrapper will
+            // be set instead
+            if(cx instanceof Wrapper && uw != null) {
                 try {
                     Wrapper w = cx;
                     if(w.isWrapperFor(OracleConnection.class)) {

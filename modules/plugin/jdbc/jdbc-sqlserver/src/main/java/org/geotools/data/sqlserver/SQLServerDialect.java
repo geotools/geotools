@@ -645,40 +645,51 @@ public class SQLServerDialect extends BasicSQLDialect {
     
     @Override
     public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
-        // if we have a nested query (used in sql views) we might have a inner order by,
-        // check for the last closed )
-        int lastClosed = sql.lastIndexOf(")");
-        int orderByIndex = sql.lastIndexOf("ORDER BY");
-        CharSequence orderBy;
-        if(orderByIndex > 0 && orderByIndex > lastClosed) {
-            // we'll move the order by into the ROW_NUMBER call
-            orderBy = sql.subSequence(orderByIndex, sql.length());
-            sql.delete(orderByIndex, orderByIndex + orderBy.length());
+        if(offset == 0) {
+            int idx = getAfterSelectInsertPoint(sql.toString());
+            sql.insert(idx, " top "  + limit);
         } else {
-            // ROW_NUMBER requires an order by clause, we need to feed it something
-            orderBy = "ORDER BY CURRENT_TIMESTAMP";
-        }
-        
-        // now insert the order by inside the select
-        Matcher fromMatcher = FROM_PATTERN.matcher(sql);
-        fromMatcher.find();
-        int fromStart = fromMatcher.start(2);
-        sql.insert(fromStart - 1, ", ROW_NUMBER() OVER (" + orderBy + ") AS _GT_ROW_NUMBER ");
-        
-        // and wrap inside a block that selects the portion we want
-        sql.insert(0, "SELECT * FROM (");
-        sql.append(") AS _GT_PAGING_SUBQUERY WHERE ");
-        if(offset > 0) {
-            sql.append("_GT_ROW_NUMBER > " + offset);
-        }
-        if(limit >= 0 && limit < Integer.MAX_VALUE) {
-            int max = limit;
-            if(offset > 0) {
-                max += offset;
-                sql.append(" AND ");
+            // if we have a nested query (used in sql views) we might have a inner order by,
+            // check for the last closed )
+            int lastClosed = sql.lastIndexOf(")");
+            int orderByIndex = sql.lastIndexOf("ORDER BY");
+            CharSequence orderBy;
+            if(orderByIndex > 0 && orderByIndex > lastClosed) {
+                // we'll move the order by into the ROW_NUMBER call
+                orderBy = sql.subSequence(orderByIndex, sql.length());
+                sql.delete(orderByIndex, orderByIndex + orderBy.length());
+            } else {
+                // ROW_NUMBER requires an order by clause, we need to feed it something
+                orderBy = "ORDER BY CURRENT_TIMESTAMP";
             }
-            sql.append("_GT_ROW_NUMBER <= " + max);
+            
+            // now insert the order by inside the select
+            Matcher fromMatcher = FROM_PATTERN.matcher(sql);
+            fromMatcher.find();
+            int fromStart = fromMatcher.start(2);
+            sql.insert(fromStart - 1, ", ROW_NUMBER() OVER (" + orderBy + ") AS _GT_ROW_NUMBER ");
+            
+            // and wrap inside a block that selects the portion we want
+            sql.insert(0, "SELECT * FROM (");
+            sql.append(") AS _GT_PAGING_SUBQUERY WHERE ");
+            if(offset > 0) {
+                sql.append("_GT_ROW_NUMBER > " + offset);
+            }
+            if(limit >= 0 && limit < Integer.MAX_VALUE) {
+                int max = limit;
+                if(offset > 0) {
+                    max += offset;
+                    sql.append(" AND ");
+                }
+                sql.append("_GT_ROW_NUMBER <= " + max);
+            }
         }
+    }
+    
+    int getAfterSelectInsertPoint(String sql) {
+        final int selectIndex = sql.toLowerCase().indexOf( "select" );
+        final int selectDistinctIndex = sql.toLowerCase().indexOf( "select distinct" );
+        return selectIndex + (selectDistinctIndex == selectIndex ? 15 : 6);
     }
     
     @Override

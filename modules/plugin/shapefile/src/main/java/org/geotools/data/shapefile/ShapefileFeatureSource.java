@@ -406,24 +406,26 @@ class ShapefileFeatureSource extends ContentFeatureSource {
      */
     protected List<AttributeDescriptor> readAttributes() throws IOException {
         ShapefileSetManager shpManager = getDataStore().shpManager;
-        ShapefileReader shp = shpManager.openShapeReader(new GeometryFactory(), false);
-        DbaseFileReader dbf = shpManager.openDbfReader(false);
-        CoordinateReferenceSystem crs = null;
-
         PrjFileReader prj = null;
-        try {
-            prj = shpManager.openPrjReader();
-
-            if (prj != null) {
-                crs = prj.getCoordinateReferenceSystem();
-            }
-        } catch (FactoryException fe) {
-            crs = null;
-        }
+        ShapefileReader shp = null;
+        DbaseFileReader dbf = null;
+        CoordinateReferenceSystem crs = null;
 
         AttributeTypeBuilder build = new AttributeTypeBuilder();
         List<AttributeDescriptor> attributes = new ArrayList<AttributeDescriptor>();
         try {
+            shp = shpManager.openShapeReader(new GeometryFactory(), false);
+            dbf = shpManager.openDbfReader(false);
+            try {
+                prj = shpManager.openPrjReader();
+
+                if (prj != null) {
+                    crs = prj.getCoordinateReferenceSystem();
+                }
+            } catch (FactoryException fe) {
+                crs = null;
+            }
+            
             Class<?> geometryClass = JTSUtilities.findBestGeometryClass(shp.getHeader()
                     .getShapeType());
             build.setName(Classes.getShortName(geometryClass));

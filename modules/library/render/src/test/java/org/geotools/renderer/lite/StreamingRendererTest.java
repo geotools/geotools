@@ -39,6 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.Query;
+import org.geotools.data.collection.CollectionFeatureSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -62,6 +63,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -371,4 +375,43 @@ public class StreamingRendererTest {
                 screen.height - 1) != 0);
     }
     
+    @Test
+    public void testRepeatedEnvelopeExpansion() throws Exception {
+        final List<Filter> filters = new ArrayList<Filter>();
+        SimpleFeatureSource testSource = new CollectionFeatureSource(createLineCollection()) {
+            @Override
+            public SimpleFeatureCollection getFeatures(Query query) {
+                filters.add(query.getFilter());
+                return super.getFeatures(query);
+            }
+        };
+        
+        StyleBuilder sb = new StyleBuilder();
+        Style style20 = sb.createStyle(sb.createLineSymbolizer(20));
+        Style style10 = sb.createStyle(sb.createLineSymbolizer(10));
+        
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(testSource, style20));
+        mc.addLayer(new FeatureLayer(testSource, style10));
+        
+        StreamingRenderer sr = new StreamingRenderer();
+        sr.setMapContent(mc);
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = bi.createGraphics();
+        sr.paint(graphics, new Rectangle(0, 0, 100, 100), new ReferencedEnvelope(0, 100, 0, 100, DefaultGeographicCRS.WGS84));
+        graphics.dispose();
+        
+        System.out.println(filters);
+        assertEquals(2, filters.size());
+        Filter f1 = filters.get(0);
+        assertTrue(f1 instanceof BBOX);
+        BoundingBox bbox1 = ((BBOX) f1).getBounds();
+        assertEquals(new ReferencedEnvelope(-11, 111, -11, 111, DefaultGeographicCRS.WGS84), bbox1);
+        Filter f2 = filters.get(1);
+        assertTrue(f2 instanceof BBOX);
+        BoundingBox bbox2 = ((BBOX) f2).getBounds();
+        assertEquals(new ReferencedEnvelope(-6, 106, -6, 106, DefaultGeographicCRS.WGS84), bbox2);
+    }
+    
 }
+

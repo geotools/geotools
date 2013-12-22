@@ -1020,7 +1020,7 @@ public class StreamingRenderer implements GTRenderer {
         }
         
         // take care of rendering transforms
-        expandEnvelopeByTransformations(styles, new ReferencedEnvelope(mapArea, mapCRS));
+        mapArea = expandEnvelopeByTransformations(styles, new ReferencedEnvelope(mapArea, mapCRS));
 
         // build a list of attributes used in the rendering
         List<PropertyName> attributes;
@@ -1031,11 +1031,8 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         ReferencedEnvelope envelope = new ReferencedEnvelope(mapArea, mapCRS);
-        // update the current rendering extent
-        mapExtent = envelope;
         // see what attributes we really need by exploring the styles
         // for testing purposes we have a null case -->
-
         try {
             // Then create the geometry filters. We have to create one for
             // each geometric attribute used during the rendering as the

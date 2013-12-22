@@ -1011,7 +1011,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                     " WHERE SEQUENCE_NAME = '" + sequenceName + "'");
             try {
                 if ( rs.next() ) {
-                    String schema = rs.getString("OWNER");
+                    String schema = rs.getString("SEQUENCE_OWNER");
                     return schema + "." + sequenceName;
                 }    
             } finally {

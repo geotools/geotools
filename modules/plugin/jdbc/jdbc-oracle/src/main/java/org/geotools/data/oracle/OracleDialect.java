@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Types;
+import java.sql.Wrapper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -548,6 +549,17 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         }
         
         try {
+            if(cx instanceof Wrapper) {
+                try {
+                    Wrapper w = cx;
+                    if(w.isWrapperFor(OracleConnection.class)) {
+                        return w.unwrap(OracleConnection.class);
+                    }
+                } catch(Throwable t) {
+                    // not a mistake, old DBCP versions will throw an Error here, we need to catch it
+                    LOGGER.log(Level.FINE, "Failed to unwrap connection using java 6 facilities", t);
+                }
+            }
             if(uw == null)
                 uw = DataSourceFinder.getUnWrapper( cx );
             if ( uw != null ) {

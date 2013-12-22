@@ -35,7 +35,7 @@ public abstract class JDBCDataStoreAPITestSetup extends JDBCDelegatingTestSetup 
         super( delegate );
     }
     
-    protected final void setUpData() throws Exception {
+    protected void setUpData() throws Exception {
         //kill all the data
         try {
             dropRoadTable();

@@ -42,6 +42,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Dialect implementation for Microsoft SQL Server.
@@ -54,6 +56,12 @@ public class SQLServerDialect extends BasicSQLDialect {
 
     private static final int DEFAULT_AXIS_MAX = 10000000;
     private static final int DEFAULT_AXIS_MIN = -10000000;
+    
+    /**
+     * Pattern used to match the first FROM element in a SQL query, without matching
+     * also attributes containing FROM inside the name. We require to locate 
+     */
+    static final Pattern FROM_PATTERN = Pattern.compile("(\\s+)(FROM)(\\s)+", Pattern.DOTALL);
     
     /**
      * The direct geometry metadata table
@@ -652,7 +660,9 @@ public class SQLServerDialect extends BasicSQLDialect {
         }
         
         // now insert the order by inside the select
-        int fromStart = sql.indexOf("FROM");
+        Matcher fromMatcher = FROM_PATTERN.matcher(sql);
+        fromMatcher.find();
+        int fromStart = fromMatcher.start(2);
         sql.insert(fromStart - 1, ", ROW_NUMBER() OVER (" + orderBy + ") AS _GT_ROW_NUMBER ");
         
         // and wrap inside a block that selects the portion we want

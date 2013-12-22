@@ -30,6 +30,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -215,7 +216,12 @@ public class QueryTest extends TestCase {
         
         query.setPropertyNames(new String[]{"foo", "bar"});
         assertNotNull(query.toString());
-        
+     
+        query = new Query();
+        query.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        assertTrue(query.toString().contains("[sort by: NATURAL]"));
+        query.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        assertTrue(query.toString().contains("[sort by: REVERSE]"));
     }
     
     

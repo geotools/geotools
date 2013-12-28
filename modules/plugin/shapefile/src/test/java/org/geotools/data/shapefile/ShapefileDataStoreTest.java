@@ -64,6 +64,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -1572,6 +1574,15 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             ds.dispose();
         }
     }
+    
+    @Test
+    public void testFeatureStoreHints() throws Exception {
+        File shpFile = copyShapefiles(STATE_POP);
+        URL url = shpFile.toURI().toURL();
+        ShapefileDataStore ds = new ShapefileDataStore(url);
+        ShapefileFeatureStore store = (ShapefileFeatureStore) ds.getFeatureSource("statepop");
+        assertEquals(store.getSupportedHints(), store.delegate.getSupportedHints());
+    }
 
     private void performSpatialQuery(ShapefileDataStore ds) throws IOException {
         SimpleFeatureSource featureSource = ds.getFeatureSource();
@@ -1615,4 +1626,5 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         char[] array = { hexDigit[(b >> 4) & 0x0f], hexDigit[b & 0x0f] };
         return new String(array);
     }
+    
 }

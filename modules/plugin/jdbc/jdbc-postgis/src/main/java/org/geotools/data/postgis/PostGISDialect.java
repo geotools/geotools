@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -242,6 +243,23 @@ public class PostGISDialect extends BasicSQLDialect {
                 encodeColumnName(prefix, gatt.getLocalName(), sql);
                 sql.append("),'base64')");
             }
+        }
+    }
+    
+    @Override
+    public void encodeGeometryColumnSimplified(GeometryDescriptor gatt, String prefix, int srid,
+            StringBuffer sql, Double distance) {
+        boolean geography = "geography".equals(gatt.getUserData().get(
+                JDBCDataStore.JDBC_NATIVE_TYPENAME));
+
+        if (geography) {
+            sql.append("encode(ST_AsBinary(ST_Simplify(");
+            encodeColumnName(prefix, gatt.getLocalName(), sql);
+            sql.append(", "  + distance + ")),'base64')");
+        } else {
+            sql.append("encode(ST_AsBinary(ST_Simplify(ST_Force_2D(");
+            encodeColumnName(prefix, gatt.getLocalName(), sql);
+            sql.append("), "  + distance + ")),'base64')");
         }
     }
 
@@ -1039,11 +1057,16 @@ public class PostGISDialect extends BasicSQLDialect {
         }
         return pgsqlVersion;
     }
+
     /**
      * Returns true if the PostGIS version is >= 1.5.0
      */
     boolean supportsGeography(Connection cx) throws SQLException {
         return getVersion(cx).compareTo(V_1_5_0) >= 0;
+    }
+    
+    protected void addSupportedHints(Set<Hints.Key> hints) {        
+        hints.add(Hints.GEOMETRY_SIMPLIFICATION);
     }
     
 }

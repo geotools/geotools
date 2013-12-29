@@ -1000,7 +1000,7 @@ public class StreamingRenderer implements GTRenderer {
             Envelope mapArea, CoordinateReferenceSystem mapCRS,
             CoordinateReferenceSystem featCrs, Rectangle screenSize,
             GeometryDescriptor geometryAttribute,
-            AffineTransform worldToScreenTransform)
+            AffineTransform worldToScreenTransform, boolean renderingTransformation)
             throws IllegalFilterException, IOException, FactoryException {
         Query query = new Query(Query.ALL);
         Filter filter = null;
@@ -1125,16 +1125,25 @@ public class StreamingRenderer implements GTRenderer {
                     }
                 }
             
-                // ... if possible we let the datastore do the generalization
-                if(fsHints.contains(Hints.GEOMETRY_SIMPLIFICATION)) {
-                    // good, we don't need to perform in memory generalization, the datastore
-                    // does it all for us
-                    hints.put(Hints.GEOMETRY_SIMPLIFICATION, distance);
-                    inMemoryGeneralization = false;
-                } else if(fsHints.contains(Hints.GEOMETRY_DISTANCE)) {
-                    // in this case the datastore can get us close, but we can still
-                    // perform some in memory generalization
-                    hints.put(Hints.GEOMETRY_DISTANCE, distance);
+                if(renderingTransformation) {
+                    // the RT might need valid geometries, we can at most apply a topology
+                    // preserving generalization
+                    if(fsHints.contains(Hints.GEOMETRY_GENERALIZATION)) {
+                        hints.put(Hints.GEOMETRY_GENERALIZATION, distance);
+                        inMemoryGeneralization = false;
+                    }
+                } else {
+                    // ... if possible we let the datastore do the generalization
+                    if(fsHints.contains(Hints.GEOMETRY_SIMPLIFICATION)) {
+                        // good, we don't need to perform in memory generalization, the datastore
+                        // does it all for us
+                        hints.put(Hints.GEOMETRY_SIMPLIFICATION, distance);
+                        inMemoryGeneralization = false;
+                    } else if(fsHints.contains(Hints.GEOMETRY_DISTANCE)) {
+                        // in this case the datastore can get us close, but we can still
+                        // perform some in memory generalization
+                        hints.put(Hints.GEOMETRY_DISTANCE, distance);
+                    }
                 }
             }
         } catch(Exception e) {
@@ -2011,11 +2020,12 @@ public class StreamingRenderer implements GTRenderer {
                 // ... assume we have to do the generalization, the query layer process will
                 // turn down the flag if we don't 
                 inMemoryGeneralization = true;
+                boolean hasTransformation = transform != null;
                 Query styleQuery = getStyleQuery(featureSource, schema,
                         uniform, mapArea, destinationCrs, sourceCrs, screenSize,
-                        geometryAttribute, at);
+                        geometryAttribute, at, hasTransformation);
                 Query definitionQuery = getDefinitionQuery(currLayer, featureSource, sourceCrs);
-                if(transform != null) {
+                if(hasTransformation) {
                     // prepare the stage for the raster transformations
                     GridGeometry2D gridGeometry = getRasterGridGeometry(destinationCrs, sourceCrs);
                     // vector transformation wise, we have to account for two separate queries,

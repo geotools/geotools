@@ -2490,6 +2490,7 @@ public class StreamingRenderer implements GTRenderer {
             try {
                 boolean clone = isCloningRequired(currLayer, fts_array);
                 RenderableFeature rf = new RenderableFeature(currLayer, clone);
+                rf.setScreenMap(liteFeatureTypeStyle.screenMap);
                 // loop exit condition tested inside try catch
                 // make sure we test hasNext() outside of the try/cath that follows, as that
                 // one is there to make sure a single feature error does not ruin the rendering
@@ -2707,7 +2708,7 @@ public class StreamingRenderer implements GTRenderer {
             NumberRange scaleRange, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, String layerId)
             throws Exception {
-        
+        int paintCommands = 0;
         for (Symbolizer symbolizer : symbolizers) {
 
             // /////////////////////////////////////////////////////////////////
@@ -2734,11 +2735,6 @@ public class StreamingRenderer implements GTRenderer {
                         GridGeometry2D readGG = getRasterGridGeometry(destinationCrs, sourceCRS);
                         coverage = readCoverage(reader, params, readGG);
                         disposeCoverage = true;
-                        
-                       
-                        
-                        
-                        
                     }
                 } catch (IllegalArgumentException e) {
                     LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
@@ -2751,6 +2747,7 @@ public class StreamingRenderer implements GTRenderer {
                 if(coverage != null) {
                     requests.put(new RenderRasterRequest(graphics, coverage, disposeCoverage,
                             (RasterSymbolizer) symbolizer, destinationCrs, at));
+                    paintCommands++;
                 }
             } else {
 
@@ -2767,6 +2764,7 @@ public class StreamingRenderer implements GTRenderer {
                 if (symbolizer instanceof TextSymbolizer && drawMe.content instanceof Feature) {
                     labelCache.put(layerId, (TextSymbolizer) symbolizer, (Feature) drawMe.content,
                             shape, scaleRange);
+                    paintCommands++;
                 } else {
                     Style2D style = styleFactory.createStyle(drawMe.content,
                             symbolizer, scaleRange);
@@ -2781,8 +2779,9 @@ public class StreamingRenderer implements GTRenderer {
                     env.expandBy(clipBuffer);
                     final GeometryClipper clipper = new GeometryClipper(env);
                     Geometry g = clipper.clip(shape.getGeometry(), false);
-                    if(g == null) 
+                    if(g == null) {
                         continue;
+                    }
                     if(g != shape.getGeometry()) {
                         shape = new LiteShape2(g, null, null, false);
                     }
@@ -2793,11 +2792,16 @@ public class StreamingRenderer implements GTRenderer {
                         paintShapeRequest.setLabelObstacle(true);
                     }
                     requests.put(paintShapeRequest);
+                    paintCommands++;
                 }
 
             }
         }
-        requests.put(new FeatureRenderedRequest(drawMe.content));
+        // only emit a feature drawn event if we actually painted something with it, 
+        // if it has been clipped out or eliminated by the screenmap we won't emit the event instead
+        if(paintCommands > 0) {
+            requests.put(new FeatureRenderedRequest(drawMe.content));
+        }
     }
 
     /**

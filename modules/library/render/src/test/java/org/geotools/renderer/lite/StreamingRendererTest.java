@@ -39,6 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.Query;
+import org.geotools.data.collection.CollectionFeatureSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -46,6 +47,7 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.FeatureLayer;
@@ -62,6 +64,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -83,7 +88,7 @@ import com.vividsolutions.jts.geom.Point;
  */
 public class StreamingRendererTest {
 
-    private SimpleFeatureType testFeatureType;
+    private SimpleFeatureType testLineFeatureType;
     private SimpleFeatureType testPointFeatureType;
     private GeometryFactory gf = new GeometryFactory();
     protected int errors;
@@ -95,7 +100,7 @@ public class StreamingRendererTest {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("Lines");
         builder.add("geom", LineString.class, DefaultGeographicCRS.WGS84);
-        testFeatureType = builder.buildFeatureType();
+        testLineFeatureType = builder.buildFeatureType();
         builder =  new SimpleFeatureTypeBuilder();
         builder.setName("Points");
         builder.add("geom", Point.class, DefaultGeographicCRS.WGS84);
@@ -112,7 +117,7 @@ public class StreamingRendererTest {
 
     private SimpleFeature createLine(double x1, double y1, double x2, double y2) {
         Coordinate[] coords = new Coordinate[] { new Coordinate(x1, y1), new Coordinate(x2, y2) };
-        return SimpleFeatureBuilder.build(testFeatureType, new Object[] { gf.createLineString(coords) }, null);
+        return SimpleFeatureBuilder.build(testLineFeatureType, new Object[] { gf.createLineString(coords) }, null);
     }
     
     private SimpleFeature createPoint(double x, double y) {
@@ -135,43 +140,6 @@ public class StreamingRendererTest {
         return sb.createStyle(sb.createPointSymbolizer());
     }
 
-    @Test
-    public void testRenderStuff() throws Exception {
-        // build map context
-        MapContext mapContext = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mapContext.addLayer(createLineCollection(), createLineStyle());
-
-        // build projected envelope to work with (small one around the area of
-        // validity of utm zone 1, which being a Gauss projection is a vertical 
-        // slice parallel to the central meridian, -177°)
-        ReferencedEnvelope reWgs = new ReferencedEnvelope(new Envelope(-180,
-                -170, 20, 40), DefaultGeographicCRS.WGS84);
-        CoordinateReferenceSystem utm1N = CRS.decode("EPSG:32601");
-        System.out.println(CRS.getGeographicBoundingBox(utm1N));
-        ReferencedEnvelope reUtm = reWgs.transform(utm1N, true);
-
-        BufferedImage image = new BufferedImage(200, 200,BufferedImage.TYPE_4BYTE_ABGR);
-
-        // setup the renderer and listen for errors
-        StreamingRenderer sr = new StreamingRenderer();
-        sr.setContext(mapContext);
-        sr.addRenderListener(new RenderListener() {
-            public void featureRenderer(SimpleFeature feature) {
-                features++;
-            }
-            public void errorOccurred(Exception e) {
-                errors++;
-            }
-        });
-        errors = 0;
-        features = 0;
-        sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200),reUtm);
-        
-        // we should get two errors since there are two features that cannot be
-        // projected but the renderer itself should not throw exceptions
-        assertTrue( features > 0 );
-    }
-    
     @Test
     public void testEventAfterDrawing() throws Exception {
         // build map context
@@ -217,9 +185,9 @@ public class StreamingRendererTest {
         features = 0;
         sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200),reUtm);
         
-        // we should get two errors since there are two features that cannot be
+        // we should get errors since there are two features that cannot be
         // projected but the renderer itself should not throw exceptions
-        assertTrue( features > 0 );
+        assertTrue(errors > 0);
     }
 
     @Test
@@ -234,12 +202,12 @@ public class StreamingRendererTest {
         SimpleFeatureCollection fc = createNiceMock(SimpleFeatureCollection.class);
         expect(fc.features()).andReturn(it2);
         expect(fc.size()).andReturn(200);
-        expect(fc.getSchema()).andReturn(testFeatureType).anyTimes();
+        expect(fc.getSchema()).andReturn(testLineFeatureType).anyTimes();
         replay(fc);
         
         SimpleFeatureSource fs = createNiceMock(SimpleFeatureSource.class);
         expect(fs.getFeatures((Query) anyObject())).andReturn(fc);
-        expect(fs.getSchema()).andReturn(testFeatureType).anyTimes();
+        expect(fs.getSchema()).andReturn(testLineFeatureType).anyTimes();
         expect(fs.getSupportedHints()).andReturn(new HashSet()).anyTimes();
         replay(fs);
         
@@ -369,6 +337,59 @@ public class StreamingRendererTest {
                 screen.height / 2) == 0);
         assertTrue("Pixel should be drawn at image max corner ", image.getRGB(screen.width - 1,
                 screen.height - 1) != 0);
+    }
+    
+    @Test
+    public void testScreenMapMemory() {
+        // build a feature source with two zig-zag line occupying the same position
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 0, 1, 1, 2, 0, 3, 1, 4, 0});
+        SimpleFeature zigzag1 = SimpleFeatureBuilder.build(testLineFeatureType, new Object[] { gf.createLineString(cs) }, "zz1");
+        SimpleFeature zigzag2 = SimpleFeatureBuilder.build(testLineFeatureType, new Object[] { gf.createLineString(cs) }, "zz2");
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
+        fc.add(zigzag1);
+        fc.add(zigzag2);
+        SimpleFeatureSource zzSource = new CollectionFeatureSource(fc);
+        
+        // prepare the map
+        MapContent mc = new MapContent();
+        StyleBuilder sb = new StyleBuilder();
+        mc.addLayer(new FeatureLayer(zzSource, sb.createStyle(sb.createLineSymbolizer())));
+        StreamingRenderer sr = new StreamingRenderer();
+        sr.setMapContent(mc);
+
+        // collect rendered features
+        final List<SimpleFeature> features = new ArrayList<SimpleFeature>();
+        RenderListener renderedFeaturesCollector = new RenderListener() {
+            
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                features.add(feature);
+            }
+            
+            @Override
+            public void errorOccurred(Exception e) {
+                // nothing to do
+            }
+        };
+        sr.addRenderListener(renderedFeaturesCollector);
+        BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = bi.createGraphics();
+        // have the lines be smaller than a 1/3 of a pixel
+        sr.paint(graphics, new Rectangle(0, 0, 1, 1), new ReferencedEnvelope(0, 8, 0, 8, DefaultGeographicCRS.WGS84));
+        
+        // check we only rendered one feature
+        assertEquals(1, features.size());
+        assertEquals("zz1", features.get(0).getID());
+        
+        // now have the lines be big enough to be painted instead
+        features.clear();
+        sr.paint(graphics, new Rectangle(0, 0, 1, 1), new ReferencedEnvelope(0, 1, 0, 1, DefaultGeographicCRS.WGS84));
+        assertEquals(2, features.size());
+        assertEquals("zz1", features.get(0).getID());
+        assertEquals("zz2", features.get(1).getID());
+
+        
+        graphics.dispose();
     }
     
 }

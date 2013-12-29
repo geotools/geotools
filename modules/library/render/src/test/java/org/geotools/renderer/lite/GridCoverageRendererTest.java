@@ -212,9 +212,9 @@ public class GridCoverageRendererTest  {
         Graphics2D g2d = (Graphics2D) image.getGraphics();
         renderer.paint(g2d, new Rectangle(0,0,300,300), context.getLayerBounds());
         g2d.dispose();
-        // make sure no errors and one features
+        // make sure no errors and no features
         assertEquals(0, counter.errors);
-        assertEquals(1, counter.features);
+        assertEquals(0, counter.features);
     }
 
 	@Test

@@ -185,10 +185,10 @@ public class OGRDataStore extends ContentDataStore {
             layer = createNewLayer(schema, dataSource, options, mapper);
 
             // check the ability to create fields
-            if (!ogr.LayerCanCreateField(layer)) {
+            /*if (!ogr.LayerCanCreateField(layer)) {
                 throw new DataSourceException(
                         "OGR reports it's not possible to create fields on this layer");
-            }
+            }*/
 
             // create fields
             for (int i = 0; i < schema.getAttributeCount(); i++) {
@@ -237,10 +237,10 @@ public class OGRDataStore extends ContentDataStore {
             layer = createNewLayer(schema, dataSource, options, mapper);
 
             // check the ability to create fields
-            if (!ogr.LayerCanCreateField(layer)) {
+            /*if (!ogr.LayerCanCreateField(layer)) {
                 throw new DataSourceException(
                         "OGR reports it's not possible to create fields on this layer");
-            }
+            }*/
 
             // create fields
             Map<String, String> nameMap = new HashMap<String, String>();

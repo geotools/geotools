@@ -408,6 +408,41 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(features.size(), s.getFeatureSource("junk").getFeatures().size());
     }
     
+    public void testAttributesWritingGeoRSS() throws Exception {
+        if (!ogrSupports("GeoRSS")) {
+            System.out.println("Skipping GeoRSS writing test as OGR was not built to support it");
+
+        }
+        // Write
+        SimpleFeatureCollection features = createFeatureCollection();
+        File tmpFile = getTempFile("test-georss", ".rss");
+        tmpFile.delete();
+        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "GeoRSS", null, ogr);
+        s.createSchema(features, true, new String[]{
+            "FORMAT=RSS",
+            "GEOM_DIALECT=SIMPLE",
+            "USE_EXTENSIONS=YES",
+            "TITLE=f",
+            "DESCRIPTION=f"
+        });
+        assertEquals(1, s.getTypeNames().length);
+        SimpleFeatureCollection fc = s.getFeatureSource("georss").getFeatures();
+        assertEquals(features.size(), fc.size());
+        // Read
+        int c = 0;
+        SimpleFeatureIterator it = fc.features();
+        try {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNotNull(f);
+                assertNotNull(f.getDefaultGeometry());
+                c++;
+            }
+        } finally {
+            it.close();
+        }
+        assertEquals(fc.size(), c);
+    }
 
     public void testAttributeFilters() throws Exception {
         OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);

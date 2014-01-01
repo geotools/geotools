@@ -427,6 +427,116 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(1, fs.getFeatures(f).size());
     }
     
+    public void testAttributesWritingSqlite() throws Exception {
+        if (!ogrSupports("SQLite")) {
+            System.out.println("Skipping SQLite writing test as OGR was not built to support it");
+
+        }
+        SimpleFeatureCollection features = createFeatureCollection();
+        File tmpFile = getTempFile("test-sql", ".sqlite");
+        tmpFile.delete();
+        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "SQLite", null, ogr);
+        s.createSchema(features, true, null);
+        assertEquals(1, s.getTypeNames().length);
+        SimpleFeatureCollection fc = s.getFeatureSource("junk").getFeatures();
+        assertEquals(features.size(), fc.size());
+        // Read
+        int c = 0;
+        SimpleFeatureIterator it = fc.features();
+        try {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNotNull(f);
+                assertNotNull(f.getDefaultGeometry());
+                c++;
+            }
+        } finally {
+            it.close();
+        }
+        assertEquals(fc.size(), c);
+    }
+    
+    public void testAttributesWritingSqliteWithSorting() throws Exception {
+        if (!ogrSupports("SQLite")) {
+            System.out.println("Skipping SQLite writing test as OGR was not built to support it");
+
+        }
+        SimpleFeatureCollection features = createFeatureCollection();
+        File tmpFile = getTempFile("test-sql", ".sqlite");
+        tmpFile.delete();
+        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "SQLite", null, ogr);
+        s.createSchema(features, true, null);
+        assertEquals(1, s.getTypeNames().length);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Query query = new Query();
+        query.setSortBy(new org.opengis.filter.sort.SortBy[] {
+            ff.sort("f", org.opengis.filter.sort.SortOrder.ASCENDING)
+        });
+        SimpleFeatureCollection fc = s.getFeatureSource("junk").getFeatures(query);
+        assertEquals(features.size(), fc.size());
+        // Read
+        int c = 0;
+        SimpleFeatureIterator it = fc.features();
+        try {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNotNull(f);
+                assertNotNull(f.getDefaultGeometry());
+                c++;
+            }
+        } finally {
+            it.close();
+        }
+        assertEquals(fc.size(), c);
+    }
+
+    public void testAttributesWritingSqliteFromUpperCaseAttributes() throws Exception {
+        if(!ogrSupports("SQLite")) {
+            System.out.println("Skipping SQLite writing test as OGR was not built to support it");
+        }
+        SimpleFeatureCollection features = createFeatureCollectionWithUpperCaseAttributes();
+        File tmpFile = getTempFile("test-sqlite", ".db");
+        tmpFile.delete();
+        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "SQLite", null, ogr);
+        s.createSchema(features, true, null);
+        assertEquals(1, s.getTypeNames().length);
+        SimpleFeatureCollection fc = s.getFeatureSource("points").getFeatures();
+        assertEquals(features.size(), fc.size());
+        // Read
+        int c = 0;
+        SimpleFeatureIterator it = fc.features();
+        try {
+            while(it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNotNull(f);
+                assertNotNull(f.getDefaultGeometry());
+                assertNotNull(f.getAttribute("name"));
+                c++;
+            }
+        } finally {
+            it.close();
+        }
+        assertEquals(fc.size(), c);
+    }
+    
+    protected ListFeatureCollection createFeatureCollectionWithUpperCaseAttributes() throws Exception {
+        SimpleFeatureTypeBuilder tbuilder = new SimpleFeatureTypeBuilder();
+        tbuilder.setName("points");
+        tbuilder.add("geom", Point.class);
+        tbuilder.add("NAME", String.class);
+        SimpleFeatureType type = tbuilder.buildFeatureType();
+        SimpleFeatureBuilder fb = new SimpleFeatureBuilder(type);
+        ListFeatureCollection features = new ListFeatureCollection(type);
+        for (int i = 0, ii = 20; i < ii; i++) {
+            features.add(fb.buildFeature(null, new Object[] {
+                    new GeometryFactory().createPoint(new Coordinate(1, -1)),
+                    "Point" + String.valueOf(i)
+            }));
+        }
+        return features;
+    }
+
+    
     public void testGeometryFilters() throws Exception {
         OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);
         FeatureSource fs = s.getFeatureSource(s.getTypeNames()[0]);

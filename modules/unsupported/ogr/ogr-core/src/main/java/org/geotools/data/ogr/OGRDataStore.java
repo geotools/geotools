@@ -270,6 +270,13 @@ public class OGRDataStore extends ContentDataStore {
                 String newName = ogr.FieldGetName(fd);
                 if (newName != null) {
                     String oldName = nameMap.get(newName);
+                    // Check case insensitive because sqlite can convert names to lowercase
+                    if (oldName == null) {
+                        oldName = nameMap.get(newName.toLowerCase());
+                    }
+                    if (oldName == null) {
+                        oldName = nameMap.get(newName.toUpperCase());
+                    }
                     for (int j = 0; j < schema.getAttributeCount(); j++) {
                         if (schema.getDescriptor(j).getLocalName().equals(oldName)) {
                             indexMap.put(j, i);

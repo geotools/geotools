@@ -380,6 +380,129 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         writeFeatures(s, features);
     }
     
+    public void testAttributesWritingGeoJSON() throws Exception {
+        if (!ogrSupports("GeoJSON")) {
+            System.out.println("Skipping GeoJSON writing test as OGR was not built to support it");
+
+        }
+        SimpleFeatureCollection features = createFeatureCollection();
+        File tmpFile = getTempFile("test-geojson", ".json");
+        tmpFile.delete();
+        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "GeoJSON", null, ogr);
+        s.createSchema(features, true, null);
+        assertEquals(1, s.getTypeNames().length);
+        SimpleFeatureCollection fc = s.getFeatureSource("OGRGeoJSON").getFeatures();
+        assertEquals(features.size(), fc.size());
+        // Read
+        int c = 0;
+        SimpleFeatureIterator it = fc.features();
+        try {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNotNull(f);
+                assertNotNull(f.getDefaultGeometry());
+                c++;
+            }
+        } finally {
+            it.close();
+        }
+        assertEquals(fc.size(), c);
+    }
+
+    public void testAttributesWritingCsv() throws Exception {
+        if (!ogrSupports("CSV")) {
+            System.out.println("Skipping CSV writing test as OGR was not built to support it");
+
+        }
+        SimpleFeatureCollection features = createFeatureCollection();
+        File tmpFile = getTempFile("test-csv", ".csv");
+        tmpFile.delete();
+        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "CSV", null, ogr);
+        s.createSchema(features, true, new String[]{
+            "GEOMETRY=AS_WKT"
+        });
+        assertEquals(1, s.getTypeNames().length);
+        String typeName = tmpFile.getName().substring(0, tmpFile.getName().lastIndexOf(".csv"));
+        SimpleFeatureCollection fc = s.getFeatureSource(typeName).getFeatures();
+        assertEquals(features.size(), fc.size());
+        // Read
+        int c = 0;
+        SimpleFeatureIterator it = fc.features();
+        try {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNotNull(f);
+                assertNotNull(f.getDefaultGeometry());
+                c++;
+            }
+        } finally {
+            it.close();
+        }
+        assertEquals(fc.size(), c);
+    }
+
+    public void testAttributesWritingGmt() throws Exception {
+        if (!ogrSupports("GMT")) {
+            System.out.println("Skipping GMT writing test as OGR was not built to support it");
+
+        }
+        SimpleFeatureCollection features = createFeatureCollection();
+        File tmpFile = getTempFile("test-gmt", ".gmt");
+        tmpFile.delete();
+        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "GMT", null, ogr);
+        s.createSchema(features, true, null);
+        assertEquals(1, s.getTypeNames().length);
+        String typeName = tmpFile.getName().substring(0, tmpFile.getName().lastIndexOf(".gmt"));
+        SimpleFeatureCollection fc = s.getFeatureSource(typeName).getFeatures();
+        assertEquals(features.size(), fc.size());
+        // Read
+        int c = 0;
+        SimpleFeatureIterator it = fc.features();
+        try {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNotNull(f);
+                assertNotNull(f.getDefaultGeometry());
+                c++;
+            }
+        } finally {
+            it.close();
+        }
+        assertEquals(fc.size(), c);
+    }
+
+    public void testAttributesWritingGpx() throws Exception {
+        if (!ogrSupports("GPX")) {
+            System.out.println("Skipping GPX writing test as OGR was not built to support it");
+
+        }
+        SimpleFeatureCollection features = createFeatureCollection();
+        File tmpFile = getTempFile("test-gpx", ".gpx");
+        tmpFile.delete();
+        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "GPX", null, ogr);
+        s.createSchema(features, true, new String[]{
+            "GPX_USE_EXTENSIONS=YES"
+        });
+        // waypoints, routes, tracks, route_points, track_points
+        assertEquals(5, s.getTypeNames().length);
+        SimpleFeatureCollection fc = s.getFeatureSource("waypoints").getFeatures();
+        assertEquals(features.size(), fc.size());
+        // Read
+        int c = 0;
+        SimpleFeatureIterator it = fc.features();
+        try {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNotNull(f);
+                assertNotNull(f.getDefaultGeometry());
+                c++;
+            }
+        } finally {
+            it.close();
+        }
+        assertEquals(fc.size(), c);
+    }
+    
     public void testAttributesWritingGML() throws Exception {
         if(!ogrSupports("GML")) {
             System.out.println("Skipping GML writing test as OGR was not built to support it");
@@ -391,7 +514,22 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "GML", null, ogr);
         s.createSchema(features, true, null);
         assertEquals(1, s.getTypeNames().length);
-        assertEquals(features.size(), s.getFeatureSource("junk").getFeatures().size());
+        SimpleFeatureCollection fc = s.getFeatureSource("junk").getFeatures();
+        assertEquals(features.size(), fc.size());
+        // Read
+        int c = 0;
+        SimpleFeatureIterator it = fc.features();
+        try {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNotNull(f);
+                assertNotNull(f.getDefaultGeometry());
+                c++;
+            }
+        } finally {
+            it.close();
+        }
+        assertEquals(fc.size(), c);
     }
     
     public void testAttributesWritingKML() throws Exception {
@@ -405,7 +543,22 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "KML", null, ogr);
         s.createSchema(features, true, null);
         assertEquals(1, s.getTypeNames().length);
-        assertEquals(features.size(), s.getFeatureSource("junk").getFeatures().size());
+        SimpleFeatureCollection fc = s.getFeatureSource("junk").getFeatures();
+        assertEquals(features.size(), fc.size());
+        // Read
+        int c = 0;
+        SimpleFeatureIterator it = fc.features();
+        try {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNotNull(f);
+                assertNotNull(f.getDefaultGeometry());
+                c++;
+            }
+        } finally {
+            it.close();
+        }
+        assertEquals(fc.size(), c);
     }
     
 

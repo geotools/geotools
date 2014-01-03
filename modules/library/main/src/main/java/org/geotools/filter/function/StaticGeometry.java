@@ -467,7 +467,11 @@ import com.vividsolutions.jts.io.WKTReader;
   	//JAVA String functions
      static public String strConcat(String s1,String s2)
      {
-        if (s1 == null || s2 == null) return null;
+        if (s1 == null) {
+            return s2;
+        } else if(s2 == null) {
+            return s1;
+        }
      	return s1+s2;
      }
      

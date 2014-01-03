@@ -193,6 +193,9 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                 Row row;
                 if (dbf != null) {
                     row = dbf.readRow();
+                    if(row.isDeleted()) {
+                        continue;
+                    }
                 } else {
                     row = null;
                 }

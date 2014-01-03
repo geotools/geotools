@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -924,6 +925,28 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         assertEquals(idx + 3, sds.getCount(Query.ALL));
         sds.dispose();
 
+    }
+    
+    @Test
+    public void testDeletedDbf() throws Exception {
+        // this shapefile has 4 records that are marked as deleted only inside the dbf, but 
+        // not in the headers
+        URL u = TestData.url(TestCaseSupport.class, "deleted/archsites.dbf");
+        File shpFile = DataUtilities.urlToFile(u);
+        
+        ShapefileDataStore store = new ShapefileDataStore(DataUtilities.fileToURL(shpFile));
+        ContentFeatureSource fs = store.getFeatureSource();
+        // this one reads the shp header, which still contains trace of all records
+        assertEquals(25, fs.getCount(Query.ALL));
+        // now read manually and check we skip the records with the dbf entry marked as deleted
+        SimpleFeatureIterator fi = fs.getFeatures().features();
+        int count = 0;
+        while(fi.hasNext()) {
+            fi.next();
+            count++;
+        }
+        fi.close();
+        assertEquals(21, count);
     }
 
     /**

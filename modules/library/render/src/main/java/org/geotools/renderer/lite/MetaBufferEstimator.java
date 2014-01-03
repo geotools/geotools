@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.geotools.filter.ConstantExpression;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
 import org.geotools.renderer.style.ExpressionExtractor;
@@ -180,7 +181,8 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     }
     
     protected boolean isNull(Expression exp) {
-        return exp == null || exp instanceof NilExpression; 
+        return exp == null || exp instanceof NilExpression 
+                || (exp instanceof ConstantExpression && ((ConstantExpression) exp).getValue() == null); 
     }
 
     /**

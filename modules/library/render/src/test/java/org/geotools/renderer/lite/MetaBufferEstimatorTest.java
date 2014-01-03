@@ -3,8 +3,10 @@ package org.geotools.renderer.lite;
 import static org.junit.Assert.*;
 
 import org.geotools.styling.Graphic;
+import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
@@ -141,6 +143,18 @@ public class MetaBufferEstimatorTest {
         style.accept(estimator);
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(26, estimator.getBuffer());
+    }
+    
+    @Test
+    public void testNullStroke() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        LineSymbolizer ls = sb.createLineSymbolizer(Stroke.NULL);
+        Style style = sb.createStyle(ls);
+        
+        MetaBufferEstimator estimator = new MetaBufferEstimator();
+        style.accept(estimator);
+        assertTrue(estimator.isEstimateAccurate());
+        assertEquals(0, estimator.getBuffer());
     }
 
 }

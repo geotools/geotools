@@ -130,12 +130,14 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
     public void visit(org.opengis.feature.Feature feature) {
     	Object value = expr.evaluate(feature);
 
-        if (strategy == null) {
-            Class type = value.getClass();
-            strategy = createStrategy(type);
-        }
+        if (value != null) {
+            if (strategy == null) {
+                Class type = value.getClass();
+                strategy = createStrategy(type);
+            }
 
-        strategy.add(value);
+            strategy.add(value);
+        }
     }
 
     public Expression getExpression() {

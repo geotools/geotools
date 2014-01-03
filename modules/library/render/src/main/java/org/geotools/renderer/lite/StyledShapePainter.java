@@ -83,6 +83,7 @@ public final class StyledShapePainter {
 
     /** The logger for the rendering module. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(StyledShapePainter.class.getName());
+    static boolean ROUND_ICON_COORDS = Boolean.parseBoolean(System.getProperty("org.geotools.renderer.lite.roundIconCoords", "true"));
 
     /**
      * the label cache, used to populate the label cache with reserved areas for labelling 
@@ -595,9 +596,14 @@ public final class StyledShapePainter {
         }
 
         AffineTransform markAT = new AffineTransform();
-        markAT.translate(x, y);
-        markAT.rotate(rotation);
-        markAT.translate(-image.getWidth() / 2.0, -image.getHeight() / 2.0);
+        if(ROUND_ICON_COORDS && rotation == 0) {
+            // this results in sharper images to be painted
+            markAT.translate(Math.round(x - image.getWidth() / 2), Math.round(y - image.getHeight() / 2));
+        } else {
+            markAT.translate(x, y);
+            markAT.rotate(rotation);
+            markAT.translate(-image.getWidth() / 2.0, -image.getHeight() / 2.0);
+        }
         if (isLabelObstacle) {
             int w = Math.max((int) (image.getWidth() * 1), 1);
             int h = Math.max((int) (image.getHeight() * 1), 1);

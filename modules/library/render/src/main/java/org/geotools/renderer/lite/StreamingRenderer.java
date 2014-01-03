@@ -1016,6 +1016,14 @@ public class StreamingRenderer implements GTRenderer {
                         metaBuffer);
                 LOGGER.fine("Expanding rendering area by " + metaBuffer 
                         + " pixels to consider stroke width");
+                
+                // expand the screenmaps by the meta buffer, otherwise we'll throw away geomtries
+                // that sit outside of the map, but whose symbolizer may contribute to it
+                for (LiteFeatureTypeStyle lfts : styles) {
+                    if(lfts.screenMap != null) {
+                        lfts.screenMap = new ScreenMap(lfts.screenMap, metaBuffer);
+                    }
+                }
             }
         }
         

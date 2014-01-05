@@ -51,6 +51,7 @@ import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -125,11 +126,11 @@ public final class LabelCacheImpl implements LabelCache {
      */
     public static double MIN_CURVED_DELTA = Math.PI / 60;
 
-    /** Map<label, LabelCacheItem> the label cache */
-    protected Map<String, LabelCacheItem> labelCache = new HashMap<String, LabelCacheItem>();
+    /** Used to locate grouped labels quickly */
+    protected Map<LabelCacheItem, LabelCacheItem> groupedLabelsLookup = new HashMap<LabelCacheItem, LabelCacheItem>();
 
-    /** non-grouped labels get thrown in here* */
-    protected ArrayList<LabelCacheItem> labelCacheNonGrouped = new ArrayList<LabelCacheItem>();
+    /** labels get thrown in here, in insertion order */
+    protected ArrayList<LabelCacheItem> labelCache = new ArrayList<LabelCacheItem>();
 
     /** List of reserved areas of the screen for which labels should fear to tread */
     private List<Rectangle2D> reserved = new ArrayList<Rectangle2D>();
@@ -195,7 +196,7 @@ public final class LabelCacheImpl implements LabelCache {
         }
         needsOrdering = true;
         labelCache.clear();
-        labelCacheNonGrouped.clear();
+        groupedLabelsLookup.clear();
         enabledLayers.clear();
     }
 
@@ -206,15 +207,12 @@ public final class LabelCacheImpl implements LabelCache {
         }
         needsOrdering = true;
 
-        for (Iterator<LabelCacheItem> iter = labelCache.values().iterator(); iter.hasNext();) {
+        for (Iterator<LabelCacheItem> iter = labelCache.iterator(); iter.hasNext();) {
             LabelCacheItem item = iter.next();
-            if (item.getLayerIds().contains(layerId))
+            if (item.getLayerIds().contains(layerId)) {
                 iter.remove();
-        }
-        for (Iterator<LabelCacheItem> iter = labelCacheNonGrouped.iterator(); iter.hasNext();) {
-            LabelCacheItem item = iter.next();
-            if (item.getLayerIds().contains(layerId))
-                iter.remove();
+                groupedLabelsLookup.remove(item);
+            }
         }
 
         enabledLayers.remove(layerId);
@@ -279,42 +277,26 @@ public final class LabelCacheImpl implements LabelCache {
             }
             double priorityValue = getPriority(symbolizer, feature);
             boolean group = voParser.getBooleanOption(symbolizer, TextSymbolizer.GROUP_KEY, false);
+            LabelCacheItem item = buildLabelCacheItem(layerId, symbolizer, feature, shape,
+                    scaleRange, label, priorityValue);
             if (!(group)) {
-                LabelCacheItem item = buildLabelCacheItem(layerId, symbolizer, feature, shape,
-                        scaleRange, label, priorityValue);
-                labelCacheNonGrouped.add(item);
+                labelCache.add(item);
             } else { // / --------- grouping case ----------------
-
-                // equals and hashcode of LabelCacheItem is the hashcode of
-                // label and the
-                // equals of the 2 labels so label can be used to find the
-                // entry.
-
-                // DJB: this is where the "grouping" of 'same label' features
-                // occurs
-                LabelCacheItem lci = (LabelCacheItem) labelCache.get(label);
-                if (lci == null) // nothing in there yet!
-                {
-                    lci = buildLabelCacheItem(layerId, symbolizer, feature, shape, scaleRange,
-                            label, priorityValue);
-                    labelCache.put(label, lci);
+                // LabelCacheItem equals and hashcode work based on the label equality and the
+                // TextSymbolizer identity
+                LabelCacheItem groupItem = groupedLabelsLookup.get(item);
+                if(groupItem == null) {
+                    labelCache.add(item);
+                    groupedLabelsLookup.put(item, item);
                 } else {
-                    // add only in the non-default case or non-literal. Ie.
+                    // add to the priority only in the non-default case or non-literal. Ie.
                     // area()
-                    if ((symbolizer.getPriority() != null)
-                            && (!(symbolizer.getPriority() instanceof Literal)))
-                        lci.setPriority(lci.getPriority() + priorityValue); // djb--
-                    // changed
-                    // because
-                    // you
-                    // do
-                    // not
-                    // always
-                    // want
-                    // to
-                    // add!
+                    Expression priority = symbolizer.getPriority();
+                    if ((priority != null) && (!(priority instanceof Literal))) {
+                        groupItem.setPriority(groupItem.getPriority() + priorityValue);
+                    }
 
-                    lci.getGeoms().add(shape.getGeometry());
+                    groupItem.getGeoms().add(shape.getGeometry());
                 }
             }
         } catch (Exception e) {
@@ -332,7 +314,7 @@ public final class LabelCacheImpl implements LabelCache {
         TextStyle2D textStyle = (TextStyle2D) styleFactory.createStyle(feature, symbolizer,
                 scaleRange);
 
-        LabelCacheItem item = new LabelCacheItem(layerId, textStyle, shape, label);
+        LabelCacheItem item = new LabelCacheItem(layerId, textStyle, shape, label, symbolizer);
         item.setPriority(priorityValue);
         item.setSpaceAround(voParser.getIntOption(symbolizer, SPACE_AROUND_KEY, DEFAULT_SPACE_AROUND));
         item.setMaxDisplacement(voParser.getIntOption(symbolizer, MAX_DISPLACEMENT_KEY,
@@ -385,14 +367,10 @@ public final class LabelCacheImpl implements LabelCache {
      * 
      * @return
      */
-    private List<LabelCacheItem> getActiveLabels() {
+    public List<LabelCacheItem> getActiveLabels() {
         // fill a list with the active labels
         List<LabelCacheItem> al = new ArrayList<LabelCacheItem>();
-        for (LabelCacheItem item : labelCache.values()) {
-            if (isActive(item.getLayerIds()))
-                al.add(item);
-        }
-        for (LabelCacheItem item : labelCacheNonGrouped) {
+        for (LabelCacheItem item : labelCache) {
             if (isActive(item.getLayerIds()))
                 al.add(item);
         }

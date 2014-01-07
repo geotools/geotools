@@ -60,29 +60,34 @@ public class MultiLevelROI {
         ROIGeometry roiGeometry = roiCache.get(at);
         if (roiGeometry == null) {
             Geometry rescaled;
+            AffineTransformation geometryAT = new AffineTransformation(at.getScaleX(), at.getShearX(), at
+                    .getTranslateX(), at.getShearY(), at.getScaleY(), at.getTranslateY());
             if (inset > 0) {
-                double scale = Math.min(at.getScaleX(), at.getScaleY());
+                double scale = Math.min(Math.abs(at.getScaleX()), Math.abs(at.getScaleY()));
                 double rescaledInset = scale * inset;
                 if (rescaledInset < 1) {
                     // just apply a 1 pixel inset on the rescaled geometry 
                     Geometry cloned = (Geometry) originalFootprint.clone();
-                    cloned.apply(new AffineTransformation(at.getScaleX(), at.getShearX(), at
-                            .getTranslateX(), at.getShearY(), at.getScaleY(), at.getTranslateY()));
-                    rescaled = insetPolicy.applyInset(cloned, granuleBounds, 1.5);
+                    cloned.apply(geometryAT);
+                    Geometry bounds = (Geometry) granuleBounds.clone();
+                    bounds.apply(geometryAT);
+                    rescaled = insetPolicy.applyInset(cloned, bounds, 1.5);
                 } else {
                     // use the original footprint
                     rescaled = (Geometry) insetFootprint.clone();
-                    rescaled.apply(new AffineTransformation(at.getScaleX(), at.getShearX(), at
-                            .getTranslateX(), at.getShearY(), at.getScaleY(), at.getTranslateY()));
+                    rescaled.apply(geometryAT);
                 }
             } else {
                 rescaled = (Geometry) originalFootprint.clone();
-                rescaled.apply(new AffineTransformation(at.getScaleX(), at.getShearX(), at
-                        .getTranslateX(), at.getShearY(), at.getScaleY(), at.getTranslateY()));
+                rescaled.apply(geometryAT);
             }
 
-            roiGeometry = new ROIGeometry(rescaled);
-            roiCache.put(at, roiGeometry);
+            if(!rescaled.isEmpty()) {
+                roiGeometry = new ROIGeometry(rescaled);
+                roiCache.put(at, roiGeometry);
+            } else {
+                return null;
+            }
         }
 
         return roiGeometry;

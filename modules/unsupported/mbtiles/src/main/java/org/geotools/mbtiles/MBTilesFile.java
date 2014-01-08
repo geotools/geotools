@@ -130,7 +130,7 @@ public class MBTilesFile {
      * Creates a new empty MbTilesFile, generating a new file.
      */
     public MBTilesFile() throws IOException {
-        this(File.createTempFile("mbtiles", "db"));
+        this(File.createTempFile("temp", ".mbtiles"));
     }
 
     /**
@@ -149,7 +149,7 @@ public class MBTilesFile {
     public MBTilesFile(File file, String user, String passwd) throws IOException {
         this.file = file;
 
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<String, Object> ();
         if (user != null) {
             params.put(MBTilesDataStoreFactory.USER.key, user);
         }
@@ -394,7 +394,22 @@ public class MBTilesFile {
     public TileIterator tiles() throws SQLException {
         Connection cx = connPool.getConnection();
         Statement st = cx.createStatement();
-        return new TileIterator(st.executeQuery("SELECT * FROM tiles;"));
+        return new TileIterator(st.executeQuery("SELECT * FROM " + TABLE_TILES + ";"));
+    }
+    
+    public TileIterator tiles(long zoomLevel) throws SQLException {
+        Connection cx = connPool.getConnection();
+        PreparedStatement ps = prepare(
+                cx, format("SELECT * FROM %s WHERE zoom_level=?", TABLE_TILES)).set(zoomLevel).statement();
+        return new TileIterator(ps.executeQuery());
+    }
+    
+    public TileIterator tiles(long zoomLevel, long leftTile, long bottomTile, long rightTile, long topTile) throws SQLException {
+        Connection cx = connPool.getConnection();
+        PreparedStatement ps = prepare(
+                cx, format("SELECT * FROM %s WHERE zoom_level=? AND tile_column >= ? AND tile_row >= ? AND tile_column <= ? AND tile_row <= ?", TABLE_TILES))
+                .set(zoomLevel).set(leftTile).set(bottomTile).set(rightTile).set(topTile).statement();
+        return new TileIterator(ps.executeQuery());
     }
 
     public int numberOfTiles() throws SQLException {
@@ -402,11 +417,135 @@ public class MBTilesFile {
         Connection cx = connPool.getConnection();
         try {
             Statement st = cx.createStatement();
-            ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM tiles;");
+            ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM " + TABLE_TILES + ";");
             rs.next();
             size = rs.getInt(1);
             rs.close();
             st.close();
+        } finally {
+            cx.close();
+        }
+        return size;
+    }
+    
+    public int numberOfTiles(long zoomLevel) throws SQLException {
+        int size;
+        Connection cx = connPool.getConnection();
+        try {
+            PreparedStatement ps = prepare(
+                    cx, format("SELECT COUNT(*) FROM %s WHERE zoom_level=?", TABLE_TILES)).set(zoomLevel).statement();
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            size = rs.getInt(1);
+            rs.close();
+            ps.close();
+        } finally {
+            cx.close();
+        }
+        return size;
+    }
+              
+    public long closestZoom(long zoomLevel) throws SQLException {
+        long zoom = 0;
+        Connection cx = connPool.getConnection();
+        try {
+            PreparedStatement ps = prepare(
+                    cx, format("SELECT zoom_level FROM %s ORDER BY abs(zoom_level - ?)", TABLE_TILES)).set(zoomLevel).statement();
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                zoom = rs.getLong(1);
+            }
+            rs.close();
+            ps.close();
+        } finally {
+            cx.close();
+        }
+        return zoom;
+    }
+        
+    public long maxZoom() throws SQLException {
+        long zoom = 0;
+        Connection cx = connPool.getConnection();
+        try {
+            Statement st = cx.createStatement();
+            ResultSet rs = st.executeQuery("SELECT MAX(zoom_level) FROM " + TABLE_TILES);
+            if (rs.next()) {
+                zoom = rs.getLong(1);
+            }
+            rs.close();
+            st.close();
+        } finally {
+            cx.close();
+        }
+        return zoom;
+    }
+    
+    public long minColumn(long zoomLevel) throws SQLException {
+        long size = 0;
+        Connection cx = connPool.getConnection();
+        try {
+            PreparedStatement ps = prepare(
+                    cx, format("SELECT MIN(tile_column) FROM %s WHERE zoom_level=?", TABLE_TILES)).set(zoomLevel).statement();
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                size = rs.getLong(1);
+            }
+            rs.close();
+            ps.close();
+        } finally {
+            cx.close();
+        }
+        return size;
+    }
+    
+    public long maxColumn(long zoomLevel) throws SQLException {
+        long size = Long.MAX_VALUE;
+        Connection cx = connPool.getConnection();
+        try {
+            PreparedStatement ps = prepare(
+                    cx, format("SELECT MAX(tile_column) FROM %s WHERE zoom_level=?", TABLE_TILES)).set(zoomLevel).statement();
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                size = rs.getLong(1);
+            }
+            rs.close();
+            ps.close();
+        } finally {
+            cx.close();
+        }
+        return size;
+    }
+    
+    public long minRow(long zoomLevel) throws SQLException {
+        long size = 0;
+        Connection cx = connPool.getConnection();
+        try {
+            PreparedStatement ps = prepare(
+                    cx, format("SELECT MIN(tile_row) FROM %s WHERE zoom_level=?", TABLE_TILES)).set(zoomLevel).statement();
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            if (rs.next()) {
+                size = rs.getLong(1);
+            }
+            rs.close();
+            ps.close();
+        } finally {
+            cx.close();
+        }
+        return size;
+    }
+    
+    public long maxRow(long zoomLevel) throws SQLException {
+        long size = Long.MAX_VALUE;
+        Connection cx = connPool.getConnection();
+        try {
+            PreparedStatement ps = prepare(
+                    cx, format("SELECT MAX(tile_row) FROM %s WHERE zoom_level=?", TABLE_TILES)).set(zoomLevel).statement();
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            size = rs.getLong(1);
+            rs.close();
+            ps.close();
         } finally {
             cx.close();
         }

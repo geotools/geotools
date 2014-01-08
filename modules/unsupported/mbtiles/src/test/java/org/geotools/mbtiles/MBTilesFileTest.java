@@ -68,7 +68,15 @@ public class MBTilesFileTest {
         assertNotNull(it.next());
         assertFalse(it.hasNext());
         
-        file.close();        
+        assertEquals(2, file.maxZoom());
+        assertEquals(2, file.closestZoom(5));
+        assertEquals(1, file.closestZoom(1));
+        assertEquals(0, file.minColumn(1));
+        assertEquals(0, file.maxColumn(2));
+        assertEquals(0, file.minRow(1));
+        assertEquals(1, file.maxRow(2));
+        
+        file.close();   
     }
     
     @Test

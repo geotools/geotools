@@ -282,18 +282,29 @@ public final class JDBCDataStore extends ContentDataStore
     }
 
     /**
-     * Adds a virtual table to the data store. If a virtual table with the same name was registered this
-     * method will replace it with the new one.
-     *      * @param vt
+     * Adds a virtual table to the data store. If a virtual table with the same name was registered
+     * this method will replace it with the new one. * @param vt
+     * 
      * @throws IOException If the view definition is not valid
+     * @deprecated Use createVirtualTable instead
      */
     public void addVirtualTable(VirtualTable vtable) throws IOException {
+        createVirtualTable(vtable);
+    }
+
+    /**
+     * Adds a virtual table to the data store. If a virtual table with the same name was registered
+     * this method will replace it with the new one. * @param vt
+     * 
+     * @throws IOException If the view definition is not valid
+     */
+    public void createVirtualTable(VirtualTable vtable) throws IOException {
         try {
             virtualTables.put(vtable.getName(), new VirtualTable(vtable));
             // the new vtable might be overriding a previous definition
             entries.remove(new NameImpl(namespaceURI, vtable.getName()));
             getSchema(vtable.getName());
-        } catch(IOException e) {
+        } catch (IOException e) {
             virtualTables.remove(vtable.getName());
             throw e;
         }
@@ -309,18 +320,29 @@ public final class JDBCDataStore extends ContentDataStore
     
     /**
      * Removes and returns the specified virtual table
+     * 
+     * @param name
+     * @return
+     * @deprecated Use dropVirtualTable instead
+     */
+    public VirtualTable removeVirtualTable(String name) {
+        return dropVirtualTable(name);
+    }
+
+    /**
+     * Removes and returns the specified virtual table
+     * 
      * @param name
      * @return
      */
-    public VirtualTable removeVirtualTable(String name) {
+    public VirtualTable dropVirtualTable(String name) {
         // the new vtable might be overriding a previous definition
-        VirtualTable vt =  virtualTables.remove(name);
-        if(vt != null) {
+        VirtualTable vt = virtualTables.remove(name);
+        if (vt != null) {
             entries.remove(new NameImpl(namespaceURI, name));
         }
         return vt;
     }
-    
 
     /**
      * Returns a live, immutable view of the virtual tables map (from name to definition)  
@@ -4546,5 +4568,66 @@ public final class JDBCDataStore extends ContentDataStore
 
         return tx;
     }
+    
+    /**
+     * Creates a new database index
+     * 
+     * @param index
+     * @throws IOException
+     */
+    public void createIndex(Index index) throws IOException {
+        SimpleFeatureType schema = getSchema(index.typeName);
+        Connection cx = null;
+        try {
+            cx = getConnection(Transaction.AUTO_COMMIT);
+            dialect.createIndex(cx, schema, databaseSchema, index);
+        } catch (SQLException e) {
+            throw new IOException("Failed to create index", e);
+        } finally {
+            closeSafe(cx);
+        }
+
+    }
+
+    /**
+     * Creates a new database index
+     * 
+     * @param index
+     * @throws IOException
+     */
+    public void dropIndex(String typeName, String indexName) throws IOException {
+        SimpleFeatureType schema = getSchema(typeName);
+
+        Connection cx = null;
+        try {
+            cx = getConnection(Transaction.AUTO_COMMIT);
+            dialect.dropIndex(cx, schema, databaseSchema, indexName);
+        } catch (SQLException e) {
+            throw new IOException("Failed to create index", e);
+        } finally {
+            closeSafe(cx);
+        }
+    }
+    
+    /**
+     * Lists all indexes associated to the given feature type
+     * @param typeName Name of the type for which indexes are searched. It's mandatory 
+     * @return 
+     */
+    public List<Index> getIndexes(String typeName) throws IOException {
+        // just to ensure we have the type name specified
+        SimpleFeatureType schema = getSchema(typeName);
+        
+        Connection cx = null;
+        try {
+            cx = getConnection(Transaction.AUTO_COMMIT);
+            return dialect.getIndexes(cx, databaseSchema, typeName);
+        } catch (SQLException e) {
+            throw new IOException("Failed to create index", e);
+        } finally {
+            closeSafe(cx);
+        }
+    }
+
     
 }

@@ -23,9 +23,12 @@ import java.sql.DatabaseMetaData;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1213,5 +1216,121 @@ public abstract class SQLDialect {
      */
     public boolean isAutoCommitQuery() {
         return false;
+    }
+    
+    /**
+     * Performs the class "create [unique] indexName on tableName(att1, att2, ..., attN)" call.
+     * 
+     * Subclasses can override to handle special indexes (like spatial ones) and/or the hints
+     * 
+     * @param schema
+     * @param index
+     * @throws SQLException
+     */
+    public void createIndex(Connection cx, SimpleFeatureType schema, String databaseSchema,
+            Index index) throws SQLException {
+        StringBuffer sql = new StringBuffer();
+        String escape = getNameEscape();
+        sql.append("CREATE ");
+        if (index.isUnique()) {
+            sql.append("UNIQUE ");
+        }
+        sql.append("INDEX ");
+        sql.append(escape).append(index.getIndexName()).append(escape);
+        sql.append(" ON ");
+        if (databaseSchema != null) {
+            encodeSchemaName(databaseSchema, sql);
+            sql.append(".");
+        }
+        sql.append(escape).append(index.getTypeName()).append(escape).append("(");
+        for (String attribute : index.getAttributes()) {
+            sql.append(escape).append(attribute).append(escape).append(", ");
+        }
+        sql.setLength(sql.length() - 2);
+        sql.append(")");
+
+        Statement st = null;
+        try {
+            st = cx.createStatement();
+            st.execute(sql.toString());
+            if(!cx.getAutoCommit()) {
+                cx.commit();
+            }
+        } finally {
+            dataStore.closeSafe(cx);
+        }
+    }
+
+    /**
+     * Drop the index. Subclasses can override to handle extra syntax or db specific situations
+     * 
+     * @param cx
+     * @param schema
+     * @param databaseSchema
+     * @param indexName
+     * @throws SQLException
+     */
+    public void dropIndex(Connection cx, SimpleFeatureType schema, String databaseSchema,
+            String indexName) throws SQLException {
+        StringBuffer sql = new StringBuffer();
+        String escape = getNameEscape();
+        sql.append("DROP INDEX ");
+        if (databaseSchema != null) {
+            encodeSchemaName(databaseSchema, sql);
+            sql.append(".");
+        }
+        sql.append(escape).append(indexName).append(escape);
+
+        Statement st = null;
+        try {
+            st = cx.createStatement();
+            st.execute(sql.toString());
+            if(!cx.getAutoCommit()) {
+                cx.commit();
+            }
+        } finally {
+            dataStore.closeSafe(cx);
+        }
+    }
+
+    /**
+     * Returns the list of indexes for a certain table. Subclasses can override to add support for
+     * db specific hints
+     * 
+     * @param cx
+     * @param databaseSchema
+     * @param typeName
+     * @return
+     * @throws SQLException
+     */
+    public List<Index> getIndexes(Connection cx, String databaseSchema, String typeName)
+            throws SQLException {
+        DatabaseMetaData md = cx.getMetaData();
+        ResultSet indexInfo = null;
+        try {
+            indexInfo = md.getIndexInfo(cx.getCatalog(), databaseSchema, typeName, false, true);
+
+            Map<String, Index> indexes = new LinkedHashMap<String, Index>();
+            while (indexInfo.next()) {
+                short type = indexInfo.getShort("TYPE");
+                if(type != DatabaseMetaData.tableIndexStatistic) {
+                    String indexName = indexInfo.getString("INDEX_NAME");
+                    String columnName = indexInfo.getString("COLUMN_NAME");
+                    Index index = indexes.get(indexName);
+                    if (index != null) {
+                        index.attributes.add(columnName);
+                    } else {
+                        boolean unique = !indexInfo.getBoolean("NON_UNIQUE");
+                        index = new Index(typeName, indexName, unique, columnName);
+                        indexes.put(indexName, index);
+                    }
+                }
+            }
+
+            return new ArrayList<Index>(indexes.values());
+        } finally {
+            dataStore.closeSafe(indexInfo);
+        }
+
     }
 }

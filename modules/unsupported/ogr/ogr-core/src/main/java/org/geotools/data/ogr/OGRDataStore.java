@@ -185,10 +185,16 @@ public class OGRDataStore extends ContentDataStore {
             layer = createNewLayer(schema, dataSource, options, mapper);
 
             // check the ability to create fields
-            /*if (!ogr.LayerCanCreateField(layer)) {
+            Object driver = ogr.DataSourceGetDriver(dataSource);
+            String driverName = ogr.DriverGetName(driver);
+            ogr.DriverRelease(driver);
+            if (!driverName.equalsIgnoreCase("georss") &&
+                !driverName.equalsIgnoreCase("gpx") &&
+                !driverName.equalsIgnoreCase("sosi") &&
+                !ogr.LayerCanCreateField(layer)) {
                 throw new DataSourceException(
                         "OGR reports it's not possible to create fields on this layer");
-            }*/
+            }
 
             // create fields
             for (int i = 0; i < schema.getAttributeCount(); i++) {
@@ -237,10 +243,16 @@ public class OGRDataStore extends ContentDataStore {
             layer = createNewLayer(schema, dataSource, options, mapper);
 
             // check the ability to create fields
-            /*if (!ogr.LayerCanCreateField(layer)) {
+            Object driver = ogr.DataSourceGetDriver(dataSource);
+            String driverName = ogr.DriverGetName(driver);
+            ogr.DriverRelease(driver);
+            if (!driverName.equalsIgnoreCase("georss") &&
+                !driverName.equalsIgnoreCase("gpx") &&
+                !driverName.equalsIgnoreCase("sosi") &&
+                !ogr.LayerCanCreateField(layer)) {
                 throw new DataSourceException(
                         "OGR reports it's not possible to create fields on this layer");
-            }*/
+            }
 
             // create fields
             Map<String, String> nameMap = new HashMap<String, String>();

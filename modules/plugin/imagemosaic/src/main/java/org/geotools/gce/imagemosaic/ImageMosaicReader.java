@@ -51,6 +51,7 @@ import org.geotools.coverage.grid.io.DefaultHarvestedSource;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.HarvestedSource;
+import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStoreFactorySpi;
@@ -59,6 +60,7 @@ import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicWalker.ExceptionEvent;
 import org.geotools.gce.imagemosaic.ImageMosaicWalker.FileProcessingEvent;
 import org.geotools.gce.imagemosaic.ImageMosaicWalker.ProcessingEvent;
+import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
@@ -639,6 +641,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 		return super.numOverviews;
 	}
 	
+	
 
     /** Package scope grid to world transformation accessor */
     MathTransform getRaster2Model() {
@@ -742,6 +745,41 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 
     public boolean isParameterSupported(Identifier name) {
         return isParameterSupported(UNSPECIFIED, name);
+    }
+    
+    @Override
+    public int getNumOverviews(String coverageName) {
+        coverageName = checkUnspecifiedCoverage(coverageName);
+        RasterManager manager =  getRasterManager(coverageName);
+        return manager.overviewsController.getNumberOfOverviews();
+    }
+
+    @Override
+    public int getNumOverviews() {
+        return getNumOverviews(UNSPECIFIED);
+    }
+
+    @Override
+    public double[] getReadingResolutions(OverviewPolicy policy,
+            double[] requestedResolution) {
+        return getReadingResolutions(UNSPECIFIED, policy, requestedResolution);
+    }
+
+    @Override
+    public double[] getReadingResolutions(String coverageName, OverviewPolicy policy,
+            double[] requestedResolution) {
+        coverageName = checkUnspecifiedCoverage(coverageName);
+        RasterManager manager =  getRasterManager(coverageName);
+        final int numOverviews = getNumOverviews(coverageName);
+        OverviewsController overviewsController = manager.overviewsController; 
+        OverviewLevel level = null;
+        if (numOverviews > 0) {
+            int imageIdx = overviewsController.pickOverviewLevel(policy, requestedResolution);
+            level = overviewsController.getLevel(imageIdx);
+        } else {
+            level = overviewsController.getLevel(0);
+        }
+        return new double[]{level.resolutionX, level.resolutionY};
     }
 
         /**

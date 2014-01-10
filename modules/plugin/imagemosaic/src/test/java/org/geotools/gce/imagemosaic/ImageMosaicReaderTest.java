@@ -281,7 +281,24 @@ public class ImageMosaicReaderTest extends Assert{
 		
 		// Test the output coverage
 		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,tileSize}, "overviews test");
-	}	
+	}
+	
+    /**
+     * 
+     * @throws IOException
+     * @throws MismatchedDimensionException
+     * @throws FactoryException
+     */
+    @Test
+    // @Ignore
+    public void readingResolutions() throws IOException, MismatchedDimensionException,
+            FactoryException {
+        final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
+        final ImageMosaicReader reader = TestUtils.getReader(overviewURL, format);
+        double[] result = reader.getReadingResolutions(OverviewPolicy.QUALITY, new double[] { 32, 32 });
+        assertEquals(16.0714285714285, result[0], 1E-6);
+        assertEquals(16.0427807486631, result[1], 1E-6);
+    }
 	
 	@Test
 	    //@Ignore

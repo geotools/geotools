@@ -33,6 +33,7 @@ final  class OverviewsController {
 
     final ArrayList<OverviewLevel> resolutionsLevels = new ArrayList<OverviewLevel>();
 
+    private int numberOfOverviews;
     /**
      * Constructor.
      * 
@@ -51,6 +52,7 @@ final  class OverviewsController {
         // -the aspect ratio for the overviews is constant
         // -the provided resolutions are taken directly from the grid
         resolutionsLevels.add(new OverviewLevel(1, highestRes[0], highestRes[1], 0));
+        this.numberOfOverviews = numberOfOverviews;
         if (numberOfOverviews > 0) {
             for (int i = 0; i < overviewsResolution.length; i++) {
                 resolutionsLevels.add(new OverviewLevel(overviewsResolution[i][0] / highestRes[0],
@@ -144,6 +146,16 @@ final  class OverviewsController {
         return max.imageChoice;
     }
 
+    public int getNumberOfOverviews() {
+        return numberOfOverviews;
+    }
+
+    public OverviewLevel getLevel(final int overviewIndex) {
+        if (overviewIndex < 0 || overviewIndex > (numberOfOverviews)) {
+            throw new IllegalArgumentException("overviewIndex is out of range, it should be >= 0 and < " + numberOfOverviews);
+        }
+        return resolutionsLevels.get(overviewIndex);
+    }
     /**
      * Simple support class for sorting overview resolutions
      * 

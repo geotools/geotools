@@ -83,7 +83,10 @@ public final class StyledShapePainter {
 
     /** The logger for the rendering module. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(StyledShapePainter.class.getName());
-    static boolean ROUND_ICON_COORDS = Boolean.parseBoolean(System.getProperty("org.geotools.renderer.lite.roundIconCoords", "true"));
+    /**
+     * Whether icon centers should be matched to a pixel center, or not
+     */
+    public static boolean ROUND_ICON_COORDS = Boolean.parseBoolean(System.getProperty("org.geotools.renderer.lite.roundIconCoords", "true"));
 
     /**
      * the label cache, used to populate the label cache with reserved areas for labelling 

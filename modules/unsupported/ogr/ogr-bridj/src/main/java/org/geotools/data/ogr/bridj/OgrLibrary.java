@@ -334,7 +334,7 @@ public class OgrLibrary {
 	public static native Pointer<? > OGRMalloc(@Ptr long size_t1);
 	public static native Pointer<? > OGRCalloc(@Ptr long size_t1, @Ptr long size_t2);
 	public static native Pointer<? > OGRRealloc(Pointer<? > voidPtr1, @Ptr long size_t1);
-	public static native Pointer<Byte > OGRStrdup(Pointer<Byte > charPtr1);
+	//public static native Pointer<Byte > OGRStrdup(Pointer<Byte > charPtr1);
 	public static native void OGRFree(Pointer<? > voidPtr1);
 	public static native Pointer<Byte > OGRGeometryTypeToName(ValuedEnum<OgrLibrary.OGRwkbGeometryType > eType);
 	public static native ValuedEnum<OgrLibrary.OGRwkbGeometryType > OGRMergeGeometryTypes(ValuedEnum<OgrLibrary.OGRwkbGeometryType > eMain, ValuedEnum<OgrLibrary.OGRwkbGeometryType > eExtra);

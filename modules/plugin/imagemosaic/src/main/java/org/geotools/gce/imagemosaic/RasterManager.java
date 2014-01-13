@@ -1252,6 +1252,9 @@ public class RasterManager {
             granuleCatalog.createType(indexSchema);
             this.typeName = typeName;
         } else {
+            if (this.typeName == null) {
+                this.typeName = typeName;
+            }
             // remove them all, assuming the schema has not changed
             final Query query = new Query(type.getTypeName());
             query.setFilter(Filter.INCLUDE);

@@ -68,7 +68,7 @@ public abstract class JDBCFeatureStoreExposePkTest extends JDBCFeatureStoreTest 
                 // this has been updated
                 assertEquals("foo", feature.getAttribute(aname("stringProperty")));
                 // the pk did not
-                assertEquals(0, feature.getAttribute(aname("id")));
+                assertEquals(0, ((Number) feature.getAttribute(aname("id"))).intValue());
             }
         }
         finally {

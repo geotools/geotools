@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<StyledLayerDescriptor version="1.1.0"
+  xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"
+  xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"
+  xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <NamedLayer>
+    <se:Name>OCEANSEA_1M:Foundation</se:Name>
+    <UserStyle>
+      <se:Name>GEOSYM</se:Name>
+      <IsDefault>1</IsDefault>
+      <se:FeatureTypeStyle>
+        <se:FeatureTypeName>Foundation</se:FeatureTypeName>
+        <se:Rule>
+          <se:Name>poly</se:Name>
+          <se:PolygonSymbolizer>
+            <se:Fill />
+            <se:VendorOption name="labelObstacle">true</se:VendorOption>
+          </se:PolygonSymbolizer>
+          <se:LineSymbolizer>
+            <se:Stroke />
+            <se:VendorOption name="labelObstacle">true</se:VendorOption>
+          </se:LineSymbolizer>
+          <se:PointSymbolizer>
+            <se:Graphic>
+              <se:Mark>
+                <se:WellKnownName>star</se:WellKnownName>
+                <se:Fill>
+                  <se:SvgParameter name="fill">#ff0000
+                  </se:SvgParameter>
+                </se:Fill>
+              </se:Mark>
+              <se:Size>8.0</se:Size>
+            </se:Graphic>
+            <se:VendorOption name="labelObstacle">true</se:VendorOption>
+          </se:PointSymbolizer>
+          <se:TextSymbolizer>
+            <se:Label>Hello</se:Label>
+            <se:Font>
+              <se:SvgParameter name="font-family">Arial</se:SvgParameter>
+            </se:Font>
+            <se:Fill>
+              <se:SvgParameter name="fill">#000000</se:SvgParameter>
+            </se:Fill>
+            <se:VendorOption name="repeat">100</se:VendorOption>
+          </se:TextSymbolizer>
+        </se:Rule>
+      </se:FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>

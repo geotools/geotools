@@ -46,6 +46,13 @@ public class DXFCircle extends DXFEntity {
         _radius = r;
         setName("DXFCircle");
     }
+    public DXFCircle(DXFPoint p, double r, DXFLineType lineType, int c, DXFLayer l, int visibility, double thickness, DXFExtendedData extData) {
+    	super(c, l, visibility, lineType, thickness);
+    	_point = p;
+    	_radius = r;
+    	setName("DXFCircle");
+    	_extendedData = extData;
+    }
 
     public static DXFCircle read(DXFLineNumberReader br, DXFUnivers univers) throws NumberFormatException, IOException {
 
@@ -53,6 +60,7 @@ public class DXFCircle extends DXFEntity {
         double x = 0, y = 0, r = 0, thickness = 1;
         DXFLayer l = null;
         DXFLineType lineType = null;
+        DXFExtendedData _extData = null;
 
         int sln = br.getLineNumber();
         log.debug(">>Enter at line: " + sln);
@@ -101,6 +109,11 @@ public class DXFCircle extends DXFEntity {
                     break;
                 case DOUBLE_1: //"40"
                     r = cvp.getDoubleValue();
+                    break;
+                case XDATA_APPLICATION_NAME:
+                	String appName = cvp.getStringValue();
+            		_extData = DXFExtendedData.getExtendedData(br);
+            		_extData.setAppName(appName);
                     break;
                 default:
                     break;

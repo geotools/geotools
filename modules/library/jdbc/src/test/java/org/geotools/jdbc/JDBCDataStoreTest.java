@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.geotools.data.*;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -128,24 +129,24 @@ public abstract class JDBCDataStoreTest extends JDBCTestSupport {
         builder.setCRS(CRS.decode("EPSG:4326"));
         builder.add(aname("geometry"), Geometry.class);
         builder.nillable(false).add(aname("intProperty"), Integer.class);
-        
+
         builder.length(5).add(aname("stringProperty"), String.class);
-        
+
         SimpleFeatureType featureType = builder.buildFeatureType();
         dataStore.createSchema(featureType);
-        
+
         SimpleFeatureType ft2 = dataStore.getSchema(tname("ft2"));
         //assertEquals(ft2, featureType);
-        
+
         //grab a writer
         FeatureWriter w = dataStore.getFeatureWriter( tname("ft2"),Transaction.AUTO_COMMIT);
         w.hasNext();
-        
+
         SimpleFeature f = (SimpleFeature) w.next();
         f.setAttribute( 1, new Integer(0));
         f.setAttribute( 2, "hello");
         w.write();
-        
+
         w.hasNext();
         f = (SimpleFeature) w.next();
         f.setAttribute( 1, null );
@@ -155,7 +156,7 @@ public abstract class JDBCDataStoreTest extends JDBCTestSupport {
         }
         catch( Exception e ) {
         }
-        
+
         f.setAttribute( 1, new Integer(1) );
         f.setAttribute( 2, "hello!");
         try {
@@ -164,8 +165,103 @@ public abstract class JDBCDataStoreTest extends JDBCTestSupport {
         }
         catch( Exception e ) {
         }
-        
+
         w.close();
+    }
+
+    public void testRemoveSchema() throws Exception {
+        SimpleFeatureType ft = dataStore.getSchema(tname("ft1"));
+        assertNotNull(ft);
+
+        dataStore.removeSchema(tname("ft1"));
+        try {
+            dataStore.getSchema(tname("ft1"));
+            fail("getSchema() should fail if table was deleted");
+        }
+        catch(Exception e) {
+        }
+    }
+    
+    public void testSimpleIndex() throws Exception {
+        SimpleFeatureType ft = dataStore.getSchema(tname("ft1"));
+        assertNotNull(ft);
+        
+        // check initial status
+        String ft1TypeName = ft.getTypeName();
+        List<Index> indexes = dataStore.getIndexes(ft1TypeName);
+        assertNotNull(indexes);
+        final int initialSize = indexes.size();
+        
+        // create index
+        String indexName = "ft1_str_index";
+        Index stringIndex = new Index(ft1TypeName, indexName, false, aname("stringProperty"));
+        dataStore.createIndex(stringIndex);
+        
+        // check the index has been created
+        indexes = dataStore.getIndexes(ft1TypeName);
+        assertEquals(initialSize + 1, indexes.size());
+        for (Index index : indexes) {
+            assertEquals(ft1TypeName, index.getTypeName());
+            if(index.getIndexName().equals(indexName)) {
+                List<String> attributes = index.getAttributes();
+                assertEquals(1, attributes.size());
+                assertEquals(aname("stringProperty"), attributes.get(0));
+                assertFalse(index.isUnique());
+            }
+        }
+
+        // drop it
+        dataStore.dropIndex(ft1TypeName, indexName);
+        indexes = dataStore.getIndexes(ft1TypeName);
+        assertEquals(initialSize, indexes.size());
+        for (Index index : indexes) {
+            assertEquals(ft1TypeName, index.getTypeName());
+            if(index.getIndexName().equals(indexName)) {
+                fail("the index has not been removed");
+            }
+        }
+
+    }
+    
+    public void testMultiColumnIndex() throws Exception {
+        SimpleFeatureType ft = dataStore.getSchema(tname("ft1"));
+        assertNotNull(ft);
+        
+        // check initial status
+        String ft1TypeName = ft.getTypeName();
+        List<Index> indexes = dataStore.getIndexes(ft1TypeName);
+        assertNotNull(indexes);
+        final int initialSize = indexes.size();
+        
+        // create index
+        String indexName = "ft1_str_index";
+        Index stringIndex = new Index(ft1TypeName, indexName, false, aname("stringProperty"), aname("intProperty"));
+        dataStore.createIndex(stringIndex);
+        
+        // check the index has been created
+        indexes = dataStore.getIndexes(ft1TypeName);
+        assertEquals(initialSize + 1, indexes.size());
+        for (Index index : indexes) {
+            assertEquals(ft1TypeName, index.getTypeName());
+            if(index.getIndexName().equals(indexName)) {
+                List<String> attributes = index.getAttributes();
+                assertEquals(2, attributes.size());
+                assertEquals(aname("stringProperty"), attributes.get(0));
+                assertEquals(aname("intProperty"), attributes.get(1));
+            }
+        }
+
+        // drop it
+        dataStore.dropIndex(ft1TypeName, indexName);
+        indexes = dataStore.getIndexes(ft1TypeName);
+        assertEquals(initialSize, indexes.size());
+        for (Index index : indexes) {
+            assertEquals(ft1TypeName, index.getTypeName());
+            if(index.getIndexName().equals(indexName)) {
+                fail("the index has not been removed");
+            }
+        }
+
     }
 
     public void testCreateSchemaUTMCRS() throws Exception {

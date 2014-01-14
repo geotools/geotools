@@ -41,6 +41,7 @@ import java.util.logging.Logger;
 
 import javax.media.jai.ImageLayout;
 
+import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -887,11 +888,15 @@ public class RasterManager {
 
             this.parentReader = parentReader;
             this.expandMe = parentReader.expandMe;
+            boolean checkAuxiliaryMetadata = configuration.isCheckAuxiliaryMetadata();
             this.heterogeneousGranules = parentReader.heterogeneousGranules;
             this.configuration = configuration;
             hints = parentReader.getHints();
             if (configuration != null && configuration.getAuxiliaryFilePath() != null) {
                 hints.add(new RenderingHints(Utils.AUXILIARY_FILES_PATH, configuration.getAuxiliaryFilePath()));
+            }
+            if (checkAuxiliaryMetadata) {
+                hints.add(new RenderingHints(Utils.CHECK_AUXILIARY_METADATA, checkAuxiliaryMetadata));
             }
             
             // take ownership of the index : TODO: REMOVE THAT ONCE DEALING WITH MORE CATALOGS/RASTERMANAGERS
@@ -930,30 +935,7 @@ public class RasterManager {
         if (configuration != null) {
             CatalogConfigurationBean catalogBean = configuration.getCatalogConfigurationBean();
             typeName = catalogBean != null ? catalogBean.getTypeName() : null;
-            if (typeName != null) {
-                final SimpleFeatureType schema = granuleCatalog.getType(typeName);
-                if (configuration.getAdditionalDomainAttributes() != null) {
-                    domainsManager = new DomainManager(
-                            configuration.getAdditionalDomainAttributes(), schema);
-                    dimensionDescriptors.addAll(domainsManager.dimensions);
-                }
-
-                // time attribute
-                if (configuration.getTimeAttribute() != null) {
-                    final HashMap<String, String> init = new HashMap<String, String>();
-                    init.put(Utils.TIME_DOMAIN, configuration.getTimeAttribute());
-                    timeDomainManager = new DomainManager(init, schema);
-                    dimensionDescriptors.addAll(timeDomainManager.dimensions);
-                
-                }
-                // elevation attribute
-                if (configuration.getElevationAttribute() != null) {
-                    final HashMap<String, String> init = new HashMap<String, String>();
-                    init.put(Utils.ELEVATION_DOMAIN, configuration.getElevationAttribute());
-                    elevationDomainManager = new DomainManager(init, schema);
-                    dimensionDescriptors.addAll(elevationDomainManager.dimensions);
-                }
-            }
+            initDomains(configuration);
             if (defaultSM == null) {
                 defaultSM = configuration.getSampleModel();
             }
@@ -980,12 +962,60 @@ public class RasterManager {
             overviewsController = new OverviewsController(highRes,
                   numOverviews, overviews);
             imposedEnvelope = configuration.getEnvelope();
-            
-            //TODO: DR Parse more stuff from the configuration
         }
     }
 
- 	/**
+    private void initDomains(MosaicConfigurationBean configuration) throws IOException {
+        checkTypeName();
+        if (typeName != null) {
+
+            final SimpleFeatureType schema = granuleCatalog.getType(typeName);
+            if (schema != null) {
+                // additional domain attributes
+                final String additionalDomainConfig = configuration.getAdditionalDomainAttributes();
+                if (additionalDomainConfig != null && domainsManager == null) {
+                    domainsManager = new DomainManager(additionalDomainConfig, schema);
+                    dimensionDescriptors.addAll(domainsManager.dimensions);
+                }
+
+                // time attribute
+                final String timeDomain = configuration.getTimeAttribute();
+                if (timeDomain != null && timeDomainManager == null) {
+                    final HashMap<String, String> init = new HashMap<String, String>();
+                    init.put(Utils.TIME_DOMAIN, timeDomain);
+                    timeDomainManager = new DomainManager(init, schema);
+                    dimensionDescriptors.addAll(timeDomainManager.dimensions);
+                }
+
+                // elevation attribute
+                final String elevationAttribute = configuration.getElevationAttribute();
+                if (elevationAttribute != null && elevationDomainManager == null) {
+                    final HashMap<String, String> init = new HashMap<String, String>();
+                    init.put(Utils.ELEVATION_DOMAIN, elevationAttribute);
+                    elevationDomainManager = new DomainManager(init, schema);
+                    dimensionDescriptors.addAll(elevationDomainManager.dimensions);
+                }
+            }
+        }
+    }
+    
+    private void checkTypeName() throws IOException {
+        if (typeName == null) {
+            URL sourceURL = parentReader.sourceURL;
+            if (sourceURL.getPath().endsWith("shp")) {
+                typeName = FilenameUtils.getBaseName(DataUtilities.urlToFile(sourceURL)
+                        .getCanonicalPath());
+            } else {
+                typeName = configuration.getName();
+            }
+        }
+        if (typeName == null && granuleCatalog != null) {
+            String[] typeNames = granuleCatalog.getTypeNames();
+            typeName = (typeNames != null && typeNames.length > 0) ? typeNames[0] : null;
+        }
+    }
+
+    /**
 	 * This code tries to load the sample image from which we can extract SM and CM to use when answering to requests
 	 * that falls within a hole in the mosaic.
  	 * @param configuration 
@@ -1222,6 +1252,9 @@ public class RasterManager {
             granuleCatalog.createType(indexSchema);
             this.typeName = typeName;
         } else {
+            if (this.typeName == null) {
+                this.typeName = typeName;
+            }
             // remove them all, assuming the schema has not changed
             final Query query = new Query(type.getTypeName());
             query.setFilter(Filter.INCLUDE);
@@ -1280,8 +1313,11 @@ public class RasterManager {
         }
     }
 
-    void initialize() throws IOException {
+    void initialize(final boolean checkDomains) throws IOException {
         final BoundingBox bounds = granuleCatalog.getBounds(typeName);
+        if (checkDomains) {
+            initDomains(configuration);
+        }
 
         if (bounds.isEmpty()) {
             throw new IllegalArgumentException("Cannot create a mosaic out of an empty index");

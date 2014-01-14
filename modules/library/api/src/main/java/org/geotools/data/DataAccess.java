@@ -131,7 +131,18 @@ public interface DataAccess<T extends FeatureType, F extends Feature> {
      */
     void updateSchema(Name typeName, T featureType)
         throws IOException;
-    
+
+    /**
+     * Used to permanently remove a schema from the underlying storage
+     * <p>
+     * This functionality is similar to an "drop table" statement in SQL. Implementation
+     * is optional; it may not be supported by all servers or files.
+     * @param typeName
+     * @throws IOException if the operation failed
+     * @throws UnsupportedOperation if functionality is not available
+     */
+    void removeSchema(Name typeName) throws IOException;
+
     /**
      * Names of the available Resources.
      * <p>

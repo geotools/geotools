@@ -19,8 +19,8 @@ package org.geotools.data.wfs.v1_1_0;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.CUBEWERX_GOVUNITCE;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.CUBEWERX_ROADSEG;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_ARCHSITES;
-import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_ROADS;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_CURVE_ROADS;
+import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_ROADS;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_STATES;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_TASMANIA_CITIES;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.IONIC_STATISTICAL_UNIT;
@@ -31,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 
 import javax.xml.namespace.QName;
 
@@ -144,7 +145,8 @@ public abstract class AbstractGetFeatureParserTest {
         CoordinateReferenceSystem crs = CRS.decode(epsgCrsId);
 
         SimpleFeatureType originalType = EmfAppSchemaParser.parseSimpleFeatureType(
-                wfsConfiguration, featureName, schemaLocation, crs);
+                wfsConfiguration, featureName, schemaLocation, crs,
+                new HashMap<String, String>(), null, false);
 
         SimpleFeatureType subsetType = DataUtilities.createSubType(originalType, properties);
         return subsetType;

@@ -16,6 +16,8 @@
  */
 package org.geotools.data.vpf;
 
+import static org.geotools.data.vpf.ifc.FileConstants.LIBRARY_ATTTIBUTE_TABLE;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -24,8 +26,6 @@ import java.util.Vector;
 
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
-import org.geotools.data.vpf.ifc.FileConstants;
-
 import org.geotools.feature.SchemaException;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -43,7 +43,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @source $URL$
  * @version $Id$
  */
-public class VPFDataBase implements FileConstants {
+public class VPFDataBase {
     /**
      * The libraries in the database
      */

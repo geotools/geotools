@@ -16,10 +16,17 @@
  */
 package org.geotools.image;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
@@ -433,6 +440,46 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
     
     @Test
+    public void test16BitGIF() throws Exception {
+        // the resource has been compressed since the palette is way larger than the image itself, 
+        // and the palette does not get compressed
+        InputStream gzippedStream = ImageWorkerTest.class.getResource("test-data/sf-sfdem.tif.gz").openStream();
+        GZIPInputStream is = new GZIPInputStream(gzippedStream);
+        try {
+            ImageInputStream iis = ImageIO.createImageInputStream(is);
+            ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
+            reader.setInput(iis);
+            BufferedImage bi = reader.read(0);
+            if(TestData.isInteractiveTest()){
+                ImageIOUtilities.visualize(bi,"before");
+            }
+            reader.dispose();
+            iis.close();
+            IndexColorModel icm = (IndexColorModel) bi.getColorModel();
+            assertEquals(65536, icm.getMapSize());
+            
+            final File outFile = TestData.temp(this, "temp.gif");
+            ImageWorker worker = new ImageWorker(bi);
+            worker.writeGIF(outFile, "LZW", 0.75f);
+
+            // Read it back.
+            bi=ImageIO.read(outFile);
+            if(TestData.isInteractiveTest()){
+                ImageIOUtilities.visualize(bi,"after");
+            }
+            ColorModel cm = bi.getColorModel();
+            assertTrue("wrong color model", cm instanceof IndexColorModel);
+            assertEquals("wrong transparency model", Transparency.OPAQUE, cm.getTransparency());
+            final IndexColorModel indexColorModel = (IndexColorModel)cm;
+            assertEquals("wrong transparent color index", -1, indexColorModel.getTransparentPixel());
+            assertEquals("wrong component size", 8, indexColorModel.getComponentSize(0));
+            outFile.delete();
+        } finally {
+            is.close();
+        }
+    }
+    
+    @Test
     public void test16BitPNG() throws Exception {
         // the resource has been compressed since the palette is way larger than the image itself, 
         // and the palette does not get compressed
@@ -443,6 +490,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
             reader.setInput(iis);
             BufferedImage bi = reader.read(0);
+            reader.dispose();
+            iis.close();
             IndexColorModel icm = (IndexColorModel) bi.getColorModel();
             assertEquals(65536, icm.getMapSize());
             
@@ -457,8 +506,76 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             // we expect a RGB one
             ComponentColorModel ccm = (ComponentColorModel) back.getColorModel();
             assertEquals(3, ccm.getNumColorComponents());
+            
+            
+            // now ask to write paletted
+            worker = new ImageWorker(bi);
+            worker.writePNG(outFile, "FILTERED", 0.75f, true, true);
+            worker.dispose();
+            
+            // make sure we can read it 
+            back = ImageIO.read(outFile);
+            
+            // we expect a RGB one
+            icm =  (IndexColorModel) back.getColorModel();
+            assertEquals(3, icm.getNumColorComponents());
+            assertTrue(icm.getMapSize() <= 256);  
         } finally {
             is.close();
+        }
+    }
+    
+    @Test
+    public void test4BitPNG() throws Exception {
+
+        // create test image
+        IndexColorModel icm =new IndexColorModel(
+                        4, 
+                        16, 
+                        new byte[]{(byte)255,0,        0,        0,16,32,64,(byte)128,1,2,3,4,5,6,7,8}, 
+                        new byte[]{0,        (byte)255,0,        0,16,32,64,(byte)128,1,2,3,4,5,6,7,8}, 
+                        new byte[]{0,        0,        (byte)255,0,16,32,64,(byte)128,1,2,3,4,5,6,7,8});
+        assertEquals(16, icm.getMapSize());
+        
+        // create random data
+        WritableRaster data = com.sun.media.jai.codecimpl.util.RasterFactory.createWritableRaster(
+                        icm.createCompatibleSampleModel(32,32), 
+                        new Point(0,0));
+        for(int x=data.getMinX();x<data.getMinX()+data.getWidth();x++){
+                for(int y=data.getMinY();y<data.getMinY()+data.getHeight();y++){
+                        data.setSample(x, y, 0, (x+y)%8);
+                }
+        }
+        
+
+        final BufferedImage bi = new BufferedImage(
+                        icm,
+                        data,
+                        false,
+                        null);
+        assertEquals(16, ((IndexColorModel)bi.getColorModel()).getMapSize());
+        assertEquals(4, bi.getSampleModel().getSampleSize(0));
+        bi.setData(data);
+        if(TestData.isInteractiveTest()){
+                ImageIOUtilities.visualize(bi,"before");
+        }
+        
+        // encode as png
+        ImageWorker worker = new ImageWorker(bi);
+        final File outFile = TestData.temp(this, "temp4.png");
+        worker.writePNG(outFile, "FILTERED", 0.75f, true, false);
+        worker.dispose();
+        
+        // make sure we can read it 
+        BufferedImage back = ImageIO.read(outFile);
+        
+        // we expect an IndexColorMolde one matching the old one
+        IndexColorModel ccm =  (IndexColorModel) back.getColorModel();
+        assertEquals(3, ccm.getNumColorComponents());
+        assertEquals(16, ccm.getMapSize());
+        assertEquals(4, ccm.getPixelSize());
+        if(TestData.isInteractiveTest()){
+                ImageIOUtilities.visualize(back,"after");
         }
     }
     

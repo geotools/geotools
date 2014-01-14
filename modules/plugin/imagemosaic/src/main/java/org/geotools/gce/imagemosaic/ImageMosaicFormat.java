@@ -42,8 +42,6 @@ import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.h2.H2DataStoreFactory;
-import org.geotools.data.h2.H2JNDIDataStoreFactory;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.Hints;
@@ -140,12 +138,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
             "AllowMultithreading", Boolean.class, new Boolean[]{Boolean.TRUE,Boolean.FALSE}, Boolean.FALSE);
     
     /** Control the footprint management.*/
-    public static final ParameterDescriptor<Boolean> HANDLE_FOOTPRINT = new DefaultParameterDescriptor<Boolean>(
-            "HandleFootprint", Boolean.class, new Boolean[]{Boolean.TRUE,Boolean.FALSE}, Boolean.TRUE);
-    
-    /** Control whether to add the ROI in the output mosaic. */
-    public static final ParameterDescriptor<Boolean> SET_ROI_PROPERTY = new DefaultParameterDescriptor<Boolean>(
-            "SetRoiProperty", Boolean.class, new Boolean[]{Boolean.TRUE,Boolean.FALSE}, Boolean.FALSE);
+    public static final ParameterDescriptor<String> FOOTPRINT_BEHAVIOR = new DefaultParameterDescriptor<String>(
+            "FootprintBehavior", String.class, FootprintBehavior.valuesAsStrings(), FootprintBehavior.None.name());
     
     /** Control the background values for the output coverage */
     public static final ParameterDescriptor<double[]> BACKGROUND_VALUES = new DefaultParameterDescriptor<double[]>(
@@ -154,6 +148,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     /** Control the interpolation to be used in mosaicking */
     public static final ParameterDescriptor<Interpolation> INTERPOLATION = new DefaultParameterDescriptor<Interpolation>(
             "Interpolation", Interpolation.class, null, DEFAULT_INTERPOLATION);
+    /** Control the requested resolution calculation. */
+    public static final ParameterDescriptor<Boolean> ACCURATE_RESOLUTION = new DefaultParameterDescriptor<Boolean>("Accurate resolution computation", Boolean.class, new Boolean[]{Boolean.TRUE,Boolean.FALSE}, Boolean.FALSE);
 
     /** Optional Sorting for the granules of the mosaic.
      * 
@@ -201,8 +197,10 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 TIME,
                 ELEVATION,
                 FILTER,
+                ACCURATE_RESOLUTION,
                 SORT_BY,
-                MERGE_BEHAVIOR
+                MERGE_BEHAVIOR,
+                FOOTPRINT_BEHAVIOR
         }));
 
         // reading parameters
@@ -358,14 +356,10 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     						}
     				}						
     				// H2 workadound
-    				if(spi instanceof H2DataStoreFactory || spi instanceof H2JNDIDataStoreFactory){
-    					if(params.containsKey(H2DataStoreFactory.DATABASE.key)){
-    						String dbname = (String) params.get(H2DataStoreFactory.DATABASE.key);
-    						// H2 database URLs must not be percent-encoded: see GEOT-4262.
-    						params.put(H2DataStoreFactory.DATABASE.key,
-    						        "file:" + (new File(sourceF.getParentFile(), dbname)).getPath());
-    					}
-    				}   
+                    if (Utils.isH2Store(spi)) {
+                        Utils.fixH2DatabaseLocation(params,
+                                DataUtilities.fileToURL(sourceF.getParentFile()).toExternalForm());
+                    }
     				
     				tileIndexStore=spi.createDataStore(params);
         			if(tileIndexStore==null)

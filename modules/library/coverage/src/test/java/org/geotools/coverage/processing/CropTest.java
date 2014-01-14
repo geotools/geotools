@@ -16,24 +16,18 @@
  */
 package org.geotools.coverage.processing;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
-import javax.media.jai.PlanarImage;
 
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
+import javax.media.jai.PlanarImage;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.ViewType;
@@ -44,9 +38,20 @@ import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultDerivedCRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.junit.Before;
+import org.junit.Test;
+import org.opengis.geometry.Envelope;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 
 /**
@@ -390,6 +395,107 @@ public final class CropTest extends GridProcessingTestBase {
                     cropped.getGridGeometry().getGridToCRS2D());
         assertFalse(cropEnvelope.equals(cropped.getEnvelope()));
 
+    }
+    
+    /**
+     * Tests the "Crop" operation with a ROI set.
+     */
+    @Test
+    public void testCropWithROIForceMosaic() throws TransformException, InterruptedException, FactoryException {
+        final CoverageProcessor processor = CoverageProcessor.getInstance();
+
+        /*
+         * Get the source coverage and build the cropped envelope.
+         */
+        final GridCoverage2D source = coverage.view(ViewType.NATIVE);
+        final Envelope oldEnvelope = source.getEnvelope();
+        final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
+                oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
+                oldEnvelope.getMinimum(1) /*+ oldEnvelope.getSpan(1) * 3 / 8*/
+        }, new double[] {
+                oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0), //* 5 / 8,
+                oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) //* 5 / 8
+        });
+        cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
+
+
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory( JTSFactoryFinder.EMPTY_HINTS );
+        
+        // Use this crop ROI
+        //   (E) *---------* (A)
+        //      /          |
+        // (D) *           |
+        //     |           |
+        //     |           |
+        //     |           |
+        // (C) *-----------* (B)
+        double min0 = cropEnvelope.getMinimum(0);
+        double min1 = cropEnvelope.getMinimum(1);
+        
+        double max0 = cropEnvelope.getMaximum(0);
+        double max1 = cropEnvelope.getMaximum(1);
+        
+        double mid0_E = min0 + cropEnvelope.getSpan(0)/16;
+        double mid1_D = max1 - cropEnvelope.getSpan(1)/16;
+        
+        CoordinateSequence cs1 = new CoordinateArraySequence(6);
+        // A
+        cs1.setOrdinate(0, 0, max0);
+        cs1.setOrdinate(0, 1, max1);
+        
+        // B
+        cs1.setOrdinate(1, 0, max0);
+        cs1.setOrdinate(1, 1, min1);
+        
+        // C
+        cs1.setOrdinate(2, 0, min0);
+        cs1.setOrdinate(2, 1, min1);
+        
+        // D
+        cs1.setOrdinate(3, 0, min0);
+        cs1.setOrdinate(3, 1, mid1_D);
+        
+        // E
+        cs1.setOrdinate(4, 0, mid0_E);
+        cs1.setOrdinate(4, 1, max1);
+        
+        // Close
+        cs1.setOrdinate(5, 0, max0);
+        cs1.setOrdinate(5, 1, max1);
+
+        LinearRing shape1 = geometryFactory.createLinearRing(cs1);
+        com.vividsolutions.jts.geom.Polygon mask  = geometryFactory.createPolygon(shape1, null);
+
+        ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
+        param.parameter("Source").setValue(source);
+        param.parameter("Envelope").setValue(cropEnvelope);
+        param.parameter("ROI").setValue(mask);
+
+        GridCoverage2D cropped = (GridCoverage2D) processor.doOperation(param);
+        if (SHOW) {
+            Viewer.show(coverage, "Original");
+            Viewer.show(cropped, "Cropped");
+            Thread.sleep(10000);
+        } else {
+            // Force computation
+            assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
+        }
+        RenderedImage raster = cropped.getRenderedImage();
+
+        // Checking pixel values in the top left corner (0,0)
+        // It's not zero due to having used a crop instead of a mosaic
+        assertEquals(240, raster.getTile(0, 0).getSample(0, 0, 0));
+        assertTrue(cropEnvelope.equals(cropped.getEnvelope()));
+
+        // Forcing the mosaic operation and repeating the computation
+        param.parameter("ForceMosaic").setValue(true);
+
+        cropped = (GridCoverage2D) processor.doOperation(param);
+        raster = cropped.getRenderedImage();
+
+        // Now the value should be zero since we have cut away the corner
+        assertEquals(0, raster.getTile(0, 0).getSample(0, 0, 0));
+        assertTrue(cropEnvelope.equals(cropped.getEnvelope()));
     }
 
     /**

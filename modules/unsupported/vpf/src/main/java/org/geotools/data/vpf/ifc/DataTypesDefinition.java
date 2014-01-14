@@ -17,7 +17,10 @@
 package org.geotools.data.vpf.ifc;
 
 /**
- * DataTypesDefinition.java Created: Thu Jan 02 17:26:02 2003
+ * Data type definition constants for VPF files.
+ * 
+ * 
+ * @since Thu Jan 02 17:26:02 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
  *

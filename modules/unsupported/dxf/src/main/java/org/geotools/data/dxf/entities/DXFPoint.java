@@ -63,6 +63,12 @@ public class DXFPoint extends DXFEntity {
         _point = new Point2D.Double(x, y);
         setName("DXFPoint");
     }
+    public DXFPoint(double x, double y, int c, DXFLayer l, int visibility, double thickness, DXFExtendedData extData) {
+    	super(c, l, visibility, null, DXFTables.defaultThickness);
+    	_point = new Point2D.Double(x, y);
+    	setName("DXFPoint");
+    	_extendedData = extData;
+    }
 
     public void setX(double x) {
         _point.x = x;
@@ -90,7 +96,8 @@ public class DXFPoint extends DXFEntity {
 
         DXFCodeValuePair cvp = null;
         DXFGroupCode gc = null;
-
+        DXFExtendedData _extData = null;
+        
         boolean doLoop = true;
         while (doLoop) {
             cvp = new DXFCodeValuePair();
@@ -128,12 +135,17 @@ public class DXFPoint extends DXFEntity {
                 case THICKNESS: //"39"
                     thickness = cvp.getDoubleValue();
                     break;
+                case XDATA_APPLICATION_NAME:
+                	String appName = cvp.getStringValue();
+            		_extData = DXFExtendedData.getExtendedData(br);
+            		_extData.setAppName(appName);
+                    break;
                 default:
                     break;
             }
         }
 
-        DXFPoint e = new DXFPoint(x, y, c, l, visibility, thickness);
+        DXFPoint e = new DXFPoint(x, y, c, l, visibility, thickness, _extData);
         e.setType(GeometryType.POINT);
         e.setStartingLineNumber(sln);
         e.setUnivers(univers);

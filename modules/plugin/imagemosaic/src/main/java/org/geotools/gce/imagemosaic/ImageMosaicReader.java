@@ -20,7 +20,6 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -51,18 +50,21 @@ import org.geotools.coverage.grid.io.DefaultHarvestedSource;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.HarvestedSource;
+import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
-import org.geotools.gce.imagemosaic.ImageMosaicWalker.ExceptionEvent;
-import org.geotools.gce.imagemosaic.ImageMosaicWalker.FileProcessingEvent;
-import org.geotools.gce.imagemosaic.ImageMosaicWalker.ProcessingEvent;
+import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.ExceptionEvent;
+import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.FileProcessingEvent;
+import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.ProcessingEvent;
+import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
+import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProvider;
+import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderFactory;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -120,7 +122,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     Map<String, RasterManager> rasterManagers = new ConcurrentHashMap<String, RasterManager>();
 
     public RasterManager getRasterManager(String name) {
-          if(rasterManagers.containsKey(name)){
+          if(name != null && rasterManagers.containsKey(name)){
               return rasterManagers.get(name);
           }
           return null;
@@ -160,6 +162,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 	boolean imposedBBox;
 	
 	boolean heterogeneousGranules;
+
+        boolean checkAuxiliaryMetadata = false;
 
 	String typeName;
 
@@ -241,12 +245,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         if (schema == null) {
             throw new DataSourceException("Unable to create reader for this mosaic since the inner catalog schema is null.");
         }
+        
+        granuleCatalog = catalog;
 
         // grid geometry
         setGridGeometry(typeName);
 
         // raster manager
-        addRasterManager(configuration, false);
+        addRasterManager(configuration, true);
     }
 
     /**
@@ -312,23 +318,26 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 
                 // Catalog initialization from datastore
                 GranuleCatalog catalog = null;
-                final Properties props = CatalogManager.createGranuleCatalogProperties(datastoreProperties);
-                
-                // SPI
-                final String SPIClass = props.getProperty("SPI");
-
-                // create a datastore as instructed
-                final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
-                final Map<String, Serializable> params = Utils.createDataStoreParamsFromPropertiesFile(props, spi);
+                final Properties params = CatalogManager.createGranuleCatalogProperties(datastoreProperties);
 
                 // Since we are dealing with a catalog from an existing store, make sure to scan for all the typeNames on initialization
-                params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.valueOf(true));
-//                params.put(Utils.SCAN_FOR_TYPENAMES, typeNamesProps.getProperty(Utils.SCAN_FOR_TYPENAMES));
-                
-                catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, beans.get(0).getCatalogConfigurationBean(), params, getHints());
-                if (granuleCatalog == null) {
-                    granuleCatalog = catalog;
+                final Object typeNames=params.get(Utils.SCAN_FOR_TYPENAMES);
+                if (typeNames!=null){
+                    params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.valueOf(typeNames.toString()));
+                } else {
+                    params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.TRUE);
                 }
+                if (beans.size() > 0) {
+                    catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, beans.get(0).getCatalogConfigurationBean(), params, getHints());
+                } else {
+                    catalog = CatalogManager.createGranuleCatalogFromDatastore(parent, datastoreProperties, true, getHints());
+                } 
+                MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+                catalog.setMultiScaleROIProvider(rois);
+                if (granuleCatalog != null) {
+                    granuleCatalog.dispose();
+                }
+                granuleCatalog = catalog;
 
                 if (granuleCatalog == null) {
                     throw new DataSourceException("Unable to create index for this URL " + sourceURL);
@@ -343,6 +352,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 
                 // Old style code: we have a single MosaicConfigurationBean. Use that to create the catalog 
                 granuleCatalog = CatalogManager.createCatalog(sourceURL, configuration, this.hints);
+                File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
+                MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+                granuleCatalog.setMultiScaleROIProvider(rois);
                 addRasterManager(configuration, true);
             }
         } catch (Throwable e) {
@@ -445,6 +457,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 		// this is a newly added property we have to be ready to the case where
 		// we do not find it.
 		expandMe = configuration.isExpandToRGB();
+		
+		checkAuxiliaryMetadata = configuration.isCheckAuxiliaryMetadata();
 		
 		CatalogConfigurationBean catalogConfigurationBean = configuration.getCatalogConfigurationBean();
 		
@@ -634,6 +648,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 		return super.numOverviews;
 	}
 	
+	
 
     /** Package scope grid to world transformation accessor */
     MathTransform getRaster2Model() {
@@ -707,7 +722,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     public String[] getMetadataNames(String coverageName) {
         String name = checkUnspecifiedCoverage(coverageName);
         RasterManager manager = getRasterManager(name);
-        return manager.getMetadataNames();
+        return manager != null ? manager.getMetadataNames() : null;
     }
 
     @Override
@@ -737,6 +752,41 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 
     public boolean isParameterSupported(Identifier name) {
         return isParameterSupported(UNSPECIFIED, name);
+    }
+    
+    @Override
+    public int getNumOverviews(String coverageName) {
+        coverageName = checkUnspecifiedCoverage(coverageName);
+        RasterManager manager =  getRasterManager(coverageName);
+        return manager.overviewsController.getNumberOfOverviews();
+    }
+
+    @Override
+    public int getNumOverviews() {
+        return getNumOverviews(UNSPECIFIED);
+    }
+
+    @Override
+    public double[] getReadingResolutions(OverviewPolicy policy,
+            double[] requestedResolution) {
+        return getReadingResolutions(UNSPECIFIED, policy, requestedResolution);
+    }
+
+    @Override
+    public double[] getReadingResolutions(String coverageName, OverviewPolicy policy,
+            double[] requestedResolution) {
+        coverageName = checkUnspecifiedCoverage(coverageName);
+        RasterManager manager =  getRasterManager(coverageName);
+        final int numOverviews = getNumOverviews(coverageName);
+        OverviewsController overviewsController = manager.overviewsController; 
+        OverviewLevel level = null;
+        if (numOverviews > 0) {
+            int imageIdx = overviewsController.pickOverviewLevel(policy, requestedResolution);
+            level = overviewsController.getLevel(imageIdx);
+        } else {
+            level = overviewsController.getLevel(0);
+        }
+        return new double[]{level.resolutionX, level.resolutionY};
     }
 
         /**
@@ -792,7 +842,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
             defaultName = name;
         }
         if (init) {
-            rasterManager.initialize();
+            rasterManager.initialize(false);
         }
         return rasterManager;
     }
@@ -935,7 +985,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         String indexingPath = directory.getAbsolutePath();
         configuration.setParameter(Prop.HARVEST_DIRECTORY, indexingPath);
         if(defaultCoverage == null) {
-            defaultCoverage = getGridCoverageNames()[0];
+            String[] coverageNames = getGridCoverageNames();
+            defaultCoverage = (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
         } 
         configuration.setParameter(Prop.INDEX_NAME, defaultCoverage);
         configuration.setHints(new Hints(Utils.MOSAIC_READER, this));
@@ -948,9 +999,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         configuration.setParameter(Prop.ROOT_MOSAIC_DIR, mosaicSource.getAbsolutePath());
         
         // run the walker and collect information
-        ImageMosaicWalker walker = new ImageMosaicWalker(configuration);
-        walker.setFileFilter(filter);
-        walker.addProcessingEventListener(new ImageMosaicWalker.ProcessingEventListener() {
+        ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
+        final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration,
+                eventHandler);
+        // build the index
+        ImageMosaicDirectoryWalker walker = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler,filter);
+        eventHandler.addProcessingEventListener(new ImageMosaicEventHandlers.ProcessingEventListener() {
             
             @Override
             public void getNotification(ProcessingEvent event) {

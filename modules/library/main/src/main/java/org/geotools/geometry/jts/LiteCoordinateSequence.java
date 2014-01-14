@@ -119,17 +119,31 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
      * @param coordinates
      */
     public LiteCoordinateSequence(Coordinate[] coordinates) {
-      if (coordinates == null)
-        coordinates = new Coordinate[0];
-      this.dimension=2;
+        if (coordinates == null)
+            coordinates = new Coordinate[0];
+        this.dimension = guessDimension(coordinates);
 
-      coords = new double[coordinates.length * this.dimension];
-      for (int i = 0; i < coordinates.length; i++) {
-        coords[i * this.dimension] = coordinates[i].x;
-        if (this.dimension >= 2)
-          coords[i * this.dimension + 1] = coordinates[i].y;
-      }
-      this.size = coordinates.length;
+        coords = new double[coordinates.length * this.dimension];
+        for (int i = 0; i < coordinates.length; i++) {
+            coords[i * this.dimension] = coordinates[i].x;
+            if (this.dimension > 2) {
+                coords[i * this.dimension + 1] = coordinates[i].y;
+                coords[i * this.dimension + 2] = coordinates[i].z;
+            } else if (this.dimension > 1) {
+                coords[i * this.dimension + 1] = coordinates[i].y;
+            }
+        }
+        this.size = coordinates.length;
+    }
+
+    private int guessDimension(Coordinate[] coordinates) {
+        for (Coordinate c : coordinates) {
+            if(!java.lang.Double.isNaN(c.z)) {
+                return 3;
+            }
+        }
+        
+        return 2;
     }
 
     /**

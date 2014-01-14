@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.Capabilities;
 import org.geotools.data.ows.GetCapabilitiesResponse;
 import org.geotools.data.ows.HTTPResponse;
@@ -42,30 +43,34 @@ import org.xml.sax.SAXException;
  */
 public class WMSGetCapabilitiesResponse extends GetCapabilitiesResponse {
 
-	public WMSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
-		super(response);
-		
-		try {
-	        Map hints = new HashMap();
-	        hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
-	        hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
-	
-	        Object object;
-			try {
-			    InputStream inputStream = response.getResponseStream();
-				object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
-			} catch (SAXException e) {
-				throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
-			}
-	        
-	        if (object instanceof ServiceException) {
-	        	throw (ServiceException) object;
-	        }
-	        
-	        this.capabilities = (Capabilities)object;
-		} finally {
-			response.dispose();
-		}
-	}
+    public WMSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
+        super(response);
+
+        try {
+            Map hints = new HashMap();
+            hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
+            hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
+
+            Object object;
+            InputStream inputStream = null;
+            try {
+                inputStream = response.getResponseStream();
+                object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
+            } catch (SAXException e) {
+                throw (ServiceException) new ServiceException("Error while parsing XML.")
+                        .initCause(e);
+            } finally {
+                IOUtils.closeQuietly(inputStream);
+            }
+
+            if (object instanceof ServiceException) {
+                throw (ServiceException) object;
+            }
+
+            this.capabilities = (Capabilities) object;
+        } finally {
+            response.dispose();
+        }
+    }
 
 }

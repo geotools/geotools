@@ -16,6 +16,23 @@
  */
 package org.geotools.jdbc;
 
+import java.io.IOException;
+
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.factory.CommonFactoryFinder;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.PropertyIsEqualTo;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+
 /**
  * Tests data modification when the expose primary key flag is raised
  * 
@@ -30,6 +47,33 @@ public abstract class JDBCFeatureStoreExposePkTest extends JDBCFeatureStoreTest 
     protected void connect() throws Exception {
         super.connect();
         featureStore.setExposePrimaryKeyColumns(true);
+    }
+    
+    public void testModifyExposedPk() throws IOException {
+        SimpleFeatureType t = featureStore.getSchema();
+         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("stringProperty")), ff.literal("zero"), false);
+        featureStore.modifyFeatures(new AttributeDescriptor[] { t.getDescriptor(aname("stringProperty")), 
+                t.getDescriptor(aname("id"))},
+            new Object[] { "foo", 123}, filter);
+
+        PropertyIsEqualTo idFilter = ff.equal(ff.property(aname("id")), ff.literal(0), false);
+        SimpleFeatureCollection features = featureStore.getFeatures(idFilter);
+        SimpleFeatureIterator i = features.features();
+        try {
+            assertTrue(i.hasNext());
+    
+            while (i.hasNext()) {
+                SimpleFeature feature = (SimpleFeature) i.next();
+                // this has been updated
+                assertEquals("foo", feature.getAttribute(aname("stringProperty")));
+                // the pk did not
+                assertEquals(0, ((Number) feature.getAttribute(aname("id"))).intValue());
+            }
+        }
+        finally {
+            i.close();
+        }
     }
 
 }

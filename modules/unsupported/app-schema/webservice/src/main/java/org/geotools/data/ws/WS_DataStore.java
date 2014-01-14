@@ -110,6 +110,26 @@ public class WS_DataStore implements XmlDataStore {
     }
 
     /**
+     * Unsupported operation.
+     * 
+     * @see org.geotools.data.DataStore#removeSchema(java.lang.String)
+     */
+    @Override
+    public void removeSchema(String typeName) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Unsupported operation.
+     * 
+     * @see org.geotools.data.DataAccess#removeSchema(org.opengis.feature.type.Name)
+     */
+    @Override
+    public void removeSchema(Name typeName) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * @see DataAccess#getNames()
      */
     public List<Name> getNames() throws IOException {

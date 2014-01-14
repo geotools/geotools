@@ -127,8 +127,8 @@ public class GML2EncodingUtils {
         }
         
         // allow for non epsg codes to be encoded
-        if (crs != null && !crs.getIdentifiers().isEmpty()) {
-            return crs.getIdentifiers().iterator().next().getCode();
+        if (crs != null && crs.getName() != null) {
+            return crs.getName().getCode();
         }
         return null;
     }

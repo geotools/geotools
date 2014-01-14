@@ -82,6 +82,10 @@ public class ScreenMap {
         pixels = new int[arraySize];
         this.mt = mt;
     }
+    
+    public ScreenMap(ScreenMap original, int expandBy) {
+        this(original.minx - expandBy, original.miny - expandBy, original.width + expandBy * 2, original.height + expandBy * 2);
+    }
 
     public ScreenMap(int x, int y, int width, int height) {
         this(x, y, width, height, null);

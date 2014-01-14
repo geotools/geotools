@@ -67,6 +67,7 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -114,8 +115,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     protected FeatureCollection<? extends FeatureType, ? extends Feature> sourceFeatures;
 
     protected List<Expression> foreignIds = null;
-    
-	protected AttributeDescriptor targetFeature;
+
+    protected AttributeDescriptor targetFeature;
 
     /**
      * True if joining is turned off and pre filter exists. There's a need to run extra query to get
@@ -283,12 +284,23 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      */
     public List<Object> getIdValues(Object source) {   
         List<Object> ids = new ArrayList<Object>();
-        FilterAttributeExtractor extractor = new FilterAttributeExtractor();
-        mapping.getFeatureIdExpression().accept(extractor, null);
-        for (String att : extractor.getAttributeNameSet()) {
-            ids.add(peekValue(source, namespaceAwareFilterFactory.property( att)));
+        Expression idExpression = mapping.getFeatureIdExpression();
+        if (Expression.NIL.equals(idExpression) || idExpression instanceof Literal) {
+            // GEOT-4554: if idExpression is not specified, should use PK
+            if (source instanceof Feature) {
+                for (Property p : ((Feature) source).getProperties()) {
+                    if (p.getName().getLocalPart().startsWith(JoiningJDBCFeatureSource.PRIMARY_KEY)) {
+                        ids.add(p.getValue());
+                    }
+                }
+            }
+        } else {
+            FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+            idExpression.accept(extractor, null);
+            for (String att : extractor.getAttributeNameSet()) {
+                ids.add(peekValue(source, namespaceAwareFilterFactory.property(att)));
+            }
         }
-        
         if (foreignIds != null) {
             ids.addAll(getForeignIdValues(source));
         }
@@ -319,8 +331,11 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         }
         String version=(String)this.mapping.getTargetFeature().getType().getUserData().get("targetVersion");
-        //might be because top level feature has no geometry
-        if (targetCRS == null && version!=null) {
+        // might be because top level feature has no geometry
+        // GEOT-4550: exclude this part for WMS requests because the reprojection happens during rendering
+        // not at ReprojectingFilterVisitor.
+        // The original CRS should be preserved so the reprojection could happen at rendering.
+        if (targetCRS == null && version != null && !version.contains("wms")) {
             // figure out the crs the data is in
             CoordinateReferenceSystem crs=null;
             try{

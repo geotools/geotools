@@ -13,9 +13,9 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>geotools</artifactId>
-    <version>10-SNAPSHOT</version>
+    <version>11-SNAPSHOT</version>
   </parent>
-  
+
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -33,6 +33,7 @@
     </license>
   </licenses>
 
+
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
@@ -47,12 +48,12 @@
       </roles>
     </developer>
   </developers>
-  
-    <!-- =========================================================== -->
+
+
+  <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
   <dependencies>
-    <!--  GeoTools Library modules -->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
@@ -68,8 +69,6 @@
       <artifactId>gt-render</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <!--  GeoTools Plugins -->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-shapefile</artifactId>
@@ -84,7 +83,7 @@
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-postgis</artifactId>
       <version>${project.version}</version>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-wfs</artifactId>
@@ -105,8 +104,6 @@
       <artifactId>gt-epsg-hsql</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
-    <!--  GeoTools Extensions -->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-wms</artifactId>
@@ -142,7 +139,6 @@
       <artifactId>gt-swing</artifactId>
       <version>${project.version}</version>
     </dependency>
-        <!-- Other GeoTools modules -->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-process</artifactId>
@@ -163,20 +159,16 @@
       <artifactId>gt-process-raster</artifactId>
       <version>${project.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-grid</artifactId>
       <version>${project.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-validation</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
-    <!-- Other dependencies -->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
@@ -200,21 +192,20 @@
         <groupId>com.sun.xml.bind</groupId>
         <artifactId>jaxb-impl</artifactId>
         <version>2.1.13</version>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>javax.media</groupId>
       <artifactId>jai_core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
-
     <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <scope>provided</scope>
     </dependency>
-
   </dependencies>
-  
+
+
   <build>
     <plugins>
       <plugin>
@@ -238,8 +229,7 @@
             <configuration>
               <tasks>
                 <ant antfile="build.xml" dir="${basedir}" target="${target}">
-                  <property name="build.directory" value="${build.directory}"/>
-                  <!-- may be ${project.version} when tagged -->
+                  <property name="build.directory" value="${project.build.directory}"/>
                   <property name="project.version" value="${project.version}"/>
                 </ant>
               </tasks>
@@ -253,9 +243,11 @@
     </plugins>
   </build>
 
+
   <properties>
      <target>full</target>
   </properties>
+
 
   <profiles>
     <profile>

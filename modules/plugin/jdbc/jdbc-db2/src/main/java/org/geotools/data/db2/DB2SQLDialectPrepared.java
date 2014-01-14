@@ -17,7 +17,6 @@
 package org.geotools.data.db2;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -185,13 +183,13 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
 
         
 	@Override
-	public void setGeometryValue(Geometry g, int srid, Class binding, PreparedStatement ps, int column) throws SQLException {
+	public void setGeometryValue(Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column) throws SQLException {
 		if (g ==null || g.isEmpty()) {		        
 			//ps.setNull(column, Types.OTHER);
 			ps.setBytes(column, null);
 			return;
 		}		
-		DB2WKBWriter w = new DB2WKBWriter(DB2WKBWriter.guessCoorinateDims(g),getDb2DialectInfo().isHasOGCWkbZTyps());
+		DB2WKBWriter w = new DB2WKBWriter(dimension, getDb2DialectInfo().isHasOGCWkbZTyps());
 		byte[] bytes = w.write(g);
 		ps.setBytes(column, bytes);		
 	}
@@ -223,7 +221,7 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
     }
     
     @Override
-    public void prepareGeometryValue(Geometry geom, int srid, Class binding, StringBuffer sql) {
+    public void prepareGeometryValue(Geometry geom, int dimension, int srid, Class binding, StringBuffer sql) {
 	    DB2Util.prepareGeometryValue(geom, srid, binding, sql);
     }
 

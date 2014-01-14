@@ -81,6 +81,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
@@ -281,18 +282,29 @@ public final class JDBCDataStore extends ContentDataStore
     }
 
     /**
-     * Adds a virtual table to the data store. If a virtual table with the same name was registered this
-     * method will replace it with the new one.
-     *      * @param vt
+     * Adds a virtual table to the data store. If a virtual table with the same name was registered
+     * this method will replace it with the new one. * @param vt
+     * 
      * @throws IOException If the view definition is not valid
+     * @deprecated Use createVirtualTable instead
      */
     public void addVirtualTable(VirtualTable vtable) throws IOException {
+        createVirtualTable(vtable);
+    }
+
+    /**
+     * Adds a virtual table to the data store. If a virtual table with the same name was registered
+     * this method will replace it with the new one. * @param vt
+     * 
+     * @throws IOException If the view definition is not valid
+     */
+    public void createVirtualTable(VirtualTable vtable) throws IOException {
         try {
             virtualTables.put(vtable.getName(), new VirtualTable(vtable));
             // the new vtable might be overriding a previous definition
             entries.remove(new NameImpl(namespaceURI, vtable.getName()));
             getSchema(vtable.getName());
-        } catch(IOException e) {
+        } catch (IOException e) {
             virtualTables.remove(vtable.getName());
             throw e;
         }
@@ -308,18 +320,29 @@ public final class JDBCDataStore extends ContentDataStore
     
     /**
      * Removes and returns the specified virtual table
+     * 
+     * @param name
+     * @return
+     * @deprecated Use dropVirtualTable instead
+     */
+    public VirtualTable removeVirtualTable(String name) {
+        return dropVirtualTable(name);
+    }
+
+    /**
+     * Removes and returns the specified virtual table
+     * 
      * @param name
      * @return
      */
-    public VirtualTable removeVirtualTable(String name) {
+    public VirtualTable dropVirtualTable(String name) {
         // the new vtable might be overriding a previous definition
-        VirtualTable vt =  virtualTables.remove(name);
-        if(vt != null) {
+        VirtualTable vt = virtualTables.remove(name);
+        if (vt != null) {
             entries.remove(new NameImpl(namespaceURI, name));
         }
         return vt;
     }
-    
 
     /**
      * Returns a live, immutable view of the virtual tables map (from name to definition)  
@@ -687,6 +710,53 @@ public final class JDBCDataStore extends ContentDataStore
         }
     }
 
+    public void removeSchema(String typeName) throws IOException {
+        removeSchema(name(typeName));
+    }
+
+    public void removeSchema(Name typeName) throws IOException {
+        if (entry(typeName) == null) {
+            String msg = "Schema '" + typeName + "' does not exist";
+            throw new IllegalArgumentException(msg);
+        }
+
+        //check for virtual table
+        if (virtualTables.containsKey(typeName.getLocalPart())) {
+            removeVirtualTable(typeName.getLocalPart());
+            return;
+        }
+
+        SimpleFeatureType featureType = getSchema(typeName);
+
+        //execute the drop table statement
+        Connection cx = createConnection();
+        try {
+            //give the dialect a chance to cleanup pre
+            dialect.preDropTable(databaseSchema, featureType, cx);
+
+            String sql = dropTableSQL(featureType, cx);
+            LOGGER.log(Level.FINE, "Drop schema: {0}", sql);
+
+            Statement st = cx.createStatement();
+
+            try {
+                st.execute(sql);
+            } finally {
+                closeSafe(st);
+            }
+
+            dialect.postDropTable(databaseSchema, featureType, cx);
+            removeEntry(typeName);
+        }
+        catch(Exception e) {
+            String msg = "Error occurred dropping table";
+            throw (IOException) new IOException(msg).initCause(e);
+        }
+        finally {
+            closeSafe(cx);
+        }
+    }
+
     /**
      * 
      */
@@ -850,7 +920,9 @@ public final class JDBCDataStore extends ContentDataStore
         try {
             DatabaseMetaData metaData = cx.getMetaData();
             Set<String> availableTableTypes = new HashSet<String>();
-            String[] desiredTableTypes = new String[] { "TABLE", "VIEW", "SYNONYM" };
+            String[] desiredTableTypes = new String[] {
+                "TABLE", "VIEW", "MATERIALIZED VIEW", "SYNONYM"
+            };
             ResultSet tableTypes = null;
             try{
                 tableTypes = metaData.getTableTypes();
@@ -1182,7 +1254,7 @@ public final class JDBCDataStore extends ContentDataStore
                 }
                 }
         } catch (Exception e) {
-            String msg = "Error occured calculating bounds";
+            String msg = "Error occured calculating bounds for " + featureType.getTypeName();
             throw (IOException) new IOException(msg).initCause(e);
         } finally {
             closeSafe(rs);
@@ -1978,6 +2050,19 @@ public final class JDBCDataStore extends ContentDataStore
 
         //practically should never get here, but just fall back and fail later 
         return "fid";
+    }
+
+    /**
+     * Generates a 'DROP TABLE' sql statement.
+     */
+    protected String dropTableSQL(SimpleFeatureType featureType, Connection cx)
+        throws Exception {
+        StringBuffer sql = new StringBuffer();
+        sql.append("DROP TABLE ");
+
+        encodeTableName(featureType.getTypeName(), sql, null);
+
+        return sql.toString();
     }
 
     /**
@@ -3203,11 +3288,16 @@ public final class JDBCDataStore extends ContentDataStore
             Object value = toSQL.getLiteralValues().get(i);
             Class binding = toSQL.getLiteralTypes().get(i);
             Integer srid = toSQL.getSRIDs().get(i);
-            if(srid == null)
+            Integer dimension = toSQL.getDimensions().get(i);
+            if(srid == null) {
                 srid = -1;
+            } 
+            if(dimension == null) {
+                dimension = 2;
+            }
             
             if(binding != null && Geometry.class.isAssignableFrom(binding))
-                dialect.setGeometryValue((Geometry) value, srid, binding, ps, offset + i+1);
+                dialect.setGeometryValue((Geometry) value, dimension, srid, binding, ps, offset + i+1);
             else
                 dialect.setValue( value, binding, ps, offset + i+1, cx );
             if ( LOGGER.isLoggable( Level.FINE ) ) {
@@ -3617,7 +3707,8 @@ public final class JDBCDataStore extends ContentDataStore
                     try {
                         Geometry g = (Geometry) value;
                         int srid = getGeometrySRID(g, att);
-                        dialect.encodeGeometryValue(g, srid, sql);
+                        int dimension = getGeometryDimension(g, att);
+                        dialect.encodeGeometryValue(g, dimension, srid, sql);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -3723,7 +3814,7 @@ public final class JDBCDataStore extends ContentDataStore
             // geometries might need special treatment, delegate to the dialect
             if(att instanceof GeometryDescriptor) {
                 Geometry geometry = (Geometry) feature.getAttribute(att.getName());
-                dialect.prepareGeometryValue(geometry, getDescriptorSRID(att), att.getType().getBinding(),  sql );
+                dialect.prepareGeometryValue(geometry, getDescriptorDimension(att), getDescriptorSRID(att), att.getType().getBinding(),  sql );
             } else {
                 sql.append("?");
             }
@@ -3765,7 +3856,8 @@ public final class JDBCDataStore extends ContentDataStore
             if (Geometry.class.isAssignableFrom(binding)) {
                 Geometry g = (Geometry) value;
                 int srid = getGeometrySRID(g, att);
-                dialect.setGeometryValue( g, srid, binding, ps, i );
+                int dimension = getGeometryDimension(g, att);
+                dialect.setGeometryValue( g, dimension, srid, binding, ps, i );
             } else {
                 dialect.setValue( value, binding, ps, i, cx );
             }
@@ -3830,6 +3922,23 @@ public final class JDBCDataStore extends ContentDataStore
         
         return srid;
     }
+    
+    /**
+     * Looks up the geometry dimension by trying a number of heuristics. Returns 2 if all attempts
+     * at guessing the dimension failed.
+     */
+    protected int getGeometryDimension(Geometry g, AttributeDescriptor descriptor) throws IOException {
+        int dimension = getDescriptorDimension(descriptor);
+        
+        if ( g == null || dimension > 0) {
+            return dimension;
+        }
+        
+        // check for dimension in the geometry coordinate sequences
+        CoordinateSequenceDimensionExtractor dex = new CoordinateSequenceDimensionExtractor();
+        g.apply(dex);
+        return dex.getDimension();
+    }
 
     /**
      * Extracts the eventual native SRID user property from the descriptor, 
@@ -3844,6 +3953,22 @@ public final class JDBCDataStore extends ContentDataStore
             srid = (Integer) descriptor.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
         
         return srid;
+    }
+    
+    /**
+     * Extracts the eventual native dimension user property from the descriptor, 
+     * returns -1 if not found
+     * @param descriptor
+     */
+    protected int getDescriptorDimension(AttributeDescriptor descriptor) {
+        int dimension = -1;
+        
+        // check if we have stored the native srid in the descriptor (we should)
+        if(descriptor.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID) != null) {
+            dimension = (Integer) descriptor.getUserData().get(Hints.COORDINATE_DIMENSION);
+        }
+        
+        return dimension;
     }
     
     /**
@@ -3870,7 +3995,8 @@ public final class JDBCDataStore extends ContentDataStore
 
         for (int i = 0; i < attributes.length; i++) {
             // skip exposed pk columns, they are read only
-            String attName = attributes[i].getLocalName();
+            AttributeDescriptor att = attributes[i];
+            String attName = att.getLocalName();
             if(pkColumnNames.contains(attName)) {
                 continue;
             }
@@ -3878,17 +4004,18 @@ public final class JDBCDataStore extends ContentDataStore
             dialect.encodeColumnName(attName, sql);
             sql.append(" = ");
             
-            if ( Geometry.class.isAssignableFrom( attributes[i].getType().getBinding() ) ) {
+            if ( Geometry.class.isAssignableFrom( att.getType().getBinding() ) ) {
                 try {
                     Geometry g = (Geometry) values[i];
-                    int srid = getGeometrySRID(g, attributes[i]);
-                    dialect.encodeGeometryValue(g, srid, sql);
+                    int srid = getGeometrySRID(g, att);
+                    int dimension = getGeometryDimension(g, att);
+                    dialect.encodeGeometryValue(g, dimension, srid, sql);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
             else {
-                dialect.encodeValue(values[i], attributes[i].getType().getBinding(), sql);    
+                dialect.encodeValue(values[i], att.getType().getBinding(), sql);    
             }
             
             sql.append(",");
@@ -3947,7 +4074,7 @@ public final class JDBCDataStore extends ContentDataStore
             if(attributes[i] instanceof GeometryDescriptor) {
                 Geometry geometry = (Geometry) values[i];
                 final Class<?> binding = att.getType().getBinding();
-                dialect.prepareGeometryValue(geometry, getDescriptorSRID(att), binding,  sql );
+                dialect.prepareGeometryValue(geometry, getDescriptorDimension(att), getDescriptorSRID(att), binding,  sql );
             } else {
                 sql.append("?");
             }
@@ -3983,7 +4110,7 @@ public final class JDBCDataStore extends ContentDataStore
             Class binding = att.getType().getBinding();
             if (Geometry.class.isAssignableFrom( binding ) ) {
                 Geometry g = (Geometry) values[i];
-                dialect.setGeometryValue(g, getDescriptorSRID(att), binding, ps, j+1);
+                dialect.setGeometryValue(g, getDescriptorDimension(att), getDescriptorSRID(att), binding, ps, j+1);
             } else {
                 dialect.setValue( values[i], binding, ps, j+1, cx);    
             }
@@ -3995,15 +4122,7 @@ public final class JDBCDataStore extends ContentDataStore
         }
         
         if ( toSQL != null ) {
-            setPreparedFilterValues(ps, toSQL, i, cx);
-            //for ( int j = 0; j < toSQL.getLiteralValues().size(); j++, i++)  {
-            //    Object value = toSQL.getLiteralValues().get( j );
-            //    Class binding = toSQL.getLiteralTypes().get( j );
-            //    
-            //    dialect.setValue( value, binding, ps, i+1, cx );
-            //    if ( LOGGER.isLoggable( Level.FINE ) ) {
-            //        LOGGER.fine( (i+1) + " = " + value );
-            //}
+            setPreparedFilterValues(ps, toSQL, j, cx);
         }
         
         return ps;
@@ -4449,5 +4568,66 @@ public final class JDBCDataStore extends ContentDataStore
 
         return tx;
     }
+    
+    /**
+     * Creates a new database index
+     * 
+     * @param index
+     * @throws IOException
+     */
+    public void createIndex(Index index) throws IOException {
+        SimpleFeatureType schema = getSchema(index.typeName);
+        Connection cx = null;
+        try {
+            cx = getConnection(Transaction.AUTO_COMMIT);
+            dialect.createIndex(cx, schema, databaseSchema, index);
+        } catch (SQLException e) {
+            throw new IOException("Failed to create index", e);
+        } finally {
+            closeSafe(cx);
+        }
+
+    }
+
+    /**
+     * Creates a new database index
+     * 
+     * @param index
+     * @throws IOException
+     */
+    public void dropIndex(String typeName, String indexName) throws IOException {
+        SimpleFeatureType schema = getSchema(typeName);
+
+        Connection cx = null;
+        try {
+            cx = getConnection(Transaction.AUTO_COMMIT);
+            dialect.dropIndex(cx, schema, databaseSchema, indexName);
+        } catch (SQLException e) {
+            throw new IOException("Failed to create index", e);
+        } finally {
+            closeSafe(cx);
+        }
+    }
+    
+    /**
+     * Lists all indexes associated to the given feature type
+     * @param typeName Name of the type for which indexes are searched. It's mandatory 
+     * @return 
+     */
+    public List<Index> getIndexes(String typeName) throws IOException {
+        // just to ensure we have the type name specified
+        SimpleFeatureType schema = getSchema(typeName);
+        
+        Connection cx = null;
+        try {
+            cx = getConnection(Transaction.AUTO_COMMIT);
+            return dialect.getIndexes(cx, databaseSchema, typeName);
+        } catch (SQLException e) {
+            throw new IOException("Failed to create index", e);
+        } finally {
+            closeSafe(cx);
+        }
+    }
+
     
 }

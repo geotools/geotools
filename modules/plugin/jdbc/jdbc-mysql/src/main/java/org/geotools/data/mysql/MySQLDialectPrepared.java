@@ -187,22 +187,22 @@ public class MySQLDialectPrepared extends PreparedStatementSQLDialect {
     // prepared statement api
     //
     @Override
-    public void prepareGeometryValue(Geometry g, int srid, Class binding,
+    public void prepareGeometryValue(Geometry g, int dimension, int srid, Class binding,
             StringBuffer sql) {
         if ( g != null ) {
             sql.append( "GeomFromWKB(?)");
             //sql.append( "GeomFromText(?)");            
         }
         else {
-            super.prepareGeometryValue(g, srid, binding, sql);
+            super.prepareGeometryValue(g, dimension, srid, binding, sql);
         }
     }
     
     @Override
-    public void setGeometryValue(Geometry g, int srid, Class binding,
+    public void setGeometryValue(Geometry g, int dimension, int srid, Class binding,
             PreparedStatement ps, int column) throws SQLException {
         if ( g != null ) {
-            ps.setBytes( column, new WKBWriter().write( g ) );
+            ps.setBytes( column, new WKBWriter(dimension).write( g ) );
             //ps.setString( column, g.toText() );
         }
         else {

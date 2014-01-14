@@ -935,7 +935,10 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 	}
 
 	public String[] getMetadataNames(final String coverageName) {
-		return null;
+        if(!checkName(coverageName)){
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
+        }
+        return getMetadataNames();
 	}
 	
 	/**
@@ -953,7 +956,10 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 	}
 	
     public String getMetadataValue(final String coverageName, final String name) {
-        return null;
+        if(!checkName(coverageName)){
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
+        }
+        return getMetadataValue(name);
     }
 
 	/**

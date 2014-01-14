@@ -35,6 +35,7 @@ import java.net.MalformedURLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,8 +45,7 @@ import javax.swing.ImageIcon;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.VendorOptionParser;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
+import org.geotools.renderer.style.RandomFillBuilder.PositionRandomizer;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -146,6 +146,12 @@ public class SLDStyleFactory {
 	/** This one is used as the observer object in image tracks */
 	private static final Canvas obs = new Canvas();
 
+	/**
+	 * The default size for Marks when a mark is used, but no size is provided (got from
+	 * the default size to be used for SVGs and other scalable graphics when no size is provided)
+	 */
+    public static final int DEFAULT_MARK_SIZE = 16;
+
 	static { // static block to populate the lookups
 		joinLookup.put("miter", new Integer(BasicStroke.JOIN_MITER));
 		joinLookup.put("bevel", new Integer(BasicStroke.JOIN_BEVEL));
@@ -200,6 +206,11 @@ public class SLDStyleFactory {
 	 * Helper to parse significant vendor options
 	 */
 	VendorOptionParser voParser = new VendorOptionParser();
+	
+	/**
+	 * Helper used to build
+	 */
+	RandomFillBuilder randomFillBuilder = new RandomFillBuilder(voParser, this);
 
 	/**
 	 * The factory builds a fair number of buffered images to deal with external
@@ -410,7 +421,7 @@ public class SLDStyleFactory {
 		style.setStroke(getStroke(symbolizer.getStroke(), feature));
 		style.setGraphicStroke(getGraphicStroke(symbolizer, symbolizer.getStroke(),
 				feature, scaleRange));
-		style.setContour(getStrokePaint(symbolizer, symbolizer.getStroke(), feature));
+		style.setContour(getStrokePaint(symbolizer.getStroke(), feature));
 		style.setContourComposite(getStrokeComposite(symbolizer.getStroke(),
 				feature));
 		setPolygonStyleFill(feature, style, symbolizer, scaleRange);
@@ -448,7 +459,7 @@ public class SLDStyleFactory {
 			}
 		}
 		// otherwise, sets regular fill using Java raster-based Paint objects
-		style.setFill(getPaint(symbolizer, symbolizer.getFill(), feature));
+		style.setFill(getPaint(symbolizer.getFill(), feature, symbolizer));
 		style.setFillComposite(getComposite(symbolizer.getFill(), feature));
 	}
 
@@ -470,7 +481,7 @@ public class SLDStyleFactory {
 		style.setStroke(getStroke(symbolizer.getStroke(), feature));
 		style.setGraphicStroke(getGraphicStroke(symbolizer, symbolizer.getStroke(),
 				feature, scaleRange));
-		style.setContour(getStrokePaint(symbolizer, symbolizer.getStroke(), feature));
+		style.setContour(getStrokePaint(symbolizer.getStroke(), feature));
 		style.setContourComposite(getStrokeComposite(symbolizer.getStroke(),
 				feature));
 
@@ -549,9 +560,8 @@ public class SLDStyleFactory {
 		} catch (NumberFormatException nfe) {
 			// nothing to do
 		}
-
-		float rotation = (float) ((evalToFloat(sldGraphic.getRotation(),
-				feature, 0) * Math.PI) / 180);
+		
+		float rotation = (float) Math.toRadians( evalToDouble(sldGraphic.getRotation(), feature, 0));
 
 		// Extract the sequence of external graphics and symbols and process
 		// them in order
@@ -640,16 +650,16 @@ public class SLDStyleFactory {
 
 				ms2d = new MarkStyle2D();
 				ms2d.setShape(shape);
-				ms2d.setFill(getPaint(symbolizer, mark.getFill(), feature));
+				ms2d.setFill(getPaint(mark.getFill(), feature, symbolizer));
 				ms2d.setFillComposite(getComposite(mark.getFill(), feature));
 				ms2d.setStroke(getStroke(mark.getStroke(), feature));
-				ms2d.setContour(getStrokePaint(symbolizer, mark.getStroke(), feature));
+				ms2d.setContour(getStrokePaint(mark.getStroke(), feature));
 				ms2d.setContourComposite(getStrokeComposite(mark.getStroke(),
 						feature));
 				// in case of Mark we don't have a natural size, so we default
 				// to 16
 				if (size <= 0)
-					size = 16;
+					size = DEFAULT_MARK_SIZE;
 				ms2d.setSize(size);
 				ms2d.setRotation(rotation);
 				retval = ms2d;
@@ -750,8 +760,7 @@ public class SLDStyleFactory {
 				// don't rotate labels that are being placed on shields.
 				rotation = 0.0;
 			} else {
-				rotation = evalToDouble(p.getRotation(), feature, 0);
-				rotation *= (Math.PI / 180.0);
+				rotation = Math.toRadians( evalToDouble(p.getRotation(), feature, 0));
 			}
 
 			ts2d.setPointPlacement(true);
@@ -774,14 +783,14 @@ public class SLDStyleFactory {
 		ts2d.setDisplacementY(dispY);
 
 		// setup fill and composite
-		ts2d.setFill(getPaint(symbolizer, symbolizer.getFill(), feature));
+		ts2d.setFill(getPaint(symbolizer.getFill(), feature, symbolizer));
 		ts2d.setComposite(getComposite(symbolizer.getFill(), feature));
 
 		// compute halo parameters
 		Halo halo = symbolizer.getHalo();
 
 		if (halo != null) {
-			ts2d.setHaloFill(getPaint(symbolizer, halo.getFill(), feature));
+			ts2d.setHaloFill(getPaint(halo.getFill(), feature, symbolizer));
 			ts2d.setHaloComposite(getComposite(halo.getFill(), feature));
 			ts2d.setHaloRadius(evalToFloat(halo.getRadius(), feature, 1));
 		}
@@ -907,7 +916,7 @@ public class SLDStyleFactory {
 		return createPointStyle(feature, symbolizer, stroke.getGraphicStroke(), scaleRange, false);
 	}
 
-	private Stroke getStroke(org.geotools.styling.Stroke stroke, Object feature) {
+	Stroke getStroke(org.geotools.styling.Stroke stroke, Object feature) {
 		if (stroke == null) {
 			return null;
 		}
@@ -961,8 +970,7 @@ public class SLDStyleFactory {
 		return stroke2d;
 	}
 
-	private Paint getStrokePaint(Symbolizer symbolizer, org.geotools.styling.Stroke stroke,
-			Object feature) {
+	private Paint getStrokePaint(org.geotools.styling.Stroke stroke, Object feature) {
 		if (stroke == null) {
 			return null;
 		}
@@ -974,8 +982,8 @@ public class SLDStyleFactory {
 		// if a graphic fill is to be used, prepare the paint accordingly....
 		org.geotools.styling.Graphic gr = stroke.getGraphicFill();
 
-		if (gr != null) {
-			contourPaint = getTexturePaint(symbolizer, gr, feature);
+		if (gr != null && gr.graphicalSymbols() != null && gr.graphicalSymbols().size() > 0) {
+			contourPaint = getTexturePaint(gr, feature, null);
 		}
 
 		return contourPaint;
@@ -995,7 +1003,7 @@ public class SLDStyleFactory {
 		return composite;
 	}
 
-	protected Paint getPaint(Symbolizer symbolizer, Fill fill, Object feature) {
+	protected Paint getPaint(Fill fill, Object feature, Symbolizer symbolizer) {
 		if (fill == null) {
 			return null;
 		}
@@ -1006,8 +1014,8 @@ public class SLDStyleFactory {
 		// if a graphic fill is to be used, prepare the paint accordingly....
 		org.geotools.styling.Graphic gr = fill.getGraphicFill();
 
-		if (gr != null) {
-			fillPaint = getTexturePaint(symbolizer, gr, feature);
+		if (gr != null && gr.graphicalSymbols() != null && gr.graphicalSymbols().size() > 0) {
+			fillPaint = getTexturePaint(gr, feature, symbolizer);
 		}
 
 		return fillPaint;
@@ -1033,115 +1041,81 @@ public class SLDStyleFactory {
 		return composite;
 	}
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param gr
-	 *            DOCUMENT ME!
-	 * @param feature
-	 *            DOCUMENT ME!
-	 * @return DOCUMENT ME!
-	 */
-	TexturePaint getTexturePaint(Symbolizer symbolizer, org.geotools.styling.Graphic gr, Object feature) {
-		// -1 to have the image use its natural size if none was provided by the
-		// user
-		double graphicSize = evalToDouble(gr.getSize(), feature, -1);
-		GraphicStyle2D gs = null;
-		for (ExternalGraphic eg : gr.getExternalGraphics()) {
-			gs = getGraphicStyle(eg, feature, graphicSize, 1);
-			if (gs != null) {
-				break;
-			}
-		}
+    TexturePaint getTexturePaint(org.geotools.styling.Graphic gr, Object feature,
+            Symbolizer symbolizer) {
+        // -1 to have the image use its natural size if none was provided by the
+        // user
+        double graphicSize = evalToDouble(gr.getSize(), feature, -1);
 
-		int iSizeX;
-		int iSizeY;
-		BufferedImage image = null;
-		if (gs != null) {
-			image = gs.getImage();
-			iSizeX = image.getWidth() - gs.getBorder();
-			iSizeY = image.getHeight() - gs.getBorder();
-			if (LOGGER.isLoggable(Level.FINER)) {
-				LOGGER.finer("got an image in graphic fill");
-			}
-		} else {
-			if (LOGGER.isLoggable(Level.FINER)) {
-				LOGGER.finer("going for the mark from graphic fill");
-			}
-
-			org.geotools.styling.Mark mark = getMark(gr, feature);
-
-			if (mark == null) {
-				return null;
-			}
-
-			// we need the shape to get to the aspect ratio information, since
-			// this info isnt' on the mark.
-			Shape shape = getShape(mark, feature);
-			if (shape == null) {
-				return null;
-			}
-
-			Rectangle2D shapeBounds = shape.getBounds2D();
-
-			// The aspect ratio is the relation between the width and height of
-			// this mark (x width units per y height units or width/height). The
-			// aspect ratio is used to render non isometric sized marks (where
-			// width != height). To discover the <code>width</code> of a non
-			// isometric
-			// mark, simply calculate <code>height * aspectRatio</code>, where
-			// height is given by getSize().
-			double shapeAspectRatio = (shapeBounds.getHeight() > 0 && shapeBounds
-					.getWidth() > 0) ? shapeBounds.getWidth()
-					/ shapeBounds.getHeight() : 1.0;
-
-			double size = evalToDouble(gr.getSize(), feature, 16);
-			final double sizeX = size * shapeAspectRatio; // apply the aspect
-															// ratio to fix the
-															// sample's width.
-			final double sizeY = size;
-			image = new BufferedImage((int) Math.ceil(sizeX * 3), (int) Math
-					.ceil(sizeY * 3), BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = image.createGraphics();
-			g2d.setRenderingHints(renderingHints);
-			double rotation = evalToDouble(gr.getRotation(), feature, 0.0);
-			for (int i = -1; i < 2; i++) {
-				for (int j = -1; j < 2; j++) {
-					double tx = sizeX * 1.5 + sizeX * i;
-					double ty = sizeY * 1.5 + sizeY * j;
-					fillDrawMark(g2d, tx, ty, symbolizer, mark, size, rotation, feature);
-				}
-			}
-			g2d.dispose();
-
-			iSizeX = (int) Math.floor(sizeX);
-			iSizeY = (int) Math.floor(sizeY);
-			// updated to use the new sizes
-			image = image.getSubimage(iSizeX, iSizeY, iSizeX, iSizeY); 
-		}
-
-		// do we have a graphic margin? (top,right,bottom,left order)
-		int[] margin = voParser.getGraphicMargin(symbolizer, "graphic-margin");
-		BufferedImage imageWithMargin;
-		if(margin == null) {
-		    imageWithMargin = image;
-		} else {
-		    int extraY = margin[0] + margin[2];
-		    int extraX = margin[1] + margin[3];
-		    int type = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType();
-            imageWithMargin = new BufferedImage(image.getWidth() + extraY, image.getHeight() + extraX, type);
-            int tx = margin[3];
-            int ty = margin[0];
-            AffineTransform at = AffineTransform.getTranslateInstance(tx, ty);
-            Graphics2D graphics = imageWithMargin.createGraphics();
-            graphics.drawRenderedImage(image, at);
-            graphics.dispose();
-		}
+        // search for the first valid external graphic or mark
+        Icon icon = null;
+        Mark mark = null;
+        Shape shape = null;
+        for (GraphicalSymbol symbol : gr.graphicalSymbols()) {
+            if(symbol instanceof ExternalGraphic) {
+                ExternalGraphic eg = (ExternalGraphic) symbol;
+                icon = getIcon(eg, feature, graphicSize);
+                if (icon != null) {
+                    break;
+                }    
+            } else if(symbol instanceof Mark) {
+                mark = (Mark) symbol;
+                shape = getShape(mark, feature);
+                if(shape != null) {
+                    break;
+                }
+            }
+        }
+        
+        if(icon == null && shape == null) {
+            return null;
+        }
 		
-		Rectangle2D.Double rect = new Rectangle2D.Double(0.0, 0.0, imageWithMargin.getWidth(),
-		        imageWithMargin.getHeight());
-		TexturePaint imagePaint = new TexturePaint(imageWithMargin, rect);
+        // grab the major vendor options
+        PositionRandomizer randomizer = (PositionRandomizer) voParser.getEnumOption(symbolizer, "random", PositionRandomizer.NONE);
+        
+        BufferedImage image;
+        if(randomizer != null && randomizer != PositionRandomizer.NONE) {
+            // we pass the mark instead of turning it into an image as an attempt to get
+            // a higher quality result, if we turn it into an image and then start moving/rotating
+            // it around we're going to antialias it more than once
+            image = randomFillBuilder.buildRandomTilableImage(symbolizer, gr, icon, mark, shape, graphicSize, feature);
+        } else {
+            int[] margin = voParser.getGraphicMargin(symbolizer, "graphic-margin");
+            GraphicStyle2D gs = getGraphicStyle(icon, 1);
+            if (gs != null) {
+                image = gs.getImage();
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.finer("got an image in graphic fill");
+                }
+            } else {
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.finer("going for the mark from graphic fill");
+                }
 
+                image = markToTilableImage(gr, feature, mark, shape);
+            }
+
+            if(margin != null) {
+                // apply the margin around the image
+                int extraY = margin[0] + margin[2];
+                int extraX = margin[1] + margin[3];
+                int type = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType();
+                BufferedImage imageWithMargin = new BufferedImage(image.getWidth() + extraX, image.getHeight() + extraY, type);
+                int tx = margin[1];
+                int ty = margin[0];
+                AffineTransform at = AffineTransform.getTranslateInstance(tx, ty);
+                Graphics2D graphics = imageWithMargin.createGraphics();
+                graphics.drawRenderedImage(image, at);
+                graphics.dispose();
+                
+                image = imageWithMargin;
+            }
+        }
+
+        // turn the image into a texture paint
+        Rectangle2D.Double rect = new Rectangle2D.Double(0.0, 0.0, image.getWidth(), image.getHeight());
+        TexturePaint imagePaint = new TexturePaint(image, rect);
 		if (LOGGER.isLoggable(Level.FINER)) {
 			LOGGER.finer("applied TexturePaint " + imagePaint);
 		}
@@ -1149,108 +1123,102 @@ public class SLDStyleFactory {
 		return imagePaint;
 	}
 
-	/**
-	 * Tries to parse the provided external graphic into a BufferedImage.
-	 * 
-	 * @param eg
-	 * @param feature
-	 * @param size
-	 * @return the image, or null if the external graphics could not be
-	 *         interpreted
-	 */
-	private GraphicStyle2D getGraphicStyle(ExternalGraphic eg, Object feature,
-			double size, int border) {
-		Icon icon = getIcon(eg, feature, toImageSize(size));
-		if (icon != null) {
-			// optimization, if this is an IconImage based on a BufferedImage,
-			// just return the
-			// wrapped one
-			if (icon instanceof ImageIcon) {
-				ImageIcon img = (ImageIcon) icon;
-				if (img.getImage() instanceof BufferedImage) {
-					// return the image as is, no border
-					BufferedImage image = (BufferedImage) img.getImage();
-					return new GraphicStyle2D(image, 0, 0);
-				}
-			}
+	
 
-			// otherwise have the icon draw itself on a BufferedImage
-			BufferedImage result = new BufferedImage(icon.getIconWidth()
-					+ border * 2, icon.getIconHeight() + border * 2,
-					BufferedImage.TYPE_4BYTE_ABGR);
-			Graphics2D g = (Graphics2D) result.getGraphics();
-			// we paint it once, make it look good
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_RENDERING,
-					RenderingHints.VALUE_RENDER_QUALITY);
-			g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-					RenderingHints.VALUE_STROKE_PURE);
-			icon.paintIcon(null, g, 1, 1);
-			g.dispose();
+    private BufferedImage markToTilableImage(org.geotools.styling.Graphic gr, Object feature, Mark mark,
+            Shape shape) {
+        BufferedImage image;
+        Rectangle2D shapeBounds = shape.getBounds2D();
+   
+        // The aspect ratio is the relation between the width and height of
+        // this mark (x width units per y height units or width/height). The
+        // aspect ratio is used to render non isometric sized marks (where
+        // width != height). To discover the <code>width</code> of a non
+        // isometric
+        // mark, simply calculate <code>height * aspectRatio</code>, where
+        // height is given by getSize().
+        double shapeAspectRatio = (shapeBounds.getHeight() > 0 && shapeBounds
+        		.getWidth() > 0) ? shapeBounds.getWidth()
+        		/ shapeBounds.getHeight() : 1.0;
+   
+        double size = evalToDouble(gr.getSize(), feature, 16);
+        final double sizeX = size * shapeAspectRatio; // apply the aspect
+        												// ratio to fix the
+        												// sample's width.
+        final double sizeY = size;
+        
+        // we need to paint the mark in a 3x3 grid to account for border effects
+        // due to antialiasing (e.g., even if the mark is 10 pixels wide, due to the 
+        // antialiasing graphically it occupies 12 or so pixels)
+        image = new BufferedImage((int) Math.ceil(sizeX * 3), (int) Math
+        		.ceil(sizeY * 3), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = image.createGraphics();
+        g2d.setRenderingHints(renderingHints);
+        double rotation = Math.toRadians(evalToDouble(gr.getRotation(), feature, 0.0)); // fix for GEOS-6217
+        for (int i = -1; i < 2; i++) {
+        	for (int j = -1; j < 2; j++) {
+        		double tx = sizeX * 1.5 + sizeX * i;
+        		double ty = sizeY * 1.5 + sizeY * j;
+        		fillDrawMark(g2d, tx, ty, mark, size, rotation, feature);
+        	}
+        }
+        g2d.dispose();
+   
+        int iSizeX = (int) Math.floor(sizeX);
+        int iSizeY = (int) Math.floor(sizeY);
+        // updated to use the new sizes
+        image = image.getSubimage(iSizeX, iSizeY, iSizeX, iSizeY);
+        return image;
+    }
 
-			return new GraphicStyle2D(result, 0, 0, border);
-		}
+    /**
+     * Tries to parse the provided external graphic into a BufferedImage.
+     * 
+     * @param eg
+     * @param feature
+     * @param size
+     * @return the image, or null if the external graphics could not be interpreted
+     */
+    private GraphicStyle2D getGraphicStyle(ExternalGraphic eg, Object feature, double size,
+            int border) {
+        Icon icon = getIcon(eg, feature, toImageSize(size));
+        return getGraphicStyle(icon, border);
+    }
 
-		return null;
-	}
+    /**
+     * Converts an icon into a {@link GraphicStyle2D}
+     * @param icon
+     * @param border
+     * @return
+     */
+    private GraphicStyle2D getGraphicStyle(Icon icon, int border) {
+        if (icon == null) {
+            return null;
+        }
+        // optimization, if this is an IconImage based on a BufferedImage,
+        // just return the
+        // wrapped one
+        if (icon instanceof ImageIcon) {
+            ImageIcon img = (ImageIcon) icon;
+            if (img.getImage() instanceof BufferedImage) {
+                // return the image as is, no border
+                BufferedImage image = (BufferedImage) img.getImage();
+                return new GraphicStyle2D(image, 0, 0);
+            }
+        }
 
-	/**
-	 * Applies image displacement if necessary
-	 * @param image
-	 * @param displacement
-	 * @param feature 
-	 * @return
-	 */
-    private BufferedImage displaceImage(BufferedImage image, Displacement displacement, AnchorPoint anchor, Object feature, boolean fill) {
-        if(displacement == null && anchor == null) {
-            return image;
-        }
-        
-        int dx = 0; 
-        int dy = 0;
-        if(displacement != null) {
-            dx = evalToInt(displacement.getDisplacementX(), feature, 0);
-            dy = evalToInt(displacement.getDisplacementY(), feature, 0);
-        }
-        
-        double ax = 0.5;
-        double ay = 0.5;
-        if(anchor != null) {
-            ax = evalToDouble(anchor.getAnchorPointX(), feature, 0.5f);
-            ay = evalToDouble(anchor.getAnchorPointY(), feature, 0.5f);
-        }
-        
-        if(dx == 0 && dy == 0 && ax == 0.5 && ay == 0.5) {
-            return image;
-        }
-        
-        if(dx > MAX_RASTERIZATION_SIZE || dy > MAX_RASTERIZATION_SIZE) {
-            throw new IllegalArgumentException("Displacement is too large, max value is " + MAX_RASTERIZATION_SIZE);
-        }
-        
-        // prepare a drawing surface to contain the original image and its displacement
-        int type = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType(); 
-        BufferedImage bi;
-        AffineTransform at; 
-        if(fill) {
-            bi = new BufferedImage(image.getWidth() + Math.abs(dx), image.getHeight() + Math.abs(dy), type);
-            int tx = (int) Math.round((bi.getWidth() - image.getWidth()) * ax);
-            int ty = (int) Math.round((bi.getHeight() - image.getHeight()) * ay);
-            at = AffineTransform.getTranslateInstance(tx, ty);
-        } else {
-            int tx = dx > 0 ? dx : 0;
-            int ty = dy > 0 ? dy : 0;
-            tx += (ax - 0.5) * image.getWidth();
-            ty += (ay - 0.5) * image.getHeight();
-            at = AffineTransform.getTranslateInstance(tx, ty);
-            bi = new BufferedImage(image.getWidth() + Math.abs(tx), image.getHeight() + Math.abs(ty), type);
-        }
-        Graphics2D graphics = bi.createGraphics();
-        graphics.drawRenderedImage(image, at);
-        graphics.dispose();
-        
-        return bi;
+        // otherwise have the icon draw itself on a BufferedImage
+        BufferedImage result = new BufferedImage(icon.getIconWidth() + border * 2,
+                icon.getIconHeight() + border * 2, BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D g = (Graphics2D) result.getGraphics();
+        // we paint it once, make it look good
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        icon.paintIcon(null, g, 1, 1);
+        g.dispose();
+
+        return new GraphicStyle2D(result, 0, 0, border);
     }
 
     /**
@@ -1321,30 +1289,6 @@ public class SLDStyleFactory {
 	}
 
 	/**
-	 * Looks ups the marks included in the graphics and returns the one that can
-	 * be drawn by at least one mark factory
-	 * 
-	 * @param graphic
-	 * @param feature
-	 * @return
-	 */
-	private Mark getMark(Graphic graphic, Object feature) {
-		if (graphic == null)
-			return null;
-
-		Mark[] marks = graphic.getMarks();
-		for (int i = 0; i < marks.length; i++) {
-			final Mark mark = marks[i];
-			Shape shape = getShape(mark, feature);
-			if (shape != null)
-				return mark;
-
-		}
-		// if nothing worked, we return a square
-		return null;
-	}
-
-	/**
 	 * Given a mark and a feature, returns the Shape provided by the first
 	 * {@link MarkFactory} that was able to handle the Mark
 	 * 
@@ -1381,8 +1325,17 @@ public class SLDStyleFactory {
 
 		return null;
 	}
-
-	private void fillDrawMark(Graphics2D g2d, double tx, double ty, Symbolizer symbolizer, Mark mark,
+	/**
+	 * 
+	 * @param g2d graphics context
+	 * @param tx x offset
+	 * @param ty y offset
+	 * @param mark mark used for fill pattern
+	 * @param size size of mark
+	 * @param rotation rotation in radians
+	 * @param feature feature used for expression evaulation
+	 */
+	void fillDrawMark(Graphics2D g2d, double tx, double ty, Mark mark,
 			double size, double rotation, Object feature) {
 		if (mark == null)
 			return;
@@ -1412,7 +1365,7 @@ public class SLDStyleFactory {
 				LOGGER.finer("applying fill to mark");
 			}
 
-			g2d.setPaint(getPaint(symbolizer, mark.getFill(), feature));
+			g2d.setPaint(getPaint(mark.getFill(), feature, null));
 			g2d.setComposite(getComposite(mark.getFill(), feature));
 			g2d.fill(shape);
 		}
@@ -1422,7 +1375,7 @@ public class SLDStyleFactory {
 				LOGGER.finer("applying stroke to mark");
 			}
 
-			g2d.setPaint(getStrokePaint(symbolizer, mark.getStroke(), feature));
+			g2d.setPaint(getStrokePaint(mark.getStroke(), feature));
 			g2d.setComposite(getStrokeComposite(mark.getStroke(), feature));
 			g2d.setStroke(getStroke(mark.getStroke(), feature));
 			g2d.draw(shape);
@@ -1541,7 +1494,7 @@ public class SLDStyleFactory {
 		}
 		return fallback;
 	}
-
+	
 	private float evalToFloat(Expression exp, Object f, float fallback) {
 		if (exp == null) {
 			return fallback;

@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -135,6 +136,7 @@ public class SpatialRequestHelper {
         ReferencedEnvelope geographicBBox;
 
         CoordinateReferenceSystem geographicCRS2D;
+
     }
 
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SpatialRequestHelper.class);
@@ -162,8 +164,10 @@ public class SpatialRequestHelper {
     MathTransform requestCRSToCoverageGeographicCRS2D;
 
     MathTransform destinationToSourceTransform;
-    
+
     CoverageProperties coverageProperties;
+
+    boolean accurateResolution;
 
     /**
      * Set to {@code true} if this request will produce an empty result, 
@@ -452,23 +456,12 @@ public class SpatialRequestHelper {
                 // same and the conversion is not , we can get the resolution from envelope + raster directly
                 //
                 if (destinationToSourceTransform != null && !destinationToSourceTransform.isIdentity()) {
-
-                    //
-                    // compute the approximated resolution in the request crs, notice that we are
-                    // assuming a reprojection that keeps the raster area unchanged hence
-                    // the effect is a degradation of quality, but we might take that into account emprically
-                    //
-                    requestedResolution = null;
-
-                    final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(destinationRasterArea), cropBBox);
-                    final AffineTransform tempTransform = geMapper.createAffineTransform();
-
-                    requestedResolution = new double[] {
-                            XAffineTransform.getScaleX0(tempTransform),
-                            XAffineTransform.getScaleY0(tempTransform) };
-
+                    if (accurateResolution) {
+                        requestedResolution = computeAccurateResolution();
+                    } else {
+                        requestedResolution = computeClassicResolution();
+                    }
                 } else {
-
                     // the crs of the request and the one of the coverage are the
                     // same, we can get the resolution from the grid to world
                     requestedResolution = new double[] {
@@ -495,7 +488,80 @@ public class SpatialRequestHelper {
 
     }
 
-    private void computeCropBBOX() throws DataSourceException {
+    /**
+     * Classic way of computing the requested resolution
+     * 
+     * @return
+     */
+    private double[] computeClassicResolution() {
+        final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(
+                destinationRasterArea), cropBBox);
+        final AffineTransform tempTransform = geMapper.createAffineTransform();
+
+        return new double[] { XAffineTransform.getScaleX0(tempTransform),
+                XAffineTransform.getScaleY0(tempTransform) };
+    }
+
+    /** 
+     * Compute the resolutions through a more accurate logic:
+     * Compute the resolution in 9 points, the corners of the requested area and the middle points
+     * and take the better one. This will provide better results for cases where
+     * there is a lot more deformation on a subregion (top/bottom/sides) of the requested bbox with respect to others.
+     * 
+     * @return
+     * @throws TransformException
+     * @throws NoninvertibleTransformException
+     */
+    private double[] computeAccurateResolution() throws TransformException,
+            NoninvertibleTransformException {
+        GeneralEnvelope cropBboxTarget = CRS.transform(destinationToSourceTransform.inverse(), cropBBox); 
+        double[] points = new double[36];
+        for(int i = 0; i < 3; i++) {
+            double x;
+            if(i == 0) {
+                x = cropBboxTarget.getMinimum(0);
+            } else if(i == 1) {
+                x = cropBboxTarget.getMedian(0);
+            } else {
+                x = cropBboxTarget.getMaximum(0);
+            }
+            for(int j = 0; j < 3; j++) {
+                double y;
+                if(j == 0) {
+                    y = cropBboxTarget.getMinimum(1);
+                } else if(j == 1) {
+                    y = cropBboxTarget.getMedian(1);
+                } else {
+                    y = cropBboxTarget.getMaximum(1);
+                }
+
+                int k = (i * 3 + j) * 4;
+                points[k] = x - requestedResolution[0] / 2;
+                points[k + 1] = y - requestedResolution[1] / 2;
+                points[k + 2] = x + requestedResolution[0] / 2;
+                points[k + 3] = y + requestedResolution[1] / 2;
+            }
+        }
+        destinationToSourceTransform.transform(points, 0, points, 0, 18);
+
+        double mx = Double.MAX_VALUE;
+        double my = Double.MAX_VALUE;
+
+        for (int i = 0; i < 36; i+=4) {
+            double dx = points[i + 2] - points[i];
+            double dy = points[i + 3] - points[i + 1];
+            if(dx < mx) {
+                mx = dx;
+            }
+            if(dy < my) {
+                my = dy;
+            }
+        }
+        
+        return new double[] {mx, my};
+    }
+
+    private void computeCropBBOX() throws DataSourceException  {
 
         // get the crs for the requested bbox
         if (requestCRS == null)
@@ -613,6 +679,14 @@ public class SpatialRequestHelper {
         return needsReprojection;
     }
 
+    public boolean isAccurateResolution() {
+        return accurateResolution;
+    }
+
+    public void setAccurateResolution(boolean accurateResolution) {
+        this.accurateResolution = accurateResolution;
+    }
+
     public BoundingBox getRequestedBBox() {
         return requestedBBox;
     }
@@ -653,6 +727,80 @@ public class SpatialRequestHelper {
     
     public CoverageProperties getCoverageProperties() {
         return coverageProperties;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SpatialRequestHelper [");
+        if (requestedBBox != null) {
+            builder.append("requestedBBox=");
+            builder.append(requestedBBox);
+            builder.append(", ");
+        }
+        if (cropBBox != null) {
+            builder.append("cropBBox=");
+            builder.append(cropBBox);
+            builder.append(", ");
+        }
+        if (requestedRasterArea != null) {
+            builder.append("requestedRasterArea=");
+            builder.append(requestedRasterArea);
+            builder.append(", ");
+        }
+        if (destinationRasterArea != null) {
+            builder.append("destinationRasterArea=");
+            builder.append(destinationRasterArea);
+            builder.append(", ");
+        }
+        if (requestCRS != null) {
+            builder.append("requestCRS=");
+            builder.append(requestCRS);
+            builder.append(", ");
+        }
+        if (requestedGridToWorld != null) {
+            builder.append("requestedGridToWorld=");
+            builder.append(requestedGridToWorld);
+            builder.append(", ");
+        }
+        if (requestedResolution != null) {
+            builder.append("requestedResolution=");
+            builder.append(Arrays.toString(requestedResolution));
+            builder.append(", ");
+        }
+        if (requestedBBOXInCoverageGeographicCRS != null) {
+            builder.append("requestedBBOXInCoverageGeographicCRS=");
+            builder.append(requestedBBOXInCoverageGeographicCRS);
+            builder.append(", ");
+        }
+        if (requestCRSToCoverageGeographicCRS2D != null) {
+            builder.append("requestCRSToCoverageGeographicCRS2D=");
+            builder.append(requestCRSToCoverageGeographicCRS2D);
+            builder.append(", ");
+        }
+        if (destinationToSourceTransform != null) {
+            builder.append("destinationToSourceTransform=");
+            builder.append(destinationToSourceTransform);
+            builder.append(", ");
+        }
+        if (coverageProperties != null) {
+            builder.append("coverageProperties=");
+            builder.append(coverageProperties);
+            builder.append(", ");
+        }
+        builder.append("accurateResolution=");
+        builder.append(accurateResolution);
+        builder.append(", empty=");
+        builder.append(empty);
+        builder.append(", needsReprojection=");
+        builder.append(needsReprojection);
+        builder.append(", ");
+        if (approximateRequestedBBoInNativeCRS != null) {
+            builder.append("approximateRequestedBBoInNativeCRS=");
+            builder.append(approximateRequestedBBoInNativeCRS);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

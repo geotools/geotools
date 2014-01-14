@@ -355,8 +355,11 @@ public interface Graphic extends GraphicLegend,
     Expression getRotation();
 
     /**
+     * This parameter defines the rotation of a graphic in the clockwise
+     * direction about its centre point in decimal degrees.   The value
+     * encoded as a floating point number.
      * 
-     * @param rotation
+     * @param rotation in decimal degrees
      */
     void setRotation(Expression rotation);
 

@@ -81,7 +81,10 @@ public class GraphicStyle2D extends Style2D {
 	}
 
 	/**
-     */
+	 * The graphic rotation in radians.
+	 * 
+	 * @return graphic rotation in radians
+         */
 	public float getRotation() {
 		return rotation;
 	}
@@ -101,10 +104,11 @@ public class GraphicStyle2D extends Style2D {
 	}
 
 	/**
-	 * @param f
+	 * Graphic rotation in radians
+	 * @param radians graphic rotation
 	 */
-	public void setRotation(float f) {
-		rotation = f;
+	public void setRotation(float radians) {
+		rotation = radians;
 	}
 
 	/**

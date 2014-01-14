@@ -34,6 +34,7 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.Layer;
+import org.geotools.data.ows.MultithreadedHttpClient;
 import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.WMSCapabilities;
 import org.geotools.data.wms.WebMapServer;
@@ -129,7 +130,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
             // do setup once!
             if (serverURL != null) {
                 try {
-                    wms = new WebMapServer(serverURL);
+                    wms = new WebMapServer(serverURL, new MultithreadedHttpClient());
                     capabilities = wms.getCapabilities();
                 } catch (Exception eek) {
                     serverURL = null;

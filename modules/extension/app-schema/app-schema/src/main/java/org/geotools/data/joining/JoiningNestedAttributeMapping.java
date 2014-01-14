@@ -38,13 +38,11 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.SortByImpl;
 import org.geotools.jdbc.JoiningJDBCFeatureSource;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -213,11 +211,11 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         List<Expression> foreignIds = new ArrayList<Expression>();
         for (int i = 0; i < query.getQueryJoins().size(); i++) {
-                for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
-                    foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i
-                            + "_" + j));
-                }
-        }      
+            for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
+                foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i
+                        + "_" + j));
+            }
+        }
         
         daFeatureIterator.setForeignIds(foreignIds);
 
@@ -394,7 +392,10 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
 
         if (featureIterator != null) {
-            while (featureIterator.hasNext() && featureIterator.checkForeignIdValues(idValues)) {
+            while (featureIterator.hasNext()
+                    && featureIterator.checkForeignIdValues(idValues)
+                    && featureIterator.peekNextValue(nestedSourceExpression).toString()
+                            .equals(foreignKeyValue.toString())) {
                 matchingFeatures.add(featureIterator.next());
             }
         }

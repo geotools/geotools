@@ -23,9 +23,12 @@ import java.sql.DatabaseMetaData;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -573,6 +576,27 @@ public abstract class SQLDialect {
     }
     
     /**
+     * Returns the dimension of the coordinates in the geometry. Defaults to 2, subclasses
+     * can override it.
+     * <p>
+     * This method is given a direct connection to the database. The connection
+     * must not be closed. However any statements or result sets instantiated
+     * from the connection must be closed.
+     * </p>
+     * <p>
+     * In the event that the dimension cannot be determined, this method should return 2
+     * </p>
+     * @param schemaName The database schema, could be <code>null</code>.
+     * @param tableName The table, never <code>null</code>.
+     * @param columnName The column name, never <code>null</code>
+     * @param cx The database connection.
+     */
+    public int getGeometryDimension(String schemaName, String tableName, String columnName,
+        Connection cx) throws SQLException {
+        return 2;
+    }
+    
+    /**
      * Turns the specified srid into a {@link CoordinateReferenceSystem}, or returns <code>null</code> if not possible.
      * <p>
      * The implementation might just use <code>CRS.decode("EPSG:" + srid)</code>, but most spatial databases will have 
@@ -979,6 +1003,31 @@ public abstract class SQLDialect {
     }
 
     /**
+     * Callback which executes before a table is about to be dropped.
+     * <p>
+     * This base implementation does nothing, subclasses should override as need be.
+     * </p>
+     * @param schemaName The database schema containing the table.
+     * @param featureType The featureType/table being dropped.
+     * @param cx The database connection.
+     */
+    public void preDropTable(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {
+    }
+
+    /**
+     * Callback which executes after a table has been dropped.
+     *
+     * <p>
+     * This base implementation does nothing, subclasses should override as need be.
+     * </p>
+     * @param schemaName The database schema containing the table.
+     * @param featureType The featureType/table being dropped.
+     * @param cx The database connection.
+     */
+    public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {
+    }
+
+    /**
      * Controls whether keys are looked up post or pre insert.
      * <p>
      * When a row is inserted into a table, and a key is automatically generated
@@ -1167,5 +1216,121 @@ public abstract class SQLDialect {
      */
     public boolean isAutoCommitQuery() {
         return false;
+    }
+    
+    /**
+     * Performs the class "create [unique] indexName on tableName(att1, att2, ..., attN)" call.
+     * 
+     * Subclasses can override to handle special indexes (like spatial ones) and/or the hints
+     * 
+     * @param schema
+     * @param index
+     * @throws SQLException
+     */
+    public void createIndex(Connection cx, SimpleFeatureType schema, String databaseSchema,
+            Index index) throws SQLException {
+        StringBuffer sql = new StringBuffer();
+        String escape = getNameEscape();
+        sql.append("CREATE ");
+        if (index.isUnique()) {
+            sql.append("UNIQUE ");
+        }
+        sql.append("INDEX ");
+        sql.append(escape).append(index.getIndexName()).append(escape);
+        sql.append(" ON ");
+        if (databaseSchema != null) {
+            encodeSchemaName(databaseSchema, sql);
+            sql.append(".");
+        }
+        sql.append(escape).append(index.getTypeName()).append(escape).append("(");
+        for (String attribute : index.getAttributes()) {
+            sql.append(escape).append(attribute).append(escape).append(", ");
+        }
+        sql.setLength(sql.length() - 2);
+        sql.append(")");
+
+        Statement st = null;
+        try {
+            st = cx.createStatement();
+            st.execute(sql.toString());
+            if(!cx.getAutoCommit()) {
+                cx.commit();
+            }
+        } finally {
+            dataStore.closeSafe(cx);
+        }
+    }
+
+    /**
+     * Drop the index. Subclasses can override to handle extra syntax or db specific situations
+     * 
+     * @param cx
+     * @param schema
+     * @param databaseSchema
+     * @param indexName
+     * @throws SQLException
+     */
+    public void dropIndex(Connection cx, SimpleFeatureType schema, String databaseSchema,
+            String indexName) throws SQLException {
+        StringBuffer sql = new StringBuffer();
+        String escape = getNameEscape();
+        sql.append("DROP INDEX ");
+        if (databaseSchema != null) {
+            encodeSchemaName(databaseSchema, sql);
+            sql.append(".");
+        }
+        sql.append(escape).append(indexName).append(escape);
+
+        Statement st = null;
+        try {
+            st = cx.createStatement();
+            st.execute(sql.toString());
+            if(!cx.getAutoCommit()) {
+                cx.commit();
+            }
+        } finally {
+            dataStore.closeSafe(cx);
+        }
+    }
+
+    /**
+     * Returns the list of indexes for a certain table. Subclasses can override to add support for
+     * db specific hints
+     * 
+     * @param cx
+     * @param databaseSchema
+     * @param typeName
+     * @return
+     * @throws SQLException
+     */
+    public List<Index> getIndexes(Connection cx, String databaseSchema, String typeName)
+            throws SQLException {
+        DatabaseMetaData md = cx.getMetaData();
+        ResultSet indexInfo = null;
+        try {
+            indexInfo = md.getIndexInfo(cx.getCatalog(), databaseSchema, typeName, false, true);
+
+            Map<String, Index> indexes = new LinkedHashMap<String, Index>();
+            while (indexInfo.next()) {
+                short type = indexInfo.getShort("TYPE");
+                if(type != DatabaseMetaData.tableIndexStatistic) {
+                    String indexName = indexInfo.getString("INDEX_NAME");
+                    String columnName = indexInfo.getString("COLUMN_NAME");
+                    Index index = indexes.get(indexName);
+                    if (index != null) {
+                        index.attributes.add(columnName);
+                    } else {
+                        boolean unique = !indexInfo.getBoolean("NON_UNIQUE");
+                        index = new Index(typeName, indexName, unique, columnName);
+                        indexes.put(indexName, index);
+                    }
+                }
+            }
+
+            return new ArrayList<Index>(indexes.values());
+        } finally {
+            dataStore.closeSafe(indexInfo);
+        }
+
     }
 }

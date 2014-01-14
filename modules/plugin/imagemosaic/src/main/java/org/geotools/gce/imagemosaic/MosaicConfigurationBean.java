@@ -63,6 +63,11 @@ public class MosaicConfigurationBean {
      */
     private boolean expandToRGB;
     
+    /**
+     * <code>true</code> if we need to look for Auxiliary Metadata PAM XML files
+     */
+    private boolean checkAuxiliaryMetadata;
+    
     /** OverviewLevel levels */
     private double[][] levels;
     
@@ -163,6 +168,14 @@ public class MosaicConfigurationBean {
     public void setExpandToRGB(final boolean expandToRGB) {
         this.expandToRGB = expandToRGB;
     }
+    public boolean isCheckAuxiliaryMetadata() {
+        return checkAuxiliaryMetadata;
+    }
+
+    public void setCheckAuxiliaryMetadata(boolean checkAuxiliaryMetadata) {
+        this.checkAuxiliaryMetadata = checkAuxiliaryMetadata;
+    }
+
     public String getName() {
         return name;
     }
@@ -222,6 +235,8 @@ public class MosaicConfigurationBean {
                 + ", elevationAttribute=" + elevationAttribute
                 + ",sampleModel=" + sampleModel
                 + ", envelope=" + envelope 
-                + ", footprintManagement=" + footprintManagement + "]";
+                + ", footprintManagement=" + footprintManagement 
+                + ", checkAuxiliaryMetadata=" + checkAuxiliaryMetadata +
+                "]";
         }
 }

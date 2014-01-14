@@ -26,6 +26,9 @@ package org.geotools.data.vpf.exc;
  * @source $URL$
  */
 public class VPFRowDataException extends VPFDataException {
+    /** serialVersionUID */
+    private static final long serialVersionUID = 8181515081697144676L;
+
     /**
      * Creates a new VPFRowDataException object.
      */

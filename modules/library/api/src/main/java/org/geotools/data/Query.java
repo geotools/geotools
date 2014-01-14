@@ -984,9 +984,16 @@ public class Query {
         if(sortBy != null && sortBy.length > 0) {
         returnString.append("\n   [sort by: ");
             for (int i = 0; i < sortBy.length; i++) {
-                returnString.append(sortBy[i].getPropertyName().getPropertyName());
-                returnString.append(" ");
-                returnString.append(sortBy[i].getSortOrder().name());
+                SortBy sb = sortBy[i];
+                if(sb == SortBy.NATURAL_ORDER) {
+                    returnString.append("NATURAL");
+                } else if(sb == SortBy.REVERSE_ORDER) {
+                    returnString.append("REVERSE");
+                } else {
+                    returnString.append(sb.getPropertyName().getPropertyName());
+                    returnString.append(" ");
+                    returnString.append(sb.getSortOrder().name());
+                }
 
                 if (i < (sortBy.length - 1)) {
                     returnString.append(", ");

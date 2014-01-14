@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.renderer.style.TextStyle2D;
+import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -86,6 +87,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     
     int[] graphicMargin = null;
 
+    TextSymbolizer symbolizer;
+
     public double getGoodnessOfFit() {
         return goodnessOfFit;
     }
@@ -132,11 +135,12 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     /**
      * Construct <code>LabelCacheItem</code>.
      */
-    public LabelCacheItem(String layerId, TextStyle2D textStyle, LiteShape2 shape, String label) {
+    public LabelCacheItem(String layerId, TextStyle2D textStyle, LiteShape2 shape, String label, TextSymbolizer symbolizer) {
         this.textStyle = textStyle;
         this.geoms.add(shape.getGeometry());
         this.label = label;
         this.layerIds.add(layerId);
+        this.symbolizer = symbolizer;
     }
 
     /**
@@ -160,25 +164,6 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
      */
     public TextStyle2D getTextStyle() {
         return textStyle;
-    }
-
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals(Object arg0) {
-        if (arg0 instanceof String) {
-            String label = (String) arg0;
-            return label.equals(textStyle.getLabel());
-        }
-        if (arg0 instanceof LabelCacheItem) {
-            LabelCacheItem item = (LabelCacheItem) arg0;
-            return textStyle.getLabel().equals(item.getTextStyle().getLabel());
-        }
-        if (arg0 instanceof TextStyle2D) {
-            TextStyle2D text = (TextStyle2D) arg0;
-            return textStyle.getLabel().equals(text.getLabel());
-        }
-        return false;
     }
 
     /**
@@ -312,10 +297,6 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.autoWrap = autoWrap;
     }
 
-    public int hashCode() {
-        return textStyle.getLabel().hashCode();
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -381,6 +362,37 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     PolygonAlignOptions getPolygonAlign() {
         return polygonAlign;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((label == null) ? 0 : label.hashCode());
+        result = prime * result + ((symbolizer == null) ? 0 : System.identityHashCode(symbolizer));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        LabelCacheItem other = (LabelCacheItem) obj;
+        if (label == null) {
+            if (other.label != null)
+                return false;
+        } else if (!label.equals(other.label))
+            return false;
+        if (symbolizer != other.symbolizer) {
+                return false;
+        }
+        return true;
+    }
+    
+    
     
 }
 

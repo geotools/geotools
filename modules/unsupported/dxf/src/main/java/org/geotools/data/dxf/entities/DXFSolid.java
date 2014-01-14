@@ -61,6 +61,22 @@ public class DXFSolid extends DXFEntity {
         }
         setName("DXFSolid");
     }
+    public DXFSolid(DXFPoint p1, DXFPoint p2, DXFPoint p3, DXFPoint p4,
+    		double thickness, int c, DXFLayer l, int visibility, DXFLineType lineType, DXFExtendedData extData) {
+    	super(c, l, visibility, lineType, thickness);
+    	
+    	_p1 = p1;
+    	_p2 = p2;
+    	_p3 = p3;
+    	
+    	if (p4 == null) {
+    		_p4 = p3;
+    	} else {
+    		_p4 = p4;
+    	}
+    	_extendedData = extData;
+    	setName("DXFSolid");
+    }
 
     public static DXFEntity read(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
         double p1_x = 0, p2_x = 0, p3_x = 0, p4_x = 0, p1_y = 0, p2_y = 0, p3_y = 0, p4_y = 0;
@@ -74,6 +90,7 @@ public class DXFSolid extends DXFEntity {
 
         DXFCodeValuePair cvp = null;
         DXFGroupCode gc = null;
+        DXFExtendedData _extData = null;
 
         boolean doLoop = true;
         while (doLoop) {
@@ -133,6 +150,11 @@ public class DXFSolid extends DXFEntity {
                 case VISIBILITY: //"60"
                     visibility = cvp.getShortValue();
                     break;
+                case XDATA_APPLICATION_NAME:
+                	String appName = cvp.getStringValue();
+            		_extData = DXFExtendedData.getExtendedData(br);
+            		_extData.setAppName(appName);
+                    break;
                 default:
                     break;
             }
@@ -147,7 +169,7 @@ public class DXFSolid extends DXFEntity {
                 c,
                 l,
                 visibility,
-                lineType);
+                lineType, _extData);
         e.setType(GeometryType.POLYGON);
         e.setStartingLineNumber(sln);
         e.setUnivers(univers);

@@ -51,6 +51,7 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
+import org.geotools.referencing.wkt.Formattable;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -271,11 +272,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         }
 
         if (crs != null) {
-            String s = crs.toWKT();
-            // .prj files should have no carriage returns in them, this
-            // messes up
-            // ESRI's ArcXXX software, so we'll be compatible
-            s = s.replaceAll("\n", "").replaceAll("  ", "");
+            String s = toSingleLineWKT(crs);
 
             FileWriter prjWriter = new FileWriter(prjStoragefile.getFile());
             try {
@@ -288,6 +285,25 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         }
         StorageFile
                 .replaceOriginals(shpStoragefile, shxStoragefile, dbfStoragefile, prjStoragefile);
+    }
+    
+    /**
+     * Turns the CRS into a single line WKT, more compatible with ESRI software
+     * @param crs
+     * @return
+     */
+    String toSingleLineWKT(CoordinateReferenceSystem crs) {
+        String wkt = null;
+        try {
+            // this is a lenient transformation, works with polar stereographics too
+            Formattable formattable = (Formattable) crs;
+            wkt = formattable.toWKT(0, false);
+        } catch(ClassCastException e) {
+            wkt = crs.toWKT();
+        }
+        
+        wkt = wkt.replaceAll("\n", "").replaceAll("  ", "");
+        return wkt;
     }
 
     /**
@@ -367,8 +383,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         if (crs == null)
             throw new NullPointerException("CRS required for .prj file");
 
-        String s = crs.toWKT();
-        s = s.replaceAll("\n", "").replaceAll("  ", "");
+        String s = toSingleLineWKT(crs);
         StorageFile storageFile = shpFiles.getStorageFile(PRJ);
         FileWriter out = new FileWriter(storageFile.getFile());
 

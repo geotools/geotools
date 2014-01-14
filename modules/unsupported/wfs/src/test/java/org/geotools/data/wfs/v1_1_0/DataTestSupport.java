@@ -188,6 +188,10 @@ public final class DataTestSupport {
     public static final TestDataType IONIC_STATISTICAL_UNIT = new TestDataType("Ionic", new QName(
             "http://www.fgdc.gov/fgdc/gubs", "StatisticalUnit"), "gubs:StatisticalUnit",
             "EPSG:4269");
+    
+    public static final TestDataType MAPSRV_GOVUNITCE = new TestDataType("MapServer",
+            new QName("", "GovernmentalUnitCE"),
+            "GovernmentalUnitCE", "EPSG:4269");
 
     public static TestWFS_1_1_0_Protocol wfs;
 
@@ -208,6 +212,16 @@ public final class DataTestSupport {
         createTestProtocol(capabilitiesFileName, http);
     }
 
+    public static void createTestProtocol(String capabilitiesFileName, WFSStrategy strategy) throws IOException {
+        HTTPClient http = new SimpleHttpClient();
+        createTestProtocol(capabilitiesFileName, http, strategy);
+    }
+    
+    public static void createTestProtocol(String capabilitiesFileName,
+            HTTPClient http) throws IOException {
+        createTestProtocol(capabilitiesFileName, http, null);
+    }
+    
     /**
      * Creates the test {@link #wfs} with the provided connection factory that parses the
      * capabilities object from the test xml file pointed out by {@code capabilitiesFileName}
@@ -220,10 +234,11 @@ public final class DataTestSupport {
      *            WFS_Capabilities document.
      * @throws IOException
      */
-    public static void createTestProtocol(String capabilitiesFileName, HTTPClient http)
-            throws IOException {
-        InputStream stream = TestData.openStream(DataTestSupport.class, capabilitiesFileName);
-        wfs = new TestWFS_1_1_0_Protocol(stream, http);
+    public static void createTestProtocol(String capabilitiesFileName,
+            HTTPClient http, WFSStrategy strategy) throws IOException {
+        InputStream stream = TestData.openStream(DataTestSupport.class,
+                capabilitiesFileName);
+        wfs = new TestWFS_1_1_0_Protocol(stream, http, strategy);
     }
 
     public static class TestWFS_1_1_0_Protocol extends WFS_1_1_0_Protocol {
@@ -231,10 +246,10 @@ public final class DataTestSupport {
         private URL describeFeatureTypeUrlOverride;
         private GetFeature request;
 
-        public TestWFS_1_1_0_Protocol(InputStream capabilitiesReader, HTTPClient http)
-                throws IOException {
-            super(capabilitiesReader, http, null);
-        }
+    public TestWFS_1_1_0_Protocol(InputStream capabilitiesReader, HTTPClient http,
+            WFSStrategy strategy) throws IOException {
+        super(capabilitiesReader, http, null, strategy);
+    }
 
         /**
          * Allows to set an overriding url for the {@link #getDescribeFeatureTypeURLGet(String)}

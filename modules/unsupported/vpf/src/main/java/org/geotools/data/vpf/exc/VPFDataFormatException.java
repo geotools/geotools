@@ -31,6 +31,9 @@ package org.geotools.data.vpf.exc;
  * @version $Id$
  */
 public class VPFDataFormatException extends RuntimeException {
+    /** serialVersionUID */
+    private static final long serialVersionUID = -604863532883311799L;
+
     /**
      * Creates a new VPFDataFormatException object.
      */

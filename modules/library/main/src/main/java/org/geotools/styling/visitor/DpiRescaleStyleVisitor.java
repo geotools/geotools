@@ -38,14 +38,7 @@ import org.opengis.filter.expression.Expression;
  */
 public class DpiRescaleStyleVisitor extends RescaleStyleVisitor {
 
-    private boolean rescaling = true;
-    
-
     public DpiRescaleStyleVisitor(double scale) {
-        super(scale);
-    }
-
-    public DpiRescaleStyleVisitor(Expression scale) {
         super(scale);
     }
 
@@ -53,23 +46,25 @@ public class DpiRescaleStyleVisitor extends RescaleStyleVisitor {
         super(filterFactory, scale);
     }
 
-    public DpiRescaleStyleVisitor(FilterFactory2 filterFactory, Expression scale) {
-        super(filterFactory, scale);
-    }
-
-    
     @Override
     protected Expression rescale(Expression expr) {
-        if (rescaling) {
-            return super.rescale(expr);
-        } else {
-            return expr;
+        // handle null values
+        if(expr == null) {
+            return null;
         }
+        if(expr == Expression.NIL) {
+            return Expression.NIL;
+        }
+        
+        // delegate the handling of the rescaling to ValueAndUnit 
+        // to deal with local uom (px, m, ft suffixes)
+        Measure v = new Measure(expr, defaultUnit);
+        return RescalingMode.Pixels.rescaleToExpression(scale, v);
     }
     
     @Override
     float[] rescale(float[] values) {
-        if (rescaling) {
+        if (defaultUnit == null || defaultUnit == NonSI.PIXEL) {
             return super.rescale(values);
         } else {
             return values;
@@ -78,93 +73,29 @@ public class DpiRescaleStyleVisitor extends RescaleStyleVisitor {
     
     @Override    
     protected void rescaleOption(Map<String, String> options, String key, double defaultValue) {
-        if (rescaling) {
-            super.rescaleOption(options, key, defaultValue);
-        } else {
-            if (options.get(key) == null && defaultValue != 0) {
-                options.put(key, String.valueOf(defaultValue));
-            }
+        double scaleFactor = (double) scale.evaluate(null, Double.class);
+        String value = options.get(key);
+        if(value == null) {
+            value = String.valueOf(defaultValue);
         }
+            
+        Measure v = new Measure(value, defaultUnit);
+        String rescaled = RescalingMode.Pixels.rescaleToString(scaleFactor, v);
+        options.put(key, String.valueOf(rescaled));
     }
     
     @Override        
     protected void rescaleOption(Map<String, String> options, String key, int defaultValue) {
-        if (rescaling) {
-            super.rescaleOption(options, key, defaultValue);
-        } else {
-            if (options.get(key) == null && defaultValue != 0) {
-                options.put(key, String.valueOf(defaultValue));
-            }
-        }        
+        double scaleFactor = (double) scale.evaluate(null, Double.class);
+        String value = options.get(key);
+        if(value == null) {
+            value = String.valueOf(defaultValue);
+        }
+            
+        Measure v = new Measure(value, defaultUnit);
+        String rescaled = RescalingMode.Pixels.rescaleToString(scaleFactor, v);
+        options.put(key, String.valueOf(rescaled));
     }
     
-    private void setRescaling(Symbolizer symbolizer) {
-        // scaling to do only if UOM is PIXEL (or null, which stands for PIXEL as well)        
-        Unit<Length> uom = symbolizer.getUnitOfMeasure();
-        setRescaling(uom == null || uom.equals(NonSI.PIXEL));
-    }
     
-    private void setRescaling(boolean rescaling) {
-        this.rescaling = rescaling;
-    }
- 
-    @Override    
-    public void visit(Symbolizer sym) {
-        setRescaling(sym);
-        try {
-            super.visit(sym);
-        } finally {
-            setRescaling(true);
-        }        
-    }
-    
-    @Override    
-    public void visit(PointSymbolizer sym) {
-        setRescaling(sym);
-        try {
-            super.visit(sym);
-        } finally {
-            setRescaling(true);
-        }        
-    }
-    
-    @Override    
-    public void visit(LineSymbolizer sym) {
-        setRescaling(sym);
-        try {
-            super.visit(sym);
-        } finally {
-            setRescaling(true);
-        }        
-    }
-    
-    @Override    
-    public void visit(PolygonSymbolizer sym) {
-        setRescaling(sym);
-        try {
-            super.visit(sym);
-        } finally {
-            setRescaling(true);
-        }        
-    }
-    
-    @Override    
-    public void visit(TextSymbolizer sym) {
-        setRescaling(sym);
-        try {
-            super.visit(sym);
-        } finally {
-            setRescaling(true);
-        }        
-    }
-    
-    @Override    
-    public void visit(RasterSymbolizer sym) {
-        setRescaling(sym);
-        try {
-            super.visit(sym);
-        } finally {
-            setRescaling(true);
-        }        
-    }
 }

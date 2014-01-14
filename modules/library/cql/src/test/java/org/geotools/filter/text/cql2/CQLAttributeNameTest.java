@@ -58,7 +58,8 @@ public class CQLAttributeNameTest  {
         
         this(Language.CQL);
     }
-    public CQLAttributeNameTest(final Language language){
+    
+    protected CQLAttributeNameTest(final Language language){
         
         assert language != null: "language cannot be null value";
         

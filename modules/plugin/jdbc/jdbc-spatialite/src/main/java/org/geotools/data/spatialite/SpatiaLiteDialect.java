@@ -16,13 +16,8 @@
  */
 package org.geotools.data.spatialite;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -263,8 +258,8 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
     }
     
     @Override
-    public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql) throws IOException {
-        sql.append("GeomFromText('") .append( new WKTWriter().write( value ) ).append( "',")
+    public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql) throws IOException {
+        sql.append("GeomFromText('") .append( new WKTWriter(dimension).write( value ) ).append( "',")
             .append(srid).append(")");
     }
 

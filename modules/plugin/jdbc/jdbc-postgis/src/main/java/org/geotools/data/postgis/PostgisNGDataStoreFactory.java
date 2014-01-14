@@ -16,10 +16,19 @@
  */
 package org.geotools.data.postgis;
 
+import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
+import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
+
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 
-import org.geotools.data.DataAccessFactory.Param;
+import javax.sql.DataSource;
+
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -46,6 +55,14 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     
     /** parameter for database schema */
     public static final Param SCHEMA = new Param("schema", String.class, "Schema", false, "public");
+    
+    /** attempt to create the database if missing */
+    public static final Param CREATE_DB_IF_MISSING = new Param("create database", Boolean.class, 
+            "Creates the database if it does not exist yet", false, false, Param.LEVEL, "advanced");
+    
+    /** attempt to create the database if missing */
+    public static final Param CREATE_PARAMS = new Param("create database params", String.class, 
+            "Extra specifications appeneded to the CREATE DATABASE command", false, "", Param.LEVEL, "advanced");
 
     /**
      * Wheter a prepared statements based dialect should be used, or not
@@ -147,6 +164,8 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(PREPARED_STATEMENTS.key, PREPARED_STATEMENTS);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
         parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
+        parameters.put(CREATE_DB_IF_MISSING.key, CREATE_DB_IF_MISSING);
+        parameters.put(CREATE_PARAMS.key, CREATE_PARAMS);
     }
     
     @Override
@@ -161,5 +180,126 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         int port = (Integer) PORT.lookUp(params);
         return "jdbc:postgresql" + "://" + host + ":" + port + "/" + db;
     }
+    
+    protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
+        DataSource ds = super.createDataSource(params, dialect);
+        JDBCDataStore closer = new JDBCDataStore();
+
+        if (Boolean.TRUE.equals(CREATE_DB_IF_MISSING.lookUp(params))) {
+            // verify we can connect
+            Connection cx = null;
+            boolean canConnect = true;
+            try {
+                ds.getConnection();
+            } catch (SQLException e) {
+                canConnect = false;
+            } finally {
+                closer.closeSafe(cx);
+            }
+
+            if (!canConnect) {
+                // get the connection params
+                String host = (String) HOST.lookUp(params);
+                int port = (Integer) PORT.lookUp(params);
+                String db = (String) DATABASE.lookUp(params);
+                String user = (String) USER.lookUp(params);
+                String password = (String) PASSWD.lookUp(params);
+
+                Statement st = null;
+                try {
+                    // connect to template1 instead
+                    String url = "jdbc:postgresql" + "://" + host + ":" + port + "/template1";
+                    cx = getConnection(user, password, url);
+
+                    // create the database
+
+                    String createParams = (String) CREATE_PARAMS.lookUp(params);
+                    String sql = "CREATE DATABASE \"" + db + "\" " + (createParams == null ? "" : createParams);
+                    st = cx.createStatement();
+                    st.execute(sql);
+                } catch (SQLException e) {
+                    throw new IOException("Failed to create the target database", e);
+                } finally {
+                    closer.closeSafe(st);
+                    closer.closeSafe(cx);
+                }
+
+                // if we got here the database has been created, now verify it has the postgis
+                // extensions
+                // and eventually try to create them
+                ResultSet rs = null;
+                try {
+                    String url = "jdbc:postgresql" + "://" + host + ":" + port + "/" + db;
+                    cx = DriverManager.getConnection(url, user, password);
+
+                    // check we have postgis
+                    st = cx.createStatement();
+                    try {
+                        rs = st.executeQuery("select PostGIS_version()");
+                        rs.close();
+                    } catch (SQLException e) {
+                        // not available eh? create it
+                        st.execute("create extension postgis");
+                    }
+                } catch (SQLException e) {
+                    throw new IOException("Failed to create the target database", e);
+                } finally {
+                    closer.closeSafe(st);
+                    closer.closeSafe(cx);
+                }
+
+                // and finally re-create the connection pool
+                ds = super.createDataSource(params, dialect);
+            }
+        }
+
+        return ds;
+    }
+
+    private Connection getConnection(String user, String password, String url) throws SQLException {
+        Connection cx;
+        if(user != null) {
+            cx = DriverManager.getConnection(url, user, password);
+        } else {
+            cx = DriverManager.getConnection(url);
+        }
+        return cx;
+    }
+
+    /**
+     * Drops the database specified in the connection params. The database must not be in use, and
+     * the user must have the necessary privileges
+     * @param params
+     * @throws IOException
+     */
+    public void dropDatabase(Map<String, Object> params) throws IOException {
+        JDBCDataStore closer = new JDBCDataStore();
+        // get the connection params
+        String host = (String) HOST.lookUp(params);
+        int port = (Integer) PORT.lookUp(params);
+        String db = (String) DATABASE.lookUp(params);
+        String user = (String) USER.lookUp(params);
+        String password = (String) PASSWD.lookUp(params);
+
+        Connection cx = null;
+        Statement st = null;
+        try {
+            // connect to template1 instead
+            String url = "jdbc:postgresql" + "://" + host + ":" + port + "/template1";
+            cx = getConnection(user, password, url);
+
+            // drop the database
+            String sql = "DROP DATABASE \"" + db + "\"";
+            st = cx.createStatement();
+            st.execute(sql);
+        } catch (SQLException e) {
+            throw new IOException("Failed to create the target database", e);
+        } finally {
+            closer.closeSafe(st);
+            closer.closeSafe(cx);
+        }
+
+    }
+
 
 }

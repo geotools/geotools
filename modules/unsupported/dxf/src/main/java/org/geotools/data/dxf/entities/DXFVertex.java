@@ -36,6 +36,12 @@ public class DXFVertex extends DXFPoint {
         setName("DXFVertex");
         _bulge = b;
     }
+    public DXFVertex(double x, double y, double b, int c, DXFLayer l, int visibility, DXFExtendedData extData) {
+    	super(x, y, c, l, visibility, 1);
+    	setName("DXFVertex");
+    	_bulge = b;
+    	_extendedData = extData;
+    }
 
     public static DXFVertex read(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
         DXFLayer l = null;
@@ -47,6 +53,7 @@ public class DXFVertex extends DXFPoint {
 
         DXFCodeValuePair cvp = null;
         DXFGroupCode gc = null;
+        DXFExtendedData _extData = null;
 
         boolean doLoop = true;
         while (doLoop) {
@@ -85,13 +92,18 @@ public class DXFVertex extends DXFPoint {
                 case VISIBILITY: //"60"
                     visibility = cvp.getShortValue();
                     break;
+                case XDATA_APPLICATION_NAME:
+                	String appName = cvp.getStringValue();
+            		_extData = DXFExtendedData.getExtendedData(br);
+            		_extData.setAppName(appName);
+                    break;
                 default:
                     break;
             }
 
         }
 
-        DXFVertex e = new DXFVertex(x, y, b, c, l, visibility);
+        DXFVertex e = new DXFVertex(x, y, b, c, l, visibility, _extData);
         e.setType(GeometryType.POINT);
         e.setStartingLineNumber(sln);
         e.setUnivers(univers);

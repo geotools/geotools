@@ -30,7 +30,7 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.hsqldb.jdbc.jdbcDataSource;
+import org.hsqldb.jdbc.JDBCDataSource;
 
 /**
  * Utility used to create a HSQL zipped version of the official EPSG database 
@@ -75,7 +75,7 @@ public class DatabaseCreationScript {
          * File.toURI() because HSQL doesn't seem to expect an encoded URL
          * (e.g. "%20" instead of spaces).
          */
-        final jdbcDataSource source = new jdbcDataSource();
+        final JDBCDataSource source = new JDBCDataSource();
         final StringBuilder url = new StringBuilder(ThreadedHsqlEpsgFactory.PREFIX);
         final String path = directory.getAbsolutePath().replace(File.separatorChar, '/');
         if (path.length()==0 || path.charAt(0)!='/') {
@@ -100,7 +100,6 @@ public class DatabaseCreationScript {
         final Statement statement = connection.createStatement();
         try {
             // read and execute the scripts that make up the database
-            statement.execute("CREATE ALIAS CHR for \"org.hsqldb.Library.character\"");
             executeScript(new File(directory, "EPSG_Tables.sql"), statement);
             executeScript(new File(directory, "EPSG_Data.sql"), statement);
             statement.execute("UPDATE EPSG_DATUM SET REALIZATION_EPOCH = NULL WHERE REALIZATION_EPOCH = ''");

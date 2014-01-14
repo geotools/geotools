@@ -16,7 +16,15 @@
  */
 package org.geotools.data.postgis;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import org.geotools.jdbc.JDBC3DTestSetup;
+import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.util.Version;
 
 /**
  * 
@@ -24,18 +32,49 @@ import org.geotools.jdbc.JDBC3DTestSetup;
  * @source $URL$
  */
 public class PostGIS3DTestSetup extends JDBC3DTestSetup {
-
-    protected PostGIS3DTestSetup() {
-        super(new PostGISTestSetup());
     
+    static final Version V_2_0_0 = new Version("2.0.0");
+
+    private Version version;
+
+    public PostGIS3DTestSetup(JDBCTestSetup setup) {
+        super(setup);
+    }
+    
+    public Version getVersion() throws SQLException, IOException {
+        if(version == null) {
+            Connection conn = null;
+            Statement st = null;
+            ResultSet rs = null;
+            try {
+                conn = getDataSource().getConnection();
+                st = conn.createStatement();
+                rs = st.executeQuery("select PostGIS_Lib_Version()");
+                if(rs.next()) {
+                    version = new Version(rs.getString(1));
+                } 
+            } finally {
+                conn.close();
+                st.close();
+                rs.close();
+            }
+        }
+        
+        return version;
     }
 
     @Override
     protected void createLine3DTable() throws Exception {
+        Version version = getVersion();
+        boolean atLeastV2 = version.compareTo(V_2_0_0) >= 0;
+        String geometryType = atLeastV2 ? "geometry(LINESTRINGZ, 4326)" : "geometry";
+        
         // setup table
         run("CREATE TABLE \"line3d\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
-                + "\"geom\" geometry, \"name\" varchar )");
-        run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'line3d', 'geom', 3, '4326', 'LINESTRING')");
+                + "\"geom\" " + geometryType + ", \"name\" varchar )");
+        if(!atLeastV2) {
+            run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'line3d', 'geom', 3, '4326', 'LINESTRING')");
+        }
         run("CREATE INDEX line3d_GEOM_IDX ON \"line3d\" USING GIST (\"geom\") ");
     
         // insert data
@@ -49,10 +88,16 @@ public class PostGIS3DTestSetup extends JDBC3DTestSetup {
 
     @Override
     protected void createPoint3DTable() throws Exception {
+        Version version = getVersion();
+        boolean atLeastV2 = version.compareTo(V_2_0_0) >= 0;
+        String geometryType = atLeastV2 ? "geometry(POINTZ, 4326)" : "geometry";
+        
         // setup table
         run("CREATE TABLE \"point3d\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
-                + "\"geom\" geometry, \"name\" varchar )");
-        run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'point3d', 'geom', 3, '4326', 'POINT')");
+                + "\"geom\" " + geometryType + ", \"name\" varchar )");
+        if(atLeastV2) {
+            run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'point3d', 'geom', 3, '4326', 'POINT')");
+        }
         run("CREATE INDEX POINT3D_GEOM_IDX ON \"point3d\" USING GIST (\"geom\") ");
     
         // insert data

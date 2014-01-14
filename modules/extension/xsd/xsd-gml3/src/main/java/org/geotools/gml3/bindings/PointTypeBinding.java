@@ -18,6 +18,7 @@ package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
@@ -119,7 +120,11 @@ public class PointTypeBinding extends AbstractComplexBinding {
         if (node.hasChild(DirectPosition.class)) {
             DirectPosition dp = (DirectPosition) node.getChildValue(DirectPosition.class);
 
-            return gFactory.createPoint(new Coordinate(dp.getOrdinate(0), dp.getOrdinate(1)));
+            if(dp instanceof DirectPosition2D) {
+                return gFactory.createPoint(new Coordinate(dp.getOrdinate(0), dp.getOrdinate(1)));
+            } else {
+                return gFactory.createPoint(new Coordinate(dp.getOrdinate(0), dp.getOrdinate(1), dp.getOrdinate(2)));
+            }
         }
 
         if (node.hasChild(Coordinate.class)) {

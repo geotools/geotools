@@ -35,7 +35,7 @@ single result).
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-process</artifactId>
-      <version>${project.version}</version>
+      <version>${geotools.version}</version>
     </dependency>
 
 2. To start with we need to create a class that extends StaticMethodsProcessFactory:

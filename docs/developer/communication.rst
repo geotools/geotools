@@ -36,13 +36,18 @@ The developer list is used by the development team of GeoTools solely to discuss
 
 Please do not send general questions regarding the use of GeoTools to this list, but to geotools-gt2-users above.
 
-geotools-commits
-^^^^^^^^^^^^^^^^
+Commit Tracker
+--------------
 
-A read only list to which all SVN (was CVS) commit statements are posted.
+To follow new commits and pull requests to the GeoTools repository, GitHub provides a tracking feature called
+`Watching Repositories <https://help.github.com/articles/watching-repositories>`_. Following the instructions provided
+by GitHub you are able to customise the feed of information you are able to receive. Note that GeoTools doesn't utilise
+the issue feature of GitHub; see the `Issue tracker <http://docs.geotools.org/latest/developer/communication.html#issue-tracker>`_
+in the next section.
 
-* http://lists.sourceforge.net/lists/listinfo/geotools-commits
-* http://sourceforge.net/mailarchive/forum.php?forum_name=geotools-commits
+Other pages that may be helpful in following GeoTools are the `pulse <https://github.com/geotools/geotools/pulse>`_ and
+the `commits <https://github.com/geotools/geotools/commits>`_. Both are pages that provide summary information about the
+current activity of the project.
 
 Issue Tracker
 ---------------
@@ -56,12 +61,14 @@ This is where all bugs should be reported, in addition to requested features and
 Filling out all fields is specially important for bug reports:
 
 * including component(s)
-* affected versions of geotools ( a release or code from SVN? )
+* affected versions of geotools (a release or git commit hash)
 * A description of what caused the problem (example code that reproduces the problem) along with any stack traces
 * The Java Version and the type of operating system you are using
 * You may wish to attach log files, or screen snapshots to the Jira task
 * If you are reporting failed tests during the maven build, check the test reports in
   ``<module>/target/surefire-reports`` for further details
+
+The User Guide has an example of `creating a new issue <http://docs.geotools.org/latest/userguide/welcome/support.html#issue-tracker>`_.
 
 Internet Relay Chat
 --------------------
@@ -80,61 +87,20 @@ The information you need to configure your IRC client are:
 * Channel - #geotools
 * Port - 6667
 
-Logs from IRC meetings are stored on this wiki:
-
-* http://docs.codehaus.org/pages/viewrecentblogposts.action?key=GEOTOOLS
-
 IRC Breakout Meetings
 
 * Occasionally breakout IRC meetings will be announced on the geotools-devel mailing list around
   specific topics of interest.
-  
+
   Anyone is free to start a meeting; we ask that an email be sent out and a time negotiated on the
   email list allowing interested parties to attend.
 
-Websites
---------
-
-GeoTools maintains a number of public websites:
-
-* http://geotools.org/
-     Website generated using sphinx operated by OSGeo
-
-* http://geotoolsnews.blogspot.com/   
-  Blog operated by GeoTools on blogger
-
-* http://docs.codehaus.org/display/GEOTOOLS/Home
-  
-  http://docs.codehaus.org/display/GEOTDOC/Home  
-  http://docs.codehaus.org/display/GEOT/Home
-     Confluence wiki used for developer collaboration operated by CodeHaus
-
-* http://jira.codehaus.org/secure/BrowseProject.jspa?id=10270      JIRA Issue Tracker operated by CodeHaus
-
-* http://xircles.codehaus.org/projects/geotools   
-  CodeHaus project page (for confluence and jira project permissions)
-
-* http://svn.osgeo.org/geotools/trunk
-  
-  svn source code repository operated by OSGeo
-
-* http://sourceforge.net/projects/geotools/   
-  Used for project downloads.
-
-We have a number of facilities we no longer use:
-
-* http://svn.geotools.org/ * http://javadoc.geotools.fr/
-* http://geotools.fr/
-
-GeoTools has entries on a number of other public websites:
-
-* http://freshmeat.net/projects/geotools/
-* http://www.ohloh.net/p/geotools
 
 Confluence
 ----------
 
-Confluence has been used since March 2004 to allow anyone (developers and users) to create and update GeoTools documentation.
+Confluence has been used since March 2004 to allow anyone (developers and users) to
+work on design ideas and change proposals.
 
 Because of spammers our procedure to get read/write access to the wiki has gotten a tad annoying.
 
@@ -144,7 +110,7 @@ It is documented at the bottom of our home wiki page:
 2. Create an account for codehaus: http://xircles.codehaus.org/signup
 3. Go to your personal details page: http://xircles.codehaus.org/my/details
 4. Use the form to fill in your Confluence Username from step one.
-   
+
    http://xircles.codehaus.org/projects/geotools
 
 5. Go to the GeoTools project page: http://xircles.codehaus.org/projects/geotools
@@ -154,8 +120,38 @@ It is documented at the bottom of our home wiki page:
 
 Tips:
 
-* Confluence uses a simple markup language, and a quick reference is given on the right side of
-  pages you are editing.
 * One way to start contributing to the wiki documentation is to fix mistakes, clarify confusing
-  content or by contributing to the documentation for areas of the GeoTools code base you are
+  content or by contributing an article on an area of the GeoTools code base you are
   familiar with.
+
+Websites
+--------
+
+GeoTools maintains a number of public websites.
+
+============================================= =========================================== ============
+http://geotools.org/                          GeoTools website                            OSGeo
+http://geotoolsnews.blogspot.com/             GeoTools Blog                               Blogger
+http://sourceforge.net/projects/geotools/     Used for project downloads.                 SourceForge
+https://github.com/geotools                   Source code                                 GitHub
+http://jira.codehaus.org/browse/GEOT          JIRA Issue Tracker                          CodeHaus
+http://docs.codehaus.org/display/GEOTOOLS     Confluence wiki for developer collaboration CodeHaus
+http://xircles.codehaus.org/projects/geotools CodeHaus project page for single sign on    CodeHaus
+============================================= =========================================== ============
+
+GeoTools has entries on a number of other public websites:
+
+* http://www.ohloh.net/p/geotools
+* http://freshmeat.net/projects/geotools/
+* http://live.osgeo.org/en/overview/geotools_overview.html
+* http://www.osgeo.org/geotools
+* http://gis.stackexchange.com/questions/tagged/geotools
+* http://www.slashgeo.org/category/Tags/GeoTools
+
+We have a number of facilities we no longer use:
+
+* http://docs.codehaus.org/display/GEOTDOC/Home
+* http://docs.codehaus.org/display/GEOT/Home
+* http://svn.osgeo.org/geotools/trunk
+* http://svn.geotools.org/
+

@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.namespace.QName;
+
 import net.opengis.wfs.GetFeatureType;
 import net.opengis.wfs.QueryType;
 import net.opengis.wfs.WfsFactory;
@@ -326,5 +328,26 @@ public class DefaultWFSStrategy implements WFSStrategy {
 
             return new Filter[] { server, post };
         }
+    }
+
+    @Override
+    public String getPrefixedTypeName(QName typeName) {
+        assert !("".equals(typeName.getPrefix()));
+        return typeName.getPrefix() + ":" + typeName.getLocalPart();
+    }
+
+    @Override
+    public Map<String, String> getNamespaceURIMappings() {        
+        return new HashMap<String, String>();
+    }
+
+    @Override
+    public boolean canIgnoreMissingElementDeclaration() {
+        return false;
+    }
+
+    @Override
+    public Map<QName, Class<?>> getFieldTypeMappings() {
+        return new HashMap<QName, Class<?>>();
     }
 }

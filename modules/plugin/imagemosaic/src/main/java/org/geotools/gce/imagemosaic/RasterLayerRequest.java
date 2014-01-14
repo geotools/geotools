@@ -66,13 +66,11 @@ class RasterLayerRequest {
     /** The Interpolation required to serve this request */
     private Interpolation interpolation;
 
-    private boolean footprintManagement;
+    private FootprintBehavior footprintBehavior = FootprintBehavior.None;
     
     private int defaultArtifactsFilterThreshold = Integer.MIN_VALUE;;
     
     private double artifactsFilterPTileThreshold;
-    
-    private boolean setRoiProperty;
     
     private boolean heterogeneousGranules = false; 
 
@@ -107,6 +105,8 @@ class RasterLayerRequest {
 	private List<?> elevation;
 	
 	private Filter filter;
+
+    private boolean accurateResolution;
 	
         private final Map<String,List> requestedAdditionalDomains = new HashMap<String,List>();
 
@@ -209,7 +209,8 @@ class RasterLayerRequest {
         // imageReadParams
         //
         // //
-        checkReadType();        
+        checkReadType();
+        spatialRequestHelper.setAccurateResolution(accurateResolution);
         spatialRequestHelper.prepare();
     }
 
@@ -371,19 +372,13 @@ class RasterLayerRequest {
 				continue;
 			}	 	
 			
-			if (name.equals(ImageMosaicFormat.HANDLE_FOOTPRINT.getName())) {
-                            if (value == null)
-                                    continue;
-                            footprintManagement = ((Boolean) value).booleanValue();
-                            continue;
-                        }       
+            if (name.equals(ImageMosaicFormat.FOOTPRINT_BEHAVIOR.getName())) {
+                if (value == null)
+                    continue;
+                footprintBehavior = FootprintBehavior.valueOf((String) value);
+                continue;
+            }
 			
-			if (name.equals(ImageMosaicFormat.SET_ROI_PROPERTY.getName())) {
-			   if (value == null)
-                                continue;
-	                    setRoiProperty = ((Boolean) value).booleanValue();
-	                    return;
-	                }  
 	       
 	        // //
 	        //
@@ -420,6 +415,12 @@ class RasterLayerRequest {
 	            }
 	        }
 	        
+            if (name.equals(ImageMosaicFormat.ACCURATE_RESOLUTION.getName())) {
+                if (value == null)
+                    continue;
+                accurateResolution = ((Boolean) value).booleanValue();
+                return;
+            }
     	}
 		
 	}
@@ -605,23 +606,22 @@ class RasterLayerRequest {
 			return;
 		}	 	
 		
-		if (name.equals(ImageMosaicFormat.HANDLE_FOOTPRINT.getName())) {
-                    final Object value = param.getValue();
-                    if (value == null) {
-                            return;
-                    }
-                    footprintManagement = ((Boolean) value).booleanValue();
-                    return;
-                }    
+        if (name.equals(ImageMosaicFormat.FOOTPRINT_BEHAVIOR.getName())) {
+            final Object value = param.getValue();
+            if (value == null)
+                return;
+            footprintBehavior = FootprintBehavior.valueOf((String) value);
+            return;
+        }
 		
-		if (name.equals(ImageMosaicFormat.SET_ROI_PROPERTY.getName())) {
-                    final Object value = param.getValue();
-                    if (value == null) {
-                            return;
-                    }
-                    setRoiProperty = ((Boolean) value).booleanValue();
+        if (name.equals(ImageMosaicFormat.ACCURATE_RESOLUTION.getName())) {
+            final Object value = param.getValue();
+            if (value == null) {
                     return;
-                }    
+            }
+            accurateResolution = ((Boolean) value).booleanValue();
+            return;
+        } 
        
         // //
         //
@@ -723,9 +723,19 @@ class RasterLayerRequest {
         }
     }
 
-   
+    /**
+     * @return the accurateResolution
+     */
+    public boolean isAccurateResolution() {
+        return accurateResolution;
+    }
 
-    
+    /**
+     * @param accurateResolution the accurateResolution to set
+     */
+    public void setAccurateResolution(boolean accurateResolution) {
+        this.accurateResolution = accurateResolution;
+    }            
 
 	/**
      * Check the type of read operation which will be performed and return
@@ -779,22 +789,17 @@ class RasterLayerRequest {
 		return maximumNumberOfGranules;
 	}
 	
-	public boolean isFootprintManagement() {
-            return footprintManagement;
-        }
-	
-        public int getDefaultArtifactsFilterThreshold() {
-            return defaultArtifactsFilterThreshold;
-        }
-        
-        public double getArtifactsFilterPTileThreshold() {
-            return artifactsFilterPTileThreshold;
-        }
+	public FootprintBehavior getFootprintBehavior() {
+            return footprintBehavior;
+    }
 
-        public boolean isSetRoiProperty() {
-            return setRoiProperty;
-        }
+    public int getDefaultArtifactsFilterThreshold() {
+        return defaultArtifactsFilterThreshold;
+    }
 
+    public double getArtifactsFilterPTileThreshold() {
+        return artifactsFilterPTileThreshold;
+    }
 	public boolean isBlend() {
 		return blend;
 	}

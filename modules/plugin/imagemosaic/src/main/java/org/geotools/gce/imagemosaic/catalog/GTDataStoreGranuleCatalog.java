@@ -16,13 +16,12 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
@@ -41,11 +40,6 @@ import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.h2.H2DataStoreFactory;
-import org.geotools.data.h2.H2JNDIDataStoreFactory;
-import org.geotools.data.oracle.OracleNGDataStoreFactory;
-import org.geotools.data.oracle.OracleNGJNDIDataStoreFactory;
-import org.geotools.data.oracle.OracleNGOCIDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
@@ -112,7 +106,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
 
     boolean heterogeneous;
 
-    public GTDataStoreGranuleCatalog(final Map<String, Serializable> params, final boolean create,
+    public GTDataStoreGranuleCatalog(final Properties params, final boolean create,
             final DataStoreFactorySpi spi, final Hints hints) {
         super(hints);
         Utilities.ensureNonNull("params", params);
@@ -125,40 +119,32 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             this.suggestedRasterSPI = temp != null ? (ImageReaderSpi) Class.forName(temp)
                     .newInstance() : null;
             this.parentLocation = (String) params.get("ParentLocation");
-            Object heterogen = params.get("Heterogeneous");
-            if (heterogen != null) {
-                this.heterogeneous = ((Boolean) heterogen).booleanValue();
-            }
-
-            // H2 workadound
-            if (spi instanceof H2DataStoreFactory || spi instanceof H2JNDIDataStoreFactory) {
-                if (params.containsKey(H2DataStoreFactory.DATABASE.key)) {
-                    String dbname = (String) params.get(H2DataStoreFactory.DATABASE.key);
-                    // H2 database URLs must not be percent-encoded: see GEOT-4262.
-                    params.put(H2DataStoreFactory.DATABASE.key,
-                            "file:"
-                                    + (new File(DataUtilities.urlToFile(new URL(parentLocation)),
-                                            dbname)).getPath());
-                }
+            if (params.containsKey("Heterogeneous")) {
+                this.heterogeneous = Boolean.valueOf(params.getProperty("Heterogeneous"));
             }
 
             // creating a store, this might imply creating it for an existing underlying store or
             // creating a brand new one
-            if (!create)
-                tileIndexStore = spi.createDataStore(params);
-            else {
+            Map<String, Serializable> dastastoreParams = Utils.filterDataStoreParams(params, spi);
+
+            // H2 workadound
+            if (Utils.isH2Store(spi)) {
+                Utils.fixH2DatabaseLocation(dastastoreParams, parentLocation);
+            }
+
+            if (!create) {
+                tileIndexStore = spi.createDataStore(dastastoreParams);
+            } else {
                 // this works only with the shapefile datastore, not with the others
                 // therefore I try to catch the error to try and use themethdo without *New*
                 try {
-                    tileIndexStore = spi.createNewDataStore(params);
+                    tileIndexStore = spi.createNewDataStore(dastastoreParams);
                 } catch (UnsupportedOperationException e) {
-                    tileIndexStore = spi.createDataStore(params);
+                    tileIndexStore = spi.createDataStore(dastastoreParams);
                 }
             }
 
-            if (spi instanceof OracleNGOCIDataStoreFactory
-                    || spi instanceof OracleNGJNDIDataStoreFactory
-                    || spi instanceof OracleNGDataStoreFactory) {
+            if(Utils.isOracleStore(spi)) {
                 tileIndexStore = new OracleDatastoreWrapper(tileIndexStore,
                         FilenameUtils.getFullPath(parentLocation));
             }
@@ -176,7 +162,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             }
 
             if (params.containsKey(Utils.SCAN_FOR_TYPENAMES)) {
-                scanForTypeNames = (Boolean) params.get(Utils.SCAN_FOR_TYPENAMES);
+                scanForTypeNames = Boolean.valueOf(params.get(Utils.SCAN_FOR_TYPENAMES).toString());
             }
 
             // if this is not a new store let's extract basic properties from it
@@ -273,7 +259,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             }
 
             final FeatureType schema = featureSource.getSchema();
-            if (schema != null) {
+            if (schema != null && schema.getGeometryDescriptor()!=null) {
                 geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): geometryPropertyName is set to \'"
@@ -293,13 +279,19 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
         try {
             l.lock();
             try {
-                if (tileIndexStore != null)
+                if (tileIndexStore != null) {
                     tileIndexStore.dispose();
+                }
+                if(multiScaleROIProvider != null) {
+                    multiScaleROIProvider.dispose();
+                }
             } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINE))
+                if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                }
             } finally {
                 tileIndexStore = null;
+                multiScaleROIProvider = null;
             }
 
         } finally {
@@ -414,11 +406,15 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                     if (feature instanceof SimpleFeature) {
                         // get the feature
                         final SimpleFeature sf = (SimpleFeature) feature;
-                        final GranuleDescriptor granule = new GranuleDescriptor(sf,
-                                suggestedRasterSPI, pathType, locationAttribute, parentLocation,
-                                heterogeneous, q.getHints());
-
-                        visitor.visit(granule, null);
+                        MultiLevelROI footprint = getGranuleFootprint(sf);
+                        if(footprint == null || !footprint.isEmpty()) {
+                            final GranuleDescriptor granule = new GranuleDescriptor(sf,
+                                    suggestedRasterSPI, pathType, locationAttribute, parentLocation,
+                                    footprint,
+                                    heterogeneous, q.getHints());
+    
+                            visitor.visit(granule, null);
+                        }
 
                         // check if something bad occurred
                         if (listener.isCanceled() || listener.hasExceptions()) {

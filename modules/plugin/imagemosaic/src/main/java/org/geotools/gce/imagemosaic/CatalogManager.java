@@ -18,14 +18,11 @@ package org.geotools.gce.imagemosaic;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
@@ -52,6 +49,8 @@ import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
+import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProvider;
+import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderFactory;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
@@ -97,6 +96,17 @@ public class CatalogManager {
      * @throws IOException
      */
     public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration) throws IOException {
+        return createCatalog(runConfiguration, true);
+    }
+    
+    /**
+     * Create or load a GranuleCatalog on top of the provided configuration
+     * @param runConfiguration
+     * @param create if true create a new catalog, otherwise it is loaded
+     * @return
+     * @throws IOException
+     */
+    public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration, boolean create) throws IOException {
         //
         // create the index
         //
@@ -109,12 +119,12 @@ public class CatalogManager {
         // GranuleCatalog catalog = null;
         if (Utils.checkFileReadable(datastoreProperties)) {
             // read the properties file
-            catalog = createGranuleCatalogFromDatastore(parent, datastoreProperties, true,runConfiguration.getHints());
+            catalog = createGranuleCatalogFromDatastore(parent, datastoreProperties, create,runConfiguration.getHints());
         } else {
 
             // we do not have a datastore properties file therefore we continue with a shapefile datastore
             final URL file = new File(parent, runConfiguration.getParameter(Utils.Prop.INDEX_NAME) + ".shp").toURI().toURL();
-            final Map<String, Serializable> params = new HashMap<String, Serializable>();
+            final Properties params = new Properties();
             params.put(ShapefileDataStoreFactory.URLP.key, file);
             if (file.getProtocol().equalsIgnoreCase("file")) {
                 params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.TRUE);
@@ -122,7 +132,9 @@ public class CatalogManager {
             params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, Boolean.TRUE);
             params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
             params.put(Utils.Prop.LOCATION_ATTRIBUTE, runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE));
-            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, true, Utils.SHAPE_SPI,runConfiguration.getHints());
+            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, create, Utils.SHAPE_SPI,runConfiguration.getHints());
+            MultiLevelROIProvider roi = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+            catalog.setMultiScaleROIProvider(roi);
         }
 
         return catalog;
@@ -154,13 +166,14 @@ public class CatalogManager {
         try {
             // create a datastore as instructed
             final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
-            final Map<String, Serializable> params = Utils.createDataStoreParamsFromPropertiesFile(properties, spi);
 
             // set ParentLocation parameter since for embedded database like H2 we must change the database
             // to incorporate the path where to write the db
-            params.put("ParentLocation", DataUtilities.fileToURL(parent).toExternalForm());
+            properties.put("ParentLocation", DataUtilities.fileToURL(parent).toExternalForm());
 
-            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, create, spi,hints);
+            catalog = GranuleCatalogFactory.createGranuleCatalog(properties, false, create, spi,hints);
+            MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+            catalog.setMultiScaleROIProvider(rois);
         } catch (Exception e) {
             final IOException ioe = new IOException();
             throw (IOException) ioe.initCause(e);
@@ -559,7 +572,12 @@ public class CatalogManager {
             }
         }
         // Create the catalog
-        return GranuleCatalogFactory.createGranuleCatalog(sourceURL, catalogBean, null,hints);
+        GranuleCatalog catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, catalogBean, null,hints);
+        File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
+        MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+        catalog.setMultiScaleROIProvider(rois);
+        
+        return catalog;
     }
 
 }

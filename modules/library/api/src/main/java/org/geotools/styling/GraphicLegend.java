@@ -24,12 +24,46 @@ public interface GraphicLegend extends org.opengis.style.GraphicLegend {
     
     public void setDisplacement( org.opengis.style.Displacement displacement );
 
+    /**
+     * This specifies the level of translucency to use when rendering the graphic.<br>
+     * The value is encoded as a floating-point value between 0.0 and 1.0 with
+     * 0.0 representing totally transparent and 1.0 representing totally
+     * opaque, with a linear scale of translucency for intermediate values.<br>
+     * For example, "0.65" would represent 65% opacity. The default value is
+     * 1.0 (opaque).
+     *
+     * @return The opacity of the Graphic, where 0.0 is completely transparent
+     *         and 1.0 is completely opaque.
+     */
     public Expression getOpacity();
 
+    /**
+     * Graphic opacity.
+     * 
+     * @param opacity New value of property opacity.
+     */
     public void setOpacity( Expression opacity);
     
+    /**
+     * This parameter defines the rotation of a graphic in the clockwise
+     * direction about its centre point in decimal degrees. The value encoded
+     * as a floating point number.
+     *
+     * @return The angle of rotation in decimal degrees. Negative values
+     *         represent counter-clockwise rotation.  The default is 0.0 (no
+     *         rotation).
+     */
     public Expression getRotation();
 
+    /**
+     * This parameter defines the rotation of a graphic in the clockwise
+     * direction about its centre point in decimal degrees.   The value
+     * encoded as a floating point number.
+     * 
+     * @param rotation in decimal degrees
+     */
+    void setRotation(Expression rotation);
+    
     /**
      * The size of the mark if specified.
      * <p>

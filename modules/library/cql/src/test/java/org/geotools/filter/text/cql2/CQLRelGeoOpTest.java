@@ -62,7 +62,7 @@ public class CQLRelGeoOpTest {
         this(Language.CQL);
     }
 
-    public CQLRelGeoOpTest(final Language language) {
+    protected CQLRelGeoOpTest(final Language language) {
 
         assert language != null : "language cannot be null value";
 

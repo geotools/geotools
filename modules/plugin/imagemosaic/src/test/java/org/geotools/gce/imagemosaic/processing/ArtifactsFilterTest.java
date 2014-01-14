@@ -83,15 +83,15 @@ public class ArtifactsFilterTest extends Assert {
 			
 			bins = histogram.getBins();
 			
-			assertEquals(bins[0][0],4375);
-			assertEquals(bins[1][0],4375);
-			assertEquals(bins[2][0],4959);
+			assertEquals(bins[0][0],4261);
+			assertEquals(bins[1][0],4261);
+			assertEquals(bins[2][0],4845);
 			assertEquals(bins[0][180],584);
 			assertEquals(bins[0][200],5041);
 			assertEquals(bins[2][200],5041);
 			assertEquals(bins[1][255],5625);
 			
-			assertEquals(bins[0][0]+bins[1][0]+bins[2][0]+bins[0][180]+bins[0][200]+bins[2][200]+bins[1][255], 100*100*3);
+			assertEquals(bins[0][0]+bins[1][0]+bins[2][0]+bins[0][20]+bins[1][20]+bins[2][20] +bins[0][180]+bins[0][200]+bins[2][200]+bins[1][255], 100*100*3);
 		} finally {
 			if (fis != null){
 				try {

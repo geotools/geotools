@@ -22,7 +22,6 @@ import java.awt.image.BandedSampleModel;
 import java.awt.image.SampleModel;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -48,6 +47,7 @@ import org.geotools.coverage.io.CoverageSource.TemporalDomain;
 import org.geotools.coverage.io.CoverageSource.VerticalDomain;
 import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.RasterLayout;
+import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
@@ -57,6 +57,8 @@ import org.geotools.coverage.io.util.DateRangeComparator;
 import org.geotools.coverage.io.util.DateRangeTreeSet;
 import org.geotools.coverage.io.util.DoubleRangeTreeSet;
 import org.geotools.coverage.io.util.NumberRangeComparator;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.factory.GeoTools;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.Utils;
@@ -70,11 +72,11 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
-import org.geotools.util.Range;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.SampleDimension;
 import org.opengis.coverage.grid.GridEnvelope;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
@@ -89,8 +91,11 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
+import ucar.nc2.Dimension;
+import ucar.nc2.Variable;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
+import ucar.nc2.dataset.CoordinateSystem;
 import ucar.nc2.dataset.VariableDS;
 
 /**
@@ -399,7 +404,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
     private int rank;
 
     private SampleModel sampleModel;
-    
+
     private int numberOfSlices;
 
     private int width;
@@ -409,6 +414,10 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
     private CoordinateReferenceSystem coordinateReferenceSystem;
 
     private int[] shape;
+
+    private Name coverageName;
+
+    private SimpleFeatureType indexSchema;
 
     private final static java.util.logging.Logger LOGGER = Logging.getLogger(UnidataVariableAdapter.class);
 
@@ -477,7 +486,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         
         setDimensionDescriptors(dimensions);
         if (reader.ancillaryFileManager.isImposedSchema()) {
-            updateDimensions(dimensions);
+            updateDimensions(getDimensionDescriptors());
         }
     }
 
@@ -523,6 +532,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
                         if (schemaType != null) {
                             // Schema found: proceed with remapping attributes
                             updateMapping(schemaType, dimensionDescriptors);
+                            indexSchema = schemaType;
                             break;
                         }
                         throw new IllegalStateException("Unable to find the table for this coverage: "+ coverageName);
@@ -736,9 +746,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         final FieldType fieldType = new DefaultFieldType(new NameImpl(getName()), desc, sampleDims);
         sb.append(description != null ? description.toString() + "," : "");
         final RangeType range = new DefaultRangeType(getName(), description, fieldType);
-        this.setRangeType(range);        
-        
-        
+        this.setRangeType(range);
     }
 
     private void addAdditionalDomain(List<CoordinateVariable<?>> otherAxes, List<DimensionDescriptor> dimensions) {
@@ -791,6 +799,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
                 // model space
                 if(cv.isRegular()){
                     // regular model space
+                    //TODO should we support a decreasing longitude?
                     origin[0]=cv.getStart();
                     scaleX=cv.getIncrement();
                 } else {
@@ -829,8 +838,16 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
                 
                 // model space
                 if(cv.isRegular()){
-                    scaleY=-cv.getIncrement();
-                    origin[1]=cv.getStart()-scaleY*high[1];
+
+                    if(cv.getIncrement()>0){
+                        //the latitude axis is increasing! This is a special case so we flip it around
+                        scaleY=-cv.getIncrement();
+                        origin[1]=cv.getStart()-scaleY*(high[1]-1);
+                    }else{
+
+                        scaleY=cv.getIncrement();
+                        origin[1]=cv.getStart();
+                    }
                 } else {
                     
                     // model space is not declared to be regular, but we kind of assume it is!!!
@@ -863,8 +880,6 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
             default:
                 break;
             }
-            
-            
         }
 
         final AffineTransform at = new AffineTransform(scaleX, 0, 0, scaleY, origin[0], origin[1]);
@@ -874,7 +889,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
                 high[0]-low[0], 
                 high[1]-low[1]);
         final MathTransform raster2Model = ProjectiveTransform.create(at);
-        return new GridGeometry2D(gridRange,PixelInCell.CELL_CORNER ,raster2Model, coordinateReferenceSystem,GeoTools.getDefaultHints());
+        return new GridGeometry2D(gridRange,PixelInCell.CELL_CENTER,raster2Model, coordinateReferenceSystem,GeoTools.getDefaultHints());
     }
 
     public int getNumBands() {
@@ -892,9 +907,10 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         return sampleModel;
     }
 
-    public UnidataVariableAdapter(UnidataImageReader reader, VariableDS variable) throws Exception {
+    public UnidataVariableAdapter(UnidataImageReader reader, Name coverageName, VariableDS variable) throws Exception {
         this.variableDS = variable;
-        this.reader=reader;
+        this.reader = reader;
+        this.coverageName = coverageName;
         setName(variable.getFullName());
         init();
     }
@@ -991,5 +1007,166 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
      */
     public int[] getShape() {
         return shape;
+    }
+
+    /**
+     * Return features for that variable adapter, starting from slices with index = "startIndex", and up to "limit" elements.
+     * This allows for paging. Put the created features inside the provided collection
+     * 
+     * @param startIndex the first slice to be returned
+     * @param limit the max number of features to be created
+     * @param collection the feature collection where features need to be stored
+     */
+    public void getFeatures(final int startIndex, final int limit, final ListFeatureCollection collection) {
+        final boolean hasVerticalAxis = coordinateSystem.hasVerticalAxis();
+        final SimpleFeatureType indexSchema = collection.getSchema();
+        final int bandDimension = rank - UnidataUtilities.Z_DIMENSION;
+        final int slicesNum = getNumberOfSlices();
+        if (startIndex > slicesNum) {
+            throw new IllegalArgumentException("The paging start index can't be higher than the number of available slices");
+        }
+        int lastIndex = startIndex + limit;
+        if (lastIndex > slicesNum) {
+            lastIndex = slicesNum;
+        }
+        final String varName = variableDS.getFullName();
+        for (int imageIndex = startIndex; imageIndex < lastIndex; imageIndex++) {
+            int zIndex = -1;
+            int tIndex = -1;
+            for (int i = 0; i < rank; i++) {
+                switch (rank - i) {
+                case UnidataUtilities.X_DIMENSION:
+                case UnidataUtilities.Y_DIMENSION:
+                    break;
+                default: {
+                    if (i == bandDimension && hasVerticalAxis) {
+                        zIndex = getZIndex(imageIndex);
+                    } else {
+                        tIndex =  getTIndex(imageIndex);
+                    }
+                    break;
+                }
+                }
+            }
+
+            //Put a new sliceIndex in the list
+            final UnidataSlice2DIndex variableIndex = new UnidataSlice2DIndex(tIndex, zIndex, varName);
+            reader.ancillaryFileManager.addSlice(variableIndex);
+
+            // Create a feature for that index to be put in the CoverageSlicesCatalog
+            final SimpleFeature feature = createFeature(
+                    variableDS, 
+                    coverageName.toString(), 
+                    tIndex, 
+                    zIndex, 
+                    coordinateSystem, 
+                    imageIndex, 
+                    indexSchema);
+            collection.add(feature);
+        }
+    }
+
+    /**
+     * Create a SimpleFeature on top of the provided variable and indexes.
+     * 
+     * @param variable the input variable 
+     * @param tIndex the time index 
+     * @param zIndex the zeta index
+     * @param cs the {@link CoordinateSystem} associated with that variable
+     * @param imageIndex the index to be associated to the feature in the index
+     * @param indexSchema the schema to be used to create the feature
+     * @param geometry the geometry to be attached to the feature
+     * @return the created {@link SimpleFeature}
+     * TODO move to variable wrapper
+     */
+    private SimpleFeature createFeature(
+            final Variable variable,
+            final String coverageName,
+            final int tIndex,
+            final int zIndex,
+            final CoordinateSystem cs,
+            final int imageIndex, 
+            final SimpleFeatureType indexSchema) {
+        
+        final Date date = getTimeValueByIndex(variable, tIndex, cs);
+        final Number verticalValue = getVerticalValueByIndex(variable, zIndex, cs);
+
+        final SimpleFeature feature = DataUtilities.template(indexSchema);
+        feature.setAttribute(CoverageSlice.Attributes.GEOMETRY, UnidataCRSUtilities.GEOM_FACTORY.toGeometry(reader.boundingBox));
+        feature.setAttribute(CoverageSlice.Attributes.INDEX, imageIndex);
+
+        // TIME management
+        // Check if we have time and elevation domain and set the attribute if needed
+        if (date != null) {
+            feature.setAttribute(reader.dimensionsMapping.get(UnidataUtilities.TIME_DIM), date);
+        }
+
+        // ELEVATION or other dimension
+        final String elevationCVName = reader.dimensionsMapping.get(UnidataUtilities.ELEVATION_DIM);
+        if (!Double.isNaN(verticalValue.doubleValue())) {
+            List<AttributeDescriptor> descriptors = indexSchema.getAttributeDescriptors();
+            String attribute = null;
+            
+            // Once we don't deal anymore with old coverage APIs, we can consider directly use the dimension name as attribute
+            for (AttributeDescriptor descriptor: descriptors) {
+                if (descriptor.getLocalName().equalsIgnoreCase(elevationCVName)) {
+                    attribute = elevationCVName;
+                    break;
+                }
+            }
+            
+            // custom dimension, mapped to an attribute using its name
+            if (attribute == null) {
+                // Assuming the custom dimension is always the last attribute
+                attribute = variable.getDimension(0).getShortName();
+            }
+            feature.setAttribute(attribute, verticalValue);
+        }
+        return feature;
+    }
+    
+    /** Return the zIndex-th value of the vertical dimension of the specified variable, as a double, or {@link Double#NaN} 
+     * in case that variable doesn't have a vertical axis.
+     * 
+     * @param unidataReader the reader to be used for that search
+     * @param variable the variable to be accessed
+     * @param timeIndex the requested index
+     * @param cs the coordinateSystem to be scan
+     * @return
+     * TODO move to variable wrapper
+     */
+    private Number getVerticalValueByIndex(Variable variable, final int zIndex,
+            final CoordinateSystem cs ) {
+        double ve = Double.NaN;
+        if (cs != null && cs.hasVerticalAxis()) {
+            final int rank = variable.getRank();
+    
+            final Dimension verticalDimension = variable.getDimension(rank - UnidataUtilities.Z_DIMENSION);
+            return (Number) reader.coordinatesVariables.get(verticalDimension.getFullName()).read(zIndex);
+        }
+        return ve;
+    }
+
+    /** Return the timeIndex-th value of the time dimension of the specified variable, as a Date, or null in case that
+     * variable doesn't have a time axis.
+     * 
+     * @param unidataReader the reader to be used for that search
+     * @param variable the variable to be accessed
+     * @param timeIndex the requested index
+     * @param cs the coordinateSystem to be scan
+     * @return
+     * TODO move to variable wrapper
+     */
+    private Date getTimeValueByIndex( Variable variable, int timeIndex,
+            final CoordinateSystem cs ) {
+    
+        if (cs != null && cs.hasTimeAxis()) {
+            final int rank = variable.getRank();
+            final Dimension temporalDimension = variable.getDimension(rank
+                    - ((cs.hasVerticalAxis() ? UnidataUtilities.Z_DIMENSION : 2) + 1));
+            return (Date) reader.coordinatesVariables.get(temporalDimension.getFullName()).read(timeIndex);
+        }
+    
+        return null;
     }
 }

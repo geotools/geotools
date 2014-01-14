@@ -22,10 +22,12 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.geotools.filter.ConstantExpression;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
 import org.geotools.renderer.style.ExpressionExtractor;
 import org.geotools.renderer.style.ExternalGraphicFactory;
+import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
@@ -179,7 +181,8 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     }
     
     protected boolean isNull(Expression exp) {
-        return exp == null || exp instanceof NilExpression; 
+        return exp == null || exp instanceof NilExpression 
+                || (exp instanceof ConstantExpression && ((ConstantExpression) exp).getValue() == null); 
     }
 
     /**
@@ -301,9 +304,10 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                         }
                         
                         Iterator<ExternalGraphicFactory> it  = DynamicSymbolFactoryFinder.getExternalGraphicFactories();
-                        while(it.hasNext()) {
+                        while(it.hasNext() && icon == null) {
                             try {
-                                icon = it.next().getIcon(null, expanded, eg.getFormat(), imageSize);
+                                ExternalGraphicFactory factory = it.next();
+                                icon = factory.getIcon(null, expanded, eg.getFormat(), imageSize);
                             } catch(Exception e) {
                                 LOGGER.log(Level.FINE, "Error occurred evaluating external graphic", e);
                             }
@@ -320,15 +324,27 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                         }
                     }
                 } else if(gs instanceof Mark) {
+                    Mark mark = (Mark) gs;
+                    int markSize;
                     if(isSizeLiteral) {
-                        if(imageSize > buffer) {
-                            buffer = imageSize;
-                        }
-                        return;
+                        markSize = imageSize;
                     } else {
-                        estimateAccurate = false;
-                        return;
+                        markSize = SLDStyleFactory.DEFAULT_MARK_SIZE;
                     }
+                    if(mark.getStroke() != null) {
+                        int strokeWidth = getWidth(mark.getStroke().getWidth());
+                        if(strokeWidth < 0) {
+                            estimateAccurate = false;
+                        } else {
+                            markSize += strokeWidth;
+                        }
+                    }
+                    
+                    if(markSize > buffer) {
+                        this.buffer = markSize;
+                    }
+
+                    return;
                 }
 
                 // if we got here we could not find a way to actually estimate the graphic size
@@ -345,20 +361,26 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     }
 
     private void evaluateWidth(Expression width) {
+        int value = getWidth(width);
+        if(value < 0) {
+            estimateAccurate = false;
+        } else if(value > buffer) {
+            buffer = value;
+        }
+    }
+    
+    private int getWidth(Expression width) {
         attributeExtractor.clear();
         width.accept(attributeExtractor, null);
         if (attributeExtractor.isConstantExpression()) {
             Double result = width.evaluate(null, Double.class);
             if(result != null) {
-                int size = (int) Math.ceil(result);
-                if (size > buffer) {
-                    buffer = size;
-                }
+                return (int) Math.ceil(result);
             } else {
-                estimateAccurate = false;
+                return -1;
             }
         } else {
-            estimateAccurate = false;
+            return -1;
         }
     }
 

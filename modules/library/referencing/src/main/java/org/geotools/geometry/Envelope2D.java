@@ -3,7 +3,6 @@
  *    http://geotools.org
  *
  *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
- *    (C) 2001 Vivid Solutions
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -33,7 +32,6 @@ import org.geotools.util.Utilities;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
-
 
 /**
  * A two-dimensional envelope on top of {@link Rectangle2D}. This implementation is provided for

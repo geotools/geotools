@@ -16,20 +16,24 @@
  */
 package org.geotools.data.vpf;
 
+import static org.geotools.data.vpf.ifc.FCode.ALLOWED_FCODE_ATTRIBUTES_LIST;
+import static org.geotools.data.vpf.ifc.FileConstants.CHARACTER_VALUE_DESCRIPTION_TABLE;
+import static org.geotools.data.vpf.ifc.FileConstants.TABLE_FCS;
+import static org.geotools.data.vpf.ifc.VPFCoverageIfc.FIELD_COVERAGE_NAME;
+import static org.geotools.data.vpf.ifc.VPFCoverageIfc.FIELD_LEVEL;
+
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.sql.SQLException;
 import java.util.AbstractSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import java.net.URI;
 
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
-import org.geotools.data.vpf.ifc.FCode;
-import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.data.vpf.ifc.VPFCoverageIfc;
 import org.geotools.feature.SchemaException;
 import org.opengis.feature.simple.SimpleFeature;
@@ -44,7 +48,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @source $URL$
  */
-public class VPFCoverage implements FCode, FileConstants, VPFCoverageIfc {
+public class VPFCoverage {
     /**
      * The description attribute of the coverage
      */

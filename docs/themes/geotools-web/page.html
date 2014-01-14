@@ -3,7 +3,35 @@
     <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
             <h1><a href="http://geotoolsnews.blogspot.com">News</a></h1>
-            <script charset="ISO-8859-1" src="http://landmark-project.com/feed2js/feed2js.php?src=http://geotoolsnews.blogspot.com/feeds/posts/default?alt=rss&num=3&desc=75"></script>
+            <ul id="bloglist"></ul>
+            <script type="text/javascript">
+                function prettyDate(theTime){
+	                var time = theTime.split('.')[0]+'Z';
+	                var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," "));
+	                var curr_date = date.getDate();
+	                var curr_month = date.getMonth();
+                    curr_month++;
+	                var curr_year = date.getFullYear();
+	
+	                return curr_year+"-"+curr_month+"-"+curr_date;
+                }
+
+                function showPosts(data){
+	                var entries = data.feed.entry;
+                    for(i = 0; i < 3; i ++) {
+	                    var latest = entries[i];
+	                    var link = latest.link[4].href;
+	                    var title = latest.title.$t;
+	                    var blog_link = data.feed.link[2].href;
+	                    var date = prettyDate(latest.updated.$t);
+	                    var newli = '<li><h4><a target="_blank" href="'+link+'">'+ title + '</a></h4><span style="margin-left: 10px; font-size: 12px; margin-top:-10px;">published on '+date+'</span></li>';
+                        var bloglist = $('#bloglist');
+                        bloglist.append(newli);
+                    }
+                }
+        	</script>
+            <script  type="text/javascript" src="http://geotoolsnews.blogspot.com/feeds/posts/default?alt=json-in-script&amp;callback=showPosts">
+            </script>
         </div>
         <div class="sphinxsidebarwrapper">
 

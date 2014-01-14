@@ -72,6 +72,9 @@ import org.geotools.resources.NIOUtilities;
 public class DbaseFileReader implements FileReader {
 
     public final class Row {
+        
+        boolean deleted;
+        
         public Object read(final int column) throws IOException {
             final int offset = fieldOffsets[column];
             return readObject(offset, column);
@@ -89,6 +92,10 @@ public class DbaseFileReader implements FileReader {
                 ret.append("\" ");
             }
             return ret.toString();
+        }
+
+        public boolean isDeleted() {
+            return deleted;
         }
     }
 
@@ -347,7 +354,7 @@ public class DbaseFileReader implements FileReader {
         }
         cnt++;
     }
-
+    
     /**
      * Copy the next record into the array starting at offset.
      * 
@@ -366,6 +373,9 @@ public class DbaseFileReader implements FileReader {
         }
 
         read();
+        if(row.deleted) {
+            return null;
+        }
 
         // retrieve the record length
         final int numFields = header.getNumFields();
@@ -415,9 +425,7 @@ public class DbaseFileReader implements FileReader {
 
             // read the deleted flag
             final char deleted = (char) buffer.get();
-            if (deleted == '*') {
-                continue;
-            }
+            row.deleted = deleted == '*';
 
             buffer.limit(buffer.position() + header.getRecordLength() - 1);
             buffer.get(bytes); // SK: There is a side-effect here!!!

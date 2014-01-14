@@ -75,17 +75,22 @@ public class PrjFileReader {
 	 */
 	public PrjFileReader(ReadableByteChannel channel, final Hints hints)
 			throws IOException, FactoryException {
-		Charset chars = Charset.forName("ISO-8859-1");
-		decoder = chars.newDecoder();
-		this.channel = channel;
-
-		init();
-
-		// ok, everything is ready...
-		decoder.decode(buffer, charBuffer, true);
-		buffer.limit(buffer.capacity());
-		charBuffer.flip();
-		crs = ReferencingFactoryFinder.getCRSFactory(hints).createFromWKT(charBuffer.toString());
+	    try {
+    		Charset chars = Charset.forName("ISO-8859-1");
+    		decoder = chars.newDecoder();
+    		this.channel = channel;
+    
+    		init();
+    
+    		// ok, everything is ready...
+    		decoder.decode(buffer, charBuffer, true);
+    		buffer.limit(buffer.capacity());
+    		charBuffer.flip();
+    		crs = ReferencingFactoryFinder.getCRSFactory(hints).createFromWKT(charBuffer.toString());
+	    } finally {
+    		// we are done reading, so just close this
+    		close();
+	    }
 	}
 
 	/**
@@ -149,6 +154,11 @@ public class PrjFileReader {
 
 	}
 
+	/**
+	 * The reader will close itself right after reading the CRS from the prj file,
+	 * so no actual need to call it explicitly anymore.
+	 * @throws IOException
+	 */
 	public void close() throws IOException {
 	    if(buffer != null) {
 	        NIOUtilities.clean(buffer); // will close if a MappedByteBuffer

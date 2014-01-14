@@ -55,6 +55,23 @@ public class DXFLwPolyline extends DXFEntity {
         _flag = flag;
         setName("DXFLwPolyline");
     }
+    public DXFLwPolyline(String name, int flag, int c, DXFLayer l, Vector<DXFLwVertex> v, int visibility, DXFLineType lineType, double thickness, DXFExtendedData extData) {
+    	super(c, l, visibility, lineType, thickness);
+    	_id = name;
+    	
+    	
+    	Vector<DXFLwVertex> newV = new Vector<DXFLwVertex>();
+    	
+    	for (int i = 0; i < v.size(); i++) {
+    		DXFLwVertex entity = (DXFLwVertex) v.get(i).clone();
+    		newV.add(entity);
+    	}
+    	
+    	theVertices = newV;
+    	_flag = flag;
+    	setName("DXFLwPolyline");
+    	_extendedData = extData;
+    }
 
     public DXFLwPolyline(DXFLayer l) {
         super(-1, l, 0, null, DXFTables.defaultThickness);
@@ -95,6 +112,7 @@ public class DXFLwPolyline extends DXFEntity {
 
         DXFCodeValuePair cvp = null;
         DXFGroupCode gc = null;
+        DXFExtendedData _extData = null;
 
         boolean doLoop = true;
         while (doLoop) {
@@ -137,12 +155,17 @@ public class DXFLwPolyline extends DXFEntity {
                 case VISIBILITY: //"60"
                     visibility = cvp.getShortValue();
                     break;
+                case XDATA_APPLICATION_NAME:
+                	String appName = cvp.getStringValue();
+            		_extData = DXFExtendedData.getExtendedData(br);
+            		_extData.setAppName(appName);
+                    break;
                 default:
                     break;
             }
 
         }
-        DXFLwPolyline e = new DXFLwPolyline(name, flag, c, l, lv, visibility, lineType, DXFTables.defaultThickness);
+        DXFLwPolyline e = new DXFLwPolyline(name, flag, c, l, lv, visibility, lineType, DXFTables.defaultThickness, _extData);
         if ((flag & 1) == 1) {
             e.setType(GeometryType.POLYGON);
         } else {

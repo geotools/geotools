@@ -26,7 +26,6 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -338,7 +337,8 @@ public class FeatureJSON {
         }
 
         //check for the case of a crs specified post features in the json
-        if (features.getSchema().getCoordinateReferenceSystem() == null 
+        if (features.getSchema() != null
+                && features.getSchema().getCoordinateReferenceSystem() == null 
                 && it.getHandler().getCRS() != null ) {
             try {
                 return new ForceCoordinateSystemFeatureResults(features, it.getHandler().getCRS());
@@ -463,6 +463,48 @@ public class FeatureJSON {
      */
     public CoordinateReferenceSystem readCRS(InputStream input) throws IOException {
         return readCRS((Object)input);
+    }
+    
+
+    /**
+     * Reads the {@link SimpleFeatureType} of a GeoJSON feature collection. In the
+     * worst case, it will parse all features searching for attributes not present
+     * in previous features.
+     * 
+     * @param input
+     *          The input. See {@link GeoJSONUtil#toReader(Object)} for details.
+     * @param nullValuesEncoded
+     *          if the input has null values encoded. If this flag is set to true
+     *          and the GeoJSON doesn't actually encode null values, only the
+     *          first feature attributes will be discovered.
+     * @return The feature collection schema
+     * 
+     * @throws IOException
+     *           In the event of a parsing error or if the input json is invalid.
+     */
+    public SimpleFeatureType readFeatureCollectionSchema(Object input, boolean nullValuesEncoded) throws IOException {
+        return GeoJSONUtil.parse(new FeatureTypeHandler(nullValuesEncoded), input, false);
+    }
+
+
+    /**
+     * Reads the {@link SimpleFeatureType} of a GeoJSON feature collection. In the
+     * worst case, it will parse all features searching for attributes not present
+     * in previous features.
+     * 
+     * @param input
+     *          The input. See {@link GeoJSONUtil#toReader(Object)} for details.
+     * @param nullValuesEncoded
+     *          if the input has null values encoded. If this flag is set to true
+     *          and the GeoJSON doesn't actually encode null values, only the
+     *          first feature attributes will be discovered.
+     * @return The feature collection schema
+     * 
+     * @throws IOException
+     *           In the event of a parsing error or if the input json is invalid.
+     */
+    public SimpleFeatureType readFeatureCollectionSchema(InputStream input, boolean nullValuesEncoded) throws IOException {
+        return readFeatureCollectionSchema((Object)input, false);
     }
 
     /**

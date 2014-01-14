@@ -139,7 +139,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
             }
         } else if (baseDirectory == null) {
             //use current working directory
-            dataSource.setUrl("jdbc:h2:" + database);
+            dataSource.setUrl("jdbc:h2:" + database + ";AUTO_SERVER=TRUE");
         } else {
             //use directory specified if the patch is relative
             String location;
@@ -150,7 +150,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
                 location = database;
             }
 
-            dataSource.setUrl("jdbc:h2:file:" + location);
+            dataSource.setUrl("jdbc:h2:file:" + location + ";AUTO_SERVER=TRUE");
         }
         
         String username = (String) USER.lookUp(params);

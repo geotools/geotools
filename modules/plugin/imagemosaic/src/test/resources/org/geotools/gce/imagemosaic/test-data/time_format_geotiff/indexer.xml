@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Indexer>
+  <coverages>
+    <coverage>
+      <name>time_format_geotiff</name>
+      <schema>
+        <attributes>the_geom:Polygon,location:String,time:java.util.Date
+        </attributes>
+      </schema>
+      <domains>
+        <domain name="time">
+          <attributes>
+            <attribute ref="timeCollector">time</attribute>
+          </attributes>
+        </domain>
+      </domains>
+    </coverage>
+  </coverages>
+  <collectors>
+    <collector name="timeCollector">
+      <value>[0-9]{14},format=yyyyMMddHHmmss</value>
+      <spi>TimestampFileNameExtractorSPI</spi>
+      <mapped>time</mapped>
+    </collector>
+  </collectors>
+</Indexer>

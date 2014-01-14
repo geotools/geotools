@@ -683,7 +683,59 @@ public class NetCDFMosaicReaderTest extends Assert {
             reader.dispose();
         }
     }
-    
+
+    @Test
+    public void testDeleteCoverageGome() throws IOException {
+        // prepare a "mosaic" with just one NetCDF
+        File nc1 = TestData.file(this,"O3-NO2.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_deleteCoverage");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+
+        File xml = TestData.file(this,".O3-NO2/O3-NO2.xml");
+        FileUtils.copyFileToDirectory(xml, mosaic);
+
+        // The indexer
+        String indexer = "TimeAttribute=time\n"
+                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+        indexer += Prop.AUXILIARY_FILE + "=" + "O3-NO2.xml";
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+
+
+        // the datastore.properties file is also mandatory...
+        File dsp = TestData.file(this,"datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+
+        // have the reader harvest it
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(mosaic);
+        GridCoverage2D coverage = null;
+        assertNotNull(reader);
+        try {
+            assertEquals(2, reader.getGridCoverageNames().length);
+
+            File[] files = mosaic.listFiles();
+            assertEquals(15, files.length);
+            
+            reader.dispose();
+            reader = format.getReader(mosaic);
+            
+            reader.delete(false);
+            files = mosaic.listFiles();
+            assertEquals(2, files.length);
+            
+        } finally {
+            if(coverage != null) {
+                ImageUtilities.disposePlanarImageChain((PlanarImage) coverage.getRenderedImage());
+                coverage.dispose(true);
+            }
+            reader.dispose();
+        }
+    }
+
     @Test
     public void testReadCoverageGome2Names() throws IOException {
         // prepare a "mosaic" with just one NetCDF

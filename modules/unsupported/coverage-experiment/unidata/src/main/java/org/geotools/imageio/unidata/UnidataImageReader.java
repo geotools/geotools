@@ -49,6 +49,7 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.spi.ImageReaderSpi;
 
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
@@ -94,7 +95,7 @@ import ucar.nc2.dataset.VariableDS;
  * 
  * TODO caching for {@link CoverageSourceDescriptor}
  */
-public abstract class UnidataImageReader extends GeoSpatialImageReader {
+public abstract class UnidataImageReader extends GeoSpatialImageReader implements FileSetManager{
 
     /** INTERNAL_INDEX_CREATION_PAGE_SIZE */
     private static final int INTERNAL_INDEX_CREATION_PAGE_SIZE = 1000;
@@ -930,6 +931,27 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
             schemaAttributes+=("," + name + ":" + cv.getType().getName());
         }
         return schemaAttributes;
+    }
+
+    @Override
+    public void addFile(String filePath) {
+         ancillaryFileManager.addFile(filePath);
+    }
+
+    @Override
+    public List<String> list() {
+        return ancillaryFileManager.list();
+    }
+
+    @Override
+    public void removeFile(String filePath) {
+        ancillaryFileManager.removeFile(filePath);
+    }
+
+    @Override
+    public void purge() {
+        getCatalog().dispose();
+        ancillaryFileManager.purge();
     }
   
 }

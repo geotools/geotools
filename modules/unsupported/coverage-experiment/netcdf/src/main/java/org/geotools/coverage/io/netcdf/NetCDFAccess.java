@@ -26,11 +26,12 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.FilenameUtils;
+import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.CoverageSource;
 import org.geotools.coverage.io.Driver;
@@ -59,15 +60,12 @@ import org.opengis.util.ProgressListener;
  *
  * @source $URL$
  */
-public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageAccess {
+public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageAccess, FileSetManager {
 
     private final static Logger LOGGER = Logging.getLogger(NetCDFAccess.class.toString());
 
     GeoSpatialImageReader reader = null;
-    
-    private String namePrefix = null;
-    
-//    private Map<Name, Name> nameToVarMap = new HashMap<Name, Name>();
+
     /**
      * Constructor 
      * 
@@ -117,20 +115,24 @@ public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageA
             }
             reader.setInput(this.source);
 
-            namePrefix = FilenameUtils.getBaseName(sourceFile.getCanonicalPath()) + "_";
-
             if (names == null) {
                 names = new ArrayList<Name>();
                 final Collection<Name> originalNames = reader.getCoveragesNames();
                 for (Name name : originalNames) {
                     Name coverageName = new NameImpl(/*namePrefix + */name.toString());
                     names.add(coverageName);
-//                    nameToVarMap.put(coverageName, name);
                 }
             }
         } catch (Exception e) {
             throw new DataSourceException(e);
         }
+    }
+
+    @Override
+    public boolean delete(Name name, Map<String, Serializable> params, Hints hints)
+            throws IOException {
+        // Right now, simply delete the name
+        return names.remove(name);
     }
 
     public CoverageSource access( Name name, Map<String, Serializable> params, AccessType accessType, Hints hints,
@@ -179,11 +181,33 @@ public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageA
         super.dispose();
         if (reader != null) {
             try {
-                reader.dispose();        
+                reader.dispose();
             } catch (Throwable t) {
                 
             }
         }
+    }
+
+    @Override
+    public void addFile(String filePath) {
+        reader.addFile(filePath);
+        
+    }
+
+    @Override
+    public List<String> list() {
+        return reader.list();
+    }
+
+    @Override
+    public void removeFile(String filePath) {
+        reader.removeFile(filePath);
+        
+    }
+
+    @Override
+    public void purge() {
+        reader.purge();
     }
 
 }

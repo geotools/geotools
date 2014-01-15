@@ -118,15 +118,9 @@ public class SLDFontBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-        //&quot;font-family&quot;
-        //&quot;font-style&quot;
-        //&quot;font-weight&quot;
-        //&quot;font-size&quot
-        List<Expression> family = new ArrayList();
-        Expression style = null;
-        Expression weight = null;
-        Expression size = null;
-
+        Font font = styleFactory.getDefaultFont();
+        
+        boolean familyFound = false;
         for (Iterator i = node.getChildValues(CssParameter.class).iterator(); i.hasNext();) {
             CssParameter css = (CssParameter) i.next();
 
@@ -136,22 +130,27 @@ public class SLDFontBinding extends AbstractComplexBinding {
             }
 
             if ("font-family".equals(css.getName())) {
-                family.add(exp);
+                if(!familyFound) {
+                    font.getFamily().set(0, exp);
+                    familyFound = true;
+                } else { 
+                    font.getFamily().add(exp);
+                }
             }
 
             if ("font-style".equals(css.getName())) {
-                style = exp;
+                font.setStyle(exp);
             }
 
             if ("font-weight".equals(css.getName())) {
-                weight = exp;
+                font.setWeight(exp);
             }
 
             if ("font-size".equals(css.getName())) {
-                size = exp;
+                font.setSize(exp);
             }
         }
 
-        return styleFactory.font(family, style, weight, size);
+        return font;
     }
 }

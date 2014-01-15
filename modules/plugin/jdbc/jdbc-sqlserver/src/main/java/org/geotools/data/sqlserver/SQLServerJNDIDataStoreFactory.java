@@ -46,5 +46,6 @@ public class SQLServerJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
         parameters.put(NATIVE_PAGING.key, NATIVE_PAGING);
         parameters.put(NATIVE_SERIALIZATION.key, NATIVE_SERIALIZATION);
         parameters.put(GEOMETRY_METADATA_TABLE.key, GEOMETRY_METADATA_TABLE);
+        parameters.put(FORCE_SPATIAL_INDEX.key, FORCE_SPATIAL_INDEX);
     }
 }

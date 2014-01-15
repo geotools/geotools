@@ -3010,10 +3010,22 @@ public final class JDBCDataStore extends ContentDataStore
         //sorting
         sort(featureType, query.getSortBy(), null, sql);
         
-        // finally encode limit/offset, if necessary
+        // encode limit/offset, if necessary
         applyLimitOffset(sql, query);
+        
+        // add search hints if the dialect supports them
+        applySearchHints(featureType, query, sql);
 
         return sql.toString();
+    }
+
+    private void applySearchHints(SimpleFeatureType featureType, Query query, StringBuffer sql) {
+        // we can apply search hints only on real tables
+        if(virtualTables.containsKey(featureType.getTypeName())) {
+            return;
+        }
+        
+        dialect.handleSelectHints(sql, featureType, query);
     }
 
     protected String selectJoinSQL(SimpleFeatureType featureType, JoinInfo join, Query query) 

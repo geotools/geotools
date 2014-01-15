@@ -24,6 +24,7 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
 
@@ -60,9 +61,11 @@ import org.picocontainer.MutablePicoContainer;
  */
 public class SLDHaloBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;
+    FilterFactory filterFactory;
 
-    public SLDHaloBinding(StyleFactory styleFactory) {
+    public SLDHaloBinding(StyleFactory styleFactory, FilterFactory filterFactory) {
         this.styleFactory = styleFactory;
+        this.filterFactory = filterFactory;
     }
 
     /**
@@ -109,7 +112,15 @@ public class SLDHaloBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-        return styleFactory.createHalo((Fill) node.getChildValue("Fill"),
-            (Expression) node.getChildValue("Radius"));
+        // get the children and apply the defaults in case they are missing
+        Fill fill = (Fill) node.getChildValue("Fill");
+        if(fill == null) {
+            fill = styleFactory.createFill(filterFactory.literal("#FFFFFF"));   
+        }
+        Expression radius = (Expression) node.getChildValue("Radius");
+        if(radius == null) {
+            radius = filterFactory.literal(1.0);
+        }
+        return styleFactory.createHalo(fill, radius);
     }
 }

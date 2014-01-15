@@ -20,6 +20,7 @@ import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDHaloBinding;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
+import org.opengis.filter.FilterFactory;
 
 import javax.xml.namespace.QName;
 
@@ -51,8 +52,8 @@ import javax.xml.namespace.QName;
  */
 public class HaloBinding extends SLDHaloBinding {
 
-    public HaloBinding(StyleFactory styleFactory) {
-        super(styleFactory);
+    public HaloBinding(StyleFactory styleFactory, FilterFactory filterFactory) {
+        super(styleFactory, filterFactory);
     }
 
     /**

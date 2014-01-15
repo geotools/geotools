@@ -27,11 +27,20 @@ import org.geotools.styling.Halo;
  */
 public class SLDHaloBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
-        assertEquals(Halo.class, new SLDHaloBinding(null).getType());
+        assertEquals(Halo.class, new SLDHaloBinding(null, null).getType());
     }
 
     public void test() throws Exception {
-        SLDMockData.halo(document, document);
+        SLDMockData.halo(document, document, true);
+
+        Halo halo = (Halo) parse();
+        assertNotNull(halo);
+        assertNotNull(halo.getFill());
+        assertEquals(1.0d, Filters.asDouble(halo.getRadius()), 0d);
+    }
+    
+    public void testDefaults() throws Exception {
+        SLDMockData.halo(document, document, false);
 
         Halo halo = (Halo) parse();
         assertNotNull(halo);

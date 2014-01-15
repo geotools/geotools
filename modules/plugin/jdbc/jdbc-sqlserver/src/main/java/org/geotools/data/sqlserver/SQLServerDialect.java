@@ -16,12 +16,25 @@
  */
 package org.geotools.data.sqlserver;
 
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKBReader;
-import com.vividsolutions.jts.io.WKTReader;
-import com.vividsolutions.jts.io.WKTWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Types;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.geotools.data.Query;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
 import org.geotools.factory.Hints;
@@ -32,16 +45,25 @@ import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 
-import java.io.IOException;
-import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.logging.Level;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKBReader;
+import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.io.WKTWriter;
 
 /**
  * Dialect implementation for Microsoft SQL Server.
@@ -57,6 +79,7 @@ public class SQLServerDialect extends BasicSQLDialect {
 
     private static final int DEFAULT_AXIS_MAX = 10000000;
     private static final int DEFAULT_AXIS_MIN = -10000000;
+    static final String SPATIAL_INDEX_KEY = "SpatialIndex";
     
     /**
      * The direct geometry metadata table
@@ -67,6 +90,8 @@ public class SQLServerDialect extends BasicSQLDialect {
 	private Boolean useOffsetLimit = false;
 
     private Boolean useNativeSerialization = false;
+    
+    private Boolean forceSpatialIndexes = false;
     
     final static Map<String, Class> TYPE_TO_CLASS_MAP = new HashMap<String, Class>() {
         {
@@ -646,5 +671,156 @@ public class SQLServerDialect extends BasicSQLDialect {
     public void setUseNativeSerialization(Boolean useNativeSerialization) {
         this.useNativeSerialization = useNativeSerialization;
     }
-	
+    
+    /**
+     * Sets whether to force the usage of spatial indexes by including a WITH INDEX hint
+     * @param useNativeSerialization
+     */
+    public void setForceSpatialIndexes(boolean forceSpatialIndexes) {
+        this.forceSpatialIndexes = forceSpatialIndexes;
+    }
+    
+    /**
+     * Drop the index. Subclasses can override to handle extra syntax or db specific situations
+     * 
+     * @param cx
+     * @param schema
+     * @param databaseSchema
+     * @param indexName
+     * @throws SQLException
+     */
+    public void dropIndex(Connection cx, SimpleFeatureType schema, String databaseSchema,
+            String indexName) throws SQLException {
+        StringBuffer sql = new StringBuffer();
+        String escape = getNameEscape();
+        sql.append("DROP INDEX ");
+        sql.append(escape).append(indexName).append(escape);
+        sql.append(" ON ");
+        if (databaseSchema != null) {
+            encodeSchemaName(databaseSchema, sql);
+            sql.append(".");
+        }
+        sql.append(escape).append(schema.getTypeName()).append(escape);
+
+        Statement st = null;
+        try {
+            st = cx.createStatement();
+            st.execute(sql.toString());
+            if(!cx.getAutoCommit()) {
+                cx.commit();
+            }
+        } finally {
+            dataStore.closeSafe(cx);
+        }
+    }
+
+    @Override
+    public void postCreateFeatureType(SimpleFeatureType featureType, DatabaseMetaData md,
+            String databaseSchema, Connection cx) throws SQLException {
+        // collect the spatial indexes (index metadata does not work properly for spatial indexes)
+        String sql = "SELECT \n" + 
+                "     index_name = ind.name,\n" + 
+                "     column_name = col.name\n" + 
+                "FROM \n" + 
+                "     sys.indexes ind \n" + 
+                "INNER JOIN \n" + 
+                "     sys.index_columns ic ON  ind.object_id = ic.object_id and ind.index_id = ic.index_id \n" + 
+                "INNER JOIN \n" + 
+                "     sys.columns col ON ic.object_id = col.object_id and ic.column_id = col.column_id \n" + 
+                "INNER JOIN \n" + 
+                "     sys.tables t ON ind.object_id = t.object_id \n" + 
+                "WHERE \n" + 
+                "     ind.type_desc = 'SPATIAL'\n" + 
+                "     and t.name = '" + featureType.getTypeName() + "'";
+        ResultSet indexInfo = null;
+        Statement st = null;
+        Map<String, Set<String>> indexes = new HashMap<String, Set<String>>();
+        try {
+            st = cx.createStatement();
+            indexInfo = st.executeQuery(sql);
+            while (indexInfo.next()) {
+                String indexName = indexInfo.getString("index_name");
+                String columnName = indexInfo.getString("column_name");
+                Set<String> indexColumns = indexes.get(indexName);
+                if (indexColumns == null) {
+                    indexColumns = new HashSet<String>();
+                    indexes.put(indexName, indexColumns);
+                } 
+                indexColumns.add(columnName);
+            }
+        } finally {
+            dataStore.closeSafe(st);
+            dataStore.closeSafe(indexInfo);
+        }
+        
+        // search for single column spatial indexes and attach them to the descriptors
+        for (Map.Entry<String, Set<String>> entry : indexes.entrySet()) {
+            Set<String> columns = entry.getValue();
+            if(columns.size() == 1) {
+                String column = columns.iterator().next();
+                AttributeDescriptor descriptor = featureType.getDescriptor(column);
+                if(descriptor instanceof GeometryDescriptor) {
+                    descriptor.getUserData().put(SPATIAL_INDEX_KEY, entry.getKey());
+                }
+            }
+        }
+    }
+    
+    @Override
+    public void handleSelectHints(StringBuffer sql, SimpleFeatureType featureType, Query query) {
+        // optional feature, apply only if requested
+        if(!forceSpatialIndexes) {
+            return;
+        }
+        
+        // check we have a filter
+        Filter filter = query.getFilter();
+        if(filter == Filter.INCLUDE) {
+            return;
+        }
+        
+        // that is has spatial attributes
+        SpatialIndexAttributeExtractor attributesExtractor = new SpatialIndexAttributeExtractor();
+        filter.accept(attributesExtractor, null);
+        Map<String, Integer> attributes = attributesExtractor.getSpatialProperties();
+        if(attributes.isEmpty() || attributes.size() > 1) {
+            return;
+        }
+        
+        // and that those attributes have a spatial index
+        Set<String> indexes = new HashSet<String>();
+        for (Map.Entry<String, Integer> attribute : attributes.entrySet()) {
+            // we can only apply one index on one condition
+            if(attribute.getValue() > 1) {
+                continue;
+            }
+            AttributeDescriptor descriptor = featureType.getDescriptor(attribute.getKey());
+            if(descriptor instanceof GeometryDescriptor) {
+                String indexName = (String) descriptor.getUserData().get(SPATIAL_INDEX_KEY);
+                if(indexName != null) {
+                    indexes.add(indexName);
+                }
+            }
+        }
+        if(indexes.isEmpty()) {
+            return;
+        }
+        
+        // apply the index hints
+        String fromStatement = "FROM \"" + featureType.getTypeName() + "\"";
+        int idx = sql.indexOf(fromStatement);
+        if(idx > 0) {
+            int base = idx + fromStatement.length();
+            StringBuilder sb = new StringBuilder(" WITH( INDEX(");
+            for (String indexName : indexes) {
+                sb.append("\"").append(indexName).append("\"").append(",");
+            }
+            sb.setLength(sb.length() - 1);
+            sb.append("))");
+            String tableHint = sb.toString();
+            
+            sql.insert(base, tableHint);
+        }
+    }
+    
 }

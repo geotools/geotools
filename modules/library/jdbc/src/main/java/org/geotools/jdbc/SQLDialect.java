@@ -1168,4 +1168,15 @@ public abstract class SQLDialect {
     public boolean isAutoCommitQuery() {
         return false;
     }
+
+    /**
+     * Used to apply search hints on the fully generated SQL (complete of select, from, where, sort,
+     * limit/offset)
+     * @param sql
+     * @param featureType
+     * @param query
+     */
+    public void handleSelectHints(StringBuffer sql, SimpleFeatureType featureType, Query query) {
+        // nothing to do
+    }
 }

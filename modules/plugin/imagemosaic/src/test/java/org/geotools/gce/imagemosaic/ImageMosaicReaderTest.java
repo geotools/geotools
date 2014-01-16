@@ -68,6 +68,7 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
@@ -1559,7 +1560,7 @@ public class ImageMosaicReaderTest extends Assert{
 			Assert.fail(e.getLocalizedMessage());
 		}
 	}
-
+	
 	/**
 	 * Tests the {@link ImageMosaicReader}
 	 * 
@@ -2687,6 +2688,51 @@ public class ImageMosaicReaderTest extends Assert{
             FileUtils.deleteDirectory(TestData.file(this, "water_temp4"));
         }
     }
+    
+    @Test
+    public void testUserProvidedName() throws Exception {
+        final File workDir = new File(TestData.file(this, "."), "water_temp5");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        FileUtils
+                .copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+        TestData.unzipFile(this, "water_temp5/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, "water_temp5");
+        
+        // force the name
+        FileWriter out = null;
+        try {
+            out = new FileWriter(new File(TestData.file(this, "."),
+                    "/water_temp5/indexer.properties"),true);
+            out.write("Name=test\n");
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
+        
+        // now start the test
+        AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+        
+        // the mosaic is correctly created
+        File sampleImage=new File(TestData.file(this, "."),"/water_temp5/sample_image");
+        File mosaicProperties=new File(TestData.file(this, "."),"/water_temp5/test.properties");
+        assertTrue(sampleImage.exists());
+        assertTrue(mosaicProperties.exists());
+
+        // clean up
+        reader.dispose();
+        if (!INTERACTIVE) {
+            FileUtils.deleteDirectory(TestData.file(this, "water_temp5"));
+        }
+    }
+
 
     @Test
     @Ignore

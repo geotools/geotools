@@ -1041,7 +1041,7 @@ public class Utils {
                         // it's a DIRECTORY, let's look for a possible properties files
                         // that we want to load
                         final String locationPath = sourceFile.getAbsolutePath();
-                        final String defaultIndexName = FilenameUtils.getName(locationPath);
+                        final String defaultIndexName = getDefaultIndexName(locationPath);
                         boolean datastoreFound = false;
                         boolean buildMosaic = false;
 
@@ -1171,6 +1171,25 @@ public class Utils {
                 // sourceURL=null;
         }
         return sourceURL;
+    }
+
+    private static String getDefaultIndexName(final String locationPath) {
+        if(locationPath == null) {
+            return null;
+        }
+        File file = new File(locationPath);
+        if(file.isDirectory()) {
+            File indexer = new File(file, "indexer.properties");
+            if(indexer.exists()) {
+                URL indexerUrl = DataUtilities.fileToURL(indexer);
+                Properties config = Utils.loadPropertiesFromURL(indexerUrl);
+                if(config != null && config.get(Utils.Prop.NAME) != null) {
+                    return (String) config.get(Utils.Prop.NAME);
+                } 
+            }
+        }
+        
+        return FilenameUtils.getName(locationPath);
     }
     
 

@@ -353,7 +353,7 @@ public class Utils {
 	}
 
     private static IOFileFilter initCleanUpFilter() {
-        IOFileFilter filesFilter = FileFilterUtils.and(FileFilterUtils.or(
+        IOFileFilter filesFilter = FileFilterUtils.or(
                 FileFilterUtils.suffixFileFilter("properties"),
                 FileFilterUtils.suffixFileFilter("shp"), FileFilterUtils.suffixFileFilter("dbf"),
                 FileFilterUtils.suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"),
@@ -363,8 +363,8 @@ public class Utils {
                 FileFilterUtils.nameFileFilter("_metadata"),
                 FileFilterUtils.suffixFileFilter("sample_image"),
                 FileFilterUtils.nameFileFilter("error.txt.lck"),
-                FileFilterUtils.suffixFileFilter("db")), FileFilterUtils
-                .notFileFilter(FileFilterUtils.nameFileFilter("datastore.properties")));
+                FileFilterUtils.nameFileFilter("indexer.xml"),
+                FileFilterUtils.suffixFileFilter("db"));
 
         return filesFilter;
     }

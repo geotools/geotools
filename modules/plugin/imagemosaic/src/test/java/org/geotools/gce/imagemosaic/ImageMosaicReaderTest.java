@@ -2314,12 +2314,12 @@ public class ImageMosaicReaderTest extends Assert{
 
             reader = new ImageMosaicReader(timeElevURL);
 
-            // delete all files associated to that mosaic (granules, auxiliary files, DB entries, ...)
+            // delete metadata only (auxiliary files, DB entries, ...)
             File[] files = workDir.listFiles();
             assertEquals(15, files.length);
             reader.delete(false);
             files = workDir.listFiles();
-            assertEquals(5, files.length);
+            assertEquals(4, files.length);
         } finally {
             reader.dispose();
         }

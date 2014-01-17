@@ -190,7 +190,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
             Connection cx = null;
             boolean canConnect = true;
             try {
-                ds.getConnection();
+                cx = ds.getConnection();
             } catch (SQLException e) {
                 canConnect = false;
             } finally {
@@ -293,7 +293,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
             st = cx.createStatement();
             st.execute(sql);
         } catch (SQLException e) {
-            throw new IOException("Failed to create the target database", e);
+            throw new IOException("Failed to drop the target database", e);
         } finally {
             closer.closeSafe(st);
             closer.closeSafe(cx);

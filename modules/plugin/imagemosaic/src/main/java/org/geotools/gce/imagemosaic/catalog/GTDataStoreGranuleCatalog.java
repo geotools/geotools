@@ -126,6 +126,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             // H2 workadound
             if (Utils.isH2Store(spi)) {
                 Utils.fixH2DatabaseLocation(params, parentLocation);
+                Utils.fixH2MVCCParam(params);
             }
 
             // creating a store, this might imply creating it for an existing underlying store or

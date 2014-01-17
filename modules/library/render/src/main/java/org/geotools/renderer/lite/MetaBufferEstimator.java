@@ -66,6 +66,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.NilExpression;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.style.GraphicalSymbol;
 
 /**
@@ -277,15 +278,19 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         try {
             Expression grSize = gr.getSize();
             int imageSize = -1;
-            boolean isSizeLiteral = false;
+            boolean isSizeNull = isNull(grSize);
+            boolean isSizeConstant = false;
 
-            if (grSize instanceof Literal) {
-                isSizeLiteral = true;
-                imageSize = (int) Math.ceil(grSize.evaluate(null, Double.class));
-            } else if(!(grSize == null || grSize instanceof NilExpression)) {
-                estimateAccurate = false;
-                return;
+            if(!isSizeNull) {
+                isSizeConstant = isConstant(grSize);
+                if (isSizeConstant) {
+                    imageSize = (int) Math.ceil(grSize.evaluate(null, Double.class));
+                } else {
+                    estimateAccurate = false;
+                    return;
+                }    
             }
+            
 
             for (GraphicalSymbol gs : gr.graphicalSymbols()) {
                 if(gs instanceof ExternalGraphic) {
@@ -326,13 +331,13 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                 } else if(gs instanceof Mark) {
                     Mark mark = (Mark) gs;
                     int markSize;
-                    if(isSizeLiteral) {
+                    if(isSizeConstant) {
                         markSize = imageSize;
                     } else {
                         markSize = SLDStyleFactory.DEFAULT_MARK_SIZE;
                     }
                     if(mark.getStroke() != null) {
-                        int strokeWidth = getWidth(mark.getStroke().getWidth());
+                        int strokeWidth = getPositiveValue(mark.getStroke().getWidth());
                         if(strokeWidth < 0) {
                             estimateAccurate = false;
                         } else {
@@ -361,7 +366,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     }
 
     private void evaluateWidth(Expression width) {
-        int value = getWidth(width);
+        int value = getPositiveValue(width);
         if(value < 0) {
             estimateAccurate = false;
         } else if(value > buffer) {
@@ -369,11 +374,9 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         }
     }
     
-    private int getWidth(Expression width) {
-        attributeExtractor.clear();
-        width.accept(attributeExtractor, null);
-        if (attributeExtractor.isConstantExpression()) {
-            Double result = width.evaluate(null, Double.class);
+    private int getPositiveValue(Expression ex) {
+        if (isConstant(ex)) {
+            Double result = ex.evaluate(null, Double.class);
             if(result != null) {
                 return (int) Math.ceil(result);
             } else {
@@ -382,6 +385,19 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         } else {
             return -1;
         }
+    }
+    
+    private boolean isConstant(Expression ex) {
+        // quick common cases first
+        if(ex instanceof Literal) {
+            return true;
+        } else if(ex instanceof PropertyName) {
+            return false;
+        } 
+        // ok, check for attribute dependencies and volatile functions then
+        attributeExtractor.clear();
+        ex.accept(attributeExtractor, null);
+        return attributeExtractor.isConstantExpression();
     }
 
     /**

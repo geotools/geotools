@@ -2,6 +2,7 @@ package org.geotools.renderer.lite;
 
 import static org.junit.Assert.*;
 
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
@@ -10,6 +11,7 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.NilExpression;
 
 public class MetaBufferEstimatorTest {
@@ -155,6 +157,28 @@ public class MetaBufferEstimatorTest {
         style.accept(estimator);
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(0, estimator.getBuffer());
+    }
+    
+    @Test
+    public void testGraphicSizeFunction() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        Mark mark = sb.createMark("square");
+        mark.setStroke(null);
+        Graphic graphic = sb.createGraphic(null, mark, null);
+        FilterFactory2 ff = sb.getFilterFactory();
+        graphic.setSize(ff.function("env", ff.literal("test")));
+        PointSymbolizer ps = sb.createPointSymbolizer(graphic);
+        Style style = sb.createStyle(ps);
+
+        try {
+            EnvFunction.setGlobalValue("test", 10);
+            MetaBufferEstimator estimator = new MetaBufferEstimator();
+            style.accept(estimator);
+            assertTrue(estimator.isEstimateAccurate());
+            assertEquals(10, estimator.getBuffer());
+        } finally {
+            EnvFunction.clearGlobalValues();
+        }
     }
 
 }

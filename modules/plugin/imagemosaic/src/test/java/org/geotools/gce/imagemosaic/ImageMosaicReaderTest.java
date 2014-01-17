@@ -2319,7 +2319,7 @@ public class ImageMosaicReaderTest extends Assert{
             assertEquals(15, files.length);
             reader.delete(false);
             files = workDir.listFiles();
-            assertEquals(4, files.length);
+            assertEquals(5, files.length);
         } finally {
             reader.dispose();
         }

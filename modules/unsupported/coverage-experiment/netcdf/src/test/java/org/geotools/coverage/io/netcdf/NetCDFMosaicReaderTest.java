@@ -725,7 +725,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             
             reader.delete(false);
             files = mosaic.listFiles();
-            assertEquals(2, files.length);
+            assertEquals(3, files.length);
             
         } finally {
             if(coverage != null) {

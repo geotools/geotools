@@ -130,6 +130,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             // H2 workadound
             if (Utils.isH2Store(spi)) {
                 Utils.fixH2DatabaseLocation(dastastoreParams, parentLocation);
+                Utils.fixH2MVCCParam(dastastoreParams);
             }
 
             if (!create) {

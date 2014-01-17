@@ -124,6 +124,8 @@ public class Utils {
     
     final private static String DATABASE_KEY = "database";
 
+    final private static String MVCC_KEY = "MVCC";
+
     final private static double RESOLUTION_TOLERANCE_FACTOR = 1E-2;
 
     public final static Key EXCLUDE_MOSAIC = new Key(Boolean.class);
@@ -1805,8 +1807,7 @@ public class Utils {
             params.put(DATABASE_KEY,
                     "file:" + (new File(DataUtilities.urlToFile(new URL(parentLocation)),
                                     dbname)).getPath());
-    }
-    
+        }
     }
     
     /**
@@ -1837,5 +1838,12 @@ public class Utils {
 
     public static IOFileFilter getCleanupFilter() {
        return CLEANUP_FILTER;
+    }
+
+    public static void fixH2MVCCParam(Map<String, Serializable> params) {
+        if (params != null) {
+            // H2 database URLs must not be percent-encoded: see GEOT-4262.
+            params.put(MVCC_KEY, true);
+        }
     }
 }

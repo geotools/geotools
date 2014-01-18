@@ -20,7 +20,7 @@
           </PointSymbolizer>
 
           <TextSymbolizer>
-            <VendorOption name="truncateLabelEnabled">true</VendorOption>
+            <VendorOption name="partials">true</VendorOption>
             <Label><ogc:PropertyName>name</ogc:PropertyName></Label>
             <Font>
               <CssParameter name="font-family">SansSerif</CssParameter>

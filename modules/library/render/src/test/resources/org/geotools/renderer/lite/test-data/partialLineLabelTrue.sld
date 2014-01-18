@@ -13,8 +13,9 @@
               <CssParameter name="stroke">0xAAAAAA</CssParameter>
             </Stroke>
           </LineSymbolizer>
+
           <TextSymbolizer>
-            <VendorOption name="truncateLabelEnabled">false</VendorOption>
+            <VendorOption name="partials">true</VendorOption>
             <VendorOption name="followLine">true</VendorOption>
             <Label><ogc:PropertyName>name</ogc:PropertyName></Label>
             <Font>

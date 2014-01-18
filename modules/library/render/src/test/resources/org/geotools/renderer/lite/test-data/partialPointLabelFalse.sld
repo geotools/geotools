@@ -6,15 +6,21 @@
     <Name>Layer</Name>
     <UserStyle>
       <FeatureTypeStyle>
-
         <Rule>
-          <PolygonSymbolizer>
-            <Stroke>
-              <CssParameter name="stroke">0xAAAAAA</CssParameter>
-              <CssParameter name="stroke-width">2</CssParameter>
-            </Stroke>
-          </PolygonSymbolizer>
+          <PointSymbolizer>
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#FF0000</CssParameter>
+                </Fill>
+              </Mark>
+              <Size>6</Size>
+            </Graphic>
+          </PointSymbolizer>
+
           <TextSymbolizer>
+            <VendorOption name="partials">false</VendorOption>
             <Label><ogc:PropertyName>name</ogc:PropertyName></Label>
             <Font>
               <CssParameter name="font-family">SansSerif</CssParameter>

@@ -14,8 +14,8 @@
               <CssParameter name="stroke-width">2</CssParameter>
             </Stroke>
           </PolygonSymbolizer>
+
           <TextSymbolizer>
-            <VendorOption name="truncateLabelEnabled">false</VendorOption>
             <Label><ogc:PropertyName>name</ogc:PropertyName></Label>
             <Font>
               <CssParameter name="font-family">SansSerif</CssParameter>

@@ -338,11 +338,11 @@ public final class LabelCacheImpl implements LabelCache {
         item.setPolygonAlign((PolygonAlignOptions) voParser.getEnumOption(symbolizer, POLYGONALIGN_KEY, DEFAULT_POLYGONALIGN));
         item.setGraphicsResize((GraphicResize) voParser.getEnumOption(symbolizer, "graphic-resize", GraphicResize.NONE));
         item.setGraphicMargin(voParser.getGraphicMargin(symbolizer, "graphic-margin"));
-        // transfert to gt-api package (TextSymbolizer class)
-        //String TRUNCATE_LABEL_ENABLED_KEY = "truncateLabelEnabled";
-        //boolean DEFAULT_TRUNCATE_LABEL_ENABLED = false;
+        // start transfert to gt-api package (TextSymbolizer class)
+        //String PARTIALS_KEY = "partials";
+        //boolean DEFAULT_PARTIALS = false;
         // end transfert to gt-api package
-        item.setTruncateLabelEnabled(voParser.getBooleanOption(symbolizer, TRUNCATE_LABEL_ENABLED_KEY, DEFAULT_TRUNCATE_LABEL_ENABLED));
+        item.setPartialsEnabled(voParser.getBooleanOption(symbolizer, PARTIALS_KEY, DEFAULT_PARTIALS));
 
         return item;
     }
@@ -577,7 +577,7 @@ public final class LabelCacheImpl implements LabelCache {
         final LabelCacheItem labelItem = painter.getLabel();
         List<LineString> lines = (List<LineString>) getLineSetRepresentativeLocation(
                 labelItem.getGeoms(), displayArea, labelItem.removeGroupOverlaps(),
-                labelItem.isTruncateLabelEnabled());
+                labelItem.isPartialsEnabled());
 
         if (lines == null || lines.size() == 0)
             return false;
@@ -694,7 +694,7 @@ public final class LabelCacheImpl implements LabelCache {
 
                     // try to paint the label, the condition under which this
                     // happens are complex
-                    if ((displayArea.contains(labelEnvelope) || labelItem.isTruncateLabelEnabled())
+                    if ((displayArea.contains(labelEnvelope) || labelItem.isPartialsEnabled())
                             && !(labelItem.isConflictResolutionEnabled() && paintedBounds.labelsWithinDistance(labelEnvelope, extraSpace))
                             && !groupLabels.labelsWithinDistance(labelEnvelope, minDistance)) {
                         if (labelItem.isFollowLineEnabled()) {
@@ -881,7 +881,7 @@ public final class LabelCacheImpl implements LabelCache {
         LabelCacheItem labelItem = painter.getLabel();
         // get the point onto the shape has to be painted
         Point point = getPointSetRepresentativeLocation(labelItem.getGeoms(),
-                displayArea, labelItem.isTruncateLabelEnabled());
+                displayArea, labelItem.isPartialsEnabled());
         if (point == null)
             return false;
 
@@ -990,7 +990,7 @@ public final class LabelCacheImpl implements LabelCache {
         // check for overlaps and paint
         Rectangle2D transformed = tempTransform
                 .createTransformedShape(painter.getFullLabelBounds()).getBounds2D();
-        if (!(displayArea.contains(transformed) || labelItem.isTruncateLabelEnabled())
+        if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
                 || (labelItem.isConflictResolutionEnabled() && 
                         glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))) {
             return false;
@@ -1016,7 +1016,7 @@ public final class LabelCacheImpl implements LabelCache {
     private boolean paintPolygonLabel(LabelPainter painter, AffineTransform tempTransform,
             Rectangle displayArea, LabelIndex glyphs) throws Exception {
         LabelCacheItem labelItem = painter.getLabel();
-        Polygon geom = getPolySetRepresentativeLocation(labelItem.getGeoms(), displayArea, labelItem.isTruncateLabelEnabled());
+        Polygon geom = getPolySetRepresentativeLocation(labelItem.getGeoms(), displayArea, labelItem.isPartialsEnabled());
         if (geom == null) {
             return false;
         }
@@ -1137,7 +1137,7 @@ public final class LabelCacheImpl implements LabelCache {
 
         Rectangle2D transformed = tempTransform
                 .createTransformedShape(painter.getFullLabelBounds()).getBounds2D();
-        if (!(displayArea.contains(transformed) || labelItem.isTruncateLabelEnabled())
+        if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
                 || (labelItem.isConflictResolutionEnabled() 
                         && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))
                 || goodnessOfFit(painter, tempTransform, pg) < painter.getLabel().getGoodnessOfFit()) {
@@ -1147,7 +1147,7 @@ public final class LabelCacheImpl implements LabelCache {
                 setupPointTransform(tempTransform, centroid, textStyle, painter);
 
                 transformed = tempTransform.createTransformedShape(painter.getFullLabelBounds()).getBounds2D();
-                if (!(displayArea.contains(transformed) || labelItem.isTruncateLabelEnabled())
+                if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
                         || (labelItem.isConflictResolutionEnabled() 
                                 && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))
                         || goodnessOfFit(painter, tempTransform, pg) < painter.getLabel().getGoodnessOfFit()) {
@@ -1205,11 +1205,10 @@ public final class LabelCacheImpl implements LabelCache {
      *            list of Point or MultiPoint (any other geometry types are
      *            rejected
      * @param displayArea
-     * @param truncateLabelEnabled true if we don't want to exclude points out of the displayArea
+     * @param partialsEnabled true if we don't want to exclude points out of the displayArea
      * @return a point or null (if there's nothing to draw)
      */
-    Point getPointSetRepresentativeLocation(List<Geometry> geoms, Rectangle displayArea,
-                                            boolean truncateLabelEnabled) {
+    Point getPointSetRepresentativeLocation(List<Geometry> geoms, Rectangle displayArea, boolean partialsEnabled) {
         // points that are inside the displayGeometry
         ArrayList<Point> pts = new ArrayList<Point>();
 
@@ -1219,14 +1218,12 @@ public final class LabelCacheImpl implements LabelCache {
                 g = g.getCentroid(); // will be point
             if (g instanceof Point) {
                 Point point = (Point) g;
-                if (displayArea.contains(point.getX(), point.getY()) // this is robust!
-                        || truncateLabelEnabled)
+                if (displayArea.contains(point.getX(), point.getY()) || partialsEnabled) // this is robust!
                     pts.add(point); // possible label location
             } else if (g instanceof MultiPoint) {
                 for (int t = 0; t < g.getNumGeometries(); t++) {
                     Point gg = (Point) g.getGeometryN(t);
-                    if (displayArea.contains(gg.getX(), gg.getY())
-                            || truncateLabelEnabled)
+                    if (displayArea.contains(gg.getX(), gg.getY()) || partialsEnabled)
                         pts.add(gg); // possible label location
                 }
             }
@@ -1258,10 +1255,10 @@ public final class LabelCacheImpl implements LabelCache {
      * @param geoms
      * @param displayArea must be poly
      * @param removeOverlaps
-     * @param truncateLabelEnabled true if we don't want to clip lines on the displayArea
+     * @param partialsEnabled true if we don't want to clip lines on the displayArea
      */
     List<LineString> getLineSetRepresentativeLocation(List<Geometry> geoms, Rectangle displayArea,
-                boolean removeOverlaps, boolean truncateLabelEnabled) {
+                boolean removeOverlaps, boolean partialsEnabled) {
 
         // go through each geometry in the set.
         // if its a polygon or multipolygon, get the boundary (reduce to a line)
@@ -1278,7 +1275,7 @@ public final class LabelCacheImpl implements LabelCache {
         List<LineString> clippedLines = new ArrayList<LineString>();
         for (LineString ls : lines) {
             // If we want labels to be entirely in the display area, clip the linestring
-            if (!truncateLabelEnabled) {
+            if (!partialsEnabled) {
                 // more robust clipper -- see its dox
                 MultiLineString ll = clipLineString(ls);
                 if ((ll != null) && (!(ll.isEmpty()))) {
@@ -1286,7 +1283,7 @@ public final class LabelCacheImpl implements LabelCache {
                         clippedLines.add((LineString) ll.getGeometryN(t));
                 }
             }
-            // If we want to draw truncated labels on border, keep the whole linestring
+            // If we want to draw partial labels on border, keep the whole linestring
             else {
                 clippedLines.add(ls);
             }
@@ -1418,10 +1415,10 @@ public final class LabelCacheImpl implements LabelCache {
      * 
      * @param geoms
      * @param displayArea
-     * @param truncateLabelEnabled true if we don't want to clip lines on the displayArea
+     * @param partialsEnabled true if we don't want to clip lines on the displayArea
      */
     Polygon getPolySetRepresentativeLocation(List<Geometry> geoms,
-                Rectangle displayArea, boolean truncateLabelEnabled) {
+                Rectangle displayArea, boolean partialsEnabled) {
         List<Polygon> polys = new ArrayList<Polygon>(); // points that are
                                                         // inside the
         Geometry displayGeometry = gf.toGeometry(toEnvelope(displayArea));
@@ -1452,14 +1449,14 @@ public final class LabelCacheImpl implements LabelCache {
         Envelope displayGeomEnv = displayGeometry.getEnvelopeInternal();
         for (Polygon p : polys) {
             // If we want labels to be entirely in the display area, clip polygons
-            if (!truncateLabelEnabled) {
+            if (!partialsEnabled) {
                 MultiPolygon pp = clipPolygon(p, (Polygon) displayGeometry, displayGeomEnv);
                 if ((pp != null) && (!(pp.isEmpty()))) {
                     for (int t = 0; t < pp.getNumGeometries(); t++)
                         clippedPolys.add((Polygon) pp.getGeometryN(t));
                 }
             }
-            // If we want to draw truncated labels on border, keep the whole polygon
+            // If we want to draw partial labels on border, keep the whole polygon
             else {
                 clippedPolys.add(p);
             }

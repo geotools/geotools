@@ -8,26 +8,20 @@
       <FeatureTypeStyle>
 
         <Rule>
-          <PolygonSymbolizer>
+          <LineSymbolizer>
             <Stroke>
               <CssParameter name="stroke">0xAAAAAA</CssParameter>
-              <CssParameter name="stroke-width">2</CssParameter>
             </Stroke>
-          </PolygonSymbolizer>
+          </LineSymbolizer>
           <TextSymbolizer>
-            <VendorOption name="truncateLabelEnabled">true</VendorOption>
+            <VendorOption name="followLine">true</VendorOption>
             <Label><ogc:PropertyName>name</ogc:PropertyName></Label>
             <Font>
               <CssParameter name="font-family">SansSerif</CssParameter>
               <CssParameter name="font-size">20</CssParameter>
             </Font>
             <LabelPlacement>
-              <PointPlacement>
-                <AnchorPoint>
-                  <AnchorPointX>0.5</AnchorPointX>
-                  <AnchorPointY>0.5</AnchorPointY>
-                </AnchorPoint>
-              </PointPlacement>
+              <LinePlacement/>
             </LabelPlacement>
           </TextSymbolizer>
         </Rule>

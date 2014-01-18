@@ -6,33 +6,23 @@
     <Name>Layer</Name>
     <UserStyle>
       <FeatureTypeStyle>
-        <Rule>
-          <PointSymbolizer>
-            <Graphic>
-              <Mark>
-                <WellKnownName>circle</WellKnownName>
-                <Fill>
-                  <CssParameter name="fill">#FF0000</CssParameter>
-                </Fill>
-              </Mark>
-              <Size>6</Size>
-            </Graphic>
-          </PointSymbolizer>
-          <TextSymbolizer>
-            <VendorOption name="truncateLabelEnabled">false</VendorOption>
-            <Label><ogc:PropertyName>name</ogc:PropertyName></Label>
 
+        <Rule>
+          <LineSymbolizer>
+            <Stroke>
+              <CssParameter name="stroke">0xAAAAAA</CssParameter>
+            </Stroke>
+          </LineSymbolizer>
+          <TextSymbolizer>
+            <VendorOption name="partials">false</VendorOption>
+            <VendorOption name="followLine">true</VendorOption>
+            <Label><ogc:PropertyName>name</ogc:PropertyName></Label>
             <Font>
               <CssParameter name="font-family">SansSerif</CssParameter>
               <CssParameter name="font-size">20</CssParameter>
             </Font>
             <LabelPlacement>
-              <PointPlacement>
-                <AnchorPoint>
-                  <AnchorPointX>0.5</AnchorPointX>
-                  <AnchorPointY>0.5</AnchorPointY>
-                </AnchorPoint>
-              </PointPlacement>
+              <LinePlacement/>
             </LabelPlacement>
           </TextSymbolizer>
         </Rule>

@@ -13,7 +13,6 @@ import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -25,7 +24,7 @@ import java.util.Map;
 /**
  * Created by Michaël on 17/12/13.
  */
-public class TruncateLabelEnabledTest extends TestCase {
+public class PartialsTest extends TestCase {
 
     private static final long TIME = 10000;
     SimpleFeatureSource fs_point;
@@ -37,17 +36,17 @@ public class TruncateLabelEnabledTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
 
-        File property_point = new File(TestData.getResource(this, "truncatePointLabel.properties").toURI());
+        File property_point = new File(TestData.getResource(this, "partialPointLabel.properties").toURI());
         PropertyDataStore ds_point = new PropertyDataStore(property_point.getParentFile());
-        fs_point = ds_point.getFeatureSource("truncatePointLabel");
+        fs_point = ds_point.getFeatureSource("partialPointLabel");
 
-        File property_line = new File(TestData.getResource(this, "truncateLineLabel.properties").toURI());
+        File property_line = new File(TestData.getResource(this, "partialLineLabel.properties").toURI());
         PropertyDataStore ds_line = new PropertyDataStore(property_line.getParentFile());
-        fs_line = ds_line.getFeatureSource("truncateLineLabel");
+        fs_line = ds_line.getFeatureSource("partialLineLabel");
 
-        File property_area = new File(TestData.getResource(this, "truncateAreaLabel.properties").toURI());
+        File property_area = new File(TestData.getResource(this, "partialAreaLabel.properties").toURI());
         PropertyDataStore ds_area = new PropertyDataStore(property_area.getParentFile());
-        fs_area = ds_area.getFeatureSource("truncateAreaLabel");
+        fs_area = ds_area.getFeatureSource("partialAreaLabel");
 
         bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
@@ -61,7 +60,7 @@ public class TruncateLabelEnabledTest extends TestCase {
 
     /*
     public void testLabelNatural() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "truncatePointLabelEnabledNo.sld");
+        Style style = RendererBaseTest.loadStyle(this, "partialPointLabelNo.sld");
 
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         mc.addLayer(fs_point, style);
@@ -72,10 +71,10 @@ public class TruncateLabelEnabledTest extends TestCase {
     }
     */
 
-    public void testTruncatePointLabelEnabledNo() throws Exception {
+    public void testPartialPointLabelNo() throws Exception {
         //System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "truncatePointLabelEnabledNo.sld");
+        Style style = RendererBaseTest.loadStyle(this, "partialPointLabelNo.sld");
 
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         mc.addLayer(fs_point, style);
@@ -85,15 +84,15 @@ public class TruncateLabelEnabledTest extends TestCase {
         RendererBaseTest.assertPixel(image, 282,152, Color.WHITE);
 
         // Write to file
-        // ImageIO.write(image, "png", new File("C:/Temp/testTruncatePointLabelEnabledNo.png"));
+        // ImageIO.write(image, "png", new File("C:/Temp/testPartialPointLabelNo.png"));
         // Interactive visualization
-        // TruncateLabelEnabledTest.showImage("Point Truncate:No", TIME, image);
+        // PartialsTest.showImage("Point Partials:No", TIME, image);
     }
 
-    public void testTruncatePointLabelEnabledFalse() throws Exception {
+    public void testPointLabelFalse() throws Exception {
         //System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "truncatePointLabelEnabledFalse.sld");
+        Style style = RendererBaseTest.loadStyle(this, "partialPointLabelFalse.sld");
 
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         mc.addLayer(fs_point, style);
@@ -103,15 +102,15 @@ public class TruncateLabelEnabledTest extends TestCase {
         RendererBaseTest.assertPixel(image, 282,152, Color.WHITE);
 
         // Write to file
-        // ImageIO.write(image, "png", new File("C:/Temp/testTruncatePointLabelEnabledFalse.png"));
+        // ImageIO.write(image, "png", new File("C:/Temp/testPartialPointLabelFalse.png"));
         // Interactive visualization
-        // TruncateLabelEnabledTest.showImage("Point Truncate:False", TIME, image);
+        // PartialsTest.showImage("Point Partials:False", TIME, image);
     }
 
-    public void testTruncatePointLabelEnabledTrue() throws Exception {
+    public void testPartialPointLabelTrue() throws Exception {
         //System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "truncatePointLabelEnabledTrue.sld");
+        Style style = RendererBaseTest.loadStyle(this, "partialPointLabelTrue.sld");
 
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         mc.addLayer(fs_point, style);
@@ -122,15 +121,15 @@ public class TruncateLabelEnabledTest extends TestCase {
         RendererBaseTest.assertPixel(image, 282,152, Color.BLACK);
 
         // Write to file
-        // ImageIO.write(image, "png", new File("C:/Temp/testTruncatePointLabelEnabledTrue.png"));
+        // ImageIO.write(image, "png", new File("C:/Temp/testPartialPointLabelTrue.png"));
         // Interactive visualization
-        // TruncateLabelEnabledTest.showImage("Point Truncate:True", TIME, image);
+        // PartialsTest.showImage("Point Partials:True", TIME, image);
     }
 
-    public void testTruncateLineLabelEnabledNo() throws Exception {
+    public void testPartialLineLabelNo() throws Exception {
         //System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "truncateLineLabelEnabledNo.sld");
+        Style style = RendererBaseTest.loadStyle(this, "partialLineLabelNo.sld");
 
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         mc.addLayer(fs_line, style);
@@ -141,15 +140,15 @@ public class TruncateLabelEnabledTest extends TestCase {
         RendererBaseTest.assertPixel(image, 282,155, Color.WHITE);
 
         // Write to file
-        // ImageIO.write(image, "png", new File("C:/Temp/testTruncateLineLabelEnabledNo.png"));
+        // ImageIO.write(image, "png", new File("C:/Temp/testPartialLineLabelNo.png"));
         // Interactive visualization
-        // TruncateLabelEnabledTest.showImage("Line Truncate:No", TIME, image);
+        // PartialsTest.showImage("Line Partials:No", TIME, image);
     }
 
-    public void testTruncateLineLabelEnabledFalse() throws Exception {
+    public void testPartialLineLabelFalse() throws Exception {
         //System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "truncateLineLabelEnabledFalse.sld");
+        Style style = RendererBaseTest.loadStyle(this, "partialLineLabelFalse.sld");
 
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         mc.addLayer(fs_line, style);
@@ -160,15 +159,15 @@ public class TruncateLabelEnabledTest extends TestCase {
         RendererBaseTest.assertPixel(image, 282,155, Color.WHITE);
 
         // Write to file
-        // ImageIO.write(image, "png", new File("C:/Temp/testTruncateLineLabelEnabledFalse.png"));
+        // ImageIO.write(image, "png", new File("C:/Temp/testPartialLineLabelFalse.png"));
         // Interactive visualization
-        // TruncateLabelEnabledTest.showImage("Line Truncate:False", TIME, image);
+        // PartialsTest.showImage("Line Partials:False", TIME, image);
     }
 
-    public void testTruncateLineLabelEnabledTrue() throws Exception {
+    public void testPartialLineLabelTrue() throws Exception {
         //System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "truncateLineLabelEnabledTrue.sld");
+        Style style = RendererBaseTest.loadStyle(this, "partialLineLabelTrue.sld");
 
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         mc.addLayer(fs_line, style);
@@ -179,15 +178,15 @@ public class TruncateLabelEnabledTest extends TestCase {
         RendererBaseTest.assertPixel(image, 282,155, Color.BLACK);
 
         // Write to file
-        // ImageIO.write(image, "png", new File("C:/Temp/testTruncateLineLabelEnabledTrue.png"));
+        // ImageIO.write(image, "png", new File("C:/Temp/testPartialLineLabelTrue.png"));
         // Interactive visualization
-        // TruncateLabelEnabledTest.showImage("Line Truncate:True", TIME, image);
+        // PartialsTest.showImage("Line Partial:True", TIME, image);
     }
 
-    public void testTruncateAreaLabelEnabledNo() throws Exception {
+    public void testPartialAreaLabelNo() throws Exception {
         //System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "truncateAreaLabelEnabledNo.sld");
+        Style style = RendererBaseTest.loadStyle(this, "partialAreaLabelNo.sld");
 
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         mc.addLayer(fs_area, style);
@@ -198,15 +197,15 @@ public class TruncateLabelEnabledTest extends TestCase {
         RendererBaseTest.assertPixel(image, 282,152, Color.WHITE);
 
         // Write to file
-        // ImageIO.write(image, "png", new File("C:/Temp/testTruncateAreaLabelEnabledNo.png"));
+        // ImageIO.write(image, "png", new File("C:/Temp/testPartialAreaLabelNo.png"));
         // Interactive visualization
-        // TruncateLabelEnabledTest.showImage("Area Truncate:No", TIME, image);
+        // PartialsTest.showImage("Area Partials:No", TIME, image);
     }
 
-    public void testTruncateAreaLabelEnabledFalse() throws Exception {
+    public void testPartialAreaLabelFalse() throws Exception {
         //System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "truncateAreaLabelEnabledFalse.sld");
+        Style style = RendererBaseTest.loadStyle(this, "partialAreaLabelFalse.sld");
 
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         mc.addLayer(fs_area, style);
@@ -217,15 +216,15 @@ public class TruncateLabelEnabledTest extends TestCase {
         RendererBaseTest.assertPixel(image, 282,152, Color.WHITE);
 
         // Write to file
-        // ImageIO.write(image, "png", new File("C:/Temp/testTruncateAreaLabelEnabledFalse.png"));
+        // ImageIO.write(image, "png", new File("C:/Temp/testPartialAreaLabelFalse.png"));
         // Interactive visualization
-        // TruncateLabelEnabledTest.showImage("Area Truncate:False", TIME, image);
+        // PartialsTest.showImage("Area Partials:False", TIME, image);
     }
 
-    public void testTruncateAreaLabelEnabledTrue() throws Exception {
+    public void testPartialAreaLabelTrue() throws Exception {
         //System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "truncateAreaLabelEnabledTrue.sld");
+        Style style = RendererBaseTest.loadStyle(this, "partialAreaLabelTrue.sld");
 
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         mc.addLayer(fs_area, style);
@@ -236,9 +235,9 @@ public class TruncateLabelEnabledTest extends TestCase {
         RendererBaseTest.assertPixel(image, 282,152, Color.BLACK);
 
         // Write to file
-        // ImageIO.write(image, "png", new File("C:/Temp/testTruncateAreaLabelEnabledTrue.png"));
+        // ImageIO.write(image, "png", new File("C:/Temp/testPartialAreaLabelTrue.png"));
         // Interactive visualization
-        // TruncateLabelEnabledTest.showImage("Area Truncate:True", TIME, image);
+        // PartialsTest.showImage("Area Partials:True", TIME, image);
     }
 
 

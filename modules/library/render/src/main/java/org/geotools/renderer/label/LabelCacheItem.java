@@ -93,7 +93,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         return goodnessOfFit;
     }
 
-    boolean truncateLabelEnabled = false;
+    boolean partialsEnabled = false;
 
     /**
      * A value between 0 and 1 representing the portion of the label
@@ -365,12 +365,12 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         return polygonAlign;
     }
 
-    public boolean isTruncateLabelEnabled() { 
-        return truncateLabelEnabled;
+    public boolean isPartialsEnabled() {
+        return partialsEnabled;
     }
 
-    public void setTruncateLabelEnabled(boolean truncateLabelEnabled) {
-        this.truncateLabelEnabled = truncateLabelEnabled;
+    public void setPartialsEnabled(boolean partialsEnabled) {
+        this.partialsEnabled = partialsEnabled;
     }
 
     

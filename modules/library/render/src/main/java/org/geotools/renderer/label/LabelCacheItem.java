@@ -365,10 +365,15 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         return polygonAlign;
     }
 
-    public boolean isTruncateLabelEnabled() { return truncateLabelEnabled; }
+    public boolean isTruncateLabelEnabled() { 
+        return truncateLabelEnabled;
+    }
 
-    public void setTruncateLabelEnabled(boolean truncateLabelEnabled) { this.truncateLabelEnabled = truncateLabelEnabled; }
+    public void setTruncateLabelEnabled(boolean truncateLabelEnabled) {
+        this.truncateLabelEnabled = truncateLabelEnabled;
+    }
 
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -396,9 +401,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
                 return false;
         }
         return true;
-    }
-    
-    
+    }    
+
     
 }
 

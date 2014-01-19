@@ -90,7 +90,7 @@
     <stress.skip.pattern>**/*StressTest.java</stress.skip.pattern>
     <test.exclude.pattern>disabled</test.exclude.pattern>
     <test.maxHeapSize>512M</test.maxHeapSize>
-    <javadoc.maxHeapSize>512M</javadoc.maxHeapSize>
+    <javadoc.maxHeapSize>1024M</javadoc.maxHeapSize>
     <test.forkMode>once</test.forkMode>
     <src.output>${basedir}/target</src.output>
     <imageio.ext.version>1.1.8</imageio.ext.version>
@@ -1284,6 +1284,18 @@
           </gitDescribe>
         </configuration> 
       </plugin>
+      
+      <!-- ======================================================= -->
+      <!--     Per module javadoc generation (this one affects direct javadoc invocation -->
+      <!-- ======================================================= -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+           <maxmemory>${javadoc.maxHeapSize}</maxmemory>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -1300,7 +1312,7 @@
       </plugin>
 
       <!-- ======================================================= -->
-      <!--     Per module javadoc generation                       -->
+      <!--     Per module javadoc generation (this one is for site)-->
       <!-- ======================================================= -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

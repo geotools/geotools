@@ -1,0 +1,132 @@
+--- JDBCDataStore.java
++++ JDBCDataStore.java
+@@ -3157,10 +3157,10 @@
+         sql.append(" FROM ");
+         
+         //join clauses
+-        encodeTableJoin(featureType, join, query, sql);
++        List<FilterToSQL> toSQLs = encodeTableJoin(featureType, join, query, sql);
+ 
+         //filtering
+-        List<FilterToSQL> toSQLs = encodeWhereJoin(featureType, join, sql);
++        toSQLs.addAll(encodeWhereJoin(featureType, join, sql));
+ 
+         //sorting
+         sort(featureType, query.getSortBy(), join.getPrimaryAlias(), sql);
+@@ -3441,15 +3441,16 @@
+             encodeFunction(function,att,query,sql);
+             sql.append( " FROM ");
+         }
++
++        List<FilterToSQL> toSQL = new ArrayList();
+         
+         if (join != null) {
+-            encodeTableJoin(featureType, join, query, sql);
++            toSQL.addAll(encodeTableJoin(featureType, join, query, sql));
+         }
+         else {
+             encodeTableName(featureType.getTypeName(), sql, query.getHints());
+         }
+ 
+-        List<FilterToSQL> toSQL = new ArrayList();
+         if (join != null) {
+             toSQL.addAll(encodeWhereJoin(featureType, join, sql));
+         }
+@@ -4137,11 +4138,13 @@
+     /**
+      * Helper method to encode the join clause(s) of a query. 
+      */
+-    protected void encodeTableJoin(SimpleFeatureType featureType, JoinInfo join, Query query, StringBuffer sql) 
++    protected List<FilterToSQL> encodeTableJoin(SimpleFeatureType featureType, JoinInfo join, Query query, StringBuffer sql) 
+         throws SQLException {
+         encodeTableName(featureType.getTypeName(), sql, query.getHints());
+         dialect.encodeTableAlias(join.getPrimaryAlias(), sql);
+ 
++        List<FilterToSQL> toSQLs = new ArrayList<FilterToSQL>();
++        
+         for (JoinPart part : join.getParts()) {
+             sql.append(" ");
+             dialect.encodeJoin(part.getJoin().getType(), sql);
+@@ -4155,6 +4158,7 @@
+             FilterToSQL toSQL = dialect instanceof PreparedStatementSQLDialect ? 
+                 createPreparedFilterToSQL(null) : createFilterToSQL(null);
+             toSQL.setInline(true);
++            toSQLs.add(toSQL);
+             try {
+                 sql.append(" ").append(toSQL.encodeToString(j));
+             } 
+@@ -4162,6 +4166,8 @@
+                 throw new RuntimeException(e);
+             }
+         }
++        
++        return toSQLs;
+     }
+ 
+     protected List<FilterToSQL> encodeWhereJoin(SimpleFeatureType featureType, 
+--- JDBCJoinTest.java
++++ JDBCJoinTest.java
+@@ -16,11 +16,16 @@
+  */
+ package org.geotools.jdbc;
+ 
++import java.io.IOException;
++import java.sql.Connection;
++import java.sql.ParameterMetaData;
++import java.sql.PreparedStatement;
+ import java.util.Arrays;
+ import java.util.HashMap;
+ import java.util.HashSet;
+ import java.util.Map;
+ import java.util.Set;
++import static junit.framework.Assert.assertEquals;
+ 
+ import org.geotools.data.Join;
+ import org.geotools.data.Query;
+@@ -28,9 +33,11 @@
+ import org.geotools.data.simple.SimpleFeatureCollection;
+ import org.geotools.data.simple.SimpleFeatureIterator;
+ import org.opengis.feature.simple.SimpleFeature;
++import org.opengis.feature.simple.SimpleFeatureType;
+ import org.opengis.filter.Filter;
+ import org.opengis.filter.FilterFactory;
+ import org.opengis.filter.FilterFactory2;
++import org.opengis.filter.expression.Expression;
+ import org.opengis.filter.sort.SortBy;
+ import org.opengis.filter.sort.SortOrder;
+ 
+@@ -440,6 +447,34 @@
+     doJoinMoreThanTwo(true);
+     }
+     
++    public void testSelectJoinSQLPS() throws Exception {
++        dataStore.setExposePrimaryKeyColumns(true);
++        FilterFactory ff = dataStore.getFilterFactory();
++        Query q = new Query(tname("ftjoin"), ff.equal(ff.property(aname("name")), ff.literal(999.99d), true));
++        q.getJoins().add(new Join(tname("ft1"), 
++            ff.equal(ff.property(aname("name")), ff.literal("stringValue"), true)));
++
++        q.getJoins().add(new Join(tname("ftjoin2"), 
++                ff.equal(ff.property(aname("join2intProperty")), ff.literal((int)10), true)));
++        
++        /*for (String typeName: dataStore.getTypeNames()) {
++            System.out.print(typeName);
++        }*/
++        
++        String name = tname("ftjoin");
++        SimpleFeatureType type = dataStore.getSchema(name);
++        JoinInfo join = JoinInfo.create(q, type, dataStore);
++        Connection cx = dataStore.getConnection((JDBCState)null);
++        
++        PreparedStatement stmt = dataStore.selectJoinSQLPS(type, join, q, cx);
++        ParameterMetaData params = stmt.getParameterMetaData();
++        
++        assertEquals(3, params.getParameterCount());
++        assertEquals(params.getParameterClassName(0), String.class.getName());
++        assertEquals(params.getParameterClassName(1), int.class.getName());
++        assertEquals(params.getParameterClassName(2), double.class.getName());
++    }
++    
+     void doJoinMoreThanTwo(boolean exposePrimaryKeys) throws Exception {
+         dataStore.setExposePrimaryKeyColumns(exposePrimaryKeys);
+         FilterFactory ff = dataStore.getFilterFactory();

@@ -96,7 +96,7 @@ Run the `geotools-release <http://ares.boundlessgeo.com/jenkins/job/geotools-rel
 
 **BRANCH**
 
-  The branch to release from, "8.x", "9.x", etc... This must be a stable branch. Releases are not performed from master.
+  The branch to release from, "8.x", "9.x", etc... This must be a stable branch. Releases are not performed from master, with the notable exception of beta releases, which are indeed cut from master.
      
 **REV**
 

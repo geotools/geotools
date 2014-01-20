@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>11-beta</version>
+    <version>11-SNAPSHOT</version>
   </parent>
 
 

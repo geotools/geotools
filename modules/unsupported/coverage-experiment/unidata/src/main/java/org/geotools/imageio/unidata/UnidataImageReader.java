@@ -802,7 +802,15 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
                         intBuffer.get(intSamples);
                         raster.setSamples(xmin, ymin, destRegion.width, destRegion.height, dstBand, intSamples);
                         break;
-
+		    default: {
+                        final IndexIterator it = array.getIndexIterator();
+                        for (int y = ymin; y < ymax; y++ ) {
+                            for (int x = xmin; x < xmax; x++) {
+                                raster.setSample(x, y, dstBand, it.getIntNext());
+                            }
+                        }
+                        break;
+                    }
 
                 }
 

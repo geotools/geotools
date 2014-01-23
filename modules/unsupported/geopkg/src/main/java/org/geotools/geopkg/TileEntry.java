@@ -6,7 +6,6 @@ import java.util.List;
 public class TileEntry extends Entry {
 
     List<TileMatrix> tileMatricies = new ArrayList();
-    //Boolean timesTwoZoom;
 
     public TileEntry() {
         setDataType(DataType.Tile);
@@ -20,18 +19,9 @@ public class TileEntry extends Entry {
         this.tileMatricies = tileMatricies;
     }
 
-    /*public Boolean isTimesTwoZoom() {
-        return timesTwoZoom;
-    }
-
-    public void setTimesTwoZoom(Boolean timesTwoZoom) {
-        this.timesTwoZoom = timesTwoZoom;
-    }*/
-
     void init(TileEntry e) {
         super.init(e);
         setTileMatricies(e.getTileMatricies());
-        //setTimesTwoZoom(e.isTimesTwoZoom());
     }
 
 }

@@ -290,9 +290,6 @@ public class GeoPackageTest {
             assertEquals(entry.getTableName(), rs.getString("table_name"));
             assertEquals(entry.getName(), rs.getString("name"));
             assertEquals(entry.getTitle(), rs.getString("title"));
-            //assertEquals(entry.getSrid().intValue(), rs.getInt("srid"));
-            //assertEquals(entry.getGeoRectification().value(), rs.getInt("georectification"));
-            //assertEquals(entry.getCompressionQualityFactor(), rs.getDouble("compr_qual_factor"), 0.1);
 
             rs.close();
             ps.close();
@@ -307,18 +304,6 @@ public class GeoPackageTest {
         
         Connection cx = geopkg.getDataSource().getConnection();
         try {
-            /*PreparedStatement ps = 
-                cx.prepareStatement("SELECT * FROM tile_table_metadata WHERE t_table_name = ?");
-            ps.setString(1, entry.getTableName());
-
-            ResultSet rs = ps.executeQuery();
-            assertTrue(rs.next());
-
-            assertEquals(entry.isTimesTwoZoom(), rs.getBoolean("is_times_two_zoom"));
-
-            rs.close();
-            ps.close();*/
-
             PreparedStatement ps = cx.prepareStatement(
                 "SELECT count(*) from gpkg_tile_matrix WHERE table_name = ?");
             ps.setString(1, entry.getTableName());
@@ -326,6 +311,20 @@ public class GeoPackageTest {
 
             rs.next();
             assertEquals(rs.getInt(1), entry.getTileMatricies().size());
+            
+            ps = cx.prepareStatement(
+                    "SELECT * from gpkg_tile_matrix_set WHERE table_name = ?");
+            ps.setString(1, entry.getTableName());
+            rs = ps.executeQuery();
+
+            rs.next();
+            assertEquals(rs.getInt(2), entry.getSrid().intValue());
+            assertEquals(rs.getDouble(3), entry.getBounds().getMinX(), 0.01);
+            assertEquals(rs.getDouble(4), entry.getBounds().getMinY(), 0.01);
+            assertEquals(rs.getDouble(5), entry.getBounds().getMaxX(), 0.01);
+            assertEquals(rs.getDouble(6), entry.getBounds().getMaxY(), 0.01);
+            
+            assertFalse(rs.next());
 
             rs.close();
             ps.close();

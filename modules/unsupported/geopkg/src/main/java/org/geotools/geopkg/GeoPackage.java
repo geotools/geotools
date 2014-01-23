@@ -695,12 +695,7 @@ public class GeoPackage {
             vals.append(",?");
         }
         sb.append(") ").append(vals.append(")").toString());
-        
-        //f_geometry_column, VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", GEOPACKAGE_CONTENTS);       
-        //String sql = format(
-        //        "INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", GEOPACKAGE_CONTENTS);
 
-        
         try {
             Connection cx = connPool.getConnection();
             try {
@@ -901,10 +896,6 @@ public class GeoPackage {
             e.setDescription(e.getIdentifier());
         }
 
-        //TODO: comperession quality and georectification
-        //e.setCompressionQualityFactor(1.0);
-        //e.setGeoRectification(Rectification.Geo);
-
         e.setLastChange(new Date());
 
         //write out raster to temp file
@@ -1026,8 +1017,6 @@ public class GeoPackage {
         e.setDescription(rs.getString("column_description"));
         e.setMimeType(rs.getString("mime_type"));
         e.setConstraint(rs.getString("constraint_name"));
-        //e.setCompressionQualityFactor(rs.getDouble("compr_qual_factor"));
-        //e.setGeoRectification(Rectification.valueOf(rs.getInt("georectification")));
         return e;
     }
 
@@ -1046,9 +1035,6 @@ public class GeoPackage {
                     .set(e.getDescription())
                     .set(e.getMimeType())
                     .set(e.getConstraint())
-                    //.set(e.getCompressionQualityFactor())
-                    //.set(e.getGeoRectification().value())
-                    //.set(e.getSrid())
                     .log(Level.FINE)
                     .statement();
                 ps.execute();
@@ -1179,22 +1165,21 @@ public class GeoPackage {
             }
         }
 
-        /*if (e.isTimesTwoZoom() == null) {
-            e.setTimesTwoZoom(true);
-        }*/
-
         e.setLastChange(new Date());
 
         try {
             Connection cx = connPool.getConnection();
             //TODO: do all of this in a transaction
             try {
-                //create the tile_table_metadata entry
-                PreparedStatement st; /*= 
-                    prepare(cx, format("INSERT INTO %s VALUES (?,?)", TILES_TABLE_METADATA))
-                    .set(e.getTableName()).set(e.isTimesTwoZoom()).log(Level.FINE).statement();
+                PreparedStatement st;
+                
+                //add entry to tile matrix set table
+                st = prepare(cx, format("INSERT INTO %s VALUES (?,?,?,?,?,?)", TILE_MATRIX_SET))
+                        .set(e.getTableName()).set(e.getSrid()).set(e.getBounds().getMinX())
+                            .set(e.getBounds().getMinY()).set(e.getBounds().getMaxX()).set(e.getBounds().getMaxY())
+                            .statement();
                 st.execute();
-                st.close();*/
+                st.close();
 
                 //create the tile_matrix_metadata entries
                 st = prepare(cx, format("INSERT INTO %s VALUES (?,?,?,?,?,?,?,?)", TILE_MATRIX_METADATA))

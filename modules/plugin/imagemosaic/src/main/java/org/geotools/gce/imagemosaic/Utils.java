@@ -1839,17 +1839,16 @@ public class Utils {
      * @return
      */
     public static PAMDataset mergePamDatasets (PAMDataset[] pamDatasets) {
-        if (pamDatasets.length == 1) {
-            return pamDatasets[0];
-        } else {
-            PAMDataset merged = new PAMDataset();
-            initRasterBands(merged, pamDatasets[0]);
-            
-            for (PAMDataset pamDataset: pamDatasets) {
-                updatePamDatasets(pamDataset, merged);
+        PAMDataset merged = pamDatasets[0];
+        if (pamDatasets.length > 1) {
+            merged = initRasterBands(pamDatasets[0]);
+            if (merged != null){
+                for (PAMDataset pamDataset: pamDatasets) {
+                    updatePamDatasets(pamDataset, merged);
+                }
             }
-            return merged;
         }
+        return merged;
     }
 
     /**
@@ -1917,25 +1916,31 @@ public class Utils {
      * sample {@link PAMDataset} and same metadata names.
      * @param merged
      * @param samplePam
+     * @return 
      */
-    private static void initRasterBands(PAMDataset merged, PAMDataset samplePam) {
-        final List<PAMRasterBand> samplePamRasterBands = samplePam.getPAMRasterBand(); 
-        final int numBands = samplePamRasterBands.size();
-        List<PAMRasterBand> pamRasterBands = merged.getPAMRasterBand();
-        PAMRasterBand sampleBand = samplePamRasterBands.get(0);
-        List<MDI> sampleMetadata = sampleBand.getMetadata().getMDI();
-        for (int i = 0; i<numBands; i++) {
-            final PAMRasterBand band = new PAMRasterBand();
-            final Metadata metadata = new Metadata();
-            List<MDI> mdiList = metadata.getMDI();
-            for (MDI mdi: sampleMetadata) {
-                MDI addedMdi = new MDI();
-                addedMdi.setKey(mdi.getKey());
-                mdiList.add(addedMdi);
+    private static PAMDataset initRasterBands(PAMDataset samplePam) {
+        PAMDataset merged = null;
+        if (samplePam != null) {
+            merged = new PAMDataset();
+            final List<PAMRasterBand> samplePamRasterBands = samplePam.getPAMRasterBand(); 
+            final int numBands = samplePamRasterBands.size();
+            List<PAMRasterBand> pamRasterBands = merged.getPAMRasterBand();
+            PAMRasterBand sampleBand = samplePamRasterBands.get(0);
+            List<MDI> sampleMetadata = sampleBand.getMetadata().getMDI();
+            for (int i = 0; i<numBands; i++) {
+                final PAMRasterBand band = new PAMRasterBand();
+                final Metadata metadata = new Metadata();
+                List<MDI> mdiList = metadata.getMDI();
+                for (MDI mdi: sampleMetadata) {
+                    MDI addedMdi = new MDI();
+                    addedMdi.setKey(mdi.getKey());
+                    mdiList.add(addedMdi);
+                }
+                band.setMetadata(metadata);
+                pamRasterBands.add(band);
             }
-            band.setMetadata(metadata);
-            pamRasterBands.add(band);
         }
+        return merged;
     }
 
     public static IOFileFilter getCleanupFilter() {

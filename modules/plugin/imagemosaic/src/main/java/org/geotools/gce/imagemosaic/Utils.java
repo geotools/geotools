@@ -17,6 +17,9 @@
 package org.geotools.gce.imagemosaic;
 
 import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata.MDI;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -1809,7 +1812,7 @@ public class Utils {
                                     dbname)).getPath());
         }
     }
-    
+
     /**
      * Checks if the provided factory spi builds a Oracle store
      */
@@ -1819,7 +1822,7 @@ public class Utils {
                 "org.geotools.data.oracle.OracleNGJNDIDataStoreFactory".equals(spiName) ||
                 "org.geotools.data.oracle.OracleNGDataStoreFactory".equals(spiName);
     }
-    
+
     /**
      * Checks if the provided factory spi builds a Postgis store
      */
@@ -1829,11 +1832,110 @@ public class Utils {
                "org.geotools.data.postgis.PostgisNGDataStoreFactory".equals(spiName);
     }
 
+    /**
+     * Merge statistics across datasets.
+     * 
+     * @param pamDatasets
+     * @return
+     */
     public static PAMDataset mergePamDatasets (PAMDataset[] pamDatasets) {
-        // TODO: Need to merge all the stats by doing something like 
-        // minimum = min (min0, min1, min2, ...)
-        // maximum = max (max0, max1, max2, ...)
-        return pamDatasets[0];
+        if (pamDatasets.length == 1) {
+            return pamDatasets[0];
+        } else {
+            PAMDataset merged = new PAMDataset();
+            initRasterBands(merged, pamDatasets[0]);
+            
+            for (PAMDataset pamDataset: pamDatasets) {
+                updatePamDatasets(pamDataset, merged);
+            }
+            return merged;
+        }
+    }
+
+    /**
+     * Merge basic statistics on destination {@link PAMDataset} 
+     * {@link PAMRasterBand}s need to have same size. No checks are performed here 
+     * 
+     * @param inputPamDataset
+     * @param outputPamDataset
+     */
+    private static void updatePamDatasets(PAMDataset inputPamDataset, PAMDataset outputPamDataset) {
+        List<PAMRasterBand> inputRasterBands = inputPamDataset.getPAMRasterBand();
+        List<PAMRasterBand> outputRasterBands = outputPamDataset.getPAMRasterBand();
+        for (int i = 0; i < inputRasterBands.size(); i++) {
+            updateRasterBand(inputRasterBands.get(i), outputRasterBands.get(i));
+        }
+        
+    }
+
+    /**
+     * Merge basic statistics on {@link PAMRasterBand} by updating min/max
+     * Other statistics still need some work.
+     * {@link MDI}s need to have same size. No checks are performed here 
+     * 
+     * @param inputPamRasterBand
+     * @param outputPamRasterBand
+     */
+    private static void updateRasterBand(PAMRasterBand inputPamRasterBand, PAMRasterBand outputPamRasterBand) {
+        List<MDI> mdiInputs = inputPamRasterBand.getMetadata().getMDI();
+        List<MDI> mdiOutputs = outputPamRasterBand.getMetadata().getMDI();
+        for (int i=0; i < mdiInputs.size(); i++) {
+            MDI mdiInput = mdiInputs.get(i);
+            MDI mdiOutput = mdiOutputs.get(i);
+            updateMDI(mdiInput, mdiOutput);
+        }
+        
+    }
+
+    /**
+     * Update min and max for mdiOutput.
+     * Other statistics need better management. 
+     * For the moment we simply returns the min between them
+     * @param mdiInput
+     * @param mdiOutput
+     */
+    private static void updateMDI(MDI mdiInput, MDI mdiOutput) {
+        Double current = Double.parseDouble(mdiInput.getValue());
+        Object value = mdiOutput.getValue();
+        if (value != null) {
+            Double output = Double.parseDouble((String) value);
+            if (mdiInput.getKey().toUpperCase().endsWith("_MAXIMUM")) {
+                if (current < output) {
+                    current = output;
+                }
+            } else {
+                if (output < current) {
+                    current = output;
+                }
+            }
+        }
+        mdiOutput.setValue(Double.toString(current));
+    }
+
+    /** 
+     * Initialize a list of {@link PAMRasterBand}s having same size of the 
+     * sample {@link PAMDataset} and same metadata names.
+     * @param merged
+     * @param samplePam
+     */
+    private static void initRasterBands(PAMDataset merged, PAMDataset samplePam) {
+        final List<PAMRasterBand> samplePamRasterBands = samplePam.getPAMRasterBand(); 
+        final int numBands = samplePamRasterBands.size();
+        List<PAMRasterBand> pamRasterBands = merged.getPAMRasterBand();
+        PAMRasterBand sampleBand = samplePamRasterBands.get(0);
+        List<MDI> sampleMetadata = sampleBand.getMetadata().getMDI();
+        for (int i = 0; i<numBands; i++) {
+            final PAMRasterBand band = new PAMRasterBand();
+            final Metadata metadata = new Metadata();
+            List<MDI> mdiList = metadata.getMDI();
+            for (MDI mdi: sampleMetadata) {
+                MDI addedMdi = new MDI();
+                addedMdi.setKey(mdi.getKey());
+                mdiList.add(addedMdi);
+            }
+            band.setMetadata(metadata);
+            pamRasterBands.add(band);
+        }
     }
 
     public static IOFileFilter getCleanupFilter() {

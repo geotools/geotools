@@ -116,7 +116,7 @@ import org.opengis.referencing.datum.PixelInCell;
  */
 public class ImageMosaicReaderTest extends Assert{
 
-    private final static double DELTA = 10E-6;
+    private final static double DELTA = 1E-4;
     
     private final static Logger LOGGER = Logger.getLogger(ImageMosaicReaderTest.class.toString());
     
@@ -2810,7 +2810,7 @@ public class ImageMosaicReaderTest extends Assert{
         final List<Date> timeValues= new ArrayList<Date>();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-        Date date = sdf.parse("2008-11-01T00:00:00.000Z");
+        Date date = sdf.parse("2008-10-31T00:00:00.000Z");
         timeValues.add(date);
         time.setValue(timeValues);
 
@@ -2824,6 +2824,34 @@ public class ImageMosaicReaderTest extends Assert{
         PAMParser parser = PAMParser.getInstance();
         assertEquals(0, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MINIMUM")), DELTA);
         assertEquals(255.0, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MAXIMUM")), DELTA);
+        assertEquals(73.0352, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MEAN")), DELTA);
+        assertEquals(84.3132, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_STDDEV")), DELTA);
+    }
+
+    @Test
+    public void testPAMMerged() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
+        final URL timePamURL = TestData.url(this, "pam");
+
+        final AbstractGridFormat format = TestUtils.getFormat(timePamURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timePamURL, format);
+        assertNotNull(format);
+
+        final String[] metadataNames = reader.getMetadataNames();
+        assertNotNull(metadataNames);
+
+        GridCoverage2D coverage = reader.read(null);
+        Object object = coverage.getProperty(Utils.PAM_DATASET);
+        assertNotNull(object);
+        assertTrue(object instanceof PAMDataset);
+        PAMDataset dataset = (PAMDataset) object;
+        PAMRasterBand band = dataset.getPAMRasterBand().get(0);
+
+        PAMParser parser = PAMParser.getInstance();
+        assertEquals(0, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MINIMUM")), DELTA);
+        assertEquals(255.0, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MAXIMUM")), DELTA);
+        assertEquals(72.6912, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MEAN")), DELTA);
+        assertEquals(83.2542, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_STDDEV")), DELTA);
     }
 
 

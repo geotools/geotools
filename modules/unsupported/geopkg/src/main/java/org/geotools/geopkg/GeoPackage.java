@@ -1195,6 +1195,14 @@ public class GeoPackage {
                     .set(e.getTableName()).set(e.isTimesTwoZoom()).log(Level.FINE).statement();
                 st.execute();
                 st.close();*/
+                
+                //add entry to tile matrix set table
+                st = prepare(cx, format("INSERT INTO %s VALUES (?,?,?,?,?,?)", TILE_MATRIX_SET))
+                        .set(e.getTableName()).set(e.getSrid()).set(e.getBounds().getMinX())
+                            .set(e.getBounds().getMinY()).set(e.getBounds().getMaxX()).set(e.getBounds().getMaxY())
+                            .statement();
+                st.execute();
+                st.close();
 
                 //create the tile_matrix_metadata entries
                 st = prepare(cx, format("INSERT INTO %s VALUES (?,?,?,?,?,?,?,?)", TILE_MATRIX_METADATA))

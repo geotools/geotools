@@ -326,6 +326,20 @@ public class GeoPackageTest {
 
             rs.next();
             assertEquals(rs.getInt(1), entry.getTileMatricies().size());
+            
+            ps = cx.prepareStatement(
+                    "SELECT * from gpkg_tile_matrix_set WHERE table_name = ?");
+            ps.setString(1, entry.getTableName());
+            rs = ps.executeQuery();
+
+            rs.next();
+            assertEquals(rs.getInt(2), entry.getSrid().intValue());
+            assertEquals(rs.getDouble(3), entry.getBounds().getMinX(), 0.01);
+            assertEquals(rs.getDouble(4), entry.getBounds().getMinY(), 0.01);
+            assertEquals(rs.getDouble(5), entry.getBounds().getMaxX(), 0.01);
+            assertEquals(rs.getDouble(6), entry.getBounds().getMaxY(), 0.01);
+            
+            assertFalse(rs.next());
 
             rs.close();
             ps.close();

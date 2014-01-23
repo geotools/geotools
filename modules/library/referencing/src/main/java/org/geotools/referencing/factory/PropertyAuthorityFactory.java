@@ -184,7 +184,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
         final Symbols s = Symbols.DEFAULT;
         for (final Object wkt : this.definitions.values()) {
             if (s.containsAxis((String) wkt)) {
-                LOGGER.warning("Axis elements found in a wkt definition, the force longitude " +
+                LOGGER.fine("Axis elements found in a wkt definition, the force longitude " +
                         "first axis order hint might not be respected:\n" + wkt);
                 return;
             }

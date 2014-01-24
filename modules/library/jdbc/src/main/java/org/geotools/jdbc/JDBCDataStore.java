@@ -1017,13 +1017,13 @@ public final class JDBCDataStore extends ContentDataStore
                             try {
                                 pkey = primaryKeyFinder.getPrimaryKey(this, databaseSchema, tableName, cx);
                             } catch(SQLException e) {
-                                LOGGER.warning("Failure occurred while looking up the primary key with " +
-                                		"finder: " + primaryKeyFinder);
+                                LOGGER.log(Level.WARNING, "Failure occurred while looking up the primary key with " +
+                                		"finder: " + primaryKeyFinder, e);
                             }
                             
                             if ( pkey == null ) {
                                 String msg = "No primary key or unique index found for " + tableName + ".";
-                                LOGGER.warning(msg);
+                                LOGGER.info(msg);
     
                                 pkey = new NullPrimaryKey( tableName );
                             }

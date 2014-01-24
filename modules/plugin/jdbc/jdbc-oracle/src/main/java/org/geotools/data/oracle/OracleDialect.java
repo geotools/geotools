@@ -334,7 +334,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                 if(geometryClass == null) {
                     // if there was a record but it's not a recognized geometry type fall back on
                     // geometry for backwards compatibility, but at least log the info
-                    LOGGER.log(Level.WARNING, "Unrecognized geometry type " + gType + " falling back on generic 'GEOMETRY'");
+                    LOGGER.fine("Unrecognized geometry type " + gType + " falling back on generic 'GEOMETRY'");
                     geometryClass = Geometry.class;
                 }
 

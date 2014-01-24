@@ -377,21 +377,27 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
         // check other dimensions
         for (CoordinateAxis axis : cs.getCoordinateAxes()) {
             // get from coordinate vars
-            final CoordinateVariable<?> cv = coordinatesVariables.get(axis.getFullName()); 
-            final String name = cv.getName();
-            switch(cv.getAxisType()){
-            case GeoX: case GeoY: case Lat: case Lon:
-                continue;
-            case Height: case Pressure: case RadialElevation: case RadialDistance: case GeoZ:
-                if (UnidataCRSUtilities.VERTICAL_AXIS_NAMES.contains(name)) {
-                    dimensionsMapping.put(UnidataUtilities.ELEVATION_DIM, name);
-                } else {
-                    dimensionsMapping.put(name.toUpperCase(), name);
+            final CoordinateVariable<?> cv = coordinatesVariables.get(axis.getFullName());
+            if (cv != null) {
+                final String name = cv.getName();
+                switch(cv.getAxisType()){
+                    case GeoX: case GeoY: case Lat: case Lon:
+                        continue;
+                    case Height: case Pressure: case RadialElevation: case RadialDistance: case GeoZ:
+                        if (UnidataCRSUtilities.VERTICAL_AXIS_NAMES.contains(name)) {
+                            dimensionsMapping.put(UnidataUtilities.ELEVATION_DIM, name);
+                        } else {
+                            dimensionsMapping.put(name.toUpperCase(), name);
+                        }
+                        break;
+                    case Time:
+                        dimensionsMapping.put(UnidataUtilities.TIME_DIM, name);
+                        break;
                 }
-                break;
-            case Time: 
-                dimensionsMapping.put(UnidataUtilities.TIME_DIM, name);
-                break;
+            }else {
+                if (LOGGER.isLoggable(Level.SEVERE)) {
+                    LOGGER.severe("Null coordinate variable: '" + axis.getFullName() + "' while processing input: " + this.getInput());
+                }
             }
         }
     }
@@ -411,6 +417,15 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
         for( CoordinateAxis axis : dataset.getCoordinateAxes() ) {
             if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null) {
                 coordinatesVariables.put(axis.getFullName(), CoordinateVariable.create((CoordinateAxis1D)axis));
+            }else{
+                //workaround for files that have a time dimension, but in a format that could not be parsed
+                if("time".equals(axis.getFullName())){
+                    LOGGER.warning("Detected unparseable unit string in time axis: '" + axis.getUnitsString() + "'.");
+                    axis.setAxisType(AxisType.Time);
+                    coordinatesVariables.put(axis.getFullName(), CoordinateVariable.create((CoordinateAxis1D)axis));
+                }else{
+                    LOGGER.warning("Unsupported axis: "+axis + " in input: "+this.getInput());
+                }
             }
         }
         initMapping(dataset.getCoordinateSystems().get(0));

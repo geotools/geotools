@@ -175,6 +175,7 @@ public class FilterTest extends TestCase {
         ftb.add("time", java.sql.Time.class);
         ftb.add("datetime1", java.util.Date.class);
         ftb.add("datetime2", java.sql.Timestamp.class);
+        ftb.add("nullInt", Integer.class);
         testSchema = ftb.buildFeatureType();
 
         //LOGGER.finer("added string to feature type");
@@ -185,7 +186,7 @@ public class FilterTest extends TestCase {
         coords[2] = new Coordinate(5, 6);
 
         // Builds the test feature
-        Object[] attributes = new Object[15];
+        Object[] attributes = new Object[16];
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         attributes[0] = gf.createLineString(coords);
         attributes[1] = new Boolean(true);
@@ -1239,5 +1240,10 @@ public class FilterTest extends TestCase {
         Expression l40 = fac.literal("40");
         Assert.assertFalse(l32.equals(l40));
         Assert.assertFalse(l40.equals(l32));
+    }
+    
+    public void testNullBetween() {
+        Filter f = fac.between(fac.property("nullInt"), fac.literal(10), fac.literal(20));
+        Assert.assertFalse(f.evaluate(testFeature));
     }
 }

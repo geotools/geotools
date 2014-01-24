@@ -71,7 +71,7 @@ public class SqlServerBinaryReader {
         Collection<Geometry> polygons = new ArrayList<Geometry>();
         for (int i = shapeIndex; i < binary.getShapes().length; i++) {
             if (binary.getShape(i).getParentOffset() == shapeIndex) {
-                polygons.add(gf.createPolygon(binary.getSequence(binary.getShape(i).getFigureOffset())));
+                polygons.add(decodePolygon(i));
             }
         }
         return gf.createMultiPolygon(polygons.toArray(new Polygon[polygons.size()]));        }

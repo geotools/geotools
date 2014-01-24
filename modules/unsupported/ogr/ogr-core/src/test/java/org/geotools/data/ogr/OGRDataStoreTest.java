@@ -217,7 +217,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     
     private void assertFeatureTypeEquals(SimpleFeatureType type1, SimpleFeatureType type2) {
         // general type assertions
-        assertEquals(type1.getName(), type2.getName());
+        assertEquals(type1.getTypeName(), type2.getTypeName());
         assertEquals(type1.getSuper(), type2.getSuper());
         assertEquals(type1.getAttributeCount(), type2.getAttributeCount());
         

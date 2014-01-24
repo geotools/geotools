@@ -41,18 +41,24 @@ import java.util.logging.Logger;
 
 import javax.media.jai.ImageLayout;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.DefaultDimensionDescriptor;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.FeatureCalc;
@@ -108,6 +114,8 @@ import org.opengis.referencing.operation.TransformException;
  */
 @SuppressWarnings({"rawtypes","unchecked"})
 public class RasterManager {
+
+    final Hints excludeMosaicHints = new Hints(Utils.EXCLUDE_MOSAIC, true);
 
     /**
      * This class is responsible for putting together all the 2D spatial information needed for a certain raster.
@@ -234,11 +242,11 @@ public class RasterManager {
     }
 
     /** Logger. */
-        private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterManager.class);
+    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterManager.class);
 
-        /** The coverage factory producing a {@link GridCoverage} from an image */
-        private GridCoverageFactory coverageFactory;
-        
+    /** The coverage factory producing a {@link GridCoverage} from an image */
+    private GridCoverageFactory coverageFactory;
+
     /**
      * {@link DomainDescriptor} describe a single domain in terms of name and {@link ParameterDescriptor} that can be used to filter values during a
      * read operation.
@@ -829,31 +837,37 @@ public class RasterManager {
         SINGLE_VALUE, TIME_RANGE, NUMBER_RANGE
     }
     
-    /** Default {@link ColorModel}.*/
-	ColorModel defaultCM;
-	
-	/** Default {@link SampleModel}.*/
-	SampleModel defaultSM;
-	
-	/** The name of the input coverage 
-	 * TODO consider URI
-	 */
-	private String coverageIdentifier;
+    /** Default {@link ColorModel}. */
+    ColorModel defaultCM;
 
-	
-	/** The hints to be used to produce this coverage */
-	private Hints hints;
-	OverviewsController overviewsController;
-	OverviewPolicy overviewPolicy;
-	DecimationPolicy decimationPolicy;
-	private PathType pathType;
-	boolean expandMe;
-	boolean heterogeneousGranules;
-	
-	double[][] levels;
-	SpatialDomainManager spatialDomainManager;
+    /** Default {@link SampleModel}. */
+    SampleModel defaultSM;
 
-	ImageLayout defaultImageLayout;
+    /**
+     * The name of the input coverage TODO consider URI
+     */
+    private String coverageIdentifier;
+
+    /** The hints to be used to produce this coverage */
+    private Hints hints;
+
+    OverviewsController overviewsController;
+
+    OverviewPolicy overviewPolicy;
+
+    DecimationPolicy decimationPolicy;
+
+    private PathType pathType;
+
+    boolean expandMe;
+
+    boolean heterogeneousGranules;
+
+    double[][] levels;
+
+    SpatialDomainManager spatialDomainManager;
+
+    ImageLayout defaultImageLayout;
 
     /** The inner {@link DomainManager} instance which allows to manage custom dimensions */
     DomainManager domainsManager;
@@ -880,80 +894,41 @@ public class RasterManager {
     
     MosaicConfigurationBean configuration;
 
-        public RasterManager(final ImageMosaicReader parentReader, MosaicConfigurationBean configuration)
-                throws IOException {
+    public RasterManager(final ImageMosaicReader parentReader, MosaicConfigurationBean configuration)
+            throws IOException {
 
-            Utilities.ensureNonNull("ImageMosaicReader", parentReader);
+        Utilities.ensureNonNull("ImageMosaicReader", parentReader);
 
-            this.parentReader = parentReader;
-            this.expandMe = parentReader.expandMe;
-            this.heterogeneousGranules = parentReader.heterogeneousGranules;
-            this.configuration = configuration;
-            hints = parentReader.getHints();
-            if (configuration != null && configuration.getAuxiliaryFilePath() != null) {
-                hints.add(new RenderingHints(Utils.AUXILIARY_FILES_PATH, configuration.getAuxiliaryFilePath()));
-            }
-            
-            // take ownership of the index : TODO: REMOVE THAT ONCE DEALING WITH MORE CATALOGS/RASTERMANAGERS
-//            granuleCatalog = new HintedGranuleCatalog(parentReader.granuleCatalog, hints);   
-            granuleCatalog = parentReader.granuleCatalog; 
-            this.coverageFactory = parentReader.getGridCoverageFactory();
-            this.coverageIdentifier = configuration != null ? configuration.getName() : ImageMosaicReader.UNSPECIFIED;
-            this.pathType = parentReader.pathType;
+        this.parentReader = parentReader;
+        this.expandMe = parentReader.expandMe;
+        boolean checkAuxiliaryMetadata = configuration.isCheckAuxiliaryMetadata();
+        this.heterogeneousGranules = parentReader.heterogeneousGranules;
+        this.configuration = configuration;
+        hints = parentReader.getHints();
+        if (configuration != null && configuration.getAuxiliaryFilePath() != null) {
+            hints.add(new RenderingHints(Utils.AUXILIARY_FILES_PATH, configuration.getAuxiliaryFilePath()));
+        }
+        if (checkAuxiliaryMetadata) {
+            hints.add(new RenderingHints(Utils.CHECK_AUXILIARY_METADATA, checkAuxiliaryMetadata));
+        }
 
-            // resolution values
+        // take ownership of the index : TODO: REMOVE THAT ONCE DEALING WITH MORE CATALOGS/RASTERMANAGERS
+        // granuleCatalog = new HintedGranuleCatalog(parentReader.granuleCatalog, hints);
+        granuleCatalog = parentReader.granuleCatalog;
+        this.coverageFactory = parentReader.getGridCoverageFactory();
+        this.coverageIdentifier = configuration != null ? configuration.getName() : ImageMosaicReader.UNSPECIFIED;
+        this.pathType = configuration.getCatalogConfigurationBean().isAbsolutePath() ? PathType.ABSOLUTE : PathType.RELATIVE;
 
-            // instantiating controller for subsampling and overviews
-            //TODO: DR rasterManager don't need to ask info from the reader. It should only deal with the config.
-            // is the reader which ask info from the rasterManager
-            
-//            overviewsController = new OverviewsController(parentReader.getHighestRes(),
-//                    parentReader.getNumberOfOvervies(), parentReader.getOverviewsResolution());
-//        try {
-//			spatialDomainManager= new SpatialDomainManager(
-//			        parentReader.getOriginalEnvelope(),
-//					(GridEnvelope2D)parentReader.getOriginalGridRange(),
-//					parentReader.getCoordinateReferenceSystem(),
-//					parentReader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
-//					overviewsController);
-//		} catch (TransformException e) {
-//			throw new DataSourceException(e);
-//		} catch (FactoryException e) {
-//			throw new DataSourceException(e);
-//		}
         extractOverviewPolicy();
         extractDecimationPolicy();
-        
+
         // load defaultSM and defaultCM by using the sample_image if it was provided
         loadSampleImage(configuration);
-        
+
         if (configuration != null) {
             CatalogConfigurationBean catalogBean = configuration.getCatalogConfigurationBean();
             typeName = catalogBean != null ? catalogBean.getTypeName() : null;
-            if (typeName != null) {
-                final SimpleFeatureType schema = granuleCatalog.getType(typeName);
-                if (configuration.getAdditionalDomainAttributes() != null) {
-                    domainsManager = new DomainManager(
-                            configuration.getAdditionalDomainAttributes(), schema);
-                    dimensionDescriptors.addAll(domainsManager.dimensions);
-                }
-
-                // time attribute
-                if (configuration.getTimeAttribute() != null) {
-                    final HashMap<String, String> init = new HashMap<String, String>();
-                    init.put(Utils.TIME_DOMAIN, configuration.getTimeAttribute());
-                    timeDomainManager = new DomainManager(init, schema);
-                    dimensionDescriptors.addAll(timeDomainManager.dimensions);
-                
-                }
-                // elevation attribute
-                if (configuration.getElevationAttribute() != null) {
-                    final HashMap<String, String> init = new HashMap<String, String>();
-                    init.put(Utils.ELEVATION_DOMAIN, configuration.getElevationAttribute());
-                    elevationDomainManager = new DomainManager(init, schema);
-                    dimensionDescriptors.addAll(elevationDomainManager.dimensions);
-                }
-            }
+            initDomains(configuration);
             if (defaultSM == null) {
                 defaultSM = configuration.getSampleModel();
             }
@@ -980,12 +955,60 @@ public class RasterManager {
             overviewsController = new OverviewsController(highRes,
                   numOverviews, overviews);
             imposedEnvelope = configuration.getEnvelope();
-            
-            //TODO: DR Parse more stuff from the configuration
         }
     }
 
- 	/**
+    private void initDomains(MosaicConfigurationBean configuration) throws IOException {
+        checkTypeName();
+        if (typeName != null) {
+
+            final SimpleFeatureType schema = granuleCatalog.getType(typeName);
+            if (schema != null) {
+                // additional domain attributes
+                final String additionalDomainConfig = configuration.getAdditionalDomainAttributes();
+                if (additionalDomainConfig != null && domainsManager == null) {
+                    domainsManager = new DomainManager(additionalDomainConfig, schema);
+                    dimensionDescriptors.addAll(domainsManager.dimensions);
+                }
+
+                // time attribute
+                final String timeDomain = configuration.getTimeAttribute();
+                if (timeDomain != null && timeDomainManager == null) {
+                    final HashMap<String, String> init = new HashMap<String, String>();
+                    init.put(Utils.TIME_DOMAIN, timeDomain);
+                    timeDomainManager = new DomainManager(init, schema);
+                    dimensionDescriptors.addAll(timeDomainManager.dimensions);
+                }
+
+                // elevation attribute
+                final String elevationAttribute = configuration.getElevationAttribute();
+                if (elevationAttribute != null && elevationDomainManager == null) {
+                    final HashMap<String, String> init = new HashMap<String, String>();
+                    init.put(Utils.ELEVATION_DOMAIN, elevationAttribute);
+                    elevationDomainManager = new DomainManager(init, schema);
+                    dimensionDescriptors.addAll(elevationDomainManager.dimensions);
+                }
+            }
+        }
+    }
+    
+    private void checkTypeName() throws IOException {
+        if (typeName == null) {
+            URL sourceURL = parentReader.sourceURL;
+            if (sourceURL.getPath().endsWith("shp")) {
+                typeName = FilenameUtils.getBaseName(DataUtilities.urlToFile(sourceURL)
+                        .getCanonicalPath());
+            } else {
+                typeName = configuration.getName();
+            }
+        }
+        if (typeName == null && granuleCatalog != null) {
+            String[] typeNames = granuleCatalog.getTypeNames();
+            typeName = (typeNames != null && typeNames.length > 0) ? typeNames[0] : null;
+        }
+    }
+
+    /**
 	 * This code tries to load the sample image from which we can extract SM and CM to use when answering to requests
 	 * that falls within a hole in the mosaic.
  	 * @param configuration 
@@ -1152,52 +1175,52 @@ public class RasterManager {
         return visitor;
     }
 
-        /**
-         * Extract the domain of a dimension as a set of unique values.
-         * 
-         * <p>
-         * It retrieves a comma separated list of values as a Set of {@link String}.
-         * 
-         * @return a comma separated list of values as a {@link String}.
-         * @throws IOException
-         */
-        private Set extractDomain(final String attribute)
-                throws IOException {
-            Query query = new Query(typeName);
-            query.setPropertyNames(Arrays.asList(attribute));
-            final UniqueVisitor visitor= new UniqueVisitor(attribute);
-            granuleCatalog.computeAggregateFunction(query, visitor);
-            return visitor.getUnique();
+    /**
+     * Extract the domain of a dimension as a set of unique values.
+     * 
+     * <p>
+     * It retrieves a comma separated list of values as a Set of {@link String}.
+     * 
+     * @return a comma separated list of values as a {@link String}.
+     * @throws IOException
+     */
+    private Set extractDomain(final String attribute) throws IOException {
+        Query query = new Query(typeName);
+        query.setPropertyNames(Arrays.asList(attribute));
+        final UniqueVisitor visitor = new UniqueVisitor(attribute);
+        granuleCatalog.computeAggregateFunction(query, visitor);
+        return visitor.getUnique();
+    }
+
+    /**
+     * Extract the domain of a dimension (with Range) as a set of values.
+     * 
+     * <p>
+     * It retrieves a comma separated list of values as a Set of {@link String}.
+     * 
+     * @param domainType
+     * 
+     * @return a comma separated list of values as a Set of {@link String}.
+     * @throws IOException
+     */
+    private Set extractDomain(final String attribute, final String secondAttribute, final DomainType domainType)
+            throws IOException {
+        final Query query = new Query(typeName);
+        
+        final PropertyName propertyName = FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute);
+        query.setPropertyNames(Arrays.asList(attribute, secondAttribute));
+        
+        final SortByImpl[] sb = new SortByImpl[]{new SortByImpl(propertyName, SortOrder.ASCENDING)};
+        // Checking whether it supports sorting capabilities
+        if(granuleCatalog.getQueryCapabilities(typeName).supportsSorting(sb)){
+            query.setSortBy(sb);
         }
         
-        /**
-         * Extract the domain of a dimension (with Range) as a set of values.
-         * 
-         * <p>
-         * It retrieves a comma separated list of values as a Set of {@link String}.
-         * @param domainType 
-         * 
-         * @return a comma separated list of values as a Set of {@link String}.
-         * @throws IOException
-         */
-        private Set extractDomain(final String attribute, final String secondAttribute, final DomainType domainType)
-                throws IOException {
-            final Query query = new Query(typeName);
-            
-            final PropertyName propertyName = FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute);
-            query.setPropertyNames(Arrays.asList(attribute, secondAttribute));
-            
-            final SortByImpl[] sb = new SortByImpl[]{new SortByImpl(propertyName, SortOrder.ASCENDING)};
-            // Checking whether it supports sorting capabilities
-            if(granuleCatalog.getQueryCapabilities(typeName).supportsSorting(sb)){
-                query.setSortBy(sb);
-            }
-            
-            final FeatureCalc visitor = domainType == DomainType.TIME_RANGE ? new DateRangeVisitor(attribute, secondAttribute) : new RangeVisitor(attribute, secondAttribute);
-            granuleCatalog.computeAggregateFunction(query, visitor);
-            return domainType == DomainType.TIME_RANGE ? ((DateRangeVisitor)visitor).getRange() : ((RangeVisitor)visitor).getRange() ;
-            
-        }
+        final FeatureCalc visitor = domainType == DomainType.TIME_RANGE ? new DateRangeVisitor(attribute, secondAttribute) : new RangeVisitor(attribute, secondAttribute);
+        granuleCatalog.computeAggregateFunction(query, visitor);
+        return domainType == DomainType.TIME_RANGE ? ((DateRangeVisitor)visitor).getRange() : ((RangeVisitor)visitor).getRange() ;
+        
+    }
 
 
         /**
@@ -1207,7 +1230,7 @@ public class RasterManager {
     public GranuleCatalog getGranuleCatalog() {
         return granuleCatalog;
     }
-    
+
     /**
      * Create a store for the coverage related to this {@link RasterManager} using the 
      * provided schema
@@ -1222,13 +1245,112 @@ public class RasterManager {
             granuleCatalog.createType(indexSchema);
             this.typeName = typeName;
         } else {
+            if (this.typeName == null) {
+                this.typeName = typeName;
+            }
             // remove them all, assuming the schema has not changed
             final Query query = new Query(type.getTypeName());
             query.setFilter(Filter.INCLUDE);
             granuleCatalog.removeGranules(query);
         }
     }
-    
+
+    /**
+     * Remove a store for the coverage related to this {@link RasterManager} 
+     * @param forceDelete 
+     *
+     * @param indexSchema
+     * @throws IOException
+     */
+    public void removeStore (String typeName, boolean forceDelete, boolean checkForReferences) throws IOException {
+        Utilities.ensureNonNull("typeName", typeName);
+        if (typeName != null) {
+            // Preliminar granules removal...
+            // Should we send a message instead reporting that the catalog
+            // still contain some granules before allowing for a removal??
+            final Query query = new Query(typeName);
+            query.setFilter(Filter.INCLUDE);
+
+            // cleaning up granules and underlying readers
+            cleanupGranules(query, checkForReferences, forceDelete);
+
+            // removing records from the catalog
+            granuleCatalog.removeGranules(query);
+            granuleCatalog.removeType(typeName);
+        }
+    }
+
+    /**
+     * Delete granules from query.
+     * @param query
+     * @param checkForReferences 
+     * @throws IOException
+     */
+    private void cleanupGranules(Query query, boolean checkForReferences, boolean deleteData) throws IOException {
+        final SimpleFeatureCollection collection = granuleCatalog.getGranules(query);
+        UniqueVisitor visitor = new UniqueVisitor(parentReader.locationAttributeName);
+        collection.accepts(visitor, null);
+        Set<String> features = visitor.getUnique();
+        final String coverageName = query.getTypeName();
+
+        for (String feature: features) {
+            final URL rasterPath = pathType.resolvePath(DataUtilities.fileToURL(parentReader.parentDirectory).toString(), feature);
+            boolean delete = true;
+            if (checkForReferences) {
+                delete = !checkForReferences(coverageName);
+                
+            }
+            AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(rasterPath, excludeMosaicHints);
+            if (format != null) {
+                GridCoverage2DReader coverageReader = null;
+                try {
+                    coverageReader = (GridCoverage2DReader) format.getReader(rasterPath, hints);
+                    if (coverageReader instanceof StructuredGridCoverage2DReader) {
+                        StructuredGridCoverage2DReader reader = (StructuredGridCoverage2DReader) coverageReader;
+                        if (delete) {
+                            reader.delete(deleteData);
+                        } else {
+                            reader.removeCoverage(coverageName, false);
+                        }
+                    } else if (deleteData) {
+                        final boolean removed = FileUtils.deleteQuietly(DataUtilities.urlToFile(rasterPath));
+                    }
+                } finally {
+                    if (coverageReader != null) {
+                        try {
+                            coverageReader.dispose();
+                        } catch (Throwable t) {
+                            //Ignoring exceptions on disposing readers
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Check if there is any granule referred by other coverages. 
+     * @param coverageName
+     * @return
+     * @throws IOException
+     */
+    private boolean checkForReferences(String coverageName) throws IOException {
+        final String[] coverageNames = parentReader.getGridCoverageNames();
+        for (String typeName : coverageNames) {
+            if (!coverageName.equalsIgnoreCase(typeName)) {
+                Query query = new Query(typeName);
+                final SimpleFeatureCollection collection = granuleCatalog.getGranules(query);
+                UniqueVisitor visitor = new UniqueVisitor(parentReader.locationAttributeName);
+                collection.accepts(visitor, null);
+                Set<String> features = visitor.getUnique();
+                if (features.size() > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public GranuleSource getGranuleSource(final boolean readOnly, final Hints hints) {
         synchronized (this) {
             if (readOnly) {
@@ -1280,8 +1402,11 @@ public class RasterManager {
         }
     }
 
-    void initialize() throws IOException {
+    void initialize(final boolean checkDomains) throws IOException {
         final BoundingBox bounds = granuleCatalog.getBounds(typeName);
+        if (checkDomains) {
+            initDomains(configuration);
+        }
 
         if (bounds.isEmpty()) {
             throw new IllegalArgumentException("Cannot create a mosaic out of an empty index");

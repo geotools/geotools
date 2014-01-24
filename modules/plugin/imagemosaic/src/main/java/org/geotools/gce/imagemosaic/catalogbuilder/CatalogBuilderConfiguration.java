@@ -51,6 +51,8 @@ public class CatalogBuilderConfiguration {
 
 	private Indexer indexer;
 	
+	
+	
 	/**
 	 * @deprecated parse indexer parameters instead.
 	 * @return

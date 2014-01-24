@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org/
+
+        Version: $Id
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>11-SNAPSHOT</version>
+  </parent>
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+    <groupId>org.geotools</groupId>
+    <artifactId>gt-kml</artifactId>
+    <packaging>jar</packaging>
+    <name>KML DataStore Module</name>
+
+    <description>
+    Provides datastore support for KML format.
+    </description>
+
+    <licenses>
+        <license>
+            <name>Lesser General Public License (LGPL)</name>
+            <url>http://www.gnu.org/copyleft/lesser.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+    <developers>
+        <developer>
+            <name>Niels Charlier</name>
+            <id>nielscharlier</id>
+            <email>niels@scitus.be</email>
+            <organization>Scitus Development</organization>
+            <roles>
+                <role>Module Maintainer</role>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencies>       
+        <dependency>
+          <groupId>org.geotools</groupId>
+          <artifactId>gt-main</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.geotools</groupId>
+          <artifactId>gt-data</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+	<dependency>
+          <groupId>org.geotools.xsd</groupId>
+          <artifactId>gt-xsd-core</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+	<dependency>
+          <groupId>org.geotools.xsd</groupId>
+          <artifactId>gt-xsd-kml</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

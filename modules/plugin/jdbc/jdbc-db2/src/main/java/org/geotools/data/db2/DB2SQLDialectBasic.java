@@ -132,7 +132,7 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
 
     
     @Override
-    public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql) throws IOException {
+    public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql) throws IOException {
     	DB2Util.encodeGeometryValue(value, srid, sql);
     }
     

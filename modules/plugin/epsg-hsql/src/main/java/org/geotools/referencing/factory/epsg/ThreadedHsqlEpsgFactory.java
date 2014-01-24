@@ -40,7 +40,7 @@ import org.geotools.resources.i18n.LoggingKeys;
 import org.geotools.resources.i18n.Loggings;
 import org.geotools.util.Version;
 import org.geotools.util.logging.Logging;
-import org.hsqldb.jdbc.jdbcDataSource;
+import org.hsqldb.jdbc.JDBCDataSource;
 import org.opengis.referencing.FactoryException;
 
 
@@ -79,7 +79,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * additional minor version number if there is some changes related to the EPSG-HSQL
      * plugin rather then the EPSG database itself (for example additional database index).
      */
-    public static final Version VERSION = new Version("7.9.0");
+    public static final Version VERSION = new Version("7.9.0.1");
 
     /**
      * The key for fetching the database directory from {@linkplain System#getProperty(String)
@@ -193,8 +193,8 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * information is not available.
      */
     private static File getDirectory(final DataSource source) {
-        if (source instanceof jdbcDataSource) {
-            String path = ((jdbcDataSource) source).getDatabase();
+        if (source instanceof JDBCDataSource) {
+            String path = ((JDBCDataSource) source).getDatabase();
             if (path!=null && PREFIX.regionMatches(true, 0, path, 0, PREFIX.length())) {
                 path = path.substring(PREFIX.length());
                 return new File(path).getParentFile();
@@ -211,10 +211,10 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
         logger.log(Level.FINE, "Building new data source for " + getClass().getName());
         
         DataSource candidate = super.createDataSource();
-        if (candidate instanceof jdbcDataSource) {
+        if (candidate instanceof JDBCDataSource) {
             return candidate;
         }
-        final jdbcDataSource source = new jdbcDataSource();
+        final JDBCDataSource source = new JDBCDataSource();
         File directory = new File(getDirectory(), "v" + VERSION);
         if (directory != null) {
             /*

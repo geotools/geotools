@@ -162,5 +162,13 @@ public class StringFunctionTest  {
         assertEquals("D", ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(3))
                 .evaluate(null));
     }
+    
+    @Test
+    public void testConcatenate() throws Exception {
+        assertEquals("ab", ff.function("strConcat", ff.literal("a"), ff.literal("b")).evaluate(null));
+        assertEquals("a", ff.function("strConcat", ff.literal("a"), ff.literal(null)).evaluate(null));
+        assertEquals("b", ff.function("strConcat", ff.literal(null), ff.literal("b")).evaluate(null));
+        assertNull(ff.function("strConcat", ff.literal(null), ff.literal(null)).evaluate(null));
+    }
 
 }

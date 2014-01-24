@@ -17,9 +17,11 @@
 
 package org.geotools.filter.text.cql2;
 
+import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -48,7 +50,7 @@ public class CQLLiteralTest {
         this(Language.CQL);
     }
 
-    public CQLLiteralTest(final Language language){
+    protected CQLLiteralTest(final Language language){
         
         assert language != null: "language cannot be null value";
         
@@ -305,6 +307,71 @@ public class CQLLiteralTest {
         }
     
     }
+
+    
+    /**
+     * Tests that the ambiguous syntax between Integer and relate pattern is solved by the parser.
+     *  
+     * @throws Exception
+     */
+    @Test
+    public void clashLongLiteralandDE9IM() throws Exception{
+
+        {
+            final String expected = "201000002";
+
+            Expression expr = CompilerUtil.parseExpression(language, expected);
+
+            Literal intLiteral = (Literal) expr;
+            Long actual = (Long) intLiteral.getValue();
+
+            Assert.assertEquals(Long.parseLong(expected), actual.longValue());
+
+        }
+        {
+            PropertyIsEqualTo resultFilter;
+            
+            resultFilter = (PropertyIsEqualTo) CompilerUtil.parseFilter(language,"RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), 201000002)");
+
+            Expression relateFunction = resultFilter.getExpression1();
+            Assert.assertTrue(relateFunction instanceof FilterFunction_relatePattern); 
+            
+            Literal trueLiteral = (Literal) resultFilter.getExpression2();
+            Assert.assertTrue(trueLiteral.getValue() instanceof Boolean); 
+
+        }
+    }
+    
+    /**
+     * Test the pattern that represent the intersection matrix that is required by the Relate predicate.
+     * 
+     * @throws CQLException
+     */
+    @Test 
+    public void relatePatterns() throws CQLException {
+        
+        testRelatePatten("T******F*");
+
+        testRelatePatten("T012**FF*");
+            
+        testRelatePatten("100000001");
+
+        testRelatePatten("200000000");
+    }
+    
+    private void testRelatePatten(final String pattern) throws CQLException {
+        
+        PropertyIsEqualTo resultFilter;
+        
+        resultFilter = (PropertyIsEqualTo) CompilerUtil.parseFilter(language,"RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), "+pattern+")");
+
+        Expression relateFunction = resultFilter.getExpression1();
+        Assert.assertTrue(relateFunction instanceof FilterFunction_relatePattern); 
+        
+        Literal trueLiteral = (Literal) resultFilter.getExpression2();
+        Assert.assertTrue(trueLiteral.getValue() instanceof Boolean); 
+    }
+
     
     @Test
     public void dateLiteral() throws Exception{

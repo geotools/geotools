@@ -375,7 +375,9 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                     sort.add(new SortByImpl(filterFac.property(att), SortOrder.ASCENDING));
                 }
 
-                JoiningQuery jQuery = new JoiningQuery(newQuery);
+                JoiningQuery jQuery = new JoiningQuery(newQuery,
+                        (!Expression.NIL.equals(mapping.getFeatureIdExpression()) && !(mapping
+                                .getFeatureIdExpression() instanceof Literal)));
                 jQuery.setQueryJoins(((JoiningQuery) query).getQueryJoins());
                 jQuery.setSubset(((JoiningQuery) query).isSubset());
                 unrolledQuery = jQuery;
@@ -652,6 +654,15 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
+     * Not a supported operation.
+     * 
+     * @see org.geotools.data.DataAccess#removeSchema(org.opengis.feature.type.Name)
+     */
+    public void removeSchema(Name typeName) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * Return a feature source that can be used to obtain features of a particular name. This name
      * would be the mappingName in the TypeMapping if it exists, otherwise it's the target element
      * name.
@@ -665,27 +676,25 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             throws IOException {
         return new MappingFeatureSource(this, getMappingByName(typeName));
     }
-        
-	public Feature findFeature(FeatureId id, Hints hints, AtomicBoolean stopFlag) throws IOException {    	
-    	Feature result = null;
-    	for (Entry<Name, FeatureTypeMapping> mapping: mappings.entrySet()) {
-    		Filter filter = filterFac.id(id);
-    		FeatureCollection<FeatureType, Feature> fCollection = new MappingFeatureSource(this, mapping.getValue()).getFeatures(filter, hints);    		
-    		FeatureIterator<Feature> iterator = fCollection.features();    		
-	    	if (iterator.hasNext()) {
-	    		result = iterator.next();
-	    	}    		
-	    	iterator.close();    		
-	    	if (result != null){
-	    		return result;
-	    	}    		
 
-            synchronized(stopFlag) {
-                if (stopFlag.get()) {
-                	return null;
-                }
+    public Feature findFeature(FeatureId id, Hints hints) throws IOException {
+        for (Entry<Name, FeatureTypeMapping> mapping : mappings.entrySet()) {
+            if (Thread.currentThread().isInterrupted()) {
+                return null;
             }
-    	}    	     	   	
-    	return null;
+            Filter filter = filterFac.id(id);
+            FeatureCollection<FeatureType, Feature> fCollection = new MappingFeatureSource(this,
+                    mapping.getValue()).getFeatures(filter, hints);
+            FeatureIterator<Feature> iterator = fCollection.features();
+            try {
+                if (iterator.hasNext()) {
+                    return iterator.next();
+                }
+            } finally {
+                iterator.close();
+            }
+        }
+        return null;
     }
+
 }

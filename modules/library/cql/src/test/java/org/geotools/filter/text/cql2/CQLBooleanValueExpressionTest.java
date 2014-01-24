@@ -54,7 +54,7 @@ public class CQLBooleanValueExpressionTest {
         this(Language.CQL);
     }
 
-    public CQLBooleanValueExpressionTest(final Language language){
+    protected CQLBooleanValueExpressionTest(final Language language){
         
         assert language != null: "language cannot be null value";
         

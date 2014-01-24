@@ -193,4 +193,15 @@ public class DirectoryDataStore implements DataStore {
         return store;
     }
 
+    @Override
+    public void removeSchema(Name name) throws IOException {
+        removeSchema(name.getLocalPart());
+        
+    }
+
+    @Override
+    public void removeSchema(String name) throws IOException {
+        getDataStore(name).removeSchema(name);
+    }
+
 }

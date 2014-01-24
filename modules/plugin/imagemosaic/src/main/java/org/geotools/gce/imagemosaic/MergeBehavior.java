@@ -34,10 +34,14 @@ import org.geotools.image.ImageWorker;
 import org.jaitools.imageutils.ImageLayout2;
 
 /**
+ * This class is responsible for implementing the strategies for the mosaicking which can be
+ * a flat merge of band-stacking merge.
+ * 
  * @author Simone Giannecchini, GeoSolutions
  * TODO check more conditions to use {@link MosaicDescriptor}
  */
 public enum MergeBehavior {
+    
     STACK {
         @Override
         public RenderedImage process(
@@ -84,7 +88,7 @@ public enum MergeBehavior {
                 }
             }
             if(performMosaic){
-                // border extender
+                // BORDER extender
                 final BorderExtender borderExtenderConstant= new BorderExtenderConstant(backgroundValues);
                 // loop on sources
                 for (int i = 0; i < sources.length; i++) {
@@ -94,7 +98,7 @@ public enum MergeBehavior {
                             // current extent
                             Rectangle currentExtent = PlanarImage.wrapRenderedImage(sources[0]).getBounds();
                             
-                            // add border to the current source
+                            // add BORDER to the current source
                             sources[i]=BorderDescriptor.create(
                                     sources[i], 
                                     union.x-currentExtent.x, 

@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -726,6 +727,80 @@ public class SpatialRequestHelper {
     
     public CoverageProperties getCoverageProperties() {
         return coverageProperties;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SpatialRequestHelper [");
+        if (requestedBBox != null) {
+            builder.append("requestedBBox=");
+            builder.append(requestedBBox);
+            builder.append(", ");
+        }
+        if (cropBBox != null) {
+            builder.append("cropBBox=");
+            builder.append(cropBBox);
+            builder.append(", ");
+        }
+        if (requestedRasterArea != null) {
+            builder.append("requestedRasterArea=");
+            builder.append(requestedRasterArea);
+            builder.append(", ");
+        }
+        if (destinationRasterArea != null) {
+            builder.append("destinationRasterArea=");
+            builder.append(destinationRasterArea);
+            builder.append(", ");
+        }
+        if (requestCRS != null) {
+            builder.append("requestCRS=");
+            builder.append(requestCRS);
+            builder.append(", ");
+        }
+        if (requestedGridToWorld != null) {
+            builder.append("requestedGridToWorld=");
+            builder.append(requestedGridToWorld);
+            builder.append(", ");
+        }
+        if (requestedResolution != null) {
+            builder.append("requestedResolution=");
+            builder.append(Arrays.toString(requestedResolution));
+            builder.append(", ");
+        }
+        if (requestedBBOXInCoverageGeographicCRS != null) {
+            builder.append("requestedBBOXInCoverageGeographicCRS=");
+            builder.append(requestedBBOXInCoverageGeographicCRS);
+            builder.append(", ");
+        }
+        if (requestCRSToCoverageGeographicCRS2D != null) {
+            builder.append("requestCRSToCoverageGeographicCRS2D=");
+            builder.append(requestCRSToCoverageGeographicCRS2D);
+            builder.append(", ");
+        }
+        if (destinationToSourceTransform != null) {
+            builder.append("destinationToSourceTransform=");
+            builder.append(destinationToSourceTransform);
+            builder.append(", ");
+        }
+        if (coverageProperties != null) {
+            builder.append("coverageProperties=");
+            builder.append(coverageProperties);
+            builder.append(", ");
+        }
+        builder.append("accurateResolution=");
+        builder.append(accurateResolution);
+        builder.append(", empty=");
+        builder.append(empty);
+        builder.append(", needsReprojection=");
+        builder.append(needsReprojection);
+        builder.append(", ");
+        if (approximateRequestedBBoInNativeCRS != null) {
+            builder.append("approximateRequestedBBoInNativeCRS=");
+            builder.append(approximateRequestedBBoInNativeCRS);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

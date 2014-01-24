@@ -5,12 +5,13 @@ Project Procedures
 .. toctree::
    :maxdepth: 1
    
+   contribute
+   contribution_license
    website
-   hudson
+   build_server
    create
    proposal
    check
-   hack
    add
    release
    supported

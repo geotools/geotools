@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -39,7 +38,9 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.gce.imagemosaic.ImageMosaicWalker;
+import org.geotools.gce.imagemosaic.ImageMosaicConfigHandler;
+import org.geotools.gce.imagemosaic.ImageMosaicDirectoryWalker;
+import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
@@ -586,13 +587,16 @@ public class PyramidBuilder extends BaseArgumentsManager implements Runnable,
                 configuration.setParameter(Prop.INDEXING_DIRECTORIES, configuration.getParameter(Prop.ROOT_MOSAIC_DIR));
 
 	        // prepare and run the index builder
-	        final ImageMosaicWalker builder = new ImageMosaicWalker(configuration);
+                ImageMosaicEventHandlers eventHandler=new ImageMosaicEventHandlers();
+                final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration, eventHandler);
+                // TODO 
+	        final ImageMosaicDirectoryWalker builder = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler); 
 	        builder.run();	    
-	        builder.addProcessingEventListener(new ImageMosaicWalker.ProcessingEventListener() {
+	        eventHandler.addProcessingEventListener(new ImageMosaicEventHandlers.ProcessingEventListener() {
                     
                     @Override
                     public void getNotification(
-                            ImageMosaicWalker.ProcessingEvent event) {
+                            ImageMosaicEventHandlers.ProcessingEvent event) {
                        slaveToolsListener.getNotification(
                                new ProcessingEvent(
                                        event.getSource(),
@@ -603,13 +607,13 @@ public class PyramidBuilder extends BaseArgumentsManager implements Runnable,
                     
                     @Override
                     public void exceptionOccurred(
-                            ImageMosaicWalker.ExceptionEvent event) {
+                            ImageMosaicEventHandlers.ExceptionEvent event) {
                         slaveToolsListener.exceptionOccurred(new ExceptionEvent(event.getSource(),event.getMessage(),event.getPercentage(),event.getException()));
                         
                     }
                 });
-		builder.removeAllProcessingEventListeners();
-		MosaicConfigurationBean bean = builder.getConfigurations().values().iterator().next();
+	        eventHandler.removeAllProcessingEventListeners();
+		MosaicConfigurationBean bean = catalogHandler.getConfigurations().values().iterator().next();
 		return new double[] { bean.getLevels()[0][0],bean.getLevels()[0][1]};
 	}
 

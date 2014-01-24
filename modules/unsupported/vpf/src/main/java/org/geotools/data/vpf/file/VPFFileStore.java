@@ -49,14 +49,14 @@ public class VPFFileStore extends AbstractDataStore {
      * A collection of files which are available
      * Don't ask me how/when to close them!
      */
-    private Map files;
+    private Map<String,SimpleFeatureType> files;
 
     /**
      * Default constructor. Nothing special
      *
      */
     public VPFFileStore() {
-        files = new HashMap();
+        files = new HashMap<String,SimpleFeatureType>();
     }
 
     /* (non-Javadoc)
@@ -65,11 +65,11 @@ public class VPFFileStore extends AbstractDataStore {
     public String[] getTypeNames() {
         String[] result = new String[files.size()];
         int counter = 0;
-        VPFFile currentFile;
-        Iterator iter = files.keySet().iterator();
+        SimpleFeatureType currentFile;
+        Iterator<SimpleFeatureType> iter = files.values().iterator();
 
         while (iter.hasNext()) {
-            currentFile = (VPFFile) iter.next();
+            currentFile = iter.next();
             result[counter] = currentFile.getTypeName();
         }
 
@@ -86,7 +86,8 @@ public class VPFFileStore extends AbstractDataStore {
             result = (SimpleFeatureType) files.get(pathName);
         } else {
             try {
-                result = findFile(pathName);
+                VPFFile file = findFile(pathName);
+                result = file.getFeatureType();
             } catch (SchemaException exc) {
                 throw new IOException("Schema error in path: " + pathName
                     + "\n" + exc.getMessage());
@@ -112,11 +113,12 @@ public class VPFFileStore extends AbstractDataStore {
      *
      */
     public void reset(){
-        Iterator iter = files.values().iterator();
+        Iterator<SimpleFeatureType> iter = files.values().iterator();
         VPFFile file = null;
         while(iter.hasNext()){
             try {
-                file = (VPFFile)iter.next();
+                SimpleFeatureType schema = iter.next();
+                file = (VPFFile) schema.getUserData().get(VPFFile.class);
                 file.close();
             } catch (Exception exc) {
                 // No idea why this might happen
@@ -139,7 +141,7 @@ public class VPFFileStore extends AbstractDataStore {
         if (new File(pathName).exists())
             return new VPFFile(pathName);
 
-        ArrayList matches = new ArrayList();
+        ArrayList<String> matches = new ArrayList<String>();
         matches.add("");  // Need to start with something in the list
         StringTokenizer st = new StringTokenizer(pathName, File.separator);
         while (st.hasMoreTokens() && !matches.isEmpty()) {
@@ -148,9 +150,9 @@ public class VPFFileStore extends AbstractDataStore {
             String currLower = curr.toLowerCase();
             boolean useUpper = !curr.equals(currUpper);
             boolean useLower = !curr.equals(currLower);
-            ArrayList newMatches = new ArrayList();
+            ArrayList<String> newMatches = new ArrayList<String>();
             
-            for(Iterator it = matches.iterator(); it.hasNext(); ) {
+            for(Iterator<String> it = matches.iterator(); it.hasNext(); ) {
                 String match = (String)it.next();
                 String tmp = match + File.separator + curr;
 

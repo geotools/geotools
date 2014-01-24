@@ -74,6 +74,12 @@ public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
         vt.addGeometryMetadatata("geom", LineString.class, 4326);
         dataStore.addVirtualTable(vt);
         
+        // same vt, this time with a sql comment
+        sb.append("\n--This is a comment");
+        vt = new VirtualTable("riverReducedComment", sb.toString());
+        vt.addGeometryMetadatata("geom", LineString.class, 4326);
+        dataStore.addVirtualTable(vt);    
+        
         // the same vt, but with a id specification
         vt = new VirtualTable("riverReducedPk", sb.toString());
         vt.addGeometryMetadatata("geom", LineString.class, 4326);
@@ -115,6 +121,17 @@ public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
         SimpleFeatureType type = dataStore.getSchema("riverReduced");
         assertNotNull(type);
         
+        checkRiverReduced(type);
+    }
+    
+    public void testRiverReducedCommentSchema() throws Exception {
+        SimpleFeatureType type = dataStore.getSchema("riverReducedComment");
+        assertNotNull(type);
+        
+        checkRiverReduced(type);
+    }
+
+    private void checkRiverReduced(SimpleFeatureType type) {
         assertEquals(4, type.getAttributeCount());
         AttributeDescriptor id = type.getDescriptor(aname("id"));
         assertTrue(Number.class.isAssignableFrom(id.getType().getBinding()));

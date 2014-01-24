@@ -19,6 +19,8 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.coverage.grid.io.FileSetManager;
+import org.geotools.coverage.grid.io.FileSystemFileSetManager;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors;
@@ -42,8 +44,10 @@ import org.opengis.feature.type.Name;
  * 
  * @author Daniele Romagnoli, GeoSolutions SAS
  */
-class AncillaryFileManager {
+class AncillaryFileManager implements FileSetManager{
 
+    private FileSetManager fileSetManager; 
+    
     private final static Logger LOGGER = Logging.getLogger(AncillaryFileManager.class.toString());
 
     private static ObjectFactory OBJECT_FACTORY = new ObjectFactory();
@@ -112,6 +116,7 @@ class AncillaryFileManager {
         }
 
         // Set files  
+        fileSetManager = new FileSystemFileSetManager();
         ncFile = netcdfFile;
         parentDirectory = new File(ncFile.getParent());
 
@@ -155,6 +160,7 @@ class AncillaryFileManager {
             // Check for index to be reset only in case we didn't created a new directory.
             checkReset(ncFile, slicesIndexFile, destinationDir);
         }
+        fileSetManager.addFile(destinationDir.getAbsolutePath());
 
         // init
         initIndexer();
@@ -569,7 +575,32 @@ class AncillaryFileManager {
         return false;
     }
 
-	public boolean isImposedSchema() {
-		return imposedSchema;
-	}
+    public boolean isImposedSchema() {
+        return imposedSchema;
+    }
+
+    @Override
+    public void addFile(String filePath) {
+        fileSetManager.addFile(filePath);
+    }
+
+    @Override
+    public List<String> list() {
+        return fileSetManager.list();
+    }
+
+    @Override
+    public void removeFile(String filePath) {
+        fileSetManager.removeFile(filePath);
+    }
+
+    @Override
+    public void purge() {
+        try {
+            resetSliceManager();
+        } catch (IOException e) {
+            LOGGER.log(Level.FINER, e.getMessage(), e);
+        }
+        fileSetManager.purge();
+    }
 }

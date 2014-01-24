@@ -279,6 +279,22 @@ public abstract class DataStoreWrapper implements DataStore {
     }
 
     @Override
+    public void removeSchema(Name typeName) throws IOException {
+        FeatureTypeMapper mapper = getMapper(typeName);
+        if (mapper == null) {
+            throw new IOException ("No wrapper found for " + typeName);
+        } else {
+            String mappedName = mapper.getMappedName();
+            datastore.removeSchema(mappedName);
+        }
+    }
+
+    @Override
+    public void removeSchema(String typeName) throws IOException {
+        removeSchema(new NameImpl(typeName));
+    }
+
+    @Override
     public String[] getTypeNames() throws IOException {
         return typeNames != null ? (String[]) typeNames.toArray(new String[typeNames.size()]) : null;
     }

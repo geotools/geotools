@@ -129,4 +129,13 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
         throw new UnsupportedOperationException();
     }
 
+
+    /**
+     * Unsupported operation.
+     * 
+     * @see org.geotools.data.DataAccess#removeSchema(org.opengis.feature.type.Name)
+     */
+    public void removeSchema(Name typeName) throws IOException {
+        throw new UnsupportedOperationException("Schema removal not supported");
+    }
 }

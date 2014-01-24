@@ -57,7 +57,7 @@ public class CQLComparisonPredicateTest {
         this(Language.CQL);
     }
 
-    public CQLComparisonPredicateTest(final Language language){
+    protected CQLComparisonPredicateTest(final Language language){
         
         assert language != null: "language cannot be null value";
         
@@ -218,7 +218,7 @@ public class CQLComparisonPredicateTest {
     }
 
     @Test
-    public void LongLiteral() throws Exception {
+    public void longLiteral() throws Exception {
        
         Filter filter;
         PropertyIsEqualTo eqFilter;

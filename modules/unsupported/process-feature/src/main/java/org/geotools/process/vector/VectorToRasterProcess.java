@@ -55,6 +55,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Parameter;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -200,56 +201,6 @@ public class VectorToRasterProcess implements VectorProcess {
             title, progressListener);
     }
     
-    
-//    /**
-//     * Retrieves the input parameters from the supplied Map, conducts some basic checking,
-//     * and then carries out the vector to raster conversion.
-//     *
-//     * @param input
-//     *          input parameters from those defined in {@linkplain VectorToRasterFactory}
-//     *
-//     * @param monitor
-//     *          a ProgressListener object, or null if monitoring is not required
-//     *
-//     * @return  a Map of result objects
-//     *
-//     * @throws org.geotools.process.raster.VectorToRasterException if unable to
-//     * rasterize the features as requested
-//     *
-//     * @see VectorToRasterFactory#getResultInfo(java.util.Map)
-//     */
-//    @Override
-//    public Map<String, Object> execute( Map<String, Object> input, ProgressListener monitor )
-//        throws VectorToRasterException {
-//
-//        SimpleFeatureCollection features = (SimpleFeatureCollection)
-//            input.get(AbstractFeatureCollectionProcessFactory.FEATURES.key);
-//
-//        String attributeStr = (String) input.get(VectorToRasterFactory.ATTRIBUTE.key);
-//        Expression attribute = null;
-//        try {
-//        	attribute = ECQL.toExpression(attributeStr);
-//        } catch(CQLException e) {
-//        	throw new VectorToRasterException(e);
-//        }
-//
-//        int w = (Integer) input.get(VectorToRasterFactory.RASTER_WIDTH.key);
-//        int h = (Integer) input.get(VectorToRasterFactory.RASTER_HEIGHT.key);
-//        Dimension gridDim = new Dimension(w, h);
-//
-//        ReferencedEnvelope env = (ReferencedEnvelope) input.get(VectorToRasterFactory.BOUNDS.key);
-//
-//        String title = (String) input.get(VectorToRasterFactory.TITLE.key);
-//        if(title == null) {
-//        	title = "raster";
-//        }
-//
-//        GridCoverage2D cov = convert(features, attribute, gridDim, env, title, monitor);
-//
-//        Map<String, Object> results = new HashMap<String, Object>();
-//        results.put(VectorToRasterFactory.RESULT.key, cov);
-//        return results;
-//    }
 
     /**
      * This method is called by {@linkplain #execute} to rasterize an individual feature.
@@ -411,7 +362,7 @@ public class VectorToRasterProcess implements VectorProcess {
         } else if (attribute instanceof Expression) {
             valueSource = ValueSource.EXPRESSION;
 
-            SimpleFeature feature = features.features().next();
+            SimpleFeature feature = DataUtilities.first(features);
             Object value = ((Expression)attribute).evaluate(feature);
             
             // if the expression evaluates to a string check if the

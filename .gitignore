@@ -7,3 +7,4 @@ target
 *.pyc
 nb-configuration.xml
 *.*~
+.DS_Store

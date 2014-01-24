@@ -33,8 +33,11 @@ public class RasterEntry extends Entry {
     }
 
     String rasterColumn;
-    Rectification geoRectification;
-    Double compressionQualityFactor;
+    String name;
+    String title;
+    String description;
+    String mimeType;
+    String constraint;
 
     public RasterEntry() {
         setDataType(DataType.Raster);
@@ -47,28 +50,55 @@ public class RasterEntry extends Entry {
     public void setRasterColumn(String rasterColumn) {
         this.rasterColumn = rasterColumn;
     }
-
-    public Rectification getGeoRectification() {
-        return geoRectification;
-    }
-
-    public void setGeoRectification(Rectification geoRectification) {
-        this.geoRectification = geoRectification;
-    }
-
-    public Double getCompressionQualityFactor() {
-        return compressionQualityFactor;
-    }
-
-    public void setCompressionQualityFactor(Double compressionQualityFactor) {
-        this.compressionQualityFactor = compressionQualityFactor;
-    }
-
+   
     void init(RasterEntry e) {
         super.init(e);
         setRasterColumn(e.getRasterColumn());
-        setGeoRectification(e.getGeoRectification());
-        setCompressionQualityFactor(e.getCompressionQualityFactor());
+        setName(e.getName());
+        setTitle(e.getTitle());
+        setDescription(e.getDescription());
+        setMimeType(e.getMimeType());
+        setConstraint(e.getConstraint());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
+    public String getConstraint() {
+        return constraint;
+    }
+
+    public void setConstraint(String constraint) {
+        this.constraint = constraint;
     }
 
     @Override

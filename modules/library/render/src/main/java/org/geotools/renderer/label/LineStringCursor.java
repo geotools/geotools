@@ -164,7 +164,7 @@ public class LineStringCursor {
             // find the segment and the offset within the segment
             for (int i = 0; i < segmentLenghts.length; i++) {
                 double length = segmentLenghts[i];
-                if (ordinate < (length + position)) {
+                if (ordinate <= (length + position)) {
                     segment = i;
                     offsetDistance = ordinate - position;
                     break;
@@ -284,7 +284,7 @@ public class LineStringCursor {
         double slope = dy / dx;
         double angle = Math.atan(slope);
         // make sure we turn PI/2 into -PI/2, we don't want some labels looking straight up
-        // and some others straight down, when almost vertical they should all be orianted
+        // and some others straight down, when almost vertical they should all be oriented
         // on the same side
         if(Math.abs(angle - Math.PI / 2) < ONE_DEGREE) {
             angle = -Math.PI / 2 + Math.abs(angle - Math.PI / 2);
@@ -319,7 +319,14 @@ public class LineStringCursor {
         double prevAngle = getSegmentAngle(startSegment);
         for (int i = startSegment + 1; i <= endSegment; i++) {
             double currAngle = getSegmentAngle(i);
-            double difference = Math.abs(currAngle - prevAngle);
+            double difference = currAngle - prevAngle;
+            // normalize angle, the difference can become 2 * PI 
+            if(difference > Math.PI) {
+                difference -= 2 * Math.PI;
+            } else if(difference < -Math.PI) {
+                difference += 2 * Math.PI;
+            }
+            difference = Math.abs(difference);
             if (difference > maxDifference)
                 maxDifference = difference;
             prevAngle = currAngle;

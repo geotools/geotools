@@ -24,7 +24,7 @@ DataAccess
 **DataAccess** represents a storage location or service for spatial data.
 
 
-.. image:: /images/datastore.PNG
+.. image:: /images/datastoreapi.png
 
 The DataAccess<T,F> defined as:
 
@@ -80,6 +80,15 @@ Here is a quick review of the DataAccess methods:
   Used to modify the contents of a shapefile, or alter an existing table.
   Not supported by all dataStores.
 
+* DataAccess.removeSchema(Name)
+  
+  Used to remove an existing table. Not supported by all dataStores.
+  
+  .. literalinclude:: /../src/main/java/org/geotools/api/DataStoreExamples.java
+     :language: java
+     :start-after: // exampleRemoveSchema start
+     :end-before: // exampleRemoveSchema end
+
 * DataAccess.getNames()
 * DataAccess.getSchema(Name)
 * DataAccess.getFeatureSource(Name): FeatureSource<FeatureType,Feature>
@@ -99,6 +108,7 @@ DataStore
 The **DataStore** interface is a DataAccess subclass that provides to explicitly work with content providers that only know how to deal with SimpleFeature and SimpleFeatureType.
 
 * DataStore.updateSchema(String, SimpleFeatureType)
+* DataStore.removeSchema(String)
 * DataStore.getTypeNames()
   
   Access an String[] of Name.getLocalName()

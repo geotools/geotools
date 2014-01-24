@@ -30,6 +30,7 @@ import com.vividsolutions.jts.geom.LineString;
  * @source $URL$
  */
 public class LineStringTypeBindingTest extends GML3TestSupport {
+    
     public void testPos() throws Exception {
         document.appendChild(GML3MockData.lineStringWithPos(document, null));
 
@@ -38,6 +39,16 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
 
         assertEquals(new Coordinate(1d, 2d), line.getPointN(0).getCoordinate());
         assertEquals(new Coordinate(3d, 4d), line.getPointN(1).getCoordinate());
+    }
+    
+    public void testPos3D() throws Exception {
+        document.appendChild(GML3MockData.lineStringWithPos3D(document, null));
+
+        LineString line = (LineString) parse();
+        assertNotNull(line);
+
+        assertTrue(new Coordinate(1d, 2d, 10d).equals3D(line.getPointN(0).getCoordinate()));
+        assertTrue(new Coordinate(3d, 4d, 20d).equals3D(line.getPointN(1).getCoordinate()));
     }
 
     public void testPosList() throws Exception {
@@ -48,6 +59,16 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
 
         assertEquals(new Coordinate(1d, 2d), line.getPointN(0).getCoordinate());
         assertEquals(new Coordinate(3d, 4d), line.getPointN(1).getCoordinate());
+    }
+    
+    public void testPosList3D() throws Exception {
+        document.appendChild(GML3MockData.lineStringWithPosList3D(document, null));
+
+        LineString line = (LineString) parse();
+        assertNotNull(line);
+
+        assertTrue(new Coordinate(1d, 2d, 10d).equals3D(line.getPointN(0).getCoordinate()));
+        assertTrue(new Coordinate(3d, 4d, 20d).equals3D(line.getPointN(1).getCoordinate()));
     }
     
     /**

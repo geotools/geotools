@@ -16,6 +16,10 @@
  */
 package org.geotools.data.sqlserver;
 
+import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.jdbc.JDBCFeatureSourceTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
@@ -29,6 +33,30 @@ public class SQLServerFeatureSourceTest extends JDBCFeatureSourceTest {
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new SqlServerNativeSerializationTestSetup();
+    }
+    
+    public void testGetFeaturesWithOffset() throws Exception {
+        SimpleFeatureSource featureSource = dataStore.getFeatureSource(tname("ft_from"));
+        Query q = new Query(featureSource.getSchema().getTypeName());
+        q.setPropertyNames(new String[] {aname("ORIGIN_FROM")});
+        q.setStartIndex(1);
+        q.setMaxFeatures(1);
+        SimpleFeatureCollection features = featureSource.getFeatures(q);
+        
+        // check size
+        assertEquals(1, features.size());
+        
+        // check actual iteration
+        SimpleFeatureIterator it = features.features();
+        int count = 0;
+        try {
+            assertTrue(it.hasNext());
+            it.next();
+            count++;
+        } finally {
+            it.close();
+        }
+        assertEquals(1, count);
     }
 
 }

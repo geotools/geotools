@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -64,6 +65,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -128,6 +131,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     		store.dispose();
     	}
     	System.clearProperty("org.geotools.shapefile.datetime");
+    	System.clearProperty("org.geotools.shapefile.reportFieldSizeErrors");
     	super.tearDown();
     }
     
@@ -732,6 +736,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
      * Create a set of features, then remove every other one, updating the
      * remaining. Test for removal and proper update after reloading...
      */
+    /* Note that, when reading the DBF part of shape file set, the type of an N,0 feature will be inferred to be
+     * Long; this may cause data loss when reading a file created with a BigInteger feature.
+     */
     @Test
     public void testUpdating() throws Throwable {
             ShapefileDataStore sds = createDataStore();
@@ -919,6 +926,28 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         sds.dispose();
 
     }
+    
+    @Test
+    public void testDeletedDbf() throws Exception {
+        // this shapefile has 4 records that are marked as deleted only inside the dbf, but 
+        // not in the headers
+        URL u = TestData.url(TestCaseSupport.class, "deleted/archsites.dbf");
+        File shpFile = DataUtilities.urlToFile(u);
+        
+        ShapefileDataStore store = new ShapefileDataStore(DataUtilities.fileToURL(shpFile));
+        ContentFeatureSource fs = store.getFeatureSource();
+        // this one reads the shp header, which still contains trace of all records
+        assertEquals(25, fs.getCount(Query.ALL));
+        // now read manually and check we skip the records with the dbf entry marked as deleted
+        SimpleFeatureIterator fi = fs.getFeatures().features();
+        int count = 0;
+        while(fi.hasNext()) {
+            fi.next();
+            count++;
+        }
+        fi.close();
+        assertEquals(21, count);
+    }
 
     /**
      * Creates feature collection with all the stuff we care about from simple
@@ -1014,6 +1043,87 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         // store features
         File tmpFile = getTempFile();
         tmpFile.createNewFile();
+        ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
+        writeFeatures(s, features);
+
+        // read them back
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader();
+        try {
+            SimpleFeature f = reader.next();
+
+            assertEquals("big decimal", bigDecimal.doubleValue(), ((Number) f
+                    .getAttribute("b")).doubleValue(), 0.00001);
+            assertEquals("big integer", bigInteger.longValue(), ((Number) f
+                    .getAttribute("c")).longValue(), 0.00001);
+        } finally {
+            reader.close();
+        }
+        s.dispose();
+    }
+    
+    // We expect this to fail -- the test shows that unless we enable checking, we may suffer data corruption
+    @Test(expected=AssertionError.class)
+    public void testWriteReadBiggerNumbers() throws Exception {
+        // create feature type
+        SimpleFeatureType type = DataUtilities.createType("junk",
+                "a:Point,b:java.math.BigDecimal,c:java.math.BigInteger");
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+
+        BigInteger bigInteger = new BigInteger("12345678901234567890123456789");
+        BigDecimal bigDecimal = new BigDecimal(bigInteger, 2);
+
+        SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
+        build.add(new GeometryFactory().createPoint(new Coordinate(1, -1)));
+        build.add(bigDecimal);
+        build.add(bigInteger);
+
+        SimpleFeature feature = build.buildFeature(null);
+        features.add(feature);
+
+        // store features
+        File tmpFile = getTempFile();
+        tmpFile.createNewFile();
+        System.clearProperty("org.geotools.shapefile.reportFieldSizeErrors");
+        ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
+        writeFeatures(s, features);
+
+        // read them back
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader();
+        try {
+            SimpleFeature f = reader.next();
+
+            assertEquals("big decimal", bigDecimal.doubleValue(), ((Number) f
+                    .getAttribute("b")).doubleValue(), 0.00001);
+            assertEquals("big integer", bigInteger.longValue(), ((Number) f
+                    .getAttribute("c")).longValue(), 0.00001);
+        } finally {
+            reader.close();
+        }
+        s.dispose();
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testWriteBiggerNumbersWithCheck() throws Exception {
+        // create feature type
+        SimpleFeatureType type = DataUtilities.createType("junk",
+                "a:Point,b:java.math.BigDecimal,c:java.math.BigInteger");
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+
+        BigInteger bigInteger = new BigInteger("12345678901234567890123456789");
+        BigDecimal bigDecimal = new BigDecimal(bigInteger, 2);
+
+        SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
+        build.add(new GeometryFactory().createPoint(new Coordinate(1, -1)));
+        build.add(bigDecimal);
+        build.add(bigInteger);
+
+        SimpleFeature feature = build.buildFeature(null);
+        features.add(feature);
+
+        // store features
+        File tmpFile = getTempFile();
+        tmpFile.createNewFile();
+        System.setProperty("org.geotools.shapefile.reportFieldSizeErrors",  "true");
         ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
         writeFeatures(s, features);
 
@@ -1572,6 +1682,15 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             ds.dispose();
         }
     }
+    
+    @Test
+    public void testFeatureStoreHints() throws Exception {
+        File shpFile = copyShapefiles(STATE_POP);
+        URL url = shpFile.toURI().toURL();
+        ShapefileDataStore ds = new ShapefileDataStore(url);
+        ShapefileFeatureStore store = (ShapefileFeatureStore) ds.getFeatureSource("statepop");
+        assertEquals(store.getSupportedHints(), store.delegate.getSupportedHints());
+    }
 
     private void performSpatialQuery(ShapefileDataStore ds) throws IOException {
         SimpleFeatureSource featureSource = ds.getFeatureSource();
@@ -1615,4 +1734,5 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         char[] array = { hexDigit[(b >> 4) & 0x0f], hexDigit[b & 0x0f] };
         return new String(array);
     }
+    
 }

@@ -60,6 +60,12 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
             JDBCDataStoreFactory.PORT.description, false, 9902);
 
     /**
+     * optional parameter to handle MVCC.
+     * @link http://www.h2database.com/html/advanced.html#mvcc
+     */
+    public static final Param MVCC = new Param("MVCC", Boolean.class, "MVCC", false, Boolean.FALSE);
+
+    /**
      * base location to store h2 database files
      */
     File baseDirectory = null;
@@ -127,6 +133,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
     protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
         String database = (String) DATABASE.lookUp(params);
         String host = (String) HOST.lookUp(params);
+        Boolean mvcc = (Boolean) MVCC.lookUp(params);
         BasicDataSource dataSource = new BasicDataSource();
         
         if (host != null && !host.equals("")) {
@@ -139,7 +146,8 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
             }
         } else if (baseDirectory == null) {
             //use current working directory
-            dataSource.setUrl("jdbc:h2:" + database + ";AUTO_SERVER=TRUE");
+            dataSource.setUrl("jdbc:h2:" + database + ";AUTO_SERVER=TRUE"
+                    + (mvcc != null ? (";MVCC=" + mvcc) : ""));
         } else {
             //use directory specified if the patch is relative
             String location;
@@ -150,7 +158,8 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
                 location = database;
             }
 
-            dataSource.setUrl("jdbc:h2:file:" + location + ";AUTO_SERVER=TRUE");
+            dataSource.setUrl("jdbc:h2:file:" + location + ";AUTO_SERVER=TRUE"
+                    + (mvcc != null ? (";MVCC=" + mvcc) : ""));
         }
         
         String username = (String) USER.lookUp(params);

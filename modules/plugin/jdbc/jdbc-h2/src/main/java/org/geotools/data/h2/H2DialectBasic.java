@@ -99,19 +99,31 @@ public class H2DialectBasic extends BasicSQLDialect {
     public void encodePostCreateTable(String tableName, StringBuffer sql) {
         delegate.encodePostCreateTable(tableName, sql);
     }
-    
+
     @Override
     public void postCreateTable(String schemaName,
             SimpleFeatureType featureType, Connection cx) throws SQLException {
         delegate.postCreateTable(schemaName, featureType, cx);
     }
-    
+
     @Override
     public void postCreateFeatureType(SimpleFeatureType featureType, DatabaseMetaData metadata,
             String schemaName, Connection cx) throws SQLException {
         delegate.postCreateFeatureType(featureType, metadata, schemaName, cx);
     }
-    
+
+    @Override
+    public void preDropTable(String schemaName, SimpleFeatureType featureType, Connection cx)
+            throws SQLException {
+        delegate.preDropTable(schemaName, featureType, cx);
+    }
+
+    @Override
+    public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx)
+            throws SQLException {
+        delegate.postDropTable(schemaName, featureType, cx);
+    }
+
     @Override
     public Integer getGeometrySRID(String schemaName, String tableName, String columnName,
         Connection cx) throws SQLException {
@@ -188,7 +200,7 @@ public class H2DialectBasic extends BasicSQLDialect {
     }
     
     @Override
-    public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
+    public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql)
             throws IOException {
         if (value != null && !value.isEmpty()) {
             sql.append("ST_GeomFromText ('");

@@ -24,7 +24,7 @@ package org.geotools.data.vpf.ifc;
  * @source $URL$
  */
 /**
- * 
+ * Coverage File constants.
  *
  * @source $URL$
  */

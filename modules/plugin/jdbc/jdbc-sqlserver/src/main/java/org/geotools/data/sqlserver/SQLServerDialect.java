@@ -20,6 +20,8 @@ import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.io.WKTWriter;
+
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
 import org.geotools.factory.Hints;
@@ -40,14 +42,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Dialect implementation for Microsoft SQL Server.
  * 
  * @author Justin Deoliveira, OpenGEO
- *
- *
- *
  *
  * @source $URL$
  */
@@ -55,6 +56,12 @@ public class SQLServerDialect extends BasicSQLDialect {
 
     private static final int DEFAULT_AXIS_MAX = 10000000;
     private static final int DEFAULT_AXIS_MIN = -10000000;
+    
+    /**
+     * Pattern used to match the first FROM element in a SQL query, without matching
+     * also attributes containing FROM inside the name. We require to locate 
+     */
+    static final Pattern FROM_PATTERN = Pattern.compile("(\\s+)(FROM)(\\s)+", Pattern.DOTALL);
     
     /**
      * The direct geometry metadata table
@@ -351,7 +358,6 @@ public class SQLServerDialect extends BasicSQLDialect {
         return null;
     }
     
-    
     @Override
     public Integer getGeometrySRID(String schemaName, String tableName,
             String columnName, Connection cx) throws SQLException {
@@ -395,6 +401,81 @@ public class SQLServerDialect extends BasicSQLDialect {
             dataStore.closeSafe( st );
         }
     }
+    
+    public Integer getGeometryDimensionFromMetadataTable(String schemaName, String tableName,
+            String columnName, Connection cx) throws SQLException {
+        
+        if(geometryMetadataTable == null) {
+            return null;
+        }
+
+        Statement statement = null;
+        ResultSet result = null;
+
+        try {
+            String schema = dataStore.getDatabaseSchema();
+            String sql = "SELECT COORD_DIMENSION FROM " + geometryMetadataTable + " WHERE " //
+                    + (schema == null ? "" : "F_TABLE_SCHEMA = '" + dataStore.getDatabaseSchema() + "' AND ") 
+                    + "F_TABLE_NAME = '" + tableName + "' ";//
+
+            LOGGER.log(Level.FINE, "Geometry dimension check; {0} ", sql);
+            statement = cx.createStatement();
+            result = statement.executeQuery(sql);
+
+            if (result.next()) {
+                return result.getInt(1);
+            }
+        } finally {
+            dataStore.closeSafe(result);
+            dataStore.closeSafe(statement);
+        }
+
+        return null;
+    }
+    
+    @Override
+    public int getGeometryDimension(String schemaName, String tableName, String columnName,
+            Connection cx) throws SQLException {
+        // try retrieve the dimension from geometryMetadataTable
+        Integer dimension = getGeometryDimensionFromMetadataTable(schemaName, tableName, columnName, cx);
+        if (dimension != null) {
+            return dimension;
+        }
+
+        // try retrieve dimension from the feature table
+        StringBuffer sql = new StringBuffer("SELECT TOP 1 ");
+        encodeColumnName(null, columnName, sql);
+        sql.append( ".STPointN(1).Z");
+        
+        sql.append( " FROM ");
+        encodeTableName(schemaName, tableName, sql, true);
+        
+        sql.append( " WHERE ");
+        encodeColumnName(null, columnName, sql );
+        sql.append( " IS NOT NULL");
+        
+        dataStore.getLogger().fine( sql.toString() );
+        
+        Statement st = cx.createStatement();
+        try {
+            
+            ResultSet rs = st.executeQuery( sql.toString() );
+            try {
+                if ( rs.next() ) {
+                    Object z = rs.getObject( 1 );
+                    return z == null ? 2 : 3;
+                }
+                // no dimension found, return the default 
+                return 2;
+            }
+            finally {
+                dataStore.closeSafe( rs );
+            }
+        }
+        finally {
+            dataStore.closeSafe( st );
+        }
+    }
 
     @Override
     public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix,
@@ -406,7 +487,7 @@ public class SQLServerDialect extends BasicSQLDialect {
     }
 
     @Override
-    public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
+    public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql)
             throws IOException {
         
         if ( value == null ) {
@@ -414,7 +495,11 @@ public class SQLServerDialect extends BasicSQLDialect {
             return;
         }
         
-        sql.append( "geometry::STGeomFromText('").append( value.toText() ).append( "',").append( srid ).append(")");
+        GeometryDimensionFinder finder = new GeometryDimensionFinder();
+        value.apply(finder);
+        WKTWriter writer = new WKTWriter(finder.hasZ() ? 3 : 2);
+        String wkt = writer.write(value);
+        sql.append( "geometry::STGeomFromText('").append( wkt ).append( "',").append( srid ).append(")");
     }
     
     @Override
@@ -560,38 +645,51 @@ public class SQLServerDialect extends BasicSQLDialect {
     
     @Override
     public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
-        // if we have a nested query (used in sql views) we might have a inner order by,
-        // check for the last closed )
-        int lastClosed = sql.lastIndexOf(")");
-        int orderByIndex = sql.lastIndexOf("ORDER BY");
-        CharSequence orderBy;
-        if(orderByIndex > 0 && orderByIndex > lastClosed) {
-            // we'll move the order by into the ROW_NUMBER call
-            orderBy = sql.subSequence(orderByIndex, sql.length());
-            sql.delete(orderByIndex, orderByIndex + orderBy.length());
+        if(offset == 0) {
+            int idx = getAfterSelectInsertPoint(sql.toString());
+            sql.insert(idx, " top "  + limit);
         } else {
-            // ROW_NUMBER requires an order by clause, we need to feed it something
-            orderBy = "ORDER BY CURRENT_TIMESTAMP";
-        }
-        
-        // now insert the order by inside the select
-        int fromStart = sql.indexOf("FROM");
-        sql.insert(fromStart - 1, ", ROW_NUMBER() OVER (" + orderBy + ") AS _GT_ROW_NUMBER ");
-        
-        // and wrap inside a block that selects the portion we want
-        sql.insert(0, "SELECT * FROM (");
-        sql.append(") AS _GT_PAGING_SUBQUERY WHERE ");
-        if(offset > 0) {
-            sql.append("_GT_ROW_NUMBER > " + offset);
-        }
-        if(limit >= 0 && limit < Integer.MAX_VALUE) {
-            int max = limit;
-            if(offset > 0) {
-                max += offset;
-                sql.append(" AND ");
+            // if we have a nested query (used in sql views) we might have a inner order by,
+            // check for the last closed )
+            int lastClosed = sql.lastIndexOf(")");
+            int orderByIndex = sql.lastIndexOf("ORDER BY");
+            CharSequence orderBy;
+            if(orderByIndex > 0 && orderByIndex > lastClosed) {
+                // we'll move the order by into the ROW_NUMBER call
+                orderBy = sql.subSequence(orderByIndex, sql.length());
+                sql.delete(orderByIndex, orderByIndex + orderBy.length());
+            } else {
+                // ROW_NUMBER requires an order by clause, we need to feed it something
+                orderBy = "ORDER BY CURRENT_TIMESTAMP";
             }
-            sql.append("_GT_ROW_NUMBER <= " + max);
+            
+            // now insert the order by inside the select
+            Matcher fromMatcher = FROM_PATTERN.matcher(sql);
+            fromMatcher.find();
+            int fromStart = fromMatcher.start(2);
+            sql.insert(fromStart - 1, ", ROW_NUMBER() OVER (" + orderBy + ") AS _GT_ROW_NUMBER ");
+            
+            // and wrap inside a block that selects the portion we want
+            sql.insert(0, "SELECT * FROM (");
+            sql.append(") AS _GT_PAGING_SUBQUERY WHERE ");
+            if(offset > 0) {
+                sql.append("_GT_ROW_NUMBER > " + offset);
+            }
+            if(limit >= 0 && limit < Integer.MAX_VALUE) {
+                int max = limit;
+                if(offset > 0) {
+                    max += offset;
+                    sql.append(" AND ");
+                }
+                sql.append("_GT_ROW_NUMBER <= " + max);
+            }
         }
+    }
+    
+    int getAfterSelectInsertPoint(String sql) {
+        final int selectIndex = sql.toLowerCase().indexOf( "select" );
+        final int selectDistinctIndex = sql.toLowerCase().indexOf( "select distinct" );
+        return selectIndex + (selectDistinctIndex == selectIndex ? 15 : 6);
     }
     
     @Override

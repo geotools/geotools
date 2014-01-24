@@ -39,8 +39,7 @@ In addition several modules contain code made available to us under a different 
 * :doc:`gt-main </library/main/index>` (BSD License)
 * :doc:`gt-xsd-core </extension/xsd/core>` (Apache License)
 * :doc:`gt-brewer </extension/brewer/index>` (Apache License)
-* :doc:`gt-geotiff </library/coverage/geotiff>` (Happy Fun Ball License)
-* :doc:`gt-referencing3d </library/referencing/3d>` (some code available from nasa for unlimited distribution)
+* :doc:`gt-referencing3d </library/referencing/3d>` (some code available from nasa for unlimited distribution) 
 
 Document License
 ^^^^^^^^^^^^^^^^^
@@ -73,7 +72,7 @@ into your own application.::
 	GeoTools - The Open Source Java GIS Toolkit
 	http://geotools.org
 
-	(C) 2006-2011, Open Source Geospatial Foundation (OSGeo)
+	(C) 2006-2013, Open Source Geospatial Foundation (OSGeo)
 
 	This file is hereby placed into the Public Domain. This means anyone is
 	free to do whatever they wish with this file. Use it well and enjoy!

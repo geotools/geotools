@@ -29,6 +29,7 @@ import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -58,7 +59,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         //PreparedStatement ps = cx.prepareStatement("SELECT * FROM geopackage_contents WHERE" +
         //    " table_name = ? AND data_type = ?");
         try {
-            ResultSet rs = st.executeQuery(String.format("SELECT * FROM geopackage_contents WHERE" +
+            ResultSet rs = st.executeQuery(String.format("SELECT * FROM gpkg_contents WHERE" +
                 " table_name = '%s' AND data_type = '%s'", tableName, DataType.Feature.value()));
             //ps.setString(1, tableName);
             //ps.setString(2, DataType.Feature.value());
@@ -96,7 +97,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public void setGeometryValue(Geometry g, int srid, Class binding,
+    public void setGeometryValue(Geometry g, int dimension, int srid, Class binding,
             PreparedStatement ps, int column) throws SQLException {
         if (g == null) {
             ps.setNull(1, Types.BLOB);
@@ -148,11 +149,11 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             String col = columns.getString("COLUMN_NAME"); 
 
             String sql = format(
-                "SELECT b.geometry_type" +
+                "SELECT b.geometry_type_name" +
                  " FROM %s a, %s b" + 
-                " WHERE a.table_name = b.f_table_name" +
-                  " AND b.f_table_name = ?" + 
-                  " AND b.f_geometry_column = ?", GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS);
+                " WHERE a.table_name = b.table_name" +
+                  " AND b.table_name = ?" + 
+                  " AND b.column_name = ?", GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS);
 
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine(String.format("%s; 1=%s, 2=%s", sql, tbl, col));
@@ -201,7 +202,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             fe.setGeometryType(Geometries.getForBinding((Class) gd.getType().getBinding()));
         }
 
-        fe.setCoordDimension(2);
         CoordinateReferenceSystem crs = featureType.getCoordinateReferenceSystem(); 
         if (crs != null) {
             Integer epsgCode = null;
@@ -219,6 +219,20 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         try {
             geopkg.addGeoPackageContentsEntry(fe);
             geopkg.addGeometryColumnsEntry(fe);
+
+            //other geometry columns are possible
+            for (PropertyDescriptor descr : featureType.getDescriptors()) {
+                if (descr instanceof GeometryDescriptor) {
+                    GeometryDescriptor gd1 = (GeometryDescriptor) descr;
+                    if (gd1.getLocalName() != fe.getGeometryColumn()) {
+                        FeatureEntry fe1 = new FeatureEntry();
+                        fe1.init(fe);
+                        fe1.setGeometryColumn(gd1.getLocalName());
+                        fe1.setGeometryType(Geometries.getForBinding((Class) gd1.getType().getBinding()));
+                        geopkg.addGeometryColumnsEntry(fe1);
+                    }
+                }
+            }
         } catch (IOException e) {
             throw new SQLException(e);
         }
@@ -242,7 +256,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             
             //try looking up in spatial ref sys
             String sql = 
-                String.format("SELECT srtext FROM %s WHERE auth_srid = %d", SPATIAL_REF_SYS, srid);
+                String.format("SELECT definition FROM %s WHERE auth_srid = %d", SPATIAL_REF_SYS, srid);
             LOGGER.fine(sql);
 
             Statement st = cx.createStatement();

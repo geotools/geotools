@@ -85,4 +85,19 @@ public class FillMarginTest {
         BufferedImage image = RendererBaseTest.showRender("MarkMargin", renderer, TIME, bounds);
         ImageAssert.assertEquals(new File("./src/test/resources/org/geotools/renderer/lite/test-data/margin/markmargin.png"), image, 100); 
     }
+    
+    
+    @Test
+    public void testFillSingle() throws Exception {
+        Style style = RendererBaseTest.loadSEStyle(this, "margin/fill-single.sld");
+        
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(bfs, style));
+        
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        
+        BufferedImage image = RendererBaseTest.showRender("MarginFill", renderer, TIME, bounds);
+        ImageAssert.assertEquals(new File("./src/test/resources/org/geotools/renderer/lite/test-data/margin/single-expected.png"), image, 100); 
+    }
 }

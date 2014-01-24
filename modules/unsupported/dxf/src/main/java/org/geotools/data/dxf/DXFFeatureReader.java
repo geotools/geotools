@@ -8,12 +8,14 @@ import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.ArrayList;
 import java.net.URL;
 import org.geotools.data.GeometryType;
 import org.geotools.data.dxf.entities.DXFEntity;
+import org.geotools.data.dxf.entities.DXFExtendedData;
 import org.geotools.data.dxf.entities.DXFInsert;
 import org.geotools.data.dxf.entities.DXFText;
 import org.geotools.data.dxf.parser.DXFUnivers;
@@ -133,6 +135,7 @@ public class DXFFeatureReader implements FeatureReader {
             ftb.add("entryLineNumber", Integer.class);
             ftb.add("parseError", Integer.class);
             ftb.add("error", String.class);
+            ftb.add("extendedData", Map.class);
 
             ft = ftb.buildFeatureType();
         
@@ -179,7 +182,8 @@ public class DXFFeatureReader implements FeatureReader {
                                 new Integer(entry.isVisible() ? 1 : 0),
                                 new Integer(entry.getStartingLineNumber()),
                                 new Integer(entry.isParseError() ? 1 : 0),
-                                entry.getErrorDescription()
+                                entry.getErrorDescription(), 
+                                DXFExtendedData.toMap(entry.getExtendedData())
                             }, Integer.toString(featureID++));
 
                     return true;

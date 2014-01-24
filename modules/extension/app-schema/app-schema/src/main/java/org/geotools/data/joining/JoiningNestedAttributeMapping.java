@@ -211,19 +211,9 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         List<Expression> foreignIds = new ArrayList<Expression>();
         for (int i = 0; i < query.getQueryJoins().size(); i++) {
-            // GEOT-4554: handle PK as default idExpression
-            if (query.getQueryJoins().get(i).getIds().isEmpty()) {
-                String joinTypeName = query.getQueryJoins().get(i).getJoiningTypeName();
-                Expression idValue = filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_"
-                        + i + "_" + 0);
-                // prefixed with type name as done in SimpleFeature id
-                foreignIds.add(filterFac.function("strConcat",
-                        filterFac.literal(joinTypeName + "."), idValue));
-            } else {
-                for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
-                    foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i
-                            + "_" + j));
-                }
+            for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
+                foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i
+                        + "_" + j));
             }
         }
         
@@ -402,7 +392,10 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
 
         if (featureIterator != null) {
-            while (featureIterator.hasNext() && featureIterator.checkForeignIdValues(idValues)) {
+            while (featureIterator.hasNext()
+                    && featureIterator.checkForeignIdValues(idValues)
+                    && featureIterator.peekNextValue(nestedSourceExpression).toString()
+                            .equals(foreignKeyValue.toString())) {
                 matchingFeatures.add(featureIterator.next());
             }
         }

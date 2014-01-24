@@ -8,8 +8,11 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.text.cql2.CQL;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
+
 
 public class DataStoreExamples {
 
@@ -42,6 +45,14 @@ void exampleCreateSchema() throws Exception {
     dataStore.createSchema( schema );
     // exampleCreateSchema end
     
+}
+
+void exampleRemoveSchema() throws Exception {
+    // exampleRemoveSchema start
+    Name schemaName = new NameImpl("myTable");
+    dataStore.removeSchema(schemaName);
+    // exampleRemoveSchema end
+
 }
 
 void exampleAllCount() throws Exception {

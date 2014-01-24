@@ -157,18 +157,24 @@ final class TestUtils extends Assert {
 				final AbstractGridFormat format) throws NoSuchAuthorityCodeException, FactoryException {
 	
 	//		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
-			return getReader(testURL, format, null);
+        return getReader(testURL, format, null, true);
 	
 		}
 
 	static ImageMosaicReader getReader(URL testURL,
 				final AbstractGridFormat format, Hints hints) {
 	//		Get a reader
-			final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(testURL, hints);
-			Assert.assertNotNull(reader);
-			return reader;
+        return getReader(testURL, format, hints, true);
 		}
 
+    static ImageMosaicReader getReader(URL testURL, final AbstractGridFormat format, Hints hints,
+            final boolean checkForNull) {
+        // Get a reader
+        final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(testURL, hints);
+        if (checkForNull)
+            Assert.assertNotNull(reader);
+        return reader;
+    }
 	/**
 	 * Shows the provided {@link RenderedImage} ina {@link JFrame} using the
 	 * provided <code>title</code> as the frame's title.

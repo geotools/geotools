@@ -634,4 +634,19 @@ public abstract class AbstractDataStore implements DataStore {
     public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
         updateSchema(typeName.getLocalPart(), featureType);
     }
+
+    /**
+     * @see DataAccess#removeSchema(Name)
+     */
+    public void removeSchema(Name typeName) throws IOException {
+        throw new UnsupportedOperationException("Schema removal not supported");
+    }
+
+    /**
+     * @see DataStore#removeSchema(String)
+     */
+    public void removeSchema(String typeName) throws IOException {
+        throw new UnsupportedOperationException("Schema removal not supported");
+    }
+
 }

@@ -25,9 +25,11 @@ import java.util.logging.Logger;
 
 import org.geotools.console.CommandLine;
 import org.geotools.console.Option;
-import org.geotools.gce.imagemosaic.ImageMosaicWalker;
-import org.geotools.gce.imagemosaic.ImageMosaicWalker.ExceptionEvent;
-import org.geotools.gce.imagemosaic.ImageMosaicWalker.ProcessingEvent;
+import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers;
+import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.ExceptionEvent;
+import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.ProcessingEvent;
+import org.geotools.gce.imagemosaic.ImageMosaicConfigHandler;
+import org.geotools.gce.imagemosaic.ImageMosaicDirectoryWalker;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
@@ -158,12 +160,14 @@ public class CommandLineCatalogBuilderRunner extends CommandLine {
         
         
         // prepare and run the index builder
-        final ImageMosaicWalker builder = new ImageMosaicWalker(configuration);
-     // this is going to help us with catching exceptions and logging them
+        final ImageMosaicEventHandlers eventHandler=new ImageMosaicEventHandlers();
+        final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration, eventHandler);
+        final ImageMosaicDirectoryWalker builder = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler);
+        // this is going to help us with catching exceptions and logging them
         final Queue<Throwable> exceptions = new LinkedList<Throwable>();
         try {
 
-                final ImageMosaicWalker.ProcessingEventListener listener = new ImageMosaicWalker.ProcessingEventListener() {
+                final ImageMosaicEventHandlers.ProcessingEventListener listener = new ImageMosaicEventHandlers.ProcessingEventListener() {
 
                         @Override
                         public void exceptionOccurred(ExceptionEvent event) {
@@ -182,12 +186,12 @@ public class CommandLineCatalogBuilderRunner extends CommandLine {
                         }
 
                 };
-                builder.addProcessingEventListener(listener);
+                eventHandler.addProcessingEventListener(listener);
                 builder.run();
         } catch (Throwable e) {
                 LOGGER.log(Level.SEVERE, "Unable to build mosaic", e);
         } finally {
-            builder.dispose();
+            catalogHandler.dispose();
         }        
 
     }

@@ -395,7 +395,7 @@ public class OsrLibrary {
 	public static native int OSRIsProjected(Pointer<? > OGRSpatialReferenceH1);
 	public static native int OSRIsVertical(Pointer<? > OGRSpatialReferenceH1);
 	public static native int OSRIsSameGeogCS(Pointer<? > OGRSpatialReferenceH1, Pointer<? > OGRSpatialReferenceH2);
-	public static native int OSRIsVertCS(Pointer<? > OGRSpatialReferenceH1, Pointer<? > OGRSpatialReferenceH2);
+	//public static native int OSRIsVertCS(Pointer<? > OGRSpatialReferenceH1, Pointer<? > OGRSpatialReferenceH2);
 	public static native int OSRIsSame(Pointer<? > OGRSpatialReferenceH1, Pointer<? > OGRSpatialReferenceH2);
 	public static native int OSRSetLocalCS(Pointer<? > hSRS, Pointer<Byte > pszName);
 	public static native int OSRSetProjCS(Pointer<? > hSRS, Pointer<Byte > pszName);
@@ -423,7 +423,7 @@ public class OsrLibrary {
 	public static native int OSRAutoIdentifyEPSG(Pointer<? > hSRS);
 	public static native int OSREPSGTreatsAsLatLong(Pointer<? > hSRS);
 	public static native Pointer<Byte > OSRGetAxis(Pointer<? > hSRS, Pointer<Byte > pszTargetKey, int iAxis, Pointer<ValuedEnum<OsrLibrary.OGRAxisOrientation > > peOrientation);
-	public static native int OSRSetAxes(Pointer<Byte > pszTargetKey, Pointer<Byte > pszXAxisName, ValuedEnum<OsrLibrary.OGRAxisOrientation > eXAxisOrientation, Pointer<Byte > pszYAxisName, ValuedEnum<OsrLibrary.OGRAxisOrientation > eYAxisOrientation);
+	//public static native int OSRSetAxes(Pointer<Byte > pszTargetKey, Pointer<Byte > pszXAxisName, ValuedEnum<OsrLibrary.OGRAxisOrientation > eXAxisOrientation, Pointer<Byte > pszYAxisName, ValuedEnum<OsrLibrary.OGRAxisOrientation > eYAxisOrientation);
 	public static native int OSRSetACEA(Pointer<? > hSRS, double dfStdP1, double dfStdP2, double dfCenterLat, double dfCenterLong, double dfFalseEasting, double dfFalseNorthing);
 	public static native int OSRSetAE(Pointer<? > hSRS, double dfCenterLat, double dfCenterLong, double dfFalseEasting, double dfFalseNorthing);
 	public static native int OSRSetBonne(Pointer<? > hSRS, double dfStandardParallel, double dfCentralMeridian, double dfFalseEasting, double dfFalseNorthing);
@@ -465,7 +465,7 @@ public class OsrLibrary {
 	public static native int OSRSetTMG(Pointer<? > hSRS, double dfCenterLat, double dfCenterLong, double dfFalseEasting, double dfFalseNorthing);
 	public static native int OSRSetTMSO(Pointer<? > hSRS, double dfCenterLat, double dfCenterLong, double dfScale, double dfFalseEasting, double dfFalseNorthing);
 	public static native int OSRSetVDG(Pointer<? > hSRS, double dfCenterLong, double dfFalseEasting, double dfFalseNorthing);
-	public static native int OSRSetWagner(Pointer<? > hSRS, int nVariation, double dfFalseEasting, double dfFalseNorthing);
+	//public static native int OSRSetWagner(Pointer<? > hSRS, int nVariation, double dfFalseEasting, double dfFalseNorthing);
 	public static native void OSRCleanup();
 	public static native Pointer<? > OCTNewCoordinateTransformation(Pointer<? > hSourceSRS, Pointer<? > hTargetSRS);
 	public static native void OCTDestroyCoordinateTransformation(Pointer<? > OGRCoordinateTransformationH1);

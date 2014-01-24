@@ -3,7 +3,6 @@ package org.geotools.renderer;
 import java.util.Map;
 
 import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
 
 /**
  * Helper class that provides utility methods to extract and parse elements from the vendor options
@@ -41,6 +40,9 @@ public class VendorOptionParser {
      * @return
      */
     private String getOption(Symbolizer symbolizer, String optionName) {
+        if(symbolizer == null) {
+            return null;
+        }
         Map<String, String> options = symbolizer.getOptions();
         if(options == null) {
             return null;
@@ -91,7 +93,7 @@ public class VendorOptionParser {
      * 
      * @param symbolizer
      */
-    public boolean getBooleanOption(TextSymbolizer symbolizer, String optionName,
+    public boolean getBooleanOption(Symbolizer symbolizer, String optionName,
             boolean defaultValue) {
         String value = getOption(symbolizer, optionName);
         if (value == null) {

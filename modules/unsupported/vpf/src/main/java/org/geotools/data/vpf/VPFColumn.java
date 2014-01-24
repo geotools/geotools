@@ -18,7 +18,7 @@ package org.geotools.data.vpf;
 
 import java.util.Map;
 
-import org.geotools.data.vpf.ifc.DataTypesDefinition;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.*;
 import org.geotools.data.vpf.io.TripletId;
 import org.geotools.data.vpf.util.DataUtils;
 import org.geotools.feature.AttributeTypeBuilder;
@@ -29,50 +29,42 @@ import org.opengis.feature.type.PropertyType;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-
 /**
  * A column in a VPF File.
- *
+ * 
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
- *
- *
- *
+ * 
  * @source $URL$
  */
-public class VPFColumn implements AttributeDescriptor, DataTypesDefinition {
+public class VPFColumn {
     /**
-     * If the value is a short integer, that often means it has
-     * an accompanying value in a string lookup table.
+     * If the value is a short integer, that often means it has an accompanying value in a string lookup table.
      */
     private boolean attemptLookup = false;
-    /**
-     * The contained attribute type. 
-     * AttributeType operations are delegated to this object.
-     */
-    private final AttributeDescriptor attribute;
 
-    /** Describe variable <code>elementsNumber</code> here. */
+    /** Attribute descriptor generated from this column definition. */
+    private final AttributeDescriptor descriptor;
+
+    private final String name;
+
     private final int elementsNumber;
 
-    /** Describe variable <code>narrTable</code> here. */
     private final String narrTable;
 
-    /** Describe variable <code>keyType</code> here. */
     private final char keyType;
 
-    /** Describe variable <code>colDesc</code> here. */
     private final String colDesc;
 
-    /** Describe variable <code>thematicIdx</code> here. */
     private final String thematicIdx;
 
-    /** Describe variable <code>type</code> here. */
     private final char typeChar;
 
     /** Describe variable <code>valDescTableName</code> here. */
     private final String valDescTableName;
+   
     /**
      * Constructor with all of the elements of a VPF column
+     * 
      * @param name
      * @param type
      * @param elementsNumber
@@ -82,9 +74,9 @@ public class VPFColumn implements AttributeDescriptor, DataTypesDefinition {
      * @param thematicIdx
      * @param narrTable
      */
-    public VPFColumn(String name, char type, int elementsNumber, char keyType,
-        String colDesc, String valDescTableName, String thematicIdx,
-        String narrTable) {
+    public VPFColumn(String name, char type, int elementsNumber, char keyType, String colDesc,
+            String valDescTableName, String thematicIdx, String narrTable) {
+        this.name = name;
         this.typeChar = type;
         this.elementsNumber = elementsNumber;
         this.keyType = keyType;
@@ -92,17 +84,26 @@ public class VPFColumn implements AttributeDescriptor, DataTypesDefinition {
         this.valDescTableName = valDescTableName;
         this.thematicIdx = thematicIdx;
         this.narrTable = narrTable;
-        attribute = new AttributeTypeBuilder().length(getColumnSize())
-            .binding( getColumnClass() ).nillable( true ).buildDescriptor(name);
+        descriptor = new AttributeTypeBuilder().length(getColumnSize()).binding(getColumnClass())
+                .nillable(true).buildDescriptor(name);
+        descriptor.getUserData().put("column", this);
     }
-    
+
+    public static VPFColumn toVPFColumn(AttributeDescriptor descriptor) {
+        return (VPFColumn) descriptor.getUserData().get("column");
+    }
+
+    public AttributeDescriptor getDescriptor() {
+        return descriptor;
+    }
+
     /**
-     * Retrieves the class for the column,
-     * based on a char value.
+     * Retrieves the class for the column, based on a char value.
+     * 
      * @return the class
      */
-    public Class getColumnClass() {
-        Class columnClass;
+    public Class<?> getColumnClass() {
+        Class<?> columnClass;
 
         switch (typeChar) {
         case DATA_LONG_INTEGER:
@@ -133,7 +134,7 @@ public class VPFColumn implements AttributeDescriptor, DataTypesDefinition {
 
             break;
 
-            // Short integers are usually coded values
+        // Short integers are usually coded values
         case DATA_SHORT_INTEGER:
             attemptLookup = true;
             // Fall through
@@ -154,30 +155,16 @@ public class VPFColumn implements AttributeDescriptor, DataTypesDefinition {
 
     /**
      * Gets the size of the column in bytes
+     * 
      * @return the size
      */
     private int getColumnSize() {
         return DataUtils.getDataTypeSize(typeChar) * elementsNumber;
     }
 
-    // no longer in ft
-//    /* (non-Javadoc)
-//     * @see org.geotools.feature.AttributeType#getFieldLength()
-//     */
-//    public int getFieldLength() {
-//        return attribute.getFieldLength();
-//    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getLocalName() {
-    	return attribute.getLocalName();
-    }
-
     /**
      * Gets the value of narrTable
-     *
+     * 
      * @return the value of narrTable
      */
     public String getNarrTable() {
@@ -186,7 +173,7 @@ public class VPFColumn implements AttributeDescriptor, DataTypesDefinition {
 
     /**
      * Gets the value of thematicIdx
-     *
+     * 
      * @return the value of thematicIdx
      */
     public String getThematicIdx() {
@@ -195,38 +182,34 @@ public class VPFColumn implements AttributeDescriptor, DataTypesDefinition {
 
     /**
      * Gets the value of valDescTableName
-     *
+     * 
      * @return the value of valDescTableName
      */
     public String getValDescTableName() {
         return valDescTableName;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.geotools.feature.AttributeType#isGeometry()
      */
     public boolean isGeometry() {
-        return attribute instanceof Geometry;
-    }
+        switch (typeChar) {
+        case DATA_2_COORD_F:
+        case DATA_2_COORD_R:
+        case DATA_3_COORD_F:
+        case DATA_3_COORD_R:
+            return true;
 
-    // no longer needed
-//    /* (non-Javadoc)
-//     * @see org.geotools.feature.AttributeType#isNested()
-//     */
-//    public boolean isNested() {
-//        return attribute.isNested();
-//    }
-
-    /* (non-Javadoc)
-     * @see org.geotools.feature.AttributeType#isNillable()
-     */
-    public boolean isNillable() {
-        return attribute.isNillable();
+        default:
+            return false;
+        }
     }
 
     /**
      * Returns the typeChar field
-     *
+     * 
      * @return Returns the typeChar.
      */
     public char getTypeChar() {
@@ -235,67 +218,36 @@ public class VPFColumn implements AttributeDescriptor, DataTypesDefinition {
 
     /**
      * Returns the elementsNumber field
-     *
+     * 
      * @return Returns the elementsNumber.
      */
     public int getElementsNumber() {
         return elementsNumber;
     }
+
     /**
-     * Identifies and returns the GeometryAttributeType,
-     * or null if none exists.
+     * Identifies and returns the GeometryAttributeType, or null if none exists.
+     * 
      * @return The <code>GeometryAttributeType</code> value
      */
     public GeometryDescriptor getGeometryAttributeType() {
         GeometryDescriptor result = null;
 
         if (isGeometry()) {
-            result = (GeometryDescriptor) attribute;
+            result = (GeometryDescriptor) descriptor;
         }
 
         return result;
     }
+
     /**
      * @return Returns the attemptLookup.
      */
     public boolean isAttemptLookup() {
         return attemptLookup;
     }
-	
-	/* (non-Javadoc)
-	 * @see org.geotools.feature.AttributeType#getMinOccurs()
-	 */
-	public int getMinOccurs() {
-		return 1;
-	}
-	/* (non-Javadoc)
-	 * @see org.geotools.feature.AttributeType#getMaxOccurs()
-	 */
-	public int getMaxOccurs() {
-		return 1;
-	}
 
-    public boolean equals(Object obj) {
-	return attribute.equals(obj);
+    public String getName() {
+        return name;
     }
-
-    public int hashCode() {
-	return attribute.hashCode();
-    }
-    
-	public org.opengis.feature.type.AttributeType getType() {
-		return attribute.getType();
-	}
-	public Name getName() {
-		return attribute.getName();
-	}
-	public Object getDefaultValue() {
-		return attribute.getDefaultValue();
-	}
-	public Map<Object, Object> getUserData() {
-	    return attribute.getUserData();
-	}
-	public PropertyType type() {
-		return attribute.getType();
-	}
 }

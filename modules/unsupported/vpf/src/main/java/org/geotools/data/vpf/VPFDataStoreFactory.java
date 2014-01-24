@@ -56,8 +56,6 @@ import org.geotools.feature.SchemaException;
  * @author <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
  * @author Chris Holmes, Fulbright
  *
- *
- *
  * @source $URL$
  * @version 2.1.0
  */

@@ -88,6 +88,11 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     public static final Name XLINK_HREF_NAME = Types.toTypeName(XLINK.HREF);
 
     /**
+     * Milliseconds between polls of resolver thread.
+     */
+    public static final long RESOLVE_TIMEOUT_POLL_INTERVAL = 100;
+
+    /**
      * The mappings for the source and target schemas
      */
     protected FeatureTypeMapping mapping;
@@ -164,7 +169,18 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         this.attf = new AppSchemaFeatureFactoryImpl();
 
         this.mapping = mapping;
-        
+
+        // validate and initialise resolve options
+        Hints hints = query.getHints();
+        ResolveValueType resolveVal = (ResolveValueType) hints.get( Hints.RESOLVE );
+        boolean resolve = ResolveValueType.ALL.equals(resolveVal) || ResolveValueType.LOCAL.equals(resolveVal);
+        if (!resolve && resolveVal!=null && !ResolveValueType.NONE.equals(resolveVal)) {
+            throw new IllegalArgumentException("Resolve:" + resolveVal.getName() + " is not supported in app-schema!");
+        }
+        Integer atd = (Integer) hints.get(Hints.ASSOCIATION_TRAVERSAL_DEPTH);
+        resolveDepth = resolve ? atd==null? 0 : atd  : 0;
+        resolveTimeOut = (Integer) hints.get( Hints.RESOLVE_TIMEOUT );
+
         namespaces = mapping.getNamespaces();
         namespaceAwareFilterFactory = new FilterFactoryImplNamespaceAware(namespaces);
         
@@ -205,19 +221,6 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         xpathAttributeBuilder.setFeatureFactory(attf);
         initialiseSourceFeatures(mapping, unrolledQuery, query.getCoordinateSystemReproject());
         xpathAttributeBuilder.setFilterFactory(namespaceAwareFilterFactory);
-        
-        Hints hints = query.getHints();
-        ResolveValueType resolveVal = (ResolveValueType) hints.get( Hints.RESOLVE );
-        boolean resolve = ResolveValueType.ALL.equals(resolveVal) || ResolveValueType.LOCAL.equals(resolveVal);
-        
-        if (!resolve && resolveVal!=null && !ResolveValueType.NONE.equals(resolveVal)) {
-            throw new IllegalArgumentException("Resolve:" + resolveVal.getName() + " is not supported in app-schema!");
-        }
-        
-        Integer atd = (Integer) hints.get(Hints.ASSOCIATION_TRAVERSAL_DEPTH);
-        
-        resolveDepth = resolve ? atd==null? 0 : atd  : 0;
-        resolveTimeOut = (Integer) hints.get( Hints.RESOLVE_TIMEOUT );
     }
     
     //properties can only be set by constructor, before initialising source features 
@@ -359,39 +362,36 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         }
         return clientProperties;
     }
-    
+
     private class FeatureFinder implements Runnable {
-		private Feature feature = null;
-		private String refId;
-		private Hints hints;
-		public AtomicBoolean stopFlag = new AtomicBoolean(false);
-		
-		public synchronized Feature getFeature() {
-			return feature;
-		}
-		
-		private synchronized void setFeature (Feature feature) {
-			this.feature = feature;
-		}
-		
-		public FeatureFinder (String refId, Hints hints) {
-			this.refId = refId;
-			this.hints = hints;
-		}
-		
-		@Override
-	    public void run() {
-	    	try {
-	    		Feature feature = DataAccessRegistry.getInstance().findFeature(new FeatureIdImpl (refId), hints, stopFlag);
-		    	if (!stopFlag.get()) {
-		    		setFeature(feature);
-		    	}	    		
-			} catch (IOException e) { // ignore, no resolve
-			}    		
-	    }
-	};
-	
-	
+
+        private Feature feature = null;
+
+        private String refId;
+
+        private Hints hints;
+
+        public Feature getFeature() {
+            return feature;
+        }
+
+        public FeatureFinder(String refId, Hints hints) {
+            this.refId = refId;
+            this.hints = hints;
+        }
+
+        @Override
+        public void run() {
+            try {
+                feature = DataAccessRegistry.getInstance().findFeature(new FeatureIdImpl(refId),
+                        hints);
+            } catch (IOException e) {
+                // ignore, no resolve
+            }
+        }
+
+    };
+
     protected static String referenceToIdentifier(String reference) {
         
         //TODO: support custom rules in mapping file
@@ -411,26 +411,31 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         return lastPart;
     }
     
-    protected Attribute setAttributeContent(Attribute target, StepList xpath, Object value, String id, AttributeType targetNodeType, boolean isXlinkRef, Expression sourceExpression, Object source, final Map<Name, Expression> clientProperties, boolean ignoreXlinkHref){
-    	Attribute instance = null;
-    	
-    	Map<Name, Expression> properties = new HashMap<Name, Expression>(clientProperties);
-    	
-    	if (ignoreXlinkHref) {
-    	      properties.remove(XLINK_HREF_NAME);
-    	}
-    	
+    protected Attribute setAttributeContent(Attribute target, StepList xpath, Object value,
+            String id, AttributeType targetNodeType, boolean isXlinkRef,
+            Expression sourceExpression, Object source,
+            final Map<Name, Expression> clientProperties, boolean ignoreXlinkHref) {
+        Attribute instance = null;
+
+        Map<Name, Expression> properties = new HashMap<Name, Expression>(clientProperties);
+
+        if (ignoreXlinkHref) {
+            properties.remove(XLINK_HREF_NAME);
+        }
+
         if (properties.containsKey(XLINK_HREF_NAME) && resolveDepth > 0) {
             // local resolve
 
-            String refid = referenceToIdentifier(getValue(properties.get(XLINK_HREF_NAME), source).toString());
+            String refid = referenceToIdentifier(getValue(properties.get(XLINK_HREF_NAME), source)
+                    .toString());
 
             if (refid != null) {
 
                 final Hints hints = new Hints();
                 if (resolveDepth > 1) {
                     hints.put(Hints.RESOLVE, ResolveValueType.ALL);
-                    hints.put(Hints.RESOLVE_TIMEOUT, resolveTimeOut);
+                    // only the top-level resolve thread should monitor timeout
+                    hints.put(Hints.RESOLVE_TIMEOUT, Integer.MAX_VALUE);
                     hints.put(Hints.ASSOCIATION_TRAVERSAL_DEPTH, resolveDepth - 1);
                 } else {
                     hints.put(Hints.RESOLVE, ResolveValueType.NONE);
@@ -438,38 +443,50 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
 
                 // let's try finding it
                 FeatureFinder finder = new FeatureFinder(refid, hints);
-                Thread thread = new Thread(finder);
-                long currentTime = System.currentTimeMillis();
-                thread.start();
-                while (thread.isAlive()
-                        && (System.currentTimeMillis() - currentTime) / 1000 < resolveTimeOut) {
+                // this will be null if joining or sleeping is interrupted
+                Feature foundFeature = null;
+                if (resolveTimeOut == Integer.MAX_VALUE) {
+                    // not the top-level resolve thread so do not monitor timeout
+                    finder.run();
+                    foundFeature = finder.getFeature();
+                } else {
+                    Thread thread = new Thread(finder);
+                    long startTime = System.currentTimeMillis();
+                    thread.start();
                     try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException t) {
+                        while (thread.isAlive()
+                                && (System.currentTimeMillis() - startTime) / 1000 < resolveTimeOut) {
+                            Thread.sleep(RESOLVE_TIMEOUT_POLL_INTERVAL);
+                        }
+                        thread.interrupt();
+                        // joining ensures synchronisation
+                        thread.join();
+                        foundFeature = finder.getFeature();
+                    } catch (InterruptedException e) {
+                        // clean up as best we can
+                        thread.interrupt();
+                        throw new RuntimeException("Interrupted while resolving resource " + refid);
                     }
                 }
-                synchronized (finder.stopFlag) {
-                    finder.stopFlag.set(true);
-                }
 
-                if (finder.getFeature() != null) {
+                if (foundFeature != null) {
                     // found it
-
                     instance = xpathAttributeBuilder.set(target, xpath,
-                            Collections.singletonList(finder.getFeature()), id, targetNodeType,
-                            false, sourceExpression);
+                            Collections.singletonList(foundFeature), id, targetNodeType, false,
+                            sourceExpression);
                     properties.remove(XLINK_HREF_NAME);
                 }
             }
 
         }
-    	
-    	if (instance == null) {
-    		 instance = xpathAttributeBuilder.set(target, xpath, value, id, targetNodeType, false, sourceExpression);
-    	}
-    	
-        setClientProperties(instance, source, properties);     
-        
+
+        if (instance == null) {
+            instance = xpathAttributeBuilder.set(target, xpath, value, id, targetNodeType, false,
+                    sourceExpression);
+        }
+
+        setClientProperties(instance, source, properties);
+
         return instance;
     }
     

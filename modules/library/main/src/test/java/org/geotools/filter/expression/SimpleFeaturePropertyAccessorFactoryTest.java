@@ -52,6 +52,9 @@ public class SimpleFeaturePropertyAccessorFactoryTest extends TestCase {
 		
 		assertNull( factory.createPropertyAccessor( SimpleFeature.class, "*[0]", null, null ) );
 		assertNull( factory.createPropertyAccessor( SimpleFeatureType.class, "*[0]", null, null ) );
+
+        assertNull( factory.createPropertyAccessor( SimpleFeature.class, "===", null, null )  );
+        assertNull( factory.createPropertyAccessor( SimpleFeature.class, "34x?<>", null, null )  );
 	}
 	
 	

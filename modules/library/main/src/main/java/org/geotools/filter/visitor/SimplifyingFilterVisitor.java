@@ -24,10 +24,25 @@ import java.util.regex.Pattern;
 
 import org.geotools.filter.FilterAttributeExtractor;
 import org.opengis.filter.And;
+import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsGreaterThan;
+import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
+import org.opengis.filter.PropertyIsLessThan;
+import org.opengis.filter.PropertyIsLessThanOrEqualTo;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
+import org.opengis.filter.PropertyIsNotEqualTo;
+import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.NilExpression;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.VolatileFunction;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.GmlObjectId;
@@ -66,7 +81,7 @@ import org.opengis.filter.identity.Identifier;
  */
 public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
-    FilterAttributeExtractor attributeExtractor;
+    FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
 
     /**
      * Defines a simple means of assessing whether a feature id in an {@link Id} filter is
@@ -277,6 +292,100 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         // other filters might involve non volatile functions, so we need to look into them
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
         return (Filter) filter.accept(visitor, null);
+    }
+    
+    private boolean isConstant(Expression ex) {
+        // quick common cases first
+        if(ex instanceof Literal) {
+            return true;
+        } else if(ex instanceof NilExpression) {
+            return true;
+        } else if(ex instanceof PropertyName) {
+            return false;
+        } 
+        // ok, check for attribute dependencies and volatile functions then
+        attributeExtractor.clear();
+        ex.accept(attributeExtractor, null);
+        return attributeExtractor.isConstantExpression();
+    }
+    
+    public Object visit(PropertyIsBetween filter, Object extraData) {
+        PropertyIsBetween clone = (PropertyIsBetween) super.visit(filter, extraData);
+        if(isConstant(clone.getExpression()) && isConstant(clone.getLowerBoundary()) && isConstant(clone.getUpperBoundary())) {
+            return staticFilterEvaluate(clone);
+        } else {
+            return clone;
+        }
+    }
+
+    private Object staticFilterEvaluate(Filter filter) {
+        if(filter.evaluate(null)) {
+            return Filter.INCLUDE;
+        } else {
+            return Filter.EXCLUDE;
+        }
+    }
+
+    public Object visit(PropertyIsEqualTo filter, Object extraData) {
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
+    }
+
+    private Object simplifyBinaryComparisonOperator(BinaryComparisonOperator clone) {
+        if(isConstant(clone.getExpression1()) && isConstant(clone.getExpression2())) {
+            return staticFilterEvaluate(clone);
+        } else {
+            return clone;
+        }
+    }
+
+    public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
+    }
+
+    public Object visit(PropertyIsGreaterThan filter, Object extraData) {
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
+    }
+
+    public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
+    }
+
+    public Object visit(PropertyIsLessThan filter, Object extraData) {
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
+    }
+
+    public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
+    }
+    
+    @Override
+    public Object visit(PropertyIsLike filter, Object extraData) {
+        PropertyIsLike clone = (PropertyIsLike) super.visit(filter, extraData);
+        if(isConstant(clone.getExpression())) {
+            return staticFilterEvaluate(clone);
+        } else {
+            return clone;
+        }
+    }
+    
+    @Override
+    public Object visit(PropertyIsNil filter, Object extraData) {
+        PropertyIsNil clone = (PropertyIsNil) super.visit(filter, extraData);
+        if(isConstant(clone.getExpression())) {
+            return staticFilterEvaluate(clone);
+        } else {
+            return clone;
+        }
+    }
+    
+    @Override
+    public Object visit(PropertyIsNull filter, Object extraData) {
+        PropertyIsNull clone = (PropertyIsNull) super.visit(filter, extraData);
+        if(isConstant(clone.getExpression())) {
+            return staticFilterEvaluate(clone);
+        } else {
+            return clone;
+        }
     }
     
 }

@@ -801,10 +801,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
 	    }
         
 	    public Object visit(Literal expression, Object notUsed) {
-	        if (expression.getValue() == null) {
-	        	postStack.push(expression);
-	        }
-	        preStack.push(expression);
+            preStack.push(expression);
             return null;
 	    }
         
@@ -876,7 +873,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
 	
 	        if (expression.getName() == null) {
 	        	postStack.push(expression);
-	            return null;
+	        	return null;
 	        }
 
 	        int i = postStack.size();

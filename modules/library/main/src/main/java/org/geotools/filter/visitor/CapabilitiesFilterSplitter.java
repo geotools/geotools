@@ -863,9 +863,6 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
     }
 
     public Object visit(Literal expression, Object notUsed) {
-        if (expression.getValue() == null) {
-            postStack.push(expression);
-        }
         preStack.push(expression);
         return null;
     }

@@ -54,6 +54,11 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         property = ff.equal(ff.property("test"), ff.literal("oneTwoThree"), false);        
         visitor = new SimplifyingFilterVisitor();
     }
+    
+    @Override
+    protected void tearDown() throws Exception {
+        EnvFunction.clearLocalValues();
+    }
 
     public void testIncludeAndInclude() {
         Filter result = (Filter) ff.and(Filter.INCLUDE, Filter.INCLUDE).accept(visitor, null);
@@ -228,5 +233,22 @@ public class SimplifyingFilterVisitorTest extends TestCase {
 		Expression param2 = result.getParameters().get(1);
 		assertTrue(param2 instanceof Literal);
 		assertEquals(Integer.valueOf(3), param2.evaluate(null, Integer.class));
+    }
+    
+    public void testCompareFunctionNull() {
+        Function f = ff.function("env", ff.literal("var"));
+        PropertyIsEqualTo filter = ff.equal(f, ff.literal("test"), false);
+        
+        Filter simplified = (Filter) filter.accept(visitor, null);
+        assertEquals(Filter.EXCLUDE, simplified);
+    }
+    
+    public void testCompareConstantFunction() {
+        EnvFunction.setLocalValue("var", "test");
+        Function f = ff.function("env", ff.literal("var"));
+        PropertyIsEqualTo filter = ff.equal(f, ff.literal("test"), false);
+        
+        Filter simplified = (Filter) filter.accept(visitor, null);
+        assertEquals(Filter.INCLUDE, simplified);
     }
 }

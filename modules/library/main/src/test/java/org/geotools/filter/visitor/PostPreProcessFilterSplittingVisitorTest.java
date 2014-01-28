@@ -17,6 +17,7 @@
 package org.geotools.filter.visitor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -27,8 +28,10 @@ import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
+import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.spatial.BBOX;
@@ -386,5 +389,22 @@ public class PostPreProcessFilterSplittingVisitorTest extends AbstractPostPrePro
         f2.accept(visitor, null);
         
         assertEquals(f2, visitor.getFilterPost());
+    }
+    
+    public void testNullLiteralInLogicCombination() {
+        FilterCapabilities caps = new FilterCapabilities();
+        PostPreProcessFilterSplittingVisitor visitor = 
+            new PostPreProcessFilterSplittingVisitor(caps, null, null);
+        caps.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
+        caps.addType(And.class);
+        caps.addType(Or.class);
+        caps.addType(Not.class);
+
+        Filter f1 = ff.equal(ff.literal(null), ff.literal("test"), false);
+        Filter f2 = ff.not(ff.equal(ff.literal(null), ff.literal("test"), false));
+        Filter or = ff.or(Arrays.asList(f1, f2));
+        or.accept(visitor, null);
+        assertEquals(or, visitor.getFilterPre());
+        assertEquals(Filter.INCLUDE, visitor.getFilterPost());
     }
 }

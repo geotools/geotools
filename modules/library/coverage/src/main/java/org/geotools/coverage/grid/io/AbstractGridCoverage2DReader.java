@@ -295,7 +295,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      */
     protected Integer setReadParams(OverviewPolicy overviewPolicy, ImageReadParam readP,
             GeneralEnvelope requestedEnvelope, Rectangle requestedDim) throws IOException, TransformException {
-        return setReadParams(overviewPolicy, readP, requestedEnvelope, requestedDim);
+        return setReadParams(coverageName, overviewPolicy, readP, requestedEnvelope, requestedDim);
     }
 
     /**

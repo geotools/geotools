@@ -622,7 +622,7 @@ public class GeoPackage {
         return Features.simple(dataStore().getFeatureReader(q, tx));
     }
 
-    Integer findSRID(SimpleFeatureType schema) throws Exception {
+    static Integer findSRID(SimpleFeatureType schema) throws Exception {
         CoordinateReferenceSystem crs = schema.getCoordinateReferenceSystem();
         if (crs == null) {
             GeometryDescriptor gd = findGeometryDescriptor(schema);
@@ -632,18 +632,18 @@ public class GeoPackage {
         return crs != null ? CRS.lookupEpsgCode(crs, true) : null;
     }
 
-    String findGeometryColumn(SimpleFeatureType schema) {
+    static String findGeometryColumn(SimpleFeatureType schema) {
         GeometryDescriptor gd = findGeometryDescriptor(schema);
         return gd != null ? gd.getLocalName() : null;
     }
 
-    Geometries findGeometryType(SimpleFeatureType schema) {
+    static Geometries findGeometryType(SimpleFeatureType schema) {
         GeometryDescriptor gd = findGeometryDescriptor(schema);
         return gd != null ? 
             Geometries.getForBinding((Class<? extends Geometry>) gd.getType().getBinding()) : null;
     }
 
-    GeometryDescriptor findGeometryDescriptor(SimpleFeatureType schema) {
+    static GeometryDescriptor findGeometryDescriptor(SimpleFeatureType schema) {
         GeometryDescriptor gd = schema.getGeometryDescriptor();
         if (gd == null) {
             for (PropertyDescriptor pd : schema.getDescriptors()) {
@@ -990,17 +990,17 @@ public class GeoPackage {
         return null;
     }
 
-    Integer findSRID(GridCoverage2D raster) throws Exception {
+    static Integer findSRID(GridCoverage2D raster) throws Exception {
         return CRS.lookupEpsgCode(raster.getCoordinateReferenceSystem(), true);
     }
 
-    ReferencedEnvelope findBounds(GridCoverage2D raster) {
+    static ReferencedEnvelope findBounds(GridCoverage2D raster) {
         org.opengis.geometry.Envelope e = raster.getEnvelope();
         return new ReferencedEnvelope(e.getMinimum(0), e.getMaximum(0), e.getMinimum(1), 
             e.getMaximum(1), raster.getCoordinateReferenceSystem());
     }
 
-    GeneralEnvelope toGeneralEnvelope(ReferencedEnvelope e) {
+    static GeneralEnvelope toGeneralEnvelope(ReferencedEnvelope e) {
         GeneralEnvelope ge = new GeneralEnvelope(new double[]{e.getMinX(), e.getMinY()}, 
             new double[]{e.getMaxX(), e.getMaxY()});
         ge.setCoordinateReferenceSystem(e.getCoordinateReferenceSystem());
@@ -1243,28 +1243,41 @@ public class GeoPackage {
         }
     }
 
+    /**
+     * Retrieve tiles within certain zooms and column/row boundaries
+     * 
+     * @param entry the tile entry
+     * @param lowZoom low zoom boundary
+     * @param highZoom high zoom boundary
+     * @param lowCol low column boundary
+     * @param highCol high column boundary
+     * @param lowRow low row boundary
+     * @param highRow high row boundary
+     * @return
+     * @throws IOException
+     */
     public TileReader reader(TileEntry entry, Integer lowZoom, Integer highZoom, 
         Integer lowCol, Integer highCol, Integer lowRow, Integer highRow) throws IOException  {
 
         try {
             List<String> q = new ArrayList();
             if (lowZoom != null) {
-                q.add("zoom_level > " + lowZoom);
+                q.add("zoom_level >= " + lowZoom);
             }
             if (highZoom != null) {
-                q.add("zoom_level < " + lowZoom);
+                q.add("zoom_level <= " + lowZoom);
             }
             if (lowCol != null) {
-                q.add("tile_column < " + lowCol);
+                q.add("tile_column >= " + lowCol);
             }
             if (highCol != null) {
-                q.add("tile_column < " + highCol);
+                q.add("tile_column <= " + highCol);
             }
             if (lowRow != null) {
-                q.add("tile_row < " + lowRow);
+                q.add("tile_row >= " + lowRow);
             }
             if (highRow != null) {
-                q.add("tile_row < " + highRow);
+                q.add("tile_row <= " + highRow);
             }
 
             StringBuffer sql = new StringBuffer("SELECT * FROM ").append(entry.getTableName());
@@ -1289,17 +1302,46 @@ public class GeoPackage {
         }
         
     }
+        
+    /**
+     * Retrieve tile boundaries (min row, max row, min column and max column) for a particular zoom level,
+     * available in the actual data
+     *  
+     * @param entry The tile entry
+     * @param zoom the zoom level
+     * @param isMax true for max boundary, false for min boundary
+     * @param isRow true for rows, false for columns
+     * @return the min/max column/row of the zoom level available in the data
+     * @throws IOException
+     */
+    public int getTileBound(TileEntry entry, int zoom, boolean isMax, boolean isRow) throws IOException {
+        try {
+            StringBuffer sql = new StringBuffer("SELECT " + (isMax? "MAX" : "MIN") + "( " + (isRow? "tile_row" : "tile_column") + ") FROM ");
+            sql.append(entry.getTableName());
+            sql.append(" WHERE zoom_level == ");
+            sql.append(zoom);
 
-    TileEntry createTileEntry(ResultSet rs, Connection cx) throws SQLException, IOException {
+            Connection cx = connPool.getConnection();
+
+            Statement st = cx.createStatement();
+            ResultSet rs = st.executeQuery(sql.toString());
+            rs.next();
+            return rs.getInt(1);
+
+        } catch (SQLException e) {
+            throw new IOException(e);
+        }
+    }
+
+    static TileEntry createTileEntry(ResultSet rs, Connection cx) throws SQLException, IOException {
         TileEntry e = new TileEntry();
         initEntry(e, rs);
-
-        //e.setTimesTwoZoom(rs.getBoolean("is_times_two_zoom"));
 
         //load all the tile matrix entries
         PreparedStatement psm = cx.prepareStatement(format(
             "SELECT * FROM %s" + 
-            " WHERE table_name = ?", TILE_MATRIX_METADATA));
+            " WHERE table_name = ?" +
+            " ORDER BY zoom_level ASC", TILE_MATRIX_METADATA));
         psm.setString(1, e.getTableName());
 
         ResultSet rsm = psm.executeQuery();
@@ -1322,7 +1364,7 @@ public class GeoPackage {
         return e;
     }
 
-    Integer findSRID(ReferencedEnvelope e) throws Exception {
+    static Integer findSRID(ReferencedEnvelope e) throws Exception {
         return CRS.lookupEpsgCode(e.getCoordinateReferenceSystem(), true);
     }
 
@@ -1330,7 +1372,7 @@ public class GeoPackage {
     //sql utility methods
     //
 
-    void initEntry(Entry e, ResultSet rs) throws SQLException, IOException {
+    static void initEntry(Entry e, ResultSet rs) throws SQLException, IOException {
         e.setIdentifier(rs.getString("identifier"));
         e.setDescription(rs.getString("description"));
         e.setTableName(rs.getString("table_name"));
@@ -1361,7 +1403,7 @@ public class GeoPackage {
             rs.getDouble("max_x"), rs.getDouble("min_y"), rs.getDouble("max_y"), crs));
     }
 
-    void runSQL(String sql, Connection cx) throws SQLException {
+    static void runSQL(String sql, Connection cx) throws SQLException {
         Statement st = cx.createStatement();
         try {
             st.execute(sql);

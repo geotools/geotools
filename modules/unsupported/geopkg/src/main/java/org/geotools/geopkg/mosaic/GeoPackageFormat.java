@@ -13,6 +13,7 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.referencing.factory.gridshift.DataUtilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterDescriptor;
@@ -33,7 +34,7 @@ public class GeoPackageFormat extends AbstractGridFormat {
                 sourceFile = (File) source;
             } else if (source instanceof URL) {
                 if (((URL) source).getProtocol().equals("file")){
-                    sourceFile = new File( ((URL) source).getPath() );
+                    sourceFile = DataUtilities.urlToFile((URL) source);
                 }
             } else if (source instanceof String) {
                 sourceFile = new File((String) source);

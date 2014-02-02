@@ -1211,10 +1211,7 @@ public class SLDStyleFactory {
         BufferedImage result = new BufferedImage(icon.getIconWidth() + border * 2,
                 icon.getIconHeight() + border * 2, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = (Graphics2D) result.getGraphics();
-        // we paint it once, make it look good
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        g.setRenderingHints(renderingHints);
         icon.paintIcon(null, g, 1, 1);
         g.dispose();
 
@@ -1352,13 +1349,8 @@ public class SLDStyleFactory {
 		// resize/rotate/rescale the shape
 		Shape shape = markAT.createTransformedShape(originalShape);
 
-		// we draw it once, make it look nice
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-				RenderingHints.VALUE_STROKE_PURE);
+		// cascade the rendering hints configured in the renderer
+		g2d.setRenderingHints(renderingHints);
 
 		if (mark.getFill() != null) {
 			if (LOGGER.isLoggable(Level.FINER)) {

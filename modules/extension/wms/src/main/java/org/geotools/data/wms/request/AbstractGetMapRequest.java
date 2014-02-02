@@ -23,6 +23,8 @@ import java.net.URLEncoder;
 import java.util.ListIterator;
 import java.util.Properties;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.StyleImpl;
@@ -31,6 +33,7 @@ import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.util.logging.Logging;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -48,6 +51,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
 
     Stack layers = new Stack();
     Stack styles = new Stack();
+    static final Logger LOGGER = Logging.getLogger(AbstractGetMapRequest.class);
 
     /**
      * Constructs a GetMapRequest. The data passed in represents valid values 
@@ -200,6 +204,8 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
                             throw new IllegalArgumentException("Could not find EPSG code for " + srsName);
                         }
                         return CRS.decode("EPSG:" + epsgCode, true);
+                    } else {
+                        return crs;
                     }
                 } else if (srsName.startsWith("EPSG:")
                         && isGeotoolsLongitudeFirstAxisOrderForced()) {
@@ -209,12 +215,13 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
                 } else {
                     return CRS.decode(srsName, false);
                 }
-            }
-            else {
+            } else {
                 return CRS.decode("CRS:84");
             }
         } catch (NoSuchAuthorityCodeException e) {
+            LOGGER.log(Level.FINE, "Failed to build a coordiante reference system from " + srsName + " with forceXY " + forceXY, e);
         } catch (FactoryException e) {
+            LOGGER.log(Level.FINE, "Failed to build a coordiante reference system from " + srsName + " with forceXY " + forceXY, e);
         }
         return DefaultEngineeringCRS.CARTESIAN_2D;
     }

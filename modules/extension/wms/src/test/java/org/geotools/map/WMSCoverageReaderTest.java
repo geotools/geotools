@@ -23,10 +23,12 @@ import org.geotools.data.ows.MockHttpClient;
 import org.geotools.data.ows.MockHttpResponse;
 import org.geotools.data.wms.WebMapServer;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -128,6 +130,56 @@ public class WMSCoverageReaderTest {
                     assertEquals("1.3.0", params.get("VERSION"));
                     assertEquals("-90.0,-180.0,90.0,180.0", params.get("BBOX"));
                     assertEquals("EPSG:4326", params.get("CRS"));
+                    URL world = WMSCoverageReaderTest.class.getResource("world.png");
+                    return new MockHttpResponse(world, "image/png");
+                } else {
+                    throw new IllegalArgumentException(
+                            "Don't know how to handle a get request over " + url.toExternalForm());
+                }
+            }
+
+        };
+        // setup the reader
+        WebMapServer server = new WebMapServer(new URL("http://geoserver.org/geoserver/wms"),
+                client);
+        WMSCoverageReader reader = new WMSCoverageReader(server, getLayer(server, "world4326"));
+        return reader;
+    }
+    
+    @Test
+    public void test4326wms11() throws Exception {
+        WMSCoverageReader reader = getReader4326wms11();
+        GeneralEnvelope original = reader.getOriginalEnvelope();
+        CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
+        assertTrue(CRS.equalsIgnoreMetadata(wgs84, original.getCoordinateReferenceSystem()));
+
+        // build a getmap request and check it
+        ReferencedEnvelope worldEnvelope = new ReferencedEnvelope(-180, 180, -90, 90, wgs84);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 180, 90), worldEnvelope);
+        final Parameter<GridGeometry2D> ggParam = (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        ggParam.setValue(gg);
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { ggParam });
+        assertTrue(CRS.equalsIgnoreMetadata(wgs84, coverage.getCoordinateReferenceSystem()));
+        assertEquals(worldEnvelope, new ReferencedEnvelope(coverage.getEnvelope()));
+    }
+
+    
+    private WMSCoverageReader getReader4326wms11() throws IOException, ServiceException,
+            MalformedURLException {
+        // prepare the responses
+        MockHttpClient client = new MockHttpClient() {
+
+            public HTTPResponse get(URL url) throws IOException {
+                if (url.getQuery().contains("GetCapabilities")) {
+                    URL caps130 = WMSCoverageReaderTest.class.getResource("caps110.xml");
+                    return new MockHttpResponse(caps130, "text/xml");
+                } else if (url.getQuery().contains("GetMap")
+                        && url.getQuery().contains("world4326")) {
+                    Map<String, String> params = parseParams(url.getQuery());
+                    assertEquals("1.1.0", params.get("VERSION"));
+                    assertEquals("-180.0,-90.0,180.0,90.0", params.get("BBOX"));
+                    assertEquals("EPSG:4326", params.get("SRS"));
                     URL world = WMSCoverageReaderTest.class.getResource("world.png");
                     return new MockHttpResponse(world, "image/png");
                 } else {

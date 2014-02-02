@@ -351,8 +351,7 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
                 }
             }
         } catch (Exception e) {
-            throw (IOException) new IOException("Could not reproject the request envelope")
-                    .initCause(e);
+            throw new IOException("Could not reproject the request envelope", e);
         }
 
         GetMapRequest mapRequest = wms.createGetMapRequest();

@@ -147,68 +147,152 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     }
 
     @Override
-    public Object visit(And filter, Object extraData) {
+    public Object visit(And filter, Object extraData)
+    {
         // scan, clone and simplify the children
         List<Filter> newChildren = new ArrayList<Filter>(filter.getChildren().size());
-        for (Filter child : filter.getChildren()) {
+        for (Filter child : filter.getChildren())
+        {
             Filter cloned = (Filter) child.accept(this, extraData);
-            
-            // if any of the child filters is exclude, 
-            // the whole chain of AND is equivalent to 
+
+            // if any of the child filters is exclude,
+            // the whole chain of AND is equivalent to
             // EXCLUDE
-            if(cloned == Filter.EXCLUDE)
+            if (cloned == Filter.EXCLUDE)
+            {
                 return Filter.EXCLUDE;
-            
+            }
+
             // these can be skipped
-            if(cloned == Filter.INCLUDE)
+            if (cloned == Filter.INCLUDE)
+            {
                 continue;
-            
-            newChildren.add(cloned);
+            }
+
+            if (cloned instanceof And)
+            {
+                And and = (And) cloned;
+                newChildren.addAll(and.getChildren());
+            }
+            else
+            {
+                newChildren.add(cloned);
+            }
         }
         
         // we might end up with an empty list
-        if(newChildren.size() == 0)
+        if (newChildren.size() == 0)
+        {
             return Filter.INCLUDE;
-        
+        }
+
         // remove the logic we have only one filter
-        if(newChildren.size() == 1)
+        if (newChildren.size() == 1)
+        {
             return newChildren.get(0);
+        }
         
+        // see if we have dual filters that can lead to Filter.Exclude
+        for (int i = 0; i < newChildren.size(); i++) {
+            for(int j = i + 1; j < newChildren.size(); j++) {
+                Filter f1 = newChildren.get(i);
+                Filter f2 = newChildren.get(j);
+                if(intersectionIsExclude(f1, f2)) {
+                    return Filter.EXCLUDE;
+                }
+            }
+        }
+
         // else return the cloned and simplified up list
         return getFactory(extraData).and(newChildren);
     }
     
+    private boolean intersectionIsExclude(Filter f1, Filter f2) {
+        if(f1 instanceof Not) {
+            Not not = (Not) f1;
+            return f2.equals(not.getFilter());
+        } else if(f2 instanceof Not) {
+            Not not = (Not) f2;
+            return f1.equals(not.getFilter());
+        }
+        
+        return false;
+    }
+
+    
     @Override
-    public Object visit(Or filter, Object extraData) {
-     // scan, clone and simplify the children
+    public Object visit(Or filter, Object extraData)
+    {
+        // scan, clone and simplify the children
         List<Filter> newChildren = new ArrayList<Filter>(filter.getChildren().size());
-        for (Filter child : filter.getChildren()) {
+        for (Filter child : filter.getChildren())
+        {
             Filter cloned = (Filter) child.accept(this, extraData);
-            
-            // if any of the child filters is include, 
-            // the whole chain of OR is equivalent to 
+
+            // if any of the child filters is INCLUDE,
+            // the whole chain of OR is equivalent to
             // INCLUDE
-            if(cloned == Filter.INCLUDE)
+            if (cloned == Filter.INCLUDE)
+            {
                 return Filter.INCLUDE;
-            
+            }
+
             // these can be skipped
-            if(cloned == Filter.EXCLUDE)
+            if (cloned == Filter.EXCLUDE)
+            {
                 continue;
-            
-            newChildren.add(cloned);
+            }
+
+            if (cloned instanceof Or)
+            {
+                Or or = (Or) cloned;
+                newChildren.addAll(or.getChildren());
+            }
+            else
+            {
+                newChildren.add(cloned);
+            }
         }
         
         // we might end up with an empty list
-        if(newChildren.size() == 0)
+        if (newChildren.size() == 0)
+        {
             return Filter.EXCLUDE;
-        
+        }
+
         // remove the logic we have only one filter
-        if(newChildren.size() == 1)
+        if (newChildren.size() == 1)
+        {
             return newChildren.get(0);
+        }
         
+        // see if we have dual filters that can lead to Filter.INCLUDE
+        for (int i = 0; i < newChildren.size(); i++) {
+            for(int j = i + 1; j < newChildren.size(); j++) {
+                Filter f1 = newChildren.get(i);
+                Filter f2 = newChildren.get(j);
+                if(unionIsInclude(f1, f2)) {
+                    return Filter.INCLUDE;
+                }
+            }
+        }
+
         // else return the cloned and simplified up list
         return getFactory(extraData).or(newChildren);
     }
+    
+    private boolean unionIsInclude(Filter f1, Filter f2) {
+        if(f1 instanceof Not) {
+            Not not = (Not) f1;
+            return f2.equals(not.getFilter());
+        } else if(f2 instanceof Not) {
+            Not not = (Not) f2;
+            return f1.equals(not.getFilter());
+        }
+        
+        return false;
+    }
+
     
     /**
      * Uses the current {@link FIDValidator} to wipe out illegal feature ids from the returned

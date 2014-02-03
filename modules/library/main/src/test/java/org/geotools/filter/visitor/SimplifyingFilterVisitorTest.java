@@ -16,6 +16,7 @@
  */
 package org.geotools.filter.visitor;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,12 +25,13 @@ import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
-import org.geotools.filter.function.math.FilterFunction_abs;
 import org.geotools.filter.function.math.FilterFunction_random;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor.FIDValidator;
+import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
@@ -251,4 +253,73 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Filter simplified = (Filter) filter.accept(visitor, null);
         assertEquals(Filter.INCLUDE, simplified);
     }
+    
+    public void testSimplifyStaticExclude() 
+    {
+        assertEquals(Filter.EXCLUDE, simplify(ff.greater(ff.literal(3), ff.literal(5))));
+        assertEquals(Filter.EXCLUDE, simplify(ff.greaterOrEqual(ff.literal(3), ff.literal(5))));
+        assertEquals(Filter.EXCLUDE, simplify(ff.less(ff.literal(5), ff.literal(3))));
+        assertEquals(Filter.EXCLUDE, simplify(ff.lessOrEqual(ff.literal(5), ff.literal(3))));
+        assertEquals(Filter.EXCLUDE, simplify(ff.equal(ff.literal(5), ff.literal(3), true)));
+        assertEquals(Filter.EXCLUDE, simplify(ff.between(ff.literal(3), ff.literal(1), ff.literal(2))));
+    }
+
+    public void testSimplifyStaticInclude() 
+    {
+        assertEquals(Filter.INCLUDE, simplify(ff.less(ff.literal(3), ff.literal(5))));
+        assertEquals(Filter.INCLUDE, simplify(ff.lessOrEqual(ff.literal(3), ff.literal(5))));
+        assertEquals(Filter.INCLUDE, simplify(ff.greater(ff.literal(5), ff.literal(3))));
+        assertEquals(Filter.INCLUDE, simplify(ff.greaterOrEqual(ff.literal(5), ff.literal(3))));
+        assertEquals(Filter.INCLUDE, simplify(ff.equal(ff.literal(5), ff.literal(5), true)));
+        assertEquals(Filter.INCLUDE, simplify(ff.between(ff.literal(3), ff.literal(1), ff.literal(4))));
+    }
+    
+    private Filter simplify(Filter filter) {
+        return (Filter) filter.accept(new SimplifyingFilterVisitor(), null);
+    }
+    
+    public void testCoalesheNestedAnd()
+    {
+        Filter eq = ff.equal(ff.property("A"), ff.literal("3"), true);
+        Filter gt = ff.greater(ff.property("b"), ff.literal("3"));
+        Filter lt = ff.less(ff.property("c"), ff.literal("5"));
+        And nested = ff.and(Arrays.asList(ff.and(Arrays.asList(eq, gt)), lt));
+        
+        And simplified = (And) nested.accept(visitor, null);
+        assertEquals(3, simplified.getChildren().size());
+        assertEquals(ff.and(Arrays.asList(eq, gt, lt)), simplified);
+    }
+    
+    public void testCoalesheNestedOr()
+    {
+        Filter eq = ff.equal(ff.property("A"), ff.literal("3"), true);
+        Filter gt = ff.greater(ff.property("b"), ff.literal("3"));
+        Filter lt = ff.less(ff.property("c"), ff.literal("5"));
+        Or nested = ff.or(Arrays.asList(ff.or(Arrays.asList(eq, gt)), lt));
+        
+        Or simplified = (Or) nested.accept(visitor, null);
+        assertEquals(3, simplified.getChildren().size());
+        assertEquals(ff.or(Arrays.asList(eq, gt, lt)), simplified);
+    }
+    
+    public void testDualFilterOr() {
+        Or or = ff.or(Arrays.asList(ff.not(ff.equal(ff.property("a"), ff.literal(3), true)), ff.equal(ff.property("a"), ff.literal(3), true)));
+        assertEquals(Filter.INCLUDE, or.accept(visitor, null));
+    }
+    
+    public void testDualFilterAnd() {
+        Filter original = ff.and(Arrays.asList(ff.not(ff.equal(ff.property("a"), ff.literal(3), true)), ff.equal(ff.property("a"), ff.literal(3), true)));
+        assertEquals(Filter.EXCLUDE, original.accept(visitor, null));
+    }
+    
+    public void testDualFilterNullAnd() {
+        Filter original = ff.and(Arrays.asList(ff.not(ff.isNull(ff.property("a"))), ff.isNull(ff.property("a"))));
+        assertEquals(Filter.EXCLUDE, original.accept(visitor, null));
+    }
+    
+    public void testDualFilterNullOr() {
+        Filter original = ff.or(Arrays.asList(ff.not(ff.isNull(ff.property("a"))), ff.isNull(ff.property("a"))));
+        assertEquals(Filter.INCLUDE, original.accept(visitor, null));
+    }
+    
 }

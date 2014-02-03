@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CompositeCurve id="AMBV">
+	<curveMember>
+		<Curve id="AMBW">
+			<segments>
+				<LineStringSegment>
+					<posList>353148.991 5530600.811 353151.478 5530602.263</posList>
+				</LineStringSegment>
+			</segments>
+		</Curve>
+	</curveMember>
+</CompositeCurve>

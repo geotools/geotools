@@ -68,6 +68,7 @@ import org.geotools.gml3.bindings.TimePeriodTypeBinding;
 import org.geotools.gml3.bindings.TimePositionTypeBinding;
 import org.geotools.gml3.bindings.TimePositionUnionBinding;
 import org.geotools.gml3.v3_2.bindings.AbstractRingTypeBinding;
+import org.geotools.gml3.v3_2.bindings.CompositeCurveTypeBinding;
 import org.geotools.gml3.v3_2.bindings.DoubleListBinding;
 import org.geotools.gml3.v3_2.bindings.EnvelopeTypeBinding;
 import org.geotools.gml3.v3_2.bindings.GML32EncodingUtils;
@@ -244,6 +245,8 @@ public class GMLConfiguration extends Configuration {
             container.registerComponentImplementation(GML.SurfacePatchArrayPropertyType,
                     SurfacePatchArrayPropertyTypeBinding.class);
             container.registerComponentImplementation(GML.SurfaceType, SurfaceTypeBinding.class);
+            container.registerComponentImplementation(GML.CompositeCurveType, 
+                    CompositeCurveTypeBinding.class);
             container.registerComponentImplementation(GML.CurveArrayPropertyType, 
                     org.geotools.gml3.bindings.ext.CurveArrayPropertyTypeBinding.class);
             container.registerComponentImplementation(GML.CurvePropertyType, 

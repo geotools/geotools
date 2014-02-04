@@ -68,7 +68,7 @@ import org.geotools.gml3.bindings.TimePeriodTypeBinding;
 import org.geotools.gml3.bindings.TimePositionTypeBinding;
 import org.geotools.gml3.bindings.TimePositionUnionBinding;
 import org.geotools.gml3.v3_2.bindings.AbstractRingTypeBinding;
-import org.geotools.gml3.v3_2.bindings.CompositeCurveTypeBinding;
+import org.geotools.gml3.bindings.ext.CompositeCurveTypeBinding;
 import org.geotools.gml3.v3_2.bindings.DoubleListBinding;
 import org.geotools.gml3.v3_2.bindings.EnvelopeTypeBinding;
 import org.geotools.gml3.v3_2.bindings.GML32EncodingUtils;

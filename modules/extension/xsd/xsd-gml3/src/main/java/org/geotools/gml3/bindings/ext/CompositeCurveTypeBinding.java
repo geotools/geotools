@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gml3.v3_2.bindings;
+package org.geotools.gml3.bindings.ext;
 
 import com.vividsolutions.jts.geom.CoordinateList;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;

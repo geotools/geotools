@@ -1082,7 +1082,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 
         String[] coverageNames = getGridCoverageNames();
         for (String coverageName: coverageNames) {
-            removeCoverage(coverageName, deleteData, false);
+            removeCoverage(coverageName, deleteData, true);
         }
 
         // Dispose before deleting to make sure any lock on files or resources is released

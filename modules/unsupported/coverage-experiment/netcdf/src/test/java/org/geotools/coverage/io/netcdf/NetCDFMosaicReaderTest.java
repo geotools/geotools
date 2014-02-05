@@ -22,7 +22,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
@@ -65,7 +64,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -661,10 +659,10 @@ public class NetCDFMosaicReaderTest extends Assert {
             
             assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, reader.getCoordinateReferenceSystem()));
             GeneralEnvelope envelope = reader.getOriginalEnvelope("NO2");
-            assertEquals(-180, envelope.getMinimum(0), 0d);
-            assertEquals(180, envelope.getMaximum(0), 0d);
-            assertEquals(-90, envelope.getMinimum(1), 0d);
-            assertEquals(90, envelope.getMaximum(1), 0d);
+            assertEquals(-360, envelope.getMinimum(0), 0d);
+            assertEquals(360, envelope.getMaximum(0), 0d);
+            assertEquals(-180, envelope.getMinimum(1), 0d);
+            assertEquals(180, envelope.getMaximum(1), 0d);
 
             // check we can read a coverage out of it
             coverage = reader.read(null);
@@ -732,10 +730,10 @@ public class NetCDFMosaicReaderTest extends Assert {
             
             assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, reader.getCoordinateReferenceSystem("NO2")));
             GeneralEnvelope envelope = reader.getOriginalEnvelope("NO2");
-            assertEquals(-180, envelope.getMinimum(0), 0d);
-            assertEquals(180, envelope.getMaximum(0), 0d);
-            assertEquals(-90, envelope.getMinimum(1), 0d);
-            assertEquals(90, envelope.getMaximum(1), 0d);
+            assertEquals(-360, envelope.getMinimum(0), 0d);
+            assertEquals(360, envelope.getMaximum(0), 0d);
+            assertEquals(-180, envelope.getMinimum(1), 0d);
+            assertEquals(180, envelope.getMaximum(1), 0d);
 
             // check we can read a coverage out of it
             coverage = reader.read("NO2", null);

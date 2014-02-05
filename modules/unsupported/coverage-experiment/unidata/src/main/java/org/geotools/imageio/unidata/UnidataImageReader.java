@@ -509,29 +509,36 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
         double [] lon= new double[2];
         double [] lat= new double[2];
         byte set=0;
-        for(CoordinateVariable<?> cv:coordinatesVariables.values()){
-            if(cv.isNumeric()){
+        for (CoordinateVariable<?> cv : coordinatesVariables.values()) {
+            if (cv.isNumeric()) {
 
                 // is it lat or lon?
                 AxisType type = cv.getAxisType();
                 switch (type) {
                 case GeoY: case Lat:
-                    if(cv.isRegular()){
-                        lat[0]=cv.getStart();
-                        lat[1]=lat[0]+cv.getIncrement()*(cv.getSize()-1);
+                    if (cv.isRegular()) {
+                        lat[0] = cv.getStart() - (cv.getIncrement() / 2d);
+                        lat[1] = lat[0] + cv.getIncrement() * (cv.getSize());
                     } else {
-                        lat[0]=((Number)cv.getMinimum()).doubleValue();
-                        lat[1]=((Number)cv.getMaximum()).doubleValue();
+                        double min = ((Number) cv.getMinimum()).doubleValue();
+                        double max = ((Number) cv.getMaximum()).doubleValue();
+                        double incr = (max - min) / (cv.getSize() - 1);
+                        lat[0] = min - (incr / 2d);
+                        lat[1] = max + (incr / 2d);
                     }
                     set++;
                     break;
-                case GeoX:case Lon:
-                    if(cv.isRegular()){
-                        lon[0]=cv.getStart();
-                        lon[1]=lon[0]+cv.getIncrement()*(cv.getSize()-1);
+                case GeoX:
+                case Lon:
+                    if (cv.isRegular()) {
+                        lon[0] = cv.getStart() - (cv.getIncrement() / 2d);
+                        lon[1] = lon[0] + cv.getIncrement() * (cv.getSize());
                     } else {
-                        lon[0]=((Number)cv.getMinimum()).doubleValue();
-                        lon[1]=((Number)cv.getMaximum()).doubleValue();
+                        double min = ((Number) cv.getMinimum()).doubleValue();
+                        double max = ((Number) cv.getMaximum()).doubleValue();
+                        double incr = (max - min) / (cv.getSize() - 1);
+                        lon[0] = min - (incr / 2d);
+                        lon[1] = max + (incr / 2d);
                     }
                     set++;
                     break;
@@ -539,15 +546,15 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
                     break;
                 }
             }
-            if(set==2){
+            if (set == 2) {
                 break;
             }
         }
         // create the envelope
-        if(set!=2){
+        if (set != 2) {
             throw new IllegalStateException("Unable to create envelope for this dataset");
         }
-        boundingBox = new ReferencedEnvelope(lon[0],lon[1], lat[0],lat[1], UnidataCRSUtilities.WGS84);        
+        boundingBox = new ReferencedEnvelope(lon[0], lon[1], lat[0], lat[1], UnidataCRSUtilities.WGS84);
         
     }
 

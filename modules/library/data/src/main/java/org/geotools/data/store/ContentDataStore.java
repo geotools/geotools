@@ -384,9 +384,8 @@ public abstract class ContentDataStore implements DataStore {
     	
         ContentEntry entry = ensureEntry(typeName);
 
-        ContentFeatureSource featureSource = createFeatureSource(entry);
-        featureSource.setTransaction(tx);
-        
+        ContentFeatureSource featureSource = createFeatureSource(entry, tx);
+
 //        if ( tx != Transaction.AUTO_COMMIT ) {
 //            //setup the transaction state
 //            synchronized (tx) {
@@ -632,10 +631,11 @@ public abstract class ContentDataStore implements DataStore {
      * {@link ContentFeatureSource}.
      * </p>
      * @param entry The entry.
+     * @param tx The transaction to use with the new FeatureSource
      *
      * @return An new instance of {@link ContentFeatureSource} for the entry.
      */
-    protected abstract ContentFeatureSource createFeatureSource(ContentEntry entry)
+    protected abstract ContentFeatureSource createFeatureSource(ContentEntry entry, Transaction tx)
         throws IOException;
     
     /**

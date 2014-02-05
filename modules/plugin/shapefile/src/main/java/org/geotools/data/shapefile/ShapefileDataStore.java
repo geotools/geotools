@@ -16,30 +16,8 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.files.ShpFileType.DBF;
-import static org.geotools.data.shapefile.files.ShpFileType.PRJ;
-import static org.geotools.data.shapefile.files.ShpFileType.SHP;
-import static org.geotools.data.shapefile.files.ShpFileType.SHX;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.net.URL;
-import java.nio.channels.FileChannel;
-import java.nio.channels.WritableByteChannel;
-import java.nio.charset.Charset;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.logging.Level;
-
-import org.geotools.data.DataSourceException;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureWriter;
-import org.geotools.data.FileDataStore;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
+import com.vividsolutions.jts.geom.*;
+import org.geotools.data.*;
 import org.geotools.data.shapefile.dbf.DbaseFileException;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.files.ShpFiles;
@@ -59,14 +37,20 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.net.URL;
+import java.nio.channels.FileChannel;
+import java.nio.channels.WritableByteChannel;
+import java.nio.charset.Charset;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
+import java.util.TimeZone;
+import java.util.logging.Level;
+
+import static org.geotools.data.shapefile.files.ShpFileType.*;
 
 public class ShapefileDataStore extends ContentDataStore implements FileDataStore {
 
@@ -135,8 +119,10 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     }
 
     @Override
-    protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-        return getFeatureSource();
+    protected ContentFeatureSource createFeatureSource(ContentEntry entry, Transaction tx) throws IOException {
+        ContentFeatureSource source = getFeatureSource();
+        source.setTransaction(tx);
+        return source;
     }
 
     public ContentFeatureSource getFeatureSource() throws IOException {

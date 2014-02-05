@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,10 +16,9 @@
  */
 package org.geotools.data.db2;
 
-import java.sql.Connection;
-
 import org.geotools.jdbc.JDBCJoinTestSetup;
-import org.geotools.jdbc.JDBCTestSetup;
+
+import java.sql.Connection;
 
 public class DB2JoinTestSetup extends JDBCJoinTestSetup {
 
@@ -33,7 +32,7 @@ public class DB2JoinTestSetup extends JDBCJoinTestSetup {
         Connection con = getDataSource().getConnection();
         
         String stmt = "create table "+DB2TestUtil.SCHEMA_QUOTED+
-                        ".\"ftjoin\" (\"id\" int ," +
+                        ".\"ftjoin\" (\"id\" int primary key not null," +
                         "\"name\" varchar(255), " +
                         " \"geom\" DB2GSE.ST_GEOMETRY, \"join1intProperty\" INT ) ";
                         
@@ -61,7 +60,7 @@ public class DB2JoinTestSetup extends JDBCJoinTestSetup {
                 .execute();
 
         stmt = "create table "+DB2TestUtil.SCHEMA_QUOTED+
-                ".\"ftjoin2\" (\"id\" int ," +
+                ".\"ftjoin2\" (\"id\" int primary key not null," +
                 "\"join2intProperty\" int, " +
                 "\"stringProperty2\" VARCHAR(255)) ";
                 

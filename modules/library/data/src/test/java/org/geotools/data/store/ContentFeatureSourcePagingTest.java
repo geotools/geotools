@@ -17,14 +17,10 @@
 
 package org.geotools.data.store;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
@@ -38,6 +34,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.sort.SortBy;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Test the paging behaviour of {@link ContentFeatureSource}. To establish inter-page consistency,
@@ -348,8 +349,10 @@ public class ContentFeatureSourcePagingTest {
          * @see org.geotools.data.store.ContentDataStore#createFeatureSource(org.geotools.data.store.ContentEntry)
          */
         @Override
-        protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-            return new MockContentFeatureSource(entry, null);
+        protected ContentFeatureSource createFeatureSource(ContentEntry entry, Transaction tx) throws IOException {
+            ContentFeatureSource source = new MockContentFeatureSource(entry, null);
+            source.setTransaction(tx);
+            return source;
         }
 
     }

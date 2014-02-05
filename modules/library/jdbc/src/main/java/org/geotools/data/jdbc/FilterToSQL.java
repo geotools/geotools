@@ -555,9 +555,15 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      */
     public Object visit(Not filter, Object extraData) {
         try {
-            out.write("NOT (");
-            filter.getFilter().accept(this, extraData);
-            out.write(")");
+            if(filter.getFilter() instanceof PropertyIsNull) {
+                Expression expr = ((PropertyIsNull) filter.getFilter()).getExpression();
+                expr.accept(this, extraData);
+                out.write(" IS NOT NULL ");
+            } else {
+                out.write("NOT (");
+                filter.getFilter().accept(this, extraData);
+                out.write(")");
+            }
             return extraData;
         }
         catch(IOException e) {

@@ -180,6 +180,21 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             }
         }
         
+        // see if we have dual filters that can lead to Filter.Exclude, or duplicated filters
+        for (int i = 0; i < newChildren.size(); i++) {
+            for(int j = i + 1; j < newChildren.size(); ) {
+                Filter f1 = newChildren.get(i);
+                Filter f2 = newChildren.get(j);
+                if(f1.equals(f2)) {
+                    newChildren.remove(j);
+                } else if(dualFilters(f1, f2)) {
+                    return Filter.EXCLUDE;
+                } else {
+                    j++;
+                }
+            }
+        }
+        
         // we might end up with an empty list
         if (newChildren.size() == 0)
         {
@@ -191,23 +206,24 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         {
             return newChildren.get(0);
         }
-        
-        // see if we have dual filters that can lead to Filter.Exclude
-        for (int i = 0; i < newChildren.size(); i++) {
-            for(int j = i + 1; j < newChildren.size(); j++) {
-                Filter f1 = newChildren.get(i);
-                Filter f2 = newChildren.get(j);
-                if(intersectionIsExclude(f1, f2)) {
-                    return Filter.EXCLUDE;
-                }
-            }
-        }
 
         // else return the cloned and simplified up list
         return getFactory(extraData).and(newChildren);
     }
     
-    private boolean intersectionIsExclude(Filter f1, Filter f2) {
+    /**
+     * Two filters are dual if the are the negation of each other
+     * (we could also have simplifications for negated comparsions, 
+     * e.g., a > b and a <= b, but I plan to have dedicated range handling
+     * support later (e.g., recognize a < 10 or (a >= 10 and a < 20) or a >= 20 is
+     * really Filter.INCLUDE, or turn "a between 10 and 20 or a between 15 and 30" 
+     * to "a between 10 and 30")
+     * 
+     * @param f1
+     * @param f2
+     * @return
+     */
+    private boolean dualFilters(Filter f1, Filter f2) {
         if(f1 instanceof Not) {
             Not not = (Not) f1;
             return f2.equals(not.getFilter());
@@ -218,8 +234,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         
         return false;
     }
-
-    
+      
     @Override
     public Object visit(Or filter, Object extraData)
     {
@@ -254,6 +269,21 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             }
         }
         
+        // see if we have dual filters that can lead to Filter.INCLUDE
+        for (int i = 0; i < newChildren.size(); i++) {
+            for(int j = i + 1; j < newChildren.size(); ) {
+                Filter f1 = newChildren.get(i);
+                Filter f2 = newChildren.get(j);
+                if(f1.equals(f2)) {
+                    newChildren.remove(j);
+                } else if(dualFilters(f1, f2)) {
+                    return Filter.INCLUDE;
+                } else {
+                    j++;
+                }
+            }
+        }
+        
         // we might end up with an empty list
         if (newChildren.size() == 0)
         {
@@ -265,34 +295,10 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         {
             return newChildren.get(0);
         }
-        
-        // see if we have dual filters that can lead to Filter.INCLUDE
-        for (int i = 0; i < newChildren.size(); i++) {
-            for(int j = i + 1; j < newChildren.size(); j++) {
-                Filter f1 = newChildren.get(i);
-                Filter f2 = newChildren.get(j);
-                if(unionIsInclude(f1, f2)) {
-                    return Filter.INCLUDE;
-                }
-            }
-        }
 
         // else return the cloned and simplified up list
         return getFactory(extraData).or(newChildren);
     }
-    
-    private boolean unionIsInclude(Filter f1, Filter f2) {
-        if(f1 instanceof Not) {
-            Not not = (Not) f1;
-            return f2.equals(not.getFilter());
-        } else if(f2 instanceof Not) {
-            Not not = (Not) f2;
-            return f1.equals(not.getFilter());
-        }
-        
-        return false;
-    }
-
     
     /**
      * Uses the current {@link FIDValidator} to wipe out illegal feature ids from the returned

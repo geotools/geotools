@@ -322,4 +322,30 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         assertEquals(Filter.INCLUDE, original.accept(visitor, null));
     }
     
+    public void testRepeatedFilter() {
+        Filter f1 = ff.equal(ff.property("a"), ff.literal(3), false);
+        Filter f2 = ff.equal(ff.property("a"), ff.literal(3), false);
+        
+        Filter s1 = (Filter) ff.and(f1, f2).accept(visitor, null);
+        assertEquals(f1, s1);
+        Filter s2 = (Filter) ff.or(f1, f2).accept(visitor, null);
+        assertEquals(f1, s2);
+        
+        Filter f3 = ff.greater(ff.property("a"), ff.property("b"));
+        
+        Filter s3 = (Filter) ff.and(Arrays.asList(f1, f2, f3)).accept(visitor, null);
+        assertEquals(ff.and(Arrays.asList(f1, f3)), s3);
+        Filter s4 = (Filter) ff.and(Arrays.asList(f3, f1, f2)).accept(visitor, null);
+        assertEquals(ff.and(Arrays.asList(f3, f1)), s4);
+        Filter s5 = (Filter) ff.and(Arrays.asList(f1, f3, f2)).accept(visitor, null);
+        assertEquals(ff.and(Arrays.asList(f1, f3)), s5);
+        
+        Filter s6 = (Filter) ff.or(Arrays.asList(f1, f2, f3)).accept(visitor, null);
+        assertEquals(ff.or(Arrays.asList(f1, f3)), s6);
+        Filter s7 = (Filter) ff.or(Arrays.asList(f3, f1, f2)).accept(visitor, null);
+        assertEquals(ff.or(Arrays.asList(f3, f1)), s7);
+        Filter s8 = (Filter) ff.or(Arrays.asList(f1, f3, f2)).accept(visitor, null);
+        assertEquals(ff.or(Arrays.asList(f1, f3)), s8);
+    }
+    
 }

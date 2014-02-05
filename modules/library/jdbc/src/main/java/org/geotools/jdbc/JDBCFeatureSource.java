@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
@@ -711,12 +712,14 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         }
 
         try {
+            Pattern truePattern = Pattern.compile("(yes|y|true|t|on)", Pattern.CASE_INSENSITIVE);
             while (columns.next()) {
                 ColumnMetadata column = new ColumnMetadata();
                 column.name = columns.getString("COLUMN_NAME");
                 column.typeName = columns.getString("TYPE_NAME");
                 column.sqlType = columns.getInt("DATA_TYPE");
-                column.nullable = "YES".equalsIgnoreCase(columns.getString("IS_NULLABLE"));
+                String nullable = columns.getString("IS_NULLABLE");
+                column.nullable = nullable != null && truePattern.matcher(nullable).matches();
                 column.binding = dialect.getMapping(columns, cx);
                 
                 //support for user defined types, allow the dialect to handle them

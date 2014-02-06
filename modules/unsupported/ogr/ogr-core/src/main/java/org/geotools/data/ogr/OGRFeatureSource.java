@@ -224,18 +224,49 @@ class OGRFeatureSource extends ContentFeatureSource {
 
             // build the layer query and execute it
             if (layer == null) {
-                String sql = getLayerSql(querySchema == sourceSchema ? null : querySchema,
-                        filterTx.getAttributeFilter(), query.getSortBy());
-                Object spatialFilterPtr = null;
-                Geometry spatialFilter = filterTx.getSpatialFilter();
-                if (spatialFilter != null) {
-                    spatialFilterPtr = new GeometryMapper.WKB(new GeometryFactory(), ogr)
-                            .parseGTGeometry(spatialFilter);
-
-                }
-                layer = ogr.DataSourceExecuteSQL(dataSource, sql, spatialFilterPtr);
-                if (layer == null) {
-                    throw new IOException("Failed to query the source layer with SQL: " + sql);
+                // We only need ExecuteSQL if the user specified sorting
+                if (query.getSortBy() == null || query.getSortBy().length == 0) {
+                    layer = ogr.DataSourceGetLayerByName(dataSource, getSchema().getTypeName());
+                    setLayerFilters(layer, filterTx);
+                } 
+                // build the layer query and execute it
+                else {
+                    Object driver = ogr.DataSourceGetDriver(dataSource);
+                    String driverName = ogr.DriverGetName(driver);
+                    ogr.DriverRelease(driver);
+                    boolean isNonOgrSql = doesDriverUseNonOgrSql(driverName);
+                    
+                    String fidColumnName = "FID";
+                    if (isNonOgrSql) {
+                        boolean needsFid = false;
+                        for (SortBy sort : query.getSortBy()) {
+                            if(SortBy.NATURAL_ORDER.equals(sort)|| SortBy.REVERSE_ORDER.equals(sort)) {
+                                needsFid = true;
+                                break;
+                            }
+                        }
+                        if (needsFid) {
+                            layer = ogr.DataSourceGetLayerByName(dataSource, getSchema().getTypeName());
+                            fidColumnName = ogr.LayerGetFIDColumnName(layer);
+                            ogr.LayerRelease(layer);
+                            if (fidColumnName == null) {
+                                throw new IOException("Cannot do natural order without an FID column!");
+                            }
+                        }
+                    }
+                    
+                    String sql = getLayerSql(querySchema == sourceSchema ? null : querySchema,
+                            filterTx.getAttributeFilter(), query.getSortBy(), isNonOgrSql, fidColumnName);
+                    Object spatialFilterPtr = null;
+                    Geometry spatialFilter = filterTx.getSpatialFilter();
+                    if (spatialFilter != null) {
+                        spatialFilterPtr = new GeometryMapper.WKB(new GeometryFactory(), ogr)
+                                .parseGTGeometry(spatialFilter);                
+                    }
+                    layer = ogr.DataSourceExecuteSQL(dataSource, sql, spatialFilterPtr);
+                    if (layer == null) {
+                        throw new IOException("Failed to query the source layer with SQL: " + sql);
+                    }
                 }
             } else {
                 setLayerFilters(layer, filterTx);
@@ -269,6 +300,17 @@ class OGRFeatureSource extends ContentFeatureSource {
         }
     }
 
+    private boolean doesDriverUseNonOgrSql(String driverName) {
+        // Is this a database driver where the SQL is passed directly?
+        // List from bottom of http://www.gdal.org/ogr/ogr_sql.html (Non-OGR SQL)
+        List<String> databaseDriverNames = Arrays.asList(
+            "MYSQL", "POSTGRESQL","POSTGIS", "PG", "ORACLE", "OCI", "SQLITE", 
+            "ODBC", "ESRI PERSONAL GEODATABASE", "PGEO","MS SQL SPATIAL", 
+            "MSSQLSPATIAL"
+        );
+        return databaseDriverNames.contains(driverName.toUpperCase());
+    }
+    
     void setIgnoredFields(Object layer, SimpleFeatureType querySchema,
             SimpleFeatureType sourceSchema) throws IOException {
         if (ogr.LayerCanIgnoreFields(layer)) {
@@ -299,13 +341,16 @@ class OGRFeatureSource extends ContentFeatureSource {
     }
 
     private String getLayerSql(SimpleFeatureType targetSchema, String attributeFilter,
-            SortBy[] sortBy) {
+            SortBy[] sortBy, boolean isNonOgrSql, String fidColumnName) {
         StringBuilder sb = new StringBuilder();
 
         // list only the non geometry attributes
         
         // select attributes
-        sb.append("SELECT FID, ");
+        sb.append("SELECT ");
+        if (!isNonOgrSql) {
+            sb.append("FID, ");
+        }
         if (targetSchema == null) {
             sb.append("* ");
         } else {
@@ -331,9 +376,9 @@ class OGRFeatureSource extends ContentFeatureSource {
             sb.append("ORDER BY ");
             for (SortBy sort : sortBy) {
                 if (sort == SortBy.NATURAL_ORDER) {
-                    sb.append("FID, ");
+                    sb.append(fidColumnName).append(", ");
                 } else if (sort == SortBy.REVERSE_ORDER) {
-                    sb.append("FID DESC, ");
+                    sb.append(fidColumnName).append(" DESC, ");
                 } else {
                     sb.append(sort.getPropertyName().getPropertyName());
                     if (sort.getSortOrder() == SortOrder.DESCENDING) {

@@ -322,6 +322,11 @@ public class BridjOGR implements OGR {
     }
 
     @Override
+    public String LayerGetFIDColumnName(Object layer) {
+         return getCString(OGR_L_GetFIDColumn((Pointer<?>) layer));
+    }
+    
+    @Override
     public String FieldGetName(Object field) {
         return getCString(OGR_Fld_GetNameRef((Pointer<?>)field));
     }

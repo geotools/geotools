@@ -91,4 +91,23 @@
   <properties>
     <gdal.version>1.8.1</gdal.version>
   </properties>
+  
+  <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkMode>once</forkMode>
+                    <argLine>-Djava.library.path="${env.GT_GDAL}"</argLine>
+                    <environmentVariables>
+                        <PATH>${env.GT_GDAL};${env.PATH}</PATH>
+                        <DYLD_LIBRARY_PATH>${env.GT_GDAL};${env.DYLD_LIBRARY_PATH}</DYLD_LIBRARY_PATH>
+                        <LD_LIBRARY_PATH>${env.GT_GDAL};${env.LD_LIBRARY_PATH}</LD_LIBRARY_PATH>
+                    </environmentVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+   </build>
+  
 </project>

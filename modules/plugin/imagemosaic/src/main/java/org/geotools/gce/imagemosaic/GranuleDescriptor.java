@@ -16,6 +16,8 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 import java.awt.Dimension;
@@ -41,7 +43,6 @@ import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
-import javax.management.RuntimeErrorException;
 import javax.media.jai.BorderExtender;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
@@ -104,9 +105,12 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 public class GranuleDescriptor {
-    
-	/** Logger. */
-	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GranuleDescriptor.class);
+
+    /** Logger. */
+    private final static Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger(GranuleDescriptor.class);
+
+    private static final String AUXFILE_EXT = ".aux.xml";
 
     static {
         try {
@@ -214,44 +218,56 @@ public class GranuleDescriptor {
      * 
      */
     static class GranuleLoadingResult {
-    
+
         RenderedImage loadedImage;
-    
+
         ROI footprint;
-        
+
         URL granuleUrl;
-        
+
         boolean doFiltering;
-    
+
+        PAMDataset pamDataset;
+
         public ROI getFootprint() {
             return footprint;
         }
-    
+
         public RenderedImage getRaster() {
             return loadedImage;
         }
-    
+
         public URL getGranuleUrl() {
             return granuleUrl;
         }
+
         public boolean isDoFiltering() {
             return doFiltering;
         }
+
+        public PAMDataset getPamDataset() {
+            return pamDataset;
+        }
+
         GranuleLoadingResult(RenderedImage loadedImage, ROI footprint) {
             this(loadedImage, footprint, null);
         }
-    
+
         GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl) {
-            this(loadedImage, footprint, granuleUrl, false);
+            this(loadedImage, footprint, granuleUrl, false, null);
         }
-    
-        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl, final boolean doFiltering) {
+
+        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl,
+                final boolean doFiltering, final PAMDataset pamDataset) {
             this.loadedImage = loadedImage;
             this.footprint = footprint;
             this.granuleUrl = granuleUrl;
             this.doFiltering = doFiltering;
+            this.pamDataset = pamDataset;
         }
     }
+
+    private static PAMParser pamParser = PAMParser.getInstance();
 
     ReferencedEnvelope granuleBBOX;
 	
@@ -270,6 +286,8 @@ public class GranuleDescriptor {
 	ImageReaderSpi cachedReaderSPI;
 
 	SimpleFeature originator;
+	
+	PAMDataset pamDataset;
 	
 	boolean handleArtifactsFiltering = false;
 	
@@ -401,7 +419,12 @@ public class GranuleDescriptor {
 			    overviewsController = new OverviewsController(highestRes, numberOfOvervies, overviewsResolution);
 			}
                         //////////////////////////////////////////////////////////////////////////
-			
+                    if (hints != null && hints.containsKey(Utils.CHECK_AUXILIARY_METADATA)) {
+                           boolean checkAuxiliaryMetadata = (Boolean) hints.get(Utils.CHECK_AUXILIARY_METADATA);
+                           if (checkAuxiliaryMetadata) {
+                               checkPamDataset();
+                           }
+                       }
 
 		} catch (IllegalStateException e) {
 			throw new IllegalArgumentException(e);
@@ -423,8 +446,20 @@ public class GranuleDescriptor {
 			}
 		}
 	}
-	
-	private boolean customizeReaderInitialization(ImageReader reader, Hints hints) {
+
+    /**
+     * Look for GDAL Auxiliary File and unmarshall it to setup a PamDataset if available
+     * 
+     * @throws IOException
+     */
+    private void checkPamDataset() throws IOException {
+        final File file = DataUtilities.urlToFile(granuleUrl);
+        final String path = file.getCanonicalPath();
+        final String auxFile = path + AUXFILE_EXT;
+        pamDataset = pamParser.parsePAM(auxFile);
+    }
+
+    private boolean customizeReaderInitialization(ImageReader reader, Hints hints) {
             String classString = reader.getClass().getName();
             // Special Management for NetCDF readers to set external Auxiliary File
             if (hints != null && hints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
@@ -443,7 +478,6 @@ public class GranuleDescriptor {
                 }
             }
             return false;
-        
     }
 
     public GranuleDescriptor(
@@ -833,7 +867,7 @@ public class GranuleDescriptor {
 			// apply the affine transform  conserving indexed color model
 			final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, interpolation instanceof InterpolationNearest? Boolean.FALSE:Boolean.TRUE);
 			if(XAffineTransform.isIdentity(finalRaster2Model,Utils.AFFINE_IDENTITY_EPS)) {
-			    return new GranuleLoadingResult(raster, granuleLoadingShape, granuleUrl, doFiltering);
+			    return new GranuleLoadingResult(raster, granuleLoadingShape, granuleUrl, doFiltering, pamDataset);
 			} else {
 				//
 				// In case we are asked to use certain tile dimensions we tile
@@ -876,54 +910,11 @@ public class GranuleDescriptor {
                 if (addBorderExtender) {
                     localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
                 }
-//                boolean hasScaleX=!(Math.abs(finalRaster2Model.getScaleX()-1) < 1E-2/(raster.getWidth()+1-raster.getMinX()));
-//                boolean hasScaleY=!(Math.abs(finalRaster2Model.getScaleY()-1) < 1E-2/(raster.getHeight()+1-raster.getMinY()));
-//                boolean hasShearX=!(finalRaster2Model.getShearX() == 0.0);
-//                boolean hasShearY=!(finalRaster2Model.getShearY() == 0.0);
-//                boolean hasTranslateX=!(Math.abs(finalRaster2Model.getTranslateX()) <  0.01F);
-//                boolean hasTranslateY=!(Math.abs(finalRaster2Model.getTranslateY()) <  0.01F);
-//                boolean isTranslateXInt=!(Math.abs(finalRaster2Model.getTranslateX() - (int) finalRaster2Model.getTranslateX()) <  0.01F);
-//                boolean isTranslateYInt=!(Math.abs(finalRaster2Model.getTranslateY() - (int) finalRaster2Model.getTranslateY()) <  0.01F);
-//                
-//                boolean isIdentity = finalRaster2Model.isIdentity() && !hasScaleX&&!hasScaleY &&!hasTranslateX&&!hasTranslateY;
-                
-                
-//                // TODO how can we check that the a skew is harmelss????
-//                if(isIdentity){
-//                    // TODO check if we are missing anything like tiling or such that comes from hints 
-//                    return new GranuleLoadingResult(raster, granuleLoadingShape, granuleUrl, doFiltering);
-//                }
-//                
-//                // TOLERANCE ON PIXELS SIZE
-//                
-//                // Check and see if the affine transform is in fact doing
-//                // a Translate operation. That is a scale by 1 and no rotation.
-//                // In which case call translate. Note that only integer translate
-//                // is applicable. For non-integer translate we'll have to do the
-//                // affine.
-//                // If the hints contain an ImageLayout hint, we can't use 
-//                // TranslateIntOpImage since it isn't capable of dealing with that.
-//                // Get ImageLayout from renderHints if any.
-//                ImageLayout layout = RIFUtil.getImageLayoutHint(localHints);                                
-//                if ( !hasScaleX &&
-//                     !hasScaleY  &&
-//                      !hasShearX&&
-//                      !hasShearY&&
-//                      isTranslateXInt&&
-//                      isTranslateYInt&&
-//                    layout == null) {
-//                    // It's a integer translate
-//                    return new GranuleLoadingResult(new TranslateIntOpImage(raster,
-//                                                    localHints,
-//                                                   (int) finalRaster2Model.getShearX(),
-//                                                   (int) finalRaster2Model.getShearY()),granuleLoadingShape, granuleUrl, doFiltering);
-//                }
-                
-                
+
                 ImageWorker iw = new ImageWorker(raster);
                 iw.setRenderingHints(localHints);
                 iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());
-				return new GranuleLoadingResult(iw.getRenderedImage(), granuleLoadingShape, granuleUrl, doFiltering);
+				return new GranuleLoadingResult(iw.getRenderedImage(), granuleLoadingShape, granuleUrl, doFiltering, pamDataset);
 			}
 		
 		} catch (IllegalStateException e) {

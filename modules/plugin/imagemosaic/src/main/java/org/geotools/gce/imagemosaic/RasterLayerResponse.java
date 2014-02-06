@@ -16,6 +16,8 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.pam.PAMDataset;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -127,6 +129,40 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 @SuppressWarnings("rawtypes")
 class RasterLayerResponse{
+
+    class MosaicOutput {
+
+        public MosaicOutput (MosaicElement element) {
+            this.image = element.source;
+            this.pamDataset = element.pamDataset;
+        }
+
+        public MosaicOutput(RenderedImage image, PAMDataset pamDataset) {
+            super();
+            this.image = image;
+            this.pamDataset = pamDataset;
+        }
+
+        public RenderedImage getImage() {
+            return image;
+        }
+
+        public void setImage(RenderedImage image) {
+            this.image = image;
+        }
+
+        public PAMDataset getPamDataset() {
+            return pamDataset;
+        }
+
+        public void setPamDataset(PAMDataset pamDataset) {
+            this.pamDataset = pamDataset;
+        }
+
+        RenderedImage image;
+
+        PAMDataset pamDataset;
+    }
 
     private static final class SimplifiedGridSampleDimension extends GridSampleDimension implements SampleDimension{
 
@@ -248,10 +284,11 @@ class RasterLayerResponse{
      */
     private class MosaicElement {
 
-        private MosaicElement(PlanarImage alphaChannel, ROI roi, RenderedImage source) {
+        private MosaicElement(PlanarImage alphaChannel, ROI roi, RenderedImage source, PAMDataset pamDataset) {
             this.alphaChannel = alphaChannel;
             this.roi = roi;
             this.source = source;
+            this.pamDataset = pamDataset;
         }
 
         PlanarImage alphaChannel;
@@ -259,6 +296,8 @@ class RasterLayerResponse{
         ROI roi;
 
         RenderedImage source;
+
+        PAMDataset pamDataset;
 
     }
     
@@ -588,7 +627,7 @@ class RasterLayerResponse{
             }
             
             // preparing input 
-            return new MosaicElement(alphaChannel, imageROI, granule);
+            return new MosaicElement(alphaChannel, imageROI, granule, result.getPamDataset());
         }
     }
     /**
@@ -677,11 +716,11 @@ class RasterLayerResponse{
             if (size == 1 && Utils.OPTIMIZE_CROP) {
                 // prepare input
                 MosaicElement in = inputs.get(0);
-                
                 if (in == null) {
                     throw new NullPointerException("The list of MosaicElements contains one element but it's null");
                 }
-    
+                PAMDataset pamDataset = in.pamDataset;
+
                 // the roi is exactly equal to the image
                 final ROI roi = in.roi;
                 Rectangle bounds = Utils.toRectangle(roi.getAsShape());
@@ -726,7 +765,7 @@ class RasterLayerResponse{
                         }
 
                         // add to final list
-                        return new MosaicElement(in.alphaChannel, roi, mosaic);
+                        return new MosaicElement(in.alphaChannel, roi, mosaic, pamDataset);
                     }
                 }
             }
@@ -736,12 +775,14 @@ class RasterLayerResponse{
             final RenderedImage[] sources = new RenderedImage[size];
             final PlanarImage[] alphas = new PlanarImage[size];
             final ROI[] rois = new ROI[size];
+            final PAMDataset[] pams = new PAMDataset[size];
             ROI overallROI = null; // final ROI
             for (int i = 0; i < size; i++) {
                 final MosaicElement mosaicElement = inputs.get(i);
                 sources[i] = mosaicElement.source;
                 alphas[i] = mosaicElement.alphaChannel;
                 rois[i] = mosaicElement.roi;
+                pams[i] = mosaicElement.pamDataset;
                 if (overallROI == null) {
                     overallROI = new ROIGeometry(((ROIGeometry) mosaicElement.roi).getAsGeometry());
                 } else {
@@ -761,22 +802,21 @@ class RasterLayerResponse{
                         rois, 
                         request.isBlend() ? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
                         localHints);
-            
+
             if (setRoiProperty) {
                 // Adding globalRoi to the output
                 RenderedOp rop = (RenderedOp) mosaic;
-                
+
                 assert overallROI!=null;
                 rop.setProperty("ROI", overallROI);
             }
-    
+
             // prepare for next step
             if(hasAlpha || doInputTransparency){
-                return new MosaicElement(new ImageWorker(mosaic).retainLastBand().getPlanarImage(), overallROI, mosaic);
+                return new MosaicElement(new ImageWorker(mosaic).retainLastBand().getPlanarImage(), overallROI, mosaic, Utils.mergePamDatasets(pams));
              } else {
-                return new MosaicElement(null, overallROI, mosaic);
-             }            
-            
+                return new MosaicElement(null, overallROI, mosaic, Utils.mergePamDatasets(pams));
+             }
         }
     }
 
@@ -951,7 +991,7 @@ class RasterLayerResponse{
          * @return
          * @throws IOException
          */
-        private RenderedImage produce() throws IOException{
+        private MosaicOutput produce() throws IOException{
             // checks
             if (granulesNumber == 0) {
                 LOGGER.log(Level.FINE, "Unable to load any granuleDescriptor");     
@@ -976,15 +1016,15 @@ class RasterLayerResponse{
             LOGGER.fine("Producing the final mosaic, step 2, final mosaicking"); 
             if (size == 1) {
                 // we don't need to mosaick again
-                return mosaicInputs.get(0).source;
+                return new MosaicOutput(mosaicInputs.get(0));
             }
-            return new Mosaicker(
-                    new MosaicInputs(
-                            first.doInputTransparency, 
-                            first.hasAlpha, 
-                            mosaicInputs, 
-                            first.sourceThreshold),
-                            mergeBehavior).createMosaic().source;
+            MosaicInputs mosaickingInputs = new MosaicInputs(
+                    first.doInputTransparency,
+                    first.hasAlpha,
+                    mosaicInputs,
+                    first.sourceThreshold);
+            return new MosaicOutput(new Mosaicker(
+                    mosaickingInputs, mergeBehavior).createMosaic());
         }
     }
 
@@ -1122,26 +1162,26 @@ class RasterLayerResponse{
         }
 
         // assemble granules
-        final RenderedImage mosaic = prepareResponse();
-        if (mosaic == null) {
+        final MosaicOutput mosaic = prepareResponse();
+        if (mosaic == null || mosaic.image == null) {
             this.gridCoverage = null;
             return;
         }
 
         // postproc
-        RenderedImage finalRaster = postProcessRaster(mosaic);
+        MosaicOutput finalMosaic = postProcessRaster(mosaic);
         // create the coverage
-        gridCoverage = prepareCoverage(finalRaster);
+        gridCoverage = prepareCoverage(finalMosaic);
 
     }
 
-	private RenderedImage postProcessRaster(RenderedImage image) {
+	private MosaicOutput postProcessRaster(MosaicOutput mosaickedImage) {
 		// alpha on the final mosaic
 		if (finalTransparentColor != null) {
 			if (LOGGER.isLoggable(Level.FINE)){
 			    LOGGER.fine("Support for alpha on final mosaic");
 			}
-			return new ImageWorker(image).makeColorTransparent(finalTransparentColor).getRenderedImage();
+			return new MosaicOutput(new ImageWorker(mosaickedImage.image).makeColorTransparent(finalTransparentColor).getRenderedImage(), mosaickedImage.pamDataset);
 
 		}
 		if (!needsReprojection){
@@ -1167,7 +1207,7 @@ class RasterLayerResponse{
                         //
                         // we are in raster space here, so 1E-3 is safe
                         if(XAffineTransform.isIdentity(targetWorldToGrid, Utils.AFFINE_IDENTITY_EPS))
-                            return image;
+                            return mosaickedImage;
 		        
 		        // create final image
 		        //
@@ -1184,17 +1224,17 @@ class RasterLayerResponse{
                             }
                         }
                         
-                        ImageWorker iw = new ImageWorker(image);
+                        ImageWorker iw = new ImageWorker(mosaickedImage.image);
                         iw.setRenderingHints(localHints);
                         iw.affine(targetWorldToGrid, interpolation, backgroundValues);
-                        image = iw.getRenderedImage();
+                        mosaickedImage.image = iw.getRenderedImage();
                     } catch (NoninvertibleTransformException e) {
                         if (LOGGER.isLoggable(Level.SEVERE)){
                             LOGGER.log(Level.SEVERE, "Unable to create the requested mosaic ", e );
                         }
                 }
             }
-            return image;
+            return mosaickedImage;
         }
 
     /**
@@ -1203,7 +1243,7 @@ class RasterLayerResponse{
      * @return
      * @throws DataSourceException
      */
-    private RenderedImage prepareResponse() throws DataSourceException {
+    private MosaicOutput prepareResponse() throws DataSourceException {
 
         try {
             //=== select overview
@@ -1232,7 +1272,7 @@ class RasterLayerResponse{
             rasterManager.getGranuleDescriptors(query, visitor);   
             
             // get those granules and create the final mosaic
-            RenderedImage returnValue = visitor.produce();
+            MosaicOutput returnValue = visitor.produce();
 
             //
             // Did we actually load anything?? Notice that it might happen that
@@ -1537,7 +1577,7 @@ class RasterLayerResponse{
      * 
      * @return a blank {@link RenderedImage} initialized using the background values
      */
-    private RenderedImage createBlankResponse() {
+    private MosaicOutput createBlankResponse() {
         // if we get here that means that we do not have anything to load
         // but still we are inside the definition area for the mosaic,
         // therefore we create a fake coverage using the background values,
@@ -1563,12 +1603,12 @@ class RasterLayerResponse{
             } 
             il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(tileSize.width, tileSize.height));
             il.setTileGridXOffset(0).setTileGridYOffset(0).setTileWidth((int)tileSize.getWidth()).setTileHeight((int)tileSize.getHeight());
-            return FormatDescriptor.create(
+            return new MosaicOutput(FormatDescriptor.create(
                     finalImage,
                     Integer.valueOf(il.getSampleModel(null).getDataType()),
-                    new RenderingHints(JAI.KEY_IMAGE_LAYOUT,il));
+                    new RenderingHints(JAI.KEY_IMAGE_LAYOUT,il)), null);
         }
-        return finalImage;
+        return new MosaicOutput(finalImage, null);
     }
 
 	/**
@@ -1578,9 +1618,10 @@ class RasterLayerResponse{
 	 * @return
 	 * @throws IOException
 	 */
-	private GridCoverage2D prepareCoverage(RenderedImage image) throws IOException {
+	private GridCoverage2D prepareCoverage(MosaicOutput mosaicOutput) throws IOException {
 		
 		// creating bands
+                final RenderedImage image = mosaicOutput.image;
                 final SampleModel sm=image.getSampleModel();
                 final ColorModel cm=image.getColorModel();
 		final int numBands = sm.getNumBands();
@@ -1691,10 +1732,14 @@ class RasterLayerResponse{
 		}
 		
         // creating the final coverage by keeping into account the fact that we
-        Map <String, String> properties = null;
+        Map <String, Object> properties = null;
         if (granulesPaths != null) {
-            properties = new HashMap<String,String>();
+            properties = new HashMap<String,Object>();
             properties.put(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY, granulesPaths);
+        }
+
+        if (mosaicOutput.pamDataset != null) {
+            properties.put(Utils.PAM_DATASET, mosaicOutput.pamDataset);
         }
 
         return coverageFactory.create(

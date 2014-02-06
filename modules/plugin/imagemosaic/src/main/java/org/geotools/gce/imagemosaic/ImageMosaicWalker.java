@@ -448,7 +448,7 @@ public class ImageMosaicWalker implements Runnable {
                         
                         catalogConfigurationBean.setLocationAttribute(IndexerUtils.getParameter(Prop.LOCATION_ATTRIBUTE, indexer));
                         configBuilder.setCatalogConfigurationBean(catalogConfigurationBean);
-
+                        configBuilder.setCheckAuxiliaryMetadata(IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));
                         currentConfigurationBean = configBuilder.getMosaicConfigurationBean();
 
                         // creating the schema
@@ -870,15 +870,8 @@ public class ImageMosaicWalker implements Runnable {
                         .fileToURL(indexerFile));
 
                 indexer = createIndexer(props, params);
-
-                if (props.containsKey(Prop.INDEXING_DIRECTORIES)) {
-                    IndexerUtils.setParam(params.getParameter(), props, Prop.INDEXING_DIRECTORIES);
-                }
                 if (props.containsKey(Prop.AUXILIARY_FILE)) {
                     ancillaryFile = props.getProperty(Prop.AUXILIARY_FILE);
-                }
-                if (props.containsKey(Prop.CAN_BE_EMPTY)) {
-                    IndexerUtils.setParam(params.getParameter(),props, Prop.CAN_BE_EMPTY);
                 }
             }
         }
@@ -1371,13 +1364,27 @@ public class ImageMosaicWalker implements Runnable {
             IndexerUtils.setPropertyCollectors(indexer, props.getProperty(Prop.PROPERTY_COLLECTORS));
         }
 
-        if (props.containsKey(Prop.CACHING))
+        if (props.containsKey(Prop.CACHING)) {
             IndexerUtils.setParam(parameters, props, Prop.CACHING);
-        
+        }
+
         if (props.containsKey(Prop.ROOT_MOSAIC_DIR)) {
             // Overriding root mosaic directory
             IndexerUtils.setParam(parameters, props, Prop.ROOT_MOSAIC_DIR);
         }
+
+        if (props.containsKey(Prop.INDEXING_DIRECTORIES)) {
+            IndexerUtils.setParam(parameters, props, Prop.INDEXING_DIRECTORIES);
+        }
+
+        if (props.containsKey(Prop.CAN_BE_EMPTY)) {
+            IndexerUtils.setParam(parameters,props, Prop.CAN_BE_EMPTY);
+        }
+
+        if (props.containsKey(Prop.CHECK_AUXILIARY_METADATA)) {
+            IndexerUtils.setParam(parameters, props, Prop.CHECK_AUXILIARY_METADATA);
+        }
+
         return indexer;
     }
 
@@ -1448,6 +1455,7 @@ public class ImageMosaicWalker implements Runnable {
         properties.setProperty(Utils.Prop.NAME, mosaicConfiguration.getName());
         properties.setProperty(Utils.Prop.TYPENAME, mosaicConfiguration.getName());
         properties.setProperty(Utils.Prop.EXP_RGB, Boolean.toString(mosaicConfiguration.isExpandToRGB()));
+        properties.setProperty(Utils.Prop.CHECK_AUXILIARY_METADATA, Boolean.toString(mosaicConfiguration.isCheckAuxiliaryMetadata()));
         properties.setProperty(Utils.Prop.HETEROGENEOUS, Boolean.toString(catalogConfigurationBean.isHeterogeneous()));
 
         if (cachedReaderSPI != null) {

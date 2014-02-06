@@ -62,7 +62,12 @@ public class MosaicConfigurationBean {
      * <code>true</code> if we need to expand to RGB(A) the single tiles in case they use a different {@link IndexColorModel}.
      */
     private boolean expandToRGB;
-    
+
+    /**
+     * <code>true</code> if we need to look for Auxiliary Metadata PAM XML files
+     */
+    private boolean checkAuxiliaryMetadata;
+
     /** OverviewLevel levels */
     private double[][] levels;
     
@@ -163,6 +168,14 @@ public class MosaicConfigurationBean {
     public void setExpandToRGB(final boolean expandToRGB) {
         this.expandToRGB = expandToRGB;
     }
+    public boolean isCheckAuxiliaryMetadata() {
+        return checkAuxiliaryMetadata;
+    }
+
+    public void setCheckAuxiliaryMetadata(boolean checkAuxiliaryMetadata) {
+        this.checkAuxiliaryMetadata = checkAuxiliaryMetadata;
+    }
+
     public String getName() {
         return name;
     }
@@ -221,7 +234,9 @@ public class MosaicConfigurationBean {
                 + ", levelsNum=" + levelsNum + ", timeAttribute=" + timeAttribute
                 + ", elevationAttribute=" + elevationAttribute
                 + ",sampleModel=" + sampleModel
-                + ", envelope=" + envelope 
-                + ", footprintManagement=" + footprintManagement + "]";
-        }
+                + ", envelope=" + envelope
+                + ", footprintManagement=" + footprintManagement
+                + ", checkAuxiliaryMetadata=" + checkAuxiliaryMetadata +
+                "]";
+    }
 }

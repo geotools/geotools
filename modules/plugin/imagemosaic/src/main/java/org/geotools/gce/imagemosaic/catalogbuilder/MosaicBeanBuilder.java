@@ -47,6 +47,11 @@ public class MosaicBeanBuilder {
      */
     private boolean expandToRGB;
 
+    /**
+     * <code>true</code> if we need to look for PAM auxiliary metadata xml files.
+     */
+    private boolean checkAuxiliaryMetadata;
+
     /** OverviewLevel levels */
     private double[][] levels;
 
@@ -79,18 +84,7 @@ public class MosaicBeanBuilder {
     
     private CoordinateReferenceSystem crs = null;
 
-//    /** Imposed envelope for this mosaic. If not present we need to compute from catalogue. */
-//    private ReferencedEnvelope envelope;
-
     private CatalogConfigurationBean catalogConfigurationBean;
-
-//    public ReferencedEnvelope getEnvelope() {
-//        return envelope;
-//    }
-//
-//    public void setEnvelope(ReferencedEnvelope envelope) {
-//        this.envelope = envelope;
-//    }
 
     public SampleModel getSampleModel() {
         return sampleModel;
@@ -153,6 +147,14 @@ public class MosaicBeanBuilder {
     public void setExpandToRGB(final boolean expandToRGB) {
         this.expandToRGB = expandToRGB;
         bean = null;
+    }
+
+    public boolean isCheckAuxiliaryMetadata() {
+        return checkAuxiliaryMetadata;
+    }
+
+    public void setCheckAuxiliaryMetadata(boolean checkAuxiliaryMetadata) {
+        this.checkAuxiliaryMetadata = checkAuxiliaryMetadata;
     }
 
     public String getName() {
@@ -233,6 +235,7 @@ public class MosaicBeanBuilder {
             bean.setLevelsNum(levelsNum);
             bean.setName(name);
             bean.setAuxiliaryFilePath(auxiliaryFilePath);
+            bean.setCheckAuxiliaryMetadata(checkAuxiliaryMetadata);
         }
         return bean;
     }

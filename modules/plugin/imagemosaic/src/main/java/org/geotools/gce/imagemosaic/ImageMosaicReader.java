@@ -162,6 +162,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 	boolean imposedBBox;
 	
 	boolean heterogeneousGranules;
+	
+	boolean checkAuxiliaryMetadata = false;
 
 	String typeName;
 
@@ -452,7 +454,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 		// this is a newly added property we have to be ready to the case where
 		// we do not find it.
 		expandMe = configuration.isExpandToRGB();
-		
+
+		checkAuxiliaryMetadata = configuration.isCheckAuxiliaryMetadata();
+
 		CatalogConfigurationBean catalogConfigurationBean = configuration.getCatalogConfigurationBean();
 		
 		// do we have heterogenous granules

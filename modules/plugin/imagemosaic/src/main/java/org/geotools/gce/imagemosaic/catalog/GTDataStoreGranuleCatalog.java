@@ -132,6 +132,9 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 Utils.fixH2DatabaseLocation(dastastoreParams, parentLocation);
                 Utils.fixH2MVCCParam(dastastoreParams);
             }
+            if (Utils.isPostgisStore(spi)) {
+                Utils.fixPostgisDBCreationParams(dastastoreParams);
+            }
 
             if (!create) {
                 tileIndexStore = spi.createDataStore(dastastoreParams);

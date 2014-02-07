@@ -98,7 +98,7 @@ public class CatalogManager {
     public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration) throws IOException {
         return createCatalog(runConfiguration, true);
     }
-    
+
     /**
      * Create or load a GranuleCatalog on top of the provided configuration
      * @param runConfiguration
@@ -139,7 +139,29 @@ public class CatalogManager {
 
         return catalog;
     }
-    
+
+    /**
+     * Tries to drop a datastore referred by the datastore connections 
+     * properties specified in the provided file.
+     * 
+     * Current implementation only drop a postGIS datastore.
+     * 
+     * @param datastoreProperties
+     * @throws IOException
+     */
+    public static void dropDatastore(File datastoreProperties) throws IOException {
+        final Properties properties = createGranuleCatalogProperties(datastoreProperties);
+        final String SPIClass = properties.getProperty("SPI");
+        try {
+            // drop a datastore. Right now, only postGIS drop is supported
+            final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+            Utils.dropDB(spi, properties);
+        } catch (Exception e) {
+            final IOException ioe = new IOException();
+            throw (IOException) ioe.initCause(e);
+        } 
+    }
+
     public static Properties createGranuleCatalogProperties(File datastoreProperties) throws IOException {
         Properties properties = Utils.loadPropertiesFromURL(DataUtilities.fileToURL(datastoreProperties));
         if (properties == null) {
@@ -147,7 +169,7 @@ public class CatalogManager {
         }
         return properties;
     }
-    
+
     /**
      * Create a granule catalog from a datastore properties file
      * @param parent

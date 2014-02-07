@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -43,11 +44,9 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
 import org.geotools.data.postgis.PostgisNGDataStoreFactory;
@@ -65,7 +64,6 @@ import org.geotools.test.TestData;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -89,6 +87,8 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
     static final String tempFolderName2 = "waterTempPG2";
     
     static final String tempFolderName3 = "waterTempPG3";
+    
+    static final String tempFolderName4 = "waterTempPGCD";
     
 	/**
 	 * Simple Class for better testing raster manager
@@ -123,6 +123,7 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		props.setProperty("validate connections", "true");
 		props.setProperty("Connection timeout", "10");
 		props.setProperty("preparedStatements", "false");
+		props.setProperty("create database params", "WITH TEMPLATE=template_postgis");
 		return props;
 	}
 
@@ -328,8 +329,59 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
                 // Test the output coverage
                 reader= TestUtils.getReader(timeElevURL, format);
 		elevation.setValue(Arrays.asList(NumberRange.create(0.0,10.0)));
-                TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },"Time-Elevation Test");		
+                TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },"Time-Elevation Test");
 	}
+	
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test
+    public void testPostgisCreateAndDrop() throws Exception {
+        final File workDir = new File(TestData.file(this, "."), tempFolderName4);
+        assertTrue(workDir.mkdir());
+        FileUtils
+                .copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+        TestData.unzipFile(this, tempFolderName4 + "/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, tempFolderName4);
+
+        // place datastore.properties file in the dir for the indexing
+        FileWriter out = null;
+        try {
+            out = new FileWriter(new File(TestData.file(this, "."), tempFolderName4
+                    + "/datastore.properties"));
+
+            final Set<Object> keyset = fixture.keySet();
+            for (Object key : keyset) {
+                final String key_ = (String) key;
+                String value = fixture.getProperty(key_);
+                if (key_.equalsIgnoreCase("database")) {
+                    value = "samplecreate2";
+                }
+
+                out.write(key_.replace(" ", "\\ ") + "=" + value.replace(" ", "\\ ") + "\n");
+            }
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
+
+        // now start the test
+        final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+        reader.delete(true);
+        boolean dropSuccessfull = false;
+        try {
+            dropTables(new String[] { tempFolderName4 }, "samplecreate2");
+            dropSuccessfull = true;
+        } catch (SQLException E) {
+            // The tables have been already deleted with the database drop performed
+            // by the delete operation.
+            assertFalse(dropSuccessfull);
+        }
+    }
 
 	/**
 	 * Complex test for Postgis indexing on db.
@@ -465,7 +517,12 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 	    System.setProperty("user.timezone", "GMT");
 	}
 	
+
     private void dropTables(String[] tables) throws Exception {
+        dropTables(tables, null);
+    }
+
+    private void dropTables(String[] tables, String database) throws Exception {
         // delete tables
         Class.forName("org.postgresql.Driver");
         Connection connection = null;
@@ -473,7 +530,8 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
         try {
             connection = DriverManager.getConnection(
                     "jdbc:postgresql://" + fixture.getProperty("host") + ":"
-                            + fixture.getProperty("port") + "/" + fixture.getProperty("database"),
+                            + fixture.getProperty("port") + "/" + 
+                            (database != null ? database : fixture.getProperty("database")),
                     fixture.getProperty("user"), fixture.getProperty("passwd"));
             st = connection.createStatement();
             for (String table : tables) {

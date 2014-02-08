@@ -82,7 +82,7 @@
 	</xsd:element>
 	<xsd:complexType name="GeometryType">
 		<xsd:sequence>
-			<xsd:element ref="ogc:PropertyName"/>
+			<xsd:element ref="ogc:expression"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="Stroke" type="se:StrokeType">

@@ -20,10 +20,7 @@ package org.geotools.gce.imagemosaic.jdbc.custom;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -113,7 +110,18 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             initFromDB(getConfig().getCoverageName(), con);
             calculateExtentsFromDB(getConfig().getCoverageName(), con);
             calculateResolutionsFromDB(getConfig().getCoverageName(), con);
-            // con.commit();
+            /*
+             populate statementsMap independently of calculateResolutionsFromDB()
+             in case resolutions have been pre-set and don't need to be recalculated.
+             */
+            populateStatementsMap(getConfig().getCoverageName(), con);
+            /*
+            TODO nat changes - GEOT-4525. I am  not sure if this is the best place for the next statement, as
+            if configurations have been already defined and were not recalculated, we will be just overwriting
+            existing configuration, albeit with the same values. But for simplicity sake, it is probably better
+             to leave it here...
+             */
+            con.commit();
             con.close();
 
             for (ImageLevelInfo levelInfo : getLevelInfos()) {
@@ -320,9 +328,26 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                     imageLevelInfo.setResY(null);
                 }
 
+                /*
+                Set noDataValue on imageLevelInfo based on what
+                is stored in raster band metadata.
+                Please note: alternatively this value could be loaded from mosaic config file,
+                we could add an optional element/attribute to specify this value.
+                */
+                Number noDataValue = getNoDataValue(imageLevelInfo.getTileTableName(), con);
+                imageLevelInfo.setNoDataValue(noDataValue);
+
                 getLevelInfos().add(imageLevelInfo);
 
                 imageLevelInfo.setCrs(getCRS());
+                /*
+                Set SrsId based on what has been specified in mosaic
+                xml configuration file. It can get overwritten by value retrieved from database in
+                method calculateResolutionsFromDB(). The reason I added this is: if user has specified
+                resolutions in the mosaic table, then calculateResolutionsFromDB() will skip setting srsID
+                which will eventually result in an exception further down the track.
+                 */
+                imageLevelInfo.setSrsId(getSrsId());
             }
         } catch (SQLException e) {
             throw (e);
@@ -331,6 +356,38 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                 res.close();
             }
 
+            if (s != null) {
+                s.close();
+            }
+        }
+    }
+
+    /*
+     extract noDataValues for each overview from overview raster tables
+     */
+    private Number getNoDataValue(String coverageTableName, Connection con) throws SQLException {
+        PreparedStatement s = null;
+        ResultSet res = null;
+
+        try {
+            String stmt = "select ST_BandNoDataValue(rast) from " + coverageTableName + " limit 1";
+            s = con.prepareStatement(stmt);
+            res = s.executeQuery();
+
+            if (res.next()) {
+                ResultSetMetaData resultMetadata = res.getMetaData();
+                String colType = resultMetadata.getColumnTypeName(1);
+                if (colType != null && colType.toLowerCase().startsWith("float")) {
+                    return res.getFloat(1);
+                } else {
+                    return res.getInt(1);
+                }
+            }
+            return null;
+        }  finally {
+            if (res != null) {
+                res.close();
+            }
             if (s != null) {
                 s.close();
             }
@@ -417,6 +474,12 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             stmt.setDouble(4, li.getExtentMinY().doubleValue());
             stmt.setString(5, li.getCoverageName());
             stmt.setString(6, li.getTileTableName());
+            /*
+            TODO nat - changes for GEOT-4525
+             */
+            if (li.getSpatialTableName() != null) {
+                stmt.setString(7, li.getSpatialTableName());
+            }
             stmt.execute();
 
             long msecs = (new Date()).getTime() - start.getTime();
@@ -456,7 +519,6 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         stmt = con.prepareStatement(getConfig().getSqlUpdateResStatement());
 
         List<ImageLevelInfo> toBeRemoved = new ArrayList<ImageLevelInfo>();
-        statementMap = new HashMap<ImageLevelInfo, String>();
 
         for (ImageLevelInfo li : getLevelInfos()) {
             if (li.getCoverageName().equals(coverageName) == false) {
@@ -502,31 +564,10 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             if (LOGGER.isLoggable(Level.INFO))
                 LOGGER.info("ResX: " + li.getResX() + " ResY: " + li.getResY());
 
-            // register statements
-
-            select = "select (ST_BandMetaData(" + getConfig().getBlobAttributeNameInTileTable()
-                    + ")).isoutdb " + " from " + li.getTileTableName() + " LIMIT 1";
-            ps = con.prepareStatement(select);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                Boolean isOut = (Boolean) rs.getObject("isoutdb");
-                String gridStatement = isOut ? "SELECT st_asbinary(st_envelope ("
-                        + getConfig().getBlobAttributeNameInTileTable() + ")),"
-                        + getConfig().getBlobAttributeNameInTileTable() + " from "
-                        + li.getTileTableName() + " where st_intersects("
-                        + getConfig().getBlobAttributeNameInTileTable() + " ,ST_GeomFromWKB(?,?))"
-                        : "SELECT st_asbinary(st_envelope ("
-                                + getConfig().getBlobAttributeNameInTileTable() + ")),st_astiff("
-                                + getConfig().getBlobAttributeNameInTileTable() + ") " + " from "
-                                + li.getTileTableName() + " where st_intersects("
-                                + getConfig().getBlobAttributeNameInTileTable()
-                                + " ,ST_GeomFromWKB(?,?))";
-
-                statementMap.put(li, gridStatement);
-            }
-            rs.close();
-            ps.close();
-
+            /*
+             moved code from here into method 'populateStatementsMap' below
+             which is called at initialisation. Otherwise this code was skipped in line #496
+             */
             stmt.setDouble(1, li.getResX().doubleValue());
             stmt.setDouble(2, li.getResY().doubleValue());
             stmt.setString(3, li.getCoverageName());
@@ -538,12 +579,46 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             if (LOGGER.isLoggable(Level.INFO))
                 LOGGER.info("Calculate resolutions for " + li.toString() + " finished in " + msecs
                         + " ms ");
+
         }
 
         getLevelInfos().removeAll(toBeRemoved);
 
         if (stmt != null) {
             stmt.close();
+        }
+    }
+
+    private void populateStatementsMap(String coverageName, Connection con) throws SQLException {
+        statementMap = new HashMap<ImageLevelInfo, String>();
+
+        for (ImageLevelInfo li : getLevelInfos()) {
+            if (li.getCoverageName().equals(coverageName) == false) {
+                continue;
+            }
+
+            String select = "select (ST_BandMetaData(" + getConfig().getBlobAttributeNameInTileTable()
+                    + ")).isoutdb " + " from " + li.getTileTableName() + " LIMIT 1";
+            PreparedStatement ps = con.prepareStatement(select);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Boolean isOut = (Boolean) rs.getObject("isoutdb");
+                String gridStatement = isOut ? "SELECT st_asbinary(st_envelope ("
+                        + getConfig().getBlobAttributeNameInTileTable() + ")),"
+                        + getConfig().getBlobAttributeNameInTileTable() + " from "
+                        + li.getTileTableName() + " where st_intersects("
+                        + getConfig().getBlobAttributeNameInTileTable() + " ,ST_GeomFromWKB(?,?))"
+                        : "SELECT st_asbinary(st_envelope ("
+                        + getConfig().getBlobAttributeNameInTileTable() + ")),st_astiff("
+                        + getConfig().getBlobAttributeNameInTileTable() + ") " + " from "
+                        + li.getTileTableName() + " where st_intersects("
+                        + getConfig().getBlobAttributeNameInTileTable()
+                        + " ,ST_GeomFromWKB(?,?))";
+
+                statementMap.put(li, gridStatement);
+            }
+            rs.close();
+            ps.close();
         }
     }
 
@@ -605,4 +680,22 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         rs.close();
         ps.close();
     }
+    
+    /*
+    Extract srs Id from xml configuration file
+     */
+    protected Integer getSrsId() {
+        String crsStr = getConfig().getCoordsys();
+        String[] crsComponents = crsStr.split(":");
+        if (crsComponents.length == 2) {
+            try {
+                return new Integer(crsComponents[1]);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+
 }

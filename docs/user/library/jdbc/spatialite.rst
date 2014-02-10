@@ -83,7 +83,7 @@ Windows 32-bit
 
 Prebuilt 32-bit Windows DLL's for PROJ and GEOS are available from:
 
-  http://gridlock.opengeo.org/geotools/spatialite-libs-win-x86.zip
+  http://ares.boundlessgeo.com/geotools/spatialite-libs-win-x86.zip
   
 These libraries along with the original header files are also available from:
 
@@ -102,21 +102,21 @@ Linux 32-bit
 
 Prebuilt 32-bit Linux shared libraries for PROJ and GEOS are available from:
 
-  http://gridlock.opengeo.org/geotools/spatialite-libs-linux-x86.zip
+  http://ares.boundlessgeo.com/geotools/spatialite-libs-linux-x86.zip
   
 Linux 64-bit
 ============
 
 Prebuilt 64-bit Linux shared libraries for PROJ and GEOS are available from:
 
-  http://gridlock.opengeo.org/geotools/spatialite-libs-linux-x86_64.zip
+  http://ares.boundlessgeo.com/geotools/spatialite-libs-linux-x86_64.zip
 
 Mac
 ===
 
 Prebuilt 32/64-bit shared libraries for PROJ and GEOS for **Intel based Macs only** are available from:
  
-  http://gridlock.opengeo.org/geotools/spatialite-libs-osx-intel.zip
+  http://ares.boundlessgeo.com/geotools/spatialite-libs-osx-intel.zip
 
 
 Java Environment

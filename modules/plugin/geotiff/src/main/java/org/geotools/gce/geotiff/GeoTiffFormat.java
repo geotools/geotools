@@ -54,6 +54,7 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.MapInfoFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
@@ -203,11 +204,14 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
 			if(metadataAdapter.hasModelTrasformation()|| (metadataAdapter.hasPixelScales()&&metadataAdapter.hasTiePoints()))
 			    return true;
 			
-			// now look for info into a WLD file
+			// now look for info into a WLD file or TAB file
             MathTransform raster2Model = GeoTiffReader.parseWorldFile(o);
+            if (raster2Model == null) {
+                raster2Model = GeoTiffReader.parseMapInfoFile(o).getTransform();
+            }
             if (raster2Model != null)
                 return true;
-            else{              
+            else{
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine("Unable to find georeferencing for this tif file");
                 return false;

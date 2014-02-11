@@ -842,9 +842,12 @@ public class GranuleDescriptor {
                     if (transformed.getAsGeometry().isEmpty()) {
                         // inset might have killed the geometry fully
                         return null;
-                    }
+                    } 
 
                     PlanarImage pi = PlanarImage.wrapRenderedImage(raster);
+                    if(!transformed.intersects(pi.getBounds())) {
+                        return null;
+                    }
                     pi.setProperty("ROI", transformed);
                     raster = pi;
 

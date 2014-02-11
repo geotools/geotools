@@ -41,6 +41,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.spatial.BinarySpatialOperator;
+import org.opengis.filter.temporal.BinaryTemporalOperator;
 
 /**
  * Convenience class for filter parsing. 
@@ -88,6 +89,10 @@ public class FilterParsingUtils {
 
         //&lt;xsd:element ref="ogc:logicOps"/&gt;
         if ("logicOps".equals(name) && (filter instanceof BinaryLogicOperator || filter instanceof Not)) {
+            return filter;
+        }
+        //&lt;xsd:element ref="ogc:temporalOps"/&gt;
+        if ("temporalOps".equals(name) && (filter instanceof BinaryTemporalOperator)) {
             return filter;
         }
 

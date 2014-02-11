@@ -20,11 +20,14 @@ package org.geotools.filter;
 
 
 import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.Date;
 
 import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Literal;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
@@ -72,6 +75,20 @@ public class LiteralTest extends TestCase {
         assertEquals(new Long(Long.MAX_VALUE), ff.literal(Long.MAX_VALUE + "").evaluate(null, Long.class));
         BigInteger doubleMaxLong = BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.valueOf(2));
         assertEquals(doubleMaxLong, ff.literal(doubleMaxLong.toString()).evaluate(null, BigInteger.class));
-
+    }
+    
+    public void testDateEquality() throws Exception {
+        Calendar cal = Calendar.getInstance();
+        cal.set(2012, 6, 15);
+        Date d1 = cal.getTime();
+        cal.set(2012, 8, 15);
+        Date d2 = cal.getTime();
+        Date d3 = cal.getTime();
+        Literal l1 = ff.literal(d1);
+        Literal l2 = ff.literal(d2);
+        assertFalse(l1.equals(l2));
+        
+        Literal l3 = ff.literal(d3);
+        assertTrue(l2.equals(l3));
     }
 }

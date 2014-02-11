@@ -1391,7 +1391,7 @@ public abstract class AbstractFilterBuilder {
         Result node = this.resultStack.popResult();
         PeriodNode period = (PeriodNode) node.getBuilt();
 
-        Literal date = period.getEnding();
+        Literal date = period.getBeginning();
 
         Expression property = this.resultStack.popExpression();
 

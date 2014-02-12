@@ -786,7 +786,6 @@ class RasterLayerResponse{
             final PlanarImage[] alphas = new PlanarImage[size];
             ROI[] rois = new ROI[size];
             final PAMDataset[] pams = new PAMDataset[size];
-            ROI overallROI = null; // final ROI
             int realROIs=0;
             for (int i = 0; i < size; i++) {
                 final MosaicElement mosaicElement = inputs.get(i);
@@ -798,11 +797,6 @@ class RasterLayerResponse{
                 // compose the overall ROI if needed
                 if (mosaicElement.roi != null) {
                     realROIs++;
-                    if (overallROI == null) {
-                        overallROI = new ROIGeometry(((ROIGeometry) mosaicElement.roi).getAsGeometry());
-                    } else {
-                        overallROI = overallROI.add(mosaicElement.roi);
-                    }
                 }
             }
             if (realROIs == 0){
@@ -821,7 +815,8 @@ class RasterLayerResponse{
                         request.isBlend() ? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
                         localHints);
             
-            if (footprintBehavior!=FootprintBehavior.None) {
+            ROI overallROI = mosaicROIs(rois);
+            if (footprintBehavior != FootprintBehavior.None) {
                 // Adding globalRoi to the output
                 RenderedOp rop = (RenderedOp) mosaic;                
                 rop.setProperty("ROI", overallROI);
@@ -836,6 +831,37 @@ class RasterLayerResponse{
                 return new MosaicElement(null, overallROI, postProcessed, Utils.mergePamDatasets(pams));
              }            
             
+        }
+
+        private ROI mosaicROIs(ROI[] inputROIArray) {
+            if (inputROIArray == null || inputROIArray.length == 0) {
+                return null;
+            }
+
+            List<ROI> rois = new ArrayList<ROI>();
+            for (ROI roi : inputROIArray) {
+                if (roi != null) {
+                    rois.add(roi);
+                }
+            }
+
+            int roiCount = rois.size();
+            if (roiCount == 0) {
+                return null;
+            } else if (roiCount == 1) {
+                return rois.get(0);
+            } else {
+                PlanarImage[] images = new PlanarImage[rois.size()];
+                int i = 0;
+                for (ROI roi : rois) {
+                    images[i++] = roi.getAsImage();
+                }
+                ROI[] roisArray = (ROI[]) rois.toArray(new ROI[rois.size()]);
+                RenderedOp overallROI = MosaicDescriptor.create(images,
+                        MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, roisArray,
+                        new double[][] { { 1.0 } }, new double[] { 0.0 }, hints);
+                return new ROI(overallROI);
+            }
         }
     }
 

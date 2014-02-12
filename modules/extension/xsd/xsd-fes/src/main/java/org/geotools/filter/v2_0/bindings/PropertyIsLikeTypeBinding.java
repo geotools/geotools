@@ -18,6 +18,7 @@ package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.filter.v1_0.OGC;
 import org.geotools.filter.v1_0.OGCPropertyIsLikeTypeBinding;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xml.AbstractComplexBinding;
@@ -54,12 +55,27 @@ import org.opengis.filter.expression.PropertyName;
  * @generated
  */
 public class PropertyIsLikeTypeBinding extends OGCPropertyIsLikeTypeBinding {
-
+    FilterFactory factory;
+    
     public PropertyIsLikeTypeBinding(FilterFactory factory) {
         super(factory);
+        this.factory = factory;
     }
 
     public QName getTarget() {
         return FES.PropertyIsLikeType;
+    }
+    
+    public Object getProperty(Object object, QName name) throws Exception {
+        PropertyIsLike isLike = (PropertyIsLike) object;
+    
+        if (FES.expression.equals(name)) {
+            return new Object[] {
+                    isLike.getExpression(),
+                    isLike.getLiteral() != null ? factory.literal(isLike
+                            .getLiteral()) : null };
+        }
+    
+        return super.getProperty(object, name);
     }
 }

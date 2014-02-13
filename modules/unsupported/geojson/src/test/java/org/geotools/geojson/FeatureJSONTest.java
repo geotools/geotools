@@ -540,6 +540,49 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         assertEquals(strip(collectionText(false, true)), fjson.toString(collection()));
     }
 
+    public void testFeatureCollectionWithNonWGS84CRSWrite() throws Exception {
+        String json =
+            "{" +
+            "  'type': 'FeatureCollection'," +
+            "  'crs': {" +
+            "    'type': 'name'," +
+            "    'properties': {" +
+            "      'name': 'EPSG:3857'" +
+            "    }" +
+            "  }," +
+            "  'features': [" +
+            "    {" +
+            "      'type': 'Feature'," +
+            "      'geometry': {" +
+            "        'type': 'Point', " +
+            "        'coordinates': [2.003750834E7, 2.003750834E7]" +
+            "      }," +
+            "      'properties': {" +
+            "      }," +
+            "      'id': 'xyz.1'" +
+            "    }" +
+            "  ]" +
+            "}";
+
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.add("geom", Point.class, CRS.decode("EPSG:3857"));
+        tb.add("name", String.class);
+        tb.setName("xyz");
+        SimpleFeatureType schema = tb.buildFeatureType();
+
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
+
+        SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
+        fb.add(new WKTReader().read("POINT(20037508.34 20037508.34)"));
+        fc.add(fb.buildFeature("xyz.1"));
+
+        FeatureJSON fj = new FeatureJSON();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        fj.writeFeatureCollection(fc, os);
+
+        assertEquals(strip(json), os.toString());
+    }
+
     public void testFeatureCollectionWithCRSRead() throws Exception {
         String json = collectionText(true, true);
         FeatureCollection fcol = fjson.readFeatureCollection(strip(collectionText(true, true)));

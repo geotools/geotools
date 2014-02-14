@@ -69,8 +69,12 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
        
        sourceFile = GeoPackageFormat.getFileFromSource(source);
        GeoPackage file = new GeoPackage(sourceFile);
-       for (TileEntry tile : file.tiles()){
-           tiles.put(tile.getTableName(), tile);
+       try {
+            for (TileEntry tile : file.tiles()){
+                tiles.put(tile.getTableName(), tile);
+            }
+       } finally {
+           file.close();
        }
     }
 
@@ -146,106 +150,110 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     
     @Override
     public GridCoverage2D read(String coverageName, GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
-        GeoPackage file = new GeoPackage(sourceFile);
         TileEntry entry = tiles.get(coverageName);
-        CoordinateReferenceSystem crs = getCoordinateReferenceSystem(coverageName);
-        
-        ReferencedEnvelope requestedEnvelope = null;
-        Rectangle dim = null;
-        
-        if (parameters != null) {
-            for (int i = 0; i < parameters.length; i++) {
-                final ParameterValue param = (ParameterValue) parameters[i];
-                final ReferenceIdentifier name = param.getDescriptor().getName();
-                if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
-                    final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                    try {                        
-                        requestedEnvelope = ReferencedEnvelope.create(gg.getEnvelope(), gg.getCoordinateReferenceSystem()).transform(crs, true);;
-                    } catch (Exception e) {
-                        requestedEnvelope = null;
-                    }
-                    
-                    dim = gg.getGridRange2D().getBounds();
-                    continue;
-                }
-            }
-        }
-               
-        int leftTile, topTile, rightTile, bottomTile;
-        
-        //find the closest zoom based on horizontal resolution
-        TileMatrix bestMatrix = null;
-        if (requestedEnvelope != null && dim != null) {
-            //requested res
-            double horRes = requestedEnvelope.getSpan(0) / dim.getWidth(); //proportion of total width that is being requested
-            double worldSpan = crs.getCoordinateSystem().getAxis(0).getMaximumValue() - crs.getCoordinateSystem().getAxis(0).getMinimumValue();
-            
-            //loop over matrices            
-            double difference = Double.MAX_VALUE;
-            for (TileMatrix matrix : entry.getTileMatricies()) {
-                double newRes = worldSpan / (matrix.getMatrixWidth() * matrix.getTileWidth());
-                double newDifference = Math.abs(horRes - newRes);
-                if (newDifference < difference) {
-                    difference = newDifference;
-                    bestMatrix = matrix;
-                }
-            }
-        }
-        if (bestMatrix == null) {
-            bestMatrix = entry.getTileMatricies().get(0);
-        }
-        
-        //take available tiles from database
-        leftTile = file.getTileBound(entry, bestMatrix.getZoomLevel(), false, false);
-        rightTile = file.getTileBound(entry, bestMatrix.getZoomLevel(), true, false);
-        bottomTile = file.getTileBound(entry, bestMatrix.getZoomLevel(), false, true);
-        topTile = file.getTileBound(entry, bestMatrix.getZoomLevel(), true, true);  
-        
-        double resX = (crs.getCoordinateSystem().getAxis(0).getMaximumValue() - crs.getCoordinateSystem().getAxis(0).getMinimumValue()) / bestMatrix.getMatrixWidth();
-        double resY = (crs.getCoordinateSystem().getAxis(1).getMaximumValue() - crs.getCoordinateSystem().getAxis(1).getMinimumValue()) / bestMatrix.getMatrixHeight();
-        double offsetX = crs.getCoordinateSystem().getAxis(0).getMinimumValue();
-        double offsetY = crs.getCoordinateSystem().getAxis(1).getMinimumValue();
-                
-        if (requestedEnvelope != null) { //crop tiles to requested envelope                   
-            leftTile = Math.max(leftTile, (int) Math.round(Math.floor((requestedEnvelope.getMinimum(0) - offsetX) / resX )));
-            bottomTile = Math.max(bottomTile, (int) Math.round(Math.floor((requestedEnvelope.getMinimum(1) - offsetY) / resY )));
-            rightTile = Math.max(leftTile, (int) Math.min(rightTile, Math.round(Math.floor((requestedEnvelope.getMaximum(0) - offsetX) / resX ))));
-            topTile = Math.max(bottomTile, (int) Math.min(topTile, Math.round(Math.floor((requestedEnvelope.getMaximum(1) - offsetY) / resY ))));
-        } 
-        
-        int width = (int) (rightTile - leftTile + 1) * DEFAULT_TILE_SIZE;
-        int height = (int) (topTile - bottomTile + 1) * DEFAULT_TILE_SIZE;
-        
-        //recalculate the envelope we are actually returning
-        ReferencedEnvelope resultEnvelope = new ReferencedEnvelope(offsetX + leftTile * resX, offsetX + (rightTile+1) * resX, offsetY + bottomTile * resY, offsetY + (topTile+1) * resY, crs);
-                        
         BufferedImage image = null;
-        
-        TileReader it;
-        it = file.reader(entry, bestMatrix.getZoomLevel(), bestMatrix.getZoomLevel(), leftTile, rightTile, bottomTile, topTile);
+        ReferencedEnvelope resultEnvelope = null;
+        GeoPackage file = new GeoPackage(sourceFile);
+        try {
+            CoordinateReferenceSystem crs = getCoordinateReferenceSystem(coverageName);
 
-        while (it.hasNext()) {                
-            Tile tile = it.next();
-            
-            BufferedImage tileImage = readImage(tile.getData());
-            
-            if (image == null) {
-                image = getStartImage(tileImage, width, height);
+            ReferencedEnvelope requestedEnvelope = null;
+            Rectangle dim = null;
+
+            if (parameters != null) {
+                for (int i = 0; i < parameters.length; i++) {
+                    final ParameterValue param = (ParameterValue) parameters[i];
+                    final ReferenceIdentifier name = param.getDescriptor().getName();
+                    if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
+                        final GridGeometry2D gg = (GridGeometry2D) param.getValue();
+                        try {                        
+                            requestedEnvelope = ReferencedEnvelope.create(gg.getEnvelope(), gg.getCoordinateReferenceSystem()).transform(crs, true);;
+                        } catch (Exception e) {
+                            requestedEnvelope = null;
+                        }
+
+                        dim = gg.getGridRange2D().getBounds();
+                        continue;
+                    }
+                }
             }
 
-            //coordinates
-            int posx = (int) (tile.getColumn() - leftTile) * DEFAULT_TILE_SIZE;
-            int posy = (int) (topTile - tile.getRow()) * DEFAULT_TILE_SIZE;
+            int leftTile, topTile, rightTile, bottomTile;
 
-            image.getRaster().setRect(posx, posy, tileImage.getData() );
+            //find the closest zoom based on horizontal resolution
+            TileMatrix bestMatrix = null;
+            if (requestedEnvelope != null && dim != null) {
+                //requested res
+                double horRes = requestedEnvelope.getSpan(0) / dim.getWidth(); //proportion of total width that is being requested
+                double worldSpan = crs.getCoordinateSystem().getAxis(0).getMaximumValue() - crs.getCoordinateSystem().getAxis(0).getMinimumValue();
+
+                //loop over matrices            
+                double difference = Double.MAX_VALUE;
+                for (TileMatrix matrix : entry.getTileMatricies()) {
+                    double newRes = worldSpan / (matrix.getMatrixWidth() * matrix.getTileWidth());
+                    double newDifference = Math.abs(horRes - newRes);
+                    if (newDifference < difference) {
+                        difference = newDifference;
+                        bestMatrix = matrix;
+                    }
+                }
+            }
+            if (bestMatrix == null) {
+                bestMatrix = entry.getTileMatricies().get(0);
+            }
+
+            //take available tiles from database
+            leftTile = file.getTileBound(entry, bestMatrix.getZoomLevel(), false, false);
+            rightTile = file.getTileBound(entry, bestMatrix.getZoomLevel(), true, false);
+            bottomTile = file.getTileBound(entry, bestMatrix.getZoomLevel(), false, true);
+            topTile = file.getTileBound(entry, bestMatrix.getZoomLevel(), true, true);  
+
+            double resX = (crs.getCoordinateSystem().getAxis(0).getMaximumValue() - crs.getCoordinateSystem().getAxis(0).getMinimumValue()) / bestMatrix.getMatrixWidth();
+            double resY = (crs.getCoordinateSystem().getAxis(1).getMaximumValue() - crs.getCoordinateSystem().getAxis(1).getMinimumValue()) / bestMatrix.getMatrixHeight();
+            double offsetX = crs.getCoordinateSystem().getAxis(0).getMinimumValue();
+            double offsetY = crs.getCoordinateSystem().getAxis(1).getMinimumValue();
+
+            if (requestedEnvelope != null) { //crop tiles to requested envelope                   
+                leftTile = Math.max(leftTile, (int) Math.round(Math.floor((requestedEnvelope.getMinimum(0) - offsetX) / resX )));
+                bottomTile = Math.max(bottomTile, (int) Math.round(Math.floor((requestedEnvelope.getMinimum(1) - offsetY) / resY )));
+                rightTile = Math.max(leftTile, (int) Math.min(rightTile, Math.round(Math.floor((requestedEnvelope.getMaximum(0) - offsetX) / resX ))));
+                topTile = Math.max(bottomTile, (int) Math.min(topTile, Math.round(Math.floor((requestedEnvelope.getMaximum(1) - offsetY) / resY ))));
+            } 
+
+            int width = (int) (rightTile - leftTile + 1) * DEFAULT_TILE_SIZE;
+            int height = (int) (topTile - bottomTile + 1) * DEFAULT_TILE_SIZE;
+
+            //recalculate the envelope we are actually returning
+            resultEnvelope = new ReferencedEnvelope(offsetX + leftTile * resX, offsetX + (rightTile+1) * resX, offsetY + bottomTile * resY, offsetY + (topTile+1) * resY, crs);
+
+            TileReader it;
+            it = file.reader(entry, bestMatrix.getZoomLevel(), bestMatrix.getZoomLevel(), leftTile, rightTile, bottomTile, topTile);
+
+            while (it.hasNext()) {                
+                Tile tile = it.next();
+
+                BufferedImage tileImage = readImage(tile.getData());
+
+                if (image == null) {
+                    image = getStartImage(tileImage, width, height);
+                }
+
+                //coordinates
+                int posx = (int) (tile.getColumn() - leftTile) * DEFAULT_TILE_SIZE;
+                int posy = (int) (topTile - tile.getRow()) * DEFAULT_TILE_SIZE;
+
+                image.getRaster().setRect(posx, posy, tileImage.getData() );
+            }
+
+            it.close();
+
+            if (image == null){ // no tiles ??
+                image = getStartImage(width, height);
+            }
         }
-        
-        it.close();
-                
-        if (image == null){ // no tiles ??
-            image = getStartImage(width, height);
+        finally {
+            file.close();
         }
-        
         return coverageFactory.create(entry.getTableName(), image, resultEnvelope);
     }
     

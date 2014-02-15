@@ -1350,6 +1350,10 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             // use the target type
             if (Number.class.isAssignableFrom(target)) {
                 literal = safeConvertToNumber(expression, target);
+
+                if (literal == null) {
+                    literal = safeConvertToNumber(expression, Number.class);
+                }
             }
             else {
                 literal = expression.evaluate(null, target);

@@ -53,7 +53,7 @@ final class TestUtils extends Assert {
 	}
 
 	@SuppressWarnings("unchecked")
-	static void testCoverage(final ImageMosaicReader reader,
+	static GridCoverage2D testCoverage(final ImageMosaicReader reader,
 			GeneralParameterValue[] values, String title,
 			final GridCoverage2D coverage, final Rectangle rect) {
 	    final RenderedImage image = coverage.getRenderedImage(); 
@@ -84,6 +84,7 @@ final class TestUtils extends Assert {
 			coverage.dispose(true);
 			reader.dispose();
 		}
+		return coverage;
 	}
 
 	/**
@@ -100,16 +101,16 @@ final class TestUtils extends Assert {
 	 * @return 
 	 * @throws IOException
 	 */
-	static void checkCoverage(final ImageMosaicReader reader,
+	static GridCoverage2D checkCoverage(final ImageMosaicReader reader,
 	            GeneralParameterValue[] values, String title) throws IOException {
-	    checkCoverage(reader, values, title, null);
+	    return checkCoverage(reader, values, title, null);
 	}
 
-	static void checkCoverage(final ImageMosaicReader reader,
+	static GridCoverage2D checkCoverage(final ImageMosaicReader reader,
 			GeneralParameterValue[] values, String title, Rectangle rect) throws IOException {
 		// Test the coverage
 		final GridCoverage2D coverage = getCoverage(reader, values, true);
-		testCoverage(reader, values, title, coverage, rect);
+		return testCoverage(reader, values, title, coverage, rect);
 	}
 
 	static GridCoverage2D getCoverage(final ImageMosaicReader reader,

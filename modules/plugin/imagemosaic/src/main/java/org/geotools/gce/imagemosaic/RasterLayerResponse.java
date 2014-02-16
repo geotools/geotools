@@ -369,7 +369,7 @@ class RasterLayerResponse{
 
         private boolean doInputTransparency;
 
-        private int[] alphaIndex;
+        private int[] alphaIndex= new int[1];
 
         private Color inputTransparentColor;
         
@@ -473,8 +473,8 @@ class RasterLayerResponse{
                             //
                             final ColorModel cm = loadedImage.getColorModel();
                             hasAlpha = cm.hasAlpha();
-                            if (hasAlpha || doInputTransparency){
-                                alphaIndex = new int[] { cm.getNumComponents() - 1 };
+                            if (hasAlpha){
+                                alphaIndex[0]= cm.getNumComponents() - 1 ;
                             }
 
                             //
@@ -563,14 +563,27 @@ class RasterLayerResponse{
                     LOGGER.fine("Support for alpha on input granule " + result.granuleUrl);
                 }
                 granule = new ImageWorker(granule).makeColorTransparent(inputTransparentColor).getRenderedImage();
-                alphaIndex[0] = granule.getColorModel().getNumComponents() - 1;
+                hasAlpha=granule.getColorModel().hasAlpha();
+                if(!granule.getColorModel().hasAlpha()){
+                    // if the resulting image has no transparency (can happen with IndexColorModel then we need to try component
+                    // color model
+                    granule = new ImageWorker(granule).forceComponentColorModel(true).makeColorTransparent(inputTransparentColor).getRenderedImage();
+                    hasAlpha=granule.getColorModel().hasAlpha();
+                }
+                assert hasAlpha;
+                
             }
             PlanarImage alphaChannel=null;		
             if (hasAlpha || doInputTransparency) {
                 ImageWorker w = new ImageWorker(granule);
-                if (granule.getSampleModel() instanceof MultiPixelPackedSampleModel) {
+                if (granule.getSampleModel() instanceof MultiPixelPackedSampleModel||granule.getColorModel() instanceof IndexColorModel) {
                     w.forceComponentColorModel();
+                    granule=w.getRenderedImage();
                 }
+                // doing this here gives the guarantee that I get the correct index for the transparency band
+                alphaIndex[0] = granule.getColorModel().getNumComponents() - 1;
+                assert alphaIndex[0]< granule.getSampleModel().getNumBands();
+                
                 //
                 // ALPHA in INPUT
                 //
@@ -578,11 +591,7 @@ class RasterLayerResponse{
                 // mosaic operator. I have to force going to ComponentColorModel in
                 // case the image is indexed.
                 //
-                if (granule.getColorModel() instanceof IndexColorModel) {
-                    alphaChannel = w.forceComponentColorModel().retainLastBand().getPlanarImage();
-                } else {
-                    alphaChannel = w.retainBands(alphaIndex).getPlanarImage();
-                }
+                alphaChannel = w.retainBands(alphaIndex).getPlanarImage();
             }
         
         
@@ -702,7 +711,7 @@ class RasterLayerResponse{
             
             // anything to do?
             final int size = inputs.size();
-            if (size <= 0) {
+             if (size <= 0) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(Level.FINE, "Unable to load any granuleDescriptor ");
                 }

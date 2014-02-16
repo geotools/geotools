@@ -72,6 +72,8 @@ public class SLDTransformerTest {
     static StyleFactory2 sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory(null);
 
     static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    
+    static final String NEWLINE = System.getProperty("line.separator");
 
     static SLDTransformer transformer;
 
@@ -1205,8 +1207,8 @@ public class SLDTransformerTest {
         
         String xml = transformer.transform(sld);
         
-        assertTrue(xml.contains("<sld:Label><![CDATA[ abc]]>\n" + 
-                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>\n"
+        assertTrue(xml.contains("<sld:Label><![CDATA[ abc]]>" + NEWLINE + 
+                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>" + NEWLINE
                 + "                        </sld:Label>"));
     }
     
@@ -1218,8 +1220,8 @@ public class SLDTransformerTest {
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
         
         String xml = transformer.transform(sld);
-        assertTrue(xml.contains("<sld:Label><![CDATA[abc ]]>\n" + 
-                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>\n"
+        assertTrue(xml.contains("<sld:Label><![CDATA[abc ]]>" + NEWLINE +  
+                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>" + NEWLINE
                 + "                        </sld:Label>"));
     }
     
@@ -1231,8 +1233,8 @@ public class SLDTransformerTest {
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
         
         String xml = transformer.transform(sld);
-        assertTrue(xml.contains("<sld:Label><![CDATA[a  bc]]>\n" + 
-                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>\n"
+        assertTrue(xml.contains("<sld:Label><![CDATA[a  bc]]>" + NEWLINE +
+                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>" + NEWLINE
                 + "                        </sld:Label>"));
 
     }
@@ -1247,7 +1249,7 @@ public class SLDTransformerTest {
         String xml = transformer.transform(sld);
         // System.out.println(xml);
         // Java own xpath processor does not seem to fully support normalize-space() so we resort to string comparisons here
-        assertTrue(xml.contains("<sld:Label><![CDATA[abc ]]>\n" + 
+        assertTrue(xml.contains("<sld:Label><![CDATA[abc ]]>" + NEWLINE +  
                 "                            <ogc:PropertyName>myProperty</ogc:PropertyName><![CDATA[ def]]></sld:Label>"));
     }
 

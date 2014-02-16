@@ -654,10 +654,13 @@ public class GranuleDescriptor {
 		}
 		ImageReadParam readParameters = null;
 		int imageIndex;
-		Geometry inclusionGeometry = roiProvider != null ? roiProvider.getFootprint(): null;
-		final ReferencedEnvelope bbox = roiProvider != null? new ReferencedEnvelope(granuleBBOX.intersection(inclusionGeometry.getEnvelopeInternal()), granuleBBOX.getCoordinateReferenceSystem()):granuleBBOX;
+		final boolean useFootprint = roiProvider != null&&request.getFootprintBehavior()!=FootprintBehavior.None;
+                Geometry inclusionGeometry = useFootprint ? roiProvider.getFootprint(): null;
+		final ReferencedEnvelope bbox = useFootprint? 
+		        new ReferencedEnvelope(granuleBBOX.intersection(inclusionGeometry.getEnvelopeInternal()), granuleBBOX.getCoordinateReferenceSystem()):
+		            granuleBBOX;
 		boolean doFiltering = false;
-                if (filterMe){
+                if (filterMe&&useFootprint){
                     doFiltering = Utils.areaIsDifferent(inclusionGeometry, baseGridToWorld, granuleBBOX);
                 }
 		
@@ -673,7 +676,7 @@ public class GranuleDescriptor {
                 }
                 
         // check if the requested bbox intersects or overlaps the requested area 
-        if(inclusionGeometry != null && !JTS.toGeometry(cropBBox).intersects(inclusionGeometry)) {
+        if(useFootprint&&inclusionGeometry != null && !JTS.toGeometry(cropBBox).intersects(inclusionGeometry)) {
             if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
                 LOGGER.fine(new StringBuilder("Got empty intersection for granule ").append(this.toString())
                         .append(" with request ").append(request.toString()).append(" Resulting in no granule loaded: Empty result").toString());
@@ -750,8 +753,9 @@ public class GranuleDescriptor {
 			// it.
 			final Rectangle sourceArea = CRS.transform(cropWorldToGrid, intersection).toRectangle2D().getBounds();
 			//gutter
-			if(selectedlevel.baseToLevelTransform.isIdentity())
-			        			sourceArea.grow(2, 2);
+			if(selectedlevel.baseToLevelTransform.isIdentity()){
+			    sourceArea.grow(2, 2);
+			}
 			XRectangle2D.intersect(sourceArea, selectedlevel.rasterDimensions, sourceArea);//make sure roundings don't bother us
 			// is it empty??
 			if (sourceArea.isEmpty()) {
@@ -838,7 +842,7 @@ public class GranuleDescriptor {
 				finalRaster2Model.concatenate(decimationScaleTranform);
 			
             // adjust roi
-            if (roiProvider != null) {
+            if (useFootprint) {
 
                 ROIGeometry transformed;
                 try {

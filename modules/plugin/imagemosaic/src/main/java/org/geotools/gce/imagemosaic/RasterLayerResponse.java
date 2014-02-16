@@ -672,6 +672,7 @@ class RasterLayerResponse{
             if (tileDimensions == null) {
                 tileDimensions=(Dimension) JAI.getDefaultTileSize().clone();
             }
+            layout.setTileGridXOffset(0).setTileGridYOffset(0);
             layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
             final RenderingHints localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
             
@@ -785,7 +786,7 @@ class RasterLayerResponse{
             // prepare sources for the mosaic operation
             final RenderedImage[] sources = new RenderedImage[size];
             final PlanarImage[] alphas = new PlanarImage[size];
-            final ROI[] rois = new ROI[size];
+            ROI[] rois = new ROI[size];
             final PAMDataset[] pams = new PAMDataset[size];
             int realROIs=0;
             for (int i = 0; i < size; i++) {
@@ -800,7 +801,10 @@ class RasterLayerResponse{
                     realROIs++;
                 }
             }
-
+            if (realROIs == 0){
+                rois = null;
+            }
+            
             // execute mosaic
             final RenderedImage mosaic = 
                 mergeBehavior.process(
@@ -821,7 +825,7 @@ class RasterLayerResponse{
                 rop.setProperty("ROI", overallROI);
             }
             
-            final RenderedImage postProcessed = footprintBehavior.postProcessMosaic(mosaic, overallROI);
+            final RenderedImage postProcessed = footprintBehavior.postProcessMosaic(mosaic, overallROI,localHints);
     
             // prepare for next step
             if(hasAlpha || doInputTransparency){
@@ -1635,39 +1639,71 @@ class RasterLayerResponse{
      * @return a blank {@link RenderedImage} initialized using the background values
      */
     private MosaicOutput createBlankResponse() {
-        // if we get here that means that we do not have anything to load
+     // if we get here that means that we do not have anything to load
         // but still we are inside the definition area for the mosaic,
         // therefore we create a fake coverage using the background values,
         // if provided (defaulting to 0), as well as the compute raster
         // bounds, envelope and grid to world.
         LOGGER.fine("Creating constant image for area with no data");
-        final Number[] values = ImageUtilities.getBackgroundValues(rasterManager.defaultSM, backgroundValues);
-        // create a constant image with a proper layout
-        RenderedImage finalImage = ConstantDescriptor.create(
-                Float.valueOf(rasterBounds.width),
-                Float.valueOf(rasterBounds.height),
-                values,
-                null);
-        if (rasterBounds.x != 0 || rasterBounds.y != 0) {
-            finalImage = TranslateDescriptor.create(finalImage, Float.valueOf(rasterBounds.x), Float.valueOf(rasterBounds.y), Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
-        }
-        if (rasterManager.defaultCM != null) {
-            final ImageLayout2 il= new ImageLayout2();
-            il.setColorModel(rasterManager.defaultCM);
-            Dimension tileSize= request.getTileDimensions();
-            if(tileSize==null){
-                tileSize=JAI.getDefaultTileSize();
-            } 
-            il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(tileSize.width, tileSize.height));
-            il.setTileGridXOffset(0).setTileGridYOffset(0).setTileWidth((int)tileSize.getWidth()).setTileHeight((int)tileSize.getHeight());
-            finalImage = FormatDescriptor.create(
-                    finalImage,
-                    Integer.valueOf(il.getSampleModel(null).getDataType()),
-                    new RenderingHints(JAI.KEY_IMAGE_LAYOUT,il));
-        }
         
-        if(footprintBehavior != null) {
-            finalImage = footprintBehavior.postProcessBlankResponse(finalImage);
+        final ImageLayout2 il= new ImageLayout2();
+        il.setColorModel(rasterManager.defaultCM);
+        Dimension tileSize= request.getTileDimensions();
+        if(tileSize==null){
+            tileSize=JAI.getDefaultTileSize();
+        } 
+
+        il.setTileGridXOffset(0).setTileGridYOffset(0).setTileWidth((int)tileSize.getWidth()).setTileHeight((int)tileSize.getHeight());
+        final RenderingHints renderingHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT,il);
+        
+        
+        final Number[] values = ImageUtilities.getBackgroundValues(rasterManager.defaultSM,
+                backgroundValues);
+        RenderedImage finalImage;
+        if (ImageUtilities.isMediaLibAvailable()) {
+            // create a constant image with a proper layout
+            finalImage = ConstantDescriptor.create(Float.valueOf(rasterBounds.width),
+                    Float.valueOf(rasterBounds.height), values, renderingHints);
+            if (rasterBounds.x != 0 || rasterBounds.y != 0) {
+                finalImage = TranslateDescriptor.create(finalImage, Float.valueOf(rasterBounds.x),
+                        Float.valueOf(rasterBounds.y),
+                        Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
+            }
+
+            // impose the color model and samplemodel as the constant operation does not take them
+            // into account!
+            if (rasterManager.defaultCM != null) {
+                il.setColorModel(rasterManager.defaultCM);
+                il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(
+                        tileSize.width, tileSize.height));
+                finalImage = FormatDescriptor.create(finalImage,
+                        Integer.valueOf(il.getSampleModel(null).getDataType()), renderingHints);
+            }
+        } else {
+            il.setWidth(rasterBounds.width).setHeight(rasterBounds.height);
+            if (rasterBounds.x != 0 || rasterBounds.y != 0) {
+                il.setMinX(rasterBounds.x).setMinY(rasterBounds.y);
+            }
+            // impose the color model and samplemodel as the constant operation does not take them
+            // into account!
+            if (rasterManager.defaultCM != null) {
+                il.setColorModel(rasterManager.defaultCM);
+                il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(
+                        tileSize.width, tileSize.height));
+
+            }
+            final double[] bkgValues = new double[values.length];
+            for (int i = 0; i < values.length; i++) {
+                bkgValues[i] = values[i].doubleValue();
+            }
+
+            finalImage = MosaicDescriptor.create(new RenderedImage[0],
+                    MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, null,
+                    new double[][] { { CoverageUtilities.getMosaicThreshold(il.getSampleModel(null)
+                            .getDataType()) } }, bkgValues, renderingHints);
+        }
+        if (footprintBehavior != null) {
+            finalImage = footprintBehavior.postProcessBlankResponse(finalImage, renderingHints);
         }
         
         return new MosaicOutput(finalImage, null);

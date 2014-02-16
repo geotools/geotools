@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -219,43 +221,46 @@ public class ImageMosaicFootprintsTest {
         assertNotNull(coverage);
         return coverage;
     }
-
     @Test
-    public void testInsetsBorder() throws Exception {
+    public void testAreaOutside() throws Exception {
         // copy the footprints mosaic over
         FileUtils.copyDirectory(footprintsSource, testMosaic);
         Properties p = new Properties();
         p.put(MultiLevelROIProviderFactory.INSET_PROPERTY, "0.1"); 
         saveFootprintProperties(p);
+        final AbstractGridFormat format = TestUtils.getFormat(testMosaicUrl);
+        final ImageMosaicReader reader = TestUtils.getReader(testMosaicUrl, format);     
+        
+        // activate footprint management
+        GeneralParameterValue[] params = new GeneralParameterValue[3];
+        ParameterValue<String> footprintManagement = ImageMosaicFormat.FOOTPRINT_BEHAVIOR.createValue();
+        footprintManagement.setValue(FootprintBehavior.None.name());
+        params[0] = footprintManagement;
+        
+        // this prevents us from having problems with link to files still open.
+        ParameterValue<Boolean> jaiImageRead = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+        jaiImageRead.setValue(false); 
+        params[1] = jaiImageRead;
+        
+        // limit yourself to reading just a bit of it
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        final Dimension dim = new Dimension();
+        dim.setSize(4, 4);
+        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        rasterArea.setSize(dim);
+        final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+        gg.setValue(new GridGeometry2D(range, PixelInCell.CELL_CENTER,reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),reader.getCoordinateReferenceSystem(),null));
+        params[2]=gg;
+        
+        GridCoverage2D coverage = reader.read(params);
+        reader.dispose();
+        assertNotNull(coverage);
 
-         GridCoverage2D coverage = readCoverage();
 //         RenderedImageBrowser.showChain(coverage.getRenderedImage());
 //         System.in.read();
-        
-        // check the footprints have been applied by pocking the output image
-        byte[] pixel = new byte[3];
-        // Close to San Marino, black if we have the insets
-        coverage.evaluate(new DirectPosition2D(12.54, 44.03), pixel);
-        assertEquals(0, pixel[0]);
-        assertEquals(0, pixel[1]);
-        assertEquals(0, pixel[2]);
-        // Golfo di La Spezia, should be black
-        coverage.evaluate(new DirectPosition2D(9.12, 44.25), pixel);
-        assertEquals(0, pixel[0]);
-        assertEquals(0, pixel[1]);
-        assertEquals(0, pixel[2]);
-        // Sardinia, not black
-        coverage.evaluate(new DirectPosition2D(9, 40), pixel);
-        assertTrue(pixel[0] + pixel[1] + pixel[2] > 0);
-        // Piedmont, not black
-        coverage.evaluate(new DirectPosition2D(8, 45), pixel);
-        assertTrue(pixel[0] + pixel[1] + pixel[2] > 0);
-        
-
-        disposeCoverage(coverage);
-        
-        
     }
+
     
     @Test
     public void testInsetsFull() throws Exception {
@@ -436,4 +441,41 @@ public class ImageMosaicFootprintsTest {
             IOUtils.closeQuietly(fos);
         }
     }
+
+    @Test
+        public void testInsetsBorder() throws Exception {
+            // copy the footprints mosaic over
+            FileUtils.copyDirectory(footprintsSource, testMosaic);
+            Properties p = new Properties();
+            p.put(MultiLevelROIProviderFactory.INSET_PROPERTY, "0.1"); 
+            saveFootprintProperties(p);
+    
+             GridCoverage2D coverage = readCoverage();
+    //         RenderedImageBrowser.showChain(coverage.getRenderedImage());
+    //         System.in.read();
+            
+            // check the footprints have been applied by pocking the output image
+            byte[] pixel = new byte[3];
+            // Close to San Marino, black if we have the insets
+            coverage.evaluate(new DirectPosition2D(12.54, 44.03), pixel);
+            assertEquals(0, pixel[0]);
+            assertEquals(0, pixel[1]);
+            assertEquals(0, pixel[2]);
+            // Golfo di La Spezia, should be black
+            coverage.evaluate(new DirectPosition2D(9.12, 44.25), pixel);
+            assertEquals(0, pixel[0]);
+            assertEquals(0, pixel[1]);
+            assertEquals(0, pixel[2]);
+            // Sardinia, not black
+            coverage.evaluate(new DirectPosition2D(9, 40), pixel);
+            assertTrue(pixel[0] + pixel[1] + pixel[2] > 0);
+            // Piedmont, not black
+            coverage.evaluate(new DirectPosition2D(8, 45), pixel);
+            assertTrue(pixel[0] + pixel[1] + pixel[2] > 0);
+            
+    
+            disposeCoverage(coverage);
+            
+            
+        }
 }

@@ -16,9 +16,7 @@
  */
 package org.geotools.styling;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
@@ -180,7 +178,7 @@ public class SLDTransformerTest {
         Style[] stuff = parser.readXML();
         Style out = stuff[0];
         assertNotNull(out);
-        assertEquals(0.25, SLD.rasterOpacity(out));
+        assertEquals(0.25, SLD.rasterOpacity(out), 0d);
     }
 
     /**
@@ -1182,6 +1180,77 @@ public class SLDTransformerTest {
         
         assertXpathEvaluatesTo("1m", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name='font-size']", doc);
     }
+    
+    @Test
+    public void testLabelMixedContent() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.setLabel(ff.function("strConcat", ff.literal("abc"), ff.property("myProperty")));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+        
+        String xml = transformer.transform(sld);
+        Document doc = buildTestDocument(xml);
+        
+        assertXpathEvaluatesTo("abc", "//sld:Label/text()[1]", doc);
+        assertXpathEvaluatesTo("ogc:PropertyName", "name(//sld:Label/*[1])", doc);
+        assertXpathEvaluatesTo("myProperty", "//sld:Label/*[1]/text()", doc);
+    }
+    
+    @Test
+    public void testLabelCDataStart() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.setLabel(ff.function("strConcat", ff.literal(" abc"), ff.property("myProperty")));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+        
+        String xml = transformer.transform(sld);
+        
+        assertTrue(xml.contains("<sld:Label><![CDATA[ abc]]>\n" + 
+                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>\n"
+                + "                        </sld:Label>"));
+    }
+    
+    @Test
+    public void testLabelCDataEnd() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.setLabel(ff.function("strConcat", ff.literal("abc "), ff.property("myProperty")));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+        
+        String xml = transformer.transform(sld);
+        assertTrue(xml.contains("<sld:Label><![CDATA[abc ]]>\n" + 
+                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>\n"
+                + "                        </sld:Label>"));
+    }
+    
+    @Test
+    public void testLabelCDataMid() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.setLabel(ff.function("strConcat", ff.literal("a  bc"), ff.property("myProperty")));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+        
+        String xml = transformer.transform(sld);
+        assertTrue(xml.contains("<sld:Label><![CDATA[a  bc]]>\n" + 
+                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>\n"
+                + "                        </sld:Label>"));
+
+    }
+    
+    @Test
+    public void testLabelNested() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.setLabel(ff.function("strConcat", ff.literal("abc "), ff.function("strConcat", ff.property("myProperty"), ff.literal(" def"))));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+        
+        String xml = transformer.transform(sld);
+        // System.out.println(xml);
+        // Java own xpath processor does not seem to fully support normalize-space() so we resort to string comparisons here
+        assertTrue(xml.contains("<sld:Label><![CDATA[abc ]]>\n" + 
+                "                            <ogc:PropertyName>myProperty</ogc:PropertyName><![CDATA[ def]]></sld:Label>"));
+    }
+
 
     private StyledLayerDescriptor buildSLDAroundSymbolizer(org.geotools.styling.Symbolizer symbolizer) {
         StyleBuilder sb = new StyleBuilder();

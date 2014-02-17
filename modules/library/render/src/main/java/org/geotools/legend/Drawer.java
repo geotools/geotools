@@ -33,7 +33,6 @@ import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTS;
@@ -54,6 +53,7 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.util.NumberRange;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.expression.Expression;
@@ -74,10 +74,6 @@ import com.vividsolutions.jts.geom.Polygon;
 /**
  * This class is used to isolate GeoTools from the specific graphic library
  * being used for rendering.
- *
- * @author Administrateur
- *
- *
  *
  * @source $URL$
  */
@@ -364,7 +360,7 @@ public class Drawer {
             }else if( tmp instanceof GraphicStyle2D){
                 GraphicStyle2D style=(GraphicStyle2D) tmp;
  
-                float rotation = style.getRotation();
+                float rotation = style.getRotation(); // in radians
  
                 g.setTransform(AffineTransform.getRotateInstance(rotation));
  

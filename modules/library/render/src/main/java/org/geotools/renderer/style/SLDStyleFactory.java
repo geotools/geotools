@@ -146,6 +146,12 @@ public class SLDStyleFactory {
 	/** This one is used as the observer object in image tracks */
 	private static final Canvas obs = new Canvas();
 
+	/**
+	 * The default size for Marks when a mark is used, but no size is provided (got from
+	 * the default size to be used for SVGs and other scalable graphics when no size is provided)
+	 */
+    public static final int DEFAULT_MARK_SIZE = 16;
+
 	static { // static block to populate the lookups
 		joinLookup.put("miter", new Integer(BasicStroke.JOIN_MITER));
 		joinLookup.put("bevel", new Integer(BasicStroke.JOIN_BEVEL));
@@ -554,9 +560,8 @@ public class SLDStyleFactory {
 		} catch (NumberFormatException nfe) {
 			// nothing to do
 		}
-
-		float rotation = (float) ((evalToFloat(sldGraphic.getRotation(),
-				feature, 0) * Math.PI) / 180);
+		
+		float rotation = (float) Math.toRadians( evalToDouble(sldGraphic.getRotation(), feature, 0));
 
 		// Extract the sequence of external graphics and symbols and process
 		// them in order
@@ -654,7 +659,7 @@ public class SLDStyleFactory {
 				// in case of Mark we don't have a natural size, so we default
 				// to 16
 				if (size <= 0)
-					size = 16;
+					size = DEFAULT_MARK_SIZE;
 				ms2d.setSize(size);
 				ms2d.setRotation(rotation);
 				retval = ms2d;
@@ -755,8 +760,7 @@ public class SLDStyleFactory {
 				// don't rotate labels that are being placed on shields.
 				rotation = 0.0;
 			} else {
-				rotation = evalToDouble(p.getRotation(), feature, 0);
-				rotation *= (Math.PI / 180.0);
+				rotation = Math.toRadians( evalToDouble(p.getRotation(), feature, 0));
 			}
 
 			ts2d.setPointPlacement(true);
@@ -1097,8 +1101,8 @@ public class SLDStyleFactory {
                 int extraY = margin[0] + margin[2];
                 int extraX = margin[1] + margin[3];
                 int type = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType();
-                BufferedImage imageWithMargin = new BufferedImage(image.getWidth() + extraY, image.getHeight() + extraX, type);
-                int tx = margin[3];
+                BufferedImage imageWithMargin = new BufferedImage(image.getWidth() + extraX, image.getHeight() + extraY, type);
+                int tx = margin[1];
                 int ty = margin[0];
                 AffineTransform at = AffineTransform.getTranslateInstance(tx, ty);
                 Graphics2D graphics = imageWithMargin.createGraphics();
@@ -1150,7 +1154,7 @@ public class SLDStyleFactory {
         		.ceil(sizeY * 3), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = image.createGraphics();
         g2d.setRenderingHints(renderingHints);
-        double rotation = evalToDouble(gr.getRotation(), feature, 0.0);
+        double rotation = Math.toRadians(evalToDouble(gr.getRotation(), feature, 0.0)); // fix for GEOS-6217
         for (int i = -1; i < 2; i++) {
         	for (int j = -1; j < 2; j++) {
         		double tx = sizeX * 1.5 + sizeX * i;
@@ -1207,10 +1211,7 @@ public class SLDStyleFactory {
         BufferedImage result = new BufferedImage(icon.getIconWidth() + border * 2,
                 icon.getIconHeight() + border * 2, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = (Graphics2D) result.getGraphics();
-        // we paint it once, make it look good
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        g.setRenderingHints(renderingHints);
         icon.paintIcon(null, g, 1, 1);
         g.dispose();
 
@@ -1321,7 +1322,16 @@ public class SLDStyleFactory {
 
 		return null;
 	}
-
+	/**
+	 * 
+	 * @param g2d graphics context
+	 * @param tx x offset
+	 * @param ty y offset
+	 * @param mark mark used for fill pattern
+	 * @param size size of mark
+	 * @param rotation rotation in radians
+	 * @param feature feature used for expression evaulation
+	 */
 	void fillDrawMark(Graphics2D g2d, double tx, double ty, Mark mark,
 			double size, double rotation, Object feature) {
 		if (mark == null)
@@ -1339,13 +1349,8 @@ public class SLDStyleFactory {
 		// resize/rotate/rescale the shape
 		Shape shape = markAT.createTransformedShape(originalShape);
 
-		// we draw it once, make it look nice
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-				RenderingHints.VALUE_STROKE_PURE);
+		// cascade the rendering hints configured in the renderer
+		g2d.setRenderingHints(renderingHints);
 
 		if (mark.getFill() != null) {
 			if (LOGGER.isLoggable(Level.FINER)) {
@@ -1481,7 +1486,7 @@ public class SLDStyleFactory {
 		}
 		return fallback;
 	}
-
+	
 	private float evalToFloat(Expression exp, Object f, float fallback) {
 		if (exp == null) {
 			return fallback;

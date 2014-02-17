@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geotools.factory.Hints;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.function.FilterFunction_sdonn;
@@ -33,6 +34,7 @@ import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SQLDialect;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
@@ -276,6 +278,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             literalValues.add(clipToWorldFeatureTypeGeometry(geomValue));
             literalTypes.add(Geometry.class);
             SRIDs.add(getFeatureTypeGeometrySRID());
+            dimensions.add(getFeatureTypeGeometryDimension());
 
             int sdo_num_res = getIntFromLiteral((Literal) sdoNumResExp);
             if (sdoBatchSizeExp != null) {
@@ -342,6 +345,12 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         return (Integer) featureType.getGeometryDescriptor().getUserData()
                 .get(JDBCDataStore.JDBC_NATIVE_SRID);
     }
+    
+    private Integer getFeatureTypeGeometryDimension() {
+        GeometryDescriptor descriptor = featureType.getGeometryDescriptor();
+        return (Integer) descriptor.getUserData().get(Hints.COORDINATE_DIMENSION);
+    }
+
 	
     private boolean isFeatureTypeGeometryGeodetic() {
         Boolean geodetic = (Boolean) featureType.getGeometryDescriptor().getUserData()

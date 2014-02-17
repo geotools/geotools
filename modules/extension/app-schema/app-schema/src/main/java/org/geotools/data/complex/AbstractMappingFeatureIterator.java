@@ -169,7 +169,18 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         this.attf = new AppSchemaFeatureFactoryImpl();
 
         this.mapping = mapping;
-        
+
+        // validate and initialise resolve options
+        Hints hints = query.getHints();
+        ResolveValueType resolveVal = (ResolveValueType) hints.get( Hints.RESOLVE );
+        boolean resolve = ResolveValueType.ALL.equals(resolveVal) || ResolveValueType.LOCAL.equals(resolveVal);
+        if (!resolve && resolveVal!=null && !ResolveValueType.NONE.equals(resolveVal)) {
+            throw new IllegalArgumentException("Resolve:" + resolveVal.getName() + " is not supported in app-schema!");
+        }
+        Integer atd = (Integer) hints.get(Hints.ASSOCIATION_TRAVERSAL_DEPTH);
+        resolveDepth = resolve ? atd==null? 0 : atd  : 0;
+        resolveTimeOut = (Integer) hints.get( Hints.RESOLVE_TIMEOUT );
+
         namespaces = mapping.getNamespaces();
         namespaceAwareFilterFactory = new FilterFactoryImplNamespaceAware(namespaces);
         
@@ -210,19 +221,6 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         xpathAttributeBuilder.setFeatureFactory(attf);
         initialiseSourceFeatures(mapping, unrolledQuery, query.getCoordinateSystemReproject());
         xpathAttributeBuilder.setFilterFactory(namespaceAwareFilterFactory);
-        
-        Hints hints = query.getHints();
-        ResolveValueType resolveVal = (ResolveValueType) hints.get( Hints.RESOLVE );
-        boolean resolve = ResolveValueType.ALL.equals(resolveVal) || ResolveValueType.LOCAL.equals(resolveVal);
-        
-        if (!resolve && resolveVal!=null && !ResolveValueType.NONE.equals(resolveVal)) {
-            throw new IllegalArgumentException("Resolve:" + resolveVal.getName() + " is not supported in app-schema!");
-        }
-        
-        Integer atd = (Integer) hints.get(Hints.ASSOCIATION_TRAVERSAL_DEPTH);
-        
-        resolveDepth = resolve ? atd==null? 0 : atd  : 0;
-        resolveTimeOut = (Integer) hints.get( Hints.RESOLVE_TIMEOUT );
     }
     
     //properties can only be set by constructor, before initialising source features 
@@ -436,7 +434,8 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                 final Hints hints = new Hints();
                 if (resolveDepth > 1) {
                     hints.put(Hints.RESOLVE, ResolveValueType.ALL);
-                    hints.put(Hints.RESOLVE_TIMEOUT, resolveTimeOut);
+                    // only the top-level resolve thread should monitor timeout
+                    hints.put(Hints.RESOLVE_TIMEOUT, Integer.MAX_VALUE);
                     hints.put(Hints.ASSOCIATION_TRAVERSAL_DEPTH, resolveDepth - 1);
                 } else {
                     hints.put(Hints.RESOLVE, ResolveValueType.NONE);
@@ -446,22 +445,28 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                 FeatureFinder finder = new FeatureFinder(refid, hints);
                 // this will be null if joining or sleeping is interrupted
                 Feature foundFeature = null;
-                Thread thread = new Thread(finder);
-                long startTime = System.currentTimeMillis();
-                thread.start();
-                try {
-                    while (thread.isAlive()
-                            && (System.currentTimeMillis() - startTime) / 1000 < resolveTimeOut) {
-                        Thread.sleep(RESOLVE_TIMEOUT_POLL_INTERVAL);
-                    }
-                    thread.interrupt();
-                    // joining ensures synchronisation
-                    thread.join();
+                if (resolveTimeOut == Integer.MAX_VALUE) {
+                    // not the top-level resolve thread so do not monitor timeout
+                    finder.run();
                     foundFeature = finder.getFeature();
-                } catch (InterruptedException e) {
-                    // clean up as best we can
-                    thread.interrupt();
-                    throw new RuntimeException("Interrupted while resolving resource " + refid);
+                } else {
+                    Thread thread = new Thread(finder);
+                    long startTime = System.currentTimeMillis();
+                    thread.start();
+                    try {
+                        while (thread.isAlive()
+                                && (System.currentTimeMillis() - startTime) / 1000 < resolveTimeOut) {
+                            Thread.sleep(RESOLVE_TIMEOUT_POLL_INTERVAL);
+                        }
+                        thread.interrupt();
+                        // joining ensures synchronisation
+                        thread.join();
+                        foundFeature = finder.getFeature();
+                    } catch (InterruptedException e) {
+                        // clean up as best we can
+                        thread.interrupt();
+                        throw new RuntimeException("Interrupted while resolving resource " + refid);
+                    }
                 }
 
                 if (foundFeature != null) {

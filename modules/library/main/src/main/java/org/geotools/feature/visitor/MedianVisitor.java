@@ -89,6 +89,10 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
          * Visitor function
          */
         Object result = expr.evaluate(feature);
+        if (result == null) {
+            return; // skip
+        }
+
         if (result instanceof Comparable) {
             Comparable value = (Comparable) result;
             list.add(value);

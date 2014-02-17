@@ -312,21 +312,23 @@ public class SLDMockData {
         return element(SLD.LABEL, document, parent, "label");
     }
 
-    static Element halo(Document document, Node parent) {
+    static Element halo(Document document, Node parent, boolean setFillRadius) {
         Element halo = element(SLD.HALO, document, parent);
-        fill(document, halo);
-        element(SLD.RADIUS, document, halo, "1.0");
+        if(setFillRadius) {
+            fill(document, halo);
+            element(SLD.RADIUS, document, halo, "1.0");
+        }
 
         return halo;
     }
-
+    
     static Element textSymbolizer(Document document, Node parent) {
         Element textSymbolizer = element(SLD.TEXTSYMBOLIZER, document, parent);
         geometry(document, textSymbolizer);
         label(document, textSymbolizer);
         font(document, textSymbolizer);
         pointPlacement(document, textSymbolizer);
-        halo(document, textSymbolizer);
+        halo(document, textSymbolizer, true);
         fill(document, textSymbolizer);
 
         return textSymbolizer;

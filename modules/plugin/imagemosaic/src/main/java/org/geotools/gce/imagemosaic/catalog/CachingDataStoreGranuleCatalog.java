@@ -188,7 +188,7 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
                         if(granule != null) {
                             // check ROI inclusion
                             final Geometry footprint = granule.getFootprint();
-                            if(intersectionGeometry==null||footprint==null||footprint.intersects(intersectionGeometry)){
+                            if(intersectionGeometry==null||footprint==null||polygonOverlap(footprint, intersectionGeometry)){
                                 visitor.visit(granule, null);
                             }else{
                                 if(LOGGER.isLoggable(Level.FINE)){
@@ -207,6 +207,12 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
                             }
                         }
                 }
+            }
+
+            private boolean polygonOverlap(Geometry g1, Geometry g2) {
+                // TODO: try to use relate instead
+                Geometry intersection = g1.intersection(g2);
+                return intersection != null && intersection.getDimension() == 2;
             }
         }, listener);
         
@@ -244,6 +250,11 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
      */
     public GranuleCatalog getAdaptee() {
         return adaptee;
+    }
+
+    @Override
+    public void removeType(String typeName) throws IOException {
+        adaptee.removeType(typeName);
     }
 }
 

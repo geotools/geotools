@@ -58,6 +58,7 @@ public class SQLServerTestSetup extends JDBCTestSetup {
         //drop old data
         runSafe("DROP TABLE ft1");
         
+        runSafe("DROP TABLE ft_from");
 
         try {
             run("DROP TABLE ft2; COMMIT;");
@@ -89,6 +90,17 @@ public class SQLServerTestSetup extends JDBCTestSetup {
         
         // create the spatial index
         run("CREATE SPATIAL INDEX _ft1_geometry_index on ft1(geometry) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
+        
+        // add the ft_from table contents
+        sql = "CREATE TABLE ft_from (id int IDENTITY(0,1) PRIMARY KEY, "
+                + "geometry geometry, \"ORIGIN_FROM\" varchar(255))";
+        run(sql);
+        sql = "INSERT INTO ft_from (geometry,\"ORIGIN_FROM\") VALUES ("
+                + "geometry::STGeomFromText('POINT(0 90)',4326), 'NorthPole');";
+        run(sql);
+        sql = "INSERT INTO ft_from (geometry,\"ORIGIN_FROM\") VALUES ("
+                + "geometry::STGeomFromText('POINT(0 -90)',4326), 'SouthPole');";
+        run(sql);
     }
     
     @Override

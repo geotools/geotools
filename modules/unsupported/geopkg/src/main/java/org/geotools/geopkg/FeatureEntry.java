@@ -12,7 +12,8 @@ import org.geotools.geometry.jts.Geometries;
 public class FeatureEntry extends Entry {
 
     Geometries geometryType;
-    Integer coordDimension;
+    boolean z = false;
+    boolean m = false;
     String geometryColumn;
 
     public FeatureEntry() {
@@ -35,19 +36,29 @@ public class FeatureEntry extends Entry {
         this.geometryType = geometryType;
     }
 
-    public Integer getCoordDimension() {
-        return coordDimension;
-    }
-
-    public void setCoordDimension(Integer coordDimension) {
-        this.coordDimension = coordDimension;
-    }
-
     void init(FeatureEntry e) {
         super.init(e);
         setGeometryColumn(e.getGeometryColumn());
         setGeometryType(e.getGeometryType());
-        setCoordDimension(e.getCoordDimension());
+        setZ(e.isZ());
+        setM(e.isM());
+    }
+    
+
+    public boolean isZ() {
+        return z;
+    }
+
+    public void setZ(boolean z) {
+        this.z = z;
+    }
+
+    public boolean isM() {
+        return m;
+    }
+
+    public void setM(boolean m) {
+        this.m = m;
     }
 
     @Override

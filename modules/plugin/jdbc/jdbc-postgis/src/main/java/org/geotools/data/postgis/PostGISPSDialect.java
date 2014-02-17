@@ -194,7 +194,7 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public void prepareGeometryValue(Geometry g, int srid, Class binding,
+    public void prepareGeometryValue(Geometry g, int dimension, int srid, Class binding,
             StringBuffer sql) {
         if (g != null) {
             sql.append("ST_GeomFromWKB(?, " + srid + ")");
@@ -204,7 +204,7 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public void setGeometryValue(Geometry g, int srid, Class binding,
+    public void setGeometryValue(Geometry g, int dimension, int srid, Class binding,
             PreparedStatement ps, int column) throws SQLException {
         if (g != null && !g.isEmpty()) {
             if (g instanceof LinearRing ) {
@@ -212,7 +212,7 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
                 g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
             }
             
-            byte[] bytes = new WKBWriter().write(g);
+            byte[] bytes = new WKBWriter(dimension).write(g);
             ps.setBytes(column, bytes);
         } else {
             ps.setNull(column, Types.OTHER, "Geometry");
@@ -236,4 +236,9 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
         delegate.applyLimitOffset(sql, limit, offset);
     }
 
+    @Override
+    public int getGeometryDimension(String schemaName, String tableName, String columnName,
+            Connection cx) throws SQLException {
+        return delegate.getGeometryDimension(schemaName, tableName, columnName, cx);
+    }
 }

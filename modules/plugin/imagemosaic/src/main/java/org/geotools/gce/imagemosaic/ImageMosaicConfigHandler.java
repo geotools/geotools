@@ -128,8 +128,7 @@ public class ImageMosaicConfigHandler {
 
         Utilities.ensureNonNull("eventHandler", eventHandler);
         this.eventHandler = eventHandler;
-        
-        
+
         Indexer defaultIndexer = configuration.getIndexer();
         ParametersType params = null;
         String rootMosaicDir = null;
@@ -160,14 +159,11 @@ public class ImageMosaicConfigHandler {
         } else {
             // Backward compatible with old indexing
             indexerFile = new File(parent, Utils.INDEXER_PROPERTIES);
-
             if (Utils.checkFileReadable(indexerFile)) {
                 // load it and parse it
                 final Properties props = Utils.loadPropertiesFromURL(DataUtilities
                         .fileToURL(indexerFile));
-
                 indexer = createIndexer(props, params);
-
             }
         }
         if (indexer != null) {
@@ -176,6 +172,7 @@ public class ImageMosaicConfigHandler {
             String param = IndexerUtils.getParameter(Utils.Prop.AUXILIARY_FILE, indexer);
             if (param != null) {
                 ancillaryFile = param;
+                setReader(hints, false);
             }
             if (IndexerUtils.getParameterAsBoolean(Utils.Prop.USE_EXISTING_SCHEMA, indexer)) {
                 this.useExistingSchema = true;
@@ -191,10 +188,27 @@ public class ImageMosaicConfigHandler {
         this.runConfiguration = new CatalogBuilderConfiguration(configuration);
     }
 
+    private void setReader(Hints hints, final boolean updateHints) {
+        if (hints != null && hints.containsKey(Utils.MOSAIC_READER)) {
+            Object reader = hints.get(Utils.MOSAIC_READER);
+            if (reader instanceof ImageMosaicReader) {
+                if (getParentReader() == null) {
+                    setParentReader((ImageMosaicReader) reader);
+                }
+                if (updateHints) {
+                    Hints readerHints = getParentReader().getHints();
+                    readerHints.add(hints);
+                }
+            }
+        }
+        
+    }
+
     private void updateConfigurationHints(final CatalogBuilderConfiguration configuration,
             Hints hints, final String ancillaryFile, final String rootMosaicDir) {
+        String ancillaryFilePath = null;
         if (ancillaryFile != null) {
-            final String ancillaryFilePath = rootMosaicDir + File.separatorChar + ancillaryFile;
+            ancillaryFilePath = rootMosaicDir + File.separatorChar + ancillaryFile;
             if (hints != null) {
                 hints.put(Utils.AUXILIARY_FILES_PATH, ancillaryFilePath);
             } else {
@@ -202,15 +216,7 @@ public class ImageMosaicConfigHandler {
                 configuration.setHints(hints);
             }
         }
-
-        if (hints != null && hints.containsKey(Utils.MOSAIC_READER)) {
-            Object reader = hints.get(Utils.MOSAIC_READER);
-            if (reader instanceof ImageMosaicReader) {
-                setParentReader((ImageMosaicReader) reader);
-                Hints readerHints = getParentReader().getHints();
-                readerHints.add(hints);
-            }
-        }
+        setReader(hints, true);
     }
 
     /**
@@ -384,25 +390,23 @@ public class ImageMosaicConfigHandler {
                 final String base = FilenameUtils.getName(parent.getAbsolutePath());
                 // we create a root properties file if we have more than one coverage, or if the
                 // one coverage does not have the default name
-                if (supportsEmpty || keySize > 1
-                        || (keySize > 0 && !base.equals(keys.iterator().next()))) {
+                if (supportsEmpty || keySize > 1 || (keySize > 0 && !base.equals(keys.iterator().next()))) {
                     File mosaicFile = null;
+                    File originFile = null;
                     if (indexerFile.getAbsolutePath().endsWith("xml")) {
-                        mosaicFile = new File(indexerFile.getAbsolutePath().replace(
-                                Utils.INDEXER_XML, (base + ".xml")));
-                        FileUtils.copyFile(indexerFile, mosaicFile);
+                        mosaicFile = new File(indexerFile.getAbsolutePath().replace(Utils.INDEXER_XML, (base + ".xml")));
+                        originFile = indexerFile;
                     } else if (indexerFile.getAbsolutePath().endsWith("properties")) {
-                        mosaicFile = new File(indexerFile.getAbsolutePath().replace(
-                                Utils.INDEXER_PROPERTIES, (base + ".properties")));
-                        FileUtils.copyFile(indexerFile, mosaicFile);
+                        mosaicFile = new File(indexerFile.getAbsolutePath().replace(Utils.INDEXER_PROPERTIES, (base + ".properties")));
+                        originFile = indexerFile;
                     } else {
                         final String source = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR)
-                                + File.separatorChar
-                                + configurations.get(keys.iterator().next()).getName()
-                                + ".properties";
-                        mosaicFile = new File(indexerFile.getAbsolutePath().replace(
-                                Utils.INDEXER_PROPERTIES, (base + ".properties")));
-                        FileUtils.copyFile(new File(source), mosaicFile);
+                                + File.separatorChar + configurations.get(keys.iterator().next()).getName() + ".properties";
+                        mosaicFile = new File(indexerFile.getAbsolutePath().replace(Utils.INDEXER_PROPERTIES, (base + ".properties")));
+                        originFile = new File(source);
+                    }
+                    if (!mosaicFile.exists()) {
+                        FileUtils.copyFile(originFile, mosaicFile);
                     }
                 }
 
@@ -427,16 +431,16 @@ public class ImageMosaicConfigHandler {
             final boolean useName) {
         // create a sample image to store SM and CM
         Utilities.ensureNonNull("mosaicConfiguration", mosaicConfiguration);
+        String filePath = null;
         if (mosaicConfiguration.getSampleModel() != null
                 && mosaicConfiguration.getColorModel() != null) {
 
             // sample image file
             // TODO: Consider revisit this using different name/folder
             final String baseName = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR) + "/";
-            final File sampleImageFile = new File(baseName
-                    + (useName ? mosaicConfiguration.getName() : "") + Utils.SAMPLE_IMAGE_NAME);
+            filePath = baseName + (useName ? mosaicConfiguration.getName() : "") + Utils.SAMPLE_IMAGE_NAME;
             try {
-                Utils.storeSampleImage(sampleImageFile, mosaicConfiguration.getSampleModel(),
+                Utils.storeSampleImage(new File(filePath), mosaicConfiguration.getSampleModel(),
                         mosaicConfiguration.getColorModel());
             } catch (IOException e) {
                 eventHandler.fireEvent(Level.SEVERE, e.getLocalizedMessage(), 0);
@@ -548,34 +552,36 @@ public class ImageMosaicConfigHandler {
         }
         
         if (props.containsKey(Prop.INDEXING_DIRECTORIES)) {
-            IndexerUtils.setParam(params.getParameter(), props, Prop.INDEXING_DIRECTORIES);
+            IndexerUtils.setParam(parameters, props, Prop.INDEXING_DIRECTORIES);
         }
         if (props.containsKey(Prop.AUXILIARY_FILE)) {
-            IndexerUtils.setParam(params.getParameter(), props, Prop.AUXILIARY_FILE);
+            IndexerUtils.setParam(parameters, props, Prop.AUXILIARY_FILE);
         }
         if (props.containsKey(Prop.CAN_BE_EMPTY)) {
-            IndexerUtils.setParam(params.getParameter(), props, Prop.CAN_BE_EMPTY);
+            IndexerUtils.setParam(parameters, props, Prop.CAN_BE_EMPTY);
         }
         if (props.containsKey(Prop.USE_EXISTING_SCHEMA)) {
-            IndexerUtils.setParam(params.getParameter(), props, Prop.USE_EXISTING_SCHEMA);
+            IndexerUtils.setParam(parameters, props, Prop.USE_EXISTING_SCHEMA);
         }
-        
+        if (props.containsKey(Prop.CHECK_AUXILIARY_METADATA)) {
+            IndexerUtils.setParam(parameters, props, Prop.CHECK_AUXILIARY_METADATA);
+        }
         return indexer;
     }
 
     private void closeIndexObjects() {
 
-        // TODO: We may consider avoid disposing the catalog to allow the reader to use the already available catalog
-        try {
-            if (catalog != null) {
-                catalog.dispose();
-            }
-        } catch (Throwable e) {
-            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-        }
-
-        catalog = null;
-        getParentReader().granuleCatalog = null;
+//        // TODO: We may consider avoid disposing the catalog to allow the reader to use the already available catalog
+//        try {
+//            if (catalog != null) {
+//                catalog.dispose();
+//            }
+//        } catch (Throwable e) {
+//            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//        }
+//
+//        catalog = null;
+//        getParentReader().granuleCatalog = null;
     }
 
     /**
@@ -637,6 +643,8 @@ public class ImageMosaicConfigHandler {
         properties.setProperty(Utils.Prop.TYPENAME, mosaicConfiguration.getName());
         properties.setProperty(Utils.Prop.EXP_RGB,
                 Boolean.toString(mosaicConfiguration.isExpandToRGB()));
+        properties.setProperty(Utils.Prop.CHECK_AUXILIARY_METADATA,
+                Boolean.toString(mosaicConfiguration.isCheckAuxiliaryMetadata()));
         properties.setProperty(Utils.Prop.HETEROGENEOUS,
                 Boolean.toString(catalogConfigurationBean.isHeterogeneous()));
 
@@ -660,11 +668,11 @@ public class ImageMosaicConfigHandler {
         }
 
         OutputStream outStream = null;
+        String filePath = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR) + "/"
+                // + runConfiguration.getIndexName() + ".properties"));
+                + mosaicConfiguration.getName() + ".properties"; 
         try {
-            outStream = new BufferedOutputStream(new FileOutputStream(
-                    runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR) + "/"
-                    // + runConfiguration.getIndexName() + ".properties"));
-                            + mosaicConfiguration.getName() + ".properties"));
+            outStream = new BufferedOutputStream(new FileOutputStream(filePath));
             properties.store(outStream, "-Automagically created from GeoTools-");
         } catch (FileNotFoundException e) {
             eventHandler.fireEvent(Level.SEVERE, e.getLocalizedMessage(), 0);
@@ -813,6 +821,7 @@ public class ImageMosaicConfigHandler {
             catalogConfigurationBean.setTypeName(coverageName);
             
             configBuilder.setCatalogConfigurationBean(catalogConfigurationBean);
+            configBuilder.setCheckAuxiliaryMetadata(IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));
 
             currentConfigurationBean = configBuilder.getMosaicConfigurationBean();
 

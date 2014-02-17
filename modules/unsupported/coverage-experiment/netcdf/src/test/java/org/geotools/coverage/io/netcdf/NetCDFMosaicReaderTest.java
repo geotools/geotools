@@ -22,7 +22,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
@@ -65,7 +64,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -387,6 +385,38 @@ public class NetCDFMosaicReaderTest extends Assert {
             reader.dispose();
         }
     }
+
+    @Test
+    public void testHarvestHDF5Data() throws IOException {
+        File nc1 = TestData.file(this,"2DLatLonCoverage.nc");
+        File nc2 = TestData.file(this,"2DLatLonCoverage2.nc");
+        File mosaic = new File(TestData.file(this,"."),"simpleMosaic");
+        if(mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+        FileUtils.copyFileToDirectory(nc2, mosaic);
+
+        // the datastore.properties file is also mandatory...
+        File dsp = TestData.file(this,"datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+
+        File xml =  TestData.file(this,"hdf5Coverage2D.xml");
+        FileUtils.copyFileToDirectory(xml, mosaic);
+
+        // The indexer
+        String indexer = "TimeAttribute=time\n"
+                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+              //  + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
+        indexer += Prop.AUXILIARY_FILE + "=" + "hdf5Coverage2D.xml";
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+
+        //simply test if the mosaic can be read without exceptions
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(mosaic);
+        reader.read("L1_V2",null);
+    }
     
     @Test
     public void testHarvestAddVariable() throws IOException {
@@ -629,10 +659,10 @@ public class NetCDFMosaicReaderTest extends Assert {
             
             assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, reader.getCoordinateReferenceSystem()));
             GeneralEnvelope envelope = reader.getOriginalEnvelope("NO2");
-            assertEquals(-180, envelope.getMinimum(0), 0d);
-            assertEquals(180, envelope.getMaximum(0), 0d);
-            assertEquals(-90, envelope.getMinimum(1), 0d);
-            assertEquals(90, envelope.getMaximum(1), 0d);
+            assertEquals(-360, envelope.getMinimum(0), 0d);
+            assertEquals(360, envelope.getMaximum(0), 0d);
+            assertEquals(-180, envelope.getMinimum(1), 0d);
+            assertEquals(180, envelope.getMaximum(1), 0d);
 
             // check we can read a coverage out of it
             coverage = reader.read(null);
@@ -651,7 +681,59 @@ public class NetCDFMosaicReaderTest extends Assert {
             reader.dispose();
         }
     }
-    
+
+    @Test
+    public void testDeleteCoverageGome() throws IOException {
+        // prepare a "mosaic" with just one NetCDF
+        File nc1 = TestData.file(this,"O3-NO2.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_deleteCoverage");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+
+        File xml = TestData.file(this,".O3-NO2/O3-NO2.xml");
+        FileUtils.copyFileToDirectory(xml, mosaic);
+
+        // The indexer
+        String indexer = "TimeAttribute=time\n"
+                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+        indexer += Prop.AUXILIARY_FILE + "=" + "O3-NO2.xml";
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+
+
+        // the datastore.properties file is also mandatory...
+        File dsp = TestData.file(this,"datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+
+        // have the reader harvest it
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(mosaic);
+        GridCoverage2D coverage = null;
+        assertNotNull(reader);
+        try {
+            assertEquals(2, reader.getGridCoverageNames().length);
+
+            File[] files = mosaic.listFiles();
+            assertEquals(15, files.length);
+            
+            reader.dispose();
+            reader = format.getReader(mosaic);
+            
+            reader.delete(false);
+            files = mosaic.listFiles();
+            assertEquals(2, files.length);
+            
+        } finally {
+            if(coverage != null) {
+                ImageUtilities.disposePlanarImageChain((PlanarImage) coverage.getRenderedImage());
+                coverage.dispose(true);
+            }
+            reader.dispose();
+        }
+    }
+
     @Test
     public void testReadCoverageGome2Names() throws IOException {
         // prepare a "mosaic" with just one NetCDF
@@ -700,10 +782,10 @@ public class NetCDFMosaicReaderTest extends Assert {
             
             assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, reader.getCoordinateReferenceSystem("NO2")));
             GeneralEnvelope envelope = reader.getOriginalEnvelope("NO2");
-            assertEquals(-180, envelope.getMinimum(0), 0d);
-            assertEquals(180, envelope.getMaximum(0), 0d);
-            assertEquals(-90, envelope.getMinimum(1), 0d);
-            assertEquals(90, envelope.getMaximum(1), 0d);
+            assertEquals(-360, envelope.getMinimum(0), 0d);
+            assertEquals(360, envelope.getMaximum(0), 0d);
+            assertEquals(-180, envelope.getMinimum(1), 0d);
+            assertEquals(180, envelope.getMaximum(1), 0d);
 
             // check we can read a coverage out of it
             coverage = reader.read("NO2", null);

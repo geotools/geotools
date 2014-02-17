@@ -82,6 +82,10 @@ public class ScreenMap {
         pixels = new int[arraySize];
         this.mt = mt;
     }
+    
+    public ScreenMap(ScreenMap original, int expandBy) {
+        this(original.minx - expandBy, original.miny - expandBy, original.width + expandBy * 2, original.height + expandBy * 2);
+    }
 
     public ScreenMap(int x, int y, int width, int height) {
         this(x, y, width, height, null);
@@ -118,8 +122,11 @@ public class ScreenMap {
      * sits in a pixel that has already been used
      */
     public boolean checkAndSet(int x, int y) {
+        // if it's outside of the screenmap we cannot say whether it's busy or not, and
+        // we cannot skip it because rendering or geometry transformation might put the geometry
+        // right in the map
         if ((x - minx) < 0 || (x - minx) > width - 1 || (y - miny) < 0 || (y - miny) > height - 1)
-            return true;
+            return false;
         int bit = bit(x - minx, y - miny);
         int index = bit / 32;
         int offset = bit % 32;

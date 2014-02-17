@@ -18,9 +18,13 @@ package org.geotools.data.h2;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
+
+import javax.sql.DataSource;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.DataStore;
 import org.geotools.data.jdbc.datasource.ManageableDataSource;
 import org.geotools.jdbc.JDBCDataStore;
@@ -55,7 +59,23 @@ public class H2DataStoreFactoryTest extends TestCase {
         assertNotNull( ds );
         assertTrue(ds.getDataSource() instanceof ManageableDataSource);
     }
-    
+
+    public void testCreateDataStoreMVCC() throws Exception {
+        Map clonedParams = new HashMap(params);
+        clonedParams.put(H2DataStoreFactory.MVCC.key, true);
+        JDBCDataStore ds = factory.createDataStore(clonedParams);
+        assertNotNull(ds);
+        final DataSource source = ds.getDataSource();
+        assertNotNull(source);
+        final DataSource wrapped = source.unwrap(DataSource.class);
+        assertNotNull(wrapped);
+        if (wrapped instanceof BasicDataSource) {
+            final BasicDataSource basicSource = (BasicDataSource) wrapped;
+            final String url = basicSource.getUrl();
+            assertTrue(url.contains("MVCC=true"));
+        }
+    }
+
     public void testTCP() throws Exception {
         HashMap params = new HashMap();
         params.put(H2DataStoreFactory.HOST.key, "localhost");

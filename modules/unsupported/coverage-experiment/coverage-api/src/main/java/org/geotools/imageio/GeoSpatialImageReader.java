@@ -27,6 +27,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageReaderSpi;
 
+import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
@@ -39,7 +40,7 @@ import org.opengis.feature.type.Name;
  *
  * @source $URL$
  */
-public abstract class GeoSpatialImageReader extends ImageReader {
+public abstract class GeoSpatialImageReader extends ImageReader implements FileSetManager{
 
     /** the coverage slices slicesCatalog currently stored as H2 DB */
     private CoverageSlicesCatalog slicesCatalog;

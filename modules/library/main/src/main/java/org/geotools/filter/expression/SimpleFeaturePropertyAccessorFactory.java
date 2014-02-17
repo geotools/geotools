@@ -56,17 +56,36 @@ public class SimpleFeaturePropertyAccessorFactory implements
     static PropertyAccessor FID_ACCESS = new FidSimpleFeaturePropertyAccessor();
     static Pattern idPattern = Pattern.compile("@(\\w+:)?id");
 
+    private static final String NAME_START_CHAR =
+            ":" +
+            "A-Z" +
+            "_" +
+            "a-z" +
+            "\\u00c0-\\u00d6" +
+            "\\u00d8-\\u00f6" +
+            "\\u00f8-\\u02ff" +
+            "\\u0370-\\u037d" +
+            "\\u037f-\\u1fff" +
+            "\\u200c-\\u200d" +
+            "\\u2070-\\u218f" +
+            "\\u2c00-\\u2fef" +
+            "\\u3001-\\ud7ff" +
+            "\\uf900-\\ufdcf" +
+            "\\ufdf0-\\ufffd";
+    private static final String NAME_CHAR =
+            NAME_START_CHAR +
+            "\\-" +
+            "\\." +
+            "0-9" +
+            "\\u00b7" +
+            "\\u0300-\\u036f" +
+            "\\u203f-\\u2040";
     /**
      * Based on definition of valid xml element name at http://www.w3.org/TR/xml/#NT-Name,
      * eventually inclusive of namespace, plus an optional [1] at the end and no @ anywhere in the string
      */
-    static final Pattern propertyPattern = Pattern.compile("^(?!@)([:A-Z_a-z\\u00C0\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02ff\\u0370-\\u037d"
-            + "\\u037f-\\u1fff\\u200c\\u200d\\u2070-\\u218f\\u2c00-\\u2fef\\u3001-\\ud7ff"
-            + "\\uf900-\\ufdcf\\ufdf0-\\ufffd\\x10000-\\xEFFFF]"
-            + "[:A-Z_a-z\\u00C0\\u00D6\\u00D8-\\u00F6"
-            + "\\u00F8-\\u02ff\\u0370-\\u037d\\u037f-\\u1fff\\u200c\\u200d\\u2070-\\u218f"
-            + "\\u2c00-\\u2fef\\u3001-\\udfff\\uf900-\\ufdcf\\ufdf0-\\ufffd\\\\x10000-\\\\xEFFFF\\-\\.0-9"
-            + "\\u00b7\\u0300-\\u036f\\u203f-\\u2040]*)(\\[1\\])?$");
+    static final Pattern propertyPattern = Pattern.compile(
+            "^(?!@)([" + NAME_START_CHAR + "][" + NAME_CHAR + "]*)(\\[1])?$");
 
     public PropertyAccessor createPropertyAccessor(Class type, String xpath,
             Class target, Hints hints) {

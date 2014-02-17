@@ -30,6 +30,9 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,6 +49,7 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.spi.ImageReaderSpi;
 
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
@@ -91,7 +95,7 @@ import ucar.nc2.dataset.VariableDS;
  * 
  * TODO caching for {@link CoverageSourceDescriptor}
  */
-public abstract class UnidataImageReader extends GeoSpatialImageReader {
+public abstract class UnidataImageReader extends GeoSpatialImageReader implements FileSetManager{
 
     /** INTERNAL_INDEX_CREATION_PAGE_SIZE */
     private static final int INTERNAL_INDEX_CREATION_PAGE_SIZE = 1000;
@@ -505,29 +509,36 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
         double [] lon= new double[2];
         double [] lat= new double[2];
         byte set=0;
-        for(CoordinateVariable<?> cv:coordinatesVariables.values()){
-            if(cv.isNumeric()){
+        for (CoordinateVariable<?> cv : coordinatesVariables.values()) {
+            if (cv.isNumeric()) {
 
                 // is it lat or lon?
                 AxisType type = cv.getAxisType();
                 switch (type) {
                 case GeoY: case Lat:
-                    if(cv.isRegular()){
-                        lat[0]=cv.getStart();
-                        lat[1]=lat[0]+cv.getIncrement()*(cv.getSize()-1);
+                    if (cv.isRegular()) {
+                        lat[0] = cv.getStart() - (cv.getIncrement() / 2d);
+                        lat[1] = lat[0] + cv.getIncrement() * (cv.getSize());
                     } else {
-                        lat[0]=((Number)cv.getMinimum()).doubleValue();
-                        lat[1]=((Number)cv.getMaximum()).doubleValue();
+                        double min = ((Number) cv.getMinimum()).doubleValue();
+                        double max = ((Number) cv.getMaximum()).doubleValue();
+                        double incr = (max - min) / (cv.getSize() - 1);
+                        lat[0] = min - (incr / 2d);
+                        lat[1] = max + (incr / 2d);
                     }
                     set++;
                     break;
-                case GeoX:case Lon:
-                    if(cv.isRegular()){
-                        lon[0]=cv.getStart();
-                        lon[1]=lon[0]+cv.getIncrement()*(cv.getSize()-1);
+                case GeoX:
+                case Lon:
+                    if (cv.isRegular()) {
+                        lon[0] = cv.getStart() - (cv.getIncrement() / 2d);
+                        lon[1] = lon[0] + cv.getIncrement() * (cv.getSize());
                     } else {
-                        lon[0]=((Number)cv.getMinimum()).doubleValue();
-                        lon[1]=((Number)cv.getMaximum()).doubleValue();
+                        double min = ((Number) cv.getMinimum()).doubleValue();
+                        double max = ((Number) cv.getMaximum()).doubleValue();
+                        double incr = (max - min) / (cv.getSize() - 1);
+                        lon[0] = min - (incr / 2d);
+                        lon[1] = max + (incr / 2d);
                     }
                     set++;
                     break;
@@ -535,15 +546,15 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
                     break;
                 }
             }
-            if(set==2){
+            if (set == 2) {
                 break;
             }
         }
         // create the envelope
-        if(set!=2){
+        if (set != 2) {
             throw new IllegalStateException("Unable to create envelope for this dataset");
         }
-        boundingBox = new ReferencedEnvelope(lon[0],lon[1], lat[0],lat[1], UnidataCRSUtilities.WGS84);        
+        boundingBox = new ReferencedEnvelope(lon[0], lon[1], lat[0], lat[1], UnidataCRSUtilities.WGS84);
         
     }
 
@@ -710,7 +721,19 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
     
         final WritableRaster raster = Raster.createWritableRaster(sampleModel, new Point(0, 0));
         final BufferedImage image = new BufferedImage(colorModel, raster, colorModel.isAlphaPremultiplied(), null);
-    
+
+        CoordinateAxis axis = wrapper.variableDS.getCoordinateSystems().get(0).getLatAxis();
+        boolean flipYAxis = false;
+        try {
+            Array yAxisStart = axis.read(new Section().appendRange(2));
+            float y1 = yAxisStart.getFloat(0);
+            float y2 = yAxisStart.getFloat(1);
+            if (y2 > y1) {
+                flipYAxis=true;
+            }
+        } catch (InvalidRangeException e) {
+            throw new RuntimeException(e);
+        }
         /*
          * Reads the requested sub-region only.
          */
@@ -733,32 +756,71 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
             } catch (InvalidRangeException e) {
                 throw netcdfFailure(e);
             }
-            final IndexIterator it = array.getIndexIterator();
-             for (int y = ymax; --y >= ymin;) {
-                for( int x = xmin; x < xmax; x++ ) {
-                    switch( type ) {
-                        case DataBuffer.TYPE_DOUBLE: {
-                            raster.setSample(x, y, dstBand, it.getDoubleNext());
-                            break;
-                        }
-                        case DataBuffer.TYPE_FLOAT: {
-                            raster.setSample(x, y, dstBand, it.getFloatNext());
-                            break;
-                        }
-                        case DataBuffer.TYPE_BYTE: {
-                            byte b = it.getByteNext();
-                            // int myByte = (0x000000FF & ((int) b));
-                            // short anUnsignedByte = (short) myByte;
-                            // raster.setSample(x, y, dstBand, anUnsignedByte);
-                            raster.setSample(x, y, dstBand, b);
-                            break;
-                        }
-                        default: {
-                            raster.setSample(x, y, dstBand, it.getIntNext());
-                            break;
+            if (flipYAxis) {
+                final IndexIterator it = array.getIndexIterator();
+                for (int y = ymax; --y >= ymin; ) {
+                    for (int x = xmin; x < xmax; x++) {
+                        switch (type) {
+                            case DataBuffer.TYPE_DOUBLE: {
+                                raster.setSample(x, y, dstBand, it.getDoubleNext());
+                                break;
+                            }
+                            case DataBuffer.TYPE_FLOAT: {
+                                raster.setSample(x, y, dstBand, it.getFloatNext());
+                                break;
+                            }
+                            case DataBuffer.TYPE_BYTE: {
+                                byte b = it.getByteNext();
+                                // int myByte = (0x000000FF & ((int) b));
+                                // short anUnsignedByte = (short) myByte;
+                                // raster.setSample(x, y, dstBand, anUnsignedByte);
+                                raster.setSample(x, y, dstBand, b);
+                                break;
+                            }
+                            default: {
+                                raster.setSample(x, y, dstBand, it.getIntNext());
+                                break;
+                            }
                         }
                     }
                 }
+            }else{
+                switch( type ) {
+                    case DataBuffer.TYPE_DOUBLE: {
+                        DoubleBuffer doubleBuffer = array.getDataAsByteBuffer().asDoubleBuffer();
+                        double[] samples = new double[destRegion.width * destRegion.height];
+                        doubleBuffer.get(samples);
+                        raster.setSamples(xmin, ymin, destRegion.width, destRegion.height, dstBand, samples);
+                        break;
+                    }
+                    case DataBuffer.TYPE_FLOAT:
+                        float[] samples = new float[destRegion.width * destRegion.height];
+                        FloatBuffer floatBuffer = array.getDataAsByteBuffer().asFloatBuffer();
+                        floatBuffer.get(samples);
+                        raster.setSamples(xmin,ymin,destRegion.width,destRegion.height,dstBand,samples);
+                        break;
+                    case DataBuffer.TYPE_BYTE:
+                        //THIS ONLY WORKS FOR ONE BAND!!
+                        raster.setDataElements(xmin,ymin,destRegion.width,destRegion.height,array.getDataAsByteBuffer().array());
+                        break;
+                    case DataBuffer.TYPE_INT:
+                        IntBuffer intBuffer = array.getDataAsByteBuffer().asIntBuffer();
+                        int[] intSamples = new int[destRegion.width * destRegion.height];
+                        intBuffer.get(intSamples);
+                        raster.setSamples(xmin, ymin, destRegion.width, destRegion.height, dstBand, intSamples);
+                        break;
+		    default: {
+                        final IndexIterator it = array.getIndexIterator();
+                        for (int y = ymin; y < ymax; y++ ) {
+                            for (int x = xmin; x < xmax; x++) {
+                                raster.setSample(x, y, dstBand, it.getIntNext());
+                            }
+                        }
+                        break;
+                    }
+
+                }
+
             }
             /*
              * Checks for abort requests after reading. It would be a waste of a
@@ -884,6 +946,27 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader {
             schemaAttributes+=("," + name + ":" + cv.getType().getName());
         }
         return schemaAttributes;
+    }
+
+    @Override
+    public void addFile(String filePath) {
+         ancillaryFileManager.addFile(filePath);
+    }
+
+    @Override
+    public List<String> list() {
+        return ancillaryFileManager.list();
+    }
+
+    @Override
+    public void removeFile(String filePath) {
+        ancillaryFileManager.removeFile(filePath);
+    }
+
+    @Override
+    public void purge() {
+        getCatalog().dispose();
+        ancillaryFileManager.purge();
     }
   
 }

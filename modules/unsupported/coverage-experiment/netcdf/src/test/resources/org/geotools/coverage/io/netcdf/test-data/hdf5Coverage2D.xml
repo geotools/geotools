@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+    <coverages>
+        <coverage>
+			<name>LAI</name>
+            <origName>ROOT/LAI</origName>
+        </coverage>
+	<coverage>
+			<name>L1_V2</name>
+            <origName>ROOT/LEVEL1/V2</origName>
+        </coverage>
+    </coverages>
+    <!--  collectors>
+		<collector name="coverageNameCollector">
+			<value>[A-z0-9]+(?=.DUMMY)</value>
+			<spi>StringFileNameExtractorSPI</spi>
+			<mapped>coverageName</mapped>
+		</collector>
+    </collectors  -->
+</Indexer>

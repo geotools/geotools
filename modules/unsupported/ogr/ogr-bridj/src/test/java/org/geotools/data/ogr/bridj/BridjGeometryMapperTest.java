@@ -10,6 +10,7 @@ public class BridjGeometryMapperTest extends GeometryMapperTest {
     @Override
     protected void setUp() throws Exception {
         GdalInit.init();
+        super.setUp();
     }
 
 }

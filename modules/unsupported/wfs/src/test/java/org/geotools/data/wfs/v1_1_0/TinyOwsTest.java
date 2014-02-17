@@ -256,7 +256,8 @@ public class TinyOwsTest {
 
     @Test
     public void testGetFeatures() throws Exception {
-        final String[] queryTokens = { "<ogc:BBOX>", 
+        final String[] idQueryTokens = { "<ogc:FeatureId fid=\"comuni11.2671\"/>" };
+        final String[] bboxQueryTokens =  { "<ogc:BBOX>", 
                 "<ogc:PropertyName>the_geom</ogc:PropertyName>", 
                 "<gml:Envelope srsDimension=\"2\" srsName=\"urn:x-ogc:def:crs:EPSG:3857\">",
                 "<gml:lowerCorner>4623055.0 815134.0</gml:lowerCorner>",
@@ -265,9 +266,11 @@ public class TinyOwsTest {
             @Override
             public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
                 String request = new String(IOUtils.toByteArray(postContent), "UTF-8");
-                if (isHitsRequest(request, queryTokens)) {
-                    return new MockHttpResponse(TestData.getResource(this, "tinyows/CountFeaturesByBBox.xml"), "text/xml");
-                } else if (isResultsRequest(request, queryTokens)) {
+                if (isHitsRequest(request, idQueryTokens)) {
+                    return new MockHttpResponse(TestData.getResource(this, "tinyows/CountFeatureById.xml"), "text/xml");
+                } else if (isResultsRequest(request, idQueryTokens)) {
+                    return new MockHttpResponse(TestData.getResource(this, "tinyows/GetFeatureById.xml"), "text/xml");
+                } else if (isResultsRequest(request, bboxQueryTokens)) {
                     return new MockHttpResponse(TestData.getResource(this, "tinyows/GetFeaturesByBBox.xml"), "text/xml");
                 } else {
                     return super.post(url, new ByteArrayInputStream(request.getBytes("UTF-8")), postContentType);
@@ -284,7 +287,7 @@ public class TinyOwsTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         PropertyName bboxProperty = ff.property(sf.getDefaultGeometryProperty().getName());
         Query query = new Query(typeName, ff.and(
-                ff.greater(ff.property("gid"), ff.literal(0)), 
+                ff.greater(ff.property("cod_reg"), ff.literal(0)), 
                 ff.and(
                         ff.bbox(bboxProperty, sf.getBounds()),
                         ff.id(fids))));        

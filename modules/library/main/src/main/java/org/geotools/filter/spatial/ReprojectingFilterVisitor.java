@@ -103,7 +103,13 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
             return super.visit(filter, extraData);
 
         // grab the property data
-        PropertyName propertyName = ff.property(filter.getPropertyName());
+        PropertyName propertyName = null;
+        // get the expression as is to preserve namespace context
+        if (filter.getExpression1() instanceof PropertyName) {
+            propertyName = (PropertyName) filter.getExpression1();
+        } else if (filter.getExpression2() instanceof PropertyName) {
+            propertyName = (PropertyName) filter.getExpression2();
+        }
         CoordinateReferenceSystem targetCrs = findPropertyCRS(propertyName);
 
         // if there is a mismatch, reproject and replace

@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -49,6 +50,7 @@ class ShapefileFeatureStore extends ContentFeatureStore {
     public ShapefileFeatureStore(ContentEntry entry, ShpFiles files) {
         super(entry, Query.ALL);
         this.delegate = new ShapefileFeatureSource(entry, files);
+        this.hints = delegate.getSupportedHints();
     }
 
     @Override
@@ -167,5 +169,5 @@ class ShapefileFeatureStore extends ContentFeatureStore {
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return delegate.handleVisitor(query, visitor);
     }
-
+    
 }

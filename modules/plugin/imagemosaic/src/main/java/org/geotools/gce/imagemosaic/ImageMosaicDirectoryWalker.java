@@ -218,11 +218,10 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
                         specialWildCardFileFilter, HiddenFileFilter.VISIBLE))), FileFilterUtils
                 .suffixFileFilter("shp"), FileFilterUtils.suffixFileFilter("dbf"), FileFilterUtils
                 .suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"), FileFilterUtils
-                .suffixFileFilter("xml"), FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils
-                .suffixFileFilter("qix"), FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils
-                .suffixFileFilter("prj"), FileFilterUtils.nameFileFilter("error.txt"),
-                FileFilterUtils.nameFileFilter("error.txt.lck"), FileFilterUtils
-                        .suffixFileFilter("properties"), FileFilterUtils
+                .suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"), FileFilterUtils
+                .suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"), FileFilterUtils
+                .nameFileFilter("error.txt"), FileFilterUtils.nameFileFilter("error.txt.lck"),
+                FileFilterUtils.suffixFileFilter("properties"), FileFilterUtils
                         .suffixFileFilter("svn-base"));
         filesFilter = FileFilterUtils.or(filesFilter,
                 FileFilterUtils.nameFileFilter("indexer.properties"));
@@ -256,15 +255,9 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
 
         // sdw
         filesFilter = FileFilterUtils.and(filesFilter,
-                FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("sdw")) // );
-                // aux
-                // fileFilter = FileFilterUtils.andFileFilter(fileFilter,
-                , FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("aux"))// );
-                // wld
-                // fileFilter = FileFilterUtils.andFileFilter(fileFilter,
-                , FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("wld"))// );
-                // svn
-                // fileFilter = FileFilterUtils.andFileFilter(fileFilter,
+                FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("sdw"))
+                , FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("aux"))
+                , FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("wld"))
                 , FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("svn")));
 
         if (this.fileFilter != null) {

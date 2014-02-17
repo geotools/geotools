@@ -4,7 +4,7 @@ package org.geotools.filter.function;
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2014, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -80,7 +80,7 @@ public class FilterFunction_offset extends FunctionExpressionImpl implements
 
         if (offsetX != null && offsetY != null) {
             ReferencedEnvelope offseted = new ReferencedEnvelope(renderingEnvelope);
-            offseted.translate(offsetX, offsetY);
+            offseted.translate(-offsetX, -offsetY);
             return offseted;
         } else {
             return null;

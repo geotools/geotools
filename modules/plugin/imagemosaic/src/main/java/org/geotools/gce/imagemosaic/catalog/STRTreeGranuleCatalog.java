@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -138,7 +139,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 	
 	private String typeName;
 	
-	public STRTreeGranuleCatalog(final Map<String,Serializable> params, DataStoreFactorySpi spi, final Hints hints) {
+	public STRTreeGranuleCatalog(final Properties params, DataStoreFactorySpi spi, final Hints hints) {
 	    super(hints);
 	        Utilities.ensureNonNull("params", params);
 	        this.wrappedCatalogue = new GTDataStoreGranuleCatalog(params, false, spi,hints);
@@ -506,6 +507,18 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     @Override
     public int removeGranules(Query query) {
         throw new UnsupportedOperationException("Unsupported operation");
+    }
+
+    @Override
+    public void removeType(String typeName) throws IOException {
+        final Lock lock=rwLock.readLock();
+        try{
+                lock.lock();
+                checkStore();
+                this.wrappedCatalogue.removeType(typeName);
+        }finally{
+                lock.unlock();
+        }        
     }
 }
 

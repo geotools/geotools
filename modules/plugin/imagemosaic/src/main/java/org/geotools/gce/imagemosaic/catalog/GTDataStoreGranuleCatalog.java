@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
@@ -105,7 +106,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
 
     boolean heterogeneous;
 
-    public GTDataStoreGranuleCatalog(final Map<String, Serializable> params, final boolean create,
+    public GTDataStoreGranuleCatalog(final Properties params, final boolean create,
             final DataStoreFactorySpi spi, final Hints hints) {
         super(hints);
         Utilities.ensureNonNull("params", params);
@@ -118,27 +119,29 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             this.suggestedRasterSPI = temp != null ? (ImageReaderSpi) Class.forName(temp)
                     .newInstance() : null;
             this.parentLocation = (String) params.get("ParentLocation");
-            Object heterogen = params.get("Heterogeneous");
-            if (heterogen != null) {
-                this.heterogeneous = ((Boolean) heterogen).booleanValue();
-            }
-
-            // H2 workadound
-            if (Utils.isH2Store(spi)) {
-                Utils.fixH2DatabaseLocation(params, parentLocation);
+            if (params.containsKey("Heterogeneous")) {
+                this.heterogeneous = Boolean.valueOf(params.getProperty("Heterogeneous"));
             }
 
             // creating a store, this might imply creating it for an existing underlying store or
             // creating a brand new one
-            if (!create)
-                tileIndexStore = spi.createDataStore(params);
-            else {
+            Map<String, Serializable> dastastoreParams = Utils.filterDataStoreParams(params, spi);
+
+            // H2 workadound
+            if (Utils.isH2Store(spi)) {
+                Utils.fixH2DatabaseLocation(dastastoreParams, parentLocation);
+                Utils.fixH2MVCCParam(dastastoreParams);
+            }
+
+            if (!create) {
+                tileIndexStore = spi.createDataStore(dastastoreParams);
+            } else {
                 // this works only with the shapefile datastore, not with the others
                 // therefore I try to catch the error to try and use themethdo without *New*
                 try {
-                    tileIndexStore = spi.createNewDataStore(params);
+                    tileIndexStore = spi.createNewDataStore(dastastoreParams);
                 } catch (UnsupportedOperationException e) {
-                    tileIndexStore = spi.createDataStore(params);
+                    tileIndexStore = spi.createDataStore(dastastoreParams);
                 }
             }
 
@@ -160,7 +163,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             }
 
             if (params.containsKey(Utils.SCAN_FOR_TYPENAMES)) {
-                scanForTypeNames = (Boolean) params.get(Utils.SCAN_FOR_TYPENAMES);
+                scanForTypeNames = Boolean.valueOf(params.get(Utils.SCAN_FOR_TYPENAMES).toString());
             }
 
             // if this is not a new store let's extract basic properties from it
@@ -257,7 +260,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             }
 
             final FeatureType schema = featureSource.getSchema();
-            if (schema != null) {
+            if (schema != null && schema.getGeometryDescriptor()!=null) {
                 geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): geometryPropertyName is set to \'"
@@ -523,6 +526,12 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
         this.typeNames.add(typeName);
     }
 
+    private void removeTypeName(String typeName) {
+        if (this.typeNames.contains(typeName)) {
+            typeNames.remove(typeName);
+        }
+    }
+
     @Override
     public String[] getTypeNames() {
         if (this.typeNames != null && !this.typeNames.isEmpty()) {
@@ -545,6 +554,22 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 addTypeName(typeName, true);
             }
             extractBasicProperties(typeName);
+        } finally {
+            lock.unlock();
+        }
+
+    }
+    
+    public void removeType(String typeName) throws IOException {
+        Utilities.ensureNonNull("featureType", typeName);
+        final Lock lock = rwLock.writeLock();
+        try {
+            lock.lock();
+            checkStore();
+
+            tileIndexStore.removeSchema(typeName);
+            removeTypeName(typeName);
+            
         } finally {
             lock.unlock();
         }

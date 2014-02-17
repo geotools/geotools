@@ -139,7 +139,7 @@ public class CoverageReadRequest extends CoverageRequest {
         // create a math transform
         final GridToEnvelopeMapper mapper = new GridToEnvelopeMapper(
                 new GridEnvelope2D(rasterArea), new ReferencedEnvelope(worldArea));
-        mapper.setPixelAnchor(PixelInCell.CELL_CORNER);
+        mapper.setPixelAnchor(PixelInCell.CELL_CENTER);
         this.gridToWorldTransform = (MathTransform2D) mapper.createTransform();
     }
 

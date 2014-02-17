@@ -49,6 +49,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.media.jai.Interpolation;
+import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 
@@ -182,6 +183,8 @@ import com.vividsolutions.jts.geom.Point;
  * @version $Id$
  */
 public class StreamingRenderer implements GTRenderer {
+    private static final int REPROJECTION_RASTER_GUTTER = 10;
+
     private final static int defaultMaxFiltersToSendToDatastore = 5; // default
 
     /**
@@ -997,7 +1000,7 @@ public class StreamingRenderer implements GTRenderer {
             Envelope mapArea, CoordinateReferenceSystem mapCRS,
             CoordinateReferenceSystem featCrs, Rectangle screenSize,
             GeometryDescriptor geometryAttribute,
-            AffineTransform worldToScreenTransform)
+            AffineTransform worldToScreenTransform, boolean renderingTransformation)
             throws IllegalFilterException, IOException, FactoryException {
         Query query = new Query(Query.ALL);
         Filter filter = null;
@@ -1013,11 +1016,19 @@ public class StreamingRenderer implements GTRenderer {
                         metaBuffer);
                 LOGGER.fine("Expanding rendering area by " + metaBuffer 
                         + " pixels to consider stroke width");
+                
+                // expand the screenmaps by the meta buffer, otherwise we'll throw away geomtries
+                // that sit outside of the map, but whose symbolizer may contribute to it
+                for (LiteFeatureTypeStyle lfts : styles) {
+                    if(lfts.screenMap != null) {
+                        lfts.screenMap = new ScreenMap(lfts.screenMap, metaBuffer);
+                    }
+                }
             }
         }
         
         // take care of rendering transforms
-        expandEnvelopeByTransformations(styles, new ReferencedEnvelope(mapArea, mapCRS));
+        mapArea = expandEnvelopeByTransformations(styles, new ReferencedEnvelope(mapArea, mapCRS));
 
         // build a list of attributes used in the rendering
         List<PropertyName> attributes;
@@ -1028,11 +1039,8 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         ReferencedEnvelope envelope = new ReferencedEnvelope(mapArea, mapCRS);
-        // update the current rendering extent
-        mapExtent = envelope;
         // see what attributes we really need by exploring the styles
         // for testing purposes we have a null case -->
-
         try {
             // Then create the geometry filters. We have to create one for
             // each geometric attribute used during the rendering as the
@@ -1117,16 +1125,25 @@ public class StreamingRenderer implements GTRenderer {
                     }
                 }
             
-                // ... if possible we let the datastore do the generalization
-                if(fsHints.contains(Hints.GEOMETRY_SIMPLIFICATION)) {
-                    // good, we don't need to perform in memory generalization, the datastore
-                    // does it all for us
-                    hints.put(Hints.GEOMETRY_SIMPLIFICATION, distance);
-                    inMemoryGeneralization = false;
-                } else if(fsHints.contains(Hints.GEOMETRY_DISTANCE)) {
-                    // in this case the datastore can get us close, but we can still
-                    // perform some in memory generalization
-                    hints.put(Hints.GEOMETRY_DISTANCE, distance);
+                if(renderingTransformation) {
+                    // the RT might need valid geometries, we can at most apply a topology
+                    // preserving generalization
+                    if(fsHints.contains(Hints.GEOMETRY_GENERALIZATION)) {
+                        hints.put(Hints.GEOMETRY_GENERALIZATION, distance);
+                        inMemoryGeneralization = false;
+                    }
+                } else {
+                    // ... if possible we let the datastore do the generalization
+                    if(fsHints.contains(Hints.GEOMETRY_SIMPLIFICATION)) {
+                        // good, we don't need to perform in memory generalization, the datastore
+                        // does it all for us
+                        hints.put(Hints.GEOMETRY_SIMPLIFICATION, distance);
+                        inMemoryGeneralization = false;
+                    } else if(fsHints.contains(Hints.GEOMETRY_DISTANCE)) {
+                        // in this case the datastore can get us close, but we can still
+                        // perform some in memory generalization
+                        hints.put(Hints.GEOMETRY_DISTANCE, distance);
+                    }
                 }
             }
         } catch(Exception e) {
@@ -2003,15 +2020,14 @@ public class StreamingRenderer implements GTRenderer {
                 // ... assume we have to do the generalization, the query layer process will
                 // turn down the flag if we don't 
                 inMemoryGeneralization = true;
+                boolean hasTransformation = transform != null;
                 Query styleQuery = getStyleQuery(featureSource, schema,
                         uniform, mapArea, destinationCrs, sourceCrs, screenSize,
-                        geometryAttribute, at);
+                        geometryAttribute, at, hasTransformation);
                 Query definitionQuery = getDefinitionQuery(currLayer, featureSource, sourceCrs);
-                if(transform != null) {
+                if(hasTransformation) {
                     // prepare the stage for the raster transformations
-                    GridEnvelope2D ge = new GridEnvelope2D(screenSize);
-                    ReferencedEnvelope re = new ReferencedEnvelope(mapArea, destinationCrs);
-                    GridGeometry2D gridGeometry = new GridGeometry2D(ge, re);
+                    GridGeometry2D gridGeometry = getRasterGridGeometry(destinationCrs, sourceCrs);
                     // vector transformation wise, we have to account for two separate queries,
                     // the one attached to the layer and then one coming from SLD.
                     // The first source attributes, the latter talks tx output attributes
@@ -2489,6 +2505,7 @@ public class StreamingRenderer implements GTRenderer {
             try {
                 boolean clone = isCloningRequired(currLayer, fts_array);
                 RenderableFeature rf = new RenderableFeature(currLayer, clone);
+                rf.setScreenMap(liteFeatureTypeStyle.screenMap);
                 // loop exit condition tested inside try catch
                 // make sure we test hasNext() outside of the try/cath that follows, as that
                 // one is there to make sure a single feature error does not ruin the rendering
@@ -2706,7 +2723,7 @@ public class StreamingRenderer implements GTRenderer {
             NumberRange scaleRange, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, String layerId)
             throws Exception {
-        
+        int paintCommands = 0;
         for (Symbolizer symbolizer : symbolizers) {
 
             // /////////////////////////////////////////////////////////////////
@@ -2728,8 +2745,9 @@ public class StreamingRenderer implements GTRenderer {
                         coverage = (GridCoverage2D) grid;
                     } else if (grid instanceof GridCoverage2DReader) {
                         final Object params = paramsPropertyName.evaluate(drawMe.content);
-                        GridGeometry2D readGG = new GridGeometry2D(new GridEnvelope2D(screenSize), mapExtent);
                         GridCoverage2DReader reader = (GridCoverage2DReader) grid;
+                        CoordinateReferenceSystem sourceCRS = reader.getCoordinateReferenceSystem();
+                        GridGeometry2D readGG = getRasterGridGeometry(destinationCrs, sourceCRS);
                         coverage = readCoverage(reader, params, readGG);
                         disposeCoverage = true;
                     }
@@ -2744,6 +2762,7 @@ public class StreamingRenderer implements GTRenderer {
                 if(coverage != null) {
                     requests.put(new RenderRasterRequest(graphics, coverage, disposeCoverage,
                             (RasterSymbolizer) symbolizer, destinationCrs, at));
+                    paintCommands++;
                 }
             } else {
 
@@ -2760,6 +2779,7 @@ public class StreamingRenderer implements GTRenderer {
                 if (symbolizer instanceof TextSymbolizer && drawMe.content instanceof Feature) {
                     labelCache.put(layerId, (TextSymbolizer) symbolizer, (Feature) drawMe.content,
                             shape, scaleRange);
+                    paintCommands++;
                 } else {
                     Style2D style = styleFactory.createStyle(drawMe.content,
                             symbolizer, scaleRange);
@@ -2774,8 +2794,9 @@ public class StreamingRenderer implements GTRenderer {
                     env.expandBy(clipBuffer);
                     final GeometryClipper clipper = new GeometryClipper(env);
                     Geometry g = clipper.clip(shape.getGeometry(), false);
-                    if(g == null) 
+                    if(g == null) {
                         continue;
+                    }
                     if(g != shape.getGeometry()) {
                         shape = new LiteShape2(g, null, null, false);
                     }
@@ -2786,11 +2807,51 @@ public class StreamingRenderer implements GTRenderer {
                         paintShapeRequest.setLabelObstacle(true);
                     }
                     requests.put(paintShapeRequest);
+                    paintCommands++;
                 }
 
             }
         }
-        fireFeatureRenderedEvent(drawMe.content);
+        // only emit a feature drawn event if we actually painted something with it, 
+        // if it has been clipped out or eliminated by the screenmap we won't emit the event instead
+        if(paintCommands > 0) {
+            requests.put(new FeatureRenderedRequest(drawMe.content));
+        }
+    }
+
+    /**
+     * Builds a raster grid geometry that will be used for reading, taking into account
+     * the original map extent and target paint area, and expanding the target raster area
+     * by {@link #REPROJECTION_RASTER_GUTTER}
+     * @param destinationCrs
+     * @param sourceCRS
+     * @return
+     * @throws NoninvertibleTransformException
+     */
+    GridGeometry2D getRasterGridGeometry(CoordinateReferenceSystem destinationCrs,
+            CoordinateReferenceSystem sourceCRS) throws NoninvertibleTransformException {
+        GridGeometry2D readGG;
+        if (sourceCRS == null || destinationCrs == null ||
+                CRS.equalsIgnoreMetadata(destinationCrs, sourceCRS)) {
+            readGG = new GridGeometry2D(new GridEnvelope2D(screenSize),
+                    originalMapExtent);
+        } else {
+            // reprojection involved, read a bit more pixels to account for rotation
+            Rectangle bufferedTargetArea = (Rectangle) screenSize.clone();
+            bufferedTargetArea.add( // exand top/right
+                    screenSize.x + screenSize.width + REPROJECTION_RASTER_GUTTER, 
+                    screenSize.y + screenSize.height + REPROJECTION_RASTER_GUTTER);
+            bufferedTargetArea.add( // exand bottom/left
+                    screenSize.x - REPROJECTION_RASTER_GUTTER,
+                    screenSize.y - REPROJECTION_RASTER_GUTTER);
+
+            // now create the final envelope accordingly
+            readGG = new GridGeometry2D(new GridEnvelope2D(bufferedTargetArea),
+                    PixelInCell.CELL_CORNER, new AffineTransform2D(
+                            worldToScreenTransform.createInverse()),
+                    originalMapExtent.getCoordinateReferenceSystem(), null);
+        }
+        return readGG;
     }
 
 
@@ -3408,6 +3469,24 @@ public class StreamingRenderer implements GTRenderer {
             } catch(Throwable t) {
                 fireErrorEvent(t);
             }
+        }
+    }
+    
+    /**
+     * A request to paint a shape with a specific Style2D
+     * @author aaime
+     *
+     */
+    class FeatureRenderedRequest extends RenderingRequest {
+        Object content; 
+        
+        public FeatureRenderedRequest(Object content) {
+            this.content = content;
+        }
+
+        @Override
+        void execute() {
+            fireFeatureRenderedEvent(content);
         }
     }
     

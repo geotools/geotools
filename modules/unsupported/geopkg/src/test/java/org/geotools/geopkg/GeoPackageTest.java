@@ -80,9 +80,9 @@ public class GeoPackageTest {
 
     @Test
     public void testInit() throws Exception {
-        assertTableExists("geopackage_contents");
-        assertTableExists("geometry_columns");
-        assertTableExists("spatial_ref_sys");
+        assertTableExists("gpkg_contents");
+        assertTableExists("gpkg_geometry_columns");
+        assertTableExists("gpkg_spatial_ref_sys");
     }
 
     void assertTableExists(String table) throws Exception {
@@ -225,7 +225,7 @@ public class GeoPackageTest {
         Connection cx = geopkg.getDataSource().getConnection();
         try {
             PreparedStatement ps = 
-                cx.prepareStatement("SELECT * FROM geopackage_contents WHERE table_name = ?");
+                cx.prepareStatement("SELECT * FROM gpkg_contents WHERE table_name = ?");
             ps.setString(1, entry.getTableName());
 
             ResultSet rs = ps.executeQuery();
@@ -233,7 +233,7 @@ public class GeoPackageTest {
 
             assertEquals(entry.getIdentifier(), rs.getString("identifier"));
             assertEquals(entry.getDescription(), rs.getString("description"));
-            assertEquals(entry.getSrid().intValue(), rs.getInt("srid"));
+            assertEquals(entry.getSrid().intValue(), rs.getInt("srs_id"));
 
             assertEquals(entry.getBounds().getMinX(), rs.getDouble("min_x"), 0.1);
             assertEquals(entry.getBounds().getMinY(), rs.getDouble("min_y"), 0.1);
@@ -254,16 +254,17 @@ public class GeoPackageTest {
         Connection cx = geopkg.getDataSource().getConnection();
         try {
             PreparedStatement ps = 
-                cx.prepareStatement("SELECT * FROM geometry_columns WHERE f_table_name = ?");
+                cx.prepareStatement("SELECT * FROM gpkg_geometry_columns WHERE table_name = ?");
             ps.setString(1, entry.getTableName());
 
             ResultSet rs = ps.executeQuery();
             assertTrue(rs.next());
 
-            assertEquals(entry.getGeometryColumn(), rs.getString("f_geometry_column"));
-            assertEquals(entry.getGeometryType(), Geometries.getForName(rs.getString("geometry_type")));
-            assertEquals(entry.getSrid().intValue(), rs.getInt("srid"));
-            assertEquals(entry.getCoordDimension().intValue(), rs.getInt("coord_dimension"));
+            assertEquals(entry.getGeometryColumn(), rs.getString("column_name"));
+            assertEquals(entry.getGeometryType(), Geometries.getForName(rs.getString("geometry_type_name")));
+            assertEquals(entry.getSrid().intValue(), rs.getInt("srs_id"));
+            assertEquals(entry.isZ(), rs.getBoolean("z"));
+            assertEquals(entry.isM(), rs.getBoolean("m"));
 
             rs.close();
             ps.close();
@@ -279,16 +280,16 @@ public class GeoPackageTest {
         Connection cx = geopkg.getDataSource().getConnection();
         try {
             PreparedStatement ps = 
-                cx.prepareStatement("SELECT * FROM raster_columns WHERE r_table_name = ?");
+                cx.prepareStatement("SELECT * FROM gpkg_data_columns WHERE table_name = ?");
             ps.setString(1, entry.getTableName());
 
             ResultSet rs = ps.executeQuery();
             assertTrue(rs.next());
 
-            assertEquals(entry.getRasterColumn(), rs.getString("r_raster_column"));
-            assertEquals(entry.getSrid().intValue(), rs.getInt("srid"));
-            assertEquals(entry.getGeoRectification().value(), rs.getInt("georectification"));
-            assertEquals(entry.getCompressionQualityFactor(), rs.getDouble("compr_qual_factor"), 0.1);
+            assertEquals(entry.getRasterColumn(), rs.getString("column_name"));
+            assertEquals(entry.getTableName(), rs.getString("table_name"));
+            assertEquals(entry.getName(), rs.getString("name"));
+            assertEquals(entry.getTitle(), rs.getString("title"));
 
             rs.close();
             ps.close();
@@ -303,25 +304,27 @@ public class GeoPackageTest {
         
         Connection cx = geopkg.getDataSource().getConnection();
         try {
-            PreparedStatement ps = 
-                cx.prepareStatement("SELECT * FROM tile_table_metadata WHERE t_table_name = ?");
+            PreparedStatement ps = cx.prepareStatement(
+                "SELECT count(*) from gpkg_tile_matrix WHERE table_name = ?");
             ps.setString(1, entry.getTableName());
-
             ResultSet rs = ps.executeQuery();
-            assertTrue(rs.next());
 
-            assertEquals(entry.isTimesTwoZoom(), rs.getBoolean("is_times_two_zoom"));
-
-            rs.close();
-            ps.close();
-
+            rs.next();
+            assertEquals(rs.getInt(1), entry.getTileMatricies().size());
+            
             ps = cx.prepareStatement(
-                "SELECT count(*) from tile_matrix_metadata WHERE t_table_name = ?");
+                    "SELECT * from gpkg_tile_matrix_set WHERE table_name = ?");
             ps.setString(1, entry.getTableName());
             rs = ps.executeQuery();
 
             rs.next();
-            assertEquals(rs.getInt(1), entry.getTileMatricies().size());
+            assertEquals(rs.getInt(2), entry.getSrid().intValue());
+            assertEquals(rs.getDouble(3), entry.getBounds().getMinX(), 0.01);
+            assertEquals(rs.getDouble(4), entry.getBounds().getMinY(), 0.01);
+            assertEquals(rs.getDouble(5), entry.getBounds().getMaxX(), 0.01);
+            assertEquals(rs.getDouble(6), entry.getBounds().getMaxY(), 0.01);
+            
+            assertFalse(rs.next());
 
             rs.close();
             ps.close();

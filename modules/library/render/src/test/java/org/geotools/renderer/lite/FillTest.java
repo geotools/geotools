@@ -105,6 +105,11 @@ public class FillTest {
     }
 
     @Test
+    public void testMarkFillRotated() throws Exception {
+        runSingleLayerTest("fillMarkRotated.sld");
+    }
+
+    @Test
     public void testFontFill() throws Exception {
         runSingleLayerTest("fillTTFDecorative.sld");
     }

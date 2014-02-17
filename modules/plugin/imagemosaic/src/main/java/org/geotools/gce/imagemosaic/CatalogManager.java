@@ -18,14 +18,11 @@ package org.geotools.gce.imagemosaic;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
@@ -127,7 +124,7 @@ public class CatalogManager {
 
             // we do not have a datastore properties file therefore we continue with a shapefile datastore
             final URL file = new File(parent, runConfiguration.getParameter(Utils.Prop.INDEX_NAME) + ".shp").toURI().toURL();
-            final Map<String, Serializable> params = new HashMap<String, Serializable>();
+            final Properties params = new Properties();
             params.put(ShapefileDataStoreFactory.URLP.key, file);
             if (file.getProtocol().equalsIgnoreCase("file")) {
                 params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.TRUE);
@@ -169,13 +166,12 @@ public class CatalogManager {
         try {
             // create a datastore as instructed
             final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
-            final Map<String, Serializable> params = Utils.createDataStoreParamsFromPropertiesFile(properties, spi);
 
             // set ParentLocation parameter since for embedded database like H2 we must change the database
             // to incorporate the path where to write the db
-            params.put("ParentLocation", DataUtilities.fileToURL(parent).toExternalForm());
+            properties.put("ParentLocation", DataUtilities.fileToURL(parent).toExternalForm());
 
-            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, create, spi,hints);
+            catalog = GranuleCatalogFactory.createGranuleCatalog(properties, false, create, spi,hints);
             MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
             catalog.setMultiScaleROIProvider(rois);
         } catch (Exception e) {

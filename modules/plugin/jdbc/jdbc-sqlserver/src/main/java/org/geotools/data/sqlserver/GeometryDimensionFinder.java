@@ -1,11 +1,25 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.sqlserver;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
+
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 class GeometryDimensionFinder implements GeometryComponentFilter {
     
@@ -13,24 +27,9 @@ class GeometryDimensionFinder implements GeometryComponentFilter {
 
     @Override
     public void filter(Geometry geom) {
-        CoordinateSequence cs = null;
-        if(geom instanceof Point) {
-            cs = ((Point) geom).getCoordinateSequence();
-        } else if(geom instanceof LineString) {
-            cs = ((LineString) geom).getCoordinateSequence();
+        if(geom != null) {
+            z |= CoordinateSequences.coordinateDimension(geom) > 2;
         }
-        
-        if(cs != null) {
-            if(cs instanceof CoordinateArraySequence) {
-                CoordinateArraySequence cas = (CoordinateArraySequence) cs;
-                if(!Double.isNaN(cas.getCoordinate(0).z)) {
-                    z = true;
-                }
-            } else {
-                z |= cs.getDimension() > 2;
-            }
-        }
-        
     }
 
     public boolean hasZ() {

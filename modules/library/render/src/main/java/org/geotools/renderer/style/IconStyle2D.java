@@ -66,8 +66,9 @@ public class IconStyle2D extends Style2D {
     }
 
     /**
-     * The Icon rotation
-     * @return
+     * The Icon rotation, in radians.
+     * 
+     * @return icon rotation, in radians.
      */
     public float getRotation() {
         return rotation;

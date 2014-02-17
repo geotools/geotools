@@ -96,7 +96,7 @@ public class SQLServerFilterToSQL extends FilterToSQL {
         
         try {
             //if the filter is not disjoint, and it with a BBOX filter
-            if (!(filter instanceof Disjoint)) {
+            if (!(filter instanceof Disjoint) && !(filter instanceof DistanceBufferOperator)) {
                 e1.accept(this, extraData);
                 out.write( ".Filter(");
                 e2.accept(this, extraData);

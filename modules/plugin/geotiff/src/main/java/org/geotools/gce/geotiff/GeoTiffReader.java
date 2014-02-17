@@ -82,6 +82,7 @@ import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.MapInfoFileReader;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
 import org.geotools.factory.Hints;
@@ -302,13 +303,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
             }
 
-            if (crs == null){
-                if(LOGGER.isLoggable(Level.WARNING)){
-                    LOGGER.warning("Coordinate Reference System is not available");
-                }
-                crs = AbstractGridFormat.getDefaultCRS();
-            }
-
             // 
             // No data
             //
@@ -336,6 +330,18 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 this.raster2Model = GeoTiffMetadata2CRSAdapter.getRasterToModel(metadata);
             } else {
                 this.raster2Model = parseWorldFile(source);
+                if (raster2Model == null) {
+                    MapInfoFileReader mifReader = parseMapInfoFile(source);
+                    raster2Model = mifReader.getTransform();
+                    crs = mifReader.getCRS();
+                }
+            }
+            
+            if (crs == null){
+                if(LOGGER.isLoggable(Level.WARNING)){
+                    LOGGER.warning("Coordinate Reference System is not available");
+                }
+                crs = AbstractGridFormat.getDefaultCRS();
             }
 
             if (this.raster2Model == null) {
@@ -812,6 +818,34 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             }
         }
         return raster2Model;
+    }
+    
+    /**
+     * @throws IOException
+     */
+    static MapInfoFileReader parseMapInfoFile(Object source) throws IOException {
+        if (source instanceof File) {
+            final File sourceFile = ((File) source);
+            String parentPath = sourceFile.getParent();
+            String filename = sourceFile.getName();
+            final int i = filename.lastIndexOf('.');
+            filename = (i == -1) ? filename : filename.substring(0, i);
+            
+            // getting name and extension
+            final String base = (parentPath != null) ? new StringBuilder(
+                    parentPath).append(File.separator).append(filename)
+                    .toString() : filename;
+
+            // We can now construct the baseURL from this string.
+            File file2Parse = new File(new StringBuilder(base).append(".tab")
+                    .toString());
+
+            if (file2Parse.exists()) {
+                final MapInfoFileReader reader = new MapInfoFileReader(file2Parse);
+                return reader;
+            }
+        }
+        return null;
     }
 
 	/**

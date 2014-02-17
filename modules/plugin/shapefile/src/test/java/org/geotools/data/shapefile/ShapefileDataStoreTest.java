@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -64,6 +65,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -923,6 +926,28 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         sds.dispose();
 
     }
+    
+    @Test
+    public void testDeletedDbf() throws Exception {
+        // this shapefile has 4 records that are marked as deleted only inside the dbf, but 
+        // not in the headers
+        URL u = TestData.url(TestCaseSupport.class, "deleted/archsites.dbf");
+        File shpFile = DataUtilities.urlToFile(u);
+        
+        ShapefileDataStore store = new ShapefileDataStore(DataUtilities.fileToURL(shpFile));
+        ContentFeatureSource fs = store.getFeatureSource();
+        // this one reads the shp header, which still contains trace of all records
+        assertEquals(25, fs.getCount(Query.ALL));
+        // now read manually and check we skip the records with the dbf entry marked as deleted
+        SimpleFeatureIterator fi = fs.getFeatures().features();
+        int count = 0;
+        while(fi.hasNext()) {
+            fi.next();
+            count++;
+        }
+        fi.close();
+        assertEquals(21, count);
+    }
 
     /**
      * Creates feature collection with all the stuff we care about from simple
@@ -1657,6 +1682,15 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             ds.dispose();
         }
     }
+    
+    @Test
+    public void testFeatureStoreHints() throws Exception {
+        File shpFile = copyShapefiles(STATE_POP);
+        URL url = shpFile.toURI().toURL();
+        ShapefileDataStore ds = new ShapefileDataStore(url);
+        ShapefileFeatureStore store = (ShapefileFeatureStore) ds.getFeatureSource("statepop");
+        assertEquals(store.getSupportedHints(), store.delegate.getSupportedHints());
+    }
 
     private void performSpatialQuery(ShapefileDataStore ds) throws IOException {
         SimpleFeatureSource featureSource = ds.getFeatureSource();
@@ -1700,4 +1734,5 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         char[] array = { hexDigit[(b >> 4) & 0x0f], hexDigit[b & 0x0f] };
         return new String(array);
     }
+    
 }

@@ -32,7 +32,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
@@ -41,11 +43,19 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.data.DataStore;
 import org.geotools.data.Query;
+import org.geotools.data.postgis.PostgisNGDataStoreFactory;
 import org.geotools.factory.Hints;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.simple.SimpleFeatureTypeImpl;
+import org.geotools.feature.type.AttributeDescriptorImpl;
+import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.geometry.GeneralEnvelope;
@@ -55,8 +65,10 @@ import org.geotools.test.TestData;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
+import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.parameter.GeneralParameterValue;
@@ -75,6 +87,8 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
     static final String tempFolderName1 = "waterTempPG";
     
     static final String tempFolderName2 = "waterTempPG2";
+    
+    static final String tempFolderName3 = "waterTempPG3";
     
 	/**
 	 * Simple Class for better testing raster manager
@@ -105,7 +119,7 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		props.setProperty("database", "ddd");
 		props.setProperty("schema", "public");
 		props.setProperty("Loose bbox", "true");
-		props.setProperty("Estimated extends=", "false");
+		props.setProperty("Estimated extends", "false");
 		props.setProperty("validate connections", "true");
 		props.setProperty("Connection timeout", "10");
 		props.setProperty("preparedStatements", "false");
@@ -119,6 +133,103 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 	protected String getFixtureId() {
 		return "postgis_datastore";
 	}
+
+    // name of a table without geometry
+    //
+    private final String noGeomFirst = "wNoGeom";
+
+    private final String noGeomLast = "zNotGeom";
+
+    /**
+     * for this test the order of the retuned Typenames (by the getTypeNames()) is important: If the firs TypeName returned does not has geometry the
+     * TypeNames parameter should be set to false (so the list of TypeNames will not use the entire schema) otherwise the returned reader will be
+     * null.
+     * 
+     * @throws Exception
+     */
+    @Test
+    // @Ignore
+    public void testTypeNames() throws Exception {
+
+        final File workDir = new File(TestData.file(this, "."), tempFolderName3);
+        assertTrue(workDir.mkdir());
+        FileUtils
+                .copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+        TestData.unzipFile(this, tempFolderName3 + "/watertemp.zip");
+
+        final URL timeElevURL = TestData.url(this, tempFolderName3);
+
+        final File datastoreProperties = new File(TestData.file(this, "."), tempFolderName3
+                + "/datastore.properties");
+        final Map<String, String> params = new HashMap<String, String>();
+        final Properties p = new Properties();
+        FileWriter out = null;
+        try {
+            out = new FileWriter(datastoreProperties);
+            final Set<Object> keyset = fixture.keySet();
+            for (Object key : keyset) {
+                final String key_ = (String) key;
+                final String value = fixture.getProperty(key_);
+                if (!key_.equalsIgnoreCase(Utils.SCAN_FOR_TYPENAMES)) {
+                    params.put(key_, value);
+                    p.put(key_, value);
+                }
+            }
+            p.store(out, "");
+        } finally {
+            IOUtils.closeQuietly(out);
+        }
+
+        // create a new schema without geometries to simulate failure on scanning all the typeNames
+        DataStore ds = null;
+        try {
+            ds = new PostgisNGDataStoreFactory().createDataStore(params);
+            final List<AttributeDescriptor> schema = new ArrayList<AttributeDescriptor>();
+            schema.add(new AttributeDescriptorImpl(new AttributeTypeImpl(new NameImpl("name"),
+                    String.class, false, false, null, null, null), new NameImpl("name"), 0, 0,
+                    true, ""));
+            SimpleFeatureType featureType = new SimpleFeatureTypeImpl(new NameImpl(noGeomFirst),
+                    schema, null, false, null, null, null);
+            ds.createSchema(featureType);
+            featureType = new SimpleFeatureTypeImpl(new NameImpl(noGeomLast), schema, null, false,
+                    null, null, null);
+            ds.createSchema(featureType);
+        } finally {
+            if (ds != null) {
+                ds.dispose();
+
+            }
+        }
+
+        // now start the test (may fails since some schema does not contains geometries and Utils.SCAN_FOR_TYPENAMES is not specified)
+        AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format, null, false);
+        assertNull(reader);
+        format = null;
+
+        // remove the mosaic table
+        dropTables(new String[] { tempFolderName3 });
+        assertTrue(new File(timeElevURL.getFile(), "sample_image").delete());
+        assertTrue(new File(timeElevURL.getFile(), tempFolderName3 + ".properties").delete());
+
+        // and try to recreate it using Utils.SCAN_FOR_TYPENAMES==true to the datastore.properties
+        try {
+            out = new FileWriter(datastoreProperties);
+            p.put(Utils.SCAN_FOR_TYPENAMES, "false"); // note default was TRUE
+            p.store(out, "");
+        } finally {
+            IOUtils.closeQuietly(out);
+        }
+
+        // now start the test (may have success)
+        format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+        reader.dispose();
+
+    }
 	
 	/**
 	 * Complex test for Postgis indexing on db.
@@ -353,41 +464,46 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		System.setProperty("org.geotools.referencing.forceXY", "true");
 	    System.setProperty("user.timezone", "GMT");
 	}
-
-	@Override
-	protected void tearDownInternal() throws Exception {
-	        
+	
+    private void dropTables(String[] tables) throws Exception {
         // delete tables
         Class.forName("org.postgresql.Driver");
-        Connection connection=null;
-        Statement st =null;
-        try{
+        Connection connection = null;
+        Statement st = null;
+        try {
             connection = DriverManager.getConnection(
-                "jdbc:postgresql://" + fixture.getProperty("host") + ":"
-                        + fixture.getProperty("port") + "/" + fixture.getProperty("database"),
-                fixture.getProperty("user"), fixture.getProperty("passwd"));
+                    "jdbc:postgresql://" + fixture.getProperty("host") + ":"
+                            + fixture.getProperty("port") + "/" + fixture.getProperty("database"),
+                    fixture.getProperty("user"), fixture.getProperty("passwd"));
             st = connection.createStatement();
-            st.execute("DROP TABLE IF EXISTS \"" + tempFolderName1+"\"");
-            st.execute("DROP TABLE IF EXISTS \"" + tempFolderName2+"\"");
+            for (String table : tables) {
+                st.execute("DROP TABLE IF EXISTS \"" + table + "\"");
+            }
         } finally {
 
-            if(st!=null){
-                try{
+            if (st != null) {
+                try {
                     st.close();
-                }catch (Exception e) {
-                    LOGGER.log(Level.SEVERE,e.getLocalizedMessage(),e);
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
                 }
             }
-            
-            if(connection!=null){
-                try{
+
+            if (connection != null) {
+                try {
                     connection.close();
-                }catch (Exception e) {
-                    LOGGER.log(Level.SEVERE,e.getLocalizedMessage(),e);
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
                 }
             }
         }
+    }
 
+	@Override
+	protected void tearDownInternal() throws Exception {
+	  
+        // delete tables
+        dropTables(new String[] { tempFolderName1, tempFolderName2, noGeomLast, noGeomFirst, tempFolderName3 });
 
         System.clearProperty("org.geotools.referencing.forceXY");
 	        
@@ -399,6 +515,10 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
                 FileUtils.deleteDirectory(directory );
             }
             directory= new File(parent,tempFolderName2);
+            if(directory.isDirectory()&&directory.exists()){
+                FileUtils.deleteDirectory(directory );
+            }
+            directory= new File(parent,tempFolderName3);
             if(directory.isDirectory()&&directory.exists()){
                 FileUtils.deleteDirectory(directory );
             }

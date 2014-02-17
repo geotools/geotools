@@ -92,6 +92,7 @@ import org.geotools.gml3.bindings.ArcTypeBinding;
 import org.geotools.gml3.bindings.CircleTypeBinding;
 import org.geotools.gml3.bindings.RingTypeBinding;
 import org.geotools.gml3.bindings.SurfacePatchArrayPropertyTypeBinding;
+import org.geotools.gml3.bindings.ext.CompositeCurveTypeBinding;
 
 
 /**
@@ -289,6 +290,8 @@ public class GMLConfiguration extends Configuration {
             container.registerComponentImplementation(GML.RingType, RingTypeBinding.class);
             container.registerComponentImplementation(GML.SurfacePatchArrayPropertyType,
                     SurfacePatchArrayPropertyTypeBinding.class);
+            container.registerComponentImplementation(GML.CompositeCurveType, 
+                    CompositeCurveTypeBinding.class);
             container.registerComponentImplementation(GML.CurveArrayPropertyType, 
                     org.geotools.gml3.bindings.ext.CurveArrayPropertyTypeBinding.class);
             container.registerComponentImplementation(GML.CurvePropertyType, 

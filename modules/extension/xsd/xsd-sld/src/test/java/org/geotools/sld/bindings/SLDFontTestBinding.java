@@ -40,4 +40,14 @@ public class SLDFontTestBinding extends SLDTestSupport {
         assertEquals("normal", Filters.asString(font.getFontWeight()));
         assertEquals(14, Filters.asInt(font.getFontSize()));
     }
+    
+    public void testDefaultFont() throws Exception {
+        SLDMockData.element(SLD.FONT, document, document);
+        Font font = (Font) parse();
+        assertNotNull(font);
+        assertEquals("Serif", Filters.asString(font.getFontFamily()));
+        assertEquals("normal", Filters.asString(font.getFontStyle()));
+        assertEquals("normal", Filters.asString(font.getFontWeight()));
+        assertEquals(10, Filters.asInt(font.getFontSize()));
+    }
 }

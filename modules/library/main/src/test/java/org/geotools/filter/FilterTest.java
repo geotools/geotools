@@ -175,6 +175,7 @@ public class FilterTest extends TestCase {
         ftb.add("time", java.sql.Time.class);
         ftb.add("datetime1", java.util.Date.class);
         ftb.add("datetime2", java.sql.Timestamp.class);
+        ftb.add("nullInt", Integer.class);
         testSchema = ftb.buildFeatureType();
 
         //LOGGER.finer("added string to feature type");
@@ -185,7 +186,7 @@ public class FilterTest extends TestCase {
         coords[2] = new Coordinate(5, 6);
 
         // Builds the test feature
-        Object[] attributes = new Object[15];
+        Object[] attributes = new Object[16];
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         attributes[0] = gf.createLineString(coords);
         attributes[1] = new Boolean(true);
@@ -256,7 +257,32 @@ public class FilterTest extends TestCase {
                 PropertyIsGreaterThanOrEqualTo.class, true, true, false);
         compareNumberRunner(testAttribute,
                 PropertyIsLessThanOrEqualTo.class, false, true, true);
-        
+
+        // Test all permutations of integers as strings
+        compareStringToIntegerRunner(testAttribute, PropertyIsEqualTo.class,
+                false, true, false);
+        compareStringToIntegerRunner(testAttribute, PropertyIsGreaterThan.class,
+                true, false, false);
+        compareStringToIntegerRunner(testAttribute, PropertyIsLessThan.class,
+                false, false, true);
+        compareStringToIntegerRunner(testAttribute,
+                PropertyIsGreaterThanOrEqualTo.class, true, true, false);
+        compareStringToIntegerRunner(testAttribute,
+                PropertyIsLessThanOrEqualTo.class, false, true, true);
+
+
+        // Test all permutations of integers as doubles
+        compareIntegerToDoubleRunner(testAttribute, PropertyIsEqualTo.class,
+                false, true, false);
+        compareIntegerToDoubleRunner(testAttribute, PropertyIsGreaterThan.class,
+                true, false, false);
+        compareIntegerToDoubleRunner(testAttribute, PropertyIsLessThan.class,
+                false, false, true);
+        compareIntegerToDoubleRunner(testAttribute,
+                PropertyIsGreaterThanOrEqualTo.class, true, true, false);
+        compareIntegerToDoubleRunner(testAttribute,
+                PropertyIsLessThanOrEqualTo.class, false, true, true);
+
         // test all date permutations, with string/date conversion included
         testAttribute = new AttributeExpressionImpl(testSchema, "date");
         compareSqlDateRunner(testAttribute, PropertyIsEqualTo.class,
@@ -303,11 +329,11 @@ public class FilterTest extends TestCase {
         // Test for false positive.
         testLiteral = new LiteralExpressionImpl("zebra");
         filter = compare(PropertyIsLessThan.class, testAttribute, testLiteral);
-	assertTrue(filter.evaluate(testFeature));
+	    assertTrue(filter.evaluate(testFeature));
 
-	testLiteral = new LiteralExpressionImpl("blorg");
-	filter = compare(PropertyIsLessThan.class, testAttribute, testLiteral);
-	assertTrue(!filter.evaluate(testFeature));
+	    testLiteral = new LiteralExpressionImpl("blorg");
+	    filter = compare(PropertyIsLessThan.class, testAttribute, testLiteral);
+	    assertTrue(!filter.evaluate(testFeature));
     }
     
     
@@ -345,6 +371,56 @@ public class FilterTest extends TestCase {
         filter = compare(filterType, testAttribute, testLiteral);
 
         //LOGGER.finer( filter.toString());            
+        //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
+        assertEquals(filter.evaluate(testFeature), test3);
+    }
+
+    public void compareStringToIntegerRunner(PropertyName testAttribute,
+                                             Class filterType, boolean test1, boolean test2, boolean test3)
+            throws IllegalFilterException {
+        Literal testLiteral = new LiteralExpressionImpl(new String("1001.0"));
+        org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
+
+        //LOGGER.finer( filter.toString());
+        //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
+        assertEquals(filter.evaluate(testFeature), test1);
+
+        testLiteral = new LiteralExpressionImpl(new String("1002.0"));
+        filter = compare(filterType, testAttribute, testLiteral);
+
+        //LOGGER.finer( filter.toString());
+        //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
+        assertEquals(filter.evaluate(testFeature), test2);
+
+        testLiteral = new LiteralExpressionImpl(new String("1003.0"));
+        filter = compare(filterType, testAttribute, testLiteral);
+
+        //LOGGER.finer( filter.toString());
+        //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
+        assertEquals(filter.evaluate(testFeature), test3);
+    }
+
+    public void compareIntegerToDoubleRunner(PropertyName testAttribute,
+                                             Class filterType, boolean test1, boolean test2, boolean test3)
+            throws IllegalFilterException {
+        Literal testLiteral = new LiteralExpressionImpl(new Double(1001.0));
+        org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
+
+        //LOGGER.finer( filter.toString());
+        //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
+        assertEquals(filter.evaluate(testFeature), test1);
+
+        testLiteral = new LiteralExpressionImpl(new Double(1002.0));
+        filter = compare(filterType, testAttribute, testLiteral);
+
+        //LOGGER.finer( filter.toString());
+        //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
+        assertEquals(filter.evaluate(testFeature), test2);
+
+        testLiteral = new LiteralExpressionImpl(new Double(1003.0));
+        filter = compare(filterType, testAttribute, testLiteral);
+
+        //LOGGER.finer( filter.toString());
         //LOGGER.finer( "contains feature: " + filter.contains(testFeature));
         assertEquals(filter.evaluate(testFeature), test3);
     }
@@ -1239,5 +1315,10 @@ public class FilterTest extends TestCase {
         Expression l40 = fac.literal("40");
         Assert.assertFalse(l32.equals(l40));
         Assert.assertFalse(l40.equals(l32));
+    }
+    
+    public void testNullBetween() {
+        Filter f = fac.between(fac.property("nullInt"), fac.literal(10), fac.literal(20));
+        Assert.assertFalse(f.evaluate(testFeature));
     }
 }

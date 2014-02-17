@@ -53,7 +53,7 @@ final class TestUtils extends Assert {
 	}
 
 	@SuppressWarnings("unchecked")
-	static void testCoverage(final ImageMosaicReader reader,
+	static GridCoverage2D testCoverage(final ImageMosaicReader reader,
 			GeneralParameterValue[] values, String title,
 			final GridCoverage2D coverage, final Rectangle rect) {
 	    final RenderedImage image = coverage.getRenderedImage(); 
@@ -84,6 +84,7 @@ final class TestUtils extends Assert {
 			coverage.dispose(true);
 			reader.dispose();
 		}
+		return coverage;
 	}
 
 	/**
@@ -100,16 +101,16 @@ final class TestUtils extends Assert {
 	 * @return 
 	 * @throws IOException
 	 */
-	static void checkCoverage(final ImageMosaicReader reader,
+	static GridCoverage2D checkCoverage(final ImageMosaicReader reader,
 	            GeneralParameterValue[] values, String title) throws IOException {
-	    checkCoverage(reader, values, title, null);
+	    return checkCoverage(reader, values, title, null);
 	}
 
-	static void checkCoverage(final ImageMosaicReader reader,
+	static GridCoverage2D checkCoverage(final ImageMosaicReader reader,
 			GeneralParameterValue[] values, String title, Rectangle rect) throws IOException {
 		// Test the coverage
 		final GridCoverage2D coverage = getCoverage(reader, values, true);
-		testCoverage(reader, values, title, coverage, rect);
+		return testCoverage(reader, values, title, coverage, rect);
 	}
 
 	static GridCoverage2D getCoverage(final ImageMosaicReader reader,
@@ -157,18 +158,24 @@ final class TestUtils extends Assert {
 				final AbstractGridFormat format) throws NoSuchAuthorityCodeException, FactoryException {
 	
 	//		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
-			return getReader(testURL, format, null);
+        return getReader(testURL, format, null, true);
 	
 		}
 
 	static ImageMosaicReader getReader(URL testURL,
 				final AbstractGridFormat format, Hints hints) {
 	//		Get a reader
-			final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(testURL, hints);
-			Assert.assertNotNull(reader);
-			return reader;
+        return getReader(testURL, format, hints, true);
 		}
 
+    static ImageMosaicReader getReader(URL testURL, final AbstractGridFormat format, Hints hints,
+            final boolean checkForNull) {
+        // Get a reader
+        final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(testURL, hints);
+        if (checkForNull)
+            Assert.assertNotNull(reader);
+        return reader;
+    }
 	/**
 	 * Shows the provided {@link RenderedImage} ina {@link JFrame} using the
 	 * provided <code>title</code> as the frame's title.

@@ -2,6 +2,8 @@ package org.geotools.gce.imagemosaic;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,6 +37,13 @@ abstract class ImageMosaicWalker implements Runnable {
     final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicWalker.class);
 
     private DefaultTransaction transaction;
+
+    private static Set<String> logExcludes = new HashSet<String>();
+
+    static {
+        logExcludes.add("xml");
+        logExcludes.add("properties");
+    }
 
     /**
      * Proper way to stop a thread is not by calling Thread.stop() but by using a shared variable that can be checked in order to notify a terminating
@@ -101,9 +110,11 @@ abstract class ImageMosaicWalker implements Runnable {
 
         // replacing chars on input path
         String validFileName;
+        String extension;
         try {
             validFileName = fileBeingProcessed.getCanonicalPath();
             validFileName = FilenameUtils.normalize(validFileName);
+            extension = FilenameUtils.getExtension(validFileName);
         } catch (IOException e) {
             eventHandler.fireFileEvent(
                     Level.FINER,
@@ -123,7 +134,6 @@ abstract class ImageMosaicWalker implements Runnable {
             // Getting a coverage reader for this coverage.
             //
             final AbstractGridFormat format;
-
             if (cachedFormat == null) {
                 // When looking for formats which may parse this file, make sure to exclude the ImageMosaicFormat as return
                 format = (AbstractGridFormat) GridFormatFinder.findFormat(fileBeingProcessed,
@@ -136,9 +146,11 @@ abstract class ImageMosaicWalker implements Runnable {
                 }
             }
             if ((format instanceof UnknownFormat) || format == null) {
-                eventHandler.fireFileEvent(Level.INFO, fileBeingProcessed, false, "Skipped file "
-                        + fileBeingProcessed + ": File format is not supported.",
-                        ((fileIndex * 99.0) / numFiles));
+                if (!logExcludes.contains(extension)) {
+                    eventHandler.fireFileEvent(Level.INFO, fileBeingProcessed, false, "Skipped file "
+                            + fileBeingProcessed + ": File format is not supported.",
+                            ((fileIndex * 99.0) / numFiles));
+                }
                 return;
             }
             cachedFormat = format;

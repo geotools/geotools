@@ -16,26 +16,30 @@
  */
 package org.geotools.referencing;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.awt.Shape;
 import java.awt.geom.IllegalPathStateException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
-import javax.measure.unit.SI;
+import java.util.List;
 
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.geometry.DirectPosition;
+import javax.measure.unit.SI;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
+import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
-
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.operation.TransformException;
 
 
 /**
@@ -128,7 +132,7 @@ public final class GeodeticCalculatorTest {
                 }
                 iterator.next();
             }
-            assertEquals("Segment count", 1000, count); // Implementation check; will no longer be
+            assertEquals("Segment count", 1001, count); // Implementation check; will no longer be
                                                         // valid when the path will contains curves.
             assertEquals("Orthodromic path length", orthodromic, length, 1E-4);
         }
@@ -204,4 +208,32 @@ public final class GeodeticCalculatorTest {
         assertEquals(0.0, calculator.getAzimuth(), 0.0);
         assertEquals(1.0001966E7, calculator.getOrthodromicDistance(), 1);
     }
+    
+    
+    @Test
+    public void testGetPathAlongLongitude() {
+        GeodeticCalculator calculator = new GeodeticCalculator();
+        calculator.setStartingGeographicPoint(0, 10);
+        calculator.setDestinationGeographicPoint(0, -10);
+        List<Point2D> path = calculator.getGeodeticPath(19);
+        double y = 10.0;
+        for (Point2D p : path) {
+            assertEquals(y, p.getY(), 0.001);
+            y-- ;
+        }
+    }
+    
+    @Test
+    public void testGetPathAlongLatitude() {
+        GeodeticCalculator calculator = new GeodeticCalculator();
+        calculator.setStartingGeographicPoint(10, 0);
+        calculator.setDestinationGeographicPoint(-10, 0);
+        List<Point2D> path = calculator.getGeodeticPath(19);
+        double x = 10.0;
+        for (Point2D p : path) {
+            assertEquals(x, p.getX(), 0.001);
+            x-- ;
+        }
+    }
+    
 }

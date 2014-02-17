@@ -82,7 +82,7 @@ public class NetCDFFormat extends AbstractGridFormat{
         // reading parameters
         writeParameters = null;
     }
-    
+
     @Override
     public AbstractGridCoverage2DReader getReader(Object source) {
         return getReader(source, null);
@@ -112,13 +112,13 @@ public class NetCDFFormat extends AbstractGridFormat{
         if (source instanceof URL) {
             file = DataUtilities.urlToFile((URL) source);
         } else if (source instanceof File ){
-            file = (File) source;  
+            file = (File) source;
         }
         if (file != null) {
             if (file.isDirectory()) {
                 return false;
             }
-            if (file.getAbsolutePath().endsWith("nc")) {
+            if (file.getAbsolutePath().endsWith("nc")  || file.getAbsolutePath().endsWith("ncml")) {
                 return true;
             }
         }

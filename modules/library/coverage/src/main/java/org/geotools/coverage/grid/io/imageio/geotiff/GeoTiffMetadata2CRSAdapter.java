@@ -1662,6 +1662,8 @@ public final class GeoTiffMetadata2CRSAdapter {
 		if (origin == null)
 			origin = metadata.getGeoKey(GeoTiffPCSCodes.ProjFalseOriginLongGeoKey);
 		if (origin == null)
+                    origin = metadata.getGeoKey(GeoTiffPCSCodes.ProjStraightVertPoleLongGeoKey);
+		if (origin == null)
 			origin = metadata.getGeoKey(GeoTiffPCSCodes.ProjFalseNorthingGeoKey);
 		if (origin == null)
 			return 0.0;

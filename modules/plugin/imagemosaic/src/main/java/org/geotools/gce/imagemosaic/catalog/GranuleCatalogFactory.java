@@ -17,10 +17,8 @@
 package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
@@ -28,14 +26,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FilenameUtils;
-import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.Utils;
-import org.geotools.util.Converters;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -57,7 +53,7 @@ public abstract class GranuleCatalogFactory {
 	
 
 	public static GranuleCatalog createGranuleCatalog(
-	        final  Map<String, Serializable> params, 
+	        final  Properties params, 
 	        final boolean caching, 
 	        final boolean create, 
 	        final DataStoreFactorySpi spi,
@@ -72,16 +68,22 @@ public abstract class GranuleCatalogFactory {
 	public static GranuleCatalog createGranuleCatalog(
 			final URL sourceURL,
 			final CatalogConfigurationBean catalogConfigurationBean,
-			final Map<String, Serializable> overrideParams,
+			final Properties overrideParams,
 	                final Hints hints){
 		final File sourceFile=DataUtilities.urlToFile(sourceURL);
 		final String extension= FilenameUtils.getExtension(sourceFile.getAbsolutePath());	
 		
 		// STANDARD PARAMS
-		final Map<String, Serializable> params = new HashMap<String, Serializable>();
+		final Properties params = new Properties();
+		
 		params.put(Utils.Prop.PATH_TYPE, catalogConfigurationBean.isAbsolutePath()?PathType.ABSOLUTE:PathType.RELATIVE);
-		params.put(Utils.Prop.LOCATION_ATTRIBUTE, catalogConfigurationBean.getLocationAttribute());
-		params.put(Utils.Prop.SUGGESTED_SPI, catalogConfigurationBean.getSuggestedSPI());
+		
+		if (catalogConfigurationBean.getLocationAttribute()!=null)
+		    params.put(Utils.Prop.LOCATION_ATTRIBUTE, catalogConfigurationBean.getLocationAttribute());
+		
+		if (catalogConfigurationBean.getSuggestedSPI()!=null)
+		    params.put(Utils.Prop.SUGGESTED_SPI, catalogConfigurationBean.getSuggestedSPI());
+		
 		params.put(Utils.Prop.HETEROGENEOUS, catalogConfigurationBean.isHeterogeneous());
 		if(sourceURL!=null){
 			File parentDirectory=DataUtilities.urlToFile(sourceURL);
@@ -118,22 +120,17 @@ public abstract class GranuleCatalogFactory {
 			Properties properties = Utils.loadPropertiesFromURL(sourceURL);
 			if (properties == null)
 				return null;
+			
+			// get the params
+                        for (Object p : properties.keySet()) {
+                            params.put(p.toString(), properties.get(p).toString());
+                        }
 
 			// SPI for datastore
 			final String SPIClass = properties.getProperty("SPI");
 			try {
 				// create a datastore as instructed
 				spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
-
-				// get the params
-				final Param[] paramsInfo = spi.getParametersInfo();
-				for (Param p : paramsInfo) {
-					// search for this param and set the value if found
-					if (properties.containsKey(p.key))
-						params.put(p.key, (Serializable) Converters.convert(properties.getProperty(p.key), p.type));
-					else if (p.required && p.sample == null)
-						throw new IOException("Required parameter missing: "+ p.toString());
-				}
 
 			} catch (Exception e) {
 				if(LOGGER.isLoggable(Level.WARNING))

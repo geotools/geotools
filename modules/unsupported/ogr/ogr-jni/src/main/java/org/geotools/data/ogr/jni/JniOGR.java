@@ -293,6 +293,11 @@ public class JniOGR implements OGR {
     }
     
     @Override
+    public String LayerGetFIDColumnName(Object layer) {
+        return ((Layer)layer).GetFIDColumn();
+    }
+    
+    @Override
     public String FieldGetName(Object field) {
         return ((FieldDefn)field).GetName();
     }

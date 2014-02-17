@@ -16,6 +16,8 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 import java.awt.Dimension;
@@ -53,6 +55,7 @@ import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
 
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
@@ -107,6 +110,8 @@ public class GranuleDescriptor {
     
 	/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GranuleDescriptor.class);
+
+    private static final String AUXFILE_EXT = ".aux.xml";
 
     static {
         try {
@@ -214,38 +219,41 @@ public class GranuleDescriptor {
      * 
      */
     static class GranuleLoadingResult {
-    
+
         RenderedImage loadedImage;
-    
+
         ROI footprint;
-        
+
         URL granuleUrl;
-        
+
         boolean doFiltering;
-    
+
+        PAMDataset pamDataset;
+
         public ROI getFootprint() {
             return footprint;
         }
-    
+
         public RenderedImage getRaster() {
             return loadedImage;
         }
-    
+
         public URL getGranuleUrl() {
             return granuleUrl;
         }
+        public PAMDataset getPamDataset() {
+            return pamDataset;
+        }
+
+        public void setPamDataset(PAMDataset pamDataset) {
+            this.pamDataset = pamDataset;
+        }
+
         public boolean isDoFiltering() {
             return doFiltering;
         }
-        GranuleLoadingResult(RenderedImage loadedImage) {
-            this(loadedImage, null, false);
-        }
-    
-        GranuleLoadingResult(RenderedImage loadedImage, URL granuleUrl) {
-            this(loadedImage, granuleUrl, false);
-        }
-    
-        GranuleLoadingResult(RenderedImage loadedImage, URL granuleUrl, final boolean doFiltering) {
+
+        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl, final boolean doFiltering, final PAMDataset pamDataset) {
             this.loadedImage = loadedImage;
             Object roi = loadedImage.getProperty("ROI");
             if(roi instanceof ROI) {
@@ -253,11 +261,12 @@ public class GranuleDescriptor {
             }            
             this.granuleUrl = granuleUrl;
             this.doFiltering = doFiltering;
-            
-            
+            this.pamDataset = pamDataset;
         }
     }
 
+    private static PAMParser pamParser = PAMParser.getInstance();
+    
     ReferencedEnvelope granuleBBOX;
 	
 	MultiLevelROI roiProvider;
@@ -273,6 +282,8 @@ public class GranuleDescriptor {
 	ImageReaderSpi cachedReaderSPI;
 
 	SimpleFeature originator;
+	
+	PAMDataset pamDataset;
 	
 	boolean handleArtifactsFiltering = false;
 	
@@ -396,6 +407,13 @@ public class GranuleDescriptor {
 			}
                         //////////////////////////////////////////////////////////////////////////
 			
+			if (hints != null && hints.containsKey(Utils.CHECK_AUXILIARY_METADATA)) {
+			    boolean checkAuxiliaryMetadata = (Boolean) hints.get(Utils.CHECK_AUXILIARY_METADATA);
+			    if (checkAuxiliaryMetadata) {
+			        checkPamDataset();
+			    }
+			}
+			
 
 		} catch (IllegalStateException e) {
 			throw new IllegalArgumentException(e);
@@ -418,7 +436,18 @@ public class GranuleDescriptor {
 		}
 	}
 	
-	private boolean customizeReaderInitialization(ImageReader reader, Hints hints) {
+	/**
+	 * Look for GDAL Auxiliary File and unmarshall it to setup a PamDataset if available 
+	 * @throws IOException
+	 */
+	private void checkPamDataset() throws IOException {
+	    final File file = DataUtilities.urlToFile(granuleUrl);
+            final String path = file.getCanonicalPath();
+            final String auxFile = path + AUXFILE_EXT;
+            pamDataset = pamParser.parsePAM(auxFile);
+    }
+
+    private boolean customizeReaderInitialization(ImageReader reader, Hints hints) {
             String classString = reader.getClass().getName();
             // Special Management for NetCDF readers to set external Auxiliary File
             if (hints != null && hints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
@@ -813,9 +842,12 @@ public class GranuleDescriptor {
                     if (transformed.getAsGeometry().isEmpty()) {
                         // inset might have killed the geometry fully
                         return null;
-                    }
+                    } 
 
                     PlanarImage pi = PlanarImage.wrapRenderedImage(raster);
+                    if(!transformed.intersects(pi.getBounds())) {
+                        return null;
+                    }
                     pi.setProperty("ROI", transformed);
                     raster = pi;
 
@@ -851,7 +883,7 @@ public class GranuleDescriptor {
 			// apply the affine transform  conserving indexed color model
 			final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, interpolation instanceof InterpolationNearest? Boolean.FALSE:Boolean.TRUE);
 			if(XAffineTransform.isIdentity(finalRaster2Model,Utils.AFFINE_IDENTITY_EPS)) {
-			    return new GranuleLoadingResult(raster, granuleUrl, doFiltering);
+			    return new GranuleLoadingResult(raster, null, granuleUrl, doFiltering, pamDataset);
 			} else {
 				//
 				// In case we are asked to use certain tile dimensions we tile
@@ -898,7 +930,7 @@ public class GranuleDescriptor {
                 ImageWorker iw = new ImageWorker(raster);
                 iw.setRenderingHints(localHints);
                 iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());
-				return new GranuleLoadingResult(iw.getRenderedImage(), granuleUrl, doFiltering);
+				return new GranuleLoadingResult(iw.getRenderedImage(), null, granuleUrl, doFiltering, pamDataset);
 			}
 		
 		} catch (IllegalStateException e) {

@@ -20,6 +20,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.util.logging.Logging;
@@ -52,7 +53,8 @@ public class CompositePrimaryKeyFinder extends PrimaryKeyFinder {
                 if (pk != null)
                     return pk;
             } catch(SQLException e) {
-                LOGGER.warning("Failure occurred while looking up the primary key with finder: " + finder);
+                LOGGER.log(Level.WARNING, "Failure occurred while looking up the primary "
+                        + "key with finder: " + finder, e);
             }
         }
 

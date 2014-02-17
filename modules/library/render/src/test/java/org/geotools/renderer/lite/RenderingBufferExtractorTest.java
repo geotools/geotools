@@ -74,7 +74,7 @@ public class RenderingBufferExtractorTest {
 
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(style);
-        assertEquals(15, rbe.getBuffer());
+        assertEquals(16, rbe.getBuffer());
         assertTrue(rbe.isEstimateAccurate());
     }
     
@@ -214,7 +214,7 @@ public class RenderingBufferExtractorTest {
         g.setSize(sb.literalExpression("10.0"));
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(g);
-        assertEquals(10, rbe.getBuffer());
+        assertEquals(11, rbe.getBuffer());
         assertTrue(rbe.isEstimateAccurate());
     }
 }

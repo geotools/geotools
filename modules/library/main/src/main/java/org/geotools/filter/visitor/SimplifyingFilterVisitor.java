@@ -24,10 +24,25 @@ import java.util.regex.Pattern;
 
 import org.geotools.filter.FilterAttributeExtractor;
 import org.opengis.filter.And;
+import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsGreaterThan;
+import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
+import org.opengis.filter.PropertyIsLessThan;
+import org.opengis.filter.PropertyIsLessThanOrEqualTo;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
+import org.opengis.filter.PropertyIsNotEqualTo;
+import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.NilExpression;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.VolatileFunction;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.GmlObjectId;
@@ -66,7 +81,7 @@ import org.opengis.filter.identity.Identifier;
  */
 public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
-    FilterAttributeExtractor attributeExtractor;
+    FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
 
     /**
      * Defines a simple means of assessing whether a feature id in an {@link Id} filter is
@@ -132,65 +147,155 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     }
 
     @Override
-    public Object visit(And filter, Object extraData) {
+    public Object visit(And filter, Object extraData)
+    {
         // scan, clone and simplify the children
         List<Filter> newChildren = new ArrayList<Filter>(filter.getChildren().size());
-        for (Filter child : filter.getChildren()) {
+        for (Filter child : filter.getChildren())
+        {
             Filter cloned = (Filter) child.accept(this, extraData);
-            
-            // if any of the child filters is exclude, 
-            // the whole chain of AND is equivalent to 
+
+            // if any of the child filters is exclude,
+            // the whole chain of AND is equivalent to
             // EXCLUDE
-            if(cloned == Filter.EXCLUDE)
+            if (cloned == Filter.EXCLUDE)
+            {
                 return Filter.EXCLUDE;
-            
+            }
+
             // these can be skipped
-            if(cloned == Filter.INCLUDE)
+            if (cloned == Filter.INCLUDE)
+            {
                 continue;
-            
-            newChildren.add(cloned);
+            }
+
+            if (cloned instanceof And)
+            {
+                And and = (And) cloned;
+                newChildren.addAll(and.getChildren());
+            }
+            else
+            {
+                newChildren.add(cloned);
+            }
+        }
+        
+        // see if we have dual filters that can lead to Filter.Exclude, or duplicated filters
+        for (int i = 0; i < newChildren.size(); i++) {
+            for(int j = i + 1; j < newChildren.size(); ) {
+                Filter f1 = newChildren.get(i);
+                Filter f2 = newChildren.get(j);
+                if(f1.equals(f2)) {
+                    newChildren.remove(j);
+                } else if(dualFilters(f1, f2)) {
+                    return Filter.EXCLUDE;
+                } else {
+                    j++;
+                }
+            }
         }
         
         // we might end up with an empty list
-        if(newChildren.size() == 0)
+        if (newChildren.size() == 0)
+        {
             return Filter.INCLUDE;
-        
+        }
+
         // remove the logic we have only one filter
-        if(newChildren.size() == 1)
+        if (newChildren.size() == 1)
+        {
             return newChildren.get(0);
-        
+        }
+
         // else return the cloned and simplified up list
         return getFactory(extraData).and(newChildren);
     }
     
+    /**
+     * Two filters are dual if the are the negation of each other
+     * (we could also have simplifications for negated comparsions, 
+     * e.g., a > b and a <= b, but I plan to have dedicated range handling
+     * support later (e.g., recognize a < 10 or (a >= 10 and a < 20) or a >= 20 is
+     * really Filter.INCLUDE, or turn "a between 10 and 20 or a between 15 and 30" 
+     * to "a between 10 and 30")
+     * 
+     * @param f1
+     * @param f2
+     * @return
+     */
+    private boolean dualFilters(Filter f1, Filter f2) {
+        if(f1 instanceof Not) {
+            Not not = (Not) f1;
+            return f2.equals(not.getFilter());
+        } else if(f2 instanceof Not) {
+            Not not = (Not) f2;
+            return f1.equals(not.getFilter());
+        }
+        
+        return false;
+    }
+      
     @Override
-    public Object visit(Or filter, Object extraData) {
-     // scan, clone and simplify the children
+    public Object visit(Or filter, Object extraData)
+    {
+        // scan, clone and simplify the children
         List<Filter> newChildren = new ArrayList<Filter>(filter.getChildren().size());
-        for (Filter child : filter.getChildren()) {
+        for (Filter child : filter.getChildren())
+        {
             Filter cloned = (Filter) child.accept(this, extraData);
-            
-            // if any of the child filters is include, 
-            // the whole chain of OR is equivalent to 
+
+            // if any of the child filters is INCLUDE,
+            // the whole chain of OR is equivalent to
             // INCLUDE
-            if(cloned == Filter.INCLUDE)
+            if (cloned == Filter.INCLUDE)
+            {
                 return Filter.INCLUDE;
-            
+            }
+
             // these can be skipped
-            if(cloned == Filter.EXCLUDE)
+            if (cloned == Filter.EXCLUDE)
+            {
                 continue;
-            
-            newChildren.add(cloned);
+            }
+
+            if (cloned instanceof Or)
+            {
+                Or or = (Or) cloned;
+                newChildren.addAll(or.getChildren());
+            }
+            else
+            {
+                newChildren.add(cloned);
+            }
+        }
+        
+        // see if we have dual filters that can lead to Filter.INCLUDE
+        for (int i = 0; i < newChildren.size(); i++) {
+            for(int j = i + 1; j < newChildren.size(); ) {
+                Filter f1 = newChildren.get(i);
+                Filter f2 = newChildren.get(j);
+                if(f1.equals(f2)) {
+                    newChildren.remove(j);
+                } else if(dualFilters(f1, f2)) {
+                    return Filter.INCLUDE;
+                } else {
+                    j++;
+                }
+            }
         }
         
         // we might end up with an empty list
-        if(newChildren.size() == 0)
+        if (newChildren.size() == 0)
+        {
             return Filter.EXCLUDE;
-        
+        }
+
         // remove the logic we have only one filter
-        if(newChildren.size() == 1)
+        if (newChildren.size() == 1)
+        {
             return newChildren.get(0);
-        
+        }
+
         // else return the cloned and simplified up list
         return getFactory(extraData).or(newChildren);
     }
@@ -277,6 +382,100 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         // other filters might involve non volatile functions, so we need to look into them
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
         return (Filter) filter.accept(visitor, null);
+    }
+    
+    private boolean isConstant(Expression ex) {
+        // quick common cases first
+        if(ex instanceof Literal) {
+            return true;
+        } else if(ex instanceof NilExpression) {
+            return true;
+        } else if(ex instanceof PropertyName) {
+            return false;
+        } 
+        // ok, check for attribute dependencies and volatile functions then
+        attributeExtractor.clear();
+        ex.accept(attributeExtractor, null);
+        return attributeExtractor.isConstantExpression();
+    }
+    
+    public Object visit(PropertyIsBetween filter, Object extraData) {
+        PropertyIsBetween clone = (PropertyIsBetween) super.visit(filter, extraData);
+        if(isConstant(clone.getExpression()) && isConstant(clone.getLowerBoundary()) && isConstant(clone.getUpperBoundary())) {
+            return staticFilterEvaluate(clone);
+        } else {
+            return clone;
+        }
+    }
+
+    private Object staticFilterEvaluate(Filter filter) {
+        if(filter.evaluate(null)) {
+            return Filter.INCLUDE;
+        } else {
+            return Filter.EXCLUDE;
+        }
+    }
+
+    public Object visit(PropertyIsEqualTo filter, Object extraData) {
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
+    }
+
+    private Object simplifyBinaryComparisonOperator(BinaryComparisonOperator clone) {
+        if(isConstant(clone.getExpression1()) && isConstant(clone.getExpression2())) {
+            return staticFilterEvaluate(clone);
+        } else {
+            return clone;
+        }
+    }
+
+    public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
+    }
+
+    public Object visit(PropertyIsGreaterThan filter, Object extraData) {
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
+    }
+
+    public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
+    }
+
+    public Object visit(PropertyIsLessThan filter, Object extraData) {
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
+    }
+
+    public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
+    }
+    
+    @Override
+    public Object visit(PropertyIsLike filter, Object extraData) {
+        PropertyIsLike clone = (PropertyIsLike) super.visit(filter, extraData);
+        if(isConstant(clone.getExpression())) {
+            return staticFilterEvaluate(clone);
+        } else {
+            return clone;
+        }
+    }
+    
+    @Override
+    public Object visit(PropertyIsNil filter, Object extraData) {
+        PropertyIsNil clone = (PropertyIsNil) super.visit(filter, extraData);
+        if(isConstant(clone.getExpression())) {
+            return staticFilterEvaluate(clone);
+        } else {
+            return clone;
+        }
+    }
+    
+    @Override
+    public Object visit(PropertyIsNull filter, Object extraData) {
+        PropertyIsNull clone = (PropertyIsNull) super.visit(filter, extraData);
+        if(isConstant(clone.getExpression())) {
+            return staticFilterEvaluate(clone);
+        } else {
+            return clone;
+        }
     }
     
 }

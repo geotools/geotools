@@ -141,8 +141,9 @@ public class WMSComplexTypes {
 					operationType = (org.geotools.data.ows.OperationType) value[i].getValue();
 				}
 			}
-
-			operationType.setFormats(new ArrayList(formatStrings));
+			if(operationType!=null) {
+				operationType.setFormats(new ArrayList(formatStrings));
+			}
 
 			return operationType;
 		}

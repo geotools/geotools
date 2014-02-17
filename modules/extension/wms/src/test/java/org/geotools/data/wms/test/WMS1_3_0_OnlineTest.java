@@ -176,8 +176,26 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest{
         }
     }
     
-    
-    
+    public void testGEOT4706() {
+        try{
+            WMSCapabilities capabilities = createCapabilities("envitia-OGC.xml");
+            
+            assertNotNull(capabilities);
+            
+            assertEquals(capabilities.getVersion(), "1.3.0");
+            assertEquals(capabilities.getService().getName(), "WMS");
+            
+            Layer topLayer = (Layer) capabilities.getLayerList().get(0);
+            assertNotNull(topLayer);
+            assertNull(topLayer.getParent());
+            assertFalse(topLayer.isQueryable());
+            assertEquals(topLayer.getTitle(), "MapRite");
+            assertEquals(topLayer.getSrs().size(), 1);
+            assertTrue(topLayer.getSrs().contains("EPSG:27700"));
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }
+    }
     public void testCreateGetMapRequest() throws Exception {
         WebMapServer wms = new WebMapServer(server2);
         GetMapRequest request = wms.createGetMapRequest();

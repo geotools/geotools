@@ -153,7 +153,7 @@ Creating a new project
 
 #. We are going to start by defining the version number of GeoTools we wish to use. This workbook
    was written for |release| although you may wish to try a newer version, or make use of a nightly
-   build by using 8-SNAPSHOT.
+   build by using |branch|-SNAPSHOT.
     
    .. literalinclude:: artifacts/pom.xml
         :language: xml

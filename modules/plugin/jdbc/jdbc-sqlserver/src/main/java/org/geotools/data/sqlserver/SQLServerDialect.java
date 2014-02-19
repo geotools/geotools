@@ -738,5 +738,39 @@ public class SQLServerDialect extends BasicSQLDialect {
     public void setUseNativeSerialization(Boolean useNativeSerialization) {
         this.useNativeSerialization = useNativeSerialization;
     }
-	
+    
+    /**
+     * Drop the index. Subclasses can override to handle extra syntax or db specific situations
+     * 
+     * @param cx
+     * @param schema
+     * @param databaseSchema
+     * @param indexName
+     * @throws SQLException
+     */
+    public void dropIndex(Connection cx, SimpleFeatureType schema, String databaseSchema,
+            String indexName) throws SQLException {
+        StringBuffer sql = new StringBuffer();
+        String escape = getNameEscape();
+        sql.append("DROP INDEX ");
+        sql.append(escape).append(indexName).append(escape);
+        sql.append(" ON ");
+        if (databaseSchema != null) {
+            encodeSchemaName(databaseSchema, sql);
+            sql.append(".");
+        }
+        sql.append(escape).append(schema.getTypeName()).append(escape);
+
+        Statement st = null;
+        try {
+            st = cx.createStatement();
+            st.execute(sql.toString());
+            if(!cx.getAutoCommit()) {
+                cx.commit();
+            }
+        } finally {
+            dataStore.closeSafe(cx);
+        }
+    }
+    
 }

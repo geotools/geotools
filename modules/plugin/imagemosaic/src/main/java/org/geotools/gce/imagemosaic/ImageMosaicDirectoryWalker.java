@@ -222,7 +222,8 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
                 .suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"), FileFilterUtils
                 .nameFileFilter("error.txt"), FileFilterUtils.nameFileFilter("error.txt.lck"),
                 FileFilterUtils.suffixFileFilter("properties"), FileFilterUtils
-                        .suffixFileFilter("svn-base"));
+                        .suffixFileFilter("svn-base"), FileFilterUtils.suffixFileFilter("ncx"), 
+                        FileFilterUtils.suffixFileFilter("gbx9"));
         filesFilter = FileFilterUtils.or(filesFilter,
                 FileFilterUtils.nameFileFilter("indexer.properties"));
 

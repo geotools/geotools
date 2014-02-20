@@ -1090,6 +1090,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         
         final Date date = getTimeValueByIndex(variable, tIndex, cs);
         final Number verticalValue = getVerticalValueByIndex(variable, zIndex, cs);
+        final int dimSize = variable.getDimensions().size();
 
         final SimpleFeature feature = DataUtilities.template(indexSchema);
         feature.setAttribute(CoverageSlice.Attributes.GEOMETRY, UnidataCRSUtilities.GEOM_FACTORY.toGeometry(reader.boundingBox));
@@ -1097,8 +1098,10 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
 
         // TIME management
         // Check if we have time and elevation domain and set the attribute if needed
+        String timeAttribute = null;
         if (date != null) {
-            feature.setAttribute(reader.dimensionsMapping.get(UnidataUtilities.TIME_DIM), date);
+            timeAttribute = reader.dimensionsMapping.get(UnidataUtilities.TIME_DIM);
+            feature.setAttribute(timeAttribute, date);
         }
 
         // ELEVATION or other dimension
@@ -1118,7 +1121,14 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
             // custom dimension, mapped to an attribute using its name
             if (attribute == null) {
                 // Assuming the custom dimension is always the last attribute
-                attribute = variable.getDimension(0).getShortName();
+                String attrib = null;
+                for (int i = 0; i < dimSize; i++) {
+                    attrib = variable.getDimension(i).getShortName();
+                    if (!attrib.equalsIgnoreCase(timeAttribute)) {
+                        attribute = attrib;
+                        break;
+                    }
+                }
             }
             feature.setAttribute(attribute, verticalValue);
         }

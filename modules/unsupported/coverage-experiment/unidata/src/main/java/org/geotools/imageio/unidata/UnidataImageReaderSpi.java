@@ -72,10 +72,22 @@ public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
                 extraStreamMetadataFormatNames, extraStreamMetadataFormatClassNames,
                 extraImageMetadataFormatNames, extraImageMetadataFormatClassNames);
     }
-
+    private static boolean HAS_GRIB_AVAILABLE;
 
     /** Default Logger * */
     private static final Logger LOGGER = Logging.getLogger(UnidataImageReaderSpi.class);
+
+    static {
+        try {
+            Class.forName("ucar.nc2.grib.GribIosp");
+            HAS_GRIB_AVAILABLE = true;
+        } catch (ClassNotFoundException cnf) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("No Grib library found on classpath. GRIB will not be supported");
+            }
+            HAS_GRIB_AVAILABLE = false;
+        }
+    }
 
 
     @Override
@@ -116,8 +128,14 @@ public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
                 boolean cdfCheck = (b[0] == (byte)0x43 && b[1] == (byte)0x44 && b[2] == (byte)0x46);
                 boolean hdf5Check = (b[0] == (byte)0x89 && b[1] == (byte)0x48 && b[2] == (byte)0x44);
 
+                boolean isNetCDF = true;
                 if (!cdfCheck && ! hdf5Check) {
-                    if (!isNcML(input)) return false;
+                    if (!isNcML(input)) {
+                        isNetCDF = false;
+                    }
+                }
+                if (!isNetCDF && !HAS_GRIB_AVAILABLE) {
+                    return false;
                 }
                 file = NetcdfDataset.openDataset(input.getPath());
                 if (file != null) {

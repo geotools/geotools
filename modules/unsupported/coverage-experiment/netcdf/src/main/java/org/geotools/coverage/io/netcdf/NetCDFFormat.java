@@ -118,7 +118,8 @@ public class NetCDFFormat extends AbstractGridFormat{
             if (file.isDirectory()) {
                 return false;
             }
-            if (file.getAbsolutePath().endsWith("nc")  || file.getAbsolutePath().endsWith("ncml")) {
+            String absolutePath = file.getAbsolutePath();
+            if (absolutePath.endsWith("nc")  || absolutePath.endsWith("ncml") || absolutePath.contains("grb")){
                 return true;
             }
         }

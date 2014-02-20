@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -54,7 +55,9 @@ class AncillaryFileManager implements FileSetManager{
 
     /** Default schema name */
     static final String DEFAULT_SCHEMA_NAME = "def";
-    
+
+    private final static Set<String> CUT_EXTENSIONS = new HashSet<String>();
+
     private static final Set<PropertiesCollectorSPI> pcSPIs = PropertiesCollectorFinder.getPropertiesCollectorSPI();
 
     private static JAXBContext CONTEXT = null;
@@ -65,6 +68,7 @@ class AncillaryFileManager implements FileSetManager{
         } catch (Exception e) {
             LOGGER.log(Level.INFO, e.getMessage(), e);
         } 
+        CUT_EXTENSIONS.add("nc");
     }
 
     private Indexer indexer;
@@ -130,7 +134,10 @@ class AncillaryFileManager implements FileSetManager{
         }
 
         String mainFilePath = ncFile.getCanonicalPath();
-        String baseName = FilenameUtils.removeExtension(FilenameUtils.getName(mainFilePath));
+        String mainName = FilenameUtils.getName(mainFilePath);
+        //TODO: Improve that check on extensions.
+        String extension = FilenameUtils.getExtension(mainName);
+        String baseName = cutExtension(extension) ? FilenameUtils.removeExtension(mainName) : mainName;
         String outputLocalFolder = "." + baseName;
         destinationDir = new File(parentDirectory, outputLocalFolder);
 
@@ -164,6 +171,10 @@ class AncillaryFileManager implements FileSetManager{
 
         // init
         initIndexer();
+    }
+
+    private static boolean cutExtension(String extension) {
+        return CUT_EXTENSIONS.contains(extension);
     }
 
     /**

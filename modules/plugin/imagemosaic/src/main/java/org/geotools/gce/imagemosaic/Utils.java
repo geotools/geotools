@@ -357,6 +357,7 @@ public class Utils {
 		return true;
 	}
 
+	// Make additional filters pluggable
     private static IOFileFilter initCleanUpFilter() {
         IOFileFilter filesFilter = FileFilterUtils.or(
                 FileFilterUtils.suffixFileFilter("properties"),
@@ -364,6 +365,7 @@ public class Utils {
                 FileFilterUtils.suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"),
                 FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"),
                 FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"),
+                FileFilterUtils.suffixFileFilter("ncx"), FileFilterUtils.suffixFileFilter("gbx9"),
                 FileFilterUtils.nameFileFilter("error.txt"),
                 FileFilterUtils.nameFileFilter("_metadata"),
                 FileFilterUtils.suffixFileFilter("sample_image"),

@@ -98,7 +98,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
         boolean matchCase = true;
 
         if (node.getAttributeValue("matchCase") != null){
-            matchCase = Boolean.valueOf((String)node.getAttributeValue("matchCase"));
+            matchCase = Boolean.valueOf(node.getAttributeValue("matchCase").toString());
         }
 
         if (escape == null) {

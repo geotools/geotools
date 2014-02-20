@@ -91,7 +91,7 @@ public class SpatiaLiteDataStoreFactory extends JDBCDataStoreFactory {
     
     @Override
     protected String getDriverClassName() {
-        return "org.sqlite.JDBC";
+        return "org.spatialite.JDBC";
     }
     
     public String getDescription() {

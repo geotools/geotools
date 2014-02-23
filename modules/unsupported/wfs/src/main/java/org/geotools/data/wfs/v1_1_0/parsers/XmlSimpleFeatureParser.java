@@ -162,7 +162,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
     }
 
     public SimpleFeature parse() throws IOException {
-        final String fid;
+        String fid;
         try {
             fid = seekFeature();
             if (fid == null) {
@@ -188,7 +188,12 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
                 if (XmlPullParser.START_TAG == tagType) {
                     AttributeDescriptor descriptor = expectedProperties.get(tagName);
                     if (descriptor != null) {
-                        attributeValue = parseAttributeValue();
+                    	attributeValue = parseAttributeValue();
+                    	
+                    	if (descriptor.getName().toString().equals("FID") && fid.equals("Placeholder_AGS_FeatureId")){
+                    		fid = attributeValue.toString();
+                    	}
+                    	
                         builder.set(descriptor.getLocalName(), attributeValue);
                     }
                 }
@@ -761,6 +766,13 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
                     if (featureId == null) {
                         featureId = parser.getAttributeValue(null, "id");
                     }
+                    
+                    //ArcGIS hack
+                    if (featureId == null) {
+                    	featureId = new String("Placeholder_AGS_FeatureId"); 
+                    }
+                    	
+                    
                     return featureId;
                 }
             }

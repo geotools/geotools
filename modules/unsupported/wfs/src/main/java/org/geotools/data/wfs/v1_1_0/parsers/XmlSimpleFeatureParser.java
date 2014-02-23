@@ -80,6 +80,8 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs");
 
     private static final GeometryFactory geomFac = new GeometryFactory();
+    
+    private static final String PLACEHOLDER_ARCGIS_SERVER_FEATURE_ID = "Placeholder_AGS_FeatureId";
 
     private InputStream inputStream;
 
@@ -162,7 +164,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
     }
 
     public SimpleFeature parse() throws IOException {
-        final String fid;
+        String fid;
         try {
             fid = seekFeature();
             if (fid == null) {
@@ -188,7 +190,12 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
                 if (XmlPullParser.START_TAG == tagType) {
                     AttributeDescriptor descriptor = expectedProperties.get(tagName);
                     if (descriptor != null) {
-                        attributeValue = parseAttributeValue();
+                    	attributeValue = parseAttributeValue();
+                    	
+                    	if ( isArcGISServerFeatureID(descriptor) && fid.equals(PLACEHOLDER_ARCGIS_SERVER_FEATURE_ID)){
+                    		fid = attributeValue.toString();
+                    	}
+                    	
                         builder.set(descriptor.getLocalName(), attributeValue);
                     }
                 }
@@ -200,6 +207,19 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
         return feature;
     }
 
+    private Boolean isArcGISServerFeatureID(AttributeDescriptor descriptor){
+    	if (descriptor.getName().toString().equals("FID")||descriptor.getName().toString().equals("OBJECTID")||descriptor.getName().toString().equals("OID")){
+    		//Shapefile from ArcGIS Server GetFeatures request could have 3 types of unique id, 
+    		//depending on whether coming from a stand alone shapefile, feature class in geodatabase, 
+    		//or stand alone dBase Table. 
+    		return true;
+    	}
+    	else
+    		return false;
+    	
+    }
+    
+    
     /**
      * Parses the value of the current attribute, parser cursor shall be on a feature attribute
      * START_TAG event.
@@ -761,6 +781,13 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
                     if (featureId == null) {
                         featureId = parser.getAttributeValue(null, "id");
                     }
+                    
+                    //ArcGIS hack
+                    if (featureId == null) {
+                    	featureId = PLACEHOLDER_ARCGIS_SERVER_FEATURE_ID; 
+                    }
+                    	
+                    
                     return featureId;
                 }
             }

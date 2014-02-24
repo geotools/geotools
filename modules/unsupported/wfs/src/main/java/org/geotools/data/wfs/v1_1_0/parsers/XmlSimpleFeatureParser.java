@@ -192,7 +192,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
                     if (descriptor != null) {
                     	attributeValue = parseAttributeValue();
                     	
-                    	if ( isArcGISServerFeatureID(descriptor) && fid.equals("Placeholder_AGS_FeatureId")){
+                    	if ( isArcGISServerFeatureID(descriptor) && fid.equals(Placeholder_ArcgisServer_FeatureID)){
                     		fid = attributeValue.toString();
                     	}
                     	

@@ -11,16 +11,17 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.projection.PolarStereographic;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.io.WKTReader;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * 
@@ -321,6 +322,16 @@ public class ProjectionHandlerTest {
         Geometry preProcessed = handler.preProcess(WGS84, g);
         assertTrue(!preProcessed.equalsTopo(g));
         assertTrue(handler.validArea.contains(preProcessed.getEnvelopeInternal()));
+    }
+
+    @Test
+    public void testPolarStereographic() throws Exception {
+        ReferencedEnvelope envelope = new ReferencedEnvelope(-10700000, 14700000, -10700000,
+                14700000, CRS.decode("EPSG:5041", true));
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(envelope, true);
+        assertNotNull(handler);
+        assertEquals(envelope, handler.getRenderingEnvelope());
+        assertTrue(CRS.getMapProjection(envelope.getCoordinateReferenceSystem()) instanceof PolarStereographic);
     }
 
 }

@@ -23,6 +23,7 @@ import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.PolarStereographic;
 import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.geotools.referencing.operation.projection.MapProjection.AbstractProvider;
+import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValue;
 
 /**
@@ -42,14 +43,24 @@ public class PolarStereographicHandlerFactory implements ProjectionHandlerFactor
         if (renderingEnvelope != null && mapProjection instanceof PolarStereographic) {
             boolean north;
             // variant B uses standard_parallel
-            ParameterValue<?> stdParallel = mapProjection.getParameterValues().parameter(
-                    AbstractProvider.STANDARD_PARALLEL_1.getName().getCode());
+            ParameterValue<?> stdParallel = null;
+            try {
+                stdParallel = mapProjection.getParameterValues().parameter(
+                        AbstractProvider.STANDARD_PARALLEL_1.getName().getCode());
+            } catch (ParameterNotFoundException e) {
+                // ignore
+            }
             if(stdParallel != null) {
                 north = stdParallel.doubleValue() > 0;
             } else {
                 // variant A uses latitude of origin
-                ParameterValue<?> latOrigin = mapProjection.getParameterValues().parameter(
-                        AbstractProvider.LATITUDE_OF_ORIGIN.getName().getCode());
+                ParameterValue<?> latOrigin = null;
+                try {
+                    latOrigin = mapProjection.getParameterValues().parameter(
+                            AbstractProvider.LATITUDE_OF_ORIGIN.getName().getCode());
+                } catch (ParameterNotFoundException e) {
+                    // ignore
+                }
                 if(latOrigin != null) {
                     north = latOrigin.doubleValue() > 0;
                 } else {

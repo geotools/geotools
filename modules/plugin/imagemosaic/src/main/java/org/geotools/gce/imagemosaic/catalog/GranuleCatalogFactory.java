@@ -107,8 +107,9 @@ public abstract class GranuleCatalogFactory {
 			//
 			params.put(ShapefileDataStoreFactory.URLP.key, sourceURL);
 			params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key,Boolean.TRUE);
-			params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, Boolean.TRUE);
-			params.put(ShapefileDataStoreFactory.CACHE_MEMORY_MAPS.key, Boolean.TRUE);
+			params.put(ShapefileDataStoreFactory.ENABLE_SPATIAL_INDEX.key,Boolean.TRUE);
+			params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, Boolean.FALSE);
+			params.put(ShapefileDataStoreFactory.CACHE_MEMORY_MAPS.key, Boolean.FALSE);
 			params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
 			spi=Utils.SHAPE_SPI;			
 		}

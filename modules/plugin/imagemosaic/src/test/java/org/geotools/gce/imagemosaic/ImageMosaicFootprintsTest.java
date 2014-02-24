@@ -221,6 +221,10 @@ public class ImageMosaicFootprintsTest {
         assertNotNull(coverage);
         return coverage;
     }
+    
+    
+    
+    
     @Test
     public void testAreaOutside() throws Exception {
         // copy the footprints mosaic over

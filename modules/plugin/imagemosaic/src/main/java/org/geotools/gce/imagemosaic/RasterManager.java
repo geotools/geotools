@@ -888,7 +888,7 @@ public class RasterManager {
             this.parentReader = parentReader;
             this.expandMe = parentReader.expandMe;
             boolean checkAuxiliaryMetadata = configuration.isCheckAuxiliaryMetadata();
-            this.heterogeneousGranules = parentReader.heterogeneousGranules;
+            this.heterogeneousGranules = configuration.getCatalogConfigurationBean().isHeterogeneous();
             this.configuration = configuration;
             hints = parentReader.getHints();
             if (configuration != null && configuration.getAuxiliaryFilePath() != null) {

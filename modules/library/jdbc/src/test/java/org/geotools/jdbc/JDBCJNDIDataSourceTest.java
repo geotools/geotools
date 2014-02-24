@@ -71,6 +71,7 @@ public abstract class JDBCJNDIDataSourceTest extends JDBCTestSupport {
         standardParams.removeAll(baseParams);
         List<String> baseJndiParams = getBaseJNDIParams();
         List<String> jndiParams = getParamKeys(getJNDIStoreFactory());
+        assertTrue(jndiParams.contains(JDBCDataStoreFactory.FETCHSIZE.key));
         jndiParams.removeAll(baseJndiParams);
         assertEquals(standardParams, jndiParams);
     }

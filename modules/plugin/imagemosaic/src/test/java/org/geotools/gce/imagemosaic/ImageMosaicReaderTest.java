@@ -1376,7 +1376,7 @@ public class ImageMosaicReaderTest extends Assert{
         final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralEnvelope envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
-        dim.setSize(reader.getOriginalGridRange().getSpan(0) / 7.0, reader.getOriginalGridRange().getSpan(1) / 7.0);
+        dim.setSize(10,10);
         final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);

@@ -1337,7 +1337,7 @@ public class GeoPackage {
                 q.add("zoom_level >= " + lowZoom);
             }
             if (highZoom != null) {
-                q.add("zoom_level <= " + lowZoom);
+                q.add("zoom_level <= " + highZoom);
             }
             if (lowCol != null) {
                 q.add("tile_column >= " + lowCol);

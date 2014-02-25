@@ -113,14 +113,14 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
         Utilities.ensureNonNull("spi", spi);
 
         try {
-            this.pathType = (PathType) params.get("PathType");
-            this.locationAttribute = (String) params.get("LocationAttribute");
-            final String temp = (String) params.get("SuggestedSPI");
+            this.pathType = (PathType) params.get(Utils.Prop.PATH_TYPE);
+            this.locationAttribute = (String) params.get(Utils.Prop.LOCATION_ATTRIBUTE);
+            final String temp = (String) params.get(Utils.Prop.SUGGESTED_SPI);
             this.suggestedRasterSPI = temp != null ? (ImageReaderSpi) Class.forName(temp)
                     .newInstance() : null;
-            this.parentLocation = (String) params.get("ParentLocation");
-            if (params.containsKey("Heterogeneous")) {
-                this.heterogeneous = Boolean.valueOf(params.getProperty("Heterogeneous"));
+            this.parentLocation = (String) params.get(Utils.Prop.PARENT_LOCATION);
+            if (params.containsKey(Utils.Prop.HETEROGENEOUS)) {
+                this.heterogeneous = (Boolean) params.get(Utils.Prop.HETEROGENEOUS);
             }
 
             // creating a store, this might imply creating it for an existing underlying store or
@@ -158,8 +158,8 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             String typeName = null;
             boolean scanForTypeNames = false;
 
-            if (params.containsKey("TypeName")) {
-                typeName = (String) params.get("TypeName");
+            if (params.containsKey(Utils.Prop.TYPENAME)) {
+                typeName = (String) params.get(Utils.Prop.TYPENAME);
             }
 
             if (params.containsKey(Utils.SCAN_FOR_TYPENAMES)) {

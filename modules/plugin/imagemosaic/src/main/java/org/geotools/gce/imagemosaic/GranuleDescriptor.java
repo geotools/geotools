@@ -55,7 +55,6 @@ import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
 
 import org.apache.commons.beanutils.MethodUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;

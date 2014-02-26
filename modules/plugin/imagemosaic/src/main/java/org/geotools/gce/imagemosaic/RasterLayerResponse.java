@@ -427,7 +427,7 @@ class RasterLayerResponse{
          * 
          * @return a {@link MosaicInputs} ready to be mosaicked.
          */
-        private MosaicInputs collectGranules(){
+        private MosaicInputs collectGranules()throws IOException{
             // do we have anything to do?
             if (granulesNumber <= 0) {
                 if (LOGGER.isLoggable(Level.FINE)){
@@ -509,7 +509,7 @@ class RasterLayerResponse{
                     if (LOGGER.isLoggable(Level.INFO)){
                         LOGGER.info("Adding to mosaic failed, original request was " + request);
                     }
-                    continue;
+                    throw new IOException(e);
                 }               
                
 

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://www.opengis.net/gpkg" xmlns:gpkg="http://www.opengis.net/gpkg" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fes="http://www.opengis.net/fes/2.0" elementFormDefault="qualified">
+
+  <xs:import namespace="http://www.opengis.net/fes/2.0" schemaLocation="http://schemas.opengis.net/filter/2.0/filter.xsd" />
+  
+  <xs:element name="geopackage" type="gpkg:geopkgtype"/>
+
+  <xs:complexType name="bboxtype">
+    <xs:all>
+      <xs:element name="minx" type="xs:decimal" />
+      <xs:element name="miny" type="xs:decimal" />
+      <xs:element name="maxx" type="xs:decimal" />
+      <xs:element name="maxy" type="xs:decimal" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="layertype">
+    <xs:sequence>
+      <xs:element name="description" type="xs:string" minOccurs="0" />
+      <xs:element name="srs" type="xs:anyURI" minOccurs="0" />
+      <xs:element name="bbox" type="gpkg:bboxtype" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="name" use="required" />
+    <xs:attribute name="identifier"/>
+  </xs:complexType>
+
+  <xs:complexType name="layertype_requiredsrsbbox">
+    <xs:complexContent>
+      <xs:restriction base="gpkg:layertype">
+        <xs:sequence>
+	       <xs:element name="description" type="xs:string" minOccurs="0" /> 
+	       <xs:element name="srs" type="xs:anyURI" minOccurs="1" />       
+           <xs:element name="bbox" type="gpkg:bboxtype" minOccurs="1" />
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name ="gridtype">
+    <xs:all>
+      <xs:element name="zoomlevel" type="xs:nonNegativeInteger" />
+      <xs:element name="tilewidth" type="xs:positiveInteger" />
+      <xs:element name="tileheight" type="xs:positiveInteger" />
+      <xs:element name="matrixwidth" type="xs:positiveInteger" />
+      <xs:element name="matrixheight" type="xs:positiveInteger" />
+      <xs:element name="pixelxsize" type="xs:decimal" />
+      <xs:element name="pixelysize" type="xs:decimal" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="gridsettype">
+    <xs:choice>
+      <xs:element name="name" type="xs:string" />
+      <xs:element name="grids">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="grid" maxOccurs="unbounded" type="gpkg:gridtype" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="coveragetype">
+    <xs:all>
+      <xs:element name="minZoom" type="xs:nonNegativeInteger" minOccurs="0" />
+      <xs:element name="maxZoom" type="xs:nonNegativeInteger" minOccurs="0" />
+      <xs:element name="minColumn" type="xs:nonNegativeInteger" minOccurs="0" />
+      <xs:element name="maxColumn" type="xs:nonNegativeInteger" minOccurs="0" />
+      <xs:element name="minRow" type="xs:nonNegativeInteger" minOccurs="0" />
+      <xs:element name="maxRow" type="xs:nonNegativeInteger" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="geopkgtype">
+    <xs:sequence>
+      <xs:element name="features" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="gpkg:layertype">
+              <xs:sequence>
+                <xs:element name="featuretype" type="xs:string" />
+                <xs:element name="propertynames" minOccurs="0" type="xs:string" />
+                <xs:element name="filter" minOccurs="0" type="fes:FilterType" />
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="tiles" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="gpkg:layertype_requiredsrsbbox">
+              <xs:sequence>
+                <xs:element name="layers" type="xs:string" />
+                <xs:choice>
+                  <xs:element name="styles" type="xs:string" />
+                  <xs:element name="sld" type="xs:anyURI" />
+                  <xs:element name="sldbody" type="xs:string" />
+                </xs:choice>
+                <xs:element name="format" type="xs:string" minOccurs="0" />
+                <xs:element name="bgcolor" type="xs:string" minOccurs="0" />
+                <xs:element name="transparent" type="xs:boolean" minOccurs="0" />
+                <xs:element name="coverage" type="gpkg:coveragetype" minOccurs="0" />
+                <xs:element name="gridset" type="gpkg:gridsettype" minOccurs="0"  />
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" use="required" />
+  </xs:complexType>
+
+</xs:schema> 

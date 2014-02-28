@@ -188,6 +188,7 @@
     <module>wfs</module>
     <module>geojson</module>
     <module>geopkg</module>
+    <module>mbtiles</module>
   </modules>
 
 </project>

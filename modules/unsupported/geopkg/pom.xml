@@ -126,6 +126,57 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+	<dependency>
+	  <groupId>org.geotools.xsd</groupId>
+	  <artifactId>gt-xsd-core</artifactId>
+	  <version>${project.version}</version>
+	</dependency> 
+	<dependency>
+	  <groupId>org.geotools.xsd</groupId>
+	  <artifactId>gt-xsd-fes</artifactId>
+	  <version>${project.version}</version>
+	</dependency>   
+	<dependency>
+	  <groupId>org.geotools.xsd</groupId>
+	  <artifactId>gt-xsd-ows</artifactId>
+	  <version>${project.version}</version>
+	</dependency>
+	<dependency>
+	  <groupId>xmlunit</groupId>
+	  <artifactId>xmlunit</artifactId>
+	  <scope>test</scope>
+	</dependency>  
     </dependencies>
+    
+    <build>
+    <plugins>
+      <plugin>
+        <groupId>org.geotools.maven</groupId>
+        <artifactId>xmlcodegen</artifactId>
+        <version>${project.version}</version>
+        <configuration>
+          <schemaLocation>geopkg.xsd</schemaLocation>
+	  <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/geopkg/wps</schemaSourceDirectory>
+	  <schemaLookupDirectories>
+	    <schemaLookupDirectory>${basedir}/../../extension/xsd/xsd-core/src/main/resources/org/geotools/xml</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/../../extension/xsd/xsd-core/src/main/resources/org/geotools/xlink</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/../../extension/xsd/xsd-fes/src/main/resources/org/geotools/filter/v2_0</schemaLookupDirectory>   
+	    <schemaLookupDirectory>${basedir}/../../extension/xsd/xsd-ows/src/main/resources/org/geotools/ows/v2_0</schemaLookupDirectory>       
+          </schemaLookupDirectories>
+          <destinationPackage>org.geotools.geopkg.wps.parser</destinationPackage>
+          <generateConfiguration>true</generateConfiguration>	  
+	  <generateBindingInterface>true</generateBindingInterface>
+	  <generateSchemaLocationResolver>true</generateSchemaLocationResolver>
+          <generateTests>true</generateTests>
+	  <generateXsd>true</generateXsd>
+	  <generateAttributeBindings>true</generateAttributeBindings>
+	  <generateElementBindings>true</generateElementBindings>
+	  <followComplexTypes>true</followComplexTypes>
+	  <!--<printRecursionPaths>true</printRecursionPaths>
+	  <overwriteExistingFiles>true</overwriteExistingFiles>-->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

@@ -54,6 +54,7 @@ import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffException;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.WorldFileWriter;
 import org.geotools.factory.Hints;
 import org.geotools.image.io.GridCoverageWriterProgressAdapter;
 import org.geotools.image.io.ImageIOExt;
@@ -275,7 +276,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
                 // write tfw
                 //
                 if (writeTfw && (destination instanceof File)) {
-                    handleTFW(gc);
+                    handleTFW(gc, tr);
                 }
 			
 	}
@@ -284,14 +285,18 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
      * Takes care of writing the world file for this geotiff
      * 
      * @param gc the {@link GridCoverage} to take the georefeerincing from.
+     * @param tr 
      * 
      * @throws IOException in case something bad occurs while writing.
      */
-    private void handleTFW(final GridCoverage gc) throws IOException {
+    private void handleTFW(final GridCoverage gc, AffineTransform tr) throws IOException {
         final File destFile = (File) this.destination;
-        final File tfw = new File(destFile.getParentFile(), destFile.getName()
-                .replace("tif", "tfw"));
-        final BufferedWriter outW = new BufferedWriter(new FileWriter(tfw));
+        final File parentFile = destFile.getParentFile();
+        final String name = destFile.getName();
+        final File tfw = new File(parentFile, name.replace("tif", "tfw"));
+        final File prj = new File(parentFile, name.replace("tif", "prj"));
+        final WorldFileWriter writer =  new WorldFileWriter(tfw, tr);
+        final BufferedWriter outW = new BufferedWriter(new FileWriter(prj));
         try {
             outW.write(gc.getCoordinateReferenceSystem().toWKT());
         } finally {

@@ -1,5 +1,6 @@
 package org.geotools.wfs.v2_0;
 
+import net.opengis.wfs20.FeatureCollectionType;
 import net.opengis.wfs20.Wfs20Factory;
 
 import org.eclipse.emf.ecore.EObject;
@@ -39,6 +40,7 @@ import javax.xml.namespace.QName;
  * @source $URL$
  */
 public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
+    private static final String UNKNOWN = "unknown";
     boolean generateBounds;
 
     public FeatureCollectionTypeBinding(Wfs20Factory factory, Configuration configuration) {
@@ -71,14 +73,26 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
         if( "boundedBy".equals( name.getLocalPart() ) && !generateBounds) {
             return null;
         }   
+        Object result = null;
         if (!WFSParsingUtils.features((EObject) object).isEmpty()) {
-            Object val = WFSParsingUtils.FeatureCollectionType_getProperty((EObject) object, name);
-            if (val != null) {
-                return val;
+            result  = WFSParsingUtils.FeatureCollectionType_getProperty((EObject) object, name);
+        }
+        if(result == null) {
+            result = super.getProperty(object, name);
+        }
+        if("numberMatched".equals(name.getLocalPart())) {
+            if(result == null || !(result instanceof Number)) {
+                return UNKNOWN;
+            } else if(result instanceof Number) {
+                long numberMatched = ((Number) result).longValue();
+                if(numberMatched < 0) {
+                    return UNKNOWN;
+                } else {
+                    return numberMatched;
+                }
             }
         }
-        
-        return super.getProperty(object, name);
+        return result;
     }
     
     @Override

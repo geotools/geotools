@@ -33,7 +33,7 @@ class GdalInit {
             synchronized (GdalInit.class) {
                 if (NATIVE_NAME == null) {
                     NATIVE_NAME = System.getProperty("GDAL_LIBRARY_NAME");
-                    if(NATIVE_NAME != null) {
+                    if(NATIVE_NAME != null && !NATIVE_NAME.isEmpty()) {
                         // someone told us its name
                     	if(!checkNativeName(NATIVE_NAME)) {
                     		throw new RuntimeException(

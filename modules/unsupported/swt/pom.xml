@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>unsupported</artifactId>
-        <version>11-SNAPSHOT</version>
+        <version>11-RC2</version>
     </parent>
 
   <!-- =========================================================== -->

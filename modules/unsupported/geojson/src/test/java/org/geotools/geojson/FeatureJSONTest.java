@@ -580,12 +580,16 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
       String collectionText = collectionText(true, true, false, false, true);
       SimpleFeatureType ftype = fjson.readFeatureCollectionSchema((strip(collectionText)), true);
       
-      assertNotNull(ftype.getDescriptor("double"));
-      assertEquals(Double.class, ftype.getDescriptor("double").getType().getBinding());
+      System.out.println("type: " + ftype);
+      
+      assertEquals(4, ftype.getAttributeCount());
+      
       assertNotNull(ftype.getDescriptor("int"));
-      assertEquals(Long.class, ftype.getDescriptor("int").getType().getBinding());
+      assertEquals(Long.class, ftype.getDescriptor(1).getType().getBinding());
+      assertNotNull(ftype.getDescriptor("double"));
+      assertEquals(Double.class, ftype.getDescriptor(2).getType().getBinding());
       assertNotNull(ftype.getDescriptor("string"));
-      assertEquals(String.class, ftype.getDescriptor("string").getType().getBinding());
+      assertEquals(String.class, ftype.getDescriptor(3).getType().getBinding());
       
       assertNotNull(ftype.getCoordinateReferenceSystem());
       
@@ -605,8 +609,8 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
       SimpleFeatureType ftype = fjson.readFeatureCollectionSchema((strip(collectionText)), false);
       
       assertNotNull(ftype.getDescriptor("double"));
-      // type defined as Object as all values were null
-      assertEquals(Object.class, ftype.getDescriptor("double").getType().getBinding());
+      // type defaults to String as all values were null
+      assertEquals(String.class, ftype.getDescriptor("double").getType().getBinding());
       assertNotNull(ftype.getDescriptor("int"));
       assertEquals(Long.class, ftype.getDescriptor("int").getType().getBinding());
       assertNotNull(ftype.getDescriptor("string"));
@@ -802,5 +806,4 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         sb.append("}");
         return sb.toString();
     }
-    
 }

@@ -1785,7 +1785,7 @@ public class DataUtilities {
         tb.setNamespaceURI(namespace);
         tb.setCRS(null); // not interested in warnings from this simple method
         tb.addAll(types);
-
+        setDefaultGeometry(tb, properties, featureType);
         return tb.buildFeatureType();
     }
 
@@ -1825,7 +1825,19 @@ public class DataUtilities {
         for (int i = 0; i < properties.length; i++) {
             tb.add(featureType.getDescriptor(properties[i]));
         }
+        setDefaultGeometry(tb, properties, featureType);
         return tb.buildFeatureType();
+    }
+
+    private static void setDefaultGeometry(SimpleFeatureTypeBuilder typeBuilder, String[] properties,
+            SimpleFeatureType featureType) {
+        GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
+        if (geometryDescriptor != null) {
+            String propertyName = geometryDescriptor.getLocalName();
+            if (Arrays.asList(properties).contains(propertyName)) {
+                typeBuilder.setDefaultGeometry(propertyName);
+            }
+        }
     }
     //
     // Decoding (ie Parsing) support for PropertyAttributeReader and tutorials

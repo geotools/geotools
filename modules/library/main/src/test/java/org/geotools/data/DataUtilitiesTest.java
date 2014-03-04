@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.vividsolutions.jts.geom.Point;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -593,6 +594,32 @@ public class DataUtilitiesTest extends DataTestCase {
         before = DataUtilities.createType("cities","the_geom:Point:srid=4326,name:String,population:Integer");
         after = DataUtilities.createSubType(before, new String[] {"the_geom"});
         assertEquals(before.getGeometryDescriptor(), after.getGeometryDescriptor());
+    }
+
+    public void testCreateSubTypePreservesDefaultGeometryProperty() throws Exception {
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("test");
+        tb.add("name", String.class);
+        tb.add("the_geom1", Point.class, 4326);
+        tb.add("the_geom2", Point.class, 4326);
+        tb.add("the_geom3", Point.class, 4326);
+        tb.setDefaultGeometry("the_geom2");
+        SimpleFeatureType before = tb.buildFeatureType();
+        SimpleFeatureType after = DataUtilities.createSubType(before, new String[]{"name", "the_geom1", "the_geom3"});
+        assertEquals(3, after.getAttributeCount());
+        assertEquals("the_geom1", after.getGeometryDescriptor().getLocalName());
+
+        after = DataUtilities.createSubType(before, new String[]{"name", "the_geom1", "the_geom3"}, DefaultGeographicCRS.WGS84);
+        assertEquals(3, after.getAttributeCount());
+        assertEquals("the_geom1", after.getGeometryDescriptor().getLocalName());
+
+        after = DataUtilities.createSubType(before, new String[]{"name", "the_geom1", "the_geom2"});
+        assertEquals(3, after.getAttributeCount());
+        assertEquals("the_geom2", after.getGeometryDescriptor().getLocalName());
+
+        after = DataUtilities.createSubType(before, new String[]{"name", "the_geom1", "the_geom2"}, DefaultGeographicCRS.WGS84);
+        assertEquals(3, after.getAttributeCount());
+        assertEquals("the_geom2", after.getGeometryDescriptor().getLocalName());
     }
 
     public void testSource() throws Exception {

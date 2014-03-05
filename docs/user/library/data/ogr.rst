@@ -38,7 +38,7 @@ or if you are using JNI::
 
     OGRDataStoreFactor factory = new JniOGRDataStoreFactory();
 
-You can list of available drivers::
+You can list available drivers::
 
     Set<String> drivers = factory.getAvailableDrivers();
     for (String driver : drivers) {

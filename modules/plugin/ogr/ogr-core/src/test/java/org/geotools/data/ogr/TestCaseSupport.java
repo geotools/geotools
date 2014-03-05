@@ -31,6 +31,7 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import org.geotools.TestData;
+import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
@@ -274,7 +275,7 @@ public abstract class TestCaseSupport extends TestCase {
             copy(testData, new String[] { "shp", "dbf", "shx" }, new String[] { "prj" });
         else if (testData.endsWith(".MIF"))
             copy(testData, new String[] { "MIF", "MID" }, new String[0]);
-        File f = new File(TestData.url(this, testData).getFile());
+        File f = DataUtilities.urlToFile(TestData.url(this, testData));
         return f.getAbsolutePath();
     }
 

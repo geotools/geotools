@@ -55,16 +55,6 @@
      </profile>
 
      <!-- ================================================== -->
-     <!--     Modules kicked out of the build                -->
-     <!-- ================================================== -->
-     <profile>
-       <id>archive</id>
-       <modules>
-         <module>ogr</module>
-       </modules>
-     </profile>
-
-     <!-- ================================================== -->
      <!--     Unsupported Modules                            -->
      <!-- ================================================== -->
      <!-- The following profiles can all be turned on by     -->
@@ -137,12 +127,6 @@
        <id>feature-aggreate</id>
        <modules>
          <module>feature-aggreate</module>
-       </modules>
-     </profile>
-     <profile>
-       <id>ogr</id>
-       <modules>
-         <module>ogr</module>
        </modules>
      </profile>
      <profile>

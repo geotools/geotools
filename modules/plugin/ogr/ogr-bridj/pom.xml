@@ -24,22 +24,21 @@
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
-  <artifactId>gt-ogr-jni</artifactId>
+  <artifactId>gt-ogr-bridj</artifactId>
   <packaging>jar</packaging>
-  <name>JNI OGR DataStore Module</name>
+  <name>Bridj OGR DataStore Module</name>
   
-
   <scm>
     <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/ogr/ogr-jni
+      scm:svn:http://svn.geotools.org/trunk/modules/plugin/ogr/ogr-bridj
     </connection>
-    <url>http://svn.geotools.org/trunk/modules/unsupported/ogr/ogr-jni</url>
+    <url>http://svn.geotools.org/trunk/modules/plugin/ogr/ogr-bridj</url>
   </scm>
 
   <description>
-    A datastore levearing OGR for reading/writing a slew of data formats
+    A datastore levearing OGR BRIDJ bindings for reading/writing a slew of data formats
   </description>
-
+  
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -48,6 +47,15 @@
     </license>
   </licenses>
   
+  <repositories>
+    <repository>
+      <id>nativelibs4java-repo</id>
+      <name>NativeLibs4Java Maven Repository</name>
+      <url>http://nativelibs4java.sourceforge.net/maven</url>
+    </repository>
+  </repositories>
+
+
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
@@ -75,9 +83,16 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.gdal</groupId>
-      <artifactId>gdal</artifactId>
-      <version>${gdal.version}</version>
+      <groupId>com.nativelibs4java</groupId>
+      <artifactId>bridj</artifactId>
+      <classifier>c-only</classifier>
+      <version>0.6</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.nativelibs4java.thirdparty.com.google.android</groupId>
+          <artifactId>dx</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
@@ -88,10 +103,6 @@
     </dependency>
   </dependencies>
   
-  <properties>
-    <gdal.version>1.8.1</gdal.version>
-  </properties>
-  
   <build>
         <plugins>
             <plugin>
@@ -100,6 +111,9 @@
                 <configuration>
                     <forkMode>once</forkMode>
                     <argLine>-Djava.library.path="${env.GT_GDAL}"</argLine>
+                    <systemProperties>
+                        <GDAL_LIBRARY_NAME>${env.GDAL_LIBRARY_NAME}</GDAL_LIBRARY_NAME>
+                    </systemProperties>
                     <environmentVariables>
                         <PATH>${env.GT_GDAL};${env.PATH}</PATH>
                         <DYLD_LIBRARY_PATH>${env.GT_GDAL};${env.DYLD_LIBRARY_PATH}</DYLD_LIBRARY_PATH>
@@ -108,6 +122,6 @@
                 </configuration>
             </plugin>
         </plugins>
-   </build>
+    </build>
   
 </project>

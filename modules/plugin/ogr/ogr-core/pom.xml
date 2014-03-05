@@ -30,9 +30,9 @@
   
   <scm>
     <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/ogr/ogr-core
+      scm:svn:http://svn.geotools.org/trunk/modules/plugin/ogr/ogr-core
     </connection>
-    <url>http://svn.geotools.org/trunk/modules/unsupported/ogr/ogr-core</url>
+    <url>http://svn.geotools.org/trunk/modules/plugin/ogr/ogr-core</url>
   </scm>
 
   <licenses>

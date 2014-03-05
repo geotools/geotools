@@ -24,16 +24,20 @@
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
-  <artifactId>gt-ogr-bridj</artifactId>
+  <artifactId>gt-ogr-jni</artifactId>
   <packaging>jar</packaging>
-  <name>Bridj OGR DataStore Module</name>
+  <name>JNI OGR DataStore Module</name>
   
   <scm>
     <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/ogr/ogr-bridj
+      scm:svn:http://svn.geotools.org/trunk/modules/plugin/ogr/ogr-jni
     </connection>
-    <url>http://svn.geotools.org/trunk/modules/unsupported/ogr/ogr-bridj</url>
+    <url>http://svn.geotools.org/trunk/modules/plugin/ogr/ogr-jni</url>
   </scm>
+
+  <description>
+    A datastore levearing OGR JNI bindings for reading/writing a slew of data formats
+  </description>
 
   <licenses>
     <license>
@@ -43,15 +47,6 @@
     </license>
   </licenses>
   
-  <repositories>
-    <repository>
-      <id>nativelibs4java-repo</id>
-      <name>NativeLibs4Java Maven Repository</name>
-      <url>http://nativelibs4java.sourceforge.net/maven</url>
-    </repository>
-  </repositories>
-
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
@@ -79,16 +74,9 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.nativelibs4java</groupId>
-      <artifactId>bridj</artifactId>
-      <classifier>c-only</classifier>
-      <version>0.6</version>
-      <exclusions>
-        <exclusion>
-          <groupId>com.nativelibs4java.thirdparty.com.google.android</groupId>
-          <artifactId>dx</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>org.gdal</groupId>
+      <artifactId>gdal</artifactId>
+      <version>${gdal.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
@@ -99,6 +87,10 @@
     </dependency>
   </dependencies>
   
+  <properties>
+    <gdal.version>1.8.1</gdal.version>
+  </properties>
+  
   <build>
         <plugins>
             <plugin>
@@ -107,9 +99,6 @@
                 <configuration>
                     <forkMode>once</forkMode>
                     <argLine>-Djava.library.path="${env.GT_GDAL}"</argLine>
-                    <systemProperties>
-                        <GDAL_LIBRARY_NAME>${env.GDAL_LIBRARY_NAME}</GDAL_LIBRARY_NAME>
-                    </systemProperties>
                     <environmentVariables>
                         <PATH>${env.GT_GDAL};${env.PATH}</PATH>
                         <DYLD_LIBRARY_PATH>${env.GT_GDAL};${env.DYLD_LIBRARY_PATH}</DYLD_LIBRARY_PATH>
@@ -118,6 +107,6 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build>
+   </build>
   
 </project>

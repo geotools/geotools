@@ -30,11 +30,15 @@
   
   <scm>
     <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/ogr/ogr-bridj
+      scm:svn:http://svn.geotools.org/trunk/modules/plugin/ogr/ogr-bridj
     </connection>
-    <url>http://svn.geotools.org/trunk/modules/unsupported/ogr/ogr-bridj</url>
+    <url>http://svn.geotools.org/trunk/modules/plugin/ogr/ogr-bridj</url>
   </scm>
 
+  <description>
+    A datastore levearing OGR BRIDJ bindings for reading/writing a slew of data formats
+  </description>
+  
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>

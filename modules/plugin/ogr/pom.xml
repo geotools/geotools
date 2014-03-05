@@ -15,7 +15,7 @@
 
   <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>unsupported</artifactId>
+    <artifactId>modules</artifactId>
     <version>12-SNAPSHOT</version>
   </parent>
 
@@ -30,13 +30,13 @@
   
   <scm>
     <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/ogr/
+      scm:svn:http://svn.geotools.org/trunk/modules/plugin/ogr/
     </connection>
-    <url>http://svn.geotools.org/trunk/modules/unsupported/ogr/</url>
+    <url>http://svn.geotools.org/trunk/modules/plugin/ogr/</url>
   </scm>
 
   <description>
-    A datastore levearing OGR for reading/writing a slew of data formats
+    A datastore leveraging OGR for reading/writing a slew of data formats
   </description>
 
   <licenses>
@@ -97,18 +97,18 @@
   
   <build>
     <plugins>
-	    <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-surefire-plugin</artifactId>
-	        <configuration>
-	          <systemProperties>
-	            <property>
-	              <name>java.library.path</name>
-	              <value>${java.library.path}</value>
-	            </property>
-	          </systemProperties>
-	        </configuration>
-	      </plugin>
+       <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-surefire-plugin</artifactId>
+           <configuration>
+             <systemProperties>
+               <property>
+                 <name>java.library.path</name>
+                 <value>${java.library.path}</value>
+               </property>
+             </systemProperties>
+           </configuration>
+         </plugin>
       </plugins>
   </build>
 

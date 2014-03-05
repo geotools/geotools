@@ -752,7 +752,7 @@ public class SLDTransformer extends TransformerBase {
         public void visit(Mark mark) {
             start("Mark");
             if (mark.getWellKnownName() != null && !"square".equals(mark.getWellKnownName().evaluate(null))) {
-            	element("WellKnownName", mark.getWellKnownName().toString());
+                encodeValue("WellKnownName", null, mark.getWellKnownName(), null);
             }
 
             if (mark.getFill() != null) {

@@ -1,8 +1,8 @@
 package org.geotools.data.ogr.bridj;
 
-import org.geotools.data.ogr.OGRDataStoreTest;
+import org.geotools.data.ogr.OGRDataStoreFactoryTest;
 
-public class BridjOGRDataStoreFactoryTest extends OGRDataStoreTest {
+public class BridjOGRDataStoreFactoryTest extends OGRDataStoreFactoryTest {
 
     public BridjOGRDataStoreFactoryTest() {
         super(BridjOGRDataStoreFactory.class);

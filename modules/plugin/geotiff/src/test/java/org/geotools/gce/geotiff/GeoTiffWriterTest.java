@@ -42,6 +42,7 @@ import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder.TagSet;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.Operations;
+import org.geotools.data.WorldFileReader;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
@@ -76,6 +77,8 @@ import org.opengis.util.ProgressListener;
  */
 public class GeoTiffWriterTest extends Assert {
 	private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffWriterTest.class.toString());
+
+    private static final double DELTA = 1E-4;
 
 	/**
 	 * Test our ability to write non standard CRS 
@@ -381,7 +384,13 @@ public class GeoTiffWriterTest extends Assert {
 	        
 	        final File finalTFW=new File(noCrsTFW.getParent(),noCrsTFW.getName().replace("tif", "tfw"));
 	        assertTrue(finalTFW.canRead());
-	        
+	        WorldFileReader worldFileReader = new WorldFileReader(finalTFW);
+	        assertEquals(656217.52088, worldFileReader.getXULC(), DELTA);
+	        assertEquals(4737594.70047, worldFileReader.getYULC(), DELTA);
+	        assertEquals(32.08376, worldFileReader.getXPixelSize(), DELTA);
+	        assertEquals(-32.0590, worldFileReader.getYPixelSize(), DELTA);
+	        assertEquals(0, worldFileReader.getRotationX(), DELTA);
+	        assertEquals(0, worldFileReader.getRotationY(), DELTA);
 
 	}
 	

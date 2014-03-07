@@ -17,7 +17,7 @@
 package org.geotools.geojson.feature;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -50,7 +50,7 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
 
   private boolean inFeatures = false;
 
-  private Map<String, Class<?>> propertyTypes = new HashMap<String, Class<?>>();
+  private Map<String, Class<?>> propertyTypes = new LinkedHashMap<String, Class<?>>();
 
   private boolean inProperties;
 
@@ -122,7 +122,9 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
         List<AttributeDescriptor> attributeDescriptors = feature
             .getFeatureType().getAttributeDescriptors();
         for (AttributeDescriptor ad : attributeDescriptors) {
-          propertyTypes.put(ad.getLocalName(), ad.getType().getBinding());
+          if (!ad.equals(geom)) {
+            propertyTypes.put(ad.getLocalName(), ad.getType().getBinding());
+          }
         }
         delegate = NULL;
 
@@ -215,7 +217,11 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
     if (propertyTypes != null) {
       Set<Entry<String, Class<?>>> entrySet = propertyTypes.entrySet();
       for (Entry<String, Class<?>> entry : entrySet) {
-        typeBuilder.add(entry.getKey(), entry.getValue());
+        Class<?> binding = entry.getValue();
+        if (binding.equals(Object.class)) {
+          binding = String.class;
+        }
+        typeBuilder.add(entry.getKey(), binding);
       }
     }
 

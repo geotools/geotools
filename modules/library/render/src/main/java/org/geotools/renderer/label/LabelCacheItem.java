@@ -93,6 +93,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         return goodnessOfFit;
     }
 
+    boolean partialsEnabled = false;
+
     /**
      * A value between 0 and 1 representing the portion of the label
      * that overlaps with the geometry (atm used only for polygons)
@@ -363,6 +365,15 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         return polygonAlign;
     }
 
+    public boolean isPartialsEnabled() {
+        return partialsEnabled;
+    }
+
+    public void setPartialsEnabled(boolean partialsEnabled) {
+        this.partialsEnabled = partialsEnabled;
+    }
+
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -390,9 +401,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
                 return false;
         }
         return true;
-    }
-    
-    
+    }    
+
     
 }
 

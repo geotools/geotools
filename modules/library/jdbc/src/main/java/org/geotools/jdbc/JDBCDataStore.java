@@ -1343,11 +1343,12 @@ public final class JDBCDataStore extends ContentDataStore
     
     /**
      * Results the value of an aggregate function over a query.
+     * @return generated result, or null if unsupported
      */
     protected Object getAggregateValue(FeatureVisitor visitor, SimpleFeatureType featureType, Query query, Connection cx ) 
         throws IOException {
         
-        //get the name of the function
+        // get the name of the function
         String function = getAggregateFunctions().get( visitor.getClass() );
         if ( function == null ) {
             //try walking up the hierarchy
@@ -1366,11 +1367,13 @@ public final class JDBCDataStore extends ContentDataStore
         
         AttributeDescriptor att = null;
         Expression expression = getExpression(visitor);
-        if ( expression != null ) {
+        if (expression != null) {
             att = (AttributeDescriptor) expression.evaluate( featureType );
         }
-        
-        //result of the function
+        if(att == null && !(visitor instanceof CountVisitor)){
+            return null; // aggregate function optimization only supported for PropertyName expression
+        }
+        // result of the function
         try {
             Object result = null;
             List results = new ArrayList();

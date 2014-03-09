@@ -458,6 +458,7 @@ Collection_Count       CountVisitor               Should be the same as size()
 Collection_Max         MaxVisitor                 With respect to comparable sort order
 Collection_Median      MedianVisitor              With respect to comparable sort order
 Collection_Min         MinVisitor                 With respect to comparable sort order 
+Collection_Nearest     NearestVisitor             Nearest value to the provided one
 Collection_Sum         SumVisitor                 Restricted to Numeric content
 Collection_Unique      UniqueVisitor              Set<Object> of unique values
 ====================== ========================== ============================================
@@ -466,7 +467,7 @@ Collection_Unique      UniqueVisitor              Set<Object> of unique values
   
   Here is an example of using Collection_Sum on a FeatureCollection::
     
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     Function sum = ff.function("Collection_Sum", ff.property("age"));
     
     Object value = sum.evaluate( featureCollection );
@@ -476,7 +477,7 @@ Collection_Unique      UniqueVisitor              Set<Object> of unique values
   
   Here is an example of using Collection_Max on a FeatureCollection::
     
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     Function sum = ff.function("Collection_Max", ff.property("age"));
     
     Object value = sum.evaluate( featureCollection );

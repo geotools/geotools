@@ -46,6 +46,9 @@ import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
@@ -58,6 +61,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -675,16 +679,64 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
-        // grab connection using the current transaction
-        Connection cx = getDataStore().getConnection(getState());
-        try {
-            Object result = getDataStore().getAggregateValue(visitor, getSchema(), query, cx);
-            return result != null;
+        // special case for nearest visit, it's the sum of two other visits
+        if(visitor instanceof NearestVisitor) {
+            return handleNearestVisitor(query, visitor);
+        } else {
+            // grab connection using the current transaction
+            Connection cx = getDataStore().getConnection(getState());
+            try {
+                Object result = getDataStore().getAggregateValue(visitor, getSchema(), query, cx);
+                return result != null;
+            }
+            finally {
+            	// release the connection - behaviour depends on Transaction.AUTO_COMMIT
+            	getDataStore().releaseConnection(cx, getState());
+            }
         }
-        finally {
-        	// release the connection - behaviour depends on Transaction.AUTO_COMMIT
-        	getDataStore().releaseConnection(cx, getState());
+    }
+
+    /**
+     * Special case of nearest visitor, which can be computed by combining a min and a max visit
+     * @param query
+     * @param visitor
+     * @throws IOException
+     */
+    private boolean handleNearestVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        NearestVisitor nearest = (NearestVisitor) visitor;
+        Object targetValue = nearest.getValueToMatc();
+        String attribute = nearest.getAttributeName();
+        
+        // check what we're dealing with (and mind, Geometry is Comparable for JTS, but not for databases
+        AttributeDescriptor descriptor = getSchema().getDescriptor(attribute);
+        if(descriptor instanceof Geometry || !(descriptor instanceof Comparable)) {
+            // we may roll out KNN support in the dialect for geometries, but for the moment, we say we can't
+            return false;
         }
+        
+        // grab max of values lower than the target
+        FilterFactory ff = getDataStore().getFilterFactory();
+        Query qBelow = new Query(query);
+        Filter lessFilter = ff.lessOrEqual(ff.property(attribute), ff.literal(targetValue));
+        qBelow.setFilter(ff.and(query.getFilter(), lessFilter));
+        MaxVisitor max = new MaxVisitor(attribute);
+        handleVisitor(qBelow, max);
+        Comparable maxBelow = (Comparable) max.getResult().getValue();
+        if(maxBelow != null && maxBelow.equals(targetValue)) {
+            // shortcut exit, we had a exact match
+            nearest.setValue(maxBelow, null);
+        } else {
+            // grab mind of values higher than the target
+            Query qAbove = new Query(query);
+            Filter aboveFilter = ff.greater(ff.property(attribute), ff.literal(targetValue));
+            qAbove.setFilter(ff.and(query.getFilter(), aboveFilter));
+            MinVisitor min = new MinVisitor(attribute);
+            handleVisitor(qAbove, min);
+            Comparable minAbove = (Comparable) min.getResult().getValue();
+            nearest.setValue(maxBelow, minAbove);
+        }
+        
+        return true;
     }
     
     /**

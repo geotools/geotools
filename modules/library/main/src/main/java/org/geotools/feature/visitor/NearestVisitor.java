@@ -35,8 +35,6 @@ import com.vividsolutions.jts.geom.Geometry;
  * @param <T>
  */
 public class NearestVisitor implements FeatureCalc {
-    private String attributeName;
-
     private Expression expr;
 
     private Class attributeClass;
@@ -59,7 +57,6 @@ public class NearestVisitor implements FeatureCalc {
      */
     public NearestVisitor(Expression expression, Object valueToMatch) {
         this.expr = expression;
-        this.attributeName = attributeName;
         this.valueToMatch = valueToMatch;
     }
 
@@ -164,15 +161,25 @@ public class NearestVisitor implements FeatureCalc {
         };
     }
 
-    public String getAttributeName() {
-        return attributeName;
+    /**
+     * Expression used to access collection content.
+     * 
+     * @return expr used to access collection
+     */
+    public Expression getExpression() {
+        return expr;
     }
-
-    public Object getValueToMatc() {
+    
+    /**
+     * Provided value to match against.
+     * 
+     * @return value to match against.
+     */
+    public Object getValueToMatch() {
         return valueToMatch;
     }
 
-    interface NearestAccumulator<T> {
+    static interface NearestAccumulator<T> {
         public boolean visit(T value);
 
         public T getNearest();

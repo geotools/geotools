@@ -1343,6 +1343,7 @@ public final class JDBCDataStore extends ContentDataStore
     
     /**
      * Results the value of an aggregate function over a query.
+     * @return generated result, or null if unsupported
      */
     protected Object getAggregateValue(FeatureVisitor visitor, SimpleFeatureType featureType, Query query, Connection cx ) 
         throws IOException {
@@ -1366,10 +1367,12 @@ public final class JDBCDataStore extends ContentDataStore
         
         AttributeDescriptor att = null;
         Expression expression = getExpression(visitor);
-        if ( expression != null ) {
+        if ( expression != null) {
             att = (AttributeDescriptor) expression.evaluate( featureType );
         }
-        
+        if( att == null){
+            return null; // aggregate function optimization only supported for PropertyName expression
+        }
         // result of the function
         try {
             Object result = null;

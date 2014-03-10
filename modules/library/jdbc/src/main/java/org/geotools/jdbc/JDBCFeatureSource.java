@@ -62,6 +62,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -700,15 +702,27 @@ public class JDBCFeatureSource extends ContentFeatureSource {
      * Special case of nearest visitor, which can be computed by combining a min and a max visit
      * @param query
      * @param visitor
+     * @param nearest value, or null if not supported
      * @throws IOException
      */
     private boolean handleNearestVisitor(Query query, FeatureVisitor visitor) throws IOException {
         NearestVisitor nearest = (NearestVisitor) visitor;
-        Object targetValue = nearest.getValueToMatc();
-        String attribute = nearest.getAttributeName();
+        Object targetValue = nearest.getValueToMatch();
+        Expression expr = nearest.getExpression();
+        String attribute = null;
+        
+        if( expr != null && expr instanceof PropertyName){
+            attribute = ((PropertyName)expr).getPropertyName();
+        }
+        if( attribute == null ) {
+            return false; // optimization restricted to column evaulation
+        }
         
         // check what we're dealing with (and mind, Geometry is Comparable for JTS, but not for databases
         AttributeDescriptor descriptor = getSchema().getDescriptor(attribute);
+        if( descriptor == null ) {
+            return false; // optimization restricted to column evaulation
+        }
         if(descriptor instanceof Geometry || !(descriptor instanceof Comparable)) {
             // we may roll out KNN support in the dialect for geometries, but for the moment, we say we can't
             return false;

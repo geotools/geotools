@@ -23,6 +23,7 @@ import java.util.Set;
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.NearestVisitor;
@@ -294,8 +295,8 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
     
     class MyNearestVisitor extends NearestVisitor {
 
-        public MyNearestVisitor(String attributeName, Object valueToMatch) {
-            super(attributeName, valueToMatch);
+        public MyNearestVisitor(Expression expr, Object valueToMatch) {
+            super(expr, valueToMatch);
         }
         
         public void visit(Feature feature) {
@@ -335,7 +336,10 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
     }
     
     private void testNearest(String typeName, String attributeName, Object target, Object... validResults) throws IOException {
-        MyNearestVisitor v = new MyNearestVisitor(aname(attributeName), target);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        PropertyName expr = ff.property(aname(attributeName));
+        
+        MyNearestVisitor v = new MyNearestVisitor(expr, target);
         dataStore.getFeatureSource(tname(typeName)).accepts(Query.ALL, v, null);
         Object nearestMatch = v.getNearestMatch();
         if(validResults.length == 0) {

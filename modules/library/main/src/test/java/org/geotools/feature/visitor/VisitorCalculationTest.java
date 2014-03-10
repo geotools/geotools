@@ -43,6 +43,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -523,7 +524,8 @@ public class VisitorCalculationTest extends DataTestCase {
     }
     
     private void testNearest(SimpleFeatureCollection fc, String attributeName, Object target, Object... validResults) throws IOException {
-        NearestVisitor visitor = new NearestVisitor(attributeName, target);
+        PropertyName expr = ff.property(attributeName);
+        NearestVisitor visitor = new NearestVisitor(expr, target);
         fc.accepts(visitor, null); 
         Object nearestMatch = visitor.getNearestMatch();
         if(validResults.length == 0) {

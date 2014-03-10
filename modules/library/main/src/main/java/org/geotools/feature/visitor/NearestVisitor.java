@@ -54,12 +54,11 @@ public class NearestVisitor implements FeatureCalc {
     /**
      * Creates a NearestVisitor instance for the given attribute and a value to match.
      * 
-     * @param attributeName
-     * @param valueToMatch The targe value
+     * @param expression
+     * @param valueToMatch The target value to match
      */
-    public NearestVisitor(String attributeName, Object valueToMatch) {
-        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
-        this.expr = factory.property(attributeName);
+    public NearestVisitor(Expression expression, Object valueToMatch) {
+        this.expr = expression;
         this.attributeName = attributeName;
         this.valueToMatch = valueToMatch;
     }

@@ -16,12 +16,17 @@
  */
 package org.geotools.jdbc;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Set;
 
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.IllegalFilterException;
@@ -115,6 +120,7 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
             super.visit(feature);
             visited = true;
         }
+        
         public void visit(SimpleFeature feature) {
             super.visit(feature);
             visited = true;
@@ -285,5 +291,66 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
         assertFalse(visited);
         Set result = v.getResult().toSet();
         assertEquals(2, result.size());
+    }
+    
+    class MyNearestVisitor extends NearestVisitor {
+
+        public MyNearestVisitor(Expression expr, Object valueToMatch) {
+            super(expr, valueToMatch);
+        }
+        
+        public void visit(Feature feature) {
+            super.visit(feature);
+            visited = true;
+        }
+        
+        public void visit(SimpleFeature feature) {
+            super.visit(feature);
+            visited = true;
+        }
+        
+    }
+    
+    public void testNearest() throws IOException {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property( aname("stringProperty") );
+        
+        // test strings
+        testNearest("ft1", "stringProperty", "two", "two"); // exact match
+        testNearest("ft1", "stringProperty", "aaa", "one"); // below
+        testNearest("ft1", "stringProperty", "rrr", "one", "two"); // mid
+        testNearest("ft1", "stringProperty", "zzz", "zero"); // above
+        
+        // test integer
+        testNearest("ft1", "intProperty", 1, 1); // exact match
+        testNearest("ft1", "intProperty", -10, 0); // below
+        testNearest("ft1", "intProperty", 10, 2); // above
+        
+        // test double
+        testNearest("ft1", "doubleProperty", 1.1, 1.1); // exact match
+        testNearest("ft1", "doubleProperty", -10d, 0d); // below
+        testNearest("ft1", "doubleProperty", 1.3, 1.1); // mid
+        testNearest("ft1", "doubleProperty", 1.9, 2.2); // mid
+        testNearest("ft1", "doubleProperty", 10d, 2.2); // above
+        
+    }
+    
+    private void testNearest(String typeName, String attributeName, Object target, Object... validResults) throws IOException {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        PropertyName expr = ff.property(aname(attributeName));
+        
+        MyNearestVisitor v = new MyNearestVisitor(expr, target);
+        dataStore.getFeatureSource(tname(typeName)).accepts(Query.ALL, v, null);
+        Object nearestMatch = v.getNearestMatch();
+        if(validResults.length == 0) {
+            assertNull(nearestMatch);
+        } else {
+            boolean found = false;
+            for (Object object : validResults) {
+                found |= object != null ? (object.equals(nearestMatch)) : nearestMatch == null;
+            }
+            
+            assertTrue("Could not match nearest " + nearestMatch + " among valid values " + Arrays.asList(validResults), found);
+        }
     }
 }

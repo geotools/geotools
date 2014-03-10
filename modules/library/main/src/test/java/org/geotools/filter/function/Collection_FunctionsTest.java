@@ -82,6 +82,11 @@ public class Collection_FunctionsTest extends FunctionTestSupport{
     	performObjectTest("Collection_Unique", result);   
     }
 
+    public void testNearest() throws Exception {
+        Function func = ff.function("Collection_Nearest", ff.property("foo"),ff.literal(9));
+        Object match = func.evaluate(featureCollection);
+        assertEquals("Nearest to 9 is 8", 8, match);
+    }
     
      /**
      * Tests a function class of org.geotools.filter.function.Collection_*Function

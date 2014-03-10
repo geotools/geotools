@@ -1347,7 +1347,7 @@ public final class JDBCDataStore extends ContentDataStore
     protected Object getAggregateValue(FeatureVisitor visitor, SimpleFeatureType featureType, Query query, Connection cx ) 
         throws IOException {
         
-        //get the name of the function
+        // get the name of the function
         String function = getAggregateFunctions().get( visitor.getClass() );
         if ( function == null ) {
             //try walking up the hierarchy
@@ -1370,7 +1370,7 @@ public final class JDBCDataStore extends ContentDataStore
             att = (AttributeDescriptor) expression.evaluate( featureType );
         }
         
-        //result of the function
+        // result of the function
         try {
             Object result = null;
             List results = new ArrayList();

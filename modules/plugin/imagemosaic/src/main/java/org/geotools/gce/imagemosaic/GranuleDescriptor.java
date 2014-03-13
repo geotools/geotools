@@ -353,6 +353,9 @@ public class GranuleDescriptor {
 				
 			}
 			if (reader == null) {
+			    if (cachedReaderSPI == null) {
+			        throw new IllegalArgumentException("Unable to get a ReaderSPI for the provided input: " + granuleUrl.toString());
+			    }
 			    reader = cachedReaderSPI.createReaderInstance();
 			}
 			

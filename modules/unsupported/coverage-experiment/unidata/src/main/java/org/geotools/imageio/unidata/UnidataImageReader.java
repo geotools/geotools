@@ -259,20 +259,22 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
     /**
      * Index Initialization. Scan the coverageDescriptorsCache and store indexing information.
      * @param coverageDescriptorsCache
+     * @param lazyInitialization lazy initialization only provides to setup coverage names mapping
      * @return
      * @throws InvalidRangeException
      * @throws IOException
      */
-    protected int initIndex( ) throws InvalidRangeException, IOException {
-        DefaultTransaction transaction = new DefaultTransaction("indexTransaction" + System.nanoTime());
+    protected int initIndex(final boolean lazyInitialization) throws InvalidRangeException, IOException {
+        DefaultTransaction transaction = lazyInitialization ? null : new DefaultTransaction("indexTransaction" + System.nanoTime());
         int numImages = 0;
         try {
 
             // init slice catalog
             final File sliceIndexFile = ancillaryFileManager.getSlicesIndexFile(); 
-            initCatalog(
-                    sliceIndexFile.getParentFile(),
+            if (!lazyInitialization) {
+                initCatalog(sliceIndexFile.getParentFile(),
                     FilenameUtils.removeExtension(FilenameUtils.getName(sliceIndexFile.getCanonicalPath())).replace(".", ""));
+            }
             final List<Variable> variables = dataset.getVariables();
             if (variables != null) {
 
@@ -296,6 +298,9 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
                         // COVERAGE NAME
                         // Add the accepted variable to the list of coverages name
                         final Name coverageName = getCoverageName(varName);
+                        if (lazyInitialization) {
+                            continue;
+                        }
                         final CoordinateSystem cs = UnidataCRSUtilities.getCoordinateSystem(variable);
 
                         final SimpleFeatureType indexSchema = getIndexSchema(coverageName, cs);
@@ -337,20 +342,26 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
                 }
             }
             // write things to disk
-            ancillaryFileManager.writeToDisk();
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Committing changes to the DB");
+            if (!lazyInitialization) {
+                ancillaryFileManager.writeToDisk();
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Committing changes to the DB");
+                }
+                transaction.commit();
             }
-            transaction.commit();
         } catch (Throwable e) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Rollback");
             }
-            transaction.rollback();
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw new IOException(e);
         } finally {
             try {
-                transaction.close();
+                if (transaction != null) {
+                    transaction.close();
+                }
             } catch (Throwable t) {
 
             }
@@ -480,16 +491,18 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
                         
                         // TODO: Optimize this. Why it's storing the index and reading it back??
                         ancillaryFileManager.resetSliceManager();
-                        numImages = initIndex();
+                        numImages = initIndex(false);
 
                         // reopen file to cut caching
                         ancillaryFileManager.initSliceManager();
                         numImages = ancillaryFileManager.slicesIndexManager.getNumberOfRecords();
+                    } else {
+                        initIndex(true);
                     }
 
                 } else {
                     // === the dataset is no file dataset, need to build memory index
-                    numImages = initIndex();
+                    numImages = initIndex(false);
                 }
 
             } else{
@@ -608,7 +621,7 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
             // create, cache and return
             UnidataVariableAdapter cd;
             try {
-                String origName = ancillaryFileManager.variablesMap.get(name);
+                String origName = ancillaryFileManager.variablesMap != null ? ancillaryFileManager.variablesMap.get(name) : null;
                 if (origName == null) {
                     origName = name.getLocalPart();
                 } 

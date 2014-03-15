@@ -285,22 +285,23 @@ public class FeatureJSON {
     public void writeFeatureCollection(FeatureCollection features, Object output) throws IOException {
         LinkedHashMap obj = new LinkedHashMap();
         obj.put("type", "FeatureCollection");
-        if (encodeFeatureCollectionBounds || encodeFeatureCollectionCRS) {
-            final ReferencedEnvelope bounds = features.getBounds();
-            
-            if (encodeFeatureCollectionBounds) {
-                obj.put("bbox", new JSONStreamAware() {
-                    public void writeJSONString(Writer out) throws IOException {
-                        JSONArray.writeJSONString(Arrays.asList(bounds.getMinX(),
-                                bounds.getMinY(),bounds.getMaxX(),bounds.getMaxY()), out);
-                    }
-                });
-            }
-            
-            if (encodeFeatureCollectionCRS) {
-                obj.put("crs", createCRS(bounds.getCoordinateReferenceSystem()));
-            }
+
+        final ReferencedEnvelope bounds = features.getBounds();
+        final CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
+
+        if (encodeFeatureCollectionBounds) {
+            obj.put("bbox", new JSONStreamAware() {
+                public void writeJSONString(Writer out) throws IOException {
+                    JSONArray.writeJSONString(Arrays.asList(bounds.getMinX(),
+                            bounds.getMinY(),bounds.getMaxX(),bounds.getMaxY()), out);
+                }
+            });
         }
+
+        if (encodeFeatureCollectionCRS || !crs.getName().toString().equals("EPSG:WGS 84")) {
+            obj.put("crs", createCRS(crs));
+        }
+
         obj.put("features", new FeatureCollectionEncoder(features, gjson));
         GeoJSONUtil.encode(obj, output);
     }

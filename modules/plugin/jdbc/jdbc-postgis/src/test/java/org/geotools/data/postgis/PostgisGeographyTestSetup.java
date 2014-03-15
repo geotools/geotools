@@ -68,4 +68,16 @@ public class PostgisGeographyTestSetup extends JDBCGeographyTestSetup {
             cx.close();
         }
     }
+
+    @Override
+    protected void createGeoLineTable() throws Exception {
+        run("CREATE TABLE geoline ( id SERIAL PRIMARY KEY, name VARCHAR(64), geo GEOGRAPHY(LINESTRING,4326))");
+        run("INSERT INTO geoline(name, geo) VALUES ('theline', ST_GeographyFromText('SRID=4326;LINESTRING(0 0, 1 1, 2 2, 3 3, 4 4)'))");
+    }
+
+    @Override
+    protected void dropGeoLineTable() throws Exception {
+        runSafe("DROP TABLE geoline");
+        
+    }
 }

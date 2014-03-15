@@ -253,9 +253,9 @@ public class PostGISDialect extends BasicSQLDialect {
                 JDBCDataStore.JDBC_NATIVE_TYPENAME));
 
         if (geography) {
-            sql.append("encode(ST_AsBinary(ST_Simplify(");
+            sql.append("encode(ST_AsBinary(");
             encodeColumnName(prefix, gatt.getLocalName(), sql);
-            sql.append(", "  + distance + ")),'base64')");
+            sql.append("),'base64')");
         } else {
             sql.append("encode(ST_AsBinary(ST_Simplify(ST_Force_2D(");
             encodeColumnName(prefix, gatt.getLocalName(), sql);

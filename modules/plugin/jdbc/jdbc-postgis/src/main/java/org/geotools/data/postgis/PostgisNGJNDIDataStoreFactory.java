@@ -46,7 +46,5 @@ public class PostgisNGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
         parameters.put(PREPARED_STATEMENTS.key, PREPARED_STATEMENTS);
         parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
         parameters.put(SIMPLIFY.key, SIMPLIFY);
-        parameters.put(CREATE_DB_IF_MISSING.key, CREATE_DB_IF_MISSING);
-        parameters.put(CREATE_PARAMS.key, CREATE_PARAMS);
     }
 }

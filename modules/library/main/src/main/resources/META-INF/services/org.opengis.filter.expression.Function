@@ -12,6 +12,7 @@ org.geotools.filter.function.Collection_CountFunction
 org.geotools.filter.function.Collection_MinFunction
 org.geotools.filter.function.Collection_MedianFunction
 org.geotools.filter.function.Collection_MaxFunction
+org.geotools.filter.function.Collection_NearestFunction
 org.geotools.filter.function.Collection_SumFunction
 org.geotools.filter.function.Collection_UniqueFunction
 org.geotools.filter.function.EnvFunction

@@ -49,6 +49,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -285,24 +286,43 @@ public class FeatureJSON {
     public void writeFeatureCollection(FeatureCollection features, Object output) throws IOException {
         LinkedHashMap obj = new LinkedHashMap();
         obj.put("type", "FeatureCollection");
-        if (encodeFeatureCollectionBounds || encodeFeatureCollectionCRS) {
-            final ReferencedEnvelope bounds = features.getBounds();
-            
-            if (encodeFeatureCollectionBounds) {
-                obj.put("bbox", new JSONStreamAware() {
-                    public void writeJSONString(Writer out) throws IOException {
-                        JSONArray.writeJSONString(Arrays.asList(bounds.getMinX(),
-                                bounds.getMinY(),bounds.getMaxX(),bounds.getMaxY()), out);
-                    }
-                });
-            }
-            
-            if (encodeFeatureCollectionCRS) {
-                obj.put("crs", createCRS(bounds.getCoordinateReferenceSystem()));
-            }
+
+        final ReferencedEnvelope bounds = features.getBounds();
+        final CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
+
+        if (encodeFeatureCollectionBounds) {
+            obj.put("bbox", new JSONStreamAware() {
+                public void writeJSONString(Writer out) throws IOException {
+                    JSONArray.writeJSONString(Arrays.asList(bounds.getMinX(),
+                            bounds.getMinY(),bounds.getMaxX(),bounds.getMaxY()), out);
+                }
+            });
         }
+
+        if (encodeFeatureCollectionCRS || !isStandardCRS( crs)) {
+            obj.put("crs", createCRS(crs));
+        }
+
         obj.put("features", new FeatureCollectionEncoder(features, gjson));
         GeoJSONUtil.encode(obj, output);
+    }
+
+    /**
+     * GeoJSON assume (in easting/northing order) by default.
+     * <p>
+     * 
+     * @return
+     * @throws NoSuchAuthorityCodeException
+     * @throws FactoryException
+     */
+    private boolean isStandardCRS(CoordinateReferenceSystem crs) {
+        try {
+            CoordinateReferenceSystem standardCRS = CRS.decode("EPSG:4326"); // Consider CRS:84 due to axis order 
+            return crs != null && CRS.equalsIgnoreMetadata(crs, standardCRS);
+        } catch (Exception unexpected) {
+            return false; // no way to tell
+        }
+        
     }
 
     /**

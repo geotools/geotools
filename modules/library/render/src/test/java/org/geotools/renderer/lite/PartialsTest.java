@@ -177,7 +177,7 @@ public class PartialsTest extends TestCase {
         renderer.setContext(mc);
 
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
-        RendererBaseTest.assertPixel(image, 150,0, Color.BLACK);
+        RendererBaseTest.assertPixel(image, 150,0, Color.BLACK,30);
 
         // Write to file
         //ImageIO.write(image, "png", new File("testPartialLineLabelTrue.png"));

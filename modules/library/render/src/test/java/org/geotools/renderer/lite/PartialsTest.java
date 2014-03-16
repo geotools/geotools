@@ -2,8 +2,8 @@ package org.geotools.renderer.lite;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-
 import junit.framework.TestCase;
+
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -20,6 +20,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 /**
  * Created by Michaël on 17/12/13.
@@ -175,10 +177,10 @@ public class PartialsTest extends TestCase {
         renderer.setContext(mc);
 
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
-        RendererBaseTest.assertPixel(image, 280,155, Color.BLACK);
+        RendererBaseTest.assertPixel(image, 150,0, Color.BLACK);
 
         // Write to file
-        // ImageIO.write(image, "png", new File("C:/Temp/testPartialLineLabelTrue.png"));
+        //ImageIO.write(image, "png", new File("testPartialLineLabelTrue.png"));
         // Interactive visualization
         // PartialsTest.showImage("Line Partial:True", TIME, image);
     }

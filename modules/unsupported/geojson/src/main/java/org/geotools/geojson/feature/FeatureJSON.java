@@ -298,9 +298,11 @@ public class FeatureJSON {
                 }
             });
         }
-
-        if (encodeFeatureCollectionCRS || !isStandardCRS( crs)) {
-            obj.put("crs", createCRS(crs));
+        
+        if( crs != null ){
+            if (encodeFeatureCollectionCRS || !isStandardCRS( crs)) {
+                obj.put("crs", createCRS(crs));
+            }
         }
 
         obj.put("features", new FeatureCollectionEncoder(features, gjson));
@@ -308,21 +310,22 @@ public class FeatureJSON {
     }
 
     /**
-     * GeoJSON assume (in easting/northing order) by default.
-     * <p>
+     * Check for GeoJSON default (EPSG:4326 in easting/northing order).
      * 
-     * @return
+     * @return true if crs is the default for GeoJSON
      * @throws NoSuchAuthorityCodeException
      * @throws FactoryException
      */
     private boolean isStandardCRS(CoordinateReferenceSystem crs) {
+        if( crs == null ){
+            return true;
+        }
         try {
             CoordinateReferenceSystem standardCRS = CRS.decode("EPSG:4326"); // Consider CRS:84 due to axis order 
-            return crs != null && CRS.equalsIgnoreMetadata(crs, standardCRS);
+            return CRS.equalsIgnoreMetadata(crs, standardCRS);
         } catch (Exception unexpected) {
             return false; // no way to tell
         }
-        
     }
 
     /**
@@ -435,19 +438,31 @@ public class FeatureJSON {
     public void writeCRS(CoordinateReferenceSystem crs, OutputStream output) throws IOException {
         writeCRS(crs, (Object) output);
     }
-
+    
+    /**
+     * Create a properties map for the provided crs.
+     * 
+     * @param crs CoordinateReferenceSystem or null for default
+     * @return properties map naming crs identifier
+     * @throws IOException
+     */
     Map<String,Object> createCRS(CoordinateReferenceSystem crs) throws IOException {
         Map<String,Object> obj = new LinkedHashMap<String,Object>();
         obj.put("type", "name");
         
         Map<String,Object> props = new LinkedHashMap<String, Object>();
-        try {
-            props.put("name", CRS.lookupIdentifier(crs, true));
-        } 
-        catch (FactoryException e) {
-            throw (IOException) new IOException("Error looking up crs identifier").initCause(e);
+        if( crs == null ){
+            props.put("name", "EPSG:4326");
         }
-        
+        else {
+            try {
+                String identifier = CRS.lookupIdentifier(crs, true);
+                props.put("name", identifier);
+            } 
+            catch (FactoryException e) {
+                throw (IOException) new IOException("Error looking up crs identifier").initCause(e);
+            }
+        }
         obj.put("properties", props);
         return obj;
     }

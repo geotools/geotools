@@ -54,6 +54,7 @@ import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.util.Converters;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.Association;
 import org.opengis.feature.FeatureVisitor;
@@ -736,7 +737,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         qBelow.setFilter(ff.and(query.getFilter(), lessFilter));
         MaxVisitor max = new MaxVisitor(attribute);
         handleVisitor(qBelow, max);
-        Comparable maxBelow = (Comparable) max.getResult().getValue();
+        Object maxBelow = Converters.convert(max.getResult().getValue(), targetValue.getClass());
         if(maxBelow != null && maxBelow.equals(targetValue)) {
             // shortcut exit, we had a exact match
             nearest.setValue(maxBelow, null);
@@ -747,7 +748,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             qAbove.setFilter(ff.and(query.getFilter(), aboveFilter));
             MinVisitor min = new MinVisitor(attribute);
             handleVisitor(qAbove, min);
-            Comparable minAbove = (Comparable) min.getResult().getValue();
+            Object minAbove = Converters.convert(min.getResult().getValue(), targetValue.getClass());
             nearest.setValue(maxBelow, minAbove);
         }
         

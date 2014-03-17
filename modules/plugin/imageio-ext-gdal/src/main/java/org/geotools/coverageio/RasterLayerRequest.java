@@ -248,6 +248,10 @@ class RasterLayerRequest {
         //
         // //
         if (name.equals(AbstractGridFormat.USE_JAI_IMAGEREAD.getName())) {
+            Object value = param.getValue();
+            if (value == null) {
+                return;
+            }
             readType = param.booleanValue() ? ReadType.JAI_IMAGEREAD
                     : ReadType.DIRECT_READ;
             return;
@@ -259,6 +263,10 @@ class RasterLayerRequest {
         //
         // //
         if (name.equals(BaseGDALGridFormat.USE_MULTITHREADING.getName())) {
+            Object value = param.getValue();
+            if (value == null) {
+                return;
+            }
             useMultithreading = param.booleanValue();
             return;
         }
@@ -269,6 +277,10 @@ class RasterLayerRequest {
         //
         // //
         if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName())) {
+            Object value = param.getValue();
+            if (value == null) {
+                return;
+            }
             overviewPolicy = (OverviewPolicy) param.getValue();
             return;
         }

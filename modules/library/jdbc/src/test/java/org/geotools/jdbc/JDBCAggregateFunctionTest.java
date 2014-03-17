@@ -22,7 +22,6 @@ import java.util.Set;
 
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
@@ -30,6 +29,7 @@ import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.util.Converters;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
@@ -345,9 +345,11 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
         } else {
             boolean found = false;
             for (Object object : validResults) {
-                found |= object != null ? (object.equals(nearestMatch)) : nearestMatch == null;
+                if (object.equals(Converters.convert(nearestMatch, object.getClass()))) {
+                    found = true;
+                    break;
+                }
             }
-            
             assertTrue("Could not match nearest " + nearestMatch + " among valid values " + Arrays.asList(validResults), found);
         }
     }

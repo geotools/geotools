@@ -15,7 +15,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>geotools</artifactId>
-    <version>11-SNAPSHOT</version>
+    <version>11.0</version>
   </parent>
 
   <!-- =========================================================== -->

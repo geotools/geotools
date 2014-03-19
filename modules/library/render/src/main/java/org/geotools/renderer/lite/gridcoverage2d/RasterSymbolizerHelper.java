@@ -103,7 +103,13 @@ public class RasterSymbolizerHelper extends
 		// TODO should we go to component color model also?
 		// TODO use JAI TOOLS statistics and ignore no data properly.
 		switch(dataType){
-		        case DataBuffer.TYPE_DOUBLE:
+			// in case the original image has a USHORT pixel type without being associated
+			// with an index color model I would still go to 8 bits
+			case DataBuffer.TYPE_USHORT:
+				if(outputImage.getColorModel() instanceof IndexColorModel){
+					break;
+				}
+			case DataBuffer.TYPE_DOUBLE:
 			case DataBuffer.TYPE_FLOAT:
 			case DataBuffer.TYPE_INT:
 			case DataBuffer.TYPE_SHORT:

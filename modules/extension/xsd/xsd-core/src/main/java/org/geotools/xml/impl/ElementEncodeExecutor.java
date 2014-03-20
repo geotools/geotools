@@ -24,11 +24,13 @@ import org.geotools.util.Converters;
 import org.geotools.xml.Binding;
 import org.geotools.xml.ComplexBinding;
 import org.geotools.xml.SimpleBinding;
+import org.geotools.xs.XS;
 import org.opengis.feature.ComplexAttribute;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
+import org.xml.sax.helpers.NamespaceSupport;
 
 
 /**
@@ -52,12 +54,18 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
     /** logger */
     Logger logger;
 
+    /**
+     * Used to fetch the right prefix for the XS namespace
+     */
+    NamespaceSupport namespaces;
+
     public ElementEncodeExecutor(Object object, XSDElementDeclaration element, Document document,
-        Logger logger) {
+            Logger logger, NamespaceSupport namespaces) {
         this.object = object;
         this.element = element;
         this.document = document;
         this.logger = logger;
+        this.namespaces = namespaces;
 
         //		if ( element.getTargetNamespace() != null ) {
         encoding = document.createElementNS(element.getTargetNamespace(), element.getName());
@@ -75,10 +83,6 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
     }
 
     public void visit(Binding binding) {
-        if( object == null ) {
-            throw new RuntimeException( "Unable to encode " + element.getName() + ", value is null.");
-        }
-        
         //ensure that the type of the object being encoded matches the type 
         // of the binding
         if (binding.getType() == null) {
@@ -104,8 +108,9 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
          * every Java object has a toString method, this will always "succeed", and garbage will be
          * encoded. This breaks XML well-formedness, not to mention being generally useless.
          */
-        if (!(object instanceof ComplexAttribute)
+        if (!(object == null) && !(object instanceof ComplexAttribute)
                 && !binding.getType().isAssignableFrom(object.getClass())) {
+            
             //try to convert 
             Object converted = Converters.convert(object, binding.getType());
 
@@ -153,16 +158,27 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
             }
 
             try {
-                String value = simple.encode(object, (text != null) ? text.getData() : null);
-
-                if (value != null) {
-                    //set the text of the node
-                    if (text == null) {
-                        text = document.createTextNode(value);
-                        encoding.appendChild(text);
-                    } else {
-                        text.setData(value);
+                if(object != null) {
+                    String value = simple.encode(object, (text != null) ? text.getData() : null);
+    
+                    if (value != null) {
+                        //set the text of the node
+                        if (text == null) {
+                            text = document.createTextNode(value);
+                            encoding.appendChild(text);
+                        } else {
+                            text.setData(value);
+                        }
                     }
+                } else {
+                    String prefix = null;
+                    if (namespaces != null) {
+                        prefix = namespaces.getPrefix(XS.NAMESPACE);
+                    }
+                    if (prefix == null) {
+                        prefix = "xs";
+                    }
+                    encoding.setAttribute(prefix + ":nil", "true");
                 }
             } catch (Throwable t) {
                 String msg = "Encode failed for " + element.getName() + ". Cause: "

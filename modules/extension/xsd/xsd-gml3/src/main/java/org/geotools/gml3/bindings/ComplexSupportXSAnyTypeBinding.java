@@ -127,6 +127,10 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
     @SuppressWarnings("unchecked")
     @Override
     public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+        if(object == null) {
+            return null;
+        }
+        
         List<Object[/* 2 */]> properties = new ArrayList<Object[/* 2 */]>();
         XSDTypeDefinition typeDef = element.getTypeDefinition();
         boolean isAnyType = typeDef.getName() != null && typeDef.getTargetNamespace() != null

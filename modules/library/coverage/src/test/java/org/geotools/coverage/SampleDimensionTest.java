@@ -16,15 +16,23 @@
  */
 package org.geotools.coverage;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.awt.image.BufferedImage;
+
 import javax.media.jai.JAI;
 import javax.media.jai.OperationRegistry;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.ParameterListDescriptor;
 import javax.media.jai.RenderedOp;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.geotools.util.SimpleInternationalString;
+import org.junit.Before;
+import org.junit.Test;
+import org.opengis.util.InternationalString;
 
 
 /**
@@ -39,6 +47,18 @@ import static org.junit.Assert.*;
  * @author Martin Desruisseaux (IRD)
  */
 public final class SampleDimensionTest {
+
+    class WrappedGridSampleDimension extends GridSampleDimension {
+
+        protected WrappedGridSampleDimension(GridSampleDimension other) {
+            super(other);
+        }
+
+        @Override
+        public InternationalString getDescription() {
+            return new SimpleInternationalString("overridden");
+        }
+    }
     /**
      * The categories making the sample dimension to test.
      */
@@ -175,5 +195,19 @@ public final class SampleDimensionTest {
         assertEquals("Incorrect offset",  offset*2-6,      scaled.getOffset(),       EPS);
         assertEquals("Incorrect minimum",   0,             scaled.getMinimumValue(), EPS);
         assertEquals("Incorrect maximum", 255,             scaled.getMaximumValue(), EPS);
+    }
+
+    /**
+     * Tests the {@link GridSampleDimension}'s cloning.
+     */
+    @Test
+    public void testCloningSampleDimension() {
+        GridSampleDimension original;
+        original = test.geophysics(false);
+        assertEquals("Temperature", original.getDescription().toString());
+
+        GridSampleDimension wrapped = new WrappedGridSampleDimension(original);
+        assertEquals("overridden", wrapped.getDescription().toString());
+
     }
 }

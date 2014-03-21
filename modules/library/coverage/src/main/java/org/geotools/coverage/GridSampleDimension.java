@@ -643,8 +643,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             isGeophysics       = other.isGeophysics;
             hasQualitative     = other.hasQualitative;
             hasQuantitative    = other.hasQuantitative;
-            sampleToGeophysics = other.sampleToGeophysics;
-            description        = other.description;
+            sampleToGeophysics = other.getSampleToGeophysics();
+            description        = other.getDescription();
         } else {
             // 'inverse' will be set when needed.
             categories         = null;

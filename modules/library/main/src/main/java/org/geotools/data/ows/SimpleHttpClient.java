@@ -135,23 +135,24 @@ public class SimpleHttpClient implements HTTPClient {
         return new SimpleHTTPResponse(connection);
     }
 
-    private HttpURLConnection openConnection(URL finalURL) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) finalURL.openConnection();
-        if(tryGzip){
+    private URLConnection openConnection(URL finalURL) throws IOException {
+        URLConnection connection = finalURL.openConnection();
+        final boolean http = connection instanceof HttpURLConnection;
+        if(http && tryGzip){
             connection.addRequestProperty("Accept-Encoding", "gzip");
         }
         // mind, connect timeout is in seconds
-        if (getConnectTimeout() > 0) {
+        if (http && getConnectTimeout() > 0) {
             connection.setConnectTimeout(1000 * getConnectTimeout());
         }
-        if (getReadTimeout() > 0) {
+        if (http && getReadTimeout() > 0) {
             connection.setReadTimeout(1000 * getReadTimeout());
         }
 
         final String username = getUser();
         final String password = getPassword();
 
-        if (username != null && password != null) {
+        if (http && username != null && password != null) {
             String userpassword = username + ":" + password;
             String encodedAuthorization = Base64.encodeBytes(userpassword.getBytes("UTF-8"));
             connection.setRequestProperty("Authorization", "Basic " + encodedAuthorization);

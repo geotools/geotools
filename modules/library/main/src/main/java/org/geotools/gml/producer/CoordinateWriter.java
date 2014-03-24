@@ -267,8 +267,9 @@ public class CoordinateWriter {
             // format y into buffer
             formatDecimal(y, coordBuff);
             
-            if (D == 3 || useDummyZ) {
-                z = (D == 3 && coordSeqDimension > 2)? c.getOrdinate(i, 2) : dummyZ;
+            boolean zAvailable = coordSeqDimension > 2 && !Double.isNaN(c.getOrdinate(i, 2)) && !Double.isInfinite(c.getOrdinate(i, 2));
+            if (D == 3 || zAvailable || useDummyZ) {
+                z = zAvailable? c.getOrdinate(i, 2) : dummyZ;
                 coordBuff.append(coordinateDelimiter);
                 formatDecimal(z, coordBuff);
             }

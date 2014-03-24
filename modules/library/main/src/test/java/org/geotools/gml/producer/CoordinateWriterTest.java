@@ -141,6 +141,21 @@ public class CoordinateWriterTest extends TestCase {
         System.out.println( output.received );
         assertEquals("<coordinates>1,1,3 4,4,2 0,4,2 1,1,3</coordinates>", output.received );
     }
+    
+    public void test3DCoordSeqEvenWithWrongDimension() throws Exception {
+        CoordinateSequence coords = new CoordinateArraySequence(coords3D( new int[]{1,1,3, 4,4,2, 0,4,2, 1,1,3 }));
+
+        CoordinateWriter writer = new CoordinateWriter(4," ", ",", true, 0.0, 2 );
+        CoordinateHandler output = new CoordinateHandler();
+
+        output.startDocument();
+        writer.writeCoordinates( coords, output);
+        output.endDocument();
+
+        assertEquals("<coordinates>1,1,3 4,4,2 0,4,2 1,1,3</coordinates>", output.received );
+    }
+    
+
 
     class CoordinateHandler implements ContentHandler {
 		StringBuffer buffer;

@@ -141,6 +141,10 @@ public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
         assertEquals(String.class, river.getType().getBinding());
         AttributeDescriptor doubleFlow = type.getDescriptor(aname("doubleFlow"));
         assertTrue(Number.class.isAssignableFrom(doubleFlow.getType().getBinding()));
+        
+        // check srid and dimension are set as expected
+        assertEquals(4326, type.getGeometryDescriptor().getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID));
+        assertEquals(2, type.getGeometryDescriptor().getUserData().get(Hints.COORDINATE_DIMENSION));
     }
     
     public void testListAll() throws Exception {

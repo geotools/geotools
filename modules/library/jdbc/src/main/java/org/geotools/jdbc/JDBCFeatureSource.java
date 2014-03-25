@@ -317,7 +317,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                     int dimension = 2;
                     try {
                         if(virtualTable != null) {
-                            srid = virtualTable.getDimension(name);
+                            dimension = virtualTable.getDimension(name);
                         } else {
                             dimension = dialect.getGeometryDimension(databaseSchema, tableName, name, cx);
                         }
@@ -330,8 +330,9 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                     ab.setBinding(binding);
                     ab.setName(name);
                     ab.setCRS(crs);
-                    if(srid != null)
+                    if(srid != null) {
                         ab.addUserData(JDBCDataStore.JDBC_NATIVE_SRID, srid);
+                    }
                     ab.addUserData(Hints.COORDINATE_DIMENSION, dimension);
                     att = ab.buildDescriptor(name, ab.buildGeometryType());
                 } else {

@@ -116,7 +116,24 @@ public class DB2PrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
         con.prepareStatement("INSERT INTO "+DB2TestUtil.SCHEMA_QUOTED+".\"nokey\" (\"name\") VALUES ( 'three' )").execute();
         con.close();
     }
-    
+
+    @Override
+    protected void createNonFirstColumnPrimaryKey() throws Exception {
+        Connection con = getDataSource().getConnection();
+
+        String stmt = "create table "+DB2TestUtil.SCHEMA_QUOTED+
+                ".\"nonfirst\" (\"name\" varchar(255), \"key\" int generated always as identity (start with 1, increment by 1), \"geom\" DB2GSE.ST_GEOMETRY, primary key (\"key\"))";
+        con.prepareStatement(stmt	).execute();
+        DB2Util.executeRegister(DB2TestUtil.SCHEMA, "nonfirst", "geom", DB2TestUtil.SRSNAME, con);
+
+        con.prepareStatement( "INSERT INTO "+DB2TestUtil.SCHEMA_QUOTED+".\"nonfirst\" (\"name\",\"geom\")  VALUES ('one',NULL)" ).execute();
+        con.prepareStatement( "INSERT INTO "+DB2TestUtil.SCHEMA_QUOTED+".\"nonfirst\" (\"name\",\"geom\")  VALUES ('two',NULL)" ).execute();
+        con.prepareStatement( "INSERT INTO "+DB2TestUtil.SCHEMA_QUOTED+".\"nonfirst\" (\"name\",\"geom\")  VALUES ('three',NULL)" ).execute();
+
+        con.close();
+
+    }
+
     private String getUniqueIndexName() {
         return "uniq_key_INDEX";
     }
@@ -189,4 +206,8 @@ public class DB2PrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
         dropSpatialTable("uniq");
     }
 
+    @Override
+    protected void dropNonFirstPrimaryKeyTable() throws Exception {
+        dropSpatialTable("nonfirst");
+    }
 }

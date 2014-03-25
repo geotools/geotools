@@ -77,7 +77,16 @@ public class SpatiaLitePrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
     @Override
     protected void createSequencedPrimaryKeyTable() throws Exception {
     }
-    
+
+    @Override
+    protected void createNonFirstColumnPrimaryKey() throws Exception {
+        run("CREATE TABLE nonfirst(name VARCHAR, fid INTEGER PRIMARY KEY AUTOINCREMENT)");
+        run("SELECT AddGeometryColumn('nonfirst','geom',4326,'POINT',2)");
+        run( "INSERT INTO nonfirst VALUES ('one', 1, GeomFromText('POINT(1 1)',4326))");
+        run( "INSERT INTO nonfirst VALUES ('two', 2, GeomFromText('POINT(2 2)',4326))");
+        run( "INSERT INTO nonfirst VALUES ('three', 3, GeomFromText('POINT(3 3)',4326))");
+    }
+
     @Override
     protected void dropSequencedPrimaryKeyTable() throws Exception {
     }
@@ -111,4 +120,9 @@ public class SpatiaLitePrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
         run("DELETE FROM geometry_columns WHERE f_table_name = 'uniq'");
     }
 
+    @Override
+    protected void dropNonFirstPrimaryKeyTable() throws Exception {
+        run("DROP TABLE nonfirst");
+        run("DELETE FROM geometry_columns WHERE f_table_name = 'nonfirst'");
+    }
 }

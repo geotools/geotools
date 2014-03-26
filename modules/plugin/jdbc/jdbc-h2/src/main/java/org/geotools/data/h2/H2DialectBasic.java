@@ -185,13 +185,17 @@ public class H2DialectBasic extends BasicSQLDialect {
     public void encodeValue(Object value, Class type, StringBuffer sql) {
         if (byte[].class == type) {
             byte[] b = (byte[]) value;
-            
-            //encode as hex string
-            sql.append("'");
-            for (int i=0; i < b.length; i++) {
-                sql.append(Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 ));
+            if (value != null) {
+                //encode as hex string
+                sql.append("'");
+                for (int i=0; i < b.length; i++) {
+                    sql.append(Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 ));
+                }
+                sql.append("'");
             }
-            sql.append("'");
+            else {
+                sql.append("NULL");
+            }
         }
         else {
             super.encodeValue(value, type, sql);

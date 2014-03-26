@@ -19,13 +19,18 @@ package org.geotools.jdbc;
 import java.util.Collections;
 
 import org.geotools.data.DataUtilities;
+import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureStore;
+import org.geotools.data.Query;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 
@@ -175,5 +180,59 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("noninc"));
         fs.setExposePrimaryKeyColumns(true);
         assertEquals( 3, fs.getSchema().getAttributeCount() );
+    }
+
+    public void testUpdateWithExposePrimaryKeyColumns() throws Exception {
+        JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("nonfirst"));
+        fs.setExposePrimaryKeyColumns(true);
+
+        String key = null;
+        for (AttributeDescriptor ad : fs.getSchema().getAttributeDescriptors()) {
+            if (Number.class.isAssignableFrom(ad.getType().getBinding())) {
+                key = ad.getLocalName();
+                break;
+            }
+        }
+
+        assertNotNull(key);
+
+        Object keyValue = null;
+        FeatureReader r = fs.getReader();
+        try {
+            assertTrue(r.hasNext());
+
+            SimpleFeature f = (SimpleFeature) r.next();
+            keyValue = f.getAttribute(key);
+        }
+        finally {
+            r.close();
+        }
+
+        assertNotNull(keyValue);
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        Filter filter = ff.equal(ff.property(key), ff.literal(keyValue), false);
+
+        assertEquals(1, fs.getCount(new Query(tname("nonfirst"), filter)));
+
+        try {
+            fs.modifyFeatures(key, 10, filter);
+            fail("expected exception");
+        }
+        catch(IllegalArgumentException e) {
+        }
+
+        fs.modifyFeatures(new String[]{aname("name"), key, aname("geom")}, new Object[]{"foo", 10, null}, filter);
+
+        try {
+            r = fs.getReader(ff.equal(ff.property(key), ff.literal(keyValue), true));
+            assertTrue(r.hasNext());
+
+            SimpleFeature f = (SimpleFeature) r.next();
+            assertEquals("foo", f.getAttribute(aname("name")));
+        }
+        finally {
+            r.close();
+        }
     }
 }

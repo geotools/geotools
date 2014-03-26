@@ -305,8 +305,13 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
     
     @Override
     public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql) throws IOException {
-        sql.append("GeomFromText('") .append( new WKTWriter(dimension).write( value ) ).append( "',")
-            .append(srid).append(")");
+        if (value != null) {
+            sql.append("GeomFromText('") .append( new WKTWriter(dimension).write( value ) ).append( "',")
+                    .append(srid).append(")");
+        }
+        else {
+            sql.append("NULL");
+        }
     }
 
     @Override

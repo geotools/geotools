@@ -18,12 +18,11 @@ import java.net.URL;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
 import org.geotools.data.complex.config.EmfAppSchemaReader;
-import org.geotools.data.complex.config.FeatureTypeRegistry;
 import org.geotools.feature.FakeTypes;
 import org.geotools.feature.NameImpl;
-import org.geotools.xml.AppSchemaCache;
-import org.geotools.xml.AppSchemaResolver;
+import org.geotools.xml.resolver.SchemaResolver;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -210,10 +209,10 @@ public class XmlComplexFeatureParserTest {
 	@Test
 	public void parse_geosciml() throws MalformedURLException, IOException {
 		// Arrange
-		AppSchemaResolver appSchemaResolver = new AppSchemaResolver();
+		SchemaResolver appSchemaResolver = new SchemaResolver();
 		EmfAppSchemaReader reader = EmfAppSchemaReader.newInstance();
 		reader.setResolver(appSchemaResolver);
-		FeatureTypeRegistry typeRegistry = new FeatureTypeRegistry();
+		AppSchemaFeatureTypeRegistry typeRegistry = new AppSchemaFeatureTypeRegistry();
 		typeRegistry.addSchemas(reader.parse(new URL(
 				"http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd")));
 		AttributeDescriptor descriptor = typeRegistry

@@ -312,8 +312,7 @@ public class XmlComplexFeatureParser extends
 							&& Types.isSimpleContentType(type)) {
 
 						// Get the value
-						// —————————————
-
+					
 						// I'm calling 'next()' to move the cursor off the tag
 						// and into its body, otherwise getText() pulls the
 						// wrong part.

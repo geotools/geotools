@@ -114,8 +114,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements
 
 	@Override
 	public String getDescription() {
-		return "Provides access to the Features published a Web Feature Service, "
-				+ "and the ability to perform transactions on the server (when supported / allowed).";
+		return super.getDescription();
 	}
 
 	@Override

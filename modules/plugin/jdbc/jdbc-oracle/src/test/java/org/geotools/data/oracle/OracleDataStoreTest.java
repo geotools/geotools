@@ -26,6 +26,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.jdbc.JDBCDataStoreTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -59,6 +60,20 @@ public class OracleDataStoreTest extends JDBCDataStoreTest {
                 "  AUTHORITY[\"EPSG\",\"4269\"]]");
         builder.setCRS(crs);
         builder.add(aname("geometry"), Geometry.class);
+        builder.add(aname("intProperty"), Integer.class);
+        builder.add(aname("dateProperty"), Date.class);
+
+        SimpleFeatureType featureType = builder.buildFeatureType();
+        // used to fail here
+        dataStore.createSchema(featureType);
+    }
+    
+    public void testCreateSpatialIndexNameTooLong() throws Exception {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName(tname("ft2"));
+        builder.setNamespaceURI(dataStore.getNamespaceURI());
+        builder.setCRS(DefaultGeographicCRS.WGS84);
+        builder.add(aname("geometry_one_two_three_four"), Geometry.class);
         builder.add(aname("intProperty"), Integer.class);
         builder.add(aname("dateProperty"), Date.class);
 

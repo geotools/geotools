@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 import oracle.jdbc.OracleConnection;
 import oracle.sql.STRUCT;
@@ -48,6 +49,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.util.SoftValueHashMap;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -55,6 +57,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.util.GenericName;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -86,6 +89,9 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     private static final int DEFAULT_AXIS_MAX = 10000000;
 
     private static final int DEFAULT_AXIS_MIN = -10000000;
+    
+    private static final Pattern AXIS_NAME_VALIDATOR = Pattern.compile("^[\\w]{1,30}");
+    
     
     /**
      * Marks a geometry column as geodetic
@@ -817,7 +823,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                         for (int i = 0; i < dims; i++) {
                             if(i < cs.getDimension()) {
                                 CoordinateSystemAxis axis = cs.getAxis(i);
-                                axisNames[i] = axis.getAbbreviation();
+                                axisNames[i] = getCompatibleAxisName(axis, i);
                                 min[i] = Double.isInfinite(axis.getMinimumValue()) ? DEFAULT_AXIS_MIN : axis.getMinimumValue();
                                 max[i] = Double.isInfinite(axis.getMaximumValue()) ? DEFAULT_AXIS_MAX : axis.getMaximumValue();
                                 if(max[i] - min[i] < extent)
@@ -899,6 +905,34 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         } finally {
             dataStore.closeSafe(st);
         }
+    }
+
+    private String getCompatibleAxisName(CoordinateSystemAxis axis, int dimensionIdx) {
+        // try with one of the various ways this can be called
+        String abbreviation = axis.getAbbreviation();
+        if(AXIS_NAME_VALIDATOR.matcher(abbreviation).matches()) {
+            return abbreviation;
+        }
+        String name = axis.getName().getCode();
+        if(AXIS_NAME_VALIDATOR.matcher(name).matches()) {
+            return name;
+        }
+        for (GenericName gn : axis.getAlias()) {
+            String alias = gn.tip().toString();
+            if(AXIS_NAME_VALIDATOR.matcher(alias).matches()) {
+                return alias;
+            }
+        }
+        // one last try
+        if(CRS.equalsIgnoreMetadata(DefaultCoordinateSystemAxis.LONGITUDE, axis)) {
+            return "Longitude";
+        } else if(CRS.equalsIgnoreMetadata(DefaultCoordinateSystemAxis.LATITUDE, axis)) {
+            return "Latitude";
+        } else if(CRS.equalsIgnoreMetadata(DefaultCoordinateSystemAxis.ALTITUDE, axis)) {
+            return "Altitude";
+        }
+        // ok, give up, let's use a name
+        return "DIM_" + (dimensionIdx + 1);
     }
     
     @Override

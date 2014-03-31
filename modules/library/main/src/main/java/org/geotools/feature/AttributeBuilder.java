@@ -11,7 +11,7 @@
  *
  *    This library is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
 
@@ -508,12 +508,7 @@ public class AttributeBuilder {
             return descriptor != null ? attributeFactory.createFeature((Collection) value,
                     descriptor, id) : attributeFactory.createFeature((Collection) value,
                     (FeatureType) type, id);
-        } else if (type instanceof ComplexType) {
-        	
-        	if (value instanceof AttributeImpl) {
-        		return createComplexAttribute((Collection) ((AttributeImpl)value).value, (ComplexType) type, descriptor, id);	
-        	}
-        	
+        } else if (type instanceof ComplexType) {        	
             return createComplexAttribute((Collection) value, (ComplexType) type, descriptor, id);
         } else if (type instanceof GeometryType) {
             return attributeFactory.createGeometryAttribute(value, (GeometryDescriptor) descriptor,

@@ -16,6 +16,7 @@
  */
 package org.geotools.feature.simple;
 
+import java.rmi.server.UID;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -26,12 +27,16 @@ import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureBuilder;
 import org.geotools.feature.type.Types;
+import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.util.Converters;
+import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -43,7 +48,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * <code>
  *  <pre>
  *  //type of features we would like to build ( assume schema = (geom:Point,name:String) )
- *  SimpleFeatureType featureType = ...
+ *  SimpleFeatureType featureType = ...  
  * 
  *   //create the builder
  *  SimpleFeatureBuilder builder = new SimpleFeatureBuilder();
@@ -107,7 +112,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *   ...
  *   
  *   SimpleFeature original = ...;
- *
+ *   
  *   //copy the feature
  *   SimpleFeature feature = SimpleFeatureBuilder.copy( original );
  *   </pre>
@@ -125,12 +130,18 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @source $URL$
  */
-public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, SimpleFeature> { 
+public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
     /**
      * logger
      */
     static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.feature");
-
+    
+    /** the feature type */
+    SimpleFeatureType featureType;
+    
+    /** the feature factory */
+    FeatureFactory factory;
+    
     /** the attribute name to index index */
     Map<String, Integer> index;
 
@@ -140,52 +151,43 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
     
     /** pointer for next attribute */
     int next;
-
-    Map<Object, Object>[] userData;
-
-    Map<Object, Object> featureUserData;
-
-    boolean validating;
     
-    private Object convert(Object value, AttributeDescriptor descriptor) {
-        // make sure the type of the value and the binding of the type match up
-    	super.convert(value, descriptor);
-    	
-        if ( value == null ) {
-            // if the content is null and the descriptor says isNillable is false then set the default value:
-            if (!descriptor.isNillable()) {
-                value = descriptor.getDefaultValue();
-                if ( value == null ) {
-                    //no default value, try to generate one
-                    value = DataUtilities.defaultValue(descriptor.getType().getBinding());
-                }
-            }
-        }
-        
-        return value;
-    }
+    Map<Object, Object>[] userData;
+    
+    Map<Object, Object> featureUserData;
+    
+    boolean validating;
     
     public SimpleFeatureBuilder(SimpleFeatureType featureType) {
         this(featureType, CommonFactoryFinder.getFeatureFactory(null));
     }
-
+    
     public SimpleFeatureBuilder(SimpleFeatureType featureType, FeatureFactory factory) {
-    	super(featureType, factory);
+        super(featureType, factory);
+        this.featureType = featureType;
+        this.factory = factory;
 
         if(featureType instanceof SimpleFeatureTypeImpl) {
             index = ((SimpleFeatureTypeImpl) featureType).index;
         } else {
             this.index = SimpleFeatureTypeImpl.buildIndex(featureType);
         }
-
         reset();
     }
-
+    
     public void reset() {
         values = new Object[featureType.getAttributeCount()];
         next = 0;
         userData = null;
         featureUserData = null;
+    }
+    
+    /**
+     * Returns the simple feature type used by this builder as a feature template
+     * @return
+     */
+    public SimpleFeatureType getFeatureType() {
+        return featureType;
     }
     
     /**
@@ -195,11 +197,11 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
      * useful when copying a feature. 
      * </p>
      */
-    public void init(SimpleFeature feature) {
+    public void init( SimpleFeature feature ) {
         reset();
-
+        
         // optimize the case in which we just build
-        if (feature instanceof SimpleFeatureImpl) {
+        if(feature instanceof SimpleFeatureImpl) {
             SimpleFeatureImpl impl = (SimpleFeatureImpl) feature;
             System.arraycopy(impl.values, 0, values, 0, impl.values.length);
 
@@ -218,6 +220,8 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
 
     }
     
+    
+
     /**
      * Adds an attribute.
      * <p>
@@ -258,7 +262,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
      *            The value of the attribute.
      * 
      * @throws IllegalArgumentException
-     *             If no such attribute with the specified name exists.
+     *             If no such attribute with teh specified name exists.
      */
     public void set(Name name, Object value) {
         set(name.getLocalPart(), value);
@@ -276,14 +280,13 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
      *            The value of the attribute.
      * 
      * @throws IllegalArgumentException
-     *             If no such attribute with the specified name exists.
+     *             If no such attribute with teh specified name exists.
      */
     public void set(String name, Object value) {
         int index = featureType.indexOf(name);
         if (index == -1) {
             throw new IllegalArgumentException("No such attribute:" + name);
         }
-        
         set(index, value);
     }
 
@@ -309,6 +312,24 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
             Types.validate(descriptor, values[index]);
     }
 
+    private Object convert(Object value, AttributeDescriptor descriptor) {
+        if ( value == null ) {
+            //if the content is null and the descriptor says isNillable is false, 
+            // then set the default value
+            if (!descriptor.isNillable()) {
+                value = descriptor.getDefaultValue();
+                if ( value == null ) {
+                    //no default value, try to generate one
+                    value = DataUtilities.defaultValue(descriptor.getType().getBinding());
+                }
+            }
+        } else {
+            //make sure the type of the value and the binding of the type match up
+            value = super.convert(value, descriptor);
+        }
+        return value;
+    }
+
     /**
      * Builds the feature.
      * <p>
@@ -324,11 +345,10 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
      * 
      * @return The new feature.
      */
-    @Override
     public SimpleFeature buildFeature(String id) {
         // ensure id
         if (id == null) {
-            id = FeatureBuilder.createDefaultFeatureId();
+            id = SimpleFeatureBuilder.createDefaultFeatureId();
         }
 
         Object[] values = this.values;
@@ -336,7 +356,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
         Map<Object,Object> featureUserData = this.featureUserData;
         reset();
         SimpleFeature sf = factory.createSimpleFeature(values, featureType, id);
-
+        
         // handle the per attribute user data
         if(userData != null) {
             for (int i = 0; i < userData.length; i++) {
@@ -347,10 +367,10 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
         }
         
         // handle the feature wide user data
-        if (featureUserData != null) {
+        if(featureUserData != null) {
             sf.getUserData().putAll(featureUserData);
         }
-
+        
         return sf;
     }
     
@@ -363,8 +383,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
     public SimpleFeature buildFeature(String id, Object[] values ) {
         addAll( values );
         return buildFeature( id );
-    }
-    
+    }    
     
     /**
      * Static method to build a new feature.
@@ -420,7 +439,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
     }
     
     /**
-     * Perform a "deep copy" an existing feature resulting in a duplicate of any geometry
+     * Perform a "deep copy" an existing feature resuling in a duplicate of any geometry
      * attributes.
      * <p>
      * This method is scary, expensive and will result in a deep copy of
@@ -464,7 +483,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
         }
         return builder.buildFeature(featureId);
     }
-
+        
     /**
      * Copies an existing feature, retyping it in the process. 
      * <p> Be warned, this method will
@@ -488,7 +507,6 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
             Object value = feature.getAttribute( att.getName() );
             builder.set(att.getName(), value);
         }
-        
         return builder.buildFeature(feature.getID());
     }
     
@@ -501,7 +519,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
      * </p>
      * @param feature The original feature.
      * @param SimpleFeatureBuilder A builder for the target feature type
-     *
+     *  
      * @return The copied feature, with a new type.
      * @since 2.5.3
      */
@@ -522,7 +540,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
      * @param key The key of the user data
      * @param value The value of the user data.
     */
-    public SimpleFeatureBuilder userData(Object key, Object value) {
+    public SimpleFeatureBuilder userData( Object key, Object value ) {
         return setUserData(next, key, value);
     }
     
@@ -549,7 +567,6 @@ public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, Simp
         if(featureUserData == null) {
             featureUserData = new HashMap<Object, Object>();
         }
-        
         featureUserData.put(key, value);
         return this;
     }

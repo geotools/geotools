@@ -18,6 +18,7 @@ import org.geotools.ows.v1_1.OWSConfiguration;
 import org.geotools.wfs.v2_0.bindings.EnvelopePropertyTypeBinding;
 import org.geotools.wfs.v2_0.bindings.FeatureTypeListTypeBinding;
 import org.geotools.wfs.v2_0.bindings.FeatureTypeTypeBinding;
+import org.geotools.wfs.v2_0.bindings.MetadataURLTypeBinding;
 import org.geotools.wfs.v2_0.bindings.ParameterParserDelegate;
 import org.geotools.wfs.v2_0.bindings.QueryExpressionTextDelegate;
 import org.geotools.wfs.v2_0.bindings.QueryExpressionTextTypeBinding;
@@ -104,7 +105,7 @@ public class WFSConfiguration extends Configuration {
         binding(bindings, WFS.LockFeatureResponseType);
         binding(bindings, WFS.LockFeatureType);
         bindings.put(WFS.MemberPropertyType,MemberPropertyTypeBinding.class);
-//        container.registerComponentImplementation(WFS.MetadataURLType,MetadataURLTypeBinding.class);
+        bindings.put(WFS.MetadataURLType,MetadataURLTypeBinding.class);
         binding(bindings, WFS.NativeType);
 //        container.registerComponentImplementation(WFS.nonNegativeIntegerOrUnknown,NonNegativeIntegerOrUnknownBinding.class);
 //        container.registerComponentImplementation(WFS.OutputFormatListType,OutputFormatListTypeBinding.class);

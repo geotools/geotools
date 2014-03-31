@@ -23,6 +23,7 @@ import java.net.URI;
 import javax.xml.namespace.QName;
 
 import net.opengis.wfs20.FeatureTypeType;
+import net.opengis.wfs20.OutputFormatListType;
 import net.opengis.wfs20.Wfs20Factory;
 
 import org.eclipse.emf.ecore.EObject;
@@ -30,9 +31,11 @@ import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 
 public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
-
+	private Wfs20Factory factory;
+	
 	public FeatureTypeTypeBinding(Wfs20Factory factory) {
 		super(factory);
+		this.factory = factory;
 	}
 	
 	@Override
@@ -59,7 +62,25 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
 				((FeatureTypeType)object).getOtherCRS().add(stringValue);
 				return;
 			}
+		} else if ("OutputFormats".equals(property)) {
+			String outputFormatValue = null;
+			if (value instanceof String) {
+				outputFormatValue = (String)value;
+			}
+			
+			if (outputFormatValue != null) {
+				OutputFormatListType oflt = ((FeatureTypeType)object).getOutputFormats();
+				
+				if (oflt == null) {
+					oflt = factory.createOutputFormatListType();
+				}
+				
+				oflt.getFormat().add(outputFormatValue);
+				
+				return;
+			}
 		}
+		
 		super.setProperty(object, property, value, lax);
 	}
 }

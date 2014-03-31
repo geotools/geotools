@@ -372,7 +372,7 @@ public class Utils {
                 FileFilterUtils.nameFileFilter("_metadata"),
                 FileFilterUtils.suffixFileFilter("sample_image"),
                 FileFilterUtils.nameFileFilter("error.txt.lck"),
-                FileFilterUtils.nameFileFilter("indexer.xml"),
+                FileFilterUtils.suffixFileFilter("xml"),
                 FileFilterUtils.suffixFileFilter("db"));
         return filesFilter;
     }

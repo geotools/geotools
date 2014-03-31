@@ -465,7 +465,12 @@ public class LabelPainter {
                         .getWidth() / 2.0 + offsetX, -1.0 * labelBounds.getHeight() / 2.0 + offsetY)), null, null,
                         false, false);
 
+                // resize graphic and transform it based on the position of the last line
                 graphic = resizeGraphic(graphic);
+                AffineTransform graphicTx = new AffineTransform(transform);
+                LineInfo lastLine = lines.get(lines.size() - 1);
+                graphicTx.translate(lastLine.x, lastLine.y);
+                graphics.setTransform(graphicTx);
                 shapePainter.paint(graphics, tempShape, graphic, graphic.getMaxScale());
             }
             

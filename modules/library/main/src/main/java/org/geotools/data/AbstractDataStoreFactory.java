@@ -16,6 +16,8 @@
  */
 package org.geotools.data;
 
+import java.util.Map;
+
 /**
  * A best of toolkit for DataStoreFactory implementors.
  * <p>
@@ -47,5 +49,8 @@ package org.geotools.data;
  * 
  */
 public abstract class AbstractDataStoreFactory extends AbstractDataAccessFactory implements DataStoreFactorySpi {
-    
+    @Override
+    public boolean canProcess(Map params) {
+        return super.canProcess(params);
+    }
 }

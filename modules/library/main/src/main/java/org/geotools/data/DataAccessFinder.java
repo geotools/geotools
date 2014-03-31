@@ -236,8 +236,8 @@ public final class DataAccessFinder {
      * classpath on every invocation of the API, the class path is scanned
      * automatically only on the first invocation. Clients can call this method
      * to prompt a re-scan. Thus this method need only be invoked by
-     * sophisticated applications which dynamically make new plug-ins available at
-     * runtime.
+     * sophisticated applications which dynamically make new plug-ins available
+     * at runtime.
      */
     public static synchronized void scanForPlugins() {
         DataStoreFinder.scanForPlugins();

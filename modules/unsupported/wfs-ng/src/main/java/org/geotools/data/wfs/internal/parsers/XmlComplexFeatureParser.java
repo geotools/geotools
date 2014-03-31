@@ -380,7 +380,7 @@ public class XmlComplexFeatureParser extends
 							// builder as is.
 
 							attributeBuilder.add(innerAttribute.id,
-									innerAttribute.value, innerAttribute.name);
+									getValue(innerAttribute), innerAttribute.name);
 						}
 					}
 
@@ -426,7 +426,14 @@ public class XmlComplexFeatureParser extends
 		return null;
 	}
 
-	private class ReturnAttribute {
+    private Object getValue(ReturnAttribute innerAttribute) {
+        if (innerAttribute.value instanceof AttributeImpl) {
+            return ((AttributeImpl)innerAttribute.value).getValue();
+        } 
+        return innerAttribute.value;
+    }
+
+    private class ReturnAttribute {
 		public final String id;
 
 		public final Name name;

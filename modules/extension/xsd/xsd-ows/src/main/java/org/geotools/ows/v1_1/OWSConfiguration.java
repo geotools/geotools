@@ -25,6 +25,7 @@ import net.opengis.ows11.Ows11Factory;
 
 import org.geotools.ows.bindings.BoundingBoxTypeBinding;
 import org.geotools.ows.bindings.UnitBinding;
+import org.geotools.ows.bindings.WGS84BoundingBoxTypeBinding;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
@@ -76,6 +77,7 @@ public class OWSConfiguration extends Configuration {
         bindings.put(OWS.SectionsType ,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.SectionsType));
         bindings.put(OWS.AcceptFormatsType,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.AcceptFormatsType));
         bindings.put(OWS.BoundingBoxType, new BoundingBoxTypeBinding(Ows11Factory.eINSTANCE, OWS.BoundingBoxType));
+        bindings.put(OWS.WGS84BoundingBoxType, new WGS84BoundingBoxTypeBinding(Ows11Factory.eINSTANCE, OWS.WGS84BoundingBoxType));
         
         bindings.put(OWS.CodeType,new SimpleContentComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.CodeType));
         bindings.put(OWS.ContactType,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.ContactType));

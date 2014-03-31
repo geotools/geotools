@@ -95,7 +95,7 @@ public class OWSConfiguration extends Configuration {
         container.registerComponentInstance(OWS.AcceptVersionsType, 
                 new ComplexEMFBinding(Ows10Factory.eINSTANCE, OWS.AcceptVersionsType));
         container.registerComponentImplementation(OWS.AddressType, AddressTypeBinding.class);
-        container.registerComponentImplementation(OWS.WGS84BoundingBoxType, WGS84BoundingBoxTypeBinding.class);
+        container.registerComponentInstance(OWS.WGS84BoundingBoxType, new WGS84BoundingBoxTypeBinding(Ows10Factory.eINSTANCE, OWS.WGS84BoundingBoxType));
         container.registerComponentInstance(OWS.BoundingBoxType, new BoundingBoxTypeBinding(Ows10Factory.eINSTANCE, OWS.BoundingBoxType));
         container.registerComponentImplementation(OWS.CapabilitiesBaseType,
             CapabilitiesBaseTypeBinding.class);

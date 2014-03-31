@@ -18,11 +18,14 @@
 
 package org.geotools.wfs.v2_0.bindings;
 
+import java.net.URI;
+
 import javax.xml.namespace.QName;
 
 import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.Wfs20Factory;
 
+import org.eclipse.emf.ecore.EObject;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 
@@ -40,5 +43,23 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
 	@Override
 	public Class getType() {
 		return FeatureTypeType.class;
+	}
+	
+	@Override
+	protected void setProperty(EObject object, String property, Object value, boolean lax) {
+		if ("OtherCRS".equals(property)) {
+			String stringValue = null;
+			if (value instanceof String) {
+				stringValue = (String)value;
+			} else if (value instanceof URI) {
+				stringValue = ((URI)value).toString();
+			}
+			
+			if (stringValue != null) {
+				((FeatureTypeType)object).getOtherCRS().add(stringValue);
+				return;
+			}
+		}
+		super.setProperty(object, property, value, lax);
 	}
 }

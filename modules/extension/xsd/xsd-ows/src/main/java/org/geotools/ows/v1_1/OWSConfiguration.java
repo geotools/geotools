@@ -20,6 +20,7 @@ import java.util.Map;
 
 import net.opengis.ows11.AllowedValuesType;
 import net.opengis.ows11.AnyValueType;
+import net.opengis.ows11.NoValuesType;
 import net.opengis.ows11.Ows11Factory;
 
 import org.geotools.ows.bindings.BoundingBoxTypeBinding;
@@ -69,6 +70,7 @@ public class OWSConfiguration extends Configuration {
         bindings.put(OWS.AddressType,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.AddressType));
         bindings.put(OWS.AllowedValues, new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.AllowedValues, AllowedValuesType.class));
         bindings.put(OWS.AnyValue,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.AnyValue, AnyValueType.class));
+        bindings.put(OWS.NoValues, new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.NoValues, NoValuesType.class));
         
         bindings.put(OWS.GetCapabilitiesType,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.GetCapabilitiesType));
         bindings.put(OWS.SectionsType ,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.SectionsType));

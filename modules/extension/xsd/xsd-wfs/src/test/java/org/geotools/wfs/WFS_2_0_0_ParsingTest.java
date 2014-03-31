@@ -143,7 +143,25 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
         assertNotNull(caps);
         assertEquals("2.0.0", caps.getVersion());
 
+        // test stored query parsing
+        // TODO:
     }
+    
+    public void testParseGetCapabilitiesCuzk() throws Exception {
+        configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
+
+        Parser parser = new Parser(configuration);
+        Object parsed = parser.parse(getClass().getResourceAsStream(
+                "cuzk-GetCapabilities_2_0_0.xml"));
+
+        assertNotNull(parsed);
+        assertTrue(parsed.getClass().getName(), parsed instanceof WFSCapabilitiesType);
+        WFSCapabilitiesType caps = (WFSCapabilitiesType) parsed;
+
+        assertNotNull(caps);
+        assertEquals("2.0.0", caps.getVersion());
+    }
+
 
     void assertServiceIdentification(WFSCapabilitiesType caps) {
         ServiceIdentificationType sa = caps.getServiceIdentification();

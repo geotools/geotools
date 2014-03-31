@@ -45,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.media.jai.Interpolation;
 import javax.swing.Icon;
 
 import org.geotools.geometry.jts.LiteShape2;
@@ -465,7 +464,12 @@ public class LabelPainter {
                         .getWidth() / 2.0 + offsetX, -1.0 * labelBounds.getHeight() / 2.0 + offsetY)), null, null,
                         false, false);
 
+                // resize graphic and transform it based on the position of the last line
                 graphic = resizeGraphic(graphic);
+                AffineTransform graphicTx = new AffineTransform(transform);
+                LineInfo lastLine = lines.get(lines.size() - 1);
+                graphicTx.translate(lastLine.x, lastLine.y);
+                graphics.setTransform(graphicTx);
                 shapePainter.paint(graphics, tempShape, graphic, graphic.getMaxScale());
             }
             
@@ -741,11 +745,12 @@ public class LabelPainter {
                 graphics.getFontRenderContext());
         
         // gracefully handle font size = 0
-        if(lm.getHeight() > 0)
+        if (lm.getHeight() > 0) {
             return (Math.abs(lm.getStrikethroughOffset()) + lm.getDescent() + lm.getLeading())
                     / lm.getHeight();
-        else 
+        } else {
             return 0;
+        }
     }
 
     /**

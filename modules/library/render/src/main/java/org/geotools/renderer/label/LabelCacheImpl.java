@@ -841,6 +841,7 @@ public final class LabelCacheImpl implements LabelCache {
         double rotation;
         double displacementX = 0;
         double displacementY = 0;
+        Rectangle2D textBounds = painter.getLabelBounds();
         if (textStyle.isPointPlacement() && !followLine) {
             // use the one the user supplied!
             rotation = textStyle.getRotation();
@@ -851,12 +852,13 @@ public final class LabelCacheImpl implements LabelCache {
                 rotation = cursor.getCurrentAngle();
             }
             // move it off the line
-            displacementY -= textStyle.getPerpendicularOffset();
+            displacementY -= textStyle.getPerpendicularOffset() + (painter.getLineCount() - 1)
+                    * (textBounds.getHeight() / painter.getLineCount());
             anchorX = 0.5; // centered
             anchorY = painter.getLinePlacementYAnchor();
         }
 
-        Rectangle2D textBounds = painter.getLabelBounds();
+
         displacementX = (anchorX * (-textBounds.getWidth())) + textStyle.getDisplacementX();
         displacementY += (anchorY * (textBounds.getHeight())) - textStyle.getDisplacementY();
 

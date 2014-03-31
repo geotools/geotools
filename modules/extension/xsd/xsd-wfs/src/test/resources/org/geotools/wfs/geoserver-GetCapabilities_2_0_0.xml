@@ -48,8 +48,8 @@
 		<ows:Operation name="GetCapabilities">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="http://localhost:8080/geoserver/wfs" />
-					<ows:Post xlink:href="http://localhost:8080/geoserver/wfs" />
+					<ows:Get xlink:href="http://localhost:8080/geoserver/wfs?get" />
+					<ows:Post xlink:href="http://localhost:8080/geoserver/wfs?post" />
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="AcceptVersions">

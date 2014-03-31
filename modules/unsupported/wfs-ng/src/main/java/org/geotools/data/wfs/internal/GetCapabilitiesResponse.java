@@ -118,7 +118,7 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
         if (parsed == null) {
             throw new DataSourceException("WFS capabilities was not parsed");
         }
-        if (!(parsed instanceof WFSCapabilitiesType)) {
+        if (!(parsed instanceof WFSCapabilitiesType) && !(parsed instanceof net.opengis.wfs20.WFSCapabilitiesType)) {
             throw new DataSourceException("Expected WFS Capabilities, got " + parsed);
         }
         EObject object = (EObject) parsed;

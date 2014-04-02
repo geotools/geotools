@@ -13,11 +13,9 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -53,7 +51,7 @@ public class WrapPointSymbolizerTest {
         renderer.setRendererHints(rendererParams);
         renderer.setMapContent(mc);
         
-        // RendererBaseTest.showRender("WrapPointSymbolizer", renderer, TIME, bounds);
+        RendererBaseTest.showRender("WrapPointSymbolizer", renderer, TIME, bounds);
         
         final BufferedImage image = new BufferedImage(400, 80, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = (Graphics2D) image.getGraphics();
@@ -61,7 +59,7 @@ public class WrapPointSymbolizerTest {
         g.fillRect(0, 0, 400, 80);
         renderer.paint(g, new Rectangle(0, 0, 400, 80), bounds);
         
-        // RendererBaseTest.showImage("WrapPointSymbolizer", TIME, image);
+        RendererBaseTest.showImage("WrapPointSymbolizer", TIME, image);
         
         // the first instance, black polygon and red central point
         RendererBaseTest.assertPixel(image, 5, 0, Color.BLACK);

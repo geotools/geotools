@@ -22,6 +22,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.geotools.referencing.operation.projection.MapProjection.AbstractProvider;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Returns a {@link ProjectionHandler} for the {@link TransverseMercator} projection
@@ -34,7 +36,7 @@ import org.geotools.referencing.operation.projection.MapProjection.AbstractProvi
  */
 public class TransverseMercatorHandlerFactory implements ProjectionHandlerFactory {
 
-    public ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, boolean wrap, int maxWraps) {
+    public ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCrs, boolean wrap, int maxWraps) throws FactoryException {
         MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope
                 .getCoordinateReferenceSystem());
         if (renderingEnvelope != null && mapProjection instanceof TransverseMercator) {
@@ -44,7 +46,7 @@ public class TransverseMercatorHandlerFactory implements ProjectionHandlerFactor
             ReferencedEnvelope validArea = new ReferencedEnvelope(centralMeridian - 45,
                     centralMeridian + 45, -90, 90, DefaultGeographicCRS.WGS84);
 
-            return new ProjectionHandler(renderingEnvelope, validArea);
+            return new ProjectionHandler(sourceCrs, validArea, renderingEnvelope);
         }
 
         return null;

@@ -45,6 +45,8 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
     final double offset;
     
     final MathTransform mt;
+    
+    final int ordinateIdx;
 
     /**
      * Builds a new wrapper
@@ -55,10 +57,11 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
      * @param offset
      *            The offset to be applied to coordinates to unwrap them
      */
-    public WrappingCoordinateFilter(double wrapLimit, double offset, MathTransform mt) {
+    public WrappingCoordinateFilter(double wrapLimit, double offset, MathTransform mt, boolean wrapOnY) {
         this.wrapLimit = wrapLimit;
         this.offset = offset;
         this.mt = mt;
+        this.ordinateIdx = wrapOnY ? 1 : 0;
     }
 
     public void filter(Geometry geom) {
@@ -77,27 +80,27 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
     }
 
     private int getDisconinuityDirection(CoordinateSequence cs) {
-        double lastX = cs.getX(0);
+        double lastOrdinate = cs.getOrdinate(0, ordinateIdx);
         for (int i = 0; i < cs.size(); i++) {
-            double x = cs.getX(i);
-            if (Math.abs(x - lastX) > wrapLimit) {
-                if (x > lastX)
+            double ordinate = cs.getOrdinate(i, ordinateIdx);
+            if (Math.abs(ordinate - lastOrdinate) > wrapLimit) {
+                if (ordinate > lastOrdinate)
                     return WEST_TO_EAST;
-                else if (x < lastX)
+                else if (ordinate < lastOrdinate)
                     return EAST_TO_WEST;
             }
-            lastX = x;
+            lastOrdinate = ordinate;
         }
         return NOWRAP;
     }
 
     private void applyOffset(CoordinateSequence cs, double offset, boolean ring) {
         final double maxWrap = wrapLimit * 1.9;
-        double lastX = cs.getX(0);
+        double lastOrdinate = cs.getOrdinate(0, ordinateIdx);
         int last = ring ? cs.size() - 1 : cs.size(); 
         for (int i = 0; i < last; i++) {
-            final double x = cs.getX(i);
-            final double distance = Math.abs(x - lastX);
+            final double ordinate = cs.getOrdinate(i, ordinateIdx);
+            final double distance = Math.abs(ordinate - lastOrdinate);
             // heuristic: an object crossing the dateline is not as big as the world, if it
             // is, it's probably something like Antarctica that does not need coordinate rewrapping
             if (distance > wrapLimit) {
@@ -108,7 +111,12 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
                 // http://trac.osgeo.org/mapserver/ticket/15
                 if (!wraps && mt != null) {
                     // convert back to projected coordinates
-                    double[] src = new double[]{lastX, cs.getY(i - 1), x, cs.getY(i)};
+                    double[] src;
+                    if(ordinateIdx == 0) {
+                        src = new double[] {lastOrdinate, cs.getY(i - 1), ordinate, cs.getY(i)};
+                    } else {
+                        src = new double[] {cs.getX(i - i), lastOrdinate, cs.getX(i), ordinate};
+                    }
                     double[] dest = new double[4];
                     try {
                         mt.transform(src, 0, dest, 0, 2);
@@ -118,7 +126,7 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
                         // and convert back again
                         mt.inverse().transform(src, 0, dest, 0, 1);
                         // if the midpoint isn't between the two end points, it's a wrap
-                        wraps = !(dest[0] > Math.min(lastX, x) && dest[0] < Math.max(lastX, x));
+                        wraps = !(dest[ordinateIdx] > Math.min(lastOrdinate, ordinate) && dest[ordinateIdx] < Math.max(lastOrdinate, ordinate));
                     } catch (TransformException ex) {
                         Logging.getLogger("org.geotools.rendering").log(Level.WARNING,
                                 "Unable to perform transform to detect dateline wrapping", ex);
@@ -135,12 +143,12 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
             }
 
             if (offset != 0)
-                cs.setOrdinate(i, 0, x + offset);
+                cs.setOrdinate(i, ordinateIdx, ordinate + offset);
             
-            lastX = x;
+            lastOrdinate = ordinate;
         }
         if(ring) {
-            cs.setOrdinate(last, 0, cs.getOrdinate(0, 0));
+            cs.setOrdinate(last, ordinateIdx, cs.getOrdinate(0, ordinateIdx));
         }
     }
     

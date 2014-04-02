@@ -17,6 +17,8 @@
 package org.geotools.renderer.crs;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Builds {@link ProjectionHandler} instances
@@ -33,10 +35,10 @@ public interface ProjectionHandlerFactory {
      * Returns an handler capable of dealing with the specified envelope, or null if this factory
      * cannot create one
      * 
-     * @param renderingEnvelope
      * @param wrap enables map wrapping, if it's possible and makes sense for this projection
      * @param wrapLimit Max number of wraps performed when wrapping coordinates (to limit memory usage)
      * @return
+     * @throws FactoryException 
      */
-    ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, boolean wrap, int wrapLimit);
+    ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCRS, boolean wrap, int wrapLimit) throws FactoryException;
 }

@@ -47,6 +47,8 @@ import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.projection.MapProjection;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.wkt.Formattable;
 import org.geotools.resources.CRSUtilities;
@@ -94,6 +96,7 @@ import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
+import org.opengis.referencing.operation.Projection;
 import org.opengis.referencing.operation.TransformException;
 
 
@@ -787,9 +790,18 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
         if(projectedCRS == null)
             return null;
         
-        MathTransform mt = projectedCRS.getConversionFromBase().getMathTransform();
-        if(mt instanceof MapProjection)
+        Projection conversion = projectedCRS.getConversionFromBase();
+        MathTransform mt = conversion.getMathTransform();
+        if(mt instanceof MapProjection) {
             return (MapProjection) mt;
+        } else if(mt instanceof ConcatenatedTransform) {
+            ConcatenatedTransform ct = (ConcatenatedTransform) mt;
+            MathTransform mt1 = ct.transform1;
+            MathTransform mt2 = ct.transform2;
+            if(mt2 instanceof MapProjection && mt1 instanceof AffineTransform2D) {
+                return (MapProjection) mt2;
+            }
+        }
         
         return null;
     }

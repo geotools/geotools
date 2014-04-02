@@ -49,7 +49,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 
@@ -773,12 +772,6 @@ public class StreamingRenderer implements GTRenderer {
                     mapExtent.getCoordinateReferenceSystem()); 
         }
 
-        // enable advanced projection handling with the updated map extent
-        if(isAdvancedProjectionHandlingEnabled()) {
-            // get the projection handler and set a tentative envelope
-            projectionHandler = ProjectionHandlerFinder.getHandler(mapExtent, isMapWrappingEnabled());
-        }
-        
         // Setup the secondary painting thread
         requests = getRequestsQueue();
         painterThread = new PainterThread(requests);
@@ -1041,12 +1034,16 @@ public class StreamingRenderer implements GTRenderer {
             // each geometric attribute used during the rendering as the
             // feature may have more than one and the styles could use non
             // default geometric ones
-            List<ReferencedEnvelope> envelopes;
-            if (projectionHandler != null) {
-                // update the envelope with the one eventually grown by the rendering buffer
-                projectionHandler.setRenderingEnvelope(envelope);
-                envelopes = projectionHandler.getQueryEnvelopes(featCrs);
-            } else {
+            List<ReferencedEnvelope> envelopes = null;
+            // enable advanced projection handling with the updated map extent
+            if(isAdvancedProjectionHandlingEnabled()) {
+                // get the projection handler and set a tentative envelope
+                projectionHandler = ProjectionHandlerFinder.getHandler(mapExtent, featCrs, isMapWrappingEnabled());
+                if(projectionHandler != null) {
+                    envelopes = projectionHandler.getQueryEnvelopes();
+                }
+            }
+            if(envelopes == null) {
                 if (mapCRS != null && featCrs != null && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
                     envelopes = Collections.singletonList(envelope.transform(featCrs, true, 10));
                 } else {
@@ -3255,6 +3252,11 @@ public class StreamingRenderer implements GTRenderer {
                     sa.xform = fullTransform;
                     sa.crsxform = crsTransform;
                     sa.axform = atTransform;
+                    if(projectionHandler != null) {
+                        sa.rxform = projectionHandler.getRenderingTransform(sa.crsxform);
+                    } else {
+                        sa.rxform = sa.crsxform;
+                    }
     
                     symbolizerAssociationHT.put(symbolizer, sa);
                 }
@@ -3328,13 +3330,13 @@ public class StreamingRenderer implements GTRenderer {
             LiteShape2 shape;
             if(projectionHandler != null && sa != null) {
                 // first generalize and transform the geometry into the rendering CRS
-                geom = projectionHandler.preProcess(sa.crs, geom);
+                geom = projectionHandler.preProcess(geom);
                 if(geom == null) {
                     shape = null;
                 } else {
                     // first generalize and transform the geometry into the rendering CRS
                     Decimator d = getDecimator(sa.xform);
-                    d.decimateTransformGeneralize(geom, sa.crsxform);
+					d.decimateTransformGeneralize(geom, sa.rxform);
                     geom.geometryChanged();
                     // then post process it (provide reverse transform if available)
                     MathTransform reverse = null;

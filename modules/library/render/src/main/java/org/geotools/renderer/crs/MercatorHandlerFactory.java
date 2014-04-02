@@ -22,6 +22,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.Mercator;
 import org.geotools.referencing.operation.projection.MapProjection.AbstractProvider;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Returns a {@link ProjectionHandler} for the {@link Mercator} projection
@@ -34,16 +36,16 @@ public class MercatorHandlerFactory implements ProjectionHandlerFactory {
     private static final ReferencedEnvelope VALID_AREA = new ReferencedEnvelope(-Double.MAX_VALUE, Double.MAX_VALUE, -89, 89,
             DefaultGeographicCRS.WGS84);
 
-    public ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, boolean wrap, int maxWraps) {
+    public ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCrs, boolean wrap, int maxWraps) throws FactoryException {
         MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope
                 .getCoordinateReferenceSystem());
         if (renderingEnvelope != null && mapProjection instanceof Mercator) {
             if(wrap && maxWraps > 0) {
                 double centralMeridian = mapProjection.getParameterValues().parameter(
                         AbstractProvider.CENTRAL_MERIDIAN.getName().getCode()).doubleValue();
-                return new WrappingProjectionHandler(renderingEnvelope, VALID_AREA, centralMeridian, maxWraps);
+                return new WrappingProjectionHandler(renderingEnvelope, VALID_AREA, sourceCrs, centralMeridian, maxWraps);
             } else {
-                return new ProjectionHandler(renderingEnvelope, VALID_AREA);
+                return new ProjectionHandler(sourceCrs, VALID_AREA, renderingEnvelope);
             }
         }
 

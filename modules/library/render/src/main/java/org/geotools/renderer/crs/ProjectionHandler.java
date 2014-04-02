@@ -23,12 +23,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.geotools.geometry.jts.GeometryClipper;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.operation.transform.ConcatenatedTransform;
+import org.geotools.referencing.operation.transform.GeocentricTransform;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -36,8 +39,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
-
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * A class that can perform transformations on geometries to handle the singularity of the rendering
@@ -61,8 +62,23 @@ public class ProjectionHandler {
     
     final ReferencedEnvelope validArea;
 
-    public ProjectionHandler(ReferencedEnvelope renderingEnvelope, ReferencedEnvelope validArea) {
+    final CoordinateReferenceSystem sourceCRS;
+
+    final CoordinateReferenceSystem targetCRS;
+
+    /**
+     * Initializes a projection handler 
+     * 
+     * @param sourceCRS The source CRS
+     * @param validArea The valid area (used to cut geometries that go beyond it)
+     * @param renderingEnvelope The target rendering area and target CRS
+     * 
+     * @throws FactoryException
+     */
+    public ProjectionHandler(CoordinateReferenceSystem sourceCRS, ReferencedEnvelope validArea, ReferencedEnvelope renderingEnvelope) throws FactoryException {
         this.renderingEnvelope = renderingEnvelope;
+        this.sourceCRS = sourceCRS;
+        this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
         this.validArea = validArea;
     }
 
@@ -73,40 +89,102 @@ public class ProjectionHandler {
         return renderingEnvelope;
     }
     
-    /**
-     * Sets the current rendering envelope. Will be used to compute the envelopes to be queried,
-     * and to perform map wrapping when enabled
-     * @return
-     */
-    public void setRenderingEnvelope(ReferencedEnvelope renderingEnvelope) {
-        this.renderingEnvelope = renderingEnvelope;
+    public CoordinateReferenceSystem getSourceCRS() {
+        return this.sourceCRS;
     }
-
+    
     /**
      * Returns a set of envelopes that will be used to query the data given the specified rendering
      * envelope and the current query envelope
      */
-    public List<ReferencedEnvelope> getQueryEnvelopes(CoordinateReferenceSystem queryCRS)
+    public List<ReferencedEnvelope> getQueryEnvelopes()
             throws TransformException, FactoryException {
-        // check if we are crossing the dateline
-        ReferencedEnvelope re = renderingEnvelope.transform(WGS84, true, 10);
-        if (re.getMinX() >= -180.0 && re.getMaxX() <= 180)
-            return Collections.singletonList(renderingEnvelope.transform(queryCRS, true, 10));
+        CoordinateReferenceSystem renderingCRS = renderingEnvelope.getCoordinateReferenceSystem();
+        if(renderingCRS instanceof GeographicCRS && !CRS.equalsIgnoreMetadata(renderingCRS, WGS84)) {
+            // special case, if we just transform the coordinates are going to be wrapped by the referencing
+            // subsystem directly
+            ReferencedEnvelope re = renderingEnvelope;
+            List<ReferencedEnvelope> envelopes = new ArrayList<ReferencedEnvelope>();
+            envelopes.add(re);
 
-        // We need to split reprojected envelope and normalize it. To be lenient with
-        // situations in which the data is just broken (people saying 4326 just because they
-        // have no idea at all) we don't actually split, but add elements
-        List<ReferencedEnvelope> envelopes = new ArrayList<ReferencedEnvelope>();
-        envelopes.add(re);
-        if (re.getMinX() < -180) {
-            envelopes.add(new ReferencedEnvelope(re.getMinX() + 360, 180, re.getMinY(), re
-                    .getMaxY(), re.getCoordinateReferenceSystem()));
+            if(CRS.getAxisOrder(renderingCRS) == CRS.AxisOrder.NORTH_EAST) {
+                if (re.getMinY() >= -180.0 && re.getMaxY() <= 180) {
+                    return Collections.singletonList(renderingEnvelope.transform(sourceCRS, true, 10));
+                }
+                
+                // We need to split reprojected envelope and normalize it. To be lenient with
+                // situations in which the data is just broken (people saying 4326 just because they
+                // have no idea at all) we don't actually split, but add elements
+                if (re.getMinY() < -180) {
+                    envelopes.add(new ReferencedEnvelope(re.getMinY() + 360, 180, re.getMinX(), re
+                            .getMaxX(), re.getCoordinateReferenceSystem()));
+                }
+                if (re.getMaxY() > 180) {
+                    envelopes.add(new ReferencedEnvelope(-180, re.getMaxY() - 360, re.getMinX(), re
+                            .getMaxX(), re.getCoordinateReferenceSystem()));
+                }
+                
+            } else {
+                if (re.getMinX() >= -180.0 && re.getMaxX() <= 180) {
+                    return Collections.singletonList(renderingEnvelope.transform(sourceCRS, true, 10));
+                }
+            
+                // We need to split reprojected envelope and normalize it. To be lenient with
+                // situations in which the data is just broken (people saying 4326 just because they
+                // have no idea at all) we don't actually split, but add elements
+                
+                if (re.getMinX() < -180) {
+                    envelopes.add(new ReferencedEnvelope(re.getMinX() + 360, 180, re.getMinY(), re
+                            .getMaxY(), re.getCoordinateReferenceSystem()));
+                }
+                if (re.getMaxX() > 180) {
+                    envelopes.add(new ReferencedEnvelope(-180, re.getMaxX() - 360, re.getMinY(), re
+                            .getMaxY(), re.getCoordinateReferenceSystem()));
+                }
+            }
+    
+            mergeEnvelopes(envelopes);
+            reprojectEnvelopes(sourceCRS, envelopes);
+    
+            return envelopes;
+            
+            
+        } else {
+            // check if we are crossing the dateline
+            ReferencedEnvelope re = renderingEnvelope.transform(WGS84, true, 10);
+            if (re.getMinX() >= -180.0 && re.getMaxX() <= 180)
+                return Collections.singletonList(renderingEnvelope.transform(sourceCRS, true, 10));
+    
+            // We need to split reprojected envelope and normalize it. To be lenient with
+            // situations in which the data is just broken (people saying 4326 just because they
+            // have no idea at all) we don't actually split, but add elements
+            List<ReferencedEnvelope> envelopes = new ArrayList<ReferencedEnvelope>();
+            envelopes.add(re);
+            if (re.getMinX() < -180) {
+                envelopes.add(new ReferencedEnvelope(re.getMinX() + 360, 180, re.getMinY(), re
+                        .getMaxY(), re.getCoordinateReferenceSystem()));
+            }
+            if (re.getMaxX() > 180) {
+                envelopes.add(new ReferencedEnvelope(-180, re.getMaxX() - 360, re.getMinY(), re
+                        .getMaxY(), re.getCoordinateReferenceSystem()));
+            }
+    
+            mergeEnvelopes(envelopes);
+            reprojectEnvelopes(sourceCRS, envelopes);
+    
+            return envelopes;
         }
-        if (re.getMaxX() > 180) {
-            envelopes.add(new ReferencedEnvelope(-180, re.getMaxX() - 360, re.getMinY(), re
-                    .getMaxY(), re.getCoordinateReferenceSystem()));
-        }
+    }
 
+    private void reprojectEnvelopes(CoordinateReferenceSystem queryCRS,
+            List<ReferencedEnvelope> envelopes) throws TransformException, FactoryException {
+        // reproject the surviving envelopes
+        for (int i = 0; i < envelopes.size(); i++) {
+            envelopes.set(i, envelopes.get(i).transform(queryCRS, true, 10));
+        }
+    }
+
+    private void mergeEnvelopes(List<ReferencedEnvelope> envelopes) {
         // the envelopes generated might overlap, check and merge if necessary, we
         // don't want the data backend to deal with ORs against the spatial index
         // unless necessary
@@ -127,25 +205,18 @@ public class ProjectionHandler {
                 }
             }
         }
-
-        // reproject the surviving envelopes
-        for (int i = 0; i < envelopes.size(); i++) {
-            envelopes.set(i, envelopes.get(i).transform(queryCRS, true, 10));
-        }
-
-        return envelopes;
     }
 
     /**
      * Returns true if the geometry needs special handling
      */
-    public boolean requiresProcessing(CoordinateReferenceSystem geomCRS, Geometry geometry) {
+    public boolean requiresProcessing(Geometry geometry) {
         // if there is no valid area, no cutting is required
         if(validArea == null)
             return false;
         
         // if not reprojection is going on, we don't need to cut
-        if (CRS.equalsIgnoreMetadata(geomCRS, renderingEnvelope.getCoordinateReferenceSystem())) {
+        if (CRS.equalsIgnoreMetadata(sourceCRS, renderingEnvelope.getCoordinateReferenceSystem())) {
             return false;
         }
         
@@ -156,9 +227,9 @@ public class ProjectionHandler {
      * Pre processes the geometry, e.g. cuts it, splits it, etc. in its native srs. May return null
      * if the geometry is not to be drawn
      */
-    public Geometry preProcess(CoordinateReferenceSystem geomCRS, Geometry geometry) throws TransformException, FactoryException {
+    public Geometry preProcess(Geometry geometry) throws TransformException, FactoryException {
         // if not reprojection is going on, we don't need to cut
-        if (CRS.equalsIgnoreMetadata(geomCRS, renderingEnvelope.getCoordinateReferenceSystem())) {
+        if (CRS.equalsIgnoreMetadata(sourceCRS, renderingEnvelope.getCoordinateReferenceSystem())) {
             return geometry;
         }
         
@@ -168,7 +239,7 @@ public class ProjectionHandler {
 
         // if the geometry is within the valid area for this projection
         // just skip expensive cutting
-        ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), geomCRS);
+        ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), sourceCRS);
         ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
         if (validArea.contains((Envelope) geWGS84)) {
             return geometry;
@@ -184,7 +255,7 @@ public class ProjectionHandler {
         if(envIntWgs84.isEmpty())
             return null;
             
-        ReferencedEnvelope envInt = envIntWgs84.transform(geomCRS, true);
+        ReferencedEnvelope envInt = envIntWgs84.transform(sourceCRS, true);
 
         // turn the envelope into a geometry and perform the intersection
         Polygon envelopeGeometry = JTS.toGeometry((Envelope) envInt);
@@ -205,13 +276,78 @@ public class ProjectionHandler {
         else
             return result;
     }
-
+    
     /**
+     * Can modify/wrap the transform to handle specific projection issues
+     * @return
+     * @throws FactoryException 
+     */
+    public MathTransform getRenderingTransform(MathTransform mt) throws FactoryException {
+        List<MathTransform> elements = new ArrayList<MathTransform>();
+        accumulateTransforms(mt, elements);
+        
+        List<MathTransform> wrapped = new ArrayList<MathTransform>();
+        List<MathTransform> datumShiftChain = null;
+        boolean datumShiftDetected = false;
+        for (MathTransform element : elements) {
+            if(datumShiftChain != null) {
+                datumShiftChain.add(element);
+                if(element.getClass().getName().equals(GeocentricTransform.class.getName() + "$Inverse")) {
+                    datumShiftDetected = true;
+                    MathTransform combined = concatenateTransforms(datumShiftChain);
+                    GeographicOffsetWrapper wrapper = new GeographicOffsetWrapper(combined);
+                    wrapped.add(wrapper);
+                    datumShiftChain = null;
+                } 
+            } else if(element instanceof GeocentricTransform) {
+                datumShiftChain = new ArrayList<MathTransform>();
+                datumShiftChain.add(element);
+            } else {
+                wrapped.add(element);
+            }
+        }
+        
+        if(datumShiftDetected) {
+            if(datumShiftChain != null) {
+                wrapped.addAll(datumShiftChain);
+            }
+            return concatenateTransforms(wrapped);
+        } else {
+            return mt;
+        }
+    }
+
+    private MathTransform concatenateTransforms(List<MathTransform> datumShiftChain) {
+		if(datumShiftChain.size() == 1) {
+			return datumShiftChain.get(0);
+		} else {
+			MathTransform mt = ConcatenatedTransform.create(datumShiftChain.get(0), datumShiftChain.get(1));
+			for (int i = 2; i < datumShiftChain.size(); i++) {
+				MathTransform curr = datumShiftChain.get(i);
+				mt = ConcatenatedTransform.create(mt, curr);
+			}
+			
+			return mt;
+		}
+	}
+
+	private void accumulateTransforms(MathTransform mt, List<MathTransform> elements) {
+		if(mt instanceof ConcatenatedTransform) {
+			ConcatenatedTransform ct = (ConcatenatedTransform) mt;
+			accumulateTransforms(ct.transform1, elements);
+			accumulateTransforms(ct.transform2, elements);
+		} else {
+			elements.add(mt);
+		}
+		
+	}
+
+	/**
      * Processes the geometry already projected to the target SRS. May return null if the geometry
      * is not to be drawn.
      * @param mt optional reverse transformation to facilitate unwrapping
      */
-    public Geometry postProcess(MathTransform mt,Geometry geometry) {
+    public Geometry postProcess(MathTransform mt, Geometry geometry) {
         return geometry;
     }
     

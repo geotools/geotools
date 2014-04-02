@@ -37,7 +37,6 @@ import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-
 import org.geotools.factory.Hints;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.DirectPosition2D;
@@ -45,6 +44,7 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
+import org.geotools.referencing.operation.projection.TransverseMercator;
 
 
 /**
@@ -571,5 +571,12 @@ public class CRSTest extends TestCase {
         transform.transform(source, result);
         assertEquals(600000.0, result.x, 0.1);
         assertEquals(200000.0, result.y, 0.1);
+    }
+    
+    public void testGetMapProjection() throws Exception {
+        CoordinateReferenceSystem utm32OnLonLat = CRS.decode("EPSG:23032", true);
+        assertTrue(CRS.getMapProjection(utm32OnLonLat) instanceof TransverseMercator);
+        CoordinateReferenceSystem utm32OnLatLon = CRS.decode("EPSG:23032", false);
+        assertTrue(CRS.getMapProjection(utm32OnLatLon) instanceof TransverseMercator);
     }
 }

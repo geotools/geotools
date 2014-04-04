@@ -171,7 +171,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
              * feel free to apply the patch if its a blocker for you, but don't close this issue. Just add a reminder that the heuristic for geoserver
              * needs to be improved?
              */
-            if (!uri.startsWith("file:") && uri.contains("geoserver")) {
+            if (!uri.startsWith("file:") && uri.contains("geoserver") && !Versions.v2_0_0.equals(capsVersion)) {
                 strategy = new GeoServerPre200Strategy();
             } else if (uri.contains("/ArcGIS/services/")) {
                 strategy = new StrictWFS_1_x_Strategy(); // new ArcGISServerStrategy();

@@ -100,8 +100,9 @@ public class ReferenceTypeBinding extends AbstractComplexBinding {
         //non resolved, return the xlink:href
         if (XLINK.HREF.equals(name)) {
             String id = (String) association.getUserData().get("gml:id");
-    
-            return "#" + id;
+            if (id != null) {    
+                return "#" + id;
+            }
         }
     
         return null;

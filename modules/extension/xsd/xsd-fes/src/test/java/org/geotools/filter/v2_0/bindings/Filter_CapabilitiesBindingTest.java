@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.geotools.gml3.v3_2.GML;
+import org.opengis.filter.capability.ArithmeticOperators;
 import org.opengis.filter.capability.FilterCapabilities;
 import org.opengis.filter.capability.GeometryOperand;
 import org.opengis.filter.capability.IdCapabilities;
@@ -55,6 +56,24 @@ public class Filter_CapabilitiesBindingTest extends FESTestSupport {
 						"</fes:SpatialOperator>" +
 					"</fes:SpatialOperators>" +
 				"</fes:Spatial_Capabilities>" +
+				"<fes:Functions>" +
+					"<fes:Function name=\"abs\">" +
+						"<fes:Returns>xs:int</fes:Returns>" +
+						"<fes:Arguments>" +
+							"<fes:Argument name=\"int\">" +
+								"<fes:Type>xs:int</fes:Type>" +
+							"</fes:Argument>" +
+						"</fes:Arguments>" +
+					"</fes:Function>" +
+					"<fes:Function name=\"abs_2\">" +
+						"<fes:Returns>xs:long</fes:Returns>" +
+						"<fes:Arguments>" +
+							"<fes:Argument name=\"number\">" +
+								"<fes:Type>xs:long</fes:Type>" +
+							"</fes:Argument>" +
+						"</fes:Arguments>" +
+					"</fes:Function>" +
+				"</fes:Functions>" +
             "</fes:Filter_Capabilities>";
 
         buildDocument(xml);
@@ -81,6 +100,13 @@ public class Filter_CapabilitiesBindingTest extends FESTestSupport {
         	
         	assertTrue(op.getName().equals("PropertyIsLessThan") ||
         			op.getName().equals("PropertyIsGreaterThan"));
+        }
+        
+        // The hard part: scalar arithmetic functions
+        ArithmeticOperators arithmetic = scalar.getArithmeticOperators();
+        assertNotNull(arithmetic);
+        if (false) { // Not parsed until we can figure out if we really need these or not
+        	assertEquals(2, arithmetic.getFunctions().getFunctionNames().size());
         }
         
         // Spatial_Capabilities

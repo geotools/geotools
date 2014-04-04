@@ -131,8 +131,7 @@ public class AppSchemaFeatureTypeRegistry extends FeatureTypeRegistry {
         // GML 3.2
         addSchemas(Schemas.findSchemas(new org.geotools.gml3.v3_2.GMLConfiguration()));
 
-    }
-
+    }  
     
     /**
      * Private inner glass for handling any request made to GML. Depending on the schema type
@@ -186,14 +185,29 @@ public class AppSchemaFeatureTypeRegistry extends FeatureTypeRegistry {
                 return org.geotools.gml3.GML.id;
             }
         }
+        
+        public void setEmptyNamespace(XSDTypeDefinition typeDefinition) {
+            if (namespace.isEmpty()) {
+                // GEOT-4756:
+                // namespace could be unset when GML namespace is not set in the mapping file
+                // which is valid when it's not used in the mapping
+                if (isBasedOn(typeDefinition, org.geotools.gml3.v3_2.GML.NAMESPACE)) {
+                    namespace = org.geotools.gml3.v3_2.GML.NAMESPACE;
+                } else if (isBasedOn(typeDefinition, org.geotools.gml3.GML.NAMESPACE)) {
+                    namespace = org.geotools.gml3.GML.NAMESPACE;
+                }
+            }
+        }
 
         @Override
         public boolean isFeatureType(XSDTypeDefinition typeDefinition) {
+            setEmptyNamespace(typeDefinition);
             return isDerivedFrom(typeDefinition, getAbstractFeatureType());
         }
 
         @Override
         public boolean isGeometryType(XSDTypeDefinition typeDefinition) {
+            setEmptyNamespace(typeDefinition);
             return isDerivedFrom(typeDefinition, getAbstractGeometryType());
         }
 
@@ -221,6 +235,33 @@ public class AppSchemaFeatureTypeRegistry extends FeatureTypeRegistry {
         }
     }
     
+    /**
+     * Returns true if the <code>typeDefinition</code> is based on provided <code>superNS</code>.
+     * 
+     * @param typeDefinition
+     * @param superNS
+     * @return
+     */
+    private static boolean isBasedOn(XSDTypeDefinition typeDefinition, final String superNS) {
+
+        XSDTypeDefinition baseType;
+
+        String targetNamespace;
+        String name;
+        while ((baseType = typeDefinition.getBaseType()) != null) {
+            targetNamespace = baseType.getTargetNamespace();
+            name = baseType.getName();
+            if (XS.NAMESPACE.equals(targetNamespace) && XS.ANYTYPE.getLocalPart().equals(name)) {
+                // break the loop or this goes forever
+                return false;
+            }
+            if (superNS.equals(targetNamespace)) {
+                return true;
+            }
+            typeDefinition = baseType;
+        }
+        return false;
+    }
 
     /**
      * Returns whether <code>typeDefinition</code> has an ancestor named <code>baseTypeName</code>.

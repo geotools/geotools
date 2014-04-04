@@ -67,6 +67,7 @@ import org.geotools.filter.v2_0.bindings.PropertyIsNullTypeBinding;
 import org.geotools.filter.v2_0.bindings.ResourceIdTypeBinding;
 import org.geotools.filter.v2_0.bindings.ResourceIdentifierTypeBinding;
 import org.geotools.filter.v2_0.bindings.Scalar_CapabilitiesTypeBinding;
+import org.geotools.filter.v2_0.bindings.Spatial_CapabilitiesTypeBinding;
 import org.geotools.filter.v2_0.bindings.TContainsBinding;
 import org.geotools.filter.v2_0.bindings.TEqualsBinding;
 import org.geotools.filter.v2_0.bindings.TOverlapsBinding;
@@ -148,7 +149,7 @@ public class FESConfiguration extends Configuration {
         container.registerComponentImplementation(FES.SortByType,SortByTypeBinding.class);
         container.registerComponentImplementation(FES.SortOrderType,SortOrderTypeBinding.class);
         container.registerComponentImplementation(FES.SortPropertyType,SortPropertyTypeBinding.class);
-//        container.registerComponentImplementation(FES.Spatial_CapabilitiesType,Spatial_CapabilitiesTypeBinding.class);
+        container.registerComponentImplementation(FES.Spatial_CapabilitiesType,Spatial_CapabilitiesTypeBinding.class);
 //        container.registerComponentImplementation(FES.SpatialOperatorNameType,SpatialOperatorNameTypeBinding.class);
 //        container.registerComponentImplementation(FES.SpatialOperatorsType,SpatialOperatorsTypeBinding.class);
 //        container.registerComponentImplementation(FES.SpatialOperatorType,SpatialOperatorTypeBinding.class);

@@ -17,6 +17,8 @@
 package org.geotools.data.wfs.internal.v2_0;
 
 import static org.geotools.data.wfs.internal.HttpMethod.GET;
+import static org.geotools.data.wfs.internal.Loggers.debug;
+import static org.geotools.data.wfs.internal.Loggers.trace;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,9 +33,15 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import net.opengis.fes20.FilterCapabilitiesType;
+import net.opengis.ows11.DCPType;
+import net.opengis.ows11.OperationType;
+import net.opengis.ows11.OperationsMetadataType;
+import net.opengis.ows11.RequestMethodType;
+import net.opengis.wfs20.DescribeFeatureTypeType;
 import net.opengis.wfs20.FeatureTypeListType;
 import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.WFSCapabilitiesType;
+import net.opengis.wfs20.Wfs20Factory;
 
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.wfs.impl.WFSServiceInfo;
@@ -136,9 +144,15 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     public String getDefaultOutputFormat(WFSOperationType operation) {
-//        switch (operation) {
+        switch (operation) {
+        case DESCRIBE_FEATURETYPE:
+            // As per Table 12 in 09-25r1 OGC Web Feature Service WFS 2.0
+            return "application/gml+xml; version=3.2";
+        }
+
+//      switch(operation) {
 //        case GET_FEATURE:
-//            Set<String> serverFormats = getSupportedGetFeatureOutputFormats();
+//            Set<String> serverFormats = getServerSupportedOutputFormats(operation)
 //            String outputFormat = findExact(PREFERRED_FORMATS, serverFormats);
 //            if (outputFormat == null) {
 //                outputFormat = findFuzzy(PREFERRED_FORMATS, serverFormats);
@@ -213,8 +227,21 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     protected EObject createDescribeFeatureTypeRequestPost(DescribeFeatureTypeRequest request) {
-        // TODO Auto-generated method stub
-        return null;
+        final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
+
+        DescribeFeatureTypeType dft = factory.createDescribeFeatureTypeType();
+
+        Version version = getServiceVersion();
+        dft.setService("WFS");
+        dft.setVersion(version.toString());
+        dft.setHandle(request.getHandle());
+
+        QName typeName = request.getTypeName();
+        @SuppressWarnings("unchecked")
+        List<QName> typeNames = dft.getTypeName();
+        typeNames.add(typeName);
+
+        return dft;
     }
 
     @Override
@@ -231,7 +258,38 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     protected String getOperationURI(WFSOperationType operation, HttpMethod method) {
-        // TODO Auto-generated method stub
+        OperationsMetadataType omt = this.capabilities.getOperationsMetadata();
+        omt.getOperation();
+
+        trace("Looking operation URI for ", operation, "/", method);
+
+        List<OperationType> operations = capabilities.getOperationsMetadata().getOperation();
+        for (OperationType op : operations) {
+            if (!operation.getName().equals(op.getName())) {
+                continue;
+            }
+            List<DCPType> dcpTypes = op.getDCP();
+            if (null == dcpTypes) {
+                continue;
+            }
+            for (DCPType d : dcpTypes) {
+                List<RequestMethodType> methods;
+                if (HttpMethod.GET.equals(method)) {
+                    methods = d.getHTTP().getGet();
+                } else {
+                    methods = d.getHTTP().getPost();
+                }
+                if (null == methods || methods.isEmpty()) {
+                    continue;
+                }
+
+                String href = methods.get(0).getHref();
+                debug("Returning operation URI for ", operation, "/", method, ": ", href);
+                return href;
+            }
+        }
+
+        debug("No operation URI found for ", operation, "/", method);
         return null;
     }
 

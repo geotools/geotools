@@ -6,7 +6,6 @@ import javax.xml.namespace.QName;
 
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.opengis.filter.FilterFactory;

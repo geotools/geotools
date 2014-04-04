@@ -21,6 +21,9 @@ import static org.geotools.data.wfs.internal.Loggers.debug;
 import static org.geotools.data.wfs.internal.Loggers.trace;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,6 +43,9 @@ import net.opengis.ows11.RequestMethodType;
 import net.opengis.wfs20.DescribeFeatureTypeType;
 import net.opengis.wfs20.FeatureTypeListType;
 import net.opengis.wfs20.FeatureTypeType;
+import net.opengis.wfs20.GetFeatureType;
+import net.opengis.wfs20.QueryType;
+import net.opengis.wfs20.ResultTypeType;
 import net.opengis.wfs20.WFSCapabilitiesType;
 import net.opengis.wfs20.Wfs20Factory;
 
@@ -59,6 +65,7 @@ import org.geotools.data.wfs.internal.WFSStrategy;
 import org.geotools.util.Version;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.Configuration;
+import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FilterCapabilities;
 
 /**
@@ -145,6 +152,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     @Override
     public String getDefaultOutputFormat(WFSOperationType operation) {
         switch (operation) {
+        case GET_FEATURE:
         case DESCRIBE_FEATURETYPE:
             // As per Table 12 in 09-25r1 OGC Web Feature Service WFS 2.0
             return "application/gml+xml; version=3.2";
@@ -246,8 +254,77 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     protected EObject createGetFeatureRequestPost(GetFeatureRequest query) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+    	final QName typeName = query.getTypeName();
+        final FeatureTypeInfoImpl featureTypeInfo = (FeatureTypeInfoImpl)getFeatureTypeInfo(typeName);
+
+        final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
+
+        GetFeatureType getFeature = factory.createGetFeatureType();
+        getFeature.setService("WFS");
+        getFeature.setVersion(getVersion());
+
+        String outputFormat = query.getOutputFormat();
+        getFeature.setOutputFormat(outputFormat);
+
+        getFeature.setHandle(query.getHandle());
+
+        Integer maxFeatures = query.getMaxFeatures();
+        if (maxFeatures != null) {
+            getFeature.setCount(BigInteger.valueOf(maxFeatures.intValue()));
+        }
+
+        ResultType resultType = query.getResultType();
+        getFeature.setResultType(ResultType.RESULTS == resultType ? ResultTypeType.RESULTS
+                : ResultTypeType.HITS);
+
+        QueryType wfsQuery = factory.createQueryType();
+        wfsQuery.getTypeNames().add(typeName);
+
+        // The s*it hits the fan
+        final Filter supportedFilter;
+        final Filter unsupportedFilter;
+        {
+            final Filter filter = query.getFilter();
+            Filter[] splitFilters = splitFilters(typeName, filter);
+            supportedFilter = splitFilters[0];
+            unsupportedFilter = splitFilters[1];
+        }
+
+        query.setUnsupportedFilter(unsupportedFilter);
+
+        if (!Filter.INCLUDE.equals(supportedFilter)) {
+            wfsQuery.setFilter(supportedFilter);
+        }
+
+        String srsName = query.getSrsName();
+        if (null == srsName) {
+            srsName = featureTypeInfo.getDefaultSRS();
+        }
+        try {
+            wfsQuery.setSrsName(new URI(srsName));
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Can't create a URI from the query CRS: " + srsName, e);
+        }
+
+        String[] propertyNames = query.getPropertyNames();
+        boolean retrieveAllProperties = propertyNames == null;
+        if (!retrieveAllProperties) {
+            List<QName> propertyName = wfsQuery.getPropertyNames();
+            for (String propName : propertyNames) {
+                propertyName.add(new QName(featureTypeInfo.getQName().getNamespaceURI(), propName));
+            }
+        }
+        /*
+        SortBy[] sortByList = query.getSortBy();
+        if (sortByList != null) {
+            for (SortBy sortBy : sortByList) {
+                wfsQuery.getSortBy().add(sortBy);
+            }
+        }
+*/
+        getFeature.getAbstractQueryExpression().add(wfsQuery);
+
+        return getFeature;
     }
 
     @Override
@@ -295,6 +372,22 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     public Set<String> getServerSupportedOutputFormats(WFSOperationType operation) {
+    	OperationsMetadataType omt = this.capabilities.getOperationsMetadata();
+    	omt.getOperation();
+    	
+    	trace("Looking suppoerted output formats for ", operation);
+
+        List<OperationType> operations = capabilities.getOperationsMetadata().getOperation();
+        for (OperationType op : operations) {
+            if (!operation.getName().equals(op.getName())) {
+                continue;
+            }
+            
+            for (Object o : op.getParameter()) {
+            	System.out.println(o);
+            }
+            
+        }
         // TODO Auto-generated method stub
         return null;
     }

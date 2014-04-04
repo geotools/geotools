@@ -9,7 +9,14 @@ public class Filter_CapabilitiesBindingTest extends FESTestSupport {
             "<fes:Filter_Capabilities xmlns:fes='http://www.opengis.net/fes/2.0'>" + 
 	            "<fes:Id_Capabilities>" +
 	            	"<fes:ResourceIdentifier name=\"fes:ResourceId\"/>" +
-	            "</fes:Id_Capabilities>" + 
+	            "</fes:Id_Capabilities>" +
+	            "<fes:Scalar_Capabilities>" +
+					"<fes:LogicalOperators/>" +
+					"<fes:ComparisonOperators>" +
+						"<fes:ComparisonOperator name=\"PropertyIsLessThan\"/>" +
+						"<fes:ComparisonOperator name=\"PropertyIsGreaterThan\"/>" +
+					"</fes:ComparisonOperators>" +
+				"</fes:Scalar_Capabilities>" +
             "</fes:Filter_Capabilities>";
 
         buildDocument(xml);

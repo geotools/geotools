@@ -5510,7 +5510,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getWFSCapabilitiesType_FilterCapabilities(),
-                theFes20Package.getFilterCapabilitiesType(), null, "filterCapabilities", null, 0,
+                theFes20Package.getFilterCapabilitiesType(), null, "Filter_Capabilities", null, 0,
                 1, WFSCapabilitiesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
                 IS_ORDERED);

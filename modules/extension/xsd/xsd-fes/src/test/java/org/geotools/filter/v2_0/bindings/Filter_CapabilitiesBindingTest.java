@@ -1,7 +1,19 @@
 package org.geotools.filter.v2_0.bindings;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
+import net.opengis.fes20.AvailableFunctionsType;
+import net.opengis.fes20.ComparisonOperatorType;
+import net.opengis.fes20.ComparisonOperatorsType;
+import net.opengis.fes20.FilterCapabilitiesType;
+import net.opengis.fes20.IdCapabilitiesType;
+import net.opengis.fes20.ResourceIdentifierType;
+import net.opengis.fes20.ScalarCapabilitiesType;
+import net.opengis.fes20.SpatialCapabilitiesType;
+
+import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.geotools.gml3.v3_2.GML;
 import org.opengis.filter.capability.ArithmeticOperators;
@@ -77,47 +89,51 @@ public class Filter_CapabilitiesBindingTest extends FESTestSupport {
             "</fes:Filter_Capabilities>";
 
         buildDocument(xml);
-        FilterCapabilities filterCapabilities = (FilterCapabilities) parse();
+        FilterCapabilitiesType filterCapabilities = (FilterCapabilitiesType) parse();
         assertNotNull(filterCapabilities);
         
         // Id_Capabilities
-        IdCapabilities id = filterCapabilities.getIdCapabilities();
+        IdCapabilitiesType id = filterCapabilities.getIdCapabilities();
         assertNotNull(id);
+        List<ResourceIdentifierType> resourceIdentifiers = id.getResourceIdentifier();
+        assertNotNull(resourceIdentifiers);
+        assertEquals(1, resourceIdentifiers.size());
         
-        assertTrue(id.hasFID());
-        assertFalse(id.hasEID());
+        ResourceIdentifierType resourceIdentifier = resourceIdentifiers.get(0);
+        assertNotNull(resourceIdentifier);
+        assertEquals(FES.ResourceId, resourceIdentifier.getName());
         
         // Scalar_Capabilities
-        ScalarCapabilities scalar = filterCapabilities.getScalarCapabilities();
+        ScalarCapabilitiesType scalar = filterCapabilities.getScalarCapabilities();
         assertNotNull(scalar);
         
-        assertTrue(scalar.hasLogicalOperators());
-        assertEquals(2, scalar.getComparisonOperators().getOperators().size());
-        for (Object o : scalar.getComparisonOperators().getOperators()) {
-        	assertNotNull(o);
-        	assertTrue(o instanceof Operator);
-        	Operator op = (Operator)o;
-        	
-        	assertTrue(op.getName().equals("PropertyIsLessThan") ||
-        			op.getName().equals("PropertyIsGreaterThan"));
-        }
+        assertNotNull(scalar.getLogicalOperators());
+        ComparisonOperatorsType comparisonOperators = scalar.getComparisonOperators();
+        assertNotNull(comparisonOperators);
+        assertEquals(2, comparisonOperators.getComparisonOperator().size());
+        ComparisonOperatorType type0 = comparisonOperators.getComparisonOperator().get(0);
+        ComparisonOperatorType type1 = comparisonOperators.getComparisonOperator().get(1);
         
-        // The hard part: scalar arithmetic functions
-        ArithmeticOperators arithmetic = scalar.getArithmeticOperators();
-        assertNotNull(arithmetic);
-        if (false) { // Not parsed until we can figure out if we really need these or not
-        	assertEquals(2, arithmetic.getFunctions().getFunctionNames().size());
-        }
+        assertNotNull(type0);
+        assertNotNull(type1);
         
+        assertEquals("PropertyIsLessThan", type0.getName());
+        assertEquals("PropertyIsGreaterThan", type1.getName());
+        
+ 
         // Spatial_Capabilities
-        SpatialCapabilities spatial = filterCapabilities.getSpatialCapabilities();
+        SpatialCapabilitiesType spatial = filterCapabilities.getSpatialCapabilities();
         assertNotNull(spatial);
         
-        assertEquals(11, spatial.getSpatialOperators().getOperators().size());
-        SpatialOperator equals = spatial.getSpatialOperators().getOperator("Equals");
-        assertNotNull(equals);
-        assertEquals(0, equals.getGeometryOperands().size());
         
+        assertEquals(11, spatial.getSpatialOperators().getSpatialOperator().size());
+        
+        assertEquals(8, spatial.getGeometryOperands().getGeometryOperand().size());
+        
+        // Functions
+        AvailableFunctionsType functions = filterCapabilities.getFunctions();
+        assertNotNull(functions);
+        /*
         SpatialOperator bbox = spatial.getSpatialOperators().getOperator("BBOX");
         assertNotNull(bbox);
         assertEquals(1, bbox.getGeometryOperands().size());
@@ -126,6 +142,6 @@ public class Filter_CapabilitiesBindingTest extends FESTestSupport {
         
         assertEquals("http://schemas.opengis.net/gml", envelope.getNamespaceURI());
         assertEquals("Envelope", envelope.getLocalPart());
-        
+        */
 	}
 }

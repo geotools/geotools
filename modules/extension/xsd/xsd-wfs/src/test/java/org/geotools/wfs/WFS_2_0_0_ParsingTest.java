@@ -41,6 +41,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import junit.framework.TestCase;
+import net.opengis.fes20.FilterCapabilitiesType;
 import net.opengis.ows11.DCPType;
 import net.opengis.ows11.KeywordsType;
 import net.opengis.ows11.LanguageStringType;
@@ -108,7 +109,7 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
         assertEquals("2.0.0", caps.getVersion());
     }
     
-    public void _testParseGetCapabilities() throws Exception {
+    public void testParseGetCapabilities() throws Exception {
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
         Parser parser = new Parser(configuration);
@@ -121,11 +122,12 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
 
         assertNotNull(caps);
         assertEquals("2.0.0", caps.getVersion());
-
+/*
         assertServiceIdentification(caps);
         assertOperationsMetadata(caps);
         assertFeatureTypeList(caps);
         assertFilterCapabilities(caps);
+*/
     }
     
 
@@ -160,6 +162,9 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
 
         assertNotNull(caps);
         assertEquals("2.0.0", caps.getVersion());
+        
+        FilterCapabilitiesType fct = caps.getFilterCapabilities();
+        assertNotNull(fct);
     }
 
 

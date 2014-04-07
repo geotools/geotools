@@ -36,6 +36,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import net.opengis.fes20.FilterCapabilitiesType;
+import net.opengis.fes20.ResourceIdentifierType;
 import net.opengis.ows11.DCPType;
 import net.opengis.ows11.OperationType;
 import net.opengis.ows11.OperationsMetadataType;
@@ -62,11 +63,15 @@ import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSGetCapabilities;
 import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSStrategy;
+import org.geotools.filter.capability.FilterCapabilitiesImpl;
+import org.geotools.filter.capability.IdCapabilitiesImpl;
+import org.geotools.filter.v2_0.FES;
 import org.geotools.util.Version;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.Configuration;
 import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FilterCapabilities;
+import org.opengis.filter.capability.IdCapabilities;
 
 /**
  * 
@@ -229,8 +234,26 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     @Override
     public FilterCapabilities getFilterCapabilities() {
         FilterCapabilitiesType filterCapabilities = capabilities.getFilterCapabilities();
-        // TODO
-        throw new UnsupportedOperationException();
+        
+        FilterCapabilitiesImpl ret = new FilterCapabilitiesImpl();
+        
+        IdCapabilitiesImpl idCapabilities = new IdCapabilitiesImpl();
+        ret.setId(idCapabilities);
+        
+        for (ResourceIdentifierType rit : filterCapabilities.getIdCapabilities().getResourceIdentifier()) {
+        	QName name = rit.getName();
+        	if (FES.ResourceId.equals(name)) {
+        		idCapabilities.setFID(true);
+        	} else if (name.getNamespaceURI().startsWith("http://www.opengis.net/cat/csw/") &&
+        			name.getLocalPart().equals("RecordId")) {
+        		// FES 2.0 is very unclear about this. See 09-026r1 FES 2.0 7.14.3
+        		idCapabilities.setEid(true);
+        	}
+        }
+
+        // TODO: scalar, spatial, arithmetic
+
+        return ret;
     }
 
     @Override

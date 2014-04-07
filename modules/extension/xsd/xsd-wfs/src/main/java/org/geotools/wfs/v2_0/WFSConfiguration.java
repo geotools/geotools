@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import net.opengis.fes20.Fes20Factory;
 import net.opengis.wfs.WfsFactory;
 import net.opengis.wfs20.AllSomeType;
 import net.opengis.wfs20.DropStoredQueryType;
@@ -12,6 +13,7 @@ import net.opengis.wfs20.ResultTypeType;
 import net.opengis.wfs20.UpdateActionType;
 import net.opengis.wfs20.Wfs20Factory;
 
+import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESConfiguration;
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.ows.v1_1.OWSConfiguration;
@@ -64,6 +66,7 @@ public class WFSConfiguration extends Configuration {
     protected void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(WfsFactory.eINSTANCE);
         container.registerComponentInstance(Wfs20Factory.eINSTANCE);
+        container.registerComponentInstance(Fes20Factory.eINSTANCE);
         container.registerComponentInstance(new XSDIdRegistry());
         
         container.registerComponentImplementation(QueryExpressionTextDelegate.class);
@@ -149,7 +152,6 @@ public class WFSConfiguration extends Configuration {
         bindings.put(WFS.Abstract, new SimpleContentComplexEMFBinding(Wfs20Factory.eINSTANCE, new QName(WFS.NAMESPACE, "AbstractType")));
         bindings.put(WFS.DropStoredQuery, new ComplexEMFBinding(Wfs20Factory.eINSTANCE, WFS.DropStoredQuery, DropStoredQueryType.class));
         bindings.put(WFS.Title, new SimpleContentComplexEMFBinding(Wfs20Factory.eINSTANCE, new QName(WFS.NAMESPACE, "TitleType")));
-        
     }
     
     void binding(Map bindings, QName name) {

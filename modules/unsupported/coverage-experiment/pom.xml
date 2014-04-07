@@ -100,7 +100,6 @@
         <!--module>geotiff</module-->
         <module>netcdf</module>
         <!--module>hdf4</module-->
-        <module>grib1</module>
       </modules>
  </project>
  

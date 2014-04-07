@@ -58,13 +58,9 @@ public abstract class WFSStrategy extends Specification {
 
     public WFSStrategy() {
         requestHandleSequences = new HashMap<WFSOperationType, AtomicLong>();
-        requestHandleSequences.put(WFSOperationType.GET_CAPABILITIES, new AtomicLong());
-        requestHandleSequences.put(WFSOperationType.DESCRIBE_FEATURETYPE, new AtomicLong());
-        requestHandleSequences.put(WFSOperationType.GET_FEATURE, new AtomicLong());
-        requestHandleSequences.put(WFSOperationType.GET_FEATURE_WITH_LOCK, new AtomicLong());
-        requestHandleSequences.put(WFSOperationType.GET_GML_OBJECT, new AtomicLong());
-        requestHandleSequences.put(WFSOperationType.LOCK_FEATURE, new AtomicLong());
-        requestHandleSequences.put(WFSOperationType.TRANSACTION, new AtomicLong());
+        for (WFSOperationType operationType : WFSOperationType.values()) {
+        	requestHandleSequences.put(operationType, new AtomicLong());
+        }
     }
 
     public abstract void setCapabilities(WFSGetCapabilities capabilities);

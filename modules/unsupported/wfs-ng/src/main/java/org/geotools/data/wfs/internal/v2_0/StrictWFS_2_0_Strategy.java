@@ -25,7 +25,9 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,7 +38,10 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import net.opengis.fes20.FilterCapabilitiesType;
+import net.opengis.fes20.GeometryOperandType;
 import net.opengis.fes20.ResourceIdentifierType;
+import net.opengis.fes20.SpatialCapabilitiesType;
+import net.opengis.fes20.SpatialOperatorType;
 import net.opengis.ows11.DCPType;
 import net.opengis.ows11.OperationType;
 import net.opengis.ows11.OperationsMetadataType;
@@ -65,13 +70,19 @@ import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSStrategy;
 import org.geotools.filter.capability.FilterCapabilitiesImpl;
 import org.geotools.filter.capability.IdCapabilitiesImpl;
+import org.geotools.filter.capability.SpatialCapabiltiesImpl;
+import org.geotools.filter.capability.SpatialOperatorImpl;
+import org.geotools.filter.capability.SpatialOperatorsImpl;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.util.Version;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.Configuration;
 import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FilterCapabilities;
+import org.opengis.filter.capability.GeometryOperand;
 import org.opengis.filter.capability.IdCapabilities;
+import org.opengis.filter.capability.SpatialCapabilities;
+import org.opengis.filter.capability.SpatialOperator;
 
 /**
  * 
@@ -236,9 +247,86 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         FilterCapabilitiesType filterCapabilities = capabilities.getFilterCapabilities();
         
         FilterCapabilitiesImpl ret = new FilterCapabilitiesImpl();
+        ret.setId(createIdCapabilities(filterCapabilities));
+        ret.setSpatial(createSpatialCapabilities(filterCapabilities));
         
-        IdCapabilitiesImpl idCapabilities = new IdCapabilitiesImpl();
-        ret.setId(idCapabilities);
+        // TODO: scalar, arithmetic
+
+        return ret;
+    }
+
+	private SpatialCapabilities createSpatialCapabilities(FilterCapabilitiesType filterCapabilities) {
+		SpatialCapabilitiesType sct = filterCapabilities.getSpatialCapabilities();
+		
+		SpatialCapabiltiesImpl spatialCapabilities = new SpatialCapabiltiesImpl();
+        
+		// Geometry operands
+        
+        
+        List<GeometryOperandType> geometryOperandTypes = null;
+        
+        
+        if (sct != null && sct.getGeometryOperands() != null) {
+        	geometryOperandTypes = sct.getGeometryOperands().getGeometryOperand();
+        }
+        
+        if (geometryOperandTypes == null) {
+        	geometryOperandTypes = Collections.emptyList();
+        }
+        
+        List<GeometryOperand> geometryOperands = convertGeometryOperands(geometryOperandTypes);
+        
+        spatialCapabilities.setGeometryOperands(geometryOperands);
+        
+        
+        // Spatial operators
+        SpatialOperatorsImpl spatialOperators = new SpatialOperatorsImpl();
+        spatialCapabilities.setSpatialOperators(spatialOperators);
+        
+        Collection<SpatialOperator> ops = new ArrayList<SpatialOperator>();
+        
+        List<SpatialOperatorType> spatialOperatorTypes = null;
+        if (sct != null && sct.getSpatialOperators() != null) {
+        	spatialOperatorTypes = sct.getSpatialOperators().getSpatialOperator();
+        }
+        
+        if (spatialOperatorTypes == null) {
+        	spatialOperatorTypes = Collections.emptyList();
+        }
+        
+        for (SpatialOperatorType sot : spatialOperatorTypes) {
+        	SpatialOperator op;
+        	
+        	String name = (String)sot.getName();
+        	
+        	if (sot.getGeometryOperands() != null && sot.getGeometryOperands().getGeometryOperand() != null) {
+        		op = new SpatialOperatorImpl(name, convertGeometryOperands(sot.getGeometryOperands().getGeometryOperand()));
+        	} else {
+        		op = new SpatialOperatorImpl(name);
+        	}
+
+        	ops.add(op);
+        }
+        
+        spatialOperators.setOperators(ops);
+        
+        
+		return spatialCapabilities;
+	}
+
+	private List<GeometryOperand> convertGeometryOperands(
+			List<GeometryOperandType> geometryOperandTypes) {
+		List<GeometryOperand> geometryOperands = new ArrayList<GeometryOperand>();
+        for (GeometryOperandType got : geometryOperandTypes) {
+        	GeometryOperand op = GeometryOperand.get(got.getName().getNamespaceURI(), got.getName().getLocalPart());
+        	geometryOperands.add(op);
+        }
+		return geometryOperands;
+	}
+
+	private IdCapabilities createIdCapabilities(
+			FilterCapabilitiesType filterCapabilities) {
+		IdCapabilitiesImpl idCapabilities = new IdCapabilitiesImpl();
         
         for (ResourceIdentifierType rit : filterCapabilities.getIdCapabilities().getResourceIdentifier()) {
         	QName name = rit.getName();
@@ -250,11 +338,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         		idCapabilities.setEid(true);
         	}
         }
-
-        // TODO: scalar, spatial, arithmetic
-
-        return ret;
-    }
+		return idCapabilities;
+	}
 
     @Override
     protected EObject createDescribeFeatureTypeRequestPost(DescribeFeatureTypeRequest request) {
@@ -303,7 +388,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         QueryType wfsQuery = factory.createQueryType();
         wfsQuery.getTypeNames().add(typeName);
 
-        // The s*it hits the fan
+        // Lifted from 1.0 / 1.1
         final Filter supportedFilter;
         final Filter unsupportedFilter;
         {

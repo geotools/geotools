@@ -50,6 +50,7 @@ import net.opengis.wfs20.DescribeFeatureTypeType;
 import net.opengis.wfs20.FeatureTypeListType;
 import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.GetFeatureType;
+import net.opengis.wfs20.ListStoredQueriesType;
 import net.opengis.wfs20.QueryType;
 import net.opengis.wfs20.ResultTypeType;
 import net.opengis.wfs20.WFSCapabilitiesType;
@@ -63,6 +64,7 @@ import org.geotools.data.wfs.internal.FeatureTypeInfo;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.data.wfs.internal.HttpMethod;
+import org.geotools.data.wfs.internal.ListStoredQueriesRequest;
 import org.geotools.data.wfs.internal.TransactionRequest;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSGetCapabilities;
@@ -172,8 +174,13 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         case DESCRIBE_FEATURETYPE:
             // As per Table 12 in 09-25r1 OGC Web Feature Service WFS 2.0
             return "application/gml+xml; version=3.2";
+            
+        case LIST_STORED_QUERIES:
+        	// Format makes no sense for ListStoredQueries
+        	return null;
         }
-
+        
+        
 //      switch(operation) {
 //        case GET_FEATURE:
 //            Set<String> serverFormats = getServerSupportedOutputFormats(operation)
@@ -435,6 +442,16 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         return getFeature;
     }
 
+    @Override
+    protected EObject createListStoredQueriesRequest(
+    		ListStoredQueriesRequest request) throws IOException {
+    	final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
+    	
+    	ListStoredQueriesType ret = factory.createListStoredQueriesType();
+
+    	return ret;
+    }
+    
     @Override
     protected EObject createTransactionRequest(TransactionRequest request) throws IOException {
         // TODO Auto-generated method stub

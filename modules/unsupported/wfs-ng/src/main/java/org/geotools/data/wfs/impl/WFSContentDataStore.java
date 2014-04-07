@@ -16,6 +16,8 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeResponse;
+import org.geotools.data.wfs.internal.ListStoredQueriesRequest;
+import org.geotools.data.wfs.internal.ListStoredQueriesResponse;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 import org.geotools.factory.CommonFactoryFinder;
@@ -35,7 +37,9 @@ public class WFSContentDataStore extends ContentDataStore {
     private final Map<Name, QName> names;
 
     private final Map<QName, FeatureType> remoteFeatureTypes;
-
+  
+    private List<String> remoteStoredQueries;
+    
     public WFSContentDataStore(final WFSClient client) {
         this.client = client;
         this.names = new ConcurrentHashMap<Name, QName>();
@@ -79,10 +83,27 @@ public class WFSContentDataStore extends ContentDataStore {
             names.add(typeName);
             this.names.put(typeName, remoteTypeName);
         }
+        
+        if (client.getInfo().getVersion().equals("2.0.0")) {
+        	
+        	
+        	List<String> queries = getStoredQueryList();
+
+        	for (String q : queries) {
+	        	QName remoteTypeName = new QName("http://www.fmi.fi", q);
+	        	
+	        	String localTypeName = q;
+	        	
+	        	Name mock = new NameImpl(getNamespaceURI(), localTypeName);
+	        	names.add(mock);
+	        	this.names.put(mock, remoteTypeName);
+        	}
+        }
+        
         return names;
     }
 
-    /**
+	/**
      * @see WFSContentFeatureSource
      * @see WFSContentFeatureStore
      * @see WFSClient#supportsTransaction(QName)
@@ -115,6 +136,23 @@ public class WFSContentDataStore extends ContentDataStore {
         return qName;
     }
 
+    private List<String> getStoredQueryList() throws IOException {
+    	
+    	synchronized(this) {
+
+    		if (remoteStoredQueries == null) {
+    			
+    			ListStoredQueriesRequest request = client.createListStoredQueriesRequest();
+    			
+    			ListStoredQueriesResponse response = client.issueRequest(request);
+
+	    		remoteStoredQueries = response.getStoredQueries();
+	    	}
+    	}
+
+		return remoteStoredQueries;
+	}
+    
     public FeatureType getRemoteFeatureType(final QName remoteTypeName) throws IOException {
 
         FeatureType remoteFeatureType;

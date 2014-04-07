@@ -14,8 +14,11 @@ public class DescribeStoredQueriesResponse extends WFSResponse {
 	public DescribeStoredQueriesResponse(WFSRequest originatingRequest, HTTPResponse response) throws IOException, ServiceException {
 		super(originatingRequest, response);
 		
-		System.err.println("TODO TODO TODO, DescribeStoredQueriesResponse()");
-		// TODO Auto-generated constructor stub
+		try {
+			System.err.println("TODO TODO TODO, DescribeStoredQueriesResponse()");
+		} finally {
+			response.dispose();
+		}
 	}
 	
 	public List<StoredQueryDescriptionType> getStoredQueryDescriptions() {

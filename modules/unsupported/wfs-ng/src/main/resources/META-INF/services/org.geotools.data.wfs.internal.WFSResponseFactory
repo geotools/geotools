@@ -1,4 +1,7 @@
 org.geotools.data.wfs.internal.parsers.DescribeFeatureTypeResponseFactory
+org.geotools.data.wfs.internal.parsers.DescribeStoredQueriesResponseFactory
 org.geotools.data.wfs.internal.parsers.GmlGetFeatureResponseParserFactory
-org.geotools.data.wfs.internal.parsers.WFS_1_1_TransactionResponseFactory
 org.geotools.data.wfs.internal.parsers.ListStoredQueriesResponseFactory
+org.geotools.data.wfs.internal.parsers.WFS_1_1_TransactionResponseFactory
+
+

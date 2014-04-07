@@ -152,7 +152,10 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
     protected abstract EObject createTransactionRequest(TransactionRequest request)
             throws IOException;
 
-    protected abstract EObject createListStoredQueriesRequest(ListStoredQueriesRequest request)
+    protected abstract EObject createListStoredQueriesRequestPost(ListStoredQueriesRequest request)
+    		throws IOException;
+    
+    protected abstract EObject createDescribeStoredQueriesRequestPost(DescribeStoredQueriesRequest request)
     		throws IOException;
     
     /**
@@ -685,15 +688,18 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         case DESCRIBE_FEATURETYPE:
             requestObject = createDescribeFeatureTypeRequestPost((DescribeFeatureTypeRequest) request);
             break;
+        case DESCRIBE_STORED_QUERIES:
+        	requestObject = createDescribeStoredQueriesRequestPost((DescribeStoredQueriesRequest) request);
+        	break;
         case GET_FEATURE:
             requestObject = createGetFeatureRequestPost((GetFeatureRequest) request);
             break;
+        case LIST_STORED_QUERIES:
+        	requestObject = createListStoredQueriesRequestPost((ListStoredQueriesRequest) request);
+        	break;
         case TRANSACTION:
             requestObject = createTransactionRequest((TransactionRequest) request);
             break;
-        case LIST_STORED_QUERIES:
-        	requestObject = createListStoredQueriesRequest((ListStoredQueriesRequest) request);
-        	break;
         default:
             throw new UnsupportedOperationException("not yet implemented for "
                     + request.getOperation());

@@ -47,6 +47,7 @@ import net.opengis.ows11.OperationType;
 import net.opengis.ows11.OperationsMetadataType;
 import net.opengis.ows11.RequestMethodType;
 import net.opengis.wfs20.DescribeFeatureTypeType;
+import net.opengis.wfs20.DescribeStoredQueriesType;
 import net.opengis.wfs20.FeatureTypeListType;
 import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.GetFeatureType;
@@ -63,6 +64,7 @@ import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.FeatureTypeInfo;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
+import org.geotools.data.wfs.internal.DescribeStoredQueriesRequest;
 import org.geotools.data.wfs.internal.HttpMethod;
 import org.geotools.data.wfs.internal.ListStoredQueriesRequest;
 import org.geotools.data.wfs.internal.TransactionRequest;
@@ -175,8 +177,9 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             // As per Table 12 in 09-25r1 OGC Web Feature Service WFS 2.0
             return "application/gml+xml; version=3.2";
             
+        case DESCRIBE_STORED_QUERIES:
         case LIST_STORED_QUERIES:
-        	// Format makes no sense for ListStoredQueries
+        	// Format makes no sense for DescribeStoredQueries or ListStoredQueries
         	return null;
         }
         
@@ -429,6 +432,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
                 propertyName.add(new QName(featureTypeInfo.getQName().getNamespaceURI(), propName));
             }
         }
+        
+        System.err.println("SortBy is not implemented in StrictWFS_2_0_Strategy");
         /*
         SortBy[] sortByList = query.getSortBy();
         if (sortByList != null) {
@@ -443,12 +448,24 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     }
 
     @Override
-    protected EObject createListStoredQueriesRequest(
+    protected EObject createListStoredQueriesRequestPost(
     		ListStoredQueriesRequest request) throws IOException {
     	final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
     	
     	ListStoredQueriesType ret = factory.createListStoredQueriesType();
 
+    	return ret;
+    }
+    
+    @Override
+    protected EObject createDescribeStoredQueriesRequestPost(
+    		DescribeStoredQueriesRequest request) throws IOException {
+    	final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
+    	
+    	DescribeStoredQueriesType ret = factory.createDescribeStoredQueriesType();
+    	
+    	ret.getStoredQueryId().addAll(request.getStoredQueryIds());
+    	
     	return ret;
     }
     

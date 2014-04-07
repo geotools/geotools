@@ -273,6 +273,11 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     	return (ListStoredQueriesResponse) internalIssueRequest(request);
     }
     
+    public DescribeStoredQueriesResponse issueRequest(DescribeStoredQueriesRequest request)
+    	throws IOException {
+    	return (DescribeStoredQueriesResponse) internalIssueRequest(request);
+    }
+    
     public TransactionRequest createTransaction() {
         WFSStrategy strategy = getStrategy();
         return new TransactionRequest(config, strategy);

@@ -7,7 +7,6 @@ import java.util.List;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.internal.DescribeStoredQueriesRequest;
 import org.geotools.data.wfs.internal.DescribeStoredQueriesResponse;
-import org.geotools.data.wfs.internal.ListStoredQueriesRequest;
 import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.data.wfs.internal.WFSResponse;
@@ -23,7 +22,7 @@ public class DescribeStoredQueriesResponseFactory implements WFSResponseFactory 
 
     @Override
     public boolean canProcess(WFSRequest originatingRequest, String contentType) {
-        return originatingRequest instanceof ListStoredQueriesRequest
+        return originatingRequest instanceof DescribeStoredQueriesRequest
                 && (contentType == null || contentType.startsWith("text/xml"));
     }
 

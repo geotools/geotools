@@ -32,6 +32,8 @@ import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xs.bindings.XSQNameBinding;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class QueryTypeBinding extends ComplexEMFBinding {
 
@@ -63,6 +65,24 @@ public class QueryTypeBinding extends ComplexEMFBinding {
                 q.getTypeNames().addAll(qNames);
             }
         }
+    }
+    
+    @Override
+    public Object getProperty(Object object, QName name) throws Exception {
+    	if (name.getLocalPart().equals("typeNames")) {
+    		List qNames = ((QueryType)object).getTypeNames();
+    		StringBuffer ret = new StringBuffer();
+    		
+    		for (Object o : qNames) {
+    			QName type = (QName)o;
+    			if (ret.length() > 0) ret.append(",");
+    			ret.append(type.getPrefix()+":"+type.getLocalPart());
+    		}
+    		
+    		return ret.toString();
+    	}
+    	
+    	return super.getProperty(object, name);
     }
 
 }

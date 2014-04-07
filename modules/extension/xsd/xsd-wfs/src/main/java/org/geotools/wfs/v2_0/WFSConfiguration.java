@@ -22,6 +22,7 @@ import org.geotools.wfs.v2_0.bindings.FeatureTypeListTypeBinding;
 import org.geotools.wfs.v2_0.bindings.FeatureTypeTypeBinding;
 import org.geotools.wfs.v2_0.bindings.MetadataURLTypeBinding;
 import org.geotools.wfs.v2_0.bindings.ParameterParserDelegate;
+import org.geotools.wfs.v2_0.bindings.ParameterTypeBinding;
 import org.geotools.wfs.v2_0.bindings.QueryExpressionTextDelegate;
 import org.geotools.wfs.v2_0.bindings.QueryExpressionTextTypeBinding;
 import org.geotools.wfs.v2_0.bindings.QueryTypeBinding;
@@ -149,6 +150,8 @@ public class WFSConfiguration extends Configuration {
         bindings.put(WFS.PropertyType_ValueReference, ValueReferenceTypeBinding.class);
 //        container.registerComponentImplementation(WFS.WFS_CapabilitiesType_WSDL,WFS_CapabilitiesType_WSDLBinding.class);
     
+        bindings.put(WFS.ParameterType, ParameterTypeBinding.class);
+        
         bindings.put(WFS.Abstract, new SimpleContentComplexEMFBinding(Wfs20Factory.eINSTANCE, new QName(WFS.NAMESPACE, "AbstractType")));
         bindings.put(WFS.DropStoredQuery, new ComplexEMFBinding(Wfs20Factory.eINSTANCE, WFS.DropStoredQuery, DropStoredQueryType.class));
         bindings.put(WFS.Title, new SimpleContentComplexEMFBinding(Wfs20Factory.eINSTANCE, new QName(WFS.NAMESPACE, "TitleType")));

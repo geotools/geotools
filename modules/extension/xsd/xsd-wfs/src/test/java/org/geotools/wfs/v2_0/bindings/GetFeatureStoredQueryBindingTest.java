@@ -17,6 +17,7 @@ import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.w3c.dom.Document;
 
 public class GetFeatureStoredQueryBindingTest extends WFSTestSupport {
+
 	public void testEncodeGetFeatureWithStoredQueryId() throws Exception {
 		Wfs20Factory factory = Wfs20Factory.eINSTANCE;
         

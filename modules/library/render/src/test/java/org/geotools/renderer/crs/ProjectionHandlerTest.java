@@ -183,7 +183,7 @@ public class ProjectionHandlerTest {
         // make sure the geometry is not wrapped
         ProjectionHandler handler = ProjectionHandlerFinder.getHandler(mercatorEnvelope, WGS84, true);
         assertTrue(handler.requiresProcessing( g));
-        Geometry preProcessed = handler.preProcess( g);
+        Geometry preProcessed = handler.preProcess(g);
         // no cutting expected
         assertEquals(g, preProcessed);
         // transform and post process
@@ -210,7 +210,7 @@ public class ProjectionHandlerTest {
         // make sure the geometry is not wrapped, but it is preserved
         ProjectionHandler handler = ProjectionHandlerFinder.getHandler(world, FIJI, true);
         assertTrue(handler.requiresProcessing( g));
-        Geometry preProcessed = handler.preProcess( g);
+        Geometry preProcessed = handler.preProcess(g);
         // no cutting expected
         assertEquals(original, preProcessed);
         // post process
@@ -282,7 +282,7 @@ public class ProjectionHandlerTest {
 
         
         assertTrue(handler.requiresProcessing( g));
-        Geometry preProcessed = handler.preProcess( g);
+        Geometry preProcessed = handler.preProcess(g);
         // no cutting expected
         assertEquals(original, preProcessed);
         // post process, this should wrap the geometry and clone it
@@ -306,7 +306,7 @@ public class ProjectionHandlerTest {
 
         
         assertTrue(handler.requiresProcessing( g));
-        Geometry preProcessed = handler.preProcess( g);
+        Geometry preProcessed = handler.preProcess(g);
         Geometry reprojected = JTS.transform(preProcessed, prepared);
         assertTrue(reprojected.isValid());
         reprojected.apply(new CoordinateFilter() {
@@ -340,7 +340,7 @@ public class ProjectionHandlerTest {
         // make sure the geometry is not wrapped, but it is preserved
         
         assertTrue(handler.requiresProcessing( g));
-        Geometry preProcessed = handler.preProcess( g);
+        Geometry preProcessed = handler.preProcess(g);
         // no cutting expected
         assertEquals(original, preProcessed);
         // post process, this should wrap the geometry and clone it

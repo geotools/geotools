@@ -1039,13 +1039,16 @@ public class StreamingRenderer implements GTRenderer {
             // each geometric attribute used during the rendering as the
             // feature may have more than one and the styles could use non
             // default geometric ones
-            List<ReferencedEnvelope> envelopes;
+            List<ReferencedEnvelope> envelopes = null;
             // enable advanced projection handling with the updated map extent
             if(isAdvancedProjectionHandlingEnabled()) {
                 // get the projection handler and set a tentative envelope
-                projectionHandler = ProjectionHandlerFinder.getHandler(envelope, featCrs, isMapWrappingEnabled());
-                envelopes = projectionHandler.getQueryEnvelopes();
-            } else {
+                projectionHandler = ProjectionHandlerFinder.getHandler(mapExtent, featCrs, isMapWrappingEnabled());
+                if(projectionHandler != null) {
+                    envelopes = projectionHandler.getQueryEnvelopes();
+                }
+            }
+            if(envelopes == null) {
                 if (mapCRS != null && featCrs != null && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
                     envelopes = Collections.singletonList(envelope.transform(featCrs, true, 10));
                 } else {
@@ -3347,7 +3350,7 @@ public class StreamingRenderer implements GTRenderer {
                     shape = null;
                 } else {
                     // first generalize and transform the geometry into the rendering CRS
-                    Decimator d = getDecimator(sa.rxform);
+                    Decimator d = getDecimator(sa.xform);
 					d.decimateTransformGeneralize(geom, sa.rxform);
                     geom.geometryChanged();
                     // then post process it (provide reverse transform if available)

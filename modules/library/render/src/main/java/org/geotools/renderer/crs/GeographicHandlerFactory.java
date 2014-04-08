@@ -38,15 +38,18 @@ public class GeographicHandlerFactory implements ProjectionHandlerFactory {
         CoordinateReferenceSystem crs = renderingEnvelope.getCoordinateReferenceSystem();
         if (renderingEnvelope != null  && crs instanceof GeographicCRS) {
             GeographicCRS  geogCrs = (GeographicCRS) crs;
+            CoordinateReferenceSystem horizontalSourceCrs = CRS.getHorizontalCRS(sourceCrs);
             
             ReferencedEnvelope validArea = null;
-            if(sourceCrs instanceof GeographicCRS && !CRS.equalsIgnoreMetadata(sourceCrs, geogCrs)) {
+            if(horizontalSourceCrs instanceof GeographicCRS && !CRS.equalsIgnoreMetadata(horizontalSourceCrs, geogCrs)) {
                 // datum shifts will create unpleasant effects if we have the poles in the mix,
                 // cut them out
-                if(CRS.getAxisOrder(sourceCrs) == AxisOrder.NORTH_EAST) {
-                    validArea = new ReferencedEnvelope(MIN_LATITUDE, MAX_LATITUDE, Float.MAX_VALUE, -Float.MAX_VALUE, sourceCrs);
-                } else {
-                    validArea = new ReferencedEnvelope(Float.MAX_VALUE, -Float.MAX_VALUE, MIN_LATITUDE, MAX_LATITUDE, sourceCrs);
+                if(!CRS.equalsIgnoreMetadata(horizontalSourceCrs, geogCrs)) {
+                    if(CRS.getAxisOrder(sourceCrs) == AxisOrder.NORTH_EAST) {
+                        validArea = new ReferencedEnvelope(MIN_LATITUDE, MAX_LATITUDE, Float.MAX_VALUE, -Float.MAX_VALUE, horizontalSourceCrs);
+                    } else {
+                        validArea = new ReferencedEnvelope(Float.MAX_VALUE, -Float.MAX_VALUE, MIN_LATITUDE, MAX_LATITUDE, horizontalSourceCrs);
+                    }
                 }
             }
             

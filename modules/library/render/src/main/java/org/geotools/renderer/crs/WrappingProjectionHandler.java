@@ -150,9 +150,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
                 Geometry offseted = (Geometry) geometry.clone();
                 offseted.apply(new OffsetOrdinateFilter(northEast ? 1 : 0, offset));
                 offseted.geometryChanged();       
-                if(offseted.getEnvelopeInternal().intersects(renderingEnvelope)) {
-                    geomType = accumulate(geoms, offseted, geomType);
-                }
+                geomType = accumulate(geoms, offseted, geomType);
             }
 
             curr += radius * 2;

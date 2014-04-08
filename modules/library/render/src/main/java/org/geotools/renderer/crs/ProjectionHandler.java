@@ -228,18 +228,19 @@ public class ProjectionHandler {
      * if the geometry is not to be drawn
      */
     public Geometry preProcess(Geometry geometry) throws TransformException, FactoryException {
-        // if not reprojection is going on, we don't need to cut
-        if (CRS.equalsIgnoreMetadata(sourceCRS, renderingEnvelope.getCoordinateReferenceSystem())) {
-            return geometry;
-        }
-        
         // if there is no valid area, no cutting is required either
         if(validArea == null)
             return geometry;
+        
+        // if not reprojection is going on, we don't need to cut
+        CoordinateReferenceSystem geometryCRS = CRS.getHorizontalCRS(sourceCRS);
+        if (geometryCRS == null || CRS.equalsIgnoreMetadata(geometryCRS, renderingEnvelope.getCoordinateReferenceSystem())) {
+            return geometry;
+        }
 
         // if the geometry is within the valid area for this projection
         // just skip expensive cutting
-        ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), sourceCRS);
+        ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), geometryCRS);
         ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
         if (validArea.contains((Envelope) geWGS84)) {
             return geometry;
@@ -255,7 +256,7 @@ public class ProjectionHandler {
         if(envIntWgs84.isEmpty())
             return null;
             
-        ReferencedEnvelope envInt = envIntWgs84.transform(sourceCRS, true);
+        ReferencedEnvelope envInt = envIntWgs84.transform(geometryCRS, true);
 
         // turn the envelope into a geometry and perform the intersection
         Polygon envelopeGeometry = JTS.toGeometry((Envelope) envInt);

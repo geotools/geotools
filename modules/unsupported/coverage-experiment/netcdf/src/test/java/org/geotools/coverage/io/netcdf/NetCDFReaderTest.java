@@ -18,8 +18,10 @@ package org.geotools.coverage.io.netcdf;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,6 +43,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
+import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
@@ -821,6 +824,85 @@ public class NetCDFReaderTest extends Assert {
             } else {
                 PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
             }
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    /**
+     * Test on a Grib image flipped vertically.
+     *
+     * @throws DataSourceException
+     * @throws MalformedURLException
+     * @throws IOException
+     */
+    @Test
+    @Ignore
+    public void testGribImage() throws MalformedURLException, DataSourceException, IOException {
+        // Selection of the input file
+        final File testURL = TestData.file(this, null);
+        // Testing the 2 points
+        testGribFile(testURL, new Point2D.Double(44, 62.5), new Point2D.Double(44, 42.5));
+    }
+
+    /**
+     * Test on a Grib image not flipped vertically.
+     *
+     * @throws DataSourceException
+     * @throws MalformedURLException
+     * @throws IOException
+     */
+    @Test
+    @Ignore
+    public void testGribImage2() throws MalformedURLException, DataSourceException, IOException {
+        // Selection of the input file
+        final File testURL = TestData.file(this, null);
+        // Testing the 2 points
+        testGribFile(testURL, new Point2D.Double(-56, 14), new Point2D.Double(-56, 2));
+    }
+
+    /**
+     * Private method for checking if the selected point are nodata or not. This ensures that the images are flipped vertically only if needed. If the
+     * image is not correctly flipped then, validpoint and nodatapoint should be inverted.
+     *
+     * @param inputFile
+     * @param validPoint
+     * @param nodataPoint
+     * @throws MalformedURLException
+     * @throws DataSourceException
+     * @throws IOException
+     */
+    private void testGribFile(final File inputFile, Point2D validPoint, Point2D nodataPoint)
+            throws MalformedURLException, DataSourceException, IOException {
+        // Get format
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(
+                inputFile.toURI().toURL(), null);
+        final NetCDFReader reader = new NetCDFReader(inputFile, null);
+        assertNotNull(format);
+        assertNotNull(reader);
+        try {
+            // Selection of all the Coverage names
+            String[] names = reader.getGridCoverageNames();
+            assertNotNull(names);
+            // Selections of one Coverage
+            GridCoverage2D grid = reader.read(names[1], null);
+            assertNotNull(grid);
+            // Selection of one coordinate from the Coverage and check if the
+            // value is not a NaN
+            float[] result = new float[1];
+            grid.evaluate(validPoint, result);
+            assertTrue(!Float.isNaN(result[0]));
+            // Selection of one coordinate from the Coverage and check if the
+            // value is NaN
+            float[] result_2 = new float[1];
+            grid.evaluate(nodataPoint, result_2);
+            assertTrue(Float.isNaN(result_2[0]));
         } finally {
             if (reader != null) {
                 try {

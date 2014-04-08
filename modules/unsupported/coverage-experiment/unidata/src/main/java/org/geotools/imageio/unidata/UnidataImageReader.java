@@ -142,6 +142,9 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
 
     ReferencedEnvelope boundingBox;
 
+    /** Boolean indicating if the input file needs flipping or not*/
+	private boolean needsFlipping = false;
+
     public UnidataImageReader( ImageReaderSpi originatingProvider ) {
         super(originatingProvider);
     }
@@ -529,6 +532,11 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
                         lat[0] = min - (incr / 2d);
                         lat[1] = max + (incr / 2d);
                     }
+                    if(lat[1] > lat[0]){
+                    	needsFlipping  = true;
+                    }else{
+                    	needsFlipping = false;
+                    }
                     set++;
                     break;
                 case GeoX:
@@ -672,7 +680,12 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
         final Rectangle srcRegion = new Rectangle();
         final Rectangle destRegion = new Rectangle();
         computeRegions(param, width, height, null, srcRegion, destRegion);
-        flipVertically(param, height, srcRegion);
+
+        // Flipping is needed only when the input latitude coordinate is ordered
+        // from min to max
+        if(needsFlipping){
+        	flipVertically(param, height, srcRegion);
+        }
         int destWidth = destRegion.x + destRegion.width;
         int destHeight = destRegion.y + destRegion.height;
     

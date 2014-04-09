@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReader;
 
 import org.geotools.imageio.unidata.UnidataImageReaderSpi;
+import org.geotools.imageio.unidata.utilities.UnidataUtilities;
 import org.geotools.util.logging.Logging;
 
 import ucar.nc2.dataset.NetcdfDataset;
@@ -43,11 +44,11 @@ public class NetCDFImageReaderSpi extends UnidataImageReaderSpi {
     /** Default Logger * */
     private static final Logger LOGGER = Logging.getLogger(NetCDFImageReaderSpi.class);
 
-    static final String[] suffixes = { "nc", "NC" };
+    static final String[] suffixes;
 
-    static final String[] formatNames = { "netcdf", "NetCDF" };
+    static final String[] formatNames;
 
-    static final String[] MIMETypes = { "application/x-netcdf", "image/netcdf", "image/x-netcdf", "image/x-nc" };
+    static final String[] MIMETypes;
 
     static final String version = "1.0";
 
@@ -71,6 +72,20 @@ public class NetCDFImageReaderSpi extends UnidataImageReaderSpi {
     static final String[] extraImageMetadataFormatClassNames = { null };
  
 
+    static{
+        // If Grib Library is available, then the GRIB extension must be added to support
+        if(UnidataUtilities.isGribAvailable()){
+            suffixes  = new String[]{ "nc", "NC", "grib", "grb", "grb2" };
+            formatNames = new String[]{ "netcdf", "NetCDF", "grib", "grib2", "GRIB", "GRIB2" };
+            MIMETypes = new String[]{ "application/x-netcdf", "image/netcdf", "image/x-netcdf", "image/x-nc" , "application/octet-stream" };
+        }else{
+            suffixes  = new String[]{ "nc", "NC" };
+            formatNames = new String[]{ "netcdf", "NetCDF" };
+            MIMETypes = new String[]{ "application/x-netcdf", "image/netcdf", "image/x-netcdf", "image/x-nc" };
+        }
+    }
+
+    
     /** Default Constructor * */
     public NetCDFImageReaderSpi() {
         super(

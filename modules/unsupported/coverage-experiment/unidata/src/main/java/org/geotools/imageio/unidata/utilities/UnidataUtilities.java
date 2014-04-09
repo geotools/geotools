@@ -1,13 +1,13 @@
 /*
- *    ImageI/O-Ext - OpenSource Java Image translation Library
- *    http://www.geo-solutions.it/
- *    http://java.net/projects/imageio-ext/
- *    (C) 2007 - 2009, GeoSolutions
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
- *    either version 3 of the License, or (at your option) any later version.
+ *    version 2.1 of the License.
  *
  *    This library is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -65,6 +65,9 @@ public class UnidataUtilities {
     static {
         NetcdfDataset.setDefaultEnhanceMode(EnumSet.of(Enhance.CoordSystems));
    }
+    
+    /** Boolean indicating if GRIB library is available*/
+    private static boolean IS_GRIB_AVAILABLE;
 
     public static final String EXTERNAL_DATA_DIR;
 
@@ -186,6 +189,16 @@ public class UnidataUtilities {
             }
         }
         EXTERNAL_DATA_DIR = finalDir;
+        
+        try {
+            Class.forName("ucar.nc2.grib.GribIosp");
+            IS_GRIB_AVAILABLE = true;
+        } catch (ClassNotFoundException cnf) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("No Grib library found on classpath. GRIB will not be supported");
+            }
+            IS_GRIB_AVAILABLE = false;
+        }
     }
 
     public static boolean isValid(File file) {
@@ -631,5 +644,12 @@ public class UnidataUtilities {
             indexSchema = null;
         }
         return indexSchema;
+    }
+
+    /**
+     * @return true if the GRIB library is available
+     */
+    public static boolean isGribAvailable() {
+        return IS_GRIB_AVAILABLE;
     }
 }

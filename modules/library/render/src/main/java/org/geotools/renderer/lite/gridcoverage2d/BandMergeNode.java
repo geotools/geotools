@@ -69,7 +69,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements
 	 * (non-Javadoc)
 	 * @see org.geotools.renderer.lite.gridcoverage2d.BaseCoverageProcessingNode#dispose(boolean)
 	 */
-	public synchronized void dispose(boolean force) {
+	public void dispose(boolean force) {
 		///////////////////////////////////////////////////////////////////////
 		//
 		// Dispose local intermediate operations
@@ -110,7 +110,6 @@ class BandMergeNode extends BaseCoverageProcessingNode implements
 	}
 
 	protected GridCoverage execute() {
-		assert Thread.holdsLock(this);
 		assert getSources().size() <= 3;
 
 		// /////////////////////////////////////////////////////////////////////

@@ -110,7 +110,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
 	 * Visits the provided {@link ColorMapTransform} and build up a {@link Domain1D}
 	 * for later creation of a palette rendering for this coverage.
 	 */
-	public synchronized void visit(ColorMap colorMap) {
+	public void visit(ColorMap colorMap) {
 		// //
 		//
 		// This allows this node to work in store-and-forward way in case we had
@@ -327,7 +327,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
      * @return       the extendedColors
      * @uml.property  name="extendedColors"
      */
-	public synchronized boolean isExtendedColors() {
+	public boolean isExtendedColors() {
 		return extendedColors;
 	}
 

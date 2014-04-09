@@ -17,7 +17,6 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.image.DataBuffer;
-import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 
@@ -56,7 +55,7 @@ public class RasterSymbolizerHelper extends
 	 * not be drawable.
 	 * @return {@link GridCoverage2D} the result of this operation
 	 */
-	public synchronized GridCoverage2D execute() {
+	public GridCoverage2D execute() {
 		///////////////////////////////////////////////////////////////////////
 		//
 		// We get the geophysics view of this coverage and we check if we give away 
@@ -140,7 +139,7 @@ public class RasterSymbolizerHelper extends
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.styling.RasterSymbolizer)
 	 */
-	public synchronized void visit(RasterSymbolizer rs) {
+	public void visit(RasterSymbolizer rs) {
 	        
 		ColorMapUtilities.ensureNonNull("RasterSymbolizer", rs);
 

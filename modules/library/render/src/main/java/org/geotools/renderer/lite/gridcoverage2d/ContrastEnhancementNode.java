@@ -136,7 +136,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.styling.ContrastEnhancement)
 	 */
-	public synchronized void visit(final ContrastEnhancement ce) {
+	public void visit(final ContrastEnhancement ce) {
 		// /////////////////////////////////////////////////////////////////////
 		//
 		// Do nothing if we don't have a valid ContrastEnhancement element. This
@@ -211,7 +211,6 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 	 */
     @SuppressWarnings("unchecked")
 	protected GridCoverage2D execute() {
-		assert Thread.holdsLock(this);
 		final Hints hints = getHints();
 
 		// /////////////////////////////////////////////////////////////////////

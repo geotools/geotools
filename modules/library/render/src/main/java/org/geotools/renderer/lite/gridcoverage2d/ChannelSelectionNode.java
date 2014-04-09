@@ -80,7 +80,7 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.styling.ChannelSelection)
 	 */
-	public synchronized void visit(final ChannelSelection cs) {
+	public void visit(final ChannelSelection cs) {
 		// /////////////////////////////////////////////////////////////////////
 		//
 		// Ensure that the ChannelSelection is not null and that the source is

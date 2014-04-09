@@ -21,6 +21,7 @@ import java.util.HashMap;
 
 import junit.framework.TestCase;
 
+import junit.framework.TestResult;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 
@@ -40,6 +41,19 @@ public class SpatiaLiteDataStoreFactoryTest extends TestCase {
         params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");
         params.put(JDBCDataStoreFactory.DATABASE.key, "target/geotools");
         params.put(JDBCDataStoreFactory.DBTYPE.key, "spatialite");
+    }
+
+    @Override
+    public void run(TestResult result) {
+        // only run if spatialite can load
+        try {
+            if (new SpatiaLiteDataStoreFactory().isAvailable()) {
+                super.run(result);
+            }
+        }
+        catch(Throwable t) {
+            t.printStackTrace();
+        }
     }
 
     public void testCanProcess() throws Exception {

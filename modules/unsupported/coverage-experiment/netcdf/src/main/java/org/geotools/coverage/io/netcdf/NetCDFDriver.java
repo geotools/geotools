@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -28,6 +28,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +43,7 @@ import org.geotools.coverage.io.FileDriver;
 import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.factory.Hints;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
+import org.geotools.imageio.unidata.utilities.UnidataUtilities;
 import org.opengis.util.ProgressListener;
 
 /**
@@ -49,6 +51,9 @@ import org.opengis.util.ProgressListener;
  * 
  */
 public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Driver {
+
+    private static final List<String> EXTENSIONS = UnidataUtilities.isGribAvailable() ? Arrays
+            .asList("nc", "grb", "grb2", "grib") : Arrays.asList("nc");
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
@@ -78,7 +83,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
                 "NetCDF Coverage Format", 
                 "NetCDF Coverage Format", 
                 null, 
-                Arrays.asList("nc"),
+                EXTENSIONS,
                 EnumSet.of(DriverCapabilities.CONNECT));
     }
 

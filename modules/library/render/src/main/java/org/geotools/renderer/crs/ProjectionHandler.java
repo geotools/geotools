@@ -60,8 +60,10 @@ public class ProjectionHandler {
 
     ReferencedEnvelope renderingEnvelope;
     
-    final ReferencedEnvelope validArea;
-
+    final Envelope validAreaBounds;
+    
+    final Geometry validArea;
+    
     final CoordinateReferenceSystem sourceCRS;
 
     final CoordinateReferenceSystem targetCRS;
@@ -75,11 +77,37 @@ public class ProjectionHandler {
      * 
      * @throws FactoryException
      */
-    public ProjectionHandler(CoordinateReferenceSystem sourceCRS, ReferencedEnvelope validArea, ReferencedEnvelope renderingEnvelope) throws FactoryException {
+    public ProjectionHandler(CoordinateReferenceSystem sourceCRS, Envelope validAreaBounds, ReferencedEnvelope renderingEnvelope) throws FactoryException {
         this.renderingEnvelope = renderingEnvelope;
         this.sourceCRS = sourceCRS;
         this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
-        this.validArea = validArea;
+        this.validAreaBounds = validAreaBounds;
+        this.validArea = null;
+    }
+    
+    /**
+     * Initializes a projection handler 
+     * 
+     * @param sourceCRS The source CRS
+     * @param validArea The valid area (used to cut geometries that go beyond it)
+     * @param renderingEnvelope The target rendering area and target CRS
+     * 
+     * @throws FactoryException
+     */
+    public ProjectionHandler(CoordinateReferenceSystem sourceCRS, Geometry validArea, ReferencedEnvelope renderingEnvelope) throws FactoryException {
+        if(validArea.isRectangle()) {
+            this.renderingEnvelope = renderingEnvelope;
+            this.sourceCRS = sourceCRS;
+            this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
+            this.validAreaBounds = validArea.getEnvelopeInternal();
+            this.validArea = null;
+        } else {
+            this.renderingEnvelope = renderingEnvelope;
+            this.sourceCRS = sourceCRS;
+            this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
+            this.validAreaBounds = validArea.getEnvelopeInternal();
+            this.validArea = validArea;
+        }
     }
 
     /**
@@ -212,7 +240,7 @@ public class ProjectionHandler {
      */
     public boolean requiresProcessing(Geometry geometry) {
         // if there is no valid area, no cutting is required
-        if(validArea == null)
+        if(validAreaBounds == null)
             return false;
         
         // if not reprojection is going on, we don't need to cut
@@ -229,7 +257,7 @@ public class ProjectionHandler {
      */
     public Geometry preProcess(Geometry geometry) throws TransformException, FactoryException {
         // if there is no valid area, no cutting is required either
-        if(validArea == null)
+        if(validAreaBounds == null)
             return geometry;
         
         // if not reprojection is going on, we don't need to cut
@@ -237,45 +265,78 @@ public class ProjectionHandler {
         if (geometryCRS == null || CRS.equalsIgnoreMetadata(geometryCRS, renderingEnvelope.getCoordinateReferenceSystem())) {
             return geometry;
         }
-
-        // if the geometry is within the valid area for this projection
-        // just skip expensive cutting
-        ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), geometryCRS);
-        ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
-        if (validArea.contains((Envelope) geWGS84)) {
-            return geometry;
-        }
-
-        // we need to cut, first thing, we intersect the geometry envelope
-        // and the valid area in WGS84, which is a neutral, everything can
-        // be turned into it, and then turn back the intersection into
-        // the origin SRS
-        ReferencedEnvelope envIntWgs84 = new ReferencedEnvelope(validArea.intersection(geWGS84), WGS84);
         
-        // if the intersection is empty the geometry is completely outside of the valid area, skip it
-        if(envIntWgs84.isEmpty())
-            return null;
-            
-        ReferencedEnvelope envInt = envIntWgs84.transform(geometryCRS, true);
+        Geometry mask;
+        // fast path for the rectangular case, more complex one for the
+        // non rectangular one
+        if(validArea == null) {
+            // if the geometry is within the valid area for this projection
+            // just skip expensive cutting
+            ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), geometryCRS);
+            ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
+            if (validAreaBounds.contains((Envelope) geWGS84)) {
+                return geometry;
+            }
 
-        // turn the envelope into a geometry and perform the intersection
-        Polygon envelopeGeometry = JTS.toGeometry((Envelope) envInt);
+            // we need to cut, first thing, we intersect the geometry envelope
+            // and the valid area in WGS84, which is a neutral, everything can
+            // be turned into it, and then turn back the intersection into
+            // the origin SRS
+            ReferencedEnvelope envIntWgs84 = new ReferencedEnvelope(validAreaBounds.intersection(geWGS84), WGS84);
+            
+            // if the intersection is empty the geometry is completely outside of the valid area, skip it
+            if(envIntWgs84.isEmpty()) {
+                return null;
+            }
+                
+            ReferencedEnvelope envInt = envIntWgs84.transform(geometryCRS, true);
+            mask = JTS.toGeometry((Envelope) envInt);
+        } else {
+            // if the geometry is within the valid area for this projection
+            // just skip expensive cutting
+            ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), geometryCRS);
+            ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
+
+            // we need to cut, first thing, we intersect the geometry envelope
+            // and the valid area in WGS84, which is a neutral, everything can
+            // be turned into it, and then turn back the intersection into
+            // the origin SRS
+            ReferencedEnvelope envIntWgs84 = new ReferencedEnvelope(validAreaBounds.intersection(geWGS84), WGS84);
+            
+            // if the intersection is empty the geometry is completely outside of the valid area, skip it
+            if(envIntWgs84.isEmpty()) {
+                return null;
+            } 
+            
+            Polygon polyIntWgs84 = JTS.toGeometry(envIntWgs84);
+            Geometry maskWgs84 = intersect(validArea, polyIntWgs84);
+            if(maskWgs84 == null || maskWgs84.isEmpty()) {
+                return null;
+            }
+            mask = JTS.transform(maskWgs84, CRS.findMathTransform(WGS84, geometryCRS));
+        }
+        
+        return intersect(geometry, mask);
+    }
+
+    private Geometry intersect(Geometry geometry, Geometry mask) {
         Geometry result;
         try {
-            result = geometry.intersection(envelopeGeometry);
+            result = geometry.intersection(mask);
         } catch(Exception e1) {
             try {
-                result = EnhancedPrecisionOp.intersection(geometry, envelopeGeometry);
+                result = EnhancedPrecisionOp.intersection(geometry, mask);
             } catch(Exception e2) {
                 result = geometry;
             }
         }
         
         // handle in special way empty intersections
-        if (result instanceof GeometryCollection && ((GeometryCollection) result).isEmpty())
+        if (result instanceof GeometryCollection && ((GeometryCollection) result).isEmpty()) {
             return null;
-        else
+        } else {
             return result;
+        }
     }
     
     /**

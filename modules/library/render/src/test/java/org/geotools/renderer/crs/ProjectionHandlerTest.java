@@ -100,6 +100,33 @@ public class ProjectionHandlerTest {
         assertTrue(-90 < va.getMinY());
         assertTrue(90.0 > va.getMaxY());
     }
+    
+    @Test
+    public void testValidAreaLambertAzimuthalEqualArea() throws Exception {
+        // check valid area for the north case
+        ReferencedEnvelope wgs84north = new ReferencedEnvelope(-120, 0, 45, 90, WGS84);
+        ReferencedEnvelope laeNorth = wgs84north.transform(CRS.decode("EPSG:3408"), true);
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(laeNorth, WGS84, true);
+        ReferencedEnvelope va = handler.validArea;
+        assertNotNull(va);
+        assertEquals(WGS84, va.getCoordinateReferenceSystem());
+        assertEquals(-180.0, va.getMinX(), 0d);
+        assertEquals(180.0, va.getMaxX(), 0d);
+        assertEquals(0, va.getMinY(), 0d);
+        assertEquals(90, va.getMaxY(), 0d);
+        
+        // check the south case
+        ReferencedEnvelope wgs84South = new ReferencedEnvelope(-120, 0, -90, -45, WGS84);
+        ReferencedEnvelope laeSouth = wgs84South.transform(CRS.decode("EPSG:3409"), true);
+        handler = ProjectionHandlerFinder.getHandler(laeSouth, WGS84, true);
+        va = handler.validArea;
+        assertNotNull(va);
+        assertEquals(WGS84, va.getCoordinateReferenceSystem());
+        assertEquals(-180.0, va.getMinX(), 0d);
+        assertEquals(180.0, va.getMaxX(), 0d);
+        assertEquals(-90, va.getMinY(), 0d);
+        assertEquals(0, va.getMaxY(), 0d);
+    }
 
     @Test
     public void testQueryWrappingMercatorWorld() throws Exception {

@@ -792,19 +792,24 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
         
         Projection conversion = projectedCRS.getConversionFromBase();
         MathTransform mt = conversion.getMathTransform();
+        return unrollProjection(mt);
+    }
+
+    private static MapProjection unrollProjection(MathTransform mt) {
         if(mt instanceof MapProjection) {
             return (MapProjection) mt;
         } else if(mt instanceof ConcatenatedTransform) {
             ConcatenatedTransform ct = (ConcatenatedTransform) mt;
-            MathTransform mt1 = ct.transform1;
-            MathTransform mt2 = ct.transform2;
-            if(mt2 instanceof MapProjection && mt1 instanceof AffineTransform2D) {
-                return (MapProjection) mt2;
+            MapProjection result = unrollProjection(ct.transform1);
+            if(result == null) {
+                result = unrollProjection(ct.transform2);
             }
+            return result;
+        } else {
+            return null;
         }
-        
-        return null;
     }
+
 
     /**
      * Returns the first vertical coordinate reference system found in a the given CRS,

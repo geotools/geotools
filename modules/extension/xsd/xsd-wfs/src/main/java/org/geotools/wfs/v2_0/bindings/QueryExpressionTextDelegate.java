@@ -74,7 +74,9 @@ public class QueryExpressionTextDelegate extends CopyingHandler implements Parse
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (QueryExpressionText.getLocalPart().equals(localName)) {
-            result.setValue(buffer.toString());
+            if (buffer != null) {
+                result.setValue(buffer.toString());
+            }
         }
         else {
             super.endElement(uri, localName, qName);

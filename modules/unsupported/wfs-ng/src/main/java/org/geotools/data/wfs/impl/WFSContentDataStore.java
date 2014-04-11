@@ -14,6 +14,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import net.opengis.wfs20.ListStoredQueriesResponseType;
+import net.opengis.wfs20.StoredQueryDescriptionType;
 import net.opengis.wfs20.StoredQueryListItemType;
 
 import org.geotools.data.store.ContentDataStore;
@@ -39,21 +40,22 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 public class WFSContentDataStore extends ContentDataStore {
 
-    private static final String STORED_QUERY_LOCALNAME_PREFIX = "!StoredQuery_";
+    private static final String STORED_QUERY_LOCALNAME_PREFIX = "StoredQuery_";
 
 	private final WFSClient client;
 
     private final Map<Name, QName> names;
 
     private final Map<QName, FeatureType> remoteFeatureTypes;
-  
+    private final Map<String, StoredQueryDescriptionType> storedQueryDescriptionTypes;
+    
     private ListStoredQueriesResponseType remoteStoredQueries;
     
     public WFSContentDataStore(final WFSClient client) {
         this.client = client;
         this.names = new ConcurrentHashMap<Name, QName>();
         this.remoteFeatureTypes = new ConcurrentHashMap<QName, FeatureType>();
-
+        this.storedQueryDescriptionTypes = new ConcurrentHashMap<String, StoredQueryDescriptionType>();
         // default factories
         setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
         setGeometryFactory(new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY));
@@ -93,14 +95,16 @@ public class WFSContentDataStore extends ContentDataStore {
             this.names.put(typeName, remoteTypeName);
         }
         
-        if (client.getInfo().getVersion().equals("2.0.0")) {
-        	
-        	for (StoredQueryListItemType query : getStoredQueryList().getStoredQuery()) {
-
+        if (client.supportsStoredQueries()) {
+        	ListStoredQueriesResponseType list = getStoredQueryList();
+        	for (StoredQueryListItemType query : list.getStoredQuery()) {
+        		
         		String localTypeName = query.getId();
-	        	QName remoteTypeName = new QName(namespaceURI, STORED_QUERY_LOCALNAME_PREFIX + localTypeName);
-	        	
-	        	Name typeName = new NameImpl(namespaceURI, localTypeName);
+        		
+        		// No plan on what to do if there are multiple
+        		QName remoteTypeName = query.getReturnFeatureType().get(0);
+        		
+	        	Name typeName = new NameImpl(namespaceURI, STORED_QUERY_LOCALNAME_PREFIX + localTypeName);
 	        	names.add(typeName);
 	        	this.names.put(typeName, remoteTypeName);
         	}
@@ -118,16 +122,25 @@ public class WFSContentDataStore extends ContentDataStore {
     @Override
     protected ContentFeatureSource createFeatureSource(final ContentEntry entry) throws IOException {
         ContentFeatureSource source;
-
-        source = new WFSContentFeatureSource(entry, client);
-
+        
         final QName remoteTypeName = getRemoteTypeName(entry.getName());
-        // TODO: revisit. Transactions disabled by now until resolving the strategy to use as much
-        // from ContentDataStore and related classes as possible
-        // if (client.supportsTransaction(remoteTypeName)) {
-        // source = new WFSContentFeatureStore((WFSContentFeatureSource) source);
-        // }
+        
+        if (!entry.getName().getLocalPart().startsWith(STORED_QUERY_LOCALNAME_PREFIX)) {
+            source = new WFSContentFeatureSource(entry, client);
 
+            // TODO: revisit. Transactions disabled by now until resolving the strategy to use as much
+            // from ContentDataStore and related classes as possible
+            // if (client.supportsTransaction(remoteTypeName)) {
+            // source = new WFSContentFeatureStore((WFSContentFeatureSource) source);
+            // }
+            
+        } else {
+        	String storedQueryId = entry.getName().getLocalPart().substring(STORED_QUERY_LOCALNAME_PREFIX.length());
+        	StoredQueryDescriptionType desc = getStoredQueryDescriptionType(storedQueryId);
+        	
+        	source = new WFSStoredQueryContentFeatureSource(entry, client, desc);
+        }
+        
         return source;
     }
 
@@ -168,14 +181,14 @@ public class WFSContentDataStore extends ContentDataStore {
         synchronized (lockObj) {
             remoteFeatureType = remoteFeatureTypes.get(remoteTypeName);
             if (remoteFeatureType == null) {
+            	
+        		DescribeFeatureTypeRequest request = client.createDescribeFeatureTypeRequest();
+        		request.setTypeName(remoteTypeName);
 
-            	if (remoteTypeName.getLocalPart().startsWith(STORED_QUERY_LOCALNAME_PREFIX)) {
-            		String storedQueryId = remoteTypeName.getLocalPart().substring(STORED_QUERY_LOCALNAME_PREFIX.length());
-            		remoteFeatureType = resolveStoredQueryType(storedQueryId);
-            	} else {
-            		remoteFeatureType = resolveSimpleFeatureType(remoteTypeName);
-            	}
+        		DescribeFeatureTypeResponse response = client.issueRequest(request);
 
+        		remoteFeatureType = response.getFeatureType();
+        		
                 remoteFeatureTypes.put(remoteTypeName, remoteFeatureType);
             }
         }
@@ -183,36 +196,40 @@ public class WFSContentDataStore extends ContentDataStore {
         return remoteFeatureType;
     }
 
-	private FeatureType resolveStoredQueryType(String storedQueryId) throws IOException {
-		DescribeStoredQueriesRequest request = client.createDescribeStoredQueriesRequest();
+    // Here for possible future use
+	private StoredQueryDescriptionType getStoredQueryDescriptionType(String storedQueryId) throws IOException {
+		
+		StoredQueryDescriptionType desc = null;
+		
+        final String lockObj = storedQueryId.intern();
 
-		URI id;
-		try {
-			id = new URI(storedQueryId);
-		} catch(URISyntaxException use) {
-			throw new IOException(use);
-		}
+        synchronized (lockObj) {
+            desc = storedQueryDescriptionTypes.get(storedQueryId);
+            if (desc == null) {
+            	
 
-		request.getStoredQueryIds().add(id);
+        		DescribeStoredQueriesRequest request = client.createDescribeStoredQueriesRequest();
 
-		DescribeStoredQueriesResponse response = client.issueRequest(request);
+        		URI id;
+        		try {
+        			id = new URI(storedQueryId);
+        		} catch(URISyntaxException use) {
+        			throw new IOException(use);
+        		}
 
-		List<FeatureType> featureTypes = response.getFeatureTypes(storedQueryId);
+        		request.getStoredQueryIds().add(id);
 
-		// TODO: a selection mechanism would be nice...
-		return featureTypes.get(0);
-	}
+        		DescribeStoredQueriesResponse response = client.issueRequest(request);
 
-	private FeatureType resolveSimpleFeatureType(final QName remoteTypeName)
-	        throws IOException {
-		FeatureType remoteFeatureType;
-		DescribeFeatureTypeRequest request = client.createDescribeFeatureTypeRequest();
-		request.setTypeName(remoteTypeName);
+        		desc = response.getStoredQueryDescriptions().get(0);
+        		storedQueryDescriptionTypes.put(storedQueryId, desc);
+            }
+        }
 
-		DescribeFeatureTypeResponse response = client.issueRequest(request);
-
-		remoteFeatureType = response.getFeatureType();
-		return remoteFeatureType;
+        return desc;
+        
+        
+		
 	}
 
     public SimpleFeatureType getRemoteSimpleFeatureType(final QName remoteTypeName)

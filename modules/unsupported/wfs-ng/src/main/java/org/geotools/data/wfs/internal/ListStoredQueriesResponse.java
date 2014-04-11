@@ -89,10 +89,6 @@ public class ListStoredQueriesResponse extends WFSResponse {
         return (ListStoredQueriesResponseType)parsed;
 	}
 
-	public List<String> getStoredQueries() {
-		return Collections.singletonList("mockito!");
-	}
-
 	public ListStoredQueriesResponseType getListStoredQueriesResponse() {
 		return listStoredQueriesResponse;
 	}

@@ -307,6 +307,11 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     	return new ListStoredQueriesRequest(config, getStrategy());
     }
     
+    public DescribeStoredQueriesRequest createDescribeStoredQueriesRequest() {
+    	return new DescribeStoredQueriesRequest(config, getStrategy());
+    }
+    
+    
     public DescribeFeatureTypeResponse issueRequest(DescribeFeatureTypeRequest request)
             throws IOException {
 

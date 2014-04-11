@@ -83,7 +83,7 @@ public class ListStoredQueriesResponse extends WFSResponse {
         try {
             parsed = parser.parse();
         } catch (Exception e) {
-            throw new DataSourceException("Exception parsing WFS capabilities", e);
+            throw new DataSourceException("Exception parsing ListStoredQueriesResponse", e);
         }
         
         return (ListStoredQueriesResponseType)parsed;

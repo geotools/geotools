@@ -180,7 +180,7 @@ public class FESConfiguration extends Configuration {
 //        container.registerComponentImplementation(FES.UpperBoundaryType,UpperBoundaryTypeBinding.class);
 //        container.registerComponentImplementation(FES.VersionActionTokens,VersionActionTokensBinding.class);
         container.registerComponentImplementation(FES.VersionType,VersionTypeBinding.class);
-        container.registerComponentImplementation(FES.Filter_Capabilities,Filter_CapabilitiesTypeBinding.class);
+        container.registerComponentImplementation(FES._Filter_Capabilities,Filter_CapabilitiesTypeBinding.class);
         container.registerComponentImplementation(FES._LogicalOperators,_LogicalOperatorsBinding.class);
         container.registerComponentImplementation(FES.GeometryOperandsType_GeometryOperand,GeometryOperandsType_GeometryOperandBinding.class);
 //        container.registerComponentImplementation(FES.TemporalOperandsType_TemporalOperand,TemporalOperandsType_TemporalOperandBinding.class);

@@ -218,6 +218,11 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     public boolean canSort() {
         return true;
     }
+    
+    public boolean supportsStoredQueries() {
+    	return getStrategy().supportsOperation(WFSOperationType.LIST_STORED_QUERIES, HttpMethod.POST) ||
+    		getStrategy().supportsOperation(WFSOperationType.LIST_STORED_QUERIES, HttpMethod.GET);
+    }
 
     public ReferencedEnvelope getBounds(QName typeName, CoordinateReferenceSystem targetCrs) {
 

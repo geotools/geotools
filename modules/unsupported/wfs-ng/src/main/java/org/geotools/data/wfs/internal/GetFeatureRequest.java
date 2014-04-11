@@ -46,7 +46,10 @@ public class GetFeatureRequest extends WFSRequest {
 
     private FeatureType queryType;
 
-    private Filter unsupportedFilter;;
+    private Filter unsupportedFilter;
+    
+    private boolean storedQuery;
+    private String storedQueryId;
 
     GetFeatureRequest(WFSConfig config, WFSStrategy strategy) {
         super(GET_FEATURE, config, strategy);
@@ -159,4 +162,20 @@ public class GetFeatureRequest extends WFSRequest {
     public Filter getUnsupportedFilter() {
         return unsupportedFilter == null ? Filter.INCLUDE : unsupportedFilter;
     }
+    
+    public boolean isStoredQuery() {
+		return storedQuery;
+	}
+    
+    public void setStoredQuery(boolean storedQuery) {
+		this.storedQuery = storedQuery;
+	}
+    
+    public String getStoredQueryId() {
+		return storedQueryId;
+	}
+    
+    public void setStoredQueryId(String storedQueryId) {
+		this.storedQueryId = storedQueryId;
+	}
 }

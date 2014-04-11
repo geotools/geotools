@@ -37,6 +37,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import net.opengis.fes20.AbstractQueryExpressionType;
 import net.opengis.fes20.FilterCapabilitiesType;
 import net.opengis.fes20.GeometryOperandType;
 import net.opengis.fes20.ResourceIdentifierType;
@@ -52,8 +53,10 @@ import net.opengis.wfs20.FeatureTypeListType;
 import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.GetFeatureType;
 import net.opengis.wfs20.ListStoredQueriesType;
+import net.opengis.wfs20.ParameterType;
 import net.opengis.wfs20.QueryType;
 import net.opengis.wfs20.ResultTypeType;
+import net.opengis.wfs20.StoredQueryType;
 import net.opengis.wfs20.WFSCapabilitiesType;
 import net.opengis.wfs20.Wfs20Factory;
 
@@ -334,20 +337,21 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 		return geometryOperands;
 	}
 
-	private IdCapabilities createIdCapabilities(
-			FilterCapabilitiesType filterCapabilities) {
+	private IdCapabilities createIdCapabilities(FilterCapabilitiesType filterCapabilities) {
 		IdCapabilitiesImpl idCapabilities = new IdCapabilitiesImpl();
         
-        for (ResourceIdentifierType rit : filterCapabilities.getIdCapabilities().getResourceIdentifier()) {
-        	QName name = rit.getName();
-        	if (FES.ResourceId.equals(name)) {
-        		idCapabilities.setFID(true);
-        	} else if (name.getNamespaceURI().startsWith("http://www.opengis.net/cat/csw/") &&
-        			name.getLocalPart().equals("RecordId")) {
-        		// FES 2.0 is very unclear about this. See 09-026r1 FES 2.0 7.14.3
-        		idCapabilities.setEid(true);
-        	}
-        }
+		if (filterCapabilities.getIdCapabilities() != null) {
+	        for (ResourceIdentifierType rit : filterCapabilities.getIdCapabilities().getResourceIdentifier()) {
+	        	QName name = rit.getName();
+	        	if (FES.ResourceId.equals(name)) {
+	        		idCapabilities.setFID(true);
+	        	} else if (name.getNamespaceURI().startsWith("http://www.opengis.net/cat/csw/") &&
+	        			name.getLocalPart().equals("RecordId")) {
+	        		// FES 2.0 is very unclear about this. See 09-026r1 FES 2.0 7.14.3
+	        		idCapabilities.setEid(true);
+	        	}
+	        }
+		}
 		return idCapabilities;
 	}
 
@@ -395,55 +399,84 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         getFeature.setResultType(ResultType.RESULTS == resultType ? ResultTypeType.RESULTS
                 : ResultTypeType.HITS);
 
-        QueryType wfsQuery = factory.createQueryType();
-        wfsQuery.getTypeNames().add(typeName);
 
-        // Lifted from 1.0 / 1.1
-        final Filter supportedFilter;
-        final Filter unsupportedFilter;
-        {
-            final Filter filter = query.getFilter();
-            Filter[] splitFilters = splitFilters(typeName, filter);
-            supportedFilter = splitFilters[0];
-            unsupportedFilter = splitFilters[1];
-        }
-
-        query.setUnsupportedFilter(unsupportedFilter);
-
-        if (!Filter.INCLUDE.equals(supportedFilter)) {
-            wfsQuery.setFilter(supportedFilter);
-        }
-
-        String srsName = query.getSrsName();
-        if (null == srsName) {
-            srsName = featureTypeInfo.getDefaultSRS();
-        }
-        try {
-            wfsQuery.setSrsName(new URI(srsName));
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("Can't create a URI from the query CRS: " + srsName, e);
-        }
-
-        String[] propertyNames = query.getPropertyNames();
-        boolean retrieveAllProperties = propertyNames == null;
-        if (!retrieveAllProperties) {
-            List<QName> propertyName = wfsQuery.getPropertyNames();
-            for (String propName : propertyNames) {
-                propertyName.add(new QName(featureTypeInfo.getQName().getNamespaceURI(), propName));
-            }
-        }
+        AbstractQueryExpressionType abstractQuery;
         
-        System.err.println("SortBy is not implemented in StrictWFS_2_0_Strategy");
-        /*
-        SortBy[] sortByList = query.getSortBy();
-        if (sortByList != null) {
-            for (SortBy sortBy : sortByList) {
-                wfsQuery.getSortBy().add(sortBy);
-            }
+       
+        if (query.isStoredQuery()) {
+        	
+	        StoredQueryType storedQuery = factory.createStoredQueryType();
+	
+	        // By default, none of the filter may be done in the query
+	        // TODO: BBox mapping needs to be done here or somewhere
+	        query.setUnsupportedFilter(query.getFilter());
+	        
+	        // Mock: get this from the appropriate place, somewhere, somehow
+	        //storedQuery.setId("fmi::observations::lightning::simple");
+	    
+	        storedQuery.setId(query.getStoredQueryId());
+	        
+	        ParameterType param = factory.createParameterType();
+	        param.setName("place");
+	        param.setValue("Helsinki");
+	        storedQuery.getParameter().add(param);
+	        
+	        abstractQuery = storedQuery;
+	        
+        } else {
+	        QueryType wfsQuery = factory.createQueryType();
+	        wfsQuery.getTypeNames().add(typeName);
+	
+	        // Lifted from 1.0 / 1.1
+	        final Filter supportedFilter;
+	        final Filter unsupportedFilter;
+	        {
+	            final Filter filter = query.getFilter();
+	            Filter[] splitFilters = splitFilters(typeName, filter);
+	            supportedFilter = splitFilters[0];
+	            unsupportedFilter = splitFilters[1];
+	        }
+	
+	        query.setUnsupportedFilter(unsupportedFilter);
+	
+	        if (!Filter.INCLUDE.equals(supportedFilter)) {
+	            wfsQuery.setFilter(supportedFilter);
+	        }
+	
+	        String srsName = query.getSrsName();
+	        if (null == srsName) {
+	            srsName = featureTypeInfo.getDefaultSRS();
+	        }
+	        try {
+	            wfsQuery.setSrsName(new URI(srsName));
+	        } catch (URISyntaxException e) {
+	            throw new RuntimeException("Can't create a URI from the query CRS: " + srsName, e);
+	        }
+	
+	        String[] propertyNames = query.getPropertyNames();
+	        boolean retrieveAllProperties = propertyNames == null;
+	        if (!retrieveAllProperties) {
+	            List<QName> propertyName = wfsQuery.getPropertyNames();
+	            for (String propName : propertyNames) {
+	            	// These get encoded into <fes:AbstractProjectionClause/> elements. Something's missing
+	                propertyName.add(new QName(featureTypeInfo.getQName().getNamespaceURI(), propName));
+	            }
+	        }
+	        
+	        
+	        /*
+	         * System.err.println("SortBy is not yet implemented in StrictWFS_2_0_Strategy");
+	        SortBy[] sortByList = query.getSortBy();
+	        if (sortByList != null) {
+	            for (SortBy sortBy : sortByList) {
+	                wfsQuery.getSortBy().add(sortBy);
+	            }
+	        }
+	        */
+        	abstractQuery = wfsQuery;
         }
-*/
-        getFeature.getAbstractQueryExpression().add(wfsQuery);
-
+        getFeature.getAbstractQueryExpression().add(abstractQuery);
+        
         return getFeature;
     }
 

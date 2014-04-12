@@ -16,6 +16,7 @@
  */
 package org.geotools.process.factory;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -120,14 +121,65 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
     protected Method method(String className) {
         Class<?> c = classMap.get(className);
         if (c != null) {
+            
+            List<Method> candidates = new ArrayList<Method>();
             for (Method m : c.getMethods()) {
                 if ("execute".equals(m.getName())) {
-                    return m;
+                    candidates.add(m);
                 }
             }
+            
+            if(candidates.size() == 1) {
+                return candidates.get(0);
+            } else if(candidates.size() > 1) {
+                // uh, we have various methods in overload, we'll prefer the one
+                // that has annotations and exposes most params
+                Method selection = null;
+                for (Method m : candidates) {
+                    if(hasProcessAnnotations(m)) {
+                        if(selection != null) {
+                            throw new IllegalArgumentException("Invalid process bean " + className 
+                                    + ", has two annotated execute methods");
+                        } else {
+                            selection = m;
+                        }
+                    }
+                }
+                
+                return selection;
+            }
         }
+        
+        
+        
         return null;
     }
+    
+    private boolean hasProcessAnnotations(Method m) {
+        Annotation[] annotations = m.getAnnotations();
+        if(hasProcessAnnotations(annotations)) {
+            return true;
+        }
+        Annotation[][] paramAnnotations = m.getParameterAnnotations();
+        for (Annotation[] pa : paramAnnotations) {
+            if(hasProcessAnnotations(pa)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    private boolean hasProcessAnnotations(Annotation[] annotations) {
+        for (Annotation annotation : annotations) {
+            if(annotation instanceof DescribeResult || annotation instanceof DescribeResults || annotation instanceof DescribeParameter) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
     /**
      * List of processes published; generated from the classMap created in the constructuor.
      */

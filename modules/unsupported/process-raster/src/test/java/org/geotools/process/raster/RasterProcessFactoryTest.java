@@ -1,20 +1,21 @@
 package org.geotools.process.raster;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
+import org.geotools.data.Parameter;
 import org.geotools.factory.FactoryIteratorProvider;
 import org.geotools.factory.GeoTools;
 import org.geotools.feature.NameImpl;
 import org.geotools.process.Processors;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
+import org.geotools.util.NumberRange;
+import org.jaitools.numeric.Range;
 import org.junit.Test;
 import org.opengis.feature.type.Name;
 
@@ -27,6 +28,16 @@ public class RasterProcessFactoryTest {
         Set<Name> names = factory.getNames(); 
         assertFalse(names.isEmpty());
         assertTrue(names.contains(new NameImpl("ras", "AddCoverages")));
+    }
+    
+    @Test
+    public void testRangeLookup() {
+        Map<String, Parameter<?>> params = factory.getParameterInfo(new NameImpl("ras", "RangeLookup"));
+        Parameter<?> ranges = params.get("ranges");
+        assertEquals("ranges", ranges.getName());
+        assertEquals(0, ranges.getMinOccurs());
+        assertEquals(Integer.MAX_VALUE, ranges.getMaxOccurs());
+        assertEquals(Range.class, ranges.getType());
     }
 
     @Test

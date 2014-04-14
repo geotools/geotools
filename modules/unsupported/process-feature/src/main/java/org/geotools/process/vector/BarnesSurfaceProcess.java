@@ -30,6 +30,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -244,7 +245,7 @@ public class BarnesSurfaceProcess implements VectorProcess {
             outGrid = upsample(barnesGrid, noDataValue, outputWidth, outputHeight);
         
         // convert to the GridCoverage2D required for output
-        GridCoverageFactory gcf = CoverageFactoryFinder.getGridCoverageFactory(null);
+        GridCoverageFactory gcf = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         GridCoverage2D gridCov = gcf.create("values", outGrid, outputEnv);
         
         //System.out.println("**************  Barnes Surface computed in " + sw.getTimeString());

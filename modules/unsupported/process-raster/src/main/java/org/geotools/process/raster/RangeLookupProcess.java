@@ -37,6 +37,7 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.factory.GeoTools;
 import org.geotools.image.jai.Registry;
 import org.geotools.process.ProcessException;
 import org.geotools.renderer.i18n.Errors;
@@ -154,7 +155,7 @@ public class RangeLookupProcess implements RasterProcess {
         // build the output sample dimensions, use the default value ( 0 ) as the no data
         final GridSampleDimension outSampleDimension = new GridSampleDimension("classification",
                 new Category[] { Category.NODATA }, null).geophysics(true);
-        final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
+        final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D output = factory.create("reclassified", indexedClassification, coverage
                 .getGridGeometry(), new GridSampleDimension[] { outSampleDimension },
                 new GridCoverage[] { coverage }, new HashMap<String,Double>(){{

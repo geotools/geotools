@@ -202,6 +202,7 @@ public abstract class BaseCoverageProcessingNode implements
 		maximumNumberOfSources = maxSources;
 		this.hints = hints != null ? (Hints) hints.clone() : null;
 		this.coverageFactory = CoverageFactoryFinder.getGridCoverageFactory(hints);
+		
 		this.name = name;
 		this.description = description;
 	}
@@ -214,8 +215,6 @@ public abstract class BaseCoverageProcessingNode implements
 	 * during execution.
 	 */
 	private void checkExecuted() {
-		// precondition
-		assert Thread.holdsLock(this);
 		// /////////////////////////////////////////////////////////////////////
 		//
 		// Is this node disposed? If so throw an exception
@@ -282,7 +281,7 @@ public abstract class BaseCoverageProcessingNode implements
 	 * @param force
 	 *            force the disposition of this node.
 	 */
-	public synchronized void dispose(boolean force) {
+	public void dispose(boolean force) {
 
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -336,7 +335,7 @@ public abstract class BaseCoverageProcessingNode implements
      * This method is responsible for triggering the execution of this {@link CoverageProcessingNode}  and also of all its sources. <p> In case something bad happens a  {@link CoverageProcessingException}  is thrown.
      * @uml.property  name="output"
      */
-	public synchronized GridCoverage2D getOutput()
+	public GridCoverage2D getOutput()
 			throws CoverageProcessingException {
 		checkExecuted();
 		if (error != null)
@@ -350,7 +349,7 @@ public abstract class BaseCoverageProcessingNode implements
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#addSink(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
 	 */
-	public synchronized void addSink(CoverageProcessingNode sink) {
+	public void addSink(CoverageProcessingNode sink) {
 		ensureNotNull(sink, "CoverageProcessingNode");
 		sinks.add(sink);
 		detectCycle();
@@ -361,7 +360,6 @@ public abstract class BaseCoverageProcessingNode implements
 	 * Performs proper clean up on this {@link CoverageProcessingNode}.
 	 */
 	private void cleanOutput() {
-		assert Thread.holdsLock(this);
 		if (executed) {
 			executed = false;
 			output.dispose(true);
@@ -375,7 +373,7 @@ public abstract class BaseCoverageProcessingNode implements
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#addSource(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
 	 */
-	public synchronized boolean addSource(CoverageProcessingNode source) {
+	public boolean addSource(CoverageProcessingNode source) {
 		ensureNotNull(source, "CoverageProcessingNode");
 		checkNumSources(1);
 		if (this.sources.add(source)) {
@@ -407,7 +405,7 @@ public abstract class BaseCoverageProcessingNode implements
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getSink(int)
 	 */
-	public synchronized CoverageProcessingNode getSink(int index) {
+	public CoverageProcessingNode getSink(int index) {
 		return (CoverageProcessingNode) sinks.get(index);
 
 	}
@@ -421,7 +419,7 @@ public abstract class BaseCoverageProcessingNode implements
      * @return
      * @uml.property  name="sinks"
      */
-	public synchronized List<CoverageProcessingNode> getSinks() {
+	public List<CoverageProcessingNode> getSinks() {
 		return Collections.unmodifiableList(sinks);
 
 	}
@@ -431,7 +429,7 @@ public abstract class BaseCoverageProcessingNode implements
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getSource(int)
 	 */
-	public synchronized CoverageProcessingNode getSource(int index) {
+	public CoverageProcessingNode getSource(int index) {
 		return (CoverageProcessingNode) sources.get(index);
 
 	}
@@ -445,7 +443,7 @@ public abstract class BaseCoverageProcessingNode implements
      * @return
      * @uml.property  name="sources"
      */
-	public synchronized List<CoverageProcessingNode> getSources() {
+	public List<CoverageProcessingNode> getSources() {
 		return Collections.unmodifiableList(sources);
 
 	}
@@ -455,7 +453,7 @@ public abstract class BaseCoverageProcessingNode implements
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#removeSink(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
 	 */
-	public synchronized boolean removeSink(CoverageProcessingNode sink) {
+	public boolean removeSink(CoverageProcessingNode sink) {
 		ensureNotNull(sink, "CoverageProcessingNode");
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -470,7 +468,7 @@ public abstract class BaseCoverageProcessingNode implements
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#removeSink(int)
 	 */
-	public synchronized CoverageProcessingNode removeSink(int index) {
+	public CoverageProcessingNode removeSink(int index) {
 		return (CoverageProcessingNode) this.sinks.remove(index);
 
 	}
@@ -480,7 +478,7 @@ public abstract class BaseCoverageProcessingNode implements
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#removeSource(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
 	 */
-	public synchronized boolean removeSource(CoverageProcessingNode source) {
+	public boolean removeSource(CoverageProcessingNode source) {
 		ensureNotNull(source, "CoverageProcessingNode");
 		final boolean success = this.sources.remove(source);
 		if (success)
@@ -494,7 +492,7 @@ public abstract class BaseCoverageProcessingNode implements
      * @return   {@link Hints}  provided at construction time to control {@link GridCoverageFactory}  creation.
      * @uml.property  name="hints"
      */
-	public synchronized Hints getHints() {
+	public Hints getHints() {
 		return new Hints(hints);
 	}
 
@@ -521,7 +519,7 @@ public abstract class BaseCoverageProcessingNode implements
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getNumberOfSinks()
 	 */
-	public synchronized int getNumberOfSinks() {
+	public int getNumberOfSinks() {
 		return this.sinks.size();
 	}
 
@@ -530,7 +528,7 @@ public abstract class BaseCoverageProcessingNode implements
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getNumberOfSources()
 	 */
-	public synchronized int getNumberOfSources() {
+	public int getNumberOfSources() {
 		return sources.size();
 	}
 
@@ -598,7 +596,7 @@ public abstract class BaseCoverageProcessingNode implements
 	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#removeSource(int)
 	 */
-	public synchronized CoverageProcessingNode removeSource(int index)
+	public CoverageProcessingNode removeSource(int index)
 			throws IndexOutOfBoundsException {
 		return (CoverageProcessingNode) sources.remove(index);
 	}
@@ -632,7 +630,7 @@ public abstract class BaseCoverageProcessingNode implements
      * @return   <code>true</code> if the node has been already disposed,  <code>false</code> otherwise.
      * @uml.property  name="disposed"
      */
-	public synchronized boolean isDisposed() {
+	public boolean isDisposed() {
 		return disposed;
 	}
 	
@@ -641,7 +639,7 @@ public abstract class BaseCoverageProcessingNode implements
      * @return   <code>true</code> if the node has been already executed,  <code>false</code> otherwise.
      * @uml.property  name="executed"
      */
-	public synchronized boolean isExecuted() {
+	public boolean isExecuted() {
 		return  this.executed ;
 	}
 

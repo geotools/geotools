@@ -79,11 +79,19 @@ public final class CoverageFactoryFinder extends FactoryFinder {
      * @see Hints#DEFAULT_COORDINATE_REFERENCE_SYSTEM
      * @see Hints#TILE_ENCODING
      */
-    public static synchronized GridCoverageFactory getGridCoverageFactory(Hints hints)
+    public static GridCoverageFactory getGridCoverageFactory(Hints hints)
             throws FactoryRegistryException
     {
-        hints = mergeSystemHints(hints);
-        return getServiceRegistry().getServiceProvider(GridCoverageFactory.class, null, hints, null);
+        if (hints != null && hints.containsKey(Hints.GRID_COVERAGE_FACTORY)) {
+            GridCoverageFactory coverageFactory = (GridCoverageFactory) hints.get(Hints.GRID_COVERAGE_FACTORY);
+            if (coverageFactory != null) {
+                return coverageFactory;
+            }
+        }
+        synchronized (CoverageFactoryFinder.class) {
+            hints = mergeSystemHints(hints);
+            return getServiceRegistry().getServiceProvider(GridCoverageFactory.class, null, hints, null);
+        }
     }
 
     /**

@@ -52,6 +52,16 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         this.config = config;
         super.specification = determineCorrectStrategy();
         ((WFSStrategy) specification).setCapabilities(super.capabilities);
+        
+        if (supportsStoredQueries() && specification instanceof StrictWFS_2_0_Strategy) {
+        	// This probably should be moved to where we know we are interested in a specific query
+        	// and fire describes only then.
+        	DescribeStoredQueriesRequest request = createDescribeStoredQueriesRequest();
+        	DescribeStoredQueriesResponse response = issueRequest(request);
+        	
+        	((StrictWFS_2_0_Strategy)specification).setDescribeStoredQueries(
+        			response.getStoredQueryDescriptions());
+        }
     }
 
     protected WFSStrategy getStrategy() {

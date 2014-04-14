@@ -53,9 +53,11 @@ import net.opengis.wfs20.FeatureTypeListType;
 import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.GetFeatureType;
 import net.opengis.wfs20.ListStoredQueriesType;
+import net.opengis.wfs20.ParameterExpressionType;
 import net.opengis.wfs20.ParameterType;
 import net.opengis.wfs20.QueryType;
 import net.opengis.wfs20.ResultTypeType;
+import net.opengis.wfs20.StoredQueryDescriptionType;
 import net.opengis.wfs20.StoredQueryType;
 import net.opengis.wfs20.WFSCapabilitiesType;
 import net.opengis.wfs20.Wfs20Factory;
@@ -81,6 +83,8 @@ import org.geotools.filter.capability.SpatialCapabiltiesImpl;
 import org.geotools.filter.capability.SpatialOperatorImpl;
 import org.geotools.filter.capability.SpatialOperatorsImpl;
 import org.geotools.filter.v2_0.FES;
+import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Version;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.Configuration;
@@ -90,6 +94,8 @@ import org.opengis.filter.capability.GeometryOperand;
 import org.opengis.filter.capability.IdCapabilities;
 import org.opengis.filter.capability.SpatialCapabilities;
 import org.opengis.filter.capability.SpatialOperator;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * 
@@ -103,10 +109,12 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     private net.opengis.wfs20.WFSCapabilitiesType capabilities;
 
     private final Map<QName, FeatureTypeType> typeInfos;
+    private final Map<String, StoredQueryDescriptionType> storedQueryDescritions;
 
     public StrictWFS_2_0_Strategy() {
         super();
         typeInfos = new HashMap<QName, FeatureTypeType>();
+        storedQueryDescritions = new HashMap<String, StoredQueryDescriptionType>();
     }
 
     /*---------------------------------------------------------------------
@@ -148,6 +156,13 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             typeInfos.put(name, typeInfo);
         }
     }
+    
+    public void setDescribeStoredQueries(List<StoredQueryDescriptionType> list) {
+    	storedQueryDescritions.clear();
+    	for (StoredQueryDescriptionType desc : list) {
+    		storedQueryDescritions.put(desc.getId(), desc);
+    	}
+    }
 
     @Override
     public WFSServiceInfo getServiceInfo() {
@@ -176,38 +191,18 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     public String getDefaultOutputFormat(WFSOperationType operation) {
         switch (operation) {
         case GET_FEATURE:
-        case DESCRIBE_FEATURETYPE:
             // As per Table 12 in 09-25r1 OGC Web Feature Service WFS 2.0
             return "application/gml+xml; version=3.2";
-            
+
+        case DESCRIBE_FEATURETYPE:
         case DESCRIBE_STORED_QUERIES:
         case LIST_STORED_QUERIES:
-        	// Format makes no sense for DescribeStoredQueries or ListStoredQueries
+        	// Format makes no sense for DescribeFeatureType, DescribeStoredQueries or ListStoredQueries
         	return null;
+        
+        default:
+            throw new UnsupportedOperationException("No outputFormat set up for "+operation);
         }
-        
-        
-//      switch(operation) {
-//        case GET_FEATURE:
-//            Set<String> serverFormats = getServerSupportedOutputFormats(operation)
-//            String outputFormat = findExact(PREFERRED_FORMATS, serverFormats);
-//            if (outputFormat == null) {
-//                outputFormat = findFuzzy(PREFERRED_FORMATS, serverFormats);
-//                if (outputFormat != null) {
-//                    // TODO: log
-//                }
-//            }
-//            if (outputFormat == null) {
-//                throw new IllegalArgumentException(
-//                        "Server does not support any of the client's supported formats: "
-//                                + serverFormats);
-//            }
-//            return outputFormat;
-//
-//        default:
-            throw new UnsupportedOperationException(
-                    "Not implemented yet");
-//        }
     }
 
     private String findExact(List<String> preferredFormats, Set<String> serverFormats) {
@@ -254,6 +249,14 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         }
         return new FeatureTypeInfoImpl(eType);
     }
+    
+    protected StoredQueryDescriptionType getStoredQueryDescription(String id) {
+    	StoredQueryDescriptionType ret = storedQueryDescritions.get(id);
+    	if (null == ret) {
+    		throw new IllegalArgumentException("Stored query not found: " +id);
+    	}
+    	return ret;
+    }
 
     @Override
     public FilterCapabilities getFilterCapabilities() {
@@ -277,7 +280,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         
         
         List<GeometryOperandType> geometryOperandTypes = null;
-        
         
         if (sct != null && sct.getGeometryOperands() != null) {
         	geometryOperandTypes = sct.getGeometryOperands().getGeometryOperand();
@@ -355,6 +357,48 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 		return idCapabilities;
 	}
 
+	@Override
+	protected Map<String, String> buildGetFeatureParametersForGET(
+			GetFeatureRequest query) {
+		Map<String, String> kvp = null;
+		if (query.isStoredQuery()) {
+			String storedQueryId = query.getStoredQueryId();
+
+			kvp = new HashMap<String, String>();
+
+			kvp.put("SERVICE", "WFS");
+			kvp.put("VERSION", getVersion());
+			kvp.put("REQUEST", "GetFeature");
+			kvp.put("STOREDQUERY_ID", storedQueryId);
+
+			Filter originalFilter = query.getFilter();
+
+			StoredQueryDescriptionType desc = getStoredQueryDescription(storedQueryId);
+
+			query.setUnsupportedFilter(originalFilter);
+			ParameterType bboxParam = extractStoredQueryFilterBounds(originalFilter, desc);
+
+			if (bboxParam != null) {
+				// Disabled temporarily
+				kvp.put(bboxParam.getName(), bboxParam.getValue());
+				// storedQuery.getParameter().add(bboxParam);
+			}
+
+			// TODO: other parameters
+
+		} else {
+			kvp = super.buildGetFeatureParametersForGET(query);
+
+			// Very crude
+			if (query.getMaxFeatures() != null) {
+				String count = kvp.remove("MAXFEATURES");
+				kvp.put("COUNT", count);
+			}
+		}
+
+		return kvp;
+	}
+
     @Override
     protected EObject createDescribeFeatureTypeRequestPost(DescribeFeatureTypeRequest request) {
         final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
@@ -405,21 +449,35 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
        
         if (query.isStoredQuery()) {
         	
+        	String storedQueryId = query.getStoredQueryId();
+        	
 	        StoredQueryType storedQuery = factory.createStoredQueryType();
-	
-	        // By default, none of the filter may be done in the query
-	        // TODO: BBox mapping needs to be done here or somewhere
+	        storedQuery.setId(storedQueryId);
+	        
+	        StoredQueryDescriptionType desc = getStoredQueryDescription(storedQueryId);
+	        
+	        
+	        
+	        // The query filter must be processed locally
 	        query.setUnsupportedFilter(query.getFilter());
+	        ParameterType bboxParam = extractStoredQueryFilterBounds(query.getFilter(), desc);
+
+	        if (bboxParam != null) {
+            	// Disabled temporarily
+            	//storedQuery.getParameter().add(bboxParam);
+            }
+     
 	        
-	        // Mock: get this from the appropriate place, somewhere, somehow
-	        //storedQuery.setId("fmi::observations::lightning::simple");
-	    
-	        storedQuery.setId(query.getStoredQueryId());
+	        // TODO: do stuff with the parameters
 	        
-	        ParameterType param = factory.createParameterType();
-	        param.setName("place");
-	        param.setValue("Helsinki");
-	        storedQuery.getParameter().add(param);
+	        for (String place : Arrays.asList("Helsinki", "Turku", "Tampere", "Porvoo", "Oulu")) {
+		        
+		        ParameterType param = factory.createParameterType();
+		        param.setName("place");
+		        //param.setValue("Helsinki");
+		        param.setValue(place);
+		        storedQuery.getParameter().add(param);
+	        }
 	        
 	        abstractQuery = storedQuery;
 	        
@@ -479,6 +537,45 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         
         return getFeature;
     }
+
+	private ParameterType extractStoredQueryFilterBounds(Filter filter,
+			StoredQueryDescriptionType desc) {
+		final QName XSI_String = new QName("http://www.w3.org/2001/XMLSchema-instance", "string");
+		final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
+		ParameterType param = null;
+		
+		ParameterExpressionType bboxParameter = null;
+
+		// A more generic way to configure this would be nice. BBOX is such an usuaul suspect
+		// that this should be fine though.
+		for (ParameterExpressionType pet : desc.getParameter()) {
+			if (pet.getName().equalsIgnoreCase("bbox") && XSI_String.equals(pet.getType())) {
+				bboxParameter = pet;
+				break;
+			}
+		}
+		// But if there is a bbox parameter, we can use that!
+		if (bboxParameter != null) {
+		    Envelope bbox = new ReferencedEnvelope();
+		    bbox = (Envelope) filter.accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
+
+		    if (bbox != null && !bbox.isNull()) {
+
+				param = factory.createParameterType();
+				StringBuffer sb = new StringBuffer();
+				sb.append(bbox.getMinX());
+				sb.append(',');
+				sb.append(bbox.getMinY());
+				sb.append(',');
+				sb.append(bbox.getMaxX());
+				sb.append(',');
+				sb.append(bbox.getMaxY());
+				param.setName(bboxParameter.getName());
+				param.setValue(sb.toString());
+		    }
+		}
+		return param;
+	}
 
     @Override
     protected EObject createListStoredQueriesRequestPost(

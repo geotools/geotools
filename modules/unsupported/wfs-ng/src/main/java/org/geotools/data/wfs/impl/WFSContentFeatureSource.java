@@ -173,6 +173,8 @@ class WFSContentFeatureSource extends ContentFeatureSource {
 
         request.setFilter(query.getFilter());
         request.setResultType(resultType);
+        request.setHints(query.getHints());
+
         int maxFeatures = query.getMaxFeatures();
         if (Integer.MAX_VALUE > maxFeatures) {
             request.setMaxFeatures(maxFeatures);

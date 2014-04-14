@@ -18,6 +18,7 @@ package org.geotools.data.wfs.internal;
 
 import static org.geotools.data.wfs.internal.WFSOperationType.GET_FEATURE;
 
+import org.geotools.factory.Hints;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
@@ -49,7 +50,10 @@ public class GetFeatureRequest extends WFSRequest {
     private Filter unsupportedFilter;
     
     private boolean storedQuery;
+    
     private String storedQueryId;
+    
+    private Hints hints;
 
     GetFeatureRequest(WFSConfig config, WFSStrategy strategy) {
         super(GET_FEATURE, config, strategy);
@@ -177,5 +181,13 @@ public class GetFeatureRequest extends WFSRequest {
     
     public void setStoredQueryId(String storedQueryId) {
 		this.storedQueryId = storedQueryId;
+	}
+
+	public void setHints(Hints hints) {
+		this.hints = hints;
+	}
+	
+	public Hints getHints() {
+		return hints;
 	}
 }

@@ -30,7 +30,7 @@ public class WFSStoredQueryContentFeatureSource extends WFSContentFeatureSource 
     {
     	GetFeatureRequest request = super.createGetFeature(query, resultType);
     	request.setStoredQuery(true);
-    	request.setStoredQueryId(desc.getId());
+    	request.setStoredQueryDescriptionType(desc);
     	return request;
     }
 }

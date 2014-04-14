@@ -17,6 +17,7 @@
 package org.geotools.data.wfs.internal;
 
 import static org.geotools.data.wfs.internal.WFSOperationType.GET_FEATURE;
+import net.opengis.wfs20.StoredQueryDescriptionType;
 
 import org.geotools.factory.Hints;
 import org.opengis.feature.type.FeatureType;
@@ -51,7 +52,7 @@ public class GetFeatureRequest extends WFSRequest {
     
     private boolean storedQuery;
     
-    private String storedQueryId;
+	private StoredQueryDescriptionType storedQueryDescriptionType;
     
     private Hints hints;
 
@@ -175,19 +176,20 @@ public class GetFeatureRequest extends WFSRequest {
 		this.storedQuery = storedQuery;
 	}
     
-    public String getStoredQueryId() {
-		return storedQueryId;
-	}
-    
-    public void setStoredQueryId(String storedQueryId) {
-		this.storedQueryId = storedQueryId;
-	}
-
 	public void setHints(Hints hints) {
 		this.hints = hints;
 	}
 	
 	public Hints getHints() {
 		return hints;
+	}
+
+	public StoredQueryDescriptionType getStoredQueryDescriptionType() {
+		return storedQueryDescriptionType;
+	}
+	
+	public void setStoredQueryDescriptionType(StoredQueryDescriptionType desc) {
+		this.storedQueryDescriptionType = desc;
+		
 	}
 }

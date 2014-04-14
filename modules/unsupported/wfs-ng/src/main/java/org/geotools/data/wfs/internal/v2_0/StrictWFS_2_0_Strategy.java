@@ -77,11 +77,13 @@ import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSGetCapabilities;
 import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSStrategy;
+import org.geotools.factory.Hints;
 import org.geotools.filter.capability.FilterCapabilitiesImpl;
 import org.geotools.filter.capability.IdCapabilitiesImpl;
 import org.geotools.filter.capability.SpatialCapabiltiesImpl;
 import org.geotools.filter.capability.SpatialOperatorImpl;
 import org.geotools.filter.capability.SpatialOperatorsImpl;
+import org.geotools.filter.spatial.ReprojectingFilterVisitor;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -109,12 +111,12 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     private net.opengis.wfs20.WFSCapabilitiesType capabilities;
 
     private final Map<QName, FeatureTypeType> typeInfos;
-    private final Map<String, StoredQueryDescriptionType> storedQueryDescritions;
 
+	private final QName XSI_String = new QName("http://www.w3.org/2001/XMLSchema-instance", "string");
+    
     public StrictWFS_2_0_Strategy() {
         super();
         typeInfos = new HashMap<QName, FeatureTypeType>();
-        storedQueryDescritions = new HashMap<String, StoredQueryDescriptionType>();
     }
 
     /*---------------------------------------------------------------------
@@ -157,13 +159,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         }
     }
     
-    public void setDescribeStoredQueries(List<StoredQueryDescriptionType> list) {
-    	storedQueryDescritions.clear();
-    	for (StoredQueryDescriptionType desc : list) {
-    		storedQueryDescritions.put(desc.getId(), desc);
-    	}
-    }
-
     @Override
     public WFSServiceInfo getServiceInfo() {
         URL getCapsUrl = getOperationURL(WFSOperationType.GET_CAPABILITIES, GET);
@@ -250,14 +245,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         return new FeatureTypeInfoImpl(eType);
     }
     
-    protected StoredQueryDescriptionType getStoredQueryDescription(String id) {
-    	StoredQueryDescriptionType ret = storedQueryDescritions.get(id);
-    	if (null == ret) {
-    		throw new IllegalArgumentException("Stored query not found: " +id);
-    	}
-    	return ret;
-    }
-
     @Override
     public FilterCapabilities getFilterCapabilities() {
         FilterCapabilitiesType filterCapabilities = capabilities.getFilterCapabilities();
@@ -362,7 +349,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 			GetFeatureRequest query) {
 		Map<String, String> kvp = null;
 		if (query.isStoredQuery()) {
-			String storedQueryId = query.getStoredQueryId();
+			StoredQueryDescriptionType desc = query.getStoredQueryDescriptionType();
+			String storedQueryId = desc.getId();
 
 			kvp = new HashMap<String, String>();
 
@@ -373,18 +361,29 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
 			Filter originalFilter = query.getFilter();
 
-			StoredQueryDescriptionType desc = getStoredQueryDescription(storedQueryId);
+			
 
 			query.setUnsupportedFilter(originalFilter);
 			ParameterType bboxParam = extractStoredQueryFilterBounds(originalFilter, desc);
 
 			if (bboxParam != null) {
-				// Disabled temporarily
 				kvp.put(bboxParam.getName(), bboxParam.getValue());
-				// storedQuery.getParameter().add(bboxParam);
 			}
 
-			// TODO: other parameters
+
+	        if (query.getHints() != null) {
+	        	@SuppressWarnings("unchecked")
+				Map<String, String> viewParams = (Map<String, String>)query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+	        	
+	        	if (viewParams != null) {
+		        	for (ParameterExpressionType p : desc.getParameter()) {
+		        		String value = viewParams.get(p.getName());
+		        		if (value == null) continue;
+		        		
+		        		kvp.put(p.getName(), value);
+		        	}
+	        	}
+	        }
 
 		} else {
 			kvp = super.buildGetFeatureParametersForGET(query);
@@ -448,35 +447,37 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         
        
         if (query.isStoredQuery()) {
-        	
-        	String storedQueryId = query.getStoredQueryId();
-        	
+			StoredQueryDescriptionType desc = query.getStoredQueryDescriptionType();
+			String storedQueryId = desc.getId();
+
 	        StoredQueryType storedQuery = factory.createStoredQueryType();
 	        storedQuery.setId(storedQueryId);
-	        
-	        StoredQueryDescriptionType desc = getStoredQueryDescription(storedQueryId);
-	        
-	        
 	        
 	        // The query filter must be processed locally
 	        query.setUnsupportedFilter(query.getFilter());
 	        ParameterType bboxParam = extractStoredQueryFilterBounds(query.getFilter(), desc);
 
+	        // If there is a recognized bbox stored query parameter, add it
 	        if (bboxParam != null) {
-            	// Disabled temporarily
-            	//storedQuery.getParameter().add(bboxParam);
+            	storedQuery.getParameter().add(bboxParam);
             }
-     
-	        
-	        // TODO: do stuff with the parameters
-	        
-	        for (String place : Arrays.asList("Helsinki", "Turku", "Tampere", "Porvoo", "Oulu")) {
-		        
-		        ParameterType param = factory.createParameterType();
-		        param.setName("place");
-		        //param.setValue("Helsinki");
-		        param.setValue(place);
-		        storedQuery.getParameter().add(param);
+
+	        if (query.getHints() != null) {
+	        	@SuppressWarnings("unchecked")
+				Map<String, String> viewParams = (Map<String, String>)query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+	        	
+	        	if (viewParams != null) {
+		        	
+		        	for (ParameterExpressionType p : desc.getParameter()) {
+		        		String value = viewParams.get(p.getName());
+		        		if (value == null) continue;
+		        		
+		        		ParameterType param = factory.createParameterType();
+		        		param.setName(p.getName());
+		        		param.setValue(value);
+		        		storedQuery.getParameter().add(param);
+		        	}
+	        	}
 	        }
 	        
 	        abstractQuery = storedQuery;
@@ -538,38 +539,64 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         return getFeature;
     }
 
+    /**
+     * Searches for a bounding box parameter in the stored query parameter list. If one is found
+     * and there is an spatial envelope for the filter, the envelope bounds are filled into
+     * the stored query parameter.
+     * 
+	 * TODO: should use layer metadata to figure out the correct parameter, currently 
+	 * it just uses naive heuristics (the name must match 'bbox', ignoring case).
+	 * 
+	 * @param filter
+	 * @param desc
+	 * @return
+     */
 	private ParameterType extractStoredQueryFilterBounds(Filter filter,
 			StoredQueryDescriptionType desc) {
-		final QName XSI_String = new QName("http://www.w3.org/2001/XMLSchema-instance", "string");
+
 		final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
 		ParameterType param = null;
 		
 		ParameterExpressionType bboxParameter = null;
 
-		// A more generic way to configure this would be nice. BBOX is such an usuaul suspect
+		// A more generic way to configure this would be nice. BBOX is such an usual suspect
 		// that this should be fine though.
 		for (ParameterExpressionType pet : desc.getParameter()) {
-			if (pet.getName().equalsIgnoreCase("bbox") && XSI_String.equals(pet.getType())) {
-				bboxParameter = pet;
+			if (pet.getName().equalsIgnoreCase("bbox")) {
+				if (pet.getType() == null || XSI_String.equals(pet.getType())) {
+					bboxParameter = pet;
+				}
 				break;
 			}
 		}
+		
+		boolean flip = true;
 		// But if there is a bbox parameter, we can use that!
 		if (bboxParameter != null) {
 		    Envelope bbox = new ReferencedEnvelope();
 		    bbox = (Envelope) filter.accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
-
+		    
 		    if (bbox != null && !bbox.isNull()) {
 
 				param = factory.createParameterType();
 				StringBuffer sb = new StringBuffer();
-				sb.append(bbox.getMinX());
-				sb.append(',');
-				sb.append(bbox.getMinY());
-				sb.append(',');
-				sb.append(bbox.getMaxX());
-				sb.append(',');
-				sb.append(bbox.getMaxY());
+				if (!flip) {
+					sb.append(bbox.getMinX());
+					sb.append(',');
+					sb.append(bbox.getMinY());
+					sb.append(',');
+					sb.append(bbox.getMaxX());
+					sb.append(',');
+					sb.append(bbox.getMaxY());
+				} else {
+					sb.append(bbox.getMinY());
+					sb.append(',');
+					sb.append(bbox.getMinX());
+					sb.append(',');
+					sb.append(bbox.getMaxY());
+					sb.append(',');
+					sb.append(bbox.getMaxX());
+				}
 				param.setName(bboxParameter.getName());
 				param.setValue(sb.toString());
 		    }

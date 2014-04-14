@@ -192,6 +192,7 @@ public class UnidataUtilities {
         
         try {
             Class.forName("ucar.nc2.grib.GribIosp");
+            Class.forName("org.geotools.coverage.io.grib.GribUtilities");
             IS_GRIB_AVAILABLE = true;
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE)) {

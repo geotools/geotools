@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.coverage.io.netcdf;
+package org.geotools.coverage.io.grib;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
+import org.geotools.coverage.io.netcdf.NetCDFFormat;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.imageio.unidata.utilities.UnidataUtilities;
@@ -38,7 +39,7 @@ import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
 
-public class NetCDFFormat extends AbstractGridFormat{
+public class GRIBFormat extends NetCDFFormat{
 
     public static final ParameterDescriptor<Filter> FILTER = new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
 
@@ -48,7 +49,7 @@ public class NetCDFFormat extends AbstractGridFormat{
     /**
      * Creates an instance and sets the metadata.
      */
-    public NetCDFFormat() {
+    public GRIBFormat() {
         setInfo();
     }
 
@@ -57,8 +58,8 @@ public class NetCDFFormat extends AbstractGridFormat{
      */
     private void setInfo() {
         final HashMap<String,String> info = new HashMap<String,String> ();
-        info.put("name", "NetCDF");
-        info.put("description", "NetCDF store plugin");
+        info.put("name", "GRIB");
+        info.put("description", "GRIB store plugin");
         info.put("vendor", "Geotools");
         info.put("docURL", "");
         info.put("version", "1.0");
@@ -68,43 +69,13 @@ public class NetCDFFormat extends AbstractGridFormat{
         readParameters = new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo,
                 new GeneralParameterDescriptor[]{
                         READ_GRIDGEOMETRY2D,
-//                        INPUT_TRANSPARENT_COLOR,
-//                BACKGROUND_VALUES,
-//                SUGGESTED_TILE_SIZE,
-//                ALLOW_MULTITHREADING,
-//                MAX_ALLOWED_TILES,
                 TIME,
                 ELEVATION,
                 FILTER,
-//                SORT_BY,
-//                MERGE_BEHAVIOR
         }));
 
         // reading parameters
         writeParameters = null;
-    }
-
-    @Override
-    public AbstractGridCoverage2DReader getReader(Object source) {
-        return getReader(source, null);
-    }
-
-    @Override
-    public AbstractGridCoverage2DReader getReader(Object source, Hints hints) {
-        try {
-
-            final NetCDFReader reader = new NetCDFReader(source, hints);
-            return reader;
-        } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-            return null;
-        }
-    }
-
-    @Override
-    public GridCoverageWriter getWriter(Object destination) {
-        throw new UnsupportedOperationException("Writing operation not implemented");
     }
 
     @Override
@@ -120,22 +91,14 @@ public class NetCDFFormat extends AbstractGridFormat{
                 return false;
             }
             String absolutePath = file.getAbsolutePath();
-                        
-            if (absolutePath.endsWith("nc")  || absolutePath.endsWith("ncml")){
+            
+            // Check if it is a GRIB data and if the GRIB library is available
+            boolean gribExtension = UnidataUtilities.isGribAvailable() && (absolutePath.contains("grb") || absolutePath.contains("grib"));
+            
+            if (absolutePath.endsWith("ncml") || gribExtension){
                 return true;
             }
         }
         return false;
     }
-
-    @Override
-    public GeoToolsWriteParams getDefaultImageIOWriteParameters() {
-        throw new UnsupportedOperationException("Writing operation not implemented");
-    }
-
-    @Override
-    public GridCoverageWriter getWriter(Object destination, Hints hints) {
-        throw new UnsupportedOperationException("Writing operation not implemented");
-    }
-
 }

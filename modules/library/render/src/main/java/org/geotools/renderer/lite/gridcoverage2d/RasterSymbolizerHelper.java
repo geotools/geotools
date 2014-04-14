@@ -17,6 +17,7 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.image.DataBuffer;
+import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 

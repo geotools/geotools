@@ -21,6 +21,8 @@ import static org.geotools.data.wfs.internal.Loggers.requestDebug;
 import static org.geotools.data.wfs.internal.Loggers.requestTrace;
 import static org.geotools.data.wfs.internal.Loggers.trace;
 import static org.geotools.data.wfs.internal.WFSOperationType.DESCRIBE_FEATURETYPE;
+import static org.geotools.data.wfs.internal.WFSOperationType.DESCRIBE_STORED_QUERIES;
+import static org.geotools.data.wfs.internal.WFSOperationType.LIST_STORED_QUERIES;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -707,7 +709,9 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         final WFSOperationType operation = wfsRequest.getOperation();
 
-        if (DESCRIBE_FEATURETYPE.equals(operation)) {
+        if (DESCRIBE_FEATURETYPE.equals(operation) || 
+        		DESCRIBE_STORED_QUERIES.equals(operation) ||
+        		LIST_STORED_QUERIES.equals(operation)) {
             return "text/xml";
         }
 

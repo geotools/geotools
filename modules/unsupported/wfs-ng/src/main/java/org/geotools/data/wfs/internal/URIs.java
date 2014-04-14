@@ -30,7 +30,6 @@ public class URIs {
 
         // prepare modifiable parameters
         StringBuilder baseURLBuffer = new StringBuilder(baseURL);
-        StringBuilder pathBuffer = new StringBuilder(path != null ? path : "");
 
         Map<String, String> kvpBuffer = new LinkedHashMap<String, String>();
         if (kvp != null) {
@@ -38,7 +37,13 @@ public class URIs {
         }
 
         // compose the final URL
-        String result = appendContextPath(baseURLBuffer.toString(), pathBuffer.toString());
+        String result;
+        if (path != null) {
+        	result = appendContextPath(baseURLBuffer.toString(), path);
+        } else {
+        	result = baseURLBuffer.toString();
+        }
+        
         StringBuilder params = new StringBuilder();
         for (Map.Entry<String, String> entry : kvpBuffer.entrySet()) {
             params.append(entry.getKey());

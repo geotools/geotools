@@ -30,7 +30,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.io.netcdf.NetCDFDriver;
-import org.geotools.coverage.io.netcdf.NetCDFFormat;
 import org.geotools.coverage.io.netcdf.NetCDFReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
@@ -54,7 +53,7 @@ public class GribTest {
         // Selection of the input file
         final File file = TestData.file(this, "sampleGrib.grb2");
         // Creation of a NetCDFFormat object for checking if the GRIB format is accepted
-        NetCDFFormat format = new NetCDFFormat();
+        GRIBFormat format = new GRIBFormat();
         // Check if the format is accepted
         Assert.assertTrue(format.accepts(file));
         // Creation of a NetCDF reader SPI object for checking if it can decode the input file

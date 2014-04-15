@@ -53,7 +53,6 @@ import net.opengis.wfs20.FeatureTypeListType;
 import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.GetFeatureType;
 import net.opengis.wfs20.ListStoredQueriesType;
-import net.opengis.wfs20.ParameterExpressionType;
 import net.opengis.wfs20.ParameterType;
 import net.opengis.wfs20.QueryType;
 import net.opengis.wfs20.ResultTypeType;
@@ -69,6 +68,7 @@ import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.FeatureTypeInfo;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
+import org.geotools.data.wfs.internal.v2_0.storedquery.StoredQueryConfiguration;
 import org.geotools.data.wfs.internal.DescribeStoredQueriesRequest;
 import org.geotools.data.wfs.internal.HttpMethod;
 import org.geotools.data.wfs.internal.ListStoredQueriesRequest;
@@ -83,10 +83,7 @@ import org.geotools.filter.capability.IdCapabilitiesImpl;
 import org.geotools.filter.capability.SpatialCapabiltiesImpl;
 import org.geotools.filter.capability.SpatialOperatorImpl;
 import org.geotools.filter.capability.SpatialOperatorsImpl;
-import org.geotools.filter.spatial.ReprojectingFilterVisitor;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Version;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.Configuration;
@@ -97,7 +94,6 @@ import org.opengis.filter.capability.IdCapabilities;
 import org.opengis.filter.capability.SpatialCapabilities;
 import org.opengis.filter.capability.SpatialOperator;
 
-import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * 
@@ -351,6 +347,9 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 		if (query.isStoredQuery()) {
 			StoredQueryDescriptionType desc = query.getStoredQueryDescriptionType();
 			String storedQueryId = desc.getId();
+			
+			// TODO: this is just a mock, it needs to be read from the layer configuration
+			StoredQueryConfiguration config = StoredQueryConfiguration.createMock(storedQueryId);
 
 			kvp = new HashMap<String, String>();
 
@@ -361,30 +360,21 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
 			Filter originalFilter = query.getFilter();
 
-			
-
 			query.setUnsupportedFilter(originalFilter);
-			ParameterType bboxParam = extractStoredQueryFilterBounds(originalFilter, desc);
 
-			if (bboxParam != null) {
-				kvp.put(bboxParam.getName(), bboxParam.getValue());
-			}
-
-
+			Map<String, String> viewParams = null;
 	        if (query.getHints() != null) {
-	        	@SuppressWarnings("unchecked")
-				Map<String, String> viewParams = (Map<String, String>)query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+				viewParams = (Map<String, String>)query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
 	        	
-	        	if (viewParams != null) {
-		        	for (ParameterExpressionType p : desc.getParameter()) {
-		        		String value = viewParams.get(p.getName());
-		        		if (value == null) continue;
-		        		
-		        		kvp.put(p.getName(), value);
-		        	}
-	        	}
 	        }
+			
+	        List<ParameterType> params = config.createStoredQueryParameters(query.getFilter(),
+	        		viewParams, desc, (FeatureTypeInfoImpl)getFeatureTypeInfo(query.getTypeName()));
 
+	        for (ParameterType p : params) {
+	        	kvp.put(p.getName(), p.getValue());
+	        }
+	        
 		} else {
 			kvp = super.buildGetFeatureParametersForGET(query);
 
@@ -450,36 +440,25 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 			StoredQueryDescriptionType desc = query.getStoredQueryDescriptionType();
 			String storedQueryId = desc.getId();
 
+			// TODO: this is just a mock, it needs to be read from the layer configuration
+			StoredQueryConfiguration config = StoredQueryConfiguration.createMock(storedQueryId);
+			
 	        StoredQueryType storedQuery = factory.createStoredQueryType();
 	        storedQuery.setId(storedQueryId);
 	        
 	        // The query filter must be processed locally
 	        query.setUnsupportedFilter(query.getFilter());
-	        ParameterType bboxParam = extractStoredQueryFilterBounds(query.getFilter(), desc);
-
-	        // If there is a recognized bbox stored query parameter, add it
-	        if (bboxParam != null) {
-            	storedQuery.getParameter().add(bboxParam);
-            }
-
+	        
+	        Map<String, String> viewParams = null;
 	        if (query.getHints() != null) {
-	        	@SuppressWarnings("unchecked")
-				Map<String, String> viewParams = (Map<String, String>)query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
-	        	
-	        	if (viewParams != null) {
-		        	
-		        	for (ParameterExpressionType p : desc.getParameter()) {
-		        		String value = viewParams.get(p.getName());
-		        		if (value == null) continue;
-		        		
-		        		ParameterType param = factory.createParameterType();
-		        		param.setName(p.getName());
-		        		param.setValue(value);
-		        		storedQuery.getParameter().add(param);
-		        	}
-	        	}
+	        	viewParams = (Map<String, String>)query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
 	        }
 	        
+	        List<ParameterType> params = config.createStoredQueryParameters(query.getFilter(),
+	        		viewParams, desc, featureTypeInfo);
+	        
+	        storedQuery.getParameter().addAll(params);
+
 	        abstractQuery = storedQuery;
 	        
         } else {
@@ -539,70 +518,50 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         return getFeature;
     }
 
-    /**
-     * Searches for a bounding box parameter in the stored query parameter list. If one is found
-     * and there is an spatial envelope for the filter, the envelope bounds are filled into
-     * the stored query parameter.
-     * 
-	 * TODO: should use layer metadata to figure out the correct parameter, currently 
-	 * it just uses naive heuristics (the name must match 'bbox', ignoring case).
-	 * 
-	 * @param filter
-	 * @param desc
-	 * @return
-     */
-	private ParameterType extractStoredQueryFilterBounds(Filter filter,
-			StoredQueryDescriptionType desc) {
-
-		final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
-		ParameterType param = null;
-		
-		ParameterExpressionType bboxParameter = null;
-
-		// A more generic way to configure this would be nice. BBOX is such an usual suspect
-		// that this should be fine though.
-		for (ParameterExpressionType pet : desc.getParameter()) {
-			if (pet.getName().equalsIgnoreCase("bbox")) {
-				if (pet.getType() == null || XSI_String.equals(pet.getType())) {
-					bboxParameter = pet;
-				}
-				break;
-			}
-		}
-		
-		boolean flip = true;
-		// But if there is a bbox parameter, we can use that!
-		if (bboxParameter != null) {
-		    Envelope bbox = new ReferencedEnvelope();
-		    bbox = (Envelope) filter.accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
-		    
-		    if (bbox != null && !bbox.isNull()) {
-
-				param = factory.createParameterType();
-				StringBuffer sb = new StringBuffer();
-				if (!flip) {
-					sb.append(bbox.getMinX());
-					sb.append(',');
-					sb.append(bbox.getMinY());
-					sb.append(',');
-					sb.append(bbox.getMaxX());
-					sb.append(',');
-					sb.append(bbox.getMaxY());
-				} else {
-					sb.append(bbox.getMinY());
-					sb.append(',');
-					sb.append(bbox.getMinX());
-					sb.append(',');
-					sb.append(bbox.getMaxY());
-					sb.append(',');
-					sb.append(bbox.getMaxX());
-				}
-				param.setName(bboxParameter.getName());
-				param.setValue(sb.toString());
-		    }
-		}
-		return param;
+    /*
+    private List<ParameterType> createStoredQueryParameters(Filter filter, 
+    		Map<String, String> viewParams,	StoredQueryConfiguration config,
+    		StoredQueryDescriptionType desc) {
+    	final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
+    	
+    	ParameterMappingContext mappingContext = new ParameterMappingContext(filter, viewParams);
+    	
+    	List<ParameterType> ret = new ArrayList<ParameterType>();
+    	
+    	for (ParameterExpressionType parameter : desc.getParameter()) {
+    		String value = null;
+    		
+    		ParameterMapping mapping = config.getStoredQueryParameterMapping(
+					parameter.getName());
+			
+    		// Primarily use the one provided by the user
+    		if (value == null && viewParams != null) {
+    			value = viewParams.get(parameter.getName());
+    		}
+    		
+    		if (value == null && mapping != null) { 
+    			if (mapping instanceof ParameterMappingDefaultValue) {
+    				value = ((ParameterMappingDefaultValue)mapping).getDefaultValue();
+    			} else if (mapping instanceof ParameterMappingExpressionValue) {
+    				value = ((ParameterMappingExpressionValue)mapping).evaluate(mappingContext);
+    			} else {
+    				throw new IllegalArgumentException("Unknown StoredQueryParameterMapping: "
+    						+ mapping.getClass());
+    			}
+    		}
+    		
+    		// If there is a value, add a parameter to the query
+    		if (value != null) {
+    			ParameterType tmp = factory.createParameterType();
+    			tmp.setName(parameter.getName());
+    			tmp.setValue(value);
+    			ret.add(tmp);
+    		}
+    	}
+    	
+    	return ret;
 	}
+	*/
 
     @Override
     protected EObject createListStoredQueriesRequestPost(

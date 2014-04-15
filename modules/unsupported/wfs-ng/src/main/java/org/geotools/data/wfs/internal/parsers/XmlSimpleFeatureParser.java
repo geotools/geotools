@@ -771,10 +771,8 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
     }
 
     private Coordinate[] toCoordList(String rawTextValue, final int dimension) {
-        rawTextValue = rawTextValue.trim();
-        rawTextValue = rawTextValue.replaceAll("\n", " ");
-        rawTextValue = rawTextValue.replaceAll("\r", " ");
-        String[] split = rawTextValue.trim().split(" +");
+    	rawTextValue = rawTextValue.replaceAll("[\n\r]", " ").trim();
+        String[] split = rawTextValue.split(" +");
         final int ordinatesLength = split.length;
         if (ordinatesLength % dimension != 0) {
             throw new IllegalArgumentException("Number of ordinates (" + ordinatesLength
@@ -803,11 +801,9 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
     private Coordinate[] toCoordList(String rawTextValue, final String decimalSeparator,
             final String coordSeparator, final String tupleSeparator, final int dimension) {
 
-        rawTextValue = rawTextValue.trim();
-        rawTextValue = rawTextValue.replaceAll("\n", " ");
-        rawTextValue = rawTextValue.replaceAll("\r", " ");
+    	rawTextValue = rawTextValue.replaceAll("[\n\r]", " ").trim();
 
-        String[] tuples = rawTextValue.trim().split("\\" + tupleSeparator + "+");
+        String[] tuples = rawTextValue.split("\\" + tupleSeparator + "+");
 
         final int nCoords = tuples.length;
 

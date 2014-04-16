@@ -18,15 +18,11 @@ package org.geotools.filter.capability;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Function;
-import org.opengis.geometry.coordinate.ParametricCurveSurface;
 import org.opengis.parameter.Parameter;
 
 /**

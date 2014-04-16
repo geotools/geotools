@@ -350,7 +350,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                 for (Filter child : filter.getChildren()) {
                     extraData = child.accept(this, extraData);
                 }
-                Data mediumFilter = createMediumLevelLogicFilter(FilterType.LOGIC_AND, startSize);
+                Data mediumFilter = createMediumLevelLogicFilter(FilterType.LOGIC_OR, startSize);
                 current.push(mediumFilter);
                 break;
 
@@ -359,7 +359,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                 for (Filter child : filter.getChildren()) {
                     extraData = child.accept(this, extraData);
                 }
-                Data highFilter = createHighLevelLogicFilter(FilterType.LOGIC_AND, startSize);
+                Data highFilter = createHighLevelLogicFilter(FilterType.LOGIC_OR, startSize);
                 current.push(highFilter);
 
                 break;

@@ -40,6 +40,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -417,6 +418,15 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
         for( CoordinateAxis axis : dataset.getCoordinateAxes() ) {
             if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null) {
                 coordinatesVariables.put(axis.getFullName(), CoordinateVariable.create((CoordinateAxis1D)axis));
+            } else {
+                // Workaround for Unsupported Axes
+                Set<String> unsupported = UnidataUtilities.getUnsupportedDimensions();
+                if(axis instanceof CoordinateAxis1D && unsupported.contains(axis.getFullName())){
+                    axis.setAxisType(AxisType.GeoZ);
+                    coordinatesVariables.put(axis.getFullName(), CoordinateVariable.create((CoordinateAxis1D)axis));
+                }else{
+                    LOGGER.warning("Unsupported axis: "+axis + " in input: "+this.getInput() + " has been found");
+                }
             }
         }
         initMapping(dataset.getCoordinateSystems().get(0));

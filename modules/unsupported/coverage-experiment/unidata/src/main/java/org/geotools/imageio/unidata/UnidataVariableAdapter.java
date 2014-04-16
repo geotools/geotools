@@ -632,6 +632,9 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         if (coordinateSystem == null){
             throw new IllegalArgumentException("Provided CoordinateSystem is null");
         }
+        // Wrapper for the CoordinateSystem
+        coordinateSystem = new CoordinateSystemAdapter(coordinateSystem);
+
         // ////
         // Creating the CoordinateReferenceSystem
         // ////
@@ -1178,5 +1181,57 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         }
     
         return null;
+    }
+
+    /**
+     * Wrapper class used for setting the OSEQD dimension to Vertical, even if the {@link CoordinateSystem} does not handle it.
+     * 
+     * @author Nicola Lagomarsini GeoSolutions S.A.S.
+     * 
+     */
+    static class CoordinateSystemAdapter extends CoordinateSystem {
+        /**Input coordinate system*/
+        private CoordinateSystem cs;
+
+        /** Boolean indicating that the vertical axis is present*/
+        private final boolean vertical;
+
+        CoordinateSystemAdapter(CoordinateSystem cs) {
+            this.cs = cs;
+            // Check if the Vertical axis is present
+            if(cs.hasVerticalAxis()){
+                vertical = true;
+            }else{
+                // Check if any of the unsupported dimensions is present
+                Set<String> unsupported = UnidataUtilities.getUnsupportedDimensions();
+                boolean present = false;
+                for(String dimension : unsupported){
+                    if(cs.containsAxis(dimension)){
+                        present = true;
+                        break;
+                    }
+                }
+                if(present){
+                    vertical = true;
+                }else{
+                    vertical = false;
+                }
+            }
+        }
+
+        @Override
+        public boolean hasVerticalAxis() {
+            return vertical;
+        }
+
+        @Override
+        public boolean hasTimeAxis() {
+            return cs.hasTimeAxis();
+        }
+
+        @Override
+        public List<CoordinateAxis> getCoordinateAxes() {
+            return cs.getCoordinateAxes();
+        }
     }
 }

@@ -28,6 +28,9 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
@@ -775,5 +778,38 @@ public final class RendererUtilities {
             d2 = 0;
         }
         return Math.max(d1, d2);
+    }
+    
+    /**
+     * Makes sure the feature collection generates the desired sourceCrs, this is mostly a workaround
+     * against feature sources generating feature collections without a CRS (which is fatal to
+     * the reprojection handling later in the code)
+     *  
+     * @param features
+     * @param sourceCrs
+     * @return FeatureCollection<SimpleFeatureType, SimpleFeature> that produces results with the correct CRS
+     */
+    static FeatureCollection fixFeatureCollectionReferencing(FeatureCollection features, CoordinateReferenceSystem sourceCrs) {
+        // this is the reader's CRS
+        CoordinateReferenceSystem rCS = null;
+        try {
+            rCS = features.getSchema().getGeometryDescriptor().getType().getCoordinateReferenceSystem();
+        } catch(NullPointerException e) {
+            // life sucks sometimes
+        }
+
+        if (rCS != sourceCrs && sourceCrs != null) {
+            // if the datastore is producing null CRS, we recode.
+            // if the datastore's CRS != real CRS, then we recode
+            if ((rCS == null) || !CRS.equalsIgnoreMetadata(rCS, sourceCrs)) {
+                // need to retag the features
+                try {
+                    return new ForceCoordinateSystemFeatureResults( (SimpleFeatureCollection) features, sourceCrs);
+                } catch (Exception ee) {
+                    LOGGER.log(Level.WARNING, ee.getLocalizedMessage(), ee);
+                }
+            }
+        }
+        return features;
     }
 }

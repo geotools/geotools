@@ -45,6 +45,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureTypeFactory;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -77,6 +78,9 @@ public final class FeatureUtilities {
     static FeatureTypeFactory typeFactory;
     static FeatureFactory featureFactory;
     public static final FilterFactory2 DEFAULT_FILTER_FACTORY = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+    public final static PropertyName GRID_PROPERTY_NAME = DEFAULT_FILTER_FACTORY.property("grid");
+    public static final PropertyName PARAMS_PROPERTY_NAME = DEFAULT_FILTER_FACTORY.property("params");
+
     
     /**
      * Do not allows instantiation of this class.

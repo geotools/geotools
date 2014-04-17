@@ -14,26 +14,25 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.renderer.markwkt.test;
+package org.geotools.renderer.markwkt;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Map;
-
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.expression.Expression;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.opengis.filter.FilterFactory;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.renderer.markwkt.WKTMarkFactory;
-import org.geotools.util.SoftValueHashMap;
-
-import com.vividsolutions.jts.geom.LineString;
 
 import junit.framework.TestCase;
+
+import org.geotools.TestData;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.GeoTools;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Literal;
+
+import com.vividsolutions.jts.geom.LineString;
 
 /**
  * Unit tests for WKT mark factory
@@ -50,10 +49,9 @@ import junit.framework.TestCase;
  */
 public class WKTMarkFactoryTest extends TestCase {
 
-    private SimpleFeature feature;
-    private Expression exp;
-    private FilterFactory ff;
-    private URL rootDir;
+    private static final SimpleFeature feature;
+    private static final FilterFactory ff;
+    private static final URL rootDir;
 
     // This inner class is used to make some members public in
     // order to carry out testing
@@ -66,9 +64,9 @@ public class WKTMarkFactoryTest extends TestCase {
         }
     };
 
-    {
+    static{
 	try {
-	    ff = CommonFactoryFinder.getFilterFactory(null);
+	    ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
 	    SimpleFeatureTypeBuilder featureTypeBuilder = new SimpleFeatureTypeBuilder();
 	    featureTypeBuilder.setName("TestType");
 	    featureTypeBuilder.add("geom", LineString.class,
@@ -77,22 +75,23 @@ public class WKTMarkFactoryTest extends TestCase {
 		    .buildFeatureType();
 	    SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(
 		    featureType);
-	    this.feature = featureBuilder.buildFeature(null);
+	    feature = featureBuilder.buildFeature(null);
 	    
 	    // Sets the root dir for WKT libraries to the dir where wkt.properties is
-	    File fl= new File(this.getClass().getClassLoader().getResource("wkt.properties").toString().replace("wkt.properties", ""));
-	    this.rootDir= new URL(fl.toString());
+	    File fl= TestData.file(WKTMarkFactoryTest.class, "");
+	    assert fl.isDirectory()&&fl.exists();
+	    rootDir= fl.toURI().toURL();
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    throw new RuntimeException(e);
 	}
     }
 
     public void testWellKnownTextLineString() {
 	WKTMarkFactory wmf = new WKTMarkFactory();
 	try {
-	    this.exp = ff
+	    Literal exp = ff
 		    .literal(WKTMarkFactory.WKT_PREFIX + "LINESTRING(0.0 0.25, 0.25 0.25, 0.5 0.75, 0.75 0.25, 1.00 0.25)");
-	    wmf.getShape(null, this.exp, this.feature);
+	    wmf.getShape(null, exp, feature);
 	} catch (Exception e) {
 	    assertTrue(false);
 	    return;
@@ -104,9 +103,9 @@ public class WKTMarkFactoryTest extends TestCase {
     public void testWellKnownTextMultiLineString() {
 	WKTMarkFactory wmf = new WKTMarkFactory();
 	try {
-	    this.exp = ff
+	    Literal exp = ff
 		    .literal(WKTMarkFactory.WKT_PREFIX + "MULTILINESTRING((0.25 0.25, 0.5 0.75, 0.75 0.25, 0.25 0.25), (0.25 0.75, 0.5 0.25, 0.75 0.75, 0.25 0.75))");
-	    wmf.getShape(null, this.exp, this.feature);
+	    wmf.getShape(null, exp, feature);
 	} catch (Exception e) {
 	    assertTrue(false);
 	    return;
@@ -118,9 +117,9 @@ public class WKTMarkFactoryTest extends TestCase {
     public void testWellKnownTextPolygon() {
 	WKTMarkFactory wmf = new WKTMarkFactory();
 	try {
-	    this.exp = ff
+	    Literal exp = ff
 		    .literal(WKTMarkFactory.WKT_PREFIX + "POLYGON((0.25 0.25, 0.5 0.75, 0.75 0.25, 0.25 0.25))");
-	    wmf.getShape(null, this.exp, this.feature);
+	    wmf.getShape(null, exp, feature);
 	} catch (Exception e) {
 	    assertTrue(false);
 	    return;
@@ -132,9 +131,9 @@ public class WKTMarkFactoryTest extends TestCase {
     public void testWellKnownTextCurve() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
-            this.exp = ff
+            Literal exp = ff
                     .literal(WKTMarkFactory.WKT_PREFIX + "CURVEPOLYGON(COMPOUNDCURVE(CIRCULARSTRING(0 0,2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))");
-            wmf.getShape(null, this.exp, this.feature);
+            wmf.getShape(null, exp, feature);
         } catch (Exception e) {
             assertTrue(false);
             return;
@@ -146,9 +145,9 @@ public class WKTMarkFactoryTest extends TestCase {
     public void testWellKnownTextPolygonError() {
 	WKTMarkFactory wmf = new WKTMarkFactory();
 	try {
-	    this.exp = ff
+	    Literal exp = ff
 		    .literal(WKTMarkFactory.WKT_PREFIX + "POLYGON((0.25 0.25, 0.5 0.75, 0.75 0.25,     ))");
-	    wmf.getShape(null, this.exp, this.feature);
+	    wmf.getShape(null, exp, feature);
 	} catch (Exception e) {
 	    assertTrue(true);
 	    return;
@@ -160,9 +159,9 @@ public class WKTMarkFactoryTest extends TestCase {
     public void testUnknownProtocol() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
-            this.exp = ff
+            Literal exp = ff
                     .literal("xxx://POLYGON((0.25 0.25, 0.5 0.75, 0.75 0.25,))");
-            if (wmf.getShape(null, this.exp, this.feature) == null) {
+            if (wmf.getShape(null, exp, feature) == null) {
                 assertTrue(true);
                 return;
             }
@@ -175,10 +174,10 @@ public class WKTMarkFactoryTest extends TestCase {
 
     public void testWellKnownTextFromNotExistingFile() {
         WKTMarkFactory wmf = new WKTMarkFactory();
-        wmf.setRoot(this.rootDir);
-        this.exp = ff.literal(WKTMarkFactory.WKTLIB_PREFIX + "xxx.properties#xxx");
+        wmf.setRoot(rootDir);
+        Literal exp = ff.literal(WKTMarkFactory.WKTLIB_PREFIX + "xxx.properties#xxx");
         try {
-            wmf.getShape(null, this.exp, this.feature);
+            wmf.getShape(null, exp, feature);
             assertTrue(false);
         } catch (Exception e) {
             assertTrue(true);
@@ -187,10 +186,10 @@ public class WKTMarkFactoryTest extends TestCase {
 
     public void testNotExistingWellKnownTextFromFile() {
         WKTMarkFactory wmf = new WKTMarkFactory();
-        wmf.setRoot(this.rootDir);
-        this.exp = ff.literal(WKTMarkFactory.WKTLIB_PREFIX + "wkt.properties#xxx");
+        wmf.setRoot(rootDir);
+        Literal exp = ff.literal(WKTMarkFactory.WKTLIB_PREFIX + "wkt.properties#xxx");
         try {
-            wmf.getShape(null, this.exp, this.feature);
+            wmf.getShape(null, exp, feature);
             assertTrue(false);
         } catch (Exception e) {
             assertTrue(true);
@@ -199,10 +198,10 @@ public class WKTMarkFactoryTest extends TestCase {
 
     public void testWellKnownTextFromFile() {
 	WKTMarkFactory wmf = new WKTMarkFactory();
-        wmf.setRoot(this.rootDir);
-	this.exp = ff.literal(WKTMarkFactory.WKTLIB_PREFIX + "wkt.properties#ls");
+        wmf.setRoot(rootDir);
+	Literal exp = ff.literal(WKTMarkFactory.WKTLIB_PREFIX + "wkt.properties#ls");
 	try {
-	    wmf.getShape(null, this.exp, this.feature);
+	    wmf.getShape(null, exp, feature);
 	    assertTrue(true);
 	} catch (Exception e) {
 	    assertTrue(false);
@@ -212,12 +211,12 @@ public class WKTMarkFactoryTest extends TestCase {
     public void testCacheSingleLibrary() {
 
         WKTMarkFactoryPublic wmfp= new WKTMarkFactoryPublic();
-        wmfp.setRoot(this.rootDir);
+        wmfp.setRoot(rootDir);
         
         try {
             // Adds library to cache
-            this.exp = ff.literal("wkt.properties");
-            wmfp.addToCachePublic(this.exp.evaluate(this.feature, String.class));
+            Literal exp = ff.literal("wkt.properties");
+            wmfp.addToCachePublic(exp.evaluate(feature, String.class));
             
             // Check "ls" has been loaded
             assertEquals(wmfp.getFromCachePublic("wkt.properties", "ls"),
@@ -236,16 +235,16 @@ public class WKTMarkFactoryTest extends TestCase {
     public void testCacheMultipleLibraries() {
 
         WKTMarkFactoryPublic wmfp= new WKTMarkFactoryPublic();
-        wmfp.setRoot(this.rootDir);
+        wmfp.setRoot(rootDir);
         
         try {
             // Adds 1st library to cache
-            this.exp = ff.literal("wkt.properties");
-            wmfp.addToCachePublic(this.exp.evaluate(this.feature, String.class));
+            Literal exp = ff.literal("wkt.properties");
+            wmfp.addToCachePublic(exp.evaluate(feature, String.class));
             
             // Adds 2nd library to cache
-            this.exp = ff.literal("wkt2.properties");
-            wmfp.addToCachePublic(this.exp.evaluate(this.feature, String.class));
+            exp = ff.literal("wkt2.properties");
+            wmfp.addToCachePublic(exp.evaluate(feature, String.class));
             
             // Check "ls" has been loaded
             assertEquals(wmfp.getFromCachePublic("wkt.properties", "ls"),

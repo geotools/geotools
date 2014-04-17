@@ -14,29 +14,27 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.renderer.markwkt.test;
+package org.geotools.renderer.markwkt;
 
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.expression.Expression;
+import java.awt.Shape;
+
+import junit.framework.TestCase;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.opengis.filter.FilterFactory;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.renderer.markwkt.MeteoMarkFactory;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
 
 import com.vividsolutions.jts.geom.LineString;
-
-import junit.framework.TestCase;
 
 /**
  * Unit tests for shape mark factory
  * 
  * @author Luca Morandini lmorandini@ieee.org
- * 
- *
- *
  *
  * @source $URL$
  */
@@ -91,5 +89,20 @@ public class ShapeMarkFactoryTest extends TestCase {
 	}
 
 	assertTrue(false);
+    }
+
+    public void testSouthArrow() {
+        MeteoMarkFactory smf = new MeteoMarkFactory();
+        try {
+            this.exp = ff.literal("extshape://sarrow");
+            Shape shape = smf.getShape(null, this.exp, this.feature);
+            // Check if the South Arrow is present
+            assertNotNull(shape);
+        } catch (Exception e) {
+            assertTrue(false);
+            return;
+        }
+
+        assertTrue(true);
     }
 }

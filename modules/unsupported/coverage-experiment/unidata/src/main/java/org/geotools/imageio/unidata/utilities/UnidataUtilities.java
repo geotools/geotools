@@ -28,6 +28,7 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
@@ -62,8 +63,13 @@ import ucar.nc2.dataset.VariableDS;
  */
 public class UnidataUtilities {
 
+    /** Set containing all the definition of the UNSUPPORTED DIMENSIONS to set as vertical ones*/
+    private static final Set<String> UNSUPPORTED_DIMENSIONS;
+
     static {
         NetcdfDataset.setDefaultEnhanceMode(EnumSet.of(Enhance.CoordSystems));
+        UNSUPPORTED_DIMENSIONS = new HashSet<String>();
+        UNSUPPORTED_DIMENSIONS.add("OSEQD");
    }
     
     /** Boolean indicating if GRIB library is available*/
@@ -339,6 +345,13 @@ public class UnidataUtilities {
                 String dimName = dimension.getFullName();
                 // check the dimension to be defined
                 Group group = dimension.getGroup();
+                // Simple check if the group is not present. In that case false is returned.
+                // This situation could happen with anonymous dimensions inside variables which
+                // indicates the bounds of another variable. These kind of variable are not useful
+                // for displaying the final raster.
+                if(group == null){
+                    return false;
+                }
                 Variable dimVariable = group.findVariable(dimName);
                 if (dimVariable == null) {
                     return false;
@@ -384,6 +397,7 @@ public class UnidataUtilities {
                     || name.toLowerCase().contains(COORDSYS.toLowerCase())
                     || name.endsWith(BOUNDS)
                     || name.endsWith(BNDS)
+                    || UNSUPPORTED_DIMENSIONS.contains(name)
                     )
                 
                 return false;
@@ -652,5 +666,12 @@ public class UnidataUtilities {
      */
     public static boolean isGribAvailable() {
         return IS_GRIB_AVAILABLE;
+    }
+
+    /**
+     * @return An unmodifiable Set of Unsupported Dimension names
+     */
+    public static Set<String> getUnsupportedDimensions() {
+        return Collections.unmodifiableSet(UNSUPPORTED_DIMENSIONS);
     }
 }

@@ -1408,42 +1408,47 @@ class RasterLayerResponse{
             rasterBounds.height++;
         if(oversampledRequest)
             rasterBounds.grow(2, 2);  
-        
     }
 
     /**
      * This method is responsible for initializing transformations g2w and back
      * 
      * @throws Exception in case we don't manage to instantiate some of them.
-     * 
      */
     private void initTransformations() throws Exception {
         //compute final world to grid
         // base grid to world for the center of pixels
         final AffineTransform g2w;
-        final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
-        final OverviewLevel selectedLevel = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
-        final double resX = baseLevel.resolutionX;
-        final double resY = baseLevel.resolutionY;
-        final double[] requestRes = request.spatialRequestHelper.getRequestedResolution();
+        if (!request.isHeterogeneousGranules()) {
+            final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
+            final OverviewLevel selectedLevel = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
+            final double resX = baseLevel.resolutionX;
+            final double resY = baseLevel.resolutionY;
+            final double[] requestRes = request.spatialRequestHelper.getRequestedResolution();
 
-        g2w = new AffineTransform((AffineTransform) baseGridToWorld);
-        g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
-        
-        if ((requestRes[0] < resX || requestRes[1] < resY) ) {
-            // Using the best available resolution
-            oversampledRequest = true;
+            g2w = new AffineTransform((AffineTransform) baseGridToWorld);
+            g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+
+            if ((requestRes[0] < resX || requestRes[1] < resY)) {
+                // Using the best available resolution
+                oversampledRequest = true;
+            } else {
+
+                // SG going back to working on a per level basis to do the composition
+                // g2w = new AffineTransform(request.getRequestedGridToWorld());
+                g2w.concatenate(AffineTransform.getScaleInstance(selectedLevel.scaleFactor, selectedLevel.scaleFactor));
+                g2w.concatenate(AffineTransform.getScaleInstance(
+                        baseReadParameters.getSourceXSubsampling(),
+                        baseReadParameters.getSourceYSubsampling()));
+            }
         } else {
-                
-            // SG going back to working on a per level basis to do the composition
-            // g2w = new AffineTransform(request.getRequestedGridToWorld());
-            g2w.concatenate(AffineTransform.getScaleInstance(selectedLevel.scaleFactor,selectedLevel.scaleFactor));
-            g2w.concatenate(AffineTransform.getScaleInstance(baseReadParameters.getSourceXSubsampling(), baseReadParameters.getSourceYSubsampling()));
-        }   
+            g2w = new AffineTransform(request.spatialRequestHelper.getRequestedGridToWorld());
+            g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+        }
         // move it to the corner
         finalGridToWorldCorner = new AffineTransform2D(g2w);
         finalWorldToGridCorner = finalGridToWorldCorner.inverse();// compute raster bounds
-        
+
     }
 
     /**

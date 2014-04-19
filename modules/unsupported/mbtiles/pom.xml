@@ -25,9 +25,9 @@
   <groupId>org.geotools</groupId>
   <artifactId>gt-mbtiles</artifactId>
   <packaging>jar</packaging>
-  <name>Example</name>
+  <name>mbtiles</name>
   <description>
-    Supply a quick description here.
+    MBTiles support for GeoTools.
   </description>
   
   <licenses>

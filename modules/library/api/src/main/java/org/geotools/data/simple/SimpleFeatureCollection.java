@@ -27,7 +27,7 @@ import org.opengis.filter.sort.SortBy;
  * SimpleFeatureIterator iterator = simpleFeatureCollection.features();
  * try {
  *     while( iterator.hasNext() ){
- *          SimpleFeature feature = iterator.hasNext();
+ *          SimpleFeature feature = iterator.next();
  *          System.out.println( feature.getID() );
  *     }
  * }
@@ -39,7 +39,7 @@ import org.opengis.filter.sort.SortBy;
  * And in Java 7:<pre><code>
  * try ( SimpleFeatureIterator iterator = simpleFeatureCollection.features() ){
  *     while( iterator.hasNext() ){
- *          SimpleFeature feature = iterator.hasNext();
+ *          SimpleFeature feature = iterator.next();
  *          System.out.println( feature.getID() );
  *     }
  * }

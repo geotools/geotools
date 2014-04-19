@@ -56,7 +56,7 @@ import org.opengis.util.ProgressListener;
  * FeatureIterator iterator = featureCollection.features();
  * try {
  *     while( iterator.hasNext() ){
- *          Feature feature = iterator.hasNext();
+ *          Feature feature = iterator.next();
  *          System.out.println( feature.getID() );
  *     }
  * }
@@ -68,7 +68,7 @@ import org.opengis.util.ProgressListener;
  * And in Java 7:<pre><code>
  * try ( FeatureIterator iterator = featureCollection.features() ){
  *     while( iterator.hasNext() ){
- *          Feature feature = iterator.hasNext();
+ *          Feature feature = iterator.next();
  *          System.out.println( feature.getID() );
  *     }
  * }

@@ -19,7 +19,7 @@ originally a tutorial in the use of AbstractDataStore and has become useful in i
 Example
 ^^^^^^^
 
-The property datastore works with a custom format based on Java properity files::
+The property datastore works with a custom format based on Java property files::
   
   _=id:Integer,geom:Geometry,name:String
   rd1=1|wkt|road one

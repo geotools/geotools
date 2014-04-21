@@ -226,7 +226,7 @@ public class MBTilesFile {
 
     /**
      * Store a tile
-     * 
+     *
      * @throws IOException
      */
     public void saveTile(MBTilesTile entry) throws IOException {
@@ -251,6 +251,10 @@ public class MBTilesFile {
                 }
                 ps.execute();
                 ps.close();
+
+                saveMinMaxZoomMetadata((int)Math.min(entry.getZoomLevel(), this.minZoom()),
+                        (int)Math.max(entry.getZoomLevel(), this.maxZoom()));
+
             } finally {
                 cx.close();
             }

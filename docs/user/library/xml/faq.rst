@@ -49,7 +49,7 @@ use GeoTools in.
 |            |     |     |        | WFS1.1  | still not straight forward   |
 |            |     |     |        | WPS     |                              |
 |            |     |     |        | XSD     | Allows streaming for large   |
-|            |     |     |        |         | GIS data volumes.           |
+|            |     |     |        |         | GIS data volumes.            |
 +------------+-----+-----+--------+---------+------------------------------+
 
 The XDO and GTXML solutions are configuration based. You set up a configuration

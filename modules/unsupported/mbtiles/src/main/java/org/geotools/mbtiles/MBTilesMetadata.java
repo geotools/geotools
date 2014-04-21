@@ -26,7 +26,10 @@ public class MBTilesMetadata {
     protected Envelope bounds;
     
     protected String attribution;
-        
+
+    protected int minZoom;
+
+    protected int maxZoom;
 
     public String getName() {
         return name;
@@ -82,8 +85,24 @@ public class MBTilesMetadata {
 
     public void setAttribution(String attribution) {
         this.attribution = attribution;
-    }       
-    
+    }
+
+    public int getMinZoom() {
+        return minZoom;
+    }
+
+    public void setMinZoom(int minZoom) {
+        this.minZoom = minZoom;
+    }
+
+    public int getMaxZoom() {
+        return maxZoom;
+    }
+
+    public void setMaxZoom(int maxZoom) {
+        this.maxZoom = maxZoom;
+    }
+
     public String getTypeStr() {
         if (type == null) {
             return null;
@@ -139,6 +158,22 @@ public class MBTilesMetadata {
             setBounds(new ReferencedEnvelope(minx, maxx, miny, maxy, null));
         }
         
+    }
+
+    public void setMinZoomStr(String minZoomStr) {
+        if (minZoomStr == null) {
+            minZoom = 0;
+        } else {
+            minZoom = Integer.parseInt(minZoomStr);
+        }
+    }
+
+    public void setMaxZoomStr(String maxZoomStr) {
+        if (maxZoomStr == null) {
+            maxZoom = 0;
+        } else {
+            maxZoom = Integer.parseInt(maxZoomStr);
+        }
     }
 
 }

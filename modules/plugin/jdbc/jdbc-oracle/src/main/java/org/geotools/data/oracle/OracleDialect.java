@@ -86,6 +86,33 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class OracleDialect extends PreparedStatementSQLDialect {
     
+    /**
+     * Sentinel value used to mark that the unwrapper lookup happened already, and an unwrapper was
+     * not found
+     */
+    UnWrapper UNWRAPPER_NOT_FOUND = new UnWrapper() {
+        
+        @Override
+        public Statement unwrap(Statement statement) {
+            throw new UnsupportedOperationException();
+        }
+        
+        @Override
+        public Connection unwrap(Connection conn) {
+            throw new UnsupportedOperationException();
+        }
+        
+        @Override
+        public boolean canUnwrap(Statement st) {
+            return false;
+        }
+        
+        @Override
+        public boolean canUnwrap(Connection conn) {
+            return false;
+        }
+    }; 
+    
     private static final int DEFAULT_AXIS_MAX = 10000000;
 
     private static final int DEFAULT_AXIS_MIN = -10000000;
@@ -547,33 +574,43 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      *
      */
     OracleConnection unwrapConnection( Connection cx ) throws SQLException {
-        if(cx == null)
+        if (cx == null) {
             return null;
+        }
         
         if ( cx instanceof OracleConnection ) {
             return (OracleConnection) cx;
         }
         
         try {
-            // try to use java 6 unwrapping the first time, it can fail, if so, the unwrapper will
-            // be set instead
-            if(cx instanceof Wrapper && uw != null) {
-                try {
-                    Wrapper w = cx;
-                    if(w.isWrapperFor(OracleConnection.class)) {
-                        return w.unwrap(OracleConnection.class);
-                    }
-                } catch(Throwable t) {
-                    // not a mistake, old DBCP versions will throw an Error here, we need to catch it
-                    LOGGER.log(Level.FINE, "Failed to unwrap connection using java 6 facilities", t);
+            // first lookup ever? (we have UNWRAPPER_NOT_FOUND as a sentinel for a lookup that
+            // will not work (we assume the datasource will always return connections we can
+            // unwrap, or never).
+            if (uw == null) {
+                UnWrapper unwrapper = DataSourceFinder.getUnWrapper(cx);
+                if (unwrapper == null) {
+                    uw = UNWRAPPER_NOT_FOUND;
+                } else {
+                    uw = unwrapper;
                 }
             }
-            if(uw == null)
-                uw = DataSourceFinder.getUnWrapper( cx );
-            if ( uw != null ) {
+            if (uw != null && uw != UNWRAPPER_NOT_FOUND) {
                 Connection uwcx = uw.unwrap( cx );
                 if ( uwcx != null && uwcx instanceof OracleConnection ) {
                     return (OracleConnection) uwcx;
+                }
+            } else if (cx instanceof Wrapper) {
+                // try to use java 6 unwrapping
+                try {
+                    Wrapper w = cx;
+                    if (w.isWrapperFor(OracleConnection.class)) {
+                        return w.unwrap(OracleConnection.class);
+                    }
+                } catch (Throwable t) {
+                    // not a mistake, old DBCP versions will throw an Error here, we need to catch
+                    // it
+                    LOGGER.log(Level.FINER, "Failed to unwrap connection using java 6 facilities",
+                            t);
                 }
             }
         } catch(IOException e) {

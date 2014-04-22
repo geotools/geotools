@@ -170,6 +170,7 @@
     <module>swt</module>
     <module>process</module>
     <module>wfs</module>
+    <module>wfs-ng</module>
     <module>geojson</module>
     <module>geopkg</module>
     <module>mbtiles</module>

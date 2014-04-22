@@ -101,36 +101,18 @@ public class StoredQueryConfiguration {
 		ret.getStoredQueryParameterMappings().add(
 				new ParameterMappingExpressionValue("bbox", "CQL", 
 						"strConCat("
-						+ "numberFormat('0.00000000000', bboxMinX), strConCat("
-						+ "',', strconCat("
 						+ "numberFormat('0.00000000000', bboxMinY), strConCat("
 						+ "',', strConCat("
-						+ "numberFormat('0.00000000000', bboxMaxX), strConCat("
-						+ "',', strConCat("
-						+ "numberFormat('0.00000000000', bboxMaxY), strConCat("
-						+ "',', "
-						+ "defaultSRS))))))))" // 
-					));
-		/*
-		ret.getStoredQueryParameterMappings().add(
-				new ParameterMappingExpressionValue("bbox", "CQL", 
-						"strConCat("
-						+ "numberFormat('0.00000000000', bboxMinY), strConCat("
-						+ "',', strconCat("
 						+ "numberFormat('0.00000000000', bboxMinX), strConCat("
 						+ "',', strConCat("
 						+ "numberFormat('0.00000000000', bboxMaxY), strConCat("
-						+ "',', "
-						+ "numberFormat('0.00000000000', bboxMaxX)))))))"
+						+ "',', strConCat("
+						+ "numberFormat('0.00000000000', bboxMaxX), ',EPSG:4258')))))))" 
 					));
-		*/
-		/*
+
 		ret.getStoredQueryParameterMappings().add(
 				new ParameterMappingDefaultValue("timestep", "720"));
-		*/
-		ret.getStoredQueryParameterMappings().add(
-				new ParameterMappingExpressionValue("timestep", "CQL", "viewparam:X"));
-		
+
 		return ret;
 	}
 }

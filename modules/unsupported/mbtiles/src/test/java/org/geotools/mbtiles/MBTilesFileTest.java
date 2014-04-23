@@ -38,7 +38,14 @@ public class MBTilesFileTest {
         
         file.close();        
     }
-    
+
+    @Test
+    public void testMBTilesInitTwice() throws IOException {
+        MBTilesFile file = new MBTilesFile();
+        file.init();
+        file.init();
+    }
+
     @Test
     public void testMBTilesTile() throws IOException, SQLException {
         

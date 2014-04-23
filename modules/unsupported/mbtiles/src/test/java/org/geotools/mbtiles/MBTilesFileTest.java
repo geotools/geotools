@@ -25,7 +25,9 @@ public class MBTilesFileTest {
         metadata.setVersion("dummy version");
         metadata.setBoundsStr("0,0,100,100");
         metadata.setFormatStr("png");
-        metadata.setTypeStr("overlay");                
+        metadata.setTypeStr("overlay");
+        metadata.setMinZoomStr("0");
+        metadata.setMaxZoomStr("5");
         file.saveMetaData(metadata);   
         
         MBTilesMetadata metadata2 = file.loadMetaData();
@@ -35,7 +37,9 @@ public class MBTilesFileTest {
         assertEquals(metadata.getBounds(), metadata2.getBounds());
         assertEquals(metadata.getFormat(), metadata2.getFormat());
         assertEquals(metadata.getType(), metadata2.getType());
-        
+        assertEquals(metadata.getMinZoom(), metadata2.getMinZoom());
+        assertEquals(metadata.getMaxZoom(), metadata2.getMaxZoom());
+
         file.close();        
     }
 
@@ -44,6 +48,16 @@ public class MBTilesFileTest {
         MBTilesFile file = new MBTilesFile();
         file.init();
         file.init();
+    }
+
+    @Test
+    public void testMBTilesMinMaxZoomLevelMetaData() throws IOException, SQLException {
+        MBTilesFile file = new MBTilesFile();
+        file.init();
+        file.saveMinMaxZoomMetadata(0, 14);
+        MBTilesMetadata metadata = file.loadMetaData();
+        assertEquals(0, metadata.getMinZoom());
+        assertEquals(14, metadata.getMaxZoom());
     }
 
     @Test
@@ -74,7 +88,8 @@ public class MBTilesFileTest {
         assertTrue(it.hasNext());
         assertNotNull(it.next());
         assertFalse(it.hasNext());
-        
+
+        assertEquals(1, file.minZoom());
         assertEquals(2, file.maxZoom());
         assertEquals(2, file.closestZoom(5));
         assertEquals(1, file.closestZoom(1));

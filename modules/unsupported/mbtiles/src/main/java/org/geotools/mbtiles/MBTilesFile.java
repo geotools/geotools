@@ -106,6 +106,10 @@ public class MBTilesFile {
 
     protected final String MD_ATTRIBUTION = "attribution";
 
+    protected final String MD_MINZOOM = "minzoom";
+
+    protected final String MD_MAXZOOM = "maxzoom";
+
     /**
      * Logger
      */
@@ -189,6 +193,29 @@ public class MBTilesFile {
                 saveMetaDataEntry(MD_TYPE, metaData.getTypeStr(), cx);
                 saveMetaDataEntry(MD_FORMAT, metaData.getFormatStr(), cx);
                 saveMetaDataEntry(MD_BOUNDS, metaData.getBoundsStr(), cx);
+                saveMetaDataEntry(MD_MINZOOM, String.valueOf(metaData.getMinZoom()), cx);
+                saveMetaDataEntry(MD_MAXZOOM, String.valueOf(metaData.getMaxZoom()), cx);
+            } finally {
+                cx.close();
+            }
+        } catch (SQLException e) {
+            throw new IOException(e);
+        }
+    }
+
+    /**
+     * Save the minimum and maximum zoom level as metadata items.  GDAL and QGIS
+     * expect these items.
+     * @param min The minimum zoom level
+     * @param max The maximum zoom level
+     * @throws IOException
+     */
+    public void saveMinMaxZoomMetadata(int min, int max) throws IOException {
+        try {
+            Connection cx = connPool.getConnection();
+            try {
+                saveMetaDataEntry(MD_MINZOOM, String.valueOf(min), cx);
+                saveMetaDataEntry(MD_MAXZOOM, String.valueOf(max), cx);
             } finally {
                 cx.close();
             }
@@ -199,7 +226,7 @@ public class MBTilesFile {
 
     /**
      * Store a tile
-     * 
+     *
      * @throws IOException
      */
     public void saveTile(MBTilesTile entry) throws IOException {
@@ -224,6 +251,10 @@ public class MBTilesFile {
                 }
                 ps.execute();
                 ps.close();
+
+                saveMinMaxZoomMetadata((int)Math.min(entry.getZoomLevel(), this.minZoom()),
+                        (int)Math.max(entry.getZoomLevel(), this.maxZoom()));
+
             } finally {
                 cx.close();
             }
@@ -301,6 +332,8 @@ public class MBTilesFile {
                 metaData.setTypeStr(loadMetaDataEntry(MD_TYPE, cx));
                 metaData.setFormatStr(loadMetaDataEntry(MD_FORMAT, cx));
                 metaData.setBoundsStr(loadMetaDataEntry(MD_BOUNDS, cx));
+                metaData.setMinZoomStr(loadMetaDataEntry(MD_MINZOOM, cx));
+                metaData.setMaxZoomStr(loadMetaDataEntry(MD_MAXZOOM, cx));
             } finally {
                 cx.close();
             }
@@ -462,7 +495,24 @@ public class MBTilesFile {
         }
         return zoom;
     }
-        
+
+    public long minZoom() throws SQLException {
+        long zoom = 0;
+        Connection cx = connPool.getConnection();
+        try {
+            Statement st = cx.createStatement();
+            ResultSet rs = st.executeQuery("SELECT MIN(zoom_level) FROM " + TABLE_TILES);
+            if (rs.next()) {
+                zoom = rs.getLong(1);
+            }
+            rs.close();
+            st.close();
+        } finally {
+            cx.close();
+        }
+        return zoom;
+    }
+
     public long maxZoom() throws SQLException {
         long zoom = 0;
         Connection cx = connPool.getConnection();

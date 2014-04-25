@@ -1,54 +1,59 @@
 package org.geotools.data.wfs.internal.v2_0.storedquery;
 
-import java.util.Map;
+import java.io.Serializable;
 
-import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
 
-import com.vividsolutions.jts.geom.Envelope;
-
-public class ParameterMappingExpressionValue extends ParameterMapping {
-	private final String expressionLanguage;
-	private final String expression;
+public class ParameterMappingExpressionValue implements ParameterMapping, Serializable {
+	private String parameterName;
+	private String expressionLanguage;
+	private String expression;
 	
-	private Expression cqlExpression;
+	private transient Expression cqlExpression;
 	
-	public ParameterMappingExpressionValue(String parameterName, String expressionLanguage, 
-			String expression) {
-		super(parameterName);
+	public void setParameterName(String parameterName) {
+		this.parameterName = parameterName;
+	}
+	
+	@Override
+	public String getParameterName() {
+		return parameterName;
+	}
+	
+	public void setExpressionLanguage(String expressionLanguage) {
 		this.expressionLanguage = expressionLanguage;
+	}
+
+	public String getExpressionLanguage() {
+		return expressionLanguage;
+	}
+	
+	public void setExpression(String expression) {
 		this.expression = expression;
-		
-		if (!this.expressionLanguage.equals("CQL")) {
-			throw new IllegalArgumentException("Expression language "+expressionLanguage+
-					" is not supported!");
-		}
-		
-		try {
-			cqlExpression = CQL.toExpression(expression,
-					new ParameterCQLExpressionFilterFactoryImpl());
-		} catch(CQLException ce) {
-			throw new IllegalArgumentException("Illegal CQL experssion", ce);
-		}
 	}
 	
 	public String getExpression() {
 		return expression;
 	}
-	
-	public String getExpressionLanguage() {
-		return expressionLanguage;
-	}
 
+	private Expression ensureExpression() {
+		if (cqlExpression != null) return cqlExpression;
+		
+		try {
+			cqlExpression = CQL.toExpression(expression,
+					new ParameterCQLExpressionFilterFactoryImpl());
+		} catch(CQLException ce) {
+			throw new IllegalArgumentException("Illegal CQL expression", ce);
+		}
+		
+		return cqlExpression;
+	}
+	
 	public String evaluate(ParameterMappingContext mappingContext) {
 	
-		Object obj = cqlExpression.evaluate(mappingContext);
+		Object obj = ensureExpression().evaluate(mappingContext);
 		
 		String ret;
 		

@@ -68,6 +68,7 @@ import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.FeatureTypeInfo;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
+import org.geotools.data.wfs.internal.v2_0.storedquery.ParameterTypeFactory;
 import org.geotools.data.wfs.internal.v2_0.storedquery.StoredQueryConfiguration;
 import org.geotools.data.wfs.internal.DescribeStoredQueriesRequest;
 import org.geotools.data.wfs.internal.HttpMethod;
@@ -108,8 +109,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     private final Map<QName, FeatureTypeType> typeInfos;
 
-	private final QName XSI_String = new QName("http://www.w3.org/2001/XMLSchema-instance", "string");
-    
     public StrictWFS_2_0_Strategy() {
         super();
         typeInfos = new HashMap<QName, FeatureTypeType>();
@@ -345,11 +344,11 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 			GetFeatureRequest query) {
 		Map<String, String> kvp = null;
 		if (query.isStoredQuery()) {
+			FeatureTypeInfoImpl featureTypeInfo = (FeatureTypeInfoImpl)getFeatureTypeInfo(query.getTypeName());
 			StoredQueryDescriptionType desc = query.getStoredQueryDescriptionType();
 			String storedQueryId = desc.getId();
-			
-			// TODO: this is just a mock, it needs to be read from the layer configuration
-			StoredQueryConfiguration config = StoredQueryConfiguration.createMock(storedQueryId);
+
+			StoredQueryConfiguration config = null;
 
 			kvp = new HashMap<String, String>();
 
@@ -365,11 +364,11 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 			Map<String, String> viewParams = null;
 	        if (query.getHints() != null) {
 				viewParams = (Map<String, String>)query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
-	        	
+				config = (StoredQueryConfiguration)((Map<String, Object>)query.getHints().get(Hints.FEATURETYPEINFO_METADATA)).get("WFS_NG_STORED_QUERY_CONFIGURATION");
 	        }
 			
-	        List<ParameterType> params = config.createStoredQueryParameters(query.getFilter(),
-	        		viewParams, desc, (FeatureTypeInfoImpl)getFeatureTypeInfo(query.getTypeName()));
+	        List<ParameterType> params = new ParameterTypeFactory(config).createStoredQueryParameters(query.getFilter(),
+	        		viewParams, desc, featureTypeInfo);
 
 	        for (ParameterType p : params) {
 	        	kvp.put(p.getName(), p.getValue());
@@ -440,8 +439,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 			StoredQueryDescriptionType desc = query.getStoredQueryDescriptionType();
 			String storedQueryId = desc.getId();
 
-			// TODO: this is just a mock, it needs to be read from the layer configuration
-			StoredQueryConfiguration config = StoredQueryConfiguration.createMock(storedQueryId);
+			StoredQueryConfiguration config = null;
 			
 	        StoredQueryType storedQuery = factory.createStoredQueryType();
 	        storedQuery.setId(storedQueryId);
@@ -450,12 +448,14 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 	        query.setUnsupportedFilter(query.getFilter());
 	        
 	        Map<String, String> viewParams = null;
+
 	        if (query.getHints() != null) {
 	        	viewParams = (Map<String, String>)query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+	        	config = (StoredQueryConfiguration)((Map<String, Object>)query.getHints().get(Hints.FEATURETYPEINFO_METADATA)).get("WFS_NG_STORED_QUERY_CONFIGURATION");
 	        }
 	        
-	        List<ParameterType> params = config.createStoredQueryParameters(query.getFilter(),
-	        		viewParams, desc, featureTypeInfo);
+	        List<ParameterType> params = new ParameterTypeFactory(config)
+	        	.createStoredQueryParameters(query.getFilter(), viewParams, desc, featureTypeInfo);
 	        
 	        storedQuery.getParameter().addAll(params);
 
@@ -517,51 +517,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         
         return getFeature;
     }
-
-    /*
-    private List<ParameterType> createStoredQueryParameters(Filter filter, 
-    		Map<String, String> viewParams,	StoredQueryConfiguration config,
-    		StoredQueryDescriptionType desc) {
-    	final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
-    	
-    	ParameterMappingContext mappingContext = new ParameterMappingContext(filter, viewParams);
-    	
-    	List<ParameterType> ret = new ArrayList<ParameterType>();
-    	
-    	for (ParameterExpressionType parameter : desc.getParameter()) {
-    		String value = null;
-    		
-    		ParameterMapping mapping = config.getStoredQueryParameterMapping(
-					parameter.getName());
-			
-    		// Primarily use the one provided by the user
-    		if (value == null && viewParams != null) {
-    			value = viewParams.get(parameter.getName());
-    		}
-    		
-    		if (value == null && mapping != null) { 
-    			if (mapping instanceof ParameterMappingDefaultValue) {
-    				value = ((ParameterMappingDefaultValue)mapping).getDefaultValue();
-    			} else if (mapping instanceof ParameterMappingExpressionValue) {
-    				value = ((ParameterMappingExpressionValue)mapping).evaluate(mappingContext);
-    			} else {
-    				throw new IllegalArgumentException("Unknown StoredQueryParameterMapping: "
-    						+ mapping.getClass());
-    			}
-    		}
-    		
-    		// If there is a value, add a parameter to the query
-    		if (value != null) {
-    			ParameterType tmp = factory.createParameterType();
-    			tmp.setName(parameter.getName());
-    			tmp.setValue(value);
-    			ret.add(tmp);
-    		}
-    	}
-    	
-    	return ret;
-	}
-	*/
 
     @Override
     protected EObject createListStoredQueriesRequestPost(

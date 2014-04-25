@@ -1,10 +1,21 @@
 package org.geotools.data.wfs.internal.v2_0.storedquery;
 
-public class ParameterMappingDefaultValue extends ParameterMapping {
-	private final String defaultValue;
+import java.io.Serializable;
+
+public class ParameterMappingDefaultValue implements ParameterMapping, Serializable {
+	private String parameterName;
+	private String defaultValue;
 	
-	public ParameterMappingDefaultValue(String parameterName, String defaultValue) {
-		super(parameterName);
+	public void setParameterName(String parameterName) {
+		this.parameterName = parameterName;
+	}
+	
+	@Override
+	public String getParameterName() {
+		return parameterName;
+	}
+	
+	public void setDefaultValue(String defaultValue) {
 		this.defaultValue = defaultValue;
 	}
 	

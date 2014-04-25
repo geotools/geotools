@@ -677,6 +677,16 @@ public class Hints extends RenderingHints {
     public static final ClassKey VIRTUAL_TABLE_PARAMETERS = new ClassKey(
             "java.util.Map");
 
+
+    /**
+     * Provides metadata associated with the current FeatureTypeInfo.
+     * Serves as a bridge between GeoServer configuration and geotools.
+     *
+     * @since 12
+     */
+    public static final ClassKey FEATURETYPEINFO_METADATA = new ClassKey(
+            "java.util.Map");
+
     ////////////////////////////////////////////////////////////////////////
     ////////                                                        ////////
     ////////                     Grid Coverages                     ////////

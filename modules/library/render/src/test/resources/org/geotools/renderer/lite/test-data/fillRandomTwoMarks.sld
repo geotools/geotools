@@ -18,7 +18,7 @@
                       <CssParameter name="fill">0x000088</CssParameter>
                     </Fill>
                   </Mark>
-                  <Size>2</Size>
+                  <Size>20</Size>
                 </Graphic>
               </GraphicFill>
             </Fill>
@@ -43,7 +43,7 @@
                       <CssParameter name="fill">0xFFFFFF</CssParameter>
                     </Fill>
                   </Mark>
-                  <Size>3</Size>
+                  <Size>40</Size>
                 </Graphic>
               </GraphicFill>
             </Fill>

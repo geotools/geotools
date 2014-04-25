@@ -9,6 +9,8 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import javax.imageio.ImageIO;
+
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -60,6 +62,10 @@ public class FillTest {
     }
     
     private void runSingleLayerTest(String styleName) throws Exception {
+        runSingleLayerTest(styleName, 100);
+    }
+
+    private void runSingleLayerTest(String styleName, int threshold) throws Exception {
         Style style = RendererBaseTest.loadStyle(this, styleName);
 
         MapContent mc = new MapContent();
@@ -70,7 +76,10 @@ public class FillTest {
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         
         BufferedImage image = RendererBaseTest.showRender(styleName, renderer, TIME, bounds);
-        ImageAssert.assertEquals(new File("./src/test/resources/org/geotools/renderer/lite/test-data/" + styleName +  ".png"), image, 100);
+        ImageIO.write(image, "PNG", new File("/tmp", styleName + "png"));
+        File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/"
+                + styleName + ".png");
+        ImageAssert.assertEquals(reference, image, threshold);
     }
     
 
@@ -86,7 +95,7 @@ public class FillTest {
 
     @Test
     public void testTriangleFill() throws Exception {
-        runSingleLayerTest("fillTriangle.sld");
+        runSingleLayerTest("fillTriangle.sld", 250);
     }
 
     @Test

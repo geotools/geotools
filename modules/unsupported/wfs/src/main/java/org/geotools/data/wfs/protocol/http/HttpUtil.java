@@ -49,10 +49,16 @@ public class HttpUtil {
     }
 
     public static String createUri(final URL baseUrl, final Map<String, String> queryStringKvp) {
-        final String query = baseUrl.getQuery();
+        String query = baseUrl.getQuery();
         Map<String, String> finalKvpMap = new HashMap<String, String>(queryStringKvp);
         if (query != null && query.length() > 0) {
             Map<String, String> userParams = new CaseInsensitiveMap(queryStringKvp);
+            
+            // there might be a "&amp;" at the end, make sure to remove it
+            if (query.endsWith("&amp;")) {
+            	query = query.substring(0, query.length() - 5);
+            }
+            
             String[] rawUrlKvpSet = query.split("&");
             for (String rawUrlKvp : rawUrlKvpSet) {
                 int eqIdx = rawUrlKvp.indexOf('=');

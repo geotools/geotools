@@ -189,8 +189,7 @@ public final class FilterToTextUtil {
 	public static Object buildIsNull(PropertyIsNull filter, Object extraData) {
         StringBuilder output = asStringBuilder(extraData);
         
-        PropertyName propertyName = (PropertyName) filter.getExpression();
-        propertyName.accept(new ExpressionToText(), output);        
+        filter.getExpression().accept(new ExpressionToText(), output);
         output.append(" IS NULL");
         return output;
 	}
@@ -237,9 +236,9 @@ public final class FilterToTextUtil {
         StringBuilder output = asStringBuilder(extraData);
         
         output.append("DWITHIN(");
-        PropertyName propertyName = (PropertyName) filter.getExpression1();
         ExpressionToText visitor = new ExpressionToText();
-		propertyName.accept(visitor, output);
+        
+        filter.getExpression1().accept(visitor, output);
         output.append(", ");
         filter.getExpression2().accept(visitor, output);
         output.append(", ");

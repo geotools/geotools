@@ -185,7 +185,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         for (Expression expression : exprList) {
             PropertyIsEqualTo eq = getFilterFactory().equals(leftHandExpr,
                     expression);
-            filterList.add(eq);
+            filterList.add(0,eq);
         }
         Or orFilter = getFilterFactory().or(filterList);
 

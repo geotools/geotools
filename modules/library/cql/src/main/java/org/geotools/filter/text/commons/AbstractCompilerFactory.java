@@ -52,7 +52,7 @@ public abstract class AbstractCompilerFactory {
         FilterFactory ff = filterFactory;
 
         if (filterFactory == null) {
-            ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+            ff = CommonFactoryFinder.getFilterFactory();
         }
         String clonePredicate = new String(predicate);
         ICompiler compiler = createCompiler(clonePredicate, ff);

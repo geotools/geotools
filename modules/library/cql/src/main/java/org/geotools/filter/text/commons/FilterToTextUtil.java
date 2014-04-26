@@ -95,23 +95,27 @@ public final class FilterToTextUtil {
 	 */
 	public static Object buildBinaryLogicalOperator(final String operator, FilterVisitor visitor, BinaryLogicOperator filter, Object extraData) {
     	
-    	LOGGER.finer("exporting And filter");
+    	LOGGER.finer("exporting binary logic filter");
     	
-    	StringBuilder output = asStringBuilder(extraData);
-		List<Filter> children = filter.getChildren();
-		if (children != null) {
-			output.append("(");
-			for (Iterator<Filter> i = children.iterator(); i.hasNext();) {
-				Filter child = i.next();
-				child.accept(visitor, output);
-				if (i.hasNext()) {
-					output.append(" ").append(operator).append(" ");
-				}
-			}
-			output.append(")");
-		}
-		return output;
-	}
+        StringBuilder output = asStringBuilder(extraData);
+        List<Filter> children = filter.getChildren();
+        if (children != null) {
+            for (Iterator<Filter> i = children.iterator(); i.hasNext();) {
+                Filter child = i.next();
+                if (child instanceof BinaryLogicOperator) {
+                    output.append("(");
+                }
+                child.accept(visitor, output);
+                if (child instanceof BinaryLogicOperator) {
+                    output.append(")");
+                }
+                if (i.hasNext()) {
+                    output.append(" ").append(operator).append(" ");
+                }
+            }
+        }
+        return output;
+    }
 
 	public static Object buildBetween(PropertyIsBetween filter, Object extraData) {
     	LOGGER.finer("exporting PropertyIsBetween");

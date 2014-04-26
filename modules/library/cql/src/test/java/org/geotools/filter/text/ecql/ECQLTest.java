@@ -175,10 +175,10 @@ public final class ECQLTest  {
         Filter  filter;
        
         // and sample
-        assertFilter("(ATTR1 < 10 AND ATTR2 < 2)",And.class);
+        assertFilter("ATTR1 < 10 AND ATTR2 < 2",And.class);
         
        // or sample
-        assertFilter("(ATTR1 < 10 OR ATTR2 < 2)",Or.class);
+        assertFilter("ATTR1 < 10 OR ATTR2 < 2",Or.class);
 
         // not sample
         assertFilter("NOT (ATTR < 10)",Not.class);

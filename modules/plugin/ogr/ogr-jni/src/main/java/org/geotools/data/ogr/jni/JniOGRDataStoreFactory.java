@@ -12,8 +12,8 @@ public class JniOGRDataStoreFactory extends OGRDataStoreFactory {
     
     @Override
     protected boolean doIsAvailable() throws Throwable {
-        System.loadLibrary("gdaljni");
-        return true;
+      Class.forName("org.gdal.ogr.ogr");
+      return true;
     }
 
 }

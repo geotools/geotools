@@ -189,7 +189,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>12-SNAPSHOT</version>
+  <version>12-remloadlibrary</version>
   <name>Geotools</name>
 
   <scm>

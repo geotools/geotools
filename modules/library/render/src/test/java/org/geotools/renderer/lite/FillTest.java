@@ -76,7 +76,6 @@ public class FillTest {
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         
         BufferedImage image = RendererBaseTest.showRender(styleName, renderer, TIME, bounds);
-        ImageIO.write(image, "PNG", new File("/tmp", styleName + "png"));
         File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/"
                 + styleName + ".png");
         ImageAssert.assertEquals(reference, image, threshold);

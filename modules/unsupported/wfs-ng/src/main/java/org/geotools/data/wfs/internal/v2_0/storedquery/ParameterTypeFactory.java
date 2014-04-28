@@ -21,9 +21,13 @@ public class ParameterTypeFactory
 	}
 
 
-	public ParameterMapping getStoredQueryParameterMapping(
-			String parameterName) {
+	public ParameterMapping getStoredQueryParameterMapping(String parameterName) {
 		ParameterMapping ret = null;
+
+		if (this.config == null) {
+			return ret;
+		}
+
 		for (ParameterMapping sqpm : this.config.getStoredQueryParameterMappings()) {
 			if (sqpm.getParameterName().equals(parameterName)) {
 				ret = sqpm;
@@ -48,8 +52,7 @@ public class ParameterTypeFactory
     	for (ParameterExpressionType parameter : desc.getParameter()) {
     		String value = null;
     		
-    		ParameterMapping mapping = getStoredQueryParameterMapping(
-					parameter.getName());
+    		ParameterMapping mapping = getStoredQueryParameterMapping(parameter.getName());
 			
     		// Primarily use the one provided by the user
     		if (value == null && viewParams != null) {

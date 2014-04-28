@@ -24,10 +24,12 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.PropertyIsBetween;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -106,5 +108,15 @@ public class BetweenTest extends TestCase {
         assertEquals(true, a.contains(f3)); // max value
         assertEquals(true, a.contains(f4)); // min value
         assertEquals(false, a.contains(f5)); // too large
+    }
+
+    public void testEquals() throws Exception {
+        org.opengis.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        PropertyIsBetween f1 = ff.between(ff.property("abc"), ff.literal(10), ff.literal(20));
+        PropertyIsBetween f2 = ff.between(ff.property("efg"), ff.literal(10), ff.literal(20));
+        PropertyIsBetween f3 = ff.between(ff.property("abc"), ff.literal(10), ff.literal(20));
+
+        assertEquals(f1, f3);
+        assertFalse(f1.equals(f2));
     }
 }

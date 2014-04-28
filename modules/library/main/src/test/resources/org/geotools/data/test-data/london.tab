@@ -1,0 +1,12 @@
+!table
+!version 300
+!charset WindowsLatin1
+Definition Table
+File "london.bil"
+Type "RASTER"
+(297055,5717803) (0,0) Label "Pt 1",
+(297065,5717803) (1,0) Label "Pt 2",
+(297055,5717793) (0,1) Label "Pt 3"
+CoordSys Earth Projection 8, 104, "m", 3, 0, 0.9996, 500000, 0 Units "m"
+RasterStyle 1 48
+RasterStyle 2 89

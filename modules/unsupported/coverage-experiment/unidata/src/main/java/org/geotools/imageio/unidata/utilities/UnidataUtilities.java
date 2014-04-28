@@ -1,13 +1,13 @@
 /*
- *    ImageI/O-Ext - OpenSource Java Image translation Library
- *    http://www.geo-solutions.it/
- *    http://java.net/projects/imageio-ext/
- *    (C) 2007 - 2009, GeoSolutions
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
- *    either version 3 of the License, or (at your option) any later version.
+ *    version 2.1 of the License.
  *
  *    This library is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -28,6 +28,7 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
@@ -62,9 +63,17 @@ import ucar.nc2.dataset.VariableDS;
  */
 public class UnidataUtilities {
 
+    /** Set containing all the definition of the UNSUPPORTED DIMENSIONS to set as vertical ones*/
+    private static final Set<String> UNSUPPORTED_DIMENSIONS;
+
     static {
         NetcdfDataset.setDefaultEnhanceMode(EnumSet.of(Enhance.CoordSystems));
+        UNSUPPORTED_DIMENSIONS = new HashSet<String>();
+        UNSUPPORTED_DIMENSIONS.add("OSEQD");
    }
+    
+    /** Boolean indicating if GRIB library is available*/
+    private static boolean IS_GRIB_AVAILABLE;
 
     public static final String EXTERNAL_DATA_DIR;
 
@@ -186,6 +195,17 @@ public class UnidataUtilities {
             }
         }
         EXTERNAL_DATA_DIR = finalDir;
+        
+        try {
+            Class.forName("ucar.nc2.grib.GribIosp");
+            Class.forName("org.geotools.coverage.io.grib.GribUtilities");
+            IS_GRIB_AVAILABLE = true;
+        } catch (ClassNotFoundException cnf) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("No Grib library found on classpath. GRIB will not be supported");
+            }
+            IS_GRIB_AVAILABLE = false;
+        }
     }
 
     public static boolean isValid(File file) {
@@ -325,6 +345,13 @@ public class UnidataUtilities {
                 String dimName = dimension.getFullName();
                 // check the dimension to be defined
                 Group group = dimension.getGroup();
+                // Simple check if the group is not present. In that case false is returned.
+                // This situation could happen with anonymous dimensions inside variables which
+                // indicates the bounds of another variable. These kind of variable are not useful
+                // for displaying the final raster.
+                if(group == null){
+                    return false;
+                }
                 Variable dimVariable = group.findVariable(dimName);
                 if (dimVariable == null) {
                     return false;
@@ -370,6 +397,7 @@ public class UnidataUtilities {
                     || name.toLowerCase().contains(COORDSYS.toLowerCase())
                     || name.endsWith(BOUNDS)
                     || name.endsWith(BNDS)
+                    || UNSUPPORTED_DIMENSIONS.contains(name)
                     )
                 
                 return false;
@@ -631,5 +659,19 @@ public class UnidataUtilities {
             indexSchema = null;
         }
         return indexSchema;
+    }
+
+    /**
+     * @return true if the GRIB library is available
+     */
+    public static boolean isGribAvailable() {
+        return IS_GRIB_AVAILABLE;
+    }
+
+    /**
+     * @return An unmodifiable Set of Unsupported Dimension names
+     */
+    public static Set<String> getUnsupportedDimensions() {
+        return Collections.unmodifiableSet(UNSUPPORTED_DIMENSIONS);
     }
 }

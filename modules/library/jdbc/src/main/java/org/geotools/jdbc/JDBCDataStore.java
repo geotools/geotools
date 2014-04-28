@@ -1343,11 +1343,12 @@ public final class JDBCDataStore extends ContentDataStore
     
     /**
      * Results the value of an aggregate function over a query.
+     * @return generated result, or null if unsupported
      */
     protected Object getAggregateValue(FeatureVisitor visitor, SimpleFeatureType featureType, Query query, Connection cx ) 
         throws IOException {
         
-        //get the name of the function
+        // get the name of the function
         String function = getAggregateFunctions().get( visitor.getClass() );
         if ( function == null ) {
             //try walking up the hierarchy
@@ -1366,11 +1367,13 @@ public final class JDBCDataStore extends ContentDataStore
         
         AttributeDescriptor att = null;
         Expression expression = getExpression(visitor);
-        if ( expression != null ) {
+        if (expression != null) {
             att = (AttributeDescriptor) expression.evaluate( featureType );
         }
-        
-        //result of the function
+        if(att == null && !(visitor instanceof CountVisitor)){
+            return null; // aggregate function optimization only supported for PropertyName expression
+        }
+        // result of the function
         try {
             Object result = null;
             List results = new ArrayList();
@@ -1578,9 +1581,29 @@ public final class JDBCDataStore extends ContentDataStore
             return;
         }
 
+        // grab primary key
+        PrimaryKey key = null;
+        try {
+            key = getPrimaryKey(featureType);
+        } catch (IOException e) {
+            throw new RuntimeException( e );
+        }
+        Set<String> pkColumnNames = getColumnNames(key);
+
+        //do a check to ensure that the update includes at least one non primary key column
+        boolean nonPkeyColumn = false;
+        for (AttributeDescriptor att : attributes) {
+            if (!pkColumnNames.contains(att.getLocalName())) {
+                nonPkeyColumn = true;
+            }
+        }
+        if (!nonPkeyColumn) {
+            throw new IllegalArgumentException("Illegal update, must include at least one non primary key column, " +
+                    "all primary key columns are ignored.");
+        }
         if ( dialect instanceof PreparedStatementSQLDialect ) {
             try {
-                PreparedStatement ps = updateSQLPS(featureType, attributes, values, filter, cx);
+                PreparedStatement ps = updateSQLPS(featureType, attributes, values, filter, pkColumnNames, cx);
                 try {
                     ((PreparedStatementSQLDialect)dialect).onUpdate(ps, cx, featureType);
                     ps.execute();
@@ -1594,7 +1617,7 @@ public final class JDBCDataStore extends ContentDataStore
             }
         }
         else {
-            String sql = updateSQL(featureType, attributes, values, filter);
+            String sql = updateSQL(featureType, attributes, values, filter, pkColumnNames);
 
             try {
                 Statement st = cx.createStatement();
@@ -3010,10 +3033,22 @@ public final class JDBCDataStore extends ContentDataStore
         //sorting
         sort(featureType, query.getSortBy(), null, sql);
         
-        // finally encode limit/offset, if necessary
+        // encode limit/offset, if necessary
         applyLimitOffset(sql, query);
+        
+        // add search hints if the dialect supports them
+        applySearchHints(featureType, query, sql);
 
         return sql.toString();
+    }
+
+    private void applySearchHints(SimpleFeatureType featureType, Query query, StringBuffer sql) {
+        // we can apply search hints only on real tables
+        if(virtualTables.containsKey(featureType.getTypeName())) {
+            return;
+        }
+        
+        dialect.handleSelectHints(sql, featureType, query);
     }
 
     protected String selectJoinSQL(SimpleFeatureType featureType, JoinInfo join, Query query) 
@@ -3975,17 +4010,8 @@ public final class JDBCDataStore extends ContentDataStore
      * Generates an 'UPDATE' sql statement.
      */
     protected String updateSQL(SimpleFeatureType featureType, AttributeDescriptor[] attributes,
-        Object[] values, Filter filter) throws IOException, SQLException {
+        Object[] values, Filter filter, Set<String> pkColumnNames) throws IOException, SQLException {
         BasicSQLDialect dialect = (BasicSQLDialect) getSQLDialect();
-        
-        // grab the primary key and collect the pk column names 
-        PrimaryKey key = null; 
-        try {
-            key = getPrimaryKey(featureType);
-        } catch (IOException e) {
-            throw new RuntimeException( e );
-        }
-        Set<String> pkColumnNames = getColumnNames(key);
         
         StringBuffer sql = new StringBuffer();
         sql.append("UPDATE ");
@@ -4000,7 +4026,8 @@ public final class JDBCDataStore extends ContentDataStore
             if(pkColumnNames.contains(attName)) {
                 continue;
             }
-            // build "colName = value" 
+
+            // build "colName = value"
             dialect.encodeColumnName(attName, sql);
             sql.append(" = ");
             
@@ -4041,18 +4068,10 @@ public final class JDBCDataStore extends ContentDataStore
      * Generates an 'UPDATE' prepared statement.
      */
     protected PreparedStatement updateSQLPS(SimpleFeatureType featureType, AttributeDescriptor[] attributes,
-            Object[] values, Filter filter, Connection cx ) throws IOException, SQLException {
+            Object[] values, Filter filter, Set<String> pkColumnNames, Connection cx ) throws IOException, SQLException {
         PreparedStatementSQLDialect dialect = (PreparedStatementSQLDialect) getSQLDialect();
         
-        // grab the primary key and collect the pk column names 
-        PrimaryKey key = null; 
-        try {
-            key = getPrimaryKey(featureType);
-        } catch (IOException e) {
-            throw new RuntimeException( e );
-        }
-        Set<String> pkColumnNames = getColumnNames(key);
-        
+
         StringBuffer sql = new StringBuffer();
         sql.append("UPDATE ");
         encodeTableName(featureType.getTypeName(), sql, null);

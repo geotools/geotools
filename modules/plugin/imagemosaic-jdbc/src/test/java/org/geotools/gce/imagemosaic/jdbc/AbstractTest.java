@@ -610,8 +610,10 @@ public abstract class AbstractTest extends TestCase {
 		GridCoverage2D coverage = (GridCoverage2D) reader
 				.read(new GeneralParameterValue[] { gg, outTransp,bgColor });
 
-		ImageIO.write(coverage.getRenderedImage(), "tif", new File(
+		if (coverage!=null) {
+		    ImageIO.write(coverage.getRenderedImage(), "tif", new File(
 				getOutPutDir() + File.separator + name + ".tif"));
+		}
 	}
 
 	protected abstract String getSubDir();

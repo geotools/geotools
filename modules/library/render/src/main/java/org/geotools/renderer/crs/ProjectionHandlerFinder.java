@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Looks up the {@link ProjectionHandler} for the specified rendering area.
@@ -48,6 +50,8 @@ public class ProjectionHandlerFinder {
         factories.add(new MercatorHandlerFactory());
         factories.add(new TransverseMercatorHandlerFactory());
         factories.add(new PolarStereographicHandlerFactory());
+        factories.add(new LambertAzimuthalEqualAreaHandlerFactory());
+        factories.add(new ConiclHandlerFactory());
         
         String wrapLimit = System.getProperty(WRAP_LIMIT_KEY);
         int limit = 10;
@@ -75,13 +79,14 @@ public class ProjectionHandlerFinder {
      * Returns a projection handler for the specified rendering area, or null if not found
      * @param renderingArea The area to be painted (mind, the CRS must be property set for projection handling to work)
      * @param wrap Enable continuous map wrapping if it's possible for the current projection
+     * @throws FactoryException 
      */
-    public static ProjectionHandler getHandler(ReferencedEnvelope renderingArea, boolean wrap) {
+    public static ProjectionHandler getHandler(ReferencedEnvelope renderingArea, CoordinateReferenceSystem sourceCrs, boolean wrap) throws FactoryException {
         if (renderingArea.getCoordinateReferenceSystem() == null)
             return null;
 
         for (ProjectionHandlerFactory factory : factories) {
-            ProjectionHandler handler = factory.getHandler(renderingArea, wrap, WRAP_LIMIT);
+            ProjectionHandler handler = factory.getHandler(renderingArea, sourceCrs, wrap, WRAP_LIMIT);
             if (handler != null)
                 return handler;
         }

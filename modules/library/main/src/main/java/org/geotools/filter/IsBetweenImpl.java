@@ -21,7 +21,6 @@ import java.util.Collections;
 
 import org.geotools.util.Converters;
 import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -182,6 +181,34 @@ public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
     
     public String toString() {
         return "[ " + expression + " BETWEEN " + expression1 + " AND " + expression2 + " ]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((expression == null) ? 0 : expression.hashCode());
+        result = prime * result + ((matchAction == null) ? 0 : matchAction.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        IsBetweenImpl other = (IsBetweenImpl) obj;
+        if (expression == null) {
+            if (other.expression != null)
+                return false;
+        } else if (!expression.equals(other.expression))
+            return false;
+        if (matchAction != other.matchAction)
+            return false;
+        return true;
     }
 	
 }

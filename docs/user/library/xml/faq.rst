@@ -4,7 +4,7 @@ XML FAQ
 Q: What parser does GeoTools use?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We have a range of tools to help you with parsing and encoding xml. As a
+We have a range of tools to help you with parsing and encoding XML. As a
 general purpose library GeoTools does not have the luxury of choosing a
 parser to work with.
 
@@ -20,28 +20,28 @@ use GeoTools in.
 |            |     |     |        | SLD     |                              |
 +------------+-----+-----+--------+---------+------------------------------+
 | DOM        |     | dom |        | Filter  | Forgiving and easy to trace  |
-|            |     |     |        | GLM     | through and debug, memory    |
+|            |     |     |        | GML     | through and debug, memory    |
 |            |     |     |        | SLD     | limitation for GIS data      |
 +------------+-----+-----+--------+---------+------------------------------+
-| Transform  |     |     | xml    | Filter  | Easy to trace through and    |
+| Transform  |     |     | XML    | Filter  | Easy to trace through and    |
 |            |     |     |        | GML2    | debug, difficult to          |
 |            |     |     |        | SLD     | configure for specific data  |
 +------------+-----+-----+--------+---------+------------------------------+
-| JABX       | sax | dom | xml    | n/a     | Fast but not suitable for    |
+| JABX       | sax | dom | XML    | n/a     | Fast but not suitable for    |
 |            |     |     |        |         | dynamic data, precomplied    |
 +------------+-----+-----+--------+---------+------------------------------+
 | Pull       | sax | dom |        | n/a     | Should combine the ease of   |
 |            |     |     |        |         | DOM with the streaming       |
 |            |     |     |        |         | performance of XDO and GTXML |
 +------------+-----+-----+--------+---------+------------------------------+
-| XDO        | sax | dom | xml    | Filter  | Proof of concept of schema   |
+| XDO        | sax | dom | XML    | Filter  | Proof of concept of schema   |
 |            |     |     |        | GML     | assisted parsing allowing    |
 |            |     |     |        | SLD     | streaming into Java Objects. |
 |            |     |     |        | WMS     | Code is fast and well tested |
 |            |     |     |        | WFS1.0  | but is hard to trace through |
 |            |     |     |        | XSD     |                              |
 +------------+-----+-----+--------+---------+------------------------------+
-| GTXML      | sax | dom | xml    | Filter  | Schema assisted parsing      |
+| GTXML      | sax | dom | XML    | Filter  | Schema assisted parsing      |
 |            |     |     |        | GML     | backed by Eclipse XSD        |
 |            |     |     |        | SLD     | to represent schema.         |
 |            |     |     |        | WMS     |                              |
@@ -49,7 +49,7 @@ use GeoTools in.
 |            |     |     |        | WFS1.1  | still not straight forward   |
 |            |     |     |        | WPS     |                              |
 |            |     |     |        | XSD     | Allows streaming for large   |
-|            |     |     |        |         | GIS data volumnes.           |
+|            |     |     |        |         | GIS data volumes.            |
 +------------+-----+-----+--------+---------+------------------------------+
 
 The XDO and GTXML solutions are configuration based. You set up a configuration
@@ -66,7 +66,7 @@ Q: What is SAX?
 SAX is a W3C technology from the early days of XML. SAX Parsers work using
 callbacks, they pass control between several hard coded implementations. For
 basic use you create your own SAX Parser (say responding to a new Geometry being
-parsed) and pass control off on of the geotools implementations and wait for it
+parsed) and pass control off to the GeoTools implementations and wait for it
 to call you.
 
 * Allows streaming for large content.
@@ -107,7 +107,7 @@ Delegation is hard coded in much the same way as with the SAX parsers.
 Q: What is XML Transform?
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Traditional xml generation, traverse your data structure and call methods
+Traditional XML generation, traverse your data structure and call methods
 to generate as you go.
 
 * very fast, so fast we use it for GeoServer even though it is hard to maintain
@@ -125,15 +125,15 @@ This idea of "Schema Assisted" parsers is a GeoTools specific piece of
 technology. Then general idea is to makes use of XML Schema information to
 minimise the amount of code you need to write.
 
-A parser is supplied a configuration of bindings; each binding maps an xml
-elements or xml attributes to Java class.
+A parser is supplied a configuration of bindings; each binding maps an XML
+elements or XML attributes to Java class.
 
-While this sounds similar to other xml parsing technologies we do have a
+While this sounds similar to other XML parsing technologies we do have a
 couple of key differences:
 
 * taking special care to pay attention to the schema at runtime (so we can parse
   new documents using the "best" binding available rather than fail)
-* Ensure that data is not loaded into memory; allowing us to "stream" the xml
+* Ensure that data is not loaded into memory; allowing us to "stream" the XML
   document through an application.
 * We are on our third generation schema assisted parser.
 
@@ -162,7 +162,7 @@ call. The XSD is used to hold our representation of the schema at runtime.
 * support for content generation
 * hard to debug and trace through the parsing or encoding process
 * code generator available to jump start the development of bindings
-* examples how how to use Eclipse Modelling Objects (EMF) based bindings to
+* examples how how to use Eclipse Modeling Objects (EMF) based bindings to
   work directly from the schema
 
 Q: Why doesn't GeoTools use JAXB?
@@ -184,7 +184,7 @@ This shows up as the following error:
 
 
 To understand this error please remember that the GML returned by a WFS GetFeatures
-request is a normal XML file, with a reference to an XML schemaat the top.
+request is a normal XML file, with a reference to an XML schema at the top.
 
 For a WFS GetFeature response the schema reference is usually a DescribeFeatureType call that returns
 an XML Schema.
@@ -226,7 +226,7 @@ to a copy of the GML schema included in the GeoTools jars; rather than force the
 the GML schema each time).
 
 1. To customise how XML Schemas are located in a restricted environment (such as web portal for multiple
-   WFS services that require authorization, or require the use of an http proxy for schema requests).
+   WFS services that require authorization, or require the use of an HTTP proxy for schema requests).
 
 2. Create custom SchemaLocator we start with configuration like so::
 

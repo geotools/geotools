@@ -54,4 +54,10 @@ class SymbolizerAssociation{
       * Transform used between viewport CRS through to the screen.
       */
      public MathTransform axform;
+
+     /**
+      * The transformation used for forward projections during rendering, can
+      * have been amended by the projection handler
+      */
+     public MathTransform rxform;
 }

@@ -97,7 +97,6 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
 	 */
 	protected GridCoverage2D execute() {
 		// preconditions
-		assert Thread.holdsLock(this);
 		assert this.getSources().size() <= 1;
 
 		// /////////////////////////////////////////////////////////////////////
@@ -196,7 +195,7 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
 
 	}
 
-	public synchronized void visit(SelectedChannelType sct) {
+	public void visit(SelectedChannelType sct) {
 		// /////////////////////////////////////////////////////////////////////
 		//
 		// If a SelectedChannelType was provided, let's try to parse it.

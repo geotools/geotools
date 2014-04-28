@@ -30,10 +30,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 import oracle.jdbc.OracleConnection;
-import oracle.sql.ARRAY;
 import oracle.sql.STRUCT;
 
 import org.geotools.data.jdbc.FilterToSQL;
@@ -49,6 +50,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.util.SoftValueHashMap;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -56,6 +58,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.util.GenericName;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -83,9 +86,39 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class OracleDialect extends PreparedStatementSQLDialect {
     
+    /**
+     * Sentinel value used to mark that the unwrapper lookup happened already, and an unwrapper was
+     * not found
+     */
+    UnWrapper UNWRAPPER_NOT_FOUND = new UnWrapper() {
+        
+        @Override
+        public Statement unwrap(Statement statement) {
+            throw new UnsupportedOperationException();
+        }
+        
+        @Override
+        public Connection unwrap(Connection conn) {
+            throw new UnsupportedOperationException();
+        }
+        
+        @Override
+        public boolean canUnwrap(Statement st) {
+            return false;
+        }
+        
+        @Override
+        public boolean canUnwrap(Connection conn) {
+            return false;
+        }
+    }; 
+    
     private static final int DEFAULT_AXIS_MAX = 10000000;
 
     private static final int DEFAULT_AXIS_MIN = -10000000;
+    
+    private static final Pattern AXIS_NAME_VALIDATOR = Pattern.compile("^[\\w]{1,30}");
+    
     
     /**
      * Marks a geometry column as geodetic
@@ -541,33 +574,43 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      *
      */
     OracleConnection unwrapConnection( Connection cx ) throws SQLException {
-        if(cx == null)
+        if (cx == null) {
             return null;
+        }
         
         if ( cx instanceof OracleConnection ) {
             return (OracleConnection) cx;
         }
         
         try {
-            // try to use java 6 unwrapping the first time, it can fail, if so, the unwrapper will
-            // be set instead
-            if(cx instanceof Wrapper && uw != null) {
-                try {
-                    Wrapper w = cx;
-                    if(w.isWrapperFor(OracleConnection.class)) {
-                        return w.unwrap(OracleConnection.class);
-                    }
-                } catch(Throwable t) {
-                    // not a mistake, old DBCP versions will throw an Error here, we need to catch it
-                    LOGGER.log(Level.FINE, "Failed to unwrap connection using java 6 facilities", t);
+            // first lookup ever? (we have UNWRAPPER_NOT_FOUND as a sentinel for a lookup that
+            // will not work (we assume the datasource will always return connections we can
+            // unwrap, or never).
+            if (uw == null) {
+                UnWrapper unwrapper = DataSourceFinder.getUnWrapper(cx);
+                if (unwrapper == null) {
+                    uw = UNWRAPPER_NOT_FOUND;
+                } else {
+                    uw = unwrapper;
                 }
             }
-            if(uw == null)
-                uw = DataSourceFinder.getUnWrapper( cx );
-            if ( uw != null ) {
+            if (uw != null && uw != UNWRAPPER_NOT_FOUND) {
                 Connection uwcx = uw.unwrap( cx );
                 if ( uwcx != null && uwcx instanceof OracleConnection ) {
                     return (OracleConnection) uwcx;
+                }
+            } else if (cx instanceof Wrapper) {
+                // try to use java 6 unwrapping
+                try {
+                    Wrapper w = cx;
+                    if (w.isWrapperFor(OracleConnection.class)) {
+                        return w.unwrap(OracleConnection.class);
+                    }
+                } catch (Throwable t) {
+                    // not a mistake, old DBCP versions will throw an Error here, we need to catch
+                    // it
+                    LOGGER.log(Level.FINER, "Failed to unwrap connection using java 6 facilities",
+                            t);
                 }
             }
         } catch(IOException e) {
@@ -904,7 +947,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                         for (int i = 0; i < dims; i++) {
                             if(i < cs.getDimension()) {
                                 CoordinateSystemAxis axis = cs.getAxis(i);
-                                axisNames[i] = axis.getAbbreviation();
+                                axisNames[i] = getCompatibleAxisName(axis, i);
                                 min[i] = Double.isInfinite(axis.getMinimumValue()) ? DEFAULT_AXIS_MIN : axis.getMinimumValue();
                                 max[i] = Double.isInfinite(axis.getMaximumValue()) ? DEFAULT_AXIS_MAX : axis.getMaximumValue();
                                 if(max[i] - min[i] < extent)
@@ -969,6 +1012,9 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                     // create the spatial index (or we won't be able to run spatial predicates)
                     String type = CLASSES_TO_GEOM.get(geom.getType().getBinding());
                     String idxName = tableName +  "_" + geomColumnName + "_IDX";
+                    if(idxName.length() > 30) {
+                        idxName = "IDX_" + UUID.randomUUID().toString().replace("-", "").substring(0, 26);
+                    }
                     sql = "CREATE INDEX " //
                         + idxName + " ON \"" //
                         + tableName + "\"(\"" + geomColumnName + "\")" //
@@ -986,6 +1032,34 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         } finally {
             dataStore.closeSafe(st);
         }
+    }
+
+    private String getCompatibleAxisName(CoordinateSystemAxis axis, int dimensionIdx) {
+        // try with one of the various ways this can be called
+        String abbreviation = axis.getAbbreviation();
+        if(AXIS_NAME_VALIDATOR.matcher(abbreviation).matches()) {
+            return abbreviation;
+        }
+        String name = axis.getName().getCode();
+        if(AXIS_NAME_VALIDATOR.matcher(name).matches()) {
+            return name;
+        }
+        for (GenericName gn : axis.getAlias()) {
+            String alias = gn.tip().toString();
+            if(AXIS_NAME_VALIDATOR.matcher(alias).matches()) {
+                return alias;
+            }
+        }
+        // one last try
+        if(CRS.equalsIgnoreMetadata(DefaultCoordinateSystemAxis.LONGITUDE, axis)) {
+            return "Longitude";
+        } else if(CRS.equalsIgnoreMetadata(DefaultCoordinateSystemAxis.LATITUDE, axis)) {
+            return "Latitude";
+        } else if(CRS.equalsIgnoreMetadata(DefaultCoordinateSystemAxis.ALTITUDE, axis)) {
+            return "Altitude";
+        }
+        // ok, give up, let's use a name
+        return "DIM_" + (dimensionIdx + 1);
     }
     
     @Override

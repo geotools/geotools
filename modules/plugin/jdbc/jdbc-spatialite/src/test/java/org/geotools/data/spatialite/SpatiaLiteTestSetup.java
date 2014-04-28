@@ -114,4 +114,14 @@ public class SpatiaLiteTestSetup extends JDBCTestSetup {
         
         return true;
     }
+
+    @Override
+    protected Properties createExampleFixture() {
+        Properties fixture = new Properties();
+        fixture.put( "driver","org.spatialite.JDBC");
+        fixture.put( "url","jdbc:spatialite:target/geotools");
+        fixture.put( "user","geotools");
+        fixture.put( "password","geotools");
+        return fixture;
+    }
 }

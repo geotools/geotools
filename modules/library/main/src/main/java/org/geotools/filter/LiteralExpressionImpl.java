@@ -253,15 +253,21 @@ public class LiteralExpressionImpl extends DefaultExpression
             // should be equals to the Expression with type Integer of "2.0"
             // Same thing with doubles and integers (as noted in the javadocs)
 
+            // null handling
             if (this.literal == null) {
                 return expLit.literal == null;
+            } else if(expLit.literal == null) {
+                return false;
             }
+            
+            // direct comparison if same type
             if (this.expressionType == expLit.expressionType) {
                 if(this.literal.equals(expLit.literal)) {
                     return true;
                 }
             }
 
+            // do the conversion dance
             if (expressionType == LITERAL_GEOMETRY) {
                 return ((Geometry) this.literal).equalsExact((Geometry) expLit.evaluate(null, Geometry.class));
             } else if (expressionType == LITERAL_INTEGER) {
@@ -273,7 +279,21 @@ public class LiteralExpressionImpl extends DefaultExpression
             } else if (expressionType == LITERAL_LONG) {
                 return ((Long) this.literal).equals((Long) expLit.evaluate(null, Long.class));                
             } else {
-                return true;
+                // try to convert the other to the current type
+                Object other = expLit.evaluate(null, this.literal.getClass());
+                if (other != null) {
+                    return other.equals(this.literal);
+                }
+                // converters might be one way, try the opposite
+                other = expLit.getValue();
+                Object converted = this.evaluate(null, other.getClass());
+                if(converted != null) {
+                    return converted.equals(other);
+                }
+                // final attemp with a string to string comparison 
+                String str1 = (String) this.evaluate(null, String.class);
+                String str2 = (String) expLit.evaluate(null, String.class);
+                return str1 != null && str2 != null && str1.equals(str2);
             }
         }
         else if (obj instanceof Literal) {

@@ -1,13 +1,13 @@
 /*
- *    ImageI/O-Ext - OpenSource Java Image translation Library
- *    http://www.geo-solutions.it/
- *    http://java.net/projects/imageio-ext/
- *    (C) 2007 - 2009, GeoSolutions
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
- *    either version 3 of the License, or (at your option) any later version.
+ *    version 2.1 of the License.
  *
  *    This library is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,6 +34,7 @@ import javax.xml.transform.stream.StreamSource;
 
 
 import org.geotools.imageio.GeoSpatialImageReaderSpi;
+import org.geotools.imageio.unidata.utilities.UnidataUtilities;
 import org.geotools.util.logging.Logging;
 
 import ucar.nc2.NetcdfFile;
@@ -73,10 +74,8 @@ public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
                 extraImageMetadataFormatNames, extraImageMetadataFormatClassNames);
     }
 
-
     /** Default Logger * */
     private static final Logger LOGGER = Logging.getLogger(UnidataImageReaderSpi.class);
-
 
     @Override
     public boolean canDecodeInput(Object source) throws IOException {
@@ -109,15 +108,25 @@ public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
 
                 // Checking Magic Number
                 fis = new FileImageInputStream(input);
-                byte[] b = new byte[3];
+                byte[] b = new byte[4];
                 fis.mark();
                 fis.readFully(b);
                 fis.reset();
                 boolean cdfCheck = (b[0] == (byte)0x43 && b[1] == (byte)0x44 && b[2] == (byte)0x46);
                 boolean hdf5Check = (b[0] == (byte)0x89 && b[1] == (byte)0x48 && b[2] == (byte)0x44);
+                boolean gribCheck = (b[0] == (byte)0x47 && b[1] == (byte)0x52 && b[2] == (byte)0x49 && b[3] == (byte)0x42);
 
-                if (!cdfCheck && ! hdf5Check) {
-                    if (!isNcML(input)) return false;
+                // Check if the GRIB library is available
+                gribCheck &= UnidataUtilities.isGribAvailable();
+                
+                boolean isNetCDF = true;
+                if (!cdfCheck && !hdf5Check && !gribCheck) {
+                    if (!isNcML(input)) {
+                        isNetCDF = false;
+                    }
+                }
+                if (!isNetCDF) {
+                    return false;
                 }
                 file = NetcdfDataset.openDataset(input.getPath());
                 if (file != null) {

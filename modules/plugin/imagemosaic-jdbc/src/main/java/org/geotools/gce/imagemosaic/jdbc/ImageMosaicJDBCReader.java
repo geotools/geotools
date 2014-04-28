@@ -416,13 +416,14 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
         // /////////////////////////////////////////////////////////////////////
         if (!state.getRequestEnvelopeTransformed().intersects(this.originalEnvelope, true)) {
             LOGGER
-                    .warning("The requested envelope does not intersect the envelope of this mosaic, result is a nodata image");
+                    .warning("The requested envelope does not intersect the envelope of this mosaic");
             LOGGER.warning(state.getRequestEnvelopeTransformed().toString());
             LOGGER.warning(originalEnvelope.toString());
 
-            return coverageFactory.create(coverageName, getEmptyImage((int) pixelDimension
-                    .getWidth(), (int) pixelDimension.getHeight(), backgroundColor, outputTransparentColor), state
-                    .getRequestedEnvelope());
+//            return coverageFactory.create(coverageName, getEmptyImage((int) pixelDimension
+//                    .getWidth(), (int) pixelDimension.getHeight(), backgroundColor, outputTransparentColor), state
+//                    .getRequestedEnvelope());
+            return null;
         }
 
         // /////////////////////////////////////////////////////////////////////

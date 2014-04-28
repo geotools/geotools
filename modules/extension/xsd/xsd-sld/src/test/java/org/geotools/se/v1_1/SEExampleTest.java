@@ -18,6 +18,7 @@ package org.geotools.se.v1_1;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -520,6 +521,14 @@ public class SEExampleTest extends SETestSupport {
         
         RasterSymbolizer sym = (RasterSymbolizer) rule.symbolizers().get(0);
         assertEquals("Band.band1", sym.getChannelSelection().getGrayChannel().getChannelName());
+    }
+    
+    public void testParseValidatePointSymbolizerGeomTransform() throws Exception {
+        PointSymbolizer ps = (PointSymbolizer) parse("example-pointsymbolizer-geotrans.xml");
+        assertTrue(ps.getGeometry() instanceof Function);
+        
+        List errors = validate("example-pointsymbolizer-geotrans.xml");
+        assertEquals(0, errors.size());
     }
     
 }

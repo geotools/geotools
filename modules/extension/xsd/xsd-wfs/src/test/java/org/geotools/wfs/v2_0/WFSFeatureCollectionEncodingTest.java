@@ -16,6 +16,7 @@
  */
 package org.geotools.wfs.v2_0;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import javax.xml.transform.stream.StreamResult;
 import junit.framework.TestCase;
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
+import net.opengis.wfs20.Wfs20Factory;
 
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -35,8 +37,10 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
+import org.opengis.filter.Filter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -100,9 +104,11 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         e.setIndenting(true);
         
         Document d = e.encodeAsDOM( fc, WFS.FeatureCollection );
-        TransformerFactory.newInstance().newTransformer().transform(
-            new DOMSource(d), new StreamResult(System.out));
+//        TransformerFactory.newInstance().newTransformer().transform(
+//            new DOMSource(d), new StreamResult(System.out));
         
+        NamedNodeMap attributes = d.getDocumentElement().getAttributes();
+        assertEquals("unknown", attributes.getNamedItem("numberMatched" ).getTextContent());
         assertEquals( 1, d.getElementsByTagName( "wfs:boundedBy" ).getLength() );
         assertEquals( 2, d.getElementsByTagName( "gml:boundedBy" ).getLength() );
         assertEquals( 2, d.getElementsByTagName( "wfs:member" ).getLength() );
@@ -112,6 +118,35 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         
         assertEquals( 2, d.getElementsByTagName( "geotools:feature" ).getLength() );
         assertNotNull( ((Element)d.getElementsByTagName( "geotools:feature").item( 0 )).getAttribute("gml:id") );
+    }
+    
+    public void testEncodeNumberMatchedReturned() throws Exception {
+        // prepare empty result
+        net.opengis.wfs20.FeatureCollectionType fc = Wfs20Factory.eINSTANCE.createFeatureCollectionType();
+        fc.setNumberReturned(new BigInteger("0"));
+
+        Encoder e = encoder();
+
+        Document d = e.encodeAsDOM( fc, WFS.FeatureCollection );
+        NamedNodeMap attributes = d.getDocumentElement().getAttributes();
+        assertEquals("unknown", attributes.getNamedItem("numberMatched" ).getTextContent());
+        assertEquals("0", attributes.getNamedItem("numberReturned" ).getTextContent());
+        
+        // try with -1
+        e = encoder();
+        fc.setNumberMatched(-1);
+        d = e.encodeAsDOM( fc, WFS.FeatureCollection );
+        attributes = d.getDocumentElement().getAttributes();
+        assertEquals("unknown", attributes.getNamedItem("numberMatched" ).getTextContent());
+        assertEquals("0", attributes.getNamedItem("numberReturned" ).getTextContent());
+        
+        // now with a valid value
+        e = encoder();
+        fc.setNumberMatched(10);
+        d = e.encodeAsDOM( fc, WFS.FeatureCollection );
+        attributes = d.getDocumentElement().getAttributes();
+        assertEquals("10", attributes.getNamedItem("numberMatched" ).getTextContent());
+        assertEquals("0", attributes.getNamedItem("numberReturned" ).getTextContent());
     }
     
     public void testEncodeFeatureCollectionWithoutBBOX() throws Exception {

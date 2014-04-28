@@ -75,8 +75,12 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
      * 
      */
     public String getName() {
+        if(name == null && functionName != null) {
+            return functionName.getName();
+        }
         return name;
     }
+    
     public synchronized FunctionName getFunctionName() {
         if( functionName == null ){
             functionName = new FunctionNameImpl(name,getParameters().size());

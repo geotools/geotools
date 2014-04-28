@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -36,6 +37,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterTransformer;
+import org.geotools.filter.function.math.FilterFunction_abs;
 import org.geotools.gml.producer.FeatureTransformer;
 import org.geotools.referencing.CRS;
 import org.geotools.util.GrowableInternationalString;
@@ -46,6 +48,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.ReferenceIdentifier;
@@ -290,6 +293,30 @@ public class SLDTransformer extends TransformerBase {
             end(element);
         }
         
+        void labelContent(Expression expr) {
+            if(expr instanceof Literal) {
+                Literal literalLabel = ((Literal) expr);
+                String label = literalLabel.evaluate(null, String.class);
+                if(label != null) {
+                    // do we need a CDATA expansion?
+                    if(label.matches("^\\s+.*$|^.*\\s+$|^.*\\s{2,}.*$")) {
+                        cdata(label);
+                    } else {
+                        chars(label);
+                    }
+                }
+            } else if(expr instanceof Function && 
+                    ("strConcat".equals(((Function) expr).getName()) 
+                            || "concat".equals(((Function) expr).getName()))) {
+                List<Expression> parameters = ((Function) expr).getParameters();
+                for (Expression parameter : parameters) {
+                    labelContent(parameter);
+                }
+            } else {
+                filterTranslator.encode(expr);
+            }
+        }
+        
         /**
          * To be used when the expression is a single literal whose 
          * value must be written out as element.
@@ -394,7 +421,9 @@ public class SLDTransformer extends TransformerBase {
             encodeGeometryExpression(text.getGeometry());
 
             if (text.getLabel() != null) {
-                element("Label", text.getLabel());
+                start("Label");
+                labelContent(text.getLabel());
+                end("Label");
             }
 
             if ((text.getFonts() != null) && (text.getFonts().length != 0)) {
@@ -723,7 +752,7 @@ public class SLDTransformer extends TransformerBase {
         public void visit(Mark mark) {
             start("Mark");
             if (mark.getWellKnownName() != null && !"square".equals(mark.getWellKnownName().evaluate(null))) {
-            	element("WellKnownName", mark.getWellKnownName().toString());
+                encodeValue("WellKnownName", null, mark.getWellKnownName(), null);
             }
 
             if (mark.getFill() != null) {

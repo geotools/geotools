@@ -16,9 +16,7 @@
  */
 package org.geotools.styling;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
@@ -48,6 +46,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.style.GraphicalSymbol;
@@ -74,6 +73,8 @@ public class SLDTransformerTest {
     static StyleFactory2 sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory(null);
 
     static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    
+    static final String NEWLINE = System.getProperty("line.separator");
 
     static SLDTransformer transformer;
 
@@ -180,7 +181,7 @@ public class SLDTransformerTest {
         Style[] stuff = parser.readXML();
         Style out = stuff[0];
         assertNotNull(out);
-        assertEquals(0.25, SLD.rasterOpacity(out));
+        assertEquals(0.25, SLD.rasterOpacity(out), 0d);
     }
 
     /**
@@ -1181,6 +1182,179 @@ public class SLDTransformerTest {
         Document doc = buildTestDocument(xml);
         
         assertXpathEvaluatesTo("1m", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name='font-size']", doc);
+    }
+    
+    @Test
+    public void testLabelMixedContent() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.setLabel(ff.function("strConcat", ff.literal("abc"), ff.property("myProperty")));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+        
+        String xml = transformer.transform(sld);
+        Document doc = buildTestDocument(xml);
+        
+        assertXpathEvaluatesTo("abc", "//sld:Label/text()[1]", doc);
+        assertXpathEvaluatesTo("ogc:PropertyName", "name(//sld:Label/*[1])", doc);
+        assertXpathEvaluatesTo("myProperty", "//sld:Label/*[1]/text()", doc);
+    }
+    
+    @Test
+    public void testLabelCDataStart() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.setLabel(ff.function("strConcat", ff.literal(" abc"), ff.property("myProperty")));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+        
+        String xml = transformer.transform(sld);
+        
+        assertTrue(xml.contains("<sld:Label><![CDATA[ abc]]>" + NEWLINE + 
+                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>" + NEWLINE
+                + "                        </sld:Label>"));
+    }
+    
+    @Test
+    public void testLabelCDataEnd() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.setLabel(ff.function("strConcat", ff.literal("abc "), ff.property("myProperty")));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+        
+        String xml = transformer.transform(sld);
+        assertTrue(xml.contains("<sld:Label><![CDATA[abc ]]>" + NEWLINE +  
+                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>" + NEWLINE
+                + "                        </sld:Label>"));
+    }
+    
+    @Test
+    public void testLabelCDataMid() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.setLabel(ff.function("strConcat", ff.literal("a  bc"), ff.property("myProperty")));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+        
+        String xml = transformer.transform(sld);
+        assertTrue(xml.contains("<sld:Label><![CDATA[a  bc]]>" + NEWLINE +
+                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>" + NEWLINE
+                + "                        </sld:Label>"));
+
+    }
+    
+    @Test
+    public void testLabelNested() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.setLabel(ff.function("strConcat", ff.literal("abc "), ff.function("strConcat", ff.property("myProperty"), ff.literal(" def"))));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+        
+        String xml = transformer.transform(sld);
+        // System.out.println(xml);
+        // Java own xpath processor does not seem to fully support normalize-space() so we resort to string comparisons here
+        assertTrue(xml.contains("<sld:Label><![CDATA[abc ]]>" + NEWLINE +  
+                "                            <ogc:PropertyName>myProperty</ogc:PropertyName><![CDATA[ def]]></sld:Label>"));
+    }
+
+    /**
+     * Test the transformation of an WellKnownName element that contains an expression.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testWellKnownNameWithExpression() throws Exception {
+
+        String originalStyleXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                + "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\""
+                + "                           xmlns:sld=\"http://www.opengis.net/sld\""
+                + "                           xmlns:ogc=\"http://www.opengis.net/ogc\""
+                + "                           xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
+                + "	<sld:NamedLayer>"
+                + "		<sld:Name>test</sld:Name>"
+                + "		<sld:UserStyle>"
+                + "			<sld:Name>test</sld:Name>"
+                + "			<sld:FeatureTypeStyle>"
+                + "				<sld:Name>name</sld:Name>"
+                + "				<sld:Rule>"
+                + "					<sld:PointSymbolizer>"
+                + "						<sld:Graphic>"
+                + "							<sld:Mark>"
+                + "								<sld:WellKnownName>"
+                + "									<ogc:Function name=\"strConcat\">"
+                + "										<ogc:Literal>mark-</ogc:Literal>"
+                + "      							    <ogc:PropertyName>MARK_NAME</ogc:PropertyName>"
+                + "									</ogc:Function>"
+                + "								</sld:WellKnownName>"
+                + "							</sld:Mark>"
+                + "						</sld:Graphic>"
+                + "					</sld:PointSymbolizer>"
+                + "				</sld:Rule>"
+                + "			</sld:FeatureTypeStyle>"
+                + "		</sld:UserStyle>"
+                + "	</sld:NamedLayer>"
+                + "</sld:StyledLayerDescriptor>";
+
+        Style originalStyle = validateWellKnownNameWithExpressionStyle(originalStyleXml);
+
+        SLDTransformer styleTransform = new SLDTransformer();
+        styleTransform.setIndentation(2);
+        StringWriter writerWriter = new StringWriter();
+        styleTransform.transform(originalStyle, writerWriter);
+        String transformedStyleXml = writerWriter.toString();
+
+        validateWellKnownNameWithExpressionStyle(transformedStyleXml);
+    }
+
+    private Style validateWellKnownNameWithExpressionStyle(String xmlStyle) {
+
+        StringReader stringReader = new StringReader(xmlStyle);
+        SLDParser sldParser = new SLDParser(sf, stringReader);
+        Style[] parsedStyles = sldParser.readXML();
+        assertNotNull("parsing xml style returns null", parsedStyles);
+        assertTrue("more or less that one style is available", parsedStyles.length == 1);
+        Style style = parsedStyles[0];
+
+        assertNotNull("style is null", style);
+        assertNotNull("feature type styles are null", style.featureTypeStyles());
+        assertTrue("more or less that one feature type style is available", style.featureTypeStyles().size() == 1);
+        assertNotNull("rules are null", style.featureTypeStyles().get(0).rules());
+        assertTrue("more or less that one rule is available", style.featureTypeStyles().get(0).rules().size() == 1);
+        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        assertNotNull("rule is null", rule);
+
+        List<? extends Symbolizer> symbolizers = rule.symbolizers();
+        assertNotNull("symbolizers are null", symbolizers);
+        assertTrue("more or less that one symbolizer is available", symbolizers.size() == 1);
+        PointSymbolizer pointSymbolizer = (PointSymbolizer) symbolizers.get(0);
+        assertNotNull("point symbolizer is null", pointSymbolizer);
+
+        Graphic graphic = pointSymbolizer.getGraphic();
+        assertNotNull("graphic is null", graphic);
+        assertNotNull("graphic symbols are null", graphic.graphicalSymbols());
+        assertTrue("more or less that one graphic symbol is available", graphic.graphicalSymbols().size() == 1);
+
+        Mark mark = (Mark) graphic.graphicalSymbols().get(0);
+        assertNotNull("mark is null", mark);
+        assertNotNull("mark wellKnownName is null", mark.getWellKnownName());
+        assertTrue("wellKnownName is not a function", mark.getWellKnownName() instanceof Function);
+
+        Function function = (Function) mark.getWellKnownName();
+        assertTrue("wellKnownName function is not strConcat", function.getName().equals("strConcat"));
+        assertTrue("wellKnownName function have a wrong number of parameters", function.getParameters().size() == 2);
+
+        Expression firstParameter = function.getParameters().get(0);
+        assertNotNull("first parameter is null", firstParameter);
+        assertTrue("first parameter is not a literal", firstParameter instanceof  Literal);
+
+        Literal literal = (Literal) firstParameter;
+        assertTrue("literal value is different of 'mark-'", literal.getValue().equals("mark-"));
+
+        Expression secondParameter = function.getParameters().get(1);
+        assertNotNull("second parameter is null", secondParameter);
+        assertTrue("second parameter is", secondParameter instanceof  PropertyName);
+
+        PropertyName propertyName = (PropertyName) secondParameter;
+        assertTrue("property name is different of 'MARK_NAME'", propertyName.getPropertyName().equals("MARK_NAME"));
+
+        return style;
     }
 
     private StyledLayerDescriptor buildSLDAroundSymbolizer(org.geotools.styling.Symbolizer symbolizer) {

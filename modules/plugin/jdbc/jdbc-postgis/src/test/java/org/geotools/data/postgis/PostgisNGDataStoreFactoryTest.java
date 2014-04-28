@@ -25,9 +25,13 @@ import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
+import org.geotools.factory.Hints;
+import org.geotools.factory.Hints.Key;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
@@ -63,6 +67,7 @@ public class PostgisNGDataStoreFactoryTest extends JDBCTestSupport {
         params.put(PORT.key, db.getProperty(PORT.key));
         params.put(USER.key, db.getProperty(USER.key));
         params.put(PASSWD.key, db.getProperty(PASSWD.key));
+        params.put(PostgisNGDataStoreFactory.SIMPLIFY.key, false);
         
         params.put(DBTYPE.key, dbtype);
 
@@ -74,6 +79,60 @@ public class PostgisNGDataStoreFactoryTest extends JDBCTestSupport {
             assertTrue(store.getSQLDialect() instanceof PostGISDialect);
             // force connection usage
             assertNotNull(store.getSchema(tname("ft1")));
+        } finally {
+            store.dispose();
+        }
+    }
+    
+    public void testSimplifyParameterDisabled() throws Exception {
+        PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
+        Properties db = fixture;
+        
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(HOST.key, db.getProperty(HOST.key));
+        params.put(DATABASE.key, db.getProperty(DATABASE.key));
+        params.put(PORT.key, db.getProperty(PORT.key));
+        params.put(USER.key, db.getProperty(USER.key));
+        params.put(PASSWD.key, db.getProperty(PASSWD.key));
+        
+        // force simplify off
+        params.put(PostgisNGDataStoreFactory.SIMPLIFY.key, false);
+        JDBCDataStore store = factory.createDataStore(params);
+        assertNotNull(store);
+        try {
+            // check dialect
+            PostGISDialect dialect = (PostGISDialect) store.getSQLDialect();
+            assertFalse(dialect.isSimplifyEnabled());
+            Set<Hints.Key> baseHints = new HashSet<Key>();
+            dialect.addSupportedHints(baseHints);
+            assertTrue(baseHints.isEmpty());
+        } finally {
+            store.dispose();
+        }
+    }
+    
+    public void testSimplifyParameter() throws Exception {
+        PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
+        Properties db = fixture;
+        
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(HOST.key, db.getProperty(HOST.key));
+        params.put(DATABASE.key, db.getProperty(DATABASE.key));
+        params.put(PORT.key, db.getProperty(PORT.key));
+        params.put(USER.key, db.getProperty(USER.key));
+        params.put(PASSWD.key, db.getProperty(PASSWD.key));
+        
+        // do not specify simplify, on by default
+        JDBCDataStore store = factory.createDataStore(params);
+        assertNotNull(store);
+        try {
+            // check dialect
+            PostGISDialect dialect = (PostGISDialect) store.getSQLDialect();
+            assertTrue(dialect.isSimplifyEnabled());
+            Set<Hints.Key> baseHints = new HashSet<Key>();
+            dialect.addSupportedHints(baseHints);
+            assertFalse(baseHints.isEmpty());
+            assertTrue(baseHints.contains(Hints.GEOMETRY_SIMPLIFICATION));
         } finally {
             store.dispose();
         }

@@ -26,6 +26,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.Hints;
@@ -177,6 +178,29 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
             finally {
                 dataStore.closeSafe( rs ); 
             }
+
+            // check geometry columns views
+            sql = "SELECT b.type FROM views_geometry_columns a, geometry_columns b " +
+                    "WHERE a.f_table_name = b.f_table_name " +
+                    "AND a.f_geometry_column = b.f_geometry_column " +
+                    "AND a.view_name = '" + tbl + "' " +
+                    "AND a.view_geometry = '" + col + "'";
+            LOGGER.fine( sql );
+            try {
+                rs = st.executeQuery(sql);
+                try {
+                    if (rs.next()) {
+                        String type = rs.getString( "type" );
+                        return Geometries.getForName( type ).getBinding();
+                    }
+                }
+                finally {
+                    dataStore.closeSafe(rs);
+                }
+            }
+            catch(SQLException e) {
+                LOGGER.log(Level.FINEST, "error querying views_geometry_columns", e);
+            }
         }
         finally {
             dataStore.closeSafe( st );
@@ -225,6 +249,28 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
             finally {
                 dataStore.closeSafe( rs );
             }
+
+            // check geometry columns views
+            sql = "SELECT srid FROM views_geometry_columns a, geometry_columns b " +
+                    "WHERE a.f_table_name = b.f_table_name " +
+                    "AND a.f_geometry_column = b.f_geometry_column " +
+                    "AND a.view_name = '" + tableName + "' " +
+                    "AND a.view_geometry = '" + columnName + "'";
+            LOGGER.fine( sql );
+            try {
+                rs = st.executeQuery(sql);
+                try {
+                    if (rs.next()) {
+                        return Integer.valueOf(rs.getInt(1));
+                    }
+                }
+                finally {
+                    dataStore.closeSafe(rs);
+                }
+            }
+            catch(SQLException e) {
+                LOGGER.log(Level.FINEST, "error querying views_geometry_columns", e);
+            }
         }
         finally {
             dataStore.closeSafe( st );
@@ -259,8 +305,13 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
     
     @Override
     public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql) throws IOException {
-        sql.append("GeomFromText('") .append( new WKTWriter(dimension).write( value ) ).append( "',")
-            .append(srid).append(")");
+        if (value != null) {
+            sql.append("GeomFromText('") .append( new WKTWriter(dimension).write( value ) ).append( "',")
+                    .append(srid).append(")");
+        }
+        else {
+            sql.append("NULL");
+        }
     }
 
     @Override

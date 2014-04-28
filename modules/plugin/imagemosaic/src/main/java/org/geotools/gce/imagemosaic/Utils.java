@@ -48,6 +48,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -80,6 +81,7 @@ import javax.xml.bind.Unmarshaller;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
+import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -357,6 +359,7 @@ public class Utils {
 		return true;
 	}
 
+	// Make additional filters pluggable
     private static IOFileFilter initCleanUpFilter() {
         IOFileFilter filesFilter = FileFilterUtils.or(
                 FileFilterUtils.suffixFileFilter("properties"),
@@ -364,13 +367,13 @@ public class Utils {
                 FileFilterUtils.suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"),
                 FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"),
                 FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"),
+                FileFilterUtils.suffixFileFilter("ncx"), FileFilterUtils.suffixFileFilter("gbx9"),
                 FileFilterUtils.nameFileFilter("error.txt"),
                 FileFilterUtils.nameFileFilter("_metadata"),
                 FileFilterUtils.suffixFileFilter("sample_image"),
                 FileFilterUtils.nameFileFilter("error.txt.lck"),
-                FileFilterUtils.nameFileFilter("indexer.xml"),
+                FileFilterUtils.suffixFileFilter("xml"),
                 FileFilterUtils.suffixFileFilter("db"));
-
         return filesFilter;
     }
 
@@ -1802,7 +1805,7 @@ public class Utils {
         return "org.geotools.data.h2.H2DataStoreFactory".equals(spiName) || 
         "org.geotools.data.h2.H2JNDIDataStoreFactory".equals(spiName);
     }
-    
+
     public static void fixH2DatabaseLocation(Map<String, Serializable> params, String parentLocation) throws MalformedURLException {
         if(params.containsKey(DATABASE_KEY)){
             String dbname = (String) params.get(DATABASE_KEY);
@@ -1951,6 +1954,26 @@ public class Utils {
         if (params != null) {
             // H2 database URLs must not be percent-encoded: see GEOT-4262.
             params.put(MVCC_KEY, true);
+        }
+    }
+
+    public static void fixPostgisDBCreationParams(Map<String, Serializable> datastoreParams) {
+        datastoreParams.put("create database", true);
+    }
+
+    public static void dropDB(DataStoreFactorySpi spi, Properties properties) throws IOException {
+        if (Utils.isPostgisStore(spi)) {
+            final Map params = filterDataStoreParams(properties, spi);
+            // Use reflection to invoke dropDatabase on postGis factory DB 
+            try {
+                MethodUtils.invokeMethod(spi, "dropDatabase", params);
+            } catch (NoSuchMethodException e) {
+                throw new IOException("Unable to drop the database: ", e);
+            } catch (IllegalAccessException e) {
+                throw new IOException("Unable to drop the database: ", e);
+            } catch (InvocationTargetException e) {
+                throw new IOException("Unable to drop the database: ", e);
+            }
         }
     }
 }

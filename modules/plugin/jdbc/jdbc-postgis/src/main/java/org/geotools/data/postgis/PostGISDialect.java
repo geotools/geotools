@@ -125,6 +125,8 @@ public class PostGISDialect extends BasicSQLDialect {
     
     boolean functionEncodingEnabled = false;
     
+    boolean simplifyEnabled = true;
+    
     Version version, pgsqlVersion;
 
     public boolean isLooseBBOXEnabled() {
@@ -153,6 +155,21 @@ public class PostGISDialect extends BasicSQLDialect {
     public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
         this.functionEncodingEnabled = functionEncodingEnabled;
     }
+    
+    public boolean isSimplifyEnabled() {
+        return simplifyEnabled;
+    }
+
+    /**
+     * Enables/disables usage of ST_Simplify geometry wrapping when 
+     * the Query contains a geometry simplification hint
+     * 
+     * @param simplifyEnabled
+     */
+    public void setSimplifyEnabled(boolean simplifyEnabled) {
+        this.simplifyEnabled = simplifyEnabled;
+    }
+
 
     @Override
     public void initializeConnection(Connection cx) throws SQLException {
@@ -249,17 +266,21 @@ public class PostGISDialect extends BasicSQLDialect {
     @Override
     public void encodeGeometryColumnSimplified(GeometryDescriptor gatt, String prefix, int srid,
             StringBuffer sql, Double distance) {
-        boolean geography = "geography".equals(gatt.getUserData().get(
-                JDBCDataStore.JDBC_NATIVE_TYPENAME));
-
-        if (geography) {
-            sql.append("encode(ST_AsBinary(ST_Simplify(");
-            encodeColumnName(prefix, gatt.getLocalName(), sql);
-            sql.append(", "  + distance + ")),'base64')");
+        if(!isSimplifyEnabled()) {
+            super.encodeGeometryColumnSimplified(gatt, prefix, srid, sql, distance);
         } else {
-            sql.append("encode(ST_AsBinary(ST_Simplify(ST_Force_2D(");
-            encodeColumnName(prefix, gatt.getLocalName(), sql);
-            sql.append("), "  + distance + ")),'base64')");
+            boolean geography = "geography".equals(gatt.getUserData().get(
+                    JDBCDataStore.JDBC_NATIVE_TYPENAME));
+    
+            if (geography) {
+                sql.append("encode(ST_AsBinary(");
+                encodeColumnName(prefix, gatt.getLocalName(), sql);
+                sql.append("),'base64')");
+            } else {
+                sql.append("encode(ST_AsBinary(ST_Simplify(ST_Force_2D(");
+                encodeColumnName(prefix, gatt.getLocalName(), sql);
+                sql.append("), "  + distance + ")),'base64')");
+            }
         }
     }
 
@@ -355,8 +376,13 @@ public class PostGISDialect extends BasicSQLDialect {
             throws SQLException {
         
         String typeName = columnMetaData.getString("TYPE_NAME");
+        
         if("uuid".equalsIgnoreCase(typeName)) {
             return UUID.class;
+        }
+        
+        if("citext".equalsIgnoreCase(typeName)) {
+    	    return String.class;
         }
         
         String gType = null;
@@ -1065,8 +1091,10 @@ public class PostGISDialect extends BasicSQLDialect {
         return getVersion(cx).compareTo(V_1_5_0) >= 0;
     }
     
-    protected void addSupportedHints(Set<Hints.Key> hints) {        
-        hints.add(Hints.GEOMETRY_SIMPLIFICATION);
+    protected void addSupportedHints(Set<Hints.Key> hints) {    
+        if(isSimplifyEnabled()) {
+            hints.add(Hints.GEOMETRY_SIMPLIFICATION);
+        }
     }
     
 }

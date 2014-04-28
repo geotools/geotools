@@ -370,7 +370,7 @@ class RasterLayerResponse{
 
         private boolean doInputTransparency;
 
-        private int[] alphaIndex;
+        private int[] alphaIndex= new int[1];
 
         private Color inputTransparentColor;
         
@@ -427,7 +427,7 @@ class RasterLayerResponse{
          * 
          * @return a {@link MosaicInputs} ready to be mosaicked.
          */
-        private MosaicInputs collectGranules(){
+        private MosaicInputs collectGranules()throws IOException{
             // do we have anything to do?
             if (granulesNumber <= 0) {
                 if (LOGGER.isLoggable(Level.FINE)){
@@ -474,8 +474,8 @@ class RasterLayerResponse{
                             //
                             final ColorModel cm = loadedImage.getColorModel();
                             hasAlpha = cm.hasAlpha();
-                            if (hasAlpha || doInputTransparency){
-                                alphaIndex = new int[] { cm.getNumComponents() - 1 };
+                            if (hasAlpha){
+                                alphaIndex[0]= cm.getNumComponents() - 1 ;
                             }
 
                             //
@@ -509,7 +509,7 @@ class RasterLayerResponse{
                     if (LOGGER.isLoggable(Level.INFO)){
                         LOGGER.info("Adding to mosaic failed, original request was " + request);
                     }
-                    continue;
+                    throw new IOException(e);
                 }               
                
 
@@ -564,14 +564,27 @@ class RasterLayerResponse{
                     LOGGER.fine("Support for alpha on input granule " + result.granuleUrl);
                 }
                 granule = new ImageWorker(granule).makeColorTransparent(inputTransparentColor).getRenderedImage();
-                alphaIndex[0] = granule.getColorModel().getNumComponents() - 1;
+                hasAlpha=granule.getColorModel().hasAlpha();
+                if(!granule.getColorModel().hasAlpha()){
+                    // if the resulting image has no transparency (can happen with IndexColorModel then we need to try component
+                    // color model
+                    granule = new ImageWorker(granule).forceComponentColorModel(true).makeColorTransparent(inputTransparentColor).getRenderedImage();
+                    hasAlpha=granule.getColorModel().hasAlpha();
+                }
+                assert hasAlpha;
+                
             }
             PlanarImage alphaChannel=null;		
             if (hasAlpha || doInputTransparency) {
                 ImageWorker w = new ImageWorker(granule);
-                if (granule.getSampleModel() instanceof MultiPixelPackedSampleModel) {
+                if (granule.getSampleModel() instanceof MultiPixelPackedSampleModel||granule.getColorModel() instanceof IndexColorModel) {
                     w.forceComponentColorModel();
+                    granule=w.getRenderedImage();
                 }
+                // doing this here gives the guarantee that I get the correct index for the transparency band
+                alphaIndex[0] = granule.getColorModel().getNumComponents() - 1;
+                assert alphaIndex[0]< granule.getSampleModel().getNumBands();
+                
                 //
                 // ALPHA in INPUT
                 //
@@ -579,11 +592,7 @@ class RasterLayerResponse{
                 // mosaic operator. I have to force going to ComponentColorModel in
                 // case the image is indexed.
                 //
-                if (granule.getColorModel() instanceof IndexColorModel) {
-                    alphaChannel = w.forceComponentColorModel().retainLastBand().getPlanarImage();
-                } else {
-                    alphaChannel = w.retainBands(alphaIndex).getPlanarImage();
-                }
+                alphaChannel = w.retainBands(alphaIndex).getPlanarImage();
             }
         
         
@@ -707,7 +716,7 @@ class RasterLayerResponse{
             
             // anything to do?
             final int size = inputs.size();
-            if (size <= 0) {
+             if (size <= 0) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(Level.FINE, "Unable to load any granuleDescriptor ");
                 }
@@ -786,7 +795,6 @@ class RasterLayerResponse{
             final PlanarImage[] alphas = new PlanarImage[size];
             ROI[] rois = new ROI[size];
             final PAMDataset[] pams = new PAMDataset[size];
-            ROI overallROI = null; // final ROI
             int realROIs=0;
             for (int i = 0; i < size; i++) {
                 final MosaicElement mosaicElement = inputs.get(i);
@@ -798,11 +806,6 @@ class RasterLayerResponse{
                 // compose the overall ROI if needed
                 if (mosaicElement.roi != null) {
                     realROIs++;
-                    if (overallROI == null) {
-                        overallROI = new ROIGeometry(((ROIGeometry) mosaicElement.roi).getAsGeometry());
-                    } else {
-                        overallROI = overallROI.add(mosaicElement.roi);
-                    }
                 }
             }
             if (realROIs == 0){
@@ -821,7 +824,8 @@ class RasterLayerResponse{
                         request.isBlend() ? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
                         localHints);
             
-            if (footprintBehavior!=FootprintBehavior.None) {
+            ROI overallROI = mosaicROIs(rois);
+            if (footprintBehavior != FootprintBehavior.None) {
                 // Adding globalRoi to the output
                 RenderedOp rop = (RenderedOp) mosaic;                
                 rop.setProperty("ROI", overallROI);
@@ -836,6 +840,37 @@ class RasterLayerResponse{
                 return new MosaicElement(null, overallROI, postProcessed, Utils.mergePamDatasets(pams));
              }            
             
+        }
+
+        private ROI mosaicROIs(ROI[] inputROIArray) {
+            if (inputROIArray == null || inputROIArray.length == 0) {
+                return null;
+            }
+
+            List<ROI> rois = new ArrayList<ROI>();
+            for (ROI roi : inputROIArray) {
+                if (roi != null) {
+                    rois.add(roi);
+                }
+            }
+
+            int roiCount = rois.size();
+            if (roiCount == 0) {
+                return null;
+            } else if (roiCount == 1) {
+                return rois.get(0);
+            } else {
+                PlanarImage[] images = new PlanarImage[rois.size()];
+                int i = 0;
+                for (ROI roi : rois) {
+                    images[i++] = roi.getAsImage();
+                }
+                ROI[] roisArray = (ROI[]) rois.toArray(new ROI[rois.size()]);
+                RenderedOp overallROI = MosaicDescriptor.create(images,
+                        MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, roisArray,
+                        new double[][] { { 1.0 } }, new double[] { 0.0 }, hints);
+                return new ROI(overallROI);
+            }
         }
     }
 
@@ -1373,42 +1408,47 @@ class RasterLayerResponse{
             rasterBounds.height++;
         if(oversampledRequest)
             rasterBounds.grow(2, 2);  
-        
     }
 
     /**
      * This method is responsible for initializing transformations g2w and back
      * 
      * @throws Exception in case we don't manage to instantiate some of them.
-     * 
      */
     private void initTransformations() throws Exception {
         //compute final world to grid
         // base grid to world for the center of pixels
         final AffineTransform g2w;
-        final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
-        final OverviewLevel selectedLevel = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
-        final double resX = baseLevel.resolutionX;
-        final double resY = baseLevel.resolutionY;
-        final double[] requestRes = request.spatialRequestHelper.getRequestedResolution();
+        if (!request.isHeterogeneousGranules()) {
+            final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
+            final OverviewLevel selectedLevel = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
+            final double resX = baseLevel.resolutionX;
+            final double resY = baseLevel.resolutionY;
+            final double[] requestRes = request.spatialRequestHelper.getRequestedResolution();
 
-        g2w = new AffineTransform((AffineTransform) baseGridToWorld);
-        g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
-        
-        if ((requestRes[0] < resX || requestRes[1] < resY) ) {
-            // Using the best available resolution
-            oversampledRequest = true;
+            g2w = new AffineTransform((AffineTransform) baseGridToWorld);
+            g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+
+            if ((requestRes[0] < resX || requestRes[1] < resY)) {
+                // Using the best available resolution
+                oversampledRequest = true;
+            } else {
+
+                // SG going back to working on a per level basis to do the composition
+                // g2w = new AffineTransform(request.getRequestedGridToWorld());
+                g2w.concatenate(AffineTransform.getScaleInstance(selectedLevel.scaleFactor, selectedLevel.scaleFactor));
+                g2w.concatenate(AffineTransform.getScaleInstance(
+                        baseReadParameters.getSourceXSubsampling(),
+                        baseReadParameters.getSourceYSubsampling()));
+            }
         } else {
-                
-            // SG going back to working on a per level basis to do the composition
-            // g2w = new AffineTransform(request.getRequestedGridToWorld());
-            g2w.concatenate(AffineTransform.getScaleInstance(selectedLevel.scaleFactor,selectedLevel.scaleFactor));
-            g2w.concatenate(AffineTransform.getScaleInstance(baseReadParameters.getSourceXSubsampling(), baseReadParameters.getSourceYSubsampling()));
-        }   
+            g2w = new AffineTransform(request.spatialRequestHelper.getRequestedGridToWorld());
+            g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+        }
         // move it to the corner
         finalGridToWorldCorner = new AffineTransform2D(g2w);
         finalWorldToGridCorner = finalGridToWorldCorner.inverse();// compute raster bounds
-        
+
     }
 
     /**

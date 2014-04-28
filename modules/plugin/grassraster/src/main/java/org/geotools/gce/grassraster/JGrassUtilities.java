@@ -49,6 +49,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
+import org.geotools.factory.GeoTools;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
@@ -545,7 +546,7 @@ public class JGrassUtilities {
         WritableRaster writableRaster = createWritableRasterFromMatrix(dataMatrix, matrixIsRowCol);
 
         Envelope2D writeEnvelope = new Envelope2D(crs, w, s, e - w, n - s);
-        GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
+        GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
 
         GridCoverage2D coverage2D = factory.create(name, writableRaster, writeEnvelope);
         return coverage2D;

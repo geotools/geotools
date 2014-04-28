@@ -56,7 +56,6 @@ Unsupported DataStore implementations:
 * :doc:`efeature/index` (Active) Adds spatial support to (any) EMF model
 * :doc:`/library/data/excel` (Unknown) Support for Microsoft Excel files
 * :doc:`/library/data/georest` (Unknown) Support for a REST service using GeoJSON
-* :doc:`/library/data/ogr` (Inactive) Support for a range of vector file formats using the OGR library
 * :doc:`/library/data/wfs` (Stable but not active) Supports communcation with a Web Feature Server using the standard GeoTools DataStore API
 * :doc:`/library/data/wfs-ng` (Inactive) Experimental code for "next generation" Web Feature Server support
 * :doc:`/library/data/sfs` (Unknown) Support for the experimental GeoServer Simple Feature Service

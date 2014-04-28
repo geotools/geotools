@@ -192,7 +192,7 @@ public class LabelObstacleTest {
         
         // we should have intersections, thus min should be 1
         double[] minimum = (double[]) extrema.getProperty("minimum");
-        assertEquals(0.0, minimum[0], 0.0);
+        assertEquals(0.0, minimum[0], 1.0);
     }
 
     @Test

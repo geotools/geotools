@@ -165,7 +165,7 @@ This job will rsync all the artifacts located at::
 to the SourceForge FRS server.
 
 #. Navigate to `Sourceforge <http://sourceforge.net/projects/geotools/>`__ and verify that the artifacts have been uploaded properly.
-#. Make the latest ``-bin.zip`` the default download for all platforms (use the "i" button).
+#. If this is the latest stable release, make its ``-bin.zip`` the default download for all platforms (use the "i" button).
 
 Announce the Release
 --------------------

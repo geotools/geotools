@@ -1082,11 +1082,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 
         String[] coverageNames = getGridCoverageNames();
         for (String coverageName: coverageNames) {
-            removeCoverage(coverageName, deleteData, false);
+            removeCoverage(coverageName, deleteData, true);
         }
 
         // Dispose before deleting to make sure any lock on files or resources is released
         dispose();
+        removeDB();
         if (deleteData) {
             // quick way: delete everything
             final File[] list = parentDirectory.listFiles();
@@ -1096,6 +1097,19 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         } else {
             finalizeCleanup();
         }
+    }
+
+    private void removeDB() throws IOException {
+        final File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
+
+        final File datastoreProperties = new File(parent, "datastore.properties");
+        if (datastoreProperties != null && datastoreProperties.exists() && datastoreProperties.canRead()) {
+            CatalogManager.dropDatastore(datastoreProperties);
+        }
+
+        // Scan for MosaicConfigurationBeans from properties files
+        List<MosaicConfigurationBean> beans = new ArrayList<MosaicConfigurationBean>();
+        
     }
 
     /**

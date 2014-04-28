@@ -71,18 +71,18 @@ public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
         dialect.encodeColumnName(aname("flow"), sb);
         sb.append(" > 4");
         vt = new VirtualTable("riverReduced", sb.toString());
-        vt.addGeometryMetadatata("geom", LineString.class, 4326);
+        vt.addGeometryMetadatata(aname("geom"), LineString.class, 4326);
         dataStore.addVirtualTable(vt);
         
         // same vt, this time with a sql comment
         sb.append("\n--This is a comment");
         vt = new VirtualTable("riverReducedComment", sb.toString());
-        vt.addGeometryMetadatata("geom", LineString.class, 4326);
+        vt.addGeometryMetadatata(aname("geom"), LineString.class, 4326);
         dataStore.addVirtualTable(vt);    
         
         // the same vt, but with a id specification
         vt = new VirtualTable("riverReducedPk", sb.toString());
-        vt.addGeometryMetadatata("geom", LineString.class, 4326);
+        vt.addGeometryMetadatata(aname("geom"), LineString.class, 4326);
         vt.setPrimaryKeyColumns(Arrays.asList(aname("id")));
         dataStore.addVirtualTable(vt);    
         
@@ -104,7 +104,7 @@ public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
         dialect.encodeTableName(tname("river"), sb);
         sb.append(" %where%");
         vt = new VirtualTable("riverParam", sb.toString());
-        vt.addGeometryMetadatata("geom", LineString.class, 4326);
+        vt.addGeometryMetadatata(aname("geom"), LineString.class, 4326);
         vt.addParameter(new VirtualTableParameter("mul", "1", new RegexpValidator("[\\d\\.e\\+-]+")));
         vt.addParameter(new VirtualTableParameter("where", ""));
         dataStore.addVirtualTable(vt);
@@ -141,6 +141,10 @@ public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
         assertEquals(String.class, river.getType().getBinding());
         AttributeDescriptor doubleFlow = type.getDescriptor(aname("doubleFlow"));
         assertTrue(Number.class.isAssignableFrom(doubleFlow.getType().getBinding()));
+        
+        // check srid and dimension are set as expected
+        assertEquals(4326, type.getGeometryDescriptor().getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID));
+        assertEquals(2, type.getGeometryDescriptor().getUserData().get(Hints.COORDINATE_DIMENSION));
     }
     
     public void testListAll() throws Exception {

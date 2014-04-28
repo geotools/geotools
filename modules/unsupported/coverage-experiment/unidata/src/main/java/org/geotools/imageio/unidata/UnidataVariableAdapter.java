@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -632,6 +632,9 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         if (coordinateSystem == null){
             throw new IllegalArgumentException("Provided CoordinateSystem is null");
         }
+        // Wrapper for the CoordinateSystem
+        coordinateSystem = new CoordinateSystemAdapter(coordinateSystem);
+
         // ////
         // Creating the CoordinateReferenceSystem
         // ////
@@ -1090,6 +1093,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         
         final Date date = getTimeValueByIndex(variable, tIndex, cs);
         final Number verticalValue = getVerticalValueByIndex(variable, zIndex, cs);
+        final int dimSize = variable.getDimensions().size();
 
         final SimpleFeature feature = DataUtilities.template(indexSchema);
         feature.setAttribute(CoverageSlice.Attributes.GEOMETRY, UnidataCRSUtilities.GEOM_FACTORY.toGeometry(reader.boundingBox));
@@ -1097,8 +1101,10 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
 
         // TIME management
         // Check if we have time and elevation domain and set the attribute if needed
+        String timeAttribute = null;
         if (date != null) {
-            feature.setAttribute(reader.dimensionsMapping.get(UnidataUtilities.TIME_DIM), date);
+            timeAttribute = reader.dimensionsMapping.get(UnidataUtilities.TIME_DIM);
+            feature.setAttribute(timeAttribute, date);
         }
 
         // ELEVATION or other dimension
@@ -1118,7 +1124,14 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
             // custom dimension, mapped to an attribute using its name
             if (attribute == null) {
                 // Assuming the custom dimension is always the last attribute
-                attribute = variable.getDimension(0).getShortName();
+                String attrib = null;
+                for (int i = 0; i < dimSize; i++) {
+                    attrib = variable.getDimension(i).getShortName();
+                    if (!attrib.equalsIgnoreCase(timeAttribute)) {
+                        attribute = attrib;
+                        break;
+                    }
+                }
             }
             feature.setAttribute(attribute, verticalValue);
         }
@@ -1168,5 +1181,57 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         }
     
         return null;
+    }
+
+    /**
+     * Wrapper class used for setting the OSEQD dimension to Vertical, even if the {@link CoordinateSystem} does not handle it.
+     * 
+     * @author Nicola Lagomarsini GeoSolutions S.A.S.
+     * 
+     */
+    static class CoordinateSystemAdapter extends CoordinateSystem {
+        /**Input coordinate system*/
+        private CoordinateSystem cs;
+
+        /** Boolean indicating that the vertical axis is present*/
+        private final boolean vertical;
+
+        CoordinateSystemAdapter(CoordinateSystem cs) {
+            this.cs = cs;
+            // Check if the Vertical axis is present
+            if(cs.hasVerticalAxis()){
+                vertical = true;
+            }else{
+                // Check if any of the unsupported dimensions is present
+                Set<String> unsupported = UnidataUtilities.getUnsupportedDimensions();
+                boolean present = false;
+                for(String dimension : unsupported){
+                    if(cs.containsAxis(dimension)){
+                        present = true;
+                        break;
+                    }
+                }
+                if(present){
+                    vertical = true;
+                }else{
+                    vertical = false;
+                }
+            }
+        }
+
+        @Override
+        public boolean hasVerticalAxis() {
+            return vertical;
+        }
+
+        @Override
+        public boolean hasTimeAxis() {
+            return cs.hasTimeAxis();
+        }
+
+        @Override
+        public List<CoordinateAxis> getCoordinateAxes() {
+            return cs.getCoordinateAxes();
+        }
     }
 }

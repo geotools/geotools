@@ -1,13 +1,13 @@
 /*
- *    ImageI/O-Ext - OpenSource Java Image translation Library
- *    http://www.geo-solutions.it/
- *    http://java.net/projects/imageio-ext/
- *    (C) 2007 - 2009, GeoSolutions
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
- *    either version 3 of the License, or (at your option) any later version.
+ *    version 2.1 of the License.
  *
  *    This library is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -40,6 +40,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -141,6 +142,9 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
     private File file;
 
     ReferencedEnvelope boundingBox;
+
+    /** Boolean indicating if the input file needs flipping or not*/
+	private boolean needsFlipping = false;
 
     public UnidataImageReader( ImageReaderSpi originatingProvider ) {
         super(originatingProvider);
@@ -263,16 +267,15 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
      * @throws InvalidRangeException
      * @throws IOException
      */
-    protected int initIndex( ) throws InvalidRangeException, IOException {
+    protected int initIndex() throws InvalidRangeException, IOException {
         DefaultTransaction transaction = new DefaultTransaction("indexTransaction" + System.nanoTime());
         int numImages = 0;
         try {
 
             // init slice catalog
             final File sliceIndexFile = ancillaryFileManager.getSlicesIndexFile(); 
-            initCatalog(
-                    sliceIndexFile.getParentFile(),
-                    FilenameUtils.removeExtension(FilenameUtils.getName(sliceIndexFile.getCanonicalPath())).replace(".", ""));
+            initCatalog(sliceIndexFile.getParentFile(),
+                FilenameUtils.removeExtension(FilenameUtils.getName(sliceIndexFile.getCanonicalPath())).replace(".", ""));
             final List<Variable> variables = dataset.getVariables();
             if (variables != null) {
 
@@ -346,11 +349,15 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Rollback");
             }
-            transaction.rollback();
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw new IOException(e);
         } finally {
             try {
-                transaction.close();
+                if (transaction != null) {
+                    transaction.close();
+                }
             } catch (Throwable t) {
 
             }
@@ -411,6 +418,15 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
         for( CoordinateAxis axis : dataset.getCoordinateAxes() ) {
             if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null) {
                 coordinatesVariables.put(axis.getFullName(), CoordinateVariable.create((CoordinateAxis1D)axis));
+            } else {
+                // Workaround for Unsupported Axes
+                Set<String> unsupported = UnidataUtilities.getUnsupportedDimensions();
+                if(axis instanceof CoordinateAxis1D && unsupported.contains(axis.getFullName())){
+                    axis.setAxisType(AxisType.GeoZ);
+                    coordinatesVariables.put(axis.getFullName(), CoordinateVariable.create((CoordinateAxis1D)axis));
+                }else{
+                    LOGGER.warning("Unsupported axis: "+axis + " in input: "+this.getInput() + " has been found");
+                }
             }
         }
         initMapping(dataset.getCoordinateSystems().get(0));
@@ -509,29 +525,41 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
         double [] lon= new double[2];
         double [] lat= new double[2];
         byte set=0;
-        for(CoordinateVariable<?> cv:coordinatesVariables.values()){
-            if(cv.isNumeric()){
+        for (CoordinateVariable<?> cv : coordinatesVariables.values()) {
+            if (cv.isNumeric()) {
 
                 // is it lat or lon?
                 AxisType type = cv.getAxisType();
                 switch (type) {
                 case GeoY: case Lat:
-                    if(cv.isRegular()){
-                        lat[0]=cv.getStart();
-                        lat[1]=lat[0]+cv.getIncrement()*(cv.getSize()-1);
+                    if (cv.isRegular()) {
+                        lat[0] = cv.getStart() - (cv.getIncrement() / 2d);
+                        lat[1] = lat[0] + cv.getIncrement() * (cv.getSize());
                     } else {
-                        lat[0]=((Number)cv.getMinimum()).doubleValue();
-                        lat[1]=((Number)cv.getMaximum()).doubleValue();
+                        double min = ((Number) cv.getMinimum()).doubleValue();
+                        double max = ((Number) cv.getMaximum()).doubleValue();
+                        double incr = (max - min) / (cv.getSize() - 1);
+                        lat[0] = min - (incr / 2d);
+                        lat[1] = max + (incr / 2d);
+                    }
+                    if(lat[1] > lat[0]){
+                    	needsFlipping  = true;
+                    }else{
+                    	needsFlipping = false;
                     }
                     set++;
                     break;
-                case GeoX:case Lon:
-                    if(cv.isRegular()){
-                        lon[0]=cv.getStart();
-                        lon[1]=lon[0]+cv.getIncrement()*(cv.getSize()-1);
+                case GeoX:
+                case Lon:
+                    if (cv.isRegular()) {
+                        lon[0] = cv.getStart() - (cv.getIncrement() / 2d);
+                        lon[1] = lon[0] + cv.getIncrement() * (cv.getSize());
                     } else {
-                        lon[0]=((Number)cv.getMinimum()).doubleValue();
-                        lon[1]=((Number)cv.getMaximum()).doubleValue();
+                        double min = ((Number) cv.getMinimum()).doubleValue();
+                        double max = ((Number) cv.getMaximum()).doubleValue();
+                        double incr = (max - min) / (cv.getSize() - 1);
+                        lon[0] = min - (incr / 2d);
+                        lon[1] = max + (incr / 2d);
                     }
                     set++;
                     break;
@@ -539,15 +567,15 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
                     break;
                 }
             }
-            if(set==2){
+            if (set == 2) {
                 break;
             }
         }
         // create the envelope
-        if(set!=2){
+        if (set != 2) {
             throw new IllegalStateException("Unable to create envelope for this dataset");
         }
-        boundingBox = new ReferencedEnvelope(lon[0],lon[1], lat[0],lat[1], UnidataCRSUtilities.WGS84);        
+        boundingBox = new ReferencedEnvelope(lon[0], lon[1], lat[0], lat[1], UnidataCRSUtilities.WGS84);
         
     }
 
@@ -601,7 +629,7 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
             // create, cache and return
             UnidataVariableAdapter cd;
             try {
-                String origName = ancillaryFileManager.variablesMap.get(name);
+                String origName = ancillaryFileManager.variablesMap != null ? ancillaryFileManager.variablesMap.get(name) : null;
                 if (origName == null) {
                     origName = name.getLocalPart();
                 } 
@@ -662,7 +690,12 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
         final Rectangle srcRegion = new Rectangle();
         final Rectangle destRegion = new Rectangle();
         computeRegions(param, width, height, null, srcRegion, destRegion);
-        flipVertically(param, height, srcRegion);
+
+        // Flipping is needed only when the input latitude coordinate is ordered
+        // from min to max
+        if(needsFlipping){
+        	flipVertically(param, height, srcRegion);
+        }
         int destWidth = destRegion.x + destRegion.width;
         int destHeight = destRegion.y + destRegion.height;
     

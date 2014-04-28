@@ -25,6 +25,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
@@ -68,7 +70,6 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
-import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
@@ -100,7 +101,6 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.datum.PixelInCell;
 
 /**
@@ -161,6 +161,8 @@ public class ImageMosaicReaderTest extends Assert{
             + "min \\connections=5  #important for performances, internal pooling\n";
 
     private URL timeFormatURL;
+
+    private URL oneBitURL;
 	
 	/**
 	 * Testing crop capabilities.
@@ -171,8 +173,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 */
 	@Test
 //        @Ignore	
-	public void crop() throws MismatchedDimensionException, IOException,
-			FactoryException {
+	public void crop() throws Exception {
 		imageMosaicCropTest(rgbURL, "crop-rgbURL");
 		
 		imageMosaicCropTest(indexURL, "crop-indexURL");
@@ -199,23 +200,24 @@ public class ImageMosaicReaderTest extends Assert{
 	 */
 	@Test
 //        @Ignore	
-	public void alpha() throws IOException,
-			MismatchedDimensionException, FactoryException {
+	public void alpha() throws Exception{
 		
 		final String testName="alpha-";
 		if (INTERACTIVE)
 			imageMosaicSimpleParamsTest(rgbURL, null, null,testName+rgbURL.getFile()+"-original", false);
-		imageMosaicSimpleParamsTest(rgbURL, Color.black,Color.black,testName+rgbURL.getFile(), false);
-
-//		if (INTERACTIVE)
-//			imageMosaicSimpleParamsTest(rgbJarURL, null, null,testName+rgbJarURL.getFile()+"-original", false);
-//		imageMosaicSimpleParamsTest(rgbJarURL, Color.black,Color.black,testName+rgbURL.getFile(), false);
-
+		GridCoverage2D coverage=imageMosaicSimpleParamsTest(rgbURL, Color.black,Color.black,testName+rgbURL.getFile(), false);
+                ColorModel colorModel = coverage.getRenderedImage().getColorModel();
+                assertTrue(colorModel.hasAlpha());
+                assertTrue(colorModel instanceof ComponentColorModel);
+                
 		if (INTERACTIVE)
 			// the input images have transparency and they do overlap, we need
 			// to ask for blending mosaic.
 			imageMosaicSimpleParamsTest(rgbAURL, null, null,testName+rgbAURL.getFile()+"-original", true);
-		imageMosaicSimpleParamsTest(rgbAURL, Color.black,Color.black,testName+rgbAURL.getFile(), false);
+		coverage=imageMosaicSimpleParamsTest(rgbAURL, Color.black,Color.black,testName+rgbAURL.getFile(), false);
+                colorModel = coverage.getRenderedImage().getColorModel();
+                assertTrue(colorModel.hasAlpha());
+                assertTrue(colorModel instanceof ComponentColorModel);
 
 		// //
 		//
@@ -230,35 +232,36 @@ public class ImageMosaicReaderTest extends Assert{
 		// //
 		if (INTERACTIVE)
 			imageMosaicSimpleParamsTest(indexURL, null, null,testName+indexURL.getFile()+"-original", false);
-		imageMosaicSimpleParamsTest(indexURL, new Color(58, 49, 8),Color.black,testName+indexURL.getFile(), false);
-
-//		if (INTERACTIVE)
-//			imageMosaicSimpleParamsTest(indexJarURL, null, null,testName+indexJarURL.getFile()+"-original", false);
-//		imageMosaicSimpleParamsTest(indexJarURL, new Color(58, 49, 8),Color.black,testName+indexJarURL.getFile(), false);
+		coverage = imageMosaicSimpleParamsTest(indexURL, new Color(58, 49, 8),Color.black,testName+indexURL.getFile(), false);
+		colorModel = coverage.getRenderedImage().getColorModel();
+                assertTrue(colorModel.hasAlpha());
+		assertTrue(colorModel instanceof ComponentColorModel);
+		
 		
 		
 		if (INTERACTIVE)
 			imageMosaicSimpleParamsTest(overviewURL, null, null,testName+overviewURL.getFile()+"-original", false);
-		imageMosaicSimpleParamsTest(overviewURL, new Color(58, 49, 8),Color.black,testName+overviewURL.getFile()+"-indexURL", false);		
-		
-		
+		coverage = imageMosaicSimpleParamsTest(overviewURL, new Color(58, 49, 8),Color.black,testName+overviewURL.getFile()+"-indexURL", false);
+		colorModel = coverage.getRenderedImage().getColorModel();
+                assertTrue(colorModel.hasAlpha());
+                assertTrue(colorModel instanceof ComponentColorModel);
+                
 		if (INTERACTIVE)
 			imageMosaicSimpleParamsTest(indexAlphaURL, null, null,testName+indexAlphaURL.getFile()+"-original", false);
-		imageMosaicSimpleParamsTest(indexAlphaURL, new Color(41,41, 33), Color.black,testName+indexAlphaURL.getFile(), false);
-
-//		if (INTERACTIVE)
-//			imageMosaicSimpleParamsTest(indexAlphaJarURL, null, null,testName+indexAlphaJarURL.getFile()+"-original", false);
-//		imageMosaicSimpleParamsTest(indexAlphaJarURL, new Color(41,41, 33), Color.black,testName+indexAlphaJarURL.getFile(), false);
+		coverage = imageMosaicSimpleParamsTest(indexAlphaURL, new Color(41,41, 33), Color.black,testName+indexAlphaURL.getFile(), false);
+		colorModel = coverage.getRenderedImage().getColorModel();
+                assertTrue(colorModel.hasAlpha());
+                assertTrue(colorModel instanceof ComponentColorModel);
+                
 		
 		
 		if (INTERACTIVE)
 			imageMosaicSimpleParamsTest(grayURL, null, null,testName+grayURL.getFile()+"-original", false);
-		imageMosaicSimpleParamsTest(grayURL, Color.black,Color.black, testName+grayURL.getFile(), false);
+		coverage = imageMosaicSimpleParamsTest(grayURL, Color.black,Color.black, testName+grayURL.getFile(), false);
+		colorModel = coverage.getRenderedImage().getColorModel();
+                assertTrue(colorModel.hasAlpha());
+                assertTrue(colorModel instanceof ComponentColorModel);;
 		
-//		if (INTERACTIVE)
-//			imageMosaicSimpleParamsTest(grayJarURL, null, null,testName+grayJarURL.getFile()+"-original", false);
-//		imageMosaicSimpleParamsTest(grayJarURL, Color.black,Color.black, testName+grayJarURL.getFile(), false);
-
 
 	}
 	
@@ -272,8 +275,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 */
 	@Test
 //	@Ignore
-	public void overviews() throws IOException,	
-			MismatchedDimensionException, FactoryException {
+	public void overviews() throws Exception {
 		final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
 		final ImageMosaicReader reader = TestUtils.getReader(overviewURL, format);
 
@@ -306,8 +308,7 @@ public class ImageMosaicReaderTest extends Assert{
      */
     @Test
     // @Ignore
-    public void readingResolutions() throws IOException, MismatchedDimensionException,
-            FactoryException {
+    public void readingResolutions() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
         final ImageMosaicReader reader = TestUtils.getReader(overviewURL, format);
         double[] result = reader.getReadingResolutions(OverviewPolicy.QUALITY, new double[] { 32, 32 });
@@ -508,7 +509,7 @@ public class ImageMosaicReaderTest extends Assert{
 
 	@Test
 //	@Ignore
-	public void timeElevation() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
+	public void timeElevation() throws Exception {
     	final File workDir=new File(TestData.file(this, "."),"watertemp2");
     	if(!workDir.mkdir()){
     	    FileUtils.deleteDirectory(workDir);
@@ -591,18 +592,10 @@ public class ImageMosaicReaderTest extends Assert{
 	}	
 
 	
-	/**
-         * 
-         * @throws IOException
-         * @throws ParseException 
-         * @throws FactoryException 
-         * @throws NoSuchAuthorityCodeException 
-         * @throws MismatchedDimensionException
-         * @throws NoSuchAuthorityCodeException
-         */
+
         @Test
 //        @Ignore
-        public void timeDoubleElevation() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
+        public void timeDoubleElevation() throws Exception {
                 // Check we can have an integer elevation too 
         	final File workDir=new File(TestData.file(this, "."),"watertemp1");
                 if(!workDir.mkdir()){
@@ -665,7 +658,7 @@ public class ImageMosaicReaderTest extends Assert{
 	
 	@Test
 //    @Ignore	
-	public void imposedBBox() throws IOException, NoSuchAuthorityCodeException, FactoryException {
+	public void imposedBBox() throws Exception {
 		final AbstractGridFormat format = TestUtils.getFormat(imposedEnvelopeURL);
 		final ImageMosaicReader reader = TestUtils.getReader(imposedEnvelopeURL, format);
 	
@@ -697,18 +690,10 @@ public class ImageMosaicReaderTest extends Assert{
 		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,useJai }, "Imposed BBox");
 	}	
 	
-	/**
-	 * 
-	 * @throws IOException
-	 * @throws FactoryException 
-	 * @throws NoSuchAuthorityCodeException 
-	 * @throws MismatchedDimensionException
-	 * @throws NoSuchAuthorityCodeException
-	 * @throws ParseException 
-	 */
+
 	@Test
 //	@Ignore
-	public void time() throws IOException, NoSuchAuthorityCodeException, FactoryException, ParseException {
+	public void time() throws Exception {
 	       
 		final AbstractGridFormat format = TestUtils.getFormat(timeURL);
 		ImageMosaicReader reader = TestUtils.getReader(timeURL, format);
@@ -761,7 +746,7 @@ public class ImageMosaicReaderTest extends Assert{
 	
 	
     @Test
-    public void testTimeFormat() throws IOException, NoSuchAuthorityCodeException, FactoryException, ParseException {
+    public void testTimeFormat() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(timeFormatURL);
         ImageMosaicReader reader = TestUtils.getReader(timeFormatURL, format);
         
@@ -778,10 +763,6 @@ public class ImageMosaicReaderTest extends Assert{
     /**
      * Simple test method accessing time and 2 custom dimensions for the sample
      * dataset
-     * @throws IOException
-     * @throws FactoryException 
-     * @throws NoSuchAuthorityCodeException 
-     * @throws ParseException +
      */
     @Test
      //@Ignore
@@ -864,10 +845,7 @@ public class ImageMosaicReaderTest extends Assert{
     /**
      * Simple test method accessing time and 2 custom dimensions for the sample
      * dataset
-     * @throws IOException
-     * @throws FactoryException 
-     * @throws NoSuchAuthorityCodeException 
-     * @throws ParseException +
+     * @throws Exception
      */
     @Test
     @SuppressWarnings("rawtypes")
@@ -971,14 +949,10 @@ public class ImageMosaicReaderTest extends Assert{
     /**
      * Simple test method to test emptyMosaic creation support followed by harvesting.
      * dataset
-     * @throws IOException
-     * @throws FactoryException 
-     * @throws NoSuchAuthorityCodeException 
-     * @throws ParseException +
+     * @throws Exception
      */
     @Test
      //@Ignore
-    @SuppressWarnings("rawtypes")
     public void testEmpytMosaic() throws Exception {
     
         final File workDir=new File(TestData.file(this, "."),"emptyMosaic");
@@ -1067,10 +1041,7 @@ public class ImageMosaicReaderTest extends Assert{
     /**
      * Simple test method accessing time and 2 custom dimensions for the sample
      * dataset
-     * @throws IOException
-     * @throws FactoryException 
-     * @throws NoSuchAuthorityCodeException 
-     * @throws ParseException +
+     * @throws Exception
      */
     @Test
     @SuppressWarnings("rawtypes")
@@ -1172,13 +1143,9 @@ public class ImageMosaicReaderTest extends Assert{
     /**
      * Simple test method testing dimensions Descriptor for the sample
      * dataset
-     * @throws IOException
-     * @throws FactoryException 
-     * @throws NoSuchAuthorityCodeException 
-     * @throws ParseException +
+     * @throws Exception
      */
     @Test
-    @SuppressWarnings("rawtypes")
     public void testDimensionsDescriptor() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsRangeURL);
         ImageMosaicReader reader = TestUtils.getReader(timeAdditionalDomainsRangeURL, format);
@@ -1223,13 +1190,9 @@ public class ImageMosaicReaderTest extends Assert{
     
     /**
      * Tests that selection by range works properly 
-     * @throws IOException
-     * @throws FactoryException 
-     * @throws NoSuchAuthorityCodeException 
-     * @throws ParseException +
+     * @throws Exception
      */
     @Test
-    @SuppressWarnings("rawtypes")
     public void timeTimeRangeSelection() throws Exception {
         final AbstractGridFormat format = TestUtils
                 .getFormat(timeAdditionalDomainsRangeURL);
@@ -1324,10 +1287,7 @@ public class ImageMosaicReaderTest extends Assert{
     /**
      * Simple test method accessing time and 2 custom dimensions for the sample
      * dataset
-     * @throws IOException
-     * @throws FactoryException 
-     * @throws NoSuchAuthorityCodeException 
-     * @throws ParseException +
+     * @throws Exception
      */
     @Test
     //@Ignore
@@ -1404,14 +1364,11 @@ public class ImageMosaicReaderTest extends Assert{
      * (1.406250000000000,-1.406250000000000); 2 overviews world_b2.tif => Pixel
      * Size = (0.666666666666667,-0.666666666666667); 0 overviews
      * 
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws FactoryException
+     * @throws Exception
      */
     @Test
     //@Ignore
-    public void testHeterogeneousGranules() throws IOException,
-            MismatchedDimensionException, FactoryException {
+    public void testHeterogeneousGranules() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(heterogeneousGranulesURL);
         ImageMosaicReader reader = TestUtils.getReader(heterogeneousGranulesURL, format);
@@ -1419,7 +1376,7 @@ public class ImageMosaicReaderTest extends Assert{
         final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralEnvelope envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
-        dim.setSize(reader.getOriginalGridRange().getSpan(0) / 7.0, reader.getOriginalGridRange().getSpan(1) / 7.0);
+        dim.setSize(10,10);
         final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
@@ -1460,14 +1417,11 @@ public class ImageMosaicReaderTest extends Assert{
 	 * Tests the {@link ImageMosaicReader} with default parameters for the
 	 * various input params.
 	 * 
-	 * @throws IOException
-	 * @throws MismatchedDimensionException
-	 * @throws FactoryException 
+	 * @throws Exception
 	 */
 	@Test
 //  //@Ignore	
-	public void defaultParameterValue() throws IOException,	
-			MismatchedDimensionException, FactoryException {
+	public void defaultParameterValue() throws Exception {
 
 		final String baseTestName="testDefaultParameterValue";
 		imageMosaicSimpleParamsTest(rgbURL, null, null,baseTestName+rgbURL.getFile(), false);
@@ -1478,10 +1432,23 @@ public class ImageMosaicReaderTest extends Assert{
 		imageMosaicSimpleParamsTest(indexAlphaURL, null, null,baseTestName+indexAlphaURL.getFile(), false);		
 	}
 	
+
+    /**
+     * Testing one bit mosaics (black/white)	
+     * @throws Exception
+     */
+    @Test
+    public void oneBit() throws Exception {
+
+        final String baseTestName = "oneBit";
+        imageMosaicSimpleParamsTest(oneBitURL, null, null, baseTestName + oneBitURL.getFile(), false);
+        imageMosaicSimpleParamsTest(oneBitURL, Color.white, null, baseTestName + oneBitURL.getFile(), false);
+        imageMosaicSimpleParamsTest(oneBitURL, null, Color.white, baseTestName + oneBitURL.getFile(),false);
+    }
 	
 	@Test
     //@Ignore	
-	public void errors() throws NoSuchAuthorityCodeException, FactoryException {
+	public void errors() throws Exception {
 		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
 		
 		////
@@ -1568,17 +1535,14 @@ public class ImageMosaicReaderTest extends Assert{
 	 * 
 	 * @param threshold
 	 * 
-	 * @throws IOException
-	 * @throws MismatchedDimensionException
-	 * @throws FactoryException 
+	 * @throws Exception
 	 */
-	private void imageMosaicSimpleParamsTest(
+	private GridCoverage2D imageMosaicSimpleParamsTest(
 			final URL testURL, 
 			final Color inputTransparent, 
 			final Color outputTransparent, 
 			final String title,
-			final boolean blend) throws IOException, MismatchedDimensionException,
-			FactoryException {
+			final boolean blend) throws Exception {
 
 		// Get the resources as needed.
 		Assert.assertNotNull(testURL);
@@ -1594,7 +1558,7 @@ public class ImageMosaicReaderTest extends Assert{
 		blendPV.setValue(blend);
 
 		// Test the output coverage
-		TestUtils.checkCoverage(reader, new GeneralParameterValue[] { inTransp, blendPV, outTransp }, title);
+		return TestUtils.checkCoverage(reader, new GeneralParameterValue[] { inTransp, blendPV, outTransp }, title);
 	}
 
 	
@@ -1620,12 +1584,10 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @param title
 	 *            to use when showing image.
 	 * 
-	 * @throws IOException
-	 * @throws MismatchedDimensionException
-	 * @throws FactoryException
+	 * @throws Exception
 	 */
 	private void imageMosaicCropTest(URL testURL, String title)
-			throws IOException, MismatchedDimensionException, FactoryException {
+			throws Exception{
 
 		// Get the resources as needed.
 		Assert.assertNotNull(testURL);
@@ -1763,6 +1725,7 @@ public class ImageMosaicReaderTest extends Assert{
 		timeRangesURL = TestData.url(this, "time_ranges");
 		overviewURL = TestData.url(this, "overview/");
 		rgbAURL = TestData.url(this, "rgba/");
+		oneBitURL=TestData.url(this, "onebit/");
 		
 		indexURL = TestData.url(this, "index/");
 		
@@ -1780,9 +1743,9 @@ public class ImageMosaicReaderTest extends Assert{
 	 * Cleaning up the generated files (shape and properties so that we recreate them.
 	 * 
 	 * @throws FileNotFoundException
-	 * @throws IOException
+	 * @throws Exception
 	 */
-	private void cleanUp() throws FileNotFoundException, IOException {
+	private void cleanUp() throws Exception {
 			if(INTERACTIVE)
 				return;
 			File dir=TestData.file(this, "overview/");
@@ -1826,7 +1789,7 @@ public class ImageMosaicReaderTest extends Assert{
 	}
 	
 	@After
-	public void tearDown() throws FileNotFoundException, IOException{
+	public void tearDown() throws Exception{
 		cleanUp();
 
 	}
@@ -1834,16 +1797,13 @@ public class ImageMosaicReaderTest extends Assert{
 	/**
      * Simple test method accessing time and 2 custom dimensions for the sample
      * dataset
-     * @throws IOException
-     * @throws FactoryException 
-     * @throws NoSuchAuthorityCodeException 
-     * @throws ParseException +
+     * @throws Exception
+
      */
     @Test
     //@Ignore
     @SuppressWarnings("rawtypes")
-    public void timeAdditionalDimNoResultsDueToWrongDim() throws IOException,
-            NoSuchAuthorityCodeException, FactoryException, ParseException {
+    public void timeAdditionalDimNoResultsDueToWrongDim() throws Exception {
 
         final AbstractGridFormat format = TestUtils
                 .getFormat(timeAdditionalDomainsURL);
@@ -1914,10 +1874,7 @@ public class ImageMosaicReaderTest extends Assert{
     /**
      * Simple test method accessing time and 2 custom dimensions for the sample
      * dataset
-     * @throws IOException
-     * @throws FactoryException 
-     * @throws NoSuchAuthorityCodeException 
-     * @throws ParseException +
+     * @throws Exception
      */
     @Test
     //@Ignore
@@ -2542,8 +2499,7 @@ public class ImageMosaicReaderTest extends Assert{
     
     @Test
     @Ignore
-    public void oracle() throws IOException, ParseException, NoSuchAuthorityCodeException,
-            FactoryException {
+    public void oracle() throws Exception {
         final File workDir = TestData.file(this, "wattemp");
 
         final AbstractGridFormat format = TestUtils.getFormat(workDir.toURI().toURL());
@@ -2794,7 +2750,7 @@ public class ImageMosaicReaderTest extends Assert{
     }
 
     @Test
-    public void testPAMAuxiliaryFiles() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
+    public void testPAMAuxiliaryFiles() throws Exception {
         final URL timePamURL = TestData.url(this, "pam");
 
         final AbstractGridFormat format = TestUtils.getFormat(timePamURL);
@@ -2829,7 +2785,7 @@ public class ImageMosaicReaderTest extends Assert{
     }
 
     @Test
-    public void testPAMMerged() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
+    public void testPAMMerged() throws Exception {
         final URL timePamURL = TestData.url(this, "pam");
 
         final AbstractGridFormat format = TestUtils.getFormat(timePamURL);

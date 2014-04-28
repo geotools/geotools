@@ -115,6 +115,8 @@ public class ImageLevelInfo implements Comparable<ImageLevelInfo> {
 	 */
 	private Envelope envelope = null;
 
+	private Number noDataValue;
+
 	public String getCoverageName() {
 		return coverageName;
 	}
@@ -352,4 +354,11 @@ public class ImageLevelInfo implements Comparable<ImageLevelInfo> {
 		this.canImageIOReadFromInputStream = canImageIOReadFromInputStream;
 	}
 
+        public Number getNoDataValue() {
+            return noDataValue;
+        }
+    
+        public void setNoDataValue(Number noDataValue) {
+            this.noDataValue = noDataValue;
+        }
 }

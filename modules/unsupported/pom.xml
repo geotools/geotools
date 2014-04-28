@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>11-SNAPSHOT</version>
+    <version>12-SNAPSHOT</version>
   </parent>
 
 
@@ -51,16 +51,6 @@
        <modules>
          <module>coveragetools</module>
          <module>excel</module>
-       </modules>
-     </profile>
-
-     <!-- ================================================== -->
-     <!--     Modules kicked out of the build                -->
-     <!-- ================================================== -->
-     <profile>
-       <id>archive</id>
-       <modules>
-         <module>ogr</module>
        </modules>
      </profile>
 
@@ -140,12 +130,6 @@
        </modules>
      </profile>
      <profile>
-       <id>ogr</id>
-       <modules>
-         <module>ogr</module>
-       </modules>
-     </profile>
-     <profile>
        <id>wfs-ng</id>
        <modules>
          <module>wfs-ng</module>
@@ -188,6 +172,7 @@
     <module>wfs</module>
     <module>geojson</module>
     <module>geopkg</module>
+    <module>mbtiles</module>
   </modules>
 
 </project>

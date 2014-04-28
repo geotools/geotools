@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>11-SNAPSHOT</version>
+    <version>12-SNAPSHOT</version>
   </parent> 
 
   <!-- =========================================================== -->
@@ -25,9 +25,9 @@
   <groupId>org.geotools</groupId>
   <artifactId>gt-mbtiles</artifactId>
   <packaging>jar</packaging>
-  <name>Example</name>
+  <name>MBTiles Module</name>
   <description>
-    Supply a quick description here.
+    MBTiles support for GeoTools.
   </description>
   
   <licenses>

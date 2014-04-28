@@ -27,6 +27,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 /**
  * 
@@ -71,6 +72,13 @@ public class SETestSupport extends XMLTestSupport {
         SEConfiguration se = new SEConfiguration();
         Parser p = new Parser(se);
         return p.parse(getClass().getResourceAsStream(filename));
+    }
+    
+    protected List validate(String filename) throws Exception {
+        SEConfiguration se = new SEConfiguration();
+        Parser p = new Parser(se);
+        p.validate(getClass().getResourceAsStream(filename));
+        return p.getValidationErrors();
     }
 
 }

@@ -48,9 +48,6 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -58,11 +55,9 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
-import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.data.memory.CollectionSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -70,16 +65,12 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
-import org.geotools.feature.SchemaException;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.function.GeometryTransformationVisitor;
-import org.geotools.filter.function.RenderingTransformation;
 import org.geotools.filter.spatial.DefaultCRSFilterVisitor;
 import org.geotools.filter.spatial.ReprojectingFilterVisitor;
-import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.filter.visitor.SpatialFilterVisitor;
-import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.GeometryClipper;
 import org.geotools.geometry.jts.JTS;
@@ -125,7 +116,6 @@ import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
 import org.geotools.util.NumberRange;
-import org.opengis.coverage.processing.Operation;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -139,7 +129,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -221,13 +210,6 @@ public class StreamingRenderer implements GTRenderer {
     private final static PropertyName paramsPropertyName = filterFactory.property("params");
 
     private final static PropertyName defaultGeometryPropertyName = filterFactory.property("");
-
-    // support for crop
-    private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
-    
-    // the crop and scale operations
-    private static final Operation CROP = PROCESSOR.getOperation("CoverageCrop");
-    private static final Operation SCALE = PROCESSOR.getOperation("Scale");
 
     /**
      * The MapContent instance which contains the layers and the bounding box which needs to be
@@ -773,12 +755,6 @@ public class StreamingRenderer implements GTRenderer {
                     mapExtent.getCoordinateReferenceSystem()); 
         }
 
-        // enable advanced projection handling with the updated map extent
-        if(isAdvancedProjectionHandlingEnabled()) {
-            // get the projection handler and set a tentative envelope
-            projectionHandler = ProjectionHandlerFinder.getHandler(mapExtent, isMapWrappingEnabled());
-        }
-        
         // Setup the secondary painting thread
         requests = getRequestsQueue();
         painterThread = new PainterThread(requests);
@@ -1046,12 +1022,16 @@ public class StreamingRenderer implements GTRenderer {
             // each geometric attribute used during the rendering as the
             // feature may have more than one and the styles could use non
             // default geometric ones
-            List<ReferencedEnvelope> envelopes;
-            if (projectionHandler != null) {
-                // update the envelope with the one eventually grown by the rendering buffer
-                projectionHandler.setRenderingEnvelope(envelope);
-                envelopes = projectionHandler.getQueryEnvelopes(featCrs);
-            } else {
+            List<ReferencedEnvelope> envelopes = null;
+            // enable advanced projection handling with the updated map extent
+            if(isAdvancedProjectionHandlingEnabled()) {
+                // get the projection handler and set a tentative envelope
+                projectionHandler = ProjectionHandlerFinder.getHandler(mapExtent, featCrs, isMapWrappingEnabled());
+                if(projectionHandler != null) {
+                    envelopes = projectionHandler.getQueryEnvelopes();
+                }
+            }
+            if(envelopes == null) {
                 if (mapCRS != null && featCrs != null && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
                     envelopes = Collections.singletonList(envelope.transform(featCrs, true, 10));
                 } else {
@@ -1899,39 +1879,6 @@ public class StreamingRenderer implements GTRenderer {
     }
 
     /**
-     * Makes sure the feature collection generates the desired sourceCrs, this is mostly a workaround
-     * against feature sources generating feature collections without a CRS (which is fatal to
-     * the reprojection handling later in the code)
-     *  
-     * @param features
-     * @param sourceCrs
-     * @return FeatureCollection<SimpleFeatureType, SimpleFeature> that produces results with the correct CRS
-     */
-    private FeatureCollection prepFeatureCollection(FeatureCollection features, CoordinateReferenceSystem sourceCrs ) {
-        // this is the reader's CRS
-        CoordinateReferenceSystem rCS = null;
-        try {
-            rCS = features.getSchema().getGeometryDescriptor().getType().getCoordinateReferenceSystem();
-        } catch(NullPointerException e) {
-            // life sucks sometimes
-        }
-
-        if (rCS != sourceCrs && sourceCrs != null) {
-            // if the datastore is producing null CRS, we recode.
-            // if the datastore's CRS != real CRS, then we recode
-            if ((rCS == null) || !CRS.equalsIgnoreMetadata(rCS, sourceCrs)) {
-                // need to retag the features
-                try {
-                    return new ForceCoordinateSystemFeatureResults( (SimpleFeatureCollection) features, sourceCrs);
-                } catch (Exception ee) {
-                    LOGGER.log(Level.WARNING, ee.getLocalizedMessage(), ee);
-                }
-            }
-        }
-        return features;
-    }
-
-    /**
      * Applies each feature type styler in turn to all of the features. This
      * perhaps needs some explanation to make it absolutely clear.
      * featureStylers[0] is applied to all features before featureStylers[1] is
@@ -2033,16 +1980,42 @@ public class StreamingRenderer implements GTRenderer {
                     // The first source attributes, the latter talks tx output attributes
                     // so they have to be applied before and after the transformation respectively
                     
-                    features = applyRenderingTransformation(transform, featureSource, definitionQuery, 
-                            styleQuery, gridGeometry, sourceCrs);
-                    if(features == null) {
+                    RenderingTransformationHelper helper = new RenderingTransformationHelper() {
+                        
+                        @Override
+                        protected GridCoverage2D readCoverage(GridCoverage2DReader reader, Object params, GridGeometry2D readGG) throws IOException {
+                            return StreamingRenderer.this.readCoverage(reader, params, readGG);
+                        }
+                    };
+                    
+                    Object result = helper.applyRenderingTransformation(transform, featureSource, definitionQuery, 
+                            styleQuery, gridGeometry, sourceCrs, java2dHints);
+                    if(result == null) {
                         return;
-                    }
+                    } else if (result instanceof FeatureCollection) {
+                        features = (FeatureCollection) result;
+                    } else if (result instanceof GridCoverage2D) {
+                        GridCoverage2D coverage = (GridCoverage2D) result;
+                        // we only avoid disposing if the input was a in memory GridCovereage2D
+                        if((schema instanceof SimpleFeatureType && !FeatureUtilities.isWrappedCoverage((SimpleFeatureType) schema))) {
+                            coverage = new DisposableGridCoverage(coverage);
+                        }
+                        features = FeatureUtilities.wrapGridCoverage(coverage);
+                    } else if (result instanceof GridCoverage2DReader) {
+                        features = FeatureUtilities.wrapGridCoverageReader(
+                                (GridCoverage2DReader) result, null);
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Don't know how to handle the results of the transformation, "
+                                        + "the supported result types are FeatureCollection, GridCoverage2D "
+                                        + "and GridCoverage2DReader, but we got: "
+                                        + result.getClass());
+                    }                    
                 } else {
                     Query mixed = DataUtilities.mixQueries(definitionQuery, styleQuery, null);
                     checkAttributeExistence(featureSource.getSchema(), mixed);
                     features = featureSource.getFeatures(mixed);
-                    features = prepFeatureCollection(features, sourceCrs);
+                    features = RendererUtilities.fixFeatureCollectionReferencing(features, sourceCrs);
                 }
 
                 // HACK HACK HACK
@@ -2142,162 +2115,6 @@ public class StreamingRenderer implements GTRenderer {
                         ")");
                 }
             }
-        }
-    }
-
-    FeatureCollection applyRenderingTransformation(Expression transformation,
-            FeatureSource featureSource, Query layerQuery, Query renderingQuery, 
-            GridGeometry2D gridGeometry, CoordinateReferenceSystem sourceCrs) throws IOException, SchemaException, TransformException, FactoryException  {
-        Object result = null;
-        
-        // check if it's a wrapper coverage or a wrapped reader
-        FeatureType schema = featureSource.getSchema();
-        boolean isRasterData = false;
-        if(schema instanceof SimpleFeatureType) {
-            SimpleFeatureType simpleSchema = (SimpleFeatureType) schema;
-            GridCoverage2D coverage = null;
-            if(FeatureUtilities.isWrappedCoverage(simpleSchema) || FeatureUtilities.isWrappedCoverageReader(simpleSchema)) {
-                isRasterData = true;
-
-                // get the desired grid geometry
-                GridGeometry2D readGG = gridGeometry;
-                if(transformation instanceof RenderingTransformation) {
-                    RenderingTransformation tx = (RenderingTransformation) transformation;
-                    readGG = (GridGeometry2D) tx.invertGridGeometry(renderingQuery, gridGeometry);
-                    // TODO: override the read params and force this grid geometry, or something
-                    // similar to this (like passing it as a param to readCoverage
-                }
-                
-                FeatureCollection<?,?> sample = featureSource.getFeatures();
-                Feature gridWrapper = DataUtilities.first( sample );
-                
-                if(FeatureUtilities.isWrappedCoverageReader(simpleSchema)) {
-                    final Object params = paramsPropertyName.evaluate(gridWrapper);
-                    final GridCoverage2DReader reader = (GridCoverage2DReader) gridPropertyName.evaluate(gridWrapper);
-                    // don't read more than the native resolution (in case we are oversampling)
-                    if(CRS.equalsIgnoreMetadata(reader.getCoordinateReferenceSystem(), gridGeometry.getCoordinateReferenceSystem())) {
-                         MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
-                         if(g2w instanceof AffineTransform2D && readGG.getGridToCRS2D() instanceof AffineTransform2D) {
-                             AffineTransform2D atOriginal = (AffineTransform2D) g2w;
-                             AffineTransform2D atMap = (AffineTransform2D) readGG.getGridToCRS2D(); 
-                             if(XAffineTransform.getScale(atMap) < XAffineTransform.getScale(atOriginal)) {
-                                 // we need to go trough some convoluted code to make sure the new grid geometry
-                                 // has at least one pixel
-                                 
-                                 org.opengis.geometry.Envelope worldEnvelope = gridGeometry.getEnvelope();
-                                 GeneralEnvelope transformed = org.geotools.referencing.CRS.transform(atOriginal.inverse(), worldEnvelope);
-                                 int minx = (int) Math.floor(transformed.getMinimum(0));
-                                 int miny = (int) Math.floor(transformed.getMinimum(1));
-                                 int maxx = (int) Math.ceil(transformed.getMaximum(0));
-                                 int maxy = (int) Math.ceil(transformed.getMaximum(1));
-                                 Rectangle rect = new Rectangle(minx, miny, (maxx - minx), (maxy - miny));
-                                 GridEnvelope2D gridEnvelope = new GridEnvelope2D(rect);
-                                 readGG = new GridGeometry2D(gridEnvelope, atOriginal, worldEnvelope.getCoordinateReferenceSystem());
-                             }
-                         }
-                    }
-                    coverage = readCoverage(reader, params, readGG);
-                } else {
-                    coverage = (GridCoverage2D) gridPropertyName.evaluate(gridWrapper);
-                }
-                
-                // readers will return null if there is no coverage in the area
-                if(coverage != null) {
-                    if(readGG != null) {
-                        // Crop will fail if we try to crop outside of the coverage area
-                        ReferencedEnvelope renderingEnvelope = new ReferencedEnvelope(readGG.getEnvelope());
-                        CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem2D();
-                        if(!CRS.equalsIgnoreMetadata(renderingEnvelope.getCoordinateReferenceSystem(), coverageCRS)) {
-                            renderingEnvelope = renderingEnvelope.transform(coverageCRS, true);
-                        }
-                        if(coverage.getEnvelope2D().intersects(renderingEnvelope)) {
-                            // the resulting coverage might be larger than the readGG envelope, shall we crop it?
-                            final ParameterValueGroup param = CROP.getParameters();
-                            param.parameter("Source").setValue(coverage);
-                            param.parameter("Envelope").setValue(renderingEnvelope);
-                            coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
-                        } else {
-                            coverage = null;
-                        }
-                        
-                        if(coverage != null) {
-                            // we might also need to scale the coverage to the desired resolution
-                            MathTransform2D coverageTx = readGG.getGridToCRS2D();
-                            if(coverageTx instanceof AffineTransform) {
-                                AffineTransform coverageAt = (AffineTransform) coverageTx;
-                                AffineTransform renderingAt = (AffineTransform) gridGeometry.getGridToCRS2D();
-                                // we adjust the scale only if we have many more pixels than required (30% or more)
-                                final double ratioX = coverageAt.getScaleX() / renderingAt.getScaleX();
-                                final double ratioY = coverageAt.getScaleY() / renderingAt.getScaleY();
-                                if(ratioX < 0.7 && ratioY < 0.7) {
-                                    // resolution is too different
-                                    final ParameterValueGroup param = SCALE.getParameters();
-                                    param.parameter("Source").setValue(coverage);
-                                    param.parameter("xScale").setValue(ratioX);
-                                    param.parameter("yScale").setValue(ratioY);
-                                    final Interpolation interpolation = (Interpolation) java2dHints.get(JAI.KEY_INTERPOLATION);
-                                    if(interpolation != null) {
-                                        param.parameter("Interpolation").setValue(interpolation);
-                                    }
-    
-                                    coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
-                                }
-                            }
-                        }
-                    }
-                    
-                    if(coverage != null) {
-                        // apply the transformation
-                        result = transformation.evaluate(coverage);
-                    } else {
-                        result = null;
-                    }
-                }
-            } 
-        }
-        
-        if(result == null && !isRasterData) {
-            // it's a transformation starting from vector data, let's see if we can optimize the query
-            FeatureCollection originalFeatures;
-            Query optimizedQuery = null;
-            if(transformation instanceof RenderingTransformation) {
-                RenderingTransformation tx = (RenderingTransformation) transformation;
-                optimizedQuery = tx.invertQuery(renderingQuery, gridGeometry);
-            }
-            // if we could not find an optimized query no other choice but to just limit
-            // ourselves to the bbox, we don't know if the transformation alters/adds attributes :-(
-            if(optimizedQuery == null) {
-                 Envelope bounds = (Envelope) renderingQuery.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
-                 Filter bbox = new FastBBOX(filterFactory.property(""), bounds, filterFactory);
-                 optimizedQuery = new Query(null, bbox);
-                 optimizedQuery.setHints(layerQuery.getHints());
-            }
-            
-            // grab the original features
-            Query mixedQuery = DataUtilities.mixQueries(layerQuery, optimizedQuery, null);
-            originalFeatures = featureSource.getFeatures(mixedQuery);
-            prepFeatureCollection(originalFeatures, sourceCrs);
-            
-            // transform them
-            result = transformation.evaluate(originalFeatures);
-        } 
-        
-        // null safety, a transformation might be free to return null
-        if(result == null) {
-            return null;
-        }
-        
-        // what did we get? raster or vector?
-        if(result instanceof FeatureCollection) {
-            return (FeatureCollection) result;
-        } else if(result instanceof GridCoverage2D) {
-            return FeatureUtilities.wrapGridCoverage((GridCoverage2D) result);
-        } else if(result instanceof GridCoverage2DReader) {
-            return FeatureUtilities.wrapGridCoverageReader((GridCoverage2DReader) result, null);
-        } else {
-            throw new IllegalArgumentException("Don't know how to handle the results of the transformation, " +
-                    "the supported result types are FeatureCollection, GridCoverage2D " +
-                    "and GridCoverage2DReader, but we got: " + result.getClass());
         }
     }
 
@@ -2743,6 +2560,7 @@ public class StreamingRenderer implements GTRenderer {
                     final Object grid = gridPropertyName.evaluate(drawMe.content);
                     if (grid instanceof GridCoverage2D) {
                         coverage = (GridCoverage2D) grid;
+                        disposeCoverage = grid instanceof DisposableGridCoverage;
                     } else if (grid instanceof GridCoverage2DReader) {
                         final Object params = paramsPropertyName.evaluate(drawMe.content);
                         GridCoverage2DReader reader = (GridCoverage2DReader) grid;
@@ -3270,6 +3088,11 @@ public class StreamingRenderer implements GTRenderer {
                     sa.xform = fullTransform;
                     sa.crsxform = crsTransform;
                     sa.axform = atTransform;
+                    if(projectionHandler != null) {
+                        sa.rxform = projectionHandler.getRenderingTransform(sa.crsxform);
+                    } else {
+                        sa.rxform = sa.crsxform;
+                    }
     
                     symbolizerAssociationHT.put(symbolizer, sa);
                 }
@@ -3343,13 +3166,13 @@ public class StreamingRenderer implements GTRenderer {
             LiteShape2 shape;
             if(projectionHandler != null && sa != null) {
                 // first generalize and transform the geometry into the rendering CRS
-                geom = projectionHandler.preProcess(sa.crs, geom);
+                geom = projectionHandler.preProcess(geom);
                 if(geom == null) {
                     shape = null;
                 } else {
                     // first generalize and transform the geometry into the rendering CRS
                     Decimator d = getDecimator(sa.xform);
-                    d.decimateTransformGeneralize(geom, sa.crsxform);
+					d.decimateTransformGeneralize(geom, sa.rxform);
                     geom.geometryChanged();
                     // then post process it (provide reverse transform if available)
                     MathTransform reverse = null;

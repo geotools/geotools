@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<WMS_Capabilities version="1.3.0" xmlns="http://www.opengis.net/wms"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.opengis.net/wms http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd">
+	<Service>
+		<Name>WMS</Name>
+		<Title>AFRC Scotish Maps</Title>
+		<Abstract></Abstract>
+		<KeywordList>
+			<Keyword>AFRC</Keyword>
+		</KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink"
+			xlink:type="simple" xlink:href="http://www.envitia.co.uk" />
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson>Jane Allen</ContactPerson>
+				<ContactOrganization>AFRC Futures Programme</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition>Team Leader</ContactPosition>
+			<ContactAddress>
+				<AddressType>Postal</AddressType>
+				<Address>Saughton House</Address>
+				<City>Edniburgh</City>
+				<StateOrProvince></StateOrProvince>
+				<PostCode>EH11 3XD</PostCode>
+				<Country>Scotland</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone></ContactVoiceTelephone>
+			<ContactFacsimileTelephone></ContactFacsimileTelephone>
+			<ContactElectronicMailAddress>jane.allen@scotland.gsi.gov.uk</ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees>None</Fees>
+		<AccessConstraints>None</AccessConstraints>
+		<LayerLimit>16</LayerLimit>
+		<MaxWidth>4000</MaxWidth>
+		<MaxHeight>4000</MaxHeight>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>text/xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink"
+								xlink:type="simple" xlink:href="http://ags103a17:8080/MapLinkOGCServices/OGC?" />
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/png</Format>
+				<Format>image/tiff</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink"
+								xlink:type="simple" xlink:href="http://ags103a17:8080//MapLinkOGCServices/OGC?" />
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>text/xml</Format>
+			</GetFeatureInfo>
+		</Request>
+		<Exception>
+			<Format>XML</Format>
+			<Format>INIMAGE</Format>
+			<Format>BLANK</Format>
+		</Exception>
+		<Layer>
+			<Title>MapRite</Title>
+			<CRS>EPSG:27700</CRS>
+			<EX_GeographicBoundingBox>
+				<westBoundLongitude>-8.142493</westBoundLongitude>
+				<eastBoundLongitude>-0.155476</eastBoundLongitude>
+				<southBoundLatitude>54.238805</southBoundLatitude>
+				<northBoundLatitude>60.940729</northBoundLatitude>
+			</EX_GeographicBoundingBox>
+			<Layer>
+				<Name>Scotland</Name>
+				<Title>Scotland</Title>
+				<CRS>EPSG:27700</CRS>
+				<EX_GeographicBoundingBox>
+					<westBoundLongitude>-8.142493</westBoundLongitude>
+					<eastBoundLongitude>-0.155476</eastBoundLongitude>
+					<southBoundLatitude>54.238805</southBoundLatitude>
+					<northBoundLatitude>60.940729</northBoundLatitude>
+				</EX_GeographicBoundingBox>
+				<BoundingBox CRS="EPSG:27700" minx="-149917.150000"
+					miny="499105.282000" maxx="649960.036000" maxy="1227405.091000" />
+			</Layer>
+		</Layer>
+	</Capability>
+</WMS_Capabilities>

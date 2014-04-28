@@ -16,9 +16,14 @@
  */
 package org.geotools.data.postgis;
 
+import java.awt.RenderingHints;
+
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.jdbc.JDBCDataStore;
@@ -35,6 +40,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 
 /**
@@ -109,5 +115,22 @@ public class PostgisGeographyTest extends JDBCGeographyTest {
         assertEquals(name, f.getAttribute(aname("name")));
         assertFalse(fr.hasNext());
         fr.close();
+    }
+    
+    public void testSimplifyGeography() throws Exception {
+        // try to simplify geometry, but ST_Simplify is not defined for geometry
+        Query query = new Query(tname("geoline"));
+        query.getHints().add(new RenderingHints(Hints.GEOMETRY_SIMPLIFICATION, 2.0));
+        // used to go boom here
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("geoline"));
+        SimpleFeatureCollection features = fs.getFeatures(query);
+        // check the geometry is what we expect (but make it so that if in the future we can simplify
+        // over geography, the test still passes
+        SimpleFeature sf = DataUtilities.first(features);
+        LineString ls = (LineString) sf.getDefaultGeometry();
+        assertEquals(0d, ls.getStartPoint().getX());
+        assertEquals(0d, ls.getStartPoint().getY());
+        assertEquals(4d, ls.getEndPoint().getX());
+        assertEquals(4d, ls.getEndPoint().getY());
     }
 }

@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
@@ -227,6 +228,7 @@ public class FilterCQLSample {
 
             try {
                 SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+                dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
                 Date dateTime = dateFormatter.parse(FIRST_DATE);
                 tEqualsFilter = FACTORY.tequals(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
             } catch (ParseException e) {
@@ -243,6 +245,7 @@ public class FilterCQLSample {
 
             try {
                 SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+                dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
                 Date dateTime = dateFormatter.parse(FIRST_DATE);
                 beforeFilter = FACTORY.before(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
             } catch (ParseException e) {
@@ -287,7 +290,7 @@ public class FilterCQLSample {
 
             try {
                 SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
-                
+                dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
                 Date dateTime = dateFormatter.parse(LAST_DATE);
                 afterFilter = FACTORY.after(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
             } catch (ParseException e) {
@@ -658,7 +661,7 @@ public class FilterCQLSample {
 			throws ParseException {
 		During during = FACTORY.during(property, FACTORY.literal(period));
 
-		final Date lastDate = strToDate(FIRST_DATE);
+		final Date lastDate = period.getEnding().getPosition().getDate();
 		
 		After after = FACTORY.after(property, FACTORY.literal(lastDate));
 		Or filter = FACTORY.or(during, after);
@@ -684,6 +687,7 @@ public class FilterCQLSample {
 
     private static Date strToDate(String firstDate) throws ParseException {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         return dateFormatter.parse(firstDate);
 	}
 
@@ -762,6 +766,7 @@ public class FilterCQLSample {
     private static Instant dateToInstant(String strDate) throws ParseException{
 
     	SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+    	dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         Date date;
 		try {

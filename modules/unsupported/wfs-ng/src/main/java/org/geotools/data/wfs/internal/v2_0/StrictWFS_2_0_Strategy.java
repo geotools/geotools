@@ -346,7 +346,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 		if (query.isStoredQuery()) {
 			FeatureTypeInfoImpl featureTypeInfo = (FeatureTypeInfoImpl)getFeatureTypeInfo(query.getTypeName());
 			StoredQueryDescriptionType desc = query.getStoredQueryDescriptionType();
-			String storedQueryId = desc.getId();
 
 			StoredQueryConfiguration config = null;
 
@@ -355,7 +354,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 			kvp.put("SERVICE", "WFS");
 			kvp.put("VERSION", getVersion());
 			kvp.put("REQUEST", "GetFeature");
-			kvp.put("STOREDQUERY_ID", storedQueryId);
+			kvp.put("STOREDQUERY_ID", desc.getId());
 
 			Filter originalFilter = query.getFilter();
 
@@ -363,12 +362,19 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
 			Map<String, String> viewParams = null;
 	        if (query.getHints() != null) {
-				viewParams = (Map<String, String>)query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
-				config = (StoredQueryConfiguration)((Map<String, Object>)query.getHints().get(Hints.FEATURETYPEINFO_METADATA)).get("WFS_NG_STORED_QUERY_CONFIGURATION");
+	        	viewParams = (Map<String, String>)query.getHints()
+	        			.get(Hints.VIRTUAL_TABLE_PARAMETERS);
+	        	Map<String, Object> featureTypeInfoMetadata = ((Map<String, Object>)query.getHints()
+	        			.get(Hints.FEATURETYPEINFO_METADATA));
+	        	if (featureTypeInfoMetadata != null) {
+		        	config = (StoredQueryConfiguration)featureTypeInfoMetadata
+		        			.get("WFS_NG_STORED_QUERY_CONFIGURATION");
+	        	}
 	        }
-			
-	        List<ParameterType> params = new ParameterTypeFactory(config).createStoredQueryParameters(query.getFilter(),
-	        		viewParams, desc, featureTypeInfo);
+	        
+	        List<ParameterType> params = new ParameterTypeFactory(config)
+	        		.createStoredQueryParameters(query.getFilter(),	viewParams, desc,
+	        				featureTypeInfo);
 
 	        for (ParameterType p : params) {
 	        	kvp.put(p.getName(), p.getValue());
@@ -431,27 +437,29 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         getFeature.setResultType(ResultType.RESULTS == resultType ? ResultTypeType.RESULTS
                 : ResultTypeType.HITS);
 
-
         AbstractQueryExpressionType abstractQuery;
         
-       
         if (query.isStoredQuery()) {
 			StoredQueryDescriptionType desc = query.getStoredQueryDescriptionType();
-			String storedQueryId = desc.getId();
 
-			StoredQueryConfiguration config = null;
-			
 	        StoredQueryType storedQuery = factory.createStoredQueryType();
-	        storedQuery.setId(storedQueryId);
+	        storedQuery.setId(desc.getId());
 	        
-	        // The query filter must be processed locally
+	        // The query filter must be processed locally in full
 	        query.setUnsupportedFilter(query.getFilter());
 	        
 	        Map<String, String> viewParams = null;
+			StoredQueryConfiguration config = null;
 
 	        if (query.getHints() != null) {
-	        	viewParams = (Map<String, String>)query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
-	        	config = (StoredQueryConfiguration)((Map<String, Object>)query.getHints().get(Hints.FEATURETYPEINFO_METADATA)).get("WFS_NG_STORED_QUERY_CONFIGURATION");
+	        	viewParams = (Map<String, String>)query.getHints()
+	        			.get(Hints.VIRTUAL_TABLE_PARAMETERS);
+	        	Map<String, Object> featureTypeInfoMetadata = ((Map<String, Object>)query.getHints()
+	        			.get(Hints.FEATURETYPEINFO_METADATA));
+	        	if (featureTypeInfoMetadata != null) {
+		        	config = (StoredQueryConfiguration)featureTypeInfoMetadata
+		        			.get("WFS_NG_STORED_QUERY_CONFIGURATION");
+	        	}
 	        }
 	        
 	        List<ParameterType> params = new ParameterTypeFactory(config)

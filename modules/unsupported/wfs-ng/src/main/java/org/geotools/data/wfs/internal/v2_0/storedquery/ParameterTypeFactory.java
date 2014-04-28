@@ -29,12 +29,25 @@ import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.data.wfs.internal.FeatureTypeInfo;
 import org.opengis.filter.Filter;
 
+/**
+ * Builds parameters to pass to the stored query. It selects a value for each parameter
+ * in the stored query. The value is primarily the one passed in as a view parameter and
+ * secondarily the value of the mapping configured for the feature type.
+ * 
+ * @author Sampo Savolainen (Spatineo)
+ *
+ */
 public class ParameterTypeFactory
 {
-	private StoredQueryConfiguration config;
+	private final StoredQueryConfiguration config;
+	private final StoredQueryDescriptionType desc;
+	private final FeatureTypeInfo featureTypeInfo;
 	
-	public ParameterTypeFactory(StoredQueryConfiguration config) {
+	public ParameterTypeFactory(StoredQueryConfiguration config, StoredQueryDescriptionType desc,
+			FeatureTypeInfo featureTypeInfo) {
 		this.config = config;
+		this.desc = desc;
+		this.featureTypeInfo = featureTypeInfo;
 	}
 
 
@@ -55,11 +68,13 @@ public class ParameterTypeFactory
 		return ret;
 	}
 	
-	
-	public List<ParameterType> createStoredQueryParameters(Filter filter, 
-    		Map<String, String> viewParams, StoredQueryDescriptionType desc,
-    		FeatureTypeInfo featureTypeInfo) {
+	public List<ParameterType> buildStoredQueryParameters(Map<String, String> viewParams, 
+    		Filter filter) {
     	final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
+    	
+    	if (filter == null) {
+    		filter = Filter.INCLUDE;
+    	}
     	
     	ParameterMappingContext mappingContext = new ParameterMappingContext(filter, viewParams,
     			featureTypeInfo);
@@ -76,6 +91,7 @@ public class ParameterTypeFactory
     			value = viewParams.get(parameter.getName());
     		}
     		
+    		// If no value given by the user, execute mapping
     		if (value == null && mapping != null) { 
     			if (mapping instanceof ParameterMappingDefaultValue) {
     				value = ((ParameterMappingDefaultValue)mapping).getDefaultValue();

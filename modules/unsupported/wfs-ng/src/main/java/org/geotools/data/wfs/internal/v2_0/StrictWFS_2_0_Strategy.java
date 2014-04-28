@@ -372,9 +372,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 	        	}
 	        }
 	        
-	        List<ParameterType> params = new ParameterTypeFactory(config)
-	        		.createStoredQueryParameters(query.getFilter(),	viewParams, desc,
-	        				featureTypeInfo);
+	        List<ParameterType> params = new ParameterTypeFactory(config, desc, featureTypeInfo)
+	        		.buildStoredQueryParameters(viewParams,	query.getFilter());
 
 	        for (ParameterType p : params) {
 	        	kvp.put(p.getName(), p.getValue());
@@ -461,9 +460,9 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 		        			.get("WFS_NG_STORED_QUERY_CONFIGURATION");
 	        	}
 	        }
-	        
-	        List<ParameterType> params = new ParameterTypeFactory(config)
-	        	.createStoredQueryParameters(query.getFilter(), viewParams, desc, featureTypeInfo);
+
+	        List<ParameterType> params = new ParameterTypeFactory(config, desc, featureTypeInfo)
+	        		.buildStoredQueryParameters(viewParams,	query.getFilter());
 	        
 	        storedQuery.getParameter().addAll(params);
 

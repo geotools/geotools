@@ -27,7 +27,13 @@ import org.opengis.filter.Filter;
 
 import com.vividsolutions.jts.geom.Envelope;
 
-
+/**
+ * The property expression evaluation context for stored query parameter mappings. The fields are
+ * referred to using Java Beans naming conventions (in other words, no need to use the get prefix).
+ * 
+ * @author Sampo Savolainen (Spatineo)
+ *
+ */
 public class ParameterMappingContext {
 	// Set in constructor
 	private final Filter filter;

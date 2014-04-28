@@ -18,7 +18,6 @@ import org.geotools.filter.FilterFactoryImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 
 public class ParameterTypeFactoryTest {
 	Wfs20Factory wfs20Factory;

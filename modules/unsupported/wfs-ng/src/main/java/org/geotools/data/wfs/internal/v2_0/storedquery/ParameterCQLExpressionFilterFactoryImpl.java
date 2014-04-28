@@ -19,7 +19,6 @@ package org.geotools.data.wfs.internal.v2_0.storedquery;
 
 import org.geotools.filter.FilterFactoryImpl;
 import org.opengis.filter.expression.PropertyName;
-import org.opengis.referencing.ReferenceIdentifier;
 
 /**
  * Stored Query parameters may be configured as CQL expressions. The following properties
@@ -74,10 +73,7 @@ public class ParameterCQLExpressionFilterFactoryImpl extends
 			return new ParameterCQLExpressionPropertyName(name) {
 				@Override
 				protected Object get(ParameterMappingContext context) {
-					ReferenceIdentifier ret = context.getFeatureTypeInfo().getCRS()
-							.getIdentifiers().iterator().next();
-					
-					return ret.toString();
+					return context.getFeatureTypeInfo().getDefaultSRS();
 				}
 			};
 		} else if (name.startsWith("viewparam:")) {

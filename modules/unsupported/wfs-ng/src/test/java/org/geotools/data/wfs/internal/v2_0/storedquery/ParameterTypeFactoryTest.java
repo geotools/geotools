@@ -296,4 +296,33 @@ public class ParameterTypeFactoryTest {
 		assertEquals("stuff", tmp.getValue());
 	}
 
+	
+	@Test
+	public void testCQLExpressionStringConcatenation() {
+	
+		ParameterExpressionType param1 = wfs20Factory.createParameterExpressionType();
+		param1.setName("foo");
+		desc.getParameter().add(param1);
+		
+		ParameterMappingExpressionValue paramMapping = new ParameterMappingExpressionValue();
+		paramMapping.setParameterName("foo");
+		paramMapping.setExpressionLanguage("CQL");
+		paramMapping.setExpression("numberFormat('0.0', 1+1*2) + ',10'");
+		
+		config.getStoredQueryParameterMappings().add(paramMapping);
+		
+		
+		ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
+		
+		Map<String, String> viewParams = new HashMap<String, String>();
+		
+		List<ParameterType> params = factory.buildStoredQueryParameters(viewParams, null);
+		
+		assertEquals(1, params.size());
+		
+		ParameterType tmp = params.get(0);
+		assertEquals("foo", tmp.getName());
+		assertEquals("3.0,10", tmp.getValue());
+	}
+	
 }

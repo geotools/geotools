@@ -11,6 +11,7 @@ import org.geotools.data.DiffFeatureReader;
 import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.Transaction;
@@ -216,6 +217,10 @@ class WFSContentFeatureSource extends ContentFeatureSource {
 
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         reader = new WFSFeatureReader(features);
+
+        if (request.getUnsupportedFilter() != null && request.getUnsupportedFilter() != Filter.INCLUDE) {
+        	reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader, request.getUnsupportedFilter());
+        }
 
         if (!reader.hasNext()) {
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(contentType);

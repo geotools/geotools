@@ -174,4 +174,10 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     protected void initCatalog(File parentLocation, String databaseName) throws IOException {
         slicesCatalog = new CoverageSlicesCatalog(databaseName, parentLocation);
     }
+
+    @Override
+    protected void finalize() throws Throwable {
+        dispose();
+        super.finalize();
+    }
 }

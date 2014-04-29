@@ -46,6 +46,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.factory.GeoTools;
 import org.geotools.gce.grassraster.core.GrassBinaryRasterReadHandler;
 import org.geotools.gce.grassraster.core.color.JGrassColorTable;
 import org.geotools.gce.grassraster.format.GrassCoverageFormat;
@@ -502,7 +503,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
 
         g2eMapper.setPixelAnchor(cellAnchor);
         MathTransform gridToEnvelopeTransform = g2eMapper.createTransform();
-        GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
+        GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
 
         GridCoverage2D coverage2D = factory.create(name, finalImage, crs, gridToEnvelopeTransform,
                 new GridSampleDimension[]{band}, null, null);

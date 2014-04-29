@@ -40,6 +40,7 @@ import org.opengis.referencing.operation.TransformException;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
+import org.geotools.factory.GeoTools;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -138,7 +139,7 @@ public class GridCoverageBuilder {
      * Creates a builder initialized to default values and factory.
      */
     public GridCoverageBuilder() {
-        this(CoverageFactoryFinder.getGridCoverageFactory(null));
+        this(CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints()));
     }
 
     /**

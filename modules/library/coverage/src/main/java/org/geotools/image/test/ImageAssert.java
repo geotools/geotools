@@ -26,14 +26,12 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 import org.geotools.image.ImageWorker;
-import org.geotools.image.test.PerceptualDiff.Difference;
+import org.geotools.image.test.ImageComparator.Mode;
 import org.geotools.util.logging.Logging;
 
 /**
  * Compares two images using perceptual criterias: the assertions will fail if the images would look
  * different to a human being.
- * If the tests are run with the <code>org.geotools.image.test.interactive</code> set to true a
- * interactive image comparator will be shown.
  * 
  * @author Andrea Aime - GeoSolutions
  *
@@ -53,9 +51,11 @@ public class ImageAssert {
      * @param expectedFile
      * @param actualImage
      * @param threshold
+     * @throws IOException
      */
-    public static void assertEquals(File expectedFile, RenderedImage actualImage, int threshold) {
-        assertEquals(expectedFile, actualImage, threshold, true);
+    public static void assertEquals(File expectedFile, RenderedImage actualImage, int threshold)
+            throws IOException {
+        assertImagesResemble(expectedFile, actualImage, Mode.IgnoreAntialiasing, threshold, true);
     }
 
     /**
@@ -67,19 +67,29 @@ public class ImageAssert {
      */
     public static void assertEquals(RenderedImage expectedImage, RenderedImage actualImage,
             int threshold) {
-        File expectedFile = new File("target/expected.png");
-        try {
-            ImageIO.write(expectedImage, "PNG", expectedFile);
-            assertEquals(expectedFile, actualImage, threshold, false);
-        } catch (IOException e) {
-            throw (Error) new AssertionError("Failed to write the image to disk").initCause(e);
-        } finally {
-            expectedFile.delete();
+        ImageComparator comparator = new ImageComparator(Mode.IgnoreAntialiasing, expectedImage, actualImage);
+        if (comparator.getMismatchCount() > threshold) {
+            throw new AssertionError("Images are visibly different, found "
+                    + comparator.getMismatchCount() + " different pixels, against a threshold of "
+                    + threshold);
         }
     }
 
-    private static void assertEquals(File expectedFile, RenderedImage actualImage, int threshold,
-            boolean actualReferenceFile) {
+    /**
+     * Checks the expected image and the actual image are equals from a human perception p.o.v
+     * 
+     * @param expectedFile
+     * @param actualImage
+     * @param threshold
+     * @throws IOException
+     */
+    public static void assertEquals(File expectedImage, RenderedImage actualImage, int threshold,
+            Mode mode) throws IOException {
+        assertImagesResemble(expectedImage, actualImage, mode, threshold, true);
+    }
+
+    private static void assertImagesResemble(File expectedFile, RenderedImage actualImage,
+            Mode mode, int threshold, boolean actualReferenceFile) throws IOException {
         // do we have the reference image at all?
         if (!expectedFile.exists()) {
 
@@ -88,8 +98,8 @@ public class ImageAssert {
                     && ReferenceImageDialog.show(realignImage(actualImage));
             if (useAsReference) {
                 try {
-                    String format = getFormat(expectedFile);
-                    new ImageWorker(actualImage).writePNG(expectedFile, "FILTERED", 0.9f, false, false);
+                    new ImageWorker(actualImage).writePNG(expectedFile, "FILTERED", 0.9f, false,
+                            false);
                 } catch (IOException e) {
                     throw (Error) new AssertionError("Failed to write the image to disk")
                             .initCause(e);
@@ -98,37 +108,27 @@ public class ImageAssert {
                 throw new AssertionError("Reference image is missing: " + expectedFile);
             }
         } else {
-            File actualFile = new File("target/actual.png");
-            try {
-                ImageIO.write(actualImage, "PNG", actualFile);
-
-                Difference difference = PerceptualDiff.compareImages(expectedFile, actualFile,
-                        threshold);
-                if (difference.imagesDifferent) {
-                    // check with the user
-                    boolean overwrite = false;
-                    if (INTERACTIVE) {
-                        RenderedImage expectedImage = ImageIO.read(expectedFile);
-                        overwrite = CompareImageDialog.show(realignImage(expectedImage), realignImage(actualImage),
-                                actualReferenceFile);
-                    }
-
-                    if (overwrite) {
-                        ImageIO.write(actualImage, "PNG", expectedFile);
-                    } else {
-                        throw new AssertionError(
-                                "Images are visibly different, PerceptualDiff output is: "
-                                        + difference.output);
-                    }
-                } else {
-                    LOGGER.info("Images are equals, PerceptualDiff output is: "
-                    + difference.output);
-
+            RenderedImage expectedImage = ImageIO.read(expectedFile);
+            ImageComparator comparator = new ImageComparator(mode, expectedImage, actualImage);
+            if (comparator.getMismatchCount() > threshold) {
+                // check with the user
+                boolean overwrite = false;
+                if (INTERACTIVE) {
+                    overwrite = CompareImageDialog.show(realignImage(expectedImage),
+                            realignImage(actualImage), actualReferenceFile);
                 }
-            } catch (IOException e) {
-                throw (Error) new AssertionError("Failed to write the image to disk").initCause(e);
-            } finally {
-                actualFile.delete();
+
+                if (overwrite) {
+                    ImageIO.write(actualImage, "PNG", expectedFile);
+                } else {
+                    throw new AssertionError("Images are visibly different, found "
+                            + comparator.getMismatchCount()
+                            + " different pixels, against a threshold of " + threshold);
+                }
+            } else {
+                LOGGER.info("Images are not visibly different, found "
+                        + comparator.getMismatchCount()
+                        + " different pixels, against a threshold of " + threshold);
             }
         }
     }

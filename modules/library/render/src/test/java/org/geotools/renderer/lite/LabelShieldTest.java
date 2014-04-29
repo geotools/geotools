@@ -82,7 +82,7 @@ public class LabelShieldTest {
         BufferedImage image = RendererBaseTest.showRender("Labels and shield", renderer, TIME,
                 bounds);
         String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textLabelShieldMultiline.png";
-        ImageAssert.assertEquals(new File(refPath), image, 300);
+        ImageAssert.assertEquals(new File(refPath), image, 1200);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class LabelShieldTest {
         BufferedImage image = RendererBaseTest.showRender("Labels and shield", renderer, TIME,
                 bounds);
         String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textLabelShieldMultilineStretch.png";
-        ImageAssert.assertEquals(new File(refPath), image, 300);
+        ImageAssert.assertEquals(new File(refPath), image, 1200);
     }
 
     @Test

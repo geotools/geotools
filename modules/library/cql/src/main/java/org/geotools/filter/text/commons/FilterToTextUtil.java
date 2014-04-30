@@ -95,23 +95,27 @@ public final class FilterToTextUtil {
 	 */
 	public static Object buildBinaryLogicalOperator(final String operator, FilterVisitor visitor, BinaryLogicOperator filter, Object extraData) {
     	
-    	LOGGER.finer("exporting And filter");
+    	LOGGER.finer("exporting binary logic filter");
     	
-    	StringBuilder output = asStringBuilder(extraData);
-		List<Filter> children = filter.getChildren();
-		if (children != null) {
-			output.append("(");
-			for (Iterator<Filter> i = children.iterator(); i.hasNext();) {
-				Filter child = i.next();
-				child.accept(visitor, output);
-				if (i.hasNext()) {
-					output.append(" ").append(operator).append(" ");
-				}
-			}
-			output.append(")");
-		}
-		return output;
-	}
+        StringBuilder output = asStringBuilder(extraData);
+        List<Filter> children = filter.getChildren();
+        if (children != null) {
+            for (Iterator<Filter> i = children.iterator(); i.hasNext();) {
+                Filter child = i.next();
+                if (child instanceof BinaryLogicOperator) {
+                    output.append("(");
+                }
+                child.accept(visitor, output);
+                if (child instanceof BinaryLogicOperator) {
+                    output.append(")");
+                }
+                if (i.hasNext()) {
+                    output.append(" ").append(operator).append(" ");
+                }
+            }
+        }
+        return output;
+    }
 
 	public static Object buildBetween(PropertyIsBetween filter, Object extraData) {
     	LOGGER.finer("exporting PropertyIsBetween");
@@ -189,8 +193,7 @@ public final class FilterToTextUtil {
 	public static Object buildIsNull(PropertyIsNull filter, Object extraData) {
         StringBuilder output = asStringBuilder(extraData);
         
-        PropertyName propertyName = (PropertyName) filter.getExpression();
-        propertyName.accept(new ExpressionToText(), output);        
+        filter.getExpression().accept(new ExpressionToText(), output);
         output.append(" IS NULL");
         return output;
 	}
@@ -237,9 +240,9 @@ public final class FilterToTextUtil {
         StringBuilder output = asStringBuilder(extraData);
         
         output.append("DWITHIN(");
-        PropertyName propertyName = (PropertyName) filter.getExpression1();
         ExpressionToText visitor = new ExpressionToText();
-		propertyName.accept(visitor, output);
+        
+        filter.getExpression1().accept(visitor, output);
         output.append(", ");
         filter.getExpression2().accept(visitor, output);
         output.append(", ");

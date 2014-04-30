@@ -187,6 +187,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
                     expression);
             filterList.add(eq);
         }
+        Collections.reverse(filterList);
         Or orFilter = getFilterFactory().or(filterList);
 
         return orFilter;

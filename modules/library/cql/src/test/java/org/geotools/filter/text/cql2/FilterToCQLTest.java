@@ -69,12 +69,12 @@ public class FilterToCQLTest{
     }
     @Test
     public void testANDOR() throws Exception {
-        cqlTest( "((ATTR1 < 10 AND ATTR2 < 2) OR ATTR3 > 10)" );
+        cqlTest( "(ATTR1 < 10 AND ATTR2 < 2) OR ATTR3 > 10" );
     }
     /** (ATTR1 > 10 OR ATTR2 < 2) */
     @Test
     public void testOR() throws Exception {
-        cqlTest( "(ATTR1 > 10 OR ATTR2 < 2)" );
+        cqlTest( "ATTR1 > 10 OR ATTR2 < 2" );
     }
 
     @Test
@@ -102,7 +102,7 @@ public class FilterToCQLTest{
     @Test
     public void testBeforeAndAfter() throws Exception{
     	
-    	cqlTest("(dateAttr AFTER 2006-10-10T01:30:00+00:00 AND dateAttr BEFORE 2010-12-31T01:30:00+00:00)");
+    	cqlTest("dateAttr AFTER 2006-10-10T01:30:00+00:00 AND dateAttr BEFORE 2010-12-31T01:30:00+00:00");
     }
 
     @Test

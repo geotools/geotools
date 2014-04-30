@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -87,18 +88,14 @@ public class FunctionExpressionImplTest extends TestCase {
     }
 
     public void testGetType() {
-        assertEquals(ExpressionType.FUNCTION, function.getType());
+        assertEquals(ExpressionType.FUNCTION, Filters.getExpressionType(function));
     }
 
     public void testGetName() {
-        function.setName("testFunction");
-        assertEquals("testFunction", function.getName());
-    }
-
-    public void testSetName() {
-        function.setName("testFunction");
-        // do not try this at home
-        assertEquals("testFunction", function.name);
+        FunctionExpressionImpl anonymous = new FunctionExpressionImpl("testFunction"){
+            
+        };
+        assertEquals("testFunction", anonymous.getName());
     }
 
     public void testGetParameters() {
@@ -121,16 +118,13 @@ public class FunctionExpressionImplTest extends TestCase {
         final List expected = Collections
                 .singletonList(new LiteralExpressionImpl(10d));
         function.setParameters(expected);
-        Expression[] args = function.getArgs();
-        List actual = Arrays.asList(args);
+        List<Expression> actual = function.getParameters();
         assertEquals(expected, actual);
     }
 
     public void testSetArgs() {
-        final List expected = Collections
-                .singletonList(new LiteralExpressionImpl(10d));
-        org.geotools.filter.Expression[] args = (org.geotools.filter.Expression[]) expected.toArray(new org.geotools.filter.Expression[1]);
-        function.setArgs(args);
+        final List expected = Collections.singletonList(new LiteralExpressionImpl(10d));
+        function.setParameters(expected);
         assertEquals(expected, function.params);
     }
 
@@ -233,56 +227,53 @@ public class FunctionExpressionImplTest extends TestCase {
                 + e.getMessage());
     }
 
-    private void testDeprecatedMethods(FunctionExpression function, List errors)
+    private void testDeprecatedMethods(FunctionExpression function, List<String> errors)
             throws InstantiationException, IllegalAccessException {
         final String functionClass = function.getClass().getName();
         int argCount = function.getArgCount();
         if (argCount < 0) { //unlimited parameters
             argCount = 5; //we'll try 5
         }
-
-        final org.geotools.filter.Expression[] expected = new org.geotools.filter.Expression[argCount];
+        
+        final List<Expression> expected = new ArrayList<Expression>();
+        
         for (int i = 0; i < argCount; i++) {
-            org.geotools.filter.Expression ex = new AttributeExpressionImpl("attName");
-            expected[i] = ex;
+            AttributeExpressionImpl ex = new AttributeExpressionImpl("attName");
+            expected.add( ex );
         }
-
-        final List expectedList = Arrays.asList(expected);
+        
         try {
-            function.setArgs(expected);
+            function.setParameters(expected);
         } catch (Exception e) {
             addExceptionError(errors, functionClass, "setArgs", e);
         }
 
-        List returnedParams = function.getParameters();
+        List<Expression> returnedParams = function.getParameters();
         if (returnedParams == null) {
-            errors
-                    .add(functionClass
+            errors.add(functionClass
                             + ".getParameters() returned null when parameters were set through setArgs(Expression[])");
-        } else if (!expectedList.equals(returnedParams)) {
-            errors
-                    .add(functionClass
+        } else if (!expected.equals(returnedParams)) {
+            errors.add(functionClass
                             + ".getParameters() returned a wrong result when parameters were set through setArgs(Expression[])");
         }
 
         function = (FunctionExpression) function.getClass().newInstance();
-        function.setParameters(expectedList);
+        function.setParameters(expected);
 
-        Expression[] returnedArgs = function.getArgs();
+        List<Expression> returnedArgs = function.getParameters();
         if (returnedArgs == null) {
-            errors
-                    .add(functionClass
-                            + ".getArgs() returns null then arguments set through setParameters()");
+            errors.add(functionClass
+                            + ".getParameters() returns null then arguments set through setParameters()");
         } else {
-            returnedParams = Arrays.asList(expected);
+            returnedParams = new ArrayList<Expression>( expected);
 
-            if (!expectedList.equals(returnedParams)) {
+            if (!expected.equals(returnedParams)) {
                 errors.add(functionClass
-                        + ".getArgs() incompatible with getParameters()");
+                        + ".getParameters() incompatible with getParameters()");
             }
         }
 
-        if (ExpressionType.FUNCTION != function.getType()) {
+        if (ExpressionType.FUNCTION != Filters.getExpressionType(function)) {
             errors
                     .add(functionClass + ".getType != "
                             + ExpressionType.FUNCTION);

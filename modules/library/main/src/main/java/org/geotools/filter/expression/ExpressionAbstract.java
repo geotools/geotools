@@ -41,18 +41,18 @@ import org.opengis.filter.expression.ExpressionVisitor;
  * 
  * @author Jody Garnett
  *
- *
- *
- *
  * @source $URL$
  */
 public abstract class ExpressionAbstract implements Expression {
-	
-	/** Subclass should overide, default implementation returns null */
-	public Object evaluate(Object object) {
-		return null;
-	}
-	
+
+    /**
+     * Subclass should override, default implementation returns null.
+     * 
+     * @return default implementation returns null
+     */
+    public Object evaluate(Object object) {
+        return null;
+    }
     /**
      * Default implementation delegates handling of context
      * conversion to Value utility class.
@@ -61,32 +61,8 @@ public abstract class ExpressionAbstract implements Expression {
      * (as the easiest way to provide value morphing in confirmance with
      *  the Filter specification).
      */
-	public Object evaluate(Object object, Class context) {
-	    return Converters.convert(evaluate( object ), context);
-	}
-	
-    /**
-     * Helper method for subclasses to reduce null checks
-     * @param expression
-     * @param feature
-     * @return value or null
-     */
-    protected Object eval( Expression expression, SimpleFeature feature ){
-        if( expression == null || feature == null ) return null;
-        return expression.evaluate( feature );
+    public <T> T evaluate(Object object, Class<T> context) {
+        return Converters.convert(evaluate(object), context);
     }
 
-    /**
-     * Helper method for subclasses to reduce null checks
-     * 
-     * @param expression
-     * @param feature
-     * @return value or null
-     */
-    protected Object eval(org.geotools.filter.Expression expression,
-    		SimpleFeature feature) {
-        if (expression == null || feature == null)
-            return null;
-        return expression.evaluate(feature);
-    }
 }

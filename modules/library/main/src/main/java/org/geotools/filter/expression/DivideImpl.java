@@ -37,9 +37,6 @@ public class DivideImpl extends MathExpressionImpl implements Divide {
 
 	public DivideImpl(Expression expr1, Expression expr2) {
 		super(expr1,expr2);
-		
-		//	backwards compatability with old type system
-		expressionType = MATH_DIVIDE;
 	}
 	
 	public Object evaluate(Object feature) throws IllegalArgumentException {

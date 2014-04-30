@@ -31,19 +31,13 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class EqualsImpl extends GeometryFilterImpl implements Equals {
 
-	public EqualsImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2) {
-		super(factory, e1, e2);
+    public EqualsImpl(Expression e1, Expression e2) {
+        super(e1, e2);
+    }
 
-		// backwards compat with old type system
-		this.filterType = GEOMETRY_EQUALS;
-	}
-	
-	public EqualsImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2, MatchAction matchAction) {
-            super(factory, e1, e2, matchAction);
-
-            // backwards compat with old type system
-            this.filterType = GEOMETRY_EQUALS;
-        }
+    public EqualsImpl(Expression e1, Expression e2, MatchAction matchAction) {
+        super(e1, e2, matchAction);
+    }
 
 	@Override
         public boolean evaluateInternal(Geometry left, Geometry right) {

@@ -26,8 +26,7 @@ import java.util.Map;
 
 import javax.naming.OperationNotSupportedException;
 
-import org.geotools.filter.Expression;
-import org.geotools.filter.FilterFactoryFinder;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ContrastEnhancementImpl;
 import org.geotools.styling.ExternalGraphic;
@@ -54,6 +53,8 @@ import org.geotools.xml.styling.sldComplexTypes2._OnlineResource;
 import org.geotools.xml.styling.sldComplexTypes2._PointPlacement;
 import org.geotools.xml.styling.sldComplexTypes2._PolygonSymbolizer;
 import org.geotools.xml.styling.sldComplexTypes2._Rule;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Expression;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -219,7 +220,8 @@ public class sldComplexTypes {
                     symbol.setHistogram(); // (Graphic)value[i].getValue()
 
                 if(elems[GAMMAVALUE].getName().equals(e.getName())){
-                    symbol.setGammaValue(FilterFactoryFinder.createFilterFactory().createLiteralExpression(((Double)value[i].getValue()).doubleValue()));
+                    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                    symbol.setGammaValue(ff.literal( ((Double)value[i].getValue()).doubleValue()));
                 }
             }
             

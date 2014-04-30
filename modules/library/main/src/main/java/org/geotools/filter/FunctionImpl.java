@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.expression.ExpressionAbstract;
-
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -34,6 +33,7 @@ import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.parameter.Parameter;
+
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -111,7 +111,10 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
      * @return value for the provided object
      */
     public Object evaluate(Object object) {
-    	return fallbackValue.evaluate( object );
+        if( fallbackValue != null ){
+            return fallbackValue.evaluate( object );
+        }
+        throw new UnsupportedOperationException( "Function "+name+" not implemented");
     }
     
     /**

@@ -52,7 +52,7 @@ public class StandardDeviationFunction extends ClassificationFunction {
             int classNum = getClasses();
 
             // find the standard deviation
-            StandardDeviationVisitor sdVisit = new StandardDeviationVisitor(getExpression());
+            StandardDeviationVisitor sdVisit = new StandardDeviationVisitor(getParameters().get(0));
 
             featureCollection.accepts(sdVisit, progress);
             if (progress != null && progress.isCanceled()) {

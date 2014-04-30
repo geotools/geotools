@@ -18,6 +18,7 @@ package org.geotools.filter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,6 +32,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.opengis.filter.Filter;
+import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -264,13 +266,13 @@ public class DOMParserTest extends FilterTestSupport {
     }
 
     public void test28() throws Exception {
-        FidFilter filter = (FidFilter) parseDocumentFirst("test28.xml");
-        String[] fids = filter.getFids();
-        List list = Arrays.asList(fids);
-        assertEquals(3, fids.length);
-        assertTrue(list.contains("FID.3"));
-        assertTrue(list.contains("FID.2"));
-        assertTrue(list.contains("FID.1"));
+        Id filter = (Id) parseDocumentFirst("test28.xml");
+        Set<Object> fids = filter.getIDs();
+        
+        assertEquals(3, fids.size());
+        assertTrue(fids.contains("FID.3"));
+        assertTrue(fids.contains("FID.2"));
+        assertTrue(fids.contains("FID.1"));
     }
     
     public void testNotEqual() throws Exception {

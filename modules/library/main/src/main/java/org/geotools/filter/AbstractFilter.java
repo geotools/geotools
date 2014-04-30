@@ -18,8 +18,7 @@ package org.geotools.filter;
 
 import java.util.logging.Logger;
 
-import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.Filter;
 
 /**
  * Implements Filter interface, with constants and default behaviors for
@@ -31,42 +30,18 @@ import org.opengis.feature.simple.SimpleFeature;
  * @source $URL$
  * @version $Id$
  */
-public abstract class AbstractFilter extends FilterAbstract implements Filter {
+public abstract class AbstractFilter extends FilterAbstract implements FilterType, Filter {
    
-	/** The logger for the default core module. */
+    /** The logger for the default core module. */
     protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
-
-
-    /** Defines filter type (all valid types defined below). */
-    protected short filterType;
-
-    /** Sets the permissiveness of the filter construction handling. */
-    protected boolean permissiveConstruction = true;
 
     /**
      * 
      * @param factory
      */
-    protected AbstractFilter(org.opengis.filter.FilterFactory factory) {
-		super(factory);
-	}
-    
-    /**
-     * Implements a 'contained by' check for a given feature, defaulting to
-     * true.
-     * <p>
-     * This calls through to {@link #evaluate(Feature)}.
-     * </p>
-     *
-     * @param feature Specified feature to examine.
-     *
-     * @return Result of 'contains' test.
-     * 
-     * @deprecated use {@link Filter#evaluate(Feature)}
-     */
-    public final boolean contains(SimpleFeature feature) {
-    	return evaluate(feature);
+    protected AbstractFilter() {
     }
+
     
     /**
      * This method checks if the object is an instance of {@link Feature} and 
@@ -115,7 +90,7 @@ public abstract class AbstractFilter extends FilterAbstract implements Filter {
      *
      * @return Whether or not this is a math filter type.
      */
-    protected static boolean isMathFilter(short filterType) {
+    protected static boolean isMathFilter(int filterType) {
         return ((filterType == COMPARE_LESS_THAN)
         || (filterType == COMPARE_GREATER_THAN)
         || (filterType == COMPARE_LESS_THAN_EQUAL)
@@ -129,7 +104,7 @@ public abstract class AbstractFilter extends FilterAbstract implements Filter {
      *
      * @return Whether or not this is a compare filter type.
      */
-    protected static boolean isCompareFilter(short filterType) {
+    protected static boolean isCompareFilter(int filterType) {
         return ((isMathFilter(filterType)) || (filterType == COMPARE_EQUALS)
         || (filterType == BETWEEN) || (filterType == COMPARE_NOT_EQUALS));
     }
@@ -176,32 +151,4 @@ public abstract class AbstractFilter extends FilterAbstract implements Filter {
         || (filterType == NULL) || (filterType == FID) || (filterType == LIKE));
     }
 
-    /**
-     * Retrieves the type of filter.
-     *
-     * @return a short representation of the filter type.
-     * 
-     * @deprecated The enumeration base type system is replaced with a class 
-     * 	based type system. An 'instanceof' check should be made instead of 
-     * 	calling this method.
-     */
-    public short getFilterType() {
-        return filterType;
-    }
-
-    /**
-     * Used by FilterVisitors to perform some action on this filter instance.
-     * Typicaly used by Filter decoders, but may also be used by any thing
-     * which needs infomration from filter structure. Implementations should
-     * always call: visitor.visit(this); It is importatant that this is not
-     * left to a parent class unless the parents API is identical.
-     *
-     * @param visitor The visitor which requires access to this filter, the
-     *        method must call visitor.visit(this);
-     *        
-     *  @deprecated use {@link org.opengis.filter.Filter#accept(FilterVisitor, Object)}
-     */
-    public final void accept(FilterVisitor visitor) {
-    	accept(new FilterVisitorFilterWrapper(visitor),null);
-    }
 }

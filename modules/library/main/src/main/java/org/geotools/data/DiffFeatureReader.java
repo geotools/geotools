@@ -24,13 +24,13 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import org.geotools.feature.IllegalAttributeException;
-import org.geotools.filter.AttributeExpression;
 import org.opengis.feature.Feature;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.BinarySpatialOperator;
@@ -274,8 +274,8 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature> impleme
     	return g.getEnvelopeInternal();
     }
     
-    protected boolean isDefaultGeometry(AttributeExpression ae) {
-    	return reader.getFeatureType().getGeometryDescriptor().getLocalName().equals(ae.getAttributePath());
+    protected boolean isDefaultGeometry(PropertyName ae) {
+    	return reader.getFeatureType().getGeometryDescriptor().getLocalName().equals(ae.getPropertyName());
     }
     
     protected boolean isSubsetOfBboxFilter(Filter f) {

@@ -16,11 +16,8 @@
  */
 package org.geotools.filter;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
 import java.awt.RenderingHints.Key;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -30,18 +27,19 @@ import org.geotools.feature.NameImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.parameter.Parameter;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Abstract class for a function expression implementation
- *
+ * <p>
+ * By default this implementation returns the provided {@link #fallback} value. To implement
+ * a function please override the {@link #evaluate(Object)} method.
+ * 
  * @author James Macgill, PSU
- *
  *
  * @source $URL$
  */
@@ -97,19 +95,10 @@ public abstract class FunctionExpressionImpl
      * Creates a new instance of FunctionExpression
      */
     protected FunctionExpressionImpl(Name name, Literal fallback) {
-        this.functionName = new FunctionNameImpl(name, (Class)null);
+        this.functionName = new FunctionNameImpl(name, (Class<?>) null);
         this.name = name.getLocalPart();
         this.fallback = fallback;
         params = new ArrayList<org.opengis.filter.expression.Expression>();
-    }
-
-     /**
-     * Gets the type of this expression.
-     *
-     * @return the short representation of a function expression.
-     */
-    public short getType() {
-        return FUNCTION;
     }
 
     /**
@@ -129,12 +118,6 @@ public abstract class FunctionExpressionImpl
         return functionName;
     }
 
-    /**
-     * Sets the name of the function.
-     */
-    public void setName(String name) {
-    	this.name = name;
-    }
     
     public Literal getFallbackValue() {
         return fallback;
@@ -152,7 +135,7 @@ public abstract class FunctionExpressionImpl
     /**
      * Sets the function parameters.
      */
-    public void setParameters(List params) {
+    public void setParameters(List<Expression> params) {
         if(params == null){
             throw new NullPointerException("Function parameters required");
         }
@@ -162,29 +145,7 @@ public abstract class FunctionExpressionImpl
             throw new IllegalArgumentException("Function "+name+" expected " + argCount + 
                     " arguments, got " + paramsSize);
         }
-    	this.params = new ArrayList(params);
-    }
-    
-    /**
-     * Since this class is heavily subclasses within the geotools toolkit 
-     * itself we relax the 'final' restriction of this deprecated method.
-     * 
-     * @deprecated use {@link #getParameters()}.
-     * 
-     */
-    public Expression[] getArgs() {
-    	List params = getParameters();
-    	return (Expression[])params.toArray(new Expression[params.size()]);
-    }
-    
-    /**
-     * Since this class is heavily subclassed within the geotools toolkit 
-     * itself we relax the 'final' restriction of this deprecated method.
-     * 
-     * @deprecated use {@link #setParameters(List)}
-     */
-    public void setArgs(Expression[] args) {
-    	setParameters(Arrays.asList(args));
+    	this.params = new ArrayList<Expression>(params);
     }
 
     /**
@@ -218,7 +179,7 @@ public abstract class FunctionExpressionImpl
     /**
      * Returns the implementation hints. The default implementation returns an empty map.
      */
-    public  Map<Key, ?> getImplementationHints() {
+    public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
     
@@ -264,10 +225,18 @@ public abstract class FunctionExpressionImpl
      */
     protected org.opengis.filter.expression.Expression getExpression(int index){
         org.opengis.filter.expression.Expression exp;
-        exp = (org.opengis.filter.expression.Expression) getParameters().get(index);
+        exp =  getParameters().get(index);
         return exp;
     }
     
+    @Override
+    public Object evaluate(Object object) {
+        if( fallback != null ){
+            return fallback.evaluate( object );
+        }
+        throw new UnsupportedOperationException( "Function "+name+" not implemented");
+    }
+
     public boolean equals(Object obj) {
     	if( obj == null || !(obj instanceof Function)){
     		return false;

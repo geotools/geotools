@@ -23,15 +23,8 @@ import java.util.Date;
 import org.geotools.util.Converters;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.expression.Add;
-import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.Multiply;
-import org.opengis.filter.expression.NilExpression;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.expression.Subtract;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -50,7 +43,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 @SuppressWarnings("deprecation")
-public class ConstantExpression implements LiteralExpression, Cloneable {
+public class ConstantExpression implements Literal, Cloneable {
     public static final ConstantExpression NULL = constant(null);
     public static final ConstantExpression BLACK = color(Color.BLACK);
     public static final ConstantExpression ZERO = constant(0);
@@ -114,47 +107,6 @@ public class ConstantExpression implements LiteralExpression, Cloneable {
         return getValue();
     }
 
-    /**
-     * @deprecated use {@link #accept(ExpressionVisitor, Object)}.
-     */
-    public void accept(final FilterVisitor visitor) {
-        accept(new ExpressionVisitor() {
-                public Object visit(Add expression, Object extraData) {
-                    return null;
-                }
-
-                public Object visit(Divide expression, Object extraData) {
-                    return null;
-                }
-
-                public Object visit(Function expression, Object extraData) {
-                    return null;
-                }
-
-                public Object visit(Literal expression, Object extraData) {
-                    visitor.visit(ConstantExpression.this);
-
-                    return null;
-                }
-
-                public Object visit(Multiply expression, Object extraData) {
-                    return null;
-                }
-
-                public Object visit(PropertyName expression, Object extraData) {
-                    return null;
-                }
-
-                public Object visit(Subtract expression, Object extraData) {
-                    return null;
-                }
-
-                public Object visit(NilExpression arg0, Object arg1) {
-                    return null;
-                }
-            }, null);
-    }
-
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
@@ -164,11 +116,11 @@ public class ConstantExpression implements LiteralExpression, Cloneable {
     }
 
     public boolean equals(Object obj) {
-        if (!(obj instanceof LiteralExpression)) {
+        if (!(obj instanceof Literal)) {
             return false;
         }
 
-        LiteralExpression other = (LiteralExpression) obj;
+        Literal other = (Literal) obj;
         Object otherLiteral = other.getValue();
 
         if (value == null) {

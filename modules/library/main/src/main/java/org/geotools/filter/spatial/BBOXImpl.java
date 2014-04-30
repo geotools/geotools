@@ -17,8 +17,9 @@
 package org.geotools.filter.spatial;
 
 import org.geotools.filter.AttributeExpressionImpl;
-import org.geotools.filter.BBoxExpressionImpl;
-import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.LiteralExpressionImpl;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.opengis.filter.FilterVisitor;
@@ -32,8 +33,13 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.geom.prep.PreparedGeometry;
 
 /**
@@ -47,37 +53,34 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
 
     String srs;
 
-    public BBOXImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2) {
-        super(factory, e1, e2);
-
-        // backwards compat with old type system
-        this.filterType = GEOMETRY_BBOX;
+    public BBOXImpl(Expression e1, Expression e2) {
+        super(e1, e2);
         if (e1 != null)
             setExpression1(e1);
         if (e2 != null)
             setExpression2(e2);
     }
 
-    public BBOXImpl(FilterFactoryImpl factory, Expression name, double minx, double miny,
-            double maxx, double maxy, String srs) {
-        this(factory, name, factory.createBBoxExpression(new Envelope(minx, maxx, miny, maxy)));
+    public BBOXImpl(Expression name, double minx, double miny, double maxx, double maxy, String srs) {
+        this(name,
+             new LiteralExpressionImpl(boundingPolygon(new Envelope(minx, maxx, miny, maxy)))
+             );
         this.srs = srs;
     }
-    
-    public BBOXImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2, MatchAction matchAction) {
-        super(factory, e1, e2, matchAction);
 
-        // backwards compat with old type system
-        this.filterType = GEOMETRY_BBOX;
+    public BBOXImpl(Expression e1, Expression e2, MatchAction matchAction) {
+        super(e1, e2, matchAction);
         if (e1 != null)
             setExpression1(e1);
         if (e2 != null)
             setExpression2(e2);
     }
 
-    public BBOXImpl(FilterFactoryImpl factory, Expression name, double minx, double miny,
-            double maxx, double maxy, String srs, MatchAction matchAction) {
-        this(factory, name, factory.createBBoxExpression(buildEnvelope(minx, maxx, miny, maxy, srs)), matchAction);
+    public BBOXImpl(Expression name, double minx, double miny, double maxx, double maxy,
+            String srs, MatchAction matchAction) {
+        this(name,
+             new LiteralExpressionImpl( boundingPolygon(buildEnvelope(minx, maxx, miny, maxy, srs))),
+             matchAction);
         this.srs = srs;
     }
 
@@ -161,7 +164,8 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
 
     private void updateExpression2() {
         // this is temporary until set...XY are removed
-        BBoxExpressionImpl expression = new BBoxExpressionImpl(buildEnvelope(minx, maxx, miny, maxy, srs)) {};
+        Literal expression = 
+                new LiteralExpressionImpl( boundingPolygon(buildEnvelope(minx, maxx, miny, maxy, srs)));
         super.setExpression2(expression);
     }
 
@@ -267,7 +271,45 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
             }
         }
     }
-    
+    /**
+     * Generate bounding polygon for provided envelope.
+     * 
+     * For a ReferenedEnvelope the CoordinateReferenceSystem wil be preserved.
+     * 
+     * @param env The envelope to set as the bounds.
+     *
+     * @throws IllegalFilterException If the box can not be created.
+     *
+     * @task Currently sets the SRID to null, which can cause problems
+     *       with JTS when it comes to doing spatial tests
+     */
+    public static Polygon boundingPolygon( Envelope env ){
+        /** Factory for creating geometries */
+        GeometryFactory gfac = JTSFactoryFinder.getGeometryFactory();
+        
+        Coordinate[] coords = new Coordinate[5];
+        coords[0] = new Coordinate(env.getMinX(), env.getMinY());
+        coords[1] = new Coordinate(env.getMinX(), env.getMaxY());
+        coords[2] = new Coordinate(env.getMaxX(), env.getMaxY());
+        coords[3] = new Coordinate(env.getMaxX(), env.getMinY());
+        coords[4] = new Coordinate(env.getMinX(), env.getMinY());
+
+        LinearRing ring = null;
+
+        try {
+            ring = gfac.createLinearRing(coords);
+        } catch (TopologyException tex) {
+            throw new IllegalFilterException(tex.toString());
+        }
+
+        Polygon polygon = gfac.createPolygon(ring, null);
+        if (env instanceof ReferencedEnvelope) {
+            ReferencedEnvelope refEnv = (ReferencedEnvelope) env;
+            polygon.setUserData(refEnv.getCoordinateReferenceSystem());
+        }
+        
+        return polygon;
+    }
     private static ReferencedEnvelope buildEnvelope(double minx, double maxx, double miny, double maxy, String srs) {
     	CoordinateReferenceSystem crs = null;
 		

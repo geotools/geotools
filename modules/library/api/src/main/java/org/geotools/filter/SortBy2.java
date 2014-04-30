@@ -16,7 +16,7 @@
  */
 package org.geotools.filter;
 
-
+import org.opengis.filter.expression.Expression;
 /**
  * GeoTools allows for more pervase use of Expression then is strictly
  * supported by the specification.

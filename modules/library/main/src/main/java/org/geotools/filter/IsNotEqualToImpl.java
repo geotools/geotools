@@ -30,33 +30,32 @@ public class IsNotEqualToImpl extends MultiCompareFilterImpl
     
     IsEqualsToImpl delegate;
 
-	protected IsNotEqualToImpl(org.opengis.filter.FilterFactory factory) {
-		this(factory,null,null);
-	}
-	
-	protected IsNotEqualToImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2) {
-		this( factory, e1, e2, true );
-	}
-	
-	protected IsNotEqualToImpl(org.opengis.filter.FilterFactory factory, MatchAction matchAction) {
-            this(factory,null,null, matchAction);
-        }
-        
-        protected IsNotEqualToImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2, MatchAction matchAction) {
-            this( factory, e1, e2, true, matchAction );
-        }
-	
-	protected IsNotEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2, boolean matchCase ) {
-	    this( factory, expression1, expression2, matchCase, MatchAction.ANY );
-	}
-	
-	protected IsNotEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2, boolean matchCase, MatchAction matchAction ) {
-            super(factory, expression1, expression2, matchCase, matchAction);
-            delegate = new IsEqualsToImpl(factory, expression1, expression2, matchCase);
-            
-            //backwards compat with old type system
-            this.filterType = COMPARE_NOT_EQUALS;
-	}
+    @Deprecated
+    protected IsNotEqualToImpl() {
+        this(null, null);
+    }
+
+    protected IsNotEqualToImpl(Expression e1, Expression e2) {
+        this(e1, e2, true);
+    }
+
+    protected IsNotEqualToImpl(MatchAction matchAction) {
+        this(null, null, matchAction);
+    }
+
+    protected IsNotEqualToImpl(Expression e1, Expression e2, MatchAction matchAction) {
+        this(e1, e2, true, matchAction);
+    }
+
+    protected IsNotEqualToImpl(Expression expression1, Expression expression2, boolean matchCase) {
+        this(expression1, expression2, matchCase, MatchAction.ANY);
+    }
+
+    protected IsNotEqualToImpl(Expression expression1, Expression expression2, boolean matchCase,
+            MatchAction matchAction) {
+        super(expression1, expression2, matchCase, matchAction);
+        delegate = new IsEqualsToImpl(expression1, expression2, matchCase);
+    }
 
 	@Override
 	public boolean evaluateInternal(Object v1, Object v2) {

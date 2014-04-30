@@ -54,7 +54,7 @@ public class QuantileFunction extends ClassificationFunction {
     
 	private Object calculate(SimpleFeatureCollection featureCollection) {
 		// use a visitor to find the values in each bin
-		QuantileListVisitor quantileVisit = new QuantileListVisitor(getExpression(), getClasses());
+		QuantileListVisitor quantileVisit = new QuantileListVisitor(getParameters().get(0), getClasses());
 		if (progress == null) progress = new NullProgressListener();
 		try {
             featureCollection.accepts(quantileVisit, progress);

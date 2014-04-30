@@ -27,10 +27,10 @@ import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.filter.expression.PropertyAccessors;
 import org.geotools.util.Converters;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.ExpressionVisitor;
+import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
 
@@ -45,8 +45,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @source $URL$
  * @version $Id$
  */
-public class AttributeExpressionImpl extends DefaultExpression
-    implements AttributeExpression {
+public class AttributeExpressionImpl extends DefaultExpression implements PropertyName {
             
     /** The logger for the default core module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
@@ -79,7 +78,6 @@ public class AttributeExpressionImpl extends DefaultExpression
      */
     protected AttributeExpressionImpl(SimpleFeatureType schema) {
         this.schema = schema;
-        this.expressionType = ATTRIBUTE;
     }
 
     /**
@@ -92,7 +90,6 @@ public class AttributeExpressionImpl extends DefaultExpression
         this.schema = null;
         this.namespaceSupport = null;
         this.hints = null;
-        this.expressionType = ATTRIBUTE;
     }
     
     /**
@@ -109,7 +106,6 @@ public class AttributeExpressionImpl extends DefaultExpression
         } else {
         	namespaceSupport = null;
         }
-        expressionType = ATTRIBUTE;        
     }
     
     /**
@@ -122,7 +118,6 @@ public class AttributeExpressionImpl extends DefaultExpression
         attPath = xpath;
         schema = null;
         this.namespaceSupport = namespaceContext;
-        this.expressionType = ATTRIBUTE;
     }   
     
     /**
@@ -135,7 +130,6 @@ public class AttributeExpressionImpl extends DefaultExpression
         schema = null;
         this.namespaceSupport = null;
         this.hints = hints;
-        this.expressionType = ATTRIBUTE;
     } 
     
     public NamespaceSupport getNamespaceContext() {
@@ -154,31 +148,7 @@ public class AttributeExpressionImpl extends DefaultExpression
     protected AttributeExpressionImpl(SimpleFeatureType schema, String attPath)
         throws IllegalFilterException {
         this.schema = schema;
-        this.expressionType = ATTRIBUTE;
-        setAttributePath(attPath);
-    }
-
-    /**
-     * Constructor with minimum dataset for a valid expression.
-     *
-     * @param attPath The initial (required) sub filter.
-     *
-     * @throws IllegalFilterException If the attribute path is not in the
-     *         schema.
-     *         
-     *  @deprecated use {@link #setPropertyName(String)}
-     */
-    public final void setAttributePath(String attPath) throws IllegalFilterException {
-       setPropertyName(attPath);
-    }
-
-    /**
-     * This method calls {@link #getPropertyName()}.
-     * 
-     * @deprecated use {@link #getPropertyName()}
-     */
-    public final String getAttributePath() {
-      	return getPropertyName();
+        setPropertyName(attPath);
     }
 
     /**
@@ -209,18 +179,6 @@ public class AttributeExpressionImpl extends DefaultExpression
            this.attPath = attPath;
        }
     }	
-    
-    /**
-      * Gets the value of this attribute from the passed feature.
-      *
-      * @param feature Feature from which to extract attribute value.
-      */
-    public Object evaluate(SimpleFeature feature) {
-       //NC - is exact copy of code anyway, don't need to keep changing both
-       //this method can probably be removed all together
-        return evaluate((Object) feature, null); 
-       
-    }
   
     /**
      * Gets the value of this property from the passed object.
@@ -238,7 +196,8 @@ public class AttributeExpressionImpl extends DefaultExpression
     * @param obj Object from which to extract attribute value.
     * @param target Target Class 
     */
-    public Object evaluate(Object obj, Class target) {
+    @SuppressWarnings("unchecked")
+    public <T> T evaluate(Object obj, Class<T> target) {
         // NC- new method
 
         PropertyAccessor accessor = getLastPropertyAccessor();
@@ -275,7 +234,7 @@ public class AttributeExpressionImpl extends DefaultExpression
         }
 
         if (target == null) {
-            return value.get();
+            return (T) value.get();
         }
 
         return Converters.convert(value.get(), target);
@@ -283,7 +242,7 @@ public class AttributeExpressionImpl extends DefaultExpression
     }
 
     // NC - helper method for evaluation - attempt to use property accessor
-    private boolean tryAccessor(PropertyAccessor accessor, Object obj, Class target,
+    private boolean tryAccessor(PropertyAccessor accessor, Object obj, Class<?> target,
             AtomicReference<Object> value, AtomicReference<Exception> ex) {
         try {
             value.set(accessor.get(obj, attPath, target));
@@ -332,16 +291,16 @@ public class AttributeExpressionImpl extends DefaultExpression
         if (obj.getClass() == this.getClass()) {
             AttributeExpressionImpl expAttr = (AttributeExpressionImpl) obj;
 
-            boolean isEqual = (expAttr.getType() == this.expressionType);
+            boolean isEqual = (Filters.getExpressionType(expAttr) == Filters.getExpressionType(this));
             if(LOGGER.isLoggable(Level.FINEST))
                 LOGGER.finest("expression type match:" + isEqual + "; in:"
-                + expAttr.getType() + "; out:" + this.expressionType);
+                + Filters.getExpressionType(expAttr) + "; out:" + Filters.getExpressionType(this));
             isEqual = (expAttr.attPath != null)
                 ? (isEqual && expAttr.attPath.equals(this.attPath))
                 : (isEqual && (this.attPath == null));
             if(LOGGER.isLoggable(Level.FINEST))
                 LOGGER.finest("attribute match:" + isEqual + "; in:"
-                + expAttr.getAttributePath() + "; out:" + this.attPath);
+                + expAttr.getPropertyName() + "; out:" + this.attPath);
             isEqual = (expAttr.schema != null)
                 ? (isEqual && expAttr.schema.equals(this.schema))
                 : (isEqual && (this.schema == null));

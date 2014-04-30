@@ -16,12 +16,28 @@
  */
 package org.geotools.filter;
 
+import java.util.Arrays;
+import java.util.List;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.expression.AddImpl;
+import org.opengis.filter.And;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Not;
+import org.opengis.filter.Or;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsLessThan;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.Add;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.spatial.Touches;
 
 
 /**
@@ -38,16 +54,16 @@ public class SQLUnpackerTest extends SQLFilterTestSupport {
     //private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.defaultcore");
 
     /** Filters on which to perform tests */
-    private BetweenFilterImpl btwnFilter;
-    private CompareFilter compFilter;
-    private GeometryFilter geomFilter;
-    private LikeFilterImpl likeFilter;
-    private NullFilterImpl nullFilter;
-    private AttributeExpressionImpl attrExp1;
-    private AttributeExpressionImpl attrExp2;
-    private LiteralExpressionImpl litExp1;
-    private LiteralExpressionImpl litExp2;
-    private MathExpressionImpl mathExp1;
+    private PropertyIsBetween btwnFilter;
+    private PropertyIsLessThan compFilter;
+    private Touches geomFilter;
+    private PropertyIsLike likeFilter;
+    private PropertyIsNull nullFilter;
+    private PropertyName attrExp1;
+    private PropertyName attrExp2;
+    private Literal litExp1;
+    private Literal litExp2;
+    private Add mathExp1;
 
     /** strings for Like filter */
     private String pattern = "te_st!";
@@ -122,35 +138,25 @@ public class SQLUnpackerTest extends SQLFilterTestSupport {
         unpacker = new SQLUnpacker(capabilities);
 
         try {
-            attrExp1 = new AttributeExpressionImpl(testSchema, "testInteger");
-            attrExp2 = new AttributeExpressionImpl(testSchema, "testGeometry");
-            litExp1 = new LiteralExpressionImpl(new Integer(65));
-            litExp2 = new LiteralExpressionImpl(new Integer(35));
-            mathExp1 = new AddImpl(null,null);
-            mathExp1.addLeftValue(litExp1);
-            mathExp1.addRightValue(litExp2);
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            
+            attrExp1 = ff.property("testInteger");
+            attrExp2 = ff.property( "testGeometry");
+            litExp1 = ff.literal(new Integer(65));
+            litExp2 =  ff.literal(new Integer(35));
+            
+            mathExp1 = ff.add(litExp1,litExp2);
 
-            btwnFilter = new BetweenFilterImpl();
-            btwnFilter.addLeftValue(litExp1);
-            btwnFilter.addMiddleValue(attrExp1);
-            btwnFilter.addRightValue(mathExp1);
+            btwnFilter = ff.between(attrExp1, litExp1, mathExp1);
 
-            FilterFactory factory = FilterFactoryFinder.createFilterFactory();
-            compFilter = factory.createCompareFilter(AbstractFilter.COMPARE_LESS_THAN);
-            compFilter.addLeftValue(attrExp1);
-            compFilter.addRightValue(litExp2);
+            compFilter = ff.less(attrExp1,litExp2);
 
             
-            geomFilter = factory.createGeometryFilter(AbstractFilter.GEOMETRY_TOUCHES);
-            geomFilter.addLeftGeometry(attrExp2);
-            geomFilter.addRightGeometry(litExp2);
+            geomFilter = ff.touches(attrExp2,litExp2);
 
-            likeFilter = new LikeFilterImpl();
-            likeFilter.setValue(attrExp1);
-            likeFilter.setPattern(pattern, wcMulti, wcSingle, escape);
+            likeFilter = ff.like(attrExp1,pattern, wcMulti, wcSingle, escape);
 
-            nullFilter = new NullFilterImpl();
-            nullFilter.nullCheckValue(attrExp2);
+            nullFilter = ff.isNull(attrExp2);
         } catch (IllegalFilterException e) {
             //should not happen.
             fail(e.getMessage());
@@ -229,21 +235,24 @@ public class SQLUnpackerTest extends SQLFilterTestSupport {
     public void testAnd() throws IllegalFilterException {
         //I will use the notation (Unsupported, Supported) to indicate
         //the filters that should result, that we are testing against.
-        Filter andFilter = btwnFilter.and(compFilter);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        
+        
+        And andFilter = ff.and( btwnFilter, compFilter);
         unpacker.unPackAND(andFilter);
 
         //both supported (null, andFilter)
         assertNull(unpacker.getUnSupported());
         assertEquals(andFilter, unpacker.getSupported());
 
-        andFilter = likeFilter.and(compFilter);
+        andFilter = ff.and( likeFilter,compFilter);
         unpacker.unPackAND(andFilter);
 
         //Comp supported, Like not: (likeFilter, compFilter)
         assertEquals(likeFilter, unpacker.getUnSupported());
         assertEquals(compFilter, unpacker.getSupported());
 
-        andFilter = likeFilter.and(geomFilter);
+        andFilter = ff.and( likeFilter,geomFilter);
         unpacker.unPackAND(andFilter);
 
         //both unsupported (andFilter, null)
@@ -252,14 +261,16 @@ public class SQLUnpackerTest extends SQLFilterTestSupport {
     }
 
     public void testNot() throws IllegalFilterException {
-        Filter notFilter = nullFilter.not();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        
+        Not notFilter = ff.not( nullFilter );
         unpacker.unPackAND(notFilter);
 
         //nullFilters supported (null, nullFilter)
         assertNull(unpacker.getUnSupported());
         assertEquals(notFilter, unpacker.getSupported());
 
-        notFilter = geomFilter.not();
+        notFilter = ff.not( geomFilter );
         unpacker.unPackAND(notFilter);
 
         //geomFilters not supported (geomFilter, null);
@@ -268,21 +279,23 @@ public class SQLUnpackerTest extends SQLFilterTestSupport {
     }
 
     public void testOr() throws IllegalFilterException {
-        Filter orFilter = btwnFilter.or(compFilter);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        
+        org.opengis.filter.Filter orFilter = ff.or( btwnFilter,compFilter);
         unpacker.unPackAND(orFilter);
 
         //both supported (null, orFilter)
         assertNull(unpacker.getUnSupported());
         assertEquals(orFilter, unpacker.getSupported());
 
-        orFilter = likeFilter.or(compFilter);
+        orFilter = ff.or(likeFilter,compFilter);
         unpacker.unPackAND(orFilter);
 
         //both unsupported: (orFilter, null)  
         assertEquals(orFilter, unpacker.getUnSupported());
         assertNull(unpacker.getSupported());
 
-        orFilter = likeFilter.and(geomFilter);
+        orFilter = ff.and(likeFilter,geomFilter);
         unpacker.unPackAND(orFilter);
 
         //both unsupported (orFilter, null)
@@ -292,16 +305,18 @@ public class SQLUnpackerTest extends SQLFilterTestSupport {
 
     //put in more unPackOR's
     public void testComplex() throws IllegalFilterException {
-        Filter orFilter = likeFilter.or(btwnFilter);
-        Filter andFilter = orFilter.and(compFilter);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        
+        Or orFilter = ff.or( likeFilter, btwnFilter);
+        And andFilter = ff.and( orFilter, compFilter);
         unpacker.unPackAND(andFilter);
 
         //compFilter supported, none of orFilter: (orFilter, compFilter)
         assertEquals(orFilter, unpacker.getUnSupported());
         assertEquals(compFilter, unpacker.getSupported());
 
-        Filter bigOrFilter = (andFilter.or(compFilter)).or(nullFilter);
-        Filter biggerOrFilter = bigOrFilter.or(nullFilter);
+        Or bigOrFilter = ff.or(ff.or(andFilter,compFilter),nullFilter);
+        Or biggerOrFilter = ff.or( bigOrFilter,nullFilter);
 
         //Top level or with one unsupported (like from orFilter)
         //makes all unsupported: (bigOrFilter, null)
@@ -309,28 +324,31 @@ public class SQLUnpackerTest extends SQLFilterTestSupport {
         assertEquals(biggerOrFilter, unpacker.getUnSupported());
         assertNull(unpacker.getSupported());
 
-        Filter bigAndFilter = (geomFilter.and(compFilter)).and(orFilter);
+        And bigAndFilter = ff.and(ff.and(geomFilter,compFilter),orFilter);
 
         //comp supported, orFilter not, geomFilter not:
         //(orFilter AND geomFilter, compFilter)
         unpacker.unPackAND(bigAndFilter);
-        assertEquals((orFilter.and(geomFilter)), unpacker.getUnSupported());
+        assertEquals(ff.and(orFilter,geomFilter), unpacker.getUnSupported());
         assertEquals(compFilter, unpacker.getSupported());
         unpacker.unPackOR(bigAndFilter);
         assertEquals(bigAndFilter, unpacker.getUnSupported());
         assertNull(unpacker.getSupported());
 
-        Filter hugeAndFilter = (bigAndFilter.and(andFilter)).and(bigOrFilter);
+        And hugeAndFilter = ff.and(ff.and(bigAndFilter,andFilter),bigOrFilter);
         unpacker.unPackAND(hugeAndFilter);
 
         // two comps should be supported; geom, or and bigOr unsupported
         // (compFilter AND compFilter, geomFilter AND orFilter AND orFilter AND bigOrFilter)
-        assertEquals( (compFilter.and(compFilter)), unpacker.getSupported() );
+        assertEquals( ff.and(compFilter,compFilter), unpacker.getSupported() );
         
-        Filter expected = (((geomFilter.and(orFilter)).and(orFilter)).and(
-                bigOrFilter));
+        List<org.opengis.filter.Filter>combine = Arrays.asList( new org.opengis.filter.Filter[]{
+                geomFilter, orFilter, orFilter,bigOrFilter});
+        
+        And expected = ff.and(combine);
         org.opengis.filter.Filter unsupported = unpacker.getUnSupported();
-
+        
+        assertEquals( expected.toString(), unsupported.toString());
         assertEquals( expected, unsupported );
     }
 }

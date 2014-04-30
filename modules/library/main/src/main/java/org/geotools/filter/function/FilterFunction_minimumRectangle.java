@@ -29,8 +29,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * A FilterFunction that expects a Geometry and returns it's minimum rectangle.
  * @author Jared Erickson
  */
-public class FilterFunction_minimumRectangle extends FunctionExpressionImpl implements
-        FunctionExpression {
+public class FilterFunction_minimumRectangle extends FunctionExpressionImpl {
 
     /**
      * The FunctionName

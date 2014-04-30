@@ -18,6 +18,10 @@ package org.geotools.filter;
 
 import java.util.logging.Logger;
 
+import org.geotools.factory.CommonFactoryFinder;
+import org.opengis.filter.And;
+import org.opengis.filter.FilterFactory2;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -37,11 +41,11 @@ public class FilterCapabilitiesTest extends TestCase {
             "org.geotools.defaultcore");
 
     /** Feature on which to preform tests */
-    private Filter gFilter;
-    private Filter compFilter;
-    private Filter logFilter;
+    private org.opengis.filter.Filter gFilter;
+    private org.opengis.filter.Filter compFilter;
+    private org.opengis.filter.Filter logFilter;
     private FilterCapabilities capabilities;
-    private FilterFactory fact = FilterFactoryFinder.createFilterFactory();
+    private FilterFactory2 fact = CommonFactoryFinder.getFilterFactory2();
 
     /** Test suite for this test case */
     TestSuite suite = null;
@@ -89,8 +93,8 @@ public class FilterCapabilitiesTest extends TestCase {
         capabilities = new FilterCapabilities();
 
         try {
-            gFilter = fact.createGeometryFilter(AbstractFilter.GEOMETRY_WITHIN);
-            compFilter = fact.createCompareFilter(FilterType.COMPARE_LESS_THAN);
+            gFilter = fact.within(fact.property("geom"), fact.literal(null));
+            compFilter = fact.less(fact.property("size"), fact.literal(3));
         } catch (IllegalFilterException ife) {
             LOGGER.fine("Bad filter " + ife);
         }
@@ -121,16 +125,17 @@ public class FilterCapabilitiesTest extends TestCase {
     }
 
     public void testFullySupports() {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         try {
-            logFilter = (org.geotools.filter.Filter) gFilter.and(compFilter);
+            logFilter = ff.and( gFilter, compFilter);
             assertTrue(capabilities.fullySupports(compFilter));
             assertTrue(!(capabilities.fullySupports(gFilter)));
             assertTrue(!(capabilities.fullySupports(logFilter)));
-            logFilter = (org.geotools.filter.Filter)  compFilter.and(fact.createBetweenFilter());
+            logFilter =  ff.and( compFilter,ff.between(ff.property("sample"),ff.literal(1),ff.literal(2)));
             assertTrue(capabilities.fullySupports(logFilter));
-            logFilter = (org.geotools.filter.Filter) logFilter.or(fact.createBetweenFilter());
+            logFilter = ff.or(logFilter,ff.between(ff.property("sample"),ff.literal(1),ff.literal(2)));
             assertTrue(capabilities.fullySupports(logFilter));
-            logFilter = (org.geotools.filter.Filter) logFilter.and(gFilter);
+            logFilter = ff.and(logFilter,gFilter);
             assertTrue(!(capabilities.fullySupports(logFilter)));
         } catch (IllegalFilterException e) {
             LOGGER.fine("Bad filter " + e);

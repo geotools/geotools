@@ -21,6 +21,7 @@ import java.util.Iterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.Not;
 
 /**
  * Determines which parts of a Filter can be turned into valid SQL statements.
@@ -196,10 +197,10 @@ public class SQLUnpacker {
                 //REVISIT: one special case not covered, when capabilities 
                 //does not support AND and it perfectly splits the filter 
                 //into unsupported and supported
-                Iterator filters = ((LogicFilter) filter).getFilterIterator();
+                Iterator<Filter> filters = ((LogicFilter) filter).getChildren().iterator();
 
                 while (filters.hasNext()) {
-                    Filter next = (Filter) filters.next();
+                    Filter next = filters.next();
                     
                     subPair = doUnPack(next, splitType);
                     
@@ -210,10 +211,10 @@ public class SQLUnpacker {
                 }
             } else if ((type == AbstractFilter.LOGIC_NOT)
                     && capabilities.supports(AbstractFilter.LOGIC_NOT)) {
-                Iterator filters = ((LogicFilter) filter).getFilterIterator();
+                Filter child = ((Not)filter).getFilter();
 
                 //NOT only has one, so just get filters.next()
-                subPair = doUnPack((Filter) filters.next(), splitType);
+                subPair = doUnPack(child, splitType);
                 subSup = subPair.getSupported();
                 subUnSup = subPair.getUnSupported();
 

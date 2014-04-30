@@ -28,7 +28,6 @@ import org.xml.sax.helpers.XMLFilterImpl;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-
 /**
  * Creates an OGC filter using a SAX filter.
  * 
@@ -377,7 +376,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
                 }
             } catch (IllegalFilterException e) {
                 throw new SAXException(
-                    "Attempted to construct illegal filter: " + e.getMessage());
+                    "Attempted to construct illegal filter: " + e.getMessage(),e);
             }
         } else {
             parent.endElement(namespaceURI, localName, qName);
@@ -421,33 +420,33 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
     protected static short convertType(String filterType) {
         // matches all filter types to the default logic type
         if (filterType.equals("Or")) {
-            return Filter.LOGIC_OR;
+            return FilterType.LOGIC_OR;
         } else if (filterType.equals("And")) {
-            return Filter.LOGIC_AND;
+            return FilterType.LOGIC_AND;
         } else if (filterType.equals("Not")) {
-            return Filter.LOGIC_NOT;
+            return FilterType.LOGIC_NOT;
         } else if (filterType.equals("Equals")) {
-            return Filter.GEOMETRY_EQUALS;
+            return FilterType.GEOMETRY_EQUALS;
         } else if (filterType.equals("Disjoint")) {
-            return Filter.GEOMETRY_DISJOINT;
+            return FilterType.GEOMETRY_DISJOINT;
         } else if (filterType.equals("DWithin")) {
-            return Filter.GEOMETRY_DWITHIN;
+            return FilterType.GEOMETRY_DWITHIN;
         } else if (filterType.equals("Intersects")) {
-            return Filter.GEOMETRY_INTERSECTS;
+            return FilterType.GEOMETRY_INTERSECTS;
         } else if (filterType.equals("Touches")) {
-            return Filter.GEOMETRY_TOUCHES;
+            return FilterType.GEOMETRY_TOUCHES;
         } else if (filterType.equals("Crosses")) {
-            return Filter.GEOMETRY_CROSSES;
+            return FilterType.GEOMETRY_CROSSES;
         } else if (filterType.equals("Within")) {
-            return Filter.GEOMETRY_WITHIN;
+            return FilterType.GEOMETRY_WITHIN;
         } else if (filterType.equals("Contains")) {
-            return Filter.GEOMETRY_CONTAINS;
+            return FilterType.GEOMETRY_CONTAINS;
         } else if (filterType.equals("Overlaps")) {
-            return Filter.GEOMETRY_OVERLAPS;
+            return FilterType.GEOMETRY_OVERLAPS;
         } else if (filterType.equals("Beyond")) {
-            return Filter.GEOMETRY_BEYOND;
+            return FilterType.GEOMETRY_BEYOND;
         } else if (filterType.equals("BBOX")) {
-            return Filter.GEOMETRY_BBOX;
+            return FilterType.GEOMETRY_BBOX;
         } else if (filterType.equals("PropertyIsEqualTo")) {
             return FilterType.COMPARE_EQUALS;
         } else if (filterType.equals("PropertyIsNotEqualTo")) {
@@ -469,19 +468,19 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
         } else if (filterType.equals("FeatureId")) {
             return AbstractFilter.FID;
         } else if (filterType.equals("Add")) {
-            return DefaultExpression.MATH_ADD;
+            return ExpressionType.MATH_ADD;
         } else if (filterType.equals("Sub")) {
-            return DefaultExpression.MATH_SUBTRACT;
+            return ExpressionType.MATH_SUBTRACT;
         } else if (filterType.equals("Mul")) {
-            return DefaultExpression.MATH_MULTIPLY;
+            return ExpressionType.MATH_MULTIPLY;
         } else if (filterType.equals("Div")) {
-            return DefaultExpression.MATH_DIVIDE;
+            return ExpressionType.MATH_DIVIDE;
         } else if (filterType.equals("PropertyName")) {
-            return DefaultExpression.LITERAL_DOUBLE;
+            return ExpressionType.LITERAL_DOUBLE;
         } else if (filterType.equals("Literal")) {
-            return DefaultExpression.ATTRIBUTE_DOUBLE;
+            return ExpressionType.ATTRIBUTE_DOUBLE;
         } else if (filterType.equals("Function")) {
-            return DefaultExpression.FUNCTION;
+            return ExpressionType.FUNCTION;
         } else {
             return -1;
         }

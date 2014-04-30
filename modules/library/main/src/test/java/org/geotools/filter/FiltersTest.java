@@ -1,14 +1,15 @@
 package org.geotools.filter;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 import java.awt.Color;
 import java.util.Arrays;
-import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.visitor.AbstractFilterVisitor;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,8 +18,6 @@ import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsLike;
 
 @SuppressWarnings("deprecation")
 /**
@@ -68,67 +67,6 @@ public class FiltersTest {
     public void testOr() {
         Filter result = filters.or(ff, a, b);
         assertEquals(ff.or(a, b), result);
-    }
-
-    @Test
-    public void testAccept() {
-        Filter filter = ff.and(a, b);
-
-        final int count[] = new int[1];
-        filters.accept(filter, new FilterVisitor() {
-            public void visit(org.geotools.filter.Filter filter) {
-                count[0]++;
-            }
-
-            public void visit(BetweenFilter filter) {
-                count[0]++;
-            }
-
-            public void visit(CompareFilter filter) {
-                count[0]++;
-            }
-
-            public void visit(GeometryFilter filter) {
-                count[0]++;
-            }
-
-            public void visit(LikeFilter filter) {
-                count[0]++;
-            }
-
-            public void visit(LogicFilter filter) {
-                count[0]++;
-            }
-
-            public void visit(NullFilter filter) {
-                count[0]++;
-            }
-
-            public void visit(FidFilter filter) {
-                count[0]++;
-            }
-
-            public void visit(AttributeExpression expression) {
-                count[0]++;
-            }
-
-            public void visit(Expression expression) {
-                count[0]++;
-            }
-
-            public void visit(LiteralExpression expression) {
-                count[0]++;
-            }
-
-            public void visit(MathExpression expression) {
-                count[0]++;
-            }
-
-            public void visit(FunctionExpression expression) {
-                count[0]++;
-            }
-        });
-        assertEquals(1, count[0]);
     }
 
     @Test

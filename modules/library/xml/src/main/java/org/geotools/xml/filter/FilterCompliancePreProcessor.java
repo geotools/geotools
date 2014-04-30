@@ -600,7 +600,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
 
             for (Object item : ((Or)f).getChildren()) {
                 org.opengis.filter.Filter filter = (org.opengis.filter.Filter) item;
-                if (filter == org.geotools.filter.Filter.ALL) {
+                if (filter == org.opengis.filter.Filter.EXCLUDE) {
                     continue;
                 }
                 added++;

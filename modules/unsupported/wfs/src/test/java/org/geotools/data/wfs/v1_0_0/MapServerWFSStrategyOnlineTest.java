@@ -29,12 +29,13 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.wfs.WFSDataStoreFactory;
-import org.geotools.filter.Filter;
-import org.geotools.filter.FilterFactory;
-import org.geotools.filter.FilterFactoryFinder;
+import org.geotools.factory.CommonFactoryFinder;
+import org.opengis.filter.Filter;
 import org.geotools.filter.FilterType;
-import org.geotools.filter.GeometryFilter;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.xml.XMLHandlerHints;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.spatial.BBOX;
 
 /**
  * 
@@ -80,14 +81,15 @@ public class MapServerWFSStrategyOnlineTest extends TestCase {
         //ds=new WFSDataStore(host, null, null, null, 10000, 100, true, true);
         ds = (WFS_1_0_0_DataStore) dsfac.createDataStore(params);
         assertTrue( ds.strategy instanceof MapServerWFSStrategy );
-        FilterFactory fac=FilterFactoryFinder.createFilterFactory();
         
-        GeometryFilter filter = fac.createGeometryFilter(FilterType.GEOMETRY_BBOX);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         
         String attName = ds.getSchema(TYPE_NAME).getGeometryDescriptor().getLocalName();
-        filter.addLeftGeometry(fac.createAttributeExpression(attName));
+        ReferencedEnvelope bounds = ds.getBounds(new Query(TYPE_NAME));
         
-        filter.addRightGeometry(fac.createBBoxExpression(ds.getBounds(new Query(TYPE_NAME))));
+        BBOX filter = ff.bbox(ff.property(attName),bounds);
+        
+        
         
         Query query=new Query(TYPE_NAME, filter);
         
@@ -110,10 +112,10 @@ public class MapServerWFSStrategyOnlineTest extends TestCase {
         SimpleFeatureCollection reader = source.getFeatures(Query.ALL);
         assertCorrectSize(reader, totalFeatures);
 
-        reader = source.getFeatures(Filter.NONE);
+        reader = source.getFeatures(Filter.INCLUDE);
         assertCorrectSize(reader, totalFeatures);
 
-        reader = source.getFeatures(new Query(TYPE_NAME, Filter.NONE));
+        reader = source.getFeatures(new Query(TYPE_NAME, Filter.INCLUDE));
         assertCorrectSize(reader, totalFeatures);
 }
 

@@ -88,13 +88,13 @@ public final class FilterDOMParser {
         comparisions.put("PropertyIsLike", new Integer(AbstractFilter.LIKE));
         comparisions.put("PropertyIsNull", new Integer(AbstractFilter.NULL));
         comparisions.put("PropertyIsBetween",
-            new Integer(Filter.BETWEEN));
+            new Integer(FilterType.BETWEEN));
         comparisions.put("FeatureId", new Integer(AbstractFilter.FID));
 
         spatial.put("Equals", new Integer(AbstractFilter.GEOMETRY_EQUALS));
         spatial.put("Disjoint", new Integer(AbstractFilter.GEOMETRY_DISJOINT));
         spatial.put("Intersects",
-            new Integer(Filter.GEOMETRY_INTERSECTS));
+            new Integer(FilterType.GEOMETRY_INTERSECTS));
         spatial.put("Touches", new Integer(AbstractFilter.GEOMETRY_TOUCHES));
         spatial.put("Crosses", new Integer(AbstractFilter.GEOMETRY_CROSSES));
         spatial.put("Within", new Integer(AbstractFilter.GEOMETRY_WITHIN));

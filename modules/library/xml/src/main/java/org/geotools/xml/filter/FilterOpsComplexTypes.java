@@ -27,19 +27,10 @@ import java.util.Set;
 import javax.naming.OperationNotSupportedException;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.BetweenFilter;
-import org.geotools.filter.CompareFilter;
-import org.geotools.filter.Expression;
-import org.geotools.filter.FidFilter;
-import org.geotools.filter.Filter;
 import org.geotools.filter.FilterCapabilities;
-import org.geotools.filter.GeometryDistanceFilter;
-import org.geotools.filter.GeometryFilter;
+import org.geotools.filter.Filters;
 import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.LikeFilter;
-import org.geotools.filter.LiteralExpression;
 import org.geotools.filter.LogicFilter;
-import org.geotools.filter.NullFilter;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xml.filter.FilterComplexTypes.ExpressionType;
@@ -60,12 +51,22 @@ import org.geotools.xml.schema.Type;
 import org.geotools.xml.schema.impl.ChoiceGT;
 import org.geotools.xml.schema.impl.SequenceGT;
 import org.geotools.xml.xsi.XSISimpleTypes;
+import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
+import org.opengis.filter.Not;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
+import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.Disjoint;
+import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotSupportedException;
@@ -90,24 +91,47 @@ public class FilterOpsComplexTypes {
     private static final int LOGIC_TYPE = 2;
     private static final int FID_TYPE = 3;
     
+    /**
+     * Calls the appropriate type for encoding.
+     * <p>
+     * This mapping from filter to Type is a bit tricky since the filter hierarchy has changed.
+     * <p>
+     * <ul>
+     * <li>LOGIC_TYPE: includes BinaryLogicOperator and Not</li>
+     * <li>COMPARE_TYPE: includes BinaryComparisonOperator and PropertyIsBetween</li>
+     * <p>
+     * 
+     * 
+     * @param filter
+     * @param output
+     * @param hints
+     * @throws OperationNotSupportedException
+     * @throws IOException
+     */
+    
     protected static void encodeFilter(org.opengis.filter.Filter filter, PrintHandler output, Map hints) throws OperationNotSupportedException, IOException{
-
-        if (filter instanceof LogicFilter) {
+        if (filter instanceof BinaryLogicOperator) {
+            FilterType.elems[LOGIC_TYPE].getType().encode(FilterType.elems[LOGIC_TYPE], filter,
+                    output, hints);
+        } else if (filter instanceof Not) {
             FilterType.elems[LOGIC_TYPE].getType().encode(FilterType.elems[LOGIC_TYPE], filter, output,
                     hints);
-        } else if (filter instanceof CompareFilter) {
+        } else if (filter instanceof BinaryComparisonOperator) {
             FilterType.elems[COMPARE_TYPE].getType().encode(FilterType.elems[COMPARE_TYPE], filter, output,
                     hints);
-        } else if (filter instanceof FidFilter) {
+        } else if (filter instanceof PropertyIsBetween) {
+            FilterType.elems[COMPARE_TYPE].getType().encode(FilterType.elems[COMPARE_TYPE], filter, output,
+                    hints);
+        } else if (filter instanceof Id) {
             // deal with multi instance inside the type-writer
             FilterType.elems[FID_TYPE].getType().encode(FilterType.elems[FID_TYPE], filter, output, hints);
-        } else if (filter instanceof GeometryFilter) {
+        } else if (filter instanceof BinarySpatialOperator) {
             FilterType.elems[SPATIAL_TYPE].getType().encode(FilterType.elems[SPATIAL_TYPE], filter, output,
                     hints);
-        } else if (filter instanceof LikeFilter) {
+        } else if (filter instanceof PropertyIsLike) {
             FilterType.elems[COMPARE_TYPE].getType().encode(FilterType.elems[COMPARE_TYPE], filter, output,
                     hints);
-        } else if (filter instanceof NullFilter) {
+        } else if (filter instanceof PropertyIsNull) {
             FilterType.elems[COMPARE_TYPE].getType().encode(FilterType.elems[COMPARE_TYPE], filter, output,
                     hints);
         } else {
@@ -116,12 +140,12 @@ public class FilterOpsComplexTypes {
                             : filter.getClass().getName());
         }
     }
-    
+
     protected static void encodeExpr(Expression expr, PrintHandler output,
         Map hints) throws OperationNotSupportedException, IOException {
         int i = 0;
 
-        switch (expr.getType()) {
+        switch (Filters.getExpressionType(expr)) {
         /* Types implemented by ExpressionLiteral */
         case org.geotools.filter.ExpressionType.LITERAL_DOUBLE:
         case org.geotools.filter.ExpressionType.LITERAL_INTEGER:
@@ -289,7 +313,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return CompareFilter.class;
+            return BinaryComparisonOperator.class;
         }
 
         /**
@@ -308,9 +332,9 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && (value instanceof CompareFilter
-            || value instanceof BetweenFilter || value instanceof NullFilter
-            || value instanceof LikeFilter);
+            && (value instanceof BinaryComparisonOperator
+            || value instanceof PropertyIsBetween || value instanceof PropertyIsNull
+            || value instanceof PropertyIsLike);
         }
 
         /**
@@ -326,7 +350,7 @@ public class FilterOpsComplexTypes {
 
             Filter lf = (Filter) value;
 
-            switch (lf.getFilterType()) {
+            switch ( Filters.getFilterType( lf )) {
             case COMPARE_EQUALS:
                 BinaryComparisonOpType.getInstance().encode(new FilterElement(
                 		"PropertyIsEqualTo",
@@ -500,7 +524,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return GeometryFilter.class;
+            return BinarySpatialOperator.class;
         }
 
         /**
@@ -519,7 +543,7 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof GeometryFilter;
+            && value instanceof BinarySpatialOperator;
         }
 
         /**
@@ -533,9 +557,9 @@ public class FilterOpsComplexTypes {
                 return;
             }
 
-            GeometryFilter lf = (GeometryFilter) value;
+            BinarySpatialOperator lf = (BinarySpatialOperator) value;
 
-            switch (lf.getFilterType()) {
+            switch ( Filters.getFilterType( lf )) {
             case GEOMETRY_BBOX:
                 BBOXType.getInstance().encode(new FilterElement("BBOX",
                         BBOXType.getInstance(), element), value, output, hints);
@@ -699,7 +723,7 @@ public class FilterOpsComplexTypes {
 
             LogicFilter lf = (LogicFilter) value;
 
-            switch (lf.getFilterType()) {
+            switch ( Filters.getFilterType( lf )) {
             case LOGIC_AND:
                 BinaryLogicOpType.getInstance().encode(new FilterElement(
                         "And", BinaryLogicOpType.getInstance(), element),
@@ -857,7 +881,7 @@ public class FilterOpsComplexTypes {
             boolean r = ((element != null) && (element.getType() != null)
                 && getName().equals(element.getType().getName()));
             r = (r && (value != null) && value instanceof Filter
-                && (((Filter) value).getFilterType() != 0));
+                && Filters.getFilterType( (Filter) value) != 0);
 
             return r;
         }
@@ -875,21 +899,18 @@ public class FilterOpsComplexTypes {
             if (!canEncode(element, value, hints)) {
                 return;
             }
-
             // we may only encode one type of filter ...
+            if (value == null) {
+                return;
+            }
+            if (value == Filter.INCLUDE) {
+                return;
+            }
+
+            if (value == Filter.EXCLUDE) {
+                return;
+            }
             Filter filter = (Filter) value;
-
-            if (filter == null) {
-                return;
-            }
-
-            if (filter == org.geotools.filter.Filter.NONE) {
-                return;
-            }
-
-            if (filter == org.geotools.filter.Filter.ALL) {
-                return;
-            }
 
             if (element != null) {
                 output.startElement(element.getNamespace(), element.getName(),
@@ -899,7 +920,7 @@ public class FilterOpsComplexTypes {
 //                    null);
             }
             FilterEncodingPreProcessor visitor=getFilterEncodingPreProcessor(hints);
-            filter.accept(visitor);
+            filter.accept(visitor,null);
             // valid filter can have either a normal "filter" defining an test 
             if( !visitor.getFilter().equals(Filter.EXCLUDE) ){
             	encodeFilter(visitor.getFilter(),output,hints);
@@ -1030,16 +1051,17 @@ public class FilterOpsComplexTypes {
                 return;
             }
 
-            FidFilter ff = (FidFilter) value;
-            String[] fids = ff.getFids();
+            Id ff = (Id) value;
+            Set<String> fids = (Set) ff.getIDs();
+            
             AttributesImpl att = new AttributesImpl();
             att.addAttribute(null, null, null, null, null);
             
             output.startElement(element.getNamespace(), "Filter", null);
 
-            for (int i = 0; i < fids.length; i++) {
+            for (String fid : fids) {
                 att.setAttribute(0, element.getNamespace().toString(),
-                    attrs[0].getName(), null, "anyUri", fids[i]);
+                    attrs[0].getName(), null, "anyUri", fid);
                 output.element(element.getNamespace(), element.getName(), att);
             }            
             output.endElement(element.getNamespace(), "Filter" );
@@ -1159,7 +1181,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return CompareFilter.class;
+            return BinaryComparisonOperator.class;
         }
 
         /**
@@ -1181,7 +1203,7 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof CompareFilter;
+            && value instanceof BinaryComparisonOperator;
         }
 
         /**
@@ -1195,13 +1217,13 @@ public class FilterOpsComplexTypes {
                 return;
             }
 
-            CompareFilter cf = (CompareFilter) value;
+            BinaryComparisonOperator cf = (BinaryComparisonOperator) value;
 
             output.startElement(element.getNamespace(), element.getName(), null);
 
             // TODO is this order dependant?
-            encodeExpr(cf.getLeftValue(), output, hints);
-            encodeExpr(cf.getRightValue(), output, hints);
+            encodeExpr(cf.getExpression1(), output, hints);
+            encodeExpr(cf.getExpression2(), output, hints);
 
             output.endElement(element.getNamespace(), element.getName());
         }
@@ -1310,7 +1332,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return LikeFilter.class;
+            return PropertyIsLike.class;
         }
 
         /**
@@ -1329,7 +1351,7 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof LikeFilter;
+            && value instanceof PropertyIsLike;
         }
 
         /**
@@ -1343,19 +1365,19 @@ public class FilterOpsComplexTypes {
                 return;
             }
 
-            LikeFilter lf = (LikeFilter) value;
+            PropertyIsLike lf = (PropertyIsLike) value;
 
             AttributesImpl at = new AttributesImpl();
             at.addAttribute(FilterSchema.NAMESPACE.toString(), "wildCard",
-                null, "string", lf.getWildcardMulti());
+                null, "string", lf.getWildCard());
             at.addAttribute(FilterSchema.NAMESPACE.toString(), "singleChar",
-                null, "string", lf.getWildcardSingle());
+                null, "string", lf.getSingleChar());
             at.addAttribute(FilterSchema.NAMESPACE.toString(), "escape", null,
                 "string", lf.getEscape());
 
             output.startElement(element.getNamespace(), element.getName(), at);
-            elems[0].getType().encode(elems[0], lf.getValue(), output, hints); // PropertyName
-            elems[1].getType().encode(elems[1], lf.getPattern(), output, hints); // Literal
+            elems[0].getType().encode(elems[0], lf.getExpression(), output, hints); // PropertyName
+            elems[1].getType().encode(elems[1], lf.getLiteral(), output, hints); // Literal
             output.endElement(element.getNamespace(), element.getName());
         }
     }
@@ -1430,7 +1452,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return NullFilter.class;
+            return PropertyIsNull.class;
         }
 
         /**
@@ -1449,7 +1471,7 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof NullFilter;
+            && value instanceof PropertyIsNull;
         }
 
         /**
@@ -1463,10 +1485,10 @@ public class FilterOpsComplexTypes {
                 return;
             }
 
-            NullFilter lf = (NullFilter) value;
+            PropertyIsNull lf = (PropertyIsNull) value;
 
             output.startElement(element.getNamespace(), element.getName(), null);
-            elems[0].getType().encode(elems[0], lf.getNullCheckValue(), output,
+            elems[0].getType().encode(elems[0], lf.getExpression(), output,
                 hints); // PropertyName
 
             //            elems[1].getType().encode(elems[1],lf.getNullCheckValue(),output,hints); // Literal
@@ -1551,7 +1573,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return BetweenFilter.class;
+            return PropertyIsBetween.class;
         }
 
         /**
@@ -1570,7 +1592,7 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof BetweenFilter;
+            && value instanceof PropertyIsBetween;
         }
 
         /**
@@ -1584,12 +1606,12 @@ public class FilterOpsComplexTypes {
                 return;
             }
 
-            BetweenFilter lf = (BetweenFilter) value;
+            PropertyIsBetween lf = (PropertyIsBetween) value;
 
             output.startElement(element.getNamespace(), element.getName(), null);
-            encodeExpr(lf.getMiddleValue(),output,hints);
-            elems[1].getType().encode(elems[1], lf.getLeftValue(), output, hints); // LowerBoundary
-            elems[2].getType().encode(elems[2], lf.getRightValue(), output,
+            encodeExpr(lf.getExpression(),output,hints);
+            elems[1].getType().encode(elems[1], lf.getLowerBoundary(), output, hints); // LowerBoundary
+            elems[2].getType().encode(elems[2], lf.getUpperBoundary(), output,
                 hints); // UpperBoundary
             output.endElement(element.getNamespace(), element.getName());
         }
@@ -1884,7 +1906,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return GeometryFilter.class;
+            return BinarySpatialOperator.class;
         }
 
         public boolean canEncode(Element element, Object value, Map hints) {
@@ -1902,7 +1924,7 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof GeometryFilter;
+            && value instanceof BinarySpatialOperator;
         }
 
         /**
@@ -1916,46 +1938,47 @@ public class FilterOpsComplexTypes {
                 return;
             }
 
-            GeometryFilter lf = (GeometryFilter) value;
+            BinarySpatialOperator lf = (BinarySpatialOperator) value;
 
             output.startElement(element.getNamespace(), element.getName(), null);
-
-            if ((lf.getLeftGeometry().getType() == org.geotools.filter.ExpressionType.LITERAL_STRING)
-                    || (lf.getLeftGeometry().getType() == org.geotools.filter.ExpressionType.ATTRIBUTE_STRING)
-                    || (lf.getLeftGeometry().getType() == org.geotools.filter.ExpressionType.ATTRIBUTE)) {
-                elems[0].getType().encode(elems[0], lf.getLeftGeometry(),
+            short type1 = Filters.getExpressionType(lf.getExpression1());
+            short type2 = Filters.getExpressionType(lf.getExpression2());
+            if ((type1 == org.geotools.filter.ExpressionType.LITERAL_STRING)
+                    || (type1 == org.geotools.filter.ExpressionType.ATTRIBUTE_STRING)
+                    || (type1 == org.geotools.filter.ExpressionType.ATTRIBUTE)) {
+                elems[0].getType().encode(elems[0], lf.getExpression1(),
                     output, hints); // prop name
 
-                if (lf.getRightGeometry().getType() == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
+                if (type2 == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
                     elems[1].getType().encode(elems[1],
-                        ((LiteralExpression) lf.getRightGeometry()).getLiteral(),
+                        ((Literal) lf.getExpression2()).getValue(),
                         output, hints); // geom
                 } else {
                     elems[2].getType().encode(elems[2],
-                        ((LiteralExpression) lf.getRightGeometry()).getLiteral(),
+                        ((Literal) lf.getExpression2()).getValue(),
                         output, hints); // geom
                 }
             } else {
-                if ((lf.getRightGeometry().getType() == org.geotools.filter.ExpressionType.LITERAL_STRING)
-                        || (lf.getRightGeometry().getType() == org.geotools.filter.ExpressionType.ATTRIBUTE_STRING)
-                        || (lf.getRightGeometry().getType() == org.geotools.filter.ExpressionType.ATTRIBUTE)) {
-                    elems[0].getType().encode(elems[0], lf.getRightGeometry(),
+                
+                if ((type2 == org.geotools.filter.ExpressionType.LITERAL_STRING)
+                        || (type2 == org.geotools.filter.ExpressionType.ATTRIBUTE_STRING)
+                        || (type2 == org.geotools.filter.ExpressionType.ATTRIBUTE)) {
+                    elems[0].getType().encode(elems[0], lf.getExpression2(),
                         output, hints); // prop name
 
-                    if (lf.getLeftGeometry().getType() == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
+                    if (type1 == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
                         elems[1].getType().encode(elems[1],
-                            ((LiteralExpression) lf.getLeftGeometry())
-                            .getLiteral(), output, hints); // geom
+                            ((Literal) lf.getExpression1())
+                            .getValue(), output, hints); // geom
                     } else {
                         elems[2].getType().encode(elems[2],
-                            ((LiteralExpression) lf.getLeftGeometry())
-                            .getLiteral(), output, hints); // geom
+                            ((Literal) lf.getExpression1())
+                            .getValue(), output, hints); // geom
                     }
                 } else {
                     throw new OperationNotSupportedException(
-                        "Either the left or right expr must be a literal for the property name l="
-                        + lf.getLeftGeometry().getType() + " r="
-                        + lf.getRightGeometry().getType());
+                            "Either the left or right expr must be a literal for the property name l="
+                                    + type1 + " r=" + type2);
                 }
             }
 
@@ -2079,7 +2102,7 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof GeometryFilter;
+            && value instanceof BinarySpatialOperator;
         }
 
         /**
@@ -2093,31 +2116,31 @@ public class FilterOpsComplexTypes {
                 return;
             }
 
-            GeometryFilter lf = (GeometryFilter) value;
+            BinarySpatialOperator lf = (BinarySpatialOperator) value;
 
             output.startElement(element.getNamespace(), element.getName(), null);
-
-            if (lf.getLeftGeometry().getType() == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
-                elems[0].getType().encode(elems[0], lf.getRightGeometry(),
+            short TYPE1 = Filters.getExpressionType(lf.getExpression1());
+            short TYPE2 = Filters.getExpressionType(lf.getExpression2());
+            if (TYPE1 == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
+                elems[0].getType().encode(elems[0], lf.getExpression2(),
                     output, hints); // prop name
 
-                Geometry g = ((Geometry) ((LiteralExpression) lf
-                    .getLeftGeometry()).getLiteral()).getEnvelope();
+                Geometry g = ((Geometry) ((Literal) lf
+                    .getExpression1()).getValue()).getEnvelope();
                 elems[1].getType().encode(elems[1], g, output, hints); // geom
             } else {
-                if (lf.getRightGeometry().getType() == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
-                    elems[0].getType().encode(elems[0], lf.getLeftGeometry(),
+                if (TYPE2 == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
+                    elems[0].getType().encode(elems[0], lf.getExpression1(),
                         output, hints); // prop name
 
-                    Geometry g = ((Geometry) ((LiteralExpression) lf
-                        .getRightGeometry()).getLiteral()).getEnvelope();
+                    Geometry g = ((Geometry) ((Literal) lf
+                        .getExpression2()).getValue()).getEnvelope();
                     elems[1].getType().encode(elems[1], g, output, hints); // geom
                 } else {
                     throw new OperationNotSupportedException(
                         "Either the left or right expr must be a literal for the property name : BBOXType");
                 }
             }
-
             output.endElement(element.getNamespace(), element.getName());
         }
     }
@@ -2200,7 +2223,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return GeometryDistanceFilter.class;
+            return DistanceBufferOperator.class;
         }
 
         public boolean canEncode(Element element, Object value, Map hints) {
@@ -2218,7 +2241,7 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof GeometryDistanceFilter;
+            && value instanceof DistanceBufferOperator;
         }
 
         /**
@@ -2232,21 +2255,21 @@ public class FilterOpsComplexTypes {
                 return;
             }
 
-            GeometryDistanceFilter lf = (GeometryDistanceFilter) value;
+            DistanceBufferOperator lf = (DistanceBufferOperator) value;
 
             output.startElement(element.getNamespace(), element.getName(), null);
 
-            if (lf.getLeftGeometry().getType() == org.geotools.filter.ExpressionType.ATTRIBUTE) {
-                elems[0].getType().encode(elems[0], lf.getLeftGeometry(),
+            if (Filters.getExpressionType(lf.getExpression1()) == org.geotools.filter.ExpressionType.ATTRIBUTE) {
+                elems[0].getType().encode(elems[0], lf.getExpression1(),
                     output, hints); // prop name
-                elems[1].getType().encode(elems[1], lf.getRightGeometry().getValue(null),
+                elems[1].getType().encode(elems[1], lf.getExpression2().evaluate(null, Geometry.class),
                     output, hints); // geom
                 elems[2].getType().encode(elems[2], lf, output, hints); // distancetype
             } else {
-                if (lf.getRightGeometry().getType() == org.geotools.filter.ExpressionType.ATTRIBUTE) {
-                    elems[0].getType().encode(elems[0], lf.getRightGeometry(),
+                if (Filters.getExpressionType(lf.getExpression2()) == org.geotools.filter.ExpressionType.ATTRIBUTE) {
+                    elems[0].getType().encode(elems[0], lf.getExpression2(),
                         output, hints); // prop name
-                    elems[1].getType().encode(elems[1], lf.getLeftGeometry().getValue(null),
+                    elems[1].getType().encode(elems[1], lf.getExpression1().evaluate(null,Geometry.class),
                         output, hints); // geom
                     elems[2].getType().encode(elems[2], lf, output, hints); // distancetype
                 } else {
@@ -2330,7 +2353,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return GeometryDistanceFilter.class;
+            return DistanceBufferOperator.class;
         }
 
         public boolean canEncode(Element element, Object value, Map hints) {
@@ -2348,7 +2371,7 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof GeometryDistanceFilter;
+            && value instanceof DistanceBufferOperator;
         }
 
         /**
@@ -2362,21 +2385,22 @@ public class FilterOpsComplexTypes {
                 return;
             }
 
-            GeometryDistanceFilter distanceFilter = (GeometryDistanceFilter) value;
+            DistanceBufferOperator distanceFilter = (DistanceBufferOperator) value;
 
             AttributesImpl ai = new AttributesImpl();
 
             String name = attrs[0].getName();
             String uri = getNamespace().toString();
-            if (distanceFilter.getLeftGeometry().getType() == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
-                Geometry geometry = (Geometry) distanceFilter.getLeftGeometry().getValue(null);
+            
+            if (Filters.getExpressionType( distanceFilter.getExpression1() ) == ExpressionType.LITERAL_GEOMETRY) {
+                Geometry geometry = distanceFilter.getExpression1().evaluate(null,Geometry.class);
                 if( geometry.getUserData() != null ){
                     // code assume user data is an srsName see GEOT-693
                     String srsName = String.valueOf( geometry.getUserData() );
                     ai.addAttribute(uri, name, null, "string", srsName);
                 }
             } else {
-                Geometry geometry = (Geometry) distanceFilter.getRightGeometry().getValue(null);
+                Geometry geometry = distanceFilter.getExpression2().evaluate(null,Geometry.class);
                 if( geometry.getUserData() != null ){
                     // code assume user data is an srsName see GEOT-693
                     String srsName = String.valueOf( geometry.getUserData() );
@@ -2540,14 +2564,10 @@ public class FilterOpsComplexTypes {
             }
 
             LogicFilter lf = (LogicFilter) value;
-            Iterator i = lf.getFilterIterator();
             output.startElement(element.getNamespace(), element.getName(), null);
-
-            while (i.hasNext()){
-                Filter f = (Filter)i.next();
+            for( org.opengis.filter.Filter f : lf.getChildren() ){
                 encodeFilter(f, output, hints);
             }
-
             output.endElement(element.getNamespace(), element.getName());
         }
     }
@@ -2681,20 +2701,18 @@ public class FilterOpsComplexTypes {
             }
 
             LogicFilter lf = (LogicFilter) value;
-            Iterator i = lf.getFilterIterator();
+            
             output.startElement(element.getNamespace(), element.getName(), null);
-
             int c = 0;
-
-            while (i.hasNext()) {
+            for( org.opengis.filter.Filter f : lf.getChildren() ){
                 if (c < 1) {
-                    Filter f = (Filter)i.next();
                     encodeFilter(f, output, hints);
                     c++;
                 } else {
                     throw new OperationNotSupportedException(
-                        "Invalid Not Filter -- more than one child filter.");
+                            "Invalid Not Filter -- more than one child filter.");
                 }
+                c++;
             }
 
             output.endElement(element.getNamespace(), element.getName());

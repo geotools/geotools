@@ -38,9 +38,6 @@ public class MultiplyImpl extends MathExpressionImpl implements Multiply {
 	
 	public MultiplyImpl(Expression expr1, Expression expr2) {
 		super(expr1,expr2);
-		
-		//backwards compatability with old type system
-		expressionType = MATH_MULTIPLY;
 	}
 	
 	public Object evaluate(Object feature) throws IllegalArgumentException {

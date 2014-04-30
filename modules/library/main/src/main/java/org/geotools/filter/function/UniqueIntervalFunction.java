@@ -54,11 +54,12 @@ public class UniqueIntervalFunction extends ClassificationFunction {
         super(NAME);
     }
 
+    @SuppressWarnings("unchecked")
     private Object calculate(SimpleFeatureCollection featureCollection) {
         try {
             int classNum = getClasses();
         	//use a visitor to grab the unique values
-            UniqueVisitor uniqueVisit = new UniqueVisitor(getExpression());
+            UniqueVisitor uniqueVisit = new UniqueVisitor(getParameters().get(0));
         	if (progress == null) progress = new NullProgressListener();
                 featureCollection.accepts(uniqueVisit, progress);
         	if (progress.isCanceled()) return null;
@@ -68,7 +69,6 @@ public class UniqueIntervalFunction extends ClassificationFunction {
             List result = calcResult.toList();
             //sort the results and put them in an array
             Collections.sort(result, new Comparator() {
-        
                 public int compare(Object o1, Object o2) {
                     if (o1 == null) {
                         if (o2 == null) {
@@ -83,7 +83,6 @@ public class UniqueIntervalFunction extends ClassificationFunction {
                     }
                     return 0;
                 }
-                
             });
             Object[] results = result.toArray();
             //put the results into their respective slots/bins/buckets

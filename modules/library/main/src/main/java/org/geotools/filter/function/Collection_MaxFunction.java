@@ -29,12 +29,12 @@ import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.MaxVisitor;
-import org.geotools.filter.Expression;
+
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
-
+import org.opengis.filter.expression.Expression;
 
 /**
  * Calculates the maximum value of an attribute for a given FeatureCollection

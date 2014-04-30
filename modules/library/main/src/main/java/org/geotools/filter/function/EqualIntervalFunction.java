@@ -61,13 +61,13 @@ public class EqualIntervalFunction extends ClassificationFunction {
         Comparable globalMin;
         Comparable globalMax;
 		try {
-            MinVisitor minVisit = new MinVisitor(getExpression());
+            MinVisitor minVisit = new MinVisitor(getParameters().get(0));
 			if (progress == null) progress = new NullProgressListener();
 			featureCollection.accepts(minVisit, progress);
 			if (progress.isCanceled()) return null;
 			globalMin = (Comparable) minVisit.getResult().getValue();
 
-			MaxVisitor maxVisit = new MaxVisitor(getExpression());
+			MaxVisitor maxVisit = new MaxVisitor(getParameters().get(0));
 			featureCollection.accepts(maxVisit, progress);
 			if (progress.isCanceled()) return null;
 			globalMax = (Comparable) maxVisit.getResult().getValue();
@@ -124,7 +124,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
     @SuppressWarnings("unchecked")
     private RangedClassifier calculateNonNumerical(int classNum, FeatureCollection<?,?> featureCollection) throws IOException {
         //obtain of list of unique values, so we can enumerate
-        UniqueVisitor uniqueVisit = new UniqueVisitor(getExpression());
+        UniqueVisitor uniqueVisit = new UniqueVisitor(getParameters().get(0));
         featureCollection.accepts(uniqueVisit, new NullProgressListener());
         List result = uniqueVisit.getResult().toList();
         //sort the results and put them in an array

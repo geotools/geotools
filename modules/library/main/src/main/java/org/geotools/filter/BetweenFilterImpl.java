@@ -17,6 +17,8 @@
 package org.geotools.filter;
 
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.expression.Expression;
 
 
 /**
@@ -41,25 +43,15 @@ import org.opengis.filter.FilterVisitor;
  *       
  * @deprecated use {@link org.geotools.filter.IsBetweenImpl}
  */
-public class BetweenFilterImpl extends CompareFilterImpl
-    implements BetweenFilter {
+public class BetweenFilterImpl extends CompareFilterImpl implements PropertyIsBetween {
     /** The 'middle' value, which must be an attribute expression. */
     protected org.opengis.filter.expression.Expression middleValue = null;
 
-    protected BetweenFilterImpl(org.opengis.filter.FilterFactory factory) {
-    	super(factory,null,null);
-    	this.filterType = BETWEEN;
+    @Deprecated
+    protected BetweenFilterImpl() {
+        super();
     }
     
-    /**
-     * Constructor which flags the operator as between.
-     *
-     * @throws IllegalFilterException Should never happen.
-     */
-    protected BetweenFilterImpl() throws IllegalFilterException {
-        super(BETWEEN);
-    }
-
     /**
      * Sets the values to be compared as between the left and right values.
      *
@@ -77,17 +69,6 @@ public class BetweenFilterImpl extends CompareFilterImpl
     public void setExpression(org.opengis.filter.expression.Expression expression) {
     	this.middleValue = expression;
     	
-    }
-
-    /**
-     * Gets the middle value of the between.
-     *
-     * @return The expression in the middle.
-     * 
-     * @deprecated use {@link #getExpression()}
-     */
-    public final Expression getMiddleValue() {
-        return (Expression) getExpression();
     }
 
     /**
@@ -195,8 +176,7 @@ public class BetweenFilterImpl extends CompareFilterImpl
      * @return String representation of the between filter.
      */
     public String toString() {
-        return "[ " + expression1.toString() + " < " + middleValue.toString()
-        + " < " + expression2.toString() + " ]";
+        return "[ " + expression1.toString() + " < " + middleValue + " < " + expression2 + " ]";
     }
 
     /**
@@ -212,10 +192,12 @@ public class BetweenFilterImpl extends CompareFilterImpl
         if (oFilter.getClass() == this.getClass()) {
             BetweenFilterImpl bFilter = (BetweenFilterImpl) oFilter;
 
-            return ((bFilter.getFilterType() == this.filterType)
-            && bFilter.getLeftValue().equals(this.expression1)
-            && bFilter.getMiddleValue().equals(this.middleValue)
-            && bFilter.getRightValue().equals(this.expression2));
+            return (expression1 == bFilter.getExpression1() || (expression1 != null && expression1
+                            .equals(bFilter.getExpression1())))
+                    && (expression2 == bFilter.getExpression2() || (expression2 != null && expression2
+                            .equals(bFilter.getExpression2())))
+                    && (expression1 == bFilter.getExpression() || (middleValue != null && middleValue
+                            .equals(bFilter.getExpression())));
         } else {
             return false;
         }

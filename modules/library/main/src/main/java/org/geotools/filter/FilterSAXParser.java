@@ -20,7 +20,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.spatial.BBOXImpl;
+import org.geotools.filter.spatial.BeyondImpl;
+import org.geotools.filter.spatial.ContainsImpl;
+import org.geotools.filter.spatial.CrossesImpl;
+import org.geotools.filter.spatial.DWithinImpl;
+import org.geotools.filter.spatial.DisjointImpl;
+import org.geotools.filter.spatial.EqualsImpl;
+import org.geotools.filter.spatial.IntersectsImpl;
+import org.geotools.filter.spatial.OverlapsImpl;
+import org.geotools.filter.spatial.TouchesImpl;
+import org.geotools.filter.spatial.WithinImpl;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.Filter;
 import org.xml.sax.Attributes;
+
 
 
 /**
@@ -51,7 +67,7 @@ public class FilterSAXParser {
     private short filterType;
 
     /** factory for creating filters. */
-    private FilterFactory ff;
+    private FilterFactory2 ff;
 
     /**
      * the Attributes of the filter (only applicable to LIKE filters, I think)
@@ -62,15 +78,15 @@ public class FilterSAXParser {
      * Constructor which flags the operator as between.
      */
     public FilterSAXParser() {
-    	this( FilterFactoryFinder.createFilterFactory() );
+        this( CommonFactoryFinder.getFilterFactory2() );
     }
     /** Constructor injdection */
-    public FilterSAXParser( FilterFactory factory ){
+    public FilterSAXParser( FilterFactory2 factory ){
     	ff = factory;
     }
 
     /** Setter injection */
-    public void setFilterFactory( FilterFactory factory ){
+    public void setFilterFactory( FilterFactory2 factory ){
     	ff = factory;
     }
     /**
@@ -84,26 +100,95 @@ public class FilterSAXParser {
      */
     public void start(short filterType) throws IllegalFilterException {
         LOGGER.finest("starting filter type " + filterType);
-
+        
+        
+        
         if ((filterType == AbstractFilter.FID) && !curState.equals("fid")) {
             LOGGER.finer("creating the FID filter");
-            curFilter = ff.createFidFilter();
+            curFilter = new FidFilterImpl();
         } else if (AbstractFilter.isGeometryDistanceFilter(filterType)) {
-            curFilter = ff.createGeometryDistanceFilter(filterType);
+            switch (filterType) {
+            case FilterType.GEOMETRY_BEYOND:
+                curFilter = new BeyondImpl(null, null);
+                break;
+            case FilterType.GEOMETRY_DWITHIN:
+                curFilter = new DWithinImpl(null, null);
+                break;
+            default:
+                throw new IllegalFilterException("Not one of the accepted spatial filter types.");
+            }
         } else if (AbstractFilter.isGeometryFilter(filterType)) {
-            curFilter = ff.createGeometryFilter(filterType);
+            switch (filterType) {
+            case FilterType.GEOMETRY_EQUALS:
+                curFilter = new EqualsImpl(null, null);
+                break;
+            case FilterType.GEOMETRY_DISJOINT:
+                curFilter = new DisjointImpl(null, null);
+                break;
+            case FilterType.GEOMETRY_DWITHIN:
+                curFilter = new DWithinImpl(null, null);
+                break;
+            case FilterType.GEOMETRY_INTERSECTS:
+                curFilter = new IntersectsImpl(null, null);
+                break;
+            case FilterType.GEOMETRY_CROSSES:
+                curFilter = new CrossesImpl(null, null);
+                break;
+            case FilterType.GEOMETRY_WITHIN:
+                curFilter = new WithinImpl(null, null);
+                break;
+            case FilterType.GEOMETRY_CONTAINS:
+                curFilter = new ContainsImpl(null, null);
+                break;
+            case FilterType.GEOMETRY_OVERLAPS:
+                curFilter = new OverlapsImpl(null, null);
+                break;
+            case FilterType.GEOMETRY_BEYOND:
+                curFilter = new BeyondImpl(null, null);
+                break;
+            case FilterType.GEOMETRY_BBOX:
+                curFilter = new BBOXImpl(null, null);
+                break;
+            case FilterType.GEOMETRY_TOUCHES:
+                curFilter = new TouchesImpl(null, null);
+                break;
+            default:
+                throw new IllegalFilterException("Not one of the accepted spatial filter types.");
+            }
         } else if (filterType == AbstractFilter.BETWEEN) {
-            curFilter = ff.createBetweenFilter();
+            curFilter = new BetweenFilterImpl();
         } else if (filterType == AbstractFilter.NULL) {
-            curFilter = ff.createNullFilter();
+            curFilter = new NullFilterImpl();
         } else if (filterType == AbstractFilter.LIKE) {
-            curFilter = ff.createLikeFilter();
+            curFilter = new LikeFilterImpl();
         } else if (AbstractFilter.isCompareFilter(filterType)) {
-            curFilter = ff.createCompareFilter(filterType);
+            switch(filterType) {
+            case FilterType.COMPARE_EQUALS:
+                curFilter =  new IsEqualsToImpl();
+                break;
+            case FilterType.COMPARE_NOT_EQUALS:
+                curFilter =  new IsNotEqualToImpl();
+                break;
+            case FilterType.COMPARE_GREATER_THAN:
+                curFilter =  new IsGreaterThanImpl();
+                break;
+            case FilterType.COMPARE_GREATER_THAN_EQUAL:
+                curFilter =  new IsGreaterThanOrEqualToImpl();
+                break;
+            case FilterType.COMPARE_LESS_THAN:
+                curFilter =  new IsLessThenImpl();
+                break;
+            case FilterType.COMPARE_LESS_THAN_EQUAL:
+                curFilter =  new IsLessThenOrEqualToImpl();
+                break;
+            case FilterType.BETWEEN:
+                curFilter =  new BetweenFilterImpl();
+                break;
+            default:
+                throw new IllegalFilterException("Must be one of <,<=,==,>,>=,<>");
+            }
         } else {
-            throw new IllegalFilterException(
-                "Attempted to start a new filter with invalid type: "
-                + filterType);
+            throw new IllegalFilterException("Filter start with invalid type: " + filterType);
         }
 
         curState = setInitialState(filterType);
@@ -137,15 +222,15 @@ public class FilterSAXParser {
      */
     public void expression(Expression expression) throws IllegalFilterException {
         // Handle all filter compare states and expressions
-        if (filterType == AbstractFilter.BETWEEN) {
+        if (filterType == FilterType.BETWEEN) {
             if (curState.equals("attribute")) {
-                ((BetweenFilter) curFilter).addMiddleValue(expression);
+                ((BetweenFilterImpl) curFilter).setExpression(expression);
                 curState = "LowerBoundary";
             } else if (curState.equals("LowerBoundary")) {
-                ((BetweenFilter) curFilter).addLeftValue(expression);
+                ((BinaryComparisonAbstract) curFilter).setExpression1(expression);
                 curState = "UpperBoundary";
             } else if (curState.equals("UpperBoundary")) {
-                ((BetweenFilter) curFilter).addRightValue(expression);
+                ((BinaryComparisonAbstract) curFilter).setExpression2(expression);
                 curState = "complete";
             } else {
                 throw new IllegalFilterException(
@@ -154,19 +239,19 @@ public class FilterSAXParser {
             }
         } else if (AbstractFilter.isCompareFilter(filterType)) {
             if (curState.equals("leftValue")) {
-                ((CompareFilter) curFilter).addLeftValue(expression);
+                ((BinaryComparisonAbstract) curFilter).setExpression1(expression);
                 curState = "rightValue";
             } else if (curState.equals("rightValue")) {
-                ((CompareFilter) curFilter).addRightValue(expression);
+                ((BinaryComparisonAbstract) curFilter).setExpression2(expression);
                 curState = "complete";
             } else {
                 throw new IllegalFilterException(
                     "Got expression for Compare Filter in illegal state: "
                     + curState);
             }
-        } else if (filterType == AbstractFilter.NULL) {
+        } else if (filterType == FilterType.NULL) {
             if (curState.equals("attribute")) {
-                ((NullFilter) curFilter).nullCheckValue(expression);
+                ((NullFilterImpl) curFilter).setExpression(expression);
                 curState = "complete";
             } else {
                 throw new IllegalFilterException(
@@ -175,10 +260,10 @@ public class FilterSAXParser {
             }
         } else if (AbstractFilter.isGeometryFilter(filterType)) {
             if (curState.equals("leftValue")) {
-                ((GeometryFilter) curFilter).addLeftGeometry(expression);
+                ((BinaryComparisonAbstract) curFilter).setExpression1(expression);
                 curState = "rightValue";
             } else if (curState.equals("rightValue")) {
-                ((GeometryFilter) curFilter).addRightGeometry(expression);
+                ((BinaryComparisonAbstract) curFilter).setExpression2(expression);
 
                 if (AbstractFilter.isGeometryDistanceFilter(filterType)) {
                     curState = "distance";
@@ -195,7 +280,7 @@ public class FilterSAXParser {
             }
         } else if (filterType == AbstractFilter.LIKE) {
             if (curState.equals("attribute")) {
-                ((LikeFilter) curFilter).setValue(expression);
+                ((LikeFilterImpl) curFilter).setExpression(expression);
                 curState = "pattern";
             } else if (curState.equals("pattern")) {
                 if (attributes.size() != NUM_LIKE_ATTS) {
@@ -229,7 +314,7 @@ public class FilterSAXParser {
                 LOGGER.fine("escape char is " + escapeChar);
 
               
-                ((LikeFilter) curFilter).setPattern(expression, wildcard,
+                ((LikeFilterImpl) curFilter).setPattern(expression, wildcard,
                     singleChar, escapeChar);
                 curState = "complete";
             } else {
@@ -314,7 +399,7 @@ public class FilterSAXParser {
         if (curState.equals("distance")) {
             try {
                 double distDouble = Double.parseDouble(distance);
-                ((GeometryDistanceFilter) curFilter).setDistance(distDouble);
+                ((CartesianDistanceFilter) curFilter).setDistance(distDouble);
                 curState = "complete";
             } catch (NumberFormatException nfe) {
                 throw new IllegalFilterException("could not parse distance: "
@@ -340,7 +425,7 @@ public class FilterSAXParser {
 
         if (curState.equals("fid")) {
             LOGGER.finer("is a fid");
-            ((FidFilter) curFilter).addFid(atts.getValue(0));
+            ((FidFilterImpl) curFilter).addFid(atts.getValue(0));
             LOGGER.finer("added fid");
         } else {
             for (int i = 0; i < atts.getLength(); i++) {

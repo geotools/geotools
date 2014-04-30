@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.opengis.filter.And;
+import org.opengis.filter.Filter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -394,13 +395,9 @@ public class FilterCapabilities {
         short filterType = Filters.getFilterType(filter);
 
         if (AbstractFilter.isLogicFilter(filterType)) {
-            Iterator filters = ((LogicFilter) filter).getFilterIterator();
-            org.opengis.filter.Filter testFilter = null;
-
-            //short testFtype = 0;
-            while (filters.hasNext()) {
-                testFilter = (org.opengis.filter.Filter) filters.next();
-
+            LogicFilter lf = (LogicFilter) filter;
+            
+            for( Filter testFilter : lf.getChildren() ){
                 if (!(this.fullySupports(testFilter))) {
                     supports = false;
                     break;
@@ -409,7 +406,6 @@ public class FilterCapabilities {
         } else {
             supports = this.supports(filter);
         }
-
         return supports;
     }
     

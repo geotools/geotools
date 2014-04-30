@@ -23,11 +23,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Converters;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.MultiValuedFilter.MatchAction;
-
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.spatial.BinarySpatialOperator;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -72,175 +70,35 @@ import com.vividsolutions.jts.geom.Geometry;
  *       (comments by cholmes) - MUTABLE FACTORIES!  Sax and immutability.
  */
 public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
-    implements GeometryFilter {
+    implements BinarySpatialOperator {
     /** Class logger */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
     
     protected MatchAction matchAction;
+    
+    @Deprecated
+    protected GeometryFilterImpl() throws IllegalFilterException {
+    }
 
-    protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory, MatchAction matchAction) {
-        super(factory);
+    protected GeometryFilterImpl(MatchAction matchAction) {
         this.matchAction = matchAction;
     }
-    
-    protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory,org.opengis.filter.expression.Expression e1,org.opengis.filter.expression.Expression e2, MatchAction matchAction) {
-        super(factory,e1,e2);
+
+    protected GeometryFilterImpl(org.opengis.filter.expression.Expression e1,
+            org.opengis.filter.expression.Expression e2, MatchAction matchAction) {
+        super(e1, e2);
         this.matchAction = matchAction;
     }
-    
+
     protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory) {
-        this (factory, MatchAction.ANY);
-    }
-    
-    protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory,org.opengis.filter.expression.Expression e1,org.opengis.filter.expression.Expression e2) {
-        this(factory,e1,e2, MatchAction.ANY);        
-    }
-    
-    /**
-     * Constructor with filter type.
-     *
-     * @param filterType The type of comparison.
-     *
-     * @throws IllegalFilterException Non-geometry type.
-     */
-    protected GeometryFilterImpl(short filterType)
-        throws IllegalFilterException {
-        
-        super(CommonFactoryFinder.getFilterFactory(null));
-        
-        if (isGeometryFilter(filterType)) {
-            this.filterType = filterType;
-        } else {
-            throw new IllegalFilterException("Attempted to create geometry "
-                + "filter with non-geometry type.");
-        }
+        this(MatchAction.ANY);
     }
 
-    /**
-     * Adds the 'left' value to this filter.
-     *
-     * @param leftGeometry Expression for 'left' value.
-     *
-     * @throws IllegalFilterException Filter is not internally consistent.
-     *
-     * @deprecated use {@link #setExpression1(org.opengis.filter.expression.Expression)}
-     */
-    public final void addLeftGeometry(Expression leftGeometry)
-        throws IllegalFilterException {
-
-        setExpression1(leftGeometry);
-    }
-    
-    public void setExpression1(org.opengis.filter.expression.Expression expression) {
-        if (expression instanceof Expression) {
-            Expression leftGeometry = (Expression) expression;
-
-            // Checks if this is geometry filter or not and handles appropriately
-            if (DefaultExpression.isGeometryExpression(leftGeometry.getType())
-                    || permissiveConstruction) {
-                super.setExpression1(leftGeometry);
-            } else {
-                throw new IllegalFilterException("Attempted to add (left)"
-                        + " non-geometry expression" + " to geometry filter.");
-            }
-        } else {
-            // I guess we assume it is a good expression...
-            super.setExpression1(expression);
-        }
-
+    protected GeometryFilterImpl(org.opengis.filter.expression.Expression e1,
+            org.opengis.filter.expression.Expression e2) {
+        this(e1, e2, MatchAction.ANY);
     }
 
-    /**
-     * Adds the 'right' value to this filter.
-     *
-     * @param rightGeometry Expression for 'right' value.
-     *
-     * @throws IllegalFilterException Filter is not internally consistent.
-     *
-     * @deprecated use {@link #set}
-     * 
-     */
-    public final void addRightGeometry(Expression rightGeometry)
-        throws IllegalFilterException {
-        
-        setExpression2(rightGeometry);
-    }
-  
-    public void setExpression2(org.opengis.filter.expression.Expression expression) {
-        if (expression instanceof Expression) {
-            Expression rightGeometry = (Expression) expression;
-
-            // Checks if this is math filter or not and handles appropriately
-            if (DefaultExpression.isGeometryExpression(rightGeometry.getType())
-                    || permissiveConstruction) {
-                super.setExpression2(rightGeometry);
-            } else {
-                throw new IllegalFilterException("Attempted to add (right)" + " non-geometry"
-                        + "expression to geometry filter.");
-            }
-        } else {
-            // I guess we assume it is a good expression...
-            super.setExpression2(expression);
-        }
-    }
-
-    /**
-     * Retrieves the expression on the left side of the comparison.
-     * 
-     * @return the expression on the left.
-     * @deprecated use {@link org.opengis.filter.spatial.BinarySpatialOperator#getExpression1()}
-     */
-    public final Expression getLeftGeometry() {
-        return (Expression)getExpression1();
-    }
-    
-    /**
-     * Retrieves the expression on the right side of the comparison.
-     *
-     * @return the expression on the right.
-     * @deprecated use {@link org.opengis.filter.spatial.BinarySpatialOperator#getExpression2()}
-     */
-    public final Expression getRightGeometry() {
-        return (Expression)getExpression2();
-    }
-
-    /**
-     * Subclass convenience method for returning left expression as a 
-     * JTS geometry.
-     * 
-     * * @deprecated use {@link org.geotools.filter#getGeometries(org.opengis.filter.expression.Expression expr, Object feature)}
-     */
-    protected Geometry getLeftGeometry(Object feature) {
-        org.opengis.filter.expression.Expression leftGeometry = getExpression1();
-        
-         if (leftGeometry != null) {
-             Object obj = leftGeometry.evaluate(feature,Geometry.class);
-
-             //LOGGER.finer("leftGeom = " + o.toString()); 
-             return (Geometry) obj;
-         } else if (feature instanceof SimpleFeature) {
-             return (Geometry) ((SimpleFeature)feature).getDefaultGeometry();
-         }
-         return null;
-    }
-    
-    /**
-     * Subclass convenience method for returning right expression as a 
-     * JTS geometry.
-     * 
-     * @deprecated use {@link org.geotools.filter#getGeometries(org.opengis.filter.expression.Expression expr, Object feature)}
-     */
-    protected Geometry getRightGeometry(Object feature) {
-        org.opengis.filter.expression.Expression rightGeometry = getExpression2();
-        
-         if (rightGeometry != null) {
-             return (Geometry) rightGeometry.evaluate(feature,Geometry.class);
-         } else if(feature instanceof SimpleFeature){
-             return (Geometry) ((SimpleFeature)feature).getDefaultGeometry();
-         }
-         return null;
-    }
-    
     /**
      * NC - support for multiple values
      * Convenience method for returning expression as either a geometry or a list of geometries.
@@ -262,17 +120,6 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
          
          return Converters.convert(o, Geometry.class);
     }
-    
-    /**
-     * Determines whether or not a given feature is 'inside' this filter.
-     *
-     * @param feature Specified feature to examine.
-     *
-     * @return Flag confirming whether or not this feature is inside filter.
-     */
-    public boolean evaluate(SimpleFeature feature) {
-        return evaluate((Object)feature);
-    }
 
     /**
      * Return this filter as a string.
@@ -283,6 +130,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         String operator = null;
 
         // Handles all normal geometry cases
+        int filterType = Filters.getFilterType(this);
         if (filterType == GEOMETRY_EQUALS) {
             operator = " equals ";
         } else if (filterType == GEOMETRY_DISJOINT) {
@@ -334,10 +182,10 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
             GeometryFilterImpl geomFilter = (GeometryFilterImpl) obj;
             boolean isEqual = true;
 
-            isEqual = geomFilter.getFilterType() == this.filterType;
+            isEqual = Filters.getFilterType( geomFilter ) == Filters.getFilterType( this );
             if( LOGGER.isLoggable(Level.FINEST) ) {
                 LOGGER.finest("filter type match:" + isEqual + "; in:"
-                        + geomFilter.getFilterType() + "; out:" + this.filterType);
+                        + Filters.getFilterType(geomFilter) + "; out:" + Filters.getFilterType(this));
             }
             isEqual = (geomFilter.expression1 != null)
                 ? (isEqual && geomFilter.expression1.equals(this.expression1))
@@ -370,6 +218,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         org.opengis.filter.expression.Expression rightGeometry = getExpression2();
          
         int result = 17;
+        int filterType = Filters.getFilterType(this);
         result = (37 * result) + filterType;
         result = (37 * result)
             + ((leftGeometry == null) ? 0 : leftGeometry.hashCode());

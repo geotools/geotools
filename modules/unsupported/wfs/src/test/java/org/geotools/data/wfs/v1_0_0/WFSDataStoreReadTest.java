@@ -32,9 +32,8 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.IllegalAttributeException;
-import org.geotools.filter.FilterFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -207,7 +206,8 @@ public class WFSDataStoreReadTest extends TestCase {
         }
 
         // test fid filter 
-        query.setFilter(FilterFactoryFinder.createFilterFactory().createFidFilter(fid));
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        query.setFilter( ff.id( ff.featureId(fid)));
         if( get ){
              FeatureReader<SimpleFeatureType, SimpleFeature> fr = wfs.getFeatureReaderGet(query,Transaction.AUTO_COMMIT);
             try{

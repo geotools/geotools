@@ -65,10 +65,10 @@ public interface FunctionName extends Operator {
      * Number of arguments the function accepts.
      * <p>
      * <ul>
-     * <li>Use a postivie number to indicate the number of arguments.
-     *     Example: add( number1, number2 ) = 2</li>
+     * <li>Use a positive number to indicate the number of arguments.
+     *     Example: <code>add( number1, number2 ) = 2 </code></li>
      * <li>Use a negative number to indicate a minimum number:
-     *    Example: concat( str1, str2,... ) has -2</li>
+     *    Example:  <code>concat( str1, str2,... ) has -2 </code></li>
      * </ul> 
      *
      * <pre>

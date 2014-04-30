@@ -27,21 +27,14 @@ import org.opengis.filter.Not;
  * @source $URL$
  */
 public class NotImpl extends LogicFilterImpl implements Not {
-	
-	protected NotImpl(org.opengis.filter.FilterFactory factory) {
-		super(factory);
-		
-		//backwards compatability with old type system
-		filterType = LOGIC_NOT;
-	}
-	
-	protected NotImpl(org.opengis.filter.FilterFactory factory, Filter filter) {
-		super(factory);
-		this.children.add(filter);
-		
-		//backwards compatability with old type system
-		filterType = LOGIC_NOT;
-	}
+
+    @Deprecated
+    protected NotImpl() {
+    }
+
+    protected NotImpl(Filter filter) {
+        this.children.add(filter);
+    }
 
 	public Filter getFilter() {
 		return (Filter)children.get(0);

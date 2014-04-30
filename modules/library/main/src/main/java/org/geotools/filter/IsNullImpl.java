@@ -17,6 +17,7 @@
 package org.geotools.filter;
 
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -24,13 +25,10 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class IsNullImpl extends CompareFilterImpl implements NullFilter {
+public class IsNullImpl extends CompareFilterImpl implements PropertyIsNull {
 
-    public IsNullImpl(org.opengis.filter.FilterFactory factory,
-            org.opengis.filter.expression.Expression expression) {
-        super(factory, expression, null);
-
-        filterType = FilterType.NULL;
+    public IsNullImpl(org.opengis.filter.expression.Expression expression) {
+        super(expression, null);
     }
 
     public boolean evaluate(Object feature) {
@@ -41,15 +39,6 @@ public class IsNullImpl extends CompareFilterImpl implements NullFilter {
 
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
-    }
-
-    public void nullCheckValue(org.geotools.filter.Expression nullCheck)
-            throws IllegalFilterException {
-        setExpression(nullCheck);
-    }
-
-    public org.geotools.filter.Expression getNullCheckValue() {
-        return (org.geotools.filter.Expression) getExpression();
     }
 
     public Expression getExpression() {

@@ -33,10 +33,10 @@ public class IsNilImpl extends CompareFilterImpl implements PropertyIsNil {
     Object nilReason;
     IsNullImpl delegate;
     
-    public IsNilImpl(FilterFactory factory, Expression e1, Object nilReason) {
-        super(factory, e1, null);
+    public IsNilImpl(Expression e1, Object nilReason) {
+        super(e1, null);
         this.nilReason = nilReason;
-        this.delegate = new IsNullImpl(factory, e1);
+        this.delegate = new IsNullImpl(e1);
     }
 
     public boolean evaluate(Object object) {

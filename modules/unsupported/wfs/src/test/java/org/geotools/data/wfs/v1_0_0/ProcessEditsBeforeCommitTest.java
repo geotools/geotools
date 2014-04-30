@@ -23,16 +23,14 @@ import junit.framework.TestCase;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.wfs.v1_0_0.Action.InsertAction;
-import org.geotools.feature.IllegalAttributeException;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.filter.CompareFilter;
-import org.geotools.filter.FidFilter;
-import org.geotools.filter.Filter;
-import org.geotools.filter.FilterFactory;
-import org.geotools.filter.FilterFactoryFinder;
-import org.geotools.filter.FilterType;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsEqualTo;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -53,14 +51,12 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @source $URL$
  */
+@SuppressWarnings({"rawtypes","unchecked"})
 public class ProcessEditsBeforeCommitTest extends TestCase {
-
+	private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 	private static final PropertyIsEqualTo CUSTOM_FILTERALL;
-	private static FilterFactory filterFac=FilterFactoryFinder.createFilterFactory();
 	static{
-		CUSTOM_FILTERALL=filterFac.equals( 
-			filterFac.createLiteralExpression(1), filterFac.createLiteralExpression(2) 
-		);
+		CUSTOM_FILTERALL=ff.equals( ff.literal(1), ff.literal(2) );
 	}
 	private WFSTransactionState state;
 	private SimpleFeatureType featureType;
@@ -82,13 +78,13 @@ public class ProcessEditsBeforeCommitTest extends TestCase {
 		return SimpleFeatureBuilder.build( featureType, new Object[]{p,name}, null );
 	}
 
-	public void testBasicInsertFIDFilterUpdateCollapse() throws Exception {
+    public void testBasicInsertFIDFilterUpdateCollapse() throws Exception {
 		SimpleFeature createFeature = createFeature(0,0,NAME_ATT);
 		state.addAction(featureType.getTypeName(), new Action.InsertAction(createFeature));
 		Map properties=new HashMap(); 
 		properties.put(NAME_ATT, "newName");
 		state.addAction(featureType.getTypeName(), new Action.UpdateAction(typename, 
-				filterFac.createFidFilter(createFeature.getID()),
+				ff.id(createFeature.getIdentifier()),
 				properties));
 		
 		state.combineActions();
@@ -106,8 +102,8 @@ public class ProcessEditsBeforeCommitTest extends TestCase {
 		Map properties=new HashMap(); 
 		properties.put(NAME_ATT, "newName");
 		state.addAction(featureType.getTypeName(), new Action.UpdateAction(typename, 
-				filterFac.createFidFilter(createFeature.getID()),
-				properties));
+		        ff.id(createFeature.getIdentifier()),
+		        properties));
 		
 		state.combineActions();
 		Action.InsertAction action=(InsertAction) state.getActions(featureType.getTypeName()).get(0);
@@ -124,11 +120,11 @@ public class ProcessEditsBeforeCommitTest extends TestCase {
 		Map properties=new HashMap(); 
 		properties.put(NAME_ATT, "newName");
 		state.addAction(featureType.getTypeName(), new Action.UpdateAction(typename, 
-				filterFac.createFidFilter(createFeature.getID()),
+		                ff.id(createFeature.getIdentifier()),
 				properties));
 		properties.put(NAME_ATT, "secondUpdate");
 		state.addAction(featureType.getTypeName(), new Action.UpdateAction(typename, 
-				filterFac.createFidFilter(createFeature.getID()),
+                        ff.id(createFeature.getIdentifier()),
 				properties));
 		
 		state.combineActions();
@@ -147,12 +143,10 @@ public class ProcessEditsBeforeCommitTest extends TestCase {
 		state.addAction(featureType.getTypeName(), new Action.InsertAction(createFeature));
 		updateProperties.put(NAME_ATT, "newName");
 		state.addAction(featureType.getTypeName(), new Action.UpdateAction(typename, 
-				filterFac.createFidFilter(createFeature.getID()),
+                                ff.id(createFeature.getIdentifier()),
 				updateProperties));
 		updateProperties.put(NAME_ATT, "secondUpdate");
-		CompareFilter matchFilter=filterFac.createCompareFilter(FilterType.COMPARE_EQUALS);
-		matchFilter.addLeftValue(filterFac.createAttributeExpression("name"));
-		matchFilter.addRightValue(filterFac.createLiteralExpression("newName"));
+		PropertyIsEqualTo matchFilter = ff.equals(ff.property("name"),ff.literal("newName"));
 		state.addAction(featureType.getTypeName(), new Action.UpdateAction(typename, matchFilter, updateProperties));
 
 		updateProperties.put(NAME_ATT, "secondNoMatch");
@@ -173,12 +167,12 @@ public class ProcessEditsBeforeCommitTest extends TestCase {
 		state.addAction(featureType.getTypeName(), new Action.InsertAction(createFeature));
 		updateProperties.put(NAME_ATT, "newName");
 		state.addAction(featureType.getTypeName(), new Action.UpdateAction(typename, 
-				filterFac.createFidFilter(createFeature.getID()),
-				updateProperties));
+                        ff.id(createFeature.getIdentifier()),
+                        updateProperties));
 		updateProperties.put(NAME_ATT, "secondUpdate");
-		CompareFilter matchFilter=filterFac.createCompareFilter(FilterType.COMPARE_EQUALS);
-		matchFilter.addLeftValue(filterFac.createAttributeExpression("name"));
-		matchFilter.addRightValue(filterFac.createLiteralExpression("newName"));
+		
+		PropertyIsEqualTo matchFilter = ff.equals(ff.property("name"),ff.literal("newName"));
+		
 		state.addAction(featureType.getTypeName(), new Action.UpdateAction(typename, matchFilter, updateProperties));
 
 		updateProperties.put(NAME_ATT, "secondNoMatch");
@@ -195,7 +189,7 @@ public class ProcessEditsBeforeCommitTest extends TestCase {
 	    SimpleFeature createFeature = createFeature(0,0,NAME_ATT);
 		state.addAction(featureType.getTypeName(), new Action.InsertAction(createFeature));
 		state.addAction(featureType.getTypeName(), new Action.DeleteAction(typename, 
-				filterFac.createFidFilter(createFeature.getID())));
+				ff.id(createFeature.getIdentifier())));
 		
 		state.combineActions();
 		assertEquals(0, state.getActions(featureType.getTypeName()).size());
@@ -209,9 +203,7 @@ public class ProcessEditsBeforeCommitTest extends TestCase {
 		//create delete actions
 		Action.DeleteAction deleteNone = new Action.DeleteAction(typename, CUSTOM_FILTERALL);
 
-		FidFilter createFidFilter = filterFac.createFidFilter();
-		createFidFilter.addFid(createFeature.getID());
-		createFidFilter.addFid("someotherfid");
+		Id createFidFilter = ff.id(createFeature.getIdentifier(),ff.featureId("someotherfid"));
 		Action.DeleteAction deleteInsert1 = new Action.DeleteAction(typename, createFidFilter);
 
 		//create update actions
@@ -219,13 +211,12 @@ public class ProcessEditsBeforeCommitTest extends TestCase {
 
 		updateProperties.put(NAME_ATT, "newName");
 		Action.UpdateAction updateInsert1 = new Action.UpdateAction(typename, 
-				filterFac.createFidFilter(createFeature.getID()),
+				ff.id( createFeature.getIdentifier()),
 				updateProperties);
 
 		updateProperties.put(NAME_ATT, "secondUpdate");
-		CompareFilter matchFilter=filterFac.createCompareFilter(FilterType.COMPARE_EQUALS);
-		matchFilter.addLeftValue(filterFac.createAttributeExpression("name"));
-		matchFilter.addRightValue(filterFac.createLiteralExpression("newName"));
+		
+		PropertyIsEqualTo matchFilter = ff.equals(ff.property("name"),ff.literal("newName"));
 		Action.UpdateAction updateManyIncludingInsert1 = new Action.UpdateAction(typename, matchFilter, updateProperties);
 
 		updateProperties.put(NAME_ATT, "secondNoMatch");

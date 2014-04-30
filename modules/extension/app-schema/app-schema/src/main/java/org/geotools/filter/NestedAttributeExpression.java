@@ -297,6 +297,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
      * @param value
      * @return
      */
+    @SuppressWarnings("rawtypes")
     private Object extractAttributeValue(Object value) {
         if (value == null) {
             return null;

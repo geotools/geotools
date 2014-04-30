@@ -44,8 +44,7 @@ public class SQLFilterSuite extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite("All filter tests");
-
-        suite.addTestSuite(SQLEncoderTest.class);
+        
         suite.addTestSuite(SQLUnpackerTest.class);
         
         return suite;

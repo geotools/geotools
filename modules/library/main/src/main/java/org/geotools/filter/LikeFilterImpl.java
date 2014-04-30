@@ -22,11 +22,10 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.MultiValuedFilter.MatchAction;
-
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 
 /**
  * Defines a like filter, which checks to see if an attribute matches a REGEXP.
@@ -37,10 +36,10 @@ import org.opengis.filter.MultiValuedFilter.MatchAction;
  * @source $URL$
  * @version $Id$
  */
-public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
+public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
 
     /** The attribute value, which must be an attribute expression. */
-    private Expression attribute = null;
+    private org.opengis.filter.expression.Expression attribute = null;
 
     /** The (limited) REGEXP pattern. */
     private String pattern = null;
@@ -317,8 +316,6 @@ public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
     }
     
     protected LikeFilterImpl(MatchAction matchAction) {
-        super(CommonFactoryFinder.getFilterFactory(null));
-        filterType = LIKE;
         this.matchAction = matchAction;
     }
 
@@ -338,20 +335,10 @@ public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
      * @param attribute The value of the attribute for comparison.
      *
      * @throws IllegalFilterException Filter is illegal.
+     * @deprecated Use {@link #setExpression(org.opengis.filter.expression.Expression)}
      */
     public final void setValue(Expression attribute) throws IllegalFilterException {
         setExpression(attribute);
-    }
-
-     /**
-     * Gets the Value (left hand side) of this filter.
-     *
-     * @return The expression that is the value of the filter.
-     * 
-     * @deprecated use {@link #getExpression()}.
-     */
-    public final org.geotools.filter.Expression getValue() {
-        return attribute;
     }
 
     /**
@@ -362,19 +349,11 @@ public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
      * </p>
      */
     public org.opengis.filter.expression.Expression getExpression() {
-        return getValue();
+        return attribute;
     }
     
     public void setExpression(org.opengis.filter.expression.Expression e) {
-        Expression attribute = (Expression)e;
-        if ((attribute.getType() != ExpressionType.ATTRIBUTE_STRING)
-                || permissiveConstruction) {
-            this.attribute = attribute;
-        } else {
-            throw new IllegalFilterException(
-                "Attempted to add something other than a string attribute "
-                + "expression to a like filter.");
-        }
+        this.attribute = e;
     }
     
     /**
@@ -394,9 +373,23 @@ public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
      *  {@link PropertyIsLike#setSingleChar(String)}
      *  {@link PropertyIsLike#setEscape(String)}
      */
-    public final void setPattern(org.geotools.filter.Expression p, String wildcardMulti,
+    public final void setPattern(org.opengis.filter.expression.Expression p, String wildcardMulti,
         String wildcardSingle, String escape) {
-        setPattern(p.toString(), wildcardMulti, wildcardSingle, escape);
+        if( p instanceof Literal){
+            Literal literal = (Literal) p;
+            Object value = literal.getValue();
+            if( value != null && value instanceof String){
+                String pattern = (String) value;
+                setPattern(pattern, wildcardMulti, wildcardSingle, escape);
+            }
+            else {
+                throw new ClassCastException("Pattern Literal must be a string:"+value);
+            }
+        }
+        else {
+            throw new ClassCastException("Pattern must be a literal String");
+        }
+        
     }
 
     /**
@@ -630,8 +623,9 @@ public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
             LikeFilterImpl lFilter = (LikeFilterImpl) obj;
 
             //REVISIT: check for nulls.
-            return ((lFilter.getFilterType() == this.filterType)
-            && lFilter.getValue().equals(this.attribute)
+            
+            return ((Filters.getFilterType( lFilter ) == Filters.getFilterType( this ))
+            && lFilter.getExpression().equals(this.attribute)
             && lFilter.getPattern().equals(this.pattern));
         }
         return false;

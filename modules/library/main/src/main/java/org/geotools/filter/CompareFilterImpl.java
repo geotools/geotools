@@ -24,7 +24,9 @@ import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.PropertyIsNull;
 
 
 /**
@@ -48,8 +50,7 @@ import org.opengis.filter.FilterVisitor;
  * @source $URL$
  * @version $Id$
  */
-public abstract class CompareFilterImpl extends BinaryComparisonAbstract
-    implements CompareFilter {
+public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
     /** The logger for the default core module. */
     static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
 
@@ -61,120 +62,23 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      * @throws IllegalFilterException Non-compare type.
      * @deprecated use {@link #CompareFilterImpl(org.opengis.filter.FilterFactory, org.opengis.filter.expression.Expression, org.opengis.filter.expression.Expression)}
      */
-    protected CompareFilterImpl(short filterType) throws IllegalFilterException {
-    	super(CommonFactoryFinder.getFilterFactory(null));
-    	if (isCompareFilter(filterType)) {
-            this.filterType = filterType;
-        } else {
-            throw new IllegalFilterException(
-                "Attempted to create compare filter with non-compare type.");
-        }
+    protected CompareFilterImpl() throws IllegalFilterException {
     }
 
-    protected CompareFilterImpl(org.opengis.filter.FilterFactory factory, org.opengis.filter.expression.Expression e1, org.opengis.filter.expression.Expression e2) {
-    	this(factory,e1,e2,true);
+    protected CompareFilterImpl(org.opengis.filter.expression.Expression e1, org.opengis.filter.expression.Expression e2) {
+    	this(e1,e2,true);
     }
     
-    protected CompareFilterImpl(org.opengis.filter.FilterFactory factory, org.opengis.filter.expression.Expression e1, org.opengis.filter.expression.Expression e2, boolean matchCase ) {
-    	super(factory,e1,e2,matchCase);
-    }
-    
-    /**
-     * Adds the 'left' value to this filter.
-     *
-     * @param leftValue Expression for 'left' value.
-     *
-     * @throws IllegalFilterException Filter is not internally consistent.
-     *
-     * @task REVISIT: immutability?
-     */
-    public final void addLeftValue(Expression leftValue)
-        throws IllegalFilterException {
-        
-    	setExpression1(leftValue);
+    protected CompareFilterImpl(org.opengis.filter.expression.Expression e1, org.opengis.filter.expression.Expression e2, boolean matchCase ) {
+    	super(e1,e2,matchCase);
     }
     
     public void setExpression1(org.opengis.filter.expression.Expression leftValue) {
-    	//Checks if this is math filter or not and handles appropriately
-        if (isMathFilter(filterType)) {
-            if (DefaultExpression.isMathExpression(leftValue)
-                    || permissiveConstruction) {
-                this.expression1 = leftValue;
-            } else {
-            	throw new IllegalFilterException(
-                    "Attempted to add non-math expression to math filter."
-				);	
-            }
-                
-        } else {
-            this.expression1 = leftValue;
-        }
-    }
-
-    /**
-     * Adds the 'right' value to this filter.
-     *
-     * @param rightValue Expression for 'right' value.
-     *
-     * @throws IllegalFilterException Filter is not internally consistent.
-     *
-     * @task REVISIT: make immutable.
-     */
-    public final void addRightValue(Expression rightValue)
-        throws IllegalFilterException {
-       
-    	setExpression2(rightValue);
+        this.expression1 = leftValue;
     }
 
     public void setExpression2(org.opengis.filter.expression.Expression rightValue) {
-    	 // Checks if this is math filter or not and handles appropriately
-        if (isMathFilter(filterType)) {
-            if (DefaultExpression.isMathExpression(rightValue)
-                    || permissiveConstruction) {
-                this.expression2 = rightValue;
-            } else {
-            	
-            	throw new IllegalFilterException(
-                    "Attempted to add non-math expression to math filter."
-    			);
-                
-            }
-        } else {
-            this.expression2 = rightValue;
-        }
-    }
-    /**
-     * Gets the left expression.
-     *
-     * @return The expression on the left of the comparison.
-     * 
-     * * @deprecated use {@link #getExpression1()}
-     */
-    public final Expression getLeftValue() {
-        return (Expression)getExpression1();
-    }
-
-    /**
-     * Gets the right expression.
-     *
-     * @return The expression on the right of the comparison.
-     *
-     * @deprecated use {@link #getExpression2()}
-     */
-    public final Expression getRightValue() {
-        return (Expression)getExpression2();
-    }
-
-    /**
-     * Determines whether or not a given feature is 'inside' this filter.
-     *
-     * @param feature Specified feature to examine.
-     *
-     * @return Flag confirming whether or not this feature is inside the
-     *         filter.
-     */
-    public boolean evaluate(SimpleFeature feature){
-    	return evaluate((Object)feature);
+        this.expression2 = rightValue;
     }
   
     /**
@@ -262,10 +166,10 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      * @return String representation of the compare filter.
      */
     public String toString() {
+        int filterType = Filters.getFilterType( this );
         if (filterType == NULL) {
         	return "[ " + expression1 + " IS NULL ]";
         }
-        
         String operator = null;
 
         if (filterType == COMPARE_EQUALS) {
@@ -306,19 +210,17 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      *         otherwise.
      */
     public boolean equals(Object obj) {
-        if (obj instanceof CompareFilter) {
-            CompareFilter cFilter = (CompareFilter) obj;
+        if (obj instanceof CompareFilterImpl) {
+            CompareFilterImpl cFilter = (CompareFilterImpl) obj;
 
             // todo - check for nulls here, or make immutable.
             //
-            return
-                filterType == cFilter.getFilterType()
-            	&& (    expression1 == cFilter.getLeftValue()
-            			|| (expression1 != null && expression1.equals( cFilter.getLeftValue() ) )
-            	    )
-            	&& (    expression2 == cFilter.getRightValue()
-            			|| (expression2 != null && expression2.equals( cFilter.getRightValue() ) )
-            			);            
+            int filterType = Filters.getFilterType(this);
+            return filterType == Filters.getFilterType(cFilter)
+                    && (expression1 == cFilter.getExpression1() || (expression1 != null && expression1
+                            .equals(cFilter.getExpression1())))
+                    && (expression2 == cFilter.getExpression2() || (expression2 != null && expression2
+                            .equals(cFilter.getExpression2())));
         } else {
             return false;
         }
@@ -331,6 +233,8 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      */
     public int hashCode() {
         int result = 17;
+        int filterType = Filters.getFilterType(this);
+        
         result = (37 * result) + filterType;
         result = (37 * result)
             + ((expression1 == null) ? 0 : expression1.hashCode());

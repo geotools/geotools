@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DataSourceException;
@@ -57,6 +58,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -233,7 +235,7 @@ public abstract class JDBCDataStoreAPITest extends JDBCTestSupport {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         FilterFunction_geometryType geomTypeExpr = new FilterFunction_geometryType();
 
-        geomTypeExpr.setParameters(Collections.singletonList(factory.property(aname("geom"))));
+        geomTypeExpr.setParameters( (List) Collections.singletonList(factory.property(aname("geom"))));
 
         PropertyIsEqualTo filter = factory.equals(geomTypeExpr, factory.literal("Polygon"));
         reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), filter), t);
@@ -256,12 +258,12 @@ public abstract class JDBCDataStoreAPITest extends JDBCTestSupport {
 
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         FilterFunction_geometryType geomTypeExpr = new FilterFunction_geometryType();
-        geomTypeExpr.setParameters(Collections.singletonList(factory.property(aname("geom"))));
+        geomTypeExpr.setParameters((List)Collections.singletonList(factory.property(aname("geom"))));
 
         PropertyIsEqualTo filter = factory.equals(geomTypeExpr, factory.literal("Polygon"));
 
         DefaultQuery query = new DefaultQuery(tname("road"), filter);
-        query.setPropertyNames(Collections.singletonList(aname("id")));
+        query.setPropertyNames((List)Collections.singletonList(aname("id")));
 
          FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, t);
         // if the above statement didn't throw an exception, we're content
@@ -312,7 +314,7 @@ public abstract class JDBCDataStoreAPITest extends JDBCTestSupport {
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         FilterFunction_ceil ceil = new FilterFunction_ceil();
-        ceil.setParameters(Collections.singletonList(ff.property(aname("flow"))));
+        ceil.setParameters((List)Collections.singletonList(ff.property(aname("flow"))));
 
         PropertyIsEqualTo f = ff.equals(ceil, ff.literal(5));
 

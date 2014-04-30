@@ -22,13 +22,10 @@ import java.util.Map;
 
 import javax.naming.OperationNotSupportedException;
 
-import org.geotools.filter.AttributeExpression;
-import org.geotools.filter.Expression;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.Filters;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.LiteralExpression;
-import org.geotools.filter.MathExpression;
 import org.geotools.ows.ServiceException;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.filter.FilterSchema.FilterAttribute;
@@ -53,6 +50,9 @@ import org.geotools.xml.schema.impl.FacetGT;
 import org.geotools.xml.schema.impl.SequenceGT;
 import org.geotools.xml.xsi.XSISimpleTypes;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.BinaryExpression;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -999,7 +999,7 @@ public class FilterComplexTypes {
             Map hints) throws IOException, OperationNotSupportedException {
             Expression e = (Expression) value;
 
-            switch (e.getType()) {
+            switch (Filters.getExpressionType(e)) {
             case ATTRIBUTE:
             case ATTRIBUTE_DOUBLE:
             case ATTRIBUTE_GEOMETRY:
@@ -1138,7 +1138,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return MathExpression.class;
+            return BinaryExpression.class;
         }
 
         /**
@@ -1156,7 +1156,7 @@ public class FilterComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof MathExpression;
+            && value instanceof BinaryExpression;
         }
 
         /**
@@ -1170,10 +1170,10 @@ public class FilterComplexTypes {
                 return;
             }
 
-            MathExpression me = (MathExpression) value;
+            BinaryExpression me = (BinaryExpression) value;
             output.startElement(element.getNamespace(), element.getName(), null);
-            elems[0].getType().encode(null, me.getLeftValue(), output, hints);
-            elems[0].getType().encode(null, me.getRightValue(), output, hints);
+            elems[0].getType().encode(null, me.getExpression1(), output, hints);
+            elems[0].getType().encode(null, me.getExpression2(), output, hints);
             output.endElement(element.getNamespace(), element.getName());
         }
     }
@@ -1295,9 +1295,9 @@ public class FilterComplexTypes {
                 "string", me.getName());
             output.startElement(element.getNamespace(), element.getName(), ai);
 
-            for (int i = 0; i < me.getArgCount(); i++)
-                elems[0].getType().encode(null, me.getArgs()[i], output, hints);
-
+            for( org.opengis.filter.expression.Expression arg : me.getParameters() ){
+                elems[0].getType().encode(null, arg, output, hints);
+            }
             output.endElement(element.getNamespace(), element.getName());
         }
     }
@@ -1388,7 +1388,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return LiteralExpression.class;
+            return Literal.class;
         }
 
         /**
@@ -1398,7 +1398,7 @@ public class FilterComplexTypes {
         public boolean canEncode(Element element, Object value, Map hints) {
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && (value instanceof LiteralExpression || value instanceof String);
+            && (value instanceof Literal || value instanceof String);
         }
 
         /**
@@ -1423,16 +1423,16 @@ public class FilterComplexTypes {
                 return;
             }
             
-            LiteralExpression me = (LiteralExpression) value;
+            Literal me = (Literal) value;
             output.startElement(element.getNamespace(), element.getName(), ai);
 
-            switch (me.getType()) {
+            switch (Filters.getExpressionType(me)) {
             case org.geotools.filter.ExpressionType.LITERAL_GEOMETRY:
 
-                if (me.getLiteral() instanceof Geometry) {
+                if (me.getValue() instanceof Geometry) {
                     GMLSchema.getInstance().getElements()[29].getType().encode(GMLSchema.getInstance()
                                                                                         .getElements()[29],
-                        me.getLiteral(), output, hints);
+                        me.getValue(), output, hints);
 
                     break;
                 }
@@ -1441,7 +1441,7 @@ public class FilterComplexTypes {
             case org.geotools.filter.ExpressionType.LITERAL_INTEGER:
             case org.geotools.filter.ExpressionType.LITERAL_STRING:
             case org.geotools.filter.ExpressionType.LITERAL_LONG:
-                output.characters(me.getLiteral().toString());
+                output.characters(me.getValue().toString());
 
                 break;
             }
@@ -1516,7 +1516,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return AttributeExpression.class;
+            return PropertyName.class;
         }
 
         /**
@@ -1524,9 +1524,8 @@ public class FilterComplexTypes {
          *      java.lang.Object, java.util.Map)
          */
         public boolean canEncode(Element element, Object value, Map hints) {
-            return (value instanceof AttributeExpression
-            || value instanceof String) && (element.getType() != null)
-            && getName().equals(element.getType().getName());
+            return (value instanceof PropertyName || value instanceof String)
+                    && (element.getType() != null) && getName().equals(element.getType().getName());
         }
 
         /**
@@ -1550,8 +1549,8 @@ public class FilterComplexTypes {
             if (value instanceof String) {
                 output.characters((String) value);
             } else {
-                AttributeExpression name = (AttributeExpression) value;
-                output.characters(name.getAttributePath());
+                PropertyName name = (PropertyName) value;
+                output.characters(name.getPropertyName());
             }
 
             output.endElement(element.getNamespace(), element.getName());

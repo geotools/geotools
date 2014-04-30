@@ -51,17 +51,17 @@ public class LiteralTest extends TestCase {
     }
     
     public void testValidConstruction() throws Exception {
-        LiteralExpression a = new LiteralExpressionImpl(new Double(10));
-        LiteralExpression b = new LiteralExpressionImpl("Label");
-        LiteralExpression c = new LiteralExpressionImpl(new Integer(10));
+        Literal a = new LiteralExpressionImpl(new Double(10));
+        Literal b = new LiteralExpressionImpl("Label");
+        Literal c = new LiteralExpressionImpl(new Integer(10));
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
-        LiteralExpression d = new LiteralExpressionImpl(gf.createGeometryCollection(null));
+        Literal d = new LiteralExpressionImpl(gf.createGeometryCollection(null));
     }
 
     public void testInvalidConstruction1() throws Exception {
         try {
-            LiteralExpression a = new LiteralExpressionImpl(new Double(10));
-            LiteralExpression b = new LiteralExpressionImpl(a);
+            Literal a = new LiteralExpressionImpl(new Double(10));
+            Literal b = new LiteralExpressionImpl(a);
         } catch (IllegalFilterException ife) {
             return;
         }

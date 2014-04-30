@@ -35,35 +35,35 @@ public class ColorMapEntryImpl implements ColorMapEntry {
     private String label;
 
     /**
-     * @see org.geotools.styling.ColorMapEntry#getLabel()
+     * @see org.geotools.styling.ColorMapEntry#getLabel
      */
     public String getLabel() {
         return this.label;
     }
 
     /**
-     * @see org.geotools.styling.ColorMapEntry#setLabel(java.lang.String)
+     * @see org.geotools.styling.ColorMapEntry#setLabel
      */
     public void setLabel(String label) {
         this.label = label;
     }
 
     /**
-     * @see org.geotools.styling.ColorMapEntry#setColor(org.geotools.filter.Expression)
+     * @see org.geotools.styling.ColorMapEntry#setColor
      */
     public void setColor(Expression color) {
         this.color = color;
     }
 
     /**
-     * @see org.geotools.styling.ColorMapEntry#getColor()
+     * @see org.geotools.styling.ColorMapEntry#getColor
      */
     public Expression getColor() {
         return this.color;
     }
 
     /**
-     * @see org.geotools.styling.ColorMapEntry#setOpacity(org.geotools.filter.Expression)
+     * @see org.geotools.styling.ColorMapEntry#setOpacity
      */
     public void setOpacity(Expression opacity) {
         this.opacity = opacity;
@@ -77,7 +77,7 @@ public class ColorMapEntryImpl implements ColorMapEntry {
     }
 
     /**
-     * @see org.geotools.styling.ColorMapEntry#setQuantity(org.geotools.filter.Expression)
+     * @see org.geotools.styling.ColorMapEntry#setQuantity
      */
     public void setQuantity(Expression quantity) {
         this.quantity = quantity;

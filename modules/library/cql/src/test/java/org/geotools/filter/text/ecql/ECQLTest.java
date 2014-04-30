@@ -182,6 +182,12 @@ public final class ECQLTest  {
 
         // not sample
         assertFilter("NOT (ATTR < 10)",Not.class);
+
+        // compound example
+        assertFilter("(A = 1 OR B = 2) AND C = 3",And.class);
+        
+        // compound example
+        assertFilter("(A = 1 OR B = 2) AND NOT (C = 3)",And.class);
     }
     
     /**
@@ -205,12 +211,18 @@ public final class ECQLTest  {
         return expected.cast( expression );
     }
     
-    private <F extends Filter> F assertFilter( String ecql, Class<F> expected) throws CQLException {
+    private <F extends Filter> F assertFilter( String ecql, Class<F> type) throws CQLException {
         Filter filter = ECQL.toFilter(ecql);
-        Assert.assertTrue(expected.getSimpleName(), expected.isInstance( filter ));
+        Assert.assertTrue(type.getSimpleName(), type.isInstance( filter ));
         Assert.assertEquals(ecql, ecql, ECQL.toCQL( filter ));
         
-        return expected.cast( filter );
+        return type.cast( filter );
+    }
+    private <F extends Filter> F assertFilter( String ecql, String expected,Class<F> type) throws CQLException {
+        Filter filter = ECQL.toFilter(ecql);
+        Assert.assertEquals(ecql, expected, ECQL.toCQL( filter ));
+        
+        return type.cast( filter );
     }
     
     /**
@@ -222,6 +234,21 @@ public final class ECQLTest  {
     @Test
     public void inPredicate() throws CQLException{
         assertFilter("length IN (4100001,4100002,4100003)", Or.class);
+        
+        assertFilter("A IN (1,2,3)", Or.class);
+        assertFilter("(A IN (1,2,3)) OR B = 1", Or.class);
+        assertFilter("(A IN (1,2,3)) OR (B = 1 AND C = 3)", Or.class);
+        assertFilter("(A IN (1,2,3)) OR (B IN (4,5))", Or.class);
+        
+        assertFilter("(A IN (1,2,3)) AND (B IN (5,6,7,8))", And.class);
+        assertFilter("(A = 1 OR A = 2)","A IN (1,2)",Or.class);
+        
+        // the following glitches should be fixed - but it looks like
+        // it will require a change to the grammer to support getting a list
+        // of filters
+        // assertFilter("A = 1 OR A = 2 OR A = 3","(A IN (1,2,3)",Or.class);
+        assertFilter("A = 1 OR A = 2 OR A = 3","(A IN (1,2)) OR A = 3",Or.class);
+        
     }
     
     /**

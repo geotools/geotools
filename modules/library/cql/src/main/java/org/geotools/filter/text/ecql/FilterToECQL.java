@@ -16,15 +16,11 @@
  */
 package org.geotools.filter.text.ecql;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.geotools.filter.text.commons.ExpressionToText;
 import org.geotools.filter.text.commons.FilterToTextUtil;
-import org.geotools.util.KVP;
 import org.opengis.filter.And;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
@@ -214,10 +210,10 @@ final class FilterToECQL implements FilterVisitor {
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         StringBuilder output = FilterToTextUtil.asStringBuilder(extraData);
         if (isRelateOperation(filter)) {
-            return buildRELATE(filter, output);
+            return buildRelate(filter, output);
         }
         else if (isFunctionTrue(filter,"PropertyExists",1)){
-            return buildEXSISTS(filter, output);
+            return buildExists(filter, output);
         }
         return FilterToTextUtil.buildComparison(filter, output, "=");
     }
@@ -267,7 +263,7 @@ final class FilterToECQL implements FilterVisitor {
         return false;
     }
 
-    private Object buildEXSISTS(PropertyIsEqualTo filter, StringBuilder output) {
+    private Object buildExists(PropertyIsEqualTo filter, StringBuilder output) {
         Function function = (Function) filter.getExpression1();
         List<Expression> parameters = function.getParameters();
         Literal arg = (Literal) parameters.get(0);
@@ -297,7 +293,7 @@ final class FilterToECQL implements FilterVisitor {
         return true;
     }
 
-    private Object buildRELATE(PropertyIsEqualTo filter, StringBuilder output) {
+    private Object buildRelate(PropertyIsEqualTo filter, StringBuilder output) {
         Function operation = (Function) filter.getExpression1();
         String name = operation.getName();
         output.append( "RELATE(" );

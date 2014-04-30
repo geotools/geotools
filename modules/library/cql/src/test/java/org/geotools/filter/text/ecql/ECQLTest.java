@@ -16,6 +16,8 @@
  */
 package org.geotools.filter.text.ecql;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
@@ -30,10 +32,12 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.And;
+import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
+import org.opengis.filter.IncludeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -79,23 +83,14 @@ public final class ECQLTest  {
     
     @Test
     public void include() throws CQLException{
-
-        Assert.assertEquals("INCLUDE", ECQL.toCQL(Filter.INCLUDE) );
-        
-        Filter filter = ECQL.toFilter("INCLUDE");
-        
-        Assert.assertEquals(Filter.INCLUDE, filter);
+        Filter filter = assertFilter("INCLUDE", IncludeFilter.class);
+        assertSame( Filter.INCLUDE, filter );
     }
 
     @Test
     public void exclude() throws CQLException{
-        
-        Assert.assertEquals("EXCLUDE", ECQL.toCQL(Filter.EXCLUDE) );
-        
-        Filter filter = ECQL.toFilter("EXCLUDE");
-        
-        Assert.assertEquals(Filter.EXCLUDE, filter);
-
+        Filter filter = assertFilter("EXCLUDE", ExcludeFilter.class );
+        assertSame( Filter.EXCLUDE, filter );
     }
 
     
@@ -108,10 +103,7 @@ public final class ECQLTest  {
      */
     @Test
     public void betweenPredicate() throws CQLException{
-
-        Filter filter = ECQL.toFilter("ATTR1 BETWEEN 10 AND 20");
-        
-        Assert.assertTrue(filter instanceof PropertyIsBetween);
+        assertFilter("ATTR1 BETWEEN 10 AND 20",PropertyIsBetween.class);
     }
 
     /**
@@ -123,22 +115,13 @@ public final class ECQLTest  {
      */
     @Test
     public void comparisonPredicate() throws Exception{
-
-        Filter filter; 
-        
-        filter = ECQL.toFilter("POP_RANK > 6");
-        
-        Assert.assertTrue(filter instanceof PropertyIsGreaterThan);
-
-        filter = ECQL.toFilter("area(the_geom) < 3000");
-        
-        Assert.assertTrue(filter instanceof PropertyIsLessThan);
+        assertFilter("POP_RANK > 6",PropertyIsGreaterThan.class);
+        assertFilter("Area(the_geom) < 3000",PropertyIsLessThan.class);
     }
 
     @Test
     public void relateGeoOperation() throws CQLException{
-        
-        PropertyIsEqualTo filter = (PropertyIsEqualTo) ECQL.toFilter( "RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+        PropertyIsEqualTo filter = assertFilter( "RELATE(geometry,LINESTRING (-134.921387 58.687767, -135.303391 59.092838),T*****FF*)",PropertyIsEqualTo.class);
         
         Assert.assertTrue("Relate Pattern Function was expected", filter.getExpression1() instanceof FilterFunction_relatePattern);
         
@@ -156,27 +139,13 @@ public final class ECQLTest  {
      */
     @Test
     public void geoOperationPredicate() throws CQLException{
-        
-        Filter filter;
-        
-        filter = ECQL.toFilter("INTERSECTS(the_geom, POINT(1 2))");
-
-        Assert.assertTrue("Disjoint was expected", filter instanceof Intersects);
-
-        filter = ECQL.toFilter("INTERSECTS(buffer(the_geom, 10) , POINT(1 2))");
-
-        Assert.assertTrue("Disjoint was expected", filter instanceof Intersects);
+        assertFilter("INTERSECTS(the_geom, POINT (1 2))",Intersects.class);
+        assertFilter("INTERSECTS(buffer(the_geom,10), POINT (1 2))",Intersects.class);
     }
     
     @Test
     public void dwithinGeometry() throws Exception{
-        Filter resultFilter;
-
-        // DWITHIN
-        resultFilter = ECQL.toFilter(
-                "DWITHIN(buffer(the_geom,5), POINT(1 2), 10, kilometers)");
-
-        Assert.assertTrue(resultFilter instanceof DistanceBufferOperator);
+        assertFilter("DWITHIN(buffer(the_geom,5), POINT (1 2), 10.0, kilometers)",DistanceBufferOperator.class);
     }
 
     /**
@@ -188,10 +157,10 @@ public final class ECQLTest  {
      */
     @Test
     public void temporalPredicate() throws Exception{
-
         Filter filter = ECQL.toFilter("ATTR1 BEFORE 2006-12-31T01:30:00Z");
-
         Assert.assertTrue( filter instanceof Before);
+        
+        assertFilter("ATTR1 BEFORE 2006-12-31T01:30:00+00:00",Before.class);
     }
 
     /**
@@ -206,19 +175,19 @@ public final class ECQLTest  {
         Filter  filter;
        
         // and sample
-        filter = ECQL.toFilter("ATTR1 < 10 AND ATTR2 < 2 ");
-       
-        Assert.assertTrue(filter instanceof And);
+        assertFilter("ATTR1 < 10 AND ATTR2 < 2",And.class);
         
        // or sample
-        filter = ECQL.toFilter("ATTR1 < 10 OR ATTR2 < 2 ");
-     
-        Assert.assertTrue(filter instanceof Or);
+        assertFilter("ATTR1 < 10 OR ATTR2 < 2",Or.class);
 
         // not sample
-        filter = ECQL.toFilter("NOt ATTR < 10");
+        assertFilter("NOT (ATTR < 10)",Not.class);
+
+        // compound example
+        assertFilter("(A = 1 OR B = 2) AND C = 3",And.class);
         
-        Assert.assertTrue(filter instanceof Not);
+        // compound example
+        assertFilter("(A = 1 OR B = 2) AND NOT (C = 3)",And.class);
     }
     
     /**
@@ -230,11 +199,30 @@ public final class ECQLTest  {
      */
     @Test 
     public void idPredicate() throws Exception {
+        assertFilter("IN (1,2,3,4)", Id.class );
+        assertFilter("IN ('river.1','river.2')", Id.class );
+    }
+    
+    private <F extends Expression> F assertExpression( String ecql, Class<F> expected) throws CQLException {
+        Expression expression = ECQL.toExpression(ecql);
+        Assert.assertTrue(expected.getSimpleName(), expected.isInstance( expression ));
+        Assert.assertEquals(ecql, ecql, ECQL.toCQL( expression ));
         
-        Filter filter = ECQL.toFilter("IN ('river.1', 'river.2')");
-        Assert.assertTrue(filter instanceof Id);
-
+        return expected.cast( expression );
+    }
+    
+    private <F extends Filter> F assertFilter( String ecql, Class<F> type) throws CQLException {
+        Filter filter = ECQL.toFilter(ecql);
+        Assert.assertTrue(type.getSimpleName(), type.isInstance( filter ));
+        Assert.assertEquals(ecql, ecql, ECQL.toCQL( filter ));
         
+        return type.cast( filter );
+    }
+    private <F extends Filter> F assertFilter( String ecql, String expected,Class<F> type) throws CQLException {
+        Filter filter = ECQL.toFilter(ecql);
+        Assert.assertEquals(ecql, expected, ECQL.toCQL( filter ));
+        
+        return type.cast( filter );
     }
     
     /**
@@ -245,10 +233,22 @@ public final class ECQLTest  {
      */
     @Test
     public void inPredicate() throws CQLException{
+        assertFilter("length IN (4100001,4100002,4100003)", Or.class);
         
-        Filter filter = ECQL.toFilter("length IN (4100001,4100002, 4100003 )");
+        assertFilter("A IN (1,2,3)", Or.class);
+        assertFilter("(A IN (1,2,3)) OR B = 1", Or.class);
+        assertFilter("(A IN (1,2,3)) OR (B = 1 AND C = 3)", Or.class);
+        assertFilter("(A IN (1,2,3)) OR (B IN (4,5))", Or.class);
         
-        Assert.assertTrue(filter instanceof Or);
+        assertFilter("(A IN (1,2,3)) AND (B IN (5,6,7,8))", And.class);
+        assertFilter("(A = 1 OR A = 2)","A IN (1,2)",Or.class);
+        
+        // the following glitches should be fixed - but it looks like
+        // it will require a change to the grammer to support getting a list
+        // of filters
+        // assertFilter("A = 1 OR A = 2 OR A = 3","(A IN (1,2,3)",Or.class);
+        assertFilter("A = 1 OR A = 2 OR A = 3","(A IN (1,2)) OR A = 3",Or.class);
+        
     }
     
     /**
@@ -262,16 +262,10 @@ public final class ECQLTest  {
     public void likePredicate() throws Exception{
         
         // using a property as expression
-        Filter filter = ECQL.toFilter("aProperty like '%bb%'");
-        
-        Assert.assertTrue(filter instanceof PropertyIsLike);
+        assertFilter("aProperty LIKE '%bb%'", PropertyIsLike.class);
            
         // using function as expression
-        filter = ECQL.toFilter( "strToUpperCase(anAttribute) like '%BB%'");
-        
-        Assert.assertTrue(filter instanceof PropertyIsLike);
-
-        PropertyIsLike like = (PropertyIsLike) filter;
+        PropertyIsLike like = assertFilter("strToUpperCase(anAttribute) LIKE '%BB%'",PropertyIsLike.class);
         
         Assert.assertTrue(like.getExpression() instanceof Function );
     }
@@ -285,12 +279,7 @@ public final class ECQLTest  {
      */
     @Test
     public void isNullPredicate() throws Exception {
-        
-        Filter filter = ECQL.toFilter("centroid( the_geom ) IS NULL");
-        
-        Assert.assertTrue(filter instanceof IsNullImpl);
-     
-        
+        assertFilter("centroid(the_geom) IS NULL",IsNullImpl.class);
     }
 
     /**
@@ -301,25 +290,14 @@ public final class ECQLTest  {
      */
     @Test
     public void existProperty() throws Exception{
-
-        Filter resultFilter = ECQL.toFilter("aProperty EXISTS");
-
-        Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
-        
-        PropertyIsEqualTo eq = (PropertyIsEqualTo) resultFilter;
-        
+        PropertyIsEqualTo eq = assertFilter("aProperty EXISTS",PropertyIsEqualTo.class);
         Expression expr = eq.getExpression1() ;
-
         Assert.assertTrue(expr instanceof PropertyExistsFunction);
-        
     }
     
     @Test
     public void expression() throws Exception{
-
-        Expression expr = ECQL.toExpression("A + 1");
-        
-        Assert.assertTrue(expr instanceof Add);
+        assertExpression("A + 1",Add.class);
     }
     
     @Test

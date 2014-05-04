@@ -20,8 +20,6 @@ import java.util.List;
 
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.factory.Hints;
-import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleVisitor;
@@ -39,39 +37,6 @@ import org.opengis.util.InternationalString;
 public abstract class StyleVisitorCoverageProcessingNodeAdapter extends
 		StyleVisitorAdapter implements StyleVisitor, CoverageProcessingNode {
 
-
-	/**
-	 * Checks whether the provided source object is null or not. If it is null
-	 * it throws an {@link IllegalArgumentException} exception.
-	 * 
-	 * @param source
-	 *            the object to check.
-	 * @param node
-	 *            the operation we are trying to run.
-	 */
-	protected static void ensureSourceNotNull(final Object source,
-			final String name) {
-		if (source == null)
-			throw new IllegalArgumentException(Errors.format(
-					ErrorKeys.SOURCE_CANT_BE_NULL_$1, name));
-
-	}
-
-	/**
-	 * Checks whether the provided object is null or not. If it is null it
-	 * throws an {@link IllegalArgumentException} exception.
-	 * 
-	 * @param source
-	 *            the object to check.
-	 * @param node
-	 *            the operation we are trying to run.
-	 */
-	protected static void ensureNotNull(final Object source, final String name) {
-		if (source == null)
-			throw new IllegalArgumentException(Errors.format(
-					ErrorKeys.NULL_ARGUMENT_$1, name));
-
-	}
 
 	/**
      * Allows subclasses to access the  {@link CoverageProcessingNode}  we are adapting.
@@ -93,7 +58,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends
 	 */
 	public StyleVisitorCoverageProcessingNodeAdapter(
 			CoverageProcessingNode adaptee) {
-		ensureNotNull(adaptee, "CoverageProcessingNode");
+		GridCoverageRendererUtilities.ensureNotNull(adaptee, "CoverageProcessingNode");
 		this.adaptee = adaptee;
 	}
 
@@ -280,15 +245,6 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getCoverageFactory()
-	 */
-	public GridCoverageFactory getCoverageFactory() {
-		return adaptee.getCoverageFactory();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getNumberOfSinks()
 	 */
 	public int getNumberOfSinks() {
@@ -329,6 +285,15 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends
 	public String toString() {
 		return adaptee.toString();
 	}
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getCoverageFactory()
+     */
+    public GridCoverageFactory getCoverageFactory() {
+    	return adaptee.getCoverageFactory();
+    }
 
 
 

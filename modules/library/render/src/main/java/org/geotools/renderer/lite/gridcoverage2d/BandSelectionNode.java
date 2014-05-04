@@ -108,7 +108,7 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
 		final List<CoverageProcessingNode> sources = this.getSources();
 		if (sources != null && !sources.isEmpty()) {
 			final GridCoverage2D source = (GridCoverage2D) getSource(0).getOutput();
-			ensureSourceNotNull(source, this.getName().toString());
+			GridCoverageRendererUtilities.ensureSourceNotNull(source, this.getName().toString());
 			GridCoverage2D output = null;
 			if (bandIndex != -1) {
 				// /////////////////////////////////////////////////////////////////////

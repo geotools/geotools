@@ -18,14 +18,12 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.Color;
 import java.awt.image.DataBuffer;
-import java.awt.image.LookupTable;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.media.jai.JAI;
-import javax.media.jai.LookupTableJAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.RenderedOp;
 
@@ -142,9 +140,9 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
 			//
 			// /////////////////////////////////////////////////////////////////////
 			final CoverageProcessingNode source=getSource(0);
-			ensureSourceNotNull(source, "ColorMapNode");
+			GridCoverageRendererUtilities.ensureSourceNotNull(source, "ColorMapNode");
 			final GridCoverage2D sourceCoverage = (GridCoverage2D) source.getOutput();
-			ensureSourceNotNull(sourceCoverage, "ColorMapNode");
+			GridCoverageRendererUtilities.ensureSourceNotNull(sourceCoverage, "ColorMapNode");
 			final int numSD = sourceCoverage.getNumSampleDimensions();
 			if (numSD>1)
 				throw new IllegalArgumentException(
@@ -273,9 +271,9 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
 	    //
 	    ///////////////////////////////////////////////////////////////////
 	    final CoverageProcessingNode sourceNode = getSource(0);
-	    ensureSourceNotNull(sourceNode, this.getName().toString());
+	    GridCoverageRendererUtilities.ensureSourceNotNull(sourceNode, this.getName().toString());
 	    final GridCoverage2D sourceCoverage = (GridCoverage2D) sourceNode.getOutput();
-	    ensureSourceNotNull(sourceCoverage, this.getName().toString());
+	    GridCoverageRendererUtilities.ensureSourceNotNull(sourceCoverage, this.getName().toString());
 	    
 	    ///////////////////////////////////////////////////////////////////
             //
@@ -285,7 +283,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
 	    if (colorMapTransform != null) {
 	        //get input image
 	        final RenderedImage sourceImage = sourceCoverage.getRenderedImage();
-	        ensureSourceNotNull(sourceImage, this.getName().toString());
+	        GridCoverageRendererUtilities.ensureSourceNotNull(sourceImage, this.getName().toString());
 	        //prepare the colorMapTransform operation
 	        final ParameterBlock pbj = new ParameterBlock();
 	        pbj.addSource(sourceImage).add(colorMapTransform);

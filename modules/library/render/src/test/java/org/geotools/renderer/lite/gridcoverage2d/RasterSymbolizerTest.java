@@ -905,7 +905,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 
  
 	@Test
-	public void colorColorMaInterpolation() throws Exception {
+	public void colorMapInterpolation() throws Exception {
 		////
 		//
 		// Test using an SLD file
@@ -946,7 +946,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 		RenderedImage image = renderer.renderImage(gc, rs, new InterpolationBilinear(), null, 256, 256);
 		assertNotNull(image);
 		assertNotNull(PlanarImage.wrapRenderedImage(image));
-		assertFalse(image.getColorModel() instanceof IndexColorModel);
+		assertTrue(image.getColorModel() instanceof IndexColorModel);
 		
 		// nearest
                 image = renderer.renderImage(gc, rs, new InterpolationNearest(), null, 256, 256);

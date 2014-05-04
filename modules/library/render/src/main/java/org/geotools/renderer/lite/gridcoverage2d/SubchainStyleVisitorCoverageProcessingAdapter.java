@@ -99,7 +99,7 @@ public abstract class SubchainStyleVisitorCoverageProcessingAdapter extends
      * @uml.property  name="sink"
      */
 	protected void setSink(CoverageProcessingNode sink) {
-		ensureNotNull(sink, "sink");
+	        GridCoverageRendererUtilities.ensureNotNull(sink, "sink");
 		if (this.sink != null)
 			throw new IllegalStateException(Errors
 					.format(ErrorKeys.SINK_ALREADY_SET));

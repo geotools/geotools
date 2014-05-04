@@ -44,6 +44,7 @@ import junit.framework.TestCase;
 import org.geotools.TestData;
 import org.geotools.resources.image.ComponentColorModelJAI;
 import org.geotools.util.NumberRange;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.referencing.operation.TransformException;
@@ -57,10 +58,10 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @source $URL$
  */
-public class TestLinearClassifier extends TestCase {
+public class TestLinearClassifier extends Assert {
 
 	@Before
-	protected void setUp() throws Exception {
+	public void before() throws Exception {
 
 		// check that it exisits
 		File file = TestData.copy(this, "arcgrid/arcgrid.zip");

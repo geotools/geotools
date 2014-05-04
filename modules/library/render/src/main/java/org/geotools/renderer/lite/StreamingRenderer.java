@@ -3410,19 +3410,10 @@ public class StreamingRenderer implements GTRenderer {
                     LOGGER.fine("Raster rendered");
                 }
 
-            } catch (FactoryException e) {
+            } catch (Exception e) {
                 LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 fireErrorEvent(e);
-            } catch (TransformException e) {
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                fireErrorEvent(e);
-            } catch (NoninvertibleTransformException e) {
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                fireErrorEvent(e);
-            } catch (IllegalArgumentException e) {
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                fireErrorEvent(e);
-            }
+            } 
         }
     }
     

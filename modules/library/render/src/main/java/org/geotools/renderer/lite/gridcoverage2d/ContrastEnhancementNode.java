@@ -143,8 +143,9 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 		// would protect us against bad SLDs
 		//
 		// /////////////////////////////////////////////////////////////////////
-		if (ce == null)
-			return;
+		if (ce == null){
+		    return;
+		}
 
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -222,7 +223,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 		final List<CoverageProcessingNode> sources = this.getSources();
 		if (sources != null && !sources.isEmpty()) {
 			final GridCoverage2D source = (GridCoverage2D) getSource(0).getOutput();
-			ensureSourceNotNull(source, this.getName().toString());
+			GridCoverageRendererUtilities.ensureSourceNotNull(source, this.getName().toString());
 			GridCoverage2D output;
 			if ((!Double.isNaN(gammaValue) && 
 					!Double.isInfinite(gammaValue) && 

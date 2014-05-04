@@ -22,6 +22,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 
 import org.geotools.coverage.GridSampleDimension;
+import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.factory.Hints;
@@ -36,6 +37,7 @@ import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.coverage.grid.GridCoverage;
+import org.opengis.filter.expression.Expression;
 
 /**
  * A helper class for rendering {@link GridCoverage} objects. It supports almost
@@ -50,7 +52,9 @@ import org.opengis.coverage.grid.GridCoverage;
 public class RasterSymbolizerHelper extends
 		SubchainStyleVisitorCoverageProcessingAdapter implements StyleVisitor {
 
-	/**
+	private float opacity=1.0F;
+
+        /**
 	 * We are hacking here a solutions for whenever the user either did not
 	 * specify a style or did specify a bad one and the resulting image seems
 	 * not be drawable.
@@ -84,9 +88,9 @@ public class RasterSymbolizerHelper extends
 		///////////////////////////////////////////////////////////////////////
 		//let's check the number of bands
 		final SampleModel outputImageSampleModel= outputImage.getSampleModel();
-		final int numBands=outputImageSampleModel.getNumBands();
+		int numBands=outputImageSampleModel.getNumBands();
 		final int dataType= outputImageSampleModel.getDataType();
-		final GridSampleDimension sd[];
+		GridSampleDimension sd[];
 		if(numBands>4)
 		{
 			//get the visible band
@@ -94,9 +98,9 @@ public class RasterSymbolizerHelper extends
 			outputImage=
 				new ImageWorker(outputImage).setRenderingHints(this.getHints()).retainBands(new int[]{visibleBand}).getRenderedImage();
 			sd=new GridSampleDimension[]{(GridSampleDimension) output.getSampleDimension(visibleBand)};
+		}else{
+		    sd=output.getSampleDimensions();
 		}
-		else
-			sd=output.getSampleDimensions();
 
 		//more general case, let's check the data type and let go only USHORT and BYTE
 		// TODO I am not sure this will work with multipacked types (using INT for an RGB as an instance)
@@ -118,8 +122,39 @@ public class RasterSymbolizerHelper extends
 				new ImageWorker(outputImage).setRenderingHints(this.getHints()).rescaleToBytes().getRenderedImage();
 				
 		}
+		
+	        // ///////////////////////////////////////////////////////////////////
+	        // Apply opacity if needed
+	        // ///////////////////////////////////////////////////////////////////
+	        final RenderedImage finalImage;
+	        if(opacity < 1) {
+	            ImageWorker ow = new ImageWorker(outputImage);
+	            finalImage = ow.applyOpacity(opacity).getRenderedImage();
+	            
+	            numBands=finalImage.getSampleModel().getNumBands();
+	            sd= new GridSampleDimension[numBands];
+	            for(int i=0;i<numBands;i++) {
+	                sd[i]= new GridSampleDimension(TypeMap.getColorInterpretation(finalImage.getColorModel(), i).name());
+	            }
+	            
+                    // create a new grid coverage but preserve as much input as possible
+                    return this.getCoverageFactory().create(
+                            output.getName(), 
+                            finalImage,
+                            (GridGeometry2D) output.getGridGeometry(), 
+                            sd, 
+                            new GridCoverage[] { output },
+                            output.getProperties());	            
+	        }  
+	        
 		//create a new grid coverage but preserve as much input as possible
-		return this.getCoverageFactory().create(output.getName(), outputImage,(GridGeometry2D)output.getGridGeometry(),sd, new GridCoverage[]{output},output.getProperties());
+		return this.getCoverageFactory().create(
+		        output.getName(), 
+		        outputImage,
+		        (GridGeometry2D)output.getGridGeometry(),
+		        sd, 
+		        new GridCoverage[]{output},
+		        output.getProperties());
 	}
 
 
@@ -194,21 +229,21 @@ public class RasterSymbolizerHelper extends
 		cmNode.addSink(ceNode);
 		ceNode.visit(ce);
 
-		//
-		// //
-		// /////////////////////////////////////////////////////////////////////
-		// //
-		// // OPACITY
-		// //
-		// //
-		// /////////////////////////////////////////////////////////////////////
-		// final Expression op = rs.getOpacity();
-		// if (op != null) {
-		// final Number number = (Number) op.evaluate(null, Float.class);
-		// if (number != null) {
-		// opacity = number.floatValue();
-		// }
-		// }
+		
+		 //
+		 /////////////////////////////////////////////////////////////////////
+		 //
+		 // OPACITY
+		 //
+		 //
+		 /////////////////////////////////////////////////////////////////////
+		 final Expression op = rs.getOpacity();
+		 if (op != null) {
+        		 final Number number = (Number) op.evaluate(null, Float.class);
+        		 if (number != null) {
+        		     opacity = number.floatValue();
+        		 }
+		 }
 	}
 
 

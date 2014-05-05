@@ -79,6 +79,7 @@ import org.geotools.data.wfs.internal.WFSGetCapabilities;
 import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSStrategy;
 import org.geotools.factory.Hints;
+import org.geotools.factory.Hints.ConfigurationMetadataKey;
 import org.geotools.filter.capability.FilterCapabilitiesImpl;
 import org.geotools.filter.capability.IdCapabilitiesImpl;
 import org.geotools.filter.capability.SpatialCapabiltiesImpl;
@@ -109,6 +110,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     private final Map<QName, FeatureTypeType> typeInfos;
 
+    static final ConfigurationMetadataKey CONFIG_KEY = ConfigurationMetadataKey.get("WFS_NG_STORED_QUERY_CONFIGURATION");
+    
     public StrictWFS_2_0_Strategy() {
         super();
         typeInfos = new HashMap<QName, FeatureTypeType>();
@@ -364,12 +367,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 	        if (query.getHints() != null) {
 	        	viewParams = (Map<String, String>)query.getHints()
 	        			.get(Hints.VIRTUAL_TABLE_PARAMETERS);
-	        	Map<String, Object> featureTypeInfoMetadata = ((Map<String, Object>)query.getHints()
-	        			.get(Hints.FEATURETYPEINFO_METADATA));
-	        	if (featureTypeInfoMetadata != null) {
-		        	config = (StoredQueryConfiguration)featureTypeInfoMetadata
-		        			.get("WFS_NG_STORED_QUERY_CONFIGURATION");
-	        	}
+	        	
+	        	config = (StoredQueryConfiguration)query.getHints().get(CONFIG_KEY);
 	        }
 	        
 	        List<ParameterType> params = new ParameterTypeFactory(config, desc, featureTypeInfo)
@@ -453,12 +452,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 	        if (query.getHints() != null) {
 	        	viewParams = (Map<String, String>)query.getHints()
 	        			.get(Hints.VIRTUAL_TABLE_PARAMETERS);
-	        	Map<String, Object> featureTypeInfoMetadata = ((Map<String, Object>)query.getHints()
-	        			.get(Hints.FEATURETYPEINFO_METADATA));
-	        	if (featureTypeInfoMetadata != null) {
-		        	config = (StoredQueryConfiguration)featureTypeInfoMetadata
-		        			.get("WFS_NG_STORED_QUERY_CONFIGURATION");
-	        	}
+	        	
+	        	config = (StoredQueryConfiguration)query.getHints().get(CONFIG_KEY);
 	        }
 
 	        List<ParameterType> params = new ParameterTypeFactory(config, desc, featureTypeInfo)

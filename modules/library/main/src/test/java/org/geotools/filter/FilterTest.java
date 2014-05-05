@@ -1126,33 +1126,33 @@ public class FilterTest extends TestCase {
     public void testLiteralExpression(){
     	LiteralExpressionImpl literal;
 		literal = new LiteralExpressionImpl(1.0D);
-		assertEquals(ExpressionType.LITERAL_DOUBLE, literal.getType());
+		assertEquals(ExpressionType.LITERAL_DOUBLE, Filters.getExpressionType(literal));
 		assertEquals(new Double(1.0D), literal.evaluate((Feature)null));
 
 		GeometryFactory gf = new GeometryFactory();
 		literal = new LiteralExpressionImpl(gf.createPoint(new Coordinate(0,0)));
-		assertEquals(ExpressionType.LITERAL_GEOMETRY, literal.getType());
+		assertEquals(ExpressionType.LITERAL_GEOMETRY, Filters.getExpressionType(literal));
 		Geometry value = (Geometry) literal.evaluate((Feature)null);
 		assertTrue(gf.createPoint(new Coordinate(0,0)).equalsExact(value));
 		
 		literal = new LiteralExpressionImpl(1);
-		assertEquals(ExpressionType.LITERAL_INTEGER, literal.getType());
+		assertEquals(ExpressionType.LITERAL_INTEGER, Filters.getExpressionType(literal));
 		assertEquals(new Integer(1), literal.evaluate((Feature)null));
 
 		literal = new LiteralExpressionImpl(1L);
-		assertEquals(ExpressionType.LITERAL_LONG, literal.getType());
+		assertEquals(ExpressionType.LITERAL_LONG, Filters.getExpressionType(literal));
 		assertEquals(new Long(1), literal.evaluate((Feature)null));
 
 		literal = new LiteralExpressionImpl("string value");
-		assertEquals(ExpressionType.LITERAL_STRING, literal.getType());
+		assertEquals(ExpressionType.LITERAL_STRING, Filters.getExpressionType(literal));
 		assertEquals("string value", literal.evaluate((Feature)null));
 
 		literal = new LiteralExpressionImpl(new Date(0));
-		assertEquals(ExpressionType.LITERAL_UNDECLARED, literal.getType());
+		assertEquals(ExpressionType.LITERAL_UNDECLARED, Filters.getExpressionType(literal));
 		assertEquals(new Date(0), literal.evaluate((Feature)null));
 
 		literal = new LiteralExpressionImpl(null);
-		assertEquals(ExpressionType.LITERAL_UNDECLARED, literal.getType());
+		assertEquals(ExpressionType.LITERAL_UNDECLARED, Filters.getExpressionType(literal));
 		assertNull(literal.evaluate((Feature)null));
     }
     

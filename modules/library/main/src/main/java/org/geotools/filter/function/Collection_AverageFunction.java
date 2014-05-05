@@ -67,10 +67,6 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
-    public int getArgCount() {
-        return 1;
-    }
-
     /**
      * Calculate average (using FeatureCalc) - only one parameter is used.
      *

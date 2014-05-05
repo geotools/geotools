@@ -65,12 +65,6 @@ import org.geotools.data.wfs.v1_0_0.gml.WFSFeatureTypeTransformer;
 import org.geotools.data.wfs.v1_0_0.xml.WFSSchema;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.filter.ExpressionType;
-import org.geotools.filter.FidFilter;
-import org.geotools.filter.FilterType;
-import org.geotools.filter.Filters;
-import org.geotools.filter.GeometryFilter;
-import org.geotools.filter.LiteralExpression;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -945,8 +939,7 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
     }
 
     /**
-     * @see org.geotools.data.AbstractDataStore#getUnsupportedFilter(java.lang.String,
-     *      org.geotools.filter.Filter)
+     * @see org.geotools.data.AbstractDataStore#getUnsupportedFilter(String,Filter)
      */
     protected Filter getUnsupportedFilter(String typeName, Filter filter) {
         try {

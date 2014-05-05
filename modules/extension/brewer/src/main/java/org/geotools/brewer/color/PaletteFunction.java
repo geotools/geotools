@@ -42,7 +42,7 @@ import org.opengis.filter.expression.Literal;
  *
  * @source $URL$
  */
-public class PaletteFunction extends FunctionExpressionImpl implements FunctionExpression {
+public class PaletteFunction extends FunctionExpressionImpl {
     ClassificationFunction classifier;
     String paletteName;
     FilterFactory ff;
@@ -74,11 +74,11 @@ public class PaletteFunction extends FunctionExpressionImpl implements FunctionE
     }
 
     public Expression getEvaluationExpression() {
-        return classifier.getExpression();
+        return classifier.getParameters().get(0);
     }
 
     public void setEvaluationExpression(Expression e) {
-        classifier.setExpression((org.geotools.filter.Expression) e);
+        classifier.getParameters().set(0, e);
     }
 
     public ClassificationFunction getClassifier() {
@@ -119,7 +119,7 @@ public class PaletteFunction extends FunctionExpressionImpl implements FunctionE
         return prelim;
     }
 
-    public Object evaluate(SimpleFeature feature) {
+    public Object evaluate(Object feature) {
         int classNum = classifier.getClasses();
         ColorBrewer brewer = new ColorBrewer();
         int klass = ((Integer) classifier.evaluate(feature)).intValue();

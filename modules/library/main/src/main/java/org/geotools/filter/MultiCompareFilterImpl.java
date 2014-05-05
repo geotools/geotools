@@ -35,26 +35,24 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
     
     protected MatchAction matchAction;
     
-    protected MultiCompareFilterImpl(FilterFactory factory, Expression e1, Expression e2) {
-        super(factory, e1, e2);
+    protected MultiCompareFilterImpl(Expression e1, Expression e2) {
+        super(e1, e2);
         this.matchAction = MatchAction.ANY;
     }
 
-    protected MultiCompareFilterImpl(FilterFactory factory, Expression e1, Expression e2,
-            boolean matchCase) {
-        super(factory, e1, e2, matchCase);
+    protected MultiCompareFilterImpl(Expression e1, Expression e2, boolean matchCase) {
+        super(e1, e2, matchCase);
         this.matchAction = MatchAction.ANY;
     }
-    
-    protected MultiCompareFilterImpl(FilterFactory factory, Expression e1, Expression e2,
-            MatchAction matchAction) {
-        super(factory, e1, e2);
+
+    protected MultiCompareFilterImpl(Expression e1, Expression e2, MatchAction matchAction) {
+        super(e1, e2);
         this.matchAction = matchAction;
     }
-    
-    protected MultiCompareFilterImpl(FilterFactory factory, Expression e1, Expression e2,
-            boolean matchCase, MatchAction matchAction) {
-        super(factory, e1, e2, matchCase);
+
+    protected MultiCompareFilterImpl(Expression e1, Expression e2, boolean matchCase,
+            MatchAction matchAction) {
+        super(e1, e2, matchCase);
         this.matchAction = matchAction;
     }
 

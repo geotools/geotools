@@ -29,12 +29,11 @@ import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.MinVisitor;
-import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
-
+import org.opengis.filter.expression.Expression;
 
 /**
  * Calculates the minimum value of an attribute for a given FeatureCollection
@@ -62,10 +61,6 @@ public class Collection_MinFunction extends FunctionExpressionImpl {
      */
     public Collection_MinFunction() {
         super(NAME);
-    }
-
-    public int getArgCount() {
-        return 1;
     }
 
     /**

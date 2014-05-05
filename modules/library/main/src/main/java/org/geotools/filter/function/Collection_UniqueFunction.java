@@ -29,12 +29,11 @@ import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.UniqueVisitor;
-import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
-
+import org.opengis.filter.expression.Expression;
 
 /**
  * Calculates the unique value of an attribute for a given FeatureCollection
@@ -62,10 +61,6 @@ public class Collection_UniqueFunction extends FunctionExpressionImpl {
      */
     public Collection_UniqueFunction() {
         super(NAME);
-    }
-
-    public int getArgCount() {
-        return 1;
     }
 
     /**

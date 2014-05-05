@@ -25,11 +25,11 @@ import net.opengis.wfs.PropertyType;
 import net.opengis.wfs.TransactionType;
 import net.opengis.wfs.UpdateElementType;
 
-import org.geotools.filter.FidFilter;
 import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xml.Binding;
+import org.opengis.filter.Id;
 import org.w3c.dom.Document;
 
 /**
@@ -78,7 +78,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport
 		
 		UpdateElementType update1 = (UpdateElementType)updates.get(0);
 		List properties = update1.getProperty();
-		assertTrue(update1.getFilter() instanceof FidFilter);
+		assertTrue(update1.getFilter() instanceof Id);
 		assertEquals(1, properties.size());
 		assertTrue(properties.get(0) instanceof PropertyType);
 		PropertyType property = (PropertyType) properties.get(0);

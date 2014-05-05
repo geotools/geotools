@@ -21,6 +21,7 @@ import java.util.Collections;
 
 import org.geotools.util.Converters;
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -32,24 +33,22 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
+public class IsBetweenImpl extends CompareFilterImpl implements PropertyIsBetween {
 
 	private Expression expression;
 	
 	protected MatchAction matchAction;
 
-	protected IsBetweenImpl(org.opengis.filter.FilterFactory factory, Expression lower, Expression expression, Expression upper, MatchAction matchAction ){
-		super( factory, lower, upper );
-		this.expression = expression;
-		this.matchAction = matchAction;
-		
-		//backwards compatability
-		filterType = FilterType.BETWEEN;
-	}
-	
-	protected IsBetweenImpl(org.opengis.filter.FilterFactory factory, Expression lower, Expression expression, Expression upper ){
-            this( factory, lower, expression, upper, MatchAction.ANY );
-        }
+    protected IsBetweenImpl(Expression lower, Expression expression, Expression upper,
+            MatchAction matchAction) {
+        super(lower, upper);
+        this.expression = expression;
+        this.matchAction = matchAction;
+    }
+
+    protected IsBetweenImpl(Expression lower, Expression expression, Expression upper) {
+        this(lower, expression, upper, MatchAction.ANY);
+    }
 	
 	public Expression getExpression() {
 		return expression;
@@ -164,20 +163,7 @@ public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
 	public void setUpperBoundary(Expression upperBoundary) {
 		setExpression2( upperBoundary );
 	}
-	
-	/**
-	 * @deprecated use {@link #getExpression()}
-	 */
-	public final org.geotools.filter.Expression getMiddleValue() {
-		return (org.geotools.filter.Expression) getExpression();
-	}
-	
-	/**
-	 * @deprecated use {@link #setExpression(Expression) }
-	 */
-	public void addMiddleValue(org.geotools.filter.Expression middleValue) {
-		setExpression( middleValue );
-	}
+
     
     public String toString() {
         return "[ " + expression + " BETWEEN " + expression1 + " AND " + expression2 + " ]";

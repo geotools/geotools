@@ -5,13 +5,14 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.geotools.data.DataUtilities;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.geometry.BoundingBox3D;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -31,7 +32,7 @@ public class BBOX3DImplTest extends TestCase {
     }
 
     public void testBbox3D() {
-        FilterFactoryImpl ff = new FilterFactoryImpl();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
                 
         ;
@@ -48,9 +49,9 @@ public class BBOX3DImplTest extends TestCase {
         Feature f2 = SimpleFeatureBuilder.build(type, new Object[] { "testFeature2", gf.createPoint(new Coordinate(10, 10, 60)) }, null);
         
         BoundingBox3D envelope1 = new ReferencedEnvelope3D( 0, 50, 0, 50, 0, 50, null);
-        Filter bbox1 = ff.bbox(ff.createAttributeExpression("geom"), envelope1);
+        Filter bbox1 = ff.bbox(ff.property("geom"), envelope1);
         BoundingBox3D envelope2 = new ReferencedEnvelope3D( 0, 50, 0, 50, 50, 100, null);
-        Filter bbox2 = ff.bbox(ff.createAttributeExpression("geom"), envelope2);
+        Filter bbox2 = ff.bbox(ff.property("geom"), envelope2);
         
         assertTrue(bbox1.evaluate(f1));
         assertFalse(bbox1.evaluate(f2));

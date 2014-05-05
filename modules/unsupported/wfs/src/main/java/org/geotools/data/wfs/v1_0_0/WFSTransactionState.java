@@ -48,13 +48,13 @@ import org.geotools.data.wfs.v1_0_0.Action.DeleteAction;
 import org.geotools.data.wfs.v1_0_0.Action.InsertAction;
 import org.geotools.data.wfs.v1_0_0.Action.UpdateAction;
 import org.geotools.data.wfs.v1_0_0.xml.WFSSchema;
-import org.geotools.filter.FidFilter;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.DocumentWriter;
 import org.geotools.xml.SchemaFactory;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.Id;
 import org.xml.sax.SAXException;
 
 /**
@@ -448,9 +448,7 @@ public class WFSTransactionState implements State {
     }
 
     private InsertAction findFirstInsertAction(List<Action> actions) {
-        int i = 0;
-        for (Iterator<Action> iter = actions.iterator(); iter.hasNext(); i++) {
-            Object action = iter.next();
+        for (Action action :  actions) {
             if (action instanceof InsertAction) {
                 return (InsertAction) action;
             }
@@ -487,8 +485,8 @@ public class WFSTransactionState implements State {
             // inserted feature which
             // no longer exists since it has been deleted. so remove that action
             // as well.
-            if (deleteAction.getFilter() instanceof FidFilter
-                    && ((FidFilter) deleteAction.getFilter()).getFids().length == 1) {
+            if (deleteAction.getFilter() instanceof Id
+                    && ((Id) deleteAction.getFilter()).getIdentifiers().size() == 1) {
                 actions.remove(i);
             }
         } else {
@@ -505,8 +503,8 @@ public class WFSTransactionState implements State {
             // uniquely identifies
             // only the
             // one features so remove it.
-            if (updateAction.getFilter() instanceof FidFilter
-                    && ((FidFilter) updateAction.getFilter()).getFids().length == 1) {
+            if (updateAction.getFilter() instanceof Id
+                    && ((Id) updateAction.getFilter()).getIdentifiers().size() == 1) {
                 actions.remove(i + 1);
                 return i;
             }

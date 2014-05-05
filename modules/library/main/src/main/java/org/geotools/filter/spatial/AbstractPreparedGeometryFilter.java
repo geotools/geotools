@@ -154,22 +154,23 @@ public abstract class AbstractPreparedGeometryFilter extends GeometryFilterImpl 
      */
     protected boolean cacheValue;
 
-    protected AbstractPreparedGeometryFilter(FilterFactory factory,
-            Expression e1, Expression e2) {
-        super(factory, e1, e2);
+    protected AbstractPreparedGeometryFilter(Expression e1, Expression e2) {
+        super(e1, e2);
         pGeomFac = new PreparedGeometryFactory();
-        if( e1!=null ) setExpression1(e1);
-        if( e2!=null ) setExpression2(e2);
-        
+        if (e1 != null)
+            setExpression1(e1);
+        if (e2 != null)
+            setExpression2(e2);
+
     }
-    
-    protected AbstractPreparedGeometryFilter(FilterFactory factory,
-            Expression e1, Expression e2, MatchAction matchAction) {
-        super(factory, e1, e2, matchAction);
+
+    protected AbstractPreparedGeometryFilter(Expression e1, Expression e2, MatchAction matchAction) {
+        super(e1, e2, matchAction);
         pGeomFac = new PreparedGeometryFactory();
-        if( e1!=null ) setExpression1(e1);
-        if( e2!=null ) setExpression2(e2);
-        
+        if (e1 != null)
+            setExpression1(e1);
+        if (e2 != null)
+            setExpression2(e2);
     }
 
 	private void prepare() {

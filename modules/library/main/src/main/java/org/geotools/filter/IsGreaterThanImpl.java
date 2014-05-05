@@ -27,25 +27,21 @@ import org.opengis.filter.expression.Expression;
  * @source $URL$
  */
 public class IsGreaterThanImpl extends MultiCompareFilterImpl implements PropertyIsGreaterThan {
-
-	protected IsGreaterThanImpl(org.opengis.filter.FilterFactory factory) {
-		this(factory,null,null);
-	}
-	
-	protected IsGreaterThanImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2) {
-		super(factory, expression1, expression2);
-		
-		//backwards compat with old type system
-		this.filterType = COMPARE_GREATER_THAN;
-	}
-	
-        protected IsGreaterThanImpl(org.opengis.filter.FilterFactory factory, Expression expression1,
-                Expression expression2, MatchAction matchAction) {
-            super(factory, expression1, expression2, matchAction);
     
-            // backwards compat with old type system
-            this.filterType = COMPARE_GREATER_THAN;
-        }
+    @Deprecated
+    protected IsGreaterThanImpl() {
+        this(null, null);
+    }
+
+    protected IsGreaterThanImpl(Expression expression1,
+            Expression expression2) {
+        super(expression1, expression2);
+    }
+
+    protected IsGreaterThanImpl(Expression expression1,
+            Expression expression2, MatchAction matchAction) {
+        super(expression1, expression2, matchAction);
+    }
 
 	@Override
 	public boolean evaluateInternal(Object v1, Object v2) {

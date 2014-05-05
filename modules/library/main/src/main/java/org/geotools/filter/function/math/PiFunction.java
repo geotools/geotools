@@ -36,10 +36,6 @@ public class PiFunction extends FunctionExpressionImpl {
 	    super("pi");
 	}
 
-	public int getArgCount() {
-		return 0;
-	}
-
 	public String toString() {
 		return "PI()";
 	}

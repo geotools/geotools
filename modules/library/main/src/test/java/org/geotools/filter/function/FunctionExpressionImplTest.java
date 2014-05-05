@@ -20,10 +20,9 @@ public class FunctionExpressionImplTest {
                 parameter("double",Double.class,2,Integer.MAX_VALUE));
 
         FunctionExpressionImpl f = new FunctionExpressionImpl(name) {
-            
         };
         
-        assertEquals(-1, f.getArgCount());
+        assertEquals(-2, f.getFunctionName().getArgumentCount());
     }
     
     @Test
@@ -37,7 +36,7 @@ public class FunctionExpressionImplTest {
             
         };
         
-        assertEquals(2, f.getArgCount());
+        assertEquals(2, f.getFunctionName().getArgumentCount());
     }
     
     @Test
@@ -52,6 +51,6 @@ public class FunctionExpressionImplTest {
             
         };
         
-        assertEquals(2, f.getArgCount());
+        assertEquals(2, f.getFunctionName().getArgumentCount());
     }
 }

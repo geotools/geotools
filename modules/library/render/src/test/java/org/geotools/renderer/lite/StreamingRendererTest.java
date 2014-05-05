@@ -342,6 +342,7 @@ public class StreamingRendererTest {
     @Test
     public void testRepeatedEnvelopeExpansion() throws Exception {
         final List<Filter> filters = new ArrayList<Filter>();
+        
         SimpleFeatureSource testSource = new CollectionFeatureSource(createLineCollection()) {
             @Override
             public SimpleFeatureCollection getFeatures(Query query) {
@@ -370,7 +371,8 @@ public class StreamingRendererTest {
         Filter f1 = filters.get(0);
         assertTrue(f1 instanceof BBOX);
         BoundingBox bbox1 = ((BBOX) f1).getBounds();
-        assertEquals(new ReferencedEnvelope(-11, 111, -11, 111, DefaultGeographicCRS.WGS84), bbox1);
+        ReferencedEnvelope expected = new ReferencedEnvelope(-11, 111, -11, 111, DefaultGeographicCRS.WGS84);
+        assertEquals(expected, bbox1);
         Filter f2 = filters.get(1);
         assertTrue(f2 instanceof BBOX);
         BoundingBox bbox2 = ((BBOX) f2).getBounds();

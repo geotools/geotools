@@ -30,54 +30,12 @@ import org.opengis.filter.FilterFactory;
  *
  * @source $URL$
  * @version $Id$
+ * @deprecated No longer required to implement and, or and not
  */
 public abstract class AbstractFilterImpl
     extends org.geotools.filter.AbstractFilter {
    
-	protected AbstractFilterImpl(FilterFactory factory) {
-		super(factory);
+	protected AbstractFilterImpl() {
 	}
 
-	/**
-     * Default implementation for OR - should be sufficient for most filters.
-     *
-     * @param filter Parent of the filter: must implement GMLHandlerGeometry.
-     *
-     * @return ORed filter.
-     */
-    public Filter or(org.opengis.filter.Filter filter) {
-        try {
-        	return (Filter) factory.or(this,filter);
-        } catch (IllegalFilterException ife) {
-            return (Filter) filter;
-        }
-    }
-
-    /**
-     * Default implementation for AND - should be sufficient for most filters.
-     *
-     * @param filter Parent of the filter: must implement GMLHandlerGeometry.
-     *
-     * @return ANDed filter.
-     */
-    public Filter and(org.opengis.filter.Filter filter) {
-        try {
-            return (Filter) factory.and(this, filter);
-        } catch (IllegalFilterException ife) {
-            return (Filter) filter;
-        }
-    }
-
-    /**
-     * Default implementation for NOT - should be sufficient for most filters.
-     *
-     * @return NOTed filter.
-     */
-    public Filter not() {
-        try {
-            return (Filter) factory.not( this );
-        } catch (IllegalFilterException ife) {
-            return this;
-        }
-    }
 }

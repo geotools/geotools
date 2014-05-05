@@ -28,31 +28,31 @@ import org.opengis.filter.expression.Expression;
 public class IsLessThenOrEqualToImpl extends MultiCompareFilterImpl implements
 		PropertyIsLessThanOrEqualTo {
 	
-	protected IsLessThenOrEqualToImpl(org.opengis.filter.FilterFactory factory) {
-		this(factory, null, null);
-	}
-	
-        protected IsLessThenOrEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2) {
-            this(factory, expression1, expression2,false);
+    @Deprecated
+    protected IsLessThenOrEqualToImpl() {
+        this(null, null);
     }
 
-    protected IsLessThenOrEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2,boolean matchCase ) {
-            super(factory, expression1, expression2,matchCase);
-            
-            //backwards compat with old type system
-            this.filterType = COMPARE_LESS_THAN_EQUAL;
+    protected IsLessThenOrEqualToImpl(Expression expression1, Expression expression2) {
+        this(expression1, expression2, false);
     }
-    
-        protected IsLessThenOrEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2, MatchAction matchAction) {
-            this(factory, expression1, expression2,false, matchAction);
-        }
-        
-        protected IsLessThenOrEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2,boolean matchCase, MatchAction matchAction ) {
-                super(factory, expression1, expression2,matchCase, matchAction);
-                
-                //backwards compat with old type system
-                this.filterType = COMPARE_LESS_THAN_EQUAL;
-        }
+
+    protected IsLessThenOrEqualToImpl(Expression expression1, Expression expression2,
+            boolean matchCase) {
+        super(expression1, expression2, matchCase);
+
+    }
+
+    protected IsLessThenOrEqualToImpl(Expression expression1, Expression expression2,
+            MatchAction matchAction) {
+        this(expression1, expression2, false, matchAction);
+    }
+
+    protected IsLessThenOrEqualToImpl(
+            Expression expression1, Expression expression2, boolean matchCase,
+            MatchAction matchAction) {
+        super(expression1, expression2, matchCase, matchAction);
+    }
 
         @Override
 	public boolean evaluateInternal(Object v1, Object v2) {

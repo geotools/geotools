@@ -42,10 +42,6 @@ public class FilterFunction_abs_2 extends FunctionExpressionImpl {
         functionName = NAME;
     }
 
-    public int getArgCount() {
-        return 1;
-    }
-
     public Object evaluate(Object feature) {
         long arg0;
 

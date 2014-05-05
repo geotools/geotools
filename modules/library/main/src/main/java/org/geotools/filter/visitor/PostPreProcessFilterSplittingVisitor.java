@@ -861,10 +861,6 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
 	        preStack.push(expression);
 	    }
 	
-	    /**
-	     * 
-	     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.FunctionExpression)
-	     */
 	    public Object visit(Function expression, Object notUsed) {
 	        if (!fcs.supports(expression.getClass()) ) {
 	        	postStack.push(expression);

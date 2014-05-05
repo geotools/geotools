@@ -44,10 +44,6 @@ public class FilterFunction_max_3 extends FunctionExpressionImpl {
         functionName = NAME;
     }
 
-    public int getArgCount() {
-        return 2;
-    }
-
     public Object evaluate(Object feature) {
         float arg0;
         float arg1;

@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FilterFactoryImpl;
@@ -36,6 +37,7 @@ import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SQLDialect;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
@@ -402,8 +404,9 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
                 if (result != null && !result.isEmpty()) {
                     if(result instanceof GeometryCollection) {
                         result = distillSameTypeGeometries((GeometryCollection) result, eval);
-                    } 
-                    e = new FilterFactoryImpl().createLiteralExpression(result);
+                    }
+                    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                    e = ff.literal( result );
                 }
             }
         }

@@ -40,7 +40,6 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureReaderIterator;
 import org.geotools.feature.collection.DelegateSimpleFeatureIterator;
 import org.geotools.feature.collection.SubFeatureCollection;
-import org.geotools.filter.SortBy2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.NullProgressListener;
 import org.opengis.feature.Feature;
@@ -500,25 +499,9 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
 
      */
     public SimpleFeatureCollection sort(SortBy order) {
-    	if( order instanceof SortBy2){
-    		SortBy2 advanced = (SortBy2) order;
-    		return sort( advanced );
-    	}
     	return null; // new OrderedFeatureList( this, order );
     }
-    /**
-     * Allows for "Advanced" sort capabilities specific to the
-     * GeoTools platform!
-     * <p>
-     * Advanced in this case really means making use of a generic
-     * Expression, rather then being limited to PropertyName.
-     * </p>
-     * @param order GeoTools SortBy
-     * @return FeatureList sorted according to provided order
-     */
-    public SimpleFeatureCollection sort(SortBy2 order ){
-    	return null;
-    }
+    
     public String getID() {
     	return id;
     }

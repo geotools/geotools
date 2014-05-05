@@ -33,6 +33,11 @@ import junit.framework.TestCase;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
 import org.geotools.util.logging.Logging;
+import org.opengis.filter.BinaryLogicOperator;
+import org.opengis.filter.Filter;
+import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.ParserAdapter;
 import org.xml.sax.helpers.XMLFilterImpl;
@@ -100,8 +105,8 @@ public class FilterFilterTest extends TestCase {
         Filter f1 = (Filter) sub.get(0);
         Filter f2 = (Filter) sub.get(1);
         
-        assertEquals(FilterType.GEOMETRY_INTERSECTS,f1.getFilterType());
-        assertEquals(FilterType.GEOMETRY_BBOX, f2.getFilterType());
+        assertEquals(FilterType.GEOMETRY_INTERSECTS,Filters.getFilterType(f1));
+        assertEquals(FilterType.GEOMETRY_BBOX, Filters.getFilterType( f2));
         
     }
 
@@ -279,24 +284,24 @@ StringReader reader = new StringReader( filter );
         
         assertEquals(1, contentHandler.filters.size());
         Filter f = (Filter)contentHandler.filters.get(0);
-        assertTrue(f instanceof LogicFilter);
-        assertEquals(FilterType.LOGIC_OR, f.getFilterType());
+        assertTrue(f instanceof BinaryLogicOperator);
+        assertEquals(FilterType.LOGIC_OR, Filters.getFilterType(f));
         
         int i = 0;
-        for(Iterator filters = ((LogicFilter)f).getFilterIterator(); filters.hasNext(); i++){
-            CompareFilter subFitler = (CompareFilter)filters.next();
+        for(Iterator<org.opengis.filter.Filter> filters = ((BinaryLogicOperator)f).getChildren().iterator(); filters.hasNext(); i++){
+            BinaryComparisonOperator subFitler = (BinaryComparisonOperator) filters.next();
             StringBuffer attName = new StringBuffer();
             for(int repCount = 0; repCount <= i; repCount++){
                 attName.append("eventtype-" + repCount + "_");
             }
-            String parsedName = ((AttributeExpression)subFitler.getLeftValue()).getAttributePath();
+            String parsedName = ((PropertyName)subFitler.getExpression1()).getPropertyName();
             try{
                 assertEquals("at index " + i, attName.toString(), parsedName);
             }catch(AssertionFailedError e){
                 Logging.getLogger("org.geotools.filter").warning("expected " + attName + ",\n but was " + parsedName);
                 throw e;
             }
-            assertEquals("literal-" + i, ((LiteralExpression)subFitler.getRightValue()).getLiteral());
+            assertEquals("literal-" + i, ((Literal)subFitler.getExpression2()).getValue());
         }
         assertEquals(filterCount, i);
     }

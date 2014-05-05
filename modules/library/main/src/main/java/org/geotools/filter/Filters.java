@@ -35,11 +35,8 @@ import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
-import org.opengis.filter.IncludeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -51,10 +48,14 @@ import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.Add;
+import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
@@ -66,6 +67,9 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Utility class for working with Filters & Expression.
@@ -243,53 +247,7 @@ public class Filters {
         }
     }
     
-    /**
-     * Safely visit the provided filter.
-     * <p>
-     * This method handles the case of:
-     * <ul>
-     * <li>Filter.INCLUDES: will call FilterVisitor2 method if available
-     * <li>Filter.EXCLUDES: will call FilterVisitor2 method if available
-     * <li>org.geotools.filter.Filter: will visit
-     * </ul>
-     * Please note that when called with a strict *org.opengis.filter.Filter* this
-     * method will fail with a ClassCastException
-     * 
-     * @param filter
-     * @param visitor
-     * @deprecated Please update your code to a org.opengis.filter.FilterVisitor
-     */
-    public static void accept( org.opengis.filter.Filter filter, FilterVisitor visitor ){        
-       if( filter == Filter.EXCLUDE ){
-           if( visitor instanceof FilterVisitor2 ){
-               ((FilterVisitor2)visitor).visit( (ExcludeFilter) Filter.EXCLUDE );
-           }
-           return;
-       }
-       else if( filter == Filter.INCLUDE ){
-           if( visitor instanceof FilterVisitor2 ){
-               ((FilterVisitor2)visitor).visit( (IncludeFilter) Filter.INCLUDE);
-           }
-           return;
-       }
-       
-       if( filter instanceof org.geotools.filter.Filter ){
-           ((org.geotools.filter.Filter) filter).accept( visitor );
-       }
-       else {
-           if( STRICT ){
-               // don't even try ..
-               throw new ClassCastException("Please update your code to a org.opengis.filter.FilterVisitor");
-           }
-           // Copy the provided filter into the old org.geotools.filter.Filter api           
-           FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-           DuplicatingFilterVisitor xerox = new DuplicatingFilterVisitor( ff );           
-           org.geotools.filter.Filter copy = (org.geotools.filter.Filter) filter.accept( xerox, ff );
-           
-           // Visit the resulting copy
-           copy.accept(visitor);
-       }       
-    }
+
     /**
      * Deep copy the filter.
      * <p>
@@ -303,27 +261,93 @@ public class Filters {
     	Filter copy = (Filter) filter.accept( xerox, ff );
     	return copy;
     }
-        
     /**
-     * Utility method used to transition to geoapi filter.
-     * <p>
-     * This utility method is designed to help people port their
-     * code quickly, an instanceof check is much preferred.
+     * Convert expression to a constant for use in switch statements. This is an alternative to performing instanceof checks.
+     * p>
+     * This utility method for those upgrading to a newer version of GeoTools, instance of checks are preferred as they
+     * will take into account new kinds of expressions as the filter specification grows over time.
      * </p>
-     * Example:<pre><code>
+     * Example:
+     * 
+     * <pre>
+     * <code>
+     * BEFORE: expression.getType() == ExpressionType.MATH_ADD
+     * QUICK:  Filters.getExpressionType( expression ) == ExpressionType.MATH_ADD
+     * AFTER: expression instanceof Add
+     * </code>
+     * </pre>
+     * @see ExpressionType
+     * @param experssion
+     * @return ExpressionType constant.
+     */
+    public static short getExpressionType( org.opengis.filter.expression.Expression experssion ){
+        if (experssion == null)
+            return 0;
+        else if (experssion instanceof PropertyName)
+            return ExpressionType.ATTRIBUTE;
+        else if (experssion instanceof Function)
+            return ExpressionType.FUNCTION;
+        else if (experssion instanceof Literal) {
+            Literal literal = (Literal) experssion;
+            Object value = literal.getValue();
+            if (value == null) {
+                return ExpressionType.LITERAL_UNDECLARED;
+            } else if (value instanceof Double) {
+                return ExpressionType.LITERAL_DOUBLE;
+            } else if (value instanceof Integer) {
+                return ExpressionType.LITERAL_INTEGER;
+            } else if (value instanceof Long) {
+                return ExpressionType.LITERAL_LONG;
+            } else if (value instanceof String) {
+                return ExpressionType.LITERAL_STRING;
+            } else if (value instanceof Geometry) {
+                return ExpressionType.LITERAL_GEOMETRY;
+            } else if (value instanceof Envelope) {
+                return ExpressionType.LITERAL_GEOMETRY;
+            } else {
+                return ExpressionType.LITERAL_UNDECLARED;
+            }
+        }
+        else if (experssion instanceof Add){
+            return ExpressionType.MATH_ADD;
+        }
+        else if (experssion instanceof Divide){
+            return ExpressionType.MATH_DIVIDE;
+        }
+        else if (experssion instanceof Multiply){
+            return ExpressionType.MATH_MULTIPLY;
+        }
+        else if (experssion instanceof Subtract){
+            return ExpressionType.MATH_SUBTRACT;
+        }
+        else {
+            return 0;
+        }
+    }
+    
+    /**
+     * Convert filter to a constant for use in switch statements. This is an alternative to performing instanceof checks.
+     * <p>
+     * This utility method for those upgrading to a newer version of GeoTools, instance of checks are preferred as they will take into account new
+     * kinds of filters (example temporal filters added for Filter 2.0 specification).
+     * </p>
+     * Example:
+     * 
+     * <pre>
+     * <code>
      * BEFORE: filter.getFilterType() == FilterType.GEOMETRY_CONTAINS
      * QUICK:  Filters.getFilterType( filter ) == FilterType.GEOMETRY_CONTAINS
      * AFTER: filter instanceof Contains
-     * </code></pre>
+     * </code>
+     * </pre>
+     * 
      * @param filter
      * @deprecated please use instanceof checks
      */
     public static short getFilterType( org.opengis.filter.Filter filter ){
+        if( filter == null ) return 0;
         if( filter == org.opengis.filter.Filter.EXCLUDE ) return FilterType.ALL;
         if( filter == org.opengis.filter.Filter.INCLUDE ) return FilterType.NONE;
-        if( filter instanceof org.geotools.filter.Filter){
-            return ((org.geotools.filter.Filter)filter).getFilterType();
-        }
         if( filter instanceof PropertyIsBetween ) return FilterType.BETWEEN;
         if( filter instanceof PropertyIsEqualTo ) return FilterType.COMPARE_EQUALS;
         if( filter instanceof PropertyIsGreaterThan ) return FilterType.COMPARE_GREATER_THAN;

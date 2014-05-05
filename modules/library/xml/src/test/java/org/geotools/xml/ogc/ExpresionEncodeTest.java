@@ -25,16 +25,15 @@ import javax.naming.OperationNotSupportedException;
 import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.Expression;
-import org.geotools.filter.FidFilter;
-import org.geotools.filter.FilterFactory;
-import org.geotools.filter.FilterFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.LikeFilter;
 import org.geotools.xml.DocumentWriter;
 import org.geotools.xml.filter.FilterSchema;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Id;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Expression;
 
 /**
  *  For now just writes the expression built.
@@ -79,12 +78,10 @@ public class ExpresionEncodeTest extends TestCase {
     }
     
     public void testLikeFilter() throws IllegalFilterException, OperationNotSupportedException, IOException{
-        FilterFactory ff = FilterFactoryFinder.createFilterFactory();
-        Expression testAttribute = ff.createAttributeExpression("testString");
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Expression testAttribute = ff.property("testString");
 
-        LikeFilter lf = ff.createLikeFilter();
-        lf.setValue(testAttribute);
-        lf.setPattern(ff.createLiteralExpression("test*"), "*", ".", "!");
+        PropertyIsLike lf = ff.like( ff.property("testString"), "test*", "*", ".", "!");
 
         StringWriter output = new StringWriter();
         DocumentWriter.writeFragment(lf,
@@ -94,12 +91,9 @@ public class ExpresionEncodeTest extends TestCase {
     }
     
     public void testFidFilter() throws OperationNotSupportedException, IOException{
-        FilterFactory ff = FilterFactoryFinder.createFilterFactory();
-        FidFilter fif = ff.createFidFilter();
-        fif.addFid("f1");
-        fif.addFid("f2");
-        fif.addFid("f3");
-        fif.addFid("f4");
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        
+        Id fif = ff.id( ff.featureId("f1"),ff.featureId("f2"),ff.featureId("f3"),ff.featureId("f4"));
 
         StringWriter output = new StringWriter();
         DocumentWriter.writeFragment(fif,

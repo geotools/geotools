@@ -132,7 +132,15 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
     }
 
     public int getArgumentCount() {
-        return args.size();
+        int count = 0;
+        int variable = 1;
+        for (Parameter<?> argument : args) {
+            if (argument.getMinOccurs() != argument.getMaxOccurs()) {
+                variable = -1; // flag for variable arguments
+            }
+            count += argument.getMinOccurs();
+        }
+        return variable*count;
     }
     
     public List<Parameter<?>> getArguments() {

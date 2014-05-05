@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -81,17 +82,27 @@ public class ProcessFunction implements Function {
         
         // build the function name
         List<org.opengis.parameter.Parameter<?>> inputParams = new ArrayList<org.opengis.parameter.Parameter<?>>();
-        Set<String> paramNames = Processors.getParameterInfo(processName).keySet();
-        for (String pn: paramNames) {
-            // we do not specify the parameter type to avoid validation issues with the
-            // different positional/named conventions 
-            org.opengis.parameter.Parameter param = FunctionNameImpl.parameter(pn, Object.class, 0, 1);
-            inputParams.add(param);
+        Map<String, Parameter<?>> parameterInfo = Processors.getParameterInfo(processName);
+        if( parameterInfo instanceof LinkedHashMap){
+            // predictable order so we can assume parameter order
+            for (Parameter<?> param : parameterInfo.values() ){
+                // we do not specify the parameter type to avoid validation issues with the
+                // different positional/named conventions 
+                inputParams.add(param);
+            }
+        }
+        else {
+            Set<String> paramNames = parameterInfo.keySet();
+            for (String pn: paramNames) {
+                // we do not specify the parameter type to avoid validation issues with the
+                // different positional/named conventions 
+                org.opengis.parameter.Parameter param = FunctionNameImpl.parameter(pn, Object.class, 0, 1);
+                inputParams.add(param);
+            }
         }
         Map<String, Parameter<?>> resultParams = Processors.getResultInfo(processName, null);
         org.opengis.parameter.Parameter result = resultParams.values().iterator().next();
         functionName = new FunctionNameImpl(name, result, inputParams);
-
     }
 
     public Literal getFallbackValue() {

@@ -18,6 +18,7 @@
  */
 package org.geotools.filter.function;
 
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,13 +26,8 @@ import java.util.Map;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.DefaultExpression;
-import org.geotools.filter.Expression;
-import org.geotools.filter.ExpressionType;
 import org.geotools.filter.FunctionExpression;
-import org.geotools.filter.LiteralExpression;
-import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.util.ProgressListener;
-import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.util.ProgressListener;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Literal;
@@ -52,7 +48,7 @@ public abstract class ClassificationFunction extends DefaultExpression implement
     FunctionName name;
     
     /** function params **/
-    List params = new ArrayList(2);
+    List<org.opengis.filter.expression.Expression> params = new ArrayList<org.opengis.filter.expression.Expression>(2);
     
     Literal fallback;
     
@@ -60,23 +56,14 @@ public abstract class ClassificationFunction extends DefaultExpression implement
     
     public ClassificationFunction(FunctionName name) {
         this.name = name;
-        this.expressionType = ExpressionType.FUNCTION;
     }
-    
-    public int getArgCount() {
-        return name.getArgumentNames().size();
-    }
+
     
     /**
      * @see org.opengis.filter.expression.Expression#accept(ExpressionVisitor, Object)
      */
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
-    }
-    
-    //overriding evaluate(feature) to point at evaluate(object)
-    public Object evaluate(SimpleFeature feature) {
-        return evaluate((Object) feature);
     }
 
     public abstract Object evaluate(Object arg);
@@ -88,24 +75,6 @@ public abstract class ClassificationFunction extends DefaultExpression implement
         return fallback;
     }
     
-    /**
-     * @deprecated please use getParameters
-     */
-    public Expression[] getArgs() {
-        List parameters = getParameters();
-        return (Expression[]) parameters.toArray(new Expression[parameters.size()]);
-    }
-    
-    /**
-     * @deprecated please use setParameters
-     */
-    public void setArgs(Expression[] args) {
-        List parameters = new ArrayList();
-        for (int i = 0; i < args.length; i++) {
-            parameters.add(i, args[i]);
-        }
-        setParameters(parameters);
-    }
     
     /**
      * Gets the name of this function.
@@ -124,14 +93,14 @@ public abstract class ClassificationFunction extends DefaultExpression implement
     /**
      * Returns the function parameters (the contents are Expressions, usually attribute expression and literal expression).
      */
-    public List getParameters() {
+    public List<org.opengis.filter.expression.Expression> getParameters() {
         return params;
     }
     
     /**
      * Sets the function parameters.
      */
-    public void setParameters(List params) {
+    public void setParameters(List<org.opengis.filter.expression.Expression> params) {
         this.params = params;
     }
     
@@ -151,7 +120,7 @@ public abstract class ClassificationFunction extends DefaultExpression implement
     }
     
     public int getClasses() {
-        LiteralExpression classes = (LiteralExpression) getParameters().get(1);
+        Literal classes = (Literal) getParameters().get(1);
         return ((Integer) classes.evaluate(null, Integer.class)).intValue();
     }
 
@@ -167,20 +136,13 @@ public abstract class ClassificationFunction extends DefaultExpression implement
         Literal expression = ff.literal(classes);
         getParameters().set(1, expression);
     }
-    
-    public Expression getExpression() {
-        return (Expression) getParameters().get(0);
-    }
-    
-    public void setExpression(Expression e) {
-        getParameters().set(0, e);
-    }
+
     
     /**
      * Returns the implementation hints. The default implementation returns an empty map.
      */
-    public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    public Map<RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }
     
     /**

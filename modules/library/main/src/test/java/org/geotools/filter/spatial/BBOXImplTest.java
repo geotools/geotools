@@ -4,16 +4,16 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import junit.framework.TestCase;
 
 import org.geotools.data.DataUtilities;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -33,7 +33,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  */
 public class BBOXImplTest {
 
-    FilterFactoryImpl ff = new FilterFactoryImpl();
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
     @Test
     public void testBbox() {
@@ -64,9 +64,9 @@ public class BBOXImplTest {
         assertTrue(e1.contains(e2));
         assertTrue(p.getEnvelopeInternal().contains(e2));
         assertTrue(p.getEnvelopeInternal().intersects(e1));
-        BBOXImpl bbox1 = (BBOXImpl) ff.bbox(ff.createAttributeExpression("geom"), e1.getMinX(),
+        BBOXImpl bbox1 = (BBOXImpl) ff.bbox(ff.property("geom"), e1.getMinX(),
                 e1.getMinY(), e1.getMaxX(), e1.getMaxY(), "");
-        BBOXImpl bbox2 = (BBOXImpl) ff.bbox(ff.createAttributeExpression("geom"), e2.getMinX(),
+        BBOXImpl bbox2 = (BBOXImpl) ff.bbox(ff.property("geom"), e2.getMinX(),
                 e2.getMinY(), e2.getMaxX(), e2.getMaxY(), "");
         assertFalse(bbox2.evaluate(f));
         assertFalse(bbox1.evaluate(f));
@@ -80,8 +80,6 @@ public class BBOXImplTest {
         Geometry geom = bbox.getExpression2().evaluate(null, Geometry.class);
         assertEquals(crs, geom.getUserData());
         assertEquals(srs, bbox.getSRS());
-        
-        
     }
 
 }

@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.Filter;
 
 /**
  * A utility class for {@link FilterCapabilities} that assists in mapping between a filter or expression or

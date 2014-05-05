@@ -31,19 +31,13 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class CrossesImpl extends GeometryFilterImpl implements Crosses {
 
-	public CrossesImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2) {
-		super(factory,e1,e2);
-		
-		//backwards compat with old type system
-		this.filterType = GEOMETRY_CROSSES;
-	}
-	
-	public CrossesImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2, MatchAction matchAction) {
-            super(factory,e1,e2, matchAction);
-            
-            //backwards compat with old type system
-            this.filterType = GEOMETRY_CROSSES;
-	}
+    public CrossesImpl(Expression e1, Expression e2) {
+        super(e1, e2);
+    }
+
+    public CrossesImpl(Expression e1, Expression e2, MatchAction matchAction) {
+        super(e1, e2, matchAction);
+    }
 	
 	@Override
         public boolean evaluateInternal(Geometry left, Geometry right) {

@@ -16,20 +16,14 @@
  */
 package org.geotools.filter;
 
-
-// Geotools dependencies
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.And;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.Or;
-
-
 
 /**
  * Defines a logic filter (the only filter type that contains other filters).
@@ -42,61 +36,31 @@ import org.opengis.filter.Or;
  * @source $URL$
  * @version $Id$
  */
-public abstract class LogicFilterImpl extends BinaryLogicAbstract implements LogicFilter {
+public abstract class LogicFilterImpl extends BinaryLogicAbstract {
     /** The logger for the default core module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
 
-      protected LogicFilterImpl(org.opengis.filter.FilterFactory factory) {
-        this(factory,new ArrayList());
+    @Deprecated
+    protected LogicFilterImpl() {
+        this(new ArrayList<org.opengis.filter.Filter>());
     }
     
-    protected LogicFilterImpl(org.opengis.filter.FilterFactory factory, List children) {
-        super(factory,children);
+    protected LogicFilterImpl(List<org.opengis.filter.Filter> children) {
+        super(children);
     }
     
-    /**
-     * Constructor with type (must be valid).
-     *
-     * @param filterType The final relation between all sub filters.
-     *
-     * @throws IllegalFilterException If the filtertype is not a logic type.
-     * @deprecated Consructing with type constants should be replaced with 
-     * an actual java type.
-     */
-    protected LogicFilterImpl(short filterType) throws IllegalFilterException {
-        super(CommonFactoryFinder.getFilterFactory(null), new ArrayList());
-        if( LOGGER.isLoggable(Level.FINEST)) {
-            LOGGER.finest("filtertype " + filterType);
-        }
-
-        if (isLogicFilter(filterType)) {
-            this.filterType = filterType;
-        } else {
-            throw new IllegalFilterException(
-                "Attempted to create logic filter with non-logic type.");
-        }
-    }
 
     /**
      * Convenience constructor to create a NOT logic filter.
      *
      * @param filter The initial sub filter.
-     * @param filterType The final relation between all sub filters.
-     *
      * @throws IllegalFilterException Does not conform to logic filter
      *         structure
      */
-    protected LogicFilterImpl(Filter filter, short filterType)
+    @Deprecated
+    protected LogicFilterImpl(Filter filter)
         throws IllegalFilterException {
-        
-        super(CommonFactoryFinder.getFilterFactory(null), new ArrayList());
-        if (isLogicFilter(filterType)) {
-            this.filterType = filterType;
-        } else {
-            throw new IllegalFilterException(
-                "Attempted to create logic filter with non-logic type.");
-        }
-
+        this();
         children.add(filter);
     }
 
@@ -112,14 +76,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
      */
     protected LogicFilterImpl(Filter filter1, Filter filter2, short filterType)
         throws IllegalFilterException {
-        super(CommonFactoryFinder.getFilterFactory(null), new ArrayList());
-        
-        if (isLogicFilter(filterType)) {
-            this.filterType = filterType;
-        } else {
-            throw new IllegalFilterException(
-                "Attempted to create logic filter with non-logic type.");
-        }
+        this();
 
         // Push the initial filter on the stack
         children.add(filter1);
@@ -140,6 +97,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
      *       filter.
      */
     public final void addFilter(org.opengis.filter.Filter filter) throws IllegalFilterException {
+        int filterType = Filters.getFilterType(this);
         if ((filterType != LOGIC_NOT) || (children.size() == 0)) {
             children.add(filter);
         } else {
@@ -155,82 +113,6 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
      */
     public Iterator getFilterIterator() {
         return children.iterator();
-    }
-   
-    /**
-     * Implements a logical OR with this filter and returns the merged filter.
-     *
-     * @param filter Parent of the filter: must implement GMLHandlerGeometry.
-     *
-     * @return ORed filter.
-     *
-     * @task REVISIT: make immutable, should not modify the subfilters of the
-     *       filter being ored.
-     */
-    public Filter or(org.opengis.filter.Filter filter) {
-        // Just makes sure that we are not creating unnecessary new filters
-        //  by popping onto stack if current filter is OR
-        //HACK: not sure what should be returned by this method
-        //HACK: assuming it is the result of each method
-        //REVISIT: should return a new copy, must implement cloneable to do so.
-        if (filterType == super.LOGIC_OR) {
-            if( filter instanceof Or ){
-                Or more = (Or) filter;
-                children.addAll( more.getChildren() );
-            }
-            else {
-                children.add(filter);
-            }
-            return this;
-        } else {
-            return super.or(filter);
-        }
-    }
-
-    /**
-     * Implements a logical AND with this filter and returns the merged filter.
-     *
-     * @param filter Parent of the filter: must implement GMLHandlerGeometry.
-     *
-     * @return ANDed filter.
-     *
-     * @task REVISIT: make immutable, should not modify the subfilters of the
-     *       filter being anded.
-     */
-    public Filter and(org.opengis.filter.Filter filter) {
-        // Just makes sure that we are not creating unnecessary new filters
-        //  by popping onto stack if current filter is AND
-        //HACK: not sure what should be returned by this method
-        //HACK: assuming it is the result of each method
-        if (filterType == super.LOGIC_AND) {
-            if( filter instanceof And ){
-                And more = (And) filter;
-                children.addAll( more.getChildren() );
-            }
-            else {
-                children.add(filter);
-            }
-            return this;
-        } else {
-            return super.and(filter);
-        }
-    }
-
-    /**
-     * Implements a logical NOT with this filter and returns the merged filter.
-     *
-     * @return NOTed filter.
-     */
-    public Filter not() {
-        // Just makes sure that we are not creating unnecessary new filters
-        //  by popping off sub filter if current filter is NOT
-        //HACK: not sure what should be returned by this method
-        //HACK: assuming it is the result of each method
-        if (filterType == super.LOGIC_NOT) {
-            return (Filter) children.get(0);
-        } else {
-            return super.not();
-        }
     }
 
     /**
@@ -253,7 +135,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
         String returnString = "[";
         String operator = "";
         Iterator iterator = children.iterator();
-
+        int filterType = Filters.getFilterType(this);
         if (filterType == LOGIC_OR) {
             operator = " OR ";
         } else if (filterType == LOGIC_AND) {
@@ -293,7 +175,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
             LogicFilterImpl logFilter = (LogicFilterImpl) obj;
             if( LOGGER.isLoggable(Level.FINEST)) {
                 LOGGER.finest("filter type match:"
-                        + (logFilter.getFilterType() == this.filterType));
+                        + (Filters.getFilterType( logFilter ) == Filters.getFilterType( this )));
                 LOGGER.finest("same size:"
                         + (logFilter.getSubFilters().size() == this.children.size())
                         + "; inner size: " + logFilter.getSubFilters().size()
@@ -302,7 +184,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
                         + logFilter.getSubFilters().containsAll(this.children));
             }
 
-            return ((logFilter.getFilterType() == this.filterType)
+            return ((Filters.getFilterType( logFilter ) == Filters.getFilterType( this ))
             && (logFilter.getSubFilters().size() == this.children.size())
             && logFilter.getSubFilters().containsAll(this.children));
         } else {
@@ -317,6 +199,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
      */
     public int hashCode() {
         int result = 17;
+        int filterType = Filters.getFilterType(this);
         result = (37 * result) + filterType;
         result = (37 * result) + children.hashCode();
 

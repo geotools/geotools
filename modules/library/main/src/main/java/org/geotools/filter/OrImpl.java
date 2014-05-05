@@ -30,23 +30,20 @@ import org.opengis.filter.Or;
  * @source $URL$
  */
 public class OrImpl extends LogicFilterImpl implements Or {
-	
-	protected OrImpl(org.opengis.filter.FilterFactory factory, List/*<Filter>*/ children) {
-		super(factory, children );
-		
-		//backwards compatability with old type system
-		filterType = LOGIC_OR;
-	}
-	
-	public boolean evaluate(Object feature) {
-		for (Iterator itr = children.iterator(); itr.hasNext();) {
-			Filter filter = (Filter)itr.next();
-			if( filter.evaluate( feature )) {
+
+    protected OrImpl(List<Filter> children) {
+        super(children);
+    }
+
+    public boolean evaluate(Object feature) {
+        for (Iterator<Filter> itr = children.iterator(); itr.hasNext();) {
+            Filter filter = itr.next();
+            if (filter.evaluate(feature)) {
                 return true;
             }
-		}
-		return false;
-	}
+        }
+        return false;
+    }
 	
 	public Object accept(FilterVisitor visitor, Object extraData) {
 		return visitor.visit(this,extraData);

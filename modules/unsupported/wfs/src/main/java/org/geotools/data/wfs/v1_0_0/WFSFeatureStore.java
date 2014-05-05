@@ -84,10 +84,7 @@ public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureSt
     public Set getSupportedHints() {
         return super.getSupportedHints();
     }
-    /**
-     * 
-     * @see org.geotools.data.AbstractFeatureSource#getTransaction()
-     */
+    @Override
     public Transaction getTransaction() {
         return trans;
     }
@@ -211,10 +208,7 @@ public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureSt
         return r;
 	}
 
-	/**
-     * 
-     * @see org.geotools.data.FeatureStore#removeFeatures(org.geotools.filter.Filter)
-     */
+    @Override
     public void removeFeatures(Filter filter2) throws IOException {
     	Filter filter=ds.processFilter(filter2);
         WFSTransactionState ts = null;
@@ -238,10 +232,8 @@ public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureSt
             ts.commit();
         }
     }
-    /**
-     * 
-     * @see org.geotools.data.FeatureStore#modifyFeatures(org.geotools.feature.AttributeType[], java.lang.Object[], org.geotools.filter.Filter)
-     */
+
+    @Override
     public void modifyFeatures(Name[] names, Object[] value,
         Filter filter2) throws IOException {
     	Filter filter=ds.processFilter(filter2);
@@ -304,10 +296,8 @@ public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureSt
         Name attributeName = type.getName();
         modifyFeatures(attributeName, value, filter);
     }
-    /**
-     * 
-     * @see org.geotools.data.FeatureStore#modifyFeatures(org.geotools.feature.AttributeType, java.lang.Object, org.geotools.filter.Filter)
-     */
+    
+    @Override
     public void modifyFeatures(Name type, Object value, Filter filter)
         throws IOException {
         modifyFeatures(new Name[] { type, }, new Object[] { value, },
@@ -336,10 +326,7 @@ public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureSt
         }
         modifyFeatures(attributeNames, values, filter);
     }
-    /**
-     * 
-     * @see org.geotools.data.FeatureStore#setFeatures(org.geotools.data.FeatureReader)
-     */
+    @Override
     public void setFeatures(FeatureReader <SimpleFeatureType, SimpleFeature> reader) throws IOException {
         WFSTransactionState ts = null;
 
@@ -397,10 +384,7 @@ public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureSt
         }
     }
 
-    /**
-     * 
-     * @see org.geotools.data.FeatureStore#setTransaction(org.geotools.data.Transaction)
-     */
+    @Override
     public void setTransaction(Transaction transaction) {
         if(transaction == null)
             throw new NullPointerException("Should this not be Transaction.AutoCommit?");

@@ -28,7 +28,6 @@ import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.Filters;
 import org.geotools.filter.visitor.FixBBOXFilterVisitor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -75,7 +74,7 @@ class StrictWFSStrategy extends NonStrictWFSStrategy {
 
     protected  FeatureReader<SimpleFeatureType, SimpleFeature> wrapWithFilteringFeatureReader(Filter postFilter,  FeatureReader<SimpleFeatureType, SimpleFeature> reader, Filter processedFilter) {
         FilterEncodingPreProcessor visitor = new FilterEncodingPreProcessor(COMPLIANCE_LEVEL);
-        Filters.accept( processedFilter, visitor);
+        processedFilter.accept(visitor, null);
         
         if( visitor.requiresPostProcessing() )
             return new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader, processedFilter);
@@ -152,7 +151,7 @@ class StrictWFSStrategy extends NonStrictWFSStrategy {
 
         protected void init( Transaction transaction, Query query, Integer level ) throws IOException {
             FilterEncodingPreProcessor visitor = new FilterEncodingPreProcessor(level);
-            Filters.accept( query.getFilter(), visitor );
+            query.getFilter().accept(visitor,null);
             
             this.transaction=transaction;
             if( visitor.requiresPostProcessing() && query.getPropertyNames()!=Query.ALL_NAMES){

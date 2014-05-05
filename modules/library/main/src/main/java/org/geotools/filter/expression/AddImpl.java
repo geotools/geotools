@@ -37,8 +37,6 @@ public class AddImpl extends MathExpressionImpl implements Add {
 
 	public AddImpl(Expression expr1, Expression expr2) {
 		super(expr1,expr2);
-		//backwards compatability with old type system
-		expressionType = MATH_ADD;
 	}
 	
 	public Object evaluate(Object feature) throws IllegalArgumentException {

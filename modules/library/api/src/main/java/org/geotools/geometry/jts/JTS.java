@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.AbstractDirectPosition;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralDirectPosition;
@@ -63,6 +64,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
@@ -958,15 +960,20 @@ public final class JTS {
         if (factory == null) {
             factory = new GeometryFactory();
         }
-        return factory.createPolygon(
+        Polygon polygon = factory.createPolygon(
                 factory.createLinearRing(new Coordinate[] {
                         new Coordinate(env.getMinX(), env.getMinY()),
                         new Coordinate(env.getMaxX(), env.getMinY()),
                         new Coordinate(env.getMaxX(), env.getMaxY()),
                         new Coordinate(env.getMinX(), env.getMaxY()),
                         new Coordinate(env.getMinX(), env.getMinY()) }), null);
+        if (env instanceof ReferencedEnvelope) {
+            ReferencedEnvelope refEnv = (ReferencedEnvelope) env;
+            polygon.setUserData(refEnv.getCoordinateReferenceSystem());
+        }
+        return polygon;
     }
-
+    
     /**
      * Create a ReferencedEnvelope from the provided geometry, we will do our best to guess the
      * CoordinateReferenceSystem making use of getUserData() and getSRID() as needed.
@@ -1060,8 +1067,11 @@ public final class JTS {
             coordinates[bottom + t] = new Coordinate(xmax - dx, ymin);
             coordinates[right + t] = new Coordinate(xmax, ymax - dy);
         }
-
-        return factory.createPolygon(factory.createLinearRing(coordinates), null);
+        Polygon polygon = factory.createPolygon(factory.createLinearRing(coordinates), null);
+        
+        polygon.setUserData( bbox.getCoordinateReferenceSystem() );
+        
+        return polygon;
     }
     
     /**
@@ -1143,13 +1153,15 @@ public final class JTS {
         ensureNonNull("bbox", bbox);
         ensureNonNull("factory", factory);
 
-        return factory.createPolygon(
+        Polygon polygon = factory.createPolygon(
                 factory.createLinearRing(new Coordinate[] {
                         new Coordinate(bbox.getMinX(), bbox.getMinY()),
                         new Coordinate(bbox.getMaxX(), bbox.getMinY()),
                         new Coordinate(bbox.getMaxX(), bbox.getMaxY()),
                         new Coordinate(bbox.getMinX(), bbox.getMaxY()),
                         new Coordinate(bbox.getMinX(), bbox.getMinY()) }), null);
+        polygon.setUserData(bbox.getCoordinateReferenceSystem());
+        return polygon;
     }
 
     /**

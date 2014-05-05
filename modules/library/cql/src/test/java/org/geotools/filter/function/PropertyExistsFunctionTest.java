@@ -17,6 +17,7 @@
 package org.geotools.filter.function;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
@@ -30,6 +31,7 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.metadata.citation.Citation;
 
@@ -76,31 +78,33 @@ public class PropertyExistsFunctionTest {
         build.add(null);
         SimpleFeature feature = build.buildFeature(null);
 
-        f.setParameters(Collections.singletonList(ff.property("nonExistant")));
+        f.setParameters( list(ff.property("nonExistant")));
         Assert.assertEquals(Boolean.FALSE, f.evaluate(feature));
 
-        f.setParameters(Collections.singletonList(ff.property("name")));
+        f.setParameters(list(ff.property("name")));
         Assert.assertEquals(Boolean.TRUE, f.evaluate(feature));
 
-        f.setParameters(Collections.singletonList(ff.property("geom")));
+        f.setParameters(list(ff.property("geom")));
         Assert.assertEquals(Boolean.TRUE, f.evaluate(feature));
     }
-
+    private List<Expression> list( Expression expr ){
+        return Collections.singletonList(expr);
+    }
     @Test
     public void testEvaluatePojo() {
         Citation pojo = new CitationImpl();
 
-        f.setParameters(Collections.singletonList(ff.property("edition")));
+        f.setParameters( list(ff.property("edition")));
         Assert.assertEquals(Boolean.TRUE, f.evaluate(pojo));
 
-        f.setParameters(Collections.singletonList(ff.property("alternateTitles")));
+        f.setParameters(list(ff.property("alternateTitles")));
         Assert.assertEquals(Boolean.TRUE, f.evaluate(pojo));
 
         // wrong case (note the first letter)
-        f.setParameters(Collections.singletonList(ff.property("AlternateTitles")));
+        f.setParameters(list(ff.property("AlternateTitles")));
         Assert.assertEquals(Boolean.FALSE, f.evaluate(pojo));
 
-        f.setParameters(Collections.singletonList(ff.property("nonExistentProperty")));
+        f.setParameters(list(ff.property("nonExistentProperty")));
         Assert.assertEquals(Boolean.FALSE, f.evaluate(pojo));
     }
 
@@ -108,8 +112,8 @@ public class PropertyExistsFunctionTest {
     public void testEquals() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyExistsFunction actual = new PropertyExistsFunction();
-        f.setParameters(Collections.singletonList(ff.property("testPropName")));
-        actual.setParameters(Collections.singletonList(ff
+        f.setParameters(list(ff.property("testPropName")));
+        actual.setParameters(list(ff
                 .property("testPropName")));
         Assert.assertEquals(f, actual);
     }

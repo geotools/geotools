@@ -30,7 +30,7 @@ public class FilterFunction_octagonalEnvelopeTest {
     @Test
     public void testGetArgCount() {
         FilterFunction_octagonalEnvelope f = new FilterFunction_octagonalEnvelope();
-        assertEquals(1, f.getArgCount());
+        assertEquals(1, f.getFunctionName().getArgumentCount());
     }
 
     /**

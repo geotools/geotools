@@ -20,36 +20,43 @@ import org.geotools.factory.Hints;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.MultiValuedFilter;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.expression.Expression;
 
 /**
- * Abstract implemention for binary filters.
+ * Abstract implementation for binary filters.
+ * <p>
+ * This implementation gathers up expression1, expression2 and match action support.
+ * <p>
+ * For the SAX parsers setExpression1 and setExpression2 can be used to fill in the filter
+ * after creation. Everyone else is asked to treat the filter as immutable and use the appropriate
+ * FilterFactory2 creation method.
  * 
- * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- *
- *
+ * @author Justin Deoliveira (Boundless)
  *
  * @source $URL$
  */
-public abstract class BinaryComparisonAbstract extends AbstractFilter 
-	implements BinaryComparisonOperator {
+public abstract class BinaryComparisonAbstract extends AbstractFilter implements MultiValuedFilter {
 
 	protected Expression expression1;
 	protected Expression expression2;
 
 	boolean matchingCase;
 	
-	protected BinaryComparisonAbstract(org.opengis.filter.FilterFactory factory) {
-		this(factory,null,null);
+	/**
+	 * No argument constructor for use by SAX parsers.
+	 */
+	protected BinaryComparisonAbstract() {
+		this(null,null);
 	}
 	
-	protected BinaryComparisonAbstract(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2 ) {
-		this(factory,expression1,expression2,true);
+	/** Immutable constructor for use by FilterFactory2 */
+	protected BinaryComparisonAbstract(Expression expression1, Expression expression2 ) {
+		this(expression1,expression2,true);
 	}
-	
-	protected BinaryComparisonAbstract(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2, boolean matchingCase ) {
-		super(factory);
+	/** Immutable constructor for use by FilterFactory2 */
+	protected BinaryComparisonAbstract(Expression expression1, Expression expression2, boolean matchingCase ) {
 		this.expression1 = expression1;
 		this.expression2 = expression2;		
 		this.matchingCase = matchingCase;
@@ -78,19 +85,6 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter
 	public MatchAction getMatchAction() {
 	       return MatchAction.ANY; //default
 	}
-	
-	public Filter and(org.opengis.filter.Filter filter) {        
-		return (Filter) factory.and(this, filter);
-	}
-
-	public Filter or(org.opengis.filter.Filter filter) {
-		return (Filter) factory.or(this, filter);
-	}
-
-	public Filter not() {
-		return (Filter) factory.not(this);
-	}
-	
     /**
      * Convenience method which evaluates the expressions and trys to align the values to be of the
      * same type.

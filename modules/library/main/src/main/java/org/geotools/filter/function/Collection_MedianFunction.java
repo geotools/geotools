@@ -30,15 +30,13 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.MedianVisitor;
-import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.capability.FunctionName;
-
-
+import org.opengis.filter.expression.Expression;
 /**
  * Calculates the median value of an attribute for a given FeatureCollection
  * and Expression.

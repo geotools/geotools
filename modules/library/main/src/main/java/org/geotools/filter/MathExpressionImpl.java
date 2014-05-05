@@ -16,6 +16,8 @@
  */
 package org.geotools.filter;
 
+import org.opengis.filter.expression.BinaryExpression;
+
 
 
 /**
@@ -36,7 +38,7 @@ package org.geotools.filter;
  * @version $Id$
  */
 public abstract class MathExpressionImpl extends DefaultExpression
-    implements MathExpression {
+    implements BinaryExpression {
 	
     /** Holds the 'left' value of this math expression. */
     private org.opengis.filter.expression.Expression leftValue = null;
@@ -57,44 +59,6 @@ public abstract class MathExpressionImpl extends DefaultExpression
     	this.rightValue = e2;
     }
 
-    /**
-     * Adds the 'left' value to this expression.
-     *
-     * @param leftValue Expression to add to this expression.
-     *
-     * @throws IllegalFilterException Attempting to add non-math expression.
-     * 
-     * @deprecated use {@link #setExpression1(org.opengis.filter.expression.Expression)}
-     */
-    public final void addLeftValue(Expression leftValue)
-        throws IllegalFilterException {
-    	
-    	setExpression1(leftValue);
-    }
-
-    /**
-     * Adds the 'right' value to this expression.
-     *
-     * @param rightValue Expression to add to this expression.
-     *
-     * @throws IllegalFilterException Attempting to add non-math expression.
-     * 
-     * @deprecated use {@link #setExpression2(org.opengis.filter.expression.Expression)}
-     */
-    public final void addRightValue(Expression rightValue)
-        throws IllegalFilterException {
-        
-    	setExpression2(rightValue);
-    }
-
-    /**
-     * Gets the left or first expression.
-     * 
-     * @deprecated use {@link #getExpression1()}.
-     */
-    public final Expression getLeftValue() {
-        return (Expression)getExpression1();
-    }
     
     /**
      * 
@@ -113,23 +77,11 @@ public abstract class MathExpressionImpl extends DefaultExpression
      * @throws IllegalFilterException
      */
     public void setExpression1(org.opengis.filter.expression.Expression expression) {
-    	Expression leftValue = (Expression)expression;
-    	if (isGeometryExpression(leftValue.getType()) ) {
+    	if (isGeometryExpression(Filters.getExpressionType(expression))) {
     		throw new IllegalFilterException(
             "Attempted to add Geometry expression to math expression.");
     	}
-        this.leftValue = leftValue;
-    }
-
-    /**
-     * Gets the right expression.
-     *
-     * @return the expression on the right of the comparison.
-     * 
-     * @deprecated use {@link #getExpression2()}.
-     */
-    public final Expression getRightValue() {
-        return (Expression) getExpression2();
+        this.leftValue = expression;
     }
     
     /**
@@ -147,22 +99,12 @@ public abstract class MathExpressionImpl extends DefaultExpression
      * @throws IllegalFilterException
      */
     public void setExpression2(org.opengis.filter.expression.Expression expression) {
-    	Expression rightValue = (Expression)expression;
     	//Check to see if this is a valid math expression before adding.
-        if (isGeometryExpression(rightValue.getType()) ) {
+        if (isGeometryExpression(Filters.getExpressionType(expression)) ) {
         	throw new IllegalFilterException(
             "Attempted to add Geometry expression to math expression.");
         }
-        this.rightValue = rightValue;        	
-    }
-
-    /**
-     * Gets the type of this expression.
-     *
-     * @return Expression type.
-     */
-    public short getType() {
-        return expressionType;
+        this.rightValue = expression;
     }
     
     /** 

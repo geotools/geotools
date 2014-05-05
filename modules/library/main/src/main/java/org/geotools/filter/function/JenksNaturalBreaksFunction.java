@@ -17,7 +17,7 @@
 
 package org.geotools.filter.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.*;
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,9 +31,6 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Calculate the Jenks' Natural Breaks classification for a featurecollection
@@ -82,7 +79,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         try {
             while (features.hasNext()) {
                 SimpleFeature feature = features.next();
-                final Object result = getExpression().evaluate(feature);
+                final Object result = getParameters().get(0).evaluate(feature);
                 logger.finest("importing " + result);
                 if (result != null) {
                     final Double e = new Double(result.toString());

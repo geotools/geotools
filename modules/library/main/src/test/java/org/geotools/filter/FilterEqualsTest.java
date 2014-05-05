@@ -36,6 +36,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Disjoint;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -178,10 +179,10 @@ public class FilterEqualsTest extends TestCase {
     
 
     public void testFidFilter(){
-        FidFilter ff = new FidFilterImpl();
+        FidFilterImpl ff = new FidFilterImpl();
         ff.addFid("1");
         
-        FidFilter ff2 = new FidFilterImpl("1");
+        FidFilterImpl ff2 = new FidFilterImpl("1");
         assertNotNull(ff2);
         assertEquals(ff, ff2);
         assertTrue(!ff.equals(null));
@@ -193,12 +194,6 @@ public class FilterEqualsTest extends TestCase {
         
         ff.addFid("2");
         assertEquals(ff, ff2);
-        
-        FidFilterImpl ff3 = new FidFilterImpl();
-        ff3.filterType = -1;//REVISIT: should I even be able to do that?
-        
-        assertTrue(!ff2.equals(ff3));
-        
     }
     
     public void testExpressionMath(){
@@ -208,21 +203,21 @@ public class FilterEqualsTest extends TestCase {
 	    testExp1 = new LiteralExpressionImpl(new Double(5));
 	    testExp2 = new LiteralExpressionImpl(new Double(5));
 	    testMath1 = new AddImpl(null,null);
-	    testMath1.addLeftValue(testExp1);
-	    testMath1.addRightValue(testExp2);
+	    testMath1.setExpression1(testExp1);
+	    testMath1.setExpression2(testExp2);
 	    testMath2 =  new AddImpl(null,null);
-	    testMath2.addLeftValue(testExp2);
-	    testMath2.addRightValue(testExp1);
+	    testMath2.setExpression1(testExp2);
+	    testMath2.setExpression2(testExp1);
 	    assertTrue(testMath1.equals(testMath2));
 	    testExp3 = new LiteralExpressionImpl(new Integer(4));
 	    testExp4 = new LiteralExpressionImpl(new Integer(4));
-	    testMath2.addLeftValue(testExp3);
+	    testMath2.setExpression1(testExp3);
 	    assertTrue(!testMath1.equals(testMath2));
-	    testMath1.addLeftValue(testExp4);
+	    testMath1.setExpression1(testExp4);
 	    assertTrue(testMath1.equals(testMath2));
 	    testMath1 = new SubtractImpl(null,null);
-	    testMath1.addLeftValue(testExp4);
-	    testMath1.addLeftValue(testExp2);
+	    testMath1.setExpression1(testExp4);
+	    testMath1.setExpression1(testExp2);
 	    assertTrue(!testMath1.equals(testMath2));
             assertTrue(!testMath1.equals("Random Object that happens to be a string"));
 	} catch (IllegalFilterException e){
@@ -283,17 +278,17 @@ public class FilterEqualsTest extends TestCase {
 	testExp2 = new LiteralExpressionImpl(new Integer(45));
 	testExp3 = new AttributeExpressionImpl(testSchema, "testInteger");
 	testExp4 = new AttributeExpressionImpl(testSchema, "testInteger");
-	bFilter1.addLeftValue(testExp1);
-	bFilter2.addLeftValue(testExp2);
-	bFilter1.addMiddleValue(testExp3);
-	bFilter2.addMiddleValue(testExp4);
-	bFilter1.addRightValue(testLit1);
-	bFilter2.addRightValue(testLit2);
+	bFilter1.setExpression1(testExp1);
+	bFilter2.setExpression1(testExp2);
+	bFilter1.setExpression(testExp3);
+	bFilter2.setExpression(testExp4);
+	bFilter1.setExpression2(testLit1);
+	bFilter2.setExpression2(testLit2);
 	assertTrue(bFilter2.equals(bFilter1));
 	tFilter1 = ff.equals(org.opengis.filter.expression.Expression.NIL, 
 	        org.opengis.filter.expression.Expression.NIL);
 	assertTrue(!bFilter2.equals(tFilter1));
-	bFilter2.addRightValue(new LiteralExpressionImpl(new Integer(65)));
+	bFilter2.setExpression2(new LiteralExpressionImpl(new Integer(65)));
 	assertTrue(!bFilter2.equals(bFilter1));
     }
     
@@ -308,15 +303,15 @@ public class FilterEqualsTest extends TestCase {
 	 testExp2 = new LiteralExpressionImpl(new Integer(45));
 	testExp3 = new AttributeExpressionImpl(testSchema, "testInteger");
 	testExp4 = new AttributeExpressionImpl(testSchema, "testInteger");
-	lFilter1.setValue(testExp3);
-	lFilter2.setValue(testExp4);
+	lFilter1.setExpression(testExp3);
+	lFilter2.setExpression(testExp4);
 	lFilter1.setPattern(pattern, wcMulti, wcSingle, escape);
 	lFilter2.setPattern(pattern, wcMulti, wcSingle, escape);
 	assertTrue(lFilter1.equals(lFilter2));
 	lFilter2.setPattern("te__t!", wcMulti, wcSingle, escape);
 	assertTrue(!lFilter1.equals(lFilter2));
 	lFilter2.setPattern(pattern, wcMulti, wcSingle, escape);
-	lFilter2.setValue(testExp2);
+	lFilter2.setExpression(testExp2);
 	assertTrue(!lFilter1.equals(lFilter2));
     }	
 
@@ -359,10 +354,10 @@ public class FilterEqualsTest extends TestCase {
 	    testExp3 = new  AttributeExpressionImpl(testSchema, "testBoolean");
 	    NullFilterImpl nullFilter1 = new NullFilterImpl();
 	    NullFilterImpl nullFilter2 = new NullFilterImpl();
-	    nullFilter1.nullCheckValue(testExp1);
-	    nullFilter2.nullCheckValue(testExp2);
+	    nullFilter1.setExpression(testExp1);
+	    nullFilter2.setExpression(testExp2);
 	    assertTrue(nullFilter1.equals(nullFilter2));
-	    nullFilter1.nullCheckValue(testExp3);
+	    nullFilter1.setExpression(testExp3);
 	    assertTrue(!nullFilter1.equals(nullFilter2));
 	    assertTrue(!nullFilter1.equals(new BetweenFilterImpl()));
 	}

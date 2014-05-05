@@ -19,9 +19,12 @@ package org.geotools.filter;
 
 // J2SE dependencies
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+
+import org.opengis.filter.Filter;
+import org.geotools.factory.CommonFactoryFinder;
+import org.opengis.filter.FilterFactory2;
 
 
 /**
@@ -126,13 +129,13 @@ public class LogicSAXParser {
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
 
     /** factory for creating filters. */
-    private FilterFactory ff;
+    private FilterFactory2 ff;
 
     /** AbstractFilter filte type. */
     private short logicType = -1;
 
     /** The array of filters to be logically joined. */
-    private List subFilters = new ArrayList();
+    private List<Filter> subFilters = new ArrayList<Filter>();
 
     /** An instance of this class for nested logic filter structures. */
     private LogicSAXParser logicFactory = null;
@@ -144,15 +147,15 @@ public class LogicSAXParser {
      * Constructor which flags the operator as between.
      */
     public LogicSAXParser() {
-    	this( FilterFactoryFinder.createFilterFactory() );    	
+    	this( CommonFactoryFinder.getFilterFactory2() );    	
     }
     /** Constructor injection */
-    public LogicSAXParser( FilterFactory factory ){
+    public LogicSAXParser( FilterFactory2 factory ){
     	ff = factory;
     	LOGGER.finer("made new logic factory");
     }
     /** Setter injection */
-    public void setFilterFactory( FilterFactory factory ){
+    public void setFilterFactory( FilterFactory2 factory ){
     	ff = factory;
     }
 
@@ -238,8 +241,9 @@ public class LogicSAXParser {
      *
      * @throws IllegalFilterException if the filter is not complete.
      */
+    @SuppressWarnings("deprecation")
     public Filter create() throws IllegalFilterException {
-        LogicFilter filter = null;
+        Filter filter = null;
 
         LOGGER.finer("creating a logic filter");
 
@@ -247,20 +251,15 @@ public class LogicSAXParser {
             LOGGER.finer("filter is complete, with type: " + this.logicType);
 
             if (logicType == AbstractFilter.LOGIC_NOT) {
-                filter = ff.createLogicFilter((Filter) subFilters.get(
-                            0), this.logicType);
-            } else {
-                filter = ff.createLogicFilter(this.logicType);
-
-                Iterator iterator = subFilters.iterator();
-
-                while (iterator.hasNext()) {
-                    filter.addFilter((org.opengis.filter.Filter) iterator.next());
-                }
+                filter = ff.not( subFilters.get(0) );
+            } else if (logicType == AbstractFilter.LOGIC_AND ){
+                filter = ff.and( subFilters );
+            }  else if (logicType == AbstractFilter.LOGIC_OR ){
+                filter = ff.or( subFilters );
             }
 
             //reset the variables so it works right if called again.
-            subFilters = new ArrayList();
+            subFilters = new ArrayList<Filter>();
             this.logicType = -1;
             isComplete = false;
 

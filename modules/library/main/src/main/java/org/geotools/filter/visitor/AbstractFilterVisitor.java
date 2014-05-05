@@ -17,26 +17,12 @@
 package org.geotools.filter.visitor;
 
 import java.util.Iterator;
-import java.util.logging.Logger;
 
-import org.geotools.filter.AttributeExpression;
-import org.geotools.filter.BetweenFilter;
-import org.geotools.filter.CompareFilter;
-import org.geotools.filter.Expression;
-import org.geotools.filter.FidFilter;
-import org.geotools.filter.Filter;
-import org.geotools.filter.Filters;
-import org.geotools.filter.FunctionExpression;
-import org.geotools.filter.GeometryFilter;
-import org.geotools.filter.LikeFilter;
-import org.geotools.filter.LiteralExpression;
-import org.geotools.filter.LogicFilter;
-import org.geotools.filter.MathExpression;
-import org.geotools.filter.NullFilter;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.ExcludeFilter;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
@@ -83,30 +69,26 @@ import org.opengis.filter.temporal.TOverlaps;
 
 
 /**
- * A basic implementation of the FilterVisitor interface.
+ * Base implementation of the FilterVisitor used for inorder traversal of expressions.
  * <p>
  * This class implements the full FilterVisitor interface and will visit every
  * member of a Filter object.  This class performs no actions and is not intended
  * to be used directly, instead extend it and overide the methods for the
  * expression types you are interested in.  Remember to call the super method
- * if you want to ensure that the entier filter tree is still visited.
+ * if you want to ensure that the entire filter tree is still visited.
  * </p>
  * <p>
  * You may still need to implement FilterVisitor directly if the visit order
  * set out in this class does not meet your needs.  This class visits in sequence
  * i.e. Left - Middle - Right for all expressions which have sub-expressions.
  * </p>
- * @deprecated Please use DefaultFilterVisitor (to stick with only opengis Filter)
+ * 
  * @author James Macgill, Penn State
  * @author Justin Deoliveira, The Open Planning Project
  *
- *
  * @source $URL$
  */
-public class AbstractFilterVisitor implements org.geotools.filter.FilterVisitor, FilterVisitor {
-    
-    /** Standard java logger */
-    private static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter.visitor");
+public class AbstractFilterVisitor implements FilterVisitor {
 
     /** expression visitor */
     private ExpressionVisitor expressionVisitor;
@@ -149,32 +131,6 @@ public class AbstractFilterVisitor implements org.geotools.filter.FilterVisitor,
     public Object visitNullFilter(Object data) {
     	return null;
     }
-    
-    /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.Filter)
-     * @deprecated
-     */
-    public void visit(Filter filter) {
-       // James - unknown filter type (not good, should not happen)
-    }
-
-    /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.BetweenFilter)
-     * @deprecated use {@link #visit(PropertyIsBetween, Object)}
-     */
-    public void visit(BetweenFilter filter) {
-        if (filter.getLeftValue() != null) {
-            filter.getLeftValue().accept(this);
-        }
-
-        if (filter.getMiddleValue() != null) {
-            filter.getMiddleValue().accept(this);
-        }
-        
-        if (filter.getRightValue() != null) {
-            filter.getRightValue().accept(this);
-        } 
-    }
 
     /**
      * Visits filter.getLowerBoundary(),filter.getExpression(),filter.getUpperBoundary() if an 
@@ -192,37 +148,20 @@ public class AbstractFilterVisitor implements org.geotools.filter.FilterVisitor,
     	}    	
     	return filter;
     }
-    /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.CompareFilter)
-     * @deprecated use one of {@link #visit(PropertyIsEqualTo, Object)}, 
-     * 	{@link #visit(PropertyIsNotEqualTo, Object)}, {@link #visit(PropertyIsLessThan, Object)},
-     *  {@link #visit(PropertyIsLessThanOrEqualTo, Object)},{@link #visit(PropertyIsGreaterThan, Object)},
-     *  {@link #visit(PropertyIsGreaterThanEqualTo, Object)}
-     */
-    public void visit(CompareFilter filter) {
-        if (filter.getLeftValue() != null) {
-            filter.getLeftValue().accept(this);
-        }
-
-        if (filter.getRightValue() != null) {
-            filter.getRightValue().accept(this);
-        }
-    }
 
     /**
      * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor 
      * was set.
      */
     protected Object visit( BinaryComparisonOperator filter, Object data ) {
-    	if ( expressionVisitor != null ) {
-    		if ( filter.getExpression1() != null ) {
-        		filter.getExpression1().accept( expressionVisitor , data );
-        	}
-        	if ( filter.getExpression2() != null ) {
-        		filter.getExpression2().accept( expressionVisitor , data );
-        	}	
-    	}
-    	
+        if (expressionVisitor != null) {
+            if (filter.getExpression1() != null) {
+                filter.getExpression1().accept(expressionVisitor, data);
+            }
+            if (filter.getExpression2() != null) {
+                filter.getExpression2().accept(expressionVisitor, data);
+            }
+        }
     	return filter;
     }
     
@@ -269,20 +208,6 @@ public class AbstractFilterVisitor implements org.geotools.filter.FilterVisitor,
     	return visit( (BinaryComparisonOperator) filter, data );
     }
     
-    
-    /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.GeometryFilter)
-     */
-    public void visit(GeometryFilter filter) {
-        if (filter.getLeftGeometry() != null) {
-            filter.getLeftGeometry().accept(this);
-        }
-
-        if (filter.getRightGeometry() != null) {
-            filter.getRightGeometry().accept(this);
-        }
-    }
-    
     /**
      * does nothing
      */
@@ -295,16 +220,15 @@ public class AbstractFilterVisitor implements org.geotools.filter.FilterVisitor,
      * set.
      */
     protected Object visit( BinarySpatialOperator filter, Object data ) {
-    	if ( expressionVisitor != null ) {
-    		if ( filter.getExpression1() != null ) {
-    			filter.getExpression1().accept( expressionVisitor, data );
-    		}
-    		if ( filter.getExpression2() != null ) {
-    			filter.getExpression2().accept( expressionVisitor, data );
-    		}
-    	}
-    	
-    	return filter;
+        if (expressionVisitor != null) {
+            if (filter.getExpression1() != null) {
+                filter.getExpression1().accept(expressionVisitor, data);
+            }
+            if (filter.getExpression2() != null) {
+                filter.getExpression2().accept(expressionVisitor, data);
+            }
+        }
+        return filter;
     }
     
     /**
@@ -379,50 +303,27 @@ public class AbstractFilterVisitor implements org.geotools.filter.FilterVisitor,
     }
 
     /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.LikeFilter)
-     * @deprecated use {@link #visit(PropertyIsLike, Object)}
-     */
-    public void visit(LikeFilter filter) {
-        if (filter.getValue() != null) {
-            filter.getValue().accept(this);
-        }
-    }
-
-    /**
      * Visits filter.getExpression() if an expression visitor was set.
      */
     public Object visit( PropertyIsLike filter, Object data ) {
-    	if ( expressionVisitor != null ) {
-    		if ( filter.getExpression() != null ) {
-    			filter.getExpression().accept( expressionVisitor, null );	
-    		}
-    	}
-    	
-    	return filter;
-    }
-    
-    /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.LogicFilter)
-     * @deprecated use one of {@link #visit(And, Object)},{@link #visit(Or, Object)},
-     * 	{@link #visit(Not, Object)}
-     */
-    public void visit(LogicFilter filter) {
-        for (Iterator it = filter.getFilterIterator(); it.hasNext();) {
-            Filters.accept((org.opengis.filter.Filter)it.next(),this);
+        if (expressionVisitor != null) {
+            if (filter.getExpression() != null) {
+                filter.getExpression().accept(expressionVisitor, null);
+            }
         }
+        return filter;
     }
 
     /**
      * Visits elements of filter.getChildren().
      */
     protected Object visit( BinaryLogicOperator filter, Object data ) {
-    	if ( filter.getChildren() != null ) {
-    		for ( Iterator i = filter.getChildren().iterator(); i.hasNext(); ) {
-        		org.opengis.filter.Filter child = (org.opengis.filter.Filter) i.next();
-        		child.accept( this, data );
-        	}	
-    	}
-    	
+        if (filter.getChildren() != null) {
+            for (Iterator<Filter> i = filter.getChildren().iterator(); i.hasNext();) {
+                Filter child = i.next();
+                child.accept(this, data);
+            }
+        }
     	return filter;
     }
     
@@ -450,18 +351,6 @@ public class AbstractFilterVisitor implements org.geotools.filter.FilterVisitor,
     	return filter;
     }
     
-    
-    
-    /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.NullFilter)
-     * @deprecated use {@link #visit(PropertyIsNull, Object)}
-     */
-    public void visit(NullFilter filter) {
-        if (filter.getNullCheckValue() != null) {
-            filter.getNullCheckValue().accept(this);
-        }
-    }
-
     /**
      * Visits filter.getExpression() if an expression visitor was set.
      */
@@ -488,68 +377,11 @@ public class AbstractFilterVisitor implements org.geotools.filter.FilterVisitor,
     }
 
     /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.FidFilter)
-     * @deprecated use {@link #visit(Id, Object)} 
-     */
-    public void visit(FidFilter filter) {
-        // nothing to do, the feature id is implicit and should always be
-        // included, but cannot be derived from the filter itself 
-    }
-
-    /**
      * Does nothing.
      */
     public Object visit( Id filter, Object data ) {
     	//do nothing
     	return filter;
-    }
-    
-    /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.AttributeExpression)
-     */
-    public void visit(AttributeExpression expression) {
-       //nothing to do
-    }
-
-    
-    /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.Expression)
-     */
-    public void visit(Expression expression) {
-      // nothing to do
-    }
-
-    /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.LiteralExpression)
-     */
-    public void visit(LiteralExpression expression) {
-        // nothing to do
-    }
-
-    /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.MathExpression)
-     */
-    public void visit(MathExpression expression) {
-        if (expression.getLeftValue() != null) {
-            expression.getLeftValue().accept(this);
-        }
-
-        if (expression.getRightValue() != null) {
-            expression.getRightValue().accept(this);
-        }
-    }
-
-    /**
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.FunctionExpression)
-     */
-    public void visit(FunctionExpression expression) {
-        Expression[] args = expression.getArgs();
-
-        for (int i = 0; i < args.length; i++) {
-            if (args[i] != null) {
-                args[i].accept(this);
-            }
-        }
     }
 
     public Object visit(After after, Object extraData) {
@@ -620,4 +452,11 @@ public class AbstractFilterVisitor implements org.geotools.filter.FilterVisitor,
 
         return filter;
     }
+
+    @Override
+    public String toString() {
+        String name = getClass().getSimpleName();
+        return "AbstractFilterVisitor "+name+" [expressionVisitor=" + expressionVisitor + "]";
+    }
+    
 }

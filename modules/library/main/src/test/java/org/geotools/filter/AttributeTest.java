@@ -91,7 +91,7 @@ public class AttributeTest extends TestCase {
         AttributeExpressionImpl e2 = new AttributeExpressionImpl(schema, "name");
         boolean pass = false;
         Object value = null;
-        value = e1.getValue(f[0]);
+        value = e1.evaluate(f[0]);
 
         if (value instanceof Integer) {
             pass = true;
@@ -100,7 +100,7 @@ public class AttributeTest extends TestCase {
         assertTrue("String expresion returned an Integer", pass);
         pass = false;
 
-        value = e2.getValue(f[0]);
+        value = e2.evaluate(f[0]);
 
         if (value instanceof String) {
             pass = true;
@@ -117,10 +117,10 @@ public class AttributeTest extends TestCase {
         AttributeExpressionImpl e1 = new AttributeExpressionImpl(schema, "value");
         AttributeExpressionImpl e2 = new AttributeExpressionImpl(schema, "name");
 
-        assertEquals(12d, ((Integer) e1.getValue(f[0])).doubleValue(), 0);
-        assertEquals(3d, ((Integer) e1.getValue(f[1])).doubleValue(), 0);
-        assertEquals(15d, ((Integer) e1.getValue(f[2])).doubleValue(), 0);
-        assertEquals("first", (String) e2.getValue(f[0]));
-        assertEquals("second", (String) e2.getValue(f[1]));
+        assertEquals(12d, ((Integer) e1.evaluate(f[0])).doubleValue(), 0);
+        assertEquals(3d, ((Integer) e1.evaluate(f[1])).doubleValue(), 0);
+        assertEquals(15d, ((Integer) e1.evaluate(f[2])).doubleValue(), 0);
+        assertEquals("first", (String) e2.evaluate(f[0]));
+        assertEquals("second", (String) e2.evaluate(f[1]));
     }
 }

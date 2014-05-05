@@ -30,7 +30,7 @@ public class FilterFunction_minimumRectangleTest {
     @Test
     public void testGetArgCount() {
         FilterFunction_minimumRectangle f = new FilterFunction_minimumRectangle();
-        assertEquals(1, f.getArgCount());
+        assertEquals(1, f.getFunctionName().getArgumentCount());
     }
 
     /**

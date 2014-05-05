@@ -964,15 +964,15 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         if (filter == null)
             throw new NullPointerException(
                     "Filter to be encoded cannot be null");
-        if (!(filter instanceof BinaryComparisonOperator))
+        if (!(filter instanceof BinarySpatialOperator))
             throw new IllegalArgumentException(
-                    "This filter is not a binary comparison, "
+                    "This filter is not a binary spatial operator, "
                             + "can't do SDO relate against it: "
                             + filter.getClass());
 
         
         // extract the property name and the geometry literal
-        BinaryComparisonOperator op = (BinaryComparisonOperator) filter;
+        BinarySpatialOperator op = (BinarySpatialOperator) filter;
         Expression e1 = op.getExpression1();
         Expression e2 = op.getExpression2();
 

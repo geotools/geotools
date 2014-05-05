@@ -229,7 +229,7 @@ public class WFSFeatureSource extends AbstractFeatureSource implements SimpleFea
     }
 
     /**
-     * @see org.geotools.data.FeatureSource#getFeatures(org.geotools.filter.Filter)
+     * @see org.geotools.data.FeatureSource#getFeatures(Filter)
      */
     public SimpleFeatureCollection getFeatures( Filter filter )
             throws IOException {

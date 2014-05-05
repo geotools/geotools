@@ -76,9 +76,9 @@ public class BetweenTest extends TestCase {
         ftb.setName("testSchema");
         SimpleFeatureType schema = ftb.buildFeatureType();
 
-        a.addLeftValue(new LiteralExpressionImpl(new Double(5)));
-        a.addRightValue(new LiteralExpressionImpl(new Double(15)));
-        a.addMiddleValue(new AttributeExpressionImpl(schema, "value"));
+        a.setExpression1(new LiteralExpressionImpl(new Double(5)));
+        a.setExpression2(new LiteralExpressionImpl(new Double(15)));
+        a.setExpression(new AttributeExpressionImpl(schema, "value"));
 
         //FlatFeatureFactory fFac = new FlatFeatureFactory(schema);
         LOGGER.fine("geometry is " + schema.getDescriptor("geometry"));
@@ -103,11 +103,11 @@ public class BetweenTest extends TestCase {
                     new Integer(30), gf.createPoint(new Coordinate(30,30))
                 }, null);
 
-        assertEquals(true, a.contains(f1)); // in between
-        assertEquals(false, a.contains(f2)); // too small
-        assertEquals(true, a.contains(f3)); // max value
-        assertEquals(true, a.contains(f4)); // min value
-        assertEquals(false, a.contains(f5)); // too large
+        assertEquals(true, a.evaluate(f1)); // in between
+        assertEquals(false, a.evaluate(f2)); // too small
+        assertEquals(true, a.evaluate(f3)); // max value
+        assertEquals(true, a.evaluate(f4)); // min value
+        assertEquals(false, a.evaluate(f5)); // too large
     }
 
     public void testEquals() throws Exception {

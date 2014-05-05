@@ -30,7 +30,7 @@ public class FilterFunction_minimumCircleTest {
     @Test
     public void testGetArgCount() {
         FilterFunction_minimumCircle f = new FilterFunction_minimumCircle();
-        assertEquals(1, f.getArgCount());
+        assertEquals(1, f.getFunctionName().getArgumentCount());
     }
 
     /**

@@ -24,11 +24,6 @@ public class ReprojectCollectionFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
-    @Override
-    public int getArgCount() {
-        return -1;
-    }
-
     public Object evaluate(Object object) {
         String targetCRS = getAttribute(object, 0, String.class, true);
         try {

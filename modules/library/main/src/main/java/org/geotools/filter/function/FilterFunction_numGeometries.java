@@ -40,10 +40,6 @@ public class FilterFunction_numGeometries extends FunctionExpressionImpl {
         super(NAME);
     }
 
-    public int getArgCount() {
-        return 1;
-    }
-
     public Object evaluate(Object feature) {
         Geometry arg0;
 

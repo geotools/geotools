@@ -118,13 +118,11 @@ public class DefaultFunctionFactory implements FunctionFactory {
         }
         if( functionName == null ){
             int argc;
-            if( function instanceof FunctionExpression ){
-                argc = ((FunctionExpression)function).getArgCount();
-            }
-            else {
-                argc = function.getParameters().size();
-            }
+            argc = function.getParameters().size();
             functionName = filterFactory.functionName(name, argc );
+            if( !functionName.getName().equals(name )){
+                LOGGER.warning( function.getClass() +" FunctionName was null, used for etArgumentCount(): "+functionName );
+            }
         }
         else {
             if( !functionName.getName().equals(name )){

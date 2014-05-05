@@ -212,15 +212,6 @@ public class EnvFunction extends FunctionExpressionImpl {
 
     /**
      * {@inheritDoc}
-     * @return Always returns 1
-     */
-    @Override
-    public int getArgCount() {
-        return 1;
-    }
-
-    /**
-     * {@inheritDoc}
      * The variable name to search for is provided as the single argument to
      * this function. The active thread's local lookup table is searched first.
      * If the name is not found there the global table is searched.
@@ -240,7 +231,7 @@ public class EnvFunction extends FunctionExpressionImpl {
         // Still no result - check if there is a default
         if (value == null) {
             final int paramSize = getParameters().size();
-            if (paramSize > getArgCount()) {
+            if (paramSize > NAME.getArgumentCount()) {
                 value = getExpression(paramSize - 1).evaluate(feature);
             }
         }
@@ -259,7 +250,7 @@ public class EnvFunction extends FunctionExpressionImpl {
             throw new NullPointerException("params can't be null");
         }
 
-        final int argCount = getArgCount();
+        final int argCount = NAME.getArgumentCount();
         final int paramsSize = params.size();
         if(paramsSize < argCount || paramsSize > argCount + 1){
             throw new IllegalArgumentException(

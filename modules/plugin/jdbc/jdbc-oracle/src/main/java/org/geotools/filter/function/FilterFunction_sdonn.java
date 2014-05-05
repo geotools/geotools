@@ -42,11 +42,6 @@ public class FilterFunction_sdonn extends FunctionExpressionImpl implements Vola
     }
 
     @Override
-    public int getArgCount() {
-        return 0;
-    }
-
-    @Override
     public Object evaluate(Object feature) {
         throw new UnsupportedOperationException("Unsupported usage of SDO_NN Oracle function");
     }

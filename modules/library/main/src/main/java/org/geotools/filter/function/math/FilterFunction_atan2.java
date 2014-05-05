@@ -44,10 +44,6 @@ public class FilterFunction_atan2 extends FunctionExpressionImpl {
         functionName = NAME;
     }
 
-    public int getArgCount() {
-        return 2;
-    }
-
     public Object evaluate(Object feature) {
         double arg0;
         double arg1;

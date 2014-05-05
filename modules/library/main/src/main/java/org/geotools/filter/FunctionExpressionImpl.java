@@ -113,7 +113,7 @@ public abstract class FunctionExpressionImpl
     
     public synchronized FunctionName getFunctionName() {
         if( functionName == null ){
-            functionName = new FunctionNameImpl( getName(), getArgCount() );
+            functionName = new FunctionNameImpl( getName(), functionName.getArgumentCount() );
         }
         return functionName;
     }
@@ -139,34 +139,13 @@ public abstract class FunctionExpressionImpl
         if(params == null){
             throw new NullPointerException("Function parameters required");
         }
-        final int argCount = getArgCount();
+        final int argCount = functionName.getArgumentCount();
         final int paramsSize = params.size();
         if(argCount > 0 && argCount != paramsSize){
             throw new IllegalArgumentException("Function "+name+" expected " + argCount + 
                     " arguments, got " + paramsSize);
         }
     	this.params = new ArrayList<Expression>(params);
-    }
-
-    /**
-     * Gets the number of arguments that are set.
-     *
-     * @return the number of args.
-     */
-    public int getArgCount() {
-        if (functionName != null && functionName.getArguments() != null) {
-            int count = 0;
-            for (Parameter<?> argument : functionName.getArguments()) {
-                if (argument.getMinOccurs() != argument.getMaxOccurs()) {
-                    return -1;
-                } else {
-                    count += argument.getMinOccurs();
-                }
-            }
-            return count;
-        } else {
-            return 0;
-        }
     }
 
     /**

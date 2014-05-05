@@ -42,11 +42,7 @@ public class FilterFunction_min_4 extends FunctionExpressionImpl {
         super("min_4");
         functionName = NAME;
     }
-
-    public int getArgCount() {
-        return 2;
-    }
-
+    
     public Object evaluate(Object feature) {
         int arg0;
         int arg1;

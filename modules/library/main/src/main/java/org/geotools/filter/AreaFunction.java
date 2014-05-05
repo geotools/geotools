@@ -57,11 +57,6 @@ public class AreaFunction extends FunctionExpressionImpl {
     	
     	return new Double( getArea( g ));
     }
-    
-    public int getArgCount() {
-        return 1;
-    }
-    
 
     /**
      * Returns the area of a GeometryCollection.

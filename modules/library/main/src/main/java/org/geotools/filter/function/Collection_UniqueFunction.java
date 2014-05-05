@@ -63,10 +63,6 @@ public class Collection_UniqueFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
-    public int getArgCount() {
-        return 1;
-    }
-
     /**
      * Calculate unique (using FeatureCalc) - only one parameter is used.
      *

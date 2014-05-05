@@ -42,11 +42,6 @@ public class AttributeRenameFunction extends FunctionExpressionImpl implements
     public AttributeRenameFunction() {
         super(NAME);
     }
-    
-    @Override
-    public int getArgCount() {
-        return -1;
-    }
 
     public Object evaluate(Object object) {
         String source = getAttribute(object, 0, String.class, true);

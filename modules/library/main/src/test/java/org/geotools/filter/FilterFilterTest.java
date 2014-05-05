@@ -33,6 +33,7 @@ import junit.framework.TestCase;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
 import org.geotools.util.logging.Logging;
+import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.expression.Literal;
@@ -283,11 +284,11 @@ StringReader reader = new StringReader( filter );
         
         assertEquals(1, contentHandler.filters.size());
         Filter f = (Filter)contentHandler.filters.get(0);
-        assertTrue(f instanceof LogicFilter);
+        assertTrue(f instanceof BinaryLogicOperator);
         assertEquals(FilterType.LOGIC_OR, Filters.getFilterType(f));
         
         int i = 0;
-        for(Iterator<org.opengis.filter.Filter> filters = ((LogicFilter)f).getChildren().iterator(); filters.hasNext(); i++){
+        for(Iterator<org.opengis.filter.Filter> filters = ((BinaryLogicOperator)f).getChildren().iterator(); filters.hasNext(); i++){
             BinaryComparisonOperator subFitler = (BinaryComparisonOperator) filters.next();
             StringBuffer attName = new StringBuffer();
             for(int repCount = 0; repCount <= i; repCount++){

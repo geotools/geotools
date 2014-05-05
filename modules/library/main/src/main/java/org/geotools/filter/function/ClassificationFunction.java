@@ -57,10 +57,7 @@ public abstract class ClassificationFunction extends DefaultExpression implement
     public ClassificationFunction(FunctionName name) {
         this.name = name;
     }
-    
-    public int getArgCount() {
-        return name.getArgumentNames().size();
-    }
+
     
     /**
      * @see org.opengis.filter.expression.Expression#accept(ExpressionVisitor, Object)

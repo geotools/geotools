@@ -29,10 +29,6 @@ public class IDFunctionExpression extends FunctionExpressionImpl {
         super("getID");
     }
 
-    public int getArgCount() {
-        return 0;
-    }
-
     public Object evaluate(Object obj) {
         if (obj instanceof Attribute) {
             Attribute att = (Attribute) obj;

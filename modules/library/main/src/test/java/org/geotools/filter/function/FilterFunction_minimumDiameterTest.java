@@ -30,7 +30,7 @@ public class FilterFunction_minimumDiameterTest {
     @Test
     public void testGetArgCount() {
         FilterFunction_minimumDiameter f = new FilterFunction_minimumDiameter();
-        assertEquals(1, f.getArgCount());
+        assertEquals(1, f.getFunctionName().getArgumentCount());
     }
 
     /**

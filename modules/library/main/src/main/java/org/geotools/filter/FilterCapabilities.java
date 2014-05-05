@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.opengis.filter.And;
+import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
@@ -394,14 +395,19 @@ public class FilterCapabilities {
 
         short filterType = Filters.getFilterType(filter);
 
-        if (AbstractFilter.isLogicFilter(filterType)) {
-            LogicFilter lf = (LogicFilter) filter;
-            
+        if (filter instanceof BinaryLogicOperator) {
+            BinaryLogicOperator lf = (BinaryLogicOperator) filter;
             for( Filter testFilter : lf.getChildren() ){
                 if (!(this.fullySupports(testFilter))) {
                     supports = false;
                     break;
                 }
+            }
+        }
+        else if (filter instanceof Not) {
+            Not lf = (Not) filter;
+            if (!(this.fullySupports(lf.getFilter()))) {
+                supports = false;
             }
         } else {
             supports = this.supports(filter);

@@ -45,10 +45,6 @@ public class FilterFunction_bufferWithSegments extends FunctionExpressionImpl {
         functionName = NAME;
     }
 
-    public int getArgCount() {
-        return 3;
-    }
-
     public Object evaluate(Object feature) {
         Geometry arg0;
         double arg1;

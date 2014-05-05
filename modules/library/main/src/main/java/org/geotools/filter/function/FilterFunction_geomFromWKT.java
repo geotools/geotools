@@ -41,10 +41,6 @@ public class FilterFunction_geomFromWKT extends FunctionExpressionImpl {
         functionName = NAME;
     }
 
-    public int getArgCount() {
-        return 1;
-    }
-
     public Object evaluate(Object feature) {
         String arg0;
 

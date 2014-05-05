@@ -18,55 +18,38 @@ package org.geotools.filter;
 
 import java.util.List;
 
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.geotools.factory.Factory;
 
 /**
- * Interface allowing Function to be directly used as a factory.
+ * Quick Function implementation for direct use as a factory.
  * <p>
- * To use a function implementation as a factory:
+ * Functions are published as part of DefaultFuntionFactory using the following workflow:
  * <ul>
- * <li>Function created using using either a no argument constructor, or a constructor that takes hints.
- *  {@link Factory#getImplementationHints()} used used to review the hints that are supported by the function
- *  implementation.</li>
+ * <li>Implementation listed with Service Provider Interface <code>org.opengis.filter.Function</code></li>
+ * <li>Object created using a no argument constructor (or a constructor that takes hints). {@link Factory#getImplementationHints()} used used to
+ * review the hints that are supported by the function implementation.</li>
  * <li>{@link #setParameters(List)} is used to supply the argument expressions.</li>
- * <li>Optionally {@link #setFallbackValue(Literal)} is used to supply a placeholder to be used if the function implementation
- * is not available</li>
+ * <li>{@link #setFallbackValue(Literal)} is used to supply a placeholder Literal to be used if the function implementation is not available</li>
  * </ul>
- *
+ * 
+ * All implements should be registered for service provider interface
+ * 
+ * <pre>
+ * org.opengis.filter.Function</code>
+ * DefaultFunctionFactor.
+ * 
+ * <p>
+ * If you have a large number of related functions consider the use of {@link FunctionFactory}.
+ * 
  * @author James Macgill, PSU
  * @author Jody Garnett (Boundless)
  * @see FunctionFactory
  * @source $URL$
- * @deprecated Use of FunctionFactory is preferred
  */
 public interface FunctionExpression extends Factory, Function {
-    /**
-     *  The number of arguments this <Function> requires.
-     *
-     *  For example &lt;Function name="strCat"&gt; [arg1][arg2]&lt;/Function&gt;.
-     *  This function must have EXACTLY 2 arguments, so this function
-     *  would return 2.
-     *  <p>
-     *  The parser might use this information to ensure validity,
-     *  and its also for reporting <Function> capabilities. Users interfaces also
-     *  use this information to prompt users for an appropriate number of parameters.
-     *  <p>
-     *  Update: This same information is available from FunctionName getArgumentCount()
-     *  with the following description:
-     * <ul>
-     * <li>Use a positive number to indicate the number of arguments.
-     *     Example: <code>add( number1, number2 ) = 2 </code></li>
-     * <li>Use a negative number to indicate a minimum number:
-     *    Example:  <code>concat( str1, str2,... ) has -2 </code></li>
-     * </ul> 
-     * FunctionName provides is part of the Filter 2.0 specification and provides
-     * argument name information - in addition to this simple cunt.
-     *
-     * @return the number of arguments required, same as FunctionName getArgumentCount()
-     */
-    int getArgCount();
     
     /**
      * Fallback value to use in the event the function is unavailable in the requested environment.

@@ -232,7 +232,7 @@ public class ExpressionSAXParser {
                         // currentState = "accumulate";  //leave unchanged
                         LOGGER.finer("just added a parameter for a function: " + currentState);
                                   
-                        if (  ((FunctionExpression) curExprssn).getArgCount() ==   accumalationOfExpressions.size())
+                        if (  ((FunctionExpression) curExprssn).getFunctionName().getArgumentCount() ==   accumalationOfExpressions.size())
                         {
                         	//hay, we've parsed all the arguments!
                         	currentState = "complete";

@@ -36,7 +36,7 @@ import org.opengis.filter.FilterVisitor;
  * @source $URL$
  * @version $Id$
  */
-public abstract class LogicFilterImpl extends BinaryLogicAbstract implements LogicFilter {
+public abstract class LogicFilterImpl extends BinaryLogicAbstract {
     /** The logger for the default core module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
 

@@ -43,10 +43,6 @@ public class FilterFunction_log extends FunctionExpressionImpl {
         functionName = NAME;
     }
 
-    public int getArgCount() {
-        return 1;
-    }
-
     public Object evaluate(Object feature) {
         double arg0;
 

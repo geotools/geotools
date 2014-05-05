@@ -307,7 +307,7 @@ public class EnvFunctionTest {
     public void testGetArgCount() {
         System.out.println("   getArgCount");
         EnvFunction fn = new EnvFunction();
-        assertEquals(1, fn.getArgCount());
+        assertEquals(1, fn.getFunctionName().getArgumentCount());
     }
 
     @Test

@@ -30,7 +30,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.Filters;
 import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.LogicFilter;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xml.filter.FilterComplexTypes.ExpressionType;
@@ -688,7 +687,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return LogicFilter.class;
+            return BinaryLogicOperator.class; // Not?
         }
 
         /**
@@ -707,7 +706,7 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof LogicFilter;
+            && (value instanceof BinaryLogicOperator || value instanceof Not);
         }
 
         /**
@@ -720,36 +719,37 @@ public class FilterOpsComplexTypes {
             if (!canEncode(element, value, hints)) {
                 return;
             }
-
-            LogicFilter lf = (LogicFilter) value;
-
-            switch ( Filters.getFilterType( lf )) {
-            case LOGIC_AND:
-                BinaryLogicOpType.getInstance().encode(new FilterElement(
-                        "And", BinaryLogicOpType.getInstance(), element),
-                    value, output, hints);
-
-                return;
-
-            case LOGIC_OR:
-
-                BinaryLogicOpType.getInstance().encode(new FilterElement("Or",
-                        BinaryLogicOpType.getInstance(), element), value,
-                    output, hints);
-
-                return;
-
-            case LOGIC_NOT:
+            if( value instanceof BinaryLogicOperator){
+                BinaryLogicOperator lf = (BinaryLogicOperator) value;
+    
+                switch ( Filters.getFilterType( lf )) {
+                case LOGIC_AND:
+                    BinaryLogicOpType.getInstance().encode(new FilterElement(
+                            "And", BinaryLogicOpType.getInstance(), element),
+                        value, output, hints);
+    
+                    return;
+    
+                case LOGIC_OR:
+    
+                    BinaryLogicOpType.getInstance().encode(new FilterElement("Or",
+                            BinaryLogicOpType.getInstance(), element), value,
+                        output, hints);
+    
+                    return;
+                }
+            }
+            else if ( value instanceof Not){
+                Not lf = (Not) value;
                 UnaryLogicOpType.getInstance().encode(new FilterElement("Not",
                         UnaryLogicOpType.getInstance(), element), value,
                     output, hints);
-
                 return;
             }
 
             throw new OperationNotSupportedException(
                 "Unknown filter type in LogicFilter: "
-                + lf.getClass().getName());
+                + value.getClass().getName());
         }
 
         /* (non-Javadoc)
@@ -2530,7 +2530,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return LogicFilter.class;
+            return BinaryLogicOperator.class;
         }
 
         /**
@@ -2549,7 +2549,7 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof LogicFilter;
+            && value instanceof BinaryLogicOperator;
         }
 
         /**
@@ -2562,8 +2562,7 @@ public class FilterOpsComplexTypes {
             if (!canEncode(element, value, hints)) {
                 return;
             }
-
-            LogicFilter lf = (LogicFilter) value;
+            BinaryLogicOperator lf = (BinaryLogicOperator) value;
             output.startElement(element.getNamespace(), element.getName(), null);
             for( org.opengis.filter.Filter f : lf.getChildren() ){
                 encodeFilter(f, output, hints);
@@ -2667,7 +2666,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return LogicFilter.class;
+            return Not.class;
         }
 
         /**
@@ -2686,7 +2685,7 @@ public class FilterOpsComplexTypes {
 
             return (element.getType() != null)
             && getName().equals(element.getType().getName())
-            && value instanceof LogicFilter;
+            && value instanceof Not;
         }
 
         /**
@@ -2699,22 +2698,10 @@ public class FilterOpsComplexTypes {
             if (!canEncode(element, value, hints)) {
                 return;
             }
-
-            LogicFilter lf = (LogicFilter) value;
+            Not lf = (Not) value;
             
             output.startElement(element.getNamespace(), element.getName(), null);
-            int c = 0;
-            for( org.opengis.filter.Filter f : lf.getChildren() ){
-                if (c < 1) {
-                    encodeFilter(f, output, hints);
-                    c++;
-                } else {
-                    throw new OperationNotSupportedException(
-                            "Invalid Not Filter -- more than one child filter.");
-                }
-                c++;
-            }
-
+            encodeFilter(lf.getFilter(), output, hints);
             output.endElement(element.getNamespace(), element.getName());
         }
     }

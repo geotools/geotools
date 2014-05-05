@@ -66,10 +66,6 @@ public class Collection_MaxFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
-    public int getArgCount() {
-        return 1;
-    }
-
     /**
      * Calculate maximum (using FeatureCalc) - only one parameter is used.
      *

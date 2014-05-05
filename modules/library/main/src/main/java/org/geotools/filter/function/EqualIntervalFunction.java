@@ -183,9 +183,5 @@ public class EqualIntervalFunction extends ClassificationFunction {
         }
         return calculate((SimpleFeatureCollection) object);
     }
-
-    public int getArgCount() {
-        return 2;
-    }
     
 }

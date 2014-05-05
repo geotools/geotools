@@ -63,10 +63,6 @@ public class Collection_MinFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
-    public int getArgCount() {
-        return 1;
-    }
-
     /**
      * Calculate minimum (using FeatureCalc) - only one parameter is used.
      *

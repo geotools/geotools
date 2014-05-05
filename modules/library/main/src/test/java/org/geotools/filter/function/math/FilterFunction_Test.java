@@ -73,7 +73,7 @@ public class FilterFunction_Test extends TestCase {
         try {
             FilterFunction_sin sin = (FilterFunction_sin) ff.function("sin", org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "sin", sin.getName());
-            assertEquals("Number of arguments, ", 1, sin.getArgCount());
+            assertEquals("Number of arguments, ", 1, sin.getFunctionName().getArgumentCount());
 
             Function sinFunction = ff.function("sin", literal_1);
             double good0 = Math.sin(1.0);
@@ -152,7 +152,7 @@ public class FilterFunction_Test extends TestCase {
 
             FilterFunction_cos cos = (FilterFunction_cos) ff.function("cos", org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "cos", cos.getName());
-            assertEquals("Number of arguments, ", 1, cos.getArgCount());
+            assertEquals("Number of arguments, ", 1, cos.getFunctionName().getArgumentCount());
 
             Function cosFunction = ff.function("cos", literal_1);
             double good0 = Math.cos(1.0);
@@ -233,7 +233,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_tan tan = (FilterFunction_tan) ff.function("tan", 
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "tan", tan.getName());
-            assertEquals("Number of arguments, ", 1, tan.getArgCount());
+            assertEquals("Number of arguments, ", 1, tan.getFunctionName().getArgumentCount());
 
             Function tanFunction = ff.function("tan", literal_1);
             double good0 = Math.tan(1.0);
@@ -314,7 +314,7 @@ public class FilterFunction_Test extends TestCase {
                     org.opengis.filter.expression.Expression.NIL,
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "atan2", atan2.getName());
-            assertEquals("Number of arguments, ", 2, atan2.getArgCount());
+            assertEquals("Number of arguments, ", 2, atan2.getFunctionName().getArgumentCount());
 
             Function atan2Function = ff.function("atan2", literal_1, literal_m1);
             double good0 = Math.atan2(1.0, -1.0);
@@ -402,7 +402,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_sqrt sqrt = (FilterFunction_sqrt) ff.function("sqrt", 
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "sqrt", sqrt.getName());
-            assertEquals("Number of arguments, ", 1, sqrt.getArgCount());
+            assertEquals("Number of arguments, ", 1, sqrt.getFunctionName().getArgumentCount());
 
             Function sqrtFunction = ff.function("sqrt", literal_1);
             double good0 = Math.sqrt(1.0);
@@ -483,7 +483,7 @@ public class FilterFunction_Test extends TestCase {
                     org.opengis.filter.expression.Expression.NIL,
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "pow", pow.getName());
-            assertEquals("Number of arguments, ", 2, pow.getArgCount());
+            assertEquals("Number of arguments, ", 2, pow.getFunctionName().getArgumentCount());
 
             Function powFunction = ff.function("pow", literal_1, literal_m1);
             double good0 = Math.pow(1.0, -1.0);
@@ -571,7 +571,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_min_4 min_4 = (FilterFunction_min_4) ff.function("min_4", 
                     new org.opengis.filter.expression.Expression[2]);
             assertEquals("Name is, ", "min_4", min_4.getName());
-            assertEquals("Number of arguments, ", 2, min_4.getArgCount());
+            assertEquals("Number of arguments, ", 2, min_4.getFunctionName().getArgumentCount());
 
             Function min_4Function = ff.function("min_4", literal_1, literal_m1);
             assertEquals("min of (1.0,-1.0):", (long) Math.min(1.0, -1.0),
@@ -610,7 +610,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_min_2 min_2 = (FilterFunction_min_2) ff.function("min_2", 
                     new org.opengis.filter.expression.Expression[2]);
             assertEquals("Name is, ", "min_2", min_2.getName());
-            assertEquals("Number of arguments, ", 2, min_2.getArgCount());
+            assertEquals("Number of arguments, ", 2, min_2.getFunctionName().getArgumentCount());
 
             Function min_2Function = ff.function("min_2", literal_1, literal_m1);
             assertEquals("min of (1.0,-1.0):", (long) Math.min(1.0, -1.0),
@@ -649,7 +649,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_min_3 min_3 = (FilterFunction_min_3) ff.function("min_3", 
                     new org.opengis.filter.expression.Expression[2]);
             assertEquals("Name is, ", "min_3", min_3.getName());
-            assertEquals("Number of arguments, ", 2, min_3.getArgCount());
+            assertEquals("Number of arguments, ", 2, min_3.getFunctionName().getArgumentCount());
 
             Function min_3Function = ff.function("min_3", literal_1, literal_m1);
             assertEquals("min of (1.0,-1.0):", (float) Math.min(1.0, -1.0),
@@ -688,7 +688,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_min min = (FilterFunction_min) ff.function("min", 
                     new org.opengis.filter.expression.Expression[2]);
             assertEquals("Name is, ", "min", min.getName());
-            assertEquals("Number of arguments, ", 2, min.getArgCount());
+            assertEquals("Number of arguments, ", 2, min.getFunctionName().getArgumentCount());
 
             Function minFunction = ff.function("min", literal_1, literal_m1);
             assertEquals("min of (1.0,-1.0):", (double) Math.min(1.0, -1.0),
@@ -727,7 +727,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_max_4 max_4 = (FilterFunction_max_4) ff.function("max_4", 
                     new org.opengis.filter.expression.Expression[2]);
             assertEquals("Name is, ", "max_4", max_4.getName());
-            assertEquals("Number of arguments, ", 2, max_4.getArgCount());
+            assertEquals("Number of arguments, ", 2, max_4.getFunctionName().getArgumentCount());
 
             Function max_4Function = ff.function("max_4", literal_1, literal_m1);
             assertEquals("max_4 of (1.0,-1.0):", (int) Math.max(1.0, -1.0),
@@ -766,7 +766,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_max_2 max_2 = (FilterFunction_max_2) ff.function("max_2", 
                     new org.opengis.filter.expression.Expression[2]);
             assertEquals("Name is, ", "max_2", max_2.getName());
-            assertEquals("Number of arguments, ", 2, max_2.getArgCount());
+            assertEquals("Number of arguments, ", 2, max_2.getFunctionName().getArgumentCount());
 
             Function max_2Function = ff.function("max_2", literal_1, literal_m1);
             assertEquals("max_2 of (1.0,-1.0):", (long) Math.max(1.0, -1.0),
@@ -805,7 +805,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_max_3 max_3 = (FilterFunction_max_3) ff.function("max_3", 
                     new org.opengis.filter.expression.Expression[2]);
             assertEquals("Name is, ", "max_3", max_3.getName());
-            assertEquals("Number of arguments, ", 2, max_3.getArgCount());
+            assertEquals("Number of arguments, ", 2, max_3.getFunctionName().getArgumentCount());
 
             Function max_3Function = ff.function("max_3", literal_1, literal_m1);
             assertEquals("max_3 of (1.0,-1.0):", (float) Math.max(1.0, -1.0),
@@ -844,7 +844,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_max max = (FilterFunction_max) ff.function("max", 
                     new org.opengis.filter.expression.Expression[2]);
             assertEquals("Name is, ", "max", max.getName());
-            assertEquals("Number of arguments, ", 2, max.getArgCount());
+            assertEquals("Number of arguments, ", 2, max.getFunctionName().getArgumentCount());
 
             Function maxFunction = ff.function("max", literal_1, literal_m1);
             assertEquals("max of (1.0,-1.0):", (double) Math.max(1.0, -1.0),
@@ -882,7 +882,7 @@ public class FilterFunction_Test extends TestCase {
         try {
             FilterFunction_abs abs = (FilterFunction_abs) ff.function("abs", org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "abs", abs.getName());
-            assertEquals("Number of arguments, ", 1, abs.getArgCount());
+            assertEquals("Number of arguments, ", 1, abs.getFunctionName().getArgumentCount());
 
             Function absFunction = ff.function("abs", literal_1);
             assertEquals("abs of (1.0):", (int) Math.abs(1.0),
@@ -919,7 +919,7 @@ public class FilterFunction_Test extends TestCase {
         try {
             FilterFunction_abs_4 abs_4 = (FilterFunction_abs_4) ff.function("abs_4", org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "abs_4", abs_4.getName());
-            assertEquals("Number of arguments, ", 1, abs_4.getArgCount());
+            assertEquals("Number of arguments, ", 1, abs_4.getFunctionName().getArgumentCount());
 
             Function abs_4Function = ff.function("abs_4", literal_1);
             assertEquals("abs_4 of (1.0):", (double) Math.abs(1.0),
@@ -956,7 +956,7 @@ public class FilterFunction_Test extends TestCase {
         try {
             FilterFunction_abs_3 abs_3 = (FilterFunction_abs_3) ff.function("abs_3", org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "abs_3", abs_3.getName());
-            assertEquals("Number of arguments, ", 1, abs_3.getArgCount());
+            assertEquals("Number of arguments, ", 1, abs_3.getFunctionName().getArgumentCount());
 
             Function abs_3Function = ff.function("abs_3", literal_1);
             assertEquals("abs_3 of (1.0):", (float) Math.abs(1.0),
@@ -993,7 +993,7 @@ public class FilterFunction_Test extends TestCase {
         try {
             FilterFunction_abs_2 abs_2 = (FilterFunction_abs_2) ff.function("abs_2", org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "abs_2", abs_2.getName());
-            assertEquals("Number of arguments, ", 1, abs_2.getArgCount());
+            assertEquals("Number of arguments, ", 1, abs_2.getFunctionName().getArgumentCount());
 
             Function abs_2Function = ff.function("abs_2", literal_1);
             assertEquals("abs_2 of (1.0):", (long) Math.abs(1.0),
@@ -1032,7 +1032,7 @@ public class FilterFunction_Test extends TestCase {
                     org.opengis.filter.expression.Expression.NIL,
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "IEEEremainder", IEEEremainder.getName());
-            assertEquals("Number of arguments, ", 2, IEEEremainder.getArgCount());
+            assertEquals("Number of arguments, ", 2, IEEEremainder.getFunctionName().getArgumentCount());
 
             Function IEEEremainderFunction = ff.function("IEEEremainder", literal_1, literal_m1);
             double good0 = Math.IEEEremainder(1.0, -1.0);
@@ -1120,7 +1120,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_acos acos = (FilterFunction_acos) ff.function("acos", 
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "acos", acos.getName());
-            assertEquals("Number of arguments, ", 1, acos.getArgCount());
+            assertEquals("Number of arguments, ", 1, acos.getFunctionName().getArgumentCount());
 
             Function acosFunction = ff.function("acos", literal_1);
             double good0 = Math.acos(1.0);
@@ -1200,7 +1200,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_asin asin = (FilterFunction_asin) ff.function("asin", 
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "asin", asin.getName());
-            assertEquals("Number of arguments, ", 1, asin.getArgCount());
+            assertEquals("Number of arguments, ", 1, asin.getFunctionName().getArgumentCount());
 
             Function asinFunction = ff.function("asin", literal_1);
             double good0 = Math.asin(1.0);
@@ -1280,7 +1280,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_atan atan = (FilterFunction_atan) ff.function("atan", 
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "atan", atan.getName());
-            assertEquals("Number of arguments, ", 1, atan.getArgCount());
+            assertEquals("Number of arguments, ", 1, atan.getFunctionName().getArgumentCount());
 
             Function atanFunction = ff.function("atan", literal_1);
             double good0 = Math.atan(1.0);
@@ -1360,7 +1360,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_ceil ceil = (FilterFunction_ceil) ff.function("ceil", 
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "ceil", ceil.getName());
-            assertEquals("Number of arguments, ", 1, ceil.getArgCount());
+            assertEquals("Number of arguments, ", 1, ceil.getFunctionName().getArgumentCount());
 
             Function ceilFunction = ff.function("ceil", literal_1);
             double good0 = Math.ceil(1.0);
@@ -1440,7 +1440,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_exp exp = (FilterFunction_exp) ff.function("exp", 
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "exp", exp.getName());
-            assertEquals("Number of arguments, ", 1, exp.getArgCount());
+            assertEquals("Number of arguments, ", 1, exp.getFunctionName().getArgumentCount());
 
             Function expFunction = ff.function("exp", literal_1);
             double good0 = Math.exp(1.0);
@@ -1520,7 +1520,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_floor floor = (FilterFunction_floor) ff.function("floor", 
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "floor", floor.getName());
-            assertEquals("Number of arguments, ", 1, floor.getArgCount());
+            assertEquals("Number of arguments, ", 1, floor.getFunctionName().getArgumentCount());
 
             Function floorFunction = ff.function("floor", literal_1);
             double good0 = Math.floor(1.0);
@@ -1600,7 +1600,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_log log = (FilterFunction_log) ff.function("log", 
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "log", log.getName());
-            assertEquals("Number of arguments, ", 1, log.getArgCount());
+            assertEquals("Number of arguments, ", 1, log.getFunctionName().getArgumentCount());
 
             Function logFunction = ff.function("log", literal_1);
             double good0 = Math.log(1.0);
@@ -1682,7 +1682,7 @@ public class FilterFunction_Test extends TestCase {
                     .function("random", new org.opengis.filter.expression.Expression[0]);
             assertEquals("Name is, ", "random", randomFunction.getName());
             assertEquals("Number of arguments, ", 0, randomFunction
-                    .getArgCount());
+                    .getFunctionName().getArgumentCount());
         } catch (FactoryRegistryException e) {
             e.printStackTrace();
             fail("Unexpected exception: " + e.getMessage());
@@ -1694,7 +1694,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_rint rint = (FilterFunction_rint) ff.function("rint", 
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "rint", rint.getName());
-            assertEquals("Number of arguments, ", 1, rint.getArgCount());
+            assertEquals("Number of arguments, ", 1, rint.getFunctionName().getArgumentCount());
 
             Function rintFunction = ff.function("rint", literal_1);
             double good0 = Math.rint(1.0);
@@ -1773,7 +1773,7 @@ public class FilterFunction_Test extends TestCase {
         try {
             FilterFunction_round round = (FilterFunction_round) ff.function("round", org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "round", round.getName());
-            assertEquals("Number of arguments, ", 1, round.getArgCount());
+            assertEquals("Number of arguments, ", 1, round.getFunctionName().getArgumentCount());
 
             Function roundFunction = ff.function("round", literal_1);
             assertEquals("round of (1.0):", (int) Math.round(1.0),
@@ -1810,7 +1810,7 @@ public class FilterFunction_Test extends TestCase {
         try {
             FilterFunction_round_2 round_2 = (FilterFunction_round_2) ff.function("round_2", org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "round_2", round_2.getName());
-            assertEquals("Number of arguments, ", 1, round_2.getArgCount());
+            assertEquals("Number of arguments, ", 1, round_2.getFunctionName().getArgumentCount());
 
             Function round_2Function = ff.function("round_2", literal_1);
             assertEquals("round_2 of (1.0):", (long) Math.round(1.0),
@@ -1848,7 +1848,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_toDegrees toDegrees = (FilterFunction_toDegrees) ff.function("toDegrees", 
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "toDegrees", toDegrees.getName());
-            assertEquals("Number of arguments, ", 1, toDegrees.getArgCount());
+            assertEquals("Number of arguments, ", 1, toDegrees.getFunctionName().getArgumentCount());
 
             Function toDegreesFunction = ff.function("toDegrees", literal_1);
             double good0 = Math.toDegrees(1.0);
@@ -1928,7 +1928,7 @@ public class FilterFunction_Test extends TestCase {
             FilterFunction_toRadians toRadians = (FilterFunction_toRadians) ff.function("toRadians", 
                     org.opengis.filter.expression.Expression.NIL);
             assertEquals("Name is, ", "toRadians", toRadians.getName());
-            assertEquals("Number of arguments, ", 1, toRadians.getArgCount());
+            assertEquals("Number of arguments, ", 1, toRadians.getFunctionName().getArgumentCount());
 
             Function toRadiansFunction = ff.function("toRadians", literal_1);
             double good0 = Math.toRadians(1.0);

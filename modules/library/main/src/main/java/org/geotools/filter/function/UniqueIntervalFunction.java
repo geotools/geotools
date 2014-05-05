@@ -138,7 +138,4 @@ public class UniqueIntervalFunction extends ClassificationFunction {
         return calculate((SimpleFeatureCollection) feature);
     }
 
-    public int getArgCount() {
-        return 2;
-    }
 }

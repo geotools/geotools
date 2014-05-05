@@ -30,7 +30,6 @@ import org.geotools.filter.FilterType;
 import org.geotools.filter.Filters;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.LogicFilter;
 import org.geotools.xml.XMLHandlerHints;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
@@ -220,7 +219,44 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         current.push(new Data(filter));
     }
 
-    public void visit(LogicFilter filter) {
+    public void visitLogicFilter(Not filter) {
+        int startSize = current.size();
+
+        try {
+            switch (this.complianceInt) {
+            case LOW:
+                current.push(new Data(filter));
+
+                break;
+
+            case MEDIUM:
+                filter.getFilter().accept(this, null );
+                current.push(createMediumLevelLogicFilter(
+                        Filters.getFilterType(filter), startSize));
+
+                break;
+
+            case HIGH:
+                filter.getFilter().accept(this,null);
+                current.push(createHighLevelLogicFilter(
+                        Filters.getFilterType(filter), startSize));
+
+                break;
+
+            default:
+                break;
+            }
+        } catch (Exception e) {
+            if (e instanceof UnsupportedFilterException) {
+                throw (UnsupportedFilterException) e;
+            }
+
+            throw new UnsupportedFilterException("Exception creating filter", e);
+        }
+    }
+    
+    
+    public void visit(BinaryLogicOperator filter) {
         int startSize = current.size();
 
         try {
@@ -410,12 +446,12 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             // not expected
             f = null;
         }        
-        return new Data(compressFilter(filterType, (LogicFilter) f));
+        return new Data(compressFilter(filterType, (BinaryLogicOperator) f));
     }
-
-    private org.opengis.filter.Filter compressFilter(short filterType, LogicFilter f)
+    
+    private org.opengis.filter.Filter compressFilter(short filterType, BinaryLogicOperator f)
         throws IllegalFilterException {
-        LogicFilter result;
+        BinaryLogicOperator result;
         int added = 0;
         List<org.opengis.filter.Filter> resultList = new ArrayList<org.opengis.filter.Filter>();
         
@@ -438,7 +474,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
                 return Filter.EXCLUDE;
             }
 
-            result = (LogicFilter) ff.and(resultList);
+            result = ff.and(resultList);
             break;
 
         case FilterType.LOGIC_OR:
@@ -460,7 +496,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
                 return Filter.EXCLUDE;
             }
 
-            result = (LogicFilter) ff.or(resultList);
+            result = ff.or(resultList);
             
             break;
 
@@ -480,9 +516,9 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
     }
 
-    private boolean contains( LogicFilter f, org.opengis.filter.Filter toFind) {
-        for (Iterator iter = f.getChildren().iterator(); iter.hasNext();) {
-            if( toFind.equals( iter.next() ) ){
+    private boolean contains( BinaryLogicOperator f, org.opengis.filter.Filter toFind) {
+        for (org.opengis.filter.Filter filter : f.getChildren()) {
+            if( toFind.equals( filter ) ){
                 return true;
             }
         }
@@ -628,9 +664,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     
     // FilterVisitor2 methods formally from FilterVisitorFilterWrapper
     protected void visitLogicFilter(org.opengis.filter.Filter filter) {
-        if (filter instanceof LogicFilter) {
-            visit((LogicFilter) filter);
-        }
+        visit((BinaryLogicOperator) filter);
     }
 
 protected void visitCompareFilter(org.opengis.filter.Filter filter) {

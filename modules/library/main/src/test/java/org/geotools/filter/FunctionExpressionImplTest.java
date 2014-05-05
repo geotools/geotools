@@ -60,12 +60,8 @@ public class FunctionExpressionImplTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        function = new FunctionExpressionImpl("testFunction") {
-            public int getArgCount() {
-                return 1;
-            }
+        function = new FunctionExpressionImpl( FunctionExpressionImpl.functionName("testFunction", "test:String",  "argument:String") ){
         };
-
         testVisitor = new TestExpressionVisitor();
     }
 
@@ -92,8 +88,7 @@ public class FunctionExpressionImplTest extends TestCase {
     }
 
     public void testGetName() {
-        FunctionExpressionImpl anonymous = new FunctionExpressionImpl("testFunction"){
-            
+        FunctionExpressionImpl anonymous = new FunctionExpressionImpl(FunctionExpressionImpl.functionName("testFunction","text:String")){
         };
         assertEquals("testFunction", anonymous.getName());
     }
@@ -132,7 +127,7 @@ public class FunctionExpressionImplTest extends TestCase {
         final List expected = Collections
                 .singletonList(new LiteralExpressionImpl(10d));
         function.setParameters(expected);
-        assertEquals(1, function.getArgCount());
+        assertEquals(1, function.getFunctionName().getArgumentCount());
     }
 
     public void testGetImplementationHints() {
@@ -230,7 +225,7 @@ public class FunctionExpressionImplTest extends TestCase {
     private void testDeprecatedMethods(FunctionExpression function, List<String> errors)
             throws InstantiationException, IllegalAccessException {
         final String functionClass = function.getClass().getName();
-        int argCount = function.getArgCount();
+        int argCount = function.getFunctionName().getArgumentCount();
         if (argCount < 0) { //unlimited parameters
             argCount = 5; //we'll try 5
         }

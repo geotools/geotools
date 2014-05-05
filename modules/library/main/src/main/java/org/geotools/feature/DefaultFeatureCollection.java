@@ -38,7 +38,6 @@ import org.geotools.feature.collection.FeatureIteratorImpl;
 import org.geotools.feature.collection.SimpleFeatureIteratorImpl;
 import org.geotools.feature.collection.SubFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.filter.SortBy2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.NullProgressListener;
 import org.opengis.feature.simple.SimpleFeature;
@@ -639,34 +638,12 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
      * 
      */
     public SimpleFeatureCollection sort(SortBy order) {
-    	if( order == SortBy.NATURAL_ORDER ){
-    		return this;
-    	}
-    	if( order instanceof SortBy2){
-    		SortBy2 advanced = (SortBy2) order;
-    		return sort( advanced );
-    	}
-    	return null;
-    }
-    /**
-     * Allows for "Advanced" sort capabilities specific to the
-     * GeoTools platform!
-     * <p>
-     * Advanced in this case really means making use of a generic
-     * Expression, rather then being limited to PropertyName.
-     * </p>
-     * @param order GeoTools SortBy
-     * @return FeatureList sorted according to provided order
-     */
-    public SimpleFeatureCollection sort(SortBy2 order ){
-    	if( order == SortBy.NATURAL_ORDER ){
-    		return this;
-    	}
-    	else if ( order == SortBy.REVERSE_ORDER ){
-    		// backwards
-    	}
-    	// custom
-    	return null; // new OrderedFeatureList( order, compare );
+        if (order == SortBy.NATURAL_ORDER) {
+            return this;
+        } else if (order == SortBy.REVERSE_ORDER) {
+            // backwards
+        }
+        return null; // new OrderedFeatureList( order, compare );
     }
 
 	public void purge() {

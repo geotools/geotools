@@ -39,7 +39,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.Hints;
 import org.geotools.filter.AttributeExpressionImpl;
-import org.geotools.filter.SortBy2;
 import org.geotools.filter.SortByImpl;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -513,24 +512,13 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             // SortBy2 sortBy = new SortByImpl(new
             // AttributeExpressionImpl("CAT_ID"),SortOrder.ASCENDING);
-            SortBy2 sortBy = new SortBy2() {
-                public Expression getExpression() {
-                    return null;
-                }
-
-                public void setExpression(Expression expression) {
-                }
-
+            SortBy sortBy = new SortBy() {
                 public PropertyName getPropertyName() {
                     return new AttributeExpressionImpl("CAT_ID");
-
                 }
-
                 public SortOrder getSortOrder() {
                     return SortOrder.ASCENDING;
-
                 }
-
             };
             SimpleFeatureCollection sortedCollection = fCollection
                     .sort(sortBy);

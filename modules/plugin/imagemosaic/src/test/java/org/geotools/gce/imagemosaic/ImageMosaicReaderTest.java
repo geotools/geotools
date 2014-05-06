@@ -44,6 +44,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2025,6 +2026,64 @@ public class ImageMosaicReaderTest extends Assert{
             reader.dispose();
         }
     }
+    
+    @Test
+    public void testHarvestMultipleFiles() throws Exception {
+        File source = DataUtilities.urlToFile(timeURL);
+        File testDataDir= TestData.file(this, ".");
+        File directory1 = new File(testDataDir,"harvest1");
+        File directory2 = new File(testDataDir,"harvest2");
+        if(directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }            
+        FileUtils.copyDirectory(source, directory1);
+        if(directory2.exists()) {
+            FileUtils.deleteDirectory(directory2);
+        } 
+        directory2.mkdirs();
+        // Creation of a File Collection
+        Collection<File> files = new ArrayList<File>();
+        
+        // move all files besides month 2 and 5 to the second directory and store them into a Collection
+        for(File file : FileUtils.listFiles(directory1, new RegexFileFilter("world\\.20040[^25].*\\.tiff"), null)) {
+            File renamed = new File(directory2, file.getName());
+            assertTrue(file.renameTo(renamed));
+            files.add(renamed);
+        }
+        // remove all mosaic related files
+        for(File file : FileUtils.listFiles(directory1, new RegexFileFilter("time_geotiff.*"), null)) {
+            assertTrue(file.delete());
+        }
+        
+        // ok, let's create a mosaic with the two original granules
+        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
+        ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        try {
+            String[] metadataNames = reader.getMetadataNames();
+            assertNotNull(metadataNames);
+            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            assertEquals("2004-02-01T00:00:00.000Z,2004-05-01T00:00:00.000Z", reader.getMetadataValue(metadataNames[0]));
+            
+            // now go and harvest the other directory
+            List<HarvestedSource> summary = reader.harvest(null, files, null);
+            assertEquals(2, summary.size());
+            for (HarvestedSource hf : summary) {
+                assertTrue(hf.success());
+            }
+            
+            // the harvest put the file in the same coverage
+            assertEquals(1, reader.getGridCoverageNames().length);
+            metadataNames = reader.getMetadataNames();
+            assertNotNull(metadataNames);
+            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            assertEquals("2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,2004-05-01T00:00:00.000Z", 
+                    reader.getMetadataValue(metadataNames[0]));
+        } finally {
+            reader.dispose();
+        }
+    }
+
     
     @Test
     public void testHarvestDirectory() throws Exception {

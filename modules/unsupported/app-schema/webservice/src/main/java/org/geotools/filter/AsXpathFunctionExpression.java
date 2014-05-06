@@ -72,9 +72,4 @@ public class AsXpathFunctionExpression extends FunctionExpressionImpl {
         return XmlXpathUtilites.getSingleXPathValue(ns, xpath, doc);
     }
 
-    @Override
-    public int getArgCount() {
-        // TODO Auto-generated method stub
-        return 1;
-    }
 }

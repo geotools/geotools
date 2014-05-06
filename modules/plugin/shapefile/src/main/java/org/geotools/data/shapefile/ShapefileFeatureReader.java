@@ -35,6 +35,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.Filter;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -64,6 +65,10 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     int idxBaseLen;
 
     IndexedFidReader fidReader;
+    
+    Filter filter;
+    
+    boolean peeked;
 
     public ShapefileFeatureReader(SimpleFeatureType schema, ShapefileReader shp, DbaseFileReader dbf, IndexedFidReader fidReader)
             throws IOException {
@@ -170,7 +175,11 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                 } else if (simplificationDistance > 0 && envelope.getWidth() < simplificationDistance
                         && envelope.getHeight() < simplificationDistance) {
                     try {
-                        if (screenMap != null && screenMap.checkAndSet(envelope)) {
+                        peeked = false;
+                        if (filter != null && filtered(record)) {
+                            geometry = null;
+                            skip = true;
+                        } else if (screenMap != null && screenMap.checkAndSet(envelope)) {
                             geometry = null;
                             skip = true;
                         } else {
@@ -188,22 +197,24 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                 }
             }
 
-            if (!skip) {
-                // also grab the dbf row
-                Row row;
-                if (dbf != null) {
-                    row = dbf.readRow();
-                    if(row.isDeleted()) {
-                        continue;
+            if (!peeked) {
+                if (!skip) {
+                    // also grab the dbf row
+                    Row row;
+                    if (dbf != null) {
+                        row = dbf.readRow();
+                        if(row.isDeleted()) {
+                            continue;
+                        }
+                    } else {
+                        row = null;
                     }
+    
+                    nextFeature = buildFeature(record.number, geometry, row);
                 } else {
-                    row = null;
-                }
-
-                nextFeature = buildFeature(record.number, geometry, row);
-            } else {
-                if (dbf != null) {
-                    dbf.skip();
+                    if (dbf != null) {
+                        dbf.skip();
+                    }
                 }
             }
         }
@@ -211,6 +222,29 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
         return nextFeature != null;
     }
 
+    private boolean filtered(Record record) throws IOException {
+        if (dbf == null) {
+            return false;
+        }
+        
+        Row row = dbf.readRow();
+        peeked = true;
+        
+        if (row.isDeleted()) {
+            return true;
+        }
+        
+        Geometry geometry = (Geometry) record.getSimplifiedShape();
+        SimpleFeature feature = buildFeature(record.number, geometry, row);
+        
+        boolean filtered = !filter.evaluate(feature);
+        if (!filtered) {
+            nextFeature = feature;
+        }
+
+        return filtered;
+    }
+    
     SimpleFeature buildFeature(int number, Geometry geometry, Row row) throws IOException {
         if (dbfindexes != null) {
             for (int i = 0; i < dbfindexes.length; i++) {
@@ -298,6 +332,10 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
 
     ShapeType getShapeType() {
         return shp.getHeader().getShapeType();
+    }
+    
+    public void setFilter(Filter filter) {
+        this.filter = filter;
     }
 
 }

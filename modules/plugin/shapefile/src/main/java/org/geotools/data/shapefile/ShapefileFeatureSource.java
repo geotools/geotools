@@ -289,7 +289,11 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 if (simplificationDistance != null) {
                     result.setSimplificationDistance(simplificationDistance.doubleValue());
                 }
-                result.setScreenMap((ScreenMap) hints.get(Hints.SCREENMAP));
+                ScreenMap smap = (ScreenMap) hints.get(Hints.SCREENMAP);
+                result.setScreenMap(smap);
+                if (smap != null && "true".equals(System.getProperty("filterBeforeScreenMap", "false"))) {
+                    result.setFilter(q.getFilter());
+                }
 
                 if (Boolean.TRUE.equals(hints.get(Hints.FEATURE_2D))) {
                     shapeReader.setFlatGeometry(true);

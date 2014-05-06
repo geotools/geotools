@@ -172,6 +172,226 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 
 	String typeName;
 
+	/**
+	 * Enumeration object used for defining 3 different behaviours for the Harvesting, each of them associated
+	 * to one of these 3 objects:
+	 * <ul>
+	 * <li>File</li>
+	 * <li>Directory</li>
+	 * <li>List of Files</li>
+	 * </ul>
+	 * 
+	 * @author Nicola Lagomarsini, GeoSolutions S.A.S.
+	 *
+	 */
+	public enum HarvestedResource{
+	    FILE {
+            @Override
+            public void harvest(String defaultCoverage, Object source, Hints hints, final List<HarvestedSource> result, ImageMosaicReader reader) {
+                File file = (File)source;
+                // Directory associated to the input File
+                File directory = file.getParentFile();
+                // File Filter associated to the input File
+                IOFileFilter filter = FileFilterUtils.nameFileFilter(file.getName());
+                // Harvesting file
+                harvestCalculation(defaultCoverage, result, reader, directory, filter);
+                
+            }
+        }, DIRECTORY {
+            @Override
+            public void harvest(String defaultCoverage, Object source, Hints hints, final List<HarvestedSource> result, ImageMosaicReader reader) {
+                File directory = (File)source;
+                // Harvesting directory
+                harvestCalculation(defaultCoverage, result, reader, directory, null);
+                
+            }
+        }, FILE_COLLECTION {
+            @Override
+            public void harvest(String defaultCoverage, Object source, Hints hints, final List<HarvestedSource> result, ImageMosaicReader reader) {
+                // I have already checked that it is a Collection of File objects
+                Collection<File> files = (Collection<File>) source;
+                
+                // Harvesting
+             
+                // prepare the walker configuration
+                CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
+                configuration.setParameter(Prop.ABSOLUTE_PATH, Boolean.toString(true));
+                
+                // Setting of the HARVEST_DIRECTORY property for passing the checks even if it si not used
+                // Selection of the first file
+                Iterator<File> it = files.iterator();
+                String indexingPath = it.next().getAbsolutePath();
+                configuration.setParameter(Prop.HARVEST_DIRECTORY, indexingPath);
+                
+                if(defaultCoverage == null) {
+                    String[] coverageNames = reader.getGridCoverageNames();
+                    defaultCoverage = (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
+                } 
+                
+                configuration.setParameter(Prop.INDEX_NAME, defaultCoverage);
+                configuration.setHints(new Hints(Utils.MOSAIC_READER, reader));
+                
+                File mosaicSource = DataUtilities.urlToFile(reader.sourceURL);
+                if(!mosaicSource.isDirectory()) {
+                    mosaicSource = mosaicSource.getParentFile();
+                }
+                
+                configuration.setParameter(Prop.ROOT_MOSAIC_DIR, mosaicSource.getAbsolutePath());
+                
+                // run the walker and collect information
+                ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
+                final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration,
+                        eventHandler);
+                // Creation of the Walker for the File List
+                ImageMosaicFileCollectionWalker walker = new ImageMosaicFileCollectionWalker(catalogHandler, eventHandler,files);
+                eventHandler.addProcessingEventListener(new ImageMosaicEventHandlers.ProcessingEventListener() {
+                    
+                    @Override
+                    public void getNotification(ProcessingEvent event) {
+                        if(event instanceof FileProcessingEvent) {
+                            FileProcessingEvent fileEvent = (FileProcessingEvent) event;
+                            result.add(new DefaultHarvestedSource(fileEvent.getFile(), fileEvent.isIngested(), fileEvent.getMessage()));
+                        }
+                    }
+                    
+                    @Override
+                    public void exceptionOccurred(ExceptionEvent event) {
+                        // nothing to do
+                    }
+                });
+                // Wait the Walker ends its operations
+                walker.run();
+            }
+        };
+	    
+	    HarvestedResource(){}
+	    
+	    /**
+	     * Harvesting of the input resource. The result will be strored inside the {@link List} object.
+	     * 
+	     * @param defaultCoverage
+	     * @param source
+	     * @param hints
+	     * @param result
+	     * @param reader
+	     */
+	    public abstract void harvest(String defaultCoverage, Object source, Hints hints, final List<HarvestedSource> result, ImageMosaicReader reader);
+	    
+	    /**
+	     * Returns the HarvestedResource associated to the input Object
+	     * 
+	     * @param source
+	     * @return
+	     */
+	    public static HarvestedResource getResourceFromObject(Object source){
+	        // Check if the resource is a File or a Directory
+	        if(source instanceof File){
+	            return getResourceFromFile((File)source);
+	        }
+	        // For a String instance, it is converted to String
+	        if(source instanceof String) {
+	            File file = new File((String) source);
+	            return getResourceFromFile(file);
+	        }
+	        // Check if the input Object is a File Collection
+	        if(source instanceof Collection<?>){
+	            Collection<File> files = null;
+	            try{
+	                files = (Collection<File>)source;
+	            }catch(ClassCastException e){
+	                // Log the exception
+	                if (LOGGER.isLoggable(Level.WARNING)) {
+	                    LOGGER.log(Level.WARNING, e.getMessage(), e);
+	                }
+	            }
+	            // If the files are present
+	            if(files != null){
+	                // No File is saved
+	                int fileSize = files.size();
+	                // Check on the File Size
+	                if(fileSize < 1){
+	                    return null;
+	                }else {
+	                    return FILE_COLLECTION;
+	                } 
+	            }
+	        }
+	        return null;
+	    }
+
+	    /**
+	     * Check if the File Object is a DIRECTORY or not and return the associated {@link HarvestedResource}
+	     * 
+	     * @param file
+	     * @return
+	     */
+            private static HarvestedResource getResourceFromFile(File file) {
+                if(file != null){
+                    if(file.isDirectory()){
+                        return DIRECTORY;
+                    }else{
+                        return FILE;
+                    }                    
+                }
+                return null;
+            }
+            
+            /**
+             * Method for harvesting on a directory
+             * 
+             * @param defaultCoverage
+             * @param result
+             * @param reader
+             * @param directory
+             * @param filter
+             */
+            private static void harvestCalculation(String defaultCoverage,
+                    final List<HarvestedSource> result, ImageMosaicReader reader, File directory, IOFileFilter filter) {
+                // prepare the walker configuration
+                CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
+                configuration.setParameter(Prop.ABSOLUTE_PATH, Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
+                String indexingPath = directory.getAbsolutePath();
+                configuration.setParameter(Prop.HARVEST_DIRECTORY, indexingPath);
+                if(defaultCoverage == null) {
+                    String[] coverageNames = reader.getGridCoverageNames();
+                    defaultCoverage = (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
+                } 
+                configuration.setParameter(Prop.INDEX_NAME, defaultCoverage);
+                configuration.setHints(new Hints(Utils.MOSAIC_READER, reader));
+                
+                File mosaicSource = DataUtilities.urlToFile(reader.sourceURL);
+                if(!mosaicSource.isDirectory()) {
+                    mosaicSource = mosaicSource.getParentFile();
+                }
+                
+                configuration.setParameter(Prop.ROOT_MOSAIC_DIR, mosaicSource.getAbsolutePath());
+                
+                // run the walker and collect information
+                ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
+                final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration,
+                        eventHandler);
+                // build the index
+                ImageMosaicDirectoryWalker walker = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler,filter);
+                eventHandler.addProcessingEventListener(new ImageMosaicEventHandlers.ProcessingEventListener() {
+                    
+                    @Override
+                    public void getNotification(ProcessingEvent event) {
+                        if(event instanceof FileProcessingEvent) {
+                            FileProcessingEvent fileEvent = (FileProcessingEvent) event;
+                            result.add(new DefaultHarvestedSource(fileEvent.getFile(), fileEvent.isIngested(), fileEvent.getMessage()));
+                        }
+                    }
+                    
+                    @Override
+                    public void exceptionOccurred(ExceptionEvent event) {
+                        // nothing to do
+                    }
+                });
+
+                walker.run();
+            }
+	}
+	
     /**
      * Constructor.
      * 
@@ -998,74 +1218,20 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 
     @Override
     public List<HarvestedSource> harvest(String defaultCoverage, Object source, Hints hints) throws IOException, UnsupportedOperationException {
-        File file = null;
-        if(source instanceof File) {
-            file = (File) source;
-        }
-        if(source instanceof String) {
-            file = new File((String) source);
-        }
+        // Get the HarvestedResource object associated to the source. This object defines the harvseting behaviour.
+        HarvestedResource resource = HarvestedResource.getResourceFromObject(source);
 
+        // Check if the source object can be accepted
         final List<HarvestedSource> result = new ArrayList<HarvestedSource>();
-        if(file == null) {
+        if(resource == null) {
             result.add(new DefaultHarvestedSource(source, false, "Unrecognized source type"));
             return result;
-        } else if(!file.exists()) {
+        } else if(source instanceof File && !((File)source).exists()) {
             result.add(new DefaultHarvestedSource(source, false, "Specified file path does not exist"));
             return result;
         }
-        
-        // the mosaic walker works on a single directory, if we need to harvest 
-        // a single file we'll have to use the parent folder and add a filter
-        IOFileFilter filter = null;
-        File directory = file;
-        if(!file.isDirectory()) {
-            directory = file.getParentFile();
-            filter = FileFilterUtils.nameFileFilter(file.getName());
-        }
-        
-        // prepare the walker configuration
-        CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
-        configuration.setParameter(Prop.ABSOLUTE_PATH, Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
-        String indexingPath = directory.getAbsolutePath();
-        configuration.setParameter(Prop.HARVEST_DIRECTORY, indexingPath);
-        if(defaultCoverage == null) {
-            String[] coverageNames = getGridCoverageNames();
-            defaultCoverage = (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
-        } 
-        configuration.setParameter(Prop.INDEX_NAME, defaultCoverage);
-        configuration.setHints(new Hints(Utils.MOSAIC_READER, this));
-        
-        File mosaicSource = DataUtilities.urlToFile(sourceURL);
-        if(!mosaicSource.isDirectory()) {
-            mosaicSource = mosaicSource.getParentFile();
-        }
-        
-        configuration.setParameter(Prop.ROOT_MOSAIC_DIR, mosaicSource.getAbsolutePath());
-        
-        // run the walker and collect information
-        ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
-        final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration,
-                eventHandler);
-        // build the index
-        ImageMosaicDirectoryWalker walker = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler,filter);
-        eventHandler.addProcessingEventListener(new ImageMosaicEventHandlers.ProcessingEventListener() {
-            
-            @Override
-            public void getNotification(ProcessingEvent event) {
-                if(event instanceof FileProcessingEvent) {
-                    FileProcessingEvent fileEvent = (FileProcessingEvent) event;
-                    result.add(new DefaultHarvestedSource(fileEvent.getFile(), fileEvent.isIngested(), fileEvent.getMessage()));
-                }
-            }
-            
-            @Override
-            public void exceptionOccurred(ExceptionEvent event) {
-                // nothing to do
-            }
-        });
-
-        walker.run();
+        // Harvesting of the input source
+        resource.harvest(defaultCoverage, source, hints, result, this);
 
         return result;
     }
@@ -1128,5 +1294,99 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     @Override
     public boolean removeCoverage(String coverageName) throws IOException, UnsupportedOperationException {
         return removeCoverage(coverageName, false);
+    }
+    
+    /**
+     * This subclass of the {@link ImageMosaicWalker} cycles around a List of files and for each one calls the superclass
+     * handleFile() method. For each file is done a check if it really exists, it can be read and it is not a directory.
+     * 
+     * @author Nicola Lagomarsini, GeoSolutions S.A.S.
+     *
+     */
+    private static class ImageMosaicFileCollectionWalker extends ImageMosaicWalker{
+
+        /** Input File list to walk on*/
+        private Collection<File> files;
+
+        public ImageMosaicFileCollectionWalker(ImageMosaicConfigHandler configHandler,
+                ImageMosaicEventHandlers eventHandler, Collection<File> files) {
+            super(configHandler, eventHandler);
+
+            this.files = files;
+        }
+
+        @Override
+        public void run() {
+            try {
+                // Initialization steps
+                configHandler.indexingPreamble();
+                startTransaction();
+                
+                // Setting of the Collection size
+                setNumFiles(files.size());
+                
+                // Creation of an Iterator on the input files
+                Iterator<File> it = files.iterator();
+                
+                // Cycle on all the input files
+                while (it.hasNext()) {
+                    File file = it.next();
+                    
+                    // Stop the Harvesting if requested
+                    if (getStop()){
+                        break;
+                    }
+                    
+                    // Check if the File has an absolute path
+                    if(checkFile(file)){
+                        handleFile(file);
+                    }else{
+                        // SKIP and log
+                        skipFile(file.getAbsolutePath());
+                    }
+                }
+                
+                // close transaction
+                if (getStop()) {
+                    rollbackTransaction();
+                } else {
+                    commitTransaction();
+                }
+                
+            } catch (IOException e) {
+                //Exception Logged
+                LOGGER.log(Level.WARNING, e.getMessage(), e);
+                try {
+                    // Rollback of the Transaction
+                    rollbackTransaction();
+                } catch (IOException e1) {
+                    throw new IllegalStateException(e);
+                }
+            }finally{
+                // close transaction
+                try {
+                    closeTransaction();
+                } catch (Exception e) {
+                    final String message = "Unable to close transaction" + e.getLocalizedMessage();
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.log(Level.WARNING, message, e);
+                    }
+                    // notify listeners
+                    eventHandler.fireException(e);
+                }
+
+                // close indexing
+                try {
+                    configHandler.indexingPostamble(!getStop());
+                } catch (Exception e) {
+                    final String message = "Unable to close indexing" + e.getLocalizedMessage();
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.log(Level.WARNING, message, e);
+                    }
+                    // notify listeners
+                    eventHandler.fireException(e);
+                }
+            }
+        }   
     }
 }

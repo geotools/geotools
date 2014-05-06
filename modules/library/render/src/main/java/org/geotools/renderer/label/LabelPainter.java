@@ -45,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.media.jai.Interpolation;
 import javax.swing.Icon;
 
 import org.geotools.geometry.jts.LiteShape2;
@@ -75,6 +74,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  */
 public class LabelPainter {
     
+    private static final String NOT_EMPTY_STRING = " ";
+
     /**
      * Epsilon used for comparisons with 0
      */
@@ -164,6 +165,7 @@ public class LabelPainter {
         if(labelItem.getAutoWrap() <= 0) {
             // no need for auto-wrapping, we already have the proper split
             for (String line : splitted) {
+                line = checkForEmptyLine(line);
                 FontRenderContext frc = graphics.getFontRenderContext();
                 TextLayout layout = new TextLayout(line, labelItem.getTextStyle().getFont(), frc);
                 LineInfo info = new LineInfo(line, layoutSentence(line, labelItem), layout);
@@ -180,7 +182,7 @@ public class LabelPainter {
 
             // accumulate the lines
             for (int i = 0; i < splitted.length; i++) {
-                String line = splitted[i];
+                String line = checkForEmptyLine(splitted[i]);
 
                 // build the line break iterator that will split lines at word
                 // boundaries when the wrapping length is exceeded
@@ -218,11 +220,9 @@ public class LabelPainter {
                     // centering)
 
                     String extracted = line.substring(prevPosition, newPosition).trim();
-                    if(!"".equals(extracted)) {
-	                    LineInfo info = new LineInfo(extracted, layoutSentence(extracted, labelItem),
-	                            layout);
-	                    lines.add(info);
-                    }
+                    LineInfo info = new LineInfo(extracted, layoutSentence(
+                            extracted, labelItem), layout);
+                    lines.add(info);
                     prevPosition = newPosition;
                 }
             }
@@ -266,6 +266,19 @@ public class LabelPainter {
             info.y = labelY;
         }
         normalizeBounds(labelBounds);
+    }
+
+    /**
+     * Fix for GEOT-4789: a label line cannot be empty.
+     * 
+     * @param line
+     * @return
+     */
+    private String checkForEmptyLine(String line) {
+        if(line == null || line.equals("")) {
+            return NOT_EMPTY_STRING;
+        }
+        return line;
     }
 
     /**

@@ -48,7 +48,7 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
             try {
                 URL schemaLocation = tmp.toURI().toURL();
                 this.parsed = EmfAppSchemaParser.parse(wfsConfiguration, remoteTypeName,
-                        schemaLocation, defaultCrs);
+                        schemaLocation, defaultCrs, strategy.getFieldTypeMappings());
             } finally {
                 tmp.delete();
             }

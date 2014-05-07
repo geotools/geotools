@@ -223,5 +223,12 @@ public abstract class WFSStrategy extends Specification {
         handle.append('#').append(reqHandleSeq.incrementAndGet());
         return handle.toString();
     }
+    
+    /**
+     * Provide additional field type mappings
+     * 
+     * @return field type mappings
+     */
+    public abstract Map<QName, Class<?>> getFieldTypeMappings();
 
 }

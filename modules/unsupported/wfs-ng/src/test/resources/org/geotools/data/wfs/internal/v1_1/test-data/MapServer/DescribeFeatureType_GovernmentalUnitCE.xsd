@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- This Web Feature Server is a component of CubeWerx Suite 4.7.5. -->
+<schema 
+  xmlns:ms="http://mapserver.gis.umn.edu/mapserver" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" targetNamespace="http://mapserver.gis.umn.edu/mapserver" elementFormDefault="qualified" version="0.1">
+  
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+
+  <!-- ========================================================= -->
+  <!-- Feature type definitions ...                              -->
+  <!-- ========================================================= -->
+
+  <!-- === GOVUNIT_CE ========================================== -->
+  <element name="GovernmentalUnitCE" type="ms:GovernmentalUnitCEType" substitutionGroup="gml:_Feature" />
+  <complexType name="GovernmentalUnitCEType">
+    <annotation>
+      <documentation>
+        
+      </documentation>
+    </annotation>
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="unitId" type="fw:IdentifierPropertyType" />
+          <element name="typeAbbreviation" type="Character" minOccurs="0" maxOccurs="1" />
+          <element name="number" type="Integer" minOccurs="0" maxOccurs="1" />
+          <element name="doubleNumber" type="Real" minOccurs="0" maxOccurs="1" />
+          <element name="instanceName" type="string" />
+          <element name="instanceAlternateName" type="string" minOccurs="0" maxOccurs="unbounded" />
+          <element name="officialDescription" type="string" minOccurs="0" maxOccurs="1" />
+          <element name="instanceCode" type="string" />
+          <element name="codingSystemReference" type="string" minOccurs="0" maxOccurs="unbounded" />
+          <element name="effectiveDate" type="date" minOccurs="0" maxOccurs="2" />
+          <element name="geometry" type="gml:SurfacePropertyType">
+            <annotation>
+              <documentation>
+                
+              </documentation>
+            </annotation>
+          </element>
+          <element name="extended" type="fw:ExtendedAttributePropertyType" minOccurs="0" maxOccurs="unbounded" />
+          <element name="governmentalUnitType">
+            <complexType>
+              <simpleContent>
+                <restriction base="gml:CodeType">
+                  <attribute name="codeSpace" type="anyURI" use="optional" />
+                </restriction>
+              </simpleContent>
+            </complexType>
+          </element>
+          <element name="typeDefinition" type="string" minOccurs="0" maxOccurs="1" />
+          <element name="boundedBy" type="gml:ReferenceType" minOccurs="0" maxOccurs="unbounded">
+            <annotation>
+              <appinfo source="urn:x-gml:targetElement" />
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+</schema>

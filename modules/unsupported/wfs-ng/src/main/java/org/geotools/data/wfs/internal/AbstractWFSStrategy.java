@@ -707,5 +707,10 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         return new ByteArrayInputStream(out.toByteArray());
 
     }
+    
+    @Override
+    public Map<QName, Class<?>> getFieldTypeMappings() {
+        return null;
+    }
 
 }

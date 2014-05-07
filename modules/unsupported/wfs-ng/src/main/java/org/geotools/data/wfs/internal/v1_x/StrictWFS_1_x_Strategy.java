@@ -413,9 +413,21 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
         List<FeatureTypeType> featureTypes = featureTypeList.getFeatureType();
 
         for (FeatureTypeType typeInfo : featureTypes) {
-            QName name = typeInfo.getName();
-            typeInfos.put(name, typeInfo);
+            FeatureTypeType transTypeInfo = translateTypeInfo(typeInfo);
+            QName name = transTypeInfo.getName();
+            typeInfos.put(name, transTypeInfo);
         }
+    }
+    
+    /**
+     * Any server specific translation of type information
+     * such as setting correct namespace
+     * 
+     * @param typeInfo type info
+     * @return translated type info
+     */
+    protected FeatureTypeType translateTypeInfo(FeatureTypeType typeInfo){
+        return typeInfo;
     }
 
     @Override

@@ -21,6 +21,7 @@ import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.data.wfs.internal.v1_x.CubeWerxStrategy;
 import org.geotools.data.wfs.internal.v1_x.GeoServerPre200Strategy;
 import org.geotools.data.wfs.internal.v1_x.IonicStrategy;
+import org.geotools.data.wfs.internal.v1_x.MapServerWFSStrategy;
 import org.geotools.data.wfs.internal.v1_x.StrictWFS_1_x_Strategy;
 import org.geotools.data.wfs.internal.v2_0.StrictWFS_2_0_Strategy;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -154,7 +155,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                     LOGGER.warning("Found a Ionic server but the version may not match the strategy "
                             + "we have (v.4). Ionic namespace url: " + ionicNs);
                     strategy = new IonicStrategy();
-                }
+                } 
             }
         }
 
@@ -175,6 +176,8 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                 strategy = new GeoServerPre200Strategy();
             } else if (uri.contains("/ArcGIS/services/")) {
                 strategy = new StrictWFS_1_x_Strategy(); // new ArcGISServerStrategy();
+            } else if (uri.contains("mapserver")) {
+                strategy = new MapServerWFSStrategy();
             }
         }
 

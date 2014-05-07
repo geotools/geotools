@@ -87,8 +87,8 @@ public class EmfAppSchemaParser {
 
     public static SimpleFeatureType parseSimpleFeatureType(final QName featureName,
             final URL schemaLocation, final CoordinateReferenceSystem crs,
-            final Configuration wfsConfiguration) throws IOException {
-        return parseSimpleFeatureType(wfsConfiguration, featureName, schemaLocation, crs);
+            final Configuration wfsConfiguration, final Map<QName, Class<?>> mappedBindings) throws IOException {
+        return parseSimpleFeatureType(wfsConfiguration, featureName, schemaLocation, crs, mappedBindings);
     }
 
     /**
@@ -119,9 +119,10 @@ public class EmfAppSchemaParser {
      * @throws IOException
      */
     public static SimpleFeatureType parseSimpleFeatureType(final Configuration wfsConfiguration,
-            final QName featureName, final URL schemaLocation, final CoordinateReferenceSystem crs)
+            final QName featureName, final URL schemaLocation, final CoordinateReferenceSystem crs,
+            final Map<QName, Class<?>> mappedBindings)
             throws IOException {
-        final SimpleFeatureType realType = parse(wfsConfiguration, featureName, schemaLocation, crs);
+        final SimpleFeatureType realType = parse(wfsConfiguration, featureName, schemaLocation, crs, mappedBindings);
         SimpleFeatureType subsetType = toSimpleFeatureType(realType);
         return subsetType;
     }
@@ -210,11 +211,15 @@ public class EmfAppSchemaParser {
      * @throws IOException
      */
     public static SimpleFeatureType parse(final Configuration wfsConfiguration,
-            final QName featureName, final URL schemaLocation, final CoordinateReferenceSystem crs)
+            final QName featureName, final URL schemaLocation, final CoordinateReferenceSystem crs,
+            final Map<QName, Class<?>> mappedBindings)
             throws IOException {
         XSDElementDeclaration elementDecl = parseFeatureType(featureName, schemaLocation);
 
         Map bindings = wfsConfiguration.setupBindings();
+        if(mappedBindings != null) {
+            bindings.putAll(mappedBindings);
+        }
         BindingLoader bindingLoader = new BindingLoader(bindings);
 
         // create the document handler + root context
@@ -301,5 +306,10 @@ public class EmfAppSchemaParser {
             throw new DataSourceException("No XSDElementDeclaration found for " + featureTypeName);
         }
         return elementDeclaration;
+    }
+
+    public static SimpleFeatureType parseSimpleFeatureType(Configuration configuration,
+            QName featureTypeName, URL schemaLocation, CoordinateReferenceSystem crs) {
+        return parseSimpleFeatureType(configuration, featureTypeName, schemaLocation, crs);
     }
 }

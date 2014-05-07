@@ -18,13 +18,18 @@ package org.geotools.imageio.unidata;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.security.MessageDigest;
 import java.util.List;
 import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.io.CoverageSource.AdditionalDomain;
 import org.geotools.coverage.io.CoverageSource.DomainType;
@@ -310,6 +315,69 @@ public final class UnidataTest extends Assert {
                    }
                 }  
             }
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testImageReaderGOME2AncillaryFiles() throws Exception {
+        final File file = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY.nc");
+        final DummyUnidataImageReaderSpi unidataImageReaderSpi = new DummyUnidataImageReaderSpi();
+        assertTrue(unidataImageReaderSpi.canDecodeInput(file));
+        DummyUnidataImageReader reader = null;
+        try {
+
+            // checking low level
+            reader = (DummyUnidataImageReader) unidataImageReaderSpi.createReaderInstance();
+            reader.setInput(file);
+            int numImages = reader.getNumImages(true);
+            assertEquals(1, numImages);
+            LOGGER.info("Found " + numImages + " images.");
+            for (int i = 0; i < numImages; i++) {
+                UnidataSlice2DIndex sliceIndex = reader.getSlice2DIndex(i);
+                assertNotNull(sliceIndex);
+                spitOutSliceInformation(i, sliceIndex);
+            }
+
+            // check coverage names
+            final List<Name> names = reader.getCoveragesNames();
+            assertNotNull(names);
+            assertTrue(!names.isEmpty());
+            assertTrue(1 == names.size());
+            assertEquals("NO2", names.get(0).toString());
+
+            // checking slice catalog
+            final CoverageSlicesCatalog cs = reader.getCatalog();
+            assertNotNull(cs);
+
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            md.update(file.getCanonicalPath().getBytes());
+            String hashCode = AncillaryFileManager.convertToHex(md.digest());
+            
+            // Check if the auxiliary files directory is present
+            File parentDir = file.getParentFile();
+
+            String auxiliaryDirPath = parentDir + File.separator + "."
+                    + FilenameUtils.getBaseName(file.getName()) + "_"
+                    + hashCode;
+
+            File auxiliaryDir = new File(auxiliaryDirPath);
+
+            assertTrue(auxiliaryDir.exists());
+            assertTrue(auxiliaryDir.isDirectory());
+
+            // Check if the Auxiliary File Directory contains the origin.txt file
+            FilenameFilter nameFileFilter = FileFilterUtils.nameFileFilter("origin.txt");
+            File[] files = auxiliaryDir.listFiles(nameFileFilter);
+            assertTrue(files != null);
+            assertTrue(files[0].exists());
         } finally {
             if (reader != null) {
                 try {

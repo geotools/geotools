@@ -18,6 +18,12 @@ package org.geotools.wfs.v1_1;
 
 import org.geotools.filter.v1_1.OGCConfiguration;
 import org.geotools.ows.OWSConfiguration;
+import org.geotools.wfs.bindings.InsertResultsTypeBinding;
+import org.geotools.wfs.bindings.LockFeatureResponseTypeBinding;
+import org.geotools.wfs.bindings.OperationsTypeBinding;
+import org.geotools.wfs.bindings.TransactionResponseTypeBinding;
+import org.geotools.wfs.bindings.TransactionResultsTypeBinding;
+import org.geotools.wfs.v1_0.QueryTypeBinding;
 
 /**
  * Parser configuration for the wfs 1.1 schema.
@@ -40,4 +46,19 @@ public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
         addDependency(new OWSConfiguration());
         addDependency(new OGCConfiguration());
     }
+    
+    protected void configureBindings(org.picocontainer.MutablePicoContainer container) {
+        super.configureBindings(container);
+        
+        container.registerComponentImplementation(WFS.TransactionResponseType,
+                TransactionResponseTypeBinding.class);
+        container.registerComponentImplementation(WFS.InsertResultsType,
+                InsertResultsTypeBinding.class);
+        container.registerComponentImplementation(WFS.TransactionResultsType,
+                TransactionResultsTypeBinding.class);
+        container.registerComponentImplementation(WFS.LockFeatureResponseType,
+                LockFeatureResponseTypeBinding.class);
+        container.registerComponentImplementation(WFS.OperationsType, OperationsTypeBinding.class);
+    }
+    
 }

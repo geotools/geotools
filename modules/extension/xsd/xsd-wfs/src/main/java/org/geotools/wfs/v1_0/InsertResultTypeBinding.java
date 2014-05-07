@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.wfs.bindings;
+package org.geotools.wfs.v1_0;
 
 import java.util.Iterator;
 
@@ -24,11 +24,17 @@ import net.opengis.wfs.InsertResultsType;
 import net.opengis.wfs.InsertedFeatureType;
 import net.opengis.wfs.WfsFactory;
 
-import org.eclipse.emf.common.util.EList;
-import org.geotools.wfs.v1_1.WFS;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDFactory;
+import org.geotools.filter.v1_0.capabilities.OGC;
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.geotools.xml.impl.ElementImpl;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
 
 
 /**
@@ -65,16 +71,19 @@ import org.geotools.xml.Node;
  *
  * @source $URL$
  */
-public class InsertResultsTypeBinding extends AbstractComplexEMFBinding {
-    public InsertResultsTypeBinding(WfsFactory factory) {
+public class InsertResultTypeBinding extends AbstractComplexEMFBinding {
+    WfsFactory wfsfactory;
+    
+    public InsertResultTypeBinding(WfsFactory factory) {
         super(factory);
+        this.wfsfactory = factory;
     }
 
     /**
      * @generated
      */
     public QName getTarget() {
-        return WFS.InsertResultsType;
+        return WFS.InsertResultType;
     }
 
     /**
@@ -87,20 +96,38 @@ public class InsertResultsTypeBinding extends AbstractComplexEMFBinding {
         return InsertResultsType.class;
     }
     
-    public Object parse(ElementInstance instance, Node node, Object value) throws Exception{
+    public Object parse(ElementInstance instance, Node node, Object value){
         
-        InsertResultsType resultType = (InsertResultsType) super.parse(instance, node, value);
+        InsertResultsType resultType = wfsfactory.createInsertResultsType();
         
-        //remove 'none'
-        Iterator it = resultType.getFeature().iterator();
-        while (it.hasNext()) {
-              EList fids = ((InsertedFeatureType)it.next()).getFeatureId();
-              if (fids.size() == 1 && "none".equals(fids.get(0).toString())){
-                  it.remove();
-              }
+        for (Object featureid : node.getChildValues("FeatureId")){            
+            if (! "none".equals(featureid.toString())) {
+                InsertedFeatureType feature = wfsfactory.createInsertedFeatureType();                
+                feature.getFeatureId().add(featureid);
+                resultType.getFeature().add(feature);
+            }            
         }
         
         return resultType;
+    }
+        
+    @Override
+    public Element encode(Object object, Document document, Element value) throws Exception {
+        Element e = super.encode(object, document, value);
+        
+        InsertResultsType resultType = (InsertResultsType) object;
+        
+        Iterator it = resultType.getFeature().iterator();
+        while (it.hasNext()) {
+              Iterator fidit = ((InsertedFeatureType)it.next()).getFeatureId().iterator();
+              while (fidit.hasNext()) {
+                 Element node = document.createElementNS(OGC.NAMESPACE, "FeatureId");
+                 node.setAttribute("fid", fidit.next().toString());
+                 e.appendChild(node);
+              }
+        }
+        
+        return e;
     }
 
 }

@@ -14,14 +14,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.wfs.bindings;
+package org.geotools.wfs.v1_0;
 
 import javax.xml.namespace.QName;
 
 import net.opengis.wfs.TransactionResponseType;
 import net.opengis.wfs.WfsFactory;
 
-import org.geotools.wfs.v1_1.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 
 
@@ -92,8 +91,8 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  *
  * @source $URL$
  */
-public class TransactionResponseTypeBinding extends AbstractComplexEMFBinding {
-    public TransactionResponseTypeBinding(WfsFactory factory) {
+public class WFS_TransactionResponseTypeBinding extends AbstractComplexEMFBinding {
+    public WFS_TransactionResponseTypeBinding(WfsFactory factory) {
         super(factory);
     }
 
@@ -101,7 +100,7 @@ public class TransactionResponseTypeBinding extends AbstractComplexEMFBinding {
      * @generated
      */
     public QName getTarget() {
-        return WFS.TransactionResponseType;
+        return WFS.WFS_TransactionResponseType;
     }
 
     /**
@@ -112,5 +111,17 @@ public class TransactionResponseTypeBinding extends AbstractComplexEMFBinding {
      */
     public Class getType() {
         return TransactionResponseType.class;
+    }
+    
+    @Override
+    public Object getProperty(Object object, QName name) throws Exception{
+        if ( "InsertResult".equals(name.getLocalPart()) ){
+            return ((TransactionResponseType) object).getInsertResults();
+        }
+        if ( "TransactionResult".equals(name.getLocalPart()) ){
+            return ((TransactionResponseType) object).getTransactionResults();
+        }
+        
+        return super.getProperty(object, name);
     }
 }

@@ -14,13 +14,12 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.wfs.bindings;
+package org.geotools.wfs.v1_0;
 
 import javax.xml.namespace.QName;
 
 import net.opengis.wfs.WfsFactory;
 
-import org.geotools.wfs.v1_1.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -93,8 +92,8 @@ import org.geotools.xml.Node;
  *
  * @source $URL$
  */
-public class LockFeatureResponseTypeBinding extends AbstractComplexEMFBinding {
-    public LockFeatureResponseTypeBinding(WfsFactory factory) {
+public class WFS_LockFeatureResponseTypeBinding extends AbstractComplexEMFBinding {
+    public WFS_LockFeatureResponseTypeBinding(WfsFactory factory) {
         super(factory);
     }
 
@@ -102,7 +101,7 @@ public class LockFeatureResponseTypeBinding extends AbstractComplexEMFBinding {
      * @generated
      */
     public QName getTarget() {
-        return WFS.LockFeatureResponseType;
+        return WFS.WFS_LockFeatureResponseType;
     }
 
     /**

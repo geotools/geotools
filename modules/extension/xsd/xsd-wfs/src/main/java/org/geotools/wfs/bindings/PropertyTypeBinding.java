@@ -18,12 +18,20 @@ package org.geotools.wfs.bindings;
 
 import javax.xml.namespace.QName;
 
+import net.opengis.wfs.PropertyType;
 import net.opengis.wfs.WfsFactory;
 
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Encoder;
 import org.geotools.xml.Node;
+import org.geotools.xml.EncoderDelegate;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.ContentHandler;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 
 /**
@@ -64,6 +72,9 @@ import org.geotools.xml.Node;
  * @source $URL$
  */
 public class PropertyTypeBinding extends AbstractComplexEMFBinding {
+    
+    private final static String VALUE = "Value";
+    
     public PropertyTypeBinding(WfsFactory factory) {
         super(factory);
     }
@@ -73,6 +84,11 @@ public class PropertyTypeBinding extends AbstractComplexEMFBinding {
      */
     public QName getTarget() {
         return WFS.PropertyType;
+    }
+
+    @Override
+    public Element encode(Object object, Document document, Element value) throws Exception {
+        return value;
     }
 
     /**
@@ -85,5 +101,34 @@ public class PropertyTypeBinding extends AbstractComplexEMFBinding {
         throws Exception {
         //TODO: implement and remove call to super
         return super.parse(instance, node, value);
+    }
+        
+    @Override
+    public Object getProperty(final Object object, QName name) throws Exception{
+        if (VALUE.equals(name.getLocalPart())) {
+            return new EncoderDelegate() {
+
+                @Override
+                public void encode(ContentHandler output) throws Exception {
+                    
+                    Object value = ((PropertyType) object).getValue();
+                    
+                    output.startElement(WFS.NAMESPACE, VALUE, "wfs:" + VALUE, null);
+                    if (value instanceof Geometry) {
+                        Encoder encoder = new Encoder(new org.geotools.gml2.GMLConfiguration());
+                        encoder.encode(value, org.geotools.gml2.GML._Geometry, output);
+                    }
+                    else {
+                        String s = value.toString();
+                        output.characters(s.toCharArray(), 0, s.length());
+                    }
+                    output.endElement(WFS.NAMESPACE, VALUE, "wfs:" + VALUE);
+                }
+                
+            };
+            
+        }
+        
+        return super.getProperty(object, name);
     }
 }

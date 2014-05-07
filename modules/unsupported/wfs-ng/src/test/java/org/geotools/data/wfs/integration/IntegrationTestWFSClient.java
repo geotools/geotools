@@ -45,7 +45,7 @@ import org.geotools.data.wfs.internal.WFSResponse;
 import org.geotools.data.wfs.internal.WFSStrategy;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.ows.ServiceException;
-import org.geotools.wfs.WFS;
+import org.geotools.wfs.v1_1.WFS;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.opengis.feature.simple.SimpleFeature;

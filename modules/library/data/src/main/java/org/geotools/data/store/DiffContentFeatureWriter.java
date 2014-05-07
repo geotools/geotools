@@ -62,6 +62,8 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
     SimpleFeature current; // duplicate provided to user
 
     ContentFeatureStore store;
+    
+    SimpleFeatureBuilder builder;
 
     /**
      * DiffFeatureWriter construction.
@@ -72,10 +74,23 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
      */
     public DiffContentFeatureWriter(ContentFeatureStore store, Diff diff,
             FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
+        this(store,diff,reader,new SimpleFeatureBuilder(reader.getFeatureType()));
+    }
+    
+    /**
+     * DiffFeatureWriter construction.
+     * 
+     * @param reader
+     * @param diff
+     * @param filter
+     */
+    public DiffContentFeatureWriter(ContentFeatureStore store, Diff diff,
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeatureBuilder builder) {
         this.store = store;
         this.reader = reader;
         this.state = store.getState();
         this.diff = diff;
+        this.builder = builder;
     }
 
     /**
@@ -108,8 +123,7 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
             // (The real writer will supply a FID later)
             live = null;
             next = null;
-            current = SimpleFeatureBuilder.build(type, new Object[type.getAttributeCount()], "new"+
-                     diff.nextFID);
+            current = builder.buildFeature("new"+ diff.nextFID, new Object[type.getAttributeCount()]);
             diff.nextFID++;
             return current;
         }

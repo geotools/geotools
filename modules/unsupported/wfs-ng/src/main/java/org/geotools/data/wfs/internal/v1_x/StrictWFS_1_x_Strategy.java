@@ -67,6 +67,7 @@ import net.opengis.wfs.WfsFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.wfs.impl.WFSServiceInfo;
 import org.geotools.data.wfs.internal.AbstractWFSStrategy;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
@@ -290,12 +291,9 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
         insert.setSrsName(new URI(srsName));
 
         List<SimpleFeature> features = elem.getFeatures();
-        SimpleFeatureCollection collection = DataUtilities.collection(features);
 
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        List<FeatureCollection> featureCollections = insert.getFeature();
-
-        featureCollections.add(collection);
+        insert.getFeature().addAll(features);
+        
         return insert;
     }
 
@@ -542,9 +540,8 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
      * @see #getDefaultOutputFormat
      */
     @Override
-    public Set<String> getServerSupportedOutputFormats(final WFSOperationType operation) {
-        final OperationType operationMetadata = getOperationMetadata(operation);
-
+    public Set<String> getServerSupportedOutputFormats(WFSOperationType operation) {
+        
         String parameterName;
 
         final Version serviceVersion = getServiceVersion();
@@ -560,11 +557,20 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
             parameterName = wfs1_0 ? "ResultFormat" : "outputFormat";
             break;
         case TRANSACTION:
-            parameterName = wfs1_0 ? "" : "inputFormat";
+            if (wfs1_0) {
+                //TODO: not sure what to do here.
+                //this is a hack, there appears to be no format info in the 1.0 capabilities for transaction
+                operation = GET_FEATURE;
+                parameterName = "ResultFormat";
+            } else {
+                parameterName = "inputFormat";
+            }
             break;
         default:
             throw new UnsupportedOperationException("not yet implemented for " + operation);
         }
+        
+        final OperationType operationMetadata = getOperationMetadata(operation);
 
         Set<String> serverSupportedFormats;
         serverSupportedFormats = findParameters(operationMetadata, parameterName);

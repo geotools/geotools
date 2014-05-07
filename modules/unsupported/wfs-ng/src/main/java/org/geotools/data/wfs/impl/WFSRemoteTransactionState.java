@@ -66,7 +66,6 @@ class WFSRemoteTransactionState implements State {
     @Override
     public void rollback() throws IOException {
         clear(); // rollback differences
-        // state.fireBatchFeatureEvent(false);
     }
 
     @Override
@@ -158,8 +157,6 @@ class WFSRemoteTransactionState implements State {
                     continue;
                 }
                 SimpleFeature localFeature = added.get(fid);
-                //TODO: revisit
-                //localState.fireFeatureAdded(source, feature);
                 MutableFeatureId addedFid = (MutableFeatureId) localFeature.getIdentifier();
                 addedFeatureIds.add(addedFid);
 

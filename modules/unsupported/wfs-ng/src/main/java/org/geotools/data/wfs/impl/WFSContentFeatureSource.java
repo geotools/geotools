@@ -204,7 +204,8 @@ class WFSContentFeatureSource extends ContentFeatureSource {
 
         GetFeatureRequest request = createGetFeature(localQuery, ResultType.RESULTS);
 
-        final SimpleFeatureType contentType = getQueryType(localQuery);
+        final SimpleFeatureType destType = getQueryType(localQuery, getSchema());
+        final SimpleFeatureType contentType = getQueryType(localQuery, (SimpleFeatureType) request.getFullType());
         request.setQueryType(contentType);
 
         GetFeatureResponse response = client.issueRequest(request);
@@ -220,9 +221,9 @@ class WFSContentFeatureSource extends ContentFeatureSource {
         }
 
         final SimpleFeatureType readerType = reader.getFeatureType();
-        if (!contentType.equals(readerType)) {
+        if (!destType.equals(readerType)) {
             final boolean cloneContents = false;
-            reader = new ReTypeFeatureReader(reader, contentType, cloneContents);
+            reader = new ReTypeFeatureReader(reader, destType, cloneContents);
         }
 
         Transaction transaction = getTransaction();
@@ -232,7 +233,7 @@ class WFSContentFeatureSource extends ContentFeatureSource {
             WFSLocalTransactionState wfsState = (WFSLocalTransactionState) state;
             if (wfsState != null) {
                 WFSDiff diff = wfsState.getDiff();
-                reader = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(reader, diff);
+                reader = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(reader, diff, localQuery.getFilter());
             }
         }
         return reader;
@@ -373,9 +374,8 @@ class WFSContentFeatureSource extends ContentFeatureSource {
      * @return
      * @throws IOException
      */
-    SimpleFeatureType getQueryType(final Query query) throws IOException {
+    SimpleFeatureType getQueryType(final Query query, SimpleFeatureType featureType) throws IOException {
 
-        final SimpleFeatureType featureType = getSchema();
         final CoordinateReferenceSystem coordinateSystemReproject = query
                 .getCoordinateSystemReproject();
 

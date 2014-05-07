@@ -369,6 +369,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         dataStore.setFeatureTypeFactory(new FeatureTypeFactoryImpl());
         dataStore.setFeatureFactory(CommonFactoryFinder.getFeatureFactory(null));
         dataStore.setDataStoreFactory(this);
+        dataStore.setNamespaceURI(config.getNamespaceOverride());
 
         return dataStore;
     }

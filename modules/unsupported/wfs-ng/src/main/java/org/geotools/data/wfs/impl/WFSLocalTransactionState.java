@@ -29,8 +29,6 @@ import org.geotools.data.store.DiffTransactionState;
  */
 class WFSLocalTransactionState extends DiffTransactionState {
 
-    private WFSContentState state;
-
     /**
      * Transaction state responsible for holding an in memory {@link Diff}.
      * 
@@ -38,19 +36,16 @@ class WFSLocalTransactionState extends DiffTransactionState {
      *            ContentState for the transaction
      */
     public WFSLocalTransactionState(WFSContentState state) {
-        super(state);
-        //TODO: revisit
-        //super(state, new WFSDiff());
-        this.state = state;
+        super(state, new WFSDiff());
     }
 
     @Override
     public WFSDiff getDiff() {
-        return (WFSDiff) super.getDiff();
+        return (WFSDiff) diff;
     }
 
     WFSContentState getState() {
-        return state;
+        return (WFSContentState) state;
     }
 
     /**

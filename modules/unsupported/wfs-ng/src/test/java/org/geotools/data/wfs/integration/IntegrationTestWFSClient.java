@@ -118,9 +118,8 @@ public class IntegrationTestWFSClient extends WFSClient {
             IOException {
 
         QName typeName = request.getTypeName();
-        String simpleName = typeName.getPrefix() + "_" + typeName.getLocalPart();
 
-        String resource = "DescribeFeatureType_" + simpleName + ".xsd";
+        String resource = "DescribeFeatureType_" + typeName.getLocalPart() + ".xsd";
         URL contentUrl = new URL(baseDirectory, resource);
 
         String outputFormat = request.getOutputFormat();
@@ -135,9 +134,8 @@ public class IntegrationTestWFSClient extends WFSClient {
     private Response mockGetFeature(GetFeatureRequest request) throws IOException {
 
         final QName typeName = request.getTypeName();
-        String simpleName = typeName.getPrefix() + "_" + typeName.getLocalPart();
-
-        String resource = "GetFeature_" + simpleName + ".xml";
+        
+        String resource = "GetFeature_" + typeName.getLocalPart() + ".xml";
         URL contentUrl = new URL(baseDirectory, resource);
 
         String outputFormat = request.getOutputFormat();
@@ -174,12 +172,14 @@ public class IntegrationTestWFSClient extends WFSClient {
             }
         }
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> allFeaturesReader;
-        allFeaturesReader = DataUtilities.reader(originalFeatures);
+        FeatureReader<SimpleFeatureType, SimpleFeature> allFeaturesReader = null;
+        if (originalFeatures.size() > 0) { 
+            allFeaturesReader = DataUtilities.reader(originalFeatures);
+        }
 
         final DiffFeatureReader<SimpleFeatureType, SimpleFeature> serverFilteredReader;
         serverFilteredReader = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(
-                allFeaturesReader, diff);
+                allFeaturesReader, diff, serverFiler);
 
         final GetFeatureParser filteredParser = new GetFeatureParser() {
 
@@ -202,9 +202,11 @@ public class IntegrationTestWFSClient extends WFSClient {
                     // only if the original response included number of features (i.e. the server
                     // does advertise it)
 
-                    FeatureReader<SimpleFeatureType, SimpleFeature> all;
+                    FeatureReader<SimpleFeatureType, SimpleFeature> all = null;
                     try {
-                        all = DataUtilities.reader(originalFeatures);
+                        if (originalFeatures.size() > 0) { 
+                            all = DataUtilities.reader(originalFeatures);
+                        }
                         final DiffFeatureReader<SimpleFeatureType, SimpleFeature> serverFiltered;
                         serverFiltered = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(
                                 all, diff);
@@ -241,7 +243,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         }
     }
 
-    private AtomicInteger idseq = new AtomicInteger();
+    //private AtomicInteger idseq = new AtomicInteger();
 
     private Response mockTransaction(TransactionRequest request) throws Exception {
 
@@ -253,9 +255,9 @@ public class IntegrationTestWFSClient extends WFSClient {
             if (e instanceof Insert) {
                 Diff diff = diff(typeName);
                 for (SimpleFeature f : ((Insert) e).getFeatures()) {
-                    String newId = "wfs-generated-" + idseq.incrementAndGet();
+                    //String newId = "wfs-generated-" + idseq.incrementAndGet();
                     diff.add(f.getID(), f);
-                    added.add(newId);
+                    added.add(f.getID());
                 }
             }
             if (e instanceof Delete) {
@@ -297,7 +299,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         String outputFormat = request.getOutputFormat();
         String responseContents = createTransactionResponseXml(added, updated, deleted);
         HTTPResponse httpResponse = new TestHttpResponse(outputFormat, "UTF-8", responseContents);
-
+        
         return request.createResponse(httpResponse);
     }
 
@@ -364,7 +366,9 @@ public class IntegrationTestWFSClient extends WFSClient {
         enc.setIndenting(true);
         enc.setIndentSize(1);
 
-        String encodedTransactionResponse = enc.encodeAsString(tr, WFS.TransactionResponse);
+        String encodedTransactionResponse = enc.encodeAsString(tr, 
+                "1.0.0".equals(getStrategy().getVersion()) ? org.geotools.wfs.v1_0.WFS.WFS_TransactionResponse :
+                    WFS.TransactionResponse);
         System.err.println(encodedTransactionResponse);
         return encodedTransactionResponse;
     }

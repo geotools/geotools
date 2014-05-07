@@ -1,90 +1,208 @@
 package org.geotools.data.wfs.impl;
 
-import static org.geotools.data.DataUtilities.createType;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import static org.geotools.data.DataUtilities.createType;
+
+import org.geotools.data.DefaultTransaction;
+import org.geotools.data.Query;
+import org.geotools.data.Transaction;
+import org.geotools.data.memory.MemoryFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.data.wfs.internal.WFSClient;
+import org.geotools.data.wfs.integration.IntegrationTestWFSClient;
+import org.geotools.data.wfs.internal.WFSConfig;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.simple.SimpleFeatureImpl;
+import org.geotools.filter.identity.FeatureIdImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 public class WFSContentFeatureStoreTest {
 
-    private static final QName TYPE1 = new QName("http://example.com/1", "points", "prefix1");
-
-    private static final QName TYPE2 = new QName("http://example.com/2", "points", "prefix2");
+    private static final QName TYPE1 = new QName("http://www.census.gov", "poi", "tiger");
 
     private static SimpleFeatureType featureType1;
 
-    private static SimpleFeatureType featureType2;
-
     private static String simpleTypeName1;
-
-    private static String simpleTypeName2;
 
     private WFSContentDataStore dataStore;
 
-    private WFSClient wfs;
+    private IntegrationTestWFSClient wfs;
 
     @BeforeClass
     public static void oneTimeSetUp() throws Exception {
         simpleTypeName1 = TYPE1.getPrefix() + "_" + TYPE1.getLocalPart();
-        simpleTypeName2 = TYPE2.getPrefix() + "_" + TYPE2.getLocalPart();
-
+        
         featureType1 = createType("http://example.com/1", simpleTypeName1,
-                "name:String,geom:Point:srid=4326");
-        featureType2 = createType("http://example.com/2", "prefix2_roads",
-                "name:String,geom:Point:srid=3857");
+                "the_geom:Point:srid=4326,NAME:String,THUMBNAIL:String,MAINPAGE:String");
 
     }
 
     @Before
     public void setUp() throws Exception {
-        wfs = mock(WFSClient.class);
-        when(wfs.getRemoteTypeNames()).thenReturn(new HashSet<QName>(Arrays.asList(TYPE1, TYPE2)));
-        when(wfs.supportsTransaction(TYPE1)).thenReturn(Boolean.TRUE);
-        when(wfs.supportsTransaction(TYPE2)).thenReturn(Boolean.FALSE);
-
-        dataStore = spy(new WFSContentDataStore(wfs));
-        doReturn(featureType1).when(dataStore).getRemoteFeatureType(TYPE1);
-        doReturn(featureType2).when(dataStore).getRemoteFeatureType(TYPE2);
-        doReturn(featureType1).when(dataStore).getRemoteSimpleFeatureType(TYPE1);
-        doReturn(featureType2).when(dataStore).getRemoteSimpleFeatureType(TYPE2);
+        wfs = new IntegrationTestWFSClient("GeoServer_1.7.x/1.0.0/", new WFSConfig());
+        dataStore = new WFSContentDataStore(wfs);
     }
 
     @After
     public void tearDown() throws Exception {
     }
 
-    //TODO: re-enable when transactions are worked out
     @Test
-    @Ignore
     public void testAddFeaturesAutoCommit() throws Exception {
-        ContentFeatureSource source;
-
-        source = dataStore.getFeatureSource(simpleTypeName1);
+        GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
+        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        
+        ContentFeatureSource source = dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
         assertTrue(source instanceof WFSContentFeatureStore);
 
         WFSContentFeatureStore store = (WFSContentFeatureStore) source;
-        SimpleFeatureCollection collection = null;
-        List<FeatureId> fids = store.addFeatures(collection);
+                 
+        MemoryFeatureCollection collection = new MemoryFeatureCollection(featureType1);
+        
+        Coordinate insideCoord = new Coordinate(5.2, 7.5);
+        Point myPoint = geomfac.createPoint(insideCoord);
+        
+        SimpleFeature feat = new SimpleFeatureImpl(Arrays.asList(new Object[]{myPoint, "mypoint",  "pics/x.jpg", "pics/y.jpg"}), featureType1, new FeatureIdImpl("myid") );
+        
+        collection.add(feat);
+        
+        List<FeatureId> fids = store.addFeatures((SimpleFeatureCollection) collection);
+        
+        assertEquals(1, fids.size());
+        
+        ContentFeatureCollection coll = store.getFeatures();
+        assertEquals(4, coll.size());
+               
+        coll = store.getFeatures( new Query(simpleTypeName1, filterfac.equals(filterfac.property("NAME"), filterfac.literal("mypoint"))) );
+        assertEquals(1, coll.size());
+        
+        SimpleFeature feature = coll.features().next();
+        assertEquals(feat.getAttributes(), feature.getAttributes());        
+    }
+    
+    @Test
+    public void testRemoveFeaturesAutoCommit() throws Exception {
+
+        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        
+        ContentFeatureSource source = dataStore.getFeatureSource(simpleTypeName1);
+        
+        WFSContentFeatureStore store = (WFSContentFeatureStore) source;
+        
+        Filter filter = filterfac.id(filterfac.featureId("poi.2"));
+        
+        store.removeFeatures(filter);
+        
+        ContentFeatureCollection coll = store.getFeatures();
+        assertEquals(2, coll.size());
+        
+        coll = store.getFeatures( new Query(simpleTypeName1, filter) );
+        assertEquals(0, coll.size());
+    }
+    
+    @Test
+    public void testUpdateFeaturesAutoCommit() throws Exception {
+
+        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        
+        ContentFeatureSource source = dataStore.getFeatureSource(simpleTypeName1);
+        
+        WFSContentFeatureStore store = (WFSContentFeatureStore) source;
+        
+        Filter filter = filterfac.id(filterfac.featureId("poi.2"));
+        
+        store.modifyFeatures("NAME", "blah", filter);
+        
+        ContentFeatureCollection coll = store.getFeatures( new Query(simpleTypeName1, filter) );
+        assertEquals(1, coll.size());
+
+        SimpleFeature feature = coll.features().next();
+        assertEquals("blah", feature.getAttribute("NAME"));
+    }
+    
+    @Test
+    public void testTransaction() throws Exception {
+        GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
+        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        
+        ContentFeatureSource source = dataStore.getFeatureSource(simpleTypeName1);
+        assertNotNull(source);
+        assertTrue(source instanceof WFSContentFeatureStore);
+
+        WFSContentFeatureStore store = (WFSContentFeatureStore) source;
+                 
+        MemoryFeatureCollection collection = new MemoryFeatureCollection(featureType1);
+        
+        Coordinate insideCoord = new Coordinate(5.2, 7.5);
+        Point myPoint = geomfac.createPoint(insideCoord);
+        
+        SimpleFeature feat = new SimpleFeatureImpl(Arrays.asList(new Object[]{myPoint, "mypoint",  "pics/x.jpg", "pics/y.jpg"}), featureType1, new FeatureIdImpl("myid") );
+        
+        collection.add(feat);
+        
+        Transaction transaction = new DefaultTransaction();
+        store.setTransaction(transaction);
+        
+        List<FeatureId> fids = store.addFeatures((SimpleFeatureCollection) collection);        
+        assertEquals(1, fids.size());
+        
+        Filter filterRemove = filterfac.id(filterfac.featureId("poi.2"));        
+        store.removeFeatures(filterRemove);
+        
+        Filter filterUpdate = filterfac.id(filterfac.featureId("poi.3"));        
+        store.modifyFeatures("NAME", "blah", filterUpdate);
+                
+        transaction.commit();
+        
+        ContentFeatureCollection coll = store.getFeatures();
+        FeatureIterator it= coll.features();
+        while (it.hasNext()) {
+            System.err.println(it.next());
+        }
+        assertEquals(3, coll.size());
+               
+        coll = store.getFeatures( new Query(simpleTypeName1, filterfac.equals(filterfac.property("NAME"), filterfac.literal("mypoint"))) );
+        it= coll.features();
+        while (it.hasNext()) {
+            System.err.println(it.next());
+        }
+        assertEquals(1, coll.size());        
+        
+        SimpleFeature feature = coll.features().next();
+        assertEquals(feat.getAttributes(), feature.getAttributes());
+        
+        coll = store.getFeatures( new Query(simpleTypeName1, filterRemove) );
+        assertEquals(0, coll.size());
+        
+        coll = store.getFeatures( new Query(simpleTypeName1, filterUpdate) );
+        assertEquals(1, coll.size());
+
+        feature = coll.features().next();
+        assertEquals("blah", feature.getAttribute("NAME"));
+        
     }
 }

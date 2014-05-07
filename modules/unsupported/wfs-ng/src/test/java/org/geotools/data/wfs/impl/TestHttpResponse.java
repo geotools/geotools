@@ -48,6 +48,10 @@ public class TestHttpResponse implements HTTPResponse {
         this.bodyContent = sb.toString();
     }
 
+    public TestHttpResponse(URL response, String contentType) {
+         this(contentType, "UTF-8", response);
+    }
+
     @Override
     public void dispose() {
     }

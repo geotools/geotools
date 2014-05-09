@@ -18,6 +18,8 @@ package org.geotools.imageio.unidata;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -129,7 +131,7 @@ class AncillaryFileManager implements FileSetManager{
     /** File storing the coverages indexer */
     private File indexerFile;
     
-    public AncillaryFileManager(final File netcdfFile, final String indexFilePath) throws IOException, JAXBException {
+    public AncillaryFileManager(final File netcdfFile, final String indexFilePath) throws IOException, JAXBException, NoSuchAlgorithmException {
         org.geotools.util.Utilities.ensureNonNull("file", netcdfFile);
         if (!netcdfFile.exists()) {
             throw new IllegalArgumentException("The specified file doesn't exist: " + netcdfFile);
@@ -150,11 +152,17 @@ class AncillaryFileManager implements FileSetManager{
         }
 
         String mainFilePath = ncFile.getCanonicalPath();
+
+        // Selection of the hashcode for creating a unique directory of the auxiliary files
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        md.update(mainFilePath.getBytes());
+        String hashCode = convertToHex(md.digest());
+        
         String mainName = FilenameUtils.getName(mainFilePath);
         //TODO: Improve that check on extensions.
         String extension = FilenameUtils.getExtension(mainName);
         String baseName = cutExtension(extension) ? FilenameUtils.removeExtension(mainName) : mainName;
-        String outputLocalFolder = "." + baseName;
+        String outputLocalFolder = "." + baseName + "_" + hashCode;
         destinationDir = new File(parentDirectory, outputLocalFolder);
 
         // append base file folder tree to the optional external data dir
@@ -165,6 +173,9 @@ class AncillaryFileManager implements FileSetManager{
         boolean createdDir = false;
         if (!destinationDir.exists()) {
             createdDir = destinationDir.mkdirs();
+            // Creation of an origin.txt file with the absolute file path internally written
+            File origin = new File(destinationDir, "origin.txt");
+            FileUtils.write(origin, ncFile.getAbsolutePath());
         }
 
         // Init auxiliary file names
@@ -174,7 +185,24 @@ class AncillaryFileManager implements FileSetManager{
             if (!indexerFile.exists() || !indexerFile.canRead()) {
                 indexerFile = null;
             }
+        }else{
+            // Compose the path to an optional XML auxiliary file in the same directory of the input file
+            // (filename.xml)
+            String optionalAuxiliaryPath = parentDirectory.getAbsolutePath() + File.separator + 
+                    baseName + INDEX_SUFFIX;
+            indexerFile = new File(optionalAuxiliaryPath);
+            if (!indexerFile.exists() || !indexerFile.canRead()) {
+                // Compose the path to an optional XML auxiliary file inside a directory of with the same 
+                // name of the file but with a dot before (.filename/filename.xml) 
+                optionalAuxiliaryPath = parentDirectory.getAbsolutePath() + File.separator + "." + 
+                        baseName + File.separator + baseName + INDEX_SUFFIX;
+                indexerFile = new File(optionalAuxiliaryPath);
+                if (!indexerFile.exists() || !indexerFile.canRead()) {
+                    indexerFile = null;
+                }
+            }
         }
+
         if (indexerFile == null) {
             indexerFile = new File(destinationDir, baseName + INDEX_SUFFIX);
         }
@@ -629,5 +657,18 @@ class AncillaryFileManager implements FileSetManager{
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }
         fileSetManager.purge();
+    }
+    
+    public static String convertToHex(byte[] data) {
+        StringBuilder buf = new StringBuilder();
+        for (byte b : data) {
+            int halfbyte = (b >>> 4) & 0x0F;
+            int two_halfs = 0;
+            do {
+                buf.append((0 <= halfbyte) && (halfbyte <= 9) ? (char) ('0' + halfbyte) : (char) ('a' + (halfbyte - 10)));
+                halfbyte = b & 0x0F;
+            } while (two_halfs++ < 1);
+        }
+        return buf.toString();
     }
 }

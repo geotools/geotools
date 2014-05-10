@@ -16,6 +16,8 @@
  */
 package org.geotools.xml.impl;
 
+import java.util.logging.Logger;
+
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
@@ -23,7 +25,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import java.util.logging.Logger;
+import org.xml.sax.helpers.NamespaceSupport;
 
 
 /**
@@ -81,7 +83,9 @@ public class ElementEncoder {
      * @return The encoded value as an element.
      */
     public Element encode(Object value, XSDElementDeclaration element,Document document, XSDTypeDefinition container) {
-        ElementEncodeExecutor executor = new ElementEncodeExecutor(value, element, document, logger);
+        ElementEncodeExecutor executor = new ElementEncodeExecutor(value, element, document,
+                logger,
+                (NamespaceSupport) context.getComponentInstanceOfType(NamespaceSupport.class));
         BindingVisitorDispatch.walk(value, bindingWalker, element, executor, container, context);
         return executor.getEncodedElement();
     }

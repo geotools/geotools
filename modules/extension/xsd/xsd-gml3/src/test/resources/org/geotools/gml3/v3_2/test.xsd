@@ -12,8 +12,8 @@
 			<xsd:extension base="gml:AbstractFeatureType">
 				<xsd:sequence>
 					<xsd:element name="geom" type="gml:PointPropertyType"/>
-					<xsd:element name="count" type="xsd:int"/>
-					<xsd:element name="date" type="xsd:date"/>			
+					<xsd:element name="count" type="xsd:int" nillable="true"/>
+					<xsd:element name="date" type="xsd:date" nillable="true"/>			
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>

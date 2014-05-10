@@ -18,18 +18,13 @@ package org.geotools.gml3;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.xml.XMLConstants;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -39,6 +34,8 @@ import junit.framework.TestCase;
 
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.bindings.TEST;
@@ -47,11 +44,15 @@ import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import com.vividsolutions.jts.geom.Point;
 
 
 /**
@@ -203,5 +204,51 @@ public class GML3EncodingTest extends TestCase {
         dom = new Encoder(gml).encodeAsDOM(GML3MockData.point(), GML.Point);
         assertTrue(dom.getDocumentElement().getAttribute("srsName")
             .startsWith("http://www.opengis.net/def/crs/EPSG/0/"));
+    }
+    
+    public void testEncodeFeatureWithNullValues() throws Exception {
+        SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
+        typeBuilder.setName(TEST.TestFeature.getLocalPart());
+        typeBuilder.setNamespaceURI(TEST.TestFeature.getNamespaceURI());
+
+        typeBuilder.add("name", String.class);
+        typeBuilder.add("description", String.class);
+        typeBuilder.add("geom", Point.class);
+        typeBuilder.nillable(true);
+        typeBuilder.add("count", Integer.class);
+        typeBuilder.nillable(true);
+        typeBuilder.add("date", Date.class);
+
+        SimpleFeatureType type = (SimpleFeatureType) typeBuilder.buildFeatureType();
+
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        builder.add("theName");
+        builder.add("theDescription");
+        builder.add(GML3MockData.point());
+        builder.add(null);
+        builder.add(null);
+
+        SimpleFeature feature = (SimpleFeature) builder.buildFeature("fid.1");
+        
+        TestConfiguration configuration  = new TestConfiguration();
+        Encoder encoder = new Encoder( configuration );
+        Document dom = encoder.encodeAsDOM(feature, TEST.TestFeature);
+        NodeList countList = dom.getElementsByTagName("test:count");
+        Node count = countList.item(0);
+        assertEquals("true", count.getAttributes().getNamedItem("xs:nil").getTextContent());
+        NodeList dateList = dom.getElementsByTagName("test:date");
+        Node date = dateList.item(0);
+        assertEquals("true", date.getAttributes().getNamedItem("xs:nil").getTextContent());
+
+        // now force the XSD prefix
+        encoder = new Encoder(configuration);
+        encoder.getNamespaces().declarePrefix("xsd", "http://www.w3.org/2001/XMLSchema");
+        dom = encoder.encodeAsDOM(feature, TEST.TestFeature);
+        countList = dom.getElementsByTagName("test:count");
+        count = countList.item(0);
+        assertEquals("true", count.getAttributes().getNamedItem("xsd:nil").getTextContent());
+        dateList = dom.getElementsByTagName("test:date");
+        date = dateList.item(0);
+        assertEquals("true", date.getAttributes().getNamedItem("xsd:nil").getTextContent());
     }
 }

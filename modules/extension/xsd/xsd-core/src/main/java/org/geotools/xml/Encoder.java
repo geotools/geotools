@@ -18,7 +18,6 @@ package org.geotools.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -64,7 +63,6 @@ import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDUtil;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.xml.impl.BindingFactoryImpl;
 import org.geotools.xml.impl.BindingLoader;
 import org.geotools.xml.impl.BindingPropertyExtractor;
@@ -73,10 +71,9 @@ import org.geotools.xml.impl.BindingWalker;
 import org.geotools.xml.impl.BindingWalkerFactoryImpl;
 import org.geotools.xml.impl.ElementEncoder;
 import org.geotools.xml.impl.GetPropertyExecutor;
-import org.geotools.xml.impl.MismatchedBindingFinder;
 import org.geotools.xml.impl.NamespaceSupportWrapper;
 import org.geotools.xml.impl.SchemaIndexImpl;
-import org.opengis.feature.Feature;
+import org.geotools.xs.XS;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.w3c.dom.Attr;
@@ -617,6 +614,11 @@ public class Encoder {
         
         //maintain a stack of (encoding,element declaration pairs)
         Stack encoded = null;
+
+        // make sure the xs namespace is declared
+        if (namespaces.getPrefix(XS.NAMESPACE) == null) {
+            namespaces.declarePrefix("xs", XS.NAMESPACE);
+        }
         
         try {
         serializer = handler;
@@ -716,9 +718,6 @@ public class Encoder {
 
                     if (itr.hasNext()) {
                         Object next = itr.next();
-                        if ( next == null ) {
-                            logger.warning( "Iterator returned null for " + element.getName() );
-                        }
                         
                         //here we check for instanceof EncoderDelegate
                         if ( next instanceof EncoderDelegate ) {
@@ -994,17 +993,21 @@ O:
 
                             Object obj = tuple[1];
 
+                            // if the value is null, can we skip it? Or do we have to go out
+                            // with an non empty element with xs:nil?
                             if (obj == null) {
                                 if (particle.getMinOccurs() == 0) {
-                                    //cool
-                                } else {
-                                    //log an error
+                                    // just skip it
+                                    continue;
+                                } else if(!child.isNillable()){
+                                    // log an error and skip the element, but we're encoding
+                                    // something invalid
                                     logger.fine("Property " + ns + ":" + local
                                         + " not found but minoccurs > 0 ");
+                                    //skip this regardless
+                                    continue;
                                 }
-
-                                //skip this regardless
-                                continue;
+                                // minOccurs > 0 && nillable -> we'll encode an empty element with xs:nil
                             }
 
                             //figure out the maximum number of occurences
@@ -1033,7 +1036,7 @@ O:
 
                                 if (obj instanceof Iterator) {
                                     iterator = (Iterator) obj;
-                                } else if (obj.getClass().isArray()) {
+                                } else if (obj != null && obj.getClass().isArray()) {
                                     Object[] array = (Object[]) obj;
                                     iterator = Arrays.asList(array).iterator();
                                 } else if (obj instanceof Collection) {

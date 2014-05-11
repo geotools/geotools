@@ -45,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.media.jai.Interpolation;
 import javax.swing.Icon;
 
 import org.geotools.geometry.jts.LiteShape2;
@@ -187,8 +186,8 @@ public class LabelPainter {
                 AttributedString attributed = new AttributedString(line, map);
                 AttributedCharacterIterator iter = attributed.getIterator();
                 LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(iter, BreakIterator
-                        .getWordInstance(), graphics.getFontRenderContext());
-                BreakIterator breaks = BreakIterator.getWordInstance();
+.getLineInstance(), graphics.getFontRenderContext());
+                BreakIterator breaks = BreakIterator.getLineInstance();
                 breaks.setText(line);
 
                 // setup iteration and start splitting at word boundaries

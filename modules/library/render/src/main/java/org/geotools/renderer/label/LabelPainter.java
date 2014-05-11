@@ -188,9 +188,9 @@ public class LabelPainter {
                 // boundaries when the wrapping length is exceeded
                 AttributedString attributed = new AttributedString(line, map);
                 AttributedCharacterIterator iter = attributed.getIterator();
-                LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(iter, BreakIterator
-                        .getWordInstance(), graphics.getFontRenderContext());
-                BreakIterator breaks = BreakIterator.getWordInstance();
+                LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(iter,
+                        BreakIterator.getLineInstance(), graphics.getFontRenderContext());
+                BreakIterator breaks = BreakIterator.getLineInstance();
                 breaks.setText(line);
 
                 // setup iteration and start splitting at word boundaries

@@ -20,7 +20,7 @@
             <Label><ogc:PropertyName>label</ogc:PropertyName></Label>
             
             <Font>
-              <CssParameter name="font-family">SansSerif</CssParameter>
+              <CssParameter name="font-family">Bitstream Vera Sans</CssParameter>
               <CssParameter name="font-size">14</CssParameter>
             </Font>
             <LabelPlacement>

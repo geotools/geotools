@@ -3,22 +3,25 @@ package org.geotools.renderer.lite;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
+import java.awt.Font;
 import java.awt.RenderingHints;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 import junit.framework.TestCase;
 
-import org.geotools.data.FeatureSource;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
+import org.geotools.image.test.ImageAssert;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.renderer.label.LabelCacheImpl;
+import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
+import org.geotools.test.TestData;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -39,9 +42,14 @@ public class LabelWrapTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
+        // register a cross platform test
+        FontCache.getDefaultInstance().registerFont(
+                Font.createFont(Font.TRUETYPE_FONT, TestData.getResource(this, "Vera.ttf")
+                        .openStream()));
+
         bounds = new ReferencedEnvelope(0, 10, 0, 10, null);
         
-//        System.setProperty("org.geotools.test.interactive", "true");
+        // System.setProperty("org.geotools.test.interactive", "true");
         
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.add("geom", Point.class);
@@ -51,38 +59,48 @@ public class LabelWrapTest extends TestCase {
         
         GeometryFactory gf = new GeometryFactory();
         SimpleFeature f1 = SimpleFeatureBuilder.build(type, new Object[]{gf.createPoint(new Coordinate(5, 8)), "A long label, no newlines"}, null);
-        SimpleFeature f2 = SimpleFeatureBuilder.build(type, new Object[]{gf.createPoint(new Coordinate(5, 4)), "A long label\nwith newlines"}, null);
+        SimpleFeature f2 = SimpleFeatureBuilder
+                .build(type, new Object[] { gf.createPoint(new Coordinate(5, 5)),
+                        "A long label\nwith newlines" }, null);
+        SimpleFeature f3 = SimpleFeatureBuilder.build(type,
+                new Object[] { gf.createPoint(new Coordinate(5, 2)),
+                        "A long label with (parenthesis)" }, null);
         
         MemoryDataStore data = new MemoryDataStore();
         data.addFeature(f1);
         data.addFeature(f2);
+        data.addFeature(f3);
         fs = data.getFeatureSource("labelWrap");
         
     }
     
     public void testNoAutoWrap() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textWrapDisabled.sld");
-        renderLabels(fs, style, "Label wrap disabled");
+        BufferedImage image = renderLabels(fs, style, "Label wrap disabled");
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapDisabled.png";
+        ImageAssert.assertEquals(new File(refPath), image, 1200);
+
     }
     
     public void testAutoWrap() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textWrapEnabled.sld");
-        renderLabels(fs, style, "Label wrap enabled");
+        BufferedImage image = renderLabels(fs, style, "Label wrap enabled");
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabled.png";
+        ImageAssert.assertEquals(new File(refPath), image, 1200);
+
     }
 
-    private void renderLabels(FeatureSource fs, Style style, String title) throws Exception {
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
+    private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title)
+            throws Exception {
+        MapContent mc = new MapContent();
+        mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+        mc.addLayer(new FeatureLayer(fs, style));
         
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        Map rendererParams = new HashMap();
-        LabelCacheImpl labelCache = new LabelCacheImpl();
-        rendererParams.put(StreamingRenderer.LABEL_CACHE_KEY, labelCache);
-        renderer.setRendererHints(rendererParams);
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
         
-        RendererBaseTest.showRender(title, renderer, TIME, bounds);
+        return RendererBaseTest.showRender(title, renderer, TIME, bounds);
     }
     
     

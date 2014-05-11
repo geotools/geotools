@@ -94,8 +94,8 @@ class Measure {
         // check if we have a uom attached at the end of the expression
         String value = literal.evaluate(null, String.class);
         if (value == null) {
-            throw new IllegalArgumentException("Invalid empty measure '', "
-                    + "was expecting a number, eventually followed by px, m or ft");
+            // let it go without doing anything, it may be a ConstantExpression.NULL
+            return;
         }
         processLiteralExpression(value, defaultUnit);
     }

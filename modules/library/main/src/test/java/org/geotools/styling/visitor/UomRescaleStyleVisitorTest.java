@@ -16,7 +16,10 @@
  */
 package org.geotools.styling.visitor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.util.Map;
@@ -43,12 +46,13 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PointSymbolizerImpl;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.PolygonSymbolizerImpl;
+import org.geotools.styling.SLD;
 import org.geotools.styling.Stroke;
+import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.util.Converters;
-import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -743,6 +747,16 @@ public class UomRescaleStyleVisitorTest
 
         assertEquals(Math.round(size), Math.round(size));
         assertNotSame(rescaledLineSymb, lineSymb);
+    }
+
+    @Test
+    public void visitNullExpression() {
+        // this code generates a Displacement.NULL inside, which in turn contains
+        // ConstantExpression.NULL
+        Style style = SLD.createPolygonStyle(Color.YELLOW, null, 0.0f);
+        UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(1);
+        // used to throw an exception here
+        style.accept(visitor);
     }
 
 }

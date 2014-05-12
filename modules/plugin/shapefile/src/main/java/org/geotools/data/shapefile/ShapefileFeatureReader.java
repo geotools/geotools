@@ -334,7 +334,13 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
         return shp.getHeader().getShapeType();
     }
     
-    public void setFilter(Filter filter) {
+    /**
+     * If a filter is set, it will be assessed before applying the ScreenMap optimization.
+     * See {@link ShapefileDataStoreFactory#FILTER_BEFORE_SCREEN_MAP}.
+     * 
+     * @param filter the layer query filter
+     */
+    void setFilter(Filter filter) {
         this.filter = filter;
     }
 

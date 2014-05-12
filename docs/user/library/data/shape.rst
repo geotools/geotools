@@ -22,34 +22,36 @@ Connection Parameters
 
 The following connection parameters are available:
 
-+-------------------------+----------------------------------------------------+
-| Param                   | Description                                        |
-+=========================+====================================================+
-| "url"                   | A URL of the file ending in "shp"                  |
-+-------------------------+----------------------------------------------------+
-| "namespace"             | Optional: URI to use for the FeatureType           |
-+-------------------------+----------------------------------------------------+
-| "create spatial index"  | Optional: Use Boolean.TRUE to create an index      |
-+-------------------------+----------------------------------------------------+
-| "charset"               | Optional: Chartset used to decode strings in the   |
-|                         | DBF file                                           |
-+-------------------------+----------------------------------------------------+
-| "timezone"              | Optional: Timezone used to parse dates in the      |
-|                         | DBF file                                           |
-+-------------------------+----------------------------------------------------+
-| "memory mapped buffer"  | Optional: memory map the files (unadvisable for    |
-|                         | large files under windows, defaults to false)      |
-+------------------------------------------------------------------------------+
-| "cache memory maps"     | Optional: when memory mapping, cache and reuse     |
-|                         | memory maps (defaults to true)                     |
-+------------------------------------------------------------------------------+
-| "create spatial index"  | Optional: if false, won't try to create a spatial  |
-|                         | index if missing (defaults to true)                |
-+------------------------------------------------------------------------------+
-| "enable spatial index"  | Optional: if false, the spatial index won't be used|
-|                         | even if available (and won't be created if missing |
-+-------------------------+----------------------------------------------------+
-
++---------------------------+----------------------------------------------------+
+| Param                     | Description                                        |
++===========================+====================================================+
+| "url"                     | A URL of the file ending in "shp"                  |
++---------------------------+----------------------------------------------------+
+| "namespace"               | Optional: URI to use for the FeatureType           |
++---------------------------+----------------------------------------------------+
+| "create spatial index"    | Optional: Use Boolean.TRUE to create an index      |
++---------------------------+----------------------------------------------------+
+| "charset"                 | Optional: Chartset used to decode strings in the   |
+|                           | DBF file                                           |
++---------------------------+----------------------------------------------------+
+| "timezone"                | Optional: Timezone used to parse dates in the      |
+|                           | DBF file                                           |
++---------------------------+----------------------------------------------------+
+| "memory mapped buffer"    | Optional: memory map the files (unadvisable for    |
+|                           | large files under windows, defaults to false)      |
++---------------------------+----------------------------------------------------+
+| "cache memory maps"       | Optional: when memory mapping, cache and reuse     |
+|                           | memory maps (defaults to true)                     |
++---------------------------+----------------------------------------------------+
+| "create spatial index"    | Optional: if false, won't try to create a spatial  |
+|                           | index if missing (defaults to true)                |
++---------------------------+----------------------------------------------------+
+| "enable spatial index"    | Optional: if false, the spatial index won't be used|
+|                           | even if available (and won't be created if missing |
++---------------------------+----------------------------------------------------+
+| "filter before screen map"| Optional: if true, layer filters will be assessed  |
+|                           | before the ScreenMap optimization is applied.      |
++---------------------------+----------------------------------------------------+
 
 
 This information is also in the `javadocs <http://docs.geotools.org/latest/javadocs/org/geotools/data/shapefile/ShapefileDataStoreFactory.html>`_ .

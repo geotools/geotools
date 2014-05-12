@@ -143,7 +143,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
     /**
      * Optional - specify screen map optimization technique
      */
-    public static final Param FILTER_BEFORE_SCREEN_MAP = new Param("execute layer filters before the screen map optimization",
+    public static final Param FILTER_BEFORE_SCREEN_MAP = new Param("filter before screen map",
             Boolean.class, "allow filters to be run before the screen map optimization", false,
             false, new KVP(Param.LEVEL, "advanced"));
 

@@ -7,6 +7,10 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FileDataStore;
@@ -20,7 +24,6 @@ import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
-import org.junit.Before;
 import org.junit.Test;
 
 public class FilteredScreenMapShapefileTest {
@@ -37,10 +40,15 @@ public class FilteredScreenMapShapefileTest {
     private FeatureSource<?, ?> src;
     private BufferedImage expected;
     
-    @Before
-    public void setUp() throws Exception {
+    public void setUp(boolean isFilterBeforeScreenMap) throws Exception {
         // load shapefile
-        FileDataStore store = new ShapefileDataStoreFactory().createDataStore(TestData.getResource(this, "filter-coincident-points.shp"));
+        URL shpUrl = TestData.getResource(this, "filter-coincident-points.shp");
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put(ShapefileDataStoreFactory.URLP.key, shpUrl);
+        if (isFilterBeforeScreenMap) {
+            params.put(ShapefileDataStoreFactory.FILTER_BEFORE_SCREEN_MAP.key, true);
+        }
+        FileDataStore store = (FileDataStore) new ShapefileDataStoreFactory().createDataStore(params);
         src = store.getFeatureSource();
         expected = renderImage(null);
         
@@ -51,10 +59,10 @@ public class FilteredScreenMapShapefileTest {
             }
         }
     }
-
+    
     @Test
-    public void testCoincidentPointFilteringBackwardCompatible() throws Exception {
-        System.clearProperty("filterBeforeScreenMap");
+    public void testBackwardCompatible() throws Exception {
+        setUp(false);
         
         // point with NAME = 'a' renders
         BufferedImage actual = renderImage("NAME='a'");
@@ -72,8 +80,8 @@ public class FilteredScreenMapShapefileTest {
     }
 
     @Test
-    public void testCoincidentPointFilterBeforeScreenMap() throws Exception {
-        System.setProperty("filterBeforeScreenMap", "true");
+    public void testFilterBeforeScreenMap() throws Exception {
+        setUp(true);
         
         // point with NAME = 'a' renders
         BufferedImage actual = renderImage("NAME='a'");

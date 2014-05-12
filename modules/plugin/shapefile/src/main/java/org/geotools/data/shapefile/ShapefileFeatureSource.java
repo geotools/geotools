@@ -289,9 +289,8 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 if (simplificationDistance != null) {
                     result.setSimplificationDistance(simplificationDistance.doubleValue());
                 }
-                ScreenMap smap = (ScreenMap) hints.get(Hints.SCREENMAP);
-                result.setScreenMap(smap);
-                if (smap != null && "true".equals(System.getProperty("filterBeforeScreenMap", "false"))) {
+                result.setScreenMap((ScreenMap) hints.get(Hints.SCREENMAP));
+                if (getDataStore().isFilterBeforeScreenMap()) {
                     result.setFilter(q.getFilter());
                 }
 

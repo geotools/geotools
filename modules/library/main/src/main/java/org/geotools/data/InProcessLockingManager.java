@@ -210,7 +210,7 @@ public class InProcessLockingManager implements LockingManager {
      *
      * @return Map of Transaction or MemoryLock by featureID
      */
-    protected Map locks(String typeName) {
+    public Map locks(String typeName) {
         synchronized (lockTables) {
             if (lockTables.containsKey(typeName)) {
                 return (Map) lockTables.get(typeName);
@@ -228,7 +228,7 @@ public class InProcessLockingManager implements LockingManager {
      *
      * @return Set of all locks
      */
-    protected Set allLocks() {
+    public Set allLocks() {
         synchronized (lockTables) {
             Set set = new HashSet();
             Map fidLocks;

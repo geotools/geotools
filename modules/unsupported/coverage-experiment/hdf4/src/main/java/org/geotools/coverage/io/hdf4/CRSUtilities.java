@@ -276,7 +276,6 @@ public class CRSUtilities {
     		final String lowerLeftCorner, final String upperRightCorner){
     	GeneralEnvelope envelope = null;
     	try{ 
-    		final MathTransform WGS84toPROJCRS = CRS.findMathTransform(sourceCRS, destCRS, true);
 	    	 final String latlon1[] = lowerLeftCorner.split(",");
 	    	 final String latlon2[] = upperRightCorner.split(",");
 	
@@ -298,15 +297,12 @@ public class CRSUtilities {
 			 }
 			 GeneralEnvelope tempEnvelope = new GeneralEnvelope(new double[] { lon1, lat1 }, new double[] { lon2, lat2 });
 			 tempEnvelope.setCoordinateReferenceSystem(sourceCRS);
-			 envelope = CRS.transform(WGS84toPROJCRS,tempEnvelope);
+            envelope = CRS.transform(tempEnvelope, destCRS);
 			 envelope.setCoordinateReferenceSystem(destCRS);
 		} catch (TransformException e) {
 			if (LOGGER.isLoggable(Level.WARNING))
 				LOGGER.log(Level.WARNING,"unable to set the envelope using the projection to image affine transformation");
-		} catch (FactoryException e) {
-			if (LOGGER.isLoggable(Level.WARNING))
-				LOGGER.log(Level.WARNING,"unable to set the envelope using the projection to image affine transformation");
-		}
+        }
 		return envelope;
     }
     

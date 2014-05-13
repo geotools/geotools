@@ -130,6 +130,10 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-metadata</artifactId>
       <version>${project.version}</version>

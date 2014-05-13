@@ -232,7 +232,6 @@ public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageRead
         // do one last internal create
         if(!slices.isEmpty())
             this.descriptors.add(new RasterDescriptor(slices));
-//        return new ArrayList<RasterManager>(descriptors);ù
         return null;
     }
 

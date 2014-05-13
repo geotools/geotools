@@ -667,8 +667,8 @@ class RasterLayerRequest {
         coverageCRS2D = CRS.getHorizontalCRS(coverageCRS);
         assert coverageCRS2D.getCoordinateSystem().getDimension() == 2;
         if (coverageCRS.getCoordinateSystem().getDimension() != 2) {
-            final MathTransform transform=CRS.findMathTransform(coverageCRS,(CoordinateReferenceSystem) coverageCRS2D);
-            final GeneralEnvelope bbox = CRS.transform(transform,coverageEnvelope);
+            final GeneralEnvelope bbox = new GeneralEnvelope(CRS.transform(coverageEnvelope,
+                    coverageCRS2D));
             bbox.setCoordinateReferenceSystem(coverageCRS2D);
 			coverageBBox = new ReferencedEnvelope(bbox);
         } else {
@@ -778,16 +778,12 @@ class RasterLayerRequest {
             // STEP 1: requested BBox to native CRS
         	//
         	////
-            MathTransform destinationToSourceTransform = null;
             if (!CRS.equalsIgnoreMetadata(requestedBBoxCRS2D,coverageCRS2D))
-                destinationToSourceTransform = CRS.findMathTransform(requestedBBoxCRS2D,coverageCRS2D, true);
-            // now transform the requested envelope to source crs
-            if (destinationToSourceTransform != null && !destinationToSourceTransform.isIdentity())
             {
-            	final GeneralEnvelope temp = CRS.transform(destinationToSourceTransform,requestedBBox);
+                final GeneralEnvelope temp = new GeneralEnvelope(CRS.transform(requestedBBox,
+                        coverageCRS2D));
             	temp.setCoordinateReferenceSystem(coverageCRS2D);
-            	requestedBBox= new ReferencedEnvelope(temp);
-            	
+                requestedBBox = new ReferencedEnvelope(temp);
             }
             else
             	//we do not need to do anything, but we do this in order to aboid problems with the envelope checks
@@ -848,11 +844,6 @@ class RasterLayerRequest {
             // envelope. let's try with wgs84
             if(LOGGER.isLoggable(Level.FINE))
             	LOGGER.log(Level.FINE,te.getLocalizedMessage(),te);
-        } catch (FactoryException fe) {
-            // something bad happened while trying to transform this
-            // envelope. let's try with wgs84
-            if(LOGGER.isLoggable(Level.FINE))
-            	LOGGER.log(Level.FINE,fe.getLocalizedMessage(),fe);
         }
 
         // //
@@ -880,8 +871,8 @@ class RasterLayerRequest {
         // note that for the moment we got to use general envelope since there is no intersection othrewise
         // TODO fix then we'll have intersection in ReferencedEnvelope
         approximateWGS84requestedBBox=new ReferencedEnvelope(approximateWGS84requestedBBox.intersection(coverageGeographicBBox),DefaultGeographicCRS.WGS84);
-        final MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84,coverageCRS2D, true);
-    	final GeneralEnvelope approximateRequestedBBoInNativeCRS =CRS.transform(transform, approximateWGS84requestedBBox) ;
+        final GeneralEnvelope approximateRequestedBBoInNativeCRS = new GeneralEnvelope(
+                CRS.transform(approximateWGS84requestedBBox, coverageCRS2D));
     	approximateRequestedBBoInNativeCRS.setCoordinateReferenceSystem(coverageCRS2D);
     	requestedBBox = new ReferencedEnvelope(approximateRequestedBBoInNativeCRS);        
 

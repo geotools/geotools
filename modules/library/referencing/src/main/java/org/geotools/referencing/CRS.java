@@ -1225,7 +1225,8 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
      *
      * @since 2.5
      */
-    public static Envelope transform(Envelope envelope, final CoordinateReferenceSystem targetCRS)
+    public static GeneralEnvelope transform(Envelope envelope,
+            final CoordinateReferenceSystem targetCRS)
             throws TransformException
     {
         if (envelope != null && targetCRS != null) {
@@ -1251,7 +1252,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                 assert equalsIgnoreMetadata(envelope.getCoordinateReferenceSystem(), targetCRS);
             }
         }
-        return envelope;
+        return GeneralEnvelope.toGeneralEnvelope(envelope);
     }
 
     /**

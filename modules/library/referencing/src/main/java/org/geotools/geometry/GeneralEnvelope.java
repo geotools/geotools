@@ -188,6 +188,21 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     }
 
     /**
+     * Converts the envelope to a general envelope, avoiding the construction of a new object in
+     * case the input envelope is already a GeneralEnvelope
+     * 
+     * @param envelope
+     * @return
+     */
+    public static GeneralEnvelope toGeneralEnvelope(final Envelope envelope) {
+        if (envelope instanceof GeneralEnvelope) {
+            return (GeneralEnvelope) envelope;
+        } else {
+            return new GeneralEnvelope(envelope);
+        }
+    }
+
+    /**
      * Constructs a new envelope with the same data than the specified envelope.
      * 
      * @param envelope

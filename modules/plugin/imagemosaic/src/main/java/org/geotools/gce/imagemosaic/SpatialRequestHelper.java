@@ -402,7 +402,7 @@ public class SpatialRequestHelper {
             // reproject the crop bbox back and then crop, notice that we are imposing
             //
             try {
-                final GeneralEnvelope cropBBOXInRequestCRS = CRS.transform(destinationToSourceTransform.inverse(), cropBBox);
+                final GeneralEnvelope cropBBOXInRequestCRS = CRS.transform(cropBBox, requestCRS);
                 cropBBOXInRequestCRS.setCoordinateReferenceSystem(requestedBBox.getCoordinateReferenceSystem());
                 // make sure it falls within the requested envelope
                 cropBBOXInRequestCRS.intersect(requestedBBox);
@@ -514,7 +514,7 @@ public class SpatialRequestHelper {
      */
     private double[] computeAccurateResolution() throws TransformException,
             NoninvertibleTransformException {
-        GeneralEnvelope cropBboxTarget = CRS.transform(destinationToSourceTransform.inverse(), cropBBox); 
+        GeneralEnvelope cropBboxTarget = CRS.transform(cropBBox, requestCRS);
         double[] points = new double[36];
         for(int i = 0; i < 3; i++) {
             double x;
@@ -574,7 +574,7 @@ public class SpatialRequestHelper {
 
             // now transform the requested envelope to source crs
             if (destinationToSourceTransform != null && !destinationToSourceTransform.isIdentity()) {
-                final GeneralEnvelope temp = CRS.transform(destinationToSourceTransform, requestedBBox);
+                final GeneralEnvelope temp = CRS.transform(requestedBBox, coverageProperties.crs2D);
                 temp.setCoordinateReferenceSystem(coverageProperties.crs2D);
                 cropBBox = new ReferencedEnvelope(temp);
                 needsReprojection = true;
@@ -647,9 +647,8 @@ public class SpatialRequestHelper {
                 requestedBBOXInCoverageGeographicCRS.setCoordinateReferenceSystem(coverageProperties.geographicCRS2D);
 
                 // now go back to the coverage native CRS in order to compute an approximate requested resolution
-                final MathTransform transform = CRS.findMathTransform(
-                        requestedBBOXInCoverageGeographicCRS.getCoordinateReferenceSystem(), coverageProperties.crs2D, true);
-                approximateRequestedBBoInNativeCRS = CRS.transform(transform, requestedBBOXInCoverageGeographicCRS);
+                approximateRequestedBBoInNativeCRS = CRS.transform(
+                        requestedBBOXInCoverageGeographicCRS, coverageProperties.crs2D);
                 approximateRequestedBBoInNativeCRS.setCoordinateReferenceSystem(coverageProperties.crs2D);
                 cropBBox = new ReferencedEnvelope(approximateRequestedBBoInNativeCRS);
                 return;

@@ -49,7 +49,7 @@ public abstract class FeatureWrapper {
      * 
      * @param underlyingComplexAttribute
      */
-    private void setUnderlyingComplexAttribute(ComplexAttribute underlyingComplexAttribute) {
+    public void setUnderlyingComplexAttribute(ComplexAttribute underlyingComplexAttribute) {
         this.underlyingComplexAttribute = underlyingComplexAttribute;
     }
 

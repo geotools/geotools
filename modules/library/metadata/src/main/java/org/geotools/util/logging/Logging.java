@@ -133,6 +133,7 @@ public final class Logging {
         }
         catch (Throwable t){
             System.out.println("Logging unable to redirect JAI errors: "+t);
+            t.printStackTrace(); // sorry only able to debug on the build box
         }
     }
     /**

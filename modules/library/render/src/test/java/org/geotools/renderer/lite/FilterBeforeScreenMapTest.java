@@ -26,7 +26,7 @@ import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 import org.junit.Test;
 
-public class FilteredScreenMapShapefileTest {
+public class FilterBeforeScreenMapTest {
 
     private static final double X = -112.0033;
     private static final double Y = 33.6256;
@@ -42,7 +42,7 @@ public class FilteredScreenMapShapefileTest {
     
     public void setUp(boolean isFilterBeforeScreenMap) throws Exception {
         // load shapefile
-        URL shpUrl = TestData.getResource(this, "filter-coincident-points.shp");
+        URL shpUrl = TestData.getResource(this, "filter-before-screenmap.shp");
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put(ShapefileDataStoreFactory.URLP.key, shpUrl);
         if (isFilterBeforeScreenMap) {
@@ -115,7 +115,7 @@ public class FilteredScreenMapShapefileTest {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, width, height);
 
-        Style style = RendererBaseTest.loadStyle(this, "filter-coincident-points.sld");
+        Style style = RendererBaseTest.loadStyle(this, "filter-before-screenmap.sld");
 
         MapContent mapContent = new MapContent();
         MapViewport viewport = mapContent.getViewport();

@@ -167,6 +167,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
             Envelope envelope = record.envelope();
             boolean skip = false;
             Geometry geometry = null;
+            peeked = false;
             if(schema.getGeometryDescriptor() != null) {
                 // ... if geometry is out of the target bbox, skip both geom and row
                 if (targetBBox != null && !targetBBox.isNull() && !targetBBox.intersects(envelope)) {
@@ -175,7 +176,6 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                 } else if (simplificationDistance > 0 && envelope.getWidth() < simplificationDistance
                         && envelope.getHeight() < simplificationDistance) {
                     try {
-                        peeked = false;
                         if (filter != null && filtered(record)) {
                             geometry = null;
                             skip = true;

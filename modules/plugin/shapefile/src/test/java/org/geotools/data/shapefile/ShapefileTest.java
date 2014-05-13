@@ -17,9 +17,11 @@
 package org.geotools.data.shapefile;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -31,7 +33,9 @@ import java.util.Map;
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
+import org.geotools.data.FileDataStore;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.files.ShpFiles;
@@ -42,9 +46,20 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.transform.ConcatenatedTransform;
+import org.geotools.referencing.operation.transform.IdentityTransform;
+import org.geotools.renderer.ScreenMap;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransform2D;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -304,6 +319,23 @@ public class ShapefileTest extends TestCaseSupport {
         assertEquals("Did not read all Geometries from sparse file.", 31, cnt);
     }
 
+    @Test
+    public void testFilterBeforeScreenMapBackwardsCompatible() throws Exception {
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = setUpScreenMapShapefileFeatureReader(false);
+        
+        SimpleFeature feature = null;
+        while (reader.hasNext()) {
+            // ScreenMap should filter out all but one feature (they are all coincident)
+            assertNull(feature);
+            feature = reader.next();
+        }
+        // the first feature is named a
+        Assert.assertNotNull(feature);
+        assertEquals("a", feature.getAttribute("NAME"));
+        
+        reader.close();
+    }
+
     protected void loadMemoryMapped(String resource, int expected)
             throws Exception {
         final URL url = TestData.url(resource);
@@ -321,4 +353,26 @@ public class ShapefileTest extends TestCaseSupport {
         assertEquals("Number of Geometries loaded incorect for : " + resource,
                 expected, cnt);
     }
+    
+    private FeatureReader<SimpleFeatureType, SimpleFeature> setUpScreenMapShapefileFeatureReader(boolean isFilterBeforeScreenMap) throws Exception {
+        // load shapefile
+        URL shpUrl = TestData.url(this, "filter-before-screenmap/filter-before-screenmap.shp");
+        
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put(ShapefileDataStoreFactory.URLP.key, shpUrl);
+        params.put(ShapefileDataStoreFactory.FILTER_BEFORE_SCREEN_MAP.key, isFilterBeforeScreenMap);
+
+        ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(params);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader();
+
+        ScreenMap screenMap = new ScreenMap(-180, -90, 360, 180);
+        screenMap.setSpans(1.0, 1.0);
+        screenMap.setTransform(IdentityTransform.create(2));
+        
+        ((ShapefileFeatureReader)reader).setScreenMap(screenMap);
+        ((ShapefileFeatureReader)reader).setSimplificationDistance(1.0);
+
+        return reader;
+    }
+    
 }

@@ -220,7 +220,6 @@ public final class Logging {
                 }
             }
         }
-        checkJaiMessageRedirect();
         return Logger.getLogger(name);
     }
 

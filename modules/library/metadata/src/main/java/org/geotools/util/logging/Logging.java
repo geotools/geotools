@@ -140,7 +140,6 @@ public final class Logging {
         }
         catch (Throwable t){
             // JAI is not ready yet
-            System.out.println("Logging JAI messages: unavailable:"+t);
         }
         if( jai == null){
             return; // JAI not ready yet we cannot check

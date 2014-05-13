@@ -111,23 +111,28 @@ public final class Logging {
     private static boolean sameLoggerFactory = true;
     
     static {
-        final JAI jai = JAI.getDefaultInstance();
-        if( jai != null && jai.getImagingListener() == null ){
-            // Client code has not provided an ImagingListener so we can use our own
-            // Custom GeoTools ImagingListener used to ignore common warnings 
-            jai.setImagingListener(new ImagingListener() {
-                final Logger LOGGER = Logging.getLogger("javax.media.jai");
-                @Override
-                public boolean errorOccurred(String message, Throwable thrown, Object where,
-                        boolean isRetryable) throws RuntimeException {
-                    if (message.contains("Continuing in pure Java mode")) {
-                        LOGGER.log(Level.FINER, message, thrown);
-                    } else {
-                        LOGGER.log(Level.INFO, message, thrown);
+        try {
+            final JAI jai = JAI.getDefaultInstance();
+            if( jai != null && jai.getImagingListener() == null ){
+                // Client code has not provided an ImagingListener so we can use our own
+                // Custom GeoTools ImagingListener used to ignore common warnings 
+                jai.setImagingListener(new ImagingListener() {
+                    final Logger LOGGER = Logging.getLogger("javax.media.jai");
+                    @Override
+                    public boolean errorOccurred(String message, Throwable thrown, Object where,
+                            boolean isRetryable) throws RuntimeException {
+                        if (message.contains("Continuing in pure Java mode")) {
+                            LOGGER.log(Level.FINER, message, thrown);
+                        } else {
+                            LOGGER.log(Level.INFO, message, thrown);
+                        }
+                        return false; // we are not trying to recover
                     }
-                    return false; // we are not trying to recover
-                }
-            });
+                });
+            }
+        }
+        catch (Throwable t){
+            System.out.println("Logging unable to redirect JAI errors: "+t);
         }
     }
     /**

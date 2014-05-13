@@ -389,50 +389,73 @@ public final class GeoTools {
     }
 
     /**
-     * Initializes GeoTools for use. This convenience method performs various tasks (more may
-     * be added in the future), including setting up the {@linkplain java.util.logging Java
-     * logging framework} in one of the following states:
+     * Initializes GeoTools for use. This convenience method performs various tasks (more may be added in the future), including setting up the
+     * {@linkplain java.util.logging Java logging framework} in one of the following states:
      * <p>
      * <ul>
-     *   <li>If the <A HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A>
-     *       framework is available, then every logging message in the {@code org.geotools}
-     *       namespace sent to the Java {@linkplain java.util.logging.Logger logger} are
-     *       redirected to Commons-logging.</li>
-     *
-     *   <li>Otherwise if the <A HREF="http://logging.apache.org/log4j">Log4J</A> framework is
-     *       available, then every logging message in the {@code org.geotools} namespace sent
-     *       to the Java {@linkplain java.util.logging.Logger logger} are redirected to Log4J.</li>
-     *
-     *   <li>Otherwise, the Java logging {@linkplain java.util.logging.Formatter formatter} for
-     *       console output is replaced by a {@linkplain org.geotools.util.logging.MonolineFormatter
-     *       monoline formatter}.</li>
+     * <li>If the <A HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> framework is available, then every logging message in the
+     * {@code org.geotools} namespace sent to the Java {@linkplain java.util.logging.Logger logger} are redirected to Commons-logging.</li>
+     * 
+     * <li>Otherwise if the <A HREF="http://logging.apache.org/log4j">Log4J</A> framework is available, then every logging message in the
+     * {@code org.geotools} namespace sent to the Java {@linkplain java.util.logging.Logger logger} are redirected to Log4J.</li>
+     * 
+     * <li>Otherwise, the Java logging {@linkplain java.util.logging.Formatter formatter} for console output is replaced by a
+     * {@linkplain org.geotools.util.logging.MonolineFormatter monoline formatter}.</li>
      * </ul>
      * <p>
-     * In addition, the {@linkplain #getDefaultHints default hints} are initialized to the
-     * specified {@code hints}.
+     * In addition, the {@linkplain #getDefaultHints default hints} are initialized to the specified {@code hints}.
      * <p>
-     * Note that invoking this method is usually <strong>not</strong> needed for proper working
-     * of the Geotools library. It is just a convenience method for overwriting some Java and
-     * Geotools default settings in a way that seems to be common in server environment. Such
-     * overwriting may not be wanted for every situations.
+     * Invoking this method is <strong>not</strong> required fpr the GeoTools library to function. It is just a convenience method for overwriting
+     * select Java and GeoTools default settings. Supplying these defaults is not desirable in all settings, such as writing test cases.
      * <p>
-     * Example of typical invocation in a Geoserver environment:
-     *
-     * <blockquote><pre>
+     * Example of typical invocation in a GeoServer environment:
+     * 
+     * <pre><code>
      * Hints hints = new Hints();
      * hints.put({@linkplain Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER}, Boolean.TRUE);
      * hints.put({@linkplain Hints#FORCE_AXIS_ORDER_HONORING}, "http");
      * GeoTools.init(hints);
-     * </pre></blockquote>
-     *
+     * </code></pre>
+     * 
      * @param hints The hints to use.
-     *
+     * 
      * @see Logging#setLoggerFactory(String)
      * @see Logging#forceMonolineConsoleOutput
      * @see Hints#putSystemDefault
      * @see #getDefaultHints
      */
     public static void init(final Hints hints) {
+        init();
+        if (hints != null) {
+            // This will trigger fireConfigurationChanged()
+            Hints.putSystemDefault(hints);
+        }
+    }
+    /**
+     * Initializes GeoTools for use. This convenience method performs various tasks (more may be added in the future), including setting up the
+     * {@linkplain java.util.logging Java logging framework} in one of the following states:
+     * <p>
+     * <ul>
+     * <li>If the <A HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> framework is available, then every logging message in the
+     * {@code org.geotools} namespace sent to the Java {@linkplain java.util.logging.Logger logger} are redirected to Commons-logging.</li>
+     * 
+     * <li>Otherwise if the <A HREF="http://logging.apache.org/log4j">Log4J</A> framework is available, then every logging message in the
+     * {@code org.geotools} namespace sent to the Java {@linkplain java.util.logging.Logger logger} are redirected to Log4J.</li>
+     * 
+     * <li>Otherwise, the Java logging {@linkplain java.util.logging.Formatter formatter} for console output is replaced by a
+     * {@linkplain org.geotools.util.logging.MonolineFormatter monoline formatter}.</li>
+     * </ul>
+     * <p>
+     * Invoking this method is <strong>not</strong> required fpr the GeoTools library to function. It is just a convenience method for overwriting
+     * select Java and GeoTools default settings. Supplying these defaults is not desirable in all settings, such as writing test cases.
+     * <p>
+     * 
+     * @see Logging#setLoggerFactory(String)
+     * @see Logging#forceMonolineConsoleOutput
+     * @see Hints#putSystemDefault
+     * @see #getDefaultHints
+     */
+    public static void init(){
         final Logging log = Logging.GEOTOOLS;
         try {
             log.setLoggerFactory("org.geotools.util.logging.CommonsLoggerFactory");
@@ -447,14 +470,9 @@ public final class GeoTools {
         if (log.getLoggerFactory() == null) {
             log.forceMonolineConsoleOutput();
         }
-        if (hints != null) {
-            Hints.putSystemDefault(hints);
-            // fireConfigurationChanged() is invoked in the above method call.
-        }
     }
-
     /**
-     * Forces the initial context for test cases, or as needed.
+     * Provides GeoTools with the JNDI context for resource lookup.
      *
      * @param applicationContext The initial context to use.
      *

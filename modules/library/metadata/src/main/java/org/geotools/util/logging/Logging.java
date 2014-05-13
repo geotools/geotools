@@ -32,7 +32,6 @@ import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
 
-
 /**
  * A set of utilities method for configuring loggings in GeoTools. <strong>All GeoTools
  * code should fetch their logger through a call to {@link #getLogger(String)}</strong>,
@@ -56,6 +55,25 @@ import org.geotools.resources.i18n.ErrorKeys;
  * @author Martin Desruisseaux
  */
 public final class Logging {
+    private static final class LoggingImagingListener implements ImagingListener {
+        @Override
+        public boolean errorOccurred(String message, Throwable thrown, Object where,
+                boolean isRetryable) throws RuntimeException {
+            Logger log = Logging.getLogger("javax.media.jai");
+            if (message.contains("Continuing in pure Java mode")) {
+                log.log(Level.FINER, message, thrown);
+            } else {
+                log.log(Level.INFO, message, thrown);
+            }
+            return false; // we are not trying to recover
+        }
+
+        @Override
+        public String toString() {
+            return "LoggingImagingListener";
+        }
+    }
+
     /**
      * Compares {@link Logging} or {@link String} objects for alphabetical order.
      */
@@ -110,31 +128,34 @@ public final class Logging {
      */
     private static boolean sameLoggerFactory = true;
     
-    static {
+    // Check default JAI instance
+    private static boolean jaiMessageRedirect = false;
+    private static void checkJaiMessageRedirect() {
+        if( jaiMessageRedirect ) {
+            return; // checked already
+        }
+        JAI jai = null;
         try {
-            final JAI jai = JAI.getDefaultInstance();
-            if( jai != null && jai.getImagingListener() == null ){
-                // Client code has not provided an ImagingListener so we can use our own
-                // Custom GeoTools ImagingListener used to ignore common warnings 
-                jai.setImagingListener(new ImagingListener() {
-                    final Logger LOGGER = Logging.getLogger("javax.media.jai");
-                    @Override
-                    public boolean errorOccurred(String message, Throwable thrown, Object where,
-                            boolean isRetryable) throws RuntimeException {
-                        if (message.contains("Continuing in pure Java mode")) {
-                            LOGGER.log(Level.FINER, message, thrown);
-                        } else {
-                            LOGGER.log(Level.INFO, message, thrown);
-                        }
-                        return false; // we are not trying to recover
-                    }
-                });
-            }
+            jai = JAI.getDefaultInstance();
         }
         catch (Throwable t){
-            System.out.println("Logging unable to redirect JAI errors: "+t);
-            t.printStackTrace(); // sorry only able to debug on the build box
+            // JAI is not ready yet
+            System.out.println("Logging JAI messages: unavailable:"+t);
         }
+        if( jai == null){
+            return; // JAI not ready yet we cannot check
+        }
+        ImagingListener imagingListener = jai.getImagingListener();
+        if( imagingListener == null || imagingListener.getClass().getName().contains("ImagingListenerImpl")){
+            // Client code has not provided an ImagingListener so we can use our own
+            // Custom GeoTools ImagingListener used to ignore common warnings 
+            jai.setImagingListener(new LoggingImagingListener());
+            System.out.println("Logging JAI messages: redirected to javax.media.jai logger");
+        }
+        else {
+            System.out.println("Logging JAI messages: ImagingListener already in use: "+imagingListener);
+        }
+        jaiMessageRedirect = true;
     }
     /**
      * Creates an instance for the root logger. This constructor should not be used
@@ -200,6 +221,7 @@ public final class Logging {
                 }
             }
         }
+        checkJaiMessageRedirect();
         return Logger.getLogger(name);
     }
 

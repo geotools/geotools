@@ -27,12 +27,14 @@ import junit.framework.TestSuite;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Envelope2D;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
 import org.geotools.referencing.operation.projection.LambertConformal1SP;
 import org.geotools.referencing.operation.projection.TransverseMercator;
+import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
@@ -581,5 +583,63 @@ public class CRSTest extends TestCase {
         assertTrue(CRS.getMapProjection(utm32OnLatLon) instanceof TransverseMercator);
         CoordinateReferenceSystem nad27Tennessee = CRS.decode("EPSG:2062", false);
         assertTrue(CRS.getMapProjection(nad27Tennessee) instanceof LambertConformal1SP);
+    }
+
+    public void testTransformWgs84PolarStereographic() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3031", true);
+        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        envelope.add(-180, -90);
+        envelope.add(180, 0);
+        Envelope transformed = CRS.transform(envelope, crs);
+        // the result is a square
+        assertEquals(transformed.getMaximum(0), transformed.getMaximum(1), 1d);
+        assertEquals(transformed.getMinimum(0), transformed.getMinimum(1), 1d);
+        assertEquals(Math.abs(transformed.getMinimum(0)), transformed.getMaximum(0), 1d);
+
+        assertEquals(transformed.getMaximum(0), 1.236739621845986E7, 1d);
+    }
+
+    public void testTransformPolarStereographicWgs84() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3031", true);
+        Envelope2D envelope = new Envelope2D(crs);
+        // random bbox that does include the pole
+        envelope.add(-4223632.8125, -559082.03125);
+        envelope.add(5053710.9375, 3347167.96875);
+        Envelope transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
+        // check we got the whole range of longitudes, since the original bbox contains the pole
+        assertEquals(-180d, transformed.getMinimum(0), 0d);
+        assertEquals(180d, transformed.getMaximum(0), 0d);
+        // another bbox
+        envelope = new Envelope2D(crs);
+        // random bbox that does not include the pole, but it's really just slightly off it
+        envelope.add(-10718812.640513, -10006238.053703);
+        envelope.add(12228504.561708, -344209.75803081);
+        transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
+        assertEquals(-90, transformed.getMinimum(1), 0.1d);
+    }
+
+    public void testTransformPolarStereographicWgs84FalseOrigin() throws Exception {
+        // this one has false origins at 6000000/6000000
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3032", true);
+        Envelope2D envelope = new Envelope2D(crs);
+        envelope.add(5900000, 5900000);
+        envelope.add(6100000, 6100000);
+        Envelope transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
+        // check we got the whole range of longitudes, since the original bbox contains the pole
+        assertEquals(-180d, transformed.getMinimum(0), 0d);
+        assertEquals(180d, transformed.getMaximum(0), 0d);
+    }
+
+    public void testTransformPolarStereographicToOther() throws Exception {
+        CoordinateReferenceSystem antarcticPs = CRS.decode("EPSG:3031", true);
+        CoordinateReferenceSystem australianPs = CRS.decode("EPSG:3032", true);
+        Envelope2D envelope = new Envelope2D(antarcticPs);
+        envelope.add(-4223632.8125, -559082.03125);
+        envelope.add(5053710.9375, 3347167.96875);
+        Envelope transformed = CRS.transform(envelope, australianPs);
+        // has a false easting and northing, we can only check the spans are equal
+        assertEquals(transformed.getSpan(0), transformed.getSpan(1), 1d);
+
+        assertEquals(transformed.getMaximum(0), 1.2309982175378662E7, 1d);
     }
 }

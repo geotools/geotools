@@ -88,6 +88,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.GmlObjectId;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
@@ -196,7 +197,12 @@ public final class JDBCDataStore extends ContentDataStore
     /**
      * The envelope returned when bounds is called against a geometryless feature type
      */
-    protected static final ReferencedEnvelope EMPTY_ENVELOPE = new ReferencedEnvelope();  
+    protected static final ReferencedEnvelope EMPTY_ENVELOPE = new ReferencedEnvelope();
+
+    /**
+     * Max number of ids to use for the optimized locks checking filter.
+     */
+    public static final int MAX_IDS_IN_FILTER = 100;
 
     /**
      * data source
@@ -1315,6 +1321,7 @@ public final class JDBCDataStore extends ContentDataStore
                     LOGGER.fine( sql );
                     
                     st = cx.createStatement();
+                    st.setFetchSize(fetchSize);
                     rs = st.executeQuery( sql );
                 }
              
@@ -1994,43 +2001,70 @@ public final class JDBCDataStore extends ContentDataStore
     protected void ensureAuthorization(SimpleFeatureType featureType, Filter filter, Transaction tx, Connection cx) 
         throws IOException, SQLException {
         
-        Query query = new DefaultQuery(featureType.getTypeName(), filter, Query.NO_NAMES);
-
-        Statement st = null;
-        try {
-            ResultSet rs = null;
-            if ( getSQLDialect() instanceof PreparedStatementSQLDialect ) {
-                st = selectSQLPS(featureType, query, cx);
-                
-                PreparedStatement ps = (PreparedStatement) st;
-                ((PreparedStatementSQLDialect)getSQLDialect()).onSelect(ps, cx, featureType);
-                rs = ps.executeQuery();
+        InProcessLockingManager lm = (InProcessLockingManager) getLockingManager();
+        // verify if we have any lock to check 
+        Map locks = lm.locks(featureType.getTypeName());
+        if(locks.size() != 0) {
+            // limiting query to only extract locked features
+            if(locks.size() <= MAX_IDS_IN_FILTER) {
+                Set<FeatureId> ids = getLockedIds(locks);
+                Id lockFilter = getFilterFactory().id(ids);
+                // intersect given filter with ids filter
+                filter = getFilterFactory().and(filter, lockFilter);
             }
-            else {
-                String sql = selectSQL(featureType, query);
-                
-                st = cx.createStatement();
-                ((BasicSQLDialect)getSQLDialect()).onSelect(st, cx, featureType);
-                
-                LOGGER.fine( sql );
-                rs = st.executeQuery( sql );
-            }
-            
+            Query query = new DefaultQuery(featureType.getTypeName(), filter, Query.NO_NAMES);
+    
+            Statement st = null;
             try {
-                PrimaryKey key = getPrimaryKey( featureType );
-                InProcessLockingManager lm = (InProcessLockingManager) getLockingManager();
-                while( rs.next() ) {
-                    String fid = featureType.getTypeName() + "." + encodeFID( key, rs );
-                    lm.assertAccess(featureType.getTypeName(), fid, tx );
+                ResultSet rs = null;
+                if ( getSQLDialect() instanceof PreparedStatementSQLDialect ) {
+                    st = selectSQLPS(featureType, query, cx);
+                    
+                    PreparedStatement ps = (PreparedStatement) st;
+                    ((PreparedStatementSQLDialect)getSQLDialect()).onSelect(ps, cx, featureType);
+                    rs = ps.executeQuery();
+                }
+                else {
+                    String sql = selectSQL(featureType, query);
+                    
+                    st = cx.createStatement();
+                    st.setFetchSize(fetchSize);
+                    ((BasicSQLDialect)getSQLDialect()).onSelect(st, cx, featureType);
+                    
+                    LOGGER.fine( sql );
+                    rs = st.executeQuery( sql );
+                }
+                
+                try {
+                    PrimaryKey key = getPrimaryKey( featureType );
+                    
+                    while( rs.next() ) {
+                        String fid = featureType.getTypeName() + "." + encodeFID( key, rs );
+                        lm.assertAccess(featureType.getTypeName(), fid, tx );
+                    }
+                }
+                finally {
+                    closeSafe( rs );
                 }
             }
             finally {
-                closeSafe( rs );
+                closeSafe( st );
             }
         }
-        finally {
-            closeSafe( st );
+    }
+
+    /**
+     * Extracts a set of FeatureId objects from the locks Map.
+     * 
+     * @param locks
+     * @return
+     */
+    private Set<FeatureId> getLockedIds(Map locks) {
+        Set<FeatureId> ids = new HashSet<FeatureId>();
+        for(Object lock : locks.keySet()) {
+            ids.add(getFilterFactory().featureId(lock.toString()));
         }
+        return ids;
     }
     
     /**

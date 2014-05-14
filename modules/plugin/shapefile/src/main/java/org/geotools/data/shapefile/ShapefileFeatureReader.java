@@ -67,8 +67,6 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     IndexedFidReader fidReader;
     
     Filter filter;
-    
-    boolean peeked;
 
     public ShapefileFeatureReader(SimpleFeatureType schema, ShapefileReader shp, DbaseFileReader dbf, IndexedFidReader fidReader)
             throws IOException {
@@ -166,8 +164,9 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
             // read the geometry, so that we can decide if this row is to be skipped or not
             Envelope envelope = record.envelope();
             boolean skip = false;
+            boolean peeked = false;
             Geometry geometry = null;
-            peeked = false;
+            Row row = null;
             if(schema.getGeometryDescriptor() != null) {
                 // ... if geometry is out of the target bbox, skip both geom and row
                 if (targetBBox != null && !targetBBox.isNull() && !targetBBox.intersects(envelope)) {
@@ -176,12 +175,20 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                 } else if (simplificationDistance > 0 && envelope.getWidth() < simplificationDistance
                         && envelope.getHeight() < simplificationDistance) {
                     try {
-                        if (filter != null && filtered(record)) {
-                            geometry = null;
-                            skip = true;
-                        } else if (screenMap != null && screenMap.checkAndSet(envelope)) {
-                            geometry = null;
-                            skip = true;
+                        if (filter != null || screenMap != null) {
+                            // we need to commit to dbf.read in order to check row.isDeleted
+                            if (dbf != null) {
+                                row = dbf.readRow();
+                                peeked = true;
+                            }
+                            if (!row.isDeleted()) {
+                                if ((filter != null && filtered(row, record)) || (screenMap != null && screenMap.checkAndSet(envelope))) {
+                                    geometry = null;
+                                    skip = true;
+                                }
+                            } else {
+                                continue;
+                            }
                         } else {
                             // if we are using the screenmap better provide a slightly modified
                             // version of the geometry bounds or we'll end up with many holes
@@ -197,24 +204,19 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                 }
             }
 
-            if (!peeked) {
-                if (!skip) {
-                    // also grab the dbf row
-                    Row row;
-                    if (dbf != null) {
-                        row = dbf.readRow();
-                        if(row.isDeleted()) {
-                            continue;
-                        }
-                    } else {
-                        row = null;
+            if (!skip) {
+                // also grab the dbf row
+                if (dbf != null && !peeked) {
+                    row = dbf.readRow();
+                    if(row.isDeleted()) {
+                        continue;
                     }
-    
-                    nextFeature = buildFeature(record.number, geometry, row);
-                } else {
-                    if (dbf != null) {
-                        dbf.skip();
-                    }
+                }
+
+                nextFeature = buildFeature(record.number, geometry, row);
+            } else {
+                if (dbf != null && !peeked) {
+                    dbf.skip();
                 }
             }
         }
@@ -222,18 +224,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
         return nextFeature != null;
     }
 
-    private boolean filtered(Record record) throws IOException {
-        if (dbf == null) {
-            return false;
-        }
-        
-        Row row = dbf.readRow();
-        peeked = true;
-        
-        if (row.isDeleted()) {
-            return true;
-        }
-        
+    private boolean filtered(Row row, Record record) throws IOException {
         Geometry geometry = (Geometry) record.getSimplifiedShape();
         SimpleFeature feature = buildFeature(record.number, geometry, row);
         

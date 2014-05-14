@@ -17,6 +17,8 @@
 package org.geotools.data.shapefile;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -76,6 +78,9 @@ public class ShapefileTest extends TestCaseSupport {
     public final String POLYGONTEST = "shapes/polygontest.shp";
     public final String HOLETOUCHEDGE = "shapes/holeTouchEdge.shp";
     public final String EXTRAATEND = "shapes/extraAtEnd.shp";
+    
+    private final static String SHP_FILTER_BEFORE_SCREENMAP = "filter-before-screenmap";
+    private final static String SHP_SCREENMAP_WITH_DELETED_ROW = "screenmap-deleted";
 
     @Test
     public void testLoadingStatePop() throws Exception {
@@ -313,59 +318,87 @@ public class ShapefileTest extends TestCaseSupport {
     }
 
     @Test
-    public void testScreenMap() throws Exception {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = setUpScreenMapShapefileFeatureReader(false, null);
+    public void testScreenMapWithDeletedRow() throws Exception {
+        // test screen map optimization without filterBeforeScreenMap enhancement
+        // ensure that initial deleted record does not cause ScreenMap to return no elements
+        // first record is marked as deleted, all subsequent records are ScreenMap coincident
+        boolean isFilterBeforeScreenMap = false;
+        Integer filterFid = null;
+        String expectedName = "b";
+        int expectedFid = 2;
         
-        SimpleFeature feature = null;
-        while (reader.hasNext()) {
-            // ScreenMap should filter out all but one feature (they are all coincident)
-            assertNull(feature);
-            feature = reader.next();
-        }
-        // the first feature is named a and has feature_id 1
-        Assert.assertNotNull(feature);
-        assertEquals("a", feature.getAttribute("NAME"));
-        assertEquals(1, feature.getAttribute("feature_id"));
-        
-        reader.close();
+        testScreenMap(SHP_SCREENMAP_WITH_DELETED_ROW, isFilterBeforeScreenMap, filterFid, expectedName, expectedFid);
     }
 
     @Test
-    public void testFilterBeforeScreenMapBackwardsCompatible() throws Exception {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = setUpScreenMapShapefileFeatureReader(false, 2);
-
-        SimpleFeature feature = null;
-        while (reader.hasNext()) {
-            // ScreenMap should filter out all but one feature (they are all coincident)
-            assertNull(feature);
-            feature = reader.next();
-        }
-        // the first feature is named a
-        Assert.assertNotNull(feature);
-        assertEquals("a", feature.getAttribute("NAME"));
-        assertEquals(1, feature.getAttribute("feature_id"));
+    public void testScreenMap() throws Exception {
+        // test screen map optimization without filterBeforeScreenMap enhancement
+        // first record is named "a" and has fid 1, all subsequent records are ScreenMap coincident
+        boolean isFilterBeforeScreenMap = false;
+        Integer filterFid = null;
+        String expectedName = "a";
+        int expectedFid = 1;
         
-        reader.close();
+        testScreenMap(SHP_FILTER_BEFORE_SCREENMAP, isFilterBeforeScreenMap, filterFid, expectedName, expectedFid);
     }
-    
+
     @Test
     public void testFilterBeforeScreenMap() throws Exception {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = setUpScreenMapShapefileFeatureReader(true, 2);
+        // test screen map optimization with filterBeforeScreenMap enhancement
+        // first record is filtered out, all subsequent records are ScreenMap coincident
+        boolean isFilterBeforeScreenMap = true;
+        Integer filterFid = 2;
+        String expectedName = "b";
+        int expectedFid = filterFid;
+        
+        testScreenMap(SHP_FILTER_BEFORE_SCREENMAP, isFilterBeforeScreenMap, filterFid, expectedName, expectedFid);
+    }
+    
+    @Test
+    public void testFilterBeforeScreenMapWithDeletedRow() throws Exception {
+        // test screen map optimization with filterBeforeScreenMap enhancement and deleted row in DBF
+        // first record is filtered out, all subsequent records are ScreenMap coincident
+        boolean isFilterBeforeScreenMap = true;
+        Integer filterFid = 3;
+        String expectedName = "c";
+        int expectedFid = filterFid;
 
-        SimpleFeature feature = null;
-        while (reader.hasNext()) {
-            // ScreenMap should filter out all but one feature (they are all coincident)
-            assertNull(feature);
-            feature = reader.next();
+        testScreenMap(SHP_SCREENMAP_WITH_DELETED_ROW, isFilterBeforeScreenMap, filterFid, expectedName, expectedFid);
+    }
+    
+    private void testScreenMap(String shpName, boolean isFilterBeforeScreenMap, Integer filterFid, String expectedName, int expectedFid) throws Exception {
+        URL shpUrl = TestData.url(this, shpName + "/" + shpName + ".shp");
+        
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put(ShapefileDataStoreFactory.URLP.key, shpUrl);
+        params.put(ShapefileDataStoreFactory.FILTER_BEFORE_SCREEN_MAP.key, isFilterBeforeScreenMap);
+
+        ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(params);
+
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader();
+        if (isFilterBeforeScreenMap && filterFid != null) {
+            FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
+            ((ShapefileFeatureReader)reader).setFilter(factory.id(Collections.singleton(ff.featureId(shpName + "." + filterFid.toString()))));
         }
-        // the first non-filterd feature is named b
+
+        ScreenMap screenMap = new ScreenMap(-180, -90, 360, 180);
+        screenMap.setSpans(1.0, 1.0);
+        screenMap.setTransform(IdentityTransform.create(2));
+
+        ((ShapefileFeatureReader)reader).setScreenMap(screenMap);
+        ((ShapefileFeatureReader)reader).setSimplificationDistance(1.0);
+
+        assertTrue(reader.hasNext());
+        SimpleFeature feature = reader.next();
+        assertFalse(reader.hasNext());
+
         Assert.assertNotNull(feature);
-        assertEquals("b", feature.getAttribute("NAME"));
-        assertEquals(2, feature.getAttribute("feature_id"));
+        assertEquals(expectedName, feature.getAttribute("NAME"));
+        assertEquals(expectedFid, feature.getAttribute("feature_id"));
         
         reader.close();
     }
-    
+  
     protected void loadMemoryMapped(String resource, int expected)
             throws Exception {
         final URL url = TestData.url(resource);
@@ -382,31 +415,6 @@ public class ShapefileTest extends TestCaseSupport {
         }
         assertEquals("Number of Geometries loaded incorect for : " + resource,
                 expected, cnt);
-    }
-    
-    private FeatureReader<SimpleFeatureType, SimpleFeature> setUpScreenMapShapefileFeatureReader(boolean isFilterBeforeScreenMap, Integer fid) throws Exception {
-        URL shpUrl = TestData.url(this, "filter-before-screenmap/filter-before-screenmap.shp");
-        
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put(ShapefileDataStoreFactory.URLP.key, shpUrl);
-        params.put(ShapefileDataStoreFactory.FILTER_BEFORE_SCREEN_MAP.key, isFilterBeforeScreenMap);
-
-        ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(params);
-
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader();
-        if (isFilterBeforeScreenMap && fid != null) {
-            FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
-            ((ShapefileFeatureReader)reader).setFilter(factory.id(Collections.singleton(ff.featureId("filter-before-screenmap." + fid.toString()))));
-        }
-
-        ScreenMap screenMap = new ScreenMap(-180, -90, 360, 180);
-        screenMap.setSpans(1.0, 1.0);
-        screenMap.setTransform(IdentityTransform.create(2));
-
-        ((ShapefileFeatureReader)reader).setScreenMap(screenMap);
-        ((ShapefileFeatureReader)reader).setSimplificationDistance(1.0);
-
-        return reader;
     }
     
 }

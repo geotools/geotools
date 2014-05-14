@@ -19,7 +19,6 @@ package org.geotools.data.shapefile;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -50,7 +49,6 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.renderer.ScreenMap;
-import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -392,7 +390,7 @@ public class ShapefileTest extends TestCaseSupport {
         SimpleFeature feature = reader.next();
         assertFalse(reader.hasNext());
 
-        Assert.assertNotNull(feature);
+        assertNotNull(feature);
         assertEquals(expectedName, feature.getAttribute("NAME"));
         assertEquals(expectedFid, feature.getAttribute("feature_id"));
         

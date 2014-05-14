@@ -21,12 +21,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +35,6 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
-import org.geotools.data.FileDataStore;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.files.ShpFiles;
@@ -44,22 +43,16 @@ import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.renderer.ScreenMap;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
+import org.opengis.filter.FilterFactory2;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -320,9 +313,27 @@ public class ShapefileTest extends TestCaseSupport {
     }
 
     @Test
-    public void testFilterBeforeScreenMapBackwardsCompatible() throws Exception {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = setUpScreenMapShapefileFeatureReader(false);
+    public void testScreenMap() throws Exception {
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = setUpScreenMapShapefileFeatureReader(false, null);
         
+        SimpleFeature feature = null;
+        while (reader.hasNext()) {
+            // ScreenMap should filter out all but one feature (they are all coincident)
+            assertNull(feature);
+            feature = reader.next();
+        }
+        // the first feature is named a and has feature_id 1
+        Assert.assertNotNull(feature);
+        assertEquals("a", feature.getAttribute("NAME"));
+        assertEquals(1, feature.getAttribute("feature_id"));
+        
+        reader.close();
+    }
+
+    @Test
+    public void testFilterBeforeScreenMapBackwardsCompatible() throws Exception {
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = setUpScreenMapShapefileFeatureReader(false, 2);
+
         SimpleFeature feature = null;
         while (reader.hasNext()) {
             // ScreenMap should filter out all but one feature (they are all coincident)
@@ -332,10 +343,29 @@ public class ShapefileTest extends TestCaseSupport {
         // the first feature is named a
         Assert.assertNotNull(feature);
         assertEquals("a", feature.getAttribute("NAME"));
+        assertEquals(1, feature.getAttribute("feature_id"));
         
         reader.close();
     }
+    
+    @Test
+    public void testFilterBeforeScreenMap() throws Exception {
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = setUpScreenMapShapefileFeatureReader(true, 2);
 
+        SimpleFeature feature = null;
+        while (reader.hasNext()) {
+            // ScreenMap should filter out all but one feature (they are all coincident)
+            assertNull(feature);
+            feature = reader.next();
+        }
+        // the first non-filterd feature is named b
+        Assert.assertNotNull(feature);
+        assertEquals("b", feature.getAttribute("NAME"));
+        assertEquals(2, feature.getAttribute("feature_id"));
+        
+        reader.close();
+    }
+    
     protected void loadMemoryMapped(String resource, int expected)
             throws Exception {
         final URL url = TestData.url(resource);
@@ -354,8 +384,7 @@ public class ShapefileTest extends TestCaseSupport {
                 expected, cnt);
     }
     
-    private FeatureReader<SimpleFeatureType, SimpleFeature> setUpScreenMapShapefileFeatureReader(boolean isFilterBeforeScreenMap) throws Exception {
-        // load shapefile
+    private FeatureReader<SimpleFeatureType, SimpleFeature> setUpScreenMapShapefileFeatureReader(boolean isFilterBeforeScreenMap, Integer fid) throws Exception {
         URL shpUrl = TestData.url(this, "filter-before-screenmap/filter-before-screenmap.shp");
         
         Map<String, Serializable> params = new HashMap<String, Serializable>();
@@ -363,12 +392,17 @@ public class ShapefileTest extends TestCaseSupport {
         params.put(ShapefileDataStoreFactory.FILTER_BEFORE_SCREEN_MAP.key, isFilterBeforeScreenMap);
 
         ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(params);
+
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader();
+        if (isFilterBeforeScreenMap && fid != null) {
+            FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
+            ((ShapefileFeatureReader)reader).setFilter(factory.id(Collections.singleton(ff.featureId("filter-before-screenmap." + fid.toString()))));
+        }
 
         ScreenMap screenMap = new ScreenMap(-180, -90, 360, 180);
         screenMap.setSpans(1.0, 1.0);
         screenMap.setTransform(IdentityTransform.create(2));
-        
+
         ((ShapefileFeatureReader)reader).setScreenMap(screenMap);
         ((ShapefileFeatureReader)reader).setSimplificationDistance(1.0);
 

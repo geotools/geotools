@@ -35,42 +35,42 @@ import com.vividsolutions.jts.geom.Envelope;
  *
  */
 public class ParameterMappingContext {
-	// Set in constructor
-	private final Filter filter;
-	private final Map<String, String> viewParams;
-	private final FeatureTypeInfo featureTypeInfo;
-	
-	// Cached
-	private Envelope bbox;
-	
-	public ParameterMappingContext(Filter filter, Map<String, String> viewParams, 
-			FeatureTypeInfo featureTypeInfo) {
-		this.filter = filter;
-		if (viewParams == null) {
-			viewParams = Collections.emptyMap();
-		}
-		this.viewParams = viewParams;
-		this.featureTypeInfo = featureTypeInfo;
-	}
-	
-	public Filter getFilter() {
-		return filter;
-	}
-	
-	public Map<String, String> getViewParams() {
-		return viewParams;
-	}
-	
-	public FeatureTypeInfo getFeatureTypeInfo() {
-		return featureTypeInfo;
-	}
+    // Set in constructor
+    private final Filter filter;
+    private final Map<String, String> viewParams;
+    private final FeatureTypeInfo featureTypeInfo;
 
-	public Envelope getBBOX() {
-		if (bbox != null) return bbox;
-		
-	    bbox = new ReferencedEnvelope();
-	    bbox = (Envelope) filter.accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
+    // Cached
+    private Envelope bbox;
 
-	    return bbox;
-	}
+    public ParameterMappingContext(Filter filter, Map<String, String> viewParams, 
+            FeatureTypeInfo featureTypeInfo) {
+        this.filter = filter;
+        if (viewParams == null) {
+            viewParams = Collections.emptyMap();
+        }
+        this.viewParams = viewParams;
+        this.featureTypeInfo = featureTypeInfo;
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public Map<String, String> getViewParams() {
+        return viewParams;
+    }
+
+    public FeatureTypeInfo getFeatureTypeInfo() {
+        return featureTypeInfo;
+    }
+
+    public Envelope getBBOX() {
+        if (bbox != null) return bbox;
+
+        bbox = new ReferencedEnvelope();
+        bbox = (Envelope) filter.accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
+
+        return bbox;
+    }
 }

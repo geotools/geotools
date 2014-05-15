@@ -21,42 +21,41 @@ import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
-public abstract class ParameterCQLExpressionPropertyName implements
-		PropertyName {
+public abstract class ParameterCQLExpressionPropertyName implements PropertyName {
 
-	private final String name;
-	
-	public ParameterCQLExpressionPropertyName(String name) {
-		this.name = name;
-	}
+    private final String name;
 
-	@Override
-	public Object evaluate(Object object) {
-		ParameterMappingContext contextObj = (ParameterMappingContext) object;
-		return get(contextObj);
-	}
+    public ParameterCQLExpressionPropertyName(String name) {
+        this.name = name;
+    }
 
-	protected abstract Object get(ParameterMappingContext context);
+    @Override
+    public Object evaluate(Object object) {
+        ParameterMappingContext contextObj = (ParameterMappingContext) object;
+        return get(contextObj);
+    }
 
-	@Override
-	public <T> T evaluate(Object object, Class<T> context) {
-		ParameterMappingContext contextObj = (ParameterMappingContext) object;
-		return (T)get(contextObj);
-	}
+    protected abstract Object get(ParameterMappingContext context);
 
-	@Override
-	public Object accept(ExpressionVisitor visitor, Object extraData) {
-		return visitor.visit(this, extraData);
-	}
+    @Override
+    public <T> T evaluate(Object object, Class<T> context) {
+        ParameterMappingContext contextObj = (ParameterMappingContext) object;
+        return (T)get(contextObj);
+    }
 
-	@Override
-	public String getPropertyName() {
-		return name;
-	}
+    @Override
+    public Object accept(ExpressionVisitor visitor, Object extraData) {
+        return visitor.visit(this, extraData);
+    }
 
-	@Override
-	public NamespaceSupport getNamespaceContext() {
-		return null;
-	}
+    @Override
+    public String getPropertyName() {
+        return name;
+    }
+
+    @Override
+    public NamespaceSupport getNamespaceContext() {
+        return null;
+    }
 
 }

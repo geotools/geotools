@@ -156,11 +156,11 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
             throws IOException;
 
     protected abstract EObject createListStoredQueriesRequestPost(ListStoredQueriesRequest request)
-    		throws IOException;
-    
+            throws IOException;
+
     protected abstract EObject createDescribeStoredQueriesRequestPost(DescribeStoredQueriesRequest request)
-    		throws IOException;
-    
+            throws IOException;
+
     /**
      * Returns the xml configuration used to encode a filter at
      * {@link #encodeGetFeatureGetFilter(Filter)}
@@ -449,10 +449,10 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         return kvp;
     }
-    
+
 
     protected Map<String, String> buildDescribeStoredQueriesParametersForGET(
-			final DescribeStoredQueriesRequest request) {
+            final DescribeStoredQueriesRequest request) {
 
         Map<String, String> kvp = new HashMap<String, String>();
         kvp.put("SERVICE", "WFS");
@@ -460,32 +460,32 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         kvp.put("REQUEST", "DescribeStoredQueries");
 
         if (request.getStoredQueryIds().size() > 0) {
-        	StringBuffer sb = new StringBuffer();
-        	boolean first = true;
-        	for (URI storedQueryId : request.getStoredQueryIds()) {
-        		if (first) {
-        			first = false;
-        		} else {
-        			sb.append(",");
-        		}
-        		sb.append(storedQueryId.toString());
-        	}
-        	kvp.put("STOREDQUERY_ID", sb.toString());
+            StringBuffer sb = new StringBuffer();
+            boolean first = true;
+            for (URI storedQueryId : request.getStoredQueryIds()) {
+                if (first) {
+                    first = false;
+                } else {
+                    sb.append(",");
+                }
+                sb.append(storedQueryId.toString());
+            }
+            kvp.put("STOREDQUERY_ID", sb.toString());
         }
 
         return kvp;
-	}
+    }
 
 
-	protected Map<String, String> buildListStoredQueriesParametersForGET(
-			ListStoredQueriesRequest request) {
-		Map<String, String> kvp = new HashMap<String, String>();
+    protected Map<String, String> buildListStoredQueriesParametersForGET(
+            ListStoredQueriesRequest request) {
+        Map<String, String> kvp = new HashMap<String, String>();
         kvp.put("SERVICE", "WFS");
         kvp.put("VERSION", getServiceVersion().toString());
         kvp.put("REQUEST", "ListStoredQueries");
 
         return kvp;
-	}
+    }
 
 
     // private WFSResponse issueGetRequest(EObject request, URL baseUrl, Map<String, String> kvp)
@@ -687,11 +687,11 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
             requestParams = buildDescribeFeatureTypeParametersForGET((DescribeFeatureTypeRequest) request);
             break;
         case DESCRIBE_STORED_QUERIES:
-        	requestParams = buildDescribeStoredQueriesParametersForGET((DescribeStoredQueriesRequest) request);
-        	break;
+            requestParams = buildDescribeStoredQueriesParametersForGET((DescribeStoredQueriesRequest) request);
+            break;
         case LIST_STORED_QUERIES:
-        	requestParams = buildListStoredQueriesParametersForGET((ListStoredQueriesRequest) request);
-        	break;
+            requestParams = buildListStoredQueriesParametersForGET((ListStoredQueriesRequest) request);
+            break;
         default:
             throw new UnsupportedOperationException();
         }
@@ -704,14 +704,14 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         return finalURL;
     }
 
-	@Override
+    @Override
     public String getPostContentType(WFSRequest wfsRequest) {
 
         final WFSOperationType operation = wfsRequest.getOperation();
 
         if (DESCRIBE_FEATURETYPE.equals(operation) || 
-        		DESCRIBE_STORED_QUERIES.equals(operation) ||
-        		LIST_STORED_QUERIES.equals(operation)) {
+                DESCRIBE_STORED_QUERIES.equals(operation) ||
+                LIST_STORED_QUERIES.equals(operation)) {
             return "text/xml";
         }
 
@@ -738,14 +738,14 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
             requestObject = createDescribeFeatureTypeRequestPost((DescribeFeatureTypeRequest) request);
             break;
         case DESCRIBE_STORED_QUERIES:
-        	requestObject = createDescribeStoredQueriesRequestPost((DescribeStoredQueriesRequest) request);
-        	break;
+            requestObject = createDescribeStoredQueriesRequestPost((DescribeStoredQueriesRequest) request);
+            break;
         case GET_FEATURE:
             requestObject = createGetFeatureRequestPost((GetFeatureRequest) request);
             break;
         case LIST_STORED_QUERIES:
-        	requestObject = createListStoredQueriesRequestPost((ListStoredQueriesRequest) request);
-        	break;
+            requestObject = createListStoredQueriesRequestPost((ListStoredQueriesRequest) request);
+            break;
         case TRANSACTION:
             requestObject = createTransactionRequest((TransactionRequest) request);
             break;
@@ -764,7 +764,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         requestTrace("Encoded ", request.getOperation(), " request: ", out);
 
         System.err.println(out.toString());
-        
+
         return new ByteArrayInputStream(out.toByteArray());
 
     }

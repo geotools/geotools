@@ -102,7 +102,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
             final SimpleFeatureType targetType, QName featureDescriptorName) throws IOException {
 
         //this.inputStream = new TeeInputStream(inputStream, System.err);
-        
+
         this.inputStream = getFeatureResponseStream;
         this.featureNamespace = featureDescriptorName.getNamespaceURI();
         this.featureName = featureDescriptorName.getLocalPart();
@@ -119,7 +119,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
             parser = factory.newPullParser();
             parser.setInput(inputStream, "UTF-8");
             parser.nextTag();
-            
+
             // TODO: namespace?
             parser.require(START_TAG, null, WFS.FeatureCollection.getLocalPart());
 
@@ -265,7 +265,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
      * @throws XmlPullParserException
      */
     private Geometry parseGeom() throws NoSuchAuthorityCodeException, FactoryException,
-            XmlPullParserException, IOException {
+    XmlPullParserException, IOException {
         final QName startingGeometryTagName = new QName(parser.getNamespace(), parser.getName());
         int dimension = crsDimension(2);
         CoordinateReferenceSystem crs = crs(DefaultGeographicCRS.WGS84);
@@ -771,7 +771,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
     }
 
     private Coordinate[] toCoordList(String rawTextValue, final int dimension) {
-    	rawTextValue = rawTextValue.replaceAll("[\n\r]", " ").trim();
+        rawTextValue = rawTextValue.replaceAll("[\n\r]", " ").trim();
         String[] split = rawTextValue.split(" +");
         final int ordinatesLength = split.length;
         if (ordinatesLength % dimension != 0) {
@@ -801,7 +801,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
     private Coordinate[] toCoordList(String rawTextValue, final String decimalSeparator,
             final String coordSeparator, final String tupleSeparator, final int dimension) {
 
-    	rawTextValue = rawTextValue.replaceAll("[\n\r]", " ").trim();
+        rawTextValue = rawTextValue.replaceAll("[\n\r]", " ").trim();
 
         String[] tuples = rawTextValue.split("\\" + tupleSeparator + "+");
 
@@ -859,10 +859,10 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
                     /*
                     if (featureId == null) {
                     	featureId = parser.getAttributeValue(
-							org.geotools.gml3.v3_2.GML.id.getNamespaceURI(),
-							org.geotools.gml3.v3_2.GML.id.getLocalPart());
-					}
-					*/
+                                                        org.geotools.gml3.v3_2.GML.id.getNamespaceURI(),
+                                                        org.geotools.gml3.v3_2.GML.id.getLocalPart());
+                    }
+                     */
 
                     if (featureId == null) {
                         featureId = parser.getAttributeValue(null, "fid");

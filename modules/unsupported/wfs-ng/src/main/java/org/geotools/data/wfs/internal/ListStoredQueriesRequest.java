@@ -21,8 +21,8 @@ import static org.geotools.data.wfs.internal.WFSOperationType.LIST_STORED_QUERIE
 
 public class ListStoredQueriesRequest extends WFSRequest {
 
-	public ListStoredQueriesRequest(WFSConfig config, WFSStrategy strategy) {
-		super(LIST_STORED_QUERIES, config, strategy);
-	}
+    public ListStoredQueriesRequest(WFSConfig config, WFSStrategy strategy) {
+        super(LIST_STORED_QUERIES, config, strategy);
+    }
 
 }

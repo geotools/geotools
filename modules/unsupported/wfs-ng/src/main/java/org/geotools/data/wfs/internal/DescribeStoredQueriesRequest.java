@@ -25,16 +25,16 @@ import java.util.List;
 
 public class DescribeStoredQueriesRequest extends WFSRequest {
 
-	private List<URI> storedQueryIds;
-	
-	public DescribeStoredQueriesRequest(WFSConfig config, WFSStrategy strategy) {
-		super(DESCRIBE_STORED_QUERIES, config, strategy);
-		
-		storedQueryIds = new ArrayList<URI>();
-	}
-	
-	public List<URI> getStoredQueryIds() {
-		return storedQueryIds;
-	}
+    private List<URI> storedQueryIds;
+
+    public DescribeStoredQueriesRequest(WFSConfig config, WFSStrategy strategy) {
+        super(DESCRIBE_STORED_QUERIES, config, strategy);
+
+        storedQueryIds = new ArrayList<URI>();
+    }
+
+    public List<URI> getStoredQueryIds() {
+        return storedQueryIds;
+    }
 
 }

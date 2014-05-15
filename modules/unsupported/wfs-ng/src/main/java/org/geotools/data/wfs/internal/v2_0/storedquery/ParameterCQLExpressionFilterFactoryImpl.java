@@ -44,88 +44,87 @@ import org.opengis.filter.expression.PropertyName;
  * @author Sampo Savolainen
  *
  */
-public class ParameterCQLExpressionFilterFactoryImpl extends
-		FilterFactoryImpl {
+public class ParameterCQLExpressionFilterFactoryImpl extends FilterFactoryImpl {
 
-	@Override
-	public PropertyName property(String name) {
-		if (name.equals("bboxMinX")) {
-			return new ParameterCQLExpressionPropertyName(name) {
-				@Override
-				protected Object get(ParameterMappingContext context) {
-					return context.getBBOX().getMinX();
-				}
-			};
-		} else if (name.equals("bboxMaxX")) {
-			return new ParameterCQLExpressionPropertyName(name) {
-				@Override
-				protected Object get(ParameterMappingContext context) {
-					return context.getBBOX().getMaxX();
-				}
-			};
-		} else if (name.equals("bboxMinY")) {
-			return new ParameterCQLExpressionPropertyName(name) {
-				@Override
-				protected Object get(ParameterMappingContext context) {
-					return context.getBBOX().getMinY();
-				}
-			};
-		} else if (name.equals("bboxMaxY")) {
-			return new ParameterCQLExpressionPropertyName(name) {
-				@Override
-				protected Object get(ParameterMappingContext context) {
-					return context.getBBOX().getMaxY();
-				}
-			};
-		} else if (name.equals("defaultSRS")) {
-			return new ParameterCQLExpressionPropertyName(name) {
-				@Override
-				protected Object get(ParameterMappingContext context) {
-					return context.getFeatureTypeInfo().getDefaultSRS();
-				}
-			};
-		} else if (name.startsWith("viewparam:")) {
-			final String paramName = name.substring(10);
-			return new ParameterCQLExpressionPropertyName(name) {
-				@Override
-				protected Object get(ParameterMappingContext context) {
-					return context.getViewParams().get(paramName);
-				}
-			};
-		}
-		
-		return super.property(name);
-	}
-	
-	@Override
+    @Override
+    public PropertyName property(String name) {
+        if (name.equals("bboxMinX")) {
+            return new ParameterCQLExpressionPropertyName(name) {
+                @Override
+                protected Object get(ParameterMappingContext context) {
+                    return context.getBBOX().getMinX();
+                }
+            };
+        } else if (name.equals("bboxMaxX")) {
+            return new ParameterCQLExpressionPropertyName(name) {
+                @Override
+                protected Object get(ParameterMappingContext context) {
+                    return context.getBBOX().getMaxX();
+                }
+            };
+        } else if (name.equals("bboxMinY")) {
+            return new ParameterCQLExpressionPropertyName(name) {
+                @Override
+                protected Object get(ParameterMappingContext context) {
+                    return context.getBBOX().getMinY();
+                }
+            };
+        } else if (name.equals("bboxMaxY")) {
+            return new ParameterCQLExpressionPropertyName(name) {
+                @Override
+                protected Object get(ParameterMappingContext context) {
+                    return context.getBBOX().getMaxY();
+                }
+            };
+        } else if (name.equals("defaultSRS")) {
+            return new ParameterCQLExpressionPropertyName(name) {
+                @Override
+                protected Object get(ParameterMappingContext context) {
+                    return context.getFeatureTypeInfo().getDefaultSRS();
+                }
+            };
+        } else if (name.startsWith("viewparam:")) {
+            final String paramName = name.substring(10);
+            return new ParameterCQLExpressionPropertyName(name) {
+                @Override
+                protected Object get(ParameterMappingContext context) {
+                    return context.getViewParams().get(paramName);
+                }
+            };
+        }
+
+        return super.property(name);
+    }
+
+    @Override
     public Add add(Expression expr1, Expression expr2) {
         return new StringConcatenatingAddImpl(expr1,expr2);
     }
 
-	private static class StringConcatenatingAddImpl extends AddImpl
-	{
-		public StringConcatenatingAddImpl(Expression expr1, Expression expr2) {
-			super(expr1, expr2);
-		}
-		
-		@Override
-		public Object evaluate(Object feature) throws IllegalArgumentException {
-			ensureOperandsSet();
-			
-			Object leftValue = getExpression1().evaluate(feature);
-			Object rightValue = getExpression2().evaluate(feature);
-			
-			if (leftValue instanceof Number && rightValue instanceof Number) {
-				double leftDouble = Filters.number( leftValue );
-				double rightDouble = Filters.number( rightValue );
-				return number(leftDouble + rightDouble);
+    private static class StringConcatenatingAddImpl extends AddImpl
+    {
+        public StringConcatenatingAddImpl(Expression expr1, Expression expr2) {
+            super(expr1, expr2);
+        }
 
-			} else {
-				return leftValue.toString() + rightValue.toString();
-			}
-			
-	    }
-		
-	}
+        @Override
+        public Object evaluate(Object feature) throws IllegalArgumentException {
+            ensureOperandsSet();
+
+            Object leftValue = getExpression1().evaluate(feature);
+            Object rightValue = getExpression2().evaluate(feature);
+
+            if (leftValue instanceof Number && rightValue instanceof Number) {
+                double leftDouble = Filters.number( leftValue );
+                double rightDouble = Filters.number( rightValue );
+                return number(leftDouble + rightDouble);
+
+            } else {
+                return leftValue.toString() + rightValue.toString();
+            }
+
+        }
+
+    }
 
 }

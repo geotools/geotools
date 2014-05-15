@@ -39,79 +39,79 @@ import org.opengis.filter.Filter;
  */
 public class ParameterTypeFactory
 {
-	private final StoredQueryConfiguration config;
-	private final StoredQueryDescriptionType desc;
-	private final FeatureTypeInfo featureTypeInfo;
-	
-	public ParameterTypeFactory(StoredQueryConfiguration config, StoredQueryDescriptionType desc,
-			FeatureTypeInfo featureTypeInfo) {
-		this.config = config;
-		this.desc = desc;
-		this.featureTypeInfo = featureTypeInfo;
-	}
+    private final StoredQueryConfiguration config;
+    private final StoredQueryDescriptionType desc;
+    private final FeatureTypeInfo featureTypeInfo;
+
+    public ParameterTypeFactory(StoredQueryConfiguration config, StoredQueryDescriptionType desc,
+            FeatureTypeInfo featureTypeInfo) {
+        this.config = config;
+        this.desc = desc;
+        this.featureTypeInfo = featureTypeInfo;
+    }
 
 
-	public ParameterMapping getStoredQueryParameterMapping(String parameterName) {
-		ParameterMapping ret = null;
+    public ParameterMapping getStoredQueryParameterMapping(String parameterName) {
+        ParameterMapping ret = null;
 
-		if (this.config == null) {
-			return ret;
-		}
+        if (this.config == null) {
+            return ret;
+        }
 
-		for (ParameterMapping sqpm : this.config.getStoredQueryParameterMappings()) {
-			if (sqpm.getParameterName().equals(parameterName)) {
-				ret = sqpm;
-				break;
-			}
-		}
+        for (ParameterMapping sqpm : this.config.getStoredQueryParameterMappings()) {
+            if (sqpm.getParameterName().equals(parameterName)) {
+                ret = sqpm;
+                break;
+            }
+        }
 
-		return ret;
-	}
-	
-	public List<ParameterType> buildStoredQueryParameters(Map<String, String> viewParams, 
-    		Filter filter) {
-    	final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
-    	
-    	if (filter == null) {
-    		filter = Filter.INCLUDE;
-    	}
-    	
-    	ParameterMappingContext mappingContext = new ParameterMappingContext(filter, viewParams,
-    			featureTypeInfo);
-    	
-    	List<ParameterType> ret = new ArrayList<ParameterType>();
-    	
-    	for (ParameterExpressionType parameter : desc.getParameter()) {
-    		String value = null;
-    		
-    		ParameterMapping mapping = getStoredQueryParameterMapping(parameter.getName());
-			
-    		// Primarily use the one provided by the user
-    		if (value == null && viewParams != null) {
-    			value = viewParams.get(parameter.getName());
-    		}
-    		
-    		// If no value given by the user, execute mapping
-    		if (value == null && mapping != null) { 
-    			if (mapping instanceof ParameterMappingDefaultValue) {
-    				value = ((ParameterMappingDefaultValue)mapping).getDefaultValue();
-    			} else if (mapping instanceof ParameterMappingExpressionValue) {
-    				value = ((ParameterMappingExpressionValue)mapping).evaluate(mappingContext);
-    			} else {
-    				throw new IllegalArgumentException("Unknown StoredQueryParameterMapping: "
-    						+ mapping.getClass());
-    			}
-    		}
-    		
-    		// If there is a value, add a parameter to the query
-    		if (value != null) {
-    			ParameterType tmp = factory.createParameterType();
-    			tmp.setName(parameter.getName());
-    			tmp.setValue(value);
-    			ret.add(tmp);
-    		}
-    	}
-    	
-    	return ret;
-	}
+        return ret;
+    }
+
+    public List<ParameterType> buildStoredQueryParameters(Map<String, String> viewParams,
+            Filter filter) {
+        final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
+
+        if (filter == null) {
+            filter = Filter.INCLUDE;
+        }
+
+        ParameterMappingContext mappingContext = new ParameterMappingContext(filter, viewParams,
+                featureTypeInfo);
+
+        List<ParameterType> ret = new ArrayList<ParameterType>();
+
+        for (ParameterExpressionType parameter : desc.getParameter()) {
+            String value = null;
+
+            ParameterMapping mapping = getStoredQueryParameterMapping(parameter.getName());
+
+            // Primarily use the one provided by the user
+            if (value == null && viewParams != null) {
+                value = viewParams.get(parameter.getName());
+            }
+
+            // If no value given by the user, execute mapping
+            if (value == null && mapping != null) { 
+                if (mapping instanceof ParameterMappingDefaultValue) {
+                    value = ((ParameterMappingDefaultValue)mapping).getDefaultValue();
+                } else if (mapping instanceof ParameterMappingExpressionValue) {
+                    value = ((ParameterMappingExpressionValue)mapping).evaluate(mappingContext);
+                } else {
+                    throw new IllegalArgumentException("Unknown StoredQueryParameterMapping: "
+                            + mapping.getClass());
+                }
+            }
+
+            // If there is a value, add a parameter to the query
+            if (value != null) {
+                ParameterType tmp = factory.createParameterType();
+                tmp.setName(parameter.getName());
+                tmp.setValue(value);
+                ret.add(tmp);
+            }
+        }
+
+        return ret;
+    }
 }

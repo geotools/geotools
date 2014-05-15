@@ -52,7 +52,7 @@ public class GetFeatureRequest extends WFSRequest {
     
     private boolean storedQuery;
     
-	private StoredQueryDescriptionType storedQueryDescriptionType;
+    private StoredQueryDescriptionType storedQueryDescriptionType;
     
     private Hints hints;
 
@@ -167,29 +167,29 @@ public class GetFeatureRequest extends WFSRequest {
     public Filter getUnsupportedFilter() {
         return unsupportedFilter == null ? Filter.INCLUDE : unsupportedFilter;
     }
-    
-    public boolean isStoredQuery() {
-		return storedQuery;
-	}
-    
-    public void setStoredQuery(boolean storedQuery) {
-		this.storedQuery = storedQuery;
-	}
-    
-	public void setHints(Hints hints) {
-		this.hints = hints;
-	}
-	
-	public Hints getHints() {
-		return hints;
-	}
 
-	public StoredQueryDescriptionType getStoredQueryDescriptionType() {
-		return storedQueryDescriptionType;
-	}
-	
-	public void setStoredQueryDescriptionType(StoredQueryDescriptionType desc) {
-		this.storedQueryDescriptionType = desc;
-		
-	}
+    public boolean isStoredQuery() {
+        return storedQuery;
+    }
+
+    public void setStoredQuery(boolean storedQuery) {
+        this.storedQuery = storedQuery;
+    }
+
+    public void setHints(Hints hints) {
+        this.hints = hints;
+    }
+
+    public Hints getHints() {
+        return hints;
+    }
+
+    public StoredQueryDescriptionType getStoredQueryDescriptionType() {
+        return storedQueryDescriptionType;
+    }
+
+    public void setStoredQueryDescriptionType(StoredQueryDescriptionType desc) {
+        this.storedQueryDescriptionType = desc;
+
+    }
 }

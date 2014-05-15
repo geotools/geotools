@@ -306,19 +306,17 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      *         otherwise.
      */
     public boolean equals(Object obj) {
-        if (obj instanceof CompareFilter) {
-            CompareFilter cFilter = (CompareFilter) obj;
+        if (obj instanceof CompareFilterImpl) {
+            CompareFilterImpl cFilter = (CompareFilterImpl) obj;
 
             // todo - check for nulls here, or make immutable.
             //
-            return
-                filterType == cFilter.getFilterType()
-            	&& (    expression1 == cFilter.getLeftValue()
-            			|| (expression1 != null && expression1.equals( cFilter.getLeftValue() ) )
-            	    )
-            	&& (    expression2 == cFilter.getRightValue()
-            			|| (expression2 != null && expression2.equals( cFilter.getRightValue() ) )
-            			);            
+            int filterType = Filters.getFilterType(this);
+            return filterType == Filters.getFilterType(cFilter)
+                    && (expression1 == cFilter.getExpression1() || (expression1 != null && expression1
+                            .equals(cFilter.getExpression1())))
+                    && (expression2 == cFilter.getExpression2() || (expression2 != null && expression2
+                            .equals(cFilter.getExpression2())));
         } else {
             return false;
         }

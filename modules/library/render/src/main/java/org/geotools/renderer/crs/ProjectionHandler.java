@@ -26,8 +26,10 @@ import java.util.logging.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.GeocentricTransform;
+import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
@@ -137,7 +139,8 @@ public class ProjectionHandler {
 
             if(CRS.getAxisOrder(renderingCRS) == CRS.AxisOrder.NORTH_EAST) {
                 if (re.getMinY() >= -180.0 && re.getMaxY() <= 180) {
-                    return Collections.singletonList(renderingEnvelope.transform(sourceCRS, true, 10));
+                    return Collections
+                            .singletonList(transformEnvelope(renderingEnvelope, sourceCRS));
                 }
                 
                 // We need to split reprojected envelope and normalize it. To be lenient with
@@ -154,7 +157,8 @@ public class ProjectionHandler {
                 
             } else {
                 if (re.getMinX() >= -180.0 && re.getMaxX() <= 180) {
-                    return Collections.singletonList(renderingEnvelope.transform(sourceCRS, true, 10));
+                    return Collections
+                            .singletonList(transformEnvelope(renderingEnvelope, sourceCRS));
                 }
             
                 // We need to split reprojected envelope and normalize it. To be lenient with
@@ -179,9 +183,9 @@ public class ProjectionHandler {
             
         } else {
             // check if we are crossing the dateline
-            ReferencedEnvelope re = renderingEnvelope.transform(WGS84, true, 10);
+            ReferencedEnvelope re = transformEnvelope(renderingEnvelope, WGS84);
             if (re.getMinX() >= -180.0 && re.getMaxX() <= 180)
-                return Collections.singletonList(renderingEnvelope.transform(sourceCRS, true, 10));
+                return Collections.singletonList(transformEnvelope(renderingEnvelope, sourceCRS));
     
             // We need to split reprojected envelope and normalize it. To be lenient with
             // situations in which the data is just broken (people saying 4326 just because they
@@ -204,13 +208,73 @@ public class ProjectionHandler {
         }
     }
 
+    private ReferencedEnvelope transformEnvelope(ReferencedEnvelope envelope,
+            CoordinateReferenceSystem targetCRS) throws TransformException, FactoryException {
+        try {
+            return envelope.transform(targetCRS, true, 10);
+        } catch (Exception e) {
+            LOGGER.fine("Failed to reproject the envelope " + envelope + " to " + targetCRS
+                    + " trying an area restriction");
+
+            ReferencedEnvelope envWGS84 = envelope.transform(DefaultGeographicCRS.WGS84, true);
+
+            // let's see if we can restrict the area we're reprojecting back using a projection
+            // handler for the source CRS
+            ProjectionHandler handler = ProjectionHandlerFinder.getHandler(envelope,
+                    envelope.getCoordinateReferenceSystem(), false);
+            if (handler != null && handler.validAreaBounds != null) {
+
+                Envelope intersection = envWGS84.intersection(validAreaBounds);
+                if (intersection.isNull()) {
+                    return null;
+                } else {
+                    try {
+                        return ReferencedEnvelope.reference(intersection)
+                                .transform(targetCRS, true);
+                    } catch (Exception e2) {
+                        LOGGER.fine("Failed to reproject the restricted envelope " + intersection
+                                + " to " + targetCRS);
+                    }
+
+                }
+            }
+
+            // ok, let's see if we have an area of validity then
+            GeographicBoundingBox bbox = CRS.getGeographicBoundingBox(targetCRS);
+            if (bbox != null) {
+                ReferencedEnvelope restriction = new ReferencedEnvelope(
+                        bbox.getEastBoundLongitude(), bbox.getWestBoundLongitude(),
+                        bbox.getSouthBoundLatitude(), bbox.getNorthBoundLatitude(),
+                        DefaultGeographicCRS.WGS84);
+                Envelope intersection = envWGS84.intersection(restriction);
+                if (intersection.isNull()) {
+                    return null;
+                } else {
+                    try {
+                        return ReferencedEnvelope.reference(intersection)
+                                .transform(targetCRS, true);
+                    } catch (Exception e2) {
+                        LOGGER.fine("Failed to reproject the restricted envelope " + intersection
+                                + " to " + targetCRS);
+                    }
+
+                }
+
+            }
+
+            throw new TransformException("All attemptsto reproject the envelope " + envelope
+                    + " to " + targetCRS + " failed");
+        }
+    }
+
     private void reprojectEnvelopes(CoordinateReferenceSystem queryCRS,
             List<ReferencedEnvelope> envelopes) throws TransformException, FactoryException {
         // reproject the surviving envelopes
         for (int i = 0; i < envelopes.size(); i++) {
-            envelopes.set(i, envelopes.get(i).transform(queryCRS, true, 10));
+            envelopes.set(i, transformEnvelope(envelopes.get(i), queryCRS));
         }
     }
+
 
     private void mergeEnvelopes(List<ReferencedEnvelope> envelopes) {
         // the envelopes generated might overlap, check and merge if necessary, we

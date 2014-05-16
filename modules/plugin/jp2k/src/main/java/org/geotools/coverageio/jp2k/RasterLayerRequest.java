@@ -58,6 +58,8 @@ import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.SingleCRS;
 import org.opengis.referencing.datum.PixelInCell;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
@@ -115,8 +117,6 @@ class RasterLayerRequest {
 	private MathTransform destinationToSourceTransform;
 
 	private GeneralEnvelope requestedBBOXInCoverageGeographicCRS;
-
-	private MathTransform requestCRSToCoverageGeographicCRS2D;
 
 	private GeneralEnvelope approximateRequestedBBoInNativeCRS;
 
@@ -872,12 +872,12 @@ class RasterLayerRequest {
         	// STEP 1 reproject the requested envelope to the coverage geographic bbox
 	        if(!CRS.equalsIgnoreMetadata(rasterManager.spatialDomainManager.coverageGeographicCRS2D, requestCRS)){
 	        	//try to convert the requested bbox to the coverage geocrs
-	        	requestCRSToCoverageGeographicCRS2D=CRS.findMathTransform(requestCRS, rasterManager.spatialDomainManager.coverageGeographicCRS2D,true);
-	        	if(!requestCRSToCoverageGeographicCRS2D.isIdentity())
-	        	{
-	        		requestedBBOXInCoverageGeographicCRS=CRS.transform(requestCRSToCoverageGeographicCRS2D,requestedBBox);
-	        		requestedBBOXInCoverageGeographicCRS.setCoordinateReferenceSystem(rasterManager.spatialDomainManager.coverageGeographicCRS2D);
-	        	}
+                CoordinateOperationFactory factory = CRS.getCoordinateOperationFactory(true);
+                CoordinateOperation op = factory.createOperation(requestCRS,
+                        rasterManager.spatialDomainManager.coverageGeographicCRS2D);
+                requestedBBOXInCoverageGeographicCRS = CRS.transform(op, requestedBBox);
+                requestedBBOXInCoverageGeographicCRS
+                        .setCoordinateReferenceSystem(rasterManager.spatialDomainManager.coverageGeographicCRS2D);
 	        }
 	        if(requestedBBOXInCoverageGeographicCRS==null)
 	        	requestedBBOXInCoverageGeographicCRS= new GeneralEnvelope(requestCRS);

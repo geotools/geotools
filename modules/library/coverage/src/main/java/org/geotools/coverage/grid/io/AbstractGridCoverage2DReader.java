@@ -77,6 +77,8 @@ import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
@@ -741,14 +743,14 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         try {
             if (dim != null && envelope != null && crs != null) {
                 // do we need to transform the originalEnvelope?
-                final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(envelope
+                final CoordinateReferenceSystem envelopeCrs2D = CRS.getHorizontalCRS(envelope
                         .getCoordinateReferenceSystem());
-                if (crs2D != null && !CRS.equalsIgnoreMetadata(crs, crs2D)) {
-                    final MathTransform tr = CRS.findMathTransform(crs2D, crs, true);
-                    if (!tr.isIdentity()) {
-                        envelope = CRS.transform(tr, envelope);
-                        envelope.setCoordinateReferenceSystem(crs);
-                    }
+                if (envelopeCrs2D != null && !CRS.equalsIgnoreMetadata(crs, envelopeCrs2D)) {
+                    CoordinateOperationFactory operationFactory = CRS
+                            .getCoordinateOperationFactory(true);
+                    CoordinateOperation op = operationFactory.createOperation(envelopeCrs2D, crs);
+                    envelope = CRS.transform(op, envelope);
+                    envelope.setCoordinateReferenceSystem(crs);
                 }
                 requestedRes = new double[2];
                 requestedRes[0] = envelope.getSpan(0) / dim.getWidth();

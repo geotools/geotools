@@ -47,6 +47,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
+import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
@@ -624,12 +625,11 @@ public class SpatialRequestHelper {
                 // STEP 1 reproject the requested envelope to the coverage geographic bbox
                 if (!CRS.equalsIgnoreMetadata(coverageProperties.geographicCRS2D, requestCRS)) {
                     // try to convert the requested bbox to the coverage geocrs
-                    requestCRSToCoverageGeographicCRS2D = CRS.findMathTransform(requestCRS,
-                            coverageProperties.geographicCRS2D, true);
-                    if (!requestCRSToCoverageGeographicCRS2D.isIdentity()) {
-                        requestedBBOXInCoverageGeographicCRS = CRS.transform(requestCRSToCoverageGeographicCRS2D, requestedBBox);
-                        requestedBBOXInCoverageGeographicCRS.setCoordinateReferenceSystem(coverageProperties.geographicCRS2D);
-                    }
+                    CoordinateOperation operation = CRS.getCoordinateOperationFactory(true)
+                            .createOperation(requestCRS, coverageProperties.geographicCRS2D);
+                    requestedBBOXInCoverageGeographicCRS = CRS.transform(operation, requestedBBox);
+                    requestedBBOXInCoverageGeographicCRS
+                            .setCoordinateReferenceSystem(coverageProperties.geographicCRS2D);
                 }
                 if (requestedBBOXInCoverageGeographicCRS == null) {
                     requestedBBOXInCoverageGeographicCRS = new GeneralEnvelope(requestCRS);

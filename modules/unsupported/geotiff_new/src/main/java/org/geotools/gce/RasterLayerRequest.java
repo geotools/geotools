@@ -648,8 +648,8 @@ class RasterLayerRequest {
             // reproject the crop bbox back and then crop, notice that we are imposing
             //
             try {
-                final GeneralEnvelope cropBBOXInRequestCRS = CRS.transform(
-                        destinationToSourceTransform.inverse(), cropBBox);
+                final GeneralEnvelope cropBBOXInRequestCRS = new GeneralEnvelope(CRS.transform(
+                        cropBBox, requestCRS));
                 cropBBOXInRequestCRS.setCoordinateReferenceSystem(requestedBBox
                         .getCoordinateReferenceSystem());
                 // make sure it falls within the requested envelope
@@ -866,8 +866,8 @@ class RasterLayerRequest {
             // STEP 1: reproject requested BBox to native CRS if needed
             // now transform the requested envelope to sourceFile crs
             if (destinationToSourceTransform != null && !destinationToSourceTransform.isIdentity()) {
-                final GeneralEnvelope temp = CRS.transform(destinationToSourceTransform,
-                        requestedBBox);
+                final GeneralEnvelope temp = new GeneralEnvelope(CRS.transform(requestedBBox,
+                        rasterManager.spatialDomainManager.coverageCRS2D));
                 temp.setCoordinateReferenceSystem(rasterManager.spatialDomainManager.coverageCRS2D);
                 cropBBox = new ReferencedEnvelope(temp);
                 needsReprojection = true;
@@ -920,8 +920,8 @@ class RasterLayerRequest {
             if (destinationToSourceTransform != null && !destinationToSourceTransform.isIdentity()) {
                 // try to convert the requested bbox to the coverage geocrs
 
-                requestedBBOXInCoverageGeographicCRS = CRS.transform(
-                        requestCRSToCoverageGeographicCRS2D, requestedBBox);
+                requestedBBOXInCoverageGeographicCRS = new GeneralEnvelope(CRS.transform(
+                        requestedBBox, rasterManager.spatialDomainManager.coverageGeographicCRS2D));
                 requestedBBOXInCoverageGeographicCRS
                         .setCoordinateReferenceSystem(rasterManager.spatialDomainManager.coverageGeographicCRS2D);
 

@@ -36,7 +36,6 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.BorderExtender;
-import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
@@ -529,9 +528,8 @@ public final class GridCoverageRenderer {
                 // some erros (it usually
                 // increases the envelope we want to check) but it is still
                 // useful.
-                destinationEnvelopeInSourceCRS = CRS.transform(
-                        destinationCRSToSourceCRSTransformation,
-                        destinationEnvelope);
+                destinationEnvelopeInSourceCRS = new GeneralEnvelope(CRS.transform(
+                        destinationEnvelope, sourceCoverageCRS));
             } catch (TransformException te) {
                 // //
                 //
@@ -543,19 +541,10 @@ public final class GridCoverageRenderer {
                 if (!CRS.equalsIgnoreMetadata(destinationCRS,
                         DefaultGeographicCRS.WGS84)) {
                     // get a math transform to go to WGS84
-                    final MathTransform destinationCRSToWGS84transformation = CRS
-                            .findMathTransform(destinationCRS,
-                                    DefaultGeographicCRS.WGS84, true);
-                    if (!destinationCRSToWGS84transformation.isIdentity()) {
                         destinationEnvelopeWGS84 = CRS.transform(
-                                destinationCRSToWGS84transformation,
-                                destinationEnvelope);
+                                destinationEnvelope, DefaultGeographicCRS.WGS84);
                         destinationEnvelopeWGS84
                                 .setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
-                    } else {
-                        destinationEnvelopeWGS84 = new GeneralEnvelope(
-                                destinationEnvelope);
-                    }
 
                 } else {
                     destinationEnvelopeWGS84 = new GeneralEnvelope(
@@ -568,22 +557,11 @@ public final class GridCoverageRenderer {
                 // for cropping the provided coverage.
                 //
                 // //
-                if (!CRS.equalsIgnoreMetadata(sourceCoverageCRS,
-                        DefaultGeographicCRS.WGS84)) {
-                    // get a math transform to go to WGS84
-                    final MathTransform WGS84ToSourceCoverageCRSTransformation = CRS
-                            .findMathTransform(DefaultGeographicCRS.WGS84,
-                                    sourceCoverageCRS, true);
-                    if (!WGS84ToSourceCoverageCRSTransformation.isIdentity()) {
-                        destinationEnvelopeInSourceCRS = CRS.transform(
-                                WGS84ToSourceCoverageCRSTransformation,
-                                destinationEnvelopeWGS84);
-                        destinationEnvelopeInSourceCRS
-                                .setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
-                    } else {
-                        destinationEnvelopeInSourceCRS = new GeneralEnvelope(
-                                destinationEnvelopeWGS84);
-                    }
+                if (!CRS.equalsIgnoreMetadata(sourceCoverageCRS, DefaultGeographicCRS.WGS84)) {
+                    destinationEnvelopeInSourceCRS = CRS.transform(destinationEnvelopeWGS84,
+                            DefaultGeographicCRS.WGS84);
+                    destinationEnvelopeInSourceCRS
+                            .setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
                 } else {
                     destinationEnvelopeInSourceCRS = new GeneralEnvelope(
                             destinationEnvelopeWGS84);

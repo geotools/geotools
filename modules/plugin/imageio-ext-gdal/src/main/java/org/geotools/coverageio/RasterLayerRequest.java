@@ -37,7 +37,6 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.coverageio.BaseGridCoverage2DReader;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
@@ -774,16 +773,11 @@ class RasterLayerRequest {
             // STEP 1: requested BBox to native CRS
         	//
         	////
-            MathTransform destinationToSourceTransform = null;
             if (!CRS.equalsIgnoreMetadata(requestedBBoxCRS2D,coverageCRS2D))
-                destinationToSourceTransform = CRS.findMathTransform(requestedBBoxCRS2D,coverageCRS2D, true);
-            // now transform the requested envelope to source crs
-            if (destinationToSourceTransform != null && !destinationToSourceTransform.isIdentity())
             {
-            	final GeneralEnvelope temp = CRS.transform(destinationToSourceTransform,requestedBBox);
+                final GeneralEnvelope temp = CRS.transform(requestedBBox, coverageCRS2D);
             	temp.setCoordinateReferenceSystem(coverageCRS2D);
             	requestedBBox= new ReferencedEnvelope(temp);
-            	
             }
             else
             	//we do not need to do anything, but we do this in order to aboid problems with the envelope checks
@@ -821,11 +815,6 @@ class RasterLayerRequest {
             // envelope. let's try with wgs84
             if(LOGGER.isLoggable(Level.FINE))
             	LOGGER.log(Level.FINE,te.getLocalizedMessage(),te);
-        } catch (FactoryException fe) {
-            // something bad happened while trying to transform this
-            // envelope. let's try with wgs84
-            if(LOGGER.isLoggable(Level.FINE))
-            	LOGGER.log(Level.FINE,fe.getLocalizedMessage(),fe);
         }
 
         // //
@@ -853,8 +842,8 @@ class RasterLayerRequest {
         // note that for the moment we got to use general envelope since there is no intersection othrewise
         // TODO fix then we'll have intersection in ReferencedEnvelope
         approximateWGS84requestedBBox=new ReferencedEnvelope(approximateWGS84requestedBBox.intersection(coverageGeographicBBox),DefaultGeographicCRS.WGS84);
-        final MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84,coverageCRS2D, true);
-    	final GeneralEnvelope approximateRequestedBBoInNativeCRS =CRS.transform(transform, approximateWGS84requestedBBox) ;
+        final GeneralEnvelope approximateRequestedBBoInNativeCRS = CRS.transform(
+                approximateWGS84requestedBBox, coverageCRS2D);
     	approximateRequestedBBoInNativeCRS.setCoordinateReferenceSystem(coverageCRS2D);
     	requestedBBox = new ReferencedEnvelope(approximateRequestedBBoInNativeCRS);        
 

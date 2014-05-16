@@ -62,7 +62,6 @@ import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -404,9 +403,9 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 					.getCoordinateReferenceSystem(), this.crs)) {
 				try {
 					// transforming the envelope back to the data set crs
-					final MathTransform transform = CRS.findMathTransform(requestedEnvelope.getCoordinateReferenceSystem(),	crs,true);
-					if (!transform.isIdentity()) {
-						requestedEnvelope = CRS.transform(transform,requestedEnvelope);
+                    if (!CRS.equalsIgnoreMetadata(requestedEnvelope.getCoordinateReferenceSystem(),
+                            crs)) {
+                        requestedEnvelope = CRS.transform(requestedEnvelope, crs);
 						requestedEnvelope.setCoordinateReferenceSystem(this.crs);
 
 						if (LOGGER.isLoggable(Level.FINE))
@@ -414,9 +413,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 					}
 				} catch (TransformException e) {
 					throw new DataSourceException("Unable to create a coverage for this source", e);
-				} catch (FactoryException e) {
-					throw new DataSourceException("Unable to create a coverage for this source", e);
-				}
+                }
 			}
 			if (!requestedEnvelope.intersects(this.originalEnvelope, false))
 				return null;

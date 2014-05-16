@@ -41,7 +41,6 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
@@ -119,9 +118,8 @@ public class RasterManager {
             //
             // basic initialization
             //
-            coverageGeographicBBox = new ReferencedEnvelope(CRS.transform(CRS.findMathTransform(
-                    coverageEnvelope.getCoordinateReferenceSystem(), GeoTiffUtils.WGS84,
-                    true), coverageEnvelope));
+            coverageGeographicBBox = new ReferencedEnvelope(CRS.transform(coverageEnvelope,
+                    GeoTiffUtils.WGS84));
             coverageGeographicCRS2D = coverageGeographicBBox!=null?coverageGeographicBBox.getCoordinateReferenceSystem():null;
 
             //
@@ -130,9 +128,8 @@ public class RasterManager {
             coverageCRS2D = CRS.getHorizontalCRS(coverageCRS);
             assert coverageCRS2D.getCoordinateSystem().getDimension() == 2;
             if (coverageCRS.getCoordinateSystem().getDimension() != 2) {
-                final MathTransform transform = CRS.findMathTransform(coverageCRS,
-                        (CoordinateReferenceSystem) coverageCRS2D);
-                final GeneralEnvelope bbox = CRS.transform(transform, coverageEnvelope);
+                final GeneralEnvelope bbox = new GeneralEnvelope(CRS.transform(coverageEnvelope,
+                        (CoordinateReferenceSystem) coverageCRS2D));
                 bbox.setCoordinateReferenceSystem(coverageCRS2D);
                 coverageBBox = new ReferencedEnvelope(bbox);
             } else {

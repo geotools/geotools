@@ -395,7 +395,8 @@ public class SpatialRequestHelper {
             // reproject the crop bbox back and then crop, notice that we are imposing
             //
             try {
-                final GeneralEnvelope cropBBOXInRequestCRS = CRS.transform(destinationToSourceTransform.inverse(), cropBBox);
+                final GeneralEnvelope cropBBOXInRequestCRS = CRS.transform(cropBBox,
+                        requestedBBox.getCoordinateReferenceSystem());
                 cropBBOXInRequestCRS.setCoordinateReferenceSystem(requestedBBox.getCoordinateReferenceSystem());
                 // make sure it falls within the requested envelope
                 cropBBOXInRequestCRS.intersect(requestedBBox);
@@ -525,7 +526,8 @@ public class SpatialRequestHelper {
 
             // now transform the requested envelope to source crs
             if (destinationToSourceTransform != null && !destinationToSourceTransform.isIdentity()) {
-                final GeneralEnvelope temp = CRS.transform(destinationToSourceTransform, requestedBBox);
+                final GeneralEnvelope temp = new GeneralEnvelope(CRS.transform(requestedBBox,
+                        coverageProperties.crs2D));
                 temp.setCoordinateReferenceSystem(coverageProperties.crs2D);
                 cropBBox = new ReferencedEnvelope(temp);
                 needsReprojection = true;
@@ -578,7 +580,8 @@ public class SpatialRequestHelper {
                     requestCRSToCoverageGeographicCRS2D = CRS.findMathTransform(requestCRS,
                             coverageProperties.geographicCRS2D, true);
                     if (!requestCRSToCoverageGeographicCRS2D.isIdentity()) {
-                        requestedBBOXInCoverageGeographicCRS = CRS.transform(requestCRSToCoverageGeographicCRS2D, requestedBBox);
+                        requestedBBOXInCoverageGeographicCRS = CRS.transform(requestedBBox,
+                                coverageProperties.geographicCRS2D);
                         requestedBBOXInCoverageGeographicCRS.setCoordinateReferenceSystem(coverageProperties.geographicCRS2D);
                     }
                 }
@@ -598,9 +601,8 @@ public class SpatialRequestHelper {
                 requestedBBOXInCoverageGeographicCRS.setCoordinateReferenceSystem(coverageProperties.geographicCRS2D);
 
                 // now go back to the coverage native CRS in order to compute an approximate requested resolution
-                final MathTransform transform = CRS.findMathTransform(
-                        requestedBBOXInCoverageGeographicCRS.getCoordinateReferenceSystem(), coverageProperties.crs2D, true);
-                approximateRequestedBBoInNativeCRS = CRS.transform(transform, requestedBBOXInCoverageGeographicCRS);
+                approximateRequestedBBoInNativeCRS = CRS.transform(
+                        requestedBBOXInCoverageGeographicCRS, coverageProperties.crs2D);
                 approximateRequestedBBoInNativeCRS.setCoordinateReferenceSystem(coverageProperties.crs2D);
                 cropBBox = new ReferencedEnvelope(approximateRequestedBBoInNativeCRS);
                 return;

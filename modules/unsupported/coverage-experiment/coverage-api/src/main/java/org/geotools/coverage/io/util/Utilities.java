@@ -295,23 +295,11 @@ public class Utilities {
         if (envelope == null)
             throw new IllegalArgumentException("Specified envelope is null");
         Envelope requestedWGS84;
-        final MathTransform transformToWGS84;
         final CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
 
-        // //
-        //
-        // get a math transform to go to WGS84
-        //
-        // //
-        if (!CRS.equalsIgnoreMetadata(crs, DefaultGeographicCRS.WGS84)) {
-            transformToWGS84 = CRS.findMathTransform(crs, DefaultGeographicCRS.WGS84, true);
-        } else {
-            transformToWGS84 = IdentityTransform.create(2);
-        }
-
         // do we need to transform the requested envelope?
-        if (!transformToWGS84.isIdentity()) {
-            GeneralEnvelope env = CRS.transform(transformToWGS84, envelope);
+        if (!CRS.equalsIgnoreMetadata(crs, DefaultGeographicCRS.WGS84)) {
+            GeneralEnvelope env = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
             if (get2D) {
                 requestedWGS84 = new Envelope2D(env);
                 ((Envelope2D) requestedWGS84)
@@ -437,15 +425,12 @@ public class Utilities {
 
         try {
             // convert the requested envelope 2D to this coverage native crs.
-            MathTransform transform = null;
-            if (!CRS.equalsIgnoreMetadata(requestedEnvelopeCRS2D, spatialReferenceSystem2D))
-                transform = CRS.findMathTransform(requestedEnvelopeCRS2D, spatialReferenceSystem2D,
-                        true);
-            // now transform the requested envelope to source crs
-            if (transform != null && !transform.isIdentity())
-                adjustedRequestedEnvelope = CRS.transform(transform, requestedEnvelope2D);
-            else
+            if (!CRS.equalsIgnoreMetadata(requestedEnvelopeCRS2D, spatialReferenceSystem2D)) {
+                adjustedRequestedEnvelope = CRS.transform(requestedEnvelope2D,
+                        spatialReferenceSystem2D);
+            } else {
                 adjustedRequestedEnvelope.setEnvelope(requestedEnvelope2D);
+            }
 
             // intersect the requested area with the bounds of this
             // layer in native crs
@@ -460,9 +445,8 @@ public class Utilities {
             // space to the requested raster space
             //
             // //
-            final Envelope requestedEnvelopeCropped = (transform != null && !transform.isIdentity()) ? CRS
-                    .transform(transform.inverse(), adjustedRequestedEnvelope)
-                    : adjustedRequestedEnvelope;
+            final Envelope requestedEnvelopeCropped = CRS.transform(adjustedRequestedEnvelope,
+                    requestedEnvelopeCRS2D);
             final Rectangle2D ordinates = CRS.transform(readGridToWorld.inverse(),
                     requestedEnvelopeCropped).toRectangle2D();
             final GeneralGridEnvelope finalRange = new GeneralGridEnvelope(ordinates.getBounds());
@@ -471,10 +455,6 @@ public class Utilities {
             XRectangle2D.intersect(tempRect, requestedDim, tempRect);
             requestedDim.setRect(tempRect);
         } catch (TransformException te) {
-            // something bad happened while trying to transform this
-            // envelope. let's try with wgs84
-            tryWithWGS84 = true;
-        } catch (FactoryException fe) {
             // something bad happened while trying to transform this
             // envelope. let's try with wgs84
             tryWithWGS84 = true;
@@ -497,9 +477,8 @@ public class Utilities {
             // intersect
             adjustedRequestedEnvelope = new GeneralEnvelope(requestedEnvelopeWGS84);
             adjustedRequestedEnvelope.intersect(wgs84BaseEnvelope2D);
-            adjustedRequestedEnvelope = CRS.transform(CRS.findMathTransform(
-                    requestedEnvelopeWGS84.getCoordinateReferenceSystem(),
-                    spatialReferenceSystem2D, true), adjustedRequestedEnvelope);
+            adjustedRequestedEnvelope = CRS.transform(adjustedRequestedEnvelope,
+                    spatialReferenceSystem2D);
             adjustedRequestedEnvelope.setCoordinateReferenceSystem(spatialReferenceSystem2D);
 
         }

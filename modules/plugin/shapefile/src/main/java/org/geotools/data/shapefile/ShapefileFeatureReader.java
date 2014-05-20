@@ -193,7 +193,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                         } else if (screenMap != null && screenMap.checkAndSet(envelope)) {
                             geometry = null;
                             skip = true;
-                        } else {
+                        } else if (!nextFeatureBuilt) {
                             // if we are using the screenmap better provide a slightly modified
                             // version of the geometry bounds or we'll end up with many holes
                             // in the rendering

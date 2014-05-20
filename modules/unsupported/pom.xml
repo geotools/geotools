@@ -131,11 +131,15 @@
      </profile>
      <profile>
        <id>wfs-ng</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
        <modules>
          <module>wfs-ng</module>
        </modules>
      </profile>
      <profile>
+       <id>coverage-experiment</id>
        <activation>
          <property><name>all</name></property>
        </activation>

@@ -182,10 +182,10 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                         // we need to commit to dbf.read in order to check row.isDeleted
                         if (dbf != null) {
                             row = dbf.readRow();
+                            peeked = true;
                             if (row.isDeleted()) {
                                 continue;
                             }
-                            peeked = true;
                         }
                         if (filter != null && filtered(row, record)) {
                             geometry = null;

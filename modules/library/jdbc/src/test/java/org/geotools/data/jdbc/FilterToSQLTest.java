@@ -16,21 +16,30 @@
  */
 package org.geotools.data.jdbc;
 
+import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import junit.framework.TestCase;
 
+import org.geotools.data.jdbc.fidmapper.FIDMapper;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.identity.FeatureId;
 
 
 
@@ -76,49 +85,164 @@ public class FilterToSQLTest extends TestCase {
         
         output = new StringWriter();
         encoder = new FilterToSQL(output);
+        
+        FIDMapper mapper = new FIDMapper() {
+
+            @Override
+            public boolean returnFIDColumnsAsAttributes() {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            @Override
+            public boolean isVolatile() {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            @Override
+            public boolean isValid(String fid) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            @Override
+            public boolean isAutoIncrement(int colIndex) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            @Override
+            public void initSupportStructures() {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public boolean hasAutoIncrementColumns() {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            @Override
+            public Object[] getPKAttributes(String FID) throws IOException {
+                return new Object[] { FID };
+            }
+
+            @Override
+            public String getID(Object[] attributes) {
+                // TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public int getColumnType(int colIndex) {
+                // TODO Auto-generated method stub
+                return 0;
+            }
+
+            @Override
+            public int getColumnSize(int colIndex) {
+                // TODO Auto-generated method stub
+                return 0;
+            }
+
+            @Override
+            public String getColumnName(int colIndex) {
+                return "id";
+            }
+
+            @Override
+            public int getColumnDecimalDigits(int colIndex) {
+                // TODO Auto-generated method stub
+                return 0;
+            }
+
+            @Override
+            public int getColumnCount() {
+                return 1;
+            }
+
+            @Override
+            public String createID(Connection conn, SimpleFeature feature, Statement statement)
+                    throws IOException {
+                // TODO Auto-generated method stub
+                return null;
+            }
+        };
+        encoder.setFIDMapper(mapper);
     }
-    
+
     public void testIntegerContext() throws Exception {
-        
+
         Expression literal = filterFac.literal(5);
-        Expression prop = filterFac.property(integerFType.getAttributeDescriptors().get(0).getLocalName());
+        Expression prop = filterFac.property(integerFType.getAttributeDescriptors().get(0)
+                .getLocalName());
         PropertyIsEqualTo filter = filterFac.equals(prop, literal);
-        
+
         encoder.setFeatureType(integerFType);
         encoder.encode(filter);
-        
+
         LOGGER.fine("testAttr is an Integer " + filter + " -> " + output.getBuffer().toString());
         assertEquals(output.getBuffer().toString(), "WHERE testAttr = 5");
     }
     
     public void testStringContext() throws Exception {
         Expression literal = filterFac.literal(5);
-        Expression prop = filterFac.property(stringFType.getAttributeDescriptors().get(0).getLocalName());
+        Expression prop = filterFac.property(stringFType.getAttributeDescriptors().get(0)
+                .getLocalName());
         PropertyIsEqualTo filter = filterFac.equals(prop, literal);
-        
 
         encoder.setFeatureType(stringFType);
         encoder.encode(filter);
-        
+
         LOGGER.fine("testAttr is a String " + filter + " -> " + output.getBuffer().toString());
         assertEquals(output.getBuffer().toString(), "WHERE testAttr = '5'");
     }
-    
+
+
+    public void testIntegerToNumberContext() throws Exception {
+
+        Expression literal = filterFac.literal(5.0);
+        Expression prop = filterFac.property(integerFType.getAttributeDescriptors().get(0)
+                .getLocalName());
+        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+
+        encoder.setFeatureType(integerFType);
+        encoder.encode(filter);
+
+        LOGGER.fine("testAttr is an Integer " + filter + " -> " + output.getBuffer().toString());
+        assertEquals(output.getBuffer().toString(), "WHERE testAttr = 5.0");
+    }
+
+
     public void testInclude() throws Exception {
         encoder.encode(Filter.INCLUDE);
         assertEquals(output.getBuffer().toString(), "WHERE 1 = 1");
     }
-    
+
     public void testExclude() throws Exception {
         encoder.encode(Filter.EXCLUDE);
         assertEquals(output.getBuffer().toString(), "WHERE 0 = 1");
     }
-    
-    public void testIdFilter() throws Exception {
-        
-        // SOMEONE NEEDS TO WRITE AN ID FILTER!
-        // SDE doesn't use the FIDMapper classes, so 
-        // I'm not sure how a real-world encoder would want them encoded
+
+    public void testIdFilterMulti() throws Exception {
+        Set<FeatureId> fids = new LinkedHashSet<FeatureId>();
+        fids.add(filterFac.featureId("fid1"));
+        fids.add(filterFac.featureId("fid2"));
+        Id id = filterFac.id(fids);
+
+        encoder.encode(id);
+        assertEquals("WHERE ((id = 'fid1') OR (id = 'fid2'))", output.toString());
+    }
+
+    public void testIdFilterSingle() throws Exception {
+        Set<FeatureId> fids = new LinkedHashSet<FeatureId>();
+        fids.add(filterFac.featureId("fid1"));
+        Id id = filterFac.id(fids);
+
+        encoder.encode(id);
+        assertEquals("WHERE (id = 'fid1')", output.toString());
     }
     
     public void testEscapeQuote() throws FilterToSQLException {

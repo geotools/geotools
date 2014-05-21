@@ -16,7 +16,7 @@
  */
 package org.geotools.data.jdbc;
 
-import static org.geotools.filter.capability.FunctionNameImpl.*;
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -65,7 +65,6 @@ import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.BinaryExpression;
 import org.opengis.filter.expression.Divide;
@@ -890,8 +889,11 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             colNames[i] = mapper.getColumnName(i);
         }
 
-        for (Iterator i = ids.iterator(); i.hasNext(); ) {
-            try {
+        try {
+            if (ids.size() > 1) {
+                out.write("(");
+            }
+            for (Iterator i = ids.iterator(); i.hasNext();) {
                 Identifier id = (Identifier) i.next();
                 Object[] attValues = mapper.getPKAttributes(id.toString());
 
@@ -913,11 +915,15 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 if (i.hasNext()) {
                     out.write(" OR ");
                 }
-            } catch (java.io.IOException e) {
-                throw new RuntimeException(IO_ERROR, e);
             }
+            if (ids.size() > 1) {
+                out.write(")");
+            }
+        } catch (java.io.IOException e) {
+            throw new RuntimeException(IO_ERROR, e);
         }
         
+
         return extraData;
     }
     

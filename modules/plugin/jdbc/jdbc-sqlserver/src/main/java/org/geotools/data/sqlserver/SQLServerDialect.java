@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Types;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -84,6 +85,8 @@ public class SQLServerDialect extends BasicSQLDialect {
      */
     static final Pattern FROM_PATTERN = Pattern.compile("(\\s+)(FROM)(\\s)+", Pattern.DOTALL);
     
+    static final Pattern POSITIVE_NUMBER = Pattern.compile("[1..9][0..9]*");
+
     /**
      * The direct geometry metadata table
      * @param dataStore
@@ -95,6 +98,8 @@ public class SQLServerDialect extends BasicSQLDialect {
     private Boolean useNativeSerialization = false;
     
     private Boolean forceSpatialIndexes = false;
+
+    private String tableHints;
     
     final static Map<String, Class> TYPE_TO_CLASS_MAP = new HashMap<String, Class>() {
         {
@@ -568,15 +573,16 @@ public class SQLServerDialect extends BasicSQLDialect {
             throw (IOException) new IOException().initCause( e );
         }
         
-        CoordinateReferenceSystem crs;
-        try {
-            crs = CRS.decode( "EPSG:" + srid );
-        } 
-        catch (Exception e ) {
-            throw (IOException) new IOException().initCause( e );
+        if (srid != null && POSITIVE_NUMBER.matcher(srid).matches()) {
+            CoordinateReferenceSystem crs;
+            try {
+                crs = CRS.decode("EPSG:" + srid);
+            } catch (Exception e) {
+                throw (IOException) new IOException().initCause(e);
+            }
+
+            g.setUserData(crs);
         }
-        
-        g.setUserData( crs );
         return g;
     }
 
@@ -771,6 +777,24 @@ public class SQLServerDialect extends BasicSQLDialect {
     }
     
     /**
+     * Sets a comma separated list of table hints that will be added to every select query
+     * 
+     * @param tableHints
+     */
+    public void setTableHints(String tableHints) {
+        if (tableHints == null) {
+            this.tableHints = null;
+        } else {
+            tableHints = tableHints.trim();
+            if (tableHints.isEmpty()) {
+                this.tableHints = null;
+            } else {
+                this.tableHints = tableHints;
+            }
+        }
+    }
+
+    /**
      * Drop the index. Subclasses can override to handle extra syntax or db specific situations
      * 
      * @param cx
@@ -859,14 +883,54 @@ public class SQLServerDialect extends BasicSQLDialect {
     @Override
     public void handleSelectHints(StringBuffer sql, SimpleFeatureType featureType, Query query) {
         // optional feature, apply only if requested
-        if(!forceSpatialIndexes) {
+        if (!forceSpatialIndexes && tableHints == null) {
             return;
         }
         
+        // apply the index hints
+        String fromStatement = "FROM \"" + featureType.getTypeName() + "\"";
+        int idx = sql.indexOf(fromStatement);
+        if(idx > 0) {
+            int base = idx + fromStatement.length();
+            StringBuilder sb = new StringBuilder(" WITH(");
+            // check the spatial index hints
+            Set<String> indexes = getSpatialIndexes(featureType, query);
+            if (!indexes.isEmpty()) {
+                sb.append("INDEX(");
+                for (String indexName : indexes) {
+                    sb.append("\"").append(indexName).append("\"").append(",");
+                }
+                sb.setLength(sb.length() - 1);
+                sb.append(")");
+            } else if(tableHints == null) {
+                // no spatial indexes, and we don't have anything else to add either
+                return;
+            }
+            // do we need a comma between spatial index hints and other table hints?
+            if (!indexes.isEmpty() && tableHints != null) {
+                sb.append(", ");
+            }
+            // other table hints
+            if (tableHints != null) {
+                sb.append(tableHints);
+            }
+            sb.append(")");
+
+            // finally insert the table hints
+            String tableHint = sb.toString();
+            sql.insert(base, tableHint);
+        }
+    }
+
+    private Set<String> getSpatialIndexes(SimpleFeatureType featureType, Query query) {
+        if (!forceSpatialIndexes) {
+            return Collections.emptySet();
+        }
+
         // check we have a filter
         Filter filter = query.getFilter();
         if(filter == Filter.INCLUDE) {
-            return;
+            return Collections.emptySet();
         }
         
         // that is has spatial attributes
@@ -874,7 +938,7 @@ public class SQLServerDialect extends BasicSQLDialect {
         filter.accept(attributesExtractor, null);
         Map<String, Integer> attributes = attributesExtractor.getSpatialProperties();
         if(attributes.isEmpty() || attributes.size() > 1) {
-            return;
+            return Collections.emptySet();
         }
         
         // and that those attributes have a spatial index
@@ -892,25 +956,7 @@ public class SQLServerDialect extends BasicSQLDialect {
                 }
             }
         }
-        if(indexes.isEmpty()) {
-            return;
-        }
-        
-        // apply the index hints
-        String fromStatement = "FROM \"" + featureType.getTypeName() + "\"";
-        int idx = sql.indexOf(fromStatement);
-        if(idx > 0) {
-            int base = idx + fromStatement.length();
-            StringBuilder sb = new StringBuilder(" WITH( INDEX(");
-            for (String indexName : indexes) {
-                sb.append("\"").append(indexName).append("\"").append(",");
-            }
-            sb.setLength(sb.length() - 1);
-            sb.append("))");
-            String tableHint = sb.toString();
-            
-            sql.insert(base, tableHint);
-        }
+        return indexes;
     }
-    
+
 }

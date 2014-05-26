@@ -963,4 +963,12 @@ public class ImageMosaicConfigHandler {
         return useExistingSchema;
     }
 
+
+    public ImageReaderSpi getCachedReaderSPI() {
+        return cachedReaderSPI;
+    }
+
+    public void setCachedReaderSPI(ImageReaderSpi cachedReaderSPI) {
+        this.cachedReaderSPI = cachedReaderSPI;
+    }
 }

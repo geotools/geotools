@@ -312,16 +312,7 @@ public class GranuleDescriptor {
 			
 			// get a stream
 		        if(cachedStreamSPI==null){
-		            cachedStreamSPI=ImageIOExt.getImageInputStreamSPI(granuleUrl, true);
-		            if(cachedStreamSPI==null){
-		                final File file = DataUtilities.urlToFile(granuleUrl);
-		                if(file!=null){
-		                    if(LOGGER.isLoggable(Level.WARNING)){
-		                        LOGGER.log(Level.WARNING,Utils.getFileInfo(file));
-		                    }
-		                }
-		                throw new IllegalArgumentException("Unable to get an input stream for the provided granule "+granuleUrl.toString());
-		            }
+		            cachedStreamSPI = Utils.getInputStreamSPIFromURL(granuleUrl);
 		        }
 		        assert cachedStreamSPI!=null:"no cachedStreamSPI available!";
 			inStream = cachedStreamSPI.createInputStreamInstance(granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
@@ -337,19 +328,7 @@ public class GranuleDescriptor {
 			
 			// get a reader and try to cache the suggested SPI first
 			if(cachedReaderSPI == null){
-				inStream.mark();
-				if(suggestedSPI!=null && suggestedSPI.canDecodeInput(inStream))
-				{
-					cachedReaderSPI=suggestedSPI;
-					inStream.reset();
-				}
-				else{
-					inStream.mark();
-					reader = ImageIOExt.getImageioReader(inStream);
-					if(reader != null)
-						cachedReaderSPI = reader.getOriginatingProvider();
-					inStream.reset();
-				}
+			    cachedReaderSPI = Utils.getReaderSpiFromStream(suggestedSPI, inStream);
 				
 			}
 			if (reader == null) {

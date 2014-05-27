@@ -40,7 +40,10 @@
     </license>
   </licenses>
 
-
+  <properties>
+	<jaiext.version>1.0-SNAPSHOT</jaiext.version>
+  </properties>
+	
   <profiles>
 
      <!-- ================================================== -->

@@ -16,39 +16,71 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import java.io.*;
-import java.util.*;
-import java.sql.SQLException;
-import java.awt.geom.AffineTransform;
-import javax.measure.unit.Unit;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.opengis.referencing.*;
-import org.opengis.referencing.cs.*;
-import org.opengis.referencing.crs.*;
-import org.opengis.referencing.datum.*;
-import org.opengis.referencing.operation.*;
-import org.opengis.metadata.extent.GeographicBoundingBox;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.geometry.Envelope;
+import java.awt.geom.AffineTransform;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Set;
+
+import javax.measure.unit.Unit;
 
 import org.geotools.TestData;
 import org.geotools.factory.Hints;
+import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
+import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.AbstractCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
+import org.geotools.referencing.factory.IdentifiedObjectFinder;
 import org.geotools.referencing.operation.AbstractCoordinateOperation;
-import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
-import org.geotools.referencing.factory.IdentifiedObjectFinder;
-import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
-import org.hsqldb.lib.HashSet;
-
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.opengis.geometry.Envelope;
+import org.opengis.metadata.extent.GeographicBoundingBox;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.AuthorityFactory;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.IdentifiedObject;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.ReferenceIdentifier;
+import org.opengis.referencing.crs.CompoundCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.EngineeringCRS;
+import org.opengis.referencing.crs.GeocentricCRS;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.crs.VerticalCRS;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.datum.Datum;
+import org.opengis.referencing.datum.GeodeticDatum;
+import org.opengis.referencing.operation.Conversion;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.Operation;
+import org.opengis.referencing.operation.Projection;
+import org.opengis.referencing.operation.TransformException;
+import org.opengis.referencing.operation.Transformation;
 
 
 /**
@@ -255,10 +287,10 @@ public class DefaultFactoryTest {
     public void testTimeout() throws FactoryException {
         System.gc();              // If there is any object holding a connection to the EPSG
         System.runFinalization(); // database, running finalizers may help to close them.
-        factory.setTimeout(200);
         // Fetch this CRS first in order to prevent garbage collection.
         CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("4273");
         assertEquals("4273", getIdentifier(crs));
+        factory.setTimeout(200);
         try {
             assertTrue(factory.isConnected());
             Thread.sleep(800);

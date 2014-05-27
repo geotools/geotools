@@ -2,10 +2,17 @@ package org.geotools.gce.imagemosaic;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
+import javax.imageio.spi.ImageInputStreamSpi;
+import javax.imageio.spi.ImageReaderSpi;
+import javax.imageio.stream.ImageInputStream;
 
 import org.apache.commons.io.DirectoryWalker;
 import org.apache.commons.io.FilenameUtils;
@@ -13,8 +20,10 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.UnknownFormat;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.factory.Hints;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.Utilities;
 
 /**
@@ -158,6 +167,42 @@ abstract class ImageMosaicWalker implements Runnable {
             final Hints configurationHints = configHandler.getRunConfiguration().getHints();
             coverageReader = (GridCoverage2DReader) format.getReader(fileBeingProcessed,
                     configurationHints);
+
+            // Setting of the ReaderSPI to use
+            if(configHandler.getCachedReaderSPI() == null){
+                // Get the URL associated to the file
+                URL granuleUrl = DataUtilities
+                        .fileToURL(fileBeingProcessed);
+                // Get the ImageInputStreamSPI associated to the URL
+                ImageInputStreamSpi inStreamSpi = Utils.getInputStreamSPIFromURL(granuleUrl);
+                // Ensure that the ImageInputStreamSPI is available
+                if(inStreamSpi==null){
+                    throw new IllegalArgumentException("no inputStreamSPI available!");
+                }
+                ImageInputStream inStream=null;
+                try{
+                    // Get the ImageInputStream from the SPI
+                    inStream = inStreamSpi
+                            .createInputStreamInstance(granuleUrl, ImageIO.getUseCache(),
+                                    ImageIO.getCacheDirectory());
+                    // Throws an Exception if the ImageInputStream is not present
+                    if(inStream == null){
+                        if(LOGGER.isLoggable(Level.WARNING)){
+                            LOGGER.log(Level.WARNING,Utils.getFileInfo(fileBeingProcessed));
+                        }
+                        throw new IllegalArgumentException("Unable to get an input stream for the provided file "+granuleUrl.toString());
+                    }
+                    // Selection of the ImageReaderSpi from the Stream
+                    ImageReaderSpi spi = Utils.getReaderSpiFromStream(null, inStream);
+                    // Setting of the ImageReaderSpi to the ImageMosaicConfigHandler in order to set it inside the indexer properties
+                    configHandler.setCachedReaderSPI(spi);
+                }finally{
+                    if(inStream!=null){
+                        inStream.close();
+                    }
+                }
+
+            }
 
             // Getting available coverageNames from the reader
             String[] coverageNames = coverageReader.getGridCoverageNames();

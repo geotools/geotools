@@ -1129,6 +1129,22 @@ public class ImageMosaicReaderTest extends Assert{
         assertNotNull(waveLength);
         assertNotNull(dateValue);
         
+
+        // Get the properties file and check if the SuggestedSPI parameter is set
+        File covFile = DataUtilities.urlToFile(timeAdditionalDomainsRangeURL);
+        File propFile = new File(covFile, "time_domainsRanges.properties");
+        // Ensure the file exists
+        assertTrue(propFile.exists());
+        Properties props = Utils.loadPropertiesFromURL(DataUtilities.fileToURL(propFile));
+        // ImageReaderSpi property
+        String suggestedSpi = props.getProperty(Utils.Prop.SUGGESTED_SPI);
+        // Check if the property exists
+        assertNotNull(suggestedSpi);
+        // Get the class indicated by the SPI
+        Class<?> clazz = Class.forName(suggestedSpi);
+        // Check if the class really exists
+        assertNotNull(clazz);
+
         // Test the output coverage
         GeneralParameterValue[] values = new GeneralParameterValue[] { useJai, dateValue, time, waveLength, elevation};
         final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, true);

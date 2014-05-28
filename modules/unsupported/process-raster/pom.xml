@@ -119,13 +119,6 @@
           <version>${jt.version}</version>
         </dependency>
         
-      <!-- JAI-EXT -->
-      <dependency>
-		<groupId>it.geosolutions.jaiext.bandmerge</groupId>
-		<artifactId>jt-bandmerge</artifactId>
-		<version>${jaiext.version}</version>
-      </dependency>
-        
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.geotools</groupId>
@@ -142,18 +135,6 @@
         <dependency>
 	        <groupId>org.geotools</groupId>
 	        <artifactId>gt-property</artifactId>
-	        <version>${project.version}</version>
-	        <scope>test</scope>
-        </dependency>
-        <dependency>
-	        <groupId>org.geotools</groupId>
-	        <artifactId>gt-geotiff</artifactId>
-	        <version>${project.version}</version>
-	        <scope>test</scope>
-        </dependency>
-        <dependency>
-	        <groupId>org.geotools</groupId>
-	        <artifactId>gt-epsg-hsql</artifactId>
 	        <version>${project.version}</version>
 	        <scope>test</scope>
         </dependency>

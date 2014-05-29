@@ -27,8 +27,8 @@
 
   <licenses>
     <license>
-      <name>Lesser General Public License (LGPL)</name>
-      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <name>Creative Commons Attribution 3.0 License</name>
+      <url>http://creativecommons.org/licenses/by/3.0/</url>
       <distribution>repo</distribution>
     </license>
   </licenses>

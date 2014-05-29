@@ -18,8 +18,8 @@ Reference:
 
 Developers guide:
 
-* `Working with Git </../developer/procedures/git.html>`_
-* `Pull Requests </../developer/procedures/pull_requests.html>`_
+* `Working with Git <http://docs.geotools.org/latest/developer/procedures/git.html>`_
+* `Pull Requests <http://docs.geotools.org/latest/developer/procedures/pull_requests.html>`_
 
 Although desktop applications and IDE integration are available, no GUI will substitute for an understanding of the underlying git repository model. Even if you have previous version control experience 
 

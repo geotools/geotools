@@ -163,7 +163,6 @@
          <module>feature-aggregate</module>
          <module>mongodb</module>
          <module>property-ng</module>
-         <module>shapefile-old</module>
        </modules>
      </profile>
   </profiles>

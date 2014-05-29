@@ -17,7 +17,7 @@ The GeoTools source code is organized into the following structure:
 Download Source Code
 ^^^^^^^^^^^^^^^^^^^^^
 
-Source code releases are made available on a monthly basis and are available on the downloads page:
+Source code is published with each release and is available on the downloads page:
 
 * http://sourceforge.net/projects/geotools/files
 
@@ -31,7 +31,7 @@ It is an advanced version management tool with a different workflow than Subvers
 CVS.
 
 You do not need any special permission to have read-only access to the source code which
-is located on `github <https://github.com/geotools/geotools/>`. You are encouraged to 
+is located on `github <https://github.com/geotools/geotools/>`_. You are encouraged to 
 clone the repository or fork it into your own account and issue pull requests.
 
 Please just check out the code and have fun. If you are interested in getting commit permission later you can look into Developers Guide Roles and Responsibilities.
@@ -63,8 +63,8 @@ Notes:
 * You can switch between the master and stable branches easily::
 
      C:\java\geotools> git checkout master
-     C:\java\geotools> git checkout 8.x 
-     C:\java\geotools> git checkout 2.7.x
+     C:\java\geotools> git checkout 11.x 
+     C:\java\geotools> git checkout 8.x
 
 * Take the time to read the git book before diving into git:
 

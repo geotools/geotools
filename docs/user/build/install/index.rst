@@ -6,7 +6,7 @@ Install Build Tools
    
    jdk
    mvn
-   svn
+   git
    ojdbc
    sphinx
 
@@ -18,45 +18,53 @@ downloading now before proceeding on to the step by step install instructions.
 
 The following tools are required to build GeoTools:
 
-* Apache Maven 3.0.3
+* Apache Maven 3.2.1
+  
+  Apache build tool used for GeoTools. Excels at managing dependencies.
   
   * http://maven.apache.org/download.html  
-  * Apache build tool used for GeoTools. Excels at managing dependencies.
 
-* Java 2 Software Developers Kit (Java 6)
+* Java 2 Software Developers Kit (Java 7)
   
-  * http://www.oracle.com/technetwork/java/javase/downloads/index.html
+  * http://www.oracle.com/technetwork/java/javase/overview/index.html
 
 The following optional downloads facilitate increased functionality or performance:
 
 * Java Advanced Imaging (Optional)
   
-  * Java Advanced Imaging API 1.1.3 
+  Java Advanced Imaging API 1.1.3 is a Java extension for image processing.
+  
   * http://download.java.net/media/jai/builds/release/1_1_3/
-  * Java extension for image processing
+  
 
 * Java ImageIO (Optional)
   
-  * Java Image I/O Tools 1.1
+  Java Image I/O Tools 1.1 is a java extensions providing drivers for reading and writing
+  image files.
+  
   * http://download.java.net/media/jai-imageio/builds/release/1.1/
-  * Low-level image Access
 
 * Java ImageIO-Ext (Optional)
+  
+  Allows the JAI subsystem to read geospatial raster files such as GeoTiff.
 
   * http://java.net/projects/imageio-ext/downloads
 
 * Oracle (Optional):
     
-  * Ojdbc14.jar
+  * ojdbc14.jar
 
 * DB2 (Optional)
 
-  * DB2 Jdbc Driver
+  DB2 Jdbc Driver
+  
   * https://www-304.ibm.com/support/docview.wss?uid=swg27016878&wv=1
-  * DB2 Express-C and Spatial Extender
+  
+  DB2 Express-C and Spatial Extender
+  
   * http://www-01.ibm.com/software/data/db2/express/download.html
 
 * ArcSDE (Optional):
   
-  * Not available for download - Included on CD
+  Not available for download - Included on CD
 

@@ -5,11 +5,12 @@ GeoTools is written in the Java Programming Language. The library is targeted fo
 
 Java Runtime Environment:
 
-* Java 7 - currently untested (if you try it email the list)
-* Java 6 - Geotools 8.0.x and above
-* Java 5 - GeoTools 2.5.x and above
-* Java 1.4 - GeoTools versions 2.4.x and below
-* GeoTools is known to work with JRE provided by IBM, Apple and OpenJDK.
+* Java 7 - GeoTools 11.x and above (OpenJDK and Oracle JRE tested)
+* Java 6 - Geotools 8.x to GeoTools 9.x (Oracle JRE tested)
+* Java 5 - GeoTools 2.5.x to GeoTools 8.x (Sun JRE tested)
+* Java 1.4 - GeoTools 2.x to GeoTools 2.4.x (Sun JRE tested)
+
+If you wish to experiment with Java 8 please visit the user list for discussion. The GeoTools user list has previously reported success with JREs provided by IBM, Apple and OpenJDK.
 
 Java Extension:
 
@@ -19,21 +20,31 @@ Java Extension:
 
 When developing GeoTools please change your compile options to:
 
-* Produce 6.0 compliant code 
+* IDE: Produce Java 7 compliant code
+* Maven: source=1.7
 
-Java 2 Standard Edition Software Developers Kit
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Java Standard Edition Software Developers Kit
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1. Download a JDK
 2. Use the one click installer
 3. When it asks if you want to install a JRE you can say yes
 
-Use Java 6 starting with geotools 8.0
-'''''''''''''''''''''''''''''''''''''
+Use Java 7 starting with GeoTools 11.0
+''''''''''''''''''''''''''''''''''''''
 
-Since the API changes from Java version to version, building a geotools version with a newer Java SDK is risky (you may accidentally use a new method).
+Since the API changes from Java version to version, building a GeoTOols version with a newer Java SDK is risky (you may accidentally use a new method).
 
-GeoTools requires a Java 1.6 SDK for versions 8.0 and above and Java 1.5 SDK for versions 2.5 and above, for older versions of Java please use GeoTools 2.4.
+GeoTools requires a Java 1.7 SDK for versions 11.0 and above. If your project uses an older version of Java use an appropriate version of GeoTools as shown in the table below.
+
+========= ================ ================ =================
+Java      Initial          Final            Compiler Setting 
+========= ================ ================ =================
+Java 7    GeoTools 11.x    And Above        compiler=1.7 
+Java 6    Geotools 8.x     GeoTools 9.x     compiler=1.6 
+Java 5    GeoTools 2.5.x   GeoTools 8.x     compiler=1.5 
+Java 1.4  GeoTools 2.x     GeoTools 2.4.x   compiler = 1.4 
+========= ================ ================ =================
 
 Why JAVA_HOME does not work on Windows
 ''''''''''''''''''''''''''''''''''''''
@@ -54,9 +65,9 @@ One technique is to set up a batch file similar to the following:
 
 3. Create the C:\java\java6.bat file mentioned above::
    
-      set ANT_HOME=C:\java\apache-ant-1.6.5
-      set M2_HOME=C:\java\maven-2.0.9
-      set JAVA_HOME=C:\Program Files\Java\jdk1.6.0_29
+      set ANT_HOME=C:\java\apache-ant-1.9.4
+      set M2_HOME=C:\java\maven-3.0.5
+      set JAVA_HOME=C:\Program Files\Java\jdk1.7.0_51
       
       set PATH=%JAVA_HOME%\bin;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;C:\Program Files\Subversion\bin;%M2_HOME%\bin;%ANT_HOME%\bin
 
@@ -172,11 +183,13 @@ ImageIO-Ext Install
 
 The installer from the ImageIO-Ext website can be used to install into your JAVA_HOME (ie the JDK). If you like you can use this to install the software; and then copy the required jars into your JRE by hand (they end up in JAVA_HOME/jre/ext/libs and need to be copied into JRE/ext/libs).
 
-1. Download this version of ImageIO-ext:
+1. Download the appropriate version of ImageIO-ext:
    
-   * ImageIO-EXT 1.0.8
+   * ImageIO-EXT 1.0.10
    * http://java.net/projects/imageio-ext
-
+   
+   Tip: You can check the version of ImageIO-EXT used in the root pom.xml file.
+   
 2. Download ImageIO for your JDK by clicking on the above link.
    
    Example: `windows32-imageio-ext-installer-gdal-mrsid-1.0.8.zip <http://java.net/projects/imageio-ext/downloads/download/Releases/ImageIO-Ext/1.0.x/1.0.8/windows32-installer/windows32-imageio-ext-installer-gdal-mrsid-1.0.8.zip>`_

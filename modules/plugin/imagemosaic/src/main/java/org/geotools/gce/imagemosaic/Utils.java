@@ -65,6 +65,8 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
+import javax.imageio.spi.ImageInputStreamSpi;
+import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.BorderExtender;
 import javax.media.jai.Histogram;
@@ -101,6 +103,7 @@ import org.geotools.gce.imagemosaic.catalog.index.ObjectFactory;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -1975,5 +1978,40 @@ public class Utils {
                 throw new IOException("Unable to drop the database: ", e);
             }
         }
+    }
+
+    public static ImageReaderSpi getReaderSpiFromStream(ImageReaderSpi suggestedSPI,
+            ImageInputStream inStream) throws IOException {
+        ImageReaderSpi readerSPI = null;
+        // get a reader and try to cache the suggested SPI first
+        inStream.mark();
+        if (suggestedSPI != null && suggestedSPI.canDecodeInput(inStream)) {
+            readerSPI = suggestedSPI;
+            inStream.reset();
+        } else {
+            inStream.mark();
+            ImageReader reader = ImageIOExt.getImageioReader(inStream);
+            if (reader != null)
+                readerSPI = reader.getOriginatingProvider();
+            inStream.reset();
+        }
+        return readerSPI;
+    }
+
+    public static ImageInputStreamSpi getInputStreamSPIFromURL(URL granuleUrl) throws IOException {
+
+        ImageInputStreamSpi streamSPI = ImageIOExt.getImageInputStreamSPI(granuleUrl, true);
+        if (streamSPI == null) {
+            final File file = DataUtilities.urlToFile(granuleUrl);
+            if (file != null) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, Utils.getFileInfo(file));
+                }
+            }
+            throw new IllegalArgumentException(
+                    "Unable to get an input stream for the provided granule "
+                            + granuleUrl.toString());
+        }
+        return streamSPI;
     }
 }

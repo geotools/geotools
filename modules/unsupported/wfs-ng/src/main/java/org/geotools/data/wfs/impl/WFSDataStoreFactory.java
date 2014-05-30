@@ -16,6 +16,9 @@
  */
 package org.geotools.data.wfs.impl;
 
+import static org.geotools.data.wfs.internal.URIs.buildURL;
+import org.geotools.util.Version;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Authenticator;
@@ -24,6 +27,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +39,7 @@ import org.geotools.data.Parameter;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.internal.Loggers;
+import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
@@ -478,6 +483,90 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             }
         }
         return true;
+    }
+    
+    /**
+     * Creates a HTTP GET Method based WFS {@code GetCapabilities} request for the given protocol
+     * version.
+     * <p>
+     * If the query string in the {@code host} URL already contains a VERSION number, that version
+     * is <b>discarded</b>.
+     * </p>
+     * 
+     * @param host
+     *            non null URL from which to construct the WFS {@code GetCapabilities} request by
+     *            discarding the query string, if any, and appending the propper query string.
+     * @return
+     */
+    public static URL createGetCapabilitiesRequest(URL host, Version version) {
+        if (host == null) {
+            throw new NullPointerException("null url");
+        }
+        if (version == null) {
+            throw new NullPointerException("version");
+        }
+
+        Map<String, String> getCapsKvp = new HashMap<String, String>();
+        getCapsKvp.put("SERVICE", "WFS");
+        getCapsKvp.put("REQUEST", "GetCapabilities");
+        getCapsKvp.put("VERSION", version.toString());
+        return buildURL(host, getCapsKvp);
+    }
+
+    /**
+     * Creates a HTTP GET Method based WFS {@code GetCapabilities} request.
+     * <p>
+     * If the query string in the {@code host} URL already contains a VERSION number, that version
+     * is used, otherwise the queried version will be 1.0.0.
+     * </p>
+     * <p>
+     * <b>NOTE</b> the default version will be 1.0.0 until the support for 1.1.0 gets stable enough
+     * for general use. If you want to use a 1.1.0 WFS you'll have to explicitly provide the
+     * VERSION=1.1.0 parameter in the GetCapabilities request meanwhile.
+     * </p>
+     * 
+     * @param host
+     *            non null URL pointing either to a base WFS service access point, or to a full
+     *            {@code GetCapabilities} request.
+     * @return
+     */
+    public static URL createGetCapabilitiesRequest(final URL host) {
+        if (host == null) {
+            throw new NullPointerException("url");
+        }
+
+        String queryString = host.getQuery();
+        queryString = queryString == null || "".equals(queryString.trim()) ? "" : queryString
+                .toUpperCase();
+
+        final Version defaultVersion = Versions.highest();
+        
+        // which version to use
+        Version requestVersion = defaultVersion;
+
+        if (queryString.length() > 0) {
+
+            Map<String, String> params = new HashMap<String, String>();
+            String[] split = queryString.split("&");
+            for (String kvp : split) {
+                int index = kvp.indexOf('=');
+                String key = index > 0 ? kvp.substring(0, index) : kvp;
+                String value = index > 0 ? kvp.substring(index + 1) : null;
+                params.put(key, value);
+            }
+
+            String request = params.get("REQUEST");
+            if ("GETCAPABILITIES".equals(request)) {
+                String version = params.get("VERSION");
+                if (version != null) {
+                    requestVersion = Versions.find(version);
+                    if (requestVersion == null) {
+                        requestVersion = defaultVersion;
+                    }
+                }
+            }
+        }
+        return createGetCapabilitiesRequest(host, requestVersion);
     }
 
 }

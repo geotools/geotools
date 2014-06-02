@@ -101,6 +101,19 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             super(key, type, description, false, defaultValue);
             this.defaultValue = defaultValue;
         }
+        
+        /**
+         * Creates an optional parameter with the supplied default value
+         * 
+         * @param key
+         * @param type
+         * @param description
+         * @param required
+         */
+        public WFSFactoryParam(String key, Class<T> type, String description, T defaultValue, String level) {
+            super(key, type, description, false, defaultValue, Param.LEVEL, level);
+            this.defaultValue = defaultValue;
+        }
 
         public WFSFactoryParam(String key, Class<T> type, String description, T defaultValue,
                 Object... metadata) {
@@ -122,7 +135,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<URL> URL;
     static {
-        String name = "WFSDataStoreFactory:WFS_GET_CAPABILITIES_URL";
+        String name = "WFS GetCapabilities URL";
         String description = "Represents a URL to the getCapabilities document or a server instance.";
         parametersInfo[0] = URL = new WFSFactoryParam<URL>(name, URL.class, description);
     }
@@ -138,7 +151,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Boolean> PROTOCOL;
     static {
-        String name = "WFSDataStoreFactory:PROTOCOL";
+        String name = "Protocol";
         String description = "Sets a preference for the HTTP protocol to use when requesting "
                 + "WFS functionality. Set this value to Boolean.TRUE for POST, Boolean.FALSE "
                 + "for GET or NULL for AUTO";
@@ -157,7 +170,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<String> USERNAME;
     static {
-        String name = "WFSDataStoreFactory:USERNAME";
+        String name = "Username";
         String description = "This allows the user to specify a username. This param should not "
                 + "be used without the PASSWORD param.";
         parametersInfo[2] = USERNAME = new WFSFactoryParam<String>(name, String.class, description,
@@ -175,7 +188,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<String> PASSWORD;
     static {
-        String name = "WFSDataStoreFactory:PASSWORD";
+        String name = "Password";
         String description = "This allows the user to specify a username. This param should not"
                 + " be used without the USERNAME param.";
         parametersInfo[3] = PASSWORD = new WFSFactoryParam<String>(name, String.class, description,
@@ -189,7 +202,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
     public static final WFSFactoryParam<String> ENCODING;
     static {
 
-        String name = "WFSDataStoreFactory:ENCODING";
+        String name = "Encoding";
         String description = "This allows the user to specify the character encoding of the "
                 + "XML-Requests sent to the Server. Defaults to UTF-8";
 
@@ -208,7 +221,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Integer> TIMEOUT;
     static {
-        String name = "WFSDataStoreFactory:TIMEOUT";
+        String name = "Time-out";
         String description = "This allows the user to specify a timeout in milliseconds. This param"
                 + " has a default value of 3000ms.";
         parametersInfo[5] = TIMEOUT = new WFSFactoryParam<Integer>(name, Integer.class,
@@ -221,7 +234,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Integer> BUFFER_SIZE;
     static {
-        String name = "WFSDataStoreFactory:BUFFER_SIZE";
+        String name = "Buffer Size";
         String description = "This allows the user to specify a buffer size in features. This param "
                 + "has a default value of 10 features.";
         parametersInfo[6] = BUFFER_SIZE = new WFSFactoryParam<Integer>(name, Integer.class,
@@ -234,7 +247,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Boolean> TRY_GZIP;
     static {
-        String name = "WFSDataStoreFactory:TRY_GZIP";
+        String name = "Try GZIP";
         String description = "Indicates that datastore should use gzip to transfer data if the server "
                 + "supports it. Default is true";
         parametersInfo[7] = TRY_GZIP = new WFSFactoryParam<Boolean>(name, Boolean.class,
@@ -248,7 +261,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
     public static final WFSFactoryParam<Boolean> LENIENT;
     static {
 
-        String name = "WFSDataStoreFactory:LENIENT";
+        String name = "Lenient";
         String description = "Indicates that datastore should do its best to create features from the "
                 + "provided data even if it does not accurately match the schema.  Errors will "
                 + "be logged but the parsing will continue if this is true.  Default is false";
@@ -262,7 +275,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Integer> MAXFEATURES;
     static {
-        String name = "WFSDataStoreFactory:MAXFEATURES";
+        String name = "Maximum features";
         String description = "Positive integer used as a hard limit for the amount of Features to retrieve"
                 + " for each FeatureType. A value of zero or not providing this parameter means no limit.";
         parametersInfo[9] = MAXFEATURES = new WFSFactoryParam<Integer>(name, Integer.class,
@@ -281,7 +294,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
     public static final WFSFactoryParam<Integer> FILTER_COMPLIANCE;;
     static {
 
-        String name = "WFSDataStoreFactory:FILTER_COMPLIANCE";
+        String name = "Filter compliance";
         String description = "Level of compliance to WFS specification (0-low,1-medium,2-high)";
         List<Integer> options = Arrays.asList(new Integer[] { 0, 1, 2 });
 
@@ -295,7 +308,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<String> WFS_STRATEGY;
     static {
-        String name = "WFSDataStoreFactory:WFS_STRATEGY";
+        String name = "WFS Strategy";
         String description = "Override wfs stragegy with either cubwerx, ionic, mapserver"
                 + ", geoserver, or nonstrict strategy.";
         List<String> options = Arrays.asList(new String[] { "auto", "strict", "nonstrict",
@@ -309,10 +322,10 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<String> NAMESPACE;
     static {
-        String name = "namespace";
+        String name = "Namespace";
         String description = "Override the original WFS type name namespaces";
         parametersInfo[12] = NAMESPACE = new WFSFactoryParam<String>(name, String.class,
-                description, null);
+                description, null, "advanced");
     }
 
     /**

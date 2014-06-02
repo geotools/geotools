@@ -309,7 +309,7 @@ public class EmfAppSchemaParser {
     }
 
     public static SimpleFeatureType parseSimpleFeatureType(Configuration configuration,
-            QName featureTypeName, URL schemaLocation, CoordinateReferenceSystem crs) {
-        return parseSimpleFeatureType(configuration, featureTypeName, schemaLocation, crs);
+            QName featureTypeName, URL schemaLocation, CoordinateReferenceSystem crs) throws IOException {
+        return parseSimpleFeatureType(configuration, featureTypeName, schemaLocation, crs, null);
     }
 }

@@ -45,9 +45,9 @@ public class WFSContentDataStoreTest {
 
     private static SimpleFeatureType featureType2;
 
-    private static String simpleTypeName1;
+    private static Name simpleTypeName1;
 
-    private static String simpleTypeName2;
+    private static Name simpleTypeName2;
 
     private WFSContentDataStore dataStore;
 
@@ -55,12 +55,12 @@ public class WFSContentDataStoreTest {
 
     @BeforeClass
     public static void oneTimeSetUp() throws Exception {
-        simpleTypeName1 = TYPE1.getPrefix() + "_" + TYPE1.getLocalPart();
-        simpleTypeName2 = TYPE2.getPrefix() + "_" + TYPE2.getLocalPart();
+        simpleTypeName1 = new NameImpl(TYPE1.getNamespaceURI(), TYPE1.getPrefix() + "_" + TYPE1.getLocalPart());
+        simpleTypeName2 = new NameImpl(TYPE2.getNamespaceURI(), TYPE2.getPrefix() + "_" + TYPE2.getLocalPart());
 
-        featureType1 = createType("http://example.com/1", simpleTypeName1,
+        featureType1 = createType("http://example.com/1", "prefix1_points",
                 "name:String,geom:Point:srid=4326");
-        featureType2 = createType("http://example.com/2", "prefix2_roads",
+        featureType2 = createType("http://example.com/2", "prefix2_points",
                 "name:String,geom:Point:srid=3857");
 
     }
@@ -89,8 +89,8 @@ public class WFSContentDataStoreTest {
         List<Name> names = dataStore.createTypeNames();
         assertNotNull(names);
         assertEquals(2, names.size());
-        assertTrue(names.contains(new NameImpl(simpleTypeName1)));
-        assertTrue(names.contains(new NameImpl(simpleTypeName2)));
+        assertTrue(names.contains(simpleTypeName1));
+        assertTrue(names.contains(simpleTypeName2));
     }
 
     @Test
@@ -101,8 +101,8 @@ public class WFSContentDataStoreTest {
         List<Name> names = dataStore.createTypeNames();
         assertNotNull(names);
         assertEquals(2, names.size());
-        assertTrue(names.contains(new NameImpl(nsOverride, simpleTypeName1)));
-        assertTrue(names.contains(new NameImpl(nsOverride, simpleTypeName2)));
+        assertTrue(names.contains(new NameImpl(nsOverride, simpleTypeName1.getLocalPart())));
+        assertTrue(names.contains(new NameImpl(nsOverride, simpleTypeName2.getLocalPart())));
     }
 
     @Test
@@ -110,8 +110,8 @@ public class WFSContentDataStoreTest {
         final String nsOverride = "http://geotools.org";
         dataStore.setNamespaceURI(nsOverride);
 
-        assertEquals(TYPE1, dataStore.getRemoteTypeName(new NameImpl(nsOverride, simpleTypeName1)));
-        assertEquals(TYPE2, dataStore.getRemoteTypeName(new NameImpl(nsOverride, simpleTypeName2)));
+        assertEquals(TYPE1, dataStore.getRemoteTypeName(new NameImpl(nsOverride, simpleTypeName1.getLocalPart())));
+        assertEquals(TYPE2, dataStore.getRemoteTypeName(new NameImpl(nsOverride, simpleTypeName2.getLocalPart())));
         try {
             Name badName = new NameImpl(TYPE1.getNamespaceURI(), TYPE1.getLocalPart() + "2");
             dataStore.getRemoteTypeName(badName);
@@ -151,11 +151,11 @@ public class WFSContentDataStoreTest {
     public void testGetFeatureSource() throws Exception {
         ContentFeatureSource source;
 
-        source = dataStore.getFeatureSource(simpleTypeName1);
+        source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
         assertTrue(source instanceof WFSContentFeatureStore);
 
-        source = dataStore.getFeatureSource(simpleTypeName2);
+        source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName2);
         assertNotNull(source);
         assertTrue(source instanceof WFSContentFeatureSource);
         //assertFalse(source instanceof WFSContentFeatureStore);

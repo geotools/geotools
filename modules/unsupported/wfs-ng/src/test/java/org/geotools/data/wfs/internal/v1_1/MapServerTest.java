@@ -40,6 +40,7 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
+import org.geotools.feature.NameImpl;
 
 public class MapServerTest {
 
@@ -78,7 +79,7 @@ public class MapServerTest {
             }
         });
         
-        SimpleFeatureSource source = wfs.getFeatureSource("ms_GovernmentalUnitCE");
+        SimpleFeatureSource source = wfs.getFeatureSource(new NameImpl("http://mapserver.gis.umn.edu/mapserver", "ms_GovernmentalUnitCE"));
         SimpleFeatureCollection features = source.getFeatures();
         SimpleFeatureIterator reader = features.features();
         SimpleFeature sf = null;        

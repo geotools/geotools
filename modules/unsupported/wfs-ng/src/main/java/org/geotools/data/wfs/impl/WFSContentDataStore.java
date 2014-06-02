@@ -75,7 +75,8 @@ public class WFSContentDataStore extends ContentDataStore {
             if (!XMLConstants.DEFAULT_NS_PREFIX.equals(remoteTypeName.getPrefix())) {
                 localTypeName = remoteTypeName.getPrefix() + "_" + localTypeName;
             }
-            Name typeName = new NameImpl(namespaceURI, localTypeName);
+            Name typeName = new NameImpl(namespaceURI==null? remoteTypeName.getNamespaceURI() : namespaceURI, localTypeName);
+            
             names.add(typeName);
             this.names.put(typeName, remoteTypeName);
         }

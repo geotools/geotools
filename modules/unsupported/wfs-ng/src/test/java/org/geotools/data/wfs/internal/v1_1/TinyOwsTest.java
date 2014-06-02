@@ -28,11 +28,13 @@ import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.ows.ServiceException;
 import org.geotools.test.TestData;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
@@ -41,7 +43,7 @@ import org.xml.sax.SAXException;
 
 public class TinyOwsTest {
 
-    private String typeName = "comuni_comuni11";
+    private Name typeName = new NameImpl("http://www.tinyows.org/", "comuni_comuni11");
         
     private WFSContentDataStore getWFSDataStore(HTTPClient httpClient) throws IOException, ServiceException {
         URL capabilitiesUrl = new URL("http://127.0.0.1:8888/cgi-bin/tinyows?service=WFS&version=1.1.0&REQUEST=GetCapabilities");        
@@ -55,7 +57,7 @@ public class TinyOwsTest {
         WFSContentDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient());       
         String types[] = wfs.getTypeNames();
         assertEquals(1, types.length);
-        assertEquals(typeName, types[0]);
+        assertEquals(typeName.getLocalPart(), types[0]);
     }
     
     AtomicLong reqHandleSeq = new AtomicLong();
@@ -118,7 +120,7 @@ public class TinyOwsTest {
         
         SimpleFeatureSource source = wfs.getFeatureSource(typeName);
         
-        Query query = new Query(typeName, Filter.INCLUDE, 20, Query.ALL_NAMES, "my query");
+        Query query = new Query(typeName.getLocalPart(), Filter.INCLUDE, 20, Query.ALL_NAMES, "my query");
         iterate(source.getFeatures(query), 20, true);        
     }
     
@@ -149,7 +151,7 @@ public class TinyOwsTest {
                 Arrays.asList(Filter.INCLUDE, 
                 ff.greater(ff.property("gid"), ff.literal(0)), 
                 Filter.INCLUDE));
-        Query query = new Query(typeName, and, 20, Query.ALL_NAMES, "my query");
+        Query query = new Query(typeName.getLocalPart(), and, 20, Query.ALL_NAMES, "my query");
         iterate(source.getFeatures(query), 20, false);        
     }
     
@@ -162,7 +164,7 @@ public class TinyOwsTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Set<FeatureId> fids = new HashSet<FeatureId>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
-        Query query = new Query(typeName, ff.id(fids));
+        Query query = new Query(typeName.getLocalPart(), ff.id(fids));
         iterate(source.getFeatures(query), 1, true);
     }    
 
@@ -194,7 +196,7 @@ public class TinyOwsTest {
         
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         PropertyName bboxProperty = ff.property(sf.getDefaultGeometryProperty().getName());
-        Query query = new Query(typeName, ff.bbox(bboxProperty, sf.getBounds()));
+        Query query = new Query(typeName.getLocalPart(), ff.bbox(bboxProperty, sf.getBounds()));
         iterate(source.getFeatures(query), 6, true);        
     }
     
@@ -226,7 +228,7 @@ public class TinyOwsTest {
         
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         PropertyName bboxProperty = ff.property(sf.getDefaultGeometryProperty().getName());
-        Query query = new Query(typeName, ff.and(
+        Query query = new Query(typeName.getLocalPart(), ff.and(
                 ff.id(fids), 
                 ff.bbox(bboxProperty, sf.getBounds())));
         iterate(source.getFeatures(query), 1, false);        
@@ -260,7 +262,7 @@ public class TinyOwsTest {
         
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         PropertyName bboxProperty = ff.property(sf.getDefaultGeometryProperty().getName());
-        Query query = new Query(typeName, ff.and(
+        Query query = new Query(typeName.getLocalPart(), ff.and(
                 ff.bbox(bboxProperty, sf.getBounds()), 
                 ff.id(fids)));
         iterate(source.getFeatures(query), 1, false);        
@@ -298,7 +300,7 @@ public class TinyOwsTest {
         
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         PropertyName bboxProperty = ff.property(sf.getDefaultGeometryProperty().getName());
-        Query query = new Query(typeName, ff.and(
+        Query query = new Query(typeName.getLocalPart(), ff.and(
                 ff.greater(ff.property("cod_reg"), ff.literal(0)), 
                 ff.and(
                         ff.bbox(bboxProperty, sf.getBounds()),
@@ -318,7 +320,7 @@ public class TinyOwsTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Set<FeatureId> fids = new HashSet<FeatureId>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
-        Query query = new Query(typeName, ff.id(fids));
+        Query query = new Query(typeName.getLocalPart(), ff.id(fids));
         SimpleFeatureIterator reader = source.getFeatures(query).features();
         try {
             return reader.next();

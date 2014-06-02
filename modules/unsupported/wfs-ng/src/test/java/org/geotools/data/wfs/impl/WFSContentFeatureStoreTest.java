@@ -22,6 +22,7 @@ import org.geotools.data.wfs.integration.IntegrationTestWFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.junit.After;
@@ -30,6 +31,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
@@ -45,7 +47,7 @@ public class WFSContentFeatureStoreTest {
 
     private static SimpleFeatureType featureType1;
 
-    private static String simpleTypeName1;
+    private static Name simpleTypeName1;
 
     private WFSContentDataStore dataStore;
 
@@ -53,9 +55,9 @@ public class WFSContentFeatureStoreTest {
 
     @BeforeClass
     public static void oneTimeSetUp() throws Exception {
-        simpleTypeName1 = TYPE1.getPrefix() + "_" + TYPE1.getLocalPart();
+        simpleTypeName1 = new NameImpl(TYPE1.getNamespaceURI(), TYPE1.getPrefix() + "_" + TYPE1.getLocalPart());
         
-        featureType1 = createType("http://example.com/1", simpleTypeName1,
+        featureType1 = createType("http://example.com/1", simpleTypeName1.getLocalPart(),
                 "the_geom:Point:srid=4326,NAME:String,THUMBNAIL:String,MAINPAGE:String");
 
     }
@@ -75,7 +77,7 @@ public class WFSContentFeatureStoreTest {
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
         FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
         
-        ContentFeatureSource source = dataStore.getFeatureSource(simpleTypeName1);
+        ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
         assertTrue(source instanceof WFSContentFeatureStore);
 
@@ -97,7 +99,7 @@ public class WFSContentFeatureStoreTest {
         ContentFeatureCollection coll = store.getFeatures();
         assertEquals(4, coll.size());
                
-        coll = store.getFeatures( new Query(simpleTypeName1, filterfac.equals(filterfac.property("NAME"), filterfac.literal("mypoint"))) );
+        coll = store.getFeatures( new Query(simpleTypeName1.getLocalPart(), filterfac.equals(filterfac.property("NAME"), filterfac.literal("mypoint"))) );
         assertEquals(1, coll.size());
         
         SimpleFeature feature = coll.features().next();
@@ -109,7 +111,7 @@ public class WFSContentFeatureStoreTest {
 
         FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
         
-        ContentFeatureSource source = dataStore.getFeatureSource(simpleTypeName1);
+        ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         
         WFSContentFeatureStore store = (WFSContentFeatureStore) source;
         
@@ -120,7 +122,7 @@ public class WFSContentFeatureStoreTest {
         ContentFeatureCollection coll = store.getFeatures();
         assertEquals(2, coll.size());
         
-        coll = store.getFeatures( new Query(simpleTypeName1, filter) );
+        coll = store.getFeatures( new Query(simpleTypeName1.getLocalPart(), filter) );
         assertEquals(0, coll.size());
     }
     
@@ -129,7 +131,7 @@ public class WFSContentFeatureStoreTest {
 
         FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
         
-        ContentFeatureSource source = dataStore.getFeatureSource(simpleTypeName1);
+        ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         
         WFSContentFeatureStore store = (WFSContentFeatureStore) source;
         
@@ -137,7 +139,7 @@ public class WFSContentFeatureStoreTest {
         
         store.modifyFeatures("NAME", "blah", filter);
         
-        ContentFeatureCollection coll = store.getFeatures( new Query(simpleTypeName1, filter) );
+        ContentFeatureCollection coll = store.getFeatures( new Query(simpleTypeName1.getLocalPart(), filter) );
         assertEquals(1, coll.size());
 
         SimpleFeature feature = coll.features().next();
@@ -149,7 +151,7 @@ public class WFSContentFeatureStoreTest {
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
         FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
         
-        ContentFeatureSource source = dataStore.getFeatureSource(simpleTypeName1);
+        ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
         assertTrue(source instanceof WFSContentFeatureStore);
 
@@ -185,7 +187,7 @@ public class WFSContentFeatureStoreTest {
         }
         assertEquals(3, coll.size());
                
-        coll = store.getFeatures( new Query(simpleTypeName1, filterfac.equals(filterfac.property("NAME"), filterfac.literal("mypoint"))) );
+        coll = store.getFeatures( new Query(simpleTypeName1.getLocalPart(), filterfac.equals(filterfac.property("NAME"), filterfac.literal("mypoint"))) );
         it= coll.features();
         while (it.hasNext()) {
             System.err.println(it.next());
@@ -195,10 +197,10 @@ public class WFSContentFeatureStoreTest {
         SimpleFeature feature = coll.features().next();
         assertEquals(feat.getAttributes(), feature.getAttributes());
         
-        coll = store.getFeatures( new Query(simpleTypeName1, filterRemove) );
+        coll = store.getFeatures( new Query(simpleTypeName1.getLocalPart(), filterRemove) );
         assertEquals(0, coll.size());
         
-        coll = store.getFeatures( new Query(simpleTypeName1, filterUpdate) );
+        coll = store.getFeatures( new Query(simpleTypeName1.getLocalPart(), filterUpdate) );
         assertEquals(1, coll.size());
 
         feature = coll.features().next();

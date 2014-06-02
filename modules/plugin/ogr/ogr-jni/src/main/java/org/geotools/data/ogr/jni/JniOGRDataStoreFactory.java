@@ -33,7 +33,6 @@ public class JniOGRDataStoreFactory extends OGRDataStoreFactory {
     		// (under linux with the libname.so[.x.y.z] suffix, not the path to the symlink)
     		final Vector<String>  libs = (Vector<String>) LIBRARIES.get(ClassLoader.getSystemClassLoader());
     		for (String l : libs){
-    			System.out.println(l);
     			if (l.contains(foundLib))
     				return true;
     		}

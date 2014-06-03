@@ -13,13 +13,13 @@
 	xmlns:xlink="http://www.w3.org/1999/xlink">
 	<gml:featureMembers>
 		<sf:roads gml:id="roads.1">
-			<gml:boundedBy>
+			<!-- <gml:boundedBy>
 				<gml:Envelope
 					srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
 					<gml:lowerCorner>598340 4914058</gml:lowerCorner>
 					<gml:upperCorner>598659 4915118</gml:upperCorner>
 				</gml:Envelope>
-			</gml:boundedBy>
+			</gml:boundedBy> -->
 			<sf:the_geom>
 				<gml:MultiLineString
 					srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
@@ -36,5 +36,37 @@
 			<sf:cat>5</sf:cat>
 			<sf:label>unimproved road</sf:label>
 		</sf:roads>
+       <sf:roads gml:id="roads.2">
+            <sf:the_geom>
+              <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#26713">
+                <gml:lineStringMember>
+                  <gml:LineString>
+                    <gml:posList>
+                      598576.84589417 4915259.42699958 598570.11829199 4915276.49062597
+                      598529.91614234 4915308.7347222
+                    </gml:posList>
+                  </gml:LineString>
+                </gml:lineStringMember>
+              </gml:MultiLineString>
+            </sf:the_geom>
+            <sf:cat>5</sf:cat>
+            <sf:label>unimproved road</sf:label>
+         </sf:roads>
+          <sf:roads gml:id="roads.3">
+            <sf:the_geom>
+              <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#26713">
+                <gml:lineStringMember>
+                  <gml:LineString>
+                    <gml:posList>
+                      598576.84589417 4915259.42699958 598570.11829199 4915276.49062597
+                      598529.91614234 4915308.7347222
+                    </gml:posList>
+                  </gml:LineString>
+                </gml:lineStringMember>
+              </gml:MultiLineString>
+            </sf:the_geom>
+            <sf:cat>5</sf:cat>
+            <sf:label>unimproved road</sf:label>
+         </sf:roads>
 	</gml:featureMembers>
 </wfs:FeatureCollection>

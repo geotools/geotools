@@ -171,10 +171,18 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
             resultType = method.getReturnType();
         }
         
+        // metadata
+        Map<String, Object> metadata = null;
+        if (info != null && info.meta() != null && info.meta().length > 0) {
+            String[] meta = info.meta();
+            metadata = new HashMap<String, Object>();
+            fillParameterMetadata(meta, metadata);
+        }
+
         int min = info.primary() ? 0 : 1;
-        Parameter resultParam = new Parameter(info.name(), resultType, new SimpleInternationalString(info.name()),
-                new SimpleInternationalString(info.description()), min > 0, min, 1, null,
-                null);
+        Parameter resultParam = new Parameter(info.name(), resultType,
+                new SimpleInternationalString(info.name()), new SimpleInternationalString(
+                        info.description()), min > 0, min, 1, null, metadata);
         result.put(resultParam.key, resultParam);
     }
 
@@ -295,6 +303,11 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
             }
         }
         
+        // other metadata
+        if (info != null && info.meta() != null && info.meta().length > 0) {
+            String[] meta = info.meta();
+            fillParameterMetadata(meta, metadata);
+        }
         
         
         // finally build the parameter
@@ -306,6 +319,22 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
             return new Parameter("arg" + i, type, new SimpleInternationalString("Argument " + i),
                     new SimpleInternationalString("Input " + type.getName() + " value"), min > 0,
                     min, max, defaultValue, metadata);
+        }
+    }
+
+    private void fillParameterMetadata(String[] metas, Map<String, Object> metadata) {
+        for (String pair : metas) {
+            int idx = pair.indexOf('=');
+            String key, value;
+            if (idx > 0) {
+                key = pair.substring(0, idx);
+                value = pair.substring(idx + 1);
+            } else {
+                key = pair;
+                value = null;
+            }
+
+            metadata.put(key, value);
         }
     }
 

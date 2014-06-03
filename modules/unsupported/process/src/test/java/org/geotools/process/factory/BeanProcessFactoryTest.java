@@ -66,7 +66,7 @@ public class BeanProcessFactoryTest {
                     "bean", 
                     IdentityProcess.class,
                     DefaultsProcess.class,
-                    VectorIdentityRTProcess.class);
+                    VectorIdentityRTProcess.class, MetaProcess.class);
         }
 
     }
@@ -203,6 +203,24 @@ public class BeanProcessFactoryTest {
         //check the null values with a  parameter that does not have that annotation parameter filled
         assertNull(((Parameter)params.get("short")).metadata.get(Parameter.MAX));
         assertNull(((Parameter)params.get("short")).metadata.get(Parameter.MIN));        
+    }
+
+    @Test
+    public void testMetadata() throws Exception {
+        // check input metadata
+        NameImpl name = new NameImpl("bean", "Meta");
+        Map<String, Parameter<?>> params = factory.getParameterInfo(name);
+        assertEquals(2, params.size());
+        Parameter<?> ext = params.get("extension");
+        assertEquals("shp", ext.metadata.get(Parameter.EXT));
+        Parameter<?> pwd = params.get("password");
+        assertEquals("true", pwd.metadata.get(Parameter.IS_PASSWORD));
+
+        // check output metadata
+        Map<String, Parameter<?>> results = factory.getResultInfo(name, null);
+        assertEquals(1, results.size());
+        Parameter<?> result = results.get("value");
+        assertEquals("application/shapefile,application/json", result.metadata.get("mimeTypes"));
     }
 
 

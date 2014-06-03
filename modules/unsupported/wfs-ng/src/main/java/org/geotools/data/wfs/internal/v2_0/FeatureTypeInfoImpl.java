@@ -181,4 +181,15 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
         return new HashSet<String>(ftypeDeclaredFormats);
     }
+
+    @Override
+    public String getAbstract() {
+        StringBuffer sb = new StringBuffer();
+        for (Object a : eType.getAbstract()) {
+            sb.append(a);
+            sb.append(" ");
+        }
+        sb.setLength(sb.length()-1);
+        return sb.toString();
+    }
 }

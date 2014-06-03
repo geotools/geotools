@@ -26,6 +26,7 @@ import java.util.logging.Level;
 
 import javax.xml.XMLConstants;
 
+import net.opengis.ows10.KeywordsType;
 import net.opengis.ows10.WGS84BoundingBoxType;
 import net.opengis.wfs.FeatureTypeType;
 import net.opengis.wfs.OutputFormatListType;
@@ -55,12 +56,15 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
     @Override
     public Set<String> getKeywords() {
         @SuppressWarnings("unchecked")
-        List<String> keywords = eType.getKeywords();
+        List<KeywordsType> keywords = eType.getKeywords();
         Set<String> ret;
         if (keywords == null) {
             ret = Collections.emptySet();
         } else {
-            ret = new HashSet<String>(keywords);
+            ret = new HashSet<String>();
+            for (KeywordsType k : keywords) {
+                ret.addAll(k.getKeyword());
+            }
             ret.remove(null);
         }
         return ret;
@@ -173,6 +177,11 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
         }
 
         return new HashSet<String>(ftypeDeclaredFormats);
+    }
+
+    @Override
+    public String getAbstract() {
+        return eType.getAbstract();
     }
 
 }

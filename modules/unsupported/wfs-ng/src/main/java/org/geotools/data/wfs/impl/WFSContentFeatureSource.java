@@ -17,6 +17,7 @@
 package org.geotools.data.wfs.impl;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
@@ -29,6 +30,7 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
+import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.Transaction.State;
 import org.geotools.data.store.ContentEntry;
@@ -418,6 +420,16 @@ class WFSContentFeatureSource extends ContentFeatureSource {
         }
 
         return queryType;
+    }
+    
+    @Override
+    public ResourceInfo getInfo() {
+        try {
+            return client.getInfo(getRemoteTypeName());
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Unexpected error getting ResourceInfo: ", e);
+            return super.getInfo();
+        }
     }
 
 }

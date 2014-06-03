@@ -18,6 +18,7 @@ package org.geotools.data.wfs.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,6 +29,7 @@ import javax.xml.namespace.QName;
 
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.SimpleHttpClient;
+import org.geotools.data.wfs.impl.WFSServiceInfo;
 import org.geotools.data.wfs.impl.WFSTestData;
 import org.geotools.data.wfs.internal.v1_x.CubeWerxStrategy;
 import org.geotools.data.wfs.internal.v1_x.IonicStrategy;
@@ -153,7 +155,25 @@ public class WFSClientTest {
         testGetRemoteTypeNames("MapServer_5.6.5/1.1.0/GetCapabilities.xml", 2);
         testGetRemoteTypeNames("CubeWerx_nsdi/1.1.0/GetCapabilities.xml", 14);
     }
-
+      
+    @Test
+    public void testGetInfo() throws Exception {
+        WFSClient client = newClient("GeoServer_1.7.x/1.1.0/GetCapabilities.xml");
+        WFSServiceInfo info = client.getInfo();
+        assertEquals("My GeoServer WFS", info.getTitle());
+        assertEquals("1.1.0", info.getVersion());
+        assertEquals(3, info.getKeywords().size());
+        assertTrue(info.getKeywords().contains("GEOSERVER"));
+        assertTrue(info.getKeywords().contains("WFS"));
+        assertTrue(info.getKeywords().contains("WMS"));
+        assertEquals("http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd", info.getSchema().toString());
+        assertEquals("http://localhost:8080/geoserver/wfs?", info.getSource().toString());
+        assertEquals("\n\t\t\tThis is a description of your Web Feature Server." +
+                "\n\n\t\t\tThe GeoServer is a full transactional Web Feature Server, you may wish to limit GeoServer to a Basic service" +
+        	"\n\t\t\tlevel to prevent modificaiton of your geographic data." +
+                "\n\t\t", info.getDescription());
+    }
+    
     private void testGetRemoteTypeNames(String capabilitiesLocation, int typeCount)
             throws Exception {
 

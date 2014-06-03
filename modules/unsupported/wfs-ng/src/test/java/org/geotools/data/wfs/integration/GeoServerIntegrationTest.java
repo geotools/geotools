@@ -75,6 +75,21 @@ public class GeoServerIntegrationTest extends AbstractDataStoreTest {
     protected String getRiverTypeName() {
         return "topp_states";
     }
+
+    @Test
+    public void testInfo() throws IOException {
+        SimpleFeatureStore store1 = (SimpleFeatureStore) data.getFeatureSource(getRoadTypeName());
+        
+        ResourceInfo info = store1.getInfo();
+       
+        assertEquals("roads", info.getName());
+        assertEquals("Generated from sfRoads", info.getDescription());
+        assertTrue(info.getKeywords().contains("sfRoads roads"));
+        assertEquals("roads_Type", info.getTitle());
+        assertEquals("http://www.openplans.org/spearfish", info.getSchema().toString());
+        assertEquals(589275.24, info.getBounds().getMinX(),0.01);
+        assertEquals("EPSG:NAD27 / UTM zone 13N", info.getCRS().getName().toString());
+    }
     
     @Override
     @Ignore

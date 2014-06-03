@@ -31,5 +31,11 @@ public interface FeatureTypeInfo extends ResourceInfo{
     List<String> getOtherSRS();
 
     Set<String> getOutputFormats();
+    
+    String getAbstract();
+    
+    Set<String> getKeywords();
+    
+    String getTitle();
 
 }

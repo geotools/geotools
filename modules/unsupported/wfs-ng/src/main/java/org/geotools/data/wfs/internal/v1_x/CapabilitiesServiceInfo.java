@@ -25,6 +25,7 @@ import java.util.Set;
 
 import javax.swing.Icon;
 
+import net.opengis.ows10.KeywordsType;
 import net.opengis.ows10.OnlineResourceType;
 import net.opengis.ows10.ServiceIdentificationType;
 import net.opengis.ows10.ServiceProviderType;
@@ -83,9 +84,11 @@ public final class CapabilitiesServiceInfo implements WFSServiceInfo {
         ServiceIdentificationType serviceIdentification = capabilities.getServiceIdentification();
         if (serviceIdentification != null) {
             @SuppressWarnings("unchecked")
-            List<String> keywords = serviceIdentification.getKeywords();
+            List<KeywordsType> keywords = serviceIdentification.getKeywords();
             if (keywords != null) {
-                kws.addAll(keywords);
+                for (KeywordsType k : keywords) {
+                    kws.addAll(k.getKeyword());
+                }
                 kws.remove(null);
             }
         }

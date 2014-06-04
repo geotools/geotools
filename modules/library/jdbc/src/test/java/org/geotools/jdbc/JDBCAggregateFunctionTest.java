@@ -29,6 +29,8 @@ import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.SortByImpl;
+import org.geotools.filter.SortOrder;
 import org.geotools.util.Converters;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -36,6 +38,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
 
 /**
  * 
@@ -291,6 +294,50 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
         assertFalse(visited);
         Set result = v.getResult().toSet();
         assertEquals(2, result.size());
+    }
+    
+    public void testUniqueWithLimitOnVisitor() throws Exception {
+        
+        if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
+            return;
+        }
+        
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property( aname("stringProperty") );
+        
+        UniqueVisitor v = new MyUniqueVisitor(p);
+        v.setPreserveOrder(true);
+        v.setStartIndex(0);
+        v.setMaxFeatures(2);
+        Query q = new Query( tname("ft1"));
+        q.setSortBy(new SortBy[] { new SortByImpl(p, SortOrder.ASCENDING)});
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        assertFalse(visited);
+        Set result = v.getResult().toSet();
+        assertEquals(2, result.size());
+        assertEquals("one", result.iterator().next());
+    }
+    
+    public void testUniqueWithLimitOffsetOnVisitor() throws Exception {
+        
+        if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
+            return;
+        }
+        
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property( aname("stringProperty") );
+        
+        UniqueVisitor v = new MyUniqueVisitor(p);
+        v.setPreserveOrder(true);
+        v.setStartIndex(1);
+        v.setMaxFeatures(2);
+        Query q = new Query( tname("ft1"));
+        q.setSortBy(new SortBy[] { new SortByImpl(p, SortOrder.ASCENDING)});
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        assertFalse(visited);
+        Set result = v.getResult().toSet();
+        assertEquals(2, result.size());
+        assertEquals("two", result.iterator().next());
     }
     
     class MyNearestVisitor extends NearestVisitor {

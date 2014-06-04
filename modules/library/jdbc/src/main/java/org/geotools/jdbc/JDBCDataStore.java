@@ -3310,6 +3310,9 @@ public final class JDBCDataStore extends ContentDataStore
         // finally encode limit/offset, if necessary
         applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
 
+        // add search hints if the dialect supports them
+        applySearchHints(featureType, query, sql);
+
         LOGGER.fine( sql.toString() );
         PreparedStatement ps = cx.prepareStatement(sql.toString(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         ps.setFetchSize(fetchSize);
@@ -3469,6 +3472,9 @@ public final class JDBCDataStore extends ContentDataStore
             dialect.encodeTableAlias("GT2_BOUNDS_", sql);
         }
 
+        // add search hints if the dialect supports them
+        applySearchHints(featureType, query, sql);
+
         return sql.toString();
     }
     
@@ -3525,6 +3531,8 @@ public final class JDBCDataStore extends ContentDataStore
             dialect.encodeTableAlias("GT2_BOUNDS_", sql);
         }
         
+        // add search hints if the dialect supports them
+        applySearchHints(featureType, query, sql);
 
         LOGGER.fine( sql.toString() );
         PreparedStatement ps = cx.prepareStatement(sql.toString());
@@ -3668,6 +3676,9 @@ public final class JDBCDataStore extends ContentDataStore
             sql.append(") gt_limited_");
         }
         
+        // add search hints if the dialect supports them
+        applySearchHints(featureType, query, sql);
+
         return toSQL;
     }
 

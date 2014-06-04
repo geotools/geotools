@@ -20,9 +20,12 @@ import java.io.IOException;
 
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Contains;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -118,4 +121,23 @@ public class SQLServerTableHintsTest extends SQLServerSpatialFiltersTest {
         assertTrue(sql.toString().contains("WITH(NOLOCK)"));
     }
 
+    public void testEnvelopeBboxFilter() throws Exception {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        // should match only "r2"
+        BBOX bbox = ff.bbox(aname("geom"), 2, 3, 4, 5, "EPSG:4326");
+        ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("road")).getBounds(
+                new Query(null, bbox));
+        assertEquals(3, bounds.getMinX(), 1e-3d);
+        assertEquals(3, bounds.getMaxX(), 1e-3d);
+        assertEquals(0, bounds.getMinY(), 1e-3d);
+        assertEquals(4, bounds.getMaxY(), 1e-3d);
+    }
+
+    public void testCountBboxFilter() throws Exception {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        // should match only "r2"
+        BBOX bbox = ff.bbox(aname("geom"), 2, 3, 4, 5, "EPSG:4326");
+        int count = dataStore.getFeatureSource(tname("road")).getCount(new Query(null, bbox));
+        assertEquals(1, count);
+    }
 }

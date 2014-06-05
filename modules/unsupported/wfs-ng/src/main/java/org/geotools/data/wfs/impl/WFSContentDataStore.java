@@ -42,6 +42,8 @@ public class WFSContentDataStore extends ContentDataStore {
 
     private static final String STORED_QUERY_LOCALNAME_PREFIX = "StoredQuery_";
 
+    public static final String STORED_QUERY_CONFIGURATION_HINT = "WFS_NG_STORED_QUERY_CONFIGURATION";
+
     private final WFSClient client;
 
     private final Map<Name, QName> names;
@@ -96,17 +98,16 @@ public class WFSContentDataStore extends ContentDataStore {
         }
 
         if (client.supportsStoredQueries()) {
-            ListStoredQueriesResponseType list = getStoredQueryList();
+            ListStoredQueriesResponseType list = getStoredQueryListResponse();
             for (StoredQueryListItemType query : list.getStoredQuery()) {
 
-                String localTypeName = query.getId();
+                Name storedQueryTypeName = createStoredQueryName(query);
 
-                // No plan on what to do if there are multiple
+                // No multi-return type mode support
                 QName remoteTypeName = query.getReturnFeatureType().get(0);
 
-                Name typeName = new NameImpl(namespaceURI, STORED_QUERY_LOCALNAME_PREFIX + localTypeName);
-                names.add(typeName);
-                this.names.put(typeName, remoteTypeName);
+                names.add(storedQueryTypeName);
+                this.names.put(storedQueryTypeName, remoteTypeName);
             }
         }
 
@@ -125,7 +126,7 @@ public class WFSContentDataStore extends ContentDataStore {
 
         final QName remoteTypeName = getRemoteTypeName(entry.getName());
 
-        if (!entry.getName().getLocalPart().startsWith(STORED_QUERY_LOCALNAME_PREFIX)) {
+        if (!isStoredQuery(entry.getName())) {
             source = new WFSContentFeatureSource(entry, client);
 
             // TODO: revisit. Transactions disabled by now until resolving the strategy to use as much
@@ -135,13 +136,32 @@ public class WFSContentDataStore extends ContentDataStore {
             // }
 
         } else {
-            String storedQueryId = entry.getName().getLocalPart().substring(STORED_QUERY_LOCALNAME_PREFIX.length());
+            String storedQueryId = getStoredQueryId(entry.getName());
             StoredQueryDescriptionType desc = getStoredQueryDescriptionType(storedQueryId);
 
             source = new WFSStoredQueryContentFeatureSource(entry, client, desc);
         }
 
         return source;
+    }
+
+    public Name createStoredQueryName(StoredQueryListItemType query)
+    {
+        return createStoredQueryName(query.getId());
+    }
+
+    public Name createStoredQueryName(String localTypeName)
+    {
+        Name storedQueryTypeName = new NameImpl(getNamespaceURI(), STORED_QUERY_LOCALNAME_PREFIX + localTypeName);
+        return storedQueryTypeName;
+    }
+
+    public static boolean isStoredQuery(Name name) {
+        return name.getLocalPart().startsWith(STORED_QUERY_LOCALNAME_PREFIX);
+    }
+
+    public static String getStoredQueryId(Name name) {
+        return name.getLocalPart().substring(STORED_QUERY_LOCALNAME_PREFIX.length());
     }
 
     public QName getRemoteTypeName(Name localTypeName) throws IOException {
@@ -155,7 +175,7 @@ public class WFSContentDataStore extends ContentDataStore {
         return qName;
     }
 
-    private ListStoredQueriesResponseType getStoredQueryList() throws IOException {
+    public ListStoredQueriesResponseType getStoredQueryListResponse() throws IOException {
 
         synchronized(this) {
 
@@ -170,6 +190,10 @@ public class WFSContentDataStore extends ContentDataStore {
         }
 
         return remoteStoredQueries;
+    }
+
+    public boolean supportsStoredQueries() {
+        return client.supportsStoredQueries();
     }
 
     public FeatureType getRemoteFeatureType(final QName remoteTypeName) throws IOException {
@@ -197,7 +221,7 @@ public class WFSContentDataStore extends ContentDataStore {
     }
 
     // Here for possible future use
-    private StoredQueryDescriptionType getStoredQueryDescriptionType(String storedQueryId) throws IOException {
+    public StoredQueryDescriptionType getStoredQueryDescriptionType(String storedQueryId) throws IOException {
 
         StoredQueryDescriptionType desc = null;
 

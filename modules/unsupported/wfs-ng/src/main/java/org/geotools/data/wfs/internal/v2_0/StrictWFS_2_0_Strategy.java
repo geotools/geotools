@@ -62,6 +62,7 @@ import net.opengis.wfs20.WFSCapabilitiesType;
 import net.opengis.wfs20.Wfs20Factory;
 
 import org.eclipse.emf.ecore.EObject;
+import org.geotools.data.wfs.impl.WFSContentDataStore;
 import org.geotools.data.wfs.impl.WFSServiceInfo;
 import org.geotools.data.wfs.internal.AbstractWFSStrategy;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
@@ -110,7 +111,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     private final Map<QName, FeatureTypeType> typeInfos;
 
-    static final ConfigurationMetadataKey CONFIG_KEY = ConfigurationMetadataKey.get("WFS_NG_STORED_QUERY_CONFIGURATION");
+    private static final ConfigurationMetadataKey CONFIG_KEY = ConfigurationMetadataKey.get(WFSContentDataStore.STORED_QUERY_CONFIGURATION_HINT);
 
     public StrictWFS_2_0_Strategy() {
         super();

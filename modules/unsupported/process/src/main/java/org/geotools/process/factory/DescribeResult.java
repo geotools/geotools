@@ -1,4 +1,4 @@
- /*
+/*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
@@ -21,17 +21,52 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.opengis.parameter.Parameter;
+
 /**
  * DescribeProcess information for publication by DEMProcessFactory.
  * <p>
  * Annotation is used to mark a method for publication via DEMProcessFactory
+ * 
  * @author Jody
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface DescribeResult {
+    /**
+     * The name of the result, defaults to "result"
+     * 
+     * @return
+     */
     String name() default "result";
+
+    /**
+     * The type of the result, needed only when there are multiple ones (since it cannot be desumed
+     * from the process Map return type
+     * 
+     * @return
+     */
     Class<?> type() default Object.class;
+
+    /**
+     * The result description
+     * 
+     * @return
+     */
     String description() default "[undescribed]";
+
+    /**
+     * If true, this is the primary result of the process
+     * 
+     * @return
+     */
     boolean primary() default false;
+
+    /**
+     * Extra metadata values for this parameter which will be added into the {@link Parameter}
+     * metadata map. Each string should be in the key=value form, if not, the string will be taken
+     * as the key and the value will be null.
+     */
+    String[] meta() default {};
+
 }

@@ -386,6 +386,31 @@ public interface DataAccessFactory extends Factory {
         }
         
         /**
+         * Supports all Parameter values.
+         *
+         * @param key machine readable key for use in a java.util.Map
+         * @param type Java class for the expected value
+         * @param title Human readable title used for use in a user interface
+         * @param description Human readable description
+         * @param required true if the value is required
+         * @param min Minimum value; or -1 if not needed
+         * @param max Maximum value; or -1 for unbound
+         * @param sample Sample value; may be used as a default in a user interface
+         * @param metadata Hints to the user interface (read the javadocs for each metadata key)
+         */
+        public Param(String key,
+                     Class<?> type,
+                     InternationalString title,
+                     InternationalString description,
+                     boolean required,
+                     int min,
+                     int max,
+                     Object sample,
+                     Map<String, ?> metadata) {
+            super(key, type, title, description, required, min, max, sample, metadata);
+        }
+        
+        /**
          * Lookup Param in a user supplied map.
          *
          * <p>

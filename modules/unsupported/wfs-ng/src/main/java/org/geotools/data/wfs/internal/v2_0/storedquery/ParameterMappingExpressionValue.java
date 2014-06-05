@@ -23,20 +23,18 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.expression.Expression;
 
-public class ParameterMappingExpressionValue implements ParameterMapping, Serializable {
-    private String parameterName;
+public class ParameterMappingExpressionValue extends ParameterMapping implements Serializable {
     private String expressionLanguage;
     private String expression;
 
     private transient Expression cqlExpression;
 
-    public void setParameterName(String parameterName) {
-        this.parameterName = parameterName;
+    public ParameterMappingExpressionValue() {
     }
 
-    @Override
-    public String getParameterName() {
-        return parameterName;
+    public ParameterMappingExpressionValue(String language, String expression) {
+        setExpressionLanguage(language);
+        setExpression(expression);
     }
 
     public void setExpressionLanguage(String expressionLanguage) {

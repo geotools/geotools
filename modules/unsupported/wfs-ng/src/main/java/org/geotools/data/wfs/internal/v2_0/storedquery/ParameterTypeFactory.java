@@ -86,20 +86,19 @@ public class ParameterTypeFactory
 
             ParameterMapping mapping = getStoredQueryParameterMapping(parameter.getName());
 
-            // Primarily use the one provided by the user
-            if (value == null && viewParams != null) {
-                value = viewParams.get(parameter.getName());
-            }
+            // If mapping is forced, use that value over what the user provides
+            if (mapping != null && mapping.isForcible()) {
+                value = evaluateMapping(mappingContext, mapping);
 
-            // If no value given by the user, execute mapping
-            if (value == null && mapping != null) { 
-                if (mapping instanceof ParameterMappingDefaultValue) {
-                    value = ((ParameterMappingDefaultValue)mapping).getDefaultValue();
-                } else if (mapping instanceof ParameterMappingExpressionValue) {
-                    value = ((ParameterMappingExpressionValue)mapping).evaluate(mappingContext);
-                } else {
-                    throw new IllegalArgumentException("Unknown StoredQueryParameterMapping: "
-                            + mapping.getClass());
+            } else {
+                // Use the one provided by the user
+                if (viewParams != null) {
+                    value = viewParams.get(parameter.getName());
+                }
+
+                // If no value given by the user, execute mapping
+                if (value == null && mapping != null) {
+                    value = evaluateMapping(mappingContext, mapping);
                 }
             }
 
@@ -113,5 +112,22 @@ public class ParameterTypeFactory
         }
 
         return ret;
+    }
+
+
+    protected String evaluateMapping(ParameterMappingContext mappingContext, ParameterMapping mapping) {
+        String value;
+
+        if (mapping instanceof ParameterMappingDefaultValue) {
+            value = ((ParameterMappingDefaultValue)mapping).getDefaultValue();
+        } else if (mapping instanceof ParameterMappingExpressionValue) {
+            value = ((ParameterMappingExpressionValue)mapping).evaluate(mappingContext);
+        } else if (mapping instanceof ParameterMappingBlockValue) {
+            value = null;
+        } else {
+            throw new IllegalArgumentException("Unknown StoredQueryParameterMapping: "
+                    + mapping.getClass());
+        }
+        return value;
     }
 }

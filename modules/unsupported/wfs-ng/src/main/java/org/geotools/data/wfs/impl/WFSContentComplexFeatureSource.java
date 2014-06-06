@@ -18,13 +18,10 @@ package org.geotools.data.wfs.impl;
 
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -38,7 +35,6 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.store.WFSContentComplexFeatureCollection;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.WFSClient;
-import org.geotools.data.wfs.internal.parsers.XmlComplexFeatureParser;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
@@ -66,8 +62,6 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
      * The data access object.
      */
     private WFSContentDataAccess dataAccess;
-
-    private int count = -1;
 
     /**
      * Initialises a new instance of the class WFSContentComplexFeatureSource.
@@ -127,18 +121,8 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
         }
 
         request.setSrsName(srsName);
-        InputStream stream = request.getFinalURL().openStream();
-        XmlComplexFeatureParser parser = new XmlComplexFeatureParser(stream, schema, name);
-        count = parser.getNumberOfFeatures();
-
-        Queue<Feature> features = new LinkedList<Feature>();
-		
-        Feature feature;
-        while ((feature = parser.parse()) != null) {
-            features.add(feature);
-        }
-
-        return new WFSContentComplexFeatureCollection(features);
+        
+        return new WFSContentComplexFeatureCollection(request, schema, name);
     }
 
     @Override
@@ -242,7 +226,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
 
     @Override
     public int getCount(Query query) throws IOException {
-        return count;
+        return getFeatures(query).size();
     }
 
     @Override

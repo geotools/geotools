@@ -39,6 +39,7 @@ import org.geotools.gml3.GML;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -77,6 +78,27 @@ public class XmlComplexFeatureParser extends
 	 */
 	private Map<String, ArrayList<Attribute>> placeholderComplexAttributes = new HashMap<String, ArrayList<Attribute>>();
 
+    private Filter filter;
+    
+    /**
+     * Initialises a new instance of the XmlComplexFeature class.
+     * 
+     * @param getFeatureResponseStream
+     *            the input stream of the WFS response.
+     * @param targetType
+     *            The feature type of the WFS response.
+     * @param featureDescriptorName
+     *            The name of the feature descriptor.
+     * @throws IOException
+     */
+    public XmlComplexFeatureParser(InputStream getFeatureResponseStream,
+                    FeatureType targetType, QName featureDescriptorName)
+                    throws IOException {
+            super(getFeatureResponseStream, targetType, featureDescriptorName);
+            this.featureBuilder = new ComplexFeatureBuilder(this.targetType);
+    }
+    
+
 	/**
 	 * Initialises a new instance of the XmlComplexFeature class.
 	 * 
@@ -86,13 +108,16 @@ public class XmlComplexFeatureParser extends
 	 *            The feature type of the WFS response.
 	 * @param featureDescriptorName
 	 *            The name of the feature descriptor.
+	 * @param filter
+	 *            Filter to apply to the features.
 	 * @throws IOException
 	 */
 	public XmlComplexFeatureParser(InputStream getFeatureResponseStream,
-			FeatureType targetType, QName featureDescriptorName)
+			FeatureType targetType, QName featureDescriptorName, Filter filter)
 			throws IOException {
 		super(getFeatureResponseStream, targetType, featureDescriptorName);
 		this.featureBuilder = new ComplexFeatureBuilder(this.targetType);
+		this.filter = filter;
 	}
 
 	/**
@@ -122,7 +147,11 @@ public class XmlComplexFeatureParser extends
 			throw new DataSourceException(e);
 		}
 
-		return featureBuilder.buildFeature(fid);
+		Feature feature = featureBuilder.buildFeature(fid);
+		if (filter == null || filter.evaluate(feature)) {
+		    return feature;
+		}
+		return null;
 	}
 
 	/**

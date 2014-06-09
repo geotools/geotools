@@ -51,7 +51,6 @@ public class GetFeatureRequest extends WFSRequest {
     GetFeatureRequest(WFSConfig config, WFSStrategy strategy) {
         super(GET_FEATURE, config, strategy);
         resultType = ResultType.RESULTS;
-        this.setMaxFeatures(config.getMaxFeatures());
     }
 
     //

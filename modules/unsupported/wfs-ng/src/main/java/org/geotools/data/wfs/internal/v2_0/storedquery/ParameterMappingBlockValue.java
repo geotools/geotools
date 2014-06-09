@@ -19,7 +19,25 @@ package org.geotools.data.wfs.internal.v2_0.storedquery;
 
 import java.io.Serializable;
 
-public class ParameterMappingBlockValue extends ParameterMapping implements Serializable {
+public class ParameterMappingBlockValue implements ParameterMapping, Serializable {
+    private String parameterName;
+
+    public ParameterMappingBlockValue(String name) {
+        setParameterName(name);
+    }
+
+    public ParameterMappingBlockValue() {
+    }
+
+    public void setParameterName(String parameterName) {
+        this.parameterName = parameterName;
+    }
+
+    @Override
+    public String getParameterName() {
+        return parameterName;
+    }
+
     @Override
     public boolean isForcible() {
         return true;

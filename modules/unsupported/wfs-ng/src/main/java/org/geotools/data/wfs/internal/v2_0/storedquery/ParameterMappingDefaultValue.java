@@ -19,15 +19,36 @@ package org.geotools.data.wfs.internal.v2_0.storedquery;
 
 import java.io.Serializable;
 
-public class ParameterMappingDefaultValue extends ParameterMapping implements Serializable {
+public class ParameterMappingDefaultValue implements ParameterMapping, Serializable {
     private String defaultValue;
+    private String parameterName;
+    private boolean forcible;
+
+    public ParameterMappingDefaultValue(String name, boolean forcible, String defaultValue) {
+        setParameterName(name);
+        setForcible(forcible);
+        setDefaultValue(defaultValue);
+    }
 
     public ParameterMappingDefaultValue() {
     }
 
-    public ParameterMappingDefaultValue(boolean forcible, String defaultValue) {
-        setForcible(forcible);
-        setDefaultValue(defaultValue);
+    public void setForcible(boolean forcible) {
+        this.forcible = forcible;
+    }
+
+    @Override
+    public boolean isForcible() {
+        return forcible;
+    }
+
+    public void setParameterName(String parameterName) {
+        this.parameterName = parameterName;
+    }
+
+    @Override
+    public String getParameterName() {
+        return parameterName;
     }
 
     public void setDefaultValue(String defaultValue) {

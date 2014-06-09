@@ -21,6 +21,11 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * Interface to return appropriate feature parser.
+ * 
+ * @author Adam Brown (Curtin University of Technology)
+ */
 public interface GetParser<F extends Feature> {
     /**
      * Returns the number of features if advertised by the server and the parser was able to get that information for example from the

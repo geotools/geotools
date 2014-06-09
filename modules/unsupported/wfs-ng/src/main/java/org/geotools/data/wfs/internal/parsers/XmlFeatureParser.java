@@ -55,7 +55,10 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-
+/**
+ * Abstract form of XmlFeatureParser. Mostly taken out from @{@link XmlSimpleFeatureParser}.
+ * @author Adam Brown (Curtin University of Technology)
+ */
 public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature>
 		implements GetParser<F> {
 

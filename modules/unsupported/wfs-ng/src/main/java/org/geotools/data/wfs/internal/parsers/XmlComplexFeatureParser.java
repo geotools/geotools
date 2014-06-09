@@ -56,7 +56,7 @@ import org.xmlpull.v1.XmlPullParserException;
 /**
  * Parses complex features from a WFS response input stream.
  * 
- * @author bro879
+ * @author Adam Brown (Curtin University of Technology)
  */
 public class XmlComplexFeatureParser extends
 		XmlFeatureParser<FeatureType, Feature> {

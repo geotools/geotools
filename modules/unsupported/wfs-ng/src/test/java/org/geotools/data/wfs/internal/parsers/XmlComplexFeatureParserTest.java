@@ -30,6 +30,11 @@ import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 
+/**
+ * Tests @{@link XmlComplexFeatureParser}. 
+ * @author Adam Brown (Curtin University of Technology)
+ *
+ */
 public class XmlComplexFeatureParserTest {
 	/**
 	 * This method gets a file input stream for the file name specified. It

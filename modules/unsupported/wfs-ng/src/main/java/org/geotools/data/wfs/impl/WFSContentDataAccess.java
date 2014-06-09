@@ -46,7 +46,7 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
 /**
- * @author bro879
+ * @author Adam Brown (Curtin University of Technology)
  * Inspired by code from WFSContentDataStore & ContentDataStore.
  */
 public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {

@@ -47,7 +47,7 @@ import org.opengis.feature.type.FeatureType;
  * candidate for DataAccessFinder by virtue of the fact that its name is present in the file gt-wfs-ng > src/main/resources > META-INF > services
  * > org.geotools.data.DataAccessFactory.
  * 
- * @author bro879
+ * @author Adam Brown (Curtin University of Technology)
  *
  */
 public class WFSDataAccessFactory extends AbstractDataAccessFactory {

@@ -35,7 +35,7 @@ import org.opengis.parameter.ParameterValue;
  * As there was nothing in the implementation that was Store-specific (i.e. a restriction on simple types)
  * this was raised to allow the factory to be used for complex features.
  * 
- * @author bro879
+ * @author Adam Brown (Curtin University of Technology)
  *
  */
 public abstract class AbstractDataAccessFactory implements DataAccessFactory {

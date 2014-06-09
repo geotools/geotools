@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -95,7 +95,7 @@ public class OWSConfiguration extends Configuration {
         container.registerComponentInstance(OWS.AcceptVersionsType, 
                 new ComplexEMFBinding(Ows10Factory.eINSTANCE, OWS.AcceptVersionsType));
         container.registerComponentImplementation(OWS.AddressType, AddressTypeBinding.class);
-        container.registerComponentImplementation(OWS.WGS84BoundingBoxType, WGS84BoundingBoxTypeBinding.class);
+        container.registerComponentInstance(OWS.WGS84BoundingBoxType, new WGS84BoundingBoxTypeBinding(Ows10Factory.eINSTANCE, OWS.WGS84BoundingBoxType));
         container.registerComponentInstance(OWS.BoundingBoxType, new BoundingBoxTypeBinding(Ows10Factory.eINSTANCE, OWS.BoundingBoxType));
         container.registerComponentImplementation(OWS.CapabilitiesBaseType,
             CapabilitiesBaseTypeBinding.class);

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -676,6 +676,7 @@ public class Hints extends RenderingHints {
      */
     public static final ClassKey VIRTUAL_TABLE_PARAMETERS = new ClassKey(
             "java.util.Map");
+
 
     ////////////////////////////////////////////////////////////////////////
     ////////                                                        ////////
@@ -1860,5 +1861,60 @@ public class Hints extends RenderingHints {
         public boolean isCompatibleValue(final Object value) {
             return (value instanceof DataSource) || (value instanceof String) || (value instanceof Name);
         }
+    }
+    
+    /**
+     * Keys for extra configuration options that are passed from the overhead application
+     * into queries. In GeoServer, this is used to pass configuration metadata in the
+     * FeatureTypeInfo into queries.
+     *  
+     *  @since 2.6
+     *  @source $URL$
+     *  @version $Id$
+     *  @author Sampo Savolainen
+     */
+    public static final class ConfigurationMetadataKey extends Key {
+    	private static Map<String, ConfigurationMetadataKey> map = 
+    			new HashMap<String, Hints.ConfigurationMetadataKey>();
+    	
+    	/**
+    	 * The constructor is private to avoid multiple instances sharing the
+    	 * same key.
+    	 * 
+    	 * @param key
+    	 */
+    	private ConfigurationMetadataKey(String key) {
+    		super(key);
+    	}
+    	
+    	/**
+    	 * Creates a singleton instance per key
+    	 * 
+    	 * @param key String key which identifies the metadata in question.
+    	 * @return Key object for the requested key
+    	 */
+    	public static ConfigurationMetadataKey get(String key) {
+    		ConfigurationMetadataKey ret = map.get(key);
+    		if (ret == null) {
+    			synchronized(ConfigurationMetadataKey.class) {
+    				ret = map.get(key);
+    				if (ret == null) {
+    					ret = new ConfigurationMetadataKey(key);
+    					map.put(key, ret);
+    				}
+    			}
+    		}
+    		
+    		return ret;
+    	}
+    	
+    	/**
+    	 * Configuration metadata can be of any class, but it should be non-null. 
+    	 */
+    	@Override
+    	public boolean isCompatibleValue(Object value) {
+    		return value != null;
+    	}
+    	
     }
 }

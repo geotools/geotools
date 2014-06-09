@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -58,13 +58,9 @@ public abstract class WFSStrategy extends Specification {
 
     public WFSStrategy() {
         requestHandleSequences = new HashMap<WFSOperationType, AtomicLong>();
-        requestHandleSequences.put(WFSOperationType.GET_CAPABILITIES, new AtomicLong());
-        requestHandleSequences.put(WFSOperationType.DESCRIBE_FEATURETYPE, new AtomicLong());
-        requestHandleSequences.put(WFSOperationType.GET_FEATURE, new AtomicLong());
-        requestHandleSequences.put(WFSOperationType.GET_FEATURE_WITH_LOCK, new AtomicLong());
-        requestHandleSequences.put(WFSOperationType.GET_GML_OBJECT, new AtomicLong());
-        requestHandleSequences.put(WFSOperationType.LOCK_FEATURE, new AtomicLong());
-        requestHandleSequences.put(WFSOperationType.TRANSACTION, new AtomicLong());
+        for (WFSOperationType operationType : WFSOperationType.values()) {
+        	requestHandleSequences.put(operationType, new AtomicLong());
+        }
     }
 
     public abstract void setCapabilities(WFSGetCapabilities capabilities);

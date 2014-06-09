@@ -54,7 +54,7 @@ public class ParameterTypeFactory
     public ParameterMapping getStoredQueryParameterMapping(String parameterName) {
         ParameterMapping ret = null;
 
-        if (this.config == null) {
+        if (this.config == null || this.config.getStoredQueryParameterMappings() == null) {
             return ret;
         }
 

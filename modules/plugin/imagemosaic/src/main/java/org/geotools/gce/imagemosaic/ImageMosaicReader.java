@@ -188,7 +188,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 	    FILE {
             @Override
             public void harvest(String defaultCoverage, Object source, Hints hints, final List<HarvestedSource> result, ImageMosaicReader reader) {
-                File file = (File)source;
+                File file;
+                if (source instanceof Collection<?>) {
+                    file = (File) ((Collection<?>) source).iterator().next();
+                } else {
+                    file = (File) source;
+                }
                 // Directory associated to the input File
                 File directory = file.getParentFile();
                 // File Filter associated to the input File
@@ -200,7 +205,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         }, DIRECTORY {
             @Override
             public void harvest(String defaultCoverage, Object source, Hints hints, final List<HarvestedSource> result, ImageMosaicReader reader) {
-                File directory = (File)source;
+                File directory;
+                if (source instanceof Collection<?>) {
+                    directory = (File) ((Collection<?>) source).iterator().next();
+                } else {
+                    directory = (File) source;
+                }
                 // Harvesting directory
                 harvestCalculation(defaultCoverage, result, reader, directory, null);
                 
@@ -217,7 +227,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
                 configuration.setParameter(Prop.ABSOLUTE_PATH, Boolean.toString(true));
                 
-                // Setting of the HARVEST_DIRECTORY property for passing the checks even if it si not used
+                // Setting of the HARVEST_DIRECTORY property for passing the checks even if it is not used
                 // Selection of the first file
                 Iterator<File> it = files.iterator();
                 String indexingPath = it.next().getAbsolutePath();
@@ -283,41 +293,45 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 	     * @param source
 	     * @return
 	     */
-	    public static HarvestedResource getResourceFromObject(Object source){
-	        // Check if the resource is a File or a Directory
-	        if(source instanceof File){
-	            return getResourceFromFile((File)source);
-	        }
-	        // For a String instance, it is converted to String
-	        if(source instanceof String) {
-	            File file = new File((String) source);
-	            return getResourceFromFile(file);
-	        }
-	        // Check if the input Object is a File Collection
-	        if(source instanceof Collection<?>){
-	            Collection<File> files = null;
-	            try{
-	                files = (Collection<File>)source;
-	            }catch(ClassCastException e){
-	                // Log the exception
-	                if (LOGGER.isLoggable(Level.WARNING)) {
-	                    LOGGER.log(Level.WARNING, e.getMessage(), e);
-	                }
-	            }
-	            // If the files are present
-	            if(files != null){
-	                // No File is saved
-	                int fileSize = files.size();
-	                // Check on the File Size
-	                if(fileSize < 1){
-	                    return null;
-	                }else {
-	                    return FILE_COLLECTION;
-	                } 
-	            }
-	        }
-	        return null;
-	    }
+            public static HarvestedResource getResourceFromObject(Object source) {
+                // Check if the resource is a File or a Directory
+                if (source instanceof File) {
+                    return getResourceFromFile((File) source);
+                }
+                // For a String instance, it is converted to String
+                if (source instanceof String) {
+                    File file = new File((String) source);
+                    return getResourceFromFile(file);
+                }
+                // Check if the input Object is a File Collection
+                if (source instanceof Collection<?>) {
+                    Collection<File> files = null;
+                    try {
+                        files = (Collection<File>) source;
+                    } catch (ClassCastException e) {
+                        // Log the exception
+                        if (LOGGER.isLoggable(Level.WARNING)) {
+                            LOGGER.log(Level.WARNING, e.getMessage(), e);
+                        }
+                    }
+                    // If the files are present
+                    if (files != null) {
+                        // No File is saved
+                        int fileSize = files.size();
+                        // Check on the File Size
+                        if (fileSize < 1) {
+                            return null;
+                        } else if (fileSize == 1) {
+                            // If the Collection size is 1 then the object can be only a file or a directory
+                            return getResourceFromFile(files.iterator().next());
+                        } else {
+                            return FILE_COLLECTION;
+                        }
+    
+                    }
+                }
+                return null;
+            }
 
 	    /**
 	     * Check if the File Object is a DIRECTORY or not and return the associated {@link HarvestedResource}
@@ -1217,23 +1231,46 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     }
 
     @Override
-    public List<HarvestedSource> harvest(String defaultCoverage, Object source, Hints hints) throws IOException, UnsupportedOperationException {
+    public List<HarvestedSource> harvest(String defaultCoverage, Object source, Hints hints)
+            throws IOException, UnsupportedOperationException {
         // Get the HarvestedResource object associated to the source. This object defines the harvseting behaviour.
         HarvestedResource resource = HarvestedResource.getResourceFromObject(source);
 
         // Check if the source object can be accepted
         final List<HarvestedSource> result = new ArrayList<HarvestedSource>();
-        if(resource == null) {
+        if (resource == null) {
             result.add(new DefaultHarvestedSource(source, false, "Unrecognized source type"));
             return result;
-        } else if(source instanceof File && !((File)source).exists()) {
-            result.add(new DefaultHarvestedSource(source, false, "Specified file path does not exist"));
+        } else if (source instanceof File && !((File) source).exists() || singleFileList(source)) {
+            result.add(new DefaultHarvestedSource(source, false,
+                    "Specified file path does not exist"));
             return result;
         }
         // Harvesting of the input source
         resource.harvest(defaultCoverage, source, hints, result, this);
 
         return result;
+    }
+
+    /**
+     * Simple method used for checking if the list contains a single object and it is a file
+     * 
+     * @param source
+     * @return
+     */
+    private boolean singleFileList(Object source) {
+        if (source instanceof Collection<?>) {
+            Collection<?> collection = ((Collection<?>) source);
+            if(collection.size() == 1){
+                // Selection of the single file
+                File file = (File) collection.iterator().next();
+                // Check if it exists
+                if (!file.exists()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

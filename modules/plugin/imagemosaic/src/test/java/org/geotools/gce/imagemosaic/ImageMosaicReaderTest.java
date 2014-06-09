@@ -2155,6 +2155,142 @@ public class ImageMosaicReaderTest extends Assert{
     }
 
     @Test
+    public void testHarvestListSingleDirectory() throws Exception {
+        File source = DataUtilities.urlToFile(timeURL);
+        File testDataDir= TestData.file(this, ".");
+        File directory1 = new File(testDataDir,"harvest1");
+        File directory2 = new File(testDataDir,"harvest2");
+        if(directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        FileUtils.copyDirectory(source, directory1);
+        if(directory2.exists()) {
+            FileUtils.deleteDirectory(directory2);
+        }
+        directory2.mkdirs();
+        // move all files besides month 2 and 5 to the second directory
+        for(File file : FileUtils.listFiles(directory1, new RegexFileFilter("world\\.20040[^25].*\\.tiff"), null)) {
+            File renamed = new File(directory2, file.getName());
+            assertTrue(file.renameTo(renamed));
+        }
+        // remove all mosaic related files
+        for(File file : FileUtils.listFiles(directory1, new RegexFileFilter("time_geotiff.*"), null)) {
+            assertTrue(file.delete());
+        }
+
+        // Create a List of Files containing only the directory to harvest and check if the Reader reads it as a Directory
+        List<File> files = new ArrayList<File>();
+        files.add(directory2);
+
+        // ok, let's create a mosaic with the two original granules
+        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
+        ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        try {
+            String[] metadataNames = reader.getMetadataNames();
+            assertNotNull(metadataNames);
+            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            assertEquals("2004-02-01T00:00:00.000Z,2004-05-01T00:00:00.000Z", reader.getMetadataValue(metadataNames[0]));
+
+            // now go and harvest the file list
+            List<HarvestedSource> summary = reader.harvest(null, files, null);
+            assertEquals(2, summary.size());
+            for (HarvestedSource hf : summary) {
+                assertTrue(hf.success());
+            }
+
+            // the harvest put the files in the same coverage
+            assertEquals(1, reader.getGridCoverageNames().length);
+            metadataNames = reader.getMetadataNames();
+            assertNotNull(metadataNames);
+            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            assertEquals("2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,2004-05-01T00:00:00.000Z", 
+                    reader.getMetadataValue(metadataNames[0]));
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testHarvestListSingleFile() throws Exception {
+        File source = DataUtilities.urlToFile(timeURL);
+        File testDataDir= TestData.file(this, ".");
+        File directory1 = new File(testDataDir,"singleHarvest1");
+        File directory2 = new File(testDataDir,"singleHarvest2");
+        if(directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        FileUtils.copyDirectory(source, directory1);
+        // remove all files besides month 2 and 5
+        for(File file : FileUtils.listFiles(directory1, new RegexFileFilter("world\\.20040[^25].*\\.tiff"), null)) {
+            assertTrue(file.delete());
+        }
+        // remove all mosaic related files
+        for(File file : FileUtils.listFiles(directory1, new RegexFileFilter("time_geotiff.*"), null)) {
+            assertTrue(file.delete());
+        }
+        // move month 5 to another dir, we'll harvet it later
+        String monthFiveName = "world.200405.3x5400x2700.tiff";
+        File monthFive = new File(directory1, monthFiveName);
+        if(directory2.exists()) {
+            FileUtils.deleteDirectory(directory2);
+        }
+        directory2.mkdirs();
+        File renamed = new File(directory2, monthFiveName);
+        assertTrue(monthFive.renameTo(renamed));
+
+        // Create a List of Files containing only the directory to harvest and check if the Reader reads it as a Directory
+        List<File> files = new ArrayList<File>();
+        files.add(renamed);
+
+        // ok, let's create a mosaic with a single granule and check its times
+        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
+        ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        try {
+            String[] metadataNames = reader.getMetadataNames();
+            assertNotNull(metadataNames);
+            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            assertEquals("2004-02-01T00:00:00.000Z", reader.getMetadataValue(metadataNames[0]));
+
+            // now go and harvest the other file
+            List<HarvestedSource> summary = reader.harvest(null, files, null);
+            assertEquals(1, summary.size());
+            HarvestedSource hf = summary.get(0);
+            assertEquals(renamed.getCanonicalFile(), ((File) hf.getSource()).getCanonicalFile());
+            assertTrue(hf.success());
+
+            // the harvest put the file in the same coverage
+            assertEquals(1, reader.getGridCoverageNames().length);
+            metadataNames = reader.getMetadataNames();
+            assertNotNull(metadataNames);
+            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            assertEquals("2004-02-01T00:00:00.000Z,2004-05-01T00:00:00.000Z", reader.getMetadataValue(metadataNames[0]));
+
+            // check the granule catalog
+            String coverageName = reader.getGridCoverageNames()[0];
+            GranuleSource granules = reader.getGranules(coverageName, true);
+            assertEquals(2, granules.getCount(Query.ALL));
+            Query q = new Query(Query.ALL);
+            SimpleFeatureIterator fi = granules.getGranules(q).features();
+            try {
+                assertTrue(fi.hasNext());
+                SimpleFeature f = fi.next();
+                assertEquals("world.200402.3x5400x2700.tiff", f.getAttribute("location"));
+                assertEquals("2004-02-01T00:00:00.000Z", ConvertersHack.convert(f.getAttribute("time"), String.class));
+                f = fi.next();
+                String expected = "../singleHarvest2/world.200405.3x5400x2700.tiff".replace('/', File.separatorChar);
+                assertEquals(expected, f.getAttribute("location"));
+                assertEquals("2004-05-01T00:00:00.000Z", ConvertersHack.convert(f.getAttribute("time"), String.class));
+            } finally {
+                fi.close();
+            }
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
     public void testRemoveCoverageNoDelete() throws Exception {
 
         final String referenceDir = "testRemove";

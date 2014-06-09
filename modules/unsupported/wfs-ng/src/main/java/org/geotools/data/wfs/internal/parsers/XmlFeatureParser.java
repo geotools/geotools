@@ -155,13 +155,9 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
 			throws XmlPullParserException, IOException {
 		final AttributeType type = attribute.getType();
 		Object parsedValue;
-		if (type instanceof GeometryType) {
-			
-			int tag = parser.getEventType();
-			
+		if (type instanceof GeometryType) {			
+		        parser.nextTag();			
 			try {
-				System.out.println("Going to parse geom now...");
-				
 				parsedValue = parseGeom();
 			} catch (NoSuchAuthorityCodeException e) {
 				throw new DataSourceException(e);
@@ -176,7 +172,6 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
 
 		return parsedValue;
 	}
-
 	/**
 	 * <p>
 	 * Precondition: parser cursor positioned on a geometry property (eg,

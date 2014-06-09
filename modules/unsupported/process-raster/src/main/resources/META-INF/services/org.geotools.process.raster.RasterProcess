@@ -1,5 +1,7 @@
 org.geotools.process.raster.AddCoveragesProcess 
-org.geotools.process.raster.AreaGridProcess 
+org.geotools.process.raster.AreaGridProcess
+org.geotools.process.raster.BandMergeProcess
+org.geotools.process.raster.BandSelectProcess
 org.geotools.process.raster.ContourProcess
 org.geotools.process.raster.CropCoverage 
 org.geotools.process.raster.MultiplyCoveragesProcess 

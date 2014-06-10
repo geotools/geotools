@@ -4428,15 +4428,26 @@ public final class JDBCDataStore extends ContentDataStore
     }
     
     /**
-     * Applies the limit/offset elements to the query if they are specified
-     * and if the dialect supports them
+     * Applies the givenb limit/offset elements
+     * if the dialect supports them
      * @param sql The sql to be modified
-     * @param the query that holds the limit and offset parameters
+     * @param offset starting index
+     * @param limit max number of features
      */
     void applyLimitOffset(StringBuffer sql, final Integer offset, final int limit) {
         if(checkLimitOffset(offset, limit)) {
             dialect.applyLimitOffset(sql, limit, offset != null ? offset : 0);
         }
+    }
+    
+    /**
+     * Applies the limit/offset elements to the query if they are specified
+     * and if the dialect supports them
+     * @param sql The sql to be modified
+     * @param the query that holds the limit and offset parameters
+     */
+    void applyLimitOffset(StringBuffer sql, Query query) {
+        applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
     }
     
     /**

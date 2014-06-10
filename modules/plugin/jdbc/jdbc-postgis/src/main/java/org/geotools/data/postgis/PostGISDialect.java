@@ -107,6 +107,13 @@ public class PostGISDialect extends BasicSQLDialect {
         }
     };
     
+    
+    
+    @Override
+    public boolean isAggregatedSortSupported(String function) {
+       return "distinct".equalsIgnoreCase(function);
+    }
+
     static final Version V_1_5_0 = new Version("1.5.0");
 
     static final Version V_2_0_0 = new Version("2.0.0");

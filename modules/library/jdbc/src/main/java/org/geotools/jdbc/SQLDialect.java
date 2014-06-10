@@ -1165,6 +1165,17 @@ public abstract class SQLDialect {
     }
     
     /**
+     * Returns true if this dialect supports sorting together
+     * with the given aggregation function.
+     * 
+     * @param function
+     * @return
+     */
+    public boolean isAggregatedSortSupported(String function) {
+        return false;
+    }
+    
+    /**
      * Alters the query provided so that limit and offset are natively dealt with. This might mean
      * simply appending some extra directive to the query, or wrapping it into a bigger one.
      * @param sql

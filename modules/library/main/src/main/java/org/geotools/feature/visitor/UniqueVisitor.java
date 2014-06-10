@@ -16,13 +16,12 @@
  */
 package org.geotools.feature.visitor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -46,14 +45,21 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor {
+public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, LimitingVisitor {
     private Expression expr;
     Set set = new HashSet();
-
+    Set skipped = new HashSet();
+    int startIndex = 0;
+    int maxFeatures = Integer.MAX_VALUE;
+    int currentItem = 0;
+    boolean preserveOrder = false;
+    
     public UniqueVisitor(String attributeTypeName) {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         expr = factory.property(attributeTypeName);
     }
+    
+    
 
     public UniqueVisitor(int attributeTypeIndex, SimpleFeatureType type)
         throws IllegalFilterException {
@@ -74,6 +80,36 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor {
     public void init(SimpleFeatureCollection collection) {
     	//do nothing
     }
+    
+
+    public void setStartIndex(int startIndex) {
+        this.startIndex = startIndex;
+    }
+
+
+    public void setMaxFeatures(int maxFeatures) {
+        this.maxFeatures = maxFeatures;
+    }
+    
+    public void setPreserveOrder(boolean preserveOrder) {
+        this.preserveOrder = preserveOrder;
+        set = createNewSet(Collections.EMPTY_LIST);
+    }
+
+
+
+    @Override
+    public int getStartIndex() {
+        return startIndex;
+    }
+
+
+    @Override
+    public int getMaxFeatures() {
+        return maxFeatures;
+    }
+
+
 
     @Override
     public List<Expression> getExpressions() {
@@ -87,7 +123,14 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor {
         //we ignore null attributes
         Object value = expr.evaluate(feature);
         if (value != null) {
-        	set.add(value);
+            if(!set.contains(value) && !skipped.contains(value)) {
+                if(currentItem >= startIndex && currentItem < (startIndex + maxFeatures)) {
+                    set.add(value);
+                } else {
+                    skipped.add(value);
+                }
+                currentItem++;
+            }
         }
     }
 
@@ -105,41 +148,64 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor {
     public void setValue(Object newSet) {
         
     	if (newSet instanceof Collection) { //convert to set
-    		this.set = new HashSet((Collection) newSet);
+    		this.set = createNewSet((Collection) newSet);
     	} else {
     	    Collection collection = Converters.convert(newSet, List.class);
     	    if(collection != null) {
-    	        this.set = new HashSet(collection);
+    	        this.set = createNewSet(collection);
     	    } else {
-    	        this.set = new HashSet(Collections.singleton(newSet));
+    	        this.set = createNewSet(Collections.singleton(newSet));
     	    }
     	} 
     }
     
+    private Set createNewSet(Collection collection) {
+        return UniqueResult.createNewSet(collection, preserveOrder);
+    }
+
+
+
     public void reset() {
         /**
          * Reset the unique and current minimum for the features in the
          * collection
          */
-        this.set = new HashSet();
+        this.set = createNewSet(Collections.EMPTY_LIST);
+        this.skipped = new HashSet();
+        
+        currentItem = 0;
     }
 
     public CalcResult getResult() {
         if (set.size() < 1) {
             return CalcResult.NULL_RESULT;
         }
-        return new UniqueResult(set);
+        return new UniqueResult(set, this.preserveOrder);
     }
 
     public static class UniqueResult extends AbstractCalcResult {
         private Set unique;
+        private boolean preserveOrder = false;
 
         public UniqueResult(Set newSet) {
             unique = newSet;
         }
+        
+        public UniqueResult(Set newSet, boolean preserveOrder) {
+            unique = newSet;
+            this.preserveOrder = preserveOrder;
+        }
 
+        public static Set createNewSet(Collection collection, boolean preserveOrder) {
+            if(preserveOrder) {
+                return new LinkedHashSet(collection);
+            } else {
+                return new HashSet(collection);
+            }
+        }
+        
         public Object getValue() {
-        	return new HashSet(unique);
+        	return createNewSet(unique, preserveOrder);
         }
         
         public boolean isCompatible(CalcResult targetResults) {
@@ -160,14 +226,19 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
             if (resultsToAdd instanceof UniqueResult) {
             	//add one set to the other (to create one big unique list)
-            	Set newSet = new HashSet(unique);
+            	Set newSet = createNewSet(unique, preserveOrder);
                 newSet.addAll((Set) resultsToAdd.getValue());
-                return new UniqueResult(newSet);
+                return new UniqueResult(newSet, preserveOrder);
             } else {
             	throw new IllegalArgumentException(
 				"The CalcResults claim to be compatible, but the appropriate merge method has not been implemented.");
             }
         }
+    }
+
+    @Override
+    public boolean hasLimits() {
+        return startIndex > 0 || maxFeatures < Integer.MAX_VALUE;
     }
 }
 

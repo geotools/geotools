@@ -127,7 +127,7 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
 		final BorderExtender borderExtender= 
 			(BorderExtender) (indexOfBorderExtenderParam!=-1? 
 					parameters.parameters.getObjectParameter("BorderExtender"):
-						BorderExtender.createInstance(BorderExtender.BORDER_COPY));
+						ImageUtilities.DEFAULT_BORDER_EXTENDER);
 	
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -173,7 +173,7 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
 		// Managing Hints, especially for output coverage's layout purposes.
 		//
 		// It is worthwhile to point out that layout hints for minx, miny, width
-		// and height are honored by the warp operation. The other
+		// and height are honored by the warp and affine operation. The other
 		// ImageLayout hints, like tileWidth and tileHeight, are also
 		// honored.
 		// /////////////////////////////////////////////////////////////////////
@@ -267,7 +267,7 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
                     throw new RuntimeException(e);
                 }
 		
-			
+                // /////////////////////////////////////////////////////////////////////	
 		//
 		// Preparing the resulting coverage
 		//

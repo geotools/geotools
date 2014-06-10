@@ -17,6 +17,7 @@
 package org.geotools.coverage.processing;
 
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 
 import javax.media.jai.Interpolation;
 import javax.media.jai.KernelJAI;
@@ -502,6 +503,7 @@ public class Operations {
     {
         return doOperation("CoverageCrop", Source, "Envelope", envelope);
     }
+    
 
     /**
      * Translates and resizes an image.
@@ -544,7 +546,31 @@ public class Operations {
         return warp(source, warp,
                 Interpolation.getInstance(Interpolation.INTERP_NEAREST));
     }
-
+    /**
+     * Translates and resizes an image.
+     *
+     * @param source   The source coverage.
+     * @param transform the {@link AffineTransform}
+     * @param interpolation The interpolation to use, or {@code null} for the default.
+     * @param noDataValues the no data values to be applied
+     * @throws CoverageProcessingException if the operation can't be applied.
+     *
+     * @see org.geotools.coverage.processing.operation.Scale
+     *
+     * @since 2.3
+     */
+    public GridCoverage affine(final GridCoverage source,
+                              final AffineTransform transform,
+                              final Interpolation interpolation,
+                              final double[] noDataValues)
+            throws CoverageProcessingException
+    {
+        return (GridCoverage) doOperation("Affine", source,
+                "transform",transform,
+                "Interpolation", interpolation,
+                "backgroundValues", noDataValues);
+    }
+    
     /**
      * Translates and resizes an image.
      *

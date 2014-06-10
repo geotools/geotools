@@ -34,11 +34,13 @@
 	  </dependency>
 	  
 	  
-	 <!-- <dependency>
+	 <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-main</artifactId>
             <version>${project.version}</version>
-	  </dependency> -->
+            <type>test-jar</type> 
+            <scope>test</scope>
+	  </dependency> 
         
     </dependencies>
 

@@ -31,7 +31,7 @@ import org.geotools.data.complex.PathAttributeList.Pair;
 import org.geotools.data.complex.filter.XPath.*;
 import org.geotools.data.complex.filter.XPathUtil.*;
 import org.geotools.data.complex.xml.*;
-import org.geotools.feature.AttributeBuilder;
+import org.geotools.feature.AppSchemaAttributeBuilder;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
 import org.geotools.feature.type.ComplexTypeImpl;
@@ -173,7 +173,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
     protected Feature populateFeatureData() throws IOException {
 
         final AttributeDescriptor targetNode = mapping.getTargetFeature();
-        AttributeBuilder builder = new AttributeBuilder(attf);
+        AppSchemaAttributeBuilder builder = new AppSchemaAttributeBuilder(attf);
         builder.setDescriptor(targetNode);
         Feature target = (Feature) builder.build(extractIdForAttribute(mapping
                 .getFeatureIdExpression(), null));

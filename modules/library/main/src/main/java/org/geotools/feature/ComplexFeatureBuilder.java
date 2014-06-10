@@ -38,7 +38,7 @@ import org.opengis.feature.type.PropertyDescriptor;
  * progressively appending their components and deferring the construction till
  * you're ready.
  * 
- * @author bro879
+ * @author Adam Brown (Curtin University of Technology)
  * 
  */
 public class ComplexFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {

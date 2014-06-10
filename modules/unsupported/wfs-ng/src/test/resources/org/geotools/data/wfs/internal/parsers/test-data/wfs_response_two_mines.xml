@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection 
+	numberOfFeatures="2"
+	timeStamp="2012-03-07T08:37:45.280+08:00" 
+	xmlns:wfs="http://www.opengis.net/wfs" 
+	xmlns:ex="urn:org:example" 
+	xmlns:gml="http://www.opengis.net/gml">
+	<gml:featureMembers>
+		<ex:Mine gml:id="er.mine.S0000001"> <!-- seekFeature() -> "er.mine.S0000001" -->
+			<!--
+				(6) MINEmineNAME_DESCRIPTOR, AttributeDescriptorImpl, describes <MineNamePropertyType:Collection> or 1 to 2147483647 mineName:MineNamePropertyType.
+				(5) MINENAMEPROPERTYTYPE_TYPE, ComplexTypeImpl, defines MineNamePropertyType as having (MineName:MineNameType).
+			-->
+			<ex:mineName gml:id="MINENAMEPROPERTYTYPE_TYPE_1">
+				<!--
+					(4) MINENAME_DESCRIPTOR, AttributeDescriptorImpl, describes <MineNameType:Collection> exactly 1 MineName:MineNameType.
+					(3) MINENAMETYPE_TYPE, ComplexTypeImpl, defines MineNameType as having (isPreferred:boolean,mineName:string).
+				-->
+				<ex:MineName gml:id="MINENAMETYPE_TYPE_1">
+					<!--
+						(1) ISPREFERRED_DESCRIPTOR, AttributeDescriptorImpl, describes isPreferred as a <boolean:Boolean>
+					-->
+					<ex:isPreferred gml:id="isPreferred_1">true</ex:isPreferred>
+					<!--
+						(2) mineNAME_DESCRIPTOR, AttributeDescriptorImpl, describes mineName as a <string:String>
+					-->
+					<ex:mineName gml:id="mineName_1">Pieces of Eight - Admiral Hill</ex:mineName>
+				</ex:MineName>
+			</ex:mineName>
+			<ex:mineName gml:id="MINENAMEPROPERTYTYPE_TYPE_2">
+				<ex:MineName gml:id="MINENAMETYPE_TYPE_2">
+					<ex:isPreferred gml:id="isPreferred_2">false</ex:isPreferred>
+					<ex:mineName gml:id="mineName_2">Admiral Hill S - W Shear (WAMIN)</ex:mineName>
+				</ex:MineName>
+			</ex:mineName>
+		</ex:Mine>
+		<ex:Mine gml:id="er.mine.S0000005">
+			<ex:mineName>
+				<ex:MineName>
+					<ex:isPreferred>true</ex:isPreferred>
+					<ex:mineName>Aspacia</ex:mineName>
+				</ex:MineName>
+			</ex:mineName>
+		</ex:Mine>
+	</gml:featureMembers>
+</wfs:FeatureCollection>
+<!-- 
+	Example Mine:
+	FeatureImpl:MineType<MineType id=er.mine.S0000001>=
+	[
+		ComplexAttributeImpl:MineNamePropertyType=
+		[
+			ComplexAttributeImpl:MineName<MineNameType id=MINENAMETYPE_TYPE_1>=
+			[
+				ComplexAttributeImpl:MineNameType=
+				[
+					AttributeImpl:mineName<string id=mineName_1>=Pieces of Eight - Admiral Hill,
+					AttributeImpl:isPreferred<boolean id=isPreferred_1>=true
+				]
+			]
+		],
+		ComplexAttributeImpl:MineNamePropertyType=
+		[
+			ComplexAttributeImpl:MineName<MineNameType id=MINENAMETYPE_TYPE_2>=
+			[
+				ComplexAttributeImpl:MineNameType=
+				[
+					AttributeImpl:mineName<string id=mineName_2>=Admiral Hill S - W Shear (WAMIN),
+					AttributeImpl:isPreferred<boolean id=isPreferred_2>=false
+				]
+			]
+		]
+	]
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

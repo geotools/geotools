@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection 
+	numberOfFeatures="2"
+	timeStamp="2012-03-07T08:37:45.280+08:00" 
+	xmlns:ex="urn:org:example">
+	<gml:featureMembers>
+		<ex:Mine gml:id="er.mine.S0000005">
+			<ex:mineName xlink:href="http://www.example.org/mineName/fake1" />
+			<ex:mineName xlink:href="#mineName_Aspacia"/>
+			<ex:mineName gml:id="mineName_Aspacia">
+				<ex:MineName>
+					<ex:isPreferred gml:id="isPreferredId">false</ex:isPreferred>
+					<ex:mineName gml:id="mineNameId">Aspacia</ex:mineName>
+				</ex:MineName>
+			</ex:mineName>
+			
+		</ex:Mine>
+	</gml:featureMembers>
+</wfs:FeatureCollection>

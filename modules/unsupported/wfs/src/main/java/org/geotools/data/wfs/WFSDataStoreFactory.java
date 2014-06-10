@@ -457,7 +457,8 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         final String axisOrder = (String) AXIS_ORDER.lookUp(params);
         final String axisOrderFilter = (String) AXIS_ORDER_FILTER.lookUp(params) == null ? (String) AXIS_ORDER
                 .lookUp(params) : (String) AXIS_ORDER_FILTER.lookUp(params);
-        final String outputFormat = (String) OUTPUTFORMAT.lookUp(params);
+        
+                final String outputFormat = (String) OUTPUTFORMAT.lookUp(params);
                 
         if (((user == null) && (pass != null)) || ((pass == null) && (user != null))) {
             throw new IOException(

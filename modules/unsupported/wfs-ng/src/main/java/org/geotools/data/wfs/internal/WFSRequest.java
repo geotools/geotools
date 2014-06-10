@@ -212,7 +212,7 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
             }
         }
 
-        WFSResponse wfsResponse = responseFactory.createResponse(this, response);
+        WFSResponse wfsResponse = responseFactory.createResponse(this, response, config.getAxisOrder());
 
         return wfsResponse;
     }

@@ -210,6 +210,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
             }
         }
         LOGGER.info("Using WFS Strategy: " + strategy.getClass().getName());
+                
         return strategy;
     }
 
@@ -339,5 +340,9 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         FeatureTypeInfo typeInfo = strategy.getFeatureTypeInfo(typeName);
         CoordinateReferenceSystem crs = typeInfo.getCRS();
         return crs;
+    }
+    
+    public String getAxisOrderFilter(){
+        return config.getAxisOrderFilter();
     }
 }

@@ -605,7 +605,10 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
 
         Set<String> ftypeCrss = new HashSet<String>();
         ftypeCrss.add(defaultSRS);
-        ftypeCrss.addAll(otherSRS);
+        
+        if (!config.isUseDefaultSrs()) {
+            ftypeCrss.addAll(otherSRS);
+        }
 
         final boolean wfs1_1 = Versions.v1_1_0.equals(getServiceVersion());
         if (wfs1_1) {

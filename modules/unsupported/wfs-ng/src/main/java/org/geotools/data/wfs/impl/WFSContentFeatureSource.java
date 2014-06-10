@@ -40,6 +40,8 @@ import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.data.wfs.internal.GetFeatureResponse;
 import org.geotools.data.wfs.internal.WFSClient;
+import org.geotools.data.wfs.internal.WFSConfig;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -51,6 +53,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
@@ -175,6 +178,24 @@ class WFSContentFeatureSource extends ContentFeatureSource {
         int resultCount = featureParser.getNumberOfFeatures();
         return resultCount;
     }
+    
+    /**
+     * Invert axis order in the given query filter, if needed.
+     * 
+     * @param query
+     */
+    private void invertAxisInFilterIfNeeded(Query query) {
+        boolean invertXY = WFSConfig.invertAxisNeeded(client.getAxisOrderFilter(), query.getCoordinateSystem());
+        if (invertXY) {
+            Filter filter = query.getFilter();
+    
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+            InvertAxisFilterVisitor visitor = new InvertAxisFilterVisitor(ff, new GeometryFactory());
+            filter = (Filter) filter.accept(visitor, null);
+    
+            query.setFilter(filter);
+        }
+    }
 
     private GetFeatureRequest createGetFeature(Query query, ResultType resultType)
             throws IOException {
@@ -188,6 +209,8 @@ class WFSContentFeatureSource extends ContentFeatureSource {
 
         request.setTypeName(remoteTypeName);
         request.setFullType(remoteSimpleFeatureType);
+        
+        invertAxisInFilterIfNeeded(query);
 
         request.setFilter(query.getFilter());
         request.setResultType(resultType);

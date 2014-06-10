@@ -279,7 +279,7 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
     
     public void testUniqueWithLimitOffset() throws Exception {
         
-        if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
+        if (!dataStore.getSQLDialect().isLimitOffsetSupported() || !dataStore.getSQLDialect().isAggregatedSortSupported("distinct")) {
             return;
         }
         
@@ -298,7 +298,7 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
     
     public void testUniqueWithLimitOnVisitor() throws Exception {
         
-        if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
+        if (!dataStore.getSQLDialect().isLimitOffsetSupported() || !dataStore.getSQLDialect().isAggregatedSortSupported("distinct")) {
             return;
         }
         
@@ -320,7 +320,7 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
     
     public void testUniqueWithLimitOffsetOnVisitor() throws Exception {
         
-        if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
+        if (!dataStore.getSQLDialect().isLimitOffsetSupported() || !dataStore.getSQLDialect().isAggregatedSortSupported("distinct")) {
             return;
         }
         

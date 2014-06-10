@@ -3634,8 +3634,9 @@ public final class JDBCDataStore extends ContentDataStore
                 toSQL.add(filter(featureType, filter, sql));
             }
         }
-        
-        sort(featureType, query.getSortBy(), null, sql);
+        if(dialect.isAggregatedSortSupported(function)) {
+            sort(featureType, query.getSortBy(), null, sql);
+        }
         
         boolean visitorLimitOffset = visitor == null ? false : checkLimitOffset(visitor.getStartIndex(), visitor.getMaxFeatures());
         if(visitorLimitOffset) {

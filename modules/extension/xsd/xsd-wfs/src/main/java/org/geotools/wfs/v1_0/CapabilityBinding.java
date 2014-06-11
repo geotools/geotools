@@ -48,18 +48,24 @@ public class CapabilityBinding extends AbstractComplexEMFBinding {
 
         operation = getFeature(request.getChild("GetFeature"), ows10Factory);
         addOperation(om, operation);
+        
+        Node nodeOp = request.getChild("Transaction");
+        if (nodeOp != null) {
+            operation = createOperation("Transaction", nodeOp, ows10Factory);
+            addOperation(om, operation);
+        }
 
-        operation = createOperation("Transaction", node, ows10Factory);
-        addOperation(om, operation);
+        nodeOp = request.getChild("LockFeature");
+        if (nodeOp != null) {
+            operation = createOperation("LockFeature", nodeOp, ows10Factory);
+            addOperation(om, operation);
+        }
 
-        operation = createOperation("LockFeature", node, ows10Factory);
-        addOperation(om, operation);
-
-        operation = createOperation("GetFeatureWithLock", node, ows10Factory);
-        addOperation(om, operation);
-
-        operation = createOperation("Transaction", node, ows10Factory);
-        addOperation(om, operation);
+        nodeOp = request.getChild("GetFeatureWithLock");
+        if (nodeOp != null) {
+            operation = createOperation("GetFeatureWithLock", nodeOp, ows10Factory);
+            addOperation(om, operation);
+        }
 
         return om;
     }

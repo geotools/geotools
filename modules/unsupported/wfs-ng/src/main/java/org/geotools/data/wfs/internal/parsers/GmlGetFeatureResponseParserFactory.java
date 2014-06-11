@@ -126,14 +126,14 @@ public class GmlGetFeatureResponseParserFactory implements WFSResponseFactory {
      * @see FeatureCollectionParser
      * @see ExceptionReportParser
      */
-    public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws IOException {
+    public WFSResponse createResponse(WFSRequest request, HTTPResponse response, String axisOrder) throws IOException {
 
         final GetFeatureRequest getFeature = (GetFeatureRequest) request;
 
         final GetFeatureParser parser;
         final String contentType = response.getContentType();
         if (SUPPORTED_FORMATS.contains(contentType)) {
-            parser = parser(getFeature, response.getResponseStream());
+            parser = parser(getFeature, response.getResponseStream(), axisOrder);
         } else {
             // We can't rely on the server returning the correct output format. Some, for example
             // CubeWerx, upon a successful GetFeature request, set the response's content-type
@@ -179,7 +179,7 @@ public class GmlGetFeatureResponseParserFactory implements WFSResponseFactory {
             pushbackIn.unread(buff, 0, readCount);
 
             if (head.indexOf("FeatureCollection") > 0) {
-                parser = parser(getFeature, pushbackIn);
+                parser = parser(getFeature, pushbackIn, axisOrder);
             } else if (head.indexOf("ExceptionReport") > 0) {
                 // parser = new ExceptionReportParser();
                 // TODO: return ExceptionResponse or so
@@ -197,7 +197,7 @@ public class GmlGetFeatureResponseParserFactory implements WFSResponseFactory {
 
     }
 
-    private GetFeatureParser parser(GetFeatureRequest request, InputStream in) throws IOException {
+    private GetFeatureParser parser(GetFeatureRequest request, InputStream in, String axisOrder) throws IOException {
 
         final QName remoteFeatureName = request.getTypeName();
 
@@ -211,7 +211,7 @@ public class GmlGetFeatureResponseParserFactory implements WFSResponseFactory {
 
         SimpleFeatureType schema = (SimpleFeatureType) queryType;
 
-        GetFeatureParser featureReader = new XmlSimpleFeatureParser(in, schema, remoteFeatureName);
+        GetFeatureParser featureReader = new XmlSimpleFeatureParser(in, schema, remoteFeatureName, axisOrder);
         return featureReader;
     }
 

@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs.TransactionResponseType;
 import net.opengis.wfs.WfsFactory;
 
-import org.geotools.wfs.WFS;
+import org.geotools.wfs.v1_1.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 
 

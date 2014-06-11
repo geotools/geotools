@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.wfs.impl;
 
 import java.io.IOException;
@@ -12,21 +28,16 @@ public class WFSFeatureWriter extends DiffContentFeatureWriter {
 
     final WFSRemoteTransactionState autoCommitState;
 
-    final SimpleFeatureBuilder featureBuilder;
-
     public WFSFeatureWriter(final WFSContentFeatureStore store,
             final WFSLocalTransactionState localSate,
             final FeatureReader<SimpleFeatureType, SimpleFeature> reader, final boolean autoCommit) {
 
-        super(store, localSate.getDiff(), reader);
-        featureBuilder = new SimpleFeatureBuilder(getFeatureType(),
-                new MutableIdentifierFeatureFactory());
-
+        super(store, localSate.getDiff(), reader, new SimpleFeatureBuilder(reader.getFeatureType(), new MutableIdentifierFeatureFactory()));
+        
         if (autoCommit) {
             WFSContentDataStore dataStore = (WFSContentDataStore) store.getDataStore();
             autoCommitState = new WFSRemoteTransactionState(dataStore);
-            // TODO: revisit
-            // autoCommitState.watch(localSate);
+            autoCommitState.watch(localSate.getState());
         } else {
             autoCommitState = null;
         }
@@ -58,21 +69,8 @@ public class WFSFeatureWriter extends DiffContentFeatureWriter {
 
     @Override
     public synchronized SimpleFeature next() throws IOException {
-        throw new UnsupportedOperationException("implementation needs to be revisited");
-        // checkClosed();
-        // SimpleFeatureType type = getFeatureType();
-        // if (hasNext()) {
-        // return super.next();
-        // } else {
-        // // Create new content with mutable fid
-        // live = null;
-        // next = null;
-        // featureBuilder.reset();
-        // String id = "new" + diff.nextFID;
-        // current = featureBuilder.buildFeature(id, new Object[type.getAttributeCount()]);
-        // diff.nextFID++;
-        // return current;
-        // }
+        checkClosed();
+        return super.next();   
     }
 
     private void checkClosed() throws IOException {

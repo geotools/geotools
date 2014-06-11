@@ -1,6 +1,23 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.wfs.impl;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
@@ -13,6 +30,7 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
+import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.Transaction.State;
 import org.geotools.data.store.ContentEntry;
@@ -22,6 +40,8 @@ import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.data.wfs.internal.GetFeatureResponse;
 import org.geotools.data.wfs.internal.WFSClient;
+import org.geotools.data.wfs.internal.WFSConfig;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -33,6 +53,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
@@ -157,6 +178,24 @@ class WFSContentFeatureSource extends ContentFeatureSource {
         int resultCount = featureParser.getNumberOfFeatures();
         return resultCount;
     }
+    
+    /**
+     * Invert axis order in the given query filter, if needed.
+     * 
+     * @param query
+     */
+    private void invertAxisInFilterIfNeeded(Query query) {
+        boolean invertXY = WFSConfig.invertAxisNeeded(client.getAxisOrderFilter(), query.getCoordinateSystem());
+        if (invertXY) {
+            Filter filter = query.getFilter();
+    
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+            InvertAxisFilterVisitor visitor = new InvertAxisFilterVisitor(ff, new GeometryFactory());
+            filter = (Filter) filter.accept(visitor, null);
+    
+            query.setFilter(filter);
+        }
+    }
 
     private GetFeatureRequest createGetFeature(Query query, ResultType resultType)
             throws IOException {
@@ -170,6 +209,8 @@ class WFSContentFeatureSource extends ContentFeatureSource {
 
         request.setTypeName(remoteTypeName);
         request.setFullType(remoteSimpleFeatureType);
+        
+        invertAxisInFilterIfNeeded(query);
 
         request.setFilter(query.getFilter());
         request.setResultType(resultType);
@@ -204,7 +245,8 @@ class WFSContentFeatureSource extends ContentFeatureSource {
 
         GetFeatureRequest request = createGetFeature(localQuery, ResultType.RESULTS);
 
-        final SimpleFeatureType contentType = getQueryType(localQuery);
+        final SimpleFeatureType destType = getQueryType(localQuery, getSchema());
+        final SimpleFeatureType contentType = getQueryType(localQuery, (SimpleFeatureType) request.getFullType());
         request.setQueryType(contentType);
 
         GetFeatureResponse response = client.issueRequest(request);
@@ -220,9 +262,9 @@ class WFSContentFeatureSource extends ContentFeatureSource {
         }
 
         final SimpleFeatureType readerType = reader.getFeatureType();
-        if (!contentType.equals(readerType)) {
+        if (!destType.equals(readerType)) {
             final boolean cloneContents = false;
-            reader = new ReTypeFeatureReader(reader, contentType, cloneContents);
+            reader = new ReTypeFeatureReader(reader, destType, cloneContents);
         }
 
         Transaction transaction = getTransaction();
@@ -232,7 +274,7 @@ class WFSContentFeatureSource extends ContentFeatureSource {
             WFSLocalTransactionState wfsState = (WFSLocalTransactionState) state;
             if (wfsState != null) {
                 WFSDiff diff = wfsState.getDiff();
-                reader = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(reader, diff);
+                reader = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(reader, diff, localQuery.getFilter());
             }
         }
         return reader;
@@ -373,9 +415,8 @@ class WFSContentFeatureSource extends ContentFeatureSource {
      * @return
      * @throws IOException
      */
-    SimpleFeatureType getQueryType(final Query query) throws IOException {
+    SimpleFeatureType getQueryType(final Query query, SimpleFeatureType featureType) throws IOException {
 
-        final SimpleFeatureType featureType = getSchema();
         final CoordinateReferenceSystem coordinateSystemReproject = query
                 .getCoordinateSystemReproject();
 
@@ -402,6 +443,16 @@ class WFSContentFeatureSource extends ContentFeatureSource {
         }
 
         return queryType;
+    }
+    
+    @Override
+    public ResourceInfo getInfo() {
+        try {
+            return client.getInfo(getRemoteTypeName());
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Unexpected error getting ResourceInfo: ", e);
+            return super.getInfo();
+        }
     }
 
 }

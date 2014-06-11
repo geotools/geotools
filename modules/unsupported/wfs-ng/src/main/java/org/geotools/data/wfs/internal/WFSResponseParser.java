@@ -39,6 +39,6 @@ public interface WFSResponseParser {
      * @throws IOException
      *             if an exception is produced while parsing the response
      */
-    Object parse(WFSResponse response) throws IOException;
+    Object parse(WFSResponse response, String axisOrder) throws IOException;
 
 }

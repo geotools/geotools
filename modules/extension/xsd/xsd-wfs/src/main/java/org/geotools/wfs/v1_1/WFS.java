@@ -18,6 +18,8 @@ package org.geotools.wfs.v1_1;
 
 import java.util.Set;
 
+import javax.xml.namespace.QName;
+
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.ows.OWS;
 
@@ -31,6 +33,26 @@ import org.geotools.ows.OWS;
  * @source $URL$
  */
 public final class WFS extends org.geotools.wfs.WFS {
+    
+    /** @generated */
+    public static final QName InsertResultsType = new QName("http://www.opengis.net/wfs",
+            "InsertResultsType");
+    
+    /** @generated */
+    public static final QName LockFeatureResponseType = new QName("http://www.opengis.net/wfs",
+            "LockFeatureResponseType");
+    
+    /** @generated */
+    public static final QName TransactionResponseType = new QName("http://www.opengis.net/wfs",
+            "TransactionResponseType");
+
+    /** @generated */
+    public static final QName LockFeatureResponse = new QName("http://www.opengis.net/wfs",
+            "LockFeatureResponse");
+    
+    /** @generated */
+    public static final QName TransactionResponse = new QName("http://www.opengis.net/wfs",
+            "TransactionResponse");
 
     /** singleton instance */
     private static final WFS instance = new WFS();

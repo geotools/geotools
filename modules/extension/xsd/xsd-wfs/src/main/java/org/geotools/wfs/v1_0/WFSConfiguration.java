@@ -43,5 +43,15 @@ public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
     protected void configureBindings(org.picocontainer.MutablePicoContainer container) {
         super.configureBindings(container);
         container.registerComponentImplementation(WFS.QueryType, QueryTypeBinding.class);
+        
+        container.registerComponentImplementation(WFS.WFS_TransactionResponseType,
+                WFS_TransactionResponseTypeBinding.class);
+        container.registerComponentImplementation(WFS.WFS_LockFeatureResponseType,
+                WFS_LockFeatureResponseTypeBinding.class);
+        container.registerComponentImplementation(WFS.InsertResultType,
+                InsertResultTypeBinding.class);
+        container.registerComponentImplementation(WFS.TransactionResultType,
+                TransactionResultTypeBinding.class);
+        container.registerComponentImplementation(WFS.OperationsType, OperationsTypeBinding.class);
     }
 }

@@ -369,7 +369,7 @@ public abstract class AbstractGetFeatureParserTest {
     @Test
     public void testParseGeoServer_roads_MultiLineString_110() throws Exception {
         final QName featureName = GEOS_ROADS_11.TYPENAME;
-        final int expectedCount = 1;
+        final int expectedCount = 3;
         final URL schemaLocation = GEOS_ROADS_11.SCHEMA;
 
         final String[] properties = { "the_geom", "label" };

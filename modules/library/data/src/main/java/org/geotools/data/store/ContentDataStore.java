@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -96,6 +96,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * </p>
  * @author Jody Garnett, Refractions Research Inc.
  * @author Justin Deoliveira, The Open Planning Project
+ * @author Niels Charlier
  *
  *
  *
@@ -349,7 +350,7 @@ public abstract class ContentDataStore implements DataStore {
      */
     public ContentFeatureSource getFeatureSource(String typeName)
         throws IOException {
-        return getFeatureSource(new NameImpl(namespaceURI,typeName), Transaction.AUTO_COMMIT);
+        return getFeatureSource(new NameImpl(null, typeName), Transaction.AUTO_COMMIT);
     }
 
     /**
@@ -365,7 +366,7 @@ public abstract class ContentDataStore implements DataStore {
      */
     public ContentFeatureSource getFeatureSource(String typeName, Transaction tx) 
         throws IOException {
-        return getFeatureSource( name(typeName), tx );
+        return getFeatureSource( new NameImpl(null, typeName), tx );
     }
     
     /**
@@ -531,12 +532,13 @@ public abstract class ContentDataStore implements DataStore {
     }
     
     /**
+     * 
      * Helper method to wrap a non-qualified name.
      */
     final protected Name name(String typeName) {
-        return new NameImpl(namespaceURI,typeName);
+        return new NameImpl(namespaceURI, typeName);
     }
-
+   
     /**
      * Helper method to look up an entry in the datastore.
      * <p>
@@ -560,8 +562,18 @@ public abstract class ContentDataStore implements DataStore {
         if (!entries.containsKey(name)) {
             //is this type available?
             List<Name> typeNames = createTypeNames();
-
-            if (typeNames.contains(name)) {
+            
+            boolean found = typeNames.contains(name);
+            if (!found && name.getNamespaceURI() == null) { //try match without namespace
+                for (Name typeName : typeNames){
+                    if (typeName.getLocalPart().equals(name.getLocalPart())) {
+                        name = typeName;
+                        found = true;
+                    }
+                }
+            } 
+            
+            if (found) {
                 //yes, create an entry for it
                 synchronized (this) {
                     if (!entries.containsKey(name)) {
@@ -652,15 +664,14 @@ public abstract class ContentDataStore implements DataStore {
 
     
     /**
-     * Delegates to {@link #getFeatureSource(String)} with
-     * {@code name.getLocalPart()}
+     * Delegates to {@link #getFeatureSource(Name, Transaction)} 
      * 
      * @since 2.5
      * @see DataAccess#getFeatureSource(Name)
      */
     public SimpleFeatureSource getFeatureSource(Name typeName)
             throws IOException {
-        return getFeatureSource(typeName.getLocalPart());
+        return getFeatureSource(typeName, Transaction.AUTO_COMMIT);
     }
 
     /**

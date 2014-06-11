@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,12 @@
  */
 package org.geotools.data.wfs.impl;
 
+import static org.geotools.data.wfs.internal.URIs.buildURL;
+
+import org.geotools.util.KVP;
+import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.Version;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Authenticator;
@@ -24,6 +30,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +42,7 @@ import org.geotools.data.Parameter;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.internal.Loggers;
+import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
@@ -71,6 +79,13 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  */
 @SuppressWarnings({ "unchecked", "nls" })
 public class WFSDataStoreFactory extends AbstractDataStoreFactory {
+        
+    /**
+     * Values for the AXIS_ORDER and AXIS_ORDER_FILTER connection parameters.
+     */
+    public static final String AXIS_ORDER_EAST_NORTH = "East / North";
+    public static final String AXIS_ORDER_NORTH_EAST = "North / East";
+    public static final String AXIS_ORDER_COMPLIANT = "Compliant";
 
     /**
      * A {@link Param} subclass that allows to provide a default value to the lookUp method.
@@ -85,8 +100,8 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
          * @param type
          * @param description
          */
-        public WFSFactoryParam(String key, Class<T> type, String description) {
-            super(key, type, description, true);
+        public WFSFactoryParam(String key, Class<T> type, String title, String description) {
+            this(key, type, title, description, null);
         }
 
         /**
@@ -97,14 +112,27 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
          * @param description
          * @param required
          */
-        public WFSFactoryParam(String key, Class<T> type, String description, T defaultValue) {
-            super(key, type, description, false, defaultValue);
+        public WFSFactoryParam(String key, Class<T> type, String title, String description, T defaultValue) {
+            super(key, type, new SimpleInternationalString(title), new SimpleInternationalString(description), false, -1, -1, defaultValue, null);
+            this.defaultValue = defaultValue;
+        }
+        
+        /**
+         * Creates an optional parameter with the supplied default value
+         * 
+         * @param key
+         * @param type
+         * @param description
+         * @param required
+         */
+        public WFSFactoryParam(String key, Class<T> type, String title, String description, T defaultValue, String level) {
+            this(key, type, title, description, defaultValue, Param.LEVEL, level);
             this.defaultValue = defaultValue;
         }
 
-        public WFSFactoryParam(String key, Class<T> type, String description, T defaultValue,
+        public WFSFactoryParam(String key, Class<T> type, String title, String description, T defaultValue,
                 Object... metadata) {
-            super(key, type, description, false, defaultValue, metadata);
+            super(key, type, new SimpleInternationalString(title), new SimpleInternationalString(description), false, -1, -1, defaultValue, new KVP(metadata));
             this.defaultValue = defaultValue;
         }
 
@@ -115,16 +143,17 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
     }
 
     /** Access with {@link WFSDataStoreFactory#getParametersInfo()  */
-    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[13];
+    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[17];
 
     /**
      * Mandatory DataStore parameter indicating the URL for the WFS GetCapabilities document.
      */
     public static final WFSFactoryParam<URL> URL;
     static {
-        String name = "WFSDataStoreFactory:WFS_GET_CAPABILITIES_URL";
+        String key = "WFSDataStoreFactory:GET_CAPABILITIES_URL";
+        String title = "WFS GetCapabilities URL";
         String description = "Represents a URL to the getCapabilities document or a server instance.";
-        parametersInfo[0] = URL = new WFSFactoryParam<URL>(name, URL.class, description);
+        parametersInfo[0] = URL = new WFSFactoryParam<URL>(key, URL.class, title, description);
     }
 
     /**
@@ -138,11 +167,12 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Boolean> PROTOCOL;
     static {
-        String name = "WFSDataStoreFactory:PROTOCOL";
+        String key = "WFSDataStoreFactory:PROTOCOL";
+        String title = "Protocol";
         String description = "Sets a preference for the HTTP protocol to use when requesting "
                 + "WFS functionality. Set this value to Boolean.TRUE for POST, Boolean.FALSE "
                 + "for GET or NULL for AUTO";
-        parametersInfo[1] = PROTOCOL = new WFSFactoryParam<Boolean>(name, Boolean.class,
+        parametersInfo[1] = PROTOCOL = new WFSFactoryParam<Boolean>(key, Boolean.class, title, 
                 description, null);
     }
 
@@ -157,11 +187,11 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<String> USERNAME;
     static {
-        String name = "WFSDataStoreFactory:USERNAME";
+        String key = "WFSDataStoreFactory:USERNAME";
+        String title = "Username";
         String description = "This allows the user to specify a username. This param should not "
                 + "be used without the PASSWORD param.";
-        parametersInfo[2] = USERNAME = new WFSFactoryParam<String>(name, String.class, description,
-                null);
+        parametersInfo[2] = USERNAME = new WFSFactoryParam<String>(key, String.class, title, description);
     }
 
     /**
@@ -175,10 +205,11 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<String> PASSWORD;
     static {
-        String name = "WFSDataStoreFactory:PASSWORD";
+        String key = "WFSDataStoreFactory:PASSWORD";
+        String title = "Password";
         String description = "This allows the user to specify a username. This param should not"
                 + " be used without the USERNAME param.";
-        parametersInfo[3] = PASSWORD = new WFSFactoryParam<String>(name, String.class, description,
+        parametersInfo[3] = PASSWORD = new WFSFactoryParam<String>(key, String.class, title, description,
                 null, Param.IS_PASSWORD, true);
     }
 
@@ -189,14 +220,15 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
     public static final WFSFactoryParam<String> ENCODING;
     static {
 
-        String name = "WFSDataStoreFactory:ENCODING";
+        String key = "WFSDataStoreFactory:ENCODING";
+        String title = "Encoding";
         String description = "This allows the user to specify the character encoding of the "
                 + "XML-Requests sent to the Server. Defaults to UTF-8";
 
         String defaultValue = "UTF-8";
         List<String> options = new ArrayList<String>(Charset.availableCharsets().keySet());
         Collections.sort(options);
-        parametersInfo[4] = ENCODING = new WFSFactoryParam<String>(name, String.class, description,
+        parametersInfo[4] = ENCODING = new WFSFactoryParam<String>(key, String.class, title, description,
                 defaultValue, Parameter.OPTIONS, options);
     }
 
@@ -208,10 +240,11 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Integer> TIMEOUT;
     static {
-        String name = "WFSDataStoreFactory:TIMEOUT";
+        String key = "WFSDataStoreFactory:TIMEOUT";
+        String title = "Time-out";
         String description = "This allows the user to specify a timeout in milliseconds. This param"
                 + " has a default value of 3000ms.";
-        parametersInfo[5] = TIMEOUT = new WFSFactoryParam<Integer>(name, Integer.class,
+        parametersInfo[5] = TIMEOUT = new WFSFactoryParam<Integer>(key, Integer.class, title,
                 description, 3000);
     }
 
@@ -221,10 +254,11 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Integer> BUFFER_SIZE;
     static {
-        String name = "WFSDataStoreFactory:BUFFER_SIZE";
+        String key = "WFSDataStoreFactory:BUFFER_SIZE";
+        String title = "Buffer Size";
         String description = "This allows the user to specify a buffer size in features. This param "
                 + "has a default value of 10 features.";
-        parametersInfo[6] = BUFFER_SIZE = new WFSFactoryParam<Integer>(name, Integer.class,
+        parametersInfo[6] = BUFFER_SIZE = new WFSFactoryParam<Integer>(key, Integer.class, title,
                 description, 10);
     }
 
@@ -234,10 +268,11 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Boolean> TRY_GZIP;
     static {
-        String name = "WFSDataStoreFactory:TRY_GZIP";
+        String key = "WFSDataStoreFactory:TRY_GZIP";
+        String title = "Try GZIP";
         String description = "Indicates that datastore should use gzip to transfer data if the server "
                 + "supports it. Default is true";
-        parametersInfo[7] = TRY_GZIP = new WFSFactoryParam<Boolean>(name, Boolean.class,
+        parametersInfo[7] = TRY_GZIP = new WFSFactoryParam<Boolean>(key, Boolean.class, title,
                 description, Boolean.TRUE);
     }
 
@@ -248,11 +283,12 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
     public static final WFSFactoryParam<Boolean> LENIENT;
     static {
 
-        String name = "WFSDataStoreFactory:LENIENT";
+        String key = "WFSDataStoreFactory:LENIENT";
+        String title = "Lenient";
         String description = "Indicates that datastore should do its best to create features from the "
                 + "provided data even if it does not accurately match the schema.  Errors will "
                 + "be logged but the parsing will continue if this is true.  Default is false";
-        parametersInfo[8] = LENIENT = new WFSFactoryParam<Boolean>(name, Boolean.class,
+        parametersInfo[8] = LENIENT = new WFSFactoryParam<Boolean>(key, Boolean.class, title,
                 description, false);
     }
 
@@ -262,10 +298,11 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Integer> MAXFEATURES;
     static {
-        String name = "WFSDataStoreFactory:MAXFEATURES";
+        String key = "WFSDataStoreFactory:MAXFEATURES";
+        String title = "Maximum features";
         String description = "Positive integer used as a hard limit for the amount of Features to retrieve"
                 + " for each FeatureType. A value of zero or not providing this parameter means no limit.";
-        parametersInfo[9] = MAXFEATURES = new WFSFactoryParam<Integer>(name, Integer.class,
+        parametersInfo[9] = MAXFEATURES = new WFSFactoryParam<Integer>(key, Integer.class, title,
                 description, 0);
     }
 
@@ -280,12 +317,12 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Integer> FILTER_COMPLIANCE;;
     static {
-
-        String name = "WFSDataStoreFactory:FILTER_COMPLIANCE";
+        String key = "WFSDataStoreFactory:FILTER_COMPLIANCE";
+        String title = "Filter compliance";
         String description = "Level of compliance to WFS specification (0-low,1-medium,2-high)";
         List<Integer> options = Arrays.asList(new Integer[] { 0, 1, 2 });
 
-        parametersInfo[10] = FILTER_COMPLIANCE = new WFSFactoryParam<Integer>(name, Integer.class,
+        parametersInfo[10] = FILTER_COMPLIANCE = new WFSFactoryParam<Integer>(key, Integer.class, title,
                 description, null, Parameter.OPTIONS, options);
     }
 
@@ -295,12 +332,13 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<String> WFS_STRATEGY;
     static {
-        String name = "WFSDataStoreFactory:WFS_STRATEGY";
+        String key = "WFSDataStoreFactory:WFS_STRATEGY";
+        String title = "WFS Strategy";
         String description = "Override wfs stragegy with either cubwerx, ionic, mapserver"
                 + ", geoserver, or nonstrict strategy.";
         List<String> options = Arrays.asList(new String[] { "auto", "strict", "nonstrict",
                 "mapserver", "geoserver", "cubewerx", "ionic" });
-        parametersInfo[11] = WFS_STRATEGY = new WFSFactoryParam<String>(name, String.class,
+        parametersInfo[11] = WFS_STRATEGY = new WFSFactoryParam<String>(key, String.class, title,
                 description, "auto", Parameter.OPTIONS, options);
     }
 
@@ -309,10 +347,67 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<String> NAMESPACE;
     static {
-        String name = "namespace";
+        String key = "namespace";
+        String title = "Namespace";
         String description = "Override the original WFS type name namespaces";
-        parametersInfo[12] = NAMESPACE = new WFSFactoryParam<String>(name, String.class,
-                description, null);
+        parametersInfo[12] = NAMESPACE = new WFSFactoryParam<String>(key, String.class, title,
+                description, null, "advanced");
+    }
+    
+    /**
+     * Optional {@code String} Flag to disable usage of OtherSRS in requests and
+     * always use DefaultSRS (eventually reprojecting locally the results)
+     */
+    public static final WFSFactoryParam<Boolean> USEDEFAULTSRS;
+    static {
+        String key = "usedefaultsrs";
+        String title = "Use Default SRS";
+        String description = "Use always the declared DefaultSRS for requests and reproject locally if necessary";
+        parametersInfo[13] = USEDEFAULTSRS = new WFSFactoryParam<Boolean>(key,
+                Boolean.class, title, description, false, "advanced");
+    }
+        
+    /**
+     * Optional {@code String} DataStore parameter indicating axis order used by the
+     * remote WFS server in result coordinates.
+     */
+    public static final WFSFactoryParam<String> AXIS_ORDER;
+    static {
+        String key = "WFSDataStoreFactory:AXIS_ORDER";
+        String title = "Axis Order";
+        String description = "Indicates axis order used by the remote WFS server in result coordinates. It applies only to WFS 1.1.0 servers. "
+                + "Default is " + AXIS_ORDER_COMPLIANT;
+        List<String> options = Arrays.asList(new String[] {
+                AXIS_ORDER_COMPLIANT,
+                AXIS_ORDER_EAST_NORTH,
+                AXIS_ORDER_NORTH_EAST });
+        parametersInfo[14] = AXIS_ORDER = new WFSFactoryParam<String>(key,
+                String.class, title, description, AXIS_ORDER_COMPLIANT,
+                Parameter.OPTIONS, options, Parameter.LEVEL, "advanced");
+    }
+    
+    public static final WFSFactoryParam<String> AXIS_ORDER_FILTER;
+    static {
+        String key = "WFSDataStoreFactory:AXIS_ORDER_FILTER";
+        String title = "Axis Order Filter";
+        String description = "Indicates axis order used by the remote WFS server for filters. It applies only to WFS 1.1.0 servers. "
+                + "Default is the same as AXIS_ORDER";
+        List<String> options = Arrays.asList(new String[] {
+                AXIS_ORDER_COMPLIANT,
+                AXIS_ORDER_EAST_NORTH,
+                AXIS_ORDER_NORTH_EAST });
+        parametersInfo[15] = AXIS_ORDER_FILTER = new WFSFactoryParam<String>(key,
+                String.class, title, description, null, Parameter.OPTIONS, options, Parameter.LEVEL, "advanced");
+    }
+    
+    public static final WFSFactoryParam<String> OUTPUTFORMAT;
+    static {
+        String key = "WFSDataStoreFactory:OUTPUTFORMAT";
+        String title = "Outputformat";
+        String description = "This allows the user to specify an outputFormat, different from the default one.";
+    
+        parametersInfo[16] = OUTPUTFORMAT = new WFSFactoryParam<String>(key,
+                String.class, title, description, null, "advanced");
     }
 
     /**
@@ -369,6 +464,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         dataStore.setFeatureTypeFactory(new FeatureTypeFactoryImpl());
         dataStore.setFeatureFactory(CommonFactoryFinder.getFeatureFactory(null));
         dataStore.setDataStoreFactory(this);
+        dataStore.setNamespaceURI(config.getNamespaceOverride());
 
         return dataStore;
     }
@@ -464,6 +560,90 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             }
         }
         return true;
+    }
+    
+    /**
+     * Creates a HTTP GET Method based WFS {@code GetCapabilities} request for the given protocol
+     * version.
+     * <p>
+     * If the query string in the {@code host} URL already contains a VERSION number, that version
+     * is <b>discarded</b>.
+     * </p>
+     * 
+     * @param host
+     *            non null URL from which to construct the WFS {@code GetCapabilities} request by
+     *            discarding the query string, if any, and appending the propper query string.
+     * @return
+     */
+    public static URL createGetCapabilitiesRequest(URL host, Version version) {
+        if (host == null) {
+            throw new NullPointerException("null url");
+        }
+        if (version == null) {
+            throw new NullPointerException("version");
+        }
+
+        Map<String, String> getCapsKvp = new HashMap<String, String>();
+        getCapsKvp.put("SERVICE", "WFS");
+        getCapsKvp.put("REQUEST", "GetCapabilities");
+        getCapsKvp.put("VERSION", version.toString());
+        return buildURL(host, getCapsKvp);
+    }
+
+    /**
+     * Creates a HTTP GET Method based WFS {@code GetCapabilities} request.
+     * <p>
+     * If the query string in the {@code host} URL already contains a VERSION number, that version
+     * is used, otherwise the queried version will be 1.0.0.
+     * </p>
+     * <p>
+     * <b>NOTE</b> the default version will be 1.0.0 until the support for 1.1.0 gets stable enough
+     * for general use. If you want to use a 1.1.0 WFS you'll have to explicitly provide the
+     * VERSION=1.1.0 parameter in the GetCapabilities request meanwhile.
+     * </p>
+     * 
+     * @param host
+     *            non null URL pointing either to a base WFS service access point, or to a full
+     *            {@code GetCapabilities} request.
+     * @return
+     */
+    public static URL createGetCapabilitiesRequest(final URL host) {
+        if (host == null) {
+            throw new NullPointerException("url");
+        }
+
+        String queryString = host.getQuery();
+        queryString = queryString == null || "".equals(queryString.trim()) ? "" : queryString
+                .toUpperCase();
+
+        final Version defaultVersion = Versions.highest();
+        
+        // which version to use
+        Version requestVersion = defaultVersion;
+
+        if (queryString.length() > 0) {
+
+            Map<String, String> params = new HashMap<String, String>();
+            String[] split = queryString.split("&");
+            for (String kvp : split) {
+                int index = kvp.indexOf('=');
+                String key = index > 0 ? kvp.substring(0, index) : kvp;
+                String value = index > 0 ? kvp.substring(index + 1) : null;
+                params.put(key, value);
+            }
+
+            String request = params.get("REQUEST");
+            if ("GETCAPABILITIES".equals(request)) {
+                String version = params.get("VERSION");
+                if (version != null) {
+                    requestVersion = Versions.find(version);
+                    if (requestVersion == null) {
+                        requestVersion = defaultVersion;
+                    }
+                }
+            }
+        }
+        return createGetCapabilitiesRequest(host, requestVersion);
     }
 
 }

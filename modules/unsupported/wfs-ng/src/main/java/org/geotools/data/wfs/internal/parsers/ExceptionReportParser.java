@@ -60,7 +60,7 @@ public class ExceptionReportParser implements WFSResponseParser {
      * @return a {@link WFSException} containing the server returned exception report messages
      * @see WFSResponseParser#parse(WFSStrategy, WFSResponse)
      */
-    public Object parse(WFSResponse response) {
+    public Object parse(WFSResponse response, String axisOrder) {
         throw new UnsupportedOperationException("implement!");
 //        WFSConfiguration configuration = new WFSConfiguration();
 //        Parser parser = new Parser(configuration);

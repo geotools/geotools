@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.wfs.internal;
 
 import static org.geotools.data.wfs.impl.WFSDataStoreFactory.BUFFER_SIZE;
@@ -12,10 +28,15 @@ import static org.geotools.data.wfs.impl.WFSDataStoreFactory.TIMEOUT;
 import static org.geotools.data.wfs.impl.WFSDataStoreFactory.TRY_GZIP;
 import static org.geotools.data.wfs.impl.WFSDataStoreFactory.USERNAME;
 import static org.geotools.data.wfs.impl.WFSDataStoreFactory.WFS_STRATEGY;
+import static org.geotools.data.wfs.impl.WFSDataStoreFactory.OUTPUTFORMAT;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Map;
+
+import org.geotools.data.wfs.impl.WFSDataStoreFactory;
+import org.geotools.referencing.CRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @see WFSStrategy#setConfig(WFSConfig)
@@ -45,6 +66,16 @@ public class WFSConfig {
     private Integer filterCompliance;
 
     private String namespaceOverride;
+    
+    private String outputformatOverride;
+    
+    private boolean useDefaultSrs;
+    
+    private String axisOrder;
+    
+    private String axisOrderFilter;
+    
+    
 
     public static enum PreferredHttpMethod {
         AUTO, HTTP_GET, HTTP_POST
@@ -93,6 +124,7 @@ public class WFSConfig {
         config.wfsStrategy = (String) WFS_STRATEGY.lookUp(params);
         config.filterCompliance = (Integer) FILTER_COMPLIANCE.lookUp(params);
         config.namespaceOverride = (String) NAMESPACE.lookUp(params);
+        config.outputformatOverride = (String) OUTPUTFORMAT.lookUp(params);        
 
         return config;
     }
@@ -179,5 +211,55 @@ public class WFSConfig {
      */
     public String getNamespaceOverride() {
         return namespaceOverride;
+    }
+
+    /**
+     * @return the outputformat override
+     */
+    public String getOutputformatOverride() {
+        return outputformatOverride;
+    }
+
+    /**
+     * @return if use default srs
+     */
+    public boolean isUseDefaultSrs() {
+        return useDefaultSrs;
+    }
+
+    /**
+     * @return the axis order
+     */
+    public String getAxisOrder() {
+        return axisOrder;
+    }
+
+    /**
+     * @return the axis order filter
+     */
+    public String getAxisOrderFilter() {
+        return axisOrderFilter;
+    }    
+    
+    /**
+     * Checks if axis flipping is needed comparing axis order requested for the
+     * DataStore with query crs.
+     * 
+     * @param axisOrder
+     * @param coordinateSystem
+     * @return
+     */
+    public static boolean invertAxisNeeded(String axisOrder,
+            CoordinateReferenceSystem crs) {
+        boolean invertXY;
+    
+        if (WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH.equals(axisOrder)) {
+            invertXY = false;
+        } else if (WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST.equals(axisOrder)) {
+            invertXY = true;
+        } else {
+            invertXY = CRS.getAxisOrder(crs).equals(CRS.AxisOrder.NORTH_EAST);
+        }
+        return invertXY;
     }
 }

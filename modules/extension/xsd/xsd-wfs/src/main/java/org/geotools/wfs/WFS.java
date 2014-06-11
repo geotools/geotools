@@ -115,15 +115,6 @@ public abstract class WFS extends XSD {
     /** @generated */
     public static final QName InsertElementType = new QName("http://www.opengis.net/wfs",
             "InsertElementType");
-
-    /** @generated */
-    public static final QName InsertResultsType = new QName("http://www.opengis.net/wfs",
-            "InsertResultsType");
-
-    /** @generated */
-    public static final QName LockFeatureResponseType = new QName("http://www.opengis.net/wfs",
-            "LockFeatureResponseType");
-
     /** @generated */
     public static final QName LockFeatureType = new QName("http://www.opengis.net/wfs",
             "LockFeatureType");
@@ -159,10 +150,6 @@ public abstract class WFS extends XSD {
     /** @generated */
     public static final QName ResultTypeType = new QName("http://www.opengis.net/wfs",
             "ResultTypeType");
-
-    /** @generated */
-    public static final QName TransactionResponseType = new QName("http://www.opengis.net/wfs",
-            "TransactionResponseType");
 
     /** @generated */
     public static final QName TransactionResultsType = new QName("http://www.opengis.net/wfs",
@@ -236,10 +223,6 @@ public abstract class WFS extends XSD {
     public static final QName LockFeature = new QName("http://www.opengis.net/wfs", "LockFeature");
 
     /** @generated */
-    public static final QName LockFeatureResponse = new QName("http://www.opengis.net/wfs",
-            "LockFeatureResponse");
-
-    /** @generated */
     public static final QName LockId = new QName("http://www.opengis.net/wfs", "LockId");
 
     /** @generated */
@@ -266,10 +249,6 @@ public abstract class WFS extends XSD {
     public static final QName Transaction = new QName("http://www.opengis.net/wfs", "Transaction");
 
     /** @generated */
-    public static final QName TransactionResponse = new QName("http://www.opengis.net/wfs",
-            "TransactionResponse");
-
-    /** @generated */
     public static final QName Update = new QName("http://www.opengis.net/wfs", "Update");
 
     /** @generated */
@@ -279,6 +258,9 @@ public abstract class WFS extends XSD {
     /** @generated */
     public static final QName XlinkPropertyName = new QName("http://www.opengis.net/wfs",
             "XlinkPropertyName");
+    
+    
+    
 
     /**
      * private constructor

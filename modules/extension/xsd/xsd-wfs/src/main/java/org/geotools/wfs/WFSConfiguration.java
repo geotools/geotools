@@ -132,25 +132,16 @@ public abstract class WFSConfiguration extends Configuration {
             InsertedFeatureTypeBinding.class);
         container.registerComponentImplementation(WFS.InsertElementType,
             InsertElementTypeBinding.class);
-        container.registerComponentImplementation(WFS.InsertResultsType,
-            InsertResultsTypeBinding.class);
-        container.registerComponentImplementation(WFS.LockFeatureResponseType,
-            LockFeatureResponseTypeBinding.class);
         container.registerComponentImplementation(WFS.LockFeatureType, LockFeatureTypeBinding.class);
         container.registerComponentImplementation(WFS.LockType, LockTypeBinding.class);
         container.registerComponentImplementation(WFS.MetadataURLType, MetadataURLTypeBinding.class);
         container.registerComponentImplementation(WFS.NativeType, NativeTypeBinding.class);
-        container.registerComponentImplementation(WFS.OperationsType, OperationsTypeBinding.class);
         container.registerComponentImplementation(WFS.OperationType, OperationTypeBinding.class);
         container.registerComponentImplementation(WFS.OutputFormatListType,
             OutputFormatListTypeBinding.class);
         container.registerComponentImplementation(WFS.PropertyType, PropertyTypeBinding.class);
         container.registerComponentImplementation(WFS.QueryType, QueryTypeBinding.class);
         container.registerComponentImplementation(WFS.ResultTypeType, ResultTypeTypeBinding.class);
-        container.registerComponentImplementation(WFS.TransactionResponseType,
-            TransactionResponseTypeBinding.class);
-        container.registerComponentImplementation(WFS.TransactionResultsType,
-            TransactionResultsTypeBinding.class);
         container.registerComponentImplementation(WFS.TransactionSummaryType,
             TransactionSummaryTypeBinding.class);
         container.registerComponentImplementation(WFS.TransactionType, TransactionTypeBinding.class);

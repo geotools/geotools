@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wfs:FeatureCollection
+ xmlns:comuni='http://www.tinyows.org/'
+ xmlns:wfs='http://www.opengis.net/wfs'
+ xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+ xmlns:gml='http://www.opengis.net/gml'
+ xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+ xmlns:ogc='http://www.opengis.net/ogc'
+ xmlns:xlink='http://www.w3.org/1999/xlink'
+ xmlns:ows='http://www.opengis.net/ows'
+ xsi:schemaLocation='http://www.tinyows.org/
+    http://127.0.0.1:8888/cgi-bin/tinyows?service=WFS&amp;version=1.1.0&amp;request=DescribeFeatureType&amp;Typename=comuni:comuni11   http://www.opengis.net/wfs
+   http://schemas.opengis.net/wfs/1.1.0/wfs.xsd
+   http://www.opengis.net/gml
+   http://schemas.opengis.net/gml/3.1.1/base/gml.xsd'
+ timeStamp='2012-11-08T17:35:37.133876Z' numberOfFeatures='6' />

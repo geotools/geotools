@@ -30,6 +30,7 @@ import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.feature.Types;
 import org.geotools.filter.FidFilterImpl;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.jdbc.JDBCFeatureSource;
@@ -133,7 +134,14 @@ public class MappingFeatureIteratorFactory {
             if (!(query instanceof JoiningQuery)) {
                 boolean hasIdColumn = !Expression.NIL.equals(mapping.getFeatureIdExpression())
                         && !(mapping.getFeatureIdExpression() instanceof Literal);
-                query = new JoiningQuery(query, hasIdColumn);
+                query = new JoiningQuery(query);
+                if (hasIdColumn) {
+                    FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+                    mapping.getFeatureIdExpression().accept(extractor, null);
+                    for (String pn : extractor.getAttributeNameSet()) {
+                        ((JoiningQuery) query).addId(pn);
+                    }
+                }
             }
         }
         IMappingFeatureIterator iterator;
@@ -177,7 +185,9 @@ public class MappingFeatureIteratorFactory {
                 int maxFeatures = Query.DEFAULT_MAX;
                 if (filter != null && filter != Filter.INCLUDE) {
                     maxFeatures = query.getMaxFeatures();
-                    removeQueryLimitIfDenormalised = true;
+                }
+                if (isJoining) {
+                   ((JoiningQuery)query).setDenormalised(mapping.isDenormalised());
                 }
                 if (isJoining && isListFilter != null) {
                     // pass it on in JoiningQuery so it can be handled when the SQL is prepared
@@ -193,7 +203,7 @@ public class MappingFeatureIteratorFactory {
                 // need to flag if this is non joining and has pre filter because it needs
                 // to find denormalised rows that match the id (but doesn't match pre filter)
                 boolean isFiltered = !isJoining && preFilter != null && preFilter != Filter.INCLUDE;
-                iterator = new DataAccessMappingFeatureIterator(store, mapping, query, isFiltered, removeQueryLimitIfDenormalised);
+                iterator = new DataAccessMappingFeatureIterator(store, mapping, query, isFiltered);
                 // HACK HACK HACK
                 // experimental/temporary solution for isList subsetting by filtering
                 // Because subsetting should be done before the feature is built.. so we're not 

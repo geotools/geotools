@@ -95,16 +95,20 @@ public class JoiningQuery extends Query {
      */
     private boolean isSubset;
     
+    private boolean isDenormalised;
+    
+    protected List<String> ids = new ArrayList<String>(); 
+    
     public JoiningQuery(JoiningQuery query) {
         super(query);
-        this.hasIdColumn = query.hasIdColumn;
         setQueryJoins(query.getQueryJoins());
         setSubset(query.isSubset);
+        isDenormalised = query.isDenormalised;
+        ids = query.ids;
     }
     
-    public JoiningQuery(Query query, boolean hasIdColumn){
+    public JoiningQuery(Query query){
         super(query);
-        this.hasIdColumn = hasIdColumn;
     }
     
     public JoiningQuery() {
@@ -127,7 +131,23 @@ public class JoiningQuery extends Query {
     }
     
     public boolean hasIdColumn() {
-        return hasIdColumn;
+        return !ids.isEmpty();
+    }
+    
+    public void addId(String pn) {
+        this.ids.add(pn);
+    }
+    
+    public List<String> getIds() {
+        return ids;
+    }
+    
+    public boolean isDenormalised() {
+        return isDenormalised;
+    }
+    
+    public void setDenormalised(boolean isDenormalised) {
+        this.isDenormalised = isDenormalised;
     }
 
 }

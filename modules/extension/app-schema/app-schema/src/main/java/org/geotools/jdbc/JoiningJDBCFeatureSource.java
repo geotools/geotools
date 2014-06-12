@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -249,23 +250,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     if (joinOrders.length() > 0) {
                         sql.append(" ORDER BY ");
                         sql.append(joinOrders);                                                         
-                    }
-                    
-                    if (!pkColumnNames.isEmpty()) {
-                        for (String pk : pkColumnNames) {
-                            
-                            StringBuffer pkSql = new StringBuffer();                            
-                            encodeColumnName(pk, query.getTypeName(), pkSql, null);
-                            
-                            if (!pkSql.toString().isEmpty() && orderByFields.add(pkSql.toString())) {
-                            	if (joinOrders.length() == 0) {
-                            	    sql.append(" ORDER BY ");
-                            	} else {
-                            	    sql.append(", ");                		
-                            	}
-                                sql.append(pkSql);
-                            }
-                        }
                     }
                 } else {
                     if (aliases != null && aliases[j] != null) {
@@ -603,11 +587,61 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             } catch (FilterToSQLException e) {
                 throw new RuntimeException(e);
             }
+        }        
+        
+        //paging
+        if (getDataStore().dialect.isLimitOffsetSupported()) {
+            int startIndex = query.getStartIndex() == null ? 0 : query.getStartIndex();
+            if (query.isDenormalised()) {
+//                if (startIndex > 0) {
+//                    // maxFeatures is already applied in DataAccessMappingFeatureIterator
+//                    query.setStartIndex(startIndex);
+//                }
+//            } else {
+                int maxFeatures = query.getMaxFeatures();
+                if (startIndex > 0 || maxFeatures != Query.DEFAULT_MAX) {
+                // handle denormalised grouping by id, or if unspecified, PK
+                    
+                    Collection<String> ids;
+                    
+                    if (!query.getIds().isEmpty()) {
+                        ids = query.getIds();
+                    } else {
+                        ids = pkColumnNames;
+                    }
+                    for (String id : ids) {
+                        sql.append(" INNER JOIN ");
+                        // where id != top startIndex of id 
+                        String alias = createAlias(featureType.getTypeName(), tableNames);                        
+                        tableNames.add(alias);
+                        
+                        getDataStore().dialect.encodeTableName(alias, sql);
+                        sql.append(" ON ( ");                      
+                                                
+                        sql.append(id);
+                        
+                        sql.append(" NOT IN ");
+                        
+                        StringBuffer topIds = new StringBuffer();
+                        topIds.append("SELECT DISTINCT ").append(id);
+                        topIds.append(" FROM ").append(featureType.getTypeName());                
+                        
+                        // apply TOP using limit offset
+                        getDataStore().dialect.applyLimitOffset(topIds, maxFeatures, startIndex);
+                        
+                        sql.append(topIds);
+                        sql.append(" ) ");
+                        }                    
+                    }                
+            }                
         }
+       
+        
+//        setPaging(query, sql, aliases, pkColumnNames, isDenormalised, startIndex);
 
         //sorting
         sort(query, sql, aliases, pkColumnNames);
-        
+                
         // finally encode limit/offset, if necessary
         getDataStore().applyLimitOffset(sql, query);
         
@@ -618,6 +652,18 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         return sql.toString();
     }        
        
+    private void setPaging(JoiningQuery query, StringBuffer sql, String[] aliases,
+            Set<String> pkColumnNames, boolean isDenormalised, int startIndex) {
+        if (startIndex <= 0) {
+            return;
+        }
+        if (!isDenormalised) {
+            query.setStartIndex(startIndex);
+        } else {
+            sql.append(" INNER JOIN ( SELECT DISTINCT ");
+        }
+    }
+
     /**
      * Generates a 'SELECT p1, p2, ... FROM ... WHERE ...' prepared statement.
      * 
@@ -812,8 +858,10 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             return query;
         }
         else if (query instanceof JoiningQuery) {            
-            JoiningQuery jQuery = new JoiningQuery(super.joinQuery(query),
-                    ((JoiningQuery) query).hasIdColumn());   
+            JoiningQuery jQuery = new JoiningQuery(super.joinQuery(query)); 
+            for (String id : ((JoiningQuery) query).getIds()) {
+                jQuery.addId(id);
+            }
             jQuery.setQueryJoins(((JoiningQuery)query).getQueryJoins());            
             return jQuery;            
         }

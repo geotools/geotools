@@ -332,6 +332,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             newQuery.setCoordinateSystemReproject(query.getCoordinateSystemReproject());
             newQuery.setHandle(query.getHandle());
             newQuery.setMaxFeatures(query.getMaxFeatures());
+            newQuery.setStartIndex(query.getStartIndex());
             
             List<SortBy> sort = new ArrayList<SortBy>();
             if (query.getSortBy() != null) {
@@ -370,16 +371,17 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                                             + "\nIf this cannot be helped, you can turn off joining in app-schema.properties file.",
                                     mapping.getFeatureIdExpression(), ns, separator, typeName));
                 }
+                
+                JoiningQuery jQuery = new JoiningQuery(newQuery);
+                jQuery.setQueryJoins(((JoiningQuery) query).getQueryJoins());
+                jQuery.setSubset(((JoiningQuery) query).isSubset());
 
                 for (String att : extractor.getAttributeNameSet()) {
                     sort.add(new SortByImpl(filterFac.property(att), SortOrder.ASCENDING));
+                    jQuery.addId(att);
                 }
 
-                JoiningQuery jQuery = new JoiningQuery(newQuery,
-                        (!Expression.NIL.equals(mapping.getFeatureIdExpression()) && !(mapping
-                                .getFeatureIdExpression() instanceof Literal)));
-                jQuery.setQueryJoins(((JoiningQuery) query).getQueryJoins());
-                jQuery.setSubset(((JoiningQuery) query).isSubset());
+                
                 unrolledQuery = jQuery;
             } else {
                 unrolledQuery = newQuery;

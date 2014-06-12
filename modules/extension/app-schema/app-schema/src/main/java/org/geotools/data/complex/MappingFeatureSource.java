@@ -117,6 +117,7 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         namedQuery.setCoordinateSystemReproject(query.getCoordinateSystemReproject());
         namedQuery.setHandle(query.getHandle());
         namedQuery.setMaxFeatures(query.getMaxFeatures());
+        namedQuery.setStartIndex(query.getStartIndex());
         namedQuery.setSortBy(query.getSortBy());
         namedQuery.setHints(query.getHints());
         if (query instanceof JoiningQuery) {

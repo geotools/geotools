@@ -19,6 +19,7 @@ package org.geotools.imageio.unidata.utilities;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 
@@ -280,4 +281,39 @@ public class UnidataTimeUtilities {
         return value;
     }
 
+    /**
+     * Add a quantity of time units to a Calendar 
+     * @param cal Calendar to add to
+     * @param unit Calendar unit to add
+     * @param val Quantity of unit to add
+     */
+    public static void addTimeUnit(Calendar cal, int unit, int val) {
+    	addTimeUnit(cal, unit, (long) val); 
+    }
+
+    /**
+     * Add a quantity of time units to a Calendar 
+     * @param cal Calendar to add to
+     * @param unit Calendar unit to add
+     * @param val Quantity of TimeUnit to add
+     */
+    public static void addTimeUnit(Calendar cal, int unit, long val) {
+    	if (unit == Calendar.DATE) {
+    		cal.setTimeInMillis(cal.getTimeInMillis() + TimeUnit.DAYS.toMillis(val));
+    	} else if (unit == Calendar.HOUR) {
+    		cal.setTimeInMillis(cal.getTimeInMillis() + TimeUnit.HOURS.toMillis(val));
+    	} else if (unit == Calendar.MINUTE) {
+    		cal.setTimeInMillis(cal.getTimeInMillis() + TimeUnit.MINUTES.toMillis(val));
+    	} else if (unit == Calendar.SECOND) {
+    		cal.setTimeInMillis(cal.getTimeInMillis() + TimeUnit.SECONDS.toMillis(val));
+    	} else if (unit == Calendar.MILLISECOND) {
+    		cal.setTimeInMillis(cal.getTimeInMillis() + val);
+    	} else {
+    		int intVal = (int) val;
+    		if (intVal != val) {
+    			throw new IllegalArgumentException("Can't convert " + val + " to an int without losing data");
+    		}
+    		cal.add(unit, intVal);
+    	}
+    }
 }

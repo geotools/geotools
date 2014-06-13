@@ -762,8 +762,17 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
         dimension = crsDimension(dimension);
 
         String decimalSeparator = parser.getAttributeValue("", "decimal");
+        if (decimalSeparator == null) { //default
+            decimalSeparator = ".";
+        }
         String coordSeparator = parser.getAttributeValue("", "cs");
+        if (coordSeparator == null) { //default
+            coordSeparator = ",";
+        }
         String tupleSeparator = parser.getAttributeValue("", "ts");
+        if (tupleSeparator == null) { //default
+            tupleSeparator = " ";
+        }
 
         String rawTextValue = parser.nextText();
         Coordinate[] coords = toCoordList(rawTextValue, decimalSeparator, coordSeparator,

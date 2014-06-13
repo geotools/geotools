@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:gubs="http://www.fgdc.gov/fgdc/gubs" 
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            xmlns:gml="http://www.opengis.net/gml" 
+            targetNamespace="http://www.fgdc.gov/fgdc/gubs" 
+            xmlns:xlink="http://www.w3.org/1999/xlink" 
+            xmlns:fw="http://www.fgdc.gov/framework/073004" 
+            elementFormDefault="qualified" version="1.0">
+    <xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubscensustract/REQUEST/get/DATA/LPR/fgdc_sfgml.xsd"/>
+    <xsd:import namespace="http://www.fgdc.gov/framework/073004" schemaLocation="http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubscensustract/REQUEST/get/DATA/LPR/fgdc_frameworkgml30.xsd"/>
+    <xsd:element name="StatisticalUnit" substitutionGroup="gml:_Feature" type="gubs:StatisticalUnitType">
+    </xsd:element>
+    <xsd:complexType name="StatisticalUnitType">
+      <xsd:complexContent>
+        <xsd:extension base="gml:AbstractFeatureType">
+          <xsd:sequence>
+            <xsd:element name="unitId" type="xsd:string">
+            </xsd:element>
+            <xsd:element name="typeAbbreviation" minOccurs="0" type="xsd:string">
+            </xsd:element>
+            <xsd:element name="instanceName" type="xsd:string">
+            </xsd:element>
+            <xsd:element name="instanceAlternameName" minOccurs="0" maxOccurs="unbounded" type="xsd:string">
+            </xsd:element>
+            <xsd:element name="officialDescription" minOccurs="0" type="xsd:string">
+            </xsd:element>
+            <xsd:element name="codingSystemReference" minOccurs="0" maxOccurs="unbounded" type="xsd:string">
+            </xsd:element>
+            <xsd:element name="effectiveDate" minOccurs="0" maxOccurs="2" type="xsd:date">
+            </xsd:element>
+            <xsd:element name="geometry" maxOccurs="unbounded" type="gml:SurfacePropertyType">
+            </xsd:element>
+            <xsd:element name="boundedBy" minOccurs="0" maxOccurs="unbounded" type="gml:ReferenceType">
+              <xsd:annotation>
+                <xsd:appinfo source="urn:x-gml:targetElement">gubs:Boundary/@gml:id</xsd:appinfo>
+
+</xsd:annotation>
+            </xsd:element>
+            <xsd:element name="statisticalUnitType">
+              <xsd:annotation>
+                <xsd:appinfo source="../Dictionaries/StatisticalUnitTypeDictionary.xml"/>
+
+</xsd:annotation>
+              <xsd:complexType>
+                <xsd:simpleContent>
+                  <xsd:restriction base="gml:CodeType">
+                    <xsd:attribute name="codeSpace" use="required" type="xsd:anyURI">
+                    </xsd:attribute>
+                  </xsd:restriction>
+                </xsd:simpleContent>
+              </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="typeDefinition" minOccurs="0" type="xsd:string">
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:schema>

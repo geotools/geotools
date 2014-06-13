@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- This Web Feature Server is a component of CubeWerx Suite 4.7.5. -->
+<wfs:FeatureCollection
+  xmlns="http://www.cubewerx.com/cw"
+  xmlns:cw="http://www.cubewerx.com/cw"
+  xmlns:trans="http://www.fgdc.gov/framework/073004/transportation"
+  xmlns:fw="http://www.fgdc.gov/framework/073004"
+  xmlns:wfs="http://www.opengis.net/wfs"
+  xmlns:gml="http://www.opengis.net/gml"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.fgdc.gov/framework/073004/transportation http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework&amp;service=WFS&amp;version=1.1.0&amp;request=DescribeFeatureType&amp;outputFormat=GML3&amp;typeName=ROADSEG  http://www.fgdc.gov/framework/073004 http://frameworkwfs.usgs.gov/framework/schemas/gmlsf1/Framework.xsd http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/feature.xsd">
+  <gml:featureMember>
+    <trans:RoadSeg gml:id="CWFID.ROADSEG.0.0">
+      <trans:lastUpdateDate>2005-06-01T00:00:00Z</trans:lastUpdateDate>
+      <trans:identifier>
+        <fw:Identifier>
+          <fw:identifier>{3F728C4B-9BE5-4FE2-80EA-D7A0FF178F79}</fw:identifier>
+          <fw:idAuthority>US Census Bureau</fw:idAuthority>
+        </fw:Identifier>
+      </trans:identifier>
+      <trans:geometry>
+        <gml:LineString srsName="EPSG:4269">
+          <gml:posList srsDimension="3">
+            -160.230234 21.87064403 0 -160.22929 21.87069903 0 -160.227474 21.87080403 0 -160.227439 21.86885203 0
+            -160.225335 21.86891603 0 -160.225266 21.86722003 0 -160.224406 21.86724603 0
+          </gml:posList>
+        </gml:LineString>
+      </trans:geometry>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_FEATUREID</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>203415738</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_DATASETID</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>8bf9066f-e588-421b-b800-fc3d98a4defd</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_DESCRIPTION</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>TIGER/Line Files</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_ORIGINATOR</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>US Census Bureau</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>DATA_SECURITY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Integer</fw:type>
+          <fw:value>5</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>DISTRIBUTION_POLICY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>E4</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>STCO_FIPSCODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>15007</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>ROAD_CLASS</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>4</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>ISONEWAY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>0</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>ONEWAY_DIRECTION</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Boolean</fw:type>
+          <fw:value>0</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>CFCC_CODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>A41</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:status>unknown</trans:status>
+      <trans:fieldMeasure uom="unknown">0</trans:fieldMeasure>
+      <trans:length uom="unknown">0</trans:length>
+      <trans:isAnchorSection>false</trans:isAnchorSection>
+    </trans:RoadSeg>
+  </gml:featureMember>
+  <gml:featureMember>
+    <trans:RoadSeg gml:id="CWFID.ROADSEG.0.1">
+      <trans:lastUpdateDate>2005-06-01T00:00:00Z</trans:lastUpdateDate>
+      <trans:identifier>
+        <fw:Identifier>
+          <fw:identifier>{543027F2-EE0E-439B-A9E3-47701720912D}</fw:identifier>
+          <fw:idAuthority>US Census Bureau</fw:idAuthority>
+        </fw:Identifier>
+      </trans:identifier>
+      <trans:geometry>
+        <gml:LineString srsName="EPSG:4269">
+          <gml:posList srsDimension="3">-160.22737 21.87854703 0 -160.230234 21.87064403 0</gml:posList>
+        </gml:LineString>
+      </trans:geometry>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_FEATUREID</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>203414258</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_DATASETID</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>8bf9066f-e588-421b-b800-fc3d98a4defd</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_DESCRIPTION</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>TIGER/Line Files</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_ORIGINATOR</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>US Census Bureau</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>DATA_SECURITY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Integer</fw:type>
+          <fw:value>5</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>DISTRIBUTION_POLICY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>E4</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>STCO_FIPSCODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>15007</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>ROAD_CLASS</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>4</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>ISONEWAY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>0</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>ONEWAY_DIRECTION</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Boolean</fw:type>
+          <fw:value>0</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>CFCC_CODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>A41</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:status>unknown</trans:status>
+      <trans:fieldMeasure uom="unknown">0</trans:fieldMeasure>
+      <trans:length uom="unknown">0</trans:length>
+      <trans:isAnchorSection>false</trans:isAnchorSection>
+    </trans:RoadSeg>
+  </gml:featureMember>
+  <gml:featureMember>
+    <trans:RoadSeg gml:id="CWFID.ROADSEG.0.2">
+      <trans:lastUpdateDate>2005-06-01T00:00:00Z</trans:lastUpdateDate>
+      <trans:identifier>
+        <fw:Identifier>
+          <fw:identifier>{99966536-F329-4C63-8CC9-3502BB1AB8E2}</fw:identifier>
+          <fw:idAuthority>US Census Bureau</fw:idAuthority>
+        </fw:Identifier>
+      </trans:identifier>
+      <trans:geometry>
+        <gml:LineString srsName="EPSG:4269">
+          <gml:posList srsDimension="3">
+            -160.23289 21.87070803 0 -160.230303 21.87067603 0 -160.230234 21.87064403 0
+          </gml:posList>
+        </gml:LineString>
+      </trans:geometry>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_FEATUREID</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>203414259</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_DATASETID</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>8bf9066f-e588-421b-b800-fc3d98a4defd</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_DESCRIPTION</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>TIGER/Line Files</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_ORIGINATOR</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>US Census Bureau</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>DATA_SECURITY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Integer</fw:type>
+          <fw:value>5</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>DISTRIBUTION_POLICY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>E4</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>STCO_FIPSCODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>15007</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>ROAD_CLASS</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>4</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>ISONEWAY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>0</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>ONEWAY_DIRECTION</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Boolean</fw:type>
+          <fw:value>0</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:attribute>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>CFCC_CODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>A41</fw:value>
+        </fw:ExtendedAttribute>
+      </trans:attribute>
+      <trans:status>unknown</trans:status>
+      <trans:fieldMeasure uom="unknown">0</trans:fieldMeasure>
+      <trans:length uom="unknown">0</trans:length>
+      <trans:isAnchorSection>false</trans:isAnchorSection>
+    </trans:RoadSeg>
+  </gml:featureMember>
+</wfs:FeatureCollection>

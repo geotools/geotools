@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema  targetNamespace="http://www.cubewerx.com/cwmeta" 
+            xmlns:cwmeta="http://www.cubewerx.com/cwmeta" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            elementFormDefault="qualified">
+
+<!-- *********************************************************************** -->
+   <xs:element name="Title" type="xs:string"/>
+   <xs:element name="Abstract" type="xs:string"/>
+   <xs:element name="MetadataURL" type="xs:anyURI"/>
+
+<!-- *********************************************************************** -->
+
+   <xs:element name="Metadata">
+      <xs:annotation>
+         <xs:documentation>
+         A CubeWerx Metadata block.
+         </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="cwmeta:Title" minOccurs="0"/>
+            <xs:element ref="cwmeta:Abstract" minOccurs="0"/>
+            <xs:element ref="cwmeta:MetadataURL" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+</xs:schema>

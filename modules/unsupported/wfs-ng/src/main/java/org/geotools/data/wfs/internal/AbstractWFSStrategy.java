@@ -235,10 +235,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         final String srsName = request.getSrsName();
         if (srsName != null) {
-            final Set<String> supportedCRSIdentifiers = getSupportedCRSIdentifiers(typeName);
-            if (supportedCRSIdentifiers.contains(srsName)) {
-                map.put("SRSNAME", srsName.toString());
-            }
+            map.put("SRSNAME", srsName.toString());
         }
 
         final Filter supportedFilter;

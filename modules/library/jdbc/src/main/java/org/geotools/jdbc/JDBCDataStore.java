@@ -3600,7 +3600,8 @@ public final class JDBCDataStore extends ContentDataStore
             ? JoinInfo.create(query, featureType, this) : null;
 
         boolean queryLimitOffset = checkLimitOffset(query.getStartIndex(), query.getMaxFeatures());
-        if(queryLimitOffset) {
+        boolean visitorLimitOffset = visitor == null ? false : checkLimitOffset(visitor.getStartIndex(), visitor.getMaxFeatures());
+        if(queryLimitOffset && !visitorLimitOffset) {
             if (join != null) {
                 //don't select * to avoid ambigous result set
                 sql.append("SELECT ");
@@ -3638,7 +3639,7 @@ public final class JDBCDataStore extends ContentDataStore
             sort(featureType, query.getSortBy(), null, sql);
         }
         
-        boolean visitorLimitOffset = visitor == null ? false : checkLimitOffset(visitor.getStartIndex(), visitor.getMaxFeatures());
+        
         if(visitorLimitOffset) {
             applyLimitOffset(sql, visitor.getStartIndex(), visitor.getMaxFeatures());
         }

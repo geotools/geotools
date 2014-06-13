@@ -55,7 +55,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
 
     private static final Logger LOGGER = Logging.getLogger(WFSClient.class);
 
-    private final WFSConfig config;
+    protected final WFSConfig config;
 
     public WFSClient(URL capabilitiesURL, HTTPClient httpClient, WFSConfig config)
             throws IOException, ServiceException {
@@ -210,7 +210,9 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
             }
         }
         LOGGER.info("Using WFS Strategy: " + strategy.getClass().getName());
-                
+        
+        strategy.setConfig(config);
+        
         return strategy;
     }
 

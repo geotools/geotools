@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- This Web Feature Server is a component of CubeWerx Suite 4.7.5. -->
+<xs:schema 
+            targetNamespace="http://www.fgdc.gov/framework/073004/transportation"
+            xmlns:trans="http://www.fgdc.gov/framework/073004/transportation" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:gml="http://www.opengis.net/gml" 
+            xmlns:cwmeta="http://www.cubewerx.com/cwmeta"
+            xmlns:fw="http://www.fgdc.gov/framework/073004" 
+            elementFormDefault="qualified" 
+            version="1.0">
+            
+  <xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+
+  <!--xs:import namespace="http://www.fgdc.gov/framework/073004" schemaLocation="http://frameworkwfs.usgs.gov/framework/schemas/gmlsf1/Framework.xsd" /-->
+  <xs:import namespace="http://www.fgdc.gov/framework/073004" schemaLocation="Framework.xsd" />
+
+  <!--xs:import namespace="http://www.cubewerx.com/cwmeta" schemaLocation="http://www.cubewerx.com/schemas/cwmeta/1.0.0/cwmeta.xsd" /-->
+  <xs:import namespace="http://www.cubewerx.com/cwmeta" schemaLocation="cwmeta.xsd" />
+
+  <!-- ========================================================= -->
+  <!-- Feature type definitions ...                              -->
+  <!-- ========================================================= -->
+
+  <!-- === ROADSEG ============================================= -->
+  <xs:element name="RoadSeg" type="trans:RoadSegType" substitutionGroup="gml:_Feature" />
+  <xs:complexType name="RoadSegType">
+    <xs:annotation>
+      <xs:documentation>
+        <cwmeta:Metadata>
+          <cwmeta:Title>Road Segments</cwmeta:Title>
+        </cwmeta:Metadata>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="gml:AbstractFeatureType">
+        <xs:sequence>
+          <xs:element name="lastUpdateDate" type="xs:dateTime" />
+          <xs:element name="identifier" type="fw:IdentifierPropertyType" />
+          <xs:element name="geometry" type="gml:CurvePropertyType">
+            <xs:annotation>
+              <xs:documentation>
+                <cwmeta:Metadata>
+                  <cwmeta:Title>3</cwmeta:Title>
+                  <cwmeta:Abstract>3</cwmeta:Abstract>
+                  <cwmeta:MetadataURL>3</cwmeta:MetadataURL>
+                </cwmeta:Metadata>
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="metadata" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="topology" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="attribute" type="fw:ExtendedAttributePropertyType" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="status" type="xs:string" />
+          <xs:element name="fieldMeasure" type="gml:MeasureType" />
+          <xs:element name="length" type="gml:MeasureType" />
+          <xs:element name="isAnchorSection" type="xs:boolean" />
+          <xs:element name="to" type="gml:ReferenceType" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo source="urn:x-gml:targetElement">trans:RoadSeg/@gml:id</xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="from" type="gml:ReferenceType" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo source="urn:x-gml:targetElement">trans:RoadSeg/@gml:id</xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="startPoint" type="gml:ReferenceType" minOccurs="0">
+            <xs:annotation>
+              <xs:appinfo source="urn:x-gml:targetElement">trans:RoadPoint/@gml:id</xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="endPoint" type="gml:ReferenceType" minOccurs="0">
+            <xs:annotation>
+              <xs:appinfo source="urn:x-gml:targetElement">trans:RoadPoint/@gml:id</xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

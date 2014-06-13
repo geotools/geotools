@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema  targetNamespace="http://www.fgdc.gov/framework/073004" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:fw="http://www.fgdc.gov/framework/073004" 
+            xmlns:gml="http://www.opengis.net/gml" 
+            xmlns:gmlsf="http://www.opengis.net/gmlsf" 
+            elementFormDefault="qualified" 
+            version="0.0.1">
+
+   <xs:annotation>
+      <xs:appinfo source="http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsfLevels.xsd">
+         <gmlsf:ConformanceLevel>1</gmlsf:ConformanceLevel>
+         <gmlsf:GMLProfileSchema>http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsf.xsd</gmlsf:GMLProfileSchema>
+      </xs:appinfo>
+   </xs:annotation>
+
+   <xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+   <xs:import namespace="http://www.opengis.net/gmlsf" schemaLocation="http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsfLevels.xsd"/>
+
+   <!-- ================================================================= -->
+   <!-- IDENTIFIER                                                        -->
+   <!-- ================================================================= -->
+   <xs:complexType name="IdentifierPropertyType">
+      <xs:sequence>
+         <xs:element ref="fw:Identifier"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Identifier">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="identifier" type="xs:string"/>
+            <xs:element name="idAuthority" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element> 
+
+   <!-- ================================================================= -->
+   <!-- EXTERNALRESOURCE                                                  -->
+   <!-- ================================================================= -->
+   <xs:complexType name="ExternalResourcePropertyType">
+      <xs:sequence>
+         <xs:element ref="fw:ExternalResource"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="ExternalResource">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="url" type="xs:anyURI"/>
+            <xs:element name="urlType" minOccurs="0" maxOccurs="1">
+               <xs:annotation>
+                  <xs:appinfo source="./Dictionaries/ResourceTypesDictionary.xml"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:simpleContent>
+                     <xs:restriction base="gml:CodeType">
+                        <xs:attribute name="codeSpace" type="xs:anyURI" use="optional"/>
+                     </xs:restriction>
+                  </xs:simpleContent>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="urlDescription" type="xs:string" minOccurs="0" maxOccurs="1"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <!-- ================================================================= -->
+   <!-- RESPONSIBLEPARTY                                                  -->
+   <!-- ================================================================= -->
+   <xs:complexType name="ResponsiblePartyPropertyType">
+      <xs:sequence>
+         <xs:element ref="fw:ResponsibleParty"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="ResponsibleParty">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="individualName" type="xs:string"/>
+            <xs:element name="organizationName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="positionName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="contactInfo" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="role" type="xs:string"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <!-- ================================================================= -->
+   <!-- EXTENDEDATTRIBUTE                                                 -->
+   <!-- ================================================================= -->
+   <xs:complexType name="ExtendedAttributePropertyType">
+      <xs:sequence>
+         <xs:element ref="fw:ExtendedAttribute"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="ExtendedAttribute">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="authority" type="xs:string"/>
+            <xs:element name="link" type="fw:ExternalResourcePropertyType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="type" minOccurs="0" maxOccurs="1">
+               <xs:annotation>
+                  <xs:appinfo source="./Dictionaries/DatatypeDictionary.xml"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:simpleContent>
+                     <xs:restriction base="gml:CodeType">
+                        <xs:attribute name="codeSpace" type="xs:anyURI" use="optional"/>
+                     </xs:restriction>
+                  </xs:simpleContent>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="value" type="xs:string"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+</xs:schema>

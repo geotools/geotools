@@ -17,6 +17,7 @@
 package org.geotools.data.wfs.impl;
 
 import java.io.IOException;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,6 +34,8 @@ import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.Transaction.State;
+import org.geotools.data.crs.ForceCoordinateSystemFeatureReader;
+import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.wfs.internal.GetFeatureParser;
@@ -46,6 +49,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -222,11 +226,8 @@ class WFSContentFeatureSource extends ContentFeatureSource {
         request.setPropertyNames(query.getPropertyNames());
         request.setSortBy(query.getSortBy());
 
-        String srsName = null;
-        CoordinateReferenceSystem crs = query.getCoordinateSystem();
-        if (null != crs) {
-            System.err.println("TODO: don't forget to set the query CRS");
-        }
+        String srsName = getSupportedSrsName(request, query);  
+        
         request.setSrsName(srsName);
         return request;
     }
@@ -266,6 +267,8 @@ class WFSContentFeatureSource extends ContentFeatureSource {
             final boolean cloneContents = false;
             reader = new ReTypeFeatureReader(reader, destType, cloneContents);
         }
+        
+        reader = applyReprojectionDecorator(reader, localQuery, request);
 
         Transaction transaction = getTransaction();
         if (!Transaction.AUTO_COMMIT.equals(transaction)) {
@@ -277,6 +280,40 @@ class WFSContentFeatureSource extends ContentFeatureSource {
                 reader = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(reader, diff, localQuery.getFilter());
             }
         }
+        return reader;
+    }
+    
+    protected String getSupportedSrsName(GetFeatureRequest request, Query query) {
+        String epsgCode = GML2EncodingUtils.epsgCode(query.getCoordinateSystem());
+        Set<String> supported = request.getStrategy().getSupportedCRSIdentifiers(request.getTypeName());
+        for (String supportedSrs : supported) {
+            if (supportedSrs.endsWith(":" + epsgCode)) {
+                return supportedSrs;
+            }
+        }
+        return null;
+    }
+    
+    protected  FeatureReader<SimpleFeatureType, SimpleFeature> applyReprojectionDecorator(FeatureReader <SimpleFeatureType, SimpleFeature> reader, Query query, GetFeatureRequest request) {
+         FeatureReader<SimpleFeatureType, SimpleFeature> tmp = reader;
+        if (query.getCoordinateSystem() != null
+                && !query.getCoordinateSystem().equals(reader.getFeatureType().getCoordinateReferenceSystem())) {
+            if (request.getSrsName() != null) {
+                try {
+                    reader = new ForceCoordinateSystemFeatureReader(reader, query.getCoordinateSystem());
+                } catch (SchemaException e) {
+                    LOGGER.warning(e.toString());
+                    reader = tmp;
+                }
+            } else {
+                try {
+                    reader = new ReprojectFeatureReader(reader, query.getCoordinateSystem());
+                } catch (Exception e) {
+                    LOGGER.warning(e.toString());
+                    reader = tmp;
+                }
+            }
+        } 
         return reader;
     }
 
@@ -327,84 +364,6 @@ class WFSContentFeatureSource extends ContentFeatureSource {
         QName remoteTypeName = getDataStore().getRemoteTypeName(localTypeName);
         return remoteTypeName;
     }
-
-    //
-    // /**
-    // * Checks if the query requested CRS is supported by the query feature type and if not, adapts
-    // * the query to the feature type default CRS, returning the CRS identifier to use for the WFS
-    // * query.
-    // * <p>
-    // * If the query CRS is not advertised as supported in the WFS capabilities for the requested
-    // * feature type, the query filter is modified so that any geometry literal is reprojected to
-    // the
-    // * default CRS for the feature type, otherwise the query is not modified at all. In any case,
-    // * the crs identifier to actually use in the WFS GetFeature operation is returned.
-    // * </p>
-    // *
-    // * @param query
-    // * @return
-    // * @throws IOException
-    // */
-    // private String adaptQueryForSupportedCrs(Query query) throws IOException {
-    //
-    // final String localTypeName = getEntry().getTypeName();
-    // // The CRS the query is performed in
-    // final CoordinateReferenceSystem queryCrs = query.getCoordinateSystem();
-    // final String defaultCrs = client.getDefaultCRS(localTypeName);
-    //
-    // if (queryCrs == null) {
-    // LOGGER.warning("Query does not provide a CRS, using default: " + query);
-    // return defaultCrs;
-    // }
-    //
-    // String epsgCode;
-    //
-    // final CoordinateReferenceSystem crsNative = getFeatureTypeCRS(localTypeName);
-    //
-    // if (CRS.equalsIgnoreMetadata(queryCrs, crsNative)) {
-    // epsgCode = defaultCrs;
-    // LOGGER.fine("request and native crs for " + localTypeName + " are the same: "
-    // + epsgCode);
-    // } else {
-    // boolean transform = false;
-    // epsgCode = GML2EncodingUtils.epsgCode(queryCrs);
-    // if (epsgCode == null) {
-    // LOGGER.fine("Can't find the identifier for the request CRS, "
-    // + "query will be performed in native CRS");
-    // transform = true;
-    // } else {
-    // epsgCode = "EPSG:" + epsgCode;
-    // LOGGER.fine("Request CRS is " + epsgCode + ", checking if its supported for "
-    // + localTypeName);
-    //
-    // Set<String> supportedCRSIdentifiers = client
-    // .getSupportedCRSIdentifiers(localTypeName);
-    // if (supportedCRSIdentifiers.contains(epsgCode)) {
-    // LOGGER.fine(epsgCode + " is supported, request will be performed asking "
-    // + "for reprojection over it");
-    // } else {
-    // LOGGER.fine(epsgCode + " is not supported for " + localTypeName
-    // + ". Query will be adapted to default CRS " + defaultCrs);
-    // transform = true;
-    // }
-    // if (transform) {
-    // epsgCode = defaultCrs;
-    // FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-    // SimpleFeatureType ftype = getSchema();
-    // ReprojectingFilterVisitor visitor = new ReprojectingFilterVisitor(ff, ftype);
-    // Filter filter = query.getFilter();
-    // Filter reprojectedFilter = (Filter) filter.accept(visitor, null);
-    // if (LOGGER.isLoggable(Level.FINER)) {
-    // LOGGER.finer("Original Filter: " + filter + "\nReprojected filter: "
-    // + reprojectedFilter);
-    // }
-    // LOGGER.fine("Query filter reprojected to native CRS for " + localTypeName);
-    // query.setFilter(reprojectedFilter);
-    // }
-    // }
-    // }
-    // return epsgCode;
-    // }
 
     /**
      * Returns the feature type that shall result of issueing the given request, adapting the

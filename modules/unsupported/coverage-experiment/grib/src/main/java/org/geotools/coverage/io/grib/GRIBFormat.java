@@ -17,15 +17,10 @@
 package org.geotools.coverage.io.grib;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.io.netcdf.NetCDFFormat;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
@@ -34,7 +29,6 @@ import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
@@ -90,12 +84,12 @@ public class GRIBFormat extends NetCDFFormat{
             if (file.isDirectory()) {
                 return false;
             }
-            String absolutePath = file.getAbsolutePath();
+            String fileName = file.getName();
             
             // Check if it is a GRIB data and if the GRIB library is available
-            boolean gribExtension = UnidataUtilities.isGribAvailable() && (absolutePath.contains("grb") || absolutePath.contains("grib"));
+            boolean gribExtension = UnidataUtilities.isGribAvailable() && (fileName.contains("grb") || fileName.contains("grib"));
             
-            if (absolutePath.endsWith("ncml") || gribExtension){
+            if (fileName.endsWith("ncml") || gribExtension){
                 return true;
             }
         }

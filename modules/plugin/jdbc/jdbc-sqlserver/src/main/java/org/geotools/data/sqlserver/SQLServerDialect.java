@@ -85,7 +85,7 @@ public class SQLServerDialect extends BasicSQLDialect {
      */
     static final Pattern FROM_PATTERN = Pattern.compile("(\\s+)(FROM)(\\s)+", Pattern.DOTALL);
     
-    static final Pattern POSITIVE_NUMBER = Pattern.compile("[1..9][0..9]*");
+    static final Pattern POSITIVE_NUMBER = Pattern.compile("[1-9][0-9]*");
 
     /**
      * The direct geometry metadata table
@@ -310,7 +310,7 @@ public class SQLServerDialect extends BasicSQLDialect {
             // it's either a generic geography or geometry not registered in the medatata tables
             return Geometry.class;
         } else {
-            Class geometryClass = (Class) TYPE_TO_CLASS_MAP.get(gType.toUpperCase());
+            Class geometryClass = TYPE_TO_CLASS_MAP.get(gType.toUpperCase());
             if (geometryClass == null) {
                 geometryClass = Geometry.class;
             }
@@ -888,7 +888,15 @@ public class SQLServerDialect extends BasicSQLDialect {
         }
         
         // apply the index hints
-        String fromStatement = "FROM \"" + featureType.getTypeName() + "\"";
+        String fromStatement;
+        String typeName = featureType.getTypeName();
+        String schema = dataStore.getDatabaseSchema();
+        if (schema == null) {
+            fromStatement = "FROM \"" + typeName + "\"";
+        } else {
+            fromStatement = "FROM \"" + schema + "\".\""
+                    + typeName + "\"";
+        }
         int idx = sql.indexOf(fromStatement);
         if(idx > 0) {
             int base = idx + fromStatement.length();

@@ -60,6 +60,10 @@ public class GribTest {
         ImageReaderSpi spi = new NetCDFImageReaderSpi();
         // Check if the file can be decoded
         Assert.assertTrue(spi.canDecodeInput(file));
+
+        // Check not a grib file
+        final File fileTif = TestData.file(this, "sample.tif");
+        Assert.assertFalse(format.accepts(fileTif));
     }
 
     /**

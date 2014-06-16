@@ -85,12 +85,12 @@ public class FeatureTypeMapping {
      * No parameters constructor for use by the digester configuration engine as a JavaBean
      */
     public FeatureTypeMapping() {
-        this(null, null, new LinkedList<AttributeMapping>(), new NamespaceSupport(), true);
+        this(null, null, new LinkedList<AttributeMapping>(), new NamespaceSupport(), false);
     }
 
     public FeatureTypeMapping(FeatureSource<? extends FeatureType, ? extends Feature> source,
             AttributeDescriptor target, List<AttributeMapping> mappings, NamespaceSupport namespaces) {
-        this(source, target, mappings, namespaces, true);
+        this(source, target, mappings, namespaces, false);
     }
 
     public FeatureTypeMapping(FeatureSource<? extends FeatureType, ? extends Feature> source,

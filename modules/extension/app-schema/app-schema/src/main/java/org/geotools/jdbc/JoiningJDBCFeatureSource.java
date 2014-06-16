@@ -362,22 +362,22 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         
         String[] aliases = null;
         
+        tableNames.add(lastTypeName);
+        
+        String alias = null;
+        
         if (query.getQueryJoins() != null) {
             
             aliases = new String[query.getQueryJoins().size()];
-            
+
             for (int i=0; i< query.getQueryJoins().size(); i++) {
                 JoiningQuery.QueryJoin join = query.getQueryJoins().get(i);
                 
                 fromclause.append(" INNER JOIN ");
-                String alias = null;
-                
+
                 FilterToSQL toSQL1 = createFilterToSQL(getDataStore().getSchema(lastTypeName));
                 FilterToSQL toSQL2 = createFilterToSQL(getDataStore().getSchema(join.getJoiningTypeName()));
-                
-                String last_alias = createAlias(lastTypeName, tableNames);                        
-                tableNames.add(last_alias);
-                curTypeName = last_alias;       
+                                      
                 if (tableNames.contains(join.getJoiningTypeName()) ) {
                     alias = createAlias(join.getJoiningTypeName(), tableNames);
 
@@ -398,12 +398,15 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     toSQL2.setFieldEncoder(new JoiningFieldEncoder(join.getJoiningTypeName()));                 
                     fromclause.append(toSQL2.encodeToString(join.getForeignKeyName()));                    
                 }
+
+                
                 fromclause.append(" = ");
                 toSQL1.setFieldEncoder(new JoiningFieldEncoder(curTypeName));                 
                 fromclause.append(toSQL1.encodeToString(join.getJoiningKeyName()));
                 fromclause.append(") ");      
                 lastTypeName = join.getJoiningTypeName();
                 curTypeName = alias == null ? lastTypeName : alias;
+//                
             }
         }
         
@@ -593,49 +596,55 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         if (getDataStore().dialect.isLimitOffsetSupported()) {
             int startIndex = query.getStartIndex() == null ? 0 : query.getStartIndex();
             if (query.isDenormalised()) {
-//                if (startIndex > 0) {
-//                    // maxFeatures is already applied in DataAccessMappingFeatureIterator
-//                    query.setStartIndex(startIndex);
-//                }
-//            } else {
+                // if not denormalised, use the maxFeatures and offset in the query
                 int maxFeatures = query.getMaxFeatures();
                 if (startIndex > 0 || maxFeatures != Query.DEFAULT_MAX) {
-                // handle denormalised grouping by id, or if unspecified, PK
-                    
+                    // handle denormalised grouping by id, or if unspecified, PK
+
                     Collection<String> ids;
-                    
+
                     if (!query.getIds().isEmpty()) {
                         ids = query.getIds();
                     } else {
                         ids = pkColumnNames;
                     }
                     for (String id : ids) {
-                        sql.append(" INNER JOIN ");
-                        // where id != top startIndex of id 
-                        String alias = createAlias(featureType.getTypeName(), tableNames);                        
-                        tableNames.add(alias);
-                        
-                        getDataStore().dialect.encodeTableName(alias, sql);
-                        sql.append(" ON ( ");                      
-                                                
-                        sql.append(id);
-                        
-                        sql.append(" NOT IN ");
+                        sql.append(" INNER JOIN (");
                         
                         StringBuffer topIds = new StringBuffer();
-                        topIds.append("SELECT DISTINCT ").append(id);
-                        topIds.append(" FROM ").append(featureType.getTypeName());                
-                        
+                        topIds.append("SELECT DISTINCT ");                        
+                        encodeColumnName(id, featureType.getTypeName(), topIds, query.getHints());
+                        topIds.append(" FROM ");
+                        getDataStore().encodeTableName(featureType.getTypeName(), topIds, query.getHints());                        
                         // apply TOP using limit offset
                         getDataStore().dialect.applyLimitOffset(topIds, maxFeatures, startIndex);
-                        
                         sql.append(topIds);
+                        sql.append(") ");
+                        
+                        alias = createAlias(featureType.getTypeName(), tableNames);
+                        tableNames.add(alias);
+                        sql.append("\"");
+                        sql.append(alias);
+                        sql.append("\"");
+                        sql.append(" ON (");
+                        encodeColumnName(id, featureType.getTypeName(), sql, query.getHints());
+                        sql.append(" = ");
+                        sql.append("\"");
+                        sql.append(alias);
+                        sql.append("\"");
+                        sql.append(".");
+                        getDataStore().dialect.encodeColumnName(null, id, sql);
+                        
                         sql.append(" ) ");
-                        }                    
-                    }                
-            }                
+                    }
+                    if (!ids.isEmpty()) {
+                        // we've applied startIndex on the ids, so we don't need to apply this to the main query
+                        query.setStartIndex(0);
+                        query.setMaxFeatures(Query.DEFAULT_MAX);
+                    }
+                }
+            }
         }
-       
         
 //        setPaging(query, sql, aliases, pkColumnNames, isDenormalised, startIndex);
 

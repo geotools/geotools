@@ -113,7 +113,6 @@ public class MappingFeatureIteratorFactory {
         }        
 
         boolean isJoining = AppSchemaDataAccessConfigurator.isJoining();
-        boolean removeQueryLimitIfDenormalised = false;
 
         FeatureSource mappedSource = mapping.getSource();            
         

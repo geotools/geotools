@@ -36,7 +36,7 @@ public class JoiningQuery extends Query {
     
     // true if idExpression has been mapped to a database column
     // false if it's a string constant or has been omitted, and PK should be used if available
-    private boolean hasIdColumn;
+//    private boolean hasIdColumn;
     
     public static class QueryJoin {
         protected String joiningTypeName;    

@@ -373,6 +373,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                 }
                 
                 JoiningQuery jQuery = new JoiningQuery(newQuery);
+                jQuery.setDenormalised(((JoiningQuery) query).isDenormalised());
                 jQuery.setQueryJoins(((JoiningQuery) query).getQueryJoins());
                 jQuery.setSubset(((JoiningQuery) query).isSubset());
 

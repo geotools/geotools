@@ -55,7 +55,7 @@ public class TypeMapping implements Serializable {
      * True if data is denormalised (the default).  If flag is false its safe to apply the maxFeatures
      * limit to any SQL queries that are generated
      */
-    private boolean isDenormalised = true;
+    private boolean isDenormalised = false;
   
     private String targetElementName;
 

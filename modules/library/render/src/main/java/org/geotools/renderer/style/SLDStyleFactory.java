@@ -59,6 +59,7 @@ import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.StyleAttributeExtractorTruncated;
+import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
@@ -625,9 +626,7 @@ public class SLDStyleFactory {
 					}
 				} else {
 					GraphicStyle2D g2d = getGraphicStyle(eg, (Feature) feature, size, 1);
-					if (g2d == null) {
-						continue;
-					} else {
+					if (g2d != null) {
 						g2d.setRotation(rotation);
 						g2d.setOpacity(opacity);
 						retval = g2d;
@@ -640,40 +639,58 @@ public class SLDStyleFactory {
 					LOGGER.finer("rendering mark @ PointRenderer "
 							+ symbol.toString());
 				}
-
-				mark = (Mark) symbol;
-				shape = getShape(mark, feature);
-
-				if (shape == null)
-					throw new IllegalArgumentException("The specified mark "
-							+ mark.getWellKnownName() + " was not found!");
-
-				ms2d = new MarkStyle2D();
-				ms2d.setShape(shape);
-				ms2d.setFill(getPaint(mark.getFill(), feature, symbolizer));
-				ms2d.setFillComposite(getComposite(mark.getFill(), feature));
-				ms2d.setStroke(getStroke(mark.getStroke(), feature));
-				ms2d.setContour(getStrokePaint(mark.getStroke(), feature));
-				ms2d.setContourComposite(getStrokeComposite(mark.getStroke(),
-						feature));
-				// in case of Mark we don't have a natural size, so we default
-				// to 16
-				if (size <= 0)
-					size = DEFAULT_MARK_SIZE;
-				ms2d.setSize(size);
-				ms2d.setRotation(rotation);
-				retval = ms2d;
-
+				retval = createMarkStyle((Mark) symbol, feature, symbolizer, size, rotation);
 				break;
 			}
 		}
 
 		if (retval != null) {
 			setScaleRange(retval, scaleRange);
-		}
+		} else {
+            // from SLD spec:
+            // The default if neither an ExternalGraphic nor a Mark is specified is to use the default
+            // mark of a "square" with a 50%-gray fill and a black outline, with a size of 6 pixels,
+            // unless an explicit Size is specified
+            StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+            Mark defaultMark = sf.mark(ff.literal("square"),
+                    sf.fill(null, ff.literal("#808080"), null),
+                    sf.createStroke(ff.literal("#000000"), ff.literal(1))
+            );
+            if (size <= 0) {
+                size = 6;
+            }
+            retval = createMarkStyle(defaultMark, feature, symbolizer, size, rotation);
+        }
 
 		return retval;
 	}
+
+    MarkStyle2D createMarkStyle(Mark mark, Object feature, Symbolizer symbolizer, double size, float rotation) {
+        Shape shape = getShape(mark, feature);
+
+        if (shape == null) {
+            throw new IllegalArgumentException("The specified mark "
+                    + mark.getWellKnownName() + " was not found!");
+        }
+
+        MarkStyle2D ms2d = new MarkStyle2D();
+        ms2d.setShape(shape);
+        ms2d.setFill(getPaint(mark.getFill(), feature, symbolizer));
+        ms2d.setFillComposite(getComposite(mark.getFill(), feature));
+        ms2d.setStroke(getStroke(mark.getStroke(), feature));
+        ms2d.setContour(getStrokePaint(mark.getStroke(), feature));
+        ms2d.setContourComposite(getStrokeComposite(mark.getStroke(),
+                feature));
+        // in case of Mark we don't have a natural size, so we default
+        // to 16
+        if (size <= 0) {
+            size = DEFAULT_MARK_SIZE;
+        }
+        ms2d.setSize(size);
+        ms2d.setRotation(rotation);
+
+        return ms2d;
+    }
 
 	/**
 	 * Turns a floating point style into a integer size useful to specify the

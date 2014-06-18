@@ -267,7 +267,7 @@ public class ProjectionHandlerTest {
         Geometry transformed = JTS.transform(g, mt);
         Geometry postProcessed = handler.postProcess(mt.inverse(), transformed);
         // check the geometry is in the same area as the rendering envelope
-        assertEquals(transformed, postProcessed);
+        assertTrue(world.contains(postProcessed.getEnvelopeInternal()));
     }
     
     @Test

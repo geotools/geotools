@@ -48,12 +48,13 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
@@ -84,7 +85,6 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 import org.geotools.map.MapLayer;
 import org.geotools.map.StyleLayer;
-import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -98,6 +98,7 @@ import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
+import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelper;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
@@ -981,7 +982,7 @@ public class StreamingRenderer implements GTRenderer {
         Query query = new Query(Query.ALL);
         Filter filter = null;
         
-        LiteFeatureTypeStyle[] styles = (LiteFeatureTypeStyle[]) styleList.toArray(new LiteFeatureTypeStyle[styleList.size()]);
+        LiteFeatureTypeStyle[] styles = styleList.toArray(new LiteFeatureTypeStyle[styleList.size()]);
 
         // if map extent are not already expanded by a constant buffer, try to compute a layer
         // specific one based on stroke widths
@@ -1024,10 +1025,11 @@ public class StreamingRenderer implements GTRenderer {
             // default geometric ones
             List<ReferencedEnvelope> envelopes = null;
             // enable advanced projection handling with the updated map extent
-            if(isAdvancedProjectionHandlingEnabled()) {
+            if (isAdvancedProjectionHandlingEnabled()) {
                 // get the projection handler and set a tentative envelope
-                projectionHandler = ProjectionHandlerFinder.getHandler(mapExtent, featCrs, isMapWrappingEnabled());
-                if(projectionHandler != null) {
+                projectionHandler = ProjectionHandlerFinder.getHandler(mapExtent, featCrs,
+                        isMapWrappingEnabled());
+                if (projectionHandler != null) {
                     envelopes = projectionHandler.getQueryEnvelopes();
                 }
             }
@@ -1341,7 +1343,7 @@ public class StreamingRenderer implements GTRenderer {
             // or together all the filters
             org.opengis.filter.Filter ruleFiltersCombined;
             if (filtersToDS.size() == 1) {
-                ruleFiltersCombined = (Filter) filtersToDS.get(0);
+                ruleFiltersCombined = filtersToDS.get(0);
             } else {
                 ruleFiltersCombined = filterFactory.or(filtersToDS); 
             }
@@ -1984,7 +1986,19 @@ public class StreamingRenderer implements GTRenderer {
                         
                         @Override
                         protected GridCoverage2D readCoverage(GridCoverage2DReader reader, Object params, GridGeometry2D readGG) throws IOException {
-                            return StreamingRenderer.this.readCoverage(reader, params, readGG);
+                            GeneralParameterValue[] readParams = (GeneralParameterValue[]) params;
+                            Interpolation interpolation = getRenderingInterpolation();
+                            GridCoverageReaderHelper helper;
+                            try {
+                                helper = new GridCoverageReaderHelper(reader,
+                                        readGG.getGridRange2D(),
+                                        ReferencedEnvelope.reference(readGG.getEnvelope2D()),
+                                        interpolation);
+                                return helper.readCoverage(readParams);
+                            } catch (InvalidGridGeometryException | FactoryException e) {
+                                throw new IOException("Failure reading the coverage", e);
+                            }
+
                         }
                     };
                     
@@ -2560,27 +2574,23 @@ public class StreamingRenderer implements GTRenderer {
                     final Object grid = gridPropertyName.evaluate(drawMe.content);
                     if (grid instanceof GridCoverage2D) {
                         coverage = (GridCoverage2D) grid;
-                        disposeCoverage = grid instanceof DisposableGridCoverage;
+                        if (coverage != null) {
+                            disposeCoverage = grid instanceof DisposableGridCoverage;
+                            requests.put(new RenderRasterRequest(graphics, coverage,
+                                    disposeCoverage, (RasterSymbolizer) symbolizer, destinationCrs,
+                                    at));
+                            paintCommands++;
+                        }
                     } else if (grid instanceof GridCoverage2DReader) {
-                        final Object params = paramsPropertyName.evaluate(drawMe.content);
+                        final GeneralParameterValue[] params = (GeneralParameterValue[]) paramsPropertyName
+                                .evaluate(drawMe.content);
                         GridCoverage2DReader reader = (GridCoverage2DReader) grid;
-                        CoordinateReferenceSystem sourceCRS = reader.getCoordinateReferenceSystem();
-                        GridGeometry2D readGG = getRasterGridGeometry(destinationCrs, sourceCRS);
-                        coverage = readCoverage(reader, params, readGG);
-                        disposeCoverage = true;
+                        requests.put(new RenderCoverageReaderRequest(graphics, reader, params,
+                                (RasterSymbolizer) symbolizer, destinationCrs, at));
                     }
                 } catch (IllegalArgumentException e) {
                     LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                     fireErrorEvent(e);
-                } catch (IOException e) {
-                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                    fireErrorEvent(e);
-                }
-                
-                if(coverage != null) {
-                    requests.put(new RenderRasterRequest(graphics, coverage, disposeCoverage,
-                            (RasterSymbolizer) symbolizer, destinationCrs, at));
-                    paintCommands++;
                 }
             } else {
 
@@ -2704,10 +2714,10 @@ public class StreamingRenderer implements GTRenderer {
             } else if (drawMe instanceof Feature) {
                 geom = (Geometry) ((Feature) drawMe).getDefaultGeometryProperty().getValue();
             } else {
-                geom = (Geometry) defaultGeometryPropertyName.evaluate(drawMe, Geometry.class);
+                geom = defaultGeometryPropertyName.evaluate(drawMe, Geometry.class);
             }
         } else {
-            geom = (Geometry) geomExpr.evaluate(drawMe, Geometry.class);
+            geom = geomExpr.evaluate(drawMe, Geometry.class);
         }
 
         return geom;    
@@ -2957,57 +2967,19 @@ public class StreamingRenderer implements GTRenderer {
         return null;
     }
     
-    GridCoverage2D readCoverage(final GridCoverage2DReader reader, final Object params, GridGeometry2D readGG) throws IOException {
-        GridCoverage2D coverage;
-        // read the coverage with the proper target geometry (will trigger cropping and resolution reduction)
-        final Parameter<GridGeometry2D> readGGParam = new Parameter<GridGeometry2D>(
-                AbstractGridFormat.READ_GRIDGEOMETRY2D);
-        readGGParam.setValue(readGG);
-        // then I try to get read parameters associated with this
-        // coverage if there are any.
-        if (params != null) {
-            // //
-            //
-            // Getting parameters to control how to read this coverage.
-            // Remember to check to actually have them before forwarding
-            // them to the reader.
-            //
-            // //
-            GeneralParameterValue[] readParams = (GeneralParameterValue[]) params;
-            final int length = readParams.length;
-            if (length > 0) {
-                // we have a valid number of parameters, let's check if
-                // also have a READ_GRIDGEOMETRY2D. In such case we just
-                // override it with the one we just build for this
-                // request.
-                final String name = AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString();
-                int i = 0;
-                for (; i < length; i++)
-                    if (readParams[i].getDescriptor().getName().toString().equalsIgnoreCase(name))
-                        break;
-                // did we find anything?
-                if (i < length) {
-                    // we found another READ_GRIDGEOMETRY2D, let's override it.
-                    ((Parameter) readParams[i]).setValue(readGGParam);
-                    coverage = (GridCoverage2D) reader.read(readParams);
-                } else {
-                    // add the correct read geometry to the supplied
-                    // params since we did not find anything
-                    GeneralParameterValue[] readParams2 = new GeneralParameterValue[length + 1];
-                    System.arraycopy(readParams, 0, readParams2, 0, length);
-                    readParams2[length] = readGGParam;
-                    coverage = (GridCoverage2D) reader.read(readParams2);
-                }
-            } else
-                // we have no parameters hence we just use the read grid
-                // geometry to get a coverage
-                coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { readGGParam });
-        } else if(readGG != null) {
-            coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { readGGParam });
-        } else {
-            coverage = (GridCoverage2D) reader.read(null);
+    Interpolation getRenderingInterpolation() {
+        if(java2dHints == null) {
+            return Interpolation.getInstance(Interpolation.INTERP_NEAREST);
         }
-        return coverage;
+        Object interpolationHint = java2dHints.get(RenderingHints.KEY_INTERPOLATION);
+        if (interpolationHint == null
+                || interpolationHint == RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR) {
+            return Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        } else if (interpolationHint == RenderingHints.VALUE_INTERPOLATION_BILINEAR) {
+            return Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
+        } else {
+            return Interpolation.getInstance(Interpolation.INTERP_BICUBIC);
+        }
     }
 
     /**
@@ -3079,7 +3051,7 @@ public class StreamingRenderer implements GTRenderer {
                     sa.crs = (findGeometryCS(layer, content, symbolizer));
                     try {
                         crsTransform = buildTransform(sa.crs, destinationCrs);
-                        atTransform = (MathTransform2D) ProjectiveTransform.create(worldToScreenTransform);
+                        atTransform = ProjectiveTransform.create(worldToScreenTransform);
                         fullTransform = buildFullTransform(sa.crs, destinationCrs, at);
                     } catch (Exception e) {
                         // fall through
@@ -3353,7 +3325,6 @@ public class StreamingRenderer implements GTRenderer {
     /**
      * A request to render a raster
      * @author aaime
-     *
      */
     public class RenderRasterRequest extends RenderingRequest {
 
@@ -3417,6 +3388,69 @@ public class StreamingRenderer implements GTRenderer {
         }
     }
     
+    /**
+     * A request to render a raster
+     * 
+     * @author aaime
+     */
+    public class RenderCoverageReaderRequest extends RenderingRequest {
+
+        private Graphics2D graphics;
+
+        private GridCoverage2DReader reader;
+
+        private RasterSymbolizer symbolizer;
+
+        private CoordinateReferenceSystem destinationCRS;
+
+        private AffineTransform worldToScreen;
+
+        private GeneralParameterValue[] readParams;
+
+        public RenderCoverageReaderRequest(Graphics2D graphics, GridCoverage2DReader reader,
+                GeneralParameterValue[] readParams,
+                RasterSymbolizer symbolizer, CoordinateReferenceSystem destinationCRS,
+                AffineTransform worldToScreen) {
+            this.graphics = graphics;
+            this.reader = reader;
+            this.readParams = readParams;
+            this.symbolizer = symbolizer;
+            this.destinationCRS = destinationCRS;
+            this.worldToScreen = worldToScreen;
+        }
+
+        @Override
+        void execute() {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Rendering reader " + reader);
+            }
+
+            try {
+                // /////////////////////////////////////////////////////////////////
+                //
+                // If the grid object is a reader we ask him to do its best for the
+                // requested resolution, if it is a gridcoverage instead we have to
+                // rely on the gridocerage renderer itself.
+                //
+                // /////////////////////////////////////////////////////////////////
+                final GridCoverageRenderer gcr = new GridCoverageRenderer(destinationCRS,
+                        originalMapExtent, screenSize, worldToScreen, java2dHints);
+
+                Interpolation interpolation = getRenderingInterpolation();
+                gcr.paint(graphics, reader, readParams, symbolizer, interpolation, null);
+
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Raster rendered");
+                }
+
+            } catch (Exception e) {
+                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                fireErrorEvent(e);
+            }
+        }
+
+    }
+
     class RenderDirectLayerRequest extends RenderingRequest {
         private final Graphics2D graphics;
         private final DirectLayer layer;

@@ -48,6 +48,8 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     protected double radius;
     private int maxWraps;
 
+    private boolean datelineWrappingCheckEnabled = true;
+
     /**
      * Provides the strategy with the area we want to render and its CRS (the SPI lookup will do
      * this step)
@@ -106,10 +108,15 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         // anything larger than half of the world might have wrapped it, however,
         // if it's touching both datelines then don't wrap it, as it might be something
         // like antarctica
-        if (width > radius && width < radius * 2) {
-            geometry.apply(new WrappingCoordinateFilter(radius, radius * 2, mt, northEast));
-            geometry.geometryChanged();
-            env = geometry.getEnvelopeInternal();
+        if (datelineWrappingCheckEnabled && width > radius && width < radius * 2) {
+            Geometry wrapped = (Geometry) geometry.clone();
+            wrapped.apply(new WrappingCoordinateFilter(radius, radius * 2, mt, northEast));
+            wrapped.geometryChanged();
+            // did we un-wrap it?
+            if (wrapped.getEnvelopeInternal().getWidth() < radius) {
+                geometry = wrapped;
+                env = geometry.getEnvelopeInternal();
+            }
         }
 
         // The viewing area might contain the geometry multiple times due to
@@ -168,17 +175,17 @@ public class WrappingProjectionHandler extends ProjectionHandler {
 
         // rewrap all the clones into a single geometry
         if (Point.class.equals(geomType)) {
-            Point[] points = (Point[]) geoms.toArray(new Point[geoms.size()]);
+            Point[] points = geoms.toArray(new Point[geoms.size()]);
             return geometry.getFactory().createMultiPoint(points);
         } else if (LineString.class.isAssignableFrom(geomType)) {
-            LineString[] lines = (LineString[]) geoms.toArray(new LineString[geoms.size()]);
+            LineString[] lines = geoms.toArray(new LineString[geoms.size()]);
             return geometry.getFactory().createMultiLineString(lines);
         } else if (Polygon.class.equals(geomType)) {
-            Polygon[] polys = (Polygon[]) geoms.toArray(new Polygon[geoms.size()]);
+            Polygon[] polys = geoms.toArray(new Polygon[geoms.size()]);
             return geometry.getFactory().createMultiPolygon(polys);
         } else {
             return geometry.getFactory().createGeometryCollection(
-                    (Geometry[]) geoms.toArray(new Geometry[geoms.size()]));
+                    geoms.toArray(new Geometry[geoms.size()]));
         }
     }
 
@@ -218,5 +225,19 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     @Override
     public boolean requiresProcessing(Geometry geometry) {
         return true;
+    }
+
+    public boolean isDatelineWrappingCheckEnabled() {
+        return datelineWrappingCheckEnabled;
+    }
+
+    /**
+     * Enables the check using the "half world" heuristic on the input geometries, if larger it
+     * assumes they spanned the dateline. Enabled by default
+     * 
+     * @param datelineWrappingCheckEnabled
+     */
+    public void setDatelineWrappingCheckEnabled(boolean datelineWrappingCheckEnabled) {
+        this.datelineWrappingCheckEnabled = datelineWrappingCheckEnabled;
     }
 }

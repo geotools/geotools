@@ -30,6 +30,8 @@ import java.awt.image.ImagingOpException;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,20 +51,30 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.ViewType;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.renderer.crs.ProjectionHandler;
+import org.geotools.renderer.crs.ProjectionHandlerFinder;
+import org.geotools.renderer.crs.WrappingProjectionHandler;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.image.ImageUtilities;
 import org.geotools.styling.RasterSymbolizer;
 import org.jaitools.imageutils.ImageLayout2;
 import org.opengis.coverage.grid.GridCoverage;
+import org.opengis.coverage.grid.GridEnvelope;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.spatial.PixelOrientation;
+import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
@@ -70,7 +82,11 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
+import com.vividsolutions.jts.algorithm.match.HausdorffSimilarityMeasure;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.util.AffineTransformation;
 
 /**
  * A helper class for rendering  {@link GridCoverage}  objects. 
@@ -85,6 +101,8 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 @SuppressWarnings("deprecation")
 public final class GridCoverageRenderer { 
+
+    private static final double EPS = 1e-6;
   
     /** Logger. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GridCoverageRenderer.class);
@@ -137,6 +155,44 @@ public final class GridCoverageRenderer {
     
     /** {@link GridCoverageFactory} to be used within this {@link GridCoverageRenderer} instance.*/
     private final GridCoverageFactory gridCoverageFactory;
+
+    private boolean wrapEnabled = true;
+
+    private boolean advancedProjectionHandlingEnabled = true;
+
+    /**
+     * Enables/disable map wrapping (active only when rendering off a {@link GridCoverage2DReader}
+     * and when advanced projection handling has been enabled too)
+     */
+    public void setWrapEnabled(boolean wrapEnabled) {
+        this.wrapEnabled = wrapEnabled;
+    }
+
+    /**
+     * Returns true if map wrapping is enabled (active only when rendering off a
+     * {@link GridCoverage2DReader} and when advanced projection handling has been enabled too)
+     */
+    public boolean isWrapEnabled() {
+        return this.wrapEnabled;
+    }
+
+    /**
+     * Enables/disables advanced projection handling (read all areas needed to make up the requested
+     * map, cut them to areas where reprojection makes sense, and so on). Works only when rendering
+     * off a {@link GridCoverage2DReader}.
+     */
+    public void setAdvancedProjectionHandlingEnabled(boolean enabled) {
+        this.advancedProjectionHandlingEnabled = enabled;
+    }
+
+    /**
+     * Tests if advanced projection handling is enabled (read all areas needed to make up the
+     * requested map, cut them to areas where reprojection makes sense, and so on). Works only when
+     * rendering off a {@link GridCoverage2DReader}.
+     */
+    public boolean isAdvancedProjectionHandlingEnabled() {
+        return this.advancedProjectionHandlingEnabled;
+    }
 
 
     /**
@@ -205,10 +261,12 @@ public final class GridCoverageRenderer {
         // ///////////////////////////////////////////////////////////////////
         this.destinationSize = screenSize;
         this.destinationCRS = destinationCRS;
-        if (this.destinationCRS == null){
-            throw new TransformException(Errors.format(ErrorKeys.CANT_SEPARATE_CRS_$1, this.destinationCRS));
+        if (this.destinationCRS == null) {
+            throw new TransformException(Errors.format(ErrorKeys.CANT_SEPARATE_CRS_$1,
+                    this.destinationCRS));
         }
-        destinationEnvelope = new GeneralEnvelope(new ReferencedEnvelope(envelope, this.destinationCRS));
+        destinationEnvelope = new GeneralEnvelope(new ReferencedEnvelope(envelope,
+                this.destinationCRS));
         // ///////////////////////////////////////////////////////////////////
         //
         // FINAL DRAWING DIMENSIONS AND RESOLUTION
@@ -218,17 +276,17 @@ public final class GridCoverageRenderer {
         // source coverage.
         //
         // ///////////////////////////////////////////////////////////////////
-        
-        // PHUSTAD : The gridToEnvelopeMapper does not handle rotated views. 
-        // 
-        if (worldToScreen != null && XAffineTransform.getRotation(worldToScreen) != 0.0) { 
+
+        // PHUSTAD : The gridToEnvelopeMapper does not handle rotated views.
+        //
+        if (worldToScreen != null && XAffineTransform.getRotation(worldToScreen) != 0.0) {
             finalWorldToGrid = new AffineTransform(worldToScreen);
             finalGridToWorld = finalWorldToGrid.createInverse();
         } else {
             final GridToEnvelopeMapper gridToEnvelopeMapper = new GridToEnvelopeMapper();
             gridToEnvelopeMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
-            gridToEnvelopeMapper.setGridRange(new GridEnvelope2D(destinationSize));       
-            gridToEnvelopeMapper.setEnvelope(destinationEnvelope);            
+            gridToEnvelopeMapper.setGridRange(new GridEnvelope2D(destinationSize));
+            gridToEnvelopeMapper.setEnvelope(destinationEnvelope);
             finalGridToWorld = new AffineTransform(gridToEnvelopeMapper.createAffineTransform());
             finalWorldToGrid = finalGridToWorld.createInverse();
         }
@@ -259,10 +317,6 @@ public final class GridCoverageRenderer {
 //            // only tiles are valid at this stage?? TODO
             layout.unsetImageBounds();
             layout.unsetValid(ImageLayout.COLOR_MODEL_MASK&ImageLayout.SAMPLE_MODEL_MASK);
-//            if(layout.isValid(ImageLayout.TILE_HEIGHT_MASK)&&layout.isValid(ImageLayout.TILE_WIDTH_MASK)){
-//                tileDimension=new Dimension();
-//                tileDimension.setSize(layout.getTileWidth(null), layout.getTileHeight(null));
-//            }
         }
         // this prevents users from overriding lenient hint
         this.hints.put(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE);
@@ -328,6 +382,14 @@ public final class GridCoverageRenderer {
             final RasterSymbolizer symbolizer,
             final double[] bkgValues )throws Exception {
 
+        final GridCoverage2D symbolizerGC = renderCoverage(gridCoverage, symbolizer, bkgValues);
+        return symbolizerGC.getRenderedImage();
+    }
+
+
+
+    private GridCoverage2D renderCoverage(final GridCoverage2D gridCoverage,
+            final RasterSymbolizer symbolizer, final double[] bkgValues) throws FactoryException {
         // Initial checks
         GridCoverageRendererUtilities.ensureNotNull(gridCoverage, "gridCoverage");    	
         if (LOGGER.isLoggable(Level.FINE)){
@@ -354,10 +416,11 @@ public final class GridCoverageRenderer {
         // CROP
         //
         // /////////////////////////////////////////////////////////////////////
-        final GridCoverage2D preReprojection=crop(gridCoverage, destinationEnvelope,doReprojection);
+        final GridCoverage2D preReprojection = crop(gridCoverage, destinationEnvelope,
+                doReprojection);
         if (preReprojection == null) {
             // nothing to render, the AOI does not overlap
-            if (LOGGER.isLoggable(Level.FINE)){
+            if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Skipping current coverage because crop failed");
             }
             return null;
@@ -376,14 +439,10 @@ public final class GridCoverageRenderer {
         //
         // ///////////////////////////////////////////////////////////////////
         final GridCoverage2D preSymbolizer= affine(afterReprojection,bkgValues);
+        if (preSymbolizer == null) {
+            return null;
+        }
         
-       
-//        final ParameterValueGroup param = (ParameterValueGroup) GridCoverageRendererUtilities.RESAMPLING_PARAMS.clone();
-//        param.parameter("source").setValue(gridCoverage);
-//        param.parameter("GridGeometry").setValue(new GridGeometry2D(new GridEnvelope2D(destinationSize), destinationEnvelope));
-//        param.parameter("InterpolationType").setValue(interpolation);
-//        final GridCoverage2D preSymbolizer =(GridCoverage2D) GridCoverageRendererUtilities.RESAMPLE_FACTORY.doOperation(param, hints);
-//  
         // ///////////////////////////////////////////////////////////////////
         //
         // RASTERSYMBOLIZER
@@ -403,14 +462,7 @@ public final class GridCoverageRenderer {
         if (DEBUG) {
             writeRenderedImage( symbolizerGC.geophysics(false).getRenderedImage(),"postSymbolizer");
         }
-
-        
-        // //
-        //
-        // FINAL Result
-        // 
-        // //
-        return symbolizerGC.getRenderedImage();
+        return symbolizerGC;
     }            	
 
     /**
@@ -432,7 +484,7 @@ public final class GridCoverageRenderer {
                         bkgValues,
                         hints);
                 if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("Reprojecting to crs "+ destinationCRS.toWKT());
+                    LOGGER.fine("Reprojecting to crs " + destinationCRS.toString());
             } else{
                 afterReprojection = preResample;
             }
@@ -563,22 +615,6 @@ public final class GridCoverageRenderer {
                         LOGGER.fine("Unable to create a granuleDescriptor "+this.toString()+ " due to jai scale bug");
                 return null;
         }
-//
-//        // final transformation
-//        final ImageLayout2 layout = new ImageLayout2(finalImage);
-//        if(tileDimension!=null){
-//            layout.unsetImageBounds();
-//            layout.unsetValid(ImageLayout.COLOR_MODEL_MASK&ImageLayout.SAMPLE_MODEL_MASK);
-//            layout.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(tileDimension.height).setTileWidth(tileDimension.width);            
-//        }
-//        final RenderingHints localHints = this.hints.clone(); 
-//        localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-//        
-//        // === interpolation management
-//        // others, make sure we don't force the colormodel if it is indexed with layout as it might lead to NO color expansion        
-//        if (!(interpolation instanceof InterpolationNearest)&& finalImage.getColorModel() instanceof IndexColorModel){
-//            layout.unsetValid(ImageLayout2.COLOR_MODEL_MASK).unsetValid(ImageLayout2.SAMPLE_MODEL_MASK);
-//        }
 
         RenderedImage im=null;
         try {
@@ -634,8 +670,34 @@ public final class GridCoverageRenderer {
             final int tileSizeY
             ) throws FactoryException, TransformException, NoninvertibleTransformException {
 
+        GridCoverage2D coverage = renderCoverage(gridCoverage, symbolizer, interpolation,
+                background, tileSizeX,
+                tileSizeY);
+        return coverage.getRenderedImage();
+    }
+
+    private GridCoverage2D renderCoverage(final GridCoverage2D gridCoverage,
+            final RasterSymbolizer symbolizer, final Interpolation interpolation,
+            final Color background, final int tileSizeX, final int tileSizeY)
+            throws FactoryException {
         final Hints oldHints= this.hints.clone();
         
+        setupTilingHints(tileSizeX, tileSizeY);
+        setupInterpolationHints(interpolation);
+ 
+        try {
+            return renderCoverage(gridCoverage, symbolizer,
+                    GridCoverageRendererUtilities.colorToArray(background));
+        } catch (Exception e) {
+            throw new FactoryException(e);
+        } finally {
+            this.hints = oldHints;
+        }
+    }
+
+
+
+    private void setupTilingHints(final int tileSizeX, final int tileSizeY) {
         ////
         //
         // TILING
@@ -647,8 +709,11 @@ public final class GridCoverageRenderer {
             layout.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(tileSizeY).setTileWidth(tileSizeX);
             hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT,layout));            
         }
+    }
 
-        
+
+
+    private void setupInterpolationHints(final Interpolation interpolation) {
         ////
         //
         // INTERPOLATION
@@ -665,76 +730,163 @@ public final class GridCoverageRenderer {
             }
             setInterpolationHints();
         }
- 
-        try{
-            return renderImage(gridCoverage, symbolizer,GridCoverageRendererUtilities.colorToArray(background));
-        } catch (Exception e) {
-            throw new FactoryException(e);
-        }finally{
-            this.hints=oldHints;
-        }
-     
-        
-//        // Build the final image and the associated world to grid transformation
-//        final GCpair couple = prepareFinalImage(gridCoverage, symbolizer);
-//        if (couple == null){
-//            return null;
-//        }
-//        // NOTICE that at this stage the image we get should be 8 bits, either RGB, RGBA, Gray, GrayA
-//        // either multiband or indexed. It could also be 16 bits indexed!!!!
-//        
-//        final RenderedImage finalImage = couple.getGridCoverage().getRenderedImage();
-//        final AffineTransform finalRaster2Model = couple.getTransform();
-//        
-//        //paranoiac check to avoid that JAI freaks out when computing its internal layouT on images that are too small
-//        Rectangle2D finalLayout= GridCoverageRendererUtilities.layoutHelper(
-//                        finalImage, 
-//                        (float)finalRaster2Model.getScaleX(), 
-//                        (float)finalRaster2Model.getScaleY(), 
-//                        (float)finalRaster2Model.getTranslateX(), 
-//                        (float)finalRaster2Model.getTranslateY(), 
-//                        interpolation);
-//        if(finalLayout.isEmpty()){
-//                if(LOGGER.isLoggable(java.util.logging.Level.FINE))
-//                        LOGGER.fine("Unable to create a granuleDescriptor "+this.toString()+ " due to jai scale bug");
-//                return null;
-//        }
-//
-//        // final transformation
-//        final ImageLayout2 layout = new ImageLayout2(finalImage);
-//        layout.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(tileSizeY).setTileWidth(tileSizeX);
-//        final RenderingHints localHints = this.hints.clone(); 
-//        localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-//        
-//        // === interpolation management
-//        if (interpolation instanceof InterpolationNearest) {
-//            // nearest 
-//            localHints.add(new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE));
-//            localHints.add(new RenderingHints(JAI.KEY_TRANSFORM_ON_COLORMAP, Boolean.TRUE));
-//        } else {
-//            // others, make sure we don't force the colormodel if it is indexed with layout as it might lead to NO color expansion 
-//            if(finalImage.getColorModel() instanceof IndexColorModel){
-//                layout.unsetValid(ImageLayout2.COLOR_MODEL_MASK).unsetValid(ImageLayout2.SAMPLE_MODEL_MASK);
-//            }
-//        }
-//        //SG add hints for the border extender
-//        localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER,BorderExtender.createInstance(BorderExtender.BORDER_COPY)));
-//    	RenderedImage im=null;
-//    	try {
-//    	    ImageWorker iw = new ImageWorker(finalImage);
-//    	    iw.setRenderingHints(localHints);
-//    	    iw.affine(finalRaster2Model, interpolation, null);
-//    	    im = iw.getRenderedImage();
-//    	} finally {
-//    		if(DEBUG){
-//    		    writeRenderedImage(im, "postAffine");
-//    		}
-//    	}
-//    	
-//    	return im;
-
     }
     
+    public RenderedImage renderImage(final GridCoverage2DReader reader,
+            GeneralParameterValue[] readParams, final RasterSymbolizer symbolizer, final Interpolation interpolation,
+            final Color background, final int tileSizeX, final int tileSizeY) throws FactoryException, TransformException,
+            NoninvertibleTransformException, IOException {
+        // setup the hints
+        setupTilingHints(tileSizeX, tileSizeY);
+        setupInterpolationHints(interpolation);
+
+        return renderImage(reader, readParams, symbolizer, interpolation, background);
+    }
+
+    private RenderedImage renderImage(final GridCoverage2DReader reader,
+            GeneralParameterValue[] readParams, final RasterSymbolizer symbolizer,
+            final Interpolation interpolation, final Color background) throws FactoryException,
+            IOException, TransformException {
+        // see if we have a projection handler
+        CoordinateReferenceSystem sourceCRS = reader.getCoordinateReferenceSystem();
+        CoordinateReferenceSystem targetCRS = destinationEnvelope.getCoordinateReferenceSystem();
+
+        // read all the coverages we need, cut and whatnot
+        GridCoverageReaderHelper rh = new GridCoverageReaderHelper(reader, destinationSize,
+                ReferencedEnvelope.reference(destinationEnvelope), interpolation);
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(rh.getReadEnvelope(),
+                sourceCRS, wrapEnabled);
+        if (handler instanceof WrappingProjectionHandler) {
+            // raster data is monolithic and can cover the whole world, disable
+            // the geometry wrapping heuristic
+            ((WrappingProjectionHandler) handler).setDatelineWrappingCheckEnabled(false);
+        }
+        List<GridCoverage2D> coverages = rh.readCoverages(readParams, handler);
+
+        // reproject if needed
+        final CoordinateReferenceSystem coverageCRS = reader.getCoordinateReferenceSystem();
+        List<GridCoverage2D> reprojectedCoverages = new ArrayList<GridCoverage2D>();
+        if (!CRS.equalsIgnoreMetadata(coverageCRS, destinationCRS)) {
+            double[] bgValues = GridCoverageRendererUtilities.colorToArray(background);
+            for (GridCoverage2D coverage : coverages) {
+                GridCoverage2D reprojected = reproject(coverage, true, bgValues);
+                if (reprojected != null) {
+                    reprojectedCoverages.add(reprojected);
+                }
+            }
+        } else {
+            reprojectedCoverages.addAll(coverages);
+        }
+
+        // displace them if needed via a projection handler
+        List<GridCoverage2D> displacedCoverages = new ArrayList<GridCoverage2D>();
+        if (handler != null) {
+            Envelope testEnvelope = ReferencedEnvelope.reference(destinationEnvelope);
+            MathTransform mt = CRS.findMathTransform(sourceCRS, targetCRS);
+            PolygonExtractor polygonExtractor = new PolygonExtractor();
+            for (GridCoverage2D coverage : reprojectedCoverages) {
+                Polygon polygon = JTS.toGeometry((BoundingBox) coverage.getEnvelope2D());
+                Geometry postProcessed = handler.postProcess(mt, polygon);
+                // extract sub-polygons and displace
+                List<Polygon> polygons = polygonExtractor.getPolygons(postProcessed);
+                for (Polygon displaced : polygons) {
+                    // check we are really inside the display area before moving one
+                    Envelope intersection = testEnvelope.intersection(displaced
+                            .getEnvelopeInternal());
+                    if (intersection == null || intersection.isNull()
+                            || intersection.getArea() == 0) {
+                        continue;
+                    }
+                    if (displaced.equals(polygon)) {
+                        displacedCoverages.add(coverage);
+                    } else {
+                        double[] tx = getTranslationFactors(polygon, displaced);
+                        if (tx != null) {
+                            GridCoverage2D displacedCoverage = displaceCoverage(coverage, tx[0],
+                                    tx[1]);
+                            displacedCoverages.add(displacedCoverage);
+                        }
+                    }
+                }
+            }
+        } else {
+            displacedCoverages.addAll(reprojectedCoverages);
+        }
+
+        // if more than one coverage, mosaic
+        GridCoverage2D mosaicked = null;
+        if (displacedCoverages.size() == 0) {
+            return null;
+        } else if (displacedCoverages.size() == 1) {
+            mosaicked = displacedCoverages.get(0);
+        } else {
+            mosaicked = GridCoverageRendererUtilities.mosaic(displacedCoverages,
+                    destinationEnvelope, hints);
+        }
+
+        // the mosaicking can cut off images that are just slightly out of the
+        // request (effect of the read buffer + a request touching the actual data area)
+        if (mosaicked == null) {
+            return null;
+        }
+
+        // render it
+        GridCoverage2D result = renderCoverage(mosaicked, symbolizer,
+                GridCoverageRendererUtilities.colorToArray(background));
+
+        if (result == null) {
+            return null;
+        } else {
+            // RenderedImageBrowser.showChain(result.getRenderedImage());
+            return result.getRenderedImage();
+        }
+    }
+
+    private GridCoverage2D displaceCoverage(GridCoverage2D coverage, double tx, double ty) {
+        // let's compute the new grid geometry
+        GridGeometry2D originalGG = coverage.getGridGeometry();
+        GridEnvelope gridRange = originalGG.getGridRange();
+        Envelope2D envelope = originalGG.getEnvelope2D();
+        
+        double minx = envelope.getMinX() + tx;
+        double miny = envelope.getMinY() + ty;
+        double maxx = envelope.getMaxX() + tx;
+        double maxy = envelope.getMaxY() + ty;
+        ReferencedEnvelope translatedEnvelope = new ReferencedEnvelope(minx, maxx, miny, maxy,
+                envelope.getCoordinateReferenceSystem());
+
+        GridGeometry2D translatedGG = new GridGeometry2D(gridRange, translatedEnvelope);
+
+        GridCoverage2D translatedCoverage = gridCoverageFactory.create(coverage.getName(),
+                coverage.getRenderedImage(), translatedGG, coverage.getSampleDimensions(),
+                new GridCoverage2D[] { coverage }, coverage.getProperties());
+        return translatedCoverage;
+    }
+
+    private double[] getTranslationFactors(Polygon reference, Polygon displaced) {
+        // compare the two envelopes
+        Envelope re = reference.getEnvelopeInternal();
+        Envelope de = displaced.getEnvelopeInternal();
+        double dw = Math.abs(re.getWidth() - de.getWidth());
+        double dh = Math.abs(re.getHeight() - de.getHeight());
+        if (dw > EPS * re.getWidth() || dh > EPS * re.getWidth()) {
+            // this was not just a translation
+            return null;
+        }
+
+        // compute the translation
+        double dx = de.getMinX() - re.getMinX();
+        double dy = de.getMinY() - re.getMinY();
+
+        Polygon cloned = (Polygon) displaced.clone();
+        cloned.apply(AffineTransformation.translationInstance(-dx, -dy));
+        if (1 - new HausdorffSimilarityMeasure().measure(cloned, reference) > EPS) {
+            return null;
+        } else {
+            return new double[] { dx, dy };
+        }
+    }
+
     /**
      * Paint this grid coverage. The caller must ensure that
      * <code>graphics</code> has an affine transform mapping "real world"
@@ -757,6 +909,12 @@ public final class GridCoverageRenderer {
         paint(graphics, gridCoverage, symbolizer,null);
     }
     
+    // coverage.dispose(true);
+    // final RenderedImage image = coverage.getRenderedImage();
+    // if(image instanceof PlanarImage) {
+    // ImageUtilities.disposePlanarImageChain((PlanarImage) image);
+    // }
+
     /**
      * Paint this grid coverage. The caller must ensure that
      * <code>graphics</code> has an affine transform mapping "real world"
@@ -791,19 +949,65 @@ public final class GridCoverageRenderer {
         if (LOGGER.isLoggable(Level.FINE))
             LOGGER.fine(new StringBuilder("Drawing coverage ").append(gridCoverage.toString()).toString());
 
+        // Build the final image and the transformation
+        RenderedImage finalImage = renderImage(gridCoverage, symbolizer, bkgValues);
+        paintImage(graphics, finalImage);
+    }
+
+    /**
+     * Paint the coverage read from the reader (using advanced projection handling). The caller must
+     * ensure that <code>graphics</code> has an affine transform mapping "real world" coordinates in
+     * the coordinate system given by {@link #getCoordinateSystem}.
+     * 
+     * @param graphics the {@link Graphics2D} context in which to paint.
+     * @param metaBufferedEnvelope
+     * @throws Exception
+     * @throws UnsupportedOperationException if the transformation from grid to coordinate system in
+     *         the GridCoverage is not an AffineTransform
+     */
+    public void paint(final Graphics2D graphics, final GridCoverage2DReader gridCoverageReader,
+            GeneralParameterValue[] readParams, final RasterSymbolizer symbolizer,
+            Interpolation interpolation, final Color background) throws Exception {
+
+        //
+        // Initial checks
+        //
+        if (graphics == null) {
+            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "graphics"));
+        }
+        if (gridCoverageReader == null) {
+            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,
+                    "gridCoverageReader"));
+        }
+
+        if (LOGGER.isLoggable(Level.FINE))
+            LOGGER.fine(new StringBuilder("Drawing reader ").append(gridCoverageReader.toString())
+                    .toString());
+
+        // Build the final image and the transformation
+        RenderedImage finalImage = renderImage(gridCoverageReader, readParams, symbolizer,
+                interpolation, background);
+        if (finalImage != null) {
+            try {
+                paintImage(graphics, finalImage);
+            } finally {
+                if (finalImage instanceof PlanarImage) {
+                    ImageUtilities.disposePlanarImageChain((PlanarImage) finalImage);
+                }
+            }
+        }
+    }
+
+    private void paintImage(final Graphics2D graphics, RenderedImage finalImage) {
         final RenderingHints oldHints = graphics.getRenderingHints();
         graphics.setRenderingHints(this.hints);
-        
-        
-        // Build the final image and the transformation
-        RenderedImage finalImage = renderImage(gridCoverage, symbolizer,bkgValues);
 
         try {
-            //debug
+            // debug
             if (DEBUG) {
-                writeRenderedImage(finalImage,"final");
-            }        
-            
+                writeRenderedImage(finalImage, "final");
+            }
+
             // force solid alpha, the transparency has already been
             // dealt with in the image preparation, and we have to make
             // sure previous vector rendering code did not leave a non solid alpha
@@ -813,31 +1017,31 @@ public final class GridCoverageRenderer {
             // Drawing the Image
             // //
             graphics.drawRenderedImage(finalImage, GridCoverageRenderer.IDENTITY);
-            
+
         } catch (Throwable t) {
             try {
-                //log the error
-                if(LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE,t.getLocalizedMessage(),t);              
-                
+                // log the error
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
+
                 // /////////////////////////////////////////////////////////////
                 // this is a workaround for a bug in Java2D, we need to convert
                 // the image to component color model to make it work just fine.
                 // /////////////////////////////////////////////////////////////
-                if(t instanceof IllegalArgumentException){
+                if (t instanceof IllegalArgumentException) {
                     if (DEBUG) {
-                        writeRenderedImage(finalImage,"preWORKAROUND1");
+                        writeRenderedImage(finalImage, "preWORKAROUND1");
                     }
-                    final RenderedImage image = new ImageWorker(finalImage).forceComponentColorModel(true).getRenderedImage();
-                    
+                    final RenderedImage image = new ImageWorker(finalImage)
+                            .forceComponentColorModel(true).getRenderedImage();
+
                     if (DEBUG) {
-                        writeRenderedImage(image,"WORKAROUND1");
-                        
+                        writeRenderedImage(image, "WORKAROUND1");
+
                     }
                     graphics.drawRenderedImage(image, GridCoverageRenderer.IDENTITY);
-                
-                }
-                else if(t instanceof ImagingOpException)
+
+                } else if (t instanceof ImagingOpException)
                 // /////////////////////////////////////////////////////////////
                 // this is a workaround for a bug in Java2D
                 // (see bug 4723021
@@ -854,46 +1058,47 @@ public final class GridCoverageRenderer {
                 // LARGE IMAGES.
                 // /////////////////////////////////////////////////////////////
                 {
-                    BufferedImage buf = 
-                        finalImage.getColorModel().hasAlpha()?
-                                new BufferedImage(finalImage.getWidth(), finalImage.getHeight(), BufferedImage.TYPE_4BYTE_ABGR):
-                                new BufferedImage(finalImage.getWidth(), finalImage.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
-                                if (DEBUG) {
-                                    writeRenderedImage(buf,"preWORKAROUND2");
-                                }
+                    BufferedImage buf = finalImage.getColorModel().hasAlpha() ? new BufferedImage(
+                            finalImage.getWidth(), finalImage.getHeight(),
+                            BufferedImage.TYPE_4BYTE_ABGR) : new BufferedImage(
+                            finalImage.getWidth(), finalImage.getHeight(),
+                            BufferedImage.TYPE_3BYTE_BGR);
+                    if (DEBUG) {
+                        writeRenderedImage(buf, "preWORKAROUND2");
+                    }
                     final Graphics2D g = (Graphics2D) buf.getGraphics();
-                    final int translationX=finalImage.getMinX(),translationY=finalImage.getMinY();
-                    g.drawRenderedImage(finalImage, AffineTransform.getTranslateInstance(-translationX, -translationY));
+                    final int translationX = finalImage.getMinX(), translationY = finalImage
+                            .getMinY();
+                    g.drawRenderedImage(finalImage,
+                            AffineTransform.getTranslateInstance(-translationX, -translationY));
                     g.dispose();
                     if (DEBUG) {
-                         writeRenderedImage(buf,"WORKAROUND2");
+                        writeRenderedImage(buf, "WORKAROUND2");
                     }
-                    GridCoverageRenderer.IDENTITY.concatenate(AffineTransform.getTranslateInstance(translationX, translationY));
+                    GridCoverageRenderer.IDENTITY.concatenate(AffineTransform.getTranslateInstance(
+                            translationX, translationY));
                     graphics.drawImage(buf, GridCoverageRenderer.IDENTITY, null);
-                    //release
+                    // release
                     buf.flush();
-                    buf=null;                   
-                }
-                else 
-                    //log the error
-                    if(LOGGER.isLoggable(Level.FINE))
-                        LOGGER.fine("Unable to renderer this raster, no workaround found");
-
+                    buf = null;
+                } else
+                // log the error
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.fine("Unable to renderer this raster, no workaround found");
 
             } catch (Throwable t1) {
                 // if the workaround fails again, there is really nothing to do
                 // :-(
                 LOGGER.log(Level.WARNING, t1.getLocalizedMessage(), t1);
+            } finally {
+                // ///////////////////////////////////////////////////////////////////
+                //
+                // Restore old hints
+                //
+                // ///////////////////////////////////////////////////////////////////
+                graphics.setRenderingHints(oldHints);
             }
         }
-
-        // ///////////////////////////////////////////////////////////////////
-        //
-        // Restore old hints
-        //
-        // ///////////////////////////////////////////////////////////////////
-        graphics.setRenderingHints(oldHints);
-
     }
 
 }

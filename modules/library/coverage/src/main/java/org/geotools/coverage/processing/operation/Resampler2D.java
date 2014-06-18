@@ -32,7 +32,6 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.media.jai.BorderExtender;
-import javax.media.jai.BorderExtenderConstant;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;

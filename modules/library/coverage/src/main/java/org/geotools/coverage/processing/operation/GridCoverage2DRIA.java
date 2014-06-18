@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011-2012, Open Source Geospatial Foundation (OSGeo)
- *    (C) 2007 TOPP - www.openplans.org.
+ *    (C) 2011-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 TOPP - www.openplans.org.
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,7 +15,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.process.raster;
+package org.geotools.coverage.processing.operation;
 
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
@@ -38,9 +38,11 @@ import javax.media.jai.RasterAccessor;
 import javax.media.jai.RasterFormatTag;
 import javax.media.jai.iterator.RandomIter;
 import javax.media.jai.iterator.RandomIterFactory;
-
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.referencing.CRS;
+import org.geotools.util.Utilities;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -68,7 +70,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
     private final GridCoverage2D src;
 
-    private final GridCoverage2D dst;
+    private final GridGeometry2D dst;
 
     private final MathTransform g2wd;
 
@@ -85,6 +87,52 @@ public class GridCoverage2DRIA extends GeometricOpImage {
     /** Color table representing source's IndexColorModel. */
     private byte[][] ctable = null; // ETj: just for keeping compiler quiet: let's see if we really
 
+    /**
+     * Wrap the src coverage in the dst layout. <BR>
+     * The resulting RenderedImage will contain the data in src, and will be accessible via the grid
+     * specs of dst,
+     * 
+     * @param src
+     *            the data coverage to be remapped on dst grid
+     * @param dst
+     *            the provider of the final grid
+     * @param nodata
+     *            the nodata value to set for cells not covered by src but included in dst. All
+     *            bands will share the same nodata value.
+     * @return an instance of Coverage2RenderedImageAdapter
+     */
+    public static GridCoverage2DRIA create(final GridCoverage2D src, final GridGeometry2D dst, final double nodata) {
+
+        Utilities.ensureNonNull("dst", dst);
+        
+     // === Create destination Layout, retaining source tiling to minimize quirks
+        // TODO allow to override tiling
+        final GridEnvelope2D destinationRasterDimension = dst.getGridRange2D();
+        final ImageLayout imageLayout = new ImageLayout();
+        imageLayout.setMinX(destinationRasterDimension.x).setMinY(destinationRasterDimension.y);
+        imageLayout.setWidth(destinationRasterDimension.width).setHeight(destinationRasterDimension.height);
+        imageLayout.setTileHeight(src.getRenderedImage().getSampleModel().getHeight()).setTileWidth(src.getRenderedImage().getSampleModel().getWidth());
+        
+        //
+        // SampleModel and ColorModel are related to data itself, so we
+        // copy them from the source
+
+        imageLayout.setColorModel(src.getRenderedImage().getColorModel());
+        imageLayout.setSampleModel(src.getRenderedImage().getSampleModel());
+
+        // === BorderExtender
+        //
+        // We have yet to check for it usefulness: it might be more convenient
+        // to check for region overlapping and return a nodata value by hand,
+        // so to avoid problems with interpolation at source raster borders.
+        //
+        BorderExtender extender = new BorderExtenderConstant(new double[] { nodata });
+        
+        return new GridCoverage2DRIA(src, dst, vectorize(src.getRenderedImage()), imageLayout,
+                null, false, extender, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                new double[] { nodata });
+    }
+    
     // need it
 
     /**
@@ -122,12 +170,12 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         //
         BorderExtender extender = new BorderExtenderConstant(new double[] { nodata });
 
-        return new GridCoverage2DRIA(src, dst, vectorize(src.getRenderedImage()), imageLayout,
+        return new GridCoverage2DRIA(src, dst.getGridGeometry(), vectorize(src.getRenderedImage()), imageLayout,
                 null, false, extender, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
                 new double[] { nodata });
     }
 
-    protected GridCoverage2DRIA(final GridCoverage2D src, final GridCoverage2D dst,
+    protected GridCoverage2DRIA(final GridCoverage2D src, final GridGeometry2D dst,
             final Vector sources, final ImageLayout layout, final Map configuration,
             final boolean cobbleSources, final BorderExtender extender, final Interpolation interp,
             final double[] nodata) {
@@ -139,7 +187,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
         // === Take one for all all the transformation we need to pass from
         // model, sample, src, target and viceversa.
-        g2wd = dst.getGridGeometry().getGridToCRS2D(PixelOrientation.UPPER_LEFT);
+        g2wd = dst.getGridToCRS2D(PixelOrientation.UPPER_LEFT);
 
         try {
             w2gd = g2wd.inverse();
@@ -281,7 +329,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
         Point2D ret = ((Point2D) destPt.clone());
         ret.setLocation(coords[0], coords[1]);
-        if (dst.getGridGeometry().getEnvelope2D().contains(ret))
+        if (dst.getEnvelope2D().contains(ret))
             return ret;
         else
             return null;

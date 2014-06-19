@@ -1,20 +1,10 @@
-Mark WKT Plugin
----------------
-
-This plugin adds the rendering of marks built from WKT geometries; moreover, it adds some Java-generated shapes that are used to draw meteorological symbols... hope the weathermen will find this useful.
-
-**Maven**::
-   
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-mark-wkt</artifactId>
-      <version>${geotools.version}</version>
-    </dependency>
-
 WKT Marks
-^^^^^^^^^
+---------
 
-The use of WKT marks (prefiex with "wkt://" in your SLD) allows an easy way to add complex symbols to the rendering process.
+The use of WKT marks (prefiex with "wkt://" in your SLD) allows an easy way to add complex symbols to the rendering process. 
+Also there is the option of rendering marks built from WKT geometries; moreover, some Java-generated 
+shapes can be used to draw meteorological symbols... hope the weathermen will find this useful.
+
 
 Examples:
 
@@ -114,3 +104,28 @@ The weather symbols, which are create using Java code, should be prefixed by the
   Produces:
   
   .. image:: /images/triangleemicircle.png
+* North Arrow::
+     
+     <WellKnownName>extshape://narrow</WellKnownName> 
+  
+  Produces:
+  
+  .. image:: /images/narrow.png
+* South Arrow::
+     
+     <WellKnownName>extshape://sarrow</WellKnownName> 
+  
+  Produces:
+  
+  .. image:: /images/sarrow.png
+  
+
+More complex symbols like Wind Barbs can be created with the **windbarbs://** prefix. This is an example::
+
+	 <WellKnownName>windbarbs://default(15)[kts]</WellKnownName>
+		
+Where *15* indicates the wind intensity and *[kts]* indicates its unit of meausure.
+
+And it produces:
+
+  .. image:: /images/barbs.png

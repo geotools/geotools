@@ -21,6 +21,7 @@ import org.geotools.renderer.style.shape.ExplicitBoundsShape;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
@@ -91,6 +92,21 @@ public class MeteoMarkFactory implements MarkFactory {
         ExplicitBoundsShape narrow = new ExplicitBoundsShape(gp);
         narrow.setBounds(new Rectangle2D.Double(-1.2, -0.3, 1, 0.6));
         WELLKNOWN_SHAPES.put("narrow", narrow);   
+
+        // South Arrow
+        AffineTransform at = AffineTransform.getQuadrantRotateInstance(2);
+        gp = new GeneralPath();
+        gp.moveTo(0f, 0.5f);
+        gp.lineTo(0.5, -0.5f);
+        gp.lineTo(0.1f, -0.5f);
+        gp.lineTo(0.1f, -2.0f);
+        gp.lineTo(-0.1f, -2.0f);
+        gp.lineTo(-0.1f, -0.5f);
+        gp.lineTo(-0.5f, -0.5f);
+        gp.closePath();
+        gp.transform(at);
+        ExplicitBoundsShape sarrow = new ExplicitBoundsShape(gp);
+        WELLKNOWN_SHAPES.put("sarrow", sarrow);
      }
 
     /*
@@ -99,12 +115,12 @@ public class MeteoMarkFactory implements MarkFactory {
      */
     public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception {
         // cannot handle a null url
-        if(symbolUrl == null)
+        if (symbolUrl == null)
             return null;
 
         // see if it's a shape
         if(LOGGER.isLoggable(Level.FINE)){
-        	LOGGER.fine("Trying to resolve symbol:"+symbolUrl.toString());
+            LOGGER.fine("Trying to resolve symbol:" + symbolUrl.toString());
         }
         String wellKnownName = symbolUrl.evaluate(feature, String.class);
         if(wellKnownName==null||!wellKnownName.startsWith(SHAPE_PREFIX)) {

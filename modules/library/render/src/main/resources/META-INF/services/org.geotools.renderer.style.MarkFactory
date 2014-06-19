@@ -1,3 +1,6 @@
 org.geotools.renderer.style.WellKnownMarkFactory
 org.geotools.renderer.style.TTFMarkFactory
 org.geotools.renderer.style.ShapeMarkFactory
+org.geotools.renderer.markwkt.WKTMarkFactory
+org.geotools.renderer.markwkt.MeteoMarkFactory
+org.geotools.renderer.windbarbs.WindBarbsFactory

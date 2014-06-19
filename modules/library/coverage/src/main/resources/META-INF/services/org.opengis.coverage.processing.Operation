@@ -13,6 +13,7 @@ org.geotools.coverage.processing.operation.Log
 org.geotools.coverage.processing.operation.MaxFilter
 org.geotools.coverage.processing.operation.MedianFilter
 org.geotools.coverage.processing.operation.MinFilter
+org.geotools.coverage.processing.operation.Mosaic
 org.geotools.coverage.processing.operation.Multiply
 org.geotools.coverage.processing.operation.MultiplyConst
 org.geotools.coverage.processing.operation.Resample

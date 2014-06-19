@@ -60,7 +60,7 @@ public class ImageGraphicFactory implements ExternalGraphicFactory {
     static Set<String> supportedGraphicFormats = new HashSet<String>(Arrays.asList(ImageIO
             .getReaderMIMETypes()));
 
-    public Icon getIcon(Feature feature, Expression url, String format, int size) throws Exception {
+    public Icon getIcon(Feature feature, Expression url, String format, int size) {
         // check we do support the format
         if (!supportedGraphicFormats.contains(format.toLowerCase()))
             return null;
@@ -74,7 +74,12 @@ public class ImageGraphicFactory implements ExternalGraphicFactory {
         // get the image from the cache, or load it
         BufferedImage image = imageCache.get(location);
         if(image == null) {
-            image = ImageIO.read(location);
+            try {
+                image = ImageIO.read(location);
+            } catch (java.io.IOException ioe) {
+                LOGGER.warning("Unable to read image at " + location + " : " + ioe.getMessage());
+                return null;
+            }
             imageCache.put(location, image);
         }
         

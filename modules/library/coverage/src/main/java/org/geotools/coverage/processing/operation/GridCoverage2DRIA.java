@@ -36,11 +36,15 @@ import javax.media.jai.InterpolationNearest;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RasterAccessor;
 import javax.media.jai.RasterFormatTag;
+import javax.media.jai.RenderedOp;
 import javax.media.jai.iterator.RandomIter;
 import javax.media.jai.iterator.RandomIterFactory;
+import javax.media.jai.operator.BorderDescriptor;
+
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.factory.GeoTools;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.opengis.metadata.spatial.PixelOrientation;
@@ -111,7 +115,6 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         final ImageLayout imageLayout = new ImageLayout();
         imageLayout.setMinX(destinationRasterDimension.x).setMinY(destinationRasterDimension.y);
         imageLayout.setWidth(destinationRasterDimension.width).setHeight(destinationRasterDimension.height);
-        imageLayout.setTileHeight(src.getRenderedImage().getSampleModel().getHeight()).setTileWidth(src.getRenderedImage().getSampleModel().getWidth());
         
         //
         // SampleModel and ColorModel are related to data itself, so we
@@ -512,16 +515,13 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             maxX = src.getMaxX();
             minY = src.getMinY();
             maxY = src.getMaxY();
-            Rectangle bounds = new Rectangle(src.getMinX() - lpad, src.getMinY() - tpad, src
-                    .getWidth()
-                    + lpad + rpad, src.getHeight() + tpad + bpad);
-            iter = RandomIterFactory.create(src.getExtendedData(bounds, extender), bounds);
+            iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
         } else {
             minX = src.getMinX() + lpad;
             maxX = src.getMaxX() - rpad;
             minY = src.getMinY() + tpad;
             maxY = src.getMaxY() - bpad;
-            iter = RandomIterFactory.create(src, src.getBounds());
+            iter = getRandomIterator(src);
         }
 
         int kwidth = interp.getWidth();
@@ -661,16 +661,13 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             maxX = src.getMaxX();
             minY = src.getMinY();
             maxY = src.getMaxY();
-            Rectangle bounds = new Rectangle(src.getMinX() - lpad, src.getMinY() - tpad, src
-                    .getWidth()
-                    + lpad + rpad, src.getHeight() + tpad + bpad);
-            iter = RandomIterFactory.create(src.getExtendedData(bounds, extender), bounds);
+            iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
         } else {
             minX = src.getMinX() + lpad;
             maxX = src.getMaxX() - rpad;
             minY = src.getMinY() + tpad;
             maxY = src.getMaxY() - bpad;
-            iter = RandomIterFactory.create(src, src.getBounds());
+            iter = getRandomIterator(src);
         }
 
         int kwidth = interp.getWidth();
@@ -762,16 +759,13 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             maxX = src.getMaxX();
             minY = src.getMinY();
             maxY = src.getMaxY();
-            Rectangle bounds = new Rectangle(src.getMinX() - lpad, src.getMinY() - tpad, src
-                    .getWidth()
-                    + lpad + rpad, src.getHeight() + tpad + bpad);
-            iter = RandomIterFactory.create(src.getExtendedData(bounds, extender), bounds);
+            iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
         } else {
             minX = src.getMinX() + lpad;
             maxX = src.getMaxX() - rpad;
             minY = src.getMinY() + tpad;
             maxY = src.getMaxY() - bpad;
-            iter = RandomIterFactory.create(src, src.getBounds());
+            iter = getRandomIterator(src);
         }
 
         int kwidth = interp.getWidth();
@@ -863,16 +857,13 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             maxX = src.getMaxX();
             minY = src.getMinY();
             maxY = src.getMaxY();
-            Rectangle bounds = new Rectangle(src.getMinX() - lpad, src.getMinY() - tpad, src
-                    .getWidth()
-                    + lpad + rpad, src.getHeight() + tpad + bpad);
-            iter = RandomIterFactory.create(src.getExtendedData(bounds, extender), bounds);
+            iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
         } else {
             minX = src.getMinX() + lpad;
             maxX = src.getMaxX() - rpad;
             minY = src.getMinY() + tpad;
             maxY = src.getMaxY() - bpad;
-            iter = RandomIterFactory.create(src, src.getBounds());
+            iter = getRandomIterator(src);
         }
 
         int kwidth = interp.getWidth();
@@ -964,16 +955,13 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             maxX = src.getMaxX();
             minY = src.getMinY();
             maxY = src.getMaxY();
-            Rectangle bounds = new Rectangle(src.getMinX() - lpad, src.getMinY() - tpad, src
-                    .getWidth()
-                    + lpad + rpad, src.getHeight() + tpad + bpad);
-            iter = RandomIterFactory.create(src.getExtendedData(bounds, extender), bounds);
+            iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
         } else {
             minX = src.getMinX() + lpad;
             maxX = src.getMaxX() - rpad;
             minY = src.getMinY() + tpad;
             maxY = src.getMaxY() - bpad;
-            iter = RandomIterFactory.create(src, src.getBounds());
+            iter = getRandomIterator(src);
         }
 
         int kwidth = interp.getWidth();
@@ -1062,16 +1050,13 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             maxX = src.getMaxX();
             minY = src.getMinY();
             maxY = src.getMaxY();
-            Rectangle bounds = new Rectangle(src.getMinX() - lpad, src.getMinY() - tpad, src
-                    .getWidth()
-                    + lpad + rpad, src.getHeight() + tpad + bpad);
-            iter = RandomIterFactory.create(src.getExtendedData(bounds, extender), bounds);
+            iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
         } else {
             minX = src.getMinX() + lpad;
             maxX = src.getMaxX() - rpad;
             minY = src.getMinY() + tpad;
             maxY = src.getMaxY() - bpad;
-            iter = RandomIterFactory.create(src, src.getBounds());
+            iter = getRandomIterator(src);
         }
 
         int kwidth = interp.getWidth();
@@ -1204,6 +1189,23 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         }
 
         return destRect;
+    }
+
+    private RandomIter getRandomIterator(final PlanarImage src) {
+        return getRandomIterator(src, 0, 1, 0, 1, extender);
+    }
+
+    private RandomIter getRandomIterator(final PlanarImage src, int leftPad, int rightPad,
+            int topPad, int bottomPad, BorderExtender extender) {
+        RandomIter iterSource;
+        if (extender != null) {
+            RenderedOp op = BorderDescriptor.create(src, leftPad, rightPad, topPad, bottomPad,
+                    extender, GeoTools.getDefaultHints());
+            iterSource = RandomIterFactory.create(op, op.getBounds());
+        } else {
+            iterSource = RandomIterFactory.create(src, src.getBounds());
+        }
+        return iterSource;
     }
 
 }

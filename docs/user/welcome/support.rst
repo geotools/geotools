@@ -71,7 +71,8 @@ and improvements.
 
 To create an issue:
 
-1. Create a `new account <http://jira.codehaus.org/secure/Signup!default.jspa>`_
+1. Sign up with CodeHaus: `Signup <http://xircles.codehaus.org/signup>`_ .
+   This CodeHaus username is used for both the issue tracker and the wiki.
 2. `Login <http://jira.codehaus.org/>`
 3. Once you are logged in you can create a new issue
    

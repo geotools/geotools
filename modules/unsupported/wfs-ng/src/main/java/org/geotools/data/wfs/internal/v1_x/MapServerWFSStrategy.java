@@ -16,10 +16,17 @@
  */
 package org.geotools.data.wfs.internal.v1_x;
 
-import javax.xml.namespace.QName;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+import net.opengis.wfs.FeatureTypeType;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.xs.bindings.XSDoubleBinding;
+import org.geotools.xs.bindings.XSIntegerBinding;
+import org.geotools.xs.bindings.XSStringBinding;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.spatial.BBOX;
@@ -60,5 +67,23 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
             splitFilters[0] = newFilter;
         }
         return splitFilters;
+    }
+    
+    @Override
+    public FeatureTypeType translateTypeInfo(FeatureTypeType typeInfo){
+        if ("wfs".equals(typeInfo.getName().getPrefix())) {
+            QName newName = new QName( "http://mapserver.gis.umn.edu/mapserver", typeInfo.getName().getLocalPart(), "ms");
+            typeInfo.setName(newName);
+        }
+        return typeInfo;
+    }
+
+    @Override
+    public Map<QName, Class<?>> getFieldTypeMappings() {
+        Map<QName, Class<?>> mappings =  new HashMap<QName, Class<?>>();
+        mappings.put(new QName("http://www.w3.org/2001/XMLSchema", "Character"), XSStringBinding.class);
+        mappings.put(new QName("http://www.w3.org/2001/XMLSchema", "Integer"), XSIntegerBinding.class);
+        mappings.put(new QName("http://www.w3.org/2001/XMLSchema", "Real"), XSDoubleBinding.class);
+        return mappings;
     }
 }

@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- This Web Feature Server is a component of CubeWerx Suite 4.7.5. -->
+<wfs:FeatureCollection xmlns="http://www.cubewerx.com/cw" xmlns:cw="http://www.cubewerx.com/cw"
+  xmlns:gubs="http://www.fgdc.gov/framework/073004/gubs" xmlns:fw="http://www.fgdc.gov/framework/073004"
+  xmlns:wfs="http://www.opengis.net/wfs" xmlns:gml="http://www.opengis.net/gml"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.fgdc.gov/framework/073004/gubs ./schemas/CubeWerx_nsdi/CubeWerx_nsdi_GovernmentalUnitCE_DescribeFeatureType.xsd
+                      http://www.fgdc.gov/framework/073004 ./schemas/CubeWerx_nsdi/Framework.xsd 
+                      http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd 
+                      http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/feature.xsd">
+  <gml:featureMember>
+    <gubs:GovernmentalUnitCE gml:id="CWFID.GOVUNIT_CE.0.0">
+      <gubs:unitId>
+        <fw:Identifier>
+          <fw:identifier>e64b1841-57d3-4f6a-af04-bc011024ad98</fw:identifier>
+          <fw:idAuthority>US Census Bureau</fw:idAuthority>
+        </fw:Identifier>
+      </gubs:unitId>
+      <gubs:instanceName>Kauai</gubs:instanceName>
+      <gubs:instanceCode>007</gubs:instanceCode>
+      <gubs:effectiveDate>2005-11-07</gubs:effectiveDate>
+      <gubs:geometry>
+        <gml:Polygon srsName="EPSG:4269">
+          <gml:exterior>
+            <gml:LinearRing>
+              <gml:posList srsDimension="3">
+                -159 22 0 -159 23 0 -158 23 0 -158 22 0 -159 22 0
+              </gml:posList>
+            </gml:LinearRing>
+          </gml:exterior>
+        </gml:Polygon>
+      </gubs:geometry>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>OBJECTID</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>1344</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_DATASETID</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>0381af74-802c-4aba-b2ec-fd75c5d56d03</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_DATADESCR</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>Counties derived from US Bureau of Census polygons</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_ORIGINATOR</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>US Bureau of Census</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>DATA_SECURITY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Integer</fw:type>
+          <fw:value>5</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>DISTRIBUTION_POLICY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>E4</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>POPULATION2000</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>60165</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>AREASQKM</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>0.00000000</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>FCODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>61200</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>STATE_FIPSCODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>15</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>STATE_NAME</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>Hawaii</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>STCO_FIPSCCODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>15007</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:governmentalUnitType />
+    </gubs:GovernmentalUnitCE>
+  </gml:featureMember>
+  <gml:featureMember>
+    <gubs:GovernmentalUnitCE gml:id="CWFID.GOVUNIT_CE.0.1">
+      <gubs:unitId>
+        <fw:Identifier>
+          <fw:identifier>a9b39f61-f28c-42c2-89d2-efde7b85afe6</fw:identifier>
+          <fw:idAuthority>US Census Bureau</fw:idAuthority>
+        </fw:Identifier>
+      </gubs:unitId>
+      <gubs:instanceName>Honolulu</gubs:instanceName>
+      <gubs:instanceCode>003</gubs:instanceCode>
+      <gubs:effectiveDate>2005-11-07</gubs:effectiveDate>
+      <gubs:geometry>
+        <gml:Polygon srsName="EPSG:4269">
+          <gml:exterior>
+            <gml:LinearRing>
+              <gml:posList srsDimension="3">
+                -159 22 0 -159 23 0 -158 23 0 -158 22 0 -159 22 0
+              </gml:posList>
+            </gml:LinearRing>
+          </gml:exterior>
+        </gml:Polygon>
+      </gubs:geometry>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>OBJECTID</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>1340</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_DATASETID</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>0381af74-802c-4aba-b2ec-fd75c5d56d03</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_DATADESCR</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>Counties derived from US Bureau of Census polygons</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_ORIGINATOR</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>US Bureau of Census</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>DATA_SECURITY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Integer</fw:type>
+          <fw:value>5</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>DISTRIBUTION_POLICY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>E4</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>POPULATION2000</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>894353</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>AREASQKM</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>0.00000000</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>FCODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>61200</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>STATE_FIPSCODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>15</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>STATE_NAME</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>Hawaii</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>STCO_FIPSCCODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>15003</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:governmentalUnitType />
+    </gubs:GovernmentalUnitCE>
+  </gml:featureMember>
+  <gml:featureMember>
+    <gubs:GovernmentalUnitCE gml:id="CWFID.GOVUNIT_CE.0.2">
+      <gubs:unitId>
+        <fw:Identifier>
+          <fw:identifier>7788274e-5ba9-4df8-aaed-52c01d3f10cb</fw:identifier>
+          <fw:idAuthority>US Census Bureau</fw:idAuthority>
+        </fw:Identifier>
+      </gubs:unitId>
+      <gubs:instanceName>Hawaii</gubs:instanceName>
+      <gubs:instanceCode>001</gubs:instanceCode>
+      <gubs:effectiveDate>2005-11-07</gubs:effectiveDate>
+      <gubs:geometry>
+        <gml:Polygon srsName="EPSG:4269">
+          <gml:exterior>
+            <gml:LinearRing>
+              <gml:posList srsDimension="3">
+                -159 22 0 -159 23 0 -158 23 0 -158 22 0 -159 22 0
+              </gml:posList>
+            </gml:LinearRing>
+          </gml:exterior>
+        </gml:Polygon>
+      </gubs:geometry>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>OBJECTID</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>1338</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_DATASETID</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>0381af74-802c-4aba-b2ec-fd75c5d56d03</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_DATADESCR</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>Counties derived from US Bureau of Census polygons</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>SOURCE_ORIGINATOR</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>US Bureau of Census</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>DATA_SECURITY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Integer</fw:type>
+          <fw:value>5</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>DISTRIBUTION_POLICY</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>E4</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>POPULATION2000</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>156573</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>AREASQKM</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>0.00000000</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>FCODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">Number</fw:type>
+          <fw:value>61200</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>STATE_FIPSCODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>15</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>STATE_NAME</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>Hawaii</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:extended>
+        <fw:ExtendedAttribute>
+          <fw:authority>US Census Bureau</fw:authority>
+          <fw:name>STCO_FIPSCCODE</fw:name>
+          <fw:type codeSpace="urn:fgdc:hydro:dataTypes:">CharacterString</fw:type>
+          <fw:value>15001</fw:value>
+        </fw:ExtendedAttribute>
+      </gubs:extended>
+      <gubs:governmentalUnitType />
+    </gubs:GovernmentalUnitCE>
+  </gml:featureMember>
+</wfs:FeatureCollection>

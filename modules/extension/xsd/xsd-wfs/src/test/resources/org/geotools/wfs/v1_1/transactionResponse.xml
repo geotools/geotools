@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wfs:TransactionResponse version="1.1.0"
+xmlns:wfs="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+<wfs:InsertResults>
+    <wfs:Feature>
+        <ogc:FeatureId fid="none"/>
+    </wfs:Feature>
+</wfs:InsertResults>
+
+<wfs:TransactionResult>
+
+<wfs:Status>
+
+<wfs:SUCCESS />
+
+</wfs:Status>
+
+</wfs:TransactionResult>
+
+</wfs:TransactionResponse>

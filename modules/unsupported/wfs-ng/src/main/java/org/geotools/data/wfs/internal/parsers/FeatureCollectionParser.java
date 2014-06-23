@@ -51,7 +51,7 @@ public class FeatureCollectionParser implements WFSResponseParser {
     /**
      * @return a {@link GetFeatureParser} to stream the contents of the GML 3.1 response
      */
-    public Object parse(WFSResponse response) throws IOException {
+    public Object parse(WFSResponse response, String axisOrder) throws IOException {
 
         final GetFeatureType request = (GetFeatureType) response.getOriginatingRequest();
         final QueryType queryType = (QueryType) request.getQuery().get(0);
@@ -74,7 +74,7 @@ public class FeatureCollectionParser implements WFSResponseParser {
 
         InputStream in = response.getInputStream();
 
-        GetFeatureParser featureReader = new XmlSimpleFeatureParser(in, schema, remoteFeatureName);
+        GetFeatureParser featureReader = new XmlSimpleFeatureParser(in, schema, remoteFeatureName, axisOrder);
         return featureReader;
     }
 }

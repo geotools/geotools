@@ -1109,6 +1109,11 @@
           <artifactId>maven-eclipse-plugin</artifactId>
           <version>2.5</version>
         </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>cobertura-maven-plugin</artifactId>
+          <version>2.6</version>
+        </plugin>
       </plugins>
     </pluginManagement>
 
@@ -1311,7 +1316,7 @@
 
 
   <reporting>
-    <plugins>
+   <plugins>
       <!-- ======================================================= -->
       <!--     Web site generation.                                -->
       <!-- ======================================================= -->
@@ -1390,7 +1395,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.2</version>
+        <version>2.6</version>
       </plugin>
 
       <!-- ======================================================= -->

@@ -119,7 +119,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
     public static final Configuration WFS_2_0_CONFIGURATION = new org.geotools.wfs.v2_0.WFSConfiguration();
 
     protected WFSConfig config;
-
+    
     public AbstractWFSStrategy() {
         this.config = new WFSConfig();
     }
@@ -244,10 +244,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         final String srsName = request.getSrsName();
         if (srsName != null) {
-            final Set<String> supportedCRSIdentifiers = getSupportedCRSIdentifiers(typeName);
-            if (supportedCRSIdentifiers.contains(srsName)) {
-                map.put("SRSNAME", srsName.toString());
-            }
+            map.put("SRSNAME", srsName.toString());
         }
 
         final Filter supportedFilter;
@@ -368,8 +365,13 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
     @Override
     public String getDefaultOutputFormat(WFSOperationType operation) {
-        List<String> clientSupportedFormats = getClientSupportedOutputFormats(operation);
         Set<String> supportedOutputFormats = getServerSupportedOutputFormats(operation);
+        String overrideOutputFormat = config.getOutputformatOverride();
+        if (overrideOutputFormat != null && supportedOutputFormats.contains(overrideOutputFormat)) {
+            return overrideOutputFormat;
+        }        
+            
+        List<String> clientSupportedFormats = getClientSupportedOutputFormats(operation);        
         for (String clientSupported : clientSupportedFormats) {
             if (supportedOutputFormats.contains(clientSupported)) {
                 return clientSupported;
@@ -767,6 +769,11 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         return new ByteArrayInputStream(out.toByteArray());
 
+    }
+    
+    @Override
+    public Map<QName, Class<?>> getFieldTypeMappings() {
+        return null;
     }
 
 }

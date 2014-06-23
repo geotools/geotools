@@ -161,7 +161,6 @@
          <module>vpf</module>
          <module>matfile5</module>
          <module>sfs</module>
-         <module>mark-wkt</module>
          <module>feature-aggregate</module>
          <module>mongodb</module>
          <module>property-ng</module>

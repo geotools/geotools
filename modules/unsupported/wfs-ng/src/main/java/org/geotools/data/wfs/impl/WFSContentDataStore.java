@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.wfs.impl;
 
 import java.io.IOException;
@@ -94,7 +110,8 @@ public class WFSContentDataStore extends ContentDataStore {
             if (!XMLConstants.DEFAULT_NS_PREFIX.equals(remoteTypeName.getPrefix())) {
                 localTypeName = remoteTypeName.getPrefix() + "_" + localTypeName;
             }
-            Name typeName = new NameImpl(namespaceURI, localTypeName);
+            Name typeName = new NameImpl(namespaceURI==null? remoteTypeName.getNamespaceURI() : namespaceURI, localTypeName);
+            
             names.add(typeName);
             this.names.put(typeName, remoteTypeName);
         }
@@ -125,11 +142,9 @@ public class WFSContentDataStore extends ContentDataStore {
 
             source = new WFSContentFeatureSource(entry, client);
 
-            // TODO: revisit. Transactions disabled by now until resolving the strategy to use as much
-            // from ContentDataStore and related classes as possible
-            // if (client.supportsTransaction(remoteTypeName)) {
-            // source = new WFSContentFeatureStore((WFSContentFeatureSource) source);
-            // }
+            if (client.supportsTransaction(remoteTypeName)) {
+                source = new WFSContentFeatureStore((WFSContentFeatureSource) source);
+            }
 
         } else {
             String storedQueryId = configuredStoredQueries.get(entry.getName().getLocalPart());

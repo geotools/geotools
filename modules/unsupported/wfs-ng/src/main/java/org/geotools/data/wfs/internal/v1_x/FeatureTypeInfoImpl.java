@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.wfs.internal.v1_x;
 
 import java.net.URI;
@@ -10,6 +26,7 @@ import java.util.logging.Level;
 
 import javax.xml.XMLConstants;
 
+import net.opengis.ows10.KeywordsType;
 import net.opengis.ows10.WGS84BoundingBoxType;
 import net.opengis.wfs.FeatureTypeType;
 import net.opengis.wfs.OutputFormatListType;
@@ -39,12 +56,15 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
     @Override
     public Set<String> getKeywords() {
         @SuppressWarnings("unchecked")
-        List<String> keywords = eType.getKeywords();
+        List<KeywordsType> keywords = eType.getKeywords();
         Set<String> ret;
         if (keywords == null) {
             ret = Collections.emptySet();
         } else {
-            ret = new HashSet<String>(keywords);
+            ret = new HashSet<String>();
+            for (KeywordsType k : keywords) {
+                ret.addAll(k.getKeyword());
+            }
             ret.remove(null);
         }
         return ret;
@@ -157,6 +177,11 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
         }
 
         return new HashSet<String>(ftypeDeclaredFormats);
+    }
+
+    @Override
+    public String getAbstract() {
+        return eType.getAbstract();
     }
 
 }

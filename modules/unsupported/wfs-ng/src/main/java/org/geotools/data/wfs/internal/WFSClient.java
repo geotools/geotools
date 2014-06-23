@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.wfs.internal;
 
 import static org.geotools.data.wfs.internal.Loggers.requestDebug;
@@ -21,6 +37,7 @@ import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.data.wfs.internal.v1_x.CubeWerxStrategy;
 import org.geotools.data.wfs.internal.v1_x.GeoServerPre200Strategy;
 import org.geotools.data.wfs.internal.v1_x.IonicStrategy;
+import org.geotools.data.wfs.internal.v1_x.MapServerWFSStrategy;
 import org.geotools.data.wfs.internal.v1_x.StrictWFS_1_x_Strategy;
 import org.geotools.data.wfs.internal.v2_0.StrictWFS_2_0_Strategy;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -38,7 +55,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
 
     private static final Logger LOGGER = Logging.getLogger(WFSClient.class);
 
-    private final WFSConfig config;
+    protected final WFSConfig config;
 
     public WFSClient(URL capabilitiesURL, HTTPClient httpClient, WFSConfig config)
             throws IOException, ServiceException {
@@ -154,7 +171,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                     LOGGER.warning("Found a Ionic server but the version may not match the strategy "
                             + "we have (v.4). Ionic namespace url: " + ionicNs);
                     strategy = new IonicStrategy();
-                }
+                } 
             }
         }
 
@@ -175,6 +192,8 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                 strategy = new GeoServerPre200Strategy();
             } else if (uri.contains("/ArcGIS/services/")) {
                 strategy = new StrictWFS_1_x_Strategy(); // new ArcGISServerStrategy();
+            } else if (uri.contains("mapserver")) {
+                strategy = new MapServerWFSStrategy();
             }
         }
 
@@ -191,6 +210,9 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
             }
         }
         LOGGER.info("Using WFS Strategy: " + strategy.getClass().getName());
+        
+        strategy.setConfig(config);
+        
         return strategy;
     }
 
@@ -344,5 +366,9 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         FeatureTypeInfo typeInfo = strategy.getFeatureTypeInfo(typeName);
         CoordinateReferenceSystem crs = typeInfo.getCRS();
         return crs;
+    }
+    
+    public String getAxisOrderFilter(){
+        return config.getAxisOrderFilter();
     }
 }

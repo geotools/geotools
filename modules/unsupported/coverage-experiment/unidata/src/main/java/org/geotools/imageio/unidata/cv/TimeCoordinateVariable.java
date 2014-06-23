@@ -75,6 +75,9 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
             }
 
             baseTimeUnits  = UnidataTimeUtilities.getTimeUnits(units, null);     
+            if (baseTimeUnits == -1) {
+            	throw new IllegalArgumentException("Couldn't determine time units from unit string '" + units + "'");
+            }
             if (origin != null) {
                 origin = UnidataTimeUtilities.trimFractionalPart(origin);
                 // add 0 digits if absent
@@ -95,11 +98,12 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
                 cal.setTime(epoch);
                 cal.setTimeZone(UnidataTimeUtilities.UTC_TIMEZONE);
                 final double coordValue = axis1D.getCoordValue(timeIndex);
-                int vi = (int) Math.floor(coordValue);
+                long vi = (long) Math.floor(coordValue);
                 double vd = coordValue - vi;
-                cal.add(baseTimeUnits, vi);
+                UnidataTimeUtilities.addTimeUnit(cal, baseTimeUnits, vi);
                 if (vd != 0.0) {
-                    cal.add(UnidataTimeUtilities.getTimeUnits(units, vd), UnidataTimeUtilities.getTimeSubUnitsValue(units, vd));
+                	UnidataTimeUtilities.addTimeUnit(cal, UnidataTimeUtilities.getTimeUnits(units, vd),
+                			UnidataTimeUtilities.getTimeSubUnitsValue(units, vd));
                 }
                 return cal.getTime();
             }

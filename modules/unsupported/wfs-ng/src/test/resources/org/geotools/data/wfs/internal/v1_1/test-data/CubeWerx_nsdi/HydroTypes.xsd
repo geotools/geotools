@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+            targetNamespace="http://www.fgdc.gov/framework/073004/hydro" 
+            xmlns:hyd="http://www.fgdc.gov/framework/073004/hydro" 
+            xmlns:lrs="http://www.fgdc.gov/framework/073004/lrs" 
+            xmlns:fw="http://www.fgdc.gov/framework/073004" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:gml="http://www.opengis.net/gml" 
+            xmlns:gmlsf="http://www.opengis.net/gmlsf" 
+            elementFormDefault="qualified" 
+            version="0.0.4">
+
+   <xs:annotation>
+      <xs:appinfo source="http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsfLevels.xsd">
+         <gmlsf:ConformanceLevel>1</gmlsf:ConformanceLevel>
+         <gmlsf:GMLProfileSchema>http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsf.xsd</gmlsf:GMLProfileSchema>
+      </xs:appinfo>
+   </xs:annotation>
+
+   <xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+   <xs:import namespace="http://www.opengis.net/gmlsf" schemaLocation="http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsfLevels.xsd"/>
+   <xs:import namespace="http://www.fgdc.gov/framework/073004" schemaLocation="Framework.xsd"/>
+   <xs:import namespace="http://www.fgdc.gov/framework/073004/lrs" schemaLocation="LinearReferenceSystems.xsd"/>
+
+   <!-- ================================================================= -->
+   <!-- NAME                                                              -->
+   <!-- ================================================================= -->
+   <xs:complexType name="NamePropertyType">
+      <xs:sequence>
+         <xs:element ref="hyd:Name"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Name">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="nameId" type="fw:IdentifierPropertyType" minOccurs="0" maxOccurs="1"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <!-- ================================================================= -->
+   <!-- REPRESENTATION                                                    -->
+   <!-- ================================================================= -->
+   <xs:complexType name="RepresentationPropertyType">
+      <xs:sequence>
+         <xs:element ref="hyd:Representation"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Representation">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="representationId" type="fw:IdentifierPropertyType" minOccurs="0" maxOccurs="1"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <!-- ================================================================= -->
+   <!-- MEASUREMENT                                                        -->
+   <!-- ================================================================= -->
+   <xs:complexType name="MeasurementPropertyType">
+      <xs:sequence>
+         <xs:element ref="hyd:Measurement"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Measurement">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="accuracy" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="reportingOrganization" type="fw:ResponsiblePartyPropertyType"/>
+            <xs:element name="units">
+               <xs:annotation>
+                  <xs:appinfo source="./Dictionaries/UnitsDictionary.xml"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:simpleContent>
+                     <xs:restriction base="gml:CodeType">
+                        <xs:attribute name="codeSpace" type="xs:anyURI" use="required"/>
+                     </xs:restriction>
+                  </xs:simpleContent>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="value" type="xs:string"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <!-- ================================================================= -->
+   <!-- FEATURERELATIONSHIP                                               -->
+   <!-- ================================================================= -->
+   <xs:complexType name="FeatureRelationshipPropertyType">
+      <xs:sequence>
+         <xs:element ref="hyd:FeatureRelationship"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="FeatureRelationship">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="targetFeature" type="gml:ReferenceType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="type">
+               <xs:annotation>
+                  <xs:appinfo source="./Dictionaries/RelationshipTypeDictionary.xml"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:simpleContent>
+                     <xs:restriction base="gml:CodeType">
+                        <xs:attribute name="codeSpace" type="xs:anyURI" use="required"/>
+                     </xs:restriction>
+                  </xs:simpleContent>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="attribute" type="fw:ExtendedAttributePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <!-- ================================================================= -->
+   <!-- COMPUTEDNETWORKVALUES                                             -->
+   <!-- ================================================================= -->
+   <xs:complexType name="ComputedNetworkValuesPropertyType">
+      <xs:sequence>
+         <xs:element ref="hyd:ComputedNetworkValues"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="ComputedNetworkValues">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="fromNode" type="xs:integer"/>
+            <xs:element name="toNode" type="xs:integer"/>
+            <xs:element name="hydrologicSequenceNumber" type="xs:integer"/>
+            <xs:element name="startFlag" type="xs:integer"/>
+            <xs:element name="terminalFlag" type="xs:integer"/>
+            <xs:element name="terminalDrainId" type="xs:integer"/>
+            <xs:element name="levelPathId" type="xs:integer"/>
+            <xs:element name="arbolateSumKm" type="gml:MeasureType"/>
+            <xs:element name="pathLengthKm" type="gml:MeasureType"/>
+            <xs:element name="thinner" type="xs:integer"/>
+            <xs:element name="divergenceFlag" type="xs:integer"/>
+            <xs:element name="drainStreamLevel" type="xs:integer"/>
+            <xs:element name="downstreamDrainLevel" type="xs:integer"/>
+            <xs:element name="streamOrder" type="xs:integer"/>
+            <xs:element name="upstreamLevelPathId" type="xs:integer"/>
+            <xs:element name="upstreamHydrologicSequenceNumber" type="xs:integer"/>
+            <xs:element name="upstreamMinimumHydrologicSequenceNumber" type="xs:integer"/>
+            <xs:element name="downstreamLevelPathId" type="xs:integer"/>
+            <xs:element name="downstreamDrainCount" type="xs:integer"/>
+            <xs:element name="downstreamMinorHydrologicSequenceNumber" type="xs:integer"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+</xs:schema>

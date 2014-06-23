@@ -55,6 +55,17 @@ public class DiffTransactionState implements Transaction.State {
         this.state = state;
         this.diff = new Diff();
     }
+    
+    /**
+     * Transaction state responsible for holding an in memory {@link Diff}.
+     * 
+     * @param state ContentState for the transaction
+     */
+    protected DiffTransactionState(ContentState state, Diff diff ) {
+        this.state = state;
+        this.diff = diff;
+    }
+    
     /**
      * Access the in memory Diff.
      * @return in memory diff.

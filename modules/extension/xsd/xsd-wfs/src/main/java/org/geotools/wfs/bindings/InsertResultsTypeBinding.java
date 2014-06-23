@@ -16,13 +16,19 @@
  */
 package org.geotools.wfs.bindings;
 
+import java.util.Iterator;
+
 import javax.xml.namespace.QName;
 
 import net.opengis.wfs.InsertResultsType;
+import net.opengis.wfs.InsertedFeatureType;
 import net.opengis.wfs.WfsFactory;
 
-import org.geotools.wfs.WFS;
+import org.eclipse.emf.common.util.EList;
+import org.geotools.wfs.v1_1.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
 
 
 /**
@@ -79,6 +85,22 @@ public class InsertResultsTypeBinding extends AbstractComplexEMFBinding {
      */
     public Class getType() {
         return InsertResultsType.class;
+    }
+    
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception{
+        
+        InsertResultsType resultType = (InsertResultsType) super.parse(instance, node, value);
+        
+        //remove 'none'
+        Iterator it = resultType.getFeature().iterator();
+        while (it.hasNext()) {
+              EList fids = ((InsertedFeatureType)it.next()).getFeatureId();
+              if (fids.size() == 1 && "none".equals(fids.get(0).toString())){
+                  it.remove();
+              }
+        }
+        
+        return resultType;
     }
 
 }

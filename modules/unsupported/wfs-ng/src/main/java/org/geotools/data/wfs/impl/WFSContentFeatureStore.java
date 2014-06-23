@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.wfs.impl;
 
 import java.io.IOException;
@@ -163,7 +179,7 @@ class WFSContentFeatureStore extends ContentFeatureStore {
         final boolean autoCommit;
         WFSLocalTransactionState localState;
         if (Transaction.AUTO_COMMIT.equals(getTransaction())) {
-            localState = new WFSLocalTransactionState(getState());
+            localState = getState().getLocalTransactionState();
             autoCommit = true;
         } else {
             autoCommit = false;
@@ -229,11 +245,10 @@ class WFSContentFeatureStore extends ContentFeatureStore {
 
         if (Transaction.AUTO_COMMIT.equals(transaction)) {
             // we're in auto commit. Do a batch update and commit right away
-            WFSLocalTransactionState localState = new WFSLocalTransactionState(getState());
+            WFSLocalTransactionState localState = getState().getLocalTransactionState();
             WFSRemoteTransactionState committingState = new WFSRemoteTransactionState(
                     getDataStore());
-            //TODO: revisit
-            //committingState.watch(localState);
+            committingState.watch(localState.getState());
 
             WFSDiff diff = localState.getDiff();
 

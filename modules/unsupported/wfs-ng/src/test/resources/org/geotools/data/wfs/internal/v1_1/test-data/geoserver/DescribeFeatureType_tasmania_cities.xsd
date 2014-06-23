@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:gml="http://www.opengis.net/gml"
+	xmlns:topp="http://www.openplans.org/topp"
+	elementFormDefault="qualified"
+	targetNamespace="http://www.openplans.org/topp">
+	<xsd:import namespace="http://www.opengis.net/gml"
+		schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+	<xsd:complexType name="tasmania_citiesType">
+		<xsd:complexContent>
+			<xsd:extension base="gml:AbstractFeatureType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="1" minOccurs="0"
+						name="the_geom" nillable="true" type="gml:MultiPointPropertyType" />
+					<xsd:element maxOccurs="1" minOccurs="0"
+						name="CITY_NAME" nillable="true" type="xsd:string" />
+					<xsd:element maxOccurs="1" minOccurs="0"
+						name="ADMIN_NAME" nillable="true" type="xsd:string" />
+					<xsd:element maxOccurs="1" minOccurs="0"
+						name="CNTRY_NAME" nillable="true" type="xsd:string" />
+					<xsd:element maxOccurs="1" minOccurs="0"
+						name="STATUS" nillable="true" type="xsd:string" />
+					<xsd:element maxOccurs="1" minOccurs="0"
+						name="POP_CLASS" nillable="true" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="tasmania_cities" substitutionGroup="gml:_Feature"
+		type="topp:tasmania_citiesType" />
+</xsd:schema>

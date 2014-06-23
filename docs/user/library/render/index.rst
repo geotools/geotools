@@ -43,6 +43,7 @@ lets you draw a map using all that data you set up.
    map
    style
    icon
+   wkt
 
 Graphic plugins:
 
@@ -57,5 +58,4 @@ Unsupported:
 .. toctree::
    :maxdepth: 1
    
-   wkt
    shapefile

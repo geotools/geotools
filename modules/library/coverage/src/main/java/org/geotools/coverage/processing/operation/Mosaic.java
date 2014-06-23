@@ -31,6 +31,8 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.ROI;
+import javax.media.jai.ROIShape;
 import javax.media.jai.operator.MosaicDescriptor;
 
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -564,6 +566,15 @@ public class Mosaic extends OperationJAI {
         // Setting of the Threshold object to use for the mosaic
         block.setParameter("sourceThreshold", new double[][] { { threshold } });
 
+        // Setting of the ROI associated to each GridCoverage
+        // We need to add its roi in order to avoid problems with the mosaics sources overlapping
+        ROI[] rois = new ROI[numSources];
+        // Cycle on each coverage in order to add the associated ROI
+        for (int i = 0; i < numSources; i++) {
+            rois[i] = new ROIShape(PlanarImage.wrapRenderedImage(rasters[i]).getBounds());
+        }
+        block.setParameter("sourceROI", rois);
+
         // Setting of the Mosaic type as Overlay
         block.setParameter("mosaicType", MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
 
@@ -653,6 +664,7 @@ public class Mosaic extends OperationJAI {
         layout.setMinY(gridRange.y);
         layout.setWidth(gridRange.width);
         layout.setHeight(gridRange.height);
+
         // Set the new layout for the rendering hints
         hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
 

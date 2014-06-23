@@ -14,10 +14,11 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.wfs.impl;
+package org.geotools.data.wfs;
 
 import static org.geotools.data.wfs.internal.URIs.buildURL;
 
+import org.geotools.data.wfs.impl.WFSDataStore;
 import org.geotools.util.KVP;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Version;
@@ -74,7 +75,7 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  * server and client support that version, that version will be used.
  * </p>
  * 
- * @see WFSContentDataStore
+ * @see org.geotools.data.wfs.impl.WFSDataStore
  * @see WFSClient
  */
 @SuppressWarnings({ "unchecked", "nls" })
@@ -423,7 +424,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
     @Override
-    public WFSContentDataStore createDataStore(final Map<String, Serializable> params)
+    public WFSDataStore createDataStore(final Map<String, Serializable> params)
             throws IOException {
 
         final WFSConfig config = WFSConfig.fromParams(params);
@@ -456,7 +457,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             throw new IOException(e);
         }
 
-        WFSContentDataStore dataStore = new WFSContentDataStore(wfsClient);
+        WFSDataStore dataStore = new WFSDataStore(wfsClient);
         // factories
         dataStore.setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
         dataStore.setGeometryFactory(new GeometryFactory(

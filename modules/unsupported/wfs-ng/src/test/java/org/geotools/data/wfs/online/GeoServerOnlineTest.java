@@ -28,38 +28,27 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.logging.Level;
 
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.DataStore;
-import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureEvent;
-import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.data.wfs.impl.WFSContentDataStore;
-import org.geotools.data.wfs.impl.WFSDataStoreFactory;
+import org.geotools.data.wfs.impl.WFSDataStore;
+import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
-import org.geotools.feature.IllegalAttributeException;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -67,21 +56,11 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
-import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.xml.sax.SAXException;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * 
@@ -109,9 +88,9 @@ public class GeoServerOnlineTest {
 
     private URL url_110;
 
-    private WFSContentDataStore wfs100;
+    private WFSDataStore wfs100;
 
-    private WFSContentDataStore wfs110;
+    private WFSDataStore wfs110;
 
     @Before
     public void setUp() throws Exception {

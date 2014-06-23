@@ -36,7 +36,7 @@ import org.geotools.data.Transaction;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureReader;
 import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.wfs.impl.TestHttpResponse;
-import org.geotools.data.wfs.impl.WFSContentDataStore;
+import org.geotools.data.wfs.impl.WFSDataStore;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.ows.ServiceException;
@@ -77,7 +77,7 @@ public class DataStoreTest {
 
         createTestProtocol(CUBEWERX_GOVUNITCE.CAPABILITIES);
 
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
 
         String[] typeNames = ds.getTypeNames();
         assertNotNull(typeNames);
@@ -104,7 +104,7 @@ public class DataStoreTest {
         URL describeUrl = TestData.getResource(this, CUBEWERX_GOVUNITCE.SCHEMA);
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
 
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
 
         try {
             ds.getSchema("nonExistentTypeName");
@@ -128,7 +128,7 @@ public class DataStoreTest {
         URL describeUrl = TestData.getResource(this, CUBEWERX_GOVUNITCE.SCHEMA);
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
 
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
         
         wfs.setOutputformatOverride("text/xml; subtype=gml/2.1.2");
 
@@ -168,7 +168,7 @@ public class DataStoreTest {
         URL describeUrl = TestData.getResource(this, CUBEWERX_GOVUNITCE.SCHEMA);
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
     
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
         Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
     
         // use the OtherSRS
@@ -220,7 +220,7 @@ public class DataStoreTest {
         URL describeUrl = TestData.getResource(this, CUBEWERX_GOVUNITCE.SCHEMA);
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
     
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
         wfs.setUseDefaultSrs(true);
         Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
     
@@ -274,7 +274,7 @@ public class DataStoreTest {
         URL describeUrl = TestData.getResource(this, CUBEWERX_GOVUNITCE.SCHEMA);
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
     
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
         Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
     
         // use the OtherSRS
@@ -304,7 +304,7 @@ public class DataStoreTest {
         URL describeUrl = TestData.getResource(this, CUBEWERX_GOVUNITCE.SCHEMA);
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
 
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
         Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader;
         featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);

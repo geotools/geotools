@@ -29,6 +29,7 @@ import java.util.Map;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
+import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.util.Version;
 import org.junit.After;
@@ -107,7 +108,7 @@ public class WFSDataStoreFactoryTest {
      *            the name of the GetCapabilities document under
      *            {@code /org/geotools/data/wfs/impl/test-data}
      */
-    private WFSContentDataStore testCreateDataStore(final String capabilitiesFile,
+    private WFSDataStore testCreateDataStore(final String capabilitiesFile,
             final Version expectedVersion) throws IOException {
 
         Map<String, Serializable> params = new HashMap<String, Serializable>();
@@ -122,9 +123,9 @@ public class WFSDataStoreFactoryTest {
 
         DataStore dataStore = DataStoreFinder.getDataStore(params);
         assertNotNull(dataStore);
-        assertTrue(dataStore instanceof WFSContentDataStore);
+        assertTrue(dataStore instanceof WFSDataStore);
 
-        WFSContentDataStore wfsDs = (WFSContentDataStore) dataStore;
+        WFSDataStore wfsDs = (WFSDataStore) dataStore;
 
         assertEquals(expectedVersion.toString(), wfsDs.getInfo().getVersion());
 

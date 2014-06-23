@@ -16,25 +16,25 @@
  */
 package org.geotools.data.wfs.internal;
 
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.BUFFER_SIZE;
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.ENCODING;
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.FILTER_COMPLIANCE;
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.LENIENT;
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.MAXFEATURES;
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.NAMESPACE;
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.PASSWORD;
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.PROTOCOL;
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.TIMEOUT;
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.TRY_GZIP;
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.USERNAME;
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.WFS_STRATEGY;
-import static org.geotools.data.wfs.impl.WFSDataStoreFactory.OUTPUTFORMAT;
+import static org.geotools.data.wfs.WFSDataStoreFactory.BUFFER_SIZE;
+import static org.geotools.data.wfs.WFSDataStoreFactory.ENCODING;
+import static org.geotools.data.wfs.WFSDataStoreFactory.FILTER_COMPLIANCE;
+import static org.geotools.data.wfs.WFSDataStoreFactory.LENIENT;
+import static org.geotools.data.wfs.WFSDataStoreFactory.MAXFEATURES;
+import static org.geotools.data.wfs.WFSDataStoreFactory.NAMESPACE;
+import static org.geotools.data.wfs.WFSDataStoreFactory.PASSWORD;
+import static org.geotools.data.wfs.WFSDataStoreFactory.PROTOCOL;
+import static org.geotools.data.wfs.WFSDataStoreFactory.TIMEOUT;
+import static org.geotools.data.wfs.WFSDataStoreFactory.TRY_GZIP;
+import static org.geotools.data.wfs.WFSDataStoreFactory.USERNAME;
+import static org.geotools.data.wfs.WFSDataStoreFactory.WFS_STRATEGY;
+import static org.geotools.data.wfs.WFSDataStoreFactory.OUTPUTFORMAT;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import org.geotools.data.wfs.impl.WFSDataStoreFactory;
+import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

@@ -40,11 +40,11 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
 @SuppressWarnings("unchecked")
-class WFSContentFeatureStore extends ContentFeatureStore {
+class WFSFeatureStore extends ContentFeatureStore {
 
-    private WFSContentFeatureSource delegate;
+    private WFSFeatureSource delegate;
 
-    public WFSContentFeatureStore(WFSContentFeatureSource source) {
+    public WFSFeatureStore(WFSFeatureSource source) {
         super(source.getEntry(), null);
         this.delegate = source;
     }
@@ -69,7 +69,7 @@ class WFSContentFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    public WFSContentDataStore getDataStore() {
+    public WFSDataStore getDataStore() {
         return delegate.getDataStore();
     }
 

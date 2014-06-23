@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.wfs.impl;
+package org.geotools.data.wfs;
 
 import static org.geotools.data.wfs.internal.Loggers.info;
 
@@ -35,7 +35,7 @@ import javax.xml.namespace.QName;
 import org.geotools.data.Transaction;
 import org.geotools.data.Transaction.State;
 import org.geotools.data.TransactionStateDiff;
-import org.geotools.data.wfs.impl.WFSDiff.BatchUpdate;
+import org.geotools.data.wfs.WFSDiff.BatchUpdate;
 import org.geotools.data.wfs.internal.TransactionRequest;
 import org.geotools.data.wfs.internal.TransactionRequest.Delete;
 import org.geotools.data.wfs.internal.TransactionRequest.Insert;
@@ -54,13 +54,13 @@ import org.opengis.filter.identity.Identifier;
 
 class WFSRemoteTransactionState implements State {
 
-    private final WFSContentDataStore dataStore;
+    private final WFSDataStore dataStore;
 
     private Transaction transaction;
 
     private Map<Name, WFSContentState> localStates;
 
-    public WFSRemoteTransactionState(WFSContentDataStore dataStore) {
+    public WFSRemoteTransactionState(WFSDataStore dataStore) {
         this.dataStore = dataStore;
         this.localStates = new HashMap<Name, WFSContentState>();
     }

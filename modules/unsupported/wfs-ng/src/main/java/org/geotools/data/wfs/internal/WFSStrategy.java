@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.xml.namespace.QName;
 
 import org.geotools.data.ows.Specification;
-import org.geotools.data.wfs.impl.WFSServiceInfo;
+import org.geotools.data.wfs.WFSServiceInfo;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.factory.GeoTools;
 import org.geotools.util.Version;

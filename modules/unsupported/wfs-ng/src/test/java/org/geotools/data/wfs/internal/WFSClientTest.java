@@ -29,8 +29,8 @@ import javax.xml.namespace.QName;
 
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.SimpleHttpClient;
-import org.geotools.data.wfs.impl.WFSServiceInfo;
-import org.geotools.data.wfs.impl.WFSTestData;
+import org.geotools.data.wfs.WFSServiceInfo;
+import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.v1_x.CubeWerxStrategy;
 import org.geotools.data.wfs.internal.v1_x.IonicStrategy;
 import org.geotools.data.wfs.internal.v1_x.StrictWFS_1_x_Strategy;

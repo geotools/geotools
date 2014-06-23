@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.wfs.impl;
+package org.geotools.data.wfs;
 
 import java.io.IOException;
 
@@ -28,14 +28,14 @@ public class WFSFeatureWriter extends DiffContentFeatureWriter {
 
     final WFSRemoteTransactionState autoCommitState;
 
-    public WFSFeatureWriter(final WFSContentFeatureStore store,
+    public WFSFeatureWriter(final WFSFeatureStore store,
             final WFSLocalTransactionState localSate,
             final FeatureReader<SimpleFeatureType, SimpleFeature> reader, final boolean autoCommit) {
 
         super(store, localSate.getDiff(), reader, new SimpleFeatureBuilder(reader.getFeatureType(), new MutableIdentifierFeatureFactory()));
         
         if (autoCommit) {
-            WFSContentDataStore dataStore = (WFSContentDataStore) store.getDataStore();
+            WFSDataStore dataStore = (WFSDataStore) store.getDataStore();
             autoCommitState = new WFSRemoteTransactionState(dataStore);
             autoCommitState.watch(localSate.getState());
         } else {

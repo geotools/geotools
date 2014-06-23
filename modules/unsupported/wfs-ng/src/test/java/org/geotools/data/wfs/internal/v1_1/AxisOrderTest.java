@@ -31,9 +31,9 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.wfs.impl.TestHttpResponse;
-import org.geotools.data.wfs.impl.WFSContentDataStore;
-import org.geotools.data.wfs.impl.WFSDataStoreFactory;
+import org.geotools.data.wfs.TestHttpResponse;
+import org.geotools.data.wfs.WFSDataStore;
+import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.internal.v1_1.DataTestSupport.TestHttpProtocol;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
@@ -75,7 +75,7 @@ public class AxisOrderTest {
         URL describeUrl = TestData.getResource(this, "axisorder/DescribeFeatureType.xsd");
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
                 
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
                 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Set<FeatureId> fids = new HashSet<FeatureId>();
@@ -115,7 +115,7 @@ public class AxisOrderTest {
         URL describeUrl = TestData.getResource(this, "axisorder/DescribeFeatureType.xsd");
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
 
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
         
         // axis order used will be NORTH / EAST
         wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST);
@@ -149,7 +149,7 @@ public class AxisOrderTest {
         URL describeUrl = TestData.getResource(this, "axisorder/DescribeFeatureType.xsd");
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
 
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
         
         // axis order used will be NORTH / EAST
         wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH);
@@ -183,7 +183,7 @@ public class AxisOrderTest {
         URL describeUrl = TestData.getResource(this, "axisorder/DescribeFeatureType.xsd");
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
 
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
         
         // axis order used will be NORTH / EAST
         wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
@@ -216,7 +216,7 @@ public class AxisOrderTest {
         URL describeUrl = TestData.getResource(this, "axisorder/DescribeFeatureType.xsd");
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
 
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
         // axis order used will be EAST / NORTH
         wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
         
@@ -257,7 +257,7 @@ public class AxisOrderTest {
         URL describeUrl = TestData.getResource(this, "axisorder/DescribeFeatureType.xsd");
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
 
-        WFSContentDataStore ds = new WFSContentDataStore(wfs);
+        WFSDataStore ds = new WFSDataStore(wfs);
         // axis order used will be EAST / NORTH
         wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
         

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.wfs.impl;
+package org.geotools.data.wfs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -57,7 +57,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
-public class WFSContentFeatureStoreTest {
+public class WFSFeatureStoreTest {
 
     private static final QName TYPE1 = new QName("http://www.census.gov", "poi", "tiger");
 
@@ -65,7 +65,7 @@ public class WFSContentFeatureStoreTest {
 
     private static Name simpleTypeName1;
 
-    private WFSContentDataStore dataStore;
+    private WFSDataStore dataStore;
 
     private IntegrationTestWFSClient wfs;
 
@@ -81,7 +81,7 @@ public class WFSContentFeatureStoreTest {
     @Before
     public void setUp() throws Exception {
         wfs = new IntegrationTestWFSClient("GeoServer_1.7.x/1.0.0/", new WFSConfig());
-        dataStore = new WFSContentDataStore(wfs);
+        dataStore = new WFSDataStore(wfs);
     }
 
     @After
@@ -95,9 +95,9 @@ public class WFSContentFeatureStoreTest {
         
         ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
-        assertTrue(source instanceof WFSContentFeatureStore);
+        assertTrue(source instanceof WFSFeatureStore);
 
-        WFSContentFeatureStore store = (WFSContentFeatureStore) source;
+        WFSFeatureStore store = (WFSFeatureStore) source;
                  
         MemoryFeatureCollection collection = new MemoryFeatureCollection(featureType1);
         
@@ -129,7 +129,7 @@ public class WFSContentFeatureStoreTest {
         
         ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         
-        WFSContentFeatureStore store = (WFSContentFeatureStore) source;
+        WFSFeatureStore store = (WFSFeatureStore) source;
         
         Filter filter = filterfac.id(filterfac.featureId("poi.2"));
         
@@ -149,7 +149,7 @@ public class WFSContentFeatureStoreTest {
         
         ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         
-        WFSContentFeatureStore store = (WFSContentFeatureStore) source;
+        WFSFeatureStore store = (WFSFeatureStore) source;
         
         Filter filter = filterfac.id(filterfac.featureId("poi.2"));
         
@@ -169,9 +169,9 @@ public class WFSContentFeatureStoreTest {
         
         ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
-        assertTrue(source instanceof WFSContentFeatureStore);
+        assertTrue(source instanceof WFSFeatureStore);
 
-        WFSContentFeatureStore store = (WFSContentFeatureStore) source;
+        WFSFeatureStore store = (WFSFeatureStore) source;
                  
         MemoryFeatureCollection collection = new MemoryFeatureCollection(featureType1);
         

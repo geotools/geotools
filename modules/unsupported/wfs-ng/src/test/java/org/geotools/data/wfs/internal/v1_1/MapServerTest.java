@@ -31,9 +31,9 @@ import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.wfs.impl.TestHttpClient;
-import org.geotools.data.wfs.impl.TestHttpResponse;
-import org.geotools.data.wfs.impl.WFSContentDataStore;
+import org.geotools.data.wfs.TestHttpClient;
+import org.geotools.data.wfs.TestHttpResponse;
+import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.ows.ServiceException;
 import org.geotools.test.TestData;
 import org.junit.Test;
@@ -44,10 +44,10 @@ import org.geotools.feature.NameImpl;
 
 public class MapServerTest {
 
-    private WFSContentDataStore getWFSDataStore(HTTPClient httpClient) throws IOException, ServiceException {
+    private WFSDataStore getWFSDataStore(HTTPClient httpClient) throws IOException, ServiceException {
         URL capabilitiesUrl = new URL("http://127.0.0.1:8888/mapserver?service=WFS&version=1.1.0&REQUEST=GetCapabilities");        
         
-        WFSContentDataStore wfs = new WFSContentDataStore(new WFSClient(capabilitiesUrl, httpClient, WFSConfig.fromParams(Collections.EMPTY_MAP)));
+        WFSDataStore wfs = new WFSDataStore(new WFSClient(capabilitiesUrl, httpClient, WFSConfig.fromParams(Collections.EMPTY_MAP)));
             
         return wfs;
     }
@@ -55,7 +55,7 @@ public class MapServerTest {
     @Test
     public void testGetFeatures() throws Exception {
         
-        WFSContentDataStore wfs = getWFSDataStore(new TestHttpClient() {
+        WFSDataStore wfs = getWFSDataStore(new TestHttpClient() {
             
             @Override
             public HTTPResponse get(URL url) throws IOException {

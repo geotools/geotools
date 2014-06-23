@@ -17,7 +17,7 @@
  */
 package org.geotools.data.wfs.internal.v1_1;
 
-import static org.geotools.data.wfs.impl.WFSTestData.GEOS_STATES_11;
+import static org.geotools.data.wfs.WFSTestData.GEOS_STATES_11;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

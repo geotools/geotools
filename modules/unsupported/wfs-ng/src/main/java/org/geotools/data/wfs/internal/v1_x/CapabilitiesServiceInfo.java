@@ -32,7 +32,7 @@ import net.opengis.ows10.ServiceProviderType;
 import net.opengis.wfs.WFSCapabilitiesType;
 
 import org.geotools.data.ServiceInfo;
-import org.geotools.data.wfs.impl.WFSServiceInfo;
+import org.geotools.data.wfs.WFSServiceInfo;
 
 /**
  * Adapts a WFS capabilities document to {@link ServiceInfo}

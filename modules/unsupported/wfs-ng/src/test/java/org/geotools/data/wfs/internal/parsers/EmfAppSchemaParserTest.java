@@ -16,7 +16,7 @@
  */
 package org.geotools.data.wfs.internal.parsers;
 
-import static org.geotools.data.wfs.impl.WFSTestData.*;
+import static org.geotools.data.wfs.WFSTestData.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
@@ -28,10 +28,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.data.wfs.impl.WFSTestData;
-import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
+import org.geotools.data.wfs.WFSTestData;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.test.TestData;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.geotools.xml.Configuration;
 import org.junit.Test;

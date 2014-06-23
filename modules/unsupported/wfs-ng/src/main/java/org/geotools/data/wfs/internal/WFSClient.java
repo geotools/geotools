@@ -32,7 +32,7 @@ import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.Request;
 import org.geotools.data.ows.Response;
 import org.geotools.data.ows.Specification;
-import org.geotools.data.wfs.impl.WFSServiceInfo;
+import org.geotools.data.wfs.WFSServiceInfo;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.data.wfs.internal.v1_x.CubeWerxStrategy;
 import org.geotools.data.wfs.internal.v1_x.GeoServerPre200Strategy;

@@ -720,7 +720,20 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         Object crs = fjson.readCRS(reader(strip(crsText())));
         assertTrue(CRS.equalsIgnoreMetadata(CRS.decode("epsg:4326"), crs));
     }
-    
+
+    public void testFeatureCollectionWithNullBoundsWrite() throws Exception {
+        DefaultFeatureCollection features = new DefaultFeatureCollection() {
+            @Override
+            public ReferencedEnvelope getBounds() {
+                return null;
+            }
+        };
+        features.add(feature(0));
+
+        String json = fjson.toString(features);
+
+    }
+
     String crsText() {
         return 
             "{" + 

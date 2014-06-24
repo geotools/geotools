@@ -288,15 +288,17 @@ public class FeatureJSON {
         obj.put("type", "FeatureCollection");
 
         final ReferencedEnvelope bounds = features.getBounds();
-        final CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
+        final CoordinateReferenceSystem crs = bounds != null ? bounds.getCoordinateReferenceSystem() : null;
 
-        if (encodeFeatureCollectionBounds) {
-            obj.put("bbox", new JSONStreamAware() {
-                public void writeJSONString(Writer out) throws IOException {
-                    JSONArray.writeJSONString(Arrays.asList(bounds.getMinX(),
-                            bounds.getMinY(),bounds.getMaxX(),bounds.getMaxY()), out);
-                }
-            });
+        if (bounds != null) {
+            if (encodeFeatureCollectionBounds) {
+                obj.put("bbox", new JSONStreamAware() {
+                    public void writeJSONString(Writer out) throws IOException {
+                        JSONArray.writeJSONString(Arrays.asList(bounds.getMinX(),
+                                bounds.getMinY(), bounds.getMaxX(), bounds.getMaxY()), out);
+                    }
+                });
+            }
         }
         
         if( crs != null ){

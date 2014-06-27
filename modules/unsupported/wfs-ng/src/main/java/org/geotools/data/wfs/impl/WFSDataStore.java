@@ -55,7 +55,7 @@ import org.opengis.feature.type.Name;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
-public class WFSContentDataStore extends ContentDataStore {
+public class WFSDataStore extends ContentDataStore {
 
     public static final String STORED_QUERY_CONFIGURATION_HINT = "WFS_NG_STORED_QUERY_CONFIGURATION";
 
@@ -71,7 +71,7 @@ public class WFSContentDataStore extends ContentDataStore {
     protected Map<String, String> configuredStoredQueries =
             new ConcurrentHashMap<String, String>();
 
-    public WFSContentDataStore(final WFSClient client) {
+    public WFSDataStore(final WFSClient client) {
         this.client = client;
         this.names = new ConcurrentHashMap<Name, QName>();
         this.remoteFeatureTypes = new ConcurrentHashMap<QName, FeatureType>();
@@ -128,8 +128,8 @@ public class WFSContentDataStore extends ContentDataStore {
     }
 
     /**
-     * @see WFSContentFeatureSource
-     * @see WFSContentFeatureStore
+     * @see WFSFeatureSource
+     * @see WFSFeatureStore
      * @see WFSClient#supportsTransaction(QName)
      * @see org.geotools.data.store.ContentDataStore#createFeatureSource(org.geotools.data.store.ContentEntry)
      */

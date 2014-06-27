@@ -54,13 +54,13 @@ import org.opengis.filter.identity.Identifier;
 
 class WFSRemoteTransactionState implements State {
 
-    private final WFSContentDataStore dataStore;
+    private final WFSDataStore dataStore;
 
     private Transaction transaction;
 
     private Map<Name, WFSContentState> localStates;
 
-    public WFSRemoteTransactionState(WFSContentDataStore dataStore) {
+    public WFSRemoteTransactionState(WFSDataStore dataStore) {
         this.dataStore = dataStore;
         this.localStates = new HashMap<Name, WFSContentState>();
     }

@@ -23,7 +23,7 @@ import java.net.URL;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.data.wfs.impl.WFSDataStoreFactory;
+import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.opengis.feature.simple.SimpleFeatureType;
 

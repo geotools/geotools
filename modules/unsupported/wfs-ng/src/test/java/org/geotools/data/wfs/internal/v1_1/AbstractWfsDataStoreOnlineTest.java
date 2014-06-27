@@ -41,8 +41,8 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.wfs.impl.WFSContentDataStore;
-import org.geotools.data.wfs.impl.WFSDataStoreFactory;
+import org.geotools.data.wfs.impl.WFSDataStore;
+import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.impl.WFSTestData;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -77,7 +77,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
     /**
      * The DataStore under test, static so we create it only once
      */
-    protected static WFSContentDataStore wfs = null;
+    protected static WFSDataStore wfs = null;
 
     protected final WFSTestData.TestDataType testType;
 
@@ -146,7 +146,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
             return;
         }
 
-        assertTrue(wfs instanceof WFSContentDataStore);
+        assertTrue(wfs instanceof WFSDataStore);
 
         String types[] = wfs.getTypeNames();
         List<String> typeNames = Arrays.asList(types);

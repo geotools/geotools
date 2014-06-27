@@ -51,7 +51,7 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
-public class WFSContentDataStoreTest {
+public class WFSDataStoreTest {
 
     private static final QName TYPE1 = new QName("http://example.com/1", "points", "prefix1");
 
@@ -65,7 +65,7 @@ public class WFSContentDataStoreTest {
 
     private static Name simpleTypeName2;
 
-    private WFSContentDataStore dataStore;
+    private WFSDataStore dataStore;
 
     private WFSClient wfs;
 
@@ -88,7 +88,7 @@ public class WFSContentDataStoreTest {
         when(wfs.supportsTransaction(TYPE1)).thenReturn(Boolean.TRUE);
         when(wfs.supportsTransaction(TYPE2)).thenReturn(Boolean.FALSE);
 
-        dataStore = spy(new WFSContentDataStore(wfs));
+        dataStore = spy(new WFSDataStore(wfs));
         doReturn(featureType1).when(dataStore).getRemoteFeatureType(TYPE1);
         doReturn(featureType2).when(dataStore).getRemoteFeatureType(TYPE2);
         doReturn(featureType1).when(dataStore).getRemoteSimpleFeatureType(TYPE1);
@@ -147,7 +147,7 @@ public class WFSContentDataStoreTest {
         when(wfs.issueRequest(same(req))).thenReturn(resp);
         when(resp.getFeatureType()).thenReturn(featureType2);
 
-        dataStore = spy(new WFSContentDataStore(wfs));
+        dataStore = spy(new WFSDataStore(wfs));
 
         assertSame(featureType2, dataStore.getRemoteSimpleFeatureType(TYPE2));
 
@@ -169,11 +169,11 @@ public class WFSContentDataStoreTest {
 
         source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
-        assertTrue(source instanceof WFSContentFeatureStore);
+        assertTrue(source instanceof WFSFeatureStore);
 
         source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName2);
         assertNotNull(source);
-        assertTrue(source instanceof WFSContentFeatureSource);
+        assertTrue(source instanceof WFSFeatureSource);
         //assertFalse(source instanceof WFSContentFeatureStore);
     }
 }

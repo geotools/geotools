@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,10 +20,12 @@ import java.util.Map;
 
 import net.opengis.ows11.AllowedValuesType;
 import net.opengis.ows11.AnyValueType;
+import net.opengis.ows11.NoValuesType;
 import net.opengis.ows11.Ows11Factory;
 
 import org.geotools.ows.bindings.BoundingBoxTypeBinding;
 import org.geotools.ows.bindings.UnitBinding;
+import org.geotools.ows.bindings.WGS84BoundingBoxTypeBinding;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
@@ -69,11 +71,13 @@ public class OWSConfiguration extends Configuration {
         bindings.put(OWS.AddressType,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.AddressType));
         bindings.put(OWS.AllowedValues, new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.AllowedValues, AllowedValuesType.class));
         bindings.put(OWS.AnyValue,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.AnyValue, AnyValueType.class));
+        bindings.put(OWS.NoValues, new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.NoValues, NoValuesType.class));
         
         bindings.put(OWS.GetCapabilitiesType,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.GetCapabilitiesType));
         bindings.put(OWS.SectionsType ,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.SectionsType));
         bindings.put(OWS.AcceptFormatsType,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.AcceptFormatsType));
         bindings.put(OWS.BoundingBoxType, new BoundingBoxTypeBinding(Ows11Factory.eINSTANCE, OWS.BoundingBoxType));
+        bindings.put(OWS.WGS84BoundingBoxType, new WGS84BoundingBoxTypeBinding(Ows11Factory.eINSTANCE, OWS.WGS84BoundingBoxType));
         
         bindings.put(OWS.CodeType,new SimpleContentComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.CodeType));
         bindings.put(OWS.ContactType,new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.ContactType));

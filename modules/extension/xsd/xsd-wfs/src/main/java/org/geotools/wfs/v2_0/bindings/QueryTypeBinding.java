@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,8 @@ import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xs.bindings.XSQNameBinding;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class QueryTypeBinding extends ComplexEMFBinding {
 
@@ -63,6 +65,40 @@ public class QueryTypeBinding extends ComplexEMFBinding {
                 q.getTypeNames().addAll(qNames);
             }
         }
+    }
+    
+    @Override
+    public Object getProperty(Object object, QName name) throws Exception {
+    	if (name.getLocalPart().equals("aliases")) {
+    		List aliases = ((QueryType)object).getAliases();
+    		if (aliases.size() == 0) return null;
+    		
+    		StringBuffer ret = new StringBuffer();
+    		for (Object o : aliases) {
+    			String alias = (String)o;
+    			if (ret.length() > 0) ret.append(",");
+    			ret.append(alias);
+    		}
+    		
+    		return ret.toString();
+    	}
+    	
+    	if (name.getLocalPart().equals("typeNames")) {
+    		List qNames = ((QueryType)object).getTypeNames();
+    		if (qNames.size() == 0) return null;
+    		
+    		StringBuffer ret = new StringBuffer();
+    		
+    		for (Object o : qNames) {
+    			QName type = (QName)o;
+    			if (ret.length() > 0) ret.append(",");
+    			ret.append(type.getPrefix()+":"+type.getLocalPart());
+    		}
+    		
+    		return ret.toString();
+    	}
+    	
+    	return super.getProperty(object, name);
     }
 
 }

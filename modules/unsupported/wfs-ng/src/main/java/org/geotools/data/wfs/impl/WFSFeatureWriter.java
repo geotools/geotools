@@ -28,14 +28,14 @@ public class WFSFeatureWriter extends DiffContentFeatureWriter {
 
     final WFSRemoteTransactionState autoCommitState;
 
-    public WFSFeatureWriter(final WFSContentFeatureStore store,
+    public WFSFeatureWriter(final WFSFeatureStore store,
             final WFSLocalTransactionState localSate,
             final FeatureReader<SimpleFeatureType, SimpleFeature> reader, final boolean autoCommit) {
 
         super(store, localSate.getDiff(), reader, new SimpleFeatureBuilder(reader.getFeatureType(), new MutableIdentifierFeatureFactory()));
         
         if (autoCommit) {
-            WFSContentDataStore dataStore = (WFSContentDataStore) store.getDataStore();
+            WFSDataStore dataStore = (WFSDataStore) store.getDataStore();
             autoCommitState = new WFSRemoteTransactionState(dataStore);
             autoCommitState.watch(localSate.getState());
         } else {

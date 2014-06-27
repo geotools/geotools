@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,7 +17,9 @@
 package org.geotools.data.wfs.internal;
 
 import static org.geotools.data.wfs.internal.WFSOperationType.GET_FEATURE;
+import net.opengis.wfs20.StoredQueryDescriptionType;
 
+import org.geotools.factory.Hints;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
@@ -46,7 +48,13 @@ public class GetFeatureRequest extends WFSRequest {
 
     private FeatureType queryType;
 
-    private Filter unsupportedFilter;;
+    private Filter unsupportedFilter;
+    
+    private boolean storedQuery;
+    
+    private StoredQueryDescriptionType storedQueryDescriptionType;
+    
+    private Hints hints;
 
     GetFeatureRequest(WFSConfig config, WFSStrategy strategy) {
         super(GET_FEATURE, config, strategy);
@@ -158,5 +166,30 @@ public class GetFeatureRequest extends WFSRequest {
 
     public Filter getUnsupportedFilter() {
         return unsupportedFilter == null ? Filter.INCLUDE : unsupportedFilter;
+    }
+
+    public boolean isStoredQuery() {
+        return storedQuery;
+    }
+
+    public void setStoredQuery(boolean storedQuery) {
+        this.storedQuery = storedQuery;
+    }
+
+    public void setHints(Hints hints) {
+        this.hints = hints;
+    }
+
+    public Hints getHints() {
+        return hints;
+    }
+
+    public StoredQueryDescriptionType getStoredQueryDescriptionType() {
+        return storedQueryDescriptionType;
+    }
+
+    public void setStoredQueryDescriptionType(StoredQueryDescriptionType desc) {
+        this.storedQueryDescriptionType = desc;
+
     }
 }

@@ -29,6 +29,7 @@ import org.geotools.data.DiffFeatureReader;
 import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.ResourceInfo;
@@ -64,13 +65,13 @@ import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
-class WFSContentFeatureSource extends ContentFeatureSource {
+class WFSFeatureSource extends ContentFeatureSource {
 
-    private static final Logger LOGGER = Logging.getLogger(WFSContentFeatureSource.class);
+    private static final Logger LOGGER = Logging.getLogger(WFSFeatureSource.class);
 
     private final WFSClient client;
 
-    public WFSContentFeatureSource(final ContentEntry entry, final WFSClient client) {
+    public WFSFeatureSource(final ContentEntry entry, final WFSClient client) {
         super(entry, null);
         this.client = client;
     }
@@ -131,8 +132,8 @@ class WFSContentFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    public WFSContentDataStore getDataStore() {
-        return (WFSContentDataStore) super.getDataStore();
+    public WFSDataStore getDataStore() {
+        return (WFSDataStore) super.getDataStore();
     }
 
     /**
@@ -201,11 +202,11 @@ class WFSContentFeatureSource extends ContentFeatureSource {
         }
     }
 
-    private GetFeatureRequest createGetFeature(Query query, ResultType resultType)
+    protected GetFeatureRequest createGetFeature(Query query, ResultType resultType)
             throws IOException {
         GetFeatureRequest request = client.createGetFeatureRequest();
 
-        final WFSContentDataStore dataStore = getDataStore();
+        final WFSDataStore dataStore = getDataStore();
 
         final QName remoteTypeName = dataStore.getRemoteTypeName(getEntry().getName());
         final SimpleFeatureType remoteSimpleFeatureType;
@@ -218,6 +219,8 @@ class WFSContentFeatureSource extends ContentFeatureSource {
 
         request.setFilter(query.getFilter());
         request.setResultType(resultType);
+        request.setHints(query.getHints());
+
         int maxFeatures = query.getMaxFeatures();
         if (Integer.MAX_VALUE > maxFeatures) {
             request.setMaxFeatures(maxFeatures);
@@ -257,6 +260,10 @@ class WFSContentFeatureSource extends ContentFeatureSource {
 
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         reader = new WFSFeatureReader(features);
+
+        if (request.getUnsupportedFilter() != null && request.getUnsupportedFilter() != Filter.INCLUDE) {
+        	reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader, request.getUnsupportedFilter());
+        }
 
         if (!reader.hasNext()) {
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(contentType);
@@ -332,7 +339,7 @@ class WFSContentFeatureSource extends ContentFeatureSource {
 
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
-        final WFSContentDataStore dataStore = getDataStore();
+        final WFSDataStore dataStore = getDataStore();
 
         final Name localTypeName = getEntry().getName();
         final QName remoteTypeName = dataStore.getRemoteTypeName(localTypeName);

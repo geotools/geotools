@@ -140,17 +140,17 @@ public class WFSDataStore extends ContentDataStore {
         if (!isStoredQuery(entry.getName())) {
             final QName remoteTypeName = getRemoteTypeName(entry.getName());
 
-            source = new WFSContentFeatureSource(entry, client);
+            source = new WFSFeatureSource(entry, client);
 
             if (client.supportsTransaction(remoteTypeName)) {
-                source = new WFSContentFeatureStore((WFSContentFeatureSource) source);
+                source = new WFSFeatureStore((WFSFeatureSource) source);
             }
 
         } else {
             String storedQueryId = configuredStoredQueries.get(entry.getName().getLocalPart());
             StoredQueryDescriptionType desc = getStoredQueryDescriptionType(storedQueryId);
 
-            source = new WFSStoredQueryContentFeatureSource(entry, client, desc);
+            source = new WFSStoredQueryFeatureSource(entry, client, desc);
         }
 
         return source;

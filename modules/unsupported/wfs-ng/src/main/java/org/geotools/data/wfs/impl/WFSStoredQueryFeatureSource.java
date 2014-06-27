@@ -29,13 +29,13 @@ import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.util.logging.Logging;
 
-public class WFSStoredQueryContentFeatureSource extends WFSContentFeatureSource {
+public class WFSStoredQueryFeatureSource extends WFSFeatureSource {
 
-    private static final Logger LOGGER = Logging.getLogger(WFSStoredQueryContentFeatureSource.class);
+    private static final Logger LOGGER = Logging.getLogger(WFSStoredQueryFeatureSource.class);
 
     private final StoredQueryDescriptionType desc;
 
-    public WFSStoredQueryContentFeatureSource(final ContentEntry entry, final WFSClient client,
+    public WFSStoredQueryFeatureSource(final ContentEntry entry, final WFSClient client,
             StoredQueryDescriptionType desc) {
         super(entry, client);
         this.desc = desc;
@@ -44,10 +44,10 @@ public class WFSStoredQueryContentFeatureSource extends WFSContentFeatureSource 
     @Override
     protected GetFeatureRequest createGetFeature(Query query,
             ResultType resultType) throws IOException
-            {
+    {
         GetFeatureRequest request = super.createGetFeature(query, resultType);
         request.setStoredQuery(true);
         request.setStoredQueryDescriptionType(desc);
         return request;
-            }
+    }
 }

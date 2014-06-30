@@ -472,7 +472,8 @@ public final class GridCoverageRenderer {
         try{
             GeneralEnvelope renderingEnvelopeInCoverageCRS=null; 
             if(doReprojection){
-               GridCoverageRendererUtilities.reprojectEnvelopeWithWGS84Pivot(destinationEnvelope, coverageCRS);
+                renderingEnvelopeInCoverageCRS = GridCoverageRendererUtilities
+                        .reprojectEnvelopeWithWGS84Pivot(destinationEnvelope, coverageCRS);
             }else{
                 // NO REPROJECTION
                 renderingEnvelopeInCoverageCRS = new GeneralEnvelope(destinationEnvelope);
@@ -491,10 +492,7 @@ public final class GridCoverageRenderer {
             // Cropping for real
             //
             /////
-            outputCoverage = GridCoverageRendererUtilities.crop(
-                            inputCoverage, 
-                            destinationEnvelope, 
-                            hints);
+            outputCoverage = GridCoverageRendererUtilities.crop(inputCoverage, cropEnvelope, hints);
         }catch (Throwable t) {
                 ////
                 //
@@ -528,7 +526,7 @@ public final class GridCoverageRenderer {
      // NOTICE that at this stage the image we get should be 8 bits, either RGB, RGBA, Gray, GrayA
         // either multiband or indexed. It could also be 16 bits indexed!!!!
         final RenderedImage finalImage = input.getRenderedImage();
-        final GridGeometry2D preSymbolizerGridGeometry = ((GridGeometry2D) input.getGridGeometry());
+        final GridGeometry2D preSymbolizerGridGeometry = (input.getGridGeometry());
         // I need to translate half of a pixel since in wms the envelope
         // map to the corners of the raster space not to the center of the
         // pixels.

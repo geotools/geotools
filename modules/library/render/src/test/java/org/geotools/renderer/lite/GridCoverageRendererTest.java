@@ -17,11 +17,13 @@
 package org.geotools.renderer.lite;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -31,6 +33,7 @@ import java.text.ParseException;
 import java.util.Collections;
 
 import javax.imageio.ImageIO;
+import javax.media.jai.Interpolation;
 
 import org.geotools.TestData;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -54,6 +57,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
+import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
@@ -65,7 +69,6 @@ import org.opengis.referencing.NoSuchIdentifierException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.datum.GeodeticDatum;
 import org.opengis.referencing.operation.MathTransform;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -117,7 +120,7 @@ public class GridCoverageRendererTest  {
 		final String filename = new File(path).getName();
 		final GridCoverageFactory factory = org.geotools.coverage.CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
 		envelope.setCoordinateReferenceSystem(crs);
-		return (GridCoverage2D) factory.create(filename, image, envelope,bands, null, null);
+		return factory.create(filename, image, envelope,bands, null, null);
 	}
 
 	/**
@@ -127,7 +130,7 @@ public class GridCoverageRendererTest  {
 			final GridCoverage2D coverage) {
 		try {
 			final GeographicCRS base = (GeographicCRS) coverage.getCoordinateReferenceSystem();
-			final Ellipsoid ellipsoid = ((GeodeticDatum) base.getDatum()).getEllipsoid();
+			final Ellipsoid ellipsoid = base.getDatum().getEllipsoid();
 			final DefaultMathTransformFactory factory = new DefaultMathTransformFactory();
 			final ParameterValueGroup parameters = factory.getDefaultParameters("Oblique_Stereographic");
 			parameters.parameter("semi_major").setValue(ellipsoid.getSemiMajorAxis());
@@ -325,6 +328,36 @@ public class GridCoverageRendererTest  {
         // there used to be a white triangle in the lower right corner of the output
         ImageAssert.assertEquals(new File("src/test/resources/org/geotools/renderer/lite/reprojectBuffer.png"), result, 0);
 	}
+
+    @Test
+    public void testReprojectGoogleMercator() throws Exception {
+        File coverageFile = TestData.copy(this, "geotiff/world.tiff");
+        assertTrue(coverageFile.exists());
+        GeoTiffReader worldReader = null;
+        try {
+            worldReader = new GeoTiffReader(coverageFile);
+            CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
+            ReferencedEnvelope mapExtent = new ReferencedEnvelope(-20037508.34, 20037508.34,
+                    -20037508.34, 20037508.34, googleMercator);
+            Rectangle screenSize = new Rectangle(200, (int) (mapExtent.getHeight()
+                    / mapExtent.getWidth() * 200));
+            AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+            GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator,
+                    mapExtent, screenSize, w2s);
+
+            RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+            GridCoverage2D coverage = worldReader.read(null);
+            RenderedImage image = renderer.renderImage(coverage, rasterSymbolizer,
+                    Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.RED, 256, 256);
+            File reference = new File(
+                    "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercator.png");
+            ImageAssert.assertEquals(reference, image, 0);
+        } finally {
+            if (worldReader != null) {
+                worldReader.dispose();
+            }
+        }
+    }
 
 
 }

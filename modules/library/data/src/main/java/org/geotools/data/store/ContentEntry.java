@@ -152,7 +152,7 @@ public final class ContentEntry {
            if( entry == source ) {
                continue;  // no notificaiton required               
            }
-           for( FeatureListener listener : source.listeners ){
+           for( FeatureListener listener : entry.listeners ){
                try {
                    listener.changed( notification );
                }

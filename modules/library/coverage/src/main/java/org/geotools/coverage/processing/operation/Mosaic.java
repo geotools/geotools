@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
@@ -38,12 +39,14 @@ import javax.media.jai.operator.MosaicDescriptor;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.processing.CoverageProcessingException;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -67,6 +70,8 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.NoninvertibleTransformException;
+import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
 
 /**
@@ -355,6 +360,24 @@ public class Mosaic extends OperationJAI {
                     // New GridGeometry
                     GridGeometry2D newGG = new GridGeometry2D(PixelInCell.CELL_CORNER, g2w,
                             inputGG.getEnvelope(), GeoTools.getDefaultHints());
+                    try {
+                        // Transformation of the input envelope in the Raster Space
+                        GeneralEnvelope transformed = CRS.transform(
+                                g2w.inverse(), inputGG.getEnvelope());
+                        // Rounding of the bounds
+                        Rectangle rect = transformed.toRectangle2D().getBounds();
+                        // Creation of a new GridEnvelope to set for the new GridGeometry
+                        GridEnvelope2D gEnv2 = new GridEnvelope2D(rect);
+                        // Creation of the new GridGeometry
+                        newGG = new GridGeometry2D(gEnv2, inputGG.getEnvelope());
+                    } catch (InvalidGridGeometryException e) {
+                        throw new CoverageProcessingException(e);
+                    } catch (NoninvertibleTransformException e) {
+                        throw new CoverageProcessingException(e);
+                    } catch (TransformException e) {
+                        throw new CoverageProcessingException(e);
+                    }
+                    // Initialization of the nodata value
                     double fillValue = 0;
                     // Selection of the nodata value
                     if (nodata == null) {

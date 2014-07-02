@@ -19,6 +19,7 @@ package org.geotools.coverage.processing;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -27,6 +28,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -42,6 +45,7 @@ import org.geotools.coverage.processing.operation.Mosaic;
 import org.geotools.coverage.processing.operation.Mosaic.GridGeometryPolicy;
 import org.geotools.data.WorldFileReader;
 import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -54,7 +58,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.coverage.processing.Operation;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.parameter.InvalidParameterValueException;
@@ -64,6 +67,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransform2D;
 
 /**
  * This class tests the {@link Mosaic} operation. The tests ensures that the final {@link GridCoverage2D} created contains the union of the input
@@ -114,7 +118,7 @@ public class MosaicTest extends GridProcessingTestBase {
     private static final CoverageProcessor processor = CoverageProcessor.getInstance(GeoTools
             .getDefaultHints());
 
-    private static final Operation MOSAIC = processor.getOperation("Mosaic");
+    private static final Mosaic MOSAIC = (Mosaic) processor.getOperation("Mosaic");
 
     // Static method used for preparing the input data.
     @BeforeClass
@@ -565,27 +569,16 @@ public class MosaicTest extends GridProcessingTestBase {
         // Envelope containing the bounding box for the two images
         ReferencedEnvelope reUnion = new ReferencedEnvelope(10, 350, -90, 90,
                 DefaultGeographicCRS.WGS84);
-        // Preparation of the mosaic operation
-        ParameterValueGroup param = MOSAIC.getParameters();
-        param.parameter("Sources").setValue(Arrays.asList(c1, shifted));
-
-        // External GridGeometry
-        GridGeometry2D ggStart = new GridGeometry2D(PixelInCell.CELL_CORNER, c1.getGridGeometry()
-                .getGridToCRS2D(PixelOrientation.UPPER_LEFT), reUnion, GeoTools.getDefaultHints());
-        // Setting the external Geometry
-        param.parameter("geometry").setValue(ggStart);
         // Mosaic operation
-        GridCoverage2D mosaic = (GridCoverage2D) processor.doOperation(param);
+        GridCoverage2D mosaic = mosaic(sortCoverages(Arrays.asList(c1, shifted)),
+                new GeneralEnvelope(reUnion), new Hints());
 
         // Ensure the mosaic Bounding box is equal to that expected
         Envelope2D expected = new Envelope2D(reUnion);
         assertEqualBBOX(expected, mosaic.getEnvelope2D());
 
         // Check that the final Coverage resolution is equal to that of the first coverage
-        double initialRes = calculateResolution(c1);
         double finalRes = calculateResolution(mosaic);
-        double percentual = Math.abs(initialRes - finalRes) / initialRes;
-        Assert.assertTrue(percentual < TOLERANCE);
 
         // Check that on the center of the image there is valid data
         DirectPosition point = new DirectPosition2D(mosaic.getCoordinateReferenceSystem(),
@@ -605,6 +598,77 @@ public class MosaicTest extends GridProcessingTestBase {
                 - finalRes, expected.getMinY() + finalRes);
         result = ((byte[]) mosaic.evaluate(point))[0];
         Assert.assertNotEquals(nodata, result, TOLERANCE);
+
+        // Coverage and RenderedImage disposal
+        mosaic.dispose(true);
+        disposeCoveragePlanarImage(mosaic);
+    }
+
+    // Test which takes an input file, extracts 4 coverages from it, shifts them in order to created a replication.
+    @Test
+    public void testWorldFile2() throws FileNotFoundException, IOException {
+        // read the two coverages
+        GridEnvelope2D gridRange = new GridEnvelope2D(0, 0, 400, 200);
+        ReferencedEnvelope re = new ReferencedEnvelope(-180, 180, -85, 85,
+                DefaultGeographicCRS.WGS84);
+        GridGeometry2D gg = new GridGeometry2D(gridRange, re);
+
+        GridCoverage2D cStart = readInputFile("sample0");
+        GridCoverage2D cCrop = crop(cStart, new GeneralEnvelope(re));
+
+        // Resampling of the Coverage to the defined resolution
+        ParameterValueGroup paramResampling = processor.getOperation("resample").getParameters();
+        paramResampling.parameter("Source").setValue(cCrop);
+        paramResampling.parameter("GridGeometry").setValue(gg);
+        GridCoverage2D c = (GridCoverage2D) processor.doOperation(paramResampling);
+
+        // first shifted
+        ReferencedEnvelope re2 = new ReferencedEnvelope(-540, -180, -85, 85,
+                DefaultGeographicCRS.WGS84);
+        GridCoverage2D c2 = new GridCoverageFactory()
+                .create(c.getName(), c.getRenderedImage(), re2);
+
+        // second shifted
+        ReferencedEnvelope re3 = new ReferencedEnvelope(180, 540, -85, 85,
+                DefaultGeographicCRS.WGS84);
+        GridCoverage2D c3 = new GridCoverageFactory()
+                .create(c.getName(), c.getRenderedImage(), re3);
+
+        // third shifted
+        ReferencedEnvelope re4 = new ReferencedEnvelope(-540, -900, -85, 85,
+                DefaultGeographicCRS.WGS84);
+        GridCoverage2D c4 = new GridCoverageFactory()
+                .create(c.getName(), c.getRenderedImage(), re4);
+
+        ReferencedEnvelope reUnion = new ReferencedEnvelope(-900, 540, -85, 85,
+                DefaultGeographicCRS.WGS84);
+        List<GridCoverage2D> sorted = sortCoverages(Arrays.asList(c4, c2, c, c3));
+        GridCoverage2D mosaic = mosaic(sorted, new GeneralEnvelope(reUnion), new Hints());
+
+        // Ensure the mosaic Bounding box is equal to that expected
+        Envelope2D expected = new Envelope2D(reUnion);
+        assertEqualBBOX(expected, mosaic.getEnvelope2D());
+
+        // Calculate the mosaic resolution
+        double res = calculateResolution(mosaic);
+
+        // Ensure that no black lines are present on the border between the input images
+        // Check that on the center of the image there is valid data
+        DirectPosition point = new DirectPosition2D(mosaic.getCoordinateReferenceSystem(), -540,
+                -84);
+        double nodata = 0;
+        double result = ((byte[]) mosaic.evaluate(point))[0];
+        Assert.assertNotEquals(nodata, result, TOLERANCE);
+        point = new DirectPosition2D(mosaic.getCoordinateReferenceSystem(), -540 - res, -84);
+        result = ((byte[]) mosaic.evaluate(point))[0];
+        Assert.assertNotEquals(nodata, result, TOLERANCE);
+        point = new DirectPosition2D(mosaic.getCoordinateReferenceSystem(), -540 + res, -84);
+        result = ((byte[]) mosaic.evaluate(point))[0];
+        Assert.assertNotEquals(nodata, result, TOLERANCE);
+
+        // Coverage and RenderedImage disposal
+        mosaic.dispose(true);
+        disposeCoveragePlanarImage(mosaic);
     }
 
     @AfterClass
@@ -680,5 +744,76 @@ public class MosaicTest extends GridProcessingTestBase {
         param.parameter("source").setValue(gc);
         param.parameter("Envelope").setValue(intersectionEnvelope);
         return (GridCoverage2D) processor.doOperation(param, GeoTools.getDefaultHints());
+    }
+
+    /**
+     * Method for mosaicking two input images and setting the final BoundingBox
+     * @param coverages
+     * @param renderingEnvelope
+     * @param hints
+     * @return
+     */
+    private GridCoverage2D mosaic(List<GridCoverage2D> coverages,
+            GeneralEnvelope renderingEnvelope, Hints hints) {
+        // setup the grid geometry
+        try {
+            // find the intersection between the target envelope and the coverages one
+            ReferencedEnvelope targetEnvelope = ReferencedEnvelope.reference(renderingEnvelope);
+            ReferencedEnvelope coveragesEnvelope = null;
+            for (GridCoverage2D coverage : coverages) {
+                ReferencedEnvelope re = ReferencedEnvelope.reference(coverage.getEnvelope2D());
+                if (coveragesEnvelope == null) {
+                    coveragesEnvelope = re;
+                } else {
+                    coveragesEnvelope.expandToInclude(re);
+                }
+            }
+            targetEnvelope = new ReferencedEnvelope(targetEnvelope.intersection(coveragesEnvelope),
+                    renderingEnvelope.getCoordinateReferenceSystem());
+            if (targetEnvelope.isEmpty() || targetEnvelope.isNull()) {
+                return null;
+            }
+
+            MathTransform2D mt = coverages.get(0).getGridGeometry().getCRSToGrid2D();
+            Rectangle rasterSpaceEnvelope;
+            rasterSpaceEnvelope = CRS.transform(mt, targetEnvelope).toRectangle2D().getBounds();
+            GridEnvelope2D gridRange = new GridEnvelope2D(rasterSpaceEnvelope);
+            GridGeometry2D gridGeometry = new GridGeometry2D(gridRange, targetEnvelope);
+
+            // mosaic
+            final ParameterValueGroup param = MOSAIC.getParameters().clone();
+            param.parameter("sources").setValue(coverages);
+            param.parameter("geometry").setValue(gridGeometry);
+            return (GridCoverage2D) MOSAIC.doOperation(param, hints);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to mosaic the input coverages", e);
+        }
+    }
+
+    private List<GridCoverage2D> sortCoverages(List<GridCoverage2D> coverages) {
+        Collections.sort(coverages, new Comparator<GridCoverage2D>() {
+
+            @Override
+            public int compare(GridCoverage2D o1, GridCoverage2D o2) {
+                double minx1 = o1.getEnvelope().getMinimum(0);
+                double minx2 = o2.getEnvelope().getMinimum(0);
+                if (minx1 == minx2) {
+                    double maxy1 = o1.getEnvelope().getMaximum(1);
+                    double maxy2 = o2.getEnvelope().getMaximum(1);
+                    return compareDoubles(maxy1, maxy2);
+                } else {
+                    return compareDoubles(minx1, minx2);
+                }
+            }
+
+            private int compareDoubles(double maxy1, double maxy2) {
+                if (maxy1 == maxy2) {
+                    return 0;
+                } else {
+                    return (int) Math.signum(maxy1 - maxy2);
+                }
+            }
+        });
+        return coverages;
     }
 }

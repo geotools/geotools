@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+    <coverages>
+        <coverage>
+            <nameCollector>coverageNameCollector</nameCollector>
+            <origName>z</origName>
+        </coverage>
+    </coverages>
+     <collectors>
+        <collector name="coverageNameCollector">
+            <value>[A-z0-9]+(?=.DUMMY)</value>
+            <spi>StringFileNameExtractorSPI</spi>
+            <mapped>coverageName</mapped>
+        </collector>
+    </collectors>
+</Indexer>

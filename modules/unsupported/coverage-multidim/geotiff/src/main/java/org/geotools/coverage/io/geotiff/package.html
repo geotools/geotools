@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.data.geotiff</TITLE>
+  </HEAD>
+  <BODY>
+    A grid coverage exchange to manage the GeoTIFF Revision 1.0 format. 
+
+    <p>
+    This package is going to be &quot;evolutionary&quot;, rather than 
+    &quot;revolutionary&quot;.   As functionality is added to the package, 
+    this page will be updated.  This page should be considered a current 
+    synopsis of the capabilities of the module.  
+
+    <h1>Revision Date</h1>
+    May 31, 2005
+    
+    <p>
+    <h1>Requirements</h1>
+    This package requires that the runtime environment have access to 
+    Java Advanced Imaging (JAI) and the JAI Image I/O extensions available
+    from <A HREF="http://java.sun.com">Sun</A>.  Specifically, the 
+    <code>GeoTiffFormatFactorySpi</code>
+    will report itself unavailable if any of the following are unavailable:
+    <ul>
+    <li> <code>javax.media.jai.JAI</code>
+    <li> <code>com.sun.media.jai.operator.ImageReadDescriptor</code>
+    <li> <code>com.sun.media.imageio.plugins.tiff.GeoTIFFTagSet</code>
+    </ul>
+    
+    <p>
+    Other classes are of course necessary to successfully read in the GeoTIFF 
+    image.  As they typically come bundled with one or more of the above, 
+    they are assumed to be present if all of the above are present.
+
+    <h2>CRS Information</h2>
+    <p>
+    The ability of the GeoTiff module to <i>interpret</i> and <i>accurately 
+    express</i> the geographic information encoded in the GeoTIFF file 
+    relies strongly on it's ability to use the Geotools framework to 
+    construct a meaningful coordinate reference system (CRS) object.  Geotools 
+    has a number of <i>Authority Factories</i> which take care of constructing
+    CRS information given the code assigned to that CRS. 
+
+    <p>
+    The central problem is that a complete CRS is composed of many smaller 
+    pieces (coordinate systems (CS), datums, and coordinate operations.)  Each
+    of these smaller peices is assigned a code for berevity.  So when a 
+    GeoTIFF file is written, the coordinate information can either be a 
+    single code representing the entire CRS (if you're lucky), or a combination
+    of each of the component codes.  Reading a GeoTIFF involves the reverse 
+    process: looking up either a single code or a collection of the 
+    component codes and building up a CRS object from these components.
+
+    <p>
+    Geotools supports the looking up of EPSG codes in plugins.  Therefore it
+    is critical that the environment inside which the GeoTIFF plugin is 
+    running contain the appropriate epsg authority factory plugins. 
+    Unfortunately, the definition of &quot;appropriate&quot; varies according
+    to the type of GeoTIFF file you are trying to read.  If you know that 
+    your GeoTIFF file contains only codes for complete CRSes, then you
+    can use an EPSG plugin which only looks up complete CRSes (e.g., 
+    epsg-wkt, the property file based EPSG authority factory.)  If, however,
+    you want to be able to handle more types of GeoTIFF files (perhaps you
+    do not know where your GeoTIFF files are coming from), you must choose 
+    an EPSG authority factory which can lookup components of a CRS 
+    (e.g., epsg-access, the MS Access backed authority factory.)
+
+    <p>
+    In short, the exact means by which EPSG codes are turned into 
+    actual Java Objects is left up to the application writer.  Ensure that 
+    the capabilities you have configured match the requirements imposed by
+    the data you are trying to read.
+    
+    <p>
+    <h1>Current Functionality</h1>
+    <p>
+    The current iteration of the GeoTIFF plugin will read GeoTIFF files with the 
+    following restrictions:
+    <ul>
+    <li> The coordinate system must be either projected or geographic 
+        (geodetic coordinate systems not supported.)
+    <li> The EPSG authority factory plugin chosen by the application writer
+      must successfully construct everything necessary to represent the 
+      scene coordinates.
+    <li> The Raster to Model transformation must be a simple translation.
+    <li> This plugin does not use the &quot;Hints&quot; mechanism as of yet.
+         I don't know how to have the user specify the EPSG factories they
+         wish to use.
+    <li> When constructing a user defined projected CRS, the Cartesian CS
+         associated with the system <i>always</i> has easting as the 
+         first axis and northing as the second axis, and the units are 
+         always the length units defined in the GeoTIFF file.  I do not 
+         know if it is possible to have a different combination.
+    </ul>
+
+    <p>
+    The GeoTIFF plugin currently does not write GeoTIFF files.  The 
+    current obstacles to writing a GeoTIFF file are:
+    <ol>
+    <li> The <CODE>GeoTiffIIOMetadataAdapter</CODE> cannot modify the 
+      IIOMetadata object (e.g., it's read-only).
+    <li> No mechanism exists to examine the parameters of a coordinate
+      system and produce an EPSG code.
+    </ol>
+
+    <p>Key features of the package: 
+    <ol>
+    <li>Has a reasonable level of isolation from the Geotools library
+      ala the GeoAPI interfaces.  Areas of best isolation are CRS, and 
+      areas of worst isolation are the grid coverage exchange API.
+    <li>Utilizes the JAI ImageI/O tools to perform the actual file I/O.
+    <li>Interprets metadata retrieved as <code>IIOMetadata</code>.
+    <li>Functionality is logically subdivided:
+      <ul> 
+      <li> Classes required to interface to Geotools.
+      <li> An adapter class to retrieve GeoKeys from the IIOMetadata by
+        symbolic name (<CODE>GeoTiffIIOMetadataAdapter</CODE>).
+      <li> An adapter class to interpret the values in the GeoKeys
+        and create a corresponding coordinate system with a factory
+        (<CODE>GeoTiffCoordinateSystemAdapter</CODE>).
+      </ul>
+    </ol>
+
+    <p>
+    <h1>License Information</h1>
+    The GeoTIFF plugin for Geotools is public domain.  The 
+    <code>GeoTiffIIOMetadataAdapter</code> is Copyright 2004 by 
+    Mike Gelbin and released under a liberal license as noted in that file.
+
+  </BODY>
+</HTML>

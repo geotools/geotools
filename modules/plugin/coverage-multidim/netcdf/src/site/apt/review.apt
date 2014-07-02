@@ -1,0 +1,12 @@
+Module NetCDF
+~~~~~~~~~~~~~
+
+
+  IP Review:
+
+    * Nicola Lagomarsini, July 2014
+
+  STATUS: CLEAN
+
+    * All file headers are present.
+	* Unidata libraries v4.3 are licensed under MIT License.

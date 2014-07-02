@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+    <coverages>
+        <coverage>
+            <name>O3</name>
+        </coverage>
+        <coverage>
+            <name>NO2</name>
+        </coverage>
+    </coverages>
+</Indexer>

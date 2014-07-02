@@ -62,6 +62,7 @@ Format plugins:
    pgraster
    mosaic
    pyramid
+   multidim
 
 Unsupported plugins:
    
@@ -69,7 +70,6 @@ Unsupported plugins:
    :maxdepth: 1
    
    coverageio
-   experiment
    geotiff_new
    image-collection
    jp2k

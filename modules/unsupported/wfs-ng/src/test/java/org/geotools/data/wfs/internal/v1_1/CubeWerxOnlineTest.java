@@ -17,7 +17,7 @@
  */
 package org.geotools.data.wfs.internal.v1_1;
 
-import static org.geotools.data.wfs.impl.WFSTestData.CUBEWERX_GOVUNITCE;
+import static org.geotools.data.wfs.WFSTestData.CUBEWERX_GOVUNITCE;
 
 import com.vividsolutions.jts.geom.Polygon;
 

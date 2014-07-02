@@ -21,7 +21,7 @@ import java.io.IOException;
 import org.geotools.data.DataStore;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.data.wfs.impl.WFSContentDataStore;
+import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.junit.Ignore;
@@ -44,7 +44,7 @@ public class GeoServerIntegrationTest extends AbstractDataStoreTest {
 
         wfs = mockUpWfsClient();
 
-        WFSContentDataStore wfsds = new WFSContentDataStore(wfs);
+        WFSDataStore wfsds = new WFSDataStore(wfs);
         return wfsds;
     }
 

@@ -16,14 +16,14 @@
  */
 package org.geotools.data.wfs.internal.parsers;
 
-import static org.geotools.data.wfs.impl.WFSTestData.*;
-import static org.geotools.data.wfs.impl.WFSTestData.CUBEWERX_ROADSEG;
-import static org.geotools.data.wfs.impl.WFSTestData.GEOS_ARCHSITES_11;
-import static org.geotools.data.wfs.impl.WFSTestData.GEOS_ROADS_11;
-import static org.geotools.data.wfs.impl.WFSTestData.GEOS_STATES_10;
-import static org.geotools.data.wfs.impl.WFSTestData.GEOS_STATES_11;
-import static org.geotools.data.wfs.impl.WFSTestData.GEOS_TASMANIA_CITIES_11;
-import static org.geotools.data.wfs.impl.WFSTestData.IONIC_STATISTICAL_UNIT;
+import static org.geotools.data.wfs.WFSTestData.*;
+import static org.geotools.data.wfs.WFSTestData.CUBEWERX_ROADSEG;
+import static org.geotools.data.wfs.WFSTestData.GEOS_ARCHSITES_11;
+import static org.geotools.data.wfs.WFSTestData.GEOS_ROADS_11;
+import static org.geotools.data.wfs.WFSTestData.GEOS_STATES_10;
+import static org.geotools.data.wfs.WFSTestData.GEOS_STATES_11;
+import static org.geotools.data.wfs.WFSTestData.GEOS_TASMANIA_CITIES_11;
+import static org.geotools.data.wfs.WFSTestData.IONIC_STATISTICAL_UNIT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;

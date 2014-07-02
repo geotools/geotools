@@ -25,14 +25,12 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.io.IOUtils;
-import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.SimpleHttpClient;
-import org.geotools.data.wfs.impl.TestHttpResponse;
+import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeResponse;
-import org.geotools.data.wfs.internal.GetCapabilitiesResponse;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureResponse;
 import org.geotools.data.wfs.internal.WFSClient;

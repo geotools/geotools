@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.wfs.impl;
+package org.geotools.data.wfs;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ import org.opengis.feature.type.Name;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
-public class WFSContentDataStore extends ContentDataStore {
+public class WFSDataStore extends ContentDataStore {
 
     private final WFSClient client;
 
@@ -52,7 +52,7 @@ public class WFSContentDataStore extends ContentDataStore {
 
     private final Map<QName, FeatureType> remoteFeatureTypes;
 
-    public WFSContentDataStore(final WFSClient client) {
+    public WFSDataStore(final WFSClient client) {
         this.client = client;
         this.names = new ConcurrentHashMap<Name, QName>();
         this.remoteFeatureTypes = new ConcurrentHashMap<QName, FeatureType>();
@@ -100,8 +100,8 @@ public class WFSContentDataStore extends ContentDataStore {
     }
 
     /**
-     * @see WFSContentFeatureSource
-     * @see WFSContentFeatureStore
+     * @see WFSFeatureSource
+     * @see WFSFeatureStore
      * @see WFSClient#supportsTransaction(QName)
      * @see org.geotools.data.store.ContentDataStore#createFeatureSource(org.geotools.data.store.ContentEntry)
      */
@@ -109,12 +109,12 @@ public class WFSContentDataStore extends ContentDataStore {
     protected ContentFeatureSource createFeatureSource(final ContentEntry entry) throws IOException {
         ContentFeatureSource source;
 
-        source = new WFSContentFeatureSource(entry, client);
+        source = new WFSFeatureSource(entry, client);
 
         final QName remoteTypeName = getRemoteTypeName(entry.getName());
         
         if (client.supportsTransaction(remoteTypeName)) {
-         source = new WFSContentFeatureStore((WFSContentFeatureSource) source);
+         source = new WFSFeatureStore((WFSFeatureSource) source);
         }
 
         return source;

@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.geotools.data.wfs.impl.WFSContentDataStore;
+import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.internal.Loggers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -51,9 +51,9 @@ public class CubewerksOnlineTest {
 
     private static URL url_110;
 
-    private static WFSContentDataStore wfs100;
+    private static WFSDataStore wfs100;
 
-    private static WFSContentDataStore wfs110;
+    private static WFSDataStore wfs110;
 
     @BeforeClass
     public static void oneTimeSetUp() throws Exception {

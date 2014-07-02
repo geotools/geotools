@@ -24,7 +24,7 @@ import java.util.Set;
 
 import javax.imageio.spi.ServiceRegistry;
 
-import org.geotools.data.wfs.impl.WFSDataStoreFactory;
+import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.factory.FactoryNotFoundException;
 
 /**

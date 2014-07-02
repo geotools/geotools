@@ -37,9 +37,9 @@ import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.wfs.impl.TestHttpClient;
-import org.geotools.data.wfs.impl.TestHttpResponse;
-import org.geotools.data.wfs.impl.WFSContentDataStore;
+import org.geotools.data.wfs.TestHttpClient;
+import org.geotools.data.wfs.TestHttpResponse;
+import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
@@ -61,16 +61,16 @@ public class TinyOwsTest {
 
     private Name typeName = new NameImpl("http://www.tinyows.org/", "comuni_comuni11");
         
-    private WFSContentDataStore getWFSDataStore(HTTPClient httpClient) throws IOException, ServiceException {
+    private WFSDataStore getWFSDataStore(HTTPClient httpClient) throws IOException, ServiceException {
         URL capabilitiesUrl = new URL("http://127.0.0.1:8888/cgi-bin/tinyows?service=WFS&version=1.1.0&REQUEST=GetCapabilities");        
                 
-        WFSContentDataStore wfs = new WFSContentDataStore( new WFSClient(capabilitiesUrl, httpClient, WFSConfig.fromParams(Collections.EMPTY_MAP) ));
+        WFSDataStore wfs = new WFSDataStore( new WFSClient(capabilitiesUrl, httpClient, WFSConfig.fromParams(Collections.EMPTY_MAP) ));
         return wfs;
     }
 
     @Test
     public void testGetCapabilities() throws Exception {
-        WFSContentDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient());       
+        WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient());
         String types[] = wfs.getTypeNames();
         assertEquals(1, types.length);
         assertEquals(typeName.getLocalPart(), types[0]);
@@ -107,7 +107,7 @@ public class TinyOwsTest {
     public void testGetFirstFeatures() throws Exception {        
         final String queryXml = "<wfs:Query srsName=\"urn:ogc:def:crs:EPSG::3857\" typeName=\"comuni:comuni11\"/>";
         //final String queryXml = "<wfs:Query srsName=\"urn:ogc:def:crs:EPSG::3857\" typeName=\"comuni_comuni11\"/>";
-        WFSContentDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {        
+        WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
             @Override
             public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
                 String request = new String(IOUtils.toByteArray(postContent), "UTF-8");
@@ -142,7 +142,7 @@ public class TinyOwsTest {
     
     @Test
     public void testGetFeatureByIncludeAndOperatorAndInclude() throws Exception {
-        WFSContentDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
+        WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
             @Override
             public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
                 String request = new String(IOUtils.toByteArray(postContent), "UTF-8");
@@ -173,7 +173,7 @@ public class TinyOwsTest {
     
     @Test
     public void testGetFeatureById() throws Exception {        
-        WFSContentDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient());
+        WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient());
         
         SimpleFeatureSource source = wfs.getFeatureSource(typeName);
 
@@ -191,7 +191,7 @@ public class TinyOwsTest {
                 "<gml:Envelope srsDimension=\"2\" srsName=\"urn:x-ogc:def:crs:EPSG:3857\">",
                 "<gml:lowerCorner>4623055.0 815134.0</gml:lowerCorner>",
                 "<gml:upperCorner>4629904.0 820740.0</gml:upperCorner>" };
-        WFSContentDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
+        WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
             @Override
             public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
                 String request = new String(IOUtils.toByteArray(postContent), "UTF-8");
@@ -223,7 +223,7 @@ public class TinyOwsTest {
                 "<gml:Envelope srsDimension=\"2\" srsName=\"urn:x-ogc:def:crs:EPSG:3857\">",
                 "<gml:lowerCorner>4623055.0 815134.0</gml:lowerCorner>",
                 "<gml:upperCorner>4629904.0 820740.0</gml:upperCorner>" };
-        WFSContentDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
+        WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
             @Override
             public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
                 String request = new String(IOUtils.toByteArray(postContent), "UTF-8");
@@ -257,7 +257,7 @@ public class TinyOwsTest {
                 "<gml:Envelope srsDimension=\"2\" srsName=\"urn:x-ogc:def:crs:EPSG:3857\">",
                 "<gml:lowerCorner>4623055.0 815134.0</gml:lowerCorner>",
                 "<gml:upperCorner>4629904.0 820740.0</gml:upperCorner>" };
-        WFSContentDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
+        WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
             @Override
             public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
                 String request = new String(IOUtils.toByteArray(postContent), "UTF-8");
@@ -292,7 +292,7 @@ public class TinyOwsTest {
                 "<gml:Envelope srsDimension=\"2\" srsName=\"urn:x-ogc:def:crs:EPSG:3857\">",
                 "<gml:lowerCorner>4623055.0 815134.0</gml:lowerCorner>",
                 "<gml:upperCorner>4629904.0 820740.0</gml:upperCorner>" };
-        WFSContentDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
+        WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
             @Override
             public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
                 String request = new String(IOUtils.toByteArray(postContent), "UTF-8");

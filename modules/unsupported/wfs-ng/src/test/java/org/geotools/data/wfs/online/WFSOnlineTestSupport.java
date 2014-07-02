@@ -31,8 +31,8 @@ import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.data.wfs.impl.WFSContentDataStore;
-import org.geotools.data.wfs.impl.WFSDataStoreFactory;
+import org.geotools.data.wfs.WFSDataStore;
+import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -45,7 +45,7 @@ public class WFSOnlineTestSupport {
     public void testEmpty() {/**/
     }
 
-    public static WFSContentDataStore getDataStore(URL server, Boolean post) throws IOException {
+    public static WFSDataStore getDataStore(URL server, Boolean post) throws IOException {
 
         Map<String, Serializable> m = new HashMap<String, Serializable>();
         m.put(WFSDataStoreFactory.URL.key, server);

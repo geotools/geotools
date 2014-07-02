@@ -36,7 +36,7 @@ import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.WFSCapabilitiesType;
 
 import org.eclipse.emf.ecore.EObject;
-import org.geotools.data.wfs.impl.WFSServiceInfo;
+import org.geotools.data.wfs.WFSServiceInfo;
 import org.geotools.data.wfs.internal.AbstractWFSStrategy;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.FeatureTypeInfo;

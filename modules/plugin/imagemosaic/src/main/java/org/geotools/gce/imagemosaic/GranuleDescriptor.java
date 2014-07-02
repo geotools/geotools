@@ -725,7 +725,7 @@ public class GranuleDescriptor {
 			    
 			    //override the overviews controller for the base layer
 			    imageIndex = ReadParamsController.setReadParams(
-			            request.spatialRequestHelper.getRequestedResolution(),
+			            request.spatialRequestHelper.getComputedResolution(),
 			            request.getOverviewPolicy(),
 			            request.getDecimationPolicy(), 
 			            readParameters,

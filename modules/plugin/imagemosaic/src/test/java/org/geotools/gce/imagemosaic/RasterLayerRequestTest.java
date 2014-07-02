@@ -45,7 +45,6 @@ public class RasterLayerRequestTest {
         final RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
 
         GeneralEnvelope oe = reader.getOriginalEnvelope();
-        System.out.println(oe);
         double offset = oe.getSpan(0) * 0.9;
         GeneralEnvelope reNative = new GeneralEnvelope(oe);
         reNative.setRange(0, oe.getMinimum(0) - offset, oe.getMaximum(0) - offset);
@@ -63,7 +62,7 @@ public class RasterLayerRequestTest {
         // Creating a request
         final RasterLayerRequest request = new RasterLayerRequest(
                 new GeneralParameterValue[] { ggParam }, manager);
-        double[] rr = request.spatialRequestHelper.getRequestedResolution();
+        double[] rr = request.spatialRequestHelper.getComputedResolution();
         // System.out.println(Arrays.toString(rr));
         double resolution = Math.min(rr[0], rr[1]);
         // System.out.println(resolution);

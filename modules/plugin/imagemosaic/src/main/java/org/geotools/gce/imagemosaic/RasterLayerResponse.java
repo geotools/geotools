@@ -1255,7 +1255,10 @@ class RasterLayerResponse{
                         final AffineTransform sourceGridToWorld = new AffineTransform((AffineTransform) finalGridToWorldCorner);
 		        
 		        // target world to grid at the corner
-                        final AffineTransform targetGridToWorld = new AffineTransform(request.spatialRequestHelper.getRequestedGridToWorld());
+                        final AffineTransform targetGridToWorld = new AffineTransform(
+                        		request.spatialRequestHelper.isNeedsReprojection()?
+                        				request.spatialRequestHelper.getComputedGridToWorld():
+                        		request.spatialRequestHelper.getComputedGridToWorld());
                         targetGridToWorld.concatenate(CoverageUtilities.CENTER_TO_CORNER);
                         
                         // target world to grid at the corner
@@ -1354,7 +1357,7 @@ class RasterLayerResponse{
             if (returnValue != null) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Loaded bbox " + mosaicBBox.toString() + " while crop bbox "
-                            + request.spatialRequestHelper.getCropBBox().toString());
+                            + request.spatialRequestHelper.getComputedBBox().toString());
                 }
                 return returnValue;
             }
@@ -1424,7 +1427,7 @@ class RasterLayerResponse{
             final OverviewLevel selectedLevel = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
             final double resX = baseLevel.resolutionX;
             final double resY = baseLevel.resolutionY;
-            final double[] requestRes = request.spatialRequestHelper.getRequestedResolution();
+            final double[] requestRes = request.spatialRequestHelper.getComputedResolution();
 
             g2w = new AffineTransform((AffineTransform) baseGridToWorld);
             g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
@@ -1442,7 +1445,10 @@ class RasterLayerResponse{
                         baseReadParameters.getSourceYSubsampling()));
             }
         } else {
-            g2w = new AffineTransform(request.spatialRequestHelper.getRequestedGridToWorld());
+            g2w = new AffineTransform(
+            		request.spatialRequestHelper.isNeedsReprojection()?
+            				request.spatialRequestHelper.getComputedGridToWorld():
+            		request.spatialRequestHelper.getComputedGridToWorld());
             g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
         }
         // move it to the corner
@@ -1458,7 +1464,7 @@ class RasterLayerResponse{
      */
     private void initBBOX() {
         // ok we got something to return, let's load records from the index
-        final BoundingBox cropBBOX = request.spatialRequestHelper.getCropBBox();
+        final BoundingBox cropBBOX = request.spatialRequestHelper.getComputedBBox();
         if (cropBBOX != null){
             mosaicBBox = ReferencedEnvelope.reference(cropBBOX);
         }else{
@@ -1489,9 +1495,9 @@ class RasterLayerResponse{
         // level dimension and envelope. The grid to world transforms for
         // the other levels can be computed accordingly knowing the scale
         // factors.            
-        if (request.spatialRequestHelper.getRequestedBBox() != null && request.spatialRequestHelper.getRequestedRasterArea() != null && !request.isHeterogeneousGranules()){
+        if (request.spatialRequestHelper.getComputedBBox() != null && request.spatialRequestHelper.getComputedRasterArea() != null && !request.isHeterogeneousGranules()){
             imageChoice = ReadParamsController.setReadParams(
-                    request.spatialRequestHelper.getRequestedResolution(),
+                    request.spatialRequestHelper.getComputedResolution(),
                     request.getOverviewPolicy(),
                     request.getDecimationPolicy(),
                     baseReadParameters,
@@ -1523,7 +1529,6 @@ class RasterLayerResponse{
         final String typeName = rasterManager.getTypeName();
         Filter bbox = null;
         if (typeName != null){
-//            Query query = new Query(rasterManager.getGranuleCatalog().getType().getTypeName());
             Query query = new Query(typeName);
             // max number of elements
             if(request.getMaximumNumberOfGranules()>0){

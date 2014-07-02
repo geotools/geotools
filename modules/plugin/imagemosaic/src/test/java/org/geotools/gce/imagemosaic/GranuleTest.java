@@ -270,7 +270,7 @@ public class GranuleTest extends Assert {
         final RasterLayerRequest requestNE = new RasterLayerRequest(
                 new GeneralParameterValue[] { requestedBBox }, manager);
 
-        BoundingBox checkCropBBox = requestNE.spatialRequestHelper.getCropBBox();
+        BoundingBox checkCropBBox = requestNE.spatialRequestHelper.getComputedBBox();
         assertNotNull(checkCropBBox);
         assertEquals(
                 "ReferencedEnvelope[1587997.8835 : 1612003.2265, 6162000.4515 : 6198002.1165]",
@@ -285,7 +285,7 @@ public class GranuleTest extends Assert {
         final RasterLayerRequest requestEN = new RasterLayerRequest(
                 new GeneralParameterValue[] { requestedBBox }, manager);
 
-        checkCropBBox = requestEN.spatialRequestHelper.getCropBBox();
+        checkCropBBox = requestEN.spatialRequestHelper.getComputedBBox();
         assertNotNull(checkCropBBox);
         assertEquals(
                 "ReferencedEnvelope[1587997.8835 : 1612003.2265, 6162000.4515 : 6198002.1165]",

@@ -176,16 +176,15 @@ class RasterLayerRequest {
         // //
         this.rasterManager = rasterManager;
         this.heterogeneousGranules = rasterManager.heterogeneousGranules;
-        this.spatialRequestHelper = new SpatialRequestHelper();
         CoverageProperties coverageProperties = new CoverageProperties();
-        coverageProperties.setBbox(rasterManager.spatialDomainManager.coverageBBox);
+        coverageProperties.setBBox(rasterManager.spatialDomainManager.coverageBBox);
         coverageProperties.setRasterArea(rasterManager.spatialDomainManager.coverageRasterArea);
         coverageProperties.setFullResolution(rasterManager.spatialDomainManager.coverageFullResolution);
         coverageProperties.setGridToWorld2D(rasterManager.spatialDomainManager.coverageGridToWorld2D);
         coverageProperties.setCrs2D(rasterManager.spatialDomainManager.coverageCRS2D);
         coverageProperties.setGeographicBBox(rasterManager.spatialDomainManager.coverageGeographicBBox);
         coverageProperties.setGeographicCRS2D(rasterManager.spatialDomainManager.coverageGeographicCRS2D);
-        spatialRequestHelper.setCoverageProperties(coverageProperties);
+        this.spatialRequestHelper = new SpatialRequestHelper(coverageProperties);
         setDefaultParameterValues();
 
         // //
@@ -211,7 +210,7 @@ class RasterLayerRequest {
         // //
         checkReadType();
         spatialRequestHelper.setAccurateResolution(accurateResolution);
-        spatialRequestHelper.prepare();
+        spatialRequestHelper.compute();
     }
 
     private void setDefaultParameterValues() {

@@ -30,14 +30,11 @@ import java.util.logging.Logger;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
 
-import junit.framework.Assert;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
@@ -61,7 +58,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @source $URL$
  */
-public class GeoTiffReaderTest extends Assert {
+public class GeoTiffReaderTest extends org.junit.Assert {
 	private final static Logger LOGGER = org.geotools.util.logging.Logging
 			.getLogger(GeoTiffReaderTest.class.toString());
 
@@ -97,7 +94,7 @@ public class GeoTiffReaderTest extends Assert {
 	        final AbstractGridFormat format = new GeoTiffFormat();
 	        assertTrue(format.accepts(noCrs));
 	        GeoTiffReader reader = (GeoTiffReader) format.getReader(noCrs);
-	        CoordinateReferenceSystem crs=reader.getCrs();
+	        CoordinateReferenceSystem crs=reader.getCoordinateReferenceSystem();
 	        
 	        final File prj= TestData.file(GeoTiffReaderTest.class, "override/sample.prj");
 	        final CoordinateReferenceSystem crs_=new PrjFileReader(new FileInputStream(prj).getChannel()).getCoordinateReferenceSystem();
@@ -172,7 +169,7 @@ public class GeoTiffReaderTest extends Assert {
         final AbstractGridFormat format = new GeoTiffFormat();
         assertTrue(format.accepts(noCrs));
         GeoTiffReader reader = (GeoTiffReader) format.getReader(noCrs);
-        CoordinateReferenceSystem crs=reader.getCrs();
+        CoordinateReferenceSystem crs=reader.getCoordinateReferenceSystem();
         assertTrue(CRS.equalsIgnoreMetadata(crs, DefaultEngineeringCRS.GENERIC_2D));
         GridCoverage2D coverage=reader.read(null);
         assertTrue(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), DefaultEngineeringCRS.GENERIC_2D));
@@ -490,4 +487,36 @@ public class GeoTiffReaderTest extends Assert {
         assertEquals(overviewResolutions[4][1], 80, delta);
         
     }
+    
+    /**
+     * The leak geotiff is a strange geotiff with PixelScale and TiePoints that are all 0
+     * hence the matrix we come up with is all 0 and not invertibile.
+     * 
+     *  This is not acceptable as we need a transformation that allows us to go back and forth between 
+     *  raster and model space.
+     *  
+     *  Side effect of this, we leak an open file due to the exception thrown during a read operation.
+     * 
+     * @throws Exception
+     */
+	@Test
+	// @Ignore
+	public void testLeakedOpenFileFix() throws Exception {
+		final File file = TestData.file(GeoTiffReaderTest.class, "leak.tiff");
+		assertNotNull(file);
+		assertEquals(true, file.exists());
+
+		try {
+
+			@SuppressWarnings("unused")
+			GeoTiffReader reader = new GeoTiffReader(file);
+			assertTrue(false);
+		} catch (Exception e) {
+			assertTrue(true);
+		}
+
+		// this files if things went wrong and the fix is not working (on Windows especially)
+		assertTrue(file.delete());
+
+	}
 }

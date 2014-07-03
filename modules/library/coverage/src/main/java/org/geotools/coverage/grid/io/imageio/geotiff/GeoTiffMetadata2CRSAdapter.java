@@ -68,6 +68,7 @@ import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.Utilities;
 import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValueGroup;
@@ -437,20 +438,24 @@ public final class GeoTiffMetadata2CRSAdapter {
 	}
 	
 	/**
-         * Create the grid to world (or raster to model) transformation for this
-         * source respecting ALWAYS the OGC {@link PixelInCell#CELL_CENTER}
-         * convention for the {@link ImageDatum} of the underlying {@link ImageCRS}.
-         * 
-         * @see <a
-         *      href="http://lists.maptools.org/pipermail/geotiff/2006-January/000213.html">this
-         *      email post</a>
-         * @param metadata
-         *            containing the information to build the {@link MathTransform}
-         *            for going from grid to world.
-         * 
-         * @throws GeoTiffException
-         */
-        public static MathTransform getRasterToModel(final GeoTiffIIOMetadataDecoder metadata) throws GeoTiffException {
+     * Create the grid to world (or raster to model) transformation for this
+     * source respecting ALWAYS the OGC {@link PixelInCell#CELL_CENTER}
+     * convention for the {@link ImageDatum} of the underlying {@link ImageCRS}.
+     * 
+     * @see <a
+     *      href="http://lists.maptools.org/pipermail/geotiff/2006-January/000213.html">this
+     *      email post</a>
+     * @param metadata
+     *            containing the information to build the {@link MathTransform}
+     *            for going from grid to world.
+     * 
+     * @throws GeoTiffException
+     */
+    public static MathTransform getRasterToModel(final GeoTiffIIOMetadataDecoder metadata) throws GeoTiffException {
+        
+    	// checks
+    	Utilities.ensureNonNull("metadata", metadata);
+
 		//
 		// Load initials
 		//
@@ -476,7 +481,20 @@ public final class GeoTiffMetadata2CRSAdapter {
 			final TiePoint[] tiePoints = metadata.getModelTiePoints();
 			final PixelScale pixScales = metadata.getModelPixelScales();
 
+	    	
+	    	// logging
+	    	if(LOGGER.isLoggable(Level.FINE)){
+	    		final StringBuilder builder= new StringBuilder();
+	    		builder.append("Logging tiePoints:").append("\n");
+	    		for(TiePoint t: tiePoints){
+	    			builder.append( t.toString()).append("\n");
+	    		}
+	    		builder.append("Logging pixScales:").append("\n");
+	    		builder.append(pixScales.toString()).append("\n");
+	    		LOGGER.log(Level.FINE, builder.toString());
+	    	}
 
+			
 			// here is the matrix we need to build
 			final GeneralMatrix gm = new GeneralMatrix(3);
 			final double scaleRaster2ModelLongitude = pixScales.getScaleX();
@@ -501,22 +519,45 @@ public final class GeoTiffMetadata2CRSAdapter {
 			xform = ProjectiveTransform.create(gm);
 
 		} else if (hasModelTransformation) {
-                    if (rasterType == GeoTiffConstants.RasterPixelIsArea){
-                        final AffineTransform tempTransform = new AffineTransform(metadata.getModelTransformation());
-                        tempTransform.concatenate(PixelIsArea2PixelIsPoint);
-                        xform = ProjectiveTransform.create(tempTransform);
-                            
-                    }
-                    else {
-                        assert rasterType == GeoTiffConstants.RasterPixelIsPoint;
-                        xform = ProjectiveTransform.create(metadata.getModelTransformation());
 
-                    }
-                } else
-                    throw new GeoTiffException(metadata,
-                                    "Unknown Raster to Model configuration.", null);
+	    	
+			AffineTransform modelTransformation = metadata.getModelTransformation();
+			if(modelTransformation==null){
+				throw new GeoTiffException(metadata, "Null modelTransformation", null);
+			}
+	    	// logging
+	    	if(LOGGER.isLoggable(Level.FINE)){
+	    		final StringBuilder builder= new StringBuilder();
+	    		builder.append("Logging ModelTransformation:").append("\n");
+	    		builder.append( modelTransformation.toString()).append("\n");
+	    		LOGGER.log(Level.FINE, builder.toString());
+	    	}
+			if (rasterType == GeoTiffConstants.RasterPixelIsArea) {
+				final AffineTransform tempTransform = new AffineTransform(modelTransformation);
+				tempTransform.concatenate(PixelIsArea2PixelIsPoint);
+				xform = ProjectiveTransform.create(tempTransform);
 
-                return xform;
+			} else {
+				assert rasterType == GeoTiffConstants.RasterPixelIsPoint;
+				xform = ProjectiveTransform.create(modelTransformation);
+
+			}
+		} else{			
+			throw new GeoTiffException(metadata,"Unknown Raster to Model configuration.", null);
+		}
+
+		
+		// final check, is this invertible at all?
+		try{
+			xform.inverse();
+		}catch(Exception e){
+			if(LOGGER.isLoggable(Level.FINE)){
+				LOGGER.log(Level.FINE,"Invalid model transformation found!\n"+e.getLocalizedMessage(),e);
+			}
+			
+			return null;
+		}
+		return xform;
 	}
 	
 	/**

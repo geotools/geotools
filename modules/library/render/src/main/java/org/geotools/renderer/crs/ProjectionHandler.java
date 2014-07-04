@@ -81,10 +81,10 @@ public class ProjectionHandler {
      */
     public ProjectionHandler(CoordinateReferenceSystem sourceCRS, Envelope validAreaBounds, ReferencedEnvelope renderingEnvelope) throws FactoryException {
         this.renderingEnvelope = renderingEnvelope;
-        this.sourceCRS = sourceCRS;
+        this.sourceCRS = CRS.getHorizontalCRS(sourceCRS);
         this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
         this.validAreaBounds = validAreaBounds != null ? new ReferencedEnvelope(validAreaBounds,
-                sourceCRS) : null;
+                this.sourceCRS) : null;
         this.validArea = null;
     }
     

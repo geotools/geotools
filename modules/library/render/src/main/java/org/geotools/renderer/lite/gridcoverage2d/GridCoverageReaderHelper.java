@@ -285,8 +285,9 @@ public class GridCoverageReaderHelper {
             GridGeometry2D localGridGeometry = new GridGeometry2D(readingGridRange, gridToCRS2D,
                     mapExtent.getCoordinateReferenceSystem());
 
+            double[][] resolutionLevels = reader.getResolutionLevels();
             ReadResolutionCalculator calculator = new ReadResolutionCalculator(localGridGeometry,
-                    readerCRS, reader.getResolutionLevels()[0]);
+                    readerCRS, resolutionLevels != null ? resolutionLevels[0] : null);
             calculator.setAccurateResolution(true);
             double[] readResolution = calculator.computeRequestedResolution(reducedEnvelope);
             int width = (int) Math.max(1,

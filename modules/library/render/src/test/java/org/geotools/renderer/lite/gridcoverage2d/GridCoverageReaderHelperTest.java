@@ -12,8 +12,12 @@ import javax.media.jai.Interpolation;
 
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -23,6 +27,9 @@ import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.opengis.coverage.grid.Format;
+import org.opengis.geometry.BoundingBox;
+import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GridCoverageReaderHelperTest {
@@ -164,7 +171,7 @@ public class GridCoverageReaderHelperTest {
 
     @Test
     public void testOutsideDefinitionArea() throws Exception {
-        // setup a request large enough to cause severe reprojection deformation
+        // setup a request that is outside of the coverage
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3031", true);
         ReferencedEnvelope mapExtent = new ReferencedEnvelope(-1250000, 0, -13750000, -12500000,
                 crs);
@@ -172,10 +179,52 @@ public class GridCoverageReaderHelperTest {
         GridCoverageReaderHelper helper = new GridCoverageReaderHelper(reader, new Rectangle(400,
                 200), mapExtent, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
 
-        // read single coverage with no projection handling, we should get the full requested area
+        // read, nothing should come out
         ProjectionHandler handler = ProjectionHandlerFinder.getHandler(mapExtent,
                 reader.getCoordinateReferenceSystem(), true);
         List<GridCoverage2D> coverages = helper.readCoverages(null, handler);
         assertTrue(coverages.isEmpty());
+    }
+
+    @Test
+    public void testFullResolutionNull() throws Exception {
+        // this one has null native resolutions
+        final GridCoverage2D coverage = new GridCoverageFactory().create("test",
+                new float[200][100], new ReferencedEnvelope(-180, 180, -90, 90,
+                        DefaultGeographicCRS.WGS84));
+        GridCoverage2DReader reader = new AbstractGridCoverage2DReader() {
+            
+            {
+                this.crs = DefaultGeographicCRS.WGS84;
+                this.originalEnvelope = new GeneralEnvelope((BoundingBox) coverage.getEnvelope2D());
+                this.originalGridRange = coverage.getGridGeometry().getGridRange();
+            }
+
+            @Override
+            public Format getFormat() {
+                return null;
+            }
+            
+            @Override
+            public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException,
+                    IOException {
+                // return fake coveage
+                return coverage;
+            }
+        };
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3031", true);
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-20000000, 20000000, -20000000,
+                20000000, crs);
+
+        GridCoverageReaderHelper helper = new GridCoverageReaderHelper(reader, new Rectangle(400,
+                200), mapExtent, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+
+        // read, we should get back a coverage, not a exception
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(mapExtent,
+                reader.getCoordinateReferenceSystem(), true);
+        List<GridCoverage2D> coverages = helper.readCoverages(null, handler);
+        assertEquals(1, coverages.size());
+        
+        
     }
 }

@@ -52,6 +52,11 @@ public class ReadResolutionCalculator {
         this.requestedRasterArea = requestedGridGeometry.getGridRange2D().getBounds();
         this.requestedGridToWorld = (AffineTransform) requestedGridGeometry.getGridToCRS2D();
         this.fullResolution = fullResolution;
+        // the reader might not know (e.g., wms cascading reader) in this case we
+        // pick the classic computation results, it's better than nothing
+        if (fullResolution == null) {
+            this.fullResolution = computeClassicResolution();
+        }
         CoordinateReferenceSystem requestedCRS = requestedGridGeometry
                 .getCoordinateReferenceSystem();
         if (!CRS.equalsIgnoreMetadata(nativeCrs, requestedCRS)) {

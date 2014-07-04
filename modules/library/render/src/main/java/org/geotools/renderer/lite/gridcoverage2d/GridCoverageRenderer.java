@@ -909,12 +909,6 @@ public final class GridCoverageRenderer {
         paint(graphics, gridCoverage, symbolizer,null);
     }
     
-    // coverage.dispose(true);
-    // final RenderedImage image = coverage.getRenderedImage();
-    // if(image instanceof PlanarImage) {
-    // ImageUtilities.disposePlanarImageChain((PlanarImage) image);
-    // }
-
     /**
      * Paint this grid coverage. The caller must ensure that
      * <code>graphics</code> has an affine transform mapping "real world"

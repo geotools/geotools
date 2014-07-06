@@ -79,7 +79,10 @@ public abstract class AbstractRequest implements Request{
         String urlWithoutQuery = null;
 
         if (index <= 0) {
-            urlWithoutQuery = onlineResource.toExternalForm() + "?";
+            urlWithoutQuery = onlineResource.toExternalForm();
+            if (!isFileUrl(onlineResource)) {
+                urlWithoutQuery += "?";
+            }
         } else {
             urlWithoutQuery = onlineResource.toExternalForm().substring(0, index);
             boolean once=true;   	        
@@ -128,11 +131,15 @@ public abstract class AbstractRequest implements Request{
         initVersion();
     }
 
+    static boolean isFileUrl(URL url) {
+        return url.getProtocol().equalsIgnoreCase("file");
+    }
+
     /**
      * @see org.geotools.data.wms.request.Request#getFinalURL()
      */
     public URL getFinalURL() {
-    	if (onlineResource.getProtocol().equalsIgnoreCase("file")) {
+    	if (isFileUrl(onlineResource)) {
     		return onlineResource;
     	}
         String url = onlineResource.toExternalForm();

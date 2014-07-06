@@ -135,6 +135,21 @@ public class CompoundCurve extends LineString implements CurvedGeometry<LineStri
         return cs;
     }
 
+    @Override
+    public double getTolerance() {
+        return tolerance;
+    }
+
+    /**
+     * Returns the components of this compound curve, which will be a list of straight LineString
+     * objects and CircularString/CircularRing
+     * 
+     * @return
+     */
+    public List<LineString> getComponents() {
+        return components;
+    }
+
     /* Optimized overridden methods */
 
     public boolean isClosed() {

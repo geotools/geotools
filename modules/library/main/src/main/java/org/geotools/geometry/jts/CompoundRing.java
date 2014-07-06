@@ -74,6 +74,21 @@ public class CompoundRing extends LinearRing implements CurvedGeometry<LinearRin
     }
 
     @Override
+    public double getTolerance() {
+        return tolerance;
+    }
+
+    /**
+     * Returns the components of this compound curve, which will be a list of straight LineString
+     * objects and CircularString/CircularRing
+     * 
+     * @return
+     */
+    public List<LineString> getComponents() {
+        return delegate.components;
+    }
+
+    @Override
     public LinearRing linearize() {
         LiteCoordinateSequence cs = delegate.getLinearizedCoordinateSequence(delegate.tolerance);
         return getFactory().createLinearRing(cs);

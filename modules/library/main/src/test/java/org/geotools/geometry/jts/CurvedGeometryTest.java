@@ -34,7 +34,7 @@ public class CurvedGeometryTest {
         assertEquals(cs, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate
-        assertEquals(10 * Math.PI / 2, cs.getLength(), 1e-2);
+        assertEquals(10 * Math.PI / 2, cs.getLength(), 1e-1);
         // use a tighter tolerance
         assertEquals(10 * Math.PI / 2, cs.linearize(1e-6).getLength(), 1e-6);
 
@@ -43,7 +43,7 @@ public class CurvedGeometryTest {
 
         // verify a close-by, mis-aligned (angle wise) arc with the minimum segmentation
         // (cannot do 9.999 or the control points will cause the intersection)
-        double[] controlPoints2 = new Circle(9.99).samplePoints(Math.PI * 3 / 5, Math.PI / 4,
+        double[] controlPoints2 = new Circle(9.9).samplePoints(Math.PI * 3 / 5, Math.PI / 4,
                 Math.PI / 10);
         CircularString cs2 = new CircularString(controlPoints2, GEOMETRY_FACTORY, Double.MAX_VALUE);
         // they should not intersect
@@ -87,7 +87,7 @@ public class CurvedGeometryTest {
         assertEquals(cs, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate
-        assertEquals(10 * Math.PI, cs.getLength(), 1e-2);
+        assertEquals(10 * Math.PI, cs.getLength(), 1e-1);
         // use a tighter tolerance
         assertEquals(10 * Math.PI, cs.linearize(1e-6).getLength(), 1e-6);
 
@@ -96,7 +96,7 @@ public class CurvedGeometryTest {
 
         // verify a close-by, mis-aligned (angle wise) arc with the minimum segmentation
         // (cannot do 9.999 or the control points will cause the intersection)
-        double[] controlPoints2 = new Circle(9.99).samplePoints(Math.PI * 3 / 5, Math.PI / 4,
+        double[] controlPoints2 = new Circle(9.9).samplePoints(Math.PI * 3 / 5, Math.PI / 4,
                 Math.PI / 10);
         CircularString cs2 = new CircularString(controlPoints2, GEOMETRY_FACTORY, Double.MAX_VALUE);
         // they should not intersect
@@ -145,14 +145,14 @@ public class CurvedGeometryTest {
         assertEquals(cr, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate
-        assertEquals(10 * Math.PI * 2, cr.getLength(), 1e-2);
+        assertEquals(10 * Math.PI * 2, cr.getLength(), 1e-1);
 
         // topological operation check
         assertTrue(cr.intersects(JTS.toGeometry(new Envelope(4, 8, 4, 8))));
 
         // verify a close-by, mis-aligned (angle wise) arc with the minimum segmentation
         // (cannot do 9.999 or the control points will cause the intersection)
-        double[] controlPoints2 = new Circle(9.99).samplePoints(Math.PI * 3 / 5, Math.PI / 4,
+        double[] controlPoints2 = new Circle(9.9).samplePoints(Math.PI * 3 / 5, Math.PI / 4,
                 Math.PI / 10);
         CircularString cs2 = new CircularString(controlPoints2, GEOMETRY_FACTORY, Double.MAX_VALUE);
         // they should not intersect
@@ -203,7 +203,7 @@ public class CurvedGeometryTest {
         assertEquals(curve, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate
-        assertEquals(10 * Math.PI + 40, curve.getLength(), 1e-2);
+        assertEquals(10 * Math.PI + 40, curve.getLength(), 1e-1);
 
         // topological operation check
         assertTrue(curve.intersects(JTS.toGeometry(new Envelope(0, 10, 12, 15))));
@@ -237,7 +237,7 @@ public class CurvedGeometryTest {
         assertEquals(ring, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate
-        assertEquals(10 * Math.PI + 40, ring.getLength(), 1e-2);
+        assertEquals(10 * Math.PI + 40, ring.getLength(), 1e-1);
 
         // topological operation check
         assertTrue(ring.intersects(JTS.toGeometry(new Envelope(0, 10, 12, 15))));

@@ -135,6 +135,11 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
     }
 
     @Override
+    public double getTolerance() {
+        return tolerance;
+    }
+
+    @Override
     public LineString linearize() {
         return linearize(this.tolerance);
     }

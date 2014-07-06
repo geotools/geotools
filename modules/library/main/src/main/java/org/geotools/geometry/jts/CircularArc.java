@@ -54,16 +54,36 @@ public class CircularArc {
     /**
      * Minimum number of segments per quadrant
      */
-    static final int BASE_SEGMENTS_QUADRANT = Integer.valueOf(System.getProperty(
-            BASE_SEGMENTS_QUADRANT_KEY, "32"));
+    static int BASE_SEGMENTS_QUADRANT = Integer.valueOf(System.getProperty(
+            BASE_SEGMENTS_QUADRANT_KEY, "12"));
 
     private static final String MAX_SEGMENTS_QUADRANT_KEY = "org.getools.geometry.arc.maxSegmentsQuadrant";
 
     /**
      * Max number of segments per quadrant the system will use to satisfy the given tolerance
      */
-    static final int MAX_SEGMENTs_QUADRANT = Integer.valueOf(System.getProperty(
+    static int MAX_SEGMENTS_QUADRANT = Integer.valueOf(System.getProperty(
             MAX_SEGMENTS_QUADRANT_KEY, "10000"));
+
+    /**
+     * Allows to programmatically set the number of segments per quadrant (default to 8)
+     */
+    public static void setBaseSegmentsQuadrant(int baseSegmentsQuadrant) {
+        if (baseSegmentsQuadrant < 0) {
+            throw new IllegalArgumentException("The base segments per quadrant must be at least 1");
+        }
+        BASE_SEGMENTS_QUADRANT = baseSegmentsQuadrant;
+    }
+
+    /**
+     * Allows to programmatically set the number of segments per quadrant (default to 8)
+     */
+    public static void setMaxSegmentsQuadrant(int baseSegmentsQuadrant) {
+        if (baseSegmentsQuadrant < 0) {
+            throw new IllegalArgumentException("The max segments per quadrant must be at least 1");
+        }
+        MAX_SEGMENTS_QUADRANT = baseSegmentsQuadrant;
+    }
 
     static final double HALF_PI = PI / 2.0;
 
@@ -116,7 +136,7 @@ public class CircularArc {
             return new Coordinate(centerX, centerY);
         }
     }
-    
+
     public double[] linearize(double tolerance) {
         initializeCenterRadius();
         // the collinear case is simple, we just return the control points (and do the same for same
@@ -141,11 +161,11 @@ public class CircularArc {
         // will get us below the threshold
         int segmentsPerQuadrant;
         if (tolerance == 0) {
-            segmentsPerQuadrant = MAX_SEGMENTs_QUADRANT;
+            segmentsPerQuadrant = MAX_SEGMENTS_QUADRANT;
         } else {
             segmentsPerQuadrant = BASE_SEGMENTS_QUADRANT;
             double currentTolerance = computeChordCircleDistance(segmentsPerQuadrant);
-            while (currentTolerance > tolerance && segmentsPerQuadrant < MAX_SEGMENTs_QUADRANT) {
+            while (currentTolerance > tolerance && segmentsPerQuadrant < MAX_SEGMENTS_QUADRANT) {
                 segmentsPerQuadrant *= 2;
                 currentTolerance = computeChordCircleDistance(segmentsPerQuadrant);
             }
@@ -239,8 +259,6 @@ public class CircularArc {
         }
         return array;
     }
-
-
 
     private boolean isWhole(double d) {
         long num = (long) d;

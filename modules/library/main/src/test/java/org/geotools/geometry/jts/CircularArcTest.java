@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.vividsolutions.jts.algorithm.CGAlgorithms;
@@ -22,6 +24,18 @@ public class CircularArcTest {
     static final int COLLINEAR = 0;
 
     static final int CLOCKWISE = -1;
+
+    @BeforeClass
+    public static void setupBaseSegmentsQuadrant() {
+        // we want to run the test at a higher precision
+        CircularArc.setBaseSegmentsQuadrant(32);
+    }
+    
+    @AfterClass
+    public static void resetBaseSegmentsQuadrant() {
+        // we want to run the test at a higher precision
+        CircularArc.setBaseSegmentsQuadrant(12);
+    }
 
     Envelope envelopeFrom(CircularArc arc, double... otherPoints) {
         Envelope env = new Envelope();

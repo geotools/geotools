@@ -92,6 +92,11 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     }
 
     @Override
+    public double getTolerance() {
+        return delegate.getTolerance();
+    }
+
+    @Override
     public LiteCoordinateSequence getLinearizedCoordinateSequence(double tolerance) {
         return delegate.getLinearizedCoordinateSequence(tolerance);
     }

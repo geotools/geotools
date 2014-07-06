@@ -151,7 +151,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
             writer = getWriterInternal(query, flags);
 
             // events
-            if (canTransact() && !canEvent()){
+            if (!canEvent()){
                 writer = new EventContentFeatureWriter(this, writer );
             }
             // filtering

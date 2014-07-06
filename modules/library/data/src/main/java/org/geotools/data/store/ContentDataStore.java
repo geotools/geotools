@@ -37,6 +37,7 @@ import org.geotools.data.Query;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
@@ -164,6 +165,8 @@ public abstract class ContentDataStore implements DataStore {
         this.LOGGER = org.geotools.util.logging.Logging.getLogger(
             getClass().getPackage().getName()
         );
+        //default
+        setFilterFactory(CommonFactoryFinder.getFilterFactory());
     }
 
     //

@@ -153,17 +153,11 @@ public class DiffTransactionState implements Transaction.State {
                     if (update == TransactionStateDiff.NULL) {
                         writer.remove();
 
-                        // notify
-                        state.fireFeatureRemoved(store, feature);
                     } else {
                         try {
                             feature.setAttributes(update.getAttributes());
                             writer.write();
 
-                            // notify
-                            ReferencedEnvelope bounds = ReferencedEnvelope.reference(feature
-                                    .getBounds());
-                            state.fireFeatureUpdated(store, update, bounds);
                         } catch (IllegalAttributeException e) {
                             throw new DataSourceException("Could update " + fid, e);
                         }
@@ -199,8 +193,6 @@ public class DiffTransactionState implements Transaction.State {
                             // }
                             writer.write();
 
-                            // notify
-                            state.fireFeatureAdded(store, nextFeature);
                         } catch (IllegalAttributeException e) {
                             throw new DataSourceException("Could update " + fid, e);
                         }

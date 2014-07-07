@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,12 +17,10 @@
 package org.geotools.data.property;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.LineNumberReader;
+import java.util.Collections;
 
 import org.geotools.data.AbstractFeatureLocking;
-import org.geotools.data.DataStore;
 import org.geotools.data.FeatureEvent;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.Query;
@@ -30,7 +28,7 @@ import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.feature.FeatureCollection;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -68,6 +66,7 @@ public class PropertyFeatureStore extends AbstractFeatureLocking {
     };
     
     PropertyFeatureStore( PropertyDataStore propertyDataStore, String typeName ) throws IOException{
+        super(Collections.singleton(Hints.FEATURE_DETACHED));
         this.store = propertyDataStore;
         this.typeName = typeName;
         this.featureType = store.getSchema( typeName );

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,7 @@
 package org.geotools.geometry.jts;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
@@ -389,11 +390,49 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
     }
 
     private static final Geometry cloneGeometry(LineString geom, int dimension) {
-        return geomFac.createLineString(new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
+        if (geom instanceof SingleCurvedGeometry<?>) {
+            SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) geom;
+            double[] controlPoints = curved.getControlPoints();
+            double[] clonedPoints = new double[controlPoints.length];
+            System.arraycopy(controlPoints, 0, clonedPoints, 0, controlPoints.length);
+
+            return new CircularString(clonedPoints, geomFac, curved.getTolerance());
+        } else if (geom instanceof CompoundCurvedGeometry<?>) {
+            CompoundCurvedGeometry<?> curved = (CompoundCurvedGeometry<?>) geom;
+            List<LineString> components = curved.getComponents();
+            List<LineString> clonedComponents = new ArrayList<>(components.size());
+            for (LineString ls : components) {
+                LineString cloned = (LineString) cloneGeometry(ls, dimension);
+                clonedComponents.add(cloned);
+            }
+            return new CompoundCurve(clonedComponents, geomFac, dimension);
+        } else {
+            return geomFac.createLineString(new LiteCoordinateSequence(
+                    geom.getCoordinateSequence(), dimension));
+        }
     }
 
     private static final Geometry cloneGeometry(LinearRing geom, int dimension) {
-        return geomFac.createLinearRing(new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
+        if (geom instanceof SingleCurvedGeometry<?>) {
+            SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) geom;
+            double[] controlPoints = curved.getControlPoints();
+            double[] clonedPoints = new double[controlPoints.length];
+            System.arraycopy(controlPoints, 0, clonedPoints, 0, controlPoints.length);
+
+            return new CircularRing(clonedPoints, geomFac, curved.getTolerance());
+        } else if (geom instanceof CompoundCurvedGeometry<?>) {
+            CompoundCurvedGeometry<?> curved = (CompoundCurvedGeometry<?>) geom;
+            List<LineString> components = curved.getComponents();
+            List<LineString> clonedComponents = new ArrayList<>(components.size());
+            for (LineString ls : components) {
+                LineString cloned = (LineString) cloneGeometry(ls, dimension);
+                clonedComponents.add(cloned);
+            }
+            return new CompoundRing(clonedComponents, geomFac, dimension);
+        } else {
+            return geomFac.createLinearRing(new LiteCoordinateSequence(
+                    geom.getCoordinateSequence(), dimension));
+        }
     }
 
     private static final Geometry cloneGeometry(GeometryCollection geom, int dimension) {

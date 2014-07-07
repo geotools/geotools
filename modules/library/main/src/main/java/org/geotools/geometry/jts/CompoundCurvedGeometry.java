@@ -16,14 +16,16 @@
  */
 package org.geotools.geometry.jts;
 
+import java.util.List;
+
 import com.vividsolutions.jts.geom.LineString;
 
 /**
- * Convenience interface to expose methods common to {@link CircularString} and {@link CircularRing}
+ * Convenience interface to expose methods common to {@link CompoundCurve} and {@link CompoundRing}
  * 
  * @author Andrea Aime - GeoSolutions
  */
-interface SingleCurvedGeometry<T extends LineString> extends CurvedGeometry<T> {
+interface CompoundCurvedGeometry<T extends LineString> extends CurvedGeometry<T> {
 
     /**
      * Returns the linearized coordinates at the given tolerance
@@ -31,13 +33,6 @@ interface SingleCurvedGeometry<T extends LineString> extends CurvedGeometry<T> {
      * @param tolerance
      * @return
      */
-    public LiteCoordinateSequence getLinearizedCoordinateSequence(final double tolerance);
-
-    /**
-     * Returns the control points for this string/ring
-     * 
-     * @return
-     */
-    double[] getControlPoints();
+    public List<LineString> getComponents();
 
 }

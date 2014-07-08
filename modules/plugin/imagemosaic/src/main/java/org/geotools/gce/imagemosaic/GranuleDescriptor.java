@@ -435,6 +435,13 @@ public class GranuleDescriptor {
                 if (classString.equalsIgnoreCase("org.geotools.imageio.netcdf.NetCDFImageReader")) {
                     try {
                         String auxiliaryFilePath = (String) hints.get(Utils.AUXILIARY_FILES_PATH);
+                        if (hints.containsKey(Utils.PARENT_DIR)) {
+                            String parentDir = (String) hints.get(Utils.PARENT_DIR);
+                            // if the path stars with the parentDir, it's already absolute (old configuration file)
+                            if (!auxiliaryFilePath.startsWith(parentDir)) {
+                                auxiliaryFilePath = parentDir + File.separatorChar + auxiliaryFilePath;
+                            }
+                        }
                         MethodUtils.invokeMethod(reader, "setAuxiliaryFilesPath", auxiliaryFilePath);
                         return true;
                     } catch (NoSuchMethodException e) {

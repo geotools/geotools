@@ -22,7 +22,9 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -41,6 +44,7 @@ import junit.textui.TestRunner;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -682,6 +686,73 @@ public class NetCDFMosaicReaderTest extends Assert {
         }
     }
 
+    @Test
+    public void testAuxiliaryFileHasRelativePath() throws IOException {
+        // prepare a "mosaic" with just one NetCDF
+        File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY.nc");
+        File mosaic = new File(TestData.file(this, "."), "nc_harvestRP");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+
+        final String auxFileName = "GOME2.NO2.xml";
+        File xml = TestData.file(this, ".DUMMY.GOME2.NO2.PGL/" + auxFileName);
+        FileUtils.copyFileToDirectory(xml, mosaic);
+
+        // The indexer
+        String indexer = "TimeAttribute=time\n"
+                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
+                + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
+        indexer += Prop.AUXILIARY_FILE + "=" + "GOME2.NO2.xml\n";
+
+        // Setting RelativePath behavior
+        indexer += Prop.ABSOLUTE_PATH + "=" + "false";
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+
+        String timeregex = "regex=[0-9]{8}";
+        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex);
+
+        // the datastore.properties file is also mandatory...
+        File dsp = TestData.file(this, "datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+
+        // have the reader harvest it
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(mosaic);
+        InputStream inStream = null;
+        assertNotNull(reader);
+        try {
+            String[] names = reader.getGridCoverageNames();
+            assertEquals(1, names.length);
+            assertEquals("NO2", names[0]);
+
+            GranuleSource source = reader.getGranules("NO2", true);
+            SimpleFeatureCollection granules = source.getGranules(Query.ALL);
+            assertEquals(1, granules.size());
+            Properties props = new Properties();
+            final File file = new File(mosaic, "nc_harvestRP.properties");
+            inStream = new FileInputStream(file);
+            props.load(inStream);
+            // Before the fix, the AuxiliaryFile was always an absolute path
+            assertEquals(auxFileName, (String) props.getProperty(Prop.AUXILIARY_FILE));
+        } finally {
+            if (inStream != null) {
+                IOUtils.closeQuietly(inStream);
+            }
+            if (reader != null) {
+                try {
+
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Ignore exception on close attempt
+                }
+            }
+        }
+    }
+
+    
     @Test
     public void testDeleteCoverageGome() throws IOException {
         // prepare a "mosaic" with just one NetCDF

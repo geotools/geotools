@@ -519,7 +519,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                     throw new DataSourceException("The specified sourceURL doesn't refer to an existing file");
                 }
             }
-
+            if (sourceURL != null) {
+                parentDirectory = DataUtilities.urlToFile(sourceURL);
+                if (!parentDirectory.isDirectory()) {
+                        parentDirectory = parentDirectory.getParentFile();
+                }
+            }
             configuration = Utils.loadMosaicProperties(sourceURL, this.locationAttributeName);
             if (configuration == null) {
                 //
@@ -596,12 +601,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 granuleCatalog.setMultiScaleROIProvider(rois);
                 addRasterManager(configuration, true);
             }
-            if (sourceURL != null) {
-                parentDirectory = DataUtilities.urlToFile(sourceURL);
-                if (!parentDirectory.isDirectory()) {
-                        parentDirectory = parentDirectory.getParentFile();
-                }
-            }
+
         } catch (Throwable e) {
             
             // Dispose catalog

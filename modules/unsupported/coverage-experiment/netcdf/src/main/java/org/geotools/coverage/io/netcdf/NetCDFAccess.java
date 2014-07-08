@@ -110,7 +110,11 @@ public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageA
         try {
             reader = (NetCDFImageReader) NetCDFDriver.SPI.createReaderInstance();
             if (hints != null && hints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
-                String filePath = (String) hints.get(Utils.AUXILIARY_FILES_PATH);
+                String prefix = "";
+                if (hints.containsKey(Utils.PARENT_DIR)) {
+                    prefix = (String) hints.get(Utils.PARENT_DIR) + File.separatorChar;
+                }
+                String filePath = prefix + (String) hints.get(Utils.AUXILIARY_FILES_PATH);
                 reader.setAuxiliaryFilesPath(filePath);
             }
             reader.setInput(this.source);

@@ -137,10 +137,12 @@ public class Utils {
     final private static double RESOLUTION_TOLERANCE_FACTOR = 1E-2;
 
     public final static Key EXCLUDE_MOSAIC = new Key(Boolean.class);
-    
+
     public final static Key CHECK_AUXILIARY_METADATA = new Key(Boolean.class);
 
     public final static Key AUXILIARY_FILES_PATH = new Key(String.class);
+
+    public final static Key PARENT_DIR = new Key(String.class);
 
     public final static Key MOSAIC_READER = new Key(ImageMosaicReader.class);
 

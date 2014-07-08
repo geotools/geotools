@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 
 import com.vividsolutions.jts.algorithm.RobustCGAlgorithms;
@@ -1717,16 +1718,21 @@ public final class SDO {
      */
     private static CoordinateSequence subList(
         CoordinateSequenceFactory factory, CoordinateSequence coords,
-        int GTYPE, int[] elemInfo, int triplet) {
+ int GTYPE, int[] elemInfo, int triplet,
+            boolean compoundElement) {
             
         final int STARTING_OFFSET = STARTING_OFFSET(elemInfo, triplet);
-        final int ENDING_OFFSET = STARTING_OFFSET(elemInfo, triplet + 1); // -1 for end
+        int ENDING_OFFSET = STARTING_OFFSET(elemInfo, triplet + 1); // -1 for end
+        final int LEN = D(GTYPE);
+        if (ENDING_OFFSET != -1 && compoundElement) {
+            ENDING_OFFSET += LEN;
+        }
 
         if ((STARTING_OFFSET == 1) && (ENDING_OFFSET == -1)) {
             // Use all Cordiantes
             return coords;
         }
-        final int LEN = D(GTYPE);
+
 
         int start = (STARTING_OFFSET - 1) / LEN;
         int end = (ENDING_OFFSET != -1) ? ((ENDING_OFFSET - 1) / LEN)
@@ -2347,6 +2353,7 @@ public final class SDO {
 
         CoordinateSequence coords;
 
+
         if ((L == 0) && (TT == 01) && (point != null) && (elemInfo == null)) {
             // Single Point Type Optimization
             coords = SDO.coordinates(gf.getCoordinateSequenceFactory(), GTYPE,
@@ -2405,32 +2412,39 @@ public final class SDO {
     public static Geometry create(GeometryFactory gf, final int GTYPE,
         final int SRID, final int[] elemInfo, final int triplet,
         CoordinateSequence coords, final int N) {
+        CurvedGeometryFactory curvedFactory;
+        if (gf instanceof CurvedGeometryFactory) {
+            curvedFactory = (CurvedGeometryFactory) gf;
+        } else {
+            curvedFactory = new CurvedGeometryFactory(gf, Double.MAX_VALUE);
+        }
+
         switch (SDO.TT(GTYPE)) {
         case TT.POINT:
-            return createPoint(gf, GTYPE, SRID, elemInfo, triplet, coords);
+            return createPoint(curvedFactory, GTYPE, SRID, elemInfo, triplet, coords);
 
         case TT.LINE:
-            return createLine(gf, GTYPE, SRID, elemInfo, triplet, coords);
+            return createLine(curvedFactory, GTYPE, SRID, elemInfo, triplet, coords, false);
 
         case TT.POLYGON:
-            return createPolygon(gf, GTYPE, SRID, elemInfo, triplet, coords);
+            return createPolygon(curvedFactory, GTYPE, SRID, elemInfo, triplet, coords);
 
         case TT.MULTIPOINT:
-            return createMultiPoint(gf, GTYPE, SRID, elemInfo, triplet, coords);
+            return createMultiPoint(curvedFactory, GTYPE, SRID, elemInfo, triplet, coords);
 
         case TT.MULTILINE:
-            return createMultiLine(gf, GTYPE, SRID, elemInfo, triplet, coords, N);
+            return createMultiLine(curvedFactory, GTYPE, SRID, elemInfo, triplet, coords, N);
 
         case TT.MULTIPOLYGON:
-            return createMultiPolygon(gf, GTYPE, SRID, elemInfo, triplet,
+            return createMultiPolygon(curvedFactory, GTYPE, SRID, elemInfo, triplet,
                 coords, N, false);
 
         case TT.COLLECTION:
-            return createCollection(gf, GTYPE, SRID, elemInfo, triplet, coords,
+            return createCollection(curvedFactory, GTYPE, SRID, elemInfo, triplet, coords,
                 N);
             
         case TT.SOLID:
-            return createMultiPolygon(gf, GTYPE, SRID, elemInfo, triplet,
+            return createMultiPolygon(curvedFactory, GTYPE, SRID, elemInfo, triplet,
                     coords, N, true);
         
         case TT.UNKNOWN:  
@@ -2470,8 +2484,8 @@ public final class SDO {
         }
 
 
-        Point point = new Point(subList(gf.getCoordinateSequenceFactory(),
-                    coords, GTYPE, elemInfo, element), gf);
+        Point point = gf.createPoint(subList(gf.getCoordinateSequenceFactory(), coords, GTYPE,
+                elemInfo, element, false));
 
         //Point point = gf.createPoint( coords.getCoordinate( index ) );
         point.setSRID(SRID);
@@ -2488,39 +2502,43 @@ public final class SDO {
      * @param elemInfo
      * @param triplet
      * @param coords
-     *
-     *
+     * @param compoundElement TODO
      * @throws IllegalArgumentException If asked to create a curve
      */
-    private static LineString createLine(GeometryFactory gf, final int GTYPE,
+    private static LineString createLine(CurvedGeometryFactory gf, final int GTYPE,
         final int SRID, final int[] elemInfo, final int triplet,
-        CoordinateSequence coords) {
-        final int STARTING_OFFSET = STARTING_OFFSET(elemInfo, triplet);
+        CoordinateSequence coords, boolean compoundElement) {
         final int etype = ETYPE(elemInfo, triplet);
         final int INTERPRETATION = INTERPRETATION(elemInfo, triplet);
 
-        if (etype != ETYPE.LINE)
+        if (etype != ETYPE.LINE && etype != ETYPE.COMPOUND)
             return null;
-        if (INTERPRETATION != 1){
-            LOGGER.warning( "Could not create JTS LineString with INTERPRETATION "+INTERPRETATION+" - we can only support 1 for straight edges");
-            return null;
-        }
             
 
-        if (INTERPRETATION != 1) {
-            // May be INTERPRETATION == 2 for curves
-            throw new IllegalArgumentException("ELEM_INFO INTERPRETAION "
-                + INTERPRETATION + " not supported"
-                + "by JTS LineString.  Straight edges"
-                + "( ELEM_INFO INTERPRETAION 1) is supported");
+        LineString result;
+        if (etype == ETYPE.LINE && INTERPRETATION == 1) {
+            CoordinateSequence subList = subList(gf.getCoordinateSequenceFactory(), coords, GTYPE,
+                    elemInfo, triplet, compoundElement);
+            result = gf.createLineString(subList);
+        } else if (etype == ETYPE.LINE && INTERPRETATION == 2) {
+            CoordinateSequence subList = subList(gf.getCoordinateSequenceFactory(), coords, GTYPE,
+                    elemInfo, triplet, compoundElement);
+            result = gf.createCurvedGeometry(subList);
+        } else if (etype == ETYPE.COMPOUND) {
+            int triplets = INTERPRETATION;
+            List<LineString> components = new ArrayList<>(triplets);
+            for (int i = 1; i <= triplets; i++) {
+                LineString component = createLine(gf, GTYPE, SRID, elemInfo, triplet + i, coords, true);
+                components.add(component);
+            }
+            result = gf.createCurvedGeometry(components);
+        } else {
+            throw new IllegalArgumentException("ELEM_INFO ETYPE " + etype + " with INTERPRETAION "
+                    + INTERPRETATION + " not supported by this decoder");
         }
+        result.setSRID(SRID);
 
-        LineString line = new LineString(subList(
-                    gf.getCoordinateSequenceFactory(), coords, GTYPE, elemInfo,
-                    triplet), gf);
-        line.setSRID(SRID);
-
-        return line;
+        return result;
     }
 
     /**
@@ -2591,8 +2609,9 @@ public final class SDO {
      *         encoding that can not be captured by JTS
      * @throws IllegalArgumentException When faced with an invalid SDO encoding
      */
-    private static Polygon createPolygon(GeometryFactory gf, final int GTYPE,
-        final int SRID, final int[] elemInfo, final int triplet,
+    private static Polygon createPolygon(CurvedGeometryFactory gf, final int GTYPE,
+ final int SRID,
+            final int[] elemInfo, int triplet,
         CoordinateSequence coords) throws IllegalArgumentException  {
         final int STARTING_OFFSET = STARTING_OFFSET(elemInfo, triplet);
         final int eTYPE = ETYPE(elemInfo, triplet);
@@ -2605,30 +2624,44 @@ public final class SDO {
                     "ELEM_INFO STARTING_OFFSET "+STARTING_OFFSET+
                     "inconsistent with COORDINATES length "+ordinateSize( coords, GTYPE ) );
         } 
-        ensure( "ETYPE {0} must be expected POLYGON or POLYGON_EXTERIOR (one of {1})",
-                eTYPE, new int[]{ ETYPE.POLYGON, ETYPE.POLYGON_EXTERIOR, ETYPE.FACE_EXTERIOR, ETYPE.FACE_EXTERIOR } );
-        if (!(INTERPRETATION == 1) && !(INTERPRETATION == 3)){
-            LOGGER.warning( "Could not create JTS Polygon with INTERPRETATION "+INTERPRETATION+" - we can only support 1 for straight edges, and 3 for rectangle");
+        ensure("ETYPE {0} must be expected POLYGON or POLYGON_EXTERIOR (one of {1})", eTYPE,
+                new int[] { ETYPE.COMPOUND_POLYGON_EXTERIOR, ETYPE.COMPOUND_POLYGON, ETYPE.POLYGON,
+                        ETYPE.POLYGON_EXTERIOR,
+                        ETYPE.FACE_EXTERIOR, ETYPE.FACE_EXTERIOR });
+        if ((INTERPRETATION < 1) || (INTERPRETATION > 4)) {
+            LOGGER.warning("Could not create JTS Polygon with INTERPRETATION "
+                    + INTERPRETATION
+                    + " "
+                    + "- we can only support 1 for straight edges, 2 for circular ones, and 3 for rectangle");
             return null;
         }
 
         LinearRing exteriorRing = createLinearRing(gf, GTYPE, SRID, elemInfo,
                 triplet, coords);
+        if (eTYPE == ETYPE.COMPOUND_POLYGON_EXTERIOR) {
+            triplet = triplet + elemInfo[2];
+        }
 
         List rings = new LinkedList();
         int etype;
-HOLES: 
-        for (int i = triplet + 1; (etype = ETYPE(elemInfo, i)) != -1; i++) {
+        HOLES: for (int i = triplet + 1; (etype = ETYPE(elemInfo, i)) != -1;) {
             if (etype == ETYPE.POLYGON_INTERIOR) {
                 rings.add(createLinearRing(gf, GTYPE, SRID, elemInfo, i, coords));
-            } else if (etype == ETYPE.POLYGON) { // nead to test Clockwiseness of Ring to see if it is
-                                                 // interior or not - (use POLYGON_INTERIOR to avoid pain)
+                i++;
+            } else if (etype == ETYPE.COMPOUND_POLYGON_INTERIOR) {
+                int subelements = INTERPRETATION(elemInfo, i);
+                rings.add(createLinearRing(gf, GTYPE, SRID, elemInfo, i, coords));
+                i += subelements;
+            } else if (etype == ETYPE.POLYGON) { // nead to test Clockwiseness of Ring to see if it
+                                                 // is
+                                                 // interior or not - (use POLYGON_INTERIOR to avoid
+                                                 // pain)
 
-                LinearRing ring = createLinearRing(gf, GTYPE, SRID, elemInfo,
-                        i, coords);
+                LinearRing ring = createLinearRing(gf, GTYPE, SRID, elemInfo, i, coords);
 
                 if (clock.isCCW(ring.getCoordinates())) { // it is an Interior Hole
                     rings.add(ring);
+                    i++;
                 } else { // it is the next Polygon! - get out of here
 
                     break HOLES;
@@ -2681,7 +2714,7 @@ HOLES:
      *
      * @throws IllegalArgumentException If circle, or curve is requested
      */
-    private static LinearRing createLinearRing(GeometryFactory gf,
+    private static LinearRing createLinearRing(CurvedGeometryFactory gf,
         final int GTYPE, final int SRID, final int[] elemInfo,
         final int triplet, CoordinateSequence coords) {
             
@@ -2693,36 +2726,52 @@ HOLES:
         if (!(STARTING_OFFSET >= 1) || !(STARTING_OFFSET <= LENGTH))
             throw new IllegalArgumentException("ELEM_INFO STARTING_OFFSET "+STARTING_OFFSET+" inconsistent with ORDINATES length "+coords.size());
         
-        ensure( "ETYPE {0} must be expected POLYGON or POLYGON_EXTERIOR (one of {1})",
-                eTYPE, new int[]{ ETYPE.POLYGON, ETYPE.POLYGON_EXTERIOR, ETYPE.POLYGON_INTERIOR, ETYPE.FACE_EXTERIOR, ETYPE.FACE_EXTERIOR } );
-        if (!(INTERPRETATION == 1) && !(INTERPRETATION == 3)){
-            LOGGER.warning( "Could not create LinearRing with INTERPRETATION "+INTERPRETATION+" - we can only support 1 for straight edges");
+        ensure("ETYPE {0} must be expected POLYGON or POLYGON_EXTERIOR (one of {1})", eTYPE,
+                new int[] { ETYPE.COMPOUND_POLYGON, ETYPE.COMPOUND_POLYGON_EXTERIOR,
+                        ETYPE.COMPOUND_POLYGON_INTERIOR, ETYPE.POLYGON, ETYPE.POLYGON_EXTERIOR,
+                        ETYPE.POLYGON_INTERIOR, ETYPE.FACE_EXTERIOR, ETYPE.FACE_EXTERIOR });
+        if ((INTERPRETATION < 1) || (INTERPRETATION > 4)) {
+            LOGGER.warning("Could not create LinearRing with INTERPRETATION " + INTERPRETATION
+                    + " - we can only support 1, 2, 3 and 4");
             return null;
         }
         LinearRing ring;
 
         if (INTERPRETATION == 1) {
-            ring = gf.createLinearRing(subList(
-                        gf.getCoordinateSequenceFactory(), coords, GTYPE,
-                        elemInfo, triplet));
+            ring = gf.createLinearRing(subList(gf.getCoordinateSequenceFactory(), coords, GTYPE,
+                    elemInfo, triplet, false));
         } else if (INTERPRETATION == 3) {
             // rectangle does not maintain measures
             //
-            CoordinateSequence ext = subList(gf.getCoordinateSequenceFactory(),
-                    coords, GTYPE, elemInfo, triplet);
+            CoordinateSequence ext = subList(gf.getCoordinateSequenceFactory(), coords, GTYPE,
+                    elemInfo, triplet, false);
             Coordinate min = ext.getCoordinate(0);
             Coordinate max = ext.getCoordinate(1);
             ring = gf.createLinearRing(new Coordinate[] {
                         min, new Coordinate(max.x, min.y), max,
                         new Coordinate(min.x, max.y), min
                     });
-        } else {
-            // May be INTERPRETATION == 2 for curves, or 4 for circle
+        } else if (INTERPRETATION == 4) {
+            // rectangle does not maintain measures
             //
+            CoordinateSequence ext = subList(gf.getCoordinateSequenceFactory(), coords, GTYPE,
+                    elemInfo, triplet, false);
+            ring = gf.createCircle(ext);
+        } else if (eTYPE == ETYPE.COMPOUND_POLYGON_EXTERIOR
+                || eTYPE == ETYPE.COMPOUND_POLYGON_EXTERIOR) {
+            int triplets = INTERPRETATION;
+            List<LineString> components = new ArrayList<>(triplets);
+            for (int i = 1; i <= triplets; i++) {
+                LineString component = createLine(gf, GTYPE, SRID, elemInfo, triplet + i, coords,
+                        i < triplets);
+                components.add(component);
+            }
+            ring = (LinearRing) gf.createCurvedGeometry(components);
+        } else {
             throw new IllegalArgumentException("ELEM_INFO INTERPRETAION "
                 + elemInfo[2] + " not supported"
                 + "for JTS Polygon Linear Rings."
-                + "ELEM_INFO INTERPRETAION 1 and 3 are supported");
+                    + "ELEM_INFO INTERPRETATION 1,2 and 3 are supported");
         }
 
         ring.setSRID(SRID);
@@ -2820,7 +2869,7 @@ HOLES:
      * @param N Number of triplets (or -1 for rest)
      *
      */
-    private static MultiLineString createMultiLine(GeometryFactory gf,
+    private static MultiLineString createMultiLine(CurvedGeometryFactory gf,
         final int GTYPE, final int SRID, final int[] elemInfo,
         final int triplet, CoordinateSequence coords, final int N) {
         final int STARTING_OFFSET = STARTING_OFFSET(elemInfo, triplet);
@@ -2849,7 +2898,7 @@ LINES:      // bad bad gotos jody
                 (i < endTriplet) && ((etype = ETYPE(elemInfo, i)) != -1);
                 i++) {
             if (etype == ETYPE.LINE) {
-                list.add(createLine(gf, GTYPE, SRID, elemInfo, i, coords));
+                list.add(createLine(gf, GTYPE, SRID, elemInfo, i, coords, false));
             } else { // not a LinearString - get out of here
 
                 break LINES;    // goto LINES
@@ -2892,7 +2941,7 @@ LINES:      // bad bad gotos jody
      * @param N Number of triplets (or -1 for rest)
      *
      */
-    private static MultiPolygon createMultiPolygon(GeometryFactory gf,
+    private static MultiPolygon createMultiPolygon(CurvedGeometryFactory gf,
         final int GTYPE, final int SRID, final int[] elemInfo,
         final int triplet, CoordinateSequence coords, final int N, boolean threeDimensional) {
         final int STARTING_OFFSET = STARTING_OFFSET(elemInfo, triplet);
@@ -2969,7 +3018,7 @@ POLYGONS:
      *
      * @throws IllegalArgumentException DWhen faced with an encoding error
      */
-    private static GeometryCollection createCollection(GeometryFactory gf,
+    private static GeometryCollection createCollection(CurvedGeometryFactory gf,
         final int GTYPE, final int SRID, final int[] elemInfo,
         final int triplet, CoordinateSequence coords, final int N) {
         final int STARTING_OFFSET = STARTING_OFFSET(elemInfo, triplet);
@@ -3010,7 +3059,7 @@ GEOMETRYS:
                 break;
 
             case ETYPE.LINE:
-                geom = createLine(gf, GTYPE, SRID, elemInfo, i, coords);
+                geom = createLine(gf, GTYPE, SRID, elemInfo, i, coords, false);
 
                 break;
 

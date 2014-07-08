@@ -448,6 +448,14 @@ public class Hints extends RenderingHints {
     public static final Key GEOMETRY_FACTORY = new Key("org.opengis.geometry.coordinate.GeometryFactory");
 
     /**
+     * The default linearization tolerance for curved geometries
+     * 
+     * @see CurvedGeometryFactory
+     * @since 12.0
+     */
+    public static final Key LINEARIZATION_TOLERANCE = new Key(Double.class);
+
+    /**
      * The {@link org.opengis.geometry.complex.ComplexFactory} instance to use.
      *
      * @since 2.5

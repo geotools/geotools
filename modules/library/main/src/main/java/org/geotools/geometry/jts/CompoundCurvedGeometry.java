@@ -25,7 +25,7 @@ import com.vividsolutions.jts.geom.LineString;
  * 
  * @author Andrea Aime - GeoSolutions
  */
-interface CompoundCurvedGeometry<T extends LineString> extends CurvedGeometry<T> {
+public interface CompoundCurvedGeometry<T extends LineString> extends CurvedGeometry<T> {
 
     /**
      * Returns the linearized coordinates at the given tolerance

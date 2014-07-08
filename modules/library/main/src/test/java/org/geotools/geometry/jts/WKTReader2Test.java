@@ -49,8 +49,7 @@ public class WKTReader2Test {
     @Test
     public void circularString() throws Exception {
         String WKT = "CIRCULARSTRING(220268.439465645 150415.359530563, 220227.333322076 150505.561285879, 220227.353105332 150406.434743975)";
-        WKTReader2 reader = new WKTReader2();
-        reader.setTolerance(0.2);
+        WKTReader2 reader = new WKTReader2(0.2);
 
         Geometry geometry = reader.read(WKT);
         assertNotNull("parsed circularstring", geometry);

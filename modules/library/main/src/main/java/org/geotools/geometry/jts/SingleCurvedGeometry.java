@@ -23,7 +23,7 @@ import com.vividsolutions.jts.geom.LineString;
  * 
  * @author Andrea Aime - GeoSolutions
  */
-interface SingleCurvedGeometry<T extends LineString> extends CurvedGeometry<T> {
+public interface SingleCurvedGeometry<T extends LineString> extends CurvedGeometry<T> {
 
     /**
      * Returns the linearized coordinates at the given tolerance
@@ -39,5 +39,20 @@ interface SingleCurvedGeometry<T extends LineString> extends CurvedGeometry<T> {
      * @return
      */
     double[] getControlPoints();
+
+    /**
+     * Number of arc circles
+     * 
+     * @return
+     */
+    public int getNumArcs();
+
+    /**
+     * Returns the n-th circular arc making up the geometry
+     * 
+     * @param arcIndex
+     * @return
+     */
+    public CircularArc getArcN(int arcIndex);
 
 }

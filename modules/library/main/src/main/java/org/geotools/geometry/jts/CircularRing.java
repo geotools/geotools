@@ -41,8 +41,6 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  */
 public class CircularRing extends LinearRing implements SingleCurvedGeometry<LinearRing> {
 
-
-
     private static final long serialVersionUID = -5796254063449438787L;
 
     /**
@@ -69,6 +67,16 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
             throw new IllegalArgumentException(
                     "Start and end point are not matching, this is not a ring");
         }
+    }
+
+    @Override
+    public int getNumArcs() {
+        return delegate.getNumArcs();
+    }
+
+    @Override
+    public CircularArc getArcN(int arcIndex) {
+        return delegate.getArcN(arcIndex);
     }
 
     @Override

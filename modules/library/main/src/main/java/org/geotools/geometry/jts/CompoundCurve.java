@@ -75,6 +75,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
                     throw new IllegalArgumentException(
                             "Found two elements that are not connected, " + prev + " and " + curr);
                 }
+                prev = curr;
             }
         }
     }

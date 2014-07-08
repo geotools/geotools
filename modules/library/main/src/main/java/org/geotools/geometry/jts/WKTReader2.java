@@ -25,8 +25,6 @@
  */
 package org.geotools.geometry.jts;
 
-import static java.lang.Math.PI;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StreamTokenizer;
@@ -75,18 +73,11 @@ public class WKTReader2 extends WKTReader {
 
     private static final String NAN_SYMBOL = "NaN";
 
-    private static final double EPSILON_SQLMM = 1.0e-8;
-
-    private static final double M_PI = PI;
-    private static final double M_PI_2 = PI/2.0;
-    
-    private GeometryFactory geometryFactory;
+    private CurvedGeometryFactory geometryFactory;
 
     private PrecisionModel precisionModel;
 
     private StreamTokenizer tokenizer;
-
-    private double tolerance = Double.MAX_VALUE;
 
     /**
      * Creates a reader that creates objects using the default {@link GeometryFactory}.
@@ -96,13 +87,24 @@ public class WKTReader2 extends WKTReader {
     }
 
     /**
+     * Creates a reader that creates objects using the default {@link GeometryFactory}.
+     */
+    public WKTReader2(double tolerance) {
+        this(new CurvedGeometryFactory(JTSFactoryFinder.getGeometryFactory(null), tolerance));
+    }
+
+    /**
      * Creates a reader that creates objects using the given {@link GeometryFactory}.
      * 
      *@param geometryFactory
      *            the factory used to create <code>Geometry</code>s.
      */
     public WKTReader2(GeometryFactory geometryFactory) {
-        this.geometryFactory = geometryFactory;
+        if (geometryFactory instanceof CurvedGeometryFactory) {
+            this.geometryFactory = (CurvedGeometryFactory) geometryFactory;
+        } else {
+            this.geometryFactory = new CurvedGeometryFactory(geometryFactory, Double.MAX_VALUE);
+        }
         precisionModel = geometryFactory.getPrecisionModel();
     }
 
@@ -467,12 +469,7 @@ public class WKTReader2 extends WKTReader {
             throw new ParseException("A CIRCULARSTRING must contain at least 3 control points");
         } else {
             double[] controlPoints = toControlPoints(coordinates);
-            if (controlPoints[0] == controlPoints[controlPoints.length - 2]
-                    && controlPoints[1] == controlPoints[controlPoints.length - 1]) {
-                return new CircularRing(controlPoints, geometryFactory, tolerance);
-            } else {
-                return new CircularString(controlPoints, geometryFactory, tolerance);
-            }
+            return geometryFactory.createCurvedGeometry(controlPoints);
         }
     }
 
@@ -490,21 +487,7 @@ public class WKTReader2 extends WKTReader {
     private LineString readCompoundCurveText()
             throws IOException, ParseException {
         List<LineString> lineStrings = getLineStrings();
-        
-        if( lineStrings.isEmpty() ){
-            // return an empty lineString?
-            return geometryFactory.createLineString(new Coordinate[] {});
-        }
-        if( lineStrings.size() == 1 ){
-            return lineStrings.get(0);
-        }
-        LineString first = lineStrings.get(0);
-        LineString last = lineStrings.get(lineStrings.size() - 1);
-        if (first.getStartPoint().equals(last.getEndPoint())) {
-            return new CompoundRing(lineStrings, geometryFactory, tolerance);
-        } else {
-            return new CompoundCurve(lineStrings, geometryFactory, tolerance);
-        }
+        return geometryFactory.createCurvedGeometry(lineStrings);
     }
     
     /**
@@ -736,20 +719,6 @@ public class WKTReader2 extends WKTReader {
         }
         Geometry[] array = new Geometry[geometries.size()];
         return geometryFactory.createGeometryCollection((Geometry[]) geometries.toArray(array));
-    }
-
-    public double getTolerance() {
-        return tolerance;
-    }
-
-    /**
-     * States the linearization tolerance for the generated curved geometries (they will linearize
-     * themselves only
-     * 
-     * @param tolerance
-     */
-    public void setTolerance(double tolerance) {
-        this.tolerance = tolerance;
     }
 
 }

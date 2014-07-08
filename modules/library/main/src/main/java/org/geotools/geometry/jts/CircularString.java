@@ -131,9 +131,24 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
     }
 
     @Override
+    public int getNumArcs() {
+        return (controlPoints.length - 6) / 4 + 1;
+    }
+
+    @Override
+    public CircularArc getArcN(int arcIndex) {
+        int baseIdx = arcIndex * 4;
+        double[] arcControlPoints = new double[6];
+        System.arraycopy(controlPoints, baseIdx, arcControlPoints, 0, 6);
+        CircularArc arc = new CircularArc(arcControlPoints);
+        return arc;
+    }
+
+    @Override
     public LineString linearize() {
         return linearize(this.tolerance);
     }
+
 
     public LineString linearize(double tolerance) {
         // use the cached one if we are asked for the default geometry tolerance

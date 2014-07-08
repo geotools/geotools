@@ -208,12 +208,21 @@ public class ImageMosaicConfigHandler {
             Hints hints, final String ancillaryFile, final String rootMosaicDir) {
         String ancillaryFilePath = null;
         if (ancillaryFile != null) {
-            ancillaryFilePath = rootMosaicDir + File.separatorChar + ancillaryFile;
+            final boolean absolutePath = Boolean.parseBoolean(configuration.getParameter(Prop.ABSOLUTE_PATH));
+            if (absolutePath) {
+                ancillaryFilePath = rootMosaicDir + File.separatorChar + ancillaryFile;
+            } else {
+                ancillaryFilePath = ancillaryFile;
+            }
+
             if (hints != null) {
                 hints.put(Utils.AUXILIARY_FILES_PATH, ancillaryFilePath);
             } else {
                 hints = new Hints(Utils.AUXILIARY_FILES_PATH, ancillaryFilePath);
                 configuration.setHints(hints);
+            }
+            if (!absolutePath) {
+                hints.put(Utils.PARENT_DIR, rootMosaicDir);
             }
         }
         setReader(hints, true);

@@ -50,13 +50,18 @@ public class DefaultCRSFilterVisitor extends DuplicatingFilterVisitor {
         if (srs != null && !"".equals(srs.trim()))
             return super.visit(filter, extraData);
 
-        try {  
-            SingleCRS horizontalCRS = CRS.getHorizontalCRS(defaultCrs);
-            ReferencedEnvelope bounds = ReferencedEnvelope
-                    .create(filter.getBounds(), horizontalCRS);
-            return getFactory(extraData).bbox(filter.getExpression1(), bounds);
-        } catch (Exception e) {
-            throw new RuntimeException("Could not decode srs '" + srs + "'", e);
+        if (defaultCrs.getCoordinateSystem().getDimension() == filter.getBounds().getDimension()) {
+            return getFactory(extraData).bbox(filter.getExpression1(),
+                    ReferencedEnvelope.create(filter.getBounds(), defaultCrs));
+        } else {
+            try {
+                SingleCRS horizontalCRS = CRS.getHorizontalCRS(defaultCrs);
+                ReferencedEnvelope bounds = ReferencedEnvelope.create(filter.getBounds(),
+                        horizontalCRS);
+                return getFactory(extraData).bbox(filter.getExpression1(), bounds);
+            } catch (Exception e) {
+                throw new RuntimeException("Could not decode srs '" + srs + "'", e);
+            }
         }
     }
     

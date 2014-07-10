@@ -17,18 +17,26 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.media.jai.Interpolation;
 
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Crop;
+import org.geotools.coverage.processing.operation.Mosaic;
 import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.coverage.processing.operation.Scale;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.i18n.ErrorKeys;
@@ -36,6 +44,8 @@ import org.geotools.renderer.i18n.Errors;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
 import com.sun.media.jai.util.Rational;
@@ -58,11 +68,15 @@ final class GridCoverageRendererUtilities {
         final CoverageProcessor processor = new CoverageProcessor(new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE));
         RESAMPLING_PARAMS = processor.getOperation("Resample").getParameters();
         CROP_PARAMS = processor.getOperation("CoverageCrop").getParameters();
+        MOSAIC_PARAMS = processor.getOperation("Mosaic").getParameters();
     }
     
     /** Cached factory for the {@link Crop} operation. */
      final static Crop CROP_FACTORY = new Crop();
      
+    /** Cached factory for the {@link Crop} operation. */
+    final static Mosaic MOSAIC_FACTORY = new Mosaic();
+
     // FORMULAE FOR FORWARD MAP are derived as follows
     //     Nearest
     //        Minimum:
@@ -169,18 +183,18 @@ final class GridCoverageRendererUtilities {
     	Rational scaleXRational = Rational.approximate(scaleX,RATIONAL_TOLERANCE);
     	Rational scaleYRational = Rational.approximate(scaleY,RATIONAL_TOLERANCE);
     
-    	long scaleXRationalNum = (long) scaleXRational.num;
-    	long scaleXRationalDenom = (long) scaleXRational.denom;
-    	long scaleYRationalNum = (long) scaleYRational.num;
-    	long scaleYRationalDenom = (long) scaleYRational.denom;
+    	long scaleXRationalNum = scaleXRational.num;
+    	long scaleXRationalDenom = scaleXRational.denom;
+    	long scaleYRationalNum = scaleYRational.num;
+    	long scaleYRationalDenom = scaleYRational.denom;
     
     	Rational transXRational = Rational.approximate(transX,RATIONAL_TOLERANCE);
     	Rational transYRational = Rational.approximate(transY,RATIONAL_TOLERANCE);
     
-    	long transXRationalNum = (long) transXRational.num;
-    	long transXRationalDenom = (long) transXRational.denom;
-    	long transYRationalNum = (long) transYRational.num;
-    	long transYRationalDenom = (long) transYRational.denom;
+    	long transXRationalNum = transXRational.num;
+    	long transXRationalDenom = transXRational.denom;
+    	long transYRationalNum = transYRational.num;
+    	long transYRationalDenom = transYRational.denom;
     
     	int x0 = source.getMinX();
     	int y0 = source.getMinY();
@@ -275,6 +289,9 @@ final class GridCoverageRendererUtilities {
     /** Parameters used to control the {@link Crop} operation. */
     static ParameterValueGroup CROP_PARAMS;
     
+    /** Parameters used to control the {@link Mosaic} operation. */
+    static ParameterValueGroup MOSAIC_PARAMS;
+
     /** Parameters used to control the {@link Scale} operation. */
     static final Resample RESAMPLE_FACTORY = new Resample();
     /**
@@ -298,7 +315,7 @@ final class GridCoverageRendererUtilities {
                 || CRS.findMathTransform(destinationEnvelope.getCoordinateReferenceSystem(), crs)
                         .isIdentity();
     
-        final ParameterValueGroup param = (ParameterValueGroup) RESAMPLING_PARAMS.clone();
+        final ParameterValueGroup param = RESAMPLING_PARAMS.clone();
         param.parameter("source").setValue(gc);
         param.parameter("CoordinateReferenceSystem").setValue(crs);
         param.parameter("InterpolationType").setValue(interpolation);
@@ -326,7 +343,7 @@ final class GridCoverageRendererUtilities {
         // down to the neded resolution
         final GeneralEnvelope intersectionEnvelope = new GeneralEnvelope(envelope);
         intersectionEnvelope.setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
-        intersectionEnvelope.intersect((GeneralEnvelope) oldEnvelope);
+        intersectionEnvelope.intersect(oldEnvelope);
     
         // Do we have something to show? After the crop I could get a null
         // coverage which would mean nothing to show.
@@ -335,11 +352,82 @@ final class GridCoverageRendererUtilities {
         }
     
         // crop
-        final ParameterValueGroup param = (ParameterValueGroup) CROP_PARAMS.clone();
+        final ParameterValueGroup param = CROP_PARAMS.clone();
         param.parameter("source").setValue(gc);
         param.parameter("Envelope").setValue(intersectionEnvelope);
         return (GridCoverage2D) CROP_FACTORY.doOperation(param, hints);
     
+    }
+
+    /**
+     * Mosaicking the provided coverages to the requested geographic area.
+     * 
+     * @param gc
+     * @param envelope
+     * @param crs
+     * @return
+     */
+    static GridCoverage2D mosaic(List<GridCoverage2D> coverages, GeneralEnvelope renderingEnvelope,
+            final Hints hints) {
+
+        Collections.sort(coverages, new Comparator<GridCoverage2D>() {
+
+            @Override
+            public int compare(GridCoverage2D o1, GridCoverage2D o2) {
+                double minx1 = o1.getEnvelope().getMinimum(0);
+                double minx2 = o2.getEnvelope().getMinimum(0);
+                if (minx1 == minx2) {
+                    double maxy1 = o1.getEnvelope().getMaximum(1);
+                    double maxy2 = o2.getEnvelope().getMaximum(1);
+                    return compareDoubles(maxy1, maxy2);
+                } else {
+                    return compareDoubles(minx1, minx2);
+                }
+            }
+
+            private int compareDoubles(double maxy1, double maxy2) {
+                if (maxy1 == maxy2) {
+                    return 0;
+                } else {
+                    return (int) Math.signum(maxy1 - maxy2);
+                }
+            }
+        });
+
+        // setup the grid geometry
+        try {
+            // find the intersection between the target envelope and the coverages one
+            ReferencedEnvelope targetEnvelope = ReferencedEnvelope.reference(renderingEnvelope);
+            ReferencedEnvelope coveragesEnvelope = null;
+            for (GridCoverage2D coverage : coverages) {
+                ReferencedEnvelope re = ReferencedEnvelope.reference(coverage.getEnvelope2D());
+                if (coveragesEnvelope == null) {
+                    coveragesEnvelope = re;
+                } else {
+                    coveragesEnvelope.expandToInclude(re);
+                }
+            }
+            targetEnvelope = new ReferencedEnvelope(targetEnvelope.intersection(coveragesEnvelope),
+                    renderingEnvelope.getCoordinateReferenceSystem());
+            if (targetEnvelope.isEmpty() || targetEnvelope.isNull()) {
+                return null;
+            }
+
+            MathTransform2D mt = coverages.get(0).getGridGeometry().getCRSToGrid2D();
+            Rectangle rasterSpaceEnvelope;
+            rasterSpaceEnvelope = CRS.transform(mt, targetEnvelope).toRectangle2D().getBounds();
+            GridEnvelope2D gridRange = new GridEnvelope2D(rasterSpaceEnvelope);
+            GridGeometry2D gridGeometry = new GridGeometry2D(gridRange, targetEnvelope);
+
+            // mosaic
+            final ParameterValueGroup param = MOSAIC_PARAMS.clone();
+            param.parameter("sources").setValue(coverages);
+            param.parameter("geometry").setValue(gridGeometry);
+            return (GridCoverage2D) MOSAIC_FACTORY.doOperation(param, hints);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to mosaic the input coverages", e);
+        }
+
     }
 
     /**
@@ -391,9 +479,9 @@ final class GridCoverageRendererUtilities {
             // some erros (it usually
             // increases the envelope we want to check) but it is still
             // useful.
-            GeneralEnvelope output = CRS.transform(
-                    CRS.findMathTransform(destinationCRS, targetCRS, true),//lenient
-                    inputEnvelope);
+            CoordinateOperation operation = CRS.getCoordinateOperationFactory(true)
+                    .createOperation(destinationCRS, targetCRS);
+            GeneralEnvelope output = CRS.transform(operation, inputEnvelope);
             output.setCoordinateReferenceSystem(targetCRS);
             return output;
         } catch (TransformException te) {

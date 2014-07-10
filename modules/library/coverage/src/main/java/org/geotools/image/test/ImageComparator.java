@@ -193,8 +193,9 @@ public class ImageComparator {
         int height = image1.getHeight();
         int width = image1.getWidth();
         if (width != image2.getWidth() || height != image2.getHeight()) {
-            throw new IllegalArgumentException(
-                    "The two input images have different size, they cannot be compared");
+            mismatchCount = Integer.MAX_VALUE;
+            mismatchPercent = 1d;
+            return;
         }
 
         // switch to rbg/rgba/gray/gray-alpha

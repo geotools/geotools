@@ -62,7 +62,7 @@ public class ProjectionHandler {
 
     ReferencedEnvelope renderingEnvelope;
     
-    final Envelope validAreaBounds;
+    final ReferencedEnvelope validAreaBounds;
     
     final Geometry validArea;
     
@@ -81,9 +81,10 @@ public class ProjectionHandler {
      */
     public ProjectionHandler(CoordinateReferenceSystem sourceCRS, Envelope validAreaBounds, ReferencedEnvelope renderingEnvelope) throws FactoryException {
         this.renderingEnvelope = renderingEnvelope;
-        this.sourceCRS = sourceCRS;
+        this.sourceCRS = CRS.getHorizontalCRS(sourceCRS);
         this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
-        this.validAreaBounds = validAreaBounds;
+        this.validAreaBounds = validAreaBounds != null ? new ReferencedEnvelope(validAreaBounds,
+                this.sourceCRS) : null;
         this.validArea = null;
     }
     
@@ -101,13 +102,15 @@ public class ProjectionHandler {
             this.renderingEnvelope = renderingEnvelope;
             this.sourceCRS = sourceCRS;
             this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
-            this.validAreaBounds = validArea.getEnvelopeInternal();
+            this.validAreaBounds = new ReferencedEnvelope(validArea.getEnvelopeInternal(),
+                    sourceCRS);
             this.validArea = null;
         } else {
             this.renderingEnvelope = renderingEnvelope;
             this.sourceCRS = sourceCRS;
             this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
-            this.validAreaBounds = validArea.getEnvelopeInternal();
+            this.validAreaBounds = new ReferencedEnvelope(validArea.getEnvelopeInternal(),
+                    sourceCRS);
             this.validArea = validArea;
         }
     }
@@ -267,7 +270,7 @@ public class ProjectionHandler {
         }
     }
 
-    private void reprojectEnvelopes(CoordinateReferenceSystem queryCRS,
+    protected void reprojectEnvelopes(CoordinateReferenceSystem queryCRS,
             List<ReferencedEnvelope> envelopes) throws TransformException, FactoryException {
         // reproject the surviving envelopes
         for (int i = 0; i < envelopes.size(); i++) {
@@ -474,6 +477,16 @@ public class ProjectionHandler {
      */
     public Geometry postProcess(MathTransform mt, Geometry geometry) {
         return geometry;
+    }
+
+    /**
+     * Returns the area where the transformation from source to target is valid, expressed in the
+     * source coordinate reference system, or null if there is no limit
+     * 
+     * @return
+     */
+    public ReferencedEnvelope getValidAreaBounds() {
+        return validAreaBounds;
     }
     
 }

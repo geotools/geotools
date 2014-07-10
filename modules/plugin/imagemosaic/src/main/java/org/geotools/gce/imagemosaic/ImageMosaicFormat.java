@@ -31,7 +31,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationNearest;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -109,8 +108,6 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicFormat.class.toString());
     
-    static final Interpolation DEFAULT_INTERPOLATION = new InterpolationNearest();
-
     /** Filter tiles based on attributes from the input coverage*/
     public static final ParameterDescriptor<Filter> FILTER = new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
     
@@ -146,8 +143,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
             "BackgroundValues", double[].class, null, null);
     
     /** Control the interpolation to be used in mosaicking */
-    public static final ParameterDescriptor<Interpolation> INTERPOLATION = new DefaultParameterDescriptor<Interpolation>(
-            "Interpolation", Interpolation.class, null, DEFAULT_INTERPOLATION);
+    public static final ParameterDescriptor<Interpolation> INTERPOLATION = AbstractGridFormat.INTERPOLATION;
+    
     /** Control the requested resolution calculation. */
     public static final ParameterDescriptor<Boolean> ACCURATE_RESOLUTION = new DefaultParameterDescriptor<Boolean>("Accurate resolution computation", Boolean.class, new Boolean[]{Boolean.TRUE,Boolean.FALSE}, Boolean.FALSE);
 

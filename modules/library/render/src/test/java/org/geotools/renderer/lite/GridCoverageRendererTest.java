@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,7 @@
 package org.geotools.renderer.lite;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -29,8 +30,11 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
@@ -40,7 +44,10 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.data.DataUtilities;
 import org.geotools.factory.GeoTools;
+import org.geotools.gce.arcgrid.ArcGridReader;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.geometry.GeneralEnvelope;
@@ -57,10 +64,14 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
+import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
+import org.geotools.styling.ColorMap;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.parameter.ParameterValueGroup;
@@ -83,6 +94,35 @@ public class GridCoverageRendererTest  {
 
 
 	String FILENAME = "TestGridCoverage.jpg";
+
+    private GridCoverage2DReader worldReader;
+
+    private GridCoverage2DReader rainReader;
+
+    @Before
+    public void getData() throws IOException {
+        MapProjection.SKIP_SANITY_CHECKS = true;
+        File coverageFile = TestData.copy(this, "geotiff/world.tiff");
+        assertTrue(coverageFile.exists());
+        worldReader = new GeoTiffReader(coverageFile);
+
+        // grab also the global precipitation
+        File file = TestData.copy(this, "arcgrid/arcgrid.zip");
+        assertTrue(file.exists());
+
+        // unzip it
+        TestData.unzipFile(this, "arcgrid/arcgrid.zip");
+        URL rainURL = GridCoverageRendererTest.class
+                .getResource("test-data/arcgrid/precip30min.asc");
+        File rainFile = DataUtilities.urlToFile(rainURL);
+        rainReader = new ArcGridReader(rainFile);
+    }
+
+    @After
+    public void close() throws IOException {
+        MapProjection.SKIP_SANITY_CHECKS = false;
+        worldReader.dispose();
+    }
 
 	/**
 	 * Returns a {@link GridCoverage} which may be used as a "real world"
@@ -189,7 +229,6 @@ public class GridCoverageRendererTest  {
 		final StreamingRenderer renderer = new StreamingRenderer();
 		renderer.setContext(context);
 		RendererBaseTest.showRender("testGridCoverage", renderer, 1000, context.getLayerBounds());
-
 	}
 	
 	/**
@@ -264,10 +303,9 @@ public class GridCoverageRendererTest  {
 	@Test
     public void testRenderingBuffer() throws Exception {
 	    // prepare the layer
-	    GeoTiffReader reader = new GeoTiffReader(TestData.copy(this, "geotiff/world.tiff"));
         MapContent content = new MapContent();
         final Style style = getStyle();
-        content.addLayer(new GridReaderLayer(reader, style));
+        content.addLayer(new GridReaderLayer(worldReader, style));
         
         final StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(content);
@@ -275,6 +313,29 @@ public class GridCoverageRendererTest  {
 
         BufferedImage image = RendererBaseTest.showRender("testGridCoverageReprojection", renderer, 1000, content.getViewport().getBounds());
         ImageAssert.assertEquals(new File("src/test/resources/org/geotools/renderer/lite/rescaled.png"), image, 1000);
+    }
+
+    @Test
+    public void testInvertedColors() throws Exception {
+        MapContent content = new MapContent();
+        content.getViewport().setBounds(
+                new ReferencedEnvelope(-179.9997834892, 180.00025801626, -89.999828389438,
+                        270.00021311603, DefaultGeographicCRS.WGS84));
+        RasterSymbolizer rs = buildRainColorMap();
+        final Style style = new StyleBuilder().createStyle(rs);
+        content.addLayer(new GridReaderLayer(rainReader, style));
+
+        final StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(content);
+        Map<Object, Object> rendererParams = new HashMap<Object, Object>();
+        rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        rendererParams.put(StreamingRenderer.CONTINUOUS_MAP_WRAPPING, true);
+        renderer.setRendererHints(rendererParams);
+
+        BufferedImage image = RendererBaseTest.showRender("testGridCoverageReprojection", renderer,
+                1000, content.getViewport().getBounds());
+        ImageAssert.assertEquals(new File(
+                "src/test/resources/org/geotools/renderer/lite/inverted.png"), image, 1000);
     }
 
 	private static Style getStyle() {
@@ -331,33 +392,259 @@ public class GridCoverageRendererTest  {
 
     @Test
     public void testReprojectGoogleMercator() throws Exception {
-        File coverageFile = TestData.copy(this, "geotiff/world.tiff");
-        assertTrue(coverageFile.exists());
-        GeoTiffReader worldReader = null;
-        try {
-            worldReader = new GeoTiffReader(coverageFile);
-            CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
-            ReferencedEnvelope mapExtent = new ReferencedEnvelope(-20037508.34, 20037508.34,
-                    -20037508.34, 20037508.34, googleMercator);
-            Rectangle screenSize = new Rectangle(200, (int) (mapExtent.getHeight()
-                    / mapExtent.getWidth() * 200));
-            AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
-            GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator,
-                    mapExtent, screenSize, w2s);
+        CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-20037508.34, 20037508.34,
+                -20037508.34, 20037508.34, googleMercator);
+        Rectangle screenSize = new Rectangle(200, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 200));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator, mapExtent,
+                screenSize, w2s);
 
-            RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
-            GridCoverage2D coverage = worldReader.read(null);
-            RenderedImage image = renderer.renderImage(coverage, rasterSymbolizer,
-                    Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.RED, 256, 256);
-            File reference = new File(
-                    "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercator.png");
-            ImageAssert.assertEquals(reference, image, 0);
-        } finally {
-            if (worldReader != null) {
-                worldReader.dispose();
-            }
-        }
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        GridCoverage2D coverage = worldReader.read(null);
+        RenderedImage image = renderer.renderImage(coverage, rasterSymbolizer,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.RED, 256, 256);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercator.png");
+        ImageAssert.assertEquals(reference, image, 0);
     }
 
+    @Test
+    public void testReprojectGoogleMercatorLargerThanWorld() throws Exception {
+        CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-38448446.580832, 38448446.580832,
+                -44138127.016561, 44138127.016561, googleMercator);
+        Rectangle screenSize = new Rectangle(400, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 400));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator, mapExtent,
+                screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RenderedImage image = renderer.renderImage(worldReader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                Color.RED, 256, 256);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorLargerThanWorld.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    @Test
+    public void testReprojectGoogleMercatorBlackLine() throws Exception {
+        CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-70650900.64528, 32797834.549784,
+                -25517354.68145, 26207012.916082, googleMercator);
+        Rectangle screenSize = new Rectangle(600, 300);
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator, mapExtent,
+                screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RenderedImage image = renderer.renderImage(worldReader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                Color.RED, 256, 256);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorBlackLine.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    @Test
+    public void testReprojectGoogleMercatorTouchDateline() throws Exception {
+        CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(20037508.34, 40075016.68, 0,
+                20037508.34, googleMercator);
+        Rectangle screenSize = new Rectangle(256, 256);
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator, mapExtent,
+                screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RenderedImage image = renderer.renderImage(worldReader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                Color.RED, 256, 256);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorTouchDateline.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    @Test
+    public void testAcrossDatelineBilinear() throws Exception {
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(10, 350, -90, 90,
+                DefaultGeographicCRS.WGS84);
+        Rectangle screenSize = new Rectangle(500, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 500));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84,
+                mapExtent, screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+
+        RenderedImage image = renderer.renderImage(worldReader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                Color.RED, 256, 256);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/wrapDatelineNearest.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    public void testCrashOutsideValidArea() throws Exception {
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(0.00023726353151687, 180.00025801626,
+                -269.99984914217, -89.999828389438, DefaultGeographicCRS.WGS84);
+        Rectangle screenSize = new Rectangle(256, 256);
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84,
+                mapExtent, screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+
+        RenderedImage image = renderer.renderImage(worldReader, null, rasterSymbolizer,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.RED, 256, 256);
+        assertNull(image);
+    }
+
+    private void assertNull(RenderedImage image) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Test
+    public void testAcrossDatelineBicubic() throws Exception {
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(10, 350, -90, 90,
+                DefaultGeographicCRS.WGS84);
+        Rectangle screenSize = new Rectangle(500, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 500));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84,
+                mapExtent, screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+
+        RenderedImage image = renderer.renderImage(worldReader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_BICUBIC),
+                Color.RED, 256, 256);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/wrapDatelineBicubic.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    @Test
+    public void testUTM() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:32632", true);
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-6e6, 6e6, 0, 5.3e6, crs);
+        // System.out.println(mapExtent.transform(DefaultGeographicCRS.WGS84, true));
+        // System.out.println(mapExtent.transform(DefaultGeographicCRS.WGS84, true).transform(crs,
+        // true));
+        Rectangle screenSize = new Rectangle(400, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 400));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(
+                mapExtent.getCoordinateReferenceSystem(),
+                mapExtent, screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+
+        RenderedImage image = renderer.renderImage(worldReader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_BICUBIC),
+                Color.RED, 256, 256);
+        assertNotNull(image);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/utm.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    @Test
+    public void testPolar() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3031", true);
+        // across the dateline, not including the pole
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-6000000, 6000000, -8000000,
+                -1000000, crs);
+
+        Rectangle screenSize = new Rectangle(400, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 400));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(
+                mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+
+        RenderedImage image = renderer.renderImage(worldReader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                Color.RED, 256, 256);
+        assertNotNull(image);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/polar.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    @Test
+    public void testPolarCutLowCorner() throws Exception {
+        // we request a small area, oversampling, and the output has some white pixels in a corner
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3031", true);
+        // across the dateline, not including the pole
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-2500000, -1250000, -10000000,
+                -8750000, crs);
+
+        Rectangle screenSize = new Rectangle(256, 256);
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(
+                mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = buildRainColorMap();
+
+        RenderedImage image = renderer.renderImage(rainReader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                Color.RED, 256, 256);
+        assertNotNull(image);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/polar_whitecorner.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    private RasterSymbolizer buildRainColorMap() {
+        StyleBuilder sb = new StyleBuilder();
+        ColorMap colorMap = sb
+                .createColorMap(new String[] { "1", "2", "3", "4" }, new double[] { 0, 100, 2000,
+                        5000 }, new Color[] { Color.RED, Color.WHITE, Color.GREEN, Color.BLUE },
+                        ColorMap.TYPE_RAMP);
+        RasterSymbolizer rasterSymbolizer = sb.createRasterSymbolizer(colorMap, 1d);
+        return rasterSymbolizer;
+    }
+
+    @Test
+    public void testPolarCutUpperCorner() throws Exception {
+        // We request a small area, oversampling, and the output has some white pixels in the up
+        // corner
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3031", true);
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-625000, 0, -10000000, -9375000, crs);
+
+        Rectangle screenSize = new Rectangle(256, 256);
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(
+                mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = buildRainColorMap();
+
+        RenderedImage image = renderer.renderImage(rainReader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                Color.RED, 256, 256);
+        assertNotNull(image);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/polar_whitecorner_up.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    @Test
+    public void testPolarTouchDateline() throws Exception {
+        // we request a small area, oversampling, and the output has some white pixels in a corner
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3031", true);
+        // across the dateline, not including the pole
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-1250000, 0, -10000000, -8750000, crs);
+
+        Rectangle screenSize = new Rectangle(256, 256);
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(
+                mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = buildRainColorMap();
+
+        RenderedImage image = renderer.renderImage(rainReader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                Color.RED, 256, 256);
+        assertNotNull(image);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/polar_touchdateline.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
 
 }

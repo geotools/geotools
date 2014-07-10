@@ -16,6 +16,7 @@ import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.SingleCRS;
 import org.opengis.referencing.operation.MathTransform;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -55,6 +56,23 @@ public class ProjectionHandlerTest {
         MERCATOR = CRS.decode("EPSG:3395", true);
         ED50 = CRS.decode("EPSG:4230", true);
         ED50_LATLON = CRS.decode("urn:x-ogc:def:crs:EPSG:4230", false);
+    }
+
+    @Test
+    public void testWrappingOn3DCRS() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:4939", true);
+        SingleCRS hcrs = CRS.getHorizontalCRS(crs);
+        ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(-190, 60, -90, 45,
+                hcrs);
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(wgs84Envelope, crs, true);
+
+        assertNull(handler.validAreaBounds);
+        List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
+        assertEquals(2, envelopes.size());
+
+        ReferencedEnvelope expected = new ReferencedEnvelope(170, 180, -90, 45, hcrs);
+        assertTrue(envelopes.remove(wgs84Envelope));
+        assertEquals(expected, envelopes.get(0));
     }
 
     @Test
@@ -267,7 +285,7 @@ public class ProjectionHandlerTest {
         Geometry transformed = JTS.transform(g, mt);
         Geometry postProcessed = handler.postProcess(mt.inverse(), transformed);
         // check the geometry is in the same area as the rendering envelope
-        assertEquals(transformed, postProcessed);
+        assertTrue(world.contains(postProcessed.getEnvelopeInternal()));
     }
     
     @Test

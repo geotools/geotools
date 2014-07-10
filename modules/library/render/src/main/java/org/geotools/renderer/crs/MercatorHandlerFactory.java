@@ -20,8 +20,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.MapProjection;
-import org.geotools.referencing.operation.projection.Mercator;
 import org.geotools.referencing.operation.projection.MapProjection.AbstractProvider;
+import org.geotools.referencing.operation.projection.Mercator;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -33,7 +33,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class MercatorHandlerFactory implements ProjectionHandlerFactory {
 
-    private static final ReferencedEnvelope VALID_AREA = new ReferencedEnvelope(-Double.MAX_VALUE, Double.MAX_VALUE, -89, 89,
+    private static final ReferencedEnvelope VALID_AREA = new ReferencedEnvelope(-Double.MAX_VALUE,
+            Double.MAX_VALUE, -85, 85,
             DefaultGeographicCRS.WGS84);
 
     public ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCrs, boolean wrap, int maxWraps) throws FactoryException {

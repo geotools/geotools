@@ -583,7 +583,7 @@ public class SpatialRequestHelperTest extends Assert {
         spatialRequestHelper.setAccurateResolution(true);
         spatialRequestHelper.compute();
         double[] computedResolution2 = spatialRequestHelper.getComputedResolution();
-        assertEquals(computedResolution[0],computedResolution2[0],1E-6);
+        assertNotEquals(computedResolution[0], computedResolution2[0], 1E-6);
         assertNotEquals(computedResolution[1],computedResolution2[1],1E-6);// high deformations on latitude for large areas
         
     }    

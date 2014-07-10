@@ -157,6 +157,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-arcgrid</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.geotools.xsd</groupId>
       <artifactId>gt-xsd-sld</artifactId>
       <version>${project.version}</version>

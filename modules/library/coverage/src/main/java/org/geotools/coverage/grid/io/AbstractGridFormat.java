@@ -21,15 +21,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageWriteParam;
+import javax.media.jai.Interpolation;
+import javax.media.jai.InterpolationNearest;
 
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
-import org.geotools.image.io.GridCoverageReaderProgressAdapter;
-import org.geotools.image.io.GridCoverageWriterProgressAdapter;
 import org.geotools.parameter.DefaultParameterDescriptor;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
@@ -198,39 +197,47 @@ public abstract class AbstractGridFormat implements Format {
     /** Optional Elevation value for this mosaic. */
     public static final ParameterDescriptor<List> ELEVATION = DefaultParameterDescriptor.create("ELEVATION", "An elevation value", List.class, null, false);
 
+    static final Interpolation DEFAULT_INTERPOLATION = new InterpolationNearest();
+
+    /**
+     * Control the interpolation to be used in the eventual image processing done while reading data
+     */
+    public static final ParameterDescriptor<Interpolation> INTERPOLATION = new DefaultParameterDescriptor<Interpolation>(
+            "Interpolation", Interpolation.class, null, DEFAULT_INTERPOLATION);
+
         /**
 	 * @see org.opengis.coverage.grid.Format#getName()
 	 */
 	public String getName() {
-		return (String) mInfo.get("name");
+		return mInfo.get("name");
 	}
 
 	/**
 	 * @see org.opengis.coverage.grid.Format#getDescription()
 	 */
 	public String getDescription() {
-		return (String) mInfo.get("description");
+		return mInfo.get("description");
 	}
 
 	/**
 	 * @see org.opengis.coverage.grid.Format#getVendor()
 	 */
 	public String getVendor() {
-		return (String) mInfo.get("vendor");
+		return mInfo.get("vendor");
 	}
 
 	/**
 	 * @see org.opengis.coverage.grid.Format#getDocURL()
 	 */
 	public String getDocURL() {
-		return (String) mInfo.get("docURL");
+		return mInfo.get("docURL");
 	}
 
 	/**
 	 * @see org.opengis.coverage.grid.Format#getVersion()
 	 */
 	public String getVersion() {
-		return (String) mInfo.get("version");
+		return mInfo.get("version");
 	}
 
 	/**
@@ -324,7 +331,7 @@ public abstract class AbstractGridFormat implements Format {
 		if (this.readParameters == null)
 			throw new UnsupportedOperationException(
 					"This format does not support usage of read parameters.");
-		return (ParameterValueGroup) this.readParameters.clone();
+		return this.readParameters.clone();
 	}
 
 	/*
@@ -336,7 +343,7 @@ public abstract class AbstractGridFormat implements Format {
 		if (this.writeParameters == null)
 			throw new UnsupportedOperationException(
 					"This format does not support usage of write parameters.");
-		return (ParameterValueGroup) this.writeParameters.clone();
+		return this.writeParameters.clone();
 	}
 
 	/**

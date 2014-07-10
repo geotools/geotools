@@ -20,27 +20,18 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import static java.lang.Math.*;
+
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
-
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.Projection;
-import org.opengis.referencing.operation.TransformException;
 
 import org.geotools.math.XMath;
 import org.geotools.measure.Latitude;
@@ -49,12 +40,20 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.MathTransformProvider;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
-
-import static java.lang.Math.*;
+import org.opengis.parameter.GeneralParameterDescriptor;
+import org.opengis.parameter.InvalidParameterValueException;
+import org.opengis.parameter.ParameterDescriptor;
+import org.opengis.parameter.ParameterDescriptorGroup;
+import org.opengis.parameter.ParameterNotFoundException;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.operation.MathTransform2D;
+import org.opengis.referencing.operation.NoninvertibleTransformException;
+import org.opengis.referencing.operation.Projection;
+import org.opengis.referencing.operation.TransformException;
 
 
 /**
@@ -87,6 +86,14 @@ import static java.lang.Math.*;
 public abstract class MapProjection extends AbstractMathTransform
         implements MathTransform2D, Serializable
 {
+
+    /**
+     * A global variable use to disable the reciprocal distance checks made when assertions are
+     * enabled. This allows tests to work in "real world" conditions, where users often ask for
+     * points that are way to far from the correct area of usage of projections
+     */
+    public static boolean SKIP_SANITY_CHECKS = false;
+
     /**
      * For cross-version compatibility.
      */
@@ -668,6 +675,10 @@ public abstract class MapProjection extends AbstractMathTransform
     protected boolean checkReciprocal(Point2D point, final Point2D target, final boolean inverse)
             throws ProjectionException
     {
+        if (SKIP_SANITY_CHECKS) {
+            return true;
+        }
+
         if (!(point instanceof CheckPoint)) try {
             point = new CheckPoint(point);
             final double longitude;
@@ -720,6 +731,9 @@ public abstract class MapProjection extends AbstractMathTransform
     static boolean checkTransform(final double x, final double y,
                                   final Point2D expected, final double tolerance)
     {
+        if (SKIP_SANITY_CHECKS) {
+            return true;
+        }
         compare("x", expected.getX(), x, tolerance);
         compare("y", expected.getY(), y, tolerance);
         return tolerance < Double.POSITIVE_INFINITY;
@@ -1219,7 +1233,7 @@ public abstract class MapProjection extends AbstractMathTransform
          * may not be reflected immediately in other threads, but the later is defined only on
          * a "best effort" basis.
          */
-        return rangeCheckSemaphore != globalRangeCheckSemaphore;
+        return rangeCheckSemaphore != globalRangeCheckSemaphore && !SKIP_SANITY_CHECKS;
     }
 
     /**

@@ -453,7 +453,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         final double reqy = requestedRes[1];
 
         // requested scale factor for least reduced axis
-        final Resolution max = (Resolution) resolutionsLevels.get(0);
+        final Resolution max = resolutionsLevels.get(0);
         final double requestedScaleFactorX = reqx / max.resolutionX;
         final double requestedScaleFactorY = reqy / max.resolutionY;
         final int leastReduceAxis = requestedScaleFactorX <= requestedScaleFactorY ? 0 : 1;
@@ -464,7 +464,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         if (requestedScaleFactor <= 1)
             return max.imageChoice;
         // are we looking for a resolution even lower than the smallest overview?
-        final Resolution min = (Resolution) resolutionsLevels.get(resolutionsLevels.size() - 1);
+        final Resolution min = resolutionsLevels.get(resolutionsLevels.size() - 1);
         if (requestedScaleFactor >= min.scaleFactor)
             return min.imageChoice;
         // Ok, so we know the overview is between min and max, skip the first
@@ -1163,11 +1163,16 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         }
 
         final double[][] returnValue = new double[numOverviews + 1][2];
-        System.arraycopy(getHighestRes(), 0, returnValue[0], 0, 2);
-        for (int i = 1; i < returnValue.length; i++) {
-            System.arraycopy(overViewResolutions[i - 1], 0, returnValue[i], 0, 2);
+        double[] hres = getHighestRes();
+        if (hres == null) {
+            return null;
+        } else {
+            System.arraycopy(hres, 0, returnValue[0], 0, 2);
+            for (int i = 1; i < returnValue.length; i++) {
+                System.arraycopy(overViewResolutions[i - 1], 0, returnValue[i], 0, 2);
+            }
+            return returnValue;
         }
-        return returnValue;
     }
     
 

@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.ReadResolutionCalculator;
 import org.geotools.data.DataSourceException;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -59,11 +60,11 @@ import org.opengis.referencing.operation.TransformException;
 public class SpatialRequestHelper {
     
     public SpatialRequestHelper(CoverageProperties coverageProperties) {
-		super();
-		this.coverageProperties = coverageProperties;
-	}
+        super();
+        this.coverageProperties = coverageProperties;
+    }
 
-	public static class CoverageProperties {
+    public static class CoverageProperties {
         public ReferencedEnvelope getBbox() {
             return bbox;
         }
@@ -182,10 +183,13 @@ public class SpatialRequestHelper {
     /** The final Grid To World. In case there is a reprojection involved it is not the original one.*/
     private AffineTransform computedGridToWorld;
 
+    private GridGeometry2D requestedGridGeometry;
+
     public void setRequestedGridGeometry(GridGeometry2D gridGeometry) {
         Utilities.ensureNonNull("girdGeometry", gridGeometry);
         requestedBBox = new ReferencedEnvelope((Envelope) gridGeometry.getEnvelope2D());
         requestedRasterArea = gridGeometry.getGridRange2D().getBounds();
+        requestedGridGeometry = gridGeometry;
         requestedGridToWorld=(AffineTransform) gridGeometry.getGridToCRS2D();
     }
 
@@ -290,43 +294,45 @@ public class SpatialRequestHelper {
             }
         // now transform the requested envelope to source crs
         if (destinationToSourceTransform != null ){
-        	if(destinationToSourceTransform.isIdentity()) {
+            if (destinationToSourceTransform.isIdentity()) {
 
-        		destinationToSourceTransform = null;// the CRS is basically the same
-	        } else{
-	        	// we do need to reproject
-	        	needsReprojection=true;
-	        	
-	            //
-	            // k, the transformation between the various CRS is not null or the
-	            // Identity, let's see if it is an affine transform, which case we
-	            // can incorporate it into the requested grid to world
-	        	if (destinationToSourceTransform instanceof AffineTransform) {
-	
-		            //
-		            // we should not have any problems with regards to BBOX reprojection
-		            // update the requested grid to world transformation by pre concatenating the destination to source transform
-		            AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld.clone();
-		            mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
-		
-		            // update the requested envelope
-		            try {
-		                final MathTransform tempTransform = PixelTranslation.translate(
-		                        ProjectiveTransform.create(mutableTransform), PixelInCell.CELL_CENTER,
-		                        PixelInCell.CELL_CORNER);
-		                requestedBBox = new ReferencedEnvelope(CRS.transform(tempTransform,
-		                        new GeneralEnvelope(requestedRasterArea)));
-		
-		            } catch (Exception e) {
-		                throw new DataSourceException("Unable to inspect request CRS", e);
-		            }
-		
-		            // now clean up all the traces of the transformations
-		            destinationToSourceTransform = null;
-		            needsReprojection=false;
-	
-	            }	            
-	        }
+                destinationToSourceTransform = null;// the CRS is basically the same
+            } else {
+                // we do need to reproject
+                needsReprojection = true;
+
+                //
+                // k, the transformation between the various CRS is not null or the
+                // Identity, let's see if it is an affine transform, which case we
+                // can incorporate it into the requested grid to world
+                if (destinationToSourceTransform instanceof AffineTransform) {
+
+                    //
+                    // we should not have any problems with regards to BBOX reprojection
+                    // update the requested grid to world transformation by pre concatenating the
+                    // destination to source transform
+                    AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld
+                            .clone();
+                    mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
+
+                    // update the requested envelope
+                    try {
+                        final MathTransform tempTransform = PixelTranslation.translate(
+                                ProjectiveTransform.create(mutableTransform),
+                                PixelInCell.CELL_CENTER, PixelInCell.CELL_CORNER);
+                        requestedBBox = new ReferencedEnvelope(CRS.transform(tempTransform,
+                                new GeneralEnvelope(requestedRasterArea)));
+
+                    } catch (Exception e) {
+                        throw new DataSourceException("Unable to inspect request CRS", e);
+                    }
+
+                    // now clean up all the traces of the transformations
+                    destinationToSourceTransform = null;
+                    needsReprojection = false;
+
+                }
+            }
         }
     }
     
@@ -352,33 +358,38 @@ public class SpatialRequestHelper {
 
             // invert the requested grid to world keeping into account the fact that it is related to cell center
             // while the raster is related to cell corner
-        	 MathTransform2D requestedWorldToGrid = (MathTransform2D) PixelTranslation.translate(
+            MathTransform2D requestedWorldToGrid = (MathTransform2D) PixelTranslation.translate(
                     ProjectiveTransform.create(requestedGridToWorld), PixelInCell.CELL_CENTER,
-                    PixelInCell.CELL_CORNER).inverse();        	
-        	 
-	        if (!needsReprojection) {
+                    PixelInCell.CELL_CORNER).inverse();
 
-	            // now get the requested bbox which have been already adjusted and project it back to raster space
-	            computedRasterArea = new GeneralGridEnvelope(CRS.transform(requestedWorldToGrid,
-	                    new GeneralEnvelope(computedBBox)), PixelInCell.CELL_CORNER, false).toRectangle();
-	
-	        } else {
-	            //
-	            // reproject the crop bbox back in the requested crs and then crop, notice that we are imposing
-	            // the same raster area somehow
-	        	//
-	
-	            final GeneralEnvelope cropBBOXInRequestCRS = CRS.transform(computedBBox, requestCRS);
-	            // make sure it falls within the requested envelope
-	            cropBBOXInRequestCRS.intersect(requestedBBox);
-	
-	            // now go back to raster space
-	            computedRasterArea = new GeneralGridEnvelope(CRS.transform(requestedWorldToGrid,
-	                    cropBBOXInRequestCRS), PixelInCell.CELL_CORNER, false).toRectangle();
-	            // intersect with the original requested raster space to be sure that we stay within the requested raster area
-	            XRectangle2D.intersect(computedRasterArea, requestedRasterArea, computedRasterArea);
-	
-	        }
+            if (!needsReprojection) {
+
+                // now get the requested bbox which have been already adjusted and project it back
+                // to raster space
+                computedRasterArea = new GeneralGridEnvelope(CRS.transform(requestedWorldToGrid,
+                        new GeneralEnvelope(computedBBox)), PixelInCell.CELL_CORNER, false)
+                        .toRectangle();
+
+            } else {
+                //
+                // reproject the crop bbox back in the requested crs and then crop, notice that we
+                // are imposing
+                // the same raster area somehow
+                //
+
+                final GeneralEnvelope cropBBOXInRequestCRS = CRS
+                        .transform(computedBBox, requestCRS);
+                // make sure it falls within the requested envelope
+                cropBBOXInRequestCRS.intersect(requestedBBox);
+
+                // now go back to raster space
+                computedRasterArea = new GeneralGridEnvelope(CRS.transform(requestedWorldToGrid,
+                        cropBBOXInRequestCRS), PixelInCell.CELL_CORNER, false).toRectangle();
+                // intersect with the original requested raster space to be sure that we stay within
+                // the requested raster area
+                XRectangle2D.intersect(computedRasterArea, requestedRasterArea, computedRasterArea);
+
+            }
         } catch (Exception e) {
             throw new DataSourceException(e);
         }
@@ -395,39 +406,48 @@ public class SpatialRequestHelper {
     }
     
     /**
-     * Computes the requested resolution which is going to be used for selecting overviews and or deciding decimation factors on the target coverage.
+     * Computes the requested resolution which is going to be used for selecting overviews and or
+     * deciding decimation factors on the target coverage.
      * 
      * <p>
-     * In case the requested envelope is in the same {@link CoordinateReferenceSystem} of the coverage we compute the resolution using the requested
-     * {@link MathTransform}. Notice that it must be a {@link LinearTransform} or else we fail.
+     * In case the requested envelope is in the same {@link CoordinateReferenceSystem} of the
+     * coverage we compute the resolution using the requested {@link MathTransform}. Notice that it
+     * must be a {@link LinearTransform} or else we fail.
      * 
      * <p>
-     * In case the requested envelope is not in the same {@link CoordinateReferenceSystem} of the coverage we do an in place reprojection.
+     * In case the requested envelope is not in the same {@link CoordinateReferenceSystem} of the
+     * coverage we do an in place reprojection.
      * 
      */
     private void computeResolution(){
-    	
+
         try {
 
             //
             // the crs of the request and the one of the coverage are NOT the
             // same and the conversion is not , we can get the resolution from envelope + raster directly
             //
+            GridGeometry2D gridGeometry;
             if (needsReprojection) {
-                final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(computedRasterArea), computedBBox);
+                final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(
+                        computedRasterArea), computedBBox);
                 computedGridToWorld = geMapper.createAffineTransform();
-                computedResolution = computeClassicResolution();
                 if (accurateResolution) {
-                    computedResolution = computeAccurateResolution();
-                } 
+                    gridGeometry = requestedGridGeometry;
+                } else {
+                    gridGeometry = new GridGeometry2D(new GridEnvelope2D(computedRasterArea),
+                            computedBBox);
+                }
             } else {
-                // the crs of the request and the one of the coverage are the
-                // same, we can get the resolution from the grid to world
-            	computedGridToWorld=requestedGridToWorld;
-                computedResolution = new double[] {
-                        XAffineTransform.getScaleX0(requestedGridToWorld),
-                        XAffineTransform.getScaleY0(requestedGridToWorld) };
+                gridGeometry = requestedGridGeometry;
+                computedGridToWorld = requestedGridToWorld;
             }
+
+            ReadResolutionCalculator calculator = new ReadResolutionCalculator(gridGeometry,
+                    coverageProperties.crs2D, coverageProperties.fullResolution);
+            calculator.setAccurateResolution(accurateResolution);
+            computedResolution = calculator.computeRequestedResolution(ReferencedEnvelope
+                    .reference(computedBBox));
 
             // leave
             return;
@@ -452,7 +472,7 @@ public class SpatialRequestHelper {
     private double[] computeClassicResolution() {
 
         return new double[] { 
-        		XAffineTransform.getScaleX0(computedGridToWorld),
+ XAffineTransform.getScaleX0(computedGridToWorld),
                 XAffineTransform.getScaleY0(computedGridToWorld) 
         };
     }
@@ -469,13 +489,13 @@ public class SpatialRequestHelper {
      */
     private double[] computeAccurateResolution() throws TransformException,
             NoninvertibleTransformException {
-    	
-    	// transform back to the original space the brop bbox
+
+        // transform back to the original space the brop bbox
         GeneralEnvelope cropBboxTarget = CRS.transform(computedBBox, requestCRS);
         // get the requested resolution
         double requestedResolution[]= new double[] {
-        		XAffineTransform.getScaleX0(requestedGridToWorld),
-        		XAffineTransform.getScaleY0(requestedGridToWorld),
+                XAffineTransform.getScaleX0(requestedGridToWorld),
+                XAffineTransform.getScaleY0(requestedGridToWorld),
         };
         double[] points = new double[36];
         for(int i = 0; i < 3; i++) {
@@ -556,11 +576,11 @@ public class SpatialRequestHelper {
             
             // TODO XXX Optimize when referenced envelope has intersection method that actually retains the CRS, this is the JTS one
             computedBBox = new ReferencedEnvelope(computedBBox.intersection(coverageProperties.bbox), coverageProperties.crs2D);
-			if (computedBBox.isEmpty()) {
-				// this means that we do not have anything to load at all!
-				emptyRequest = true;
-			}
-			return;
+            if (computedBBox.isEmpty()) {
+                // this means that we do not have anything to load at all!
+                emptyRequest = true;
+            }
+            return;
         } catch (TransformException te) {
             // something bad happened while trying to transform this
             // envelope. let's try with wgs84
@@ -721,8 +741,8 @@ public class SpatialRequestHelper {
         return builder.toString();
     }
 
-	public AffineTransform getComputedGridToWorld() {
-		return computedGridToWorld;
-	}
+    public AffineTransform getComputedGridToWorld() {
+        return computedGridToWorld;
+    }
 
 }

@@ -1,18 +1,20 @@
 package org.geotools.wcs.bindings;
 
 
-import org.geotools.wcs.WCS;
-import org.geotools.xml.*;
-
-
 import javax.xml.namespace.QName;
+
+import org.geotools.wcs.WCS;
+import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:RangeSetType.
- *
+ * 
  * <p>
- *	<pre>
- *	 <code>
+ * 
+ * <pre>
+ *  <code>
  *  &lt;complexType name="RangeSetType"&gt;
  *      &lt;annotation&gt;
  *          &lt;documentation&gt;Defines the properties (categories, measures, or values) assigned to each location in the domain. Any such property may be a scalar (numeric or text) value, such as population density, or a compound (vector or tensor) value, such as incomes by race, or radiances by wavelength. The semantic of the range set is typically an observable and is referenced by a URI. A rangeSet also has a reference system that is reffered by the URI in the refSys attribute. The refSys is either qualitative (classification) or quantitative (uom). The three attributes can be included either here and in each axisDescription. If included in both places, the values in the axisDescription over-ride those included in the RangeSet. &lt;/documentation&gt;
@@ -27,7 +29,7 @@ import javax.xml.namespace.QName;
  *                  &lt;/element&gt;
  *                  &lt;element minOccurs="0" name="nullValues" type="wcs:valueEnumType"&gt;
  *                      &lt;annotation&gt;
- *                          &lt;documentation&gt;Values used when valid values are not available. (The coverage encoding may specify a fixed value for null (e.g. “–99999” or “N/A”), but often the choice is up to the provider and must be communicated to the client outside of the coverage itself.) &lt;/documentation&gt;
+ *                          &lt;documentation&gt;Values used when valid values are not available. (The coverage encoding may specify a fixed value for null, but often the choice is up to the provider and must be communicated to the client outside of the coverage itself.) &lt;/documentation&gt;
  *                      &lt;/annotation&gt;
  *                  &lt;/element&gt;
  *              &lt;/sequence&gt;
@@ -45,14 +47,15 @@ import javax.xml.namespace.QName;
  *          &lt;/extension&gt;
  *      &lt;/complexContent&gt;
  *  &lt;/complexType&gt; 
- *		
- *	  </code>
- *	 </pre>
+ * 	
+ *   </code>
+ * </pre>
+ * 
  * </p>
- *
+ * 
  * @generated
- *
- *
+ * 
+ * 
  * @source $URL$
  */
 public class RangeSetTypeBinding extends AbstractComplexBinding {

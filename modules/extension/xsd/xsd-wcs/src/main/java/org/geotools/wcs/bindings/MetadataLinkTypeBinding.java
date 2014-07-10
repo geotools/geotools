@@ -1,18 +1,20 @@
 package org.geotools.wcs.bindings;
 
 
-import org.geotools.wcs.WCS;
-import org.geotools.xml.*;
-
-
 import javax.xml.namespace.QName;
+
+import org.geotools.wcs.WCS;
+import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:MetadataLinkType.
- *
+ * 
  * <p>
- *	<pre>
- *	 <code>
+ * 
+ * <pre>
+ *  <code>
  *  &lt;complexType name="MetadataLinkType"&gt;
  *      &lt;annotation&gt;
  *          &lt;documentation&gt;Refers to a metadata package that contains metadata properties for an object. The metadataType attribute indicates the type of metadata referred to. &lt;/documentation&gt;
@@ -24,7 +26,7 @@ import javax.xml.namespace.QName;
  *                      &lt;restriction base="NMTOKEN"&gt;
  *                          &lt;enumeration value="TC211"&gt;
  *                              &lt;annotation&gt;
- *                                  &lt;documentation&gt;This metadata uses a profile of ISO TC211’s Geospatial Metadata Standard 19115. &lt;/documentation&gt;
+ *                                  &lt;documentation&gt;This metadata uses a profile of ISO TC211s Geospatial Metadata Standard 19115. &lt;/documentation&gt;
  *                              &lt;/annotation&gt;
  *                          &lt;/enumeration&gt;
  *                          &lt;enumeration value="FGDC"&gt;
@@ -43,14 +45,15 @@ import javax.xml.namespace.QName;
  *          &lt;/extension&gt;
  *      &lt;/complexContent&gt;
  *  &lt;/complexType&gt; 
- *		
- *	  </code>
- *	 </pre>
+ * 	
+ *   </code>
+ * </pre>
+ * 
  * </p>
- *
+ * 
  * @generated
- *
- *
+ * 
+ * 
  * @source $URL$
  */
 public class MetadataLinkTypeBinding extends AbstractComplexBinding {

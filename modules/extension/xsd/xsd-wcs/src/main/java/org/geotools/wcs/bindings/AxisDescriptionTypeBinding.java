@@ -1,21 +1,23 @@
 package org.geotools.wcs.bindings;
 
 
-import org.geotools.wcs.WCS;
-import org.geotools.xml.*;
-
-
 import javax.xml.namespace.QName;
+
+import org.geotools.wcs.WCS;
+import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:AxisDescriptionType.
- *
+ * 
  * <p>
- *	<pre>
- *	 <code>
+ * 
+ * <pre>
+ *  <code>
  *  &lt;complexType name="AxisDescriptionType"&gt;
  *      &lt;annotation&gt;
- *          &lt;documentation&gt;Description of a measured or observed quantity, and list of the “valid” quantity values (values for which measurements are available or “by which” aggregate values are available). The semantic is the URI of the quantity (for example observable or mathematical variable). The refSys attribute is a URI to a reference system, and the refSysLabel is the label used by client to refer the reference system. &lt;/documentation&gt;
+ *          &lt;documentation&gt;Description of a measured or observed quantity, and list of the valid quantity values (values for which measurements are available or by which aggregate values are available). The semantic is the URI of the quantity (for example observable or mathematical variable). The refSys attribute is a URI to a reference system, and the refSysLabel is the label used by client to refer the reference system. &lt;/documentation&gt;
  *      &lt;/annotation&gt;
  *      &lt;complexContent&gt;
  *          &lt;extension base="wcs:AbstractDescriptionType"&gt;
@@ -54,14 +56,15 @@ import javax.xml.namespace.QName;
  *          &lt;/extension&gt;
  *      &lt;/complexContent&gt;
  *  &lt;/complexType&gt; 
- *		
- *	  </code>
- *	 </pre>
+ * 	
+ *   </code>
+ * </pre>
+ * 
  * </p>
- *
+ * 
  * @generated
- *
- *
+ * 
+ * 
  * @source $URL$
  */
 public class AxisDescriptionTypeBinding extends AbstractComplexBinding {

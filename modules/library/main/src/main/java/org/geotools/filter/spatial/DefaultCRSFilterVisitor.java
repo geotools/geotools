@@ -50,7 +50,10 @@ public class DefaultCRSFilterVisitor extends DuplicatingFilterVisitor {
         if (srs != null && !"".equals(srs.trim()))
             return super.visit(filter, extraData);
 
-        if (defaultCrs.getCoordinateSystem().getDimension() == filter.getBounds().getDimension()) {
+        if (defaultCrs == null
+                || filter.getBounds() == null
+                || defaultCrs.getCoordinateSystem().getDimension() == filter.getBounds()
+                        .getDimension()) {
             return getFactory(extraData).bbox(filter.getExpression1(),
                     ReferencedEnvelope.create(filter.getBounds(), defaultCrs));
         } else {

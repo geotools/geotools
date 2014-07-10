@@ -22,7 +22,6 @@ import java.util.Arrays;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Represents an arc by three points, and provides methods to linearize it to a given max distance
@@ -104,12 +103,6 @@ public class CircularArc {
         return controlPoints;
     }
 
-    /**
-     * Returns the radius of this circular arc, or {@link Double#POSITIVE_INFINITY} in case they are
-     * collinear
-     * 
-     * @return
-     */
     public double getRadius() {
         initializeCenterRadius();
         return radius;
@@ -132,10 +125,10 @@ public class CircularArc {
             return controlPoints;
         }
 
-        return linearize(tolerance, new GrowableDoubleArray()).getData();
+        return linearize(tolerance, new GrowableOrdinateArray()).getData();
     }
 
-    GrowableDoubleArray linearize(double tolerance, GrowableDoubleArray array) {
+    GrowableOrdinateArray linearize(double tolerance, GrowableOrdinateArray array) {
         initializeCenterRadius();
         if (tolerance < 0) {
             throw new IllegalArgumentException(
@@ -245,71 +238,6 @@ public class CircularArc {
             array.reverseOrdinates(start, array.size() - 1);
         }
         return array;
-    }
-
-    /**
-     * Returns the circle containing this arc
-     * 
-     * @return
-     */
-    CircularRing toCircle(GeometryFactory geometryFactory, double tolerance) {
-        initializeCenterRadius();
-
-        // compute the reference angles
-        double sx = controlPoints[0];
-        double sy = controlPoints[1];
-        double mx = controlPoints[2];
-        double my = controlPoints[3];
-        double ex = controlPoints[4];
-        double ey = controlPoints[5];
-        double sa = atan2(sy - centerY, sx - centerX);
-        double ma = atan2(my - centerY, mx - centerX);
-        double ea = atan2(ey - centerY, ex - centerX);
-
-        // check if clockwise
-        boolean clockwise = (sa > ma && ma > ea) || (sa > ma && sa < ea) || (ma > ea && sa < ea);
-        if (clockwise) {
-            // we need to walk all arcs the same way, or we incur in the risk of having
-            // two close but concentric arcs to touch each other
-            double tx = sx;
-            sx = ex;
-            ex = tx;
-            double ty = sy;
-            sy = ey;
-            ey = ty;
-            double ta = sa;
-            sa = ea;
-            ea = ta;
-        }
-
-        // normalize angle so that we can treat steps like a linear progression
-        if (ma < sa) {
-            ma += PI_PI;
-            ea += PI_PI;
-        } else if (ea < sa) {
-            ea += PI_PI;
-        }
-
-        // we need to add the 4th point, its angle will be in the mid between ea and sa + PI_PI
-        double ea2 = sa + PI_PI;
-        double ma2 = (ea + ea2) / 2;
-
-        double mx2 = centerX + radius * cos(ma2);
-        double my2 = centerY + radius * sin(ma2);
-
-        double[] rcp = new double[10];
-        rcp[0] = sx;
-        rcp[1] = sy;
-        rcp[2] = mx;
-        rcp[3] = my;
-        rcp[4] = ex;
-        rcp[5] = ey;
-        rcp[6] = mx2;
-        rcp[7] = my2;
-        rcp[8] = sx;
-        rcp[9] = sy;
-
-        return new CircularRing(rcp, geometryFactory, tolerance);
     }
 
     private boolean isWhole(double d) {

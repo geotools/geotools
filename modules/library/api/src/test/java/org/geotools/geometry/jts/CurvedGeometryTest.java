@@ -22,9 +22,12 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 public class CurvedGeometryTest {
 
@@ -83,7 +86,7 @@ public class CurvedGeometryTest {
     public void testCircularStringWings() {
         double[] sp1 = new Circle(10).samplePoints(Math.PI / 2, Math.PI / 4, 0);
         double[] sp2 = new Circle(10, 20, 0).samplePoints(Math.PI, Math.PI * 3 / 4, Math.PI / 2);
-        GrowableDoubleArray data = new GrowableDoubleArray();
+        GrowableOrdinateArray data = new GrowableOrdinateArray();
         data.addAll(sp1);
         data.add(sp2[2], sp2[3]);
         data.add(sp2[4], sp2[5]);
@@ -150,9 +153,9 @@ public class CurvedGeometryTest {
 
         // check linearization
         assertEquals(CircularArc.BASE_SEGMENTS_QUADRANT * 4 + 1, cr.getNumPoints());
-        LiteCoordinateSequence coordinates = (LiteCoordinateSequence) cr.linearize()
+        CoordinateSequence coordinates = cr.linearize()
                 .getCoordinateSequence();
-        circle.assertTolerance(coordinates.getArray(), 0.1);
+        circle.assertTolerance(coordinates, 0.1);
 
         // check cloning
         CircularRing cloned = (CircularRing) cr.clone();
@@ -200,8 +203,9 @@ public class CurvedGeometryTest {
     public void testCompoundCurve() {
         double[] halfCircle = new double[] { 10, 10, 0, 20, -10, 10 };
         CircularString cs = new CircularString(halfCircle, GEOMETRY_FACTORY, Double.MAX_VALUE);
-        LineString ls = new LineString(new LiteCoordinateSequence(new double[] { -10, 10, -10, 0,
-                10, 0, 10, 10 }), GEOMETRY_FACTORY);
+        LineString ls = new LineString(new CoordinateArraySequence(new Coordinate[] {
+                new Coordinate(-10, 10), new Coordinate(-10, 0), new Coordinate(10, 0),
+                new Coordinate(10, 10) }), GEOMETRY_FACTORY);
         CompoundCurve curve = new CompoundCurve(Arrays.asList(cs, ls), GEOMETRY_FACTORY,
                 Double.MAX_VALUE);
 
@@ -234,8 +238,9 @@ public class CurvedGeometryTest {
     public void testCompoundRing() {
         double[] halfCircle = new double[] { 10, 10, 0, 20, -10, 10 };
         CircularString cs = new CircularString(halfCircle, GEOMETRY_FACTORY, Double.MAX_VALUE);
-        LineString ls = new LineString(new LiteCoordinateSequence(new double[] { -10, 10, -10, 0,
-                10, 0, 10, 10 }), GEOMETRY_FACTORY);
+        LineString ls = new LineString(new CoordinateArraySequence(new Coordinate[] {
+                new Coordinate(-10, 10), new Coordinate(-10, 0), new Coordinate(10, 0),
+                new Coordinate(10, 10) }), GEOMETRY_FACTORY);
         CompoundRing ring = new CompoundRing(Arrays.asList(cs, ls), GEOMETRY_FACTORY,
                 Double.MAX_VALUE);
 

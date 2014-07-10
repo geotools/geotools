@@ -22,9 +22,9 @@ import java.util.List;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
 
 /**
  * 
@@ -40,15 +40,15 @@ public class MultiCurveTypeBinding extends org.geotools.gml3.bindings.MultiCurve
 
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-      //&lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:curveMember"/&gt;
-        List<MultiLineString> curveMemberList = node.getChildValues("curveMember");
+        // &lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:curveMember"/&gt;
+        List<Geometry> curveMemberList = node.getChildValues("curveMember");
         //&lt;element minOccurs="0" ref="gml:curveMembers"/&gt;
-        MultiLineString curveMembers = (MultiLineString)node.getChildValue("curveMembers");
+        Geometry curveMembers = (Geometry) node.getChildValue("curveMembers");
 
         List<LineString> lineStrings = new ArrayList<LineString>();
 
         if (curveMemberList != null) {
-            for (MultiLineString curveMember : curveMemberList) {
+            for (Geometry curveMember : curveMemberList) {
                 for (int i = 0; i < curveMember.getNumGeometries(); i++) {
                     LineString lineString = (LineString)curveMember.getGeometryN(i);
                     lineStrings.add(lineString);

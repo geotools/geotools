@@ -1,8 +1,9 @@
 package org.geotools.geometry.jts;
 
-import static java.lang.Math.atan2;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static java.lang.Math.*;
+import static org.junit.Assert.*;
+
+import com.vividsolutions.jts.geom.CoordinateSequence;
 
 /**
  * Utility class for the test, represents a circle in the origin with a given radius
@@ -40,6 +41,15 @@ class Circle {
     public CircularArc getCircularArc(double startAngle, double midAngle, double endAngle) {
         double[] controlPoints = samplePoints(startAngle, midAngle, endAngle);
         return new CircularArc(controlPoints);
+    }
+
+    public void assertTolerance(CoordinateSequence cs, double tolerance) {
+        double[] ordinates = new double[cs.size() * 2];
+        for (int i = 0; i < cs.size(); i++) {
+            ordinates[i * 2] = cs.getOrdinate(i, 0);
+            ordinates[i * 2 + 1] = cs.getOrdinate(i, 1);
+        }
+        assertTolerance(ordinates, tolerance);
     }
 
     public void assertTolerance(double[] ordinates, double tolerance) {

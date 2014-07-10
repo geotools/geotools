@@ -20,8 +20,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryComponentFilter;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
 /**
@@ -114,7 +116,7 @@ public class CurvedGeometries {
                         }
                         center = curr.getCenter();
                     } else {
-                        if (!CircularArc.equals(curr.radius, radius)) {
+                        if (!CircularArc.equals(curr.getRadius(), radius)) {
                             return false;
                         }
                         Coordinate cc = curr.getCenter();
@@ -128,6 +130,72 @@ public class CurvedGeometries {
 
             return true;
         }
+    }
+
+    /**
+     * Builds a circular arc out of the specified coordinate sequence
+     * 
+     * @param cs
+     * @param startCoordinate
+     * @return
+     */
+    public static CircularArc getArc(CoordinateSequence cs, int startCoordinate) {
+        if (cs.size() < (startCoordinate + 3)) {
+            throw new IllegalArgumentException("The coordinate sequence has " + cs.size()
+                    + " points, cannot extract a circular arc starting from coordinate "
+                    + startCoordinate);
+        } else if (startCoordinate < 0) {
+            throw new IllegalArgumentException("Start coordinate must be 0 or positive, not: "
+                    + startCoordinate);
+        }
+
+        return new CircularArc(cs.getOrdinate(0, 0), cs.getOrdinate(0, 1), //
+                cs.getOrdinate(1, 0), cs.getOrdinate(1, 1), //
+                cs.getOrdinate(2, 0), cs.getOrdinate(2, 1));
+    }
+
+    /**
+     * Returns the circle containing this arc
+     * 
+     * @return
+     */
+    public static CircularRing toCircle(CircularArc arc, GeometryFactory geometryFactory,
+            double tolerance) {
+        double radius = arc.getRadius();
+        Coordinate center = arc.getCenter();
+
+        double[] rcp = new double[10];
+        rcp[0] = center.x + radius;
+        rcp[1] = center.y;
+        rcp[2] = center.x;
+        rcp[3] = center.y + radius;
+        rcp[4] = center.x - radius;
+        rcp[5] = center.y;
+        rcp[6] = center.x;
+        rcp[7] = center.y - radius;
+        rcp[8] = center.x + radius;
+        rcp[9] = center.y;
+
+        return new CircularRing(rcp, geometryFactory, tolerance);
+    }
+
+    /**
+     * Extracts a {@link CurvedGeometryFactory} from the provided geometry, either by just returning
+     * the one that is held by the geometry, if consistent with its tolerance, or by creating a new
+     * one
+     * 
+     * @param curved
+     * @return
+     */
+    public static CurvedGeometryFactory getFactory(CurvedGeometry<?> curved) {
+        GeometryFactory factory = ((Geometry) curved).getFactory();
+        if (factory instanceof CurvedGeometryFactory) {
+            CurvedGeometryFactory cf = (CurvedGeometryFactory) factory;
+            if (cf.getTolerance() == curved.getTolerance()) {
+                return cf;
+            }
+        }
+        return new CurvedGeometryFactory(factory, curved.getTolerance());
     }
 
 }

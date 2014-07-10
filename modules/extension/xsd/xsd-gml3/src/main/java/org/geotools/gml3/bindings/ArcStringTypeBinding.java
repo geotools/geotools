@@ -1,20 +1,18 @@
 package org.geotools.gml3.bindings;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import javax.xml.namespace.QName;
 
+import org.geotools.geometry.jts.CircularString;
+import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.gml3.ArcParameters;
-import org.geotools.gml3.Circle;
 import org.geotools.gml3.GML;
-import org.geotools.xml.*;
+import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.algorithm.CGAlgorithms;
-import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-
-import javax.xml.namespace.QName;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:ArcStringType.
@@ -104,7 +102,7 @@ public class ArcStringTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Class getType() {
-        return LineString.class;
+        return CircularString.class;
     }
     
     /**
@@ -116,55 +114,27 @@ public class ArcStringTypeBinding extends AbstractComplexBinding {
             throws Exception {
     
         LineString arcLineString = GML3ParsingUtils.lineString(node, gFactory, csFactory);
-        
-        Coordinate[] arcCoordinates = arcLineString.getCoordinates();
-        if (arcCoordinates.length < 3) {
+        CoordinateSequence cs = arcLineString.getCoordinateSequence();
+        if (cs.size() < 3) {
             // maybe log this instead and return null
             throw new RuntimeException("Number of coordinates in an arc string must be at least 3, " 
-                    + arcCoordinates.length + " were specified: " + arcLineString);
+                    + cs.size()+ " were specified: " + arcLineString);
         }
 
-        Coordinate c1 = arcCoordinates[0];
-        Coordinate c2 = arcCoordinates[arcCoordinates.length/2];
-        Coordinate c3 = arcCoordinates[arcCoordinates.length-1];
-
-        // determine whether we need to reverse our input.
-        boolean mustReverse = laidOutClockwise(c1, c2, c3);
-
-        if (mustReverse) {
-            // swap coords 1 and 3
-            Coordinate cTemp = c1;
-            c1 = c3;
-            c3 = cTemp;
-        }
-
-        Circle circle = new Circle(c1, c2, c3);
-        double tolerance = arcParameters.getLinearizationTolerance().getTolerance(circle);
-        Coordinate[] resultCoordinates = circle.linearizeArc(c1, c2, c3, tolerance);
-
-        if (mustReverse) {
-            // reverse back
-            List<Coordinate> reversingCoordinates = Arrays.asList(resultCoordinates);
-            Collections.reverse(reversingCoordinates);
-            resultCoordinates = (Coordinate[])
-                    reversingCoordinates.toArray(new Coordinate[reversingCoordinates.size()]);
-        }
-
-        LineString resultLineString = gFactory.createLineString(resultCoordinates);
-
-        return resultLineString;
+        CurvedGeometryFactory factory = GML3ParsingUtils.getCurvedGeometryFactory(arcParameters, gFactory, cs);
+        
+        return factory.createCurvedGeometry(cs);
     }
 
-    /**
-     * Returns whether the input coordinates are laid out clockwise on their corresponding circle.
-     * Only works correctly if the Euclidean distance between c1 and c2 is equal to the Euclidean distance between c2 and c3.
-     * @param c1
-     * @param c2
-     * @param c3
-     * @return true if input coordinates are laid out clockwise on their corresponding circle. false otherwise.
-     */
-    protected boolean laidOutClockwise(Coordinate c1, Coordinate c2, Coordinate c3) {
-        return CGAlgorithms.computeOrientation(c1, c2, c3) == CGAlgorithms.CLOCKWISE;
+    @Override
+    public Object getProperty(Object object, QName name) throws Exception {
+        if ("interpolation".equals(name.getLocalPart())) {
+            return "circularArc3Points";
+        } else if ("posList".equals(name.getLocalPart())) {
+            return GML3EncodingUtils.positions((LineString) object);
+        }
+
+        return super.getProperty(object, name);
     }
 
 }

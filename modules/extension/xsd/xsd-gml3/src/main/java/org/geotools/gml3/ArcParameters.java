@@ -31,9 +31,6 @@ public class ArcParameters {
         this.linearizationTolerance = new CircleRadiusTolerance(0.001);
     }
 
-    /**
-     *
-     */
     public ArcParameters(LinearizationTolerance linearizationTolerance) {
         this.linearizationTolerance = linearizationTolerance;
     }
@@ -41,5 +38,6 @@ public class ArcParameters {
     public LinearizationTolerance getLinearizationTolerance() {
         return linearizationTolerance;
     }
+
 
 }

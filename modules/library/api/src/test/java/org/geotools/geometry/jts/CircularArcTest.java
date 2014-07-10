@@ -27,6 +27,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 public class CircularArcTest {
 
@@ -280,7 +281,11 @@ public class CircularArcTest {
             double endAngle) {
         CircularArc arc = c.getCircularArc(startAngle, midAngle, endAngle);
         double[] linearized = arc.linearize(Double.MAX_VALUE);
-        LiteCoordinateSequence cs = new LiteCoordinateSequence(linearized);
+        Coordinate[] coords = new Coordinate[linearized.length / 2];
+        for (int i = 0; i < coords.length; i++) {
+            coords[i] = new Coordinate(linearized[i * 2], linearized[i * 2 + 1]);
+        }
+        CoordinateArraySequence cs = new CoordinateArraySequence(coords);
         return new LineString(cs, new GeometryFactory());
     }
 }

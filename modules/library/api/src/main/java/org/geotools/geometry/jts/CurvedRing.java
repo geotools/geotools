@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *
+ * 
+ *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
+ *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -14,20 +14,15 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gml3;
+package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-
+import com.vividsolutions.jts.geom.LinearRing;
 
 /**
+ * Marker interface identifying closed curved geometries
  * 
- *
- * @source $URL$
+ * @author Andrea Aime - GeoSolutions
  */
-public class Curve extends MultiLineString {
-    public Curve(LineString[] segments, GeometryFactory factory) {
-        super(segments, factory);
-    }
+public interface CurvedRing extends CurvedGeometry<LinearRing> {
+
 }

@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -30,38 +31,101 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.GeometryFilter;
 import com.vividsolutions.jts.geom.IntersectionMatrix;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
- * A CompoundRing is a connected sequence of circular arcs and linear segments forming a closed
- * line.
+ * A CompoundCurve is a connected sequence of circular arcs and linear segments.
  * 
  * @author Andrea Aime - GeoSolutions
  */
-public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<LinearRing> {
+public class CompoundCurve extends LineString implements CompoundCurvedGeometry<LineString> {
 
     private static final long serialVersionUID = -5796254063449438787L;
 
-    CompoundCurve delegate;
+    List<LineString> components;
 
     LineString linearized;
 
     double tolerance;
 
-    public CompoundRing(List<LineString> components, GeometryFactory factory, double tolerance) {
-        this(new CompoundCurve(components, factory, tolerance));
+    public CompoundCurve(List<LineString> components, GeometryFactory factory, double tolerance) {
+        super(CircularString.FAKE_STRING_2D, factory);
+        this.tolerance = tolerance;
+
+        // sanity check, we don't want compound curves containing other compound curves
+        this.components = new ArrayList<>();
+        for (LineString ls : components) {
+            if (ls instanceof CompoundCurve) {
+                CompoundCurve cc = (CompoundCurve) ls;
+                this.components.addAll(cc.components);
+            } else {
+                this.components.add(ls);
+            }
+        }
+
+        // check connectedness
+        if (components.size() > 1) {
+            LineString prev = components.get(0);
+            for (int i = 1; i < components.size(); i++) {
+                LineString curr = components.get(i);
+                Point endPoint = prev.getEndPoint();
+                Point startPoint = curr.getStartPoint();
+                if (!endPoint.equals(startPoint)) {
+                    throw new IllegalArgumentException(
+                            "Found two elements that are not connected, " + prev + " and " + curr);
+                }
+                prev = curr;
+            }
+        }
     }
 
-    public CompoundRing(CompoundCurve delegate) {
-        super(CircularRing.FAKE_RING_2D, delegate.getFactory());
-        this.delegate = delegate;
+    @Override
+    public LineString linearize() {
+        return linearize(this.tolerance);
+    }
 
-        // check closed
-        if (!delegate.isClosed()) {
-            throw new IllegalArgumentException("The components do not form a closed ring");
+    public LineString linearize(double tolerance) {
+        // use the cached one if we are asked for the default geometry tolerance
+        boolean isDefaultTolerance = CircularArc.equals(tolerance, this.tolerance);
+        if (linearized != null && isDefaultTolerance) {
+            return linearized;
         }
+
+        CoordinateSequence cs = getLinearizedCoordinateSequence(tolerance);
+        LineString result = new LineString(cs, factory);
+        if (isDefaultTolerance) {
+            linearized = result;
+        }
+
+        return result;
+    }
+
+    protected CoordinateSequence getLinearizedCoordinateSequence(final double tolerance) {
+        // collect all the points of all components
+        final GrowableOrdinateArray gar = new GrowableOrdinateArray();
+        for (LineString component : components) {
+            // the last point of the previous element is the first point of the next one,
+            // remove the duplication
+            if (gar.size() > 0) {
+                gar.setSize(gar.size() - 2);
+            }
+            // linearize with tolerance the circular strings, take the linear ones as is
+            if (component instanceof SingleCurvedGeometry<?>) {
+                SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) component;
+                CoordinateSequence cs = curved
+                        .getLinearizedCoordinateSequence(tolerance);
+                gar.addAll(cs);
+            } else {
+                CoordinateSequence cs = component.getCoordinateSequence();
+                for (int i = 0; i < cs.size(); i++) {
+                    gar.add(cs.getX(i), cs.getY(i));
+                }
+            }
+        }
+
+        CoordinateSequence cs = gar.toCoordinateSequence(getFactory());
+        return cs;
     }
 
     @Override
@@ -76,25 +140,15 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
      * @return
      */
     public List<LineString> getComponents() {
-        return delegate.components;
+        return components;
     }
-
-    @Override
-    public LinearRing linearize() {
-        LiteCoordinateSequence cs = delegate.getLinearizedCoordinateSequence(delegate.tolerance);
-        return getFactory().createLinearRing(cs);
-    }
-
-    public LinearRing linearize(double tolerance) {
-        LiteCoordinateSequence cs = delegate.getLinearizedCoordinateSequence(delegate.tolerance);
-        return getFactory().createLinearRing(cs);
-    }
-
 
     /* Optimized overridden methods */
 
     public boolean isClosed() {
-        return true;
+        LineString firstComponent = components.get(0);
+        LineString lastComponent = components.get(components.size() - 1);
+        return firstComponent.getStartPoint().equals(lastComponent.getEndPoint());
     }
 
     public int getDimension() {
@@ -110,20 +164,46 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     }
 
     public String getGeometryType() {
-        return "CircularString";
+        return "CompoundCurve";
     }
 
     public Geometry reverse() {
-        CompoundCurve reversedDelegate = (CompoundCurve) delegate.reverse();
-        return new CompoundRing(reversedDelegate);
+        // reverse the component, and reverse each component internal elements
+        List<LineString> reversedComponents = new ArrayList<>(components.size());
+        for (LineString ls : components) {
+            LineString reversed = (LineString) ls.reverse();
+            reversedComponents.add(0, reversed);
+        }
+        return new CompoundCurve(reversedComponents, getFactory(), tolerance);
+    }
+
+    public Point getInteriorPoint() {
+        return components.get(components.size() / 2).getInteriorPoint();
+    }
+
+    public Geometry getEnvelope() {
+        return super.getEnvelope();
+    }
+
+    public Envelope getEnvelopeInternal() {
+        return super.getEnvelopeInternal();
+    }
+
+    @Override
+    protected Envelope computeEnvelopeInternal() {
+        final Envelope result = new Envelope();
+        for (LineString ls : components) {
+            result.expandToInclude(ls.getEnvelopeInternal());
+        }
+        return result;
     }
 
     public int getNumGeometries() {
-        return delegate.getNumGeometries();
+        return components.size();
     }
 
     public Geometry getGeometryN(int n) {
-        return delegate.getGeometryN(n);
+        return components.get(n);
     }
 
     public void setUserData(Object userData) {
@@ -150,51 +230,64 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
         return super.getPrecisionModel();
     }
 
-    public boolean isRectangle() {
-        return delegate.isRectangle();
-    }
-
-    public Point getInteriorPoint() {
-        return delegate.getInteriorPoint();
-    }
-
-    public Geometry getEnvelope() {
-        return delegate.getEnvelope();
-    }
-
-    public Envelope getEnvelopeInternal() {
-        return delegate.getEnvelopeInternal();
-    }
-
-    @Override
-    protected Envelope computeEnvelopeInternal() {
-        return delegate.getEnvelopeInternal();
-    }
 
     public boolean equalsExact(Geometry other) {
-        return delegate.equalsExact(other);
+        return equalsExact(other, 0);
     }
 
     public boolean equalsExact(Geometry other, double tolerance) {
-        if (other instanceof CompoundRing) {
-            CompoundRing csOther = (CompoundRing) other;
-            return delegate.equalsExact(csOther.delegate, tolerance);
+        if (other instanceof CompoundCurve) {
+            CompoundCurve ccOther = (CompoundCurve) other;
+            if (ccOther.components.size() != components.size()) {
+                return false;
+            }
+            for (int i = 0; i < components.size(); i++) {
+                LineString ls1 = components.get(i);
+                LineString ls2 = ccOther.components.get(i);
+                if (!ls1.equalsExact(ls2, tolerance)) {
+                    return false;
+                }
+            }
+
+            return true;
         }
         return linearize(tolerance).equalsExact(other, tolerance);
     }
 
     public boolean equals(Geometry other) {
-        if (other instanceof CompoundRing) {
-            CompoundRing csOther = (CompoundRing) other;
-            return delegate.equals(csOther.delegate);
+        if (other instanceof CompoundCurve) {
+            CompoundCurve ccOther = (CompoundCurve) other;
+            if (ccOther.components.size() != components.size()) {
+                return false;
+            }
+            for (int i = 0; i < components.size(); i++) {
+                LineString ls1 = components.get(i);
+                LineString ls2 = ccOther.components.get(i);
+                if (!ls1.equals(ls2)) {
+                    return false;
+                }
+            }
+
+            return true;
         }
         return linearize().equals(other);
     }
 
     public boolean equalsTopo(Geometry other) {
-        if (other instanceof CompoundRing) {
-            CompoundRing csOther = (CompoundRing) other;
-            return delegate.equalsTopo(csOther.delegate);
+        if (other instanceof CompoundCurve) {
+            CompoundCurve ccOther = (CompoundCurve) other;
+            if (ccOther.components.size() != components.size()) {
+                return false;
+            }
+            for (int i = 0; i < components.size(); i++) {
+                LineString ls1 = components.get(i);
+                LineString ls2 = ccOther.components.get(i);
+                if (!ls1.equalsTopo(ls2)) {
+                    return false;
+                }
+            }
+
+            return true;
         }
         return linearize().equalsTopo(other);
     }
@@ -216,57 +309,53 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     }
 
     public String toCurvedText() {
-        return delegate.toCurvedText();
+        StringBuilder sb = new StringBuilder("COMPOUNDCURVE(");
+        for (int k = 0; k < components.size(); k++) {
+            LineString component = components.get(k);
+            if (component instanceof SingleCurvedGeometry<?>) {
+                SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) component;
+                sb.append(curved.toCurvedText());
+            } else {
+                sb.append("(");
+                CoordinateSequence cs = component.getCoordinateSequence();
+                for (int i = 0; i < cs.size(); i++) {
+                    sb.append(cs.getX(i) + " " + cs.getY(i));
+                    if (i < cs.size() - 1) {
+                        sb.append(", ");
+                    }
+                }
+                sb.append(")");
+            }
+            if (k < components.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append(")");
+        return sb.toString();
     }
 
     public boolean equalsNorm(Geometry g) {
         return super.equalsNorm(g);
     }
-    
-    public Point getPointN(int n) {
-        if(n == 0) {
-            return getStartPoint();
-        }
-        return linearize().getPointN(n);
-    }
-
-    public Point getStartPoint() {
-        return delegate.getStartPoint();
-    }
-
-    public Point getEndPoint() {
-        return delegate.getEndPoint();
-    }
-
-
 
     /*
      * Simple linearized delegate methods
      */
 
+    public boolean isRectangle() {
+        return linearized.isRectangle();
+    }
 
     public Coordinate[] getCoordinates() {
         return linearize().getCoordinates();
     }
 
     public CoordinateSequence getCoordinateSequence() {
-        // trick to avoid issues while JTS validates the ring is closed,
-        // it's calling super.isClosed() breaking the local override
-        if (delegate != null) {
-            return linearize().getCoordinateSequence();
-        } else {
-            return super.getCoordinateSequence();
-        }
+        return linearize().getCoordinateSequence();
     }
 
     public Coordinate getCoordinateN(int n) {
-        // trick to avoid issues while JTS validates the ring is closed,
-        // it's calling super.isClosed() breaking the local override
-        if (delegate != null) {
-            return linearize().getCoordinateN(n);
-        } else {
-            return super.getCoordinateN(n);
-        }
+        return linearize().getCoordinateN(n);
     }
 
     public Coordinate getCoordinate() {
@@ -274,13 +363,19 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     }
 
     public int getNumPoints() {
-        // trick to avoid issues while JTS validates the ring is closed,
-        // it's calling super.isClosed() breaking the local override
-        if (delegate != null) {
-            return linearize().getNumPoints();
-        } else {
-            return super.getNumPoints();
-        }
+        return linearize().getNumPoints();
+    }
+
+    public Point getPointN(int n) {
+        return linearize().getPointN(n);
+    }
+
+    public Point getStartPoint() {
+        return linearize().getStartPoint();
+    }
+
+    public Point getEndPoint() {
+        return linearize().getEndPoint();
     }
 
     public boolean isRing() {
@@ -392,6 +487,8 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     public IntersectionMatrix relate(Geometry g) {
         return linearize().relate(g);
     }
+
+
 
     public Geometry buffer(double distance) {
         return linearize().buffer(distance);

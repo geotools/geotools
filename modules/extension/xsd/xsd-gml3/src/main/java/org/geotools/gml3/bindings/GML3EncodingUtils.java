@@ -28,6 +28,8 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.feature.NameImpl;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
+import org.geotools.geometry.jts.SingleCurvedGeometry;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml2.bindings.GMLEncodingUtils;
@@ -85,7 +87,12 @@ public class GML3EncodingUtils {
     }
 
     static CoordinateSequence positions(LineString line) {
-        return line.getCoordinateSequence();
+        if (line instanceof SingleCurvedGeometry<?>) {
+            SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) line;
+            return new LiteCoordinateSequence(curved.getControlPoints());
+        } else {
+            return line.getCoordinateSequence();
+        }
     }
 
     static URI toURI(CoordinateReferenceSystem crs, SrsSyntax srsSyntax) {

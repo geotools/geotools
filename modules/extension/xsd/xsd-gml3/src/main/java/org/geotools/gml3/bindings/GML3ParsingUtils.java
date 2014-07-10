@@ -19,8 +19,13 @@ package org.geotools.gml3.bindings;
 import java.util.List;
 
 import org.eclipse.xsd.XSDElementDeclaration;
+import org.geotools.geometry.jts.CurvedGeometries;
+import org.geotools.geometry.jts.CurvedGeometryFactory;
+import org.geotools.geometry.jts.CircularArc;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml2.bindings.GML2ParsingUtils;
+import org.geotools.gml3.ArcParameters;
+import org.geotools.gml3.Circle;
 import org.geotools.xml.BindingWalkerFactory;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -37,77 +42,74 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Point;
 
-
 /**
  * Utility class for gml3 parsing.
- *
+ * 
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- *
- *
- *
- *
+ * 
+ * 
+ * 
+ * 
  * @source $URL$
  */
 public class GML3ParsingUtils {
     /**
-     * Utility method to implement Binding.parse for a binding which parses
-     * into A feature.
-     *
+     * Utility method to implement Binding.parse for a binding which parses into A feature.
+     * 
      * @param instance The instance being parsed.
      * @param node The parse tree.
      * @param value The value from the last binding in the chain.
      * @param ftCache The feature type cache.
      * @param bwFactory Binding walker factory.
-     *
+     * 
      * @return A feature.
      */
     public static SimpleFeature parseFeature(ElementInstance instance, Node node, Object value,
-        FeatureTypeCache ftCache, BindingWalkerFactory bwFactory)
-        throws Exception {
+            FeatureTypeCache ftCache, BindingWalkerFactory bwFactory) throws Exception {
         return GML2ParsingUtils.parseFeature(instance, node, value, ftCache, bwFactory);
     }
 
     /**
      * Turns a xml type definition into a geotools feature type.
+     * 
      * @param type The xml schema tupe.
-     *
+     * 
      * @return The corresponding geotools feature type.
      */
     public static SimpleFeatureType featureType(XSDElementDeclaration element,
-        BindingWalkerFactory bwFactory) throws Exception {
+            BindingWalkerFactory bwFactory) throws Exception {
         return GML2ParsingUtils.featureType(element, bwFactory);
     }
 
     /**
      * Turns a parse node + feature type + fid info a feature.
      */
-    static SimpleFeature feature(SimpleFeatureType fType, String fid, Node node)
-        throws Exception {
+    static SimpleFeature feature(SimpleFeatureType fType, String fid, Node node) throws Exception {
         return GML2ParsingUtils.feature(fType, fid, node);
     }
 
     static CoordinateReferenceSystem crs(Node node) {
         return GML2ParsingUtils.crs(node);
     }
-    
+
     /**
-     * Returns the number of dimensions for the specified node, eventually recursing up to find
-     * the parent node that has the indication of the dimensions (normally the top-most geometry
-     * element has it, not the posList). Returns 2 if no srsDimension attribute could be found. 
+     * Returns the number of dimensions for the specified node, eventually recursing up to find the
+     * parent node that has the indication of the dimensions (normally the top-most geometry element
+     * has it, not the posList). Returns 2 if no srsDimension attribute could be found.
      * 
      * @param node
      * @return
      */
     public static int dimensions(Node node) {
         Node current = node;
-        while(current != null) {
-            Node dimensions = (Node) current.getAttribute("srsDimension");
+        while (current != null) {
+            Node dimensions = current.getAttribute("srsDimension");
             if (dimensions != null) {
                 return ((Number) dimensions.getValue()).intValue();
             }
             current = current.getParent();
         }
-        
+
         return 2;
     }
 
@@ -120,7 +122,7 @@ public class GML3ParsingUtils {
     }
 
     static LineString line(Node node, GeometryFactory gf, CoordinateSequenceFactory csf,
-        boolean ring) {
+            boolean ring) {
         if (node.hasChild(DirectPosition.class)) {
             List dps = node.getChildValues(DirectPosition.class);
             DirectPosition dp = (DirectPosition) dps.get(0);
@@ -167,7 +169,7 @@ public class GML3ParsingUtils {
                 seq = csf.create(dps.length, dps[0].getDimension());
 
                 for (int i = 0; i < dps.length; i++) {
-                    DirectPosition dp = (DirectPosition) dps[i];
+                    DirectPosition dp = dps[i];
 
                     for (int j = 0; j < dp.getDimension(); j++) {
                         seq.setOrdinate(i, j, dp.getOrdinate(j));
@@ -179,7 +181,8 @@ public class GML3ParsingUtils {
         }
 
         if (node.hasChild(CoordinateSequence.class)) {
-            CoordinateSequence seq = (CoordinateSequence) node.getChildValue(CoordinateSequence.class);
+            CoordinateSequence seq = (CoordinateSequence) node
+                    .getChildValue(CoordinateSequence.class);
 
             return ring ? gf.createLinearRing(seq) : gf.createLineString(seq);
         }
@@ -187,5 +190,32 @@ public class GML3ParsingUtils {
         return null;
     }
 
-    
+    /**
+     * Returns a curved geometry factory given the linearization constraints, the original factory,
+     * and a coordinate sequence representing the control points of a curved geometry
+     * 
+     * @param arcParameters
+     * @param gFactory
+     * @param cs
+     * @return
+     */
+    public static CurvedGeometryFactory getCurvedGeometryFactory(ArcParameters arcParameters,
+            GeometryFactory gFactory, CoordinateSequence cs) {
+        CurvedGeometryFactory factory;
+        if (arcParameters != null && arcParameters.getLinearizationTolerance() != null) {
+            double tolerance = Double.MAX_VALUE;
+            if (cs != null) {
+                CircularArc arc = CurvedGeometries.getArc(cs, 0);
+                Circle c = new Circle(arc.getCenter(), arc.getRadius());
+                tolerance = arcParameters.getLinearizationTolerance().getTolerance(c);
+            }
+            factory = new CurvedGeometryFactory(gFactory, tolerance);
+        } else if (gFactory instanceof CurvedGeometryFactory) {
+            factory = (CurvedGeometryFactory) gFactory;
+        } else {
+            factory = new CurvedGeometryFactory(gFactory, Double.MAX_VALUE);
+        }
+        return factory;
+    }
+
 }

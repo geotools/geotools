@@ -16,8 +16,15 @@
  */
 package org.geotools.gml3.bindings;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
+import org.geotools.geometry.jts.CompoundCurvedGeometry;
+import org.geotools.geometry.jts.CurvedGeometry;
+import org.geotools.geometry.jts.CurvedGeometryFactory;
+import org.geotools.gml3.ArcParameters;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -25,7 +32,6 @@ import org.geotools.xml.Node;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
 
 
 /**
@@ -66,8 +72,14 @@ import com.vividsolutions.jts.geom.MultiLineString;
 public class CurveTypeBinding extends AbstractComplexBinding {
     protected GeometryFactory gf;
 
+    ArcParameters arcParameters;
+
     public CurveTypeBinding(GeometryFactory gf) {
         this.gf = gf;
+    }
+
+    public void setArcParameters(ArcParameters arcParameters) {
+        this.arcParameters = arcParameters;
     }
 
     /**
@@ -84,8 +96,7 @@ public class CurveTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Class getType() {
-        //return Curve.class;
-        return MultiLineString.class;
+        return CurvedGeometry.class;
     }
 
     public int getExecutionMode() {
@@ -102,23 +113,34 @@ public class CurveTypeBinding extends AbstractComplexBinding {
         throws Exception {
         LineString[] segments = (LineString[]) node.getChildValue("segments");
 
-        return gf.createMultiLineString(segments);
+        if(segments.length == 0) {
+            return null;
+        } else if(segments.length > 1) {
+            return segments[1];
+        } else {
+            LineString curved = null;
+            for (LineString ls : segments) {
+                if (ls instanceof CurvedGeometry<?>) {
+                    curved = ls;
+                }
+            }
+            CurvedGeometryFactory factory = GML3ParsingUtils.getCurvedGeometryFactory(
+                    arcParameters, gf, curved != null ? curved.getCoordinateSequence() : null);
+            return factory.createCurvedGeometry(Arrays.asList(segments));
 
-        //return new Curve(segments, gf);
+        }
     }
 
     public Object getProperty(Object object, QName name)
         throws Exception {
         if ("segments".equals(name.getLocalPart())) {
-            //Curve curve = (Curve) object;
-            MultiLineString curve = (MultiLineString) object;
-            LineString[] segments = new LineString[curve.getNumGeometries()];
-
-            for (int i = 0; i < segments.length; i++) {
-                segments[i] = (LineString) curve.getGeometryN(i);
+            if (object instanceof CompoundCurvedGeometry<?>) {
+                CompoundCurvedGeometry<?> curve = (CompoundCurvedGeometry<?>) object;
+                List<LineString> components = curve.getComponents();
+                return components;
+            } else {
+                return object;
             }
-
-            return segments;
         }
 
         return null;

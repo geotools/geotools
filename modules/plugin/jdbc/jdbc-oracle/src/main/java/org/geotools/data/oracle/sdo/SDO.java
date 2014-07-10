@@ -27,6 +27,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.geotools.geometry.jts.CircularArc;
+import org.geotools.geometry.jts.CircularArc;
+import org.geotools.geometry.jts.CurvedGeometries;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 
@@ -2756,7 +2759,19 @@ public final class SDO {
             //
             CoordinateSequence ext = subList(gf.getCoordinateSequenceFactory(), coords, GTYPE,
                     elemInfo, triplet, false);
-            ring = gf.createCircle(ext);
+            if (ext.size() != 3) {
+                throw new IllegalArgumentException(
+                        "The coordinate sequence for the circle creation must contain 3 points, the one at hand contains "
+                                + ext.size() + " instead");
+            }
+            double[] cp = new double[ext.size() * 2 + 2];
+            for (int i = 0; i < ext.size(); i++) {
+                cp[i * 2] = ext.getOrdinate(i, 0);
+                cp[i * 2 + 1] = ext.getOrdinate(i, 1);
+            }
+            // figure out the other point
+            CircularArc arc = new CircularArc(cp[0], cp[1], cp[2], cp[3], cp[4], cp[5]);
+            ring = CurvedGeometries.toCircle(arc, gf, gf.getTolerance());
         } else if (eTYPE == ETYPE.COMPOUND_POLYGON_EXTERIOR
                 || eTYPE == ETYPE.COMPOUND_POLYGON_EXTERIOR) {
             int triplets = INTERPRETATION;

@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.LineString;
 
 /**
@@ -31,10 +32,10 @@ public interface SingleCurvedGeometry<T extends LineString> extends CurvedGeomet
      * @param tolerance
      * @return
      */
-    public LiteCoordinateSequence getLinearizedCoordinateSequence(final double tolerance);
+    public CoordinateSequence getLinearizedCoordinateSequence(final double tolerance);
 
     /**
-     * Returns the control points for this string/ring
+     * Returns the control points for this string/ring.
      * 
      * @return
      */

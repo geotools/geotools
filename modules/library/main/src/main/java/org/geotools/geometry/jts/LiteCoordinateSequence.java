@@ -88,7 +88,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
      * @param coords
      * 
      */
-    public LiteCoordinateSequence(double[] coords) {
+    public LiteCoordinateSequence(double... coords) {
       init(coords, 2);
     }
     

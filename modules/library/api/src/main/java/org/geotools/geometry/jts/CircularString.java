@@ -29,86 +29,173 @@ import com.vividsolutions.jts.geom.GeometryComponentFilter;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.GeometryFilter;
 import com.vividsolutions.jts.geom.IntersectionMatrix;
-import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 /**
- * A CircularRing is a CircularString whose start and end point coincide. The ring needs to be
- * formed of at least two arc circles, in order to be able to determine its orientation.
+ * A CircularString is a sequence of zero or more connected circular arc segments. A circular arc
+ * segment is a curved segment defined by three points in a two-dimensional plane; the first point
+ * cannot be the same as the third point.
  * 
  * @author Andrea Aime - GeoSolutions
  */
-public class CircularRing extends LinearRing implements SingleCurvedGeometry<LinearRing> {
+public class CircularString extends LineString implements SingleCurvedGeometry<LineString> {
+
+    /**
+     * Helper class that automates the scan of the list of CircularArc in the controlpoint sequence
+     */
+    abstract class ArcScan {
+        public ArcScan() {
+            if (controlPoints.length == 3) {
+                // single arc case
+                CircularArc arc = new CircularArc(controlPoints);
+                visitArc(arc);
+            } else {
+                // go over each 3-points set and linearize it
+                double[] arcControlPoints = new double[6];
+                CircularArc arc = new CircularArc(arcControlPoints);
+                for (int i = 0; i <= controlPoints.length - 6; i += 4) {
+                    // have the arc work off the new control points
+                    System.arraycopy(controlPoints, i, arcControlPoints, 0, 6);
+                    arc.reset();
+                    visitArc(arc);
+                }
+            }
+        }
+
+        protected abstract void visitArc(CircularArc arc);
+
+    }
 
     private static final long serialVersionUID = -5796254063449438787L;
 
     /**
      * This sequence is used as a fake to trick the constructor
      */
-    static final CoordinateSequence FAKE_RING_2D = new LiteCoordinateSequence(new double[] { 0, 0,
-            0, 1, 1, 1, 0, 0 });
+    static final CoordinateSequence FAKE_STRING_2D = new CoordinateArraySequence(new Coordinate[] {
+            new Coordinate(0, 0), new Coordinate(1, 1) });
 
-    CircularString delegate;
+    double[] controlPoints;
 
-    public CircularRing(CoordinateSequence points, GeometryFactory factory, double tolerance) {
-        super(FAKE_RING_2D, factory);
-        delegate = new CircularString(points, factory, tolerance);
-        if (!delegate.isClosed()) {
-            throw new IllegalArgumentException(
-                    "Start and end point are not matching, this is not a ring");
+    double tolerance;
+
+    LineString linearized;
+
+    public CircularString(CoordinateSequence points, GeometryFactory factory, double tolerance) {
+        super(FAKE_STRING_2D, factory);
+        this.tolerance = tolerance;
+        if (points.getDimension() != 2) {
+            throw new IllegalArgumentException("Circular strings are restricted to 2 dimensions "
+                    + "at the moment. Contributions to get ND support welcomed!");
         }
-    }
 
-    public CircularRing(double[] controlPoints, GeometryFactory factory, double tolerance) {
-        super(FAKE_RING_2D, factory);
-        delegate = new CircularString(controlPoints, factory, tolerance);
-        if (!delegate.isClosed()) {
-            throw new IllegalArgumentException(
-                    "Start and end point are not matching, this is not a ring");
+        int pointCount = points.size();
+        controlPoints = new double[pointCount * 2];
+        for (int i = 0; i < pointCount; i++) {
+            controlPoints[i * 2] = points.getX(i);
+            controlPoints[i * 2 + 1] = points.getY(i);
         }
+        init(controlPoints, tolerance);
     }
 
-    @Override
-    public int getNumArcs() {
-        return delegate.getNumArcs();
+    public CircularString(double[] controlPoints, GeometryFactory factory, double tolerance) {
+        super(FAKE_STRING_2D, factory);
+        init(controlPoints, tolerance);
     }
 
-    @Override
-    public CircularArc getArcN(int arcIndex) {
-        return delegate.getArcN(arcIndex);
-    }
-
-    @Override
-    public LinearRing linearize() {
-        LiteCoordinateSequence cs = delegate.getLinearizedCoordinateSequence(delegate.tolerance);
-        return getFactory().createLinearRing(cs);
-    }
-
-    public LinearRing linearize(double tolerance) {
-        LiteCoordinateSequence cs = delegate.getLinearizedCoordinateSequence(delegate.tolerance);
-        return getFactory().createLinearRing(cs);
-    }
-
-    @Override
-    public double getTolerance() {
-        return delegate.getTolerance();
-    }
-
-    @Override
-    public LiteCoordinateSequence getLinearizedCoordinateSequence(double tolerance) {
-        return delegate.getLinearizedCoordinateSequence(tolerance);
+    private void init(double[] controlPoints, double tolerance) {
+        int length = controlPoints.length;
+        if (length % 2 != 0) {
+            throw new IllegalArgumentException(
+                    "Invalid number of ordinates, must be even, but it is " + length + " instead");
+        }
+        int pointCount = length / 2;
+        if (pointCount < 3 || (pointCount > 3 && (pointCount % 2) == 0)) {
+            throw new IllegalArgumentException("Invalid number of points, a circular string"
+                    + "is always made of an odd number of points, with a mininum of 3, "
+                    + "and adding 2 for each extra circular arc in the sequence");
+        }
+        this.controlPoints = controlPoints;
+        this.tolerance = tolerance;
     }
 
     @Override
     public double[] getControlPoints() {
-        return delegate.controlPoints;
+        return controlPoints;
+    }
+
+    @Override
+    public double getTolerance() {
+        return tolerance;
+    }
+
+    @Override
+    public int getNumArcs() {
+        return (controlPoints.length - 6) / 4 + 1;
+    }
+
+    @Override
+    public CircularArc getArcN(int arcIndex) {
+        int baseIdx = arcIndex * 4;
+        double[] arcControlPoints = new double[6];
+        System.arraycopy(controlPoints, baseIdx, arcControlPoints, 0, 6);
+        CircularArc arc = new CircularArc(arcControlPoints);
+        return arc;
+    }
+
+    @Override
+    public LineString linearize() {
+        return linearize(this.tolerance);
+    }
+
+
+    public LineString linearize(double tolerance) {
+        // use the cached one if we are asked for the default geometry tolerance
+        boolean isDefaultTolerance = CircularArc.equals(tolerance, this.tolerance);
+        if (linearized != null && isDefaultTolerance) {
+            return linearized;
+        }
+
+        CoordinateSequence cs = getLinearizedCoordinateSequence(tolerance);
+        LineString result = new LineString(cs, factory);
+        if (isDefaultTolerance) {
+            linearized = result;
+        }
+
+        return result;
+    }
+
+    public CoordinateSequence getLinearizedCoordinateSequence(final double tolerance) {
+        boolean isDefaultTolerance = CircularArc.equals(tolerance, this.tolerance);
+        if (linearized != null && isDefaultTolerance) {
+            return linearized.getCoordinateSequence();
+        }
+
+        final GrowableOrdinateArray gar = new GrowableOrdinateArray();
+        new ArcScan() {
+
+            protected void visitArc(CircularArc arc) {
+                // if it's not the first arc, we need to eliminate the last point,
+                // as the end point of the last arc is the start point of the new one
+                if (gar.size() > 0) {
+                    gar.setSize(gar.size() - 2);
+                }
+                arc.linearize(tolerance, gar);
+            }
+
+        };
+
+        CoordinateSequence cs = gar.toCoordinateSequence(getFactory());
+        return cs;
     }
 
     /* Optimized overridden methods */
 
     public boolean isClosed() {
-        return true;
+        return controlPoints[0] == controlPoints[controlPoints.length - 2]
+                && controlPoints[1] == controlPoints[controlPoints.length - 1];
     }
 
     public int getDimension() {
@@ -128,11 +215,41 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     }
 
     public Geometry reverse() {
-        double[] controlPoints = delegate.controlPoints;
-        GrowableDoubleArray array = new GrowableDoubleArray();
+        // reverse the control points
+        double[] reversed = new double[controlPoints.length];
+        System.arraycopy(controlPoints, 0, reversed, 0, controlPoints.length);
+        GrowableOrdinateArray array = new GrowableOrdinateArray();
         array.addAll(controlPoints);
         array.reverseOrdinates(0, array.size() - 1);
-        return new CircularRing(array.getData(), getFactory(), delegate.tolerance);
+        return new CircularString(array.getData(), getFactory(), tolerance);
+    }
+
+    public Point getInteriorPoint() {
+        int idx = controlPoints.length / 2;
+        return new Point(new CoordinateArraySequence(new Coordinate[] { new Coordinate(
+                controlPoints[idx], controlPoints[idx + 1]) }), getFactory());
+    }
+
+    public Geometry getEnvelope() {
+        return super.getEnvelope();
+    }
+
+    public Envelope getEnvelopeInternal() {
+        return super.getEnvelopeInternal();
+    }
+
+    @Override
+    protected Envelope computeEnvelopeInternal() {
+        final Envelope result = new Envelope();
+        new ArcScan() {
+
+            protected void visitArc(CircularArc arc) {
+                arc.expandEnvelope(result);
+            }
+
+        };
+
+        return result;
     }
 
     public int getNumGeometries() {
@@ -171,31 +288,14 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
         return false;
     }
 
-    public Point getInteriorPoint() {
-        return delegate.getInteriorPoint();
-    }
-
-    public Geometry getEnvelope() {
-        return delegate.getEnvelope();
-    }
-
-    public Envelope getEnvelopeInternal() {
-        return delegate.getEnvelopeInternal();
-    }
-
-    @Override
-    protected Envelope computeEnvelopeInternal() {
-        return delegate.getEnvelopeInternal();
-    }
-
     public boolean equalsExact(Geometry other) {
         return equalsExact(other, 0);
     }
 
     public boolean equalsExact(Geometry other, double tolerance) {
-        if (other instanceof CircularRing) {
-            CircularRing csOther = (CircularRing) other;
-            if (Arrays.equals(delegate.controlPoints, csOther.delegate.controlPoints)) {
+        if (other instanceof CircularString) {
+            CircularString csOther = (CircularString) other;
+            if (Arrays.equals(controlPoints, csOther.controlPoints)) {
                 return true;
             }
         }
@@ -203,9 +303,9 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     }
 
     public boolean equals(Geometry other) {
-        if (other instanceof CircularRing) {
-            CircularRing csOther = (CircularRing) other;
-            if (Arrays.equals(delegate.controlPoints, csOther.delegate.controlPoints)) {
+        if (other instanceof CircularString) {
+            CircularString csOther = (CircularString) other;
+            if (Arrays.equals(controlPoints, csOther.controlPoints)) {
                 return true;
             }
         }
@@ -213,9 +313,9 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     }
 
     public boolean equalsTopo(Geometry other) {
-        if (other instanceof CircularRing) {
-            CircularRing csOther = (CircularRing) other;
-            if (Arrays.equals(delegate.controlPoints, csOther.delegate.controlPoints)) {
+        if (other instanceof CircularString) {
+            CircularString csOther = (CircularString) other;
+            if (Arrays.equals(controlPoints, csOther.controlPoints)) {
                 return true;
             }
         }
@@ -240,7 +340,6 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
 
     public String toCurvedText() {
         StringBuilder sb = new StringBuilder("CIRCULARSTRING(");
-        double[] controlPoints = delegate.controlPoints;
         for (int i = 0; i < controlPoints.length;) {
             sb.append(controlPoints[i++] + " " + controlPoints[i++]);
             if (i < controlPoints.length) {
@@ -255,6 +354,26 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
         return super.equalsNorm(g);
     }
 
+    public Point getPointN(int n) {
+        if (n == 0) {
+            return getStartPoint();
+        } else {
+            return linearize().getPointN(n);
+        }
+    }
+
+    public Point getStartPoint() {
+        return new Point(new CoordinateArraySequence(new Coordinate[] { new Coordinate(
+                controlPoints[0], controlPoints[1]) }), getFactory());
+    }
+
+    public Point getEndPoint() {
+        return new Point(
+                new CoordinateArraySequence(new Coordinate[] { new Coordinate(
+                        controlPoints[controlPoints.length - 2],
+                        controlPoints[controlPoints.length - 1]) }), getFactory());
+    }
+
     /*
      * Simple linearized delegate methods
      */
@@ -264,23 +383,11 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     }
 
     public CoordinateSequence getCoordinateSequence() {
-        // trick to avoid issues while JTS validates the ring is closed,
-        // it's calling super.isClosed() breaking the local override
-        if (delegate != null) {
-            return linearize().getCoordinateSequence();
-        } else {
-            return super.getCoordinateSequence();
-        }
+        return linearize().getCoordinateSequence();
     }
 
     public Coordinate getCoordinateN(int n) {
-        // trick to avoid issues while JTS validates the ring is closed,
-        // it's calling super.isClosed() breaking the local override
-        if (delegate != null) {
-            return linearize().getCoordinateN(n);
-        } else {
-            return super.getCoordinateN(n);
-        }
+        return linearize().getCoordinateN(n);
     }
 
     public Coordinate getCoordinate() {
@@ -288,25 +395,7 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     }
 
     public int getNumPoints() {
-        // trick to avoid issues while JTS validates the ring is closed,
-        // it's calling super.isClosed() breaking the local override
-        if (delegate != null) {
-            return linearize().getNumPoints();
-        } else {
-            return super.getNumPoints();
-        }
-    }
-
-    public Point getPointN(int n) {
-        return linearize().getPointN(n);
-    }
-
-    public Point getStartPoint() {
-        return linearize().getStartPoint();
-    }
-
-    public Point getEndPoint() {
-        return linearize().getEndPoint();
+        return linearize().getNumPoints();
     }
 
     public boolean isRing() {

@@ -1,5 +1,22 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
+ *    
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.geometry.jts;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,7 +36,14 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
+/**
+ * A {@link GeometryFactory} with extra methods to generated {@link CurvedGeometry} instances
+ * 
+ * @author Andrea Aime - GeoSolutions
+ */
 public class CurvedGeometryFactory extends GeometryFactory {
+
+    private static final long serialVersionUID = -298811277709598383L;
 
     GeometryFactory delegate;
 
@@ -38,7 +62,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
      * Creates a {@link CircularString} or a {@link CircularRing} depending on whether the points
      * are forming a closed ring, or not
      */
-    public LineString createCurvedGeometry(double[] controlPoints) {
+    public LineString createCurvedGeometry(double... controlPoints) {
         if (controlPoints[0] == controlPoints[controlPoints.length - 2]
                 && controlPoints[1] == controlPoints[controlPoints.length - 1]) {
             return new CircularRing(controlPoints, this, tolerance);
@@ -64,6 +88,17 @@ public class CurvedGeometryFactory extends GeometryFactory {
     /**
      * Creates a compound curve with the given components
      */
+    public LineString createCurvedGeometry(LineString... components) {
+        if (components == null) {
+            // return an empty lineString?
+            return createLineString(new Coordinate[] {});
+        }
+        return createCurvedGeometry(Arrays.asList(components));
+    }
+
+    /**
+     * Creates a compound curve with the given components
+     */
     public LineString createCurvedGeometry(List<LineString> components) {
         if (components.isEmpty()) {
             // return an empty lineString?
@@ -79,30 +114,6 @@ public class CurvedGeometryFactory extends GeometryFactory {
         } else {
             return new CompoundCurve(components, this, tolerance);
         }
-    }
-
-    /**
-     * Creates a circle from a 3 points coordinate sequence
-     * 
-     * @param ext
-     * @param gf
-     * @param maxValue
-     * @return
-     */
-    public CircularRing createCircle(CoordinateSequence cs) {
-        if (cs.size() != 3) {
-            throw new IllegalArgumentException(
-                    "The coordinate sequence for the circle creation must contain 3 points, the one at hand contains "
-                            + cs.size() + " instead");
-        }
-        double[] cp = new double[cs.size() * 2 + 2];
-        for (int i = 0; i < cs.size(); i++) {
-            cp[i * 2] = cs.getOrdinate(i, 0);
-            cp[i * 2 + 1] = cs.getOrdinate(i, 1);
-        }
-        // figure out the other point
-        CircularArc arc = new CircularArc(cp[0], cp[1], cp[2], cp[3], cp[4], cp[5]);
-        return arc.toCircle(this, tolerance);
     }
 
     /* Delegate methods */
@@ -205,6 +216,15 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
     public CoordinateSequenceFactory getCoordinateSequenceFactory() {
         return delegate.getCoordinateSequenceFactory();
+    }
+
+    /**
+     * Returns the linearization tolerance used to create the curved geometries
+     * 
+     * @return
+     */
+    public double getTolerance() {
+        return tolerance;
     }
 
 }

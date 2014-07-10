@@ -16,12 +16,14 @@
  */
 package org.geotools.gml3.bindings;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.xml.namespace.QName;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -60,7 +62,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @source $URL$
  */
 public class GML3MockData {
-    static GeometryFactory gf = new GeometryFactory();
+    static CurvedGeometryFactory gf = new CurvedGeometryFactory(0.1);
     
     static LiteCoordinateSequenceFactory liteCSF = new LiteCoordinateSequenceFactory();
     static GeometryFactory liteGF = new GeometryFactory(liteCSF);
@@ -242,6 +244,14 @@ public class GML3MockData {
         Element arc = element(qName("Arc"), document, parent);
         Element posList = element(qName("posList"), document, arc);
         posList.appendChild(document.createTextNode("1.0 1.0 2.0 2.0 3.0 1.0"));
+
+        return arc;
+    }
+
+    public static Element arcStringWithPosList(Document document, Node parent) {
+        Element arc = element(qName("ArcString"), document, parent);
+        Element posList = element(qName("posList"), document, arc);
+        posList.appendChild(document.createTextNode("1.0 1.0 2.0 2.0 3.0 1.0 5 5 7 3"));
 
         return arc;
     }
@@ -482,6 +492,15 @@ public class GML3MockData {
         return gf.createMultiLineString(new LineString[] { lineString(), lineString() });
     }
 
+    public static LineString compoundCurve() {
+        CurvedGeometryFactory factory = new CurvedGeometryFactory(0.1);
+        LineString curve = factory.createCurvedGeometry(new LiteCoordinateSequence(1, 1, 2, 2, 3,
+                1, 5, 5, 7, 3));
+        LineString straight = factory.createLineString(new LiteCoordinateSequence(7, 3, 10, 15));
+        LineString compound = factory.createCurvedGeometry(curve, straight);
+        return compound;
+    }
+
     public static Element multiLineString(Document document, Node parent) {
         Element multiLineString = element(qName("MultiLineString"), document, parent);
 
@@ -532,6 +551,15 @@ public class GML3MockData {
     
     public static MultiPolygon multiPolygon() {
         return gf.createMultiPolygon(new Polygon[] { polygon(), polygon() });
+    }
+
+    public static Polygon curvePolygon() {
+        LineString curve1 = gf.createCurvedGeometry(0, 0, 2, 0, 2, 1, 2, 3, 4, 3);
+        LineString line1 = gf.createLineString(new LiteCoordinateSequence(4, 3, 4, 5, 1, 4, 0, 0));
+        LinearRing shell = (LinearRing) gf.createCurvedGeometry(Arrays.asList(curve1, line1));
+        LinearRing hole = (LinearRing) gf.createCurvedGeometry(1.7, 1, 1.4, 0.4, 1.6, 0.4, 1.6,
+                0.5, 1.7, 1);
+        return gf.createPolygon(shell, new LinearRing[] { hole });
     }
 
     public static Element multiPolygon(Document document, Node parent) {
@@ -635,7 +663,7 @@ public class GML3MockData {
         typeBuilder.add("count", Integer.class);
         typeBuilder.add("date", Date.class);
 
-        SimpleFeatureType type = (SimpleFeatureType) typeBuilder.buildFeatureType();
+        SimpleFeatureType type = typeBuilder.buildFeatureType();
 
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         builder.add("theName");
@@ -644,7 +672,7 @@ public class GML3MockData {
         builder.add(new Integer(1));
         builder.add(new Date());
 
-        return (SimpleFeature) builder.buildFeature("fid.1");
+        return builder.buildFeature("fid.1");
     }
 
     public static Element featureMember(Document document, Node parent) {

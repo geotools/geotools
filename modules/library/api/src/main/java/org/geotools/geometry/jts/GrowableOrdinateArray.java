@@ -16,6 +16,9 @@
  */
 package org.geotools.geometry.jts;
 
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.GeometryFactory;
+
 /**
  * Simple support class that allows accumulating doubles in an array, transparently growing it as
  * the data gets added.
@@ -23,7 +26,7 @@ package org.geotools.geometry.jts;
  * @author Andrea Aime - GeoSolutions
  * 
  */
-class GrowableDoubleArray {
+class GrowableOrdinateArray {
 
     private double[] data;
 
@@ -34,14 +37,14 @@ class GrowableDoubleArray {
      * 
      * @param size
      */
-    public GrowableDoubleArray(int size) {
+    public GrowableOrdinateArray(int size) {
         this.data = new double[size];
     }
 
     /**
      * Builds an initialized array, which will be primed when {@link #ensureLength(int)} is called
      */
-    GrowableDoubleArray() {
+    GrowableOrdinateArray() {
 
     }
 
@@ -78,6 +81,21 @@ class GrowableDoubleArray {
     }
 
     /**
+     * Appends a whole coordinate sequence to the array
+     * 
+     * @param cs
+     */
+    public void addAll(CoordinateSequence cs) {
+        int coordinatesCount = cs.size();
+        ensureLength(curr + coordinatesCount * 2);
+        for (int i = 0; i < coordinatesCount; i++) {
+            data[curr + i * 2] = cs.getOrdinate(i, 0);
+            data[curr + i * 2 + 1] = cs.getOrdinate(i, 1);
+        }
+        curr += coordinatesCount * 2;
+    }
+
+    /**
      * Returns the accumulated numbers, in an array cut to the current size
      * 
      * @return
@@ -93,6 +111,22 @@ class GrowableDoubleArray {
             System.arraycopy(data, 0, result, 0, curr);
             return result;
         }
+    }
+
+    /**
+     * Turns the array of ordinates into a coordinate sequence
+     * 
+     * @param gf
+     * @return
+     */
+    public CoordinateSequence toCoordinateSequence(GeometryFactory gf) {
+        double[] data = getData();
+        CoordinateSequence cs = gf.getCoordinateSequenceFactory().create(data.length / 2, 2);
+        for (int i = 0; i < cs.size(); i++) {
+            cs.setOrdinate(i, 0, data[i * 2]);
+            cs.setOrdinate(i, 1, data[i * 2 + 1]);
+        }
+        return cs;
     }
 
     public int size() {
@@ -164,5 +198,6 @@ class GrowableDoubleArray {
         sb.append("]");
         return sb.toString();
     }
+
 
 }

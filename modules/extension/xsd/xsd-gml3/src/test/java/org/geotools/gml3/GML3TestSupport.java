@@ -16,6 +16,11 @@
  */
 package org.geotools.gml3;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.custommonkey.xmlunit.SimpleNamespaceContext;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
 import org.w3c.dom.Document;
@@ -71,6 +76,20 @@ import org.w3c.dom.NodeList;
  * @source $URL$
  */
 public abstract class GML3TestSupport extends XMLTestSupport {
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+
+        Map<String, String> namespaces = new HashMap<String, String>();
+        namespaces.put("xs", "http://www.w3.org/2001/XMLSchema");
+        namespaces.put("xsd", "http://www.w3.org/2001/XMLSchema");
+        namespaces.put("gml", "http://www.opengis.net/gml");
+        namespaces.put("xlink", "http://www.w3.org/1999/xlink");
+        namespaces.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
+    }
+
     protected void registerNamespaces(Element root) {
         super.registerNamespaces(root);
         root.setAttribute("xmlns:gml", "http://www.opengis.net/gml");

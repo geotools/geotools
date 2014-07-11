@@ -103,6 +103,19 @@ Crucial to this is the agreement that they use a unique "dbtype" for each format
 |                                | and cached for each connection in the pool.        |
 |                                | Set to 0 to have unbounded caching, -1 to disable  |
 +--------------------------------+----------------------------------------------------+
+| "Test while idle"              | Periodically test if the connections are still     |
+|                                | valid also while idle in the pool                  | 
++--------------------------------+----------------------------------------------------+
+| "Time between evictor runs"    | Number of seconds between idle object evictor runs.|
+|                                | The default value is 300 seconds.                  | 
++--------------------------------+----------------------------------------------------+
+| "Min evictable time"           | Number of seconds a connection needs to stay idle  |
+|                                | before the evictor starts to consider closing it   |
++--------------------------------+----------------------------------------------------+
+| "Evictor tests per run"        | Number of connections checked by the idle          |
+|                                | connection evictor for each of its runs.           |
+|                                | The default value is 3 connections.                |
++--------------------------------+----------------------------------------------------+
 
 **Tweaking and Performance**
 

@@ -16,8 +16,11 @@
  */
 package org.geotools.data;
 
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -36,20 +39,28 @@ public class FeatureLockTest {
     long lockDuration;
     FeatureLock lock;
 
-    @Before
-    public void setUp() throws Exception {
-        lockDuration = 240; // 240 minutes
+    @Test
+    public void testGetID() {
+        lockDuration = 240; // 240 milliseconds
         lockName = "TestLock";
         lock = new FeatureLock(lockName, lockDuration);
-    }
-
-    @Test
-    public void testGetID() {        
         assertEquals( "lockName", lockName, lock.getAuthorization() );
     }
 
     @Test
-    public void testGetExpire() {        
+    public void testGetExpire() {
+        lockDuration = 240; // 240 milliseconds
+        lockName = "TestLock";
+        lock = new FeatureLock(lockName, lockDuration);
         assertEquals( "lockDate", lockDuration, lock.getDuration() ); 
     }
+
+    @Test
+    public void testGetExpireSeconds() {
+        lockDuration = 15; // 15 seconds
+        lockName = "TestLock";
+        lock = new FeatureLock(lockName, lockDuration, TimeUnit.SECONDS );
+        assertEquals( "lockDate", lockDuration*1000, lock.getDuration() ); 
+    }
+
 }

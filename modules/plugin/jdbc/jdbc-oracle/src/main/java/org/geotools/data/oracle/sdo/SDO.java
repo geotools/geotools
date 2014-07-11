@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.geotools.geometry.jts.CircularArc;
-import org.geotools.geometry.jts.CircularArc;
+import org.geotools.geometry.jts.CompoundCurvedGeometry;
 import org.geotools.geometry.jts.CurvedGeometries;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
@@ -2631,7 +2631,8 @@ public final class SDO {
                 new int[] { ETYPE.COMPOUND_POLYGON_EXTERIOR, ETYPE.COMPOUND_POLYGON, ETYPE.POLYGON,
                         ETYPE.POLYGON_EXTERIOR,
                         ETYPE.FACE_EXTERIOR, ETYPE.FACE_EXTERIOR });
-        if ((INTERPRETATION < 1) || (INTERPRETATION > 4)) {
+        if ((eTYPE != ETYPE.COMPOUND_POLYGON_EXTERIOR) && (eTYPE != ETYPE.COMPOUND_POLYGON)
+                && ((INTERPRETATION < 1) || (INTERPRETATION > 4))) {
             LOGGER.warning("Could not create JTS Polygon with INTERPRETATION "
                     + INTERPRETATION
                     + " "
@@ -2733,14 +2734,25 @@ public final class SDO {
                 new int[] { ETYPE.COMPOUND_POLYGON, ETYPE.COMPOUND_POLYGON_EXTERIOR,
                         ETYPE.COMPOUND_POLYGON_INTERIOR, ETYPE.POLYGON, ETYPE.POLYGON_EXTERIOR,
                         ETYPE.POLYGON_INTERIOR, ETYPE.FACE_EXTERIOR, ETYPE.FACE_EXTERIOR });
-        if ((INTERPRETATION < 1) || (INTERPRETATION > 4)) {
+        if ((eTYPE != ETYPE.COMPOUND_POLYGON_EXTERIOR) && (eTYPE != ETYPE.COMPOUND_POLYGON)
+                && (eTYPE != ETYPE.COMPOUND_POLYGON_INTERIOR)
+                && ((INTERPRETATION < 1) || (INTERPRETATION > 4))) {
             LOGGER.warning("Could not create LinearRing with INTERPRETATION " + INTERPRETATION
                     + " - we can only support 1, 2, 3 and 4");
             return null;
         }
         LinearRing ring;
 
-        if (INTERPRETATION == 1) {
+        if (eTYPE == ETYPE.COMPOUND_POLYGON_EXTERIOR || eTYPE == ETYPE.COMPOUND_POLYGON_INTERIOR) {
+            int triplets = INTERPRETATION;
+            List<LineString> components = new ArrayList<>(triplets);
+            for (int i = 1; i <= triplets; i++) {
+                LineString component = createLine(gf, GTYPE, SRID, elemInfo, triplet + i, coords,
+                        i < triplets);
+                components.add(component);
+            }
+            ring = (LinearRing) gf.createCurvedGeometry(components);
+        } else if (INTERPRETATION == 1) {
             ring = gf.createLinearRing(subList(gf.getCoordinateSequenceFactory(), coords, GTYPE,
                     elemInfo, triplet, false));
         } else if (INTERPRETATION == 3) {
@@ -2772,16 +2784,6 @@ public final class SDO {
             // figure out the other point
             CircularArc arc = new CircularArc(cp[0], cp[1], cp[2], cp[3], cp[4], cp[5]);
             ring = CurvedGeometries.toCircle(arc, gf, gf.getTolerance());
-        } else if (eTYPE == ETYPE.COMPOUND_POLYGON_EXTERIOR
-                || eTYPE == ETYPE.COMPOUND_POLYGON_EXTERIOR) {
-            int triplets = INTERPRETATION;
-            List<LineString> components = new ArrayList<>(triplets);
-            for (int i = 1; i <= triplets; i++) {
-                LineString component = createLine(gf, GTYPE, SRID, elemInfo, triplet + i, coords,
-                        i < triplets);
-                components.add(component);
-            }
-            ring = (LinearRing) gf.createCurvedGeometry(components);
         } else {
             throw new IllegalArgumentException("ELEM_INFO INTERPRETAION "
                 + elemInfo[2] + " not supported"
@@ -2966,9 +2968,13 @@ LINES:      // bad bad gotos jody
         
         if (!(STARTING_OFFSET >= 1) || !(STARTING_OFFSET <= LENGTH))
             throw new IllegalArgumentException("ELEM_INFO STARTING_OFFSET "+STARTING_OFFSET+" inconsistent with ORDINATES length "+coords.size());
-        if(!(eTYPE == ETYPE.POLYGON) && !(eTYPE == ETYPE.POLYGON_EXTERIOR) && !(eTYPE == ETYPE.FACE_EXTERIOR) && !(eTYPE == ETYPE.FACE_INTERIOR))
+        if (!(eTYPE == ETYPE.POLYGON) && !(eTYPE == ETYPE.POLYGON_EXTERIOR)
+                && !(eTYPE == ETYPE.FACE_EXTERIOR) && !(eTYPE == ETYPE.FACE_INTERIOR)
+                && !(eTYPE == ETYPE.COMPOUND_POLYGON)
+                && !(eTYPE == ETYPE.COMPOUND_POLYGON_EXTERIOR))
             throw new IllegalArgumentException("ETYPE "+eTYPE+" inconsistent with expected POLYGON or POLYGON_EXTERIOR");
-        if (INTERPRETATION != 1 && INTERPRETATION != 3){
+        if (!(eTYPE == ETYPE.COMPOUND_POLYGON) && !(eTYPE == ETYPE.COMPOUND_POLYGON_EXTERIOR)
+                && INTERPRETATION != 1 && INTERPRETATION != 3) {
             LOGGER.warning( "Could not create MultiPolygon with INTERPRETATION "+INTERPRETATION +" - we can only represent 1 for straight edges, or 3 for rectangle");
             return null;
         }
@@ -2981,10 +2987,16 @@ POLYGONS:
         for (int i = triplet;
                 (i < endTriplet) && ((etype = ETYPE(elemInfo, i)) != -1);
                 i++) {
-            if ((etype == ETYPE.POLYGON) || (etype == ETYPE.POLYGON_EXTERIOR) || (etype == ETYPE.FACE_EXTERIOR) || (etype == ETYPE.FACE_INTERIOR)) {
+            if ((etype == ETYPE.POLYGON) || (etype == ETYPE.POLYGON_EXTERIOR)
+                    || (etype == ETYPE.FACE_EXTERIOR) || (etype == ETYPE.FACE_INTERIOR)) {
                 Polygon poly = createPolygon(gf, GTYPE, SRID, elemInfo, i,
                         coords);
                 i += poly.getNumInteriorRing(); // skip interior rings
+                list.add(poly);
+            } else if (etype == ETYPE.COMPOUND_POLYGON_EXTERIOR || etype == ETYPE.COMPOUND_POLYGON) {
+                Polygon poly = createPolygon(gf, GTYPE, SRID, elemInfo, i, coords);
+                int curvilinearElementsCount = getCurvilinearElementsCount(poly);
+                i += curvilinearElementsCount - 1;
                 list.add(poly);
             } else { // not a Polygon - get out here
 
@@ -2996,6 +3008,24 @@ POLYGONS:
         polys.setSRID(SRID);
 
         return polys;
+    }
+
+    private static int getCurvilinearElementsCount(Polygon poly) {
+        int sum = getCurvilinearElementsCount(poly.getExteriorRing());
+        for (int i = 0; i < poly.getNumInteriorRing(); i++) {
+            sum += getCurvilinearElementsCount(poly.getInteriorRingN(i));
+        }
+        return sum;
+    }
+
+    private static int getCurvilinearElementsCount(LineString ls) {
+        if (ls instanceof CompoundCurvedGeometry<?>) {
+            CompoundCurvedGeometry<?> curved = (CompoundCurvedGeometry<?>) ls;
+            // take into account the elemInfo describing the compound
+            return curved.getComponents().size() + 1;
+        } else {
+            return 1;
+        }
     }
 
     /**

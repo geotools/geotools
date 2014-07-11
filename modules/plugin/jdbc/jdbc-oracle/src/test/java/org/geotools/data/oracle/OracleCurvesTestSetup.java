@@ -61,6 +61,11 @@ public class OracleCurvesTestSetup extends JDBCDelegatingTestSetup {
                 + "  sdo_elem_info_array(1,1005,2, 1,2,1, 13,2,2, 19,2003,4),"
                 + "  sdo_ordinate_array(20,30, 11,30, 7,22, 7,15, 11,10, 21,10, 27,30, 25,27, 20,30, 10,17, 15,22, 20,17)))";
         run(sql);
+
+        sql = "INSERT INTO CURVES VALUES (8, 'Multipolygon with curves', sdo_geometry(2007, 32632, null,"
+                + " sdo_elem_info_array(1,1005,2, 1,2,1, 5,2,2,  11,2005,2, 11,2,1, 15,2,2, 21,1005,2, 21,2,1, 25,2,2),"
+                + " sdo_ordinate_array(6,10, 10,1, 14,10, 10,14,  6,10, 13,10, 10,2,  7,10, 10,13, 13,10, 106,110, 110,101, 114,110, 110,114,106,110)))";
+        run(sql);
     }
 
     private void dropCurveTable() throws Exception {

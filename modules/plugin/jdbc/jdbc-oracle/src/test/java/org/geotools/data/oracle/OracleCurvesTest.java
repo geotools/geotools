@@ -25,6 +25,7 @@ import org.opengis.filter.PropertyIsEqualTo;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
 public class OracleCurvesTest extends JDBCTestSupport {
@@ -223,6 +224,33 @@ public class OracleCurvesTest extends JDBCTestSupport {
         CircularArc arc = hole.getArcN(0);
         assertEquals(5, arc.getRadius(), 0d);
         assertEquals(new Coordinate(15, 17), arc.getCenter());
+    }
+
+    @Test
+    public void testMultipolygon() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")),
+                ff.literal("Multipolygon with curves"), true);
+        ContentFeatureCollection fc = fs.getFeatures(filter);
+        assertEquals(1, fc.size());
+        SimpleFeature feature = DataUtilities.first(fc);
+        Geometry g = (Geometry) feature.getDefaultGeometry();
+        assertNotNull(g);
+        assertTrue(g instanceof MultiPolygon);
+        MultiPolygon mp = (MultiPolygon) g;
+        assertEquals(2, mp.getNumGeometries());
+
+        Polygon p1 = (Polygon) mp.getGeometryN(0);
+        assertTrue(p1.getExteriorRing() instanceof CompoundCurvedGeometry<?>);
+        assertEquals(2, ((CompoundCurvedGeometry<?>) p1.getExteriorRing()).getComponents().size());
+        assertEquals(1, p1.getNumInteriorRing());
+        assertEquals(2, ((CompoundCurvedGeometry<?>) p1.getInteriorRingN(0)).getComponents().size());
+
+        Polygon p2 = (Polygon) mp.getGeometryN(1);
+        assertTrue(p2.getExteriorRing() instanceof CompoundCurvedGeometry<?>);
+        assertEquals(2, ((CompoundCurvedGeometry<?>) p2.getExteriorRing()).getComponents().size());
+        assertEquals(0, p2.getNumInteriorRing());
     }
 
 }

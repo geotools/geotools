@@ -4,8 +4,6 @@ import org.geotools.styling.*;
 import org.yaml.snakeyaml.events.MappingStartEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
-import java.util.Deque;
-
 public class PointHandler extends SymbolizerHandler<PointSymbolizer> {
 
     public PointHandler(Rule rule, Factory factory) {
@@ -13,9 +11,9 @@ public class PointHandler extends SymbolizerHandler<PointSymbolizer> {
     }
 
     @Override
-    public void mapping(MappingStartEvent evt, Deque<YamlParseHandler> handlers) {
-        super.mapping(evt, handlers);
-        handlers.push(new PointGraphicHandler());
+    public void mapping(MappingStartEvent evt, YamlParseContext context) {
+        super.mapping(evt, context);
+        context.push(new PointGraphicHandler());
     }
 
     class PointGraphicHandler extends GraphicHandler {
@@ -25,9 +23,9 @@ public class PointHandler extends SymbolizerHandler<PointSymbolizer> {
         }
 
         @Override
-        public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
-            super.scalar(evt, handlers);
-            PointHandler.this.scalar(evt, handlers);
+        public void scalar(ScalarEvent evt, YamlParseContext context) {
+            super.scalar(evt, context);
+            PointHandler.this.scalar(evt, context);
         }
     }
 }

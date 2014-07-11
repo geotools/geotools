@@ -7,8 +7,6 @@ import org.yaml.snakeyaml.events.Event;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
-import java.util.Deque;
-
 public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
 
     public TextHandler(Rule rule, Factory factory) {
@@ -16,10 +14,10 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
         String val = evt.getValue();
         if ("label".equals(val)) {
-            handlers.push(new ExpressionHandler(factory) {
+            context.push(new ExpressionHandler(factory) {
                 @Override
                 protected void expression(Expression expr) {
                     sym.setLabel(expr);
@@ -27,10 +25,10 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
             });
         }
         else if ("font".equals(val)) {
-            handlers.push(new FontHandler());
+            context.push(new FontHandler());
         }
         else if ("fill".equals(val)) {
-            handlers.push(new FillHandler(factory) {
+            context.push(new FillHandler(factory) {
                 @Override
                 protected void fill(Fill fill) {
                     sym.setFill(fill);
@@ -38,13 +36,13 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
             });
         }
         else if ("halo".equals(val)) {
-            handlers.push(new HaloHandler());
+            context.push(new HaloHandler());
         }
         else if ("placement".equals(val)) {
-            handlers.push(new PlacementHandler());
+            context.push(new PlacementHandler());
         }
         else {
-            super.scalar(evt, handlers);
+            super.scalar(evt, context);
         }
     }
 
@@ -61,10 +59,10 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
         }
 
         @Override
-        public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+        public void scalar(ScalarEvent evt, YamlParseContext context) {
             String val = evt.getValue();
             if ("family".equals(val)) {
-                handlers.push(new ExpressionHandler(factory) {
+                context.push(new ExpressionHandler(factory) {
                     @Override
                     protected void expression(Expression expr) {
                         font.setFontFamily(expr);
@@ -72,7 +70,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
                 });
             }
             else if ("size".equals(val)) {
-                handlers.push(new ExpressionHandler(factory) {
+                context.push(new ExpressionHandler(factory) {
                     @Override
                     protected void expression(Expression expr) {
                         font.setSize(expr);
@@ -80,7 +78,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
                 });
             }
             else if ("style".equals(val)) {
-                handlers.push(new ExpressionHandler(factory) {
+                context.push(new ExpressionHandler(factory) {
                     @Override
                     protected void expression(Expression expr) {
                         font.setStyle(expr);
@@ -88,7 +86,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
                 });
             }
             else if ("weight".equals(val)) {
-                handlers.push(new ExpressionHandler(factory) {
+                context.push(new ExpressionHandler(factory) {
                     @Override
                     protected void expression(Expression expr) {
                         font.setWeight(expr);
@@ -98,9 +96,9 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
         }
 
         @Override
-        public void endMapping(MappingEndEvent evt, Deque<YamlParseHandler> handlers) {
-            super.endMapping(evt, handlers);
-            handlers.pop();
+        public void endMapping(MappingEndEvent evt, YamlParseContext context) {
+            super.endMapping(evt, context);
+            context.pop();
         }
     }
 
@@ -113,10 +111,10 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
         }
 
         @Override
-        public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+        public void scalar(ScalarEvent evt, YamlParseContext context) {
             String val = evt.getValue();
             if ("fill".equals(val)) {
-                handlers.push(new FillHandler(factory) {
+                context.push(new FillHandler(factory) {
                     @Override
                     protected void fill(Fill fill) {
                         halo.setFill(fill);
@@ -124,7 +122,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
                 });
             }
             else if ("radius".equals(val)) {
-                handlers.push(new ExpressionHandler(factory) {
+                context.push(new ExpressionHandler(factory) {
                     @Override
                     protected void expression(Expression expr) {
                         halo.setRadius(expr);
@@ -134,9 +132,9 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
         }
 
         @Override
-        public void endMapping(MappingEndEvent evt, Deque<YamlParseHandler> handlers) {
-            super.endMapping(evt, handlers);
-            handlers.pop();
+        public void endMapping(MappingEndEvent evt, YamlParseContext context) {
+            super.endMapping(evt, context);
+            context.pop();
         }
     }
 
@@ -153,10 +151,10 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
         }
 
         @Override
-        public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+        public void scalar(ScalarEvent evt, YamlParseContext context) {
             String val = evt.getValue();
             if ("type".equals(val)) {
-                handlers.push(new ValueHandler(factory) {
+                context.push(new ValueHandler(factory) {
                     @Override
                     protected void value(String value, Event event) {
                         type = value;
@@ -164,7 +162,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
                 });
             }
             else if ("offset".equals(val)) {
-                handlers.push(new ExpressionHandler(factory) {
+                context.push(new ExpressionHandler(factory) {
                     @Override
                     protected void expression(Expression expr) {
                         line.setPerpendicularOffset(expr);
@@ -172,7 +170,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
                 });
             }
             else if ("anchor".equals(val)) {
-                handlers.push(new AnchorHandler(factory) {
+                context.push(new AnchorHandler(factory) {
                     @Override
                     protected void anchor(AnchorPoint anchor) {
                         point.setAnchorPoint(anchor);
@@ -180,7 +178,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
                 });
             }
             else if ("displacement".equals(val)) {
-                handlers.push(new DisplacementHandler(factory) {
+                context.push(new DisplacementHandler(factory) {
                     @Override
                     protected void displace(Displacement displacement) {
                         point.setDisplacement(displacement);
@@ -188,7 +186,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
                 });
             }
             else if ("rotation".equals(val)) {
-                handlers.push(new ExpressionHandler(factory) {
+                context.push(new ExpressionHandler(factory) {
                     @Override
                     protected void expression(Expression expr) {
                         point.setRotation(expr);
@@ -198,10 +196,10 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
         }
 
         @Override
-        public void endMapping(MappingEndEvent evt, Deque<YamlParseHandler> handlers) {
+        public void endMapping(MappingEndEvent evt, YamlParseContext context) {
             sym.setLabelPlacement("line".equals(type)?line:point);
-            handlers.pop();
-            super.endMapping(evt, handlers);
+            context.pop();
+            super.endMapping(evt, context);
         }
     }
 }

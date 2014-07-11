@@ -7,8 +7,6 @@ import org.yaml.snakeyaml.events.MappingStartEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.events.SequenceEndEvent;
 
-import java.util.Deque;
-
 public class FeatureStyleHandler extends YsldParseHandler {
 
     Style style;
@@ -20,14 +18,14 @@ public class FeatureStyleHandler extends YsldParseHandler {
     }
 
     @Override
-    public void mapping(MappingStartEvent evt, Deque<YamlParseHandler> handlers) {
+    public void mapping(MappingStartEvent evt, YamlParseContext context) {
         style.featureTypeStyles().add(featureStyle = factory.style.createFeatureTypeStyle());
     }
 
     @Override
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
         if ("name".equals(evt.getValue())) {
-            handlers.push(new ValueHandler(factory) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event evt) {
                     featureStyle.setName(value);
@@ -35,7 +33,7 @@ public class FeatureStyleHandler extends YsldParseHandler {
             });
         }
         else if ("title".equals(evt.getValue())) {
-            handlers.push(new ValueHandler(factory) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event evt) {
                     featureStyle.setTitle(value);
@@ -43,7 +41,7 @@ public class FeatureStyleHandler extends YsldParseHandler {
             });
         }
         else if ("abstract".equals(evt.getValue())) {
-            handlers.push(new ValueHandler(factory) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event evt) {
                     featureStyle.setAbstract(value);
@@ -51,12 +49,12 @@ public class FeatureStyleHandler extends YsldParseHandler {
             });
         }
         else if ("rules".equals(evt.getValue())) {
-            handlers.push(new RuleHandler(featureStyle, factory));
+            context.push(new RuleHandler(featureStyle, factory));
         }
     }
 
     @Override
-    public void endSequence(SequenceEndEvent evt, Deque<YamlParseHandler> handlers) {
-        handlers.pop();
+    public void endSequence(SequenceEndEvent evt, YamlParseContext context) {
+        context.pop();
     }
 }

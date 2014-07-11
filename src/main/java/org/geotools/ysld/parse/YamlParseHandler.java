@@ -9,18 +9,18 @@ import java.util.Deque;
  */
 public class YamlParseHandler {
 
-    public void mapping(MappingStartEvent evt, Deque<YamlParseHandler> handlers) {
+    public void mapping(MappingStartEvent evt, YamlParseContext context) {
     }
 
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
     }
 
-    public void sequence(SequenceStartEvent evt, Deque<YamlParseHandler> handlers) {
+    public void sequence(SequenceStartEvent evt, YamlParseContext context) {
     }
 
-    public void endMapping(MappingEndEvent evt, Deque<YamlParseHandler> handlers) {
+    public void endMapping(MappingEndEvent evt, YamlParseContext context) {
     }
 
-    public void endSequence(SequenceEndEvent evt, Deque<YamlParseHandler> handlers) {
+    public void endSequence(SequenceEndEvent evt, YamlParseContext context) {
     }
 }

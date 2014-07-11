@@ -16,38 +16,37 @@ import java.util.Iterator;
  */
 public class YamlParser {
 
-    Iterator<Event> events;
-    Deque<YamlParseHandler> handlers = new ArrayDeque<YamlParseHandler>();
+    YamlParseContext context;
 
     public YamlParser(InputStream ysld) throws IOException {
         this(new UnicodeReader(ysld));
     }
 
     public YamlParser(Reader ysld) throws IOException{
-        events = new Yaml().parse(ysld).iterator();
+        context = new YamlParseContext(new Yaml().parse(ysld).iterator());
     }
 
     public void doParse(YamlParseHandler root) throws IOException {
-        handlers.push(root);
+        context.push(root);
 
-        while(events.hasNext()) {
-            YamlParseHandler h = handlers.peek();
+        while(context.hasMoreEvents()) {
+            YamlParseHandler h = context.handler();
 
-            Event evt = events.next();
+            Event evt = context.event();
             if (evt instanceof MappingStartEvent) {
-                h.mapping((MappingStartEvent)evt, handlers);
+                h.mapping((MappingStartEvent)evt, context);
             }
             else if (evt instanceof ScalarEvent) {
-                h.scalar((ScalarEvent)evt, handlers);
+                h.scalar((ScalarEvent)evt, context);
             }
             else if (evt instanceof SequenceStartEvent) {
-                h.sequence((SequenceStartEvent)evt, handlers);
+                h.sequence((SequenceStartEvent)evt, context);
             }
             else if (evt instanceof MappingEndEvent) {
-                h.endMapping((MappingEndEvent)evt, handlers);
+                h.endMapping((MappingEndEvent)evt, context);
             }
             else if (evt instanceof SequenceEndEvent) {
-                h.endSequence((SequenceEndEvent)evt, handlers);
+                h.endSequence((SequenceEndEvent)evt, context);
             }
         }
     }

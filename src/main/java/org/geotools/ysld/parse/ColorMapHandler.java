@@ -9,8 +9,6 @@ import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.events.SequenceEndEvent;
 
-import java.util.Deque;
-
 public abstract class ColorMapHandler extends YsldParseHandler {
 
     ColorMap colorMap;
@@ -21,10 +19,10 @@ public abstract class ColorMapHandler extends YsldParseHandler {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
         String val = evt.getValue();
         if ("type".equals(val)) {
-            handlers.push(new ValueHandler(factory) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event event) {
                     if ("ramp".equals(value)) {
@@ -43,15 +41,15 @@ public abstract class ColorMapHandler extends YsldParseHandler {
             });
         }
         else if ("entries".equals(val)) {
-            handlers.push(new EntriesHandler());
+            context.push(new EntriesHandler());
         }
     }
 
     @Override
-    public void endMapping(MappingEndEvent evt, Deque<YamlParseHandler> handlers) {
-        super.endMapping(evt, handlers);
+    public void endMapping(MappingEndEvent evt, YamlParseContext context) {
+        super.endMapping(evt, context);
         colorMap(colorMap);
-        handlers.pop();
+        context.pop();
     }
 
     protected abstract void colorMap(ColorMap colorMap);
@@ -63,7 +61,7 @@ public abstract class ColorMapHandler extends YsldParseHandler {
         }
 
         @Override
-        public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+        public void scalar(ScalarEvent evt, YamlParseContext context) {
             String val = evt.getValue();
             Tuple q = null;
             try {
@@ -92,8 +90,8 @@ public abstract class ColorMapHandler extends YsldParseHandler {
         }
 
         @Override
-        public void endSequence(SequenceEndEvent evt, Deque<YamlParseHandler> handlers) {
-            handlers.pop();
+        public void endSequence(SequenceEndEvent evt, YamlParseContext context) {
+            context.pop();
         }
     }
 }

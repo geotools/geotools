@@ -7,7 +7,6 @@ import org.yaml.snakeyaml.events.ScalarEvent;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Deque;
 
 public abstract class ExternalGraphicHandler extends YsldParseHandler {
 
@@ -21,10 +20,10 @@ public abstract class ExternalGraphicHandler extends YsldParseHandler {
     protected abstract void externalGraphic(ExternalGraphic externalGraphic);
 
     @Override
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
         String val = evt.getValue();
         if ("url".equals(val)) {
-            handlers.push(new ValueHandler(factory) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event event) {
                     try {
@@ -37,7 +36,7 @@ public abstract class ExternalGraphicHandler extends YsldParseHandler {
             });
         }
         if ("format".equals(val)) {
-            handlers.push(new ValueHandler(factory) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event event) {
                     external.setFormat(value);
@@ -47,8 +46,8 @@ public abstract class ExternalGraphicHandler extends YsldParseHandler {
     }
 
     @Override
-    public void endMapping(MappingEndEvent evt, Deque<YamlParseHandler> handlers) {
+    public void endMapping(MappingEndEvent evt, YamlParseContext context) {
         externalGraphic(external);
-        handlers.pop();
+        context.pop();
     }
 }

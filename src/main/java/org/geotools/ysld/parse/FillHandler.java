@@ -7,8 +7,6 @@ import org.opengis.filter.expression.Expression;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
-import java.util.Deque;
-
 public abstract class FillHandler extends YsldParseHandler {
     Fill fill;
 
@@ -18,10 +16,10 @@ public abstract class FillHandler extends YsldParseHandler {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
         String val = evt.getValue();
         if ("color".equals(val)) {
-            handlers.push(new ColorHandler(factory) {
+            context.push(new ColorHandler(factory) {
                 @Override
                 protected void color(Expression color) {
                     fill.setColor(color);
@@ -29,14 +27,14 @@ public abstract class FillHandler extends YsldParseHandler {
             });
         }
         if ("opacity".equals(val)) {
-            handlers.push(new ExpressionHandler(factory) {
+            context.push(new ExpressionHandler(factory) {
                 protected void expression(Expression expr) {
                     fill.setOpacity(expr);
                 }
             });
         }
         if ("graphic".equals(val)) {
-            handlers.push(new GraphicHandler(factory) {
+            context.push(new GraphicHandler(factory) {
                 @Override
                 protected void graphic(Graphic graphic) {
                     fill.setGraphicFill(graphic);
@@ -46,9 +44,9 @@ public abstract class FillHandler extends YsldParseHandler {
     }
 
     @Override
-    public void endMapping(MappingEndEvent evt, Deque<YamlParseHandler> handlers) {
+    public void endMapping(MappingEndEvent evt, YamlParseContext context) {
         fill(fill);
-        handlers.pop();
+        context.pop();
     }
 
     protected abstract void fill(Fill fill);

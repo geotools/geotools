@@ -6,8 +6,6 @@ import org.opengis.filter.expression.Expression;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
-import java.util.Deque;
-
 public abstract class MarkHandler extends YsldParseHandler {
 
     Mark mark;
@@ -20,10 +18,10 @@ public abstract class MarkHandler extends YsldParseHandler {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
         String val = evt.getValue();
         if ("shape".equals(val)) {
-            handlers.push(new ExpressionHandler(factory) {
+            context.push(new ExpressionHandler(factory) {
                 @Override
                 protected void expression(Expression expr) {
                     mark.setWellKnownName(expr);
@@ -31,7 +29,7 @@ public abstract class MarkHandler extends YsldParseHandler {
             });
         }
         if ("stroke".equals(val)) {
-            handlers.push(new StrokeHandler(factory) {
+            context.push(new StrokeHandler(factory) {
                 @Override
                 protected void stroke(Stroke stroke) {
                     mark.setStroke(stroke);
@@ -39,7 +37,7 @@ public abstract class MarkHandler extends YsldParseHandler {
             });
         }
         if ("fill".equals(val)) {
-            handlers.push(new FillHandler(factory) {
+            context.push(new FillHandler(factory) {
                 @Override
                 protected void fill(Fill fill) {
                     mark.setFill(fill);
@@ -55,9 +53,9 @@ public abstract class MarkHandler extends YsldParseHandler {
     }
 
     @Override
-    public void endMapping(MappingEndEvent evt, Deque<YamlParseHandler> handlers) {
+    public void endMapping(MappingEndEvent evt, YamlParseContext context) {
         mark(mark);
-        handlers.pop();
+        context.pop();
     }
 
     protected abstract void mark(Mark mark);

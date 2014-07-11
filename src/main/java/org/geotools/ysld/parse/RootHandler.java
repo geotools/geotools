@@ -5,8 +5,6 @@ import org.yaml.snakeyaml.events.Event;
 import org.yaml.snakeyaml.events.MappingStartEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
-import java.util.Deque;
-
 public class RootHandler extends YsldParseHandler {
 
     StyledLayerDescriptor sld;
@@ -17,7 +15,7 @@ public class RootHandler extends YsldParseHandler {
     }
 
     @Override
-    public void mapping(MappingStartEvent evt, Deque<YamlParseHandler> handlers) {
+    public void mapping(MappingStartEvent evt, YamlParseContext context) {
         sld = factory.style.createStyledLayerDescriptor();
 
         NamedLayer layer = factory.style.createNamedLayer();
@@ -27,34 +25,57 @@ public class RootHandler extends YsldParseHandler {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
-        if ("name".equals(evt.getValue())) {
-            handlers.push(new ValueHandler(factory) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
+        String val = evt.getValue();
+        if ("name".equals(val)) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event evt) {
                     style.setName(value);
                 }
             });
         }
-        else if ("title".equals(evt.getValue())) {
-            handlers.push(new ValueHandler(factory) {
+        else if ("title".equals(val)) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event evt) {
                     style.setTitle(value);
                 }
             });
         }
-        else if ("abstract".equals(evt.getValue())) {
-            handlers.push(new ValueHandler(factory) {
+        else if ("abstract".equals(val)) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event evt) {
                     style.setAbstract(value);
                 }
             });
         }
-        else if ("feature-styles".equals(evt.getValue())) {
-            handlers.push(new FeatureStyleHandler(style, factory));
+        else if ("feature-styles".equals(val)) {
+            context.push(new FeatureStyleHandler(style, factory));
         }
+        else if ("rules".equals(val)) {
+            context.push(new RuleHandler(newFeatureTypeStyle(), factory));
+        }
+        else if ("symbolizers".equals(val)) {
+            context.push(new SymbolizersHandler(newRule(), factory));
+        }
+        else if ("point".equals(val) || "line".equals(val) || "polygon".equals(val) ||
+                "text".equals(val) || "raster".equals(val)) {
+            context.push(new SymbolizersHandler(newRule(), factory)).pause();
+        }
+    }
+
+    public FeatureTypeStyle newFeatureTypeStyle() {
+        FeatureTypeStyle fts = factory.style.createFeatureTypeStyle();
+        style.featureTypeStyles().add(fts);
+        return fts;
+    }
+
+    public Rule newRule() {
+        Rule rule = factory.style.createRule();
+        newFeatureTypeStyle().rules().add(rule);
+        return rule;
     }
 
     public StyledLayerDescriptor sld() {

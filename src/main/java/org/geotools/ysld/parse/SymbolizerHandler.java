@@ -7,8 +7,6 @@ import org.yaml.snakeyaml.events.Event;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
-import java.util.Deque;
-
 public class SymbolizerHandler<T extends Symbolizer> extends YsldParseHandler {
 
     protected T sym;
@@ -19,10 +17,10 @@ public class SymbolizerHandler<T extends Symbolizer> extends YsldParseHandler {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
         String val = evt.getValue();
         if ("geometry".equals(val)) {
-            handlers.push(new ExpressionHandler(factory) {
+            context.push(new ExpressionHandler(factory) {
                 @Override
                 protected void expression(Expression expr) {
                     sym.setGeometry(expr);
@@ -30,14 +28,14 @@ public class SymbolizerHandler<T extends Symbolizer> extends YsldParseHandler {
             });
         }
         else if ("options".equals(val)) {
-            handlers.push(new OptionsHandler());
+            context.push(new OptionsHandler());
         }
     }
 
     @Override
-    public void endMapping(MappingEndEvent evt, Deque<YamlParseHandler> handlers) {
-        super.endMapping(evt, handlers);
-        handlers.pop();
+    public void endMapping(MappingEndEvent evt, YamlParseContext context) {
+        super.endMapping(evt, context);
+        context.pop();
     }
 
     class OptionsHandler extends YsldParseHandler {
@@ -47,9 +45,9 @@ public class SymbolizerHandler<T extends Symbolizer> extends YsldParseHandler {
         }
 
         @Override
-        public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+        public void scalar(ScalarEvent evt, YamlParseContext context) {
             final String key = evt.getValue();
-            handlers.push(new ValueHandler(factory) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event event) {
                     sym.getOptions().put(toCamelCase(key), value);
@@ -58,9 +56,9 @@ public class SymbolizerHandler<T extends Symbolizer> extends YsldParseHandler {
         }
 
         @Override
-        public void endMapping(MappingEndEvent evt, Deque<YamlParseHandler> handlers) {
-            super.endMapping(evt, handlers);
-            handlers.pop();
+        public void endMapping(MappingEndEvent evt, YamlParseContext context) {
+            super.endMapping(evt, context);
+            context.pop();
         }
 
         String toCamelCase(String str) {

@@ -3,7 +3,6 @@ package org.geotools.ysld.parse;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
 public abstract class FloatArrayHandler extends YsldParseHandler {
@@ -16,7 +15,7 @@ public abstract class FloatArrayHandler extends YsldParseHandler {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
         for (String str : evt.getValue().split(" ")) {
             list.add(Float.parseFloat(str));
         }
@@ -26,7 +25,7 @@ public abstract class FloatArrayHandler extends YsldParseHandler {
             array[i] = list.get(i).floatValue();
         }
         array(array);
-        handlers.pop();
+        context.pop();
     }
 
     protected abstract void array(float[] array);

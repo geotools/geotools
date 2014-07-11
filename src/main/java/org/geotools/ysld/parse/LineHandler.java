@@ -6,8 +6,6 @@ import org.geotools.styling.Stroke;
 import org.opengis.filter.expression.Expression;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
-import java.util.Deque;
-
 public class LineHandler extends SymbolizerHandler<LineSymbolizer> {
 
     protected LineHandler(Rule rule, Factory factory) {
@@ -15,10 +13,10 @@ public class LineHandler extends SymbolizerHandler<LineSymbolizer> {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
         String val = evt.getValue();
         if ("stroke".equals(val)) {
-            handlers.push(new StrokeHandler(factory) {
+            context.push(new StrokeHandler(factory) {
                 @Override
                 protected void stroke(Stroke stroke) {
                     sym.setStroke(stroke);
@@ -26,7 +24,7 @@ public class LineHandler extends SymbolizerHandler<LineSymbolizer> {
             });
         }
         else if ("offset".equals(val)) {
-            handlers.push(new ExpressionHandler(factory) {
+            context.push(new ExpressionHandler(factory) {
                 @Override
                 protected void expression(Expression expr) {
                     sym.setPerpendicularOffset(expr);
@@ -34,7 +32,7 @@ public class LineHandler extends SymbolizerHandler<LineSymbolizer> {
             });
         }
         else {
-            super.scalar(evt, handlers);
+            super.scalar(evt, context);
         }
     }
 }

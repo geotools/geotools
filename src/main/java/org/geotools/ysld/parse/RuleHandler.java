@@ -9,8 +9,6 @@ import org.yaml.snakeyaml.events.MappingStartEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.events.SequenceEndEvent;
 
-import java.util.Deque;
-
 public class RuleHandler extends YsldParseHandler {
 
     FeatureTypeStyle featureStyle;
@@ -22,15 +20,15 @@ public class RuleHandler extends YsldParseHandler {
     }
 
     @Override
-    public void mapping(MappingStartEvent evt, Deque<YamlParseHandler> handlers) {
+    public void mapping(MappingStartEvent evt, YamlParseContext context) {
         featureStyle.rules().add(rule = factory.style.createRule());
     }
 
     @Override
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
         String val = evt.getValue();
         if ("name".equals(val)) {
-            handlers.push(new ValueHandler(factory) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event evt) {
                     rule.setName(value);
@@ -38,7 +36,7 @@ public class RuleHandler extends YsldParseHandler {
             });
         }
         else if ("title".equals(val)) {
-            handlers.push(new ValueHandler(factory) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event evt) {
                     rule.setTitle(value);
@@ -46,7 +44,7 @@ public class RuleHandler extends YsldParseHandler {
             });
         }
         else if ("abstract".equals(val)) {
-            handlers.push(new ValueHandler(factory) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event evt) {
                     rule.setAbstract(value);
@@ -54,7 +52,7 @@ public class RuleHandler extends YsldParseHandler {
             });
         }
         else if ("filter".equals(val)) {
-            handlers.push(new FilterHandler(factory) {
+            context.push(new FilterHandler(factory) {
                 @Override
                 protected void filter(Filter filter) {
                     rule.setFilter(filter);
@@ -62,7 +60,7 @@ public class RuleHandler extends YsldParseHandler {
             });
         }
         else if ("else".equals(val)) {
-            handlers.push(new ValueHandler(factory) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event evt) {
                     rule.setElseFilter(Boolean.valueOf(value));
@@ -70,7 +68,7 @@ public class RuleHandler extends YsldParseHandler {
             });
         }
         else if ("scale".equals(val)) {
-            handlers.push(new ValueHandler(factory) {
+            context.push(new ValueHandler(factory) {
                 @Override
                 protected void value(String value, Event event) {
                     Tuple t = null;
@@ -91,12 +89,12 @@ public class RuleHandler extends YsldParseHandler {
             });
         }
         else if ("symbolizers".equals(val)) {
-            handlers.push(new SymbolizersHandler(rule, factory));
+            context.push(new SymbolizersHandler(rule, factory));
         }
     }
 
     @Override
-    public void endSequence(SequenceEndEvent evt, Deque<YamlParseHandler> handlers) {
-        handlers.pop();
+    public void endSequence(SequenceEndEvent evt, YamlParseContext context) {
+        context.pop();
     }
 }

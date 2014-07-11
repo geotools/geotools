@@ -7,8 +7,6 @@ import org.yaml.snakeyaml.events.Event;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
-import java.util.Deque;
-
 public class RasterHandler extends SymbolizerHandler<RasterSymbolizer> {
 
     public RasterHandler(Rule rule, Factory factory) {
@@ -16,10 +14,10 @@ public class RasterHandler extends SymbolizerHandler<RasterSymbolizer> {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+    public void scalar(ScalarEvent evt, YamlParseContext context) {
         String val = evt.getValue();
         if ("opacity".equals(val)) {
-            handlers.push(new ExpressionHandler(factory) {
+            context.push(new ExpressionHandler(factory) {
                 @Override
                 protected void expression(Expression expr) {
                     sym.setOpacity(expr);
@@ -27,7 +25,7 @@ public class RasterHandler extends SymbolizerHandler<RasterSymbolizer> {
             });
         }
         else if ("color-map".equals(val)) {
-            handlers.push(new ColorMapHandler(factory) {
+            context.push(new ColorMapHandler(factory) {
                 @Override
                 protected void colorMap(ColorMap colorMap) {
                     sym.setColorMap(colorMap);
@@ -35,10 +33,10 @@ public class RasterHandler extends SymbolizerHandler<RasterSymbolizer> {
             });
         }
         else if ("contrast-enhancement".equals(val)) {
-            handlers.push(new ContrastEnhancementHandler());
+            context.push(new ContrastEnhancementHandler());
         }
         else {
-            super.scalar(evt, handlers);
+            super.scalar(evt, context);
         }
     }
 
@@ -52,10 +50,10 @@ public class RasterHandler extends SymbolizerHandler<RasterSymbolizer> {
         }
 
         @Override
-        public void scalar(ScalarEvent evt, Deque<YamlParseHandler> handlers) {
+        public void scalar(ScalarEvent evt, YamlParseContext context) {
             String val = evt.getValue();
             if ("mode".equals(val)) {
-                handlers.push(new ValueHandler(factory) {
+                context.push(new ValueHandler(factory) {
                     @Override
                     protected void value(String value, Event event) {
                         ContrastMethod method = ContrastMethod.valueOf(value);
@@ -69,7 +67,7 @@ public class RasterHandler extends SymbolizerHandler<RasterSymbolizer> {
                 });
             }
             else if ("gamma".equals(val)) {
-                handlers.push(new ExpressionHandler(factory) {
+                context.push(new ExpressionHandler(factory) {
                     @Override
                     protected void expression(Expression expr) {
                         contrast.setGammaValue(expr);
@@ -79,9 +77,9 @@ public class RasterHandler extends SymbolizerHandler<RasterSymbolizer> {
         }
 
         @Override
-        public void endMapping(MappingEndEvent evt, Deque<YamlParseHandler> handlers) {
-            super.endMapping(evt, handlers);
-            handlers.pop();
+        public void endMapping(MappingEndEvent evt, YamlParseContext context) {
+            super.endMapping(evt, context);
+            context.pop();
         }
     }
 }

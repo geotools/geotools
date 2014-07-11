@@ -52,7 +52,7 @@ public class FeatureLock {
      * Creates a new lock.
      * 
      * @param authorization LockId used to authorize the transaction
-     * @param duration expiry period of this lock (in minutes)
+     * @param duration expiry period of this lock (in milliseconds)
      */
     public FeatureLock(String authorization, long duration ){
         this.authorization = authorization;

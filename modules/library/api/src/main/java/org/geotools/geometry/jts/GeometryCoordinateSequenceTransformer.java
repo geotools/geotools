@@ -260,7 +260,7 @@ public class GeometryCoordinateSequenceTransformer {
             CompoundCurvedGeometry<?> compound = (CompoundCurvedGeometry<?>) curved;
             List<LineString> reprojected = new ArrayList<>();
             for (LineString component : compound.getComponents()) {
-                LineString ls = transformStraightLineString(component, gf);
+                LineString ls = transformLineString(component, gf);
                 reprojected.add(ls);
             }
             return cf.createCurvedGeometry(reprojected);

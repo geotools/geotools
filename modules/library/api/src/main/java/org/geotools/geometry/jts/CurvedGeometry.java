@@ -59,4 +59,11 @@ public interface CurvedGeometry<T extends Geometry> {
      * @return
      */
     double getTolerance();
+
+    /**
+     * Returns the dimension of the geometry without forcing access to the coordinate sequence
+     * 
+     * @return
+     */
+    int getCoordinatesDimension();
 }

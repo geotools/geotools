@@ -1,8 +1,8 @@
 package org.geotools.gml3.bindings;
 import javax.xml.namespace.QName;
 
-import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
+import org.geotools.geometry.jts.SingleCurvedGeometry;
 import org.geotools.gml3.ArcParameters;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
@@ -72,7 +72,7 @@ import com.vividsolutions.jts.geom.LineString;
  * 
  * @generated
  */
-public class ArcStringTypeBinding extends AbstractComplexBinding {
+public class ArcStringTypeBinding extends AbstractComplexBinding implements Comparable {
 
     GeometryFactory gFactory;
     CoordinateSequenceFactory csFactory;
@@ -102,7 +102,7 @@ public class ArcStringTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Class getType() {
-        return CircularString.class;
+        return SingleCurvedGeometry.class;
     }
     
     /**
@@ -135,6 +135,15 @@ public class ArcStringTypeBinding extends AbstractComplexBinding {
         }
 
         return super.getProperty(object, name);
+    }
+
+    public int compareTo(Object o) {
+        if (o instanceof LineStringTypeBinding || o instanceof LineStringSegmentTypeBinding
+                || o instanceof ArcTypeBinding) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 
 }

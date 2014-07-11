@@ -81,6 +81,25 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     }
 
     @Override
+    public int getCoordinatesDimension() {
+        if (components.size() == 0) {
+            return 2;
+        }
+        int dimension = Integer.MAX_VALUE;
+        for (LineString component : components) {
+            int curr;
+            if (component instanceof CurvedGeometry<?>) {
+                curr = ((CurvedGeometry<?>) component).getCoordinatesDimension();
+            } else {
+                curr = component.getCoordinateSequence().getDimension();
+            }
+            dimension = Math.min(curr, dimension);
+        }
+
+        return dimension;
+    }
+
+    @Override
     public LineString linearize() {
         return linearize(this.tolerance);
     }

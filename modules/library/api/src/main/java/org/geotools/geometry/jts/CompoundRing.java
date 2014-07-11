@@ -81,6 +81,11 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     }
 
     @Override
+    public int getCoordinatesDimension() {
+        return delegate.getCoordinatesDimension();
+    }
+
+    @Override
     public LinearRing linearize() {
         CoordinateSequence cs = delegate.getLinearizedCoordinateSequence(delegate.tolerance);
         return getFactory().createLinearRing(cs);

@@ -563,4 +563,9 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
         return linearize().toText();
     }
 
+    @Override
+    public int getCoordinatesDimension() {
+        return 2;
+    }
+
 }

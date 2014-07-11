@@ -130,6 +130,11 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
         return "CircularString";
     }
 
+    @Override
+    public int getCoordinatesDimension() {
+        return delegate.getDimension();
+    }
+
     public Geometry reverse() {
         double[] controlPoints = delegate.controlPoints;
         GrowableOrdinateArray array = new GrowableOrdinateArray();

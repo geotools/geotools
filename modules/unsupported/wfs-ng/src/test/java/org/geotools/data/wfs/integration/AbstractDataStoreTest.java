@@ -1426,7 +1426,7 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
     @SuppressWarnings("unchecked")
     @Test
     public void testGetFeatureLockingExpire() throws Exception {
-        FeatureLock lock = new FeatureLock("Timed", 1);
+        FeatureLock lock = new FeatureLock("Timed", 100);
         FeatureLocking<SimpleFeatureType, SimpleFeature> road;
         {
             SimpleFeatureSource source = data.getFeatureSource(getRoadTypeName());
@@ -1441,7 +1441,7 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         assertFalse(isLocked(getRoadTypeName(), fid));
         road.lockFeatures(rd1Filter);
         assertTrue(fid + " not locked", isLocked(getRoadTypeName(), fid));
-        Thread.sleep(50);
+        Thread.sleep(150);
         assertFalse(isLocked(getRoadTypeName(), fid));
     }
 

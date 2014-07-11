@@ -93,7 +93,7 @@ public interface FeatureLocking<T extends FeatureType, F extends Feature> extend
      * </li>
      * </ul>
      *
-     * @param lock DOCUMENT ME!
+     * @param lock FeatureLock configuration including authorization and requested duration 
      */
     void setFeatureLock(FeatureLock lock);
 

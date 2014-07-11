@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,18 +16,22 @@
  */
 package org.geotools.data;
 
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * Used in conjuction with {@link FeatureLocking} to lock features during a
  * transaction. This class is responsible for supplying a unique Authorization 
  * ID and expiry period.
  * <p>
- * 
- * A FeatureLock representing the Current Transaction has been provided as a 
+ * A FeatureLock representing the current transaction has been provided as a 
  * static constant: {@link #TRANSACTION}.
- *
+ * <p>
+ * Lock duration is measured in milliseconds, although you shoudl take into
+ * account the abilities of different databases and servers. WFS 1.1 measures
+ * lock expiry time in minuets, WFS 2.0 measures lick expiry time in seconds..
+ * 
  * @author Jody Garnett, Refractions Research, Inc.
- *
  *
  * @source $URL$
  * @version $Id$
@@ -44,7 +48,9 @@ package org.geotools.data;
  * @see FeatureLockFactory
  */
 public class FeatureLock {
+    /** Lock requested for the duration of the Transaction (until next commit or revert). */
     public static final FeatureLock TRANSACTION = new CurrentTransactionLock();
+    
     protected String authorization;
     protected long duration;
     
@@ -52,13 +58,23 @@ public class FeatureLock {
      * Creates a new lock.
      * 
      * @param authorization LockId used to authorize the transaction
-     * @param duration expiry period of this lock (in minutes)
+     * @param duration expiry period of this lock (in milliseconds)
      */
     public FeatureLock(String authorization, long duration ){
         this.authorization = authorization;
         this.duration = duration;
     }
     
+    /**
+     * Creates a new lock.
+     * 
+     * @param authorization LockId used to authorize the transaction
+     * @param duration Expiry period
+     * @param unit Time unit for expiry period
+     */
+    public FeatureLock(String authorization, long duration, TimeUnit unit) {
+        this(authorization, TimeUnit.MILLISECONDS.convert(duration, unit));
+    }
     /**
      * Gets the ID used for transaction authorization.
      *
@@ -69,9 +85,9 @@ public class FeatureLock {
     }
 
     /**
-     * Gets the expiry time for this lock (in minutes).
+     * The expiry time for this lock (in milliseconds).
      *
-     * @return expiry period
+     * @return expiry period in milliseconds
      */
     public long getDuration(){
         return duration;

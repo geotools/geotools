@@ -62,7 +62,7 @@ public class CircularArc {
     }
 
     /**
-     * Allows to programmatically set the number of segments per quadrant (default to 8)
+     * Allows to programmatically set the maximum number of segments per quadrant (default to 10000)
      */
     public static void setMaxSegmentsQuadrant(int baseSegmentsQuadrant) {
         if (baseSegmentsQuadrant < 0) {
@@ -73,7 +73,7 @@ public class CircularArc {
 
     static final double HALF_PI = PI / 2.0;
 
-    static final double PI_PI = PI * 2.0;
+    static final double TAU = PI * 2.0;
 
     double[] controlPoints;
 
@@ -187,10 +187,10 @@ public class CircularArc {
 
         // normalize angle so that we can treat steps like a linear progression
         if (ma < sa) {
-            ma += PI_PI;
-            ea += PI_PI;
+            ma += TAU;
+            ea += TAU;
         } else if (ea < sa) {
-            ea += PI_PI;
+            ea += TAU;
         }
 
         // the starting point
@@ -363,10 +363,10 @@ public class CircularArc {
 
         // normalize angle so that we can treat steps like a linear progression
         if (ma <= sa) {
-            ma += PI_PI;
-            ea += PI_PI;
+            ma += TAU;
+            ea += TAU;
         } else if (ea <= sa) {
-            ea += PI_PI;
+            ea += TAU;
         }
 
         // scan the circle and add the points at 90° corners

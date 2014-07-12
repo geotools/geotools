@@ -37,7 +37,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
- * A {@link GeometryFactory} with extra methods to generated {@link CurvedGeometry} instances
+ * A {@link GeometryFactory} with extra methods to generate {@link CurvedGeometry} instances
  * 
  * @author Andrea Aime - GeoSolutions
  */
@@ -116,22 +116,55 @@ public class CurvedGeometryFactory extends GeometryFactory {
         }
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((delegate == null) ? 0 : delegate.hashCode());
+        long temp;
+        temp = Double.doubleToLongBits(tolerance);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CurvedGeometryFactory other = (CurvedGeometryFactory) obj;
+        if (delegate == null) {
+            if (other.delegate != null)
+                return false;
+        } else if (!delegate.equals(other.delegate))
+            return false;
+        if (Double.doubleToLongBits(tolerance) != Double.doubleToLongBits(other.tolerance))
+            return false;
+        return true;
+    }
+
+    /**
+     * Returns the linearization tolerance used to create the curved geometries
+     * 
+     * @return
+     */
+    public double getTolerance() {
+        return tolerance;
+    }
+
+    @Override
+    public String toString() {
+        return "CurvedGeometryFactory [delegate=" + delegate + ", tolerance=" + tolerance + "]";
+    }
+
     /* Delegate methods */
 
-    public int hashCode() {
-        return delegate.hashCode();
-    }
-
-    public boolean equals(Object obj) {
-        return delegate.equals(obj);
-    }
 
     public Geometry toGeometry(Envelope envelope) {
         return delegate.toGeometry(envelope);
-    }
-
-    public String toString() {
-        return delegate.toString();
     }
 
     public PrecisionModel getPrecisionModel() {
@@ -216,15 +249,6 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
     public CoordinateSequenceFactory getCoordinateSequenceFactory() {
         return delegate.getCoordinateSequenceFactory();
-    }
-
-    /**
-     * Returns the linearization tolerance used to create the curved geometries
-     * 
-     * @return
-     */
-    public double getTolerance() {
-        return tolerance;
     }
 
 }

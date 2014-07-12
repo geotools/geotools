@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2014, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -2415,12 +2415,7 @@ public final class SDO {
     public static Geometry create(GeometryFactory gf, final int GTYPE,
         final int SRID, final int[] elemInfo, final int triplet,
         CoordinateSequence coords, final int N) {
-        CurvedGeometryFactory curvedFactory;
-        if (gf instanceof CurvedGeometryFactory) {
-            curvedFactory = (CurvedGeometryFactory) gf;
-        } else {
-            curvedFactory = new CurvedGeometryFactory(gf, Double.MAX_VALUE);
-        }
+        CurvedGeometryFactory curvedFactory = getCurvedGeometryFactory(gf);
 
         switch (SDO.TT(GTYPE)) {
         case TT.POINT:
@@ -2455,6 +2450,24 @@ public final class SDO {
             LOGGER.warning( "Cannot represent provided SDO STRUCT (GTYPE ="+GTYPE+") using JTS Geometry");
             return null;    
         }        
+    }
+
+    /**
+     * Casts the provided geometry factory to a curved one if possible, or wraps it into one with
+     * infinite tolerance (the linearization will happen using the default base segments number set
+     * in {@link CircularArc}
+     * 
+     * @param gf
+     * @return
+     */
+    private static CurvedGeometryFactory getCurvedGeometryFactory(GeometryFactory gf) {
+        CurvedGeometryFactory curvedFactory;
+        if (gf instanceof CurvedGeometryFactory) {
+            curvedFactory = (CurvedGeometryFactory) gf;
+        } else {
+            curvedFactory = new CurvedGeometryFactory(gf, Double.MAX_VALUE);
+        }
+        return curvedFactory;
     }
 
     /**
@@ -2636,7 +2649,8 @@ public final class SDO {
             LOGGER.warning("Could not create JTS Polygon with INTERPRETATION "
                     + INTERPRETATION
                     + " "
-                    + "- we can only support 1 for straight edges, 2 for circular ones, and 3 for rectangle");
+ + "- we can only support 1 for straight edges, 2 for circular ones, "
+                    + "3 for rectangle and 4 for circles");
             return null;
         }
 

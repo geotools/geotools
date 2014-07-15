@@ -905,9 +905,8 @@ public class RasterManager {
         this.heterogeneousGranules = configuration.getCatalogConfigurationBean().isHeterogeneous();
         this.configuration = configuration;
         hints = parentReader.getHints();
-        if (configuration != null && configuration.getAuxiliaryFilePath() != null) {
-            hints.add(new RenderingHints(Utils.AUXILIARY_FILES_PATH, configuration.getAuxiliaryFilePath()));
-        }
+        checkAuxiliaryFile(hints, configuration, parentReader);
+
         if (checkAuxiliaryMetadata) {
             hints.add(new RenderingHints(Utils.CHECK_AUXILIARY_METADATA, checkAuxiliaryMetadata));
         }
@@ -955,6 +954,25 @@ public class RasterManager {
             overviewsController = new OverviewsController(highRes,
                   numOverviews, overviews);
             imposedEnvelope = configuration.getEnvelope();
+        }
+    }
+
+    private void checkAuxiliaryFile(Hints hints, MosaicConfigurationBean configuration,
+            ImageMosaicReader parentReader) {
+        if (configuration != null && configuration.getAuxiliaryFilePath() != null) {
+            hints.add(new RenderingHints(Utils.AUXILIARY_FILES_PATH, configuration.getAuxiliaryFilePath()));
+            if (!configuration.getCatalogConfigurationBean().isAbsolutePath() && !hints.containsKey(Utils.PARENT_DIR)) {
+                String parentDir = null;
+                if (parentReader.parentDirectory != null) {
+                    parentDir = parentReader.parentDirectory.getAbsolutePath();
+                } else {
+                    Object source = parentReader.getSource();
+                    if (source != null && source instanceof File && ((File)source).isDirectory()) {
+                        parentDir = ((File)source).getAbsolutePath();
+                    }
+                }
+                hints.add(new RenderingHints(Utils.PARENT_DIR, parentDir));
+            }
         }
     }
 

@@ -88,16 +88,6 @@ public class CurvePropertyTypeBinding extends org.geotools.gml3.bindings.CurvePr
         return node.getChildValue(LineString.class);
     }
 
-    @Override
-    public Object getProperty(Object object, QName name)
-        throws Exception {
-        if ("_Curve".equals(name.getLocalPart()) || "AbstractCurve".equals(name.getLocalPart())) {
-            return object;
-        }
-        
-        return super.getProperty(object, name);
-    }
-
     public int compareTo(Object o) {
         if (o instanceof CurveTypeBinding) {
             return 1;

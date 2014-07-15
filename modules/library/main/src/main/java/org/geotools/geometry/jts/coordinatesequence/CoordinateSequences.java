@@ -18,6 +18,8 @@
  */
 package org.geotools.geometry.jts.coordinatesequence;
 
+import org.geotools.geometry.jts.CurvedGeometry;
+
 import com.vividsolutions.jts.algorithm.RobustDeterminant;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
@@ -144,6 +146,9 @@ public class CoordinateSequences extends com.vividsolutions.jts.geom.CoordinateS
     public static int coordinateDimension(Geometry g)
     {
         // common fast cases
+        if (g instanceof CurvedGeometry<?>) {
+            return ((CurvedGeometry<?>) g).getCoordinatesDimension();
+        }
         if (g instanceof Point)
             return coordinateDimension(((Point) g).getCoordinateSequence());
         if (g instanceof LineString)

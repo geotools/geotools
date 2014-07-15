@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -3130,8 +3130,9 @@ public class StreamingRenderer implements GTRenderer {
 
             // we need to clone if the clone flag is high or if the coordinate sequence is not the one we asked for
             Geometry geom = originalGeom;
-            if(clone || !(geom.getFactory().getCoordinateSequenceFactory() instanceof LiteCoordinateSequenceFactory)) {
-                int dim = sa.crs != null ? sa.crs.getCoordinateSystem().getDimension() : 2; 
+            if (clone
+                    || !(geom.getFactory().getCoordinateSequenceFactory() instanceof LiteCoordinateSequenceFactory)) {
+                int dim = sa.crs != null ? sa.crs.getCoordinateSystem().getDimension() : 2;
                 geom = LiteCoordinateSequence.cloneGeometry(geom, dim);
             }
 
@@ -3144,7 +3145,7 @@ public class StreamingRenderer implements GTRenderer {
                 } else {
                     // first generalize and transform the geometry into the rendering CRS
                     Decimator d = getDecimator(sa.xform);
-					d.decimateTransformGeneralize(geom, sa.rxform);
+                    geom = d.decimateTransformGeneralize(geom, sa.rxform);
                     geom.geometryChanged();
                     // then post process it (provide reverse transform if available)
                     MathTransform reverse = null;
@@ -3169,7 +3170,7 @@ public class StreamingRenderer implements GTRenderer {
                     } else {
                         // apply the affine transform turning the coordinates into pixels
                         d = new Decimator(-1, -1);
-                        d.decimateTransformGeneralize(geom, sa.axform);
+                        geom = d.decimateTransformGeneralize(geom, sa.axform);
     
                         // wrap into a lite shape
                         geom.geometryChanged();
@@ -3178,7 +3179,7 @@ public class StreamingRenderer implements GTRenderer {
                 } 
             } else {
                 MathTransform xform = null;
-                if(sa != null)
+                if (sa != null)
                     xform = sa.xform;
                 shape = new LiteShape2(geom, xform, getDecimator(xform), false, false);
             }

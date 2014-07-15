@@ -1,10 +1,15 @@
 package org.geotools.gml3;
 
-import com.vividsolutions.jts.geom.Geometry;
-import static junit.framework.TestCase.assertTrue;
 import org.geotools.xml.Parser;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 public class GML3CompositeCurveParsingTest extends GML3TestSupport {
+
+    @Override
+    protected boolean enableExtendedArcSurfaceSupport() {
+        return true;
+    }
 
     public void testCompositeCurve() throws Exception {
         GMLConfiguration gml = new GMLConfiguration(true);

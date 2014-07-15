@@ -43,6 +43,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Converters;
 import org.geotools.util.logging.Logging;
@@ -197,6 +198,11 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
             geometryFactory = dataStore.getGeometryFactory();
         }
         
+        Double linearizationTolerance = (Double) hints.get(Hints.LINEARIZATION_TOLERANCE);
+        if (linearizationTolerance != null) {
+            geometryFactory = new CurvedGeometryFactory(geometryFactory, linearizationTolerance);
+        }
+
         // create a feature builder using the factory hinted or the one coming 
         // from the datastore
         FeatureFactory ff = (FeatureFactory) hints.get(Hints.FEATURE_FACTORY);

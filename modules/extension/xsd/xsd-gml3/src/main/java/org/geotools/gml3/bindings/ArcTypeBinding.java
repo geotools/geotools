@@ -18,20 +18,18 @@ package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.geometry.jts.CurvedGeometryFactory;
+import org.geotools.geometry.jts.SingleCurvedGeometry;
+import org.geotools.gml3.ArcParameters;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import org.geotools.gml3.ArcParameters;
-import org.geotools.gml3.Circle;
 
 
 /**
@@ -104,7 +102,7 @@ public class ArcTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Class getType() {
-        return LineString.class;
+        return SingleCurvedGeometry.class;
     }
 
     @Override
@@ -122,13 +120,19 @@ public class ArcTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
 
-        //check that three points were specified
         LineString arcLineString = GML3ParsingUtils.lineString(node, gFactory, csFactory);
-        if (arcLineString.getCoordinates().length != 3) {
-            throw new RuntimeException("Number of coordinates in an arc must be exactly 3, " 
-                    + arcLineString.getCoordinates().length + " were specified: " + arcLineString);
+        CoordinateSequence cs = arcLineString.getCoordinateSequence();
+        if (cs.size() < 3) {
+            // maybe log this instead and return null
+            throw new RuntimeException(
+                    "Number of coordinates in an arc string must be at least 3, " + cs.size()
+                            + " were specified: " + arcLineString);
         }
 
-        return value;
+        CurvedGeometryFactory factory = GML3ParsingUtils.getCurvedGeometryFactory(arcParameters,
+                gFactory, cs);
+
+        return factory.createCurvedGeometry(cs);
     }
+
 }

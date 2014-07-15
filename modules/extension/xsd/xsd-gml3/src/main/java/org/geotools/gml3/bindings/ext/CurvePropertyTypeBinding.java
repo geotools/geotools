@@ -17,7 +17,7 @@
 package org.geotools.gml3.bindings.ext;
 
 import javax.xml.namespace.QName;
-import org.geotools.gml3.GML;
+
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.gml3.bindings.CurveTypeBinding;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
@@ -27,7 +27,6 @@ import org.geotools.xml.Node;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:CurvePropertyType.
@@ -81,30 +80,19 @@ public class CurvePropertyTypeBinding extends org.geotools.gml3.bindings.CurvePr
     }
 
     public Class<? extends Geometry> getGeometryType() {
-        return MultiLineString.class;
+        return LineString.class;
     }
     
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        // LineString
-        LineString lineString = (LineString)node.getChildValue(LineString.class);
-        // or Curve or OrientableCurve
-        MultiLineString multiLineString = (MultiLineString)node.getChildValue(MultiLineString.class);
-
-        if (lineString != null) {
-            return new MultiLineString(new LineString[] {lineString}, gf);
-        } else {
-            return multiLineString;
-        }
+        return node.getChildValue(LineString.class);
     }
 
     @Override
     public Object getProperty(Object object, QName name)
         throws Exception {
         if ("_Curve".equals(name.getLocalPart()) || "AbstractCurve".equals(name.getLocalPart())) {
-            MultiLineString multiLineString = (MultiLineString) object;
-            // this MultiLineString consists of a single LineString wrapped in a MultiLineString:
-            return multiLineString.getGeometryN(0);
+            return object;
         }
         
         return super.getProperty(object, name);

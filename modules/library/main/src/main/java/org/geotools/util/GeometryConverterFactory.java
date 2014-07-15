@@ -17,12 +17,12 @@
 package org.geotools.util;
 
 import org.geotools.factory.Hints;
+import org.geotools.geometry.jts.WKTReader2;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * Converter factory performing converstions among geometric types.
@@ -53,7 +53,7 @@ public class GeometryConverterFactory implements ConverterFactory {
 			if ( String.class.equals( source ) ) {
 				return new Converter() {
 					public Object convert(Object source, Class target) throws Exception {
-						return new WKTReader().read( (String) source );
+                        return new WKTReader2().read((String) source);
 					}
 				};
 			}

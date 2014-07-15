@@ -27,9 +27,16 @@ import org.w3c.dom.Document;
  * @source $URL$
  */
 public class CurveTypeBindingTest extends GML3TestSupport {
-    public void testEncode() throws Exception {
-        Document dom = encode(GML3MockData.multiLineString(), GML._Curve);
 
-        assertEquals(2, dom.getElementsByTagName("gml:LineStringSegment").getLength());
+    @Override
+    protected boolean enableExtendedArcSurfaceSupport() {
+        return true;
+    }
+
+    public void testEncode() throws Exception {
+        Document dom = encode(GML3MockData.compoundCurve(), GML._Curve);
+        // print(dom);
+        assertEquals(1, dom.getElementsByTagName("gml:ArcString").getLength());
+        assertEquals(1, dom.getElementsByTagName("gml:LineStringSegment").getLength());
     }
 }

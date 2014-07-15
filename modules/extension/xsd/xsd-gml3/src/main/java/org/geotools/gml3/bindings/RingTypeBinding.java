@@ -16,9 +16,17 @@
  */
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
+import org.geotools.geometry.jts.CompoundCurvedGeometry;
+import org.geotools.geometry.jts.CurvedGeometry;
+import org.geotools.geometry.jts.CurvedGeometryFactory;
+import org.geotools.geometry.jts.CurvedRing;
+import org.geotools.gml3.ArcParameters;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -26,22 +34,18 @@ import org.geotools.xml.Node;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
- *
+ * 
  * @author Erik van de Pol. B3Partners BV.
- *
- *
+ * @author Andrea Aime
+ * 
  * @source $URL$
  */
-public class RingTypeBinding extends AbstractComplexBinding {
+public class RingTypeBinding extends AbstractComplexBinding implements Comparable {
     protected GeometryFactory gf;
+
+    protected ArcParameters arcParameters;
 
     public RingTypeBinding(GeometryFactory gf) {
         this.gf = gf;
@@ -61,7 +65,7 @@ public class RingTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Class getType() {
-        return LinearRing.class;
+        return CurvedRing.class;
     }
 
     @Override
@@ -75,38 +79,55 @@ public class RingTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
-    @Override
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
+        List members = node.getChildValues("curveMember");
 
-        List<MultiLineString> curveMemberList = node.getChildValues(MultiLineString.class);
-
-        List<LineString> curveMembers = new ArrayList<LineString>();
-
-        for (MultiLineString curveMember : curveMemberList) {
-            for (int i = 0; i < curveMember.getNumGeometries(); i++) {
-                LineString lineString = (LineString)curveMember.getGeometryN(i);
-                curveMembers.add(lineString);
+        if (members.isEmpty()) {
+            return null;
+        } else if (members.size() == 1) {
+            return members.get(0);
+        } else {
+            LineString curved = null;
+            List<LineString> components = new ArrayList<>();
+            for (Iterator it = members.iterator(); it.hasNext();) {
+                LineString ls = (LineString) it.next();
+                if (ls instanceof CurvedGeometry<?>) {
+                    curved = ls;
+                }
+                components.add(ls);
             }
+            CurvedGeometryFactory factory = GML3ParsingUtils.getCurvedGeometryFactory(
+                    arcParameters, gf, curved != null ? curved.getCoordinateSequence() : null);
+            return factory.createCurvedGeometry(components);
         }
-
-        MultiLineString multiLineString = gf.createMultiLineString(
-                GeometryFactory.toLineStringArray(curveMembers));
-
-        return gf.createLinearRing(multiLineString.getCoordinates());
     }
 
-    @Override
     public Object getProperty(Object object, QName name)
         throws Exception {
-
+        // System.out.println(name.getLocalPart());
         if ("curveMember".equals(name.getLocalPart())) {
-            LinearRing ring = (LinearRing) object;
-
-            return (MultiLineString)ring.getGeometryN(0);
+            if (object instanceof CompoundCurvedGeometry<?>) {
+                CompoundCurvedGeometry<?> curve = (CompoundCurvedGeometry<?>) object;
+                List<LineString> components = curve.getComponents();
+                return components;
+            } else {
+                return object;
+            }
         }
 
         return null;
     }
+
+    public void setArcParameters(ArcParameters arcParameters) {
+        this.arcParameters = arcParameters;
+    }
     
+    public int compareTo(Object o) {
+        if (o instanceof LinearRingTypeBinding) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 }

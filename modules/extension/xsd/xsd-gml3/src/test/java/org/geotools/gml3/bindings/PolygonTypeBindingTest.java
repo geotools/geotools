@@ -32,6 +32,11 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class PolygonTypeBindingTest extends GML3TestSupport {
     
+    @Override
+    protected boolean enableExtendedArcSurfaceSupport() {
+        return true;
+    }
+
     public void testNoInterior() throws Exception {
         GML3MockData.polygon(document, document);
 
@@ -79,5 +84,12 @@ public class PolygonTypeBindingTest extends GML3TestSupport {
         checkPosListOrdinates(doc, 2 * poly.getNumPoints());
     }
     
+
+    public void testEncodeCurved() throws Exception {
+        Polygon poly = GML3MockData.curvePolygon();
+        Document doc = encode(poly, GML.Polygon);
+        print(doc);
+
+    }
 
 }

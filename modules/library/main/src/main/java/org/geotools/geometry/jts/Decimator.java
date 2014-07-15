@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -91,6 +91,20 @@ public final class Decimator {
             this.spanx = 1;
             this.spany = 1;
         }
+    }
+
+    /**
+     * The generalization step in the x direction
+     */
+    public double getSpanX() {
+        return spanx;
+    }
+
+    /**
+     * The generalization step in the y direction
+     */
+    public double getSpanY() {
+        return spany;
     }
 
 	/**
@@ -194,42 +208,130 @@ public final class Decimator {
 	    this.spany = spany;
 	}
 
-	public final void decimateTransformGeneralize(Geometry geometry,
+    public final Geometry decimateTransformGeneralize(Geometry geometry,
 			MathTransform transform) throws TransformException {
 		if (geometry instanceof GeometryCollection) {
 			GeometryCollection collection = (GeometryCollection) geometry;
 			final int length = collection.getNumGeometries();
+			boolean cloned = false;
+			Class elementType = null;
+            Geometry[] elements = null;
 			for (int i = 0; i < length; i++) {
-				decimateTransformGeneralize(collection.getGeometryN(i),
+				Geometry source = collection.getGeometryN(i);
+                Geometry generalized = decimateTransformGeneralize(source,
 						transform);
+                
+                // lazily handle the case where we need to deep clone
+                if(generalized != source) {
+                    cloned = true;
+                    if(elements == null) {
+                        elements = new Geometry[collection.getNumGeometries()];
+                        for (int j = 0; j < i; j++) {
+                            Geometry element = source.getGeometryN(j);
+                            elements[j] = element;
+                            accumulateGeometryType(elementType, element);
+                        }
+                    }
+                }
+                if(cloned) {
+                    elements[i] = generalized;
+                    elementType = accumulateGeometryType(elementType, generalized);
+                }
+			}
+			if(cloned) {
+			    if(elementType == Point.class) {
+			        Point[] points = new Point[elements.length];
+			        System.arraycopy(elements, 0, points, 0, elements.length);
+                    return collection.getFactory().createMultiPoint(points);
+                } else if (elementType == LineString.class) {
+                    LineString[] lines = new LineString[elements.length];
+                    System.arraycopy(elements, 0, lines, 0, elements.length);
+                    return collection.getFactory().createMultiLineString(lines);
+                } else if (elementType == Polygon.class) {
+                    Polygon[] polys = new Polygon[elements.length];
+                    System.arraycopy(elements, 0, polys, 0, elements.length);
+                    return collection.getFactory().createMultiPolygon(polys);
+                } else {
+                    return collection.getFactory().createGeometryCollection(elements);
+			    }
+			} else {
+			    return collection;
 			}
 		} else if (geometry instanceof Point) {
 			LiteCoordinateSequence seq = (LiteCoordinateSequence) ((Point) geometry)
 					.getCoordinateSequence();
-			decimateTransformGeneralize(seq, transform, false);
+            decimateTransformGeneralize(seq, transform, false, spanx, spany);
+            return geometry;
 		} else if (geometry instanceof Polygon) {
 			Polygon polygon = (Polygon) geometry;
-			decimateTransformGeneralize(polygon.getExteriorRing(), transform);
-			final int length = polygon.getNumInteriorRing();
+            LinearRing shell = (LinearRing) decimateTransformGeneralize(polygon.getExteriorRing(),
+                    transform);
+            boolean cloned = shell != polygon.getExteriorRing();
+            final int length = polygon.getNumInteriorRing();
+            LinearRing[] holes = cloned ? new LinearRing[length] : null;
 			for (int i = 0; i < length; i++) {
-				decimateTransformGeneralize(polygon.getInteriorRingN(i),
+                LineString hole = polygon.getInteriorRingN(i);
+                LinearRing generalized = (LinearRing) decimateTransformGeneralize(hole,
 						transform);
+                cloned |= generalized != hole;
+                if (cloned) {
+                    if (holes == null) {
+                        holes = new LinearRing[length];
+                        for (int j = 0; j < i; j++) {
+                            holes[j] = (LinearRing) polygon.getInteriorRingN(j);
+                        }
+                    }
+                    holes[i] = generalized;
+                }
+            }
+
+            if (cloned) {
+                return polygon.getFactory().createPolygon(shell, holes);
+            } else {
+                return polygon;
 			}
 		} else if (geometry instanceof LineString) {
+            double spanx = this.spanx;
+            double spany = this.spany;
 			LineString ls = (LineString) geometry;
+            if (ls instanceof CurvedGeometry<?>) {
+                CurvedGeometry<LineString> curved = (CurvedGeometry<LineString>) ls;
+                ls = curved.linearize(Math.min(spanx, spany));
+                // do not generalize further, we already got a good representation
+                spanx = -1;
+                spany = -1;
+            }
             LiteCoordinateSequence seq = (LiteCoordinateSequence) ls.getCoordinateSequence();
             boolean loop = ls instanceof LinearRing;
-            if(!loop && seq.size() > 1) {
+            if (!loop && seq.size() > 1) {
                 double x0 = seq.getOrdinate(0, 0);
                 double y0 = seq.getOrdinate(0, 1);
                 double x1 = seq.getOrdinate(seq.size() - 1, 0);
                 double y1 = seq.getOrdinate(seq.size() - 1, 1);
-                loop = Math.abs(x0 - x1) < EPS && 
-                               Math.abs(y0 - y1) < EPS;
+                loop = Math.abs(x0 - x1) < EPS && Math.abs(y0 - y1) < EPS;
             }
-			decimateTransformGeneralize(seq, transform, loop);
+            decimateTransformGeneralize(seq, transform, loop, spanx, spany);
+            return ls;
+        } else {
+            return geometry;
 		}
 	}
+
+    private Class accumulateGeometryType(Class elementType, Geometry generalized) {
+        Class<? extends Geometry> geometryType = generalized.getClass();
+        if(elementType == null) {
+            elementType = geometryType;
+        } else if(elementType != geometryType && elementType != Geometry.class) {
+            if(elementType.isAssignableFrom(geometryType)) {
+                // nothing to do
+            } else if(geometryType.isAssignableFrom(elementType)) {
+                elementType = geometryType;
+            } else {
+                elementType = Geometry.class;
+            }
+        }
+        return elementType;
+    }
 
 	/**
 	 * decimates JTS geometries.
@@ -328,7 +430,8 @@ public final class Decimator {
 	 * @param tranform
 	 */
 	private final void decimateTransformGeneralize(LiteCoordinateSequence seq,
-			MathTransform transform, boolean ring) throws TransformException {
+            MathTransform transform, boolean ring, double spanx, double spany)
+            throws TransformException {
 		// decimates before XFORM
 		int ncoords = seq.size();
 		double coords[] = null;
@@ -363,7 +466,7 @@ public final class Decimator {
         }
 
         // generalize, use the heavier algorithm for longer lines
-        int actualCoords = spanBasedGeneralize(ncoords, coords);
+        int actualCoords = spanBasedGeneralize(ncoords, coords, spanx, spany);
         if(DP_THRESHOLD > 0 && actualCoords > DP_THRESHOLD) {
             actualCoords = dpBasedGeneralize(actualCoords, coords, Math.min(spanx, spany) * Math.min(spanx, spany));
         }
@@ -407,7 +510,7 @@ public final class Decimator {
 		}
 	}
 
-    private int spanBasedGeneralize(int ncoords, double[] coords) {
+    private int spanBasedGeneralize(int ncoords, double[] coords, double spanx, double spany) {
         int actualCoords = 1;
 		double lastX = coords[0];
 		double lastY = coords[1];
@@ -544,4 +647,5 @@ public final class Decimator {
 		readDoubles += dimension;
 		return readDoubles;
 	}
+
 }

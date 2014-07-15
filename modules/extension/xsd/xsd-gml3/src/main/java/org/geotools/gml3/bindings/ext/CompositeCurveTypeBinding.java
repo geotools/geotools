@@ -16,17 +16,27 @@
  */
 package org.geotools.gml3.bindings.ext;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import org.geotools.geometry.jts.CurvedGeometryFactory;
+import org.geotools.gml3.ArcParameters;
+import org.geotools.gml3.GML;
+import org.geotools.gml3.bindings.GML3ParsingUtils;
+import org.geotools.gml3.bindings.LineStringTypeBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
+
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateList;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
-import java.util.List;
-import javax.xml.namespace.QName;
-import org.geotools.gml3.GML;
-import org.geotools.gml3.bindings.LineStringTypeBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
 
 /**
  * Simple type binding for Composite Curve GML elements.
@@ -35,10 +45,16 @@ import org.geotools.xml.Node;
 public class CompositeCurveTypeBinding extends LineStringTypeBinding {
 
     private final GeometryFactory gFactory;
+
+    private ArcParameters arcParameters;
     
     public CompositeCurveTypeBinding(GeometryFactory gFactory, CoordinateSequenceFactory csFactory) {
         super(gFactory, csFactory);
         this.gFactory = gFactory;
+    }
+
+    public void setArcParameters(ArcParameters arcParameters) {
+        this.arcParameters = arcParameters;
     }
 
     @Override
@@ -54,10 +70,24 @@ public class CompositeCurveTypeBinding extends LineStringTypeBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value)
             throws Exception {
-        CoordinateList clist = extractCurveMemberCoordinates(node);
-        LineString lineString = gFactory
-                .createLineString(clist.toCoordinateArray());
-        return lineString;
+        List children = node.getChildren("curveMember");
+        List<LineString> components = new ArrayList<>();
+        for (Iterator it = children.iterator(); it.hasNext();) {
+            Node child = (Node) it.next();
+            if (child.getValue() instanceof LineString) {
+                LineString ls = (LineString) child.getValue();
+                components.add(ls);
+            }
+        }
+
+        if (components.isEmpty()) {
+            return gFactory.createLineString(new Coordinate[0]);
+        } else {
+            CoordinateSequence cs = components.get(0).getCoordinateSequence();
+            CurvedGeometryFactory factory = GML3ParsingUtils.getCurvedGeometryFactory(
+                    arcParameters, gFactory, cs);
+            return factory.createCurvedGeometry(components);
+        }
     }
 
     /**
@@ -80,4 +110,5 @@ public class CompositeCurveTypeBinding extends LineStringTypeBinding {
         }
         return clist;
     }
+
 }

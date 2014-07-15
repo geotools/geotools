@@ -17,12 +17,13 @@
 package org.geotools.geometry.jts;
 
 // J2SE dependencies
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.junit.Test;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
@@ -30,6 +31,7 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 
 /**
  * Tests the {@link GeometryCoordinateSequenceTransformer} implementation.
@@ -83,6 +85,42 @@ public class GeometryCoordinateSequenceTransformerTest {
                 gb.lineString(10, 10, 20, 20), gb.box(10, 10, 20, 20)));
     }
     
+    @Test
+    public void testFlipAxisOnCurved() throws Exception {
+        CircularString cs = (CircularString) new CurvedGeometryFactory(0.1).createCurvedGeometry(0,
+                1, 1, 2, 2, 1);
+
+        GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
+        CoordinateReferenceSystem crsLatLon = CRS.decode("urn:ogc:def:crs:EPSG:4326");
+        CoordinateReferenceSystem crsLonLat = CRS.decode("EPSG:4326", true);
+        transformer.setCoordinateReferenceSystem(crsLatLon);
+        MathTransform trans = CRS.findMathTransform(crsLonLat, crsLatLon);
+        transformer.setMathTransform(trans);
+
+        Geometry transformed = transformer.transform(cs);
+        assertTrue(transformed instanceof CircularString);
+        CircularString tcs = (CircularString) transformed;
+        assertArrayEquals(new double[] { 1, 0, 2, 1, 1, 2 }, tcs.getControlPoints(), 0d);
+    }
+
+    @Test
+    public void testFullTransformOnCurved() throws Exception {
+        CircularString cs = (CircularString) new CurvedGeometryFactory(0.1).createCurvedGeometry(0,
+                1, 1, 2, 2, 1);
+
+        GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
+        CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:3857");
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326", true);
+        transformer.setCoordinateReferenceSystem(targetCRS);
+        MathTransform trans = CRS.findMathTransform(sourceCRS, targetCRS);
+        transformer.setMathTransform(trans);
+
+        Geometry transformed = transformer.transform(cs);
+        assertFalse(transformed instanceof CircularString);
+        LineString ls = (LineString) transformed;
+        assertTrue(ls.getCoordinateSequence().size() > 3);
+    }
+
     /**
      * Confirm that testing method is accurate!
      * 

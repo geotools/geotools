@@ -16,17 +16,9 @@
  */
 package org.geotools.gml3.bindings.ext;
 
-import javax.xml.namespace.QName;
-
-import org.geotools.gml3.GML;
 import org.geotools.gml3.bindings.LineStringTypeBinding;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
 
 
 /**
@@ -71,26 +63,9 @@ public class CurveTypeBinding extends org.geotools.gml3.bindings.CurveTypeBindin
         super(gf);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
-        if (GML.segments.equals(name)) {
-            //Curve curve = (Curve) object;
-            MultiLineString curve = (MultiLineString) object;
-            LineString[] segments = new LineString[curve.getNumGeometries()];
-
-            for (int i = 0; i < segments.length; i++) {
-                segments[i] = (LineString) curve.getGeometryN(i);
-            }
-
-            return segments;
-        }
-
-        return null;
-    }
-
     public int compareTo(Object o) {
         if (o instanceof LineStringTypeBinding) {
-            return 1;
+            return -1;
         } else {
             return 0;
         }

@@ -1,8 +1,8 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ * 
+ *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,20 +14,25 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gml3;
+package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
+import java.util.List;
+
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-
 
 /**
+ * Convenience interface to expose methods common to {@link CompoundCurve} and {@link CompoundRing}
  * 
- *
- * @source $URL$
+ * @author Andrea Aime - GeoSolutions
  */
-public class Curve extends MultiLineString {
-    public Curve(LineString[] segments, GeometryFactory factory) {
-        super(segments, factory);
-    }
+public interface CompoundCurvedGeometry<T extends LineString> extends CurvedGeometry<T> {
+
+    /**
+     * Returns the linearized coordinates at the given tolerance.
+     * 
+     * @param tolerance
+     * @return
+     */
+    public List<LineString> getComponents();
+
 }

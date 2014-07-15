@@ -16,6 +16,14 @@
  */
 package org.geotools.geometry.jts;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
+
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Geometry;
@@ -28,10 +36,6 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 
 /**
@@ -57,6 +61,8 @@ public class GeometryCoordinateSequenceTransformer {
     private CoordinateSequenceTransformer inputCSTransformer = null;
     private CoordinateSequenceTransformer csTransformer = null;
 	private GeometryFactory currGeometryFactory = null;
+
+    private boolean curveCompatible;
     
     /**
      * Creates a transformer which uses the {@link CoordinateSequenceFactory}
@@ -88,6 +94,7 @@ public class GeometryCoordinateSequenceTransformer {
      */
     public void setMathTransform(MathTransform transform) {
         this.transform = transform;
+        this.curveCompatible = isCurveCompatible(transform);
     }
 
     /**
@@ -203,7 +210,27 @@ public class GeometryCoordinateSequenceTransformer {
      */
     public LineString transformLineString(LineString ls, GeometryFactory gf)
         throws TransformException {
-    	
+        if (ls instanceof CurvedGeometry<?> && curveCompatible) {
+            return transformCurvedLineString((CurvedGeometry) ls, gf);
+        } else {
+            return transformStraightLineString(ls, gf);
+        }
+    }
+
+    private boolean isCurveCompatible(MathTransform mt) {
+        if (!(mt instanceof AffineTransform2D)) {
+            return false;
+        }
+
+        AffineTransform2D at = (AffineTransform2D) mt;
+        // return true if we are scaling by the same amount, and the rotational
+        // elements are equal in absolute value
+        return at.getScaleX() == at.getScaleY()
+                && Math.abs(at.getShearX()) == Math.abs(at.getShearY());
+    }
+
+    private LineString transformStraightLineString(LineString ls, GeometryFactory gf)
+            throws TransformException {
         // if required, init csTransformer using geometry's CSFactory
         init(gf);
         
@@ -218,6 +245,27 @@ public class GeometryCoordinateSequenceTransformer {
         
         transformed.setUserData( ls.getUserData() );
         return transformed;
+    }
+
+    private LineString transformCurvedLineString(CurvedGeometry<?> curved, GeometryFactory gf)
+            throws TransformException {
+        CurvedGeometryFactory cf = CurvedGeometries.getFactory(curved);
+        if (curved instanceof SingleCurvedGeometry<?>) {
+            SingleCurvedGeometry<?> single = (SingleCurvedGeometry<?>) curved;
+            double[] controlPoints = single.getControlPoints();
+            double[] target = new double[controlPoints.length];
+            transform.transform(controlPoints, 0, target, 0, controlPoints.length / 2);
+            return cf.createCurvedGeometry(target);
+        } else {
+            CompoundCurvedGeometry<?> compound = (CompoundCurvedGeometry<?>) curved;
+            List<LineString> reprojected = new ArrayList<>();
+            for (LineString component : compound.getComponents()) {
+                LineString ls = transformLineString(component, gf);
+                reprojected.add(ls);
+            }
+            return cf.createCurvedGeometry(reprojected);
+        }
+
     }
 
     /**

@@ -445,6 +445,22 @@ public final class JDBCDataStore extends ContentDataStore
      * @return The data source, never <code>null</code>.
      */
     public DataSource getDataSource() {
+        if(dataSource==null){ 
+            // Should never return null so throw an exception
+            if(LOGGER.isLoggable(Level.FINE)) {
+                // At this log level, dispose() should store an exception
+                if(disposedBy==null) {
+                    LOGGER.log(Level.SEVERE, "JDBCDataStore was never given a DataSource.");
+                    throw new IllegalStateException("DataSource not available as it was never set.");
+                } else {
+                    LOGGER.log(Level.WARNING, "JDBCDataStore was disposed.", disposedBy);
+                    throw new IllegalStateException("DataSource not available after calling dispose().");
+                }
+            } else {
+                throw new IllegalStateException("DataSource not available after calling dispose() or before being set.");
+            }
+            
+        } 
         return dataSource;
     }
 
@@ -455,6 +471,8 @@ public final class JDBCDataStore extends ContentDataStore
      * @param dataSource The data source, never <code>null</code>.
      */
     public void setDataSource(DataSource dataSource) {
+        if(this.dataSource!=null) LOGGER.log(Level.WARNING, "Setting DataSource on JDBCDataStore that already has DataSource set");
+        if(dataSource==null) throw new NullPointerException("JDBCDataStore's DataSource should not be set to null");
         this.dataSource = dataSource;
     }
 
@@ -1768,9 +1786,7 @@ public final class JDBCDataStore extends ContentDataStore
     protected final Connection createConnection() {
         try {
             LOGGER.fine( "CREATE CONNECTION");
-            if( getDataSource() == null ){
-                throw new NullPointerException("JDBC DataSource not available after dispose() has been called");
-            }
+            
             Connection cx = getDataSource().getConnection();
             // isolation level is not set in the datastore, see 
             // http://jira.codehaus.org/browse/GEOT-2021 
@@ -4554,6 +4570,7 @@ public final class JDBCDataStore extends ContentDataStore
         
     }
     
+    private Throwable disposedBy=null;
     public void dispose() {
         if(dataSource != null && dataSource instanceof ManageableDataSource) {
             try {
@@ -4563,6 +4580,10 @@ public final class JDBCDataStore extends ContentDataStore
                 // it's ok, we did our best..
                 LOGGER.log(Level.FINE, "Could not close dataSource", e);
             }
+        }
+        // Store the exception for logging later if the object is used after disposal
+        if(LOGGER.isLoggable(Level.FINE)) {
+            disposedBy = new RuntimeException("DataSource disposed in thread "+Thread.currentThread().getName());
         }
         dataSource = null;
     }

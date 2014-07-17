@@ -19,6 +19,8 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.Schema;
 
+import com.vividsolutions.jts.geom.LineString;
+
 /**
  * 
  *
@@ -3751,7 +3753,7 @@ public class GMLSchema extends SchemaImpl {
     private static AttributeType build_CURVEPROPERTYTYPE_TYPE() {
         AttributeType builtType;
         builtType = new AbstractLazyAttributeTypeImpl(
-            new NameImpl("http://www.opengis.net/gml/3.2","CurvePropertyType"), com.vividsolutions.jts.geom.LineString.class, false,
+            new NameImpl("http://www.opengis.net/gml/3.2","CurvePropertyType"), LineString.class, false,
             false, null, null
         ) {
             @Override
@@ -6113,7 +6115,7 @@ public class GMLSchema extends SchemaImpl {
     private static AttributeType build_CURVETYPE_TYPE() {
         AttributeType builtType = new AbstractLazyAttributeTypeImpl(
                 new NameImpl("http://www.opengis.net/gml/3.2","CurveType"),
-                com.vividsolutions.jts.geom.MultiLineString.class, false, false, null, null) {
+                LineString.class, false, false, null, null) {
             @Override
             public AttributeType buildSuper() {
                 return ABSTRACTCURVETYPE_TYPE;

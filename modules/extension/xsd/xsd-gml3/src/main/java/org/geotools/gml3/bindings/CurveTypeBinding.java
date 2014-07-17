@@ -69,7 +69,7 @@ import com.vividsolutions.jts.geom.LineString;
  *
  * @source $URL$
  */
-public class CurveTypeBinding extends AbstractComplexBinding {
+public class CurveTypeBinding extends AbstractComplexBinding implements Comparable {
     protected GeometryFactory gf;
 
     ArcParameters arcParameters;
@@ -145,4 +145,13 @@ public class CurveTypeBinding extends AbstractComplexBinding {
 
         return null;
     }
+    
+    public int compareTo(Object o) {
+        if (o instanceof LineStringTypeBinding) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
 }

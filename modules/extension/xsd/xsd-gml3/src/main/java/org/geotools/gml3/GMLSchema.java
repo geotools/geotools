@@ -12,6 +12,7 @@ import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.feature.type.ProfileImpl;
 import org.geotools.feature.type.SchemaImpl;
+import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.gml3.smil.SMIL20LANGSchema;
 import org.geotools.xlink.XLINKSchema;
 import org.geotools.xs.XSSchema;
@@ -9905,7 +9906,7 @@ public class GMLSchema extends SchemaImpl {
     private static AttributeType build_CURVEPROPERTYTYPE_TYPE() {
         AttributeType builtType;
         builtType = new AttributeTypeImpl(
-            new NameImpl("http://www.opengis.net/gml","CurvePropertyType"), com.vividsolutions.jts.geom.MultiLineString.class, false,
+            new NameImpl("http://www.opengis.net/gml","CurvePropertyType"), CurvedGeometry.class, false,
             false, Collections.<Filter>emptyList(), XSSchema.ANYTYPE_TYPE, null
         );
         return builtType;
@@ -17885,7 +17886,7 @@ public class GMLSchema extends SchemaImpl {
     private static AttributeType build_MULTICURVETYPE_TYPE() {
         AttributeType builtType;
         builtType = new AttributeTypeImpl(
-            new NameImpl("http://www.opengis.net/gml","MultiCurveType"), com.vividsolutions.jts.geom.GeometryCollection.class, false,
+            new NameImpl("http://www.opengis.net/gml","MultiCurveType"), MultiCurvedGeometry.class, false,
             false, Collections.<Filter>emptyList(), ABSTRACTGEOMETRICAGGREGATETYPE_TYPE, null
         );
         return builtType;
@@ -22217,7 +22218,7 @@ public class GMLSchema extends SchemaImpl {
     private static AttributeType build_MULTICURVEPROPERTYTYPE_TYPE() {
         AttributeType builtType;
         builtType = new AttributeTypeImpl(
-            new NameImpl("http://www.opengis.net/gml","MultiCurvePropertyType"), com.vividsolutions.jts.geom.GeometryCollection.class, false,
+            new NameImpl("http://www.opengis.net/gml","MultiCurvePropertyType"), MultiCurvedGeometry.class, false,
             false, Collections.<Filter>emptyList(), XSSchema.ANYTYPE_TYPE, null
         );
         return builtType;
@@ -22742,7 +22743,7 @@ public class GMLSchema extends SchemaImpl {
     private static AttributeType build_CURVETYPE_TYPE() {
         AttributeType builtType;
         builtType = new AttributeTypeImpl(
-            new NameImpl("http://www.opengis.net/gml","CurveType"), com.vividsolutions.jts.geom.MultiLineString.class, false,
+            new NameImpl("http://www.opengis.net/gml","CurveType"), CurvedGeometry.class, false,
             false, Collections.<Filter>emptyList(), ABSTRACTCURVETYPE_TYPE, null
         );
         return builtType;

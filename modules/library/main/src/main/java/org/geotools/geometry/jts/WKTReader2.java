@@ -577,7 +577,56 @@ public class WKTReader2 extends WKTReader {
      * @throws ParseException if an unexpected token was encountered
      */
     private MultiPoint readMultiPointText() throws IOException, ParseException {
-        return geometryFactory.createMultiPoint(toPoints(getCoordinates()));
+        return geometryFactory.createMultiPoint(toPoints(getCoordinatesForMultiPoint()));
+    }
+
+    /**
+     * Get a Coordinate array for a MultiPoint.  Specifically handle both WKT styles:
+     * MULTIPOINT (111 -47, 110 -46.5) and MULTIPOINT ((111 -47), (110 -46.5)).
+     * @return An Array of Coordinates
+     * @throws IOException if an I/O error occurs
+     * @throws ParseException if an unexpected token was encountered
+     */
+    private Coordinate[] getCoordinatesForMultiPoint() throws IOException, ParseException {
+        String nextToken = getNextEmptyOrOpener();
+        if (nextToken.equals(EMPTY)) {
+            return new Coordinate[] {};
+        }
+
+        // Check for inner parens
+        boolean innerParens = false;
+        try {
+            String peek = getNextWord();
+            innerParens = peek.equals(L_PAREN);
+        } catch(ParseException ex) {
+            // Do nothing
+        } finally {
+            tokenizer.pushBack();
+        }
+
+        if (innerParens) {
+            ArrayList coordinates = new ArrayList();
+            Coordinate[] coords = getCoordinates();
+            coordinates.add(coords[0]);
+            nextToken = getNextCloserOrComma();
+            while (nextToken.equals(COMMA)) {
+                coords = getCoordinates();
+                coordinates.add(coords[0]);
+                nextToken = getNextCloserOrComma();
+            }
+            Coordinate[] array = new Coordinate[coordinates.size()];
+            return (Coordinate[]) coordinates.toArray(array);
+        } else {
+            ArrayList coordinates = new ArrayList();
+            coordinates.add(getPreciseCoordinate());
+            nextToken = getNextCloserOrComma();
+            while (nextToken.equals(COMMA)) {
+                coordinates.add(getPreciseCoordinate());
+                nextToken = getNextCloserOrComma();
+            }
+            Coordinate[] array = new Coordinate[coordinates.size()];
+            return (Coordinate[]) coordinates.toArray(array);
+        }
     }
 
     /**

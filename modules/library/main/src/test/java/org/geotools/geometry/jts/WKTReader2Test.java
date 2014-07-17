@@ -18,14 +18,10 @@ package org.geotools.geometry.jts;
 
 import static org.junit.Assert.*;
 
+import com.vividsolutions.jts.geom.*;
 import org.junit.Test;
 import org.opengis.geometry.coordinate.ArcString;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.WKTReader;
 /**
  * 
@@ -42,6 +38,34 @@ public class WKTReader2Test {
         Geometry geometry = reader.read(WKT);
         assertNotNull(geometry);
         assertTrue(geometry instanceof LineString);
+    }
+
+    @Test
+    public void multiPoint() throws Exception {
+        String WKT = "MULTIPOINT (111 -47, 110 -46.5)";
+        WKTReader reader = new WKTReader2();
+
+        Geometry geometry = reader.read(WKT);
+        assertNotNull(geometry);
+        assertTrue(geometry instanceof MultiPoint);
+        MultiPoint mp = (MultiPoint) geometry;
+        assertEquals(2, mp.getNumGeometries());
+        assertEquals(new Coordinate(111, -47), mp.getGeometryN(0).getCoordinate());
+        assertEquals(new Coordinate(110, -46.5), mp.getGeometryN(1).getCoordinate());
+    }
+
+    @Test
+    public void multiPointWithInnerParens() throws Exception {
+        String WKT = "MULTIPOINT ((111 -47), (110 -46.5))";
+        WKTReader reader = new WKTReader2();
+
+        Geometry geometry = reader.read(WKT);
+        assertNotNull(geometry);
+        assertTrue(geometry instanceof MultiPoint);
+        MultiPoint mp = (MultiPoint) geometry;
+        assertEquals(2, mp.getNumGeometries());
+        assertEquals(new Coordinate(111, -47), mp.getGeometryN(0).getCoordinate());
+        assertEquals(new Coordinate(110, -46.5), mp.getGeometryN(1).getCoordinate());
     }
 
     /**

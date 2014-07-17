@@ -435,7 +435,7 @@ public class GranuleDescriptor {
             String classString = reader.getClass().getSuperclass().getName();
             // Special Management for NetCDF readers to set external Auxiliary File
             if (hints != null && hints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
-                if (classString.equalsIgnoreCase("org.geotools.imageio.unidata.UnidataImageReader")) {
+                if (classString.equalsIgnoreCase("org.geotools.imageio.GeoSpatialImageReader")) {
                     try {
                         String auxiliaryFilePath = (String) hints.get(Utils.AUXILIARY_FILES_PATH);
                         if (hints.containsKey(Utils.PARENT_DIR)) {

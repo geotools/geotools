@@ -32,6 +32,7 @@ Modules under active development:
 * :doc:`process/index` - API for working with GeoSpatial processes and annotations to make defining additional processes easy
 * :doc:`swing/index` - collection of GUI components and utilities based on the Swing framework
 * :doc:`swt/index` - collection of GUI components and utilities based on the SWT framework
+* :doc:`/library/coverage/multidim` - New plugins supporting NetCDF and Grib formats
 
 Modules for which volunteers are needed:
 
@@ -69,7 +70,6 @@ Unsuppported ISO 19107 Geometry implementations:
 Unsupported Raster modules:
 
 * :doc:`/library/coverage/coverageio`
-* :doc:`/library/coverage/experiment`
 * :doc:`/library/coverage/image-collection` - publishes a large collection of non georeferenced images as a coverage reader
 * :doc:`/library/coverage/geotiff_new`
 * :doc:`/library/coverage/matlab`

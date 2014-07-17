@@ -130,15 +130,6 @@
        </modules>
      </profile>
      <profile>
-       <id>coverage-experiment</id>
-       <activation>
-         <property><name>all</name></property>
-       </activation>
-       <modules>
-         <module>coverage-experiment</module>
-       </modules>
-     </profile>
-     <profile>
        <id>unsupported</id>
        <activation>
          <property><name>all</name></property>

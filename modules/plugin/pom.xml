@@ -66,6 +66,7 @@
     <module>referencing3D</module>
     <module>shapefile</module>
     <module>svg</module>
+    <module>coverage-multidim</module>
   </modules>
 
 </project>

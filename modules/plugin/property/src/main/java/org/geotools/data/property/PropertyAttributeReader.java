@@ -7,20 +7,21 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.geotools.data.AttributeReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.SchemaException;
+import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
 
 /**
  * Simple AttributeReader that works against Java properties files.
@@ -67,6 +68,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 public class PropertyAttributeReader implements AttributeReader {
+	WKTReader2 wktReader = new WKTReader2();
+	
     BufferedReader reader;
 
     SimpleFeatureType type;
@@ -381,8 +384,19 @@ public class PropertyAttributeReader implements AttributeReader {
             }
         }
         // Use of Converters to convert from String to requested java binding
-        Object value = Converters.convert(stringValue, attType.getType().getBinding());
-
+        Object value = null;
+        if(attType instanceof GeometryDescriptor && stringValue != null && !stringValue.trim().isEmpty()) {
+        	try {
+				Geometry geometry = wktReader.read(stringValue.trim());
+				value = Converters.convert(geometry, attType.getType().getBinding());
+			} catch (ParseException e) {
+			    // to be consistent with converters
+				value = null;
+			}
+        } else {
+        	value = Converters.convert(stringValue, attType.getType().getBinding());
+        }
+        	
         if (attType.getType() instanceof GeometryType) {
             // this is to be passed on in the geometry objects so the srs name gets encoded
             CoordinateReferenceSystem crs = ((GeometryType) attType.getType())
@@ -396,4 +410,8 @@ public class PropertyAttributeReader implements AttributeReader {
         }
         return value;
     }
+
+	void setWKTReader(WKTReader2 wktReader) {
+		this.wktReader = wktReader;
+	}
 }

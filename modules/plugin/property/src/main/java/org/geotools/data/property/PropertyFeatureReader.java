@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -118,4 +119,8 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
 
         reader = null;
     }
+
+	void setWKTReader(WKTReader2 wktReader) {
+		this.reader.setWKTReader(wktReader);
+	}
 }

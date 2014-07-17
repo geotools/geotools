@@ -40,10 +40,12 @@ import org.geotools.data.Query;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.WKTReader2;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
@@ -163,6 +165,19 @@ public class PropertyDataStore extends AbstractDataStore {
             reader.close();
         }
         return null;
+    }
+    
+    @Override
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
+    		String typeName, Query query) throws IOException {
+    	PropertyFeatureReader reader = new PropertyFeatureReader(directory, typeName);
+    	Object toleranceHint = query.getHints().get(Hints.LINEARIZATION_TOLERANCE);
+		if(toleranceHint instanceof Double) {
+			double tolerance = (double) toleranceHint;
+			reader.setWKTReader(new WKTReader2(tolerance));
+		}
+		
+		return reader;
     }
 
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(

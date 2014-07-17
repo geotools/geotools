@@ -10,4 +10,5 @@ org.geotools.util.CharsetConverterFactory
 org.geotools.util.UuidConverterFactory
 org.geotools.util.EnumerationConverterFactory
 org.geotools.util.QNameConverterFactory
+org.geotools.util.MeasureConverterFactory
 org.geotools.temporal.TemporalConverterFactory

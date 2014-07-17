@@ -19,10 +19,12 @@ package org.geotools.geometry.jts;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.opengis.geometry.coordinate.ArcString;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.WKTReader;
 /**
@@ -138,4 +140,23 @@ public class WKTReader2Test {
         assertTrue(polygon.getInteriorRingN(0) instanceof CircularRing);
     }
 
+    @Test
+    public void testParseMulticurve() throws Exception {
+        WKTReader reader = new WKTReader2();
+        String WKT = "MULTICURVE EMPTY";
+        MultiLineString ml = (MultiLineString) reader.read(WKT);
+        assertTrue(ml.isEmpty());
+        
+        WKT = "MULTICURVE((0 0, 5 5),CIRCULARSTRING(4 0, 4 4, 8 4))";
+        ml = (MultiLineString) reader.read(WKT);
+        assertEquals(2, ml.getNumGeometries());
+        assertTrue(ml.getGeometryN(0).getClass() == LineString.class);
+        assertTrue(ml.getGeometryN(1) instanceof CircularString);
+        
+        WKT = "MULTICURVE((100 100, 120 120), COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))";
+        ml = (MultiLineString) reader.read(WKT);
+        assertEquals(2, ml.getNumGeometries());
+        assertTrue(ml.getGeometryN(0).getClass() == LineString.class);
+        assertTrue(ml.getGeometryN(1) instanceof CompoundRing);
+    }
 }

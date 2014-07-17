@@ -39,6 +39,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
@@ -408,6 +409,8 @@ public class WKTReader2 extends WKTReader {
             return readMultiPointText();
         } else if (type.equalsIgnoreCase("MULTILINESTRING")) {
             return readMultiLineStringText();
+        } else if (type.equalsIgnoreCase("MULTICURVE")) {
+            return readMultiCurveText();
         } else if (type.equalsIgnoreCase("MULTIPOLYGON")) {
             return readMultiPolygonText();
         } else if (type.equalsIgnoreCase("GEOMETRYCOLLECTION")) {
@@ -517,6 +520,11 @@ public class WKTReader2 extends WKTReader {
                 LineString circularString = readCircularStringText();
                 lineStrings.add(circularString);
             }
+            else if( nextWord.equalsIgnoreCase("COMPOUNDCURVE")){
+                LineString compound = readCompoundCurveText();
+                lineStrings.add(compound);
+            }
+
             nextWord = getNextCloserOrComma();
         }
         return lineStrings;
@@ -616,6 +624,12 @@ public class WKTReader2 extends WKTReader {
         return geometryFactory.createPolygon(shell, (LinearRing[]) holes.toArray(array));
     }
     
+    private MultiLineString readMultiCurveText() throws IOException, ParseException {
+        List<LineString> lineStrings = getLineStrings();
+        LineString[] array = (LineString[]) lineStrings.toArray(new LineString[lineStrings.size()]);
+        return geometryFactory.createMultiLineString(array);
+    }
+    
     private Polygon readCurvePolygonText() throws IOException, ParseException {
         String nextToken = getNextEmptyOrOpener();
         if (nextToken.equals(EMPTY)) {
@@ -636,6 +650,7 @@ public class WKTReader2 extends WKTReader {
         LinearRing[] array = new LinearRing[holes.size()];
         return geometryFactory.createPolygon(shell, (LinearRing[]) holes.toArray(array));
     }
+    
     /**
      * Creates a <code>MultiLineString</code> using the next token in the stream.
      * 

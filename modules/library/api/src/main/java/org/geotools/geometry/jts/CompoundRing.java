@@ -49,8 +49,6 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
 
     LineString linearized;
 
-    double tolerance;
-
     public CompoundRing(List<LineString> components, GeometryFactory factory, double tolerance) {
         this(new CompoundCurve(components, factory, tolerance));
     }
@@ -67,7 +65,7 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
 
     @Override
     public double getTolerance() {
-        return tolerance;
+        return delegate.getTolerance();
     }
 
     /**

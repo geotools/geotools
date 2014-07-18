@@ -51,6 +51,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @source $URL$
  */
 public abstract class JDBCDataStoreFactory extends AbstractDataStoreFactory {
+    
     /** parameter for database type */
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true);
 
@@ -252,7 +253,9 @@ public abstract class JDBCDataStoreFactory extends AbstractDataStoreFactory {
         
         //call subclass hook and return
         JDBCDataStore result = createDataStoreInternal(dataStore, params);
-        assert result.getDataSource()!=null;
+        if( result.getDataSource() == null ){
+            throw new IOException("JDBC Connection not available with provided parameters");
+        }
         return result;
     }
 

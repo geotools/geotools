@@ -10,6 +10,9 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.geotools.geometry.jts.CompoundCurve;
+import org.geotools.geometry.jts.CompoundRing;
+import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.test.TestData;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -91,5 +94,24 @@ public class GeometryTypeConverterTest extends TestCase {
 		return (Geometry)dest;
 	}
 	
+    public void testLineStringToCurve() throws Exception {
+        Geometry ls = new WKTReader().read("LINESTRING(0 0, 10 10)");
+        Converter converter = getConverter(ls, CurvedGeometry.class);
+        CurvedGeometry curve = converter.convert(ls, CurvedGeometry.class);
+        assertTrue(curve instanceof CompoundCurve);
+        CompoundCurve cc = (CompoundCurve) curve;
+        assertEquals(1, cc.getComponents().size());
+        assertEquals(ls, cc.getComponents().get(0));
+    }
+
+    public void testLinearRingToCurve() throws Exception {
+        Geometry ls = new WKTReader().read("LINEARRING(0 0, 10 10, 10 0, 0 0)");
+        Converter converter = getConverter(ls, CurvedGeometry.class);
+        CurvedGeometry curve = converter.convert(ls, CurvedGeometry.class);
+        assertTrue(curve instanceof CompoundRing);
+        CompoundRing cr = (CompoundRing) curve;
+        assertEquals(1, cr.getComponents().size());
+        assertEquals(ls, cr.getComponents().get(0));
+    }
 	
 }

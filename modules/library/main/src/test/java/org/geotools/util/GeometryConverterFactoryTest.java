@@ -37,7 +37,7 @@ public class GeometryConverterFactoryTest extends TestCase {
 	}
 	
 	public void testEnvelopeToGeometry() throws Exception {
-		Geometry geometry = (Geometry) factory.createConverter( Envelope.class, Geometry.class, null )
+		Geometry geometry = factory.createConverter( Envelope.class, Geometry.class, null )
 			.convert( new Envelope( new Coordinate( 0,0 ), new Coordinate( 1,1 ) ), Geometry.class );
 		assertNotNull( geometry );
 		assertTrue(
@@ -54,7 +54,7 @@ public class GeometryConverterFactoryTest extends TestCase {
 	}
 	
 	public void testGeometryToEnvelope() throws Exception {
-		Envelope envelope = (Envelope) factory.createConverter( Geometry.class, Envelope.class, null ).convert( 
+		Envelope envelope = factory.createConverter( Geometry.class, Envelope.class, null ).convert( 
 			new GeometryFactory().createPolygon(
 				new GeometryFactory().createLinearRing( 
 					new Coordinate[] {
@@ -69,7 +69,7 @@ public class GeometryConverterFactoryTest extends TestCase {
 	}
 	
 	public void testStringToGeometry()  throws Exception {
-		Geometry geometry = (Geometry) factory.createConverter( String.class, Geometry.class, null )
+		Geometry geometry = factory.createConverter( String.class, Geometry.class, null )
 			.convert( "POLYGON((0 0, 1 0, 1 1, 0 1, 0 0))", Geometry.class );
 		assertNotNull( geometry );
 		assertTrue(
@@ -85,7 +85,7 @@ public class GeometryConverterFactoryTest extends TestCase {
 	}
 	
 	public void testGeometryToString() throws Exception {
-		String wkt = (String) factory.createConverter( Geometry.class, String.class, null ).convert( 
+		String wkt = factory.createConverter( Geometry.class, String.class, null ).convert( 
 			new GeometryFactory().createPolygon(
 				new GeometryFactory().createLinearRing( 
 					new Coordinate[] {
@@ -98,4 +98,5 @@ public class GeometryConverterFactoryTest extends TestCase {
 		
 		assertEquals( "POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", wkt );
 	}
+
 }

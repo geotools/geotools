@@ -25,8 +25,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.factory.Hints;
-import org.geotools.util.Converter;
-import org.geotools.util.ConverterFactory;
+import org.geotools.geometry.jts.CompoundCurve;
+import org.geotools.geometry.jts.CompoundRing;
+import org.geotools.geometry.jts.CurvedGeometry;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -64,8 +65,24 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
 	
 	public Converter createConverter(Class<?> source, Class<?> target,
 			Hints hints) {
-		// we can convert geometric types
-		if(Geometry.class.isAssignableFrom(source) && Geometry.class.isAssignableFrom(target)) {
+	    // special case for curved geometries
+	    if(LineString.class.isAssignableFrom(source) && CurvedGeometry.class.isAssignableFrom(target)) {
+	        return new Converter() {
+                
+                @Override
+                public <T> T convert(Object source, Class<T> target) throws Exception {
+                    LineString ls = ((LineString) source);
+                    if (ls instanceof LinearRing) {
+                        return (T) new CompoundRing(Arrays.asList(ls), ls.getFactory(),
+                                Double.MAX_VALUE);
+                    } else {
+                        return (T) new CompoundCurve(Arrays.asList(ls), ls.getFactory(),
+                                Double.MAX_VALUE);
+                    }
+                }
+            };
+	    } else if(Geometry.class.isAssignableFrom(source) && Geometry.class.isAssignableFrom(target)) {
+	        // we can convert geometric types
 			return new Converter() {
 				/**
 				 * Converts all the geometries of the given GeometryCollection to a specified

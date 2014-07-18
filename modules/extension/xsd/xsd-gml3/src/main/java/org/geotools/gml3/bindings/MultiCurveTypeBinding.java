@@ -121,8 +121,7 @@ public class MultiCurveTypeBinding extends AbstractComplexBinding {
         return gf.createMultiLineString((LineString[]) curves.toArray(new LineString[curves.size()]));
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         if ("curveMember".equals(name.getLocalPart())) {
             MultiLineString multiCurve = (MultiLineString) object;
             LineString[] members = new LineString[multiCurve.getNumGeometries()];
@@ -134,6 +133,8 @@ public class MultiCurveTypeBinding extends AbstractComplexBinding {
             GML3EncodingUtils.setChildIDs(multiCurve);
 
             return members;
+        } else {
+            super.getProperty(object, name);
         }
 
         return null;

@@ -87,10 +87,10 @@ public class MultiGeometryPropertyTypeBinding extends AbstractComplexBinding {
     
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        if ( GML._GeometricAggregate.equals( name ) ) {
-            return (GeometryCollection)object;
+        if (GML._GeometricAggregate.equals(name)) {
+            return object;
         }
-        return null;
+        return super.getProperty(object, name);
     }
 
 }

@@ -23,9 +23,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Stack;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,6 +41,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AbstractLazyComplexTypeImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.feature.type.Types;
+import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.Schemas;
@@ -174,7 +175,7 @@ public class FeatureTypeRegistry {
 
     public AttributeType getAttributeType(final Name typeName, XSDTypeDefinition xsdType,
             CoordinateReferenceSystem crs) {
-        AttributeType type = (AttributeType) typeRegistry.get(typeName);
+        AttributeType type = typeRegistry.get(typeName);
 
         if (type == null || type instanceof AbstractLazyComplexTypeImpl) {
             // recreate lazy types too
@@ -326,7 +327,8 @@ public class FeatureTypeRegistry {
         }
 
         if (!(type instanceof AttributeTypeProxy)
-                && Geometry.class.isAssignableFrom(type.getBinding())) {
+                && (Geometry.class.isAssignableFrom(type.getBinding()) || CurvedGeometry.class
+                        .isAssignableFrom(type.getBinding()))) {
             // create geometry descriptor with the simple feature type CRS
             GeometryType geomType = new GeometryTypeImpl(type.getName(), type.getBinding(), crs,
                     type.isIdentified(), type.isAbstract(), type.getRestrictions(),
@@ -596,7 +598,7 @@ public class FeatureTypeRegistry {
                     restrictions, superType, description);
         } else {
             boolean isIdentifiable = helper
-                    .isIdentifiable((XSDComplexTypeDefinition) typeDefinition);
+                    .isIdentifiable(typeDefinition);
             type = typeFactory.createComplexType(assignedName, schema, isIdentifiable, isAbstract,
                     restrictions, superType, description);
         }

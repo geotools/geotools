@@ -141,6 +141,8 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
             } else {
                 return object;
             }
+        } else {
+            super.getProperty(object, name);
         }
 
         return null;

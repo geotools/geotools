@@ -87,7 +87,7 @@ public class WPSConfiguration extends Configuration {
         bindings.put(WPS.ProcessBriefType, new ComplexEMFBinding(Wps10Factory.eINSTANCE,WPS.ProcessBriefType));
         bindings.put(WPS.ProcessDescriptionType, new ComplexEMFBinding(Wps10Factory.eINSTANCE,WPS.ProcessDescriptionType));
         bindings.put(WPS.ProcessFailedType, new ComplexEMFBinding(Wps10Factory.eINSTANCE,WPS.ProcessFailedType));
-        bindings.put(WPS.ProcessStartedType, new ComplexEMFBinding(Wps10Factory.eINSTANCE,WPS.ProcessStartedType));
+        bindings.put(WPS.ProcessStartedType, new SimpleContentComplexEMFBinding(Wps10Factory.eINSTANCE,WPS.ProcessStartedType));
         bindings.put(WPS.RequestBaseType, new ComplexEMFBinding(Wps10Factory.eINSTANCE,WPS.RequestBaseType));
         bindings.put(WPS.ResponseBaseType, new ComplexEMFBinding(Wps10Factory.eINSTANCE,WPS.ResponseBaseType));
         bindings.put(WPS.ResponseDocumentType, new ComplexEMFBinding(Wps10Factory.eINSTANCE,WPS.ResponseDocumentType));

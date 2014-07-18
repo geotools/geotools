@@ -16,6 +16,8 @@
  */
 package org.geotools.wps;
 
+import java.math.BigInteger;
+
 import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
@@ -33,20 +35,27 @@ import net.opengis.wps10.InputReferenceType;
 import net.opengis.wps10.InputType;
 import net.opengis.wps10.OutputDataType;
 import net.opengis.wps10.ProcessOutputsType1;
+import net.opengis.wps10.ProcessStartedType;
+import net.opengis.wps10.StatusType;
 import net.opengis.wps10.Wps10Factory;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
+import org.geotools.xml.test.XMLTestSupport;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * 
  *
  * @source $URL$
  */
-public class ExecuteTest extends TestCase {
+public class ExecuteTest extends XMLTestSupport {
 
     public void testExecuteEncode() throws Exception {
         Wps10Factory f = Wps10Factory.eINSTANCE;
@@ -100,6 +109,25 @@ public class ExecuteTest extends TestCase {
         e.setIndenting(true);
         e.encode(response, WPS.ExecuteResponse, System.out);
     }
+    
+    public void testExecuteResponseProgress() throws Exception {
+        Wps10Factory f = Wps10Factory.eINSTANCE;
+        ExecuteResponseType response = f.createExecuteResponseType();
+        StatusType status = f.createStatusType();
+        ProcessStartedType ps = f.createProcessStartedType();
+        ps.setPercentCompleted(new BigInteger("20"));
+        ps.setValue("Working really hard here");
+        status.setProcessStarted(ps);
+        response.setStatus(status);
+
+        Document dom = encode(response, WPS.ExecuteResponse);
+        print(dom);
+        NodeList nodes = dom.getElementsByTagName("wps:ProcessStarted");
+        assertEquals(1, nodes.getLength());
+        Node psNode = nodes.item(0);
+        assertEquals("Working really hard here", psNode.getTextContent());
+    }
+
 
     public void testParserDelegateNamespaces() throws Exception {
         Parser p = new Parser(new WPSConfiguration());
@@ -134,5 +162,10 @@ public class ExecuteTest extends TestCase {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Filter expected = ff.or(ff.greaterOrEqual(ff.property("PERSONS"), ff.literal("10000000")), ff.lessOrEqual(ff.property("PERSONS"), ff.literal("20000000")));
         assertEquals(expected, filter);
+    }
+
+    @Override
+    protected Configuration createConfiguration() {
+        return new WPSConfiguration();
     }
 }

@@ -28,6 +28,8 @@ import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CompoundRing;
 import org.geotools.geometry.jts.CurvedGeometry;
+import org.geotools.geometry.jts.MultiCurve;
+import org.geotools.geometry.jts.MultiCurvedGeometry;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -66,19 +68,52 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
 	public Converter createConverter(Class<?> source, Class<?> target,
 			Hints hints) {
 	    // special case for curved geometries
-	    if(LineString.class.isAssignableFrom(source) && CurvedGeometry.class.isAssignableFrom(target)) {
+        if (Geometry.class.isAssignableFrom(source)
+                && CurvedGeometry.class.isAssignableFrom(target)) {
 	        return new Converter() {
                 
                 @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
-                    LineString ls = ((LineString) source);
-                    if (ls instanceof LinearRing) {
-                        return (T) new CompoundRing(Arrays.asList(ls), ls.getFactory(),
-                                Double.MAX_VALUE);
+                    Geometry result = null;
+                    Geometry sourceGeometry = (Geometry) source;
+                    if (MultiCurvedGeometry.class.isAssignableFrom(target)) {
+                        MultiLineString multiLineString = Converters.convert(source,
+                                MultiLineString.class);
+                        if (multiLineString == null) {
+                            return null;
+                        } else {
+                            List<LineString> components = new ArrayList<>();
+                            double tolerance = Double.MAX_VALUE;
+
+                            for (int i = 0; i < multiLineString.getNumGeometries(); i++) {
+                                LineString geom = (LineString) multiLineString.getGeometryN(0);
+                                if (geom instanceof CurvedGeometry) {
+                                    tolerance = Math.min(tolerance,
+                                            ((CurvedGeometry) geom).getTolerance());
+                                }
+                                components.add(geom);
+                            }
+                            GeometryFactory factory = ((Geometry) source).getFactory();
+                            result = new MultiCurve(components, factory, tolerance);
+                        }
                     } else {
-                        return (T) new CompoundCurve(Arrays.asList(ls), ls.getFactory(),
-                                Double.MAX_VALUE);
+                        LineString converted = Converters.convert(source, LineString.class);
+                        if (converted.isEmpty()) {
+                            List<LineString> components = new ArrayList<>();
+                            result = new CompoundRing(components, converted.getFactory(),
+                                    Double.MAX_VALUE);
+                        } else if (converted instanceof LinearRing) {
+                            result = new CompoundRing(Arrays.asList(converted),
+                                    ((LineString) source).getFactory(), Double.MAX_VALUE);
+                        } else {
+                            result =  new CompoundCurve(Arrays.asList(converted),
+                                    converted.getFactory(), Double.MAX_VALUE);
+                        }
                     }
+                    if (result != null) {
+                        copyUserProperties(sourceGeometry, result);
+                    }
+                    return (T) result;
                 }
             };
 	    } else if(Geometry.class.isAssignableFrom(source) && Geometry.class.isAssignableFrom(target)) {
@@ -210,37 +245,15 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
 							}
 						}
 											
-        					// NC - added cloning above for cases where an existing geometry is used
-        		                        // for purpose for changing user data - we don't want any side effects
-        
-        		                        // NC-added, copy userdata
-        		                        if (destGeometry != null) {
-        		                            Map<Object, Object> newUserData = new HashMap<Object, Object>();
-        
-        		                            // copy if anything is already in destination data
-        		                            if (destGeometry.getUserData() instanceof Map) {
-        		                                newUserData.putAll((Map) destGeometry.getUserData());
-        		                            } else if (destGeometry.getUserData() instanceof CoordinateReferenceSystem) {
-        		                                newUserData.put(CoordinateReferenceSystem.class,
-        		                                        destGeometry.getUserData());
-        		                            }
-        		                            // overwrite with source
-        		                            if (sourceGeometry.getUserData() instanceof Map) {
-        		                                newUserData.putAll((Map) sourceGeometry.getUserData());
-        		                            } else if (sourceGeometry.getUserData() instanceof CoordinateReferenceSystem) {
-        		                                newUserData.put(CoordinateReferenceSystem.class,
-        		                                        sourceGeometry.getUserData());
-        		                            }
-        
-        		                            destGeometry.setUserData(newUserData);
-        
-        		                        }
-        		                        return destGeometry;
+                        // NC - added cloning above for cases where an existing geometry is used
+                        // for purpose for changing user data - we don't want any side effects
+                        copyUserProperties(sourceGeometry, destGeometry);
+                        return destGeometry;
 					}
 					
 					return null;
 				}
-				
+
 				@SuppressWarnings("unchecked")
 				private <T> T[] arrayCopy(T[] original,int length) {
 					Class<?> arrayType = original.getClass().getComponentType();
@@ -310,5 +323,28 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
 		
 		return null;
 	}
+
+    protected void copyUserProperties(Geometry sourceGeometry, Geometry destGeometry) {
+        // NC-added, copy userdata
+        if (destGeometry != null) {
+            Map<Object, Object> newUserData = new HashMap<Object, Object>();
+
+            // copy if anything is already in destination data
+            if (destGeometry.getUserData() instanceof Map) {
+                newUserData.putAll((Map) destGeometry.getUserData());
+            } else if (destGeometry.getUserData() instanceof CoordinateReferenceSystem) {
+                newUserData.put(CoordinateReferenceSystem.class, destGeometry.getUserData());
+            }
+            // overwrite with source
+            if (sourceGeometry.getUserData() instanceof Map) {
+                newUserData.putAll((Map) sourceGeometry.getUserData());
+            } else if (sourceGeometry.getUserData() instanceof CoordinateReferenceSystem) {
+                newUserData.put(CoordinateReferenceSystem.class, sourceGeometry.getUserData());
+            }
+
+            destGeometry.setUserData(newUserData);
+
+        }
+    }
 
 }

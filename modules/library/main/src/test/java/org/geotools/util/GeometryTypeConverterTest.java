@@ -5,7 +5,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -13,6 +15,8 @@ import junit.framework.TestCase;
 import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CompoundRing;
 import org.geotools.geometry.jts.CurvedGeometry;
+import org.geotools.geometry.jts.MultiCurve;
+import org.geotools.geometry.jts.MultiCurvedGeometry;
 import org.geotools.test.TestData;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -104,14 +108,27 @@ public class GeometryTypeConverterTest extends TestCase {
         assertEquals(ls, cc.getComponents().get(0));
     }
 
+    public void testLineStringToMultiCurve() throws Exception {
+        Geometry ls = new WKTReader().read("LINESTRING(0 0, 10 10)");
+        Converter converter = getConverter(ls, CurvedGeometry.class);
+        MultiCurvedGeometry curve = converter.convert(ls, MultiCurvedGeometry.class);
+        assertTrue(curve instanceof MultiCurve);
+        MultiCurve mc = (MultiCurve) curve;
+        assertEquals(1, mc.getNumGeometries());
+        assertEquals(ls, mc.getGeometryN(0));
+    }
+
     public void testLinearRingToCurve() throws Exception {
         Geometry ls = new WKTReader().read("LINEARRING(0 0, 10 10, 10 0, 0 0)");
+        Map<String, String> userData = Collections.singletonMap("test", "value");
+        ls.setUserData(userData);
         Converter converter = getConverter(ls, CurvedGeometry.class);
         CurvedGeometry curve = converter.convert(ls, CurvedGeometry.class);
         assertTrue(curve instanceof CompoundRing);
         CompoundRing cr = (CompoundRing) curve;
         assertEquals(1, cr.getComponents().size());
         assertEquals(ls, cr.getComponents().get(0));
+        assertEquals(userData, cr.getUserData());
     }
 	
 }

@@ -179,7 +179,13 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     }
 
     public boolean isEmpty() {
-        return false;
+        for (LineString ls : components) {
+            if (!ls.isEmpty()) {
+                return false;
+            }
+        }
+        ;
+        return true;
     }
 
     public String getGeometryType() {
@@ -328,28 +334,34 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     }
 
     public String toCurvedText() {
-        StringBuilder sb = new StringBuilder("COMPOUNDCURVE(");
-        for (int k = 0; k < components.size(); k++) {
-            LineString component = components.get(k);
-            if (component instanceof SingleCurvedGeometry<?>) {
-                SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) component;
-                sb.append(curved.toCurvedText());
-            } else {
-                sb.append("(");
-                CoordinateSequence cs = component.getCoordinateSequence();
-                for (int i = 0; i < cs.size(); i++) {
-                    sb.append(cs.getX(i) + " " + cs.getY(i));
-                    if (i < cs.size() - 1) {
-                        sb.append(", ");
+        StringBuilder sb = new StringBuilder("COMPOUNDCURVE");
+
+        if (components.size() == 0) {
+            sb.append(" EMPTY");
+        } else {
+            sb.append("(");
+            for (int k = 0; k < components.size(); k++) {
+                LineString component = components.get(k);
+                if (component instanceof SingleCurvedGeometry<?>) {
+                    SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) component;
+                    sb.append(curved.toCurvedText());
+                } else {
+                    sb.append("(");
+                    CoordinateSequence cs = component.getCoordinateSequence();
+                    for (int i = 0; i < cs.size(); i++) {
+                        sb.append(cs.getX(i) + " " + cs.getY(i));
+                        if (i < cs.size() - 1) {
+                            sb.append(", ");
+                        }
                     }
+                    sb.append(")");
                 }
-                sb.append(")");
+                if (k < components.size() - 1) {
+                    sb.append(", ");
+                }
             }
-            if (k < components.size() - 1) {
-                sb.append(", ");
-            }
+            sb.append(")");
         }
-        sb.append(")");
         return sb.toString();
     }
 

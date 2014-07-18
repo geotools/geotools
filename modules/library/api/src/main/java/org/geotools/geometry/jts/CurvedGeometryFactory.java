@@ -180,7 +180,18 @@ public class CurvedGeometryFactory extends GeometryFactory {
     }
 
     public MultiLineString createMultiLineString(LineString[] lineStrings) {
-        return delegate.createMultiLineString(lineStrings);
+        boolean curved = false;
+        for (LineString ls : lineStrings) {
+            if (ls instanceof CurvedGeometry<?>) {
+                curved = true;
+                break;
+            }
+        }
+        if (curved) {
+            return new MultiCurve(Arrays.asList(lineStrings), this, tolerance);
+        } else {
+            return delegate.createMultiLineString(lineStrings);
+        }
     }
 
     public GeometryCollection createGeometryCollection(Geometry[] geometries) {

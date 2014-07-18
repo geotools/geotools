@@ -145,6 +145,12 @@ public final class JDBCDataStore extends ContentDataStore
     implements GmlObjectStore {
     
     /**
+     * When true, record a stack trace documenting who disposed the JDBCDataStore. If dispose()
+     * is called a second time we can identify the offending parties.
+     */
+    protected static final Boolean TRACE_ENABLED = "true".equalsIgnoreCase(System.getProperty("gt2.jdbc.trace"));
+
+    /**
      * The native SRID associated to a certain descriptor
      * TODO: qualify this key with 'org.geotools.jdbc'
      */
@@ -439,12 +445,26 @@ public final class JDBCDataStore extends ContentDataStore
     }
 
     /**
-     * The data source the datastore uses to obtain connections to the underlying
-     * database.
+     * The data source the datastore uses to obtain connections to the underlying database.
      *
      * @return The data source, never <code>null</code>.
      */
     public DataSource getDataSource() {
+        if (dataSource == null) {
+            // Should never return null so throw an exception
+            if (TRACE_ENABLED) {
+                // If TRACE_ENABLED disposedBy may have stored an exception
+                if (disposedBy == null) {
+                    LOGGER.log(Level.WARNING, "JDBCDataStore was never given a DataSource.");
+                    throw new IllegalStateException("DataSource not available as it was never set.");
+                } else {
+                    LOGGER.log(Level.WARNING, "JDBCDataStore was disposed:" + disposedBy,disposedBy);
+                    throw new IllegalStateException("DataSource not available after calling dispose().");
+                }
+            } else {
+                throw new IllegalStateException("DataSource not available after calling dispose() or before being set.");
+            }
+        }
         return dataSource;
     }
 
@@ -455,6 +475,12 @@ public final class JDBCDataStore extends ContentDataStore
      * @param dataSource The data source, never <code>null</code>.
      */
     public void setDataSource(DataSource dataSource) {
+        if(this.dataSource!=null) {
+            LOGGER.log(Level.FINE, "Setting DataSource on JDBCDataStore that already has DataSource set");
+        }
+        if(dataSource==null) {
+            throw new IllegalArgumentException("JDBCDataStore's DataSource should not be set to null");
+        }
         this.dataSource = dataSource;
     }
 
@@ -1768,10 +1794,9 @@ public final class JDBCDataStore extends ContentDataStore
     protected final Connection createConnection() {
         try {
             LOGGER.fine( "CREATE CONNECTION");
-            if( getDataSource() == null ){
-                throw new NullPointerException("JDBC DataSource not available after dispose() has been called");
-            }
+
             Connection cx = getDataSource().getConnection();
+            
             // isolation level is not set in the datastore, see 
             // http://jira.codehaus.org/browse/GEOT-2021 
 
@@ -4554,6 +4579,13 @@ public final class JDBCDataStore extends ContentDataStore
         
     }
     
+    /**
+     * Used with TRACE_ENABLED to record the thread responsible for disposing
+     * the JDBCDataStore. In the event dispose() is called a second time
+     * this throwable is used to identify the offending party.
+     */
+    private Throwable disposedBy=null;
+    
     public void dispose() {
         if(dataSource != null && dataSource instanceof ManageableDataSource) {
             try {
@@ -4563,6 +4595,10 @@ public final class JDBCDataStore extends ContentDataStore
                 // it's ok, we did our best..
                 LOGGER.log(Level.FINE, "Could not close dataSource", e);
             }
+        }
+        // Store the exception for logging later if the object is used after disposal
+        if(TRACE_ENABLED) {
+            disposedBy = new RuntimeException("DataSource disposed by thread "+Thread.currentThread().getName());
         }
         dataSource = null;
     }

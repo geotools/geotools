@@ -22,7 +22,7 @@
 	</STYLE>
 </HEAD>
 <BODY LANG="en-AU" DIR="LTR">
-<a href="http://geotools.org"><img src="geotools-logo.png"></a>
+<a href="http://geotools.org"><img src="README-geotools-logo.png"></a>
 <H1 CLASS="western">GeoTools @RELEASE@</H1>
 <P>Thank you for downloading GeoTools @RELEASE@. This release was
 created on @DATE@.</P>
@@ -60,15 +60,18 @@ to GeoTools development:</P>
 <P>For full details on requirements and build process please see the
 <A HREF="http://docs.geotools.org/latest/developer/">Developers'
 Guide</A> (the following is provided as a quick reference only).</P>
-<H3 CLASS="western">Requirements</H3>
+<H3 CLASS="western">Runtime Envrionment</H3>
 <P>To use the GeoTools libraries you will need:</P>
 <UL>
-	<LI><P>Java 6 or higher</P>
+	<LI>Java 7: Oracle and OpenJDK implementations tested</LI>
+	<LI>Notice: Java 6 is not supported, to use Java 6 please use the earlier GeoTools 11 series.</LI>
+	<LI>Warning: Java 8 will not build at this time and thus remains untested</LI>
 </UL>
-<P>GeoTools will benefit from the inclusion of Java Advanced Imaging
-(JAI) and the Java Image IO (JIO) extensions in your JRE. In addition
-some formats require the ImageIO-Ext additions which explicitly
-support raster formats such as MRSID and ECW. Detailed instructions
+<P>GeoTools performance will benefit from the installation of Java Advanced Imaging
+(JAI) and the Java Image IO (JIO) extensions in your JRE. GeoTools will use the pure java implementation of these libraries if the native extensions are not installed.</P>
+<P>
+Additional spatial
+formats are provided by the ImageIO-Ext project including raster formats such as MRSID and ECW. Detailed instructions
 on configuring your JDK with these optional extensions can be found
 in our developers guide <A HREF="http://docs.geotools.org/latest/userguide/advanced/build/install/jdk.html">here</A>.</P>
 <H3 CLASS="western">Oracle (Optional)</H3>

@@ -18,7 +18,7 @@ import static org.geotools.ysld.Ysld.transform;
 import static org.geotools.ysld.Ysld.xmlReader;
 import static org.junit.Assert.assertEquals;
 
-public class YsldParserTest {
+public class YsldParseCookbookTest {
 
     @Test
     public void testPointSimple() throws Exception {

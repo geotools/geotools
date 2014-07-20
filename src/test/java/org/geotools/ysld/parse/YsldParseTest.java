@@ -10,10 +10,10 @@ import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class YamlAnchorTest {
+public class YsldParseTest {
 
     @Test
-    public void testSimple() throws Exception {
+    public void testAnchor() throws Exception {
         String yaml =
         "blue: &blue rgb(0,0,255)\n" +
         "point: \n"+
@@ -25,6 +25,19 @@ public class YamlAnchorTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
         assertEquals(Color.BLUE, SLD.color(SLD.fill(p)));
+    }
 
+    @Test
+    public void testNamedColor() throws Exception {
+        String yaml =
+        "point: \n"+
+        "  symbols: \n" +
+        "  - mark: \n" +
+        "      fill: \n" +
+        "        color: blue\n";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+        assertEquals(Color.BLUE, SLD.color(SLD.fill(p)));
     }
 }

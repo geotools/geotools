@@ -4,6 +4,7 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
+import org.geotools.ysld.Colors;
 import org.geotools.ysld.Tuple;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
@@ -94,7 +95,9 @@ public class Util {
                 color = parseColorAsRGB(m);
             }
         }
-
+        if (color == null) {
+            color = Colors.get(value);
+        }
 
         return color != null ? factory.filter.literal(color) : expression(value, factory);
     }

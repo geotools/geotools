@@ -10,7 +10,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class YsldParserPartialsTest {
+public class YsldParsePartialsTest {
 
     @Test
     public void testParseRules() throws Exception {

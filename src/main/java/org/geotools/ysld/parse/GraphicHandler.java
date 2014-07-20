@@ -1,6 +1,9 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.styling.*;
+import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlObject;
+import org.geotools.ysld.YamlSeq;
 import org.opengis.filter.expression.Expression;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
@@ -19,73 +22,44 @@ public class GraphicHandler extends YsldParseHandler {
         this.g = g;
     }
 
-    @Override
-    public void scalar(ScalarEvent evt, YamlParseContext context) {
-        String val = evt.getValue();
-
-        if ("anchor".equals(val)) {
-            context.push(new AnchorHandler(factory) {
-                protected void anchor(AnchorPoint anchor) {
-                    g.setAnchorPoint(anchor);
-                }
-            });
-        }
-        if ("opacity".equals(val)) {
-            context.push(new ExpressionHandler(factory) {
-                protected void expression(Expression expr) {
-                    g.setOpacity(expr);
-                }
-            });
-        }
-        if ("size".equals(val)) {
-            context.push(new ExpressionHandler(factory) {
-                protected void expression(Expression expr) {
-                    g.setSize(expr);
-                }
-            });
-        }
-        if ("displacement".equals(val)) {
-            context.push(new DisplacementHandler(factory) {
-                @Override
-                protected void displace(Displacement displacement) {
-                    g.setDisplacement(displacement);
-                }
-            });
-        }
-        if ("rotation".equals(val)) {
-            context.push(new ExpressionHandler(factory) {
-                protected void expression(Expression expr) {
-                    g.setRotation(expr);
-                }
-            });
-        }
-        if ("gap".equals(val)) {
-            context.push(new ExpressionHandler(factory) {
-                protected void expression(Expression expr) {
-                    g.setGap(expr);
-                }
-            });
-        }
-        if ("initial-gap".equals(val)) {
-            context.push(new ExpressionHandler(factory) {
-                protected void expression(Expression expr) {
-                    g.setInitialGap(expr);
-                }
-            });
-        }
-        if ("symbols".equals(val)) {
-            context.push(new SymbolsHandler());
-        }
+    protected void graphic(Graphic g) {
     }
 
     @Override
-    public void endMapping(MappingEndEvent evt, YamlParseContext context) {
-        super.endMapping(evt, context);
+    public void handle(YamlObject<?> obj, YamlParseContext context) {
         graphic(g);
-        context.pop();
-    }
 
-    protected void graphic(Graphic graphic) {
+        YamlMap map = obj.map();
+
+        if (map.has("anchor")) {
+            g.setAnchorPoint(Util.anchor(map.str("anchor"), factory));
+        }
+
+        if (map.has("opacity")) {
+            g.setOpacity(Util.expression(map.str("opacity"), factory));
+        }
+
+        if (map.has("size")) {
+            g.setSize(Util.expression(map.str("size"), factory));
+        }
+
+        if (map.has("displacement")) {
+            g.setDisplacement(Util.displacement(map.str("displacement"), factory));
+        }
+
+        if (map.has("rotation")) {
+            g.setRotation(Util.expression(map.str("rotation"), factory));
+        }
+
+        if (map.has("gap")) {
+            g.setGap(Util.expression(map.str("gap"), factory));
+        }
+
+        if (map.has("initial-gap")) {
+            g.setInitialGap(Util.expression(map.str("initial-gap"), factory));
+        }
+
+        context.push("symbols", new SymbolsHandler());
     }
 
     class SymbolsHandler extends YsldParseHandler {
@@ -95,29 +69,22 @@ public class GraphicHandler extends YsldParseHandler {
         }
 
         @Override
-        public void scalar(ScalarEvent evt, YamlParseContext context) {
-            String val = evt.getValue();
-            if ("mark".equals(val)) {
-                context.push(new MarkHandler(factory) {
+        public void handle(YamlObject<?> obj, YamlParseContext context) {
+            YamlSeq seq = obj.seq();
+            for (YamlObject o : seq) {
+                context.push(o, "mark", new MarkHandler(factory) {
                     @Override
                     protected void mark(Mark mark) {
                         g.graphicalSymbols().add(mark);
                     }
                 });
-            }
-            else if ("external".equals(val)) {
-                context.push(new ExternalGraphicHandler(factory) {
+                context.push(o, "external", new ExternalGraphicHandler(factory) {
                     @Override
                     protected void externalGraphic(ExternalGraphic externalGraphic) {
                         g.graphicalSymbols().add(externalGraphic);
                     }
                 });
             }
-        }
-
-        @Override
-        public void endSequence(SequenceEndEvent evt, YamlParseContext context) {
-            context.pop();
         }
     }
 }

@@ -1,6 +1,7 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.styling.*;
+import org.geotools.ysld.YamlObject;
 import org.yaml.snakeyaml.events.MappingStartEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
@@ -11,21 +12,8 @@ public class PointHandler extends SymbolizerHandler<PointSymbolizer> {
     }
 
     @Override
-    public void mapping(MappingStartEvent evt, YamlParseContext context) {
-        super.mapping(evt, context);
-        context.push(new PointGraphicHandler());
-    }
-
-    class PointGraphicHandler extends GraphicHandler {
-
-        PointGraphicHandler() {
-            super(PointHandler.this.factory, sym.getGraphic());
-        }
-
-        @Override
-        public void scalar(ScalarEvent evt, YamlParseContext context) {
-            super.scalar(evt, context);
-            PointHandler.this.scalar(evt, context);
-        }
+    public void handle(YamlObject<?> obj, YamlParseContext context) {
+        super.handle(obj, context);
+        context.push(new GraphicHandler(factory, sym.getGraphic()));
     }
 }

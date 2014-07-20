@@ -4,6 +4,9 @@ package org.geotools.ysld.parse;
 import org.geotools.ysld.Tuple;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
+import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlObject;
+import org.geotools.ysld.YamlSeq;
 import org.yaml.snakeyaml.events.Event;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
@@ -19,37 +22,26 @@ public abstract class ColorMapHandler extends YsldParseHandler {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, YamlParseContext context) {
-        String val = evt.getValue();
-        if ("type".equals(val)) {
-            context.push(new ValueHandler(factory) {
-                @Override
-                protected void value(String value, Event event) {
-                    if ("ramp".equals(value)) {
-                        colorMap.setType(ColorMap.TYPE_RAMP);
-                    }
-                    else if ("intervals".equals(value)) {
-                        colorMap.setType(ColorMap.TYPE_INTERVALS);
-                    }
-                    else if ("values".equals(value)) {
-                        colorMap.setType(ColorMap.TYPE_VALUES);
-                    }
-                    else {
-                        LOG.warning("Unknown color map type: " + value);
-                    }
-                }
-            });
-        }
-        else if ("entries".equals(val)) {
-            context.push(new EntriesHandler());
-        }
-    }
-
-    @Override
-    public void endMapping(MappingEndEvent evt, YamlParseContext context) {
-        super.endMapping(evt, context);
+    public void handle(YamlObject<?> obj, YamlParseContext context) {
         colorMap(colorMap);
-        context.pop();
+
+        YamlMap map = obj.map();
+        if (map.has("type")) {
+            String value = map.str("type");
+            if ("ramp".equals(value)) {
+                colorMap.setType(ColorMap.TYPE_RAMP);
+            }
+            else if ("intervals".equals(value)) {
+                colorMap.setType(ColorMap.TYPE_INTERVALS);
+            }
+            else if ("values".equals(value)) {
+                colorMap.setType(ColorMap.TYPE_VALUES);
+            }
+            else {
+                LOG.warning("Unknown color map type: " + value);
+            }
+        }
+        context.push("entries", new EntriesHandler());
     }
 
     protected abstract void colorMap(ColorMap colorMap);
@@ -61,37 +53,36 @@ public abstract class ColorMapHandler extends YsldParseHandler {
         }
 
         @Override
-        public void scalar(ScalarEvent evt, YamlParseContext context) {
-            String val = evt.getValue();
-            Tuple q = null;
-            try {
-                q = Tuple.of(4).parse(val);
-            }
-            catch(IllegalArgumentException e) {
-                throw new ParseException(String.format(
-                    "Bad entry: '%s', must be of form (<color>,[<opacity>],[<value>],[<label>])", val), evt);
-            }
+        public void handle(YamlObject<?> obj, YamlParseContext context) {
+            YamlSeq seq = obj.seq();
+            for (Object o : seq.raw()) {
+                String val = o.toString();
 
-            ColorMapEntry e = factory.style.createColorMapEntry();
-            if (q.at(0) != null) {
-                e.setColor(ExpressionHandler.parse(q.at(0), evt, factory));
-            }
-            if (q.at(1) != null) {
-                e.setOpacity(ExpressionHandler.parse(q.at(1), evt, factory));
-            }
-            if (q.at(2)!= null) {
-                e.setQuantity(ExpressionHandler.parse(q.at(2), evt, factory));
-            }
-            if (q.at(3) != null) {
-                e.setLabel(q.at(3));
-            }
+                Tuple q = null;
+                try {
+                    q = Tuple.of(4).parse(val);
+                }
+                catch(IllegalArgumentException e) {
+                    throw new IllegalArgumentException(String.format(
+                            "Bad entry: '%s', must be of form (<color>,[<opacity>],[<value>],[<label>])", val), e);
+                }
 
-            colorMap.addColorMapEntry(e);
-        }
+                ColorMapEntry e = factory.style.createColorMapEntry();
+                if (q.at(0) != null) {
+                    e.setColor(Util.expression(q.at(0), factory));
+                }
+                if (q.at(1) != null) {
+                    e.setOpacity(Util.expression(q.at(1), factory));
+                }
+                if (q.at(2)!= null) {
+                    e.setQuantity(Util.expression(q.at(2), factory));
+                }
+                if (q.at(3) != null) {
+                    e.setLabel(q.at(3));
+                }
 
-        @Override
-        public void endSequence(SequenceEndEvent evt, YamlParseContext context) {
-            context.pop();
+                colorMap.addColorMapEntry(e);
+            }
         }
     }
 }

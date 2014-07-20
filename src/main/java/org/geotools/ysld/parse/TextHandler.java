@@ -1,6 +1,8 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.styling.*;
+import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlObject;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.yaml.snakeyaml.events.Event;
@@ -14,36 +16,22 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, YamlParseContext context) {
-        String val = evt.getValue();
-        if ("label".equals(val)) {
-            context.push(new ExpressionHandler(factory) {
-                @Override
-                protected void expression(Expression expr) {
-                    sym.setLabel(expr);
-                }
-            });
+    public void handle(YamlObject<?> obj, YamlParseContext context) {
+        super.handle(obj, context);
+
+        YamlMap map = obj.map();
+        if (map.has("label")) {
+            sym.setLabel(Util.expression(map.str("label"), factory));
         }
-        else if ("font".equals(val)) {
-            context.push(new FontHandler());
-        }
-        else if ("fill".equals(val)) {
-            context.push(new FillHandler(factory) {
-                @Override
-                protected void fill(Fill fill) {
-                    sym.setFill(fill);
-                }
-            });
-        }
-        else if ("halo".equals(val)) {
-            context.push(new HaloHandler());
-        }
-        else if ("placement".equals(val)) {
-            context.push(new PlacementHandler());
-        }
-        else {
-            super.scalar(evt, context);
-        }
+        context.push("font", new FontHandler());
+        context.push("halo", new HaloHandler());
+        context.push("placement", new PlacementHandler());
+        context.push("fill", new FillHandler(factory) {
+            @Override
+            protected void fill(Fill fill) {
+                sym.setFill(fill);
+            }
+        });
     }
 
     class FontHandler extends YsldParseHandler {
@@ -54,51 +42,28 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
             super(TextHandler.this.factory);
 
             FilterFactory ff = factory.filter;
-            sym.setFont(font = factory.style.createFont(
-                ff.literal("serif"), ff.literal("normal"), ff.literal("normal"), ff.literal(10)));
+            font = factory.style.createFont(
+                ff.literal("serif"), ff.literal("normal"), ff.literal("normal"), ff.literal(10));
         }
 
         @Override
-        public void scalar(ScalarEvent evt, YamlParseContext context) {
-            String val = evt.getValue();
-            if ("family".equals(val)) {
-                context.push(new ExpressionHandler(factory) {
-                    @Override
-                    protected void expression(Expression expr) {
-                        font.setFontFamily(expr);
-                    }
-                });
-            }
-            else if ("size".equals(val)) {
-                context.push(new ExpressionHandler(factory) {
-                    @Override
-                    protected void expression(Expression expr) {
-                        font.setSize(expr);
-                    }
-                });
-            }
-            else if ("style".equals(val)) {
-                context.push(new ExpressionHandler(factory) {
-                    @Override
-                    protected void expression(Expression expr) {
-                        font.setStyle(expr);
-                    }
-                });
-            }
-            else if ("weight".equals(val)) {
-                context.push(new ExpressionHandler(factory) {
-                    @Override
-                    protected void expression(Expression expr) {
-                        font.setWeight(expr);
-                    }
-                });
-            }
-        }
+        public void handle(YamlObject<?> obj, YamlParseContext context) {
+            sym.setFont(font);
 
-        @Override
-        public void endMapping(MappingEndEvent evt, YamlParseContext context) {
-            super.endMapping(evt, context);
-            context.pop();
+            YamlMap map = obj.map();
+
+            if (map.has("family")) {
+                font.setFontFamily(Util.expression(map.str("family"), factory));
+            }
+            if (map.has("size")) {
+                font.setSize(Util.expression(map.str("size"), factory));
+            }
+            if (map.has("style")) {
+                font.setStyle(Util.expression(map.str("style"), factory));
+            }
+            if (map.has("weight")) {
+                font.setWeight(Util.expression(map.str("weight"), factory));
+            }
         }
     }
 
@@ -107,40 +72,32 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
         Halo halo;
         HaloHandler() {
             super(TextHandler.this.factory);
-            sym.setHalo(halo = this.factory.style.createHalo(null, null));
+            halo = this.factory.style.createHalo(null, null);
         }
 
         @Override
-        public void scalar(ScalarEvent evt, YamlParseContext context) {
-            String val = evt.getValue();
-            if ("fill".equals(val)) {
-                context.push(new FillHandler(factory) {
-                    @Override
-                    protected void fill(Fill fill) {
-                        halo.setFill(fill);
-                    }
-                });
-            }
-            else if ("radius".equals(val)) {
-                context.push(new ExpressionHandler(factory) {
-                    @Override
-                    protected void expression(Expression expr) {
-                        halo.setRadius(expr);
-                    }
-                });
-            }
-        }
+        public void handle(YamlObject<?> obj, YamlParseContext context) {
+            sym.setHalo(halo);
 
-        @Override
-        public void endMapping(MappingEndEvent evt, YamlParseContext context) {
-            super.endMapping(evt, context);
-            context.pop();
+            YamlMap map = obj.map();
+
+            context.push("fill", new FillHandler(factory) {
+                @Override
+                protected void fill(Fill fill) {
+                    halo.setFill(fill);
+                }
+            });
+
+            if (map.has("radius")) {
+                halo.setRadius(Util.expression(map.str("radius"), factory));
+            }
         }
     }
 
     class PlacementHandler extends YsldParseHandler {
 
         String type;
+
         PointPlacement point;
         LinePlacement line;
 
@@ -151,55 +108,27 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
         }
 
         @Override
-        public void scalar(ScalarEvent evt, YamlParseContext context) {
-            String val = evt.getValue();
-            if ("type".equals(val)) {
-                context.push(new ValueHandler(factory) {
-                    @Override
-                    protected void value(String value, Event event) {
-                        type = value;
-                    }
-                });
+        public void handle(YamlObject<?> obj, YamlParseContext context) {
+            YamlMap map = obj.map();
+            if (map.has("type")) {
+                sym.setLabelPlacement("line".equals(map.str("type")) ? line : point);
             }
-            else if ("offset".equals(val)) {
-                context.push(new ExpressionHandler(factory) {
-                    @Override
-                    protected void expression(Expression expr) {
-                        line.setPerpendicularOffset(expr);
-                    }
-                });
+            else {
+                sym.setLabelPlacement(point);
             }
-            else if ("anchor".equals(val)) {
-                context.push(new AnchorHandler(factory) {
-                    @Override
-                    protected void anchor(AnchorPoint anchor) {
-                        point.setAnchorPoint(anchor);
-                    }
-                });
-            }
-            else if ("displacement".equals(val)) {
-                context.push(new DisplacementHandler(factory) {
-                    @Override
-                    protected void displace(Displacement displacement) {
-                        point.setDisplacement(displacement);
-                    }
-                });
-            }
-            else if ("rotation".equals(val)) {
-                context.push(new ExpressionHandler(factory) {
-                    @Override
-                    protected void expression(Expression expr) {
-                        point.setRotation(expr);
-                    }
-                });
-            }
-        }
 
-        @Override
-        public void endMapping(MappingEndEvent evt, YamlParseContext context) {
-            sym.setLabelPlacement("line".equals(type)?line:point);
-            context.pop();
-            super.endMapping(evt, context);
+            if (map.has("offset")) {
+                line.setPerpendicularOffset(Util.expression(map.str("offset"), factory));
+            }
+            if (map.has("anchor")) {
+                point.setAnchorPoint(Util.anchor(map.str("anchor"), factory));
+            }
+            if (map.has("displacement")) {
+                point.setDisplacement(Util.displacement(map.str("displacement"), factory));
+            }
+            if (map.has("rotation")) {
+                point.setRotation(Util.expression(map.str("rotation"), factory));
+            }
         }
     }
 }

@@ -1,6 +1,8 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.styling.*;
+import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlObject;
 import org.yaml.snakeyaml.events.Event;
 import org.yaml.snakeyaml.events.MappingStartEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
@@ -15,54 +17,38 @@ public class RootHandler extends YsldParseHandler {
     }
 
     @Override
-    public void mapping(MappingStartEvent evt, YamlParseContext context) {
+    public void handle(YamlObject<?> obj, YamlParseContext context) {
         sld = factory.style.createStyledLayerDescriptor();
 
         NamedLayer layer = factory.style.createNamedLayer();
         sld.layers().add(layer);
 
         layer.styles().add(style = factory.style.createStyle());
-    }
 
-    @Override
-    public void scalar(ScalarEvent evt, YamlParseContext context) {
-        String val = evt.getValue();
-        if ("name".equals(val)) {
-            context.push(new ValueHandler(factory) {
-                @Override
-                protected void value(String value, Event evt) {
-                    style.setName(value);
-                }
-            });
+        YamlMap root = obj.map();
+        style.setName(root.str("name"));
+        if (root.has("title")) {
+            style.setTitle(root.str("title"));
         }
-        else if ("title".equals(val)) {
-            context.push(new ValueHandler(factory) {
-                @Override
-                protected void value(String value, Event evt) {
-                    style.setTitle(value);
-                }
-            });
+        if (root.has("abstract")) {
+            style.setAbstract(root.str("abstract"));
         }
-        else if ("abstract".equals(val)) {
-            context.push(new ValueHandler(factory) {
-                @Override
-                protected void value(String value, Event evt) {
-                    style.setAbstract(value);
-                }
-            });
+        style.setTitle(root.str("title"));
+        style.setAbstract(root.str("abstract"));
+        style.setName(root.str("name"));
+
+        if (root.has("feature-styles")) {
+            context.push("feature-styles", new FeatureStyleHandler(style, factory));
         }
-        else if ("feature-styles".equals(val)) {
-            context.push(new FeatureStyleHandler(style, factory));
+        else if (root.has("rules")) {
+            context.push("rules", new RuleHandler(newFeatureTypeStyle(), factory));
         }
-        else if ("rules".equals(val)) {
-            context.push(new RuleHandler(newFeatureTypeStyle(), factory));
+        else if (root.has("symbolizers")) {
+            context.push("symbolizers", new SymbolizersHandler(newRule(), factory));
         }
-        else if ("symbolizers".equals(val)) {
+        else if (root.has("point") || root.has("line") || root.has("polygon")
+            || root.has("text") || root.has("raster")) {
             context.push(new SymbolizersHandler(newRule(), factory));
-        }
-        else if ("point".equals(val) || "line".equals(val) || "polygon".equals(val) ||
-                "text".equals(val) || "raster".equals(val)) {
-            context.push(new SymbolizersHandler(newRule(), factory)).pause();
         }
     }
 

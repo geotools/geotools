@@ -1,6 +1,9 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.styling.Rule;
+import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlObject;
+import org.geotools.ysld.YamlSeq;
 import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.events.SequenceEndEvent;
 
@@ -14,27 +17,27 @@ public class SymbolizersHandler extends YsldParseHandler {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, YamlParseContext context) {
-        String val = evt.getValue();
-        if ("point".equals(val)) {
-            context.push(new PointHandler(rule, factory));
-        }
-        else if ("line".equals(val)) {
-            context.push(new LineHandler(rule, factory));
-        }
-        else if ("polygon".equals(val)) {
-            context.push(new PolygonHandler(rule, factory));
-        }
-        else if ("text".equals(val)) {
-            context.push(new TextHandler(rule, factory));
-        }
-        else if ("raster".equals(val)) {
-            context.push(new RasterHandler(rule, factory));
-        }
-    }
+    public void handle(YamlObject<?> obj, YamlParseContext context) {
+        YamlSeq seq = obj instanceof YamlMap ? YamlSeq.from(obj) : obj.seq();
 
-    @Override
-    public void endSequence(SequenceEndEvent evt, YamlParseContext context) {
-        context.pop();
+        for (YamlObject o : seq) {
+            YamlMap sym = o.map();
+
+            if (sym.has("point")) {
+                context.push(sym, "point", new PointHandler(rule, factory));
+            }
+            else if (sym.has("line")) {
+                context.push(sym, "line", new LineHandler(rule, factory));
+            }
+            else if (sym.has("polygon")) {
+                context.push(sym, "polygon", new PolygonHandler(rule, factory));
+            }
+            else if (sym.has("text")) {
+                context.push(sym, "text", new TextHandler(rule, factory));
+            }
+            else if (sym.has("raster")) {
+                context.push(sym, "raster", new RasterHandler(rule, factory));
+            }
+        }
     }
 }

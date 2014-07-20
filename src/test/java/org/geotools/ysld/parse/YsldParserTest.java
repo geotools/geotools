@@ -1828,7 +1828,7 @@ public class YsldParserTest {
     Style parse(String dir, String file) throws IOException {
         StringWriter writer = new StringWriter();
         transform(xmlReader(YsldTests.sld(dir, file)), writer);
-
+        System.out.println(writer.toString());
         YsldParser p = new YsldParser(new StringReader(writer.toString()));
         return SLD.defaultStyle(p.parse());
     }

@@ -1,5 +1,6 @@
 package org.geotools.ysld.parse;
 
+import org.geotools.ysld.YamlObject;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.events.*;
 import org.yaml.snakeyaml.reader.UnicodeReader;
@@ -16,38 +17,24 @@ import java.util.Iterator;
  */
 public class YamlParser {
 
-    YamlParseContext context;
+    Reader yaml;
 
-    public YamlParser(InputStream ysld) throws IOException {
-        this(new UnicodeReader(ysld));
+    public YamlParser(InputStream yaml) {
+        this(new UnicodeReader(yaml));
     }
 
-    public YamlParser(Reader ysld) throws IOException{
-        context = new YamlParseContext(new Yaml().parse(ysld).iterator());
+    public YamlParser(Reader yaml) {
+        this.yaml = yaml;
     }
 
-    public void doParse(YamlParseHandler root) throws IOException {
-        context.push(root);
+    public <T extends YamlParseHandler> T parse(T root) throws IOException {
+        Object parsed = new Yaml().load(yaml);
 
-        while(context.hasMoreEvents()) {
-            YamlParseHandler h = context.handler();
+        YamlParseContext context = new YamlParseContext();
+        context.push(YamlObject.create(parsed), root);
 
-            Event evt = context.event();
-            if (evt instanceof MappingStartEvent) {
-                h.mapping((MappingStartEvent)evt, context);
-            }
-            else if (evt instanceof ScalarEvent) {
-                h.scalar((ScalarEvent)evt, context);
-            }
-            else if (evt instanceof SequenceStartEvent) {
-                h.sequence((SequenceStartEvent)evt, context);
-            }
-            else if (evt instanceof MappingEndEvent) {
-                h.endMapping((MappingEndEvent)evt, context);
-            }
-            else if (evt instanceof SequenceEndEvent) {
-                h.endSequence((SequenceEndEvent)evt, context);
-            }
-        }
+        while(context.next());
+
+        return root;
     }
 }

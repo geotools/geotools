@@ -2,6 +2,9 @@ package org.geotools.ysld.parse;
 
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
+import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlObject;
+import org.geotools.ysld.YamlSeq;
 import org.yaml.snakeyaml.events.Event;
 import org.yaml.snakeyaml.events.MappingStartEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
@@ -10,7 +13,6 @@ import org.yaml.snakeyaml.events.SequenceEndEvent;
 public class FeatureStyleHandler extends YsldParseHandler {
 
     Style style;
-    FeatureTypeStyle featureStyle;
 
     FeatureStyleHandler(Style style, Factory factory) {
         super(factory);
@@ -18,43 +20,23 @@ public class FeatureStyleHandler extends YsldParseHandler {
     }
 
     @Override
-    public void mapping(MappingStartEvent evt, YamlParseContext context) {
-        style.featureTypeStyles().add(featureStyle = factory.style.createFeatureTypeStyle());
-    }
+    public void handle(YamlObject<?> obj, YamlParseContext context) {
+        YamlSeq seq = obj.seq();
+        for (YamlObject o : seq) {
+            YamlMap fs = o.map();
 
-    @Override
-    public void scalar(ScalarEvent evt, YamlParseContext context) {
-        if ("name".equals(evt.getValue())) {
-            context.push(new ValueHandler(factory) {
-                @Override
-                protected void value(String value, Event evt) {
-                    featureStyle.setName(value);
-                }
-            });
-        }
-        else if ("title".equals(evt.getValue())) {
-            context.push(new ValueHandler(factory) {
-                @Override
-                protected void value(String value, Event evt) {
-                    featureStyle.setTitle(value);
-                }
-            });
-        }
-        else if ("abstract".equals(evt.getValue())) {
-            context.push(new ValueHandler(factory) {
-                @Override
-                protected void value(String value, Event evt) {
-                    featureStyle.setAbstract(value);
-                }
-            });
-        }
-        else if ("rules".equals(evt.getValue())) {
-            context.push(new RuleHandler(featureStyle, factory));
-        }
-    }
+            FeatureTypeStyle featureStyle = factory.style.createFeatureTypeStyle();
+            style.featureTypeStyles().add(featureStyle);
 
-    @Override
-    public void endSequence(SequenceEndEvent evt, YamlParseContext context) {
-        context.pop();
+            featureStyle.setName(fs.str("name"));
+            if (fs.has("title")) {
+                featureStyle.setTitle(fs.str("title"));
+            }
+            if (fs.has("abstract")) {
+                featureStyle.setAbstract(fs.str("abstract"));
+            }
+
+            context.push(fs, "rules", new RuleHandler(featureStyle, factory));
+        }
     }
 }

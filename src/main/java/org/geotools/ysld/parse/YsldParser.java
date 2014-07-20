@@ -20,8 +20,6 @@ public class YsldParser extends YamlParser {
     }
 
     public StyledLayerDescriptor parse() throws IOException {
-        RootHandler root = new RootHandler();
-        doParse(root);
-        return root.sld();
+        return super.parse(new RootHandler()).sld();
     }
 }

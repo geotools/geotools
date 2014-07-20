@@ -1,63 +1,63 @@
 package org.geotools.ysld.parse;
 
-import org.yaml.snakeyaml.events.Event;
+import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlObject;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Iterator;
 
 public class YamlParseContext {
 
-    Iterator<Event> events;
-    Deque<YamlParseHandler> handlers;
-    Event event;
-    boolean pause;
+    Deque<Entry> stack;
+    Entry curr;
 
-    public YamlParseContext(Iterator<Event> events) {
-        this.events = events;
-        this.handlers = new ArrayDeque<YamlParseHandler>();
-        this.event = null;
-        this.pause = false;
+    public YamlParseContext() {
+        stack = new ArrayDeque<Entry>();
     }
 
-    public YamlParseContext push(YamlParseHandler handler) {
-        handlers.push(handler);
+    public YamlParseContext push(String key, YamlParseHandler handler) {
+        return push(curr.obj, key, handler);
+    }
+
+    public YamlParseContext push(YamlObject scope, String key, YamlParseHandler handler) {
+        YamlMap map = scope.map();
+        if (map.has(key)) {
+            return doPush(scope.map().obj(key), handler);
+        }
         return this;
     }
 
-    public YamlParseContext pause() {
-        pause = true;
+    public YamlParseContext push(YamlParseHandler handler) {
+        return doPush(curr.obj, handler);
+    }
+
+    public YamlParseContext push(YamlObject obj, YamlParseHandler handler) {
+        return doPush(obj, handler);
+    }
+
+    YamlParseContext doPush(YamlObject obj, YamlParseHandler handler) {
+        stack.push(new Entry(obj, handler));
         return this;
     }
 
     public YamlParseContext pop() {
-        handlers.pop();
+        stack.pop();
         return this;
     }
 
-    public boolean hasMoreEvents() {
-        try {
-            if (pause) {
-                return true;
-            }
-            else {
-                if (events.hasNext()) {
-                    event = events.next();
-                    return true;
-                }
-                return false;
-            }
-        }
-        finally {
-            pause = false;
-        }
+    public boolean next() {
+        curr = stack.pop();
+        curr.handler.handle(curr.obj, this);
+        return !stack.isEmpty();
     }
 
-    public Event event() {
-        return event;
-    }
+    static class Entry {
+        YamlObject obj;
+        YamlParseHandler handler;
 
-    public YamlParseHandler handler() {
-        return handlers.peek();
+        Entry(YamlObject obj, YamlParseHandler handler) {
+            this.obj = obj;
+            this.handler = handler;
+        }
     }
 }

@@ -1,6 +1,8 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.styling.*;
+import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 import org.yaml.snakeyaml.events.Event;
@@ -14,30 +16,23 @@ public class RasterHandler extends SymbolizerHandler<RasterSymbolizer> {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, YamlParseContext context) {
-        String val = evt.getValue();
-        if ("opacity".equals(val)) {
-            context.push(new ExpressionHandler(factory) {
-                @Override
-                protected void expression(Expression expr) {
-                    sym.setOpacity(expr);
-                }
-            });
+    public void handle(YamlObject<?> obj, YamlParseContext context) {
+        super.handle(obj, context);
+
+        YamlMap map = obj.map();
+
+        if (map.has("opacity")) {
+            sym.setOpacity(Util.expression(map.str("opacity"), factory));
         }
-        else if ("color-map".equals(val)) {
-            context.push(new ColorMapHandler(factory) {
-                @Override
-                protected void colorMap(ColorMap colorMap) {
-                    sym.setColorMap(colorMap);
-                }
-            });
-        }
-        else if ("contrast-enhancement".equals(val)) {
-            context.push(new ContrastEnhancementHandler());
-        }
-        else {
-            super.scalar(evt, context);
-        }
+
+        context.push("color-map", new ColorMapHandler(factory) {
+            @Override
+            protected void colorMap(ColorMap colorMap) {
+                sym.setColorMap(colorMap);
+            }
+        });
+        context.push("contrast-enhancement", new ContrastEnhancementHandler());
+
     }
 
     class ContrastEnhancementHandler extends YsldParseHandler {
@@ -46,40 +41,28 @@ public class RasterHandler extends SymbolizerHandler<RasterSymbolizer> {
 
         protected ContrastEnhancementHandler() {
             super(RasterHandler.this.factory);
-            sym.setContrastEnhancement(contrast = factory.style.createContrastEnhancement());
+            contrast = factory.style.createContrastEnhancement();
         }
 
         @Override
-        public void scalar(ScalarEvent evt, YamlParseContext context) {
-            String val = evt.getValue();
-            if ("mode".equals(val)) {
-                context.push(new ValueHandler(factory) {
-                    @Override
-                    protected void value(String value, Event event) {
-                        ContrastMethod method = ContrastMethod.valueOf(value);
-                        if (method != null) {
-                            contrast.setMethod(method);
-                        }
-                        else {
-                            LOG.warning("Unknown contrast method: " + value);
-                        }
-                    }
-                });
-            }
-            else if ("gamma".equals(val)) {
-                context.push(new ExpressionHandler(factory) {
-                    @Override
-                    protected void expression(Expression expr) {
-                        contrast.setGammaValue(expr);
-                    }
-                });
-            }
-        }
+        public void handle(YamlObject<?> obj, YamlParseContext context) {
+            sym.setContrastEnhancement(contrast);
 
-        @Override
-        public void endMapping(MappingEndEvent evt, YamlParseContext context) {
-            super.endMapping(evt, context);
-            context.pop();
+            YamlMap map = obj.map();
+            if (map.has("mode")) {
+                String mode = map.str("mode");
+                ContrastMethod method = ContrastMethod.valueOf(mode);
+                if (method != null) {
+                    contrast.setMethod(method);
+                }
+                else {
+                    LOG.warning("Unknown contrast method: " + mode);
+                }
+            }
+            if (map.has("gamma")) {
+                contrast.setGammaValue(Util.expression(map.str("gamma"), factory));
+
+            }
         }
     }
 }

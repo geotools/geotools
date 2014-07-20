@@ -94,12 +94,12 @@ public class Ysld {
     /**
      * Parses a Ysld stream into GeoTools style objects.
      *
-     * @param ysld The Ysld stream.
+     * @param ysld The Ysld content, anything accepted by {@link #reader(Object)}.
      *
      * @return The GeoTools SLD object.
      */
-    public static StyledLayerDescriptor parse(Reader ysld) throws IOException {
-        YsldParser p = new YsldParser(ysld);
+    public static StyledLayerDescriptor parse(Object ysld) throws IOException {
+        YsldParser p = new YsldParser(reader(ysld));
         return p.parse();
     }
 

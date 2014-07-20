@@ -4,7 +4,7 @@ import org.geotools.util.logging.Logging;
 
 import java.util.logging.Logger;
 
-public class YsldParseHandler extends YamlParseHandler {
+public abstract class YsldParseHandler extends YamlParseHandler {
 
     protected static Logger LOG = Logging.getLogger(YsldParser.class);
 

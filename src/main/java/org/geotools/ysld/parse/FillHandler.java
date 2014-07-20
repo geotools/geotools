@@ -3,6 +3,8 @@ package org.geotools.ysld.parse;
 
 import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
+import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlObject;
 import org.opengis.filter.expression.Expression;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
@@ -16,37 +18,21 @@ public abstract class FillHandler extends YsldParseHandler {
     }
 
     @Override
-    public void scalar(ScalarEvent evt, YamlParseContext context) {
-        String val = evt.getValue();
-        if ("color".equals(val)) {
-            context.push(new ColorHandler(factory) {
-                @Override
-                protected void color(Expression color) {
-                    fill.setColor(color);
-                }
-            });
-        }
-        if ("opacity".equals(val)) {
-            context.push(new ExpressionHandler(factory) {
-                protected void expression(Expression expr) {
-                    fill.setOpacity(expr);
-                }
-            });
-        }
-        if ("graphic".equals(val)) {
-            context.push(new GraphicHandler(factory) {
-                @Override
-                protected void graphic(Graphic graphic) {
-                    fill.setGraphicFill(graphic);
-                }
-            });
-        }
-    }
-
-    @Override
-    public void endMapping(MappingEndEvent evt, YamlParseContext context) {
+    public void handle(YamlObject<?> obj, YamlParseContext context) {
         fill(fill);
-        context.pop();
+        YamlMap map = obj.map();
+        if (map.has("color")) {
+            fill.setColor(Util.color(map.str("color"), factory));
+        }
+        if (map.has("opacity")) {
+            fill.setOpacity(Util.expression(map.str("opacity"), factory));
+        }
+        context.push("graphic", new GraphicHandler(factory) {
+            @Override
+            protected void graphic(Graphic g) {
+                fill.setGraphicFill(g);
+            }
+        });
     }
 
     protected abstract void fill(Fill fill);

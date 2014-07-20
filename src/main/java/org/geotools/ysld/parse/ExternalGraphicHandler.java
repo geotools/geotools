@@ -17,13 +17,13 @@ public abstract class ExternalGraphicHandler extends YsldParseHandler {
     public ExternalGraphicHandler(Factory factory) {
         super(factory);
         external = factory.style.createExternalGraphic((String)null, null);
-        externalGraphic(external);
     }
 
     protected abstract void externalGraphic(ExternalGraphic externalGraphic);
 
     @Override
     public void handle(YamlObject<?> obj, YamlParseContext context) {
+        externalGraphic(external);
         YamlMap map = obj.map();
         if (map.has("url")) {
             String value = map.str("url");

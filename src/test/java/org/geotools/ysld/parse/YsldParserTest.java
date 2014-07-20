@@ -45,6 +45,7 @@ public class YsldParserTest {
 
         PointSymbolizer point = SLD.pointSymbolizer(style);
         assertEquals("circle", SLD.wellKnownName(SLD.mark(point)));
+        assertEquals(1, point.getGraphic().graphicalSymbols().size());
         assertEquals(Color.red, SLD.color(SLD.fill(point)));
         assertEquals(6, SLD.pointSize(point));
     }

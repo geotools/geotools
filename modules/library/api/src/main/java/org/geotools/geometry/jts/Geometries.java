@@ -19,6 +19,7 @@ package org.geotools.geometry.jts;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -83,22 +84,30 @@ import com.vividsolutions.jts.geom.Polygon;
  * @version $Id$
  */
 public enum Geometries {
+    /** Representing {@link Point} */
     POINT(Point.class, 2001),
 
+    /** Representing {@lin LinearRing}, {@link SingleCurvedGeometry} and {@link CompoundCurvedGeometry} */
     LINESTRING(LineString.class, 2002),
-
+    
+    /** Represent {@link Polygon} */
     POLYGON(Polygon.class, 2003),
 
+    /** Represent {@link MultiPoint} */
     MULTIPOINT(MultiPoint.class, 2004),
-
+    
+    /** Represent {@link MultiLineString} */
     MULTILINESTRING(MultiLineString.class, 2005),
 
+    /** Represent {@link MultiPolygon} */
     MULTIPOLYGON(MultiPolygon.class, 2006),
 
+    /** Represent {@link Geometry} */
     GEOMETRY(Geometry.class, 2007),
 
-    GEOMETRYCOLLECTION(GeometryCollection.class, 2008);
-
+    /** Represent {@link GeometryCollection} */
+    GEOMETRYCOLLECTION(GeometryCollection.class, 2008),
+    
     private final Class<? extends Geometry> binding;
     private final int sqlType;
     private final String name;

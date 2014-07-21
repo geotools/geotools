@@ -255,7 +255,7 @@ public class GeometryCoordinateSequenceTransformer {
             double[] controlPoints = single.getControlPoints();
             double[] target = new double[controlPoints.length];
             transform.transform(controlPoints, 0, target, 0, controlPoints.length / 2);
-            return cf.createCurvedGeometry(target);
+            return cf.createCurvedGeometry(2, target);
         } else {
             CompoundCurvedGeometry<?> compound = (CompoundCurvedGeometry<?>) curved;
             List<LineString> reprojected = new ArrayList<>();

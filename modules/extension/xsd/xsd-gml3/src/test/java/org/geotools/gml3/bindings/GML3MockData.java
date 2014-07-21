@@ -554,11 +554,11 @@ public class GML3MockData {
     }
 
     public static Polygon curvePolygon() {
-        LineString curve1 = gf.createCurvedGeometry(0, 0, 2, 0, 2, 1, 2, 3, 4, 3);
+        LineString curve1 = gf.createCurvedGeometry(2, 0, 0, 2, 0, 2, 1, 2, 3, 4, 3);
         LineString line1 = gf.createLineString(new LiteCoordinateSequence(4, 3, 4, 5, 1, 4, 0, 0));
         LinearRing shell = (LinearRing) gf.createCurvedGeometry(Arrays.asList(curve1, line1));
-        LinearRing hole = (LinearRing) gf.createCurvedGeometry(1.7, 1, 1.4, 0.4, 1.6, 0.4, 1.6,
-                0.5, 1.7, 1);
+        LinearRing hole = (LinearRing) gf.createCurvedGeometry(2, 1.7, 1, 1.4, 0.4, 1.6, 0.4,
+                1.6, 0.5, 1.7, 1);
         return gf.createPolygon(shell, new LinearRing[] { hole });
     }
 

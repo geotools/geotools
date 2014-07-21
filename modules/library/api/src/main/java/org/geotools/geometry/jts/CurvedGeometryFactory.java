@@ -61,8 +61,15 @@ public class CurvedGeometryFactory extends GeometryFactory {
     /**
      * Creates a {@link CircularString} or a {@link CircularRing} depending on whether the points
      * are forming a closed ring, or not
+     * 
+     * @param dimension Number of dimensions in the control point array. For the time being, any
+     *        value other than 2 will cause a IllegalArgumentException
      */
-    public LineString createCurvedGeometry(double... controlPoints) {
+    public LineString createCurvedGeometry(int dimension, double... controlPoints) {
+        if (dimension != 2) {
+            throw new IllegalArgumentException(
+                    "Invalid dimension value, right now only 2 dimensional curves are supported");
+        }
         if (controlPoints[0] == controlPoints[controlPoints.length - 2]
                 && controlPoints[1] == controlPoints[controlPoints.length - 1]) {
             return new CircularRing(controlPoints, this, tolerance);

@@ -87,8 +87,8 @@ public class GeometryCoordinateSequenceTransformerTest {
     
     @Test
     public void testFlipAxisOnCurved() throws Exception {
-        CircularString cs = (CircularString) new CurvedGeometryFactory(0.1).createCurvedGeometry(0,
-                1, 1, 2, 2, 1);
+        CircularString cs = (CircularString) new CurvedGeometryFactory(0.1).createCurvedGeometry(2,
+                0, 1, 1, 2, 2, 1);
 
         GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
         CoordinateReferenceSystem crsLatLon = CRS.decode("urn:ogc:def:crs:EPSG:4326");
@@ -105,8 +105,8 @@ public class GeometryCoordinateSequenceTransformerTest {
 
     @Test
     public void testFullTransformOnCurved() throws Exception {
-        CircularString cs = (CircularString) new CurvedGeometryFactory(0.1).createCurvedGeometry(0,
-                1, 1, 2, 2, 1);
+        CircularString cs = (CircularString) new CurvedGeometryFactory(0.1).createCurvedGeometry(2,
+                0, 1, 1, 2, 2, 1);
 
         GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
         CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:3857");

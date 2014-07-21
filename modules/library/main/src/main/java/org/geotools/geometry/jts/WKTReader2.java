@@ -472,7 +472,7 @@ public class WKTReader2 extends WKTReader {
             throw new ParseException("A CIRCULARSTRING must contain at least 3 control points");
         } else {
             double[] controlPoints = toControlPoints(coordinates);
-            return geometryFactory.createCurvedGeometry(controlPoints);
+            return geometryFactory.createCurvedGeometry(2, controlPoints);
         }
     }
 

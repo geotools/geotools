@@ -1,7 +1,10 @@
 package org.geotools.ysld;
 
 import org.geotools.util.Converters;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -84,5 +87,15 @@ public class YamlObject<T> {
             throw new IllegalStateException(String.format(
                     "Unable to retrieve %s as %s", obj, clazz.getSimpleName()), e);
         }
+    }
+
+    @Override
+    public String toString() {
+        StringWriter w = new StringWriter();
+        DumperOptions dumperOpts = new DumperOptions();
+        dumperOpts.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        dumperOpts.setDefaultScalarStyle(DumperOptions.ScalarStyle.PLAIN);
+        new Yaml(dumperOpts).dump(raw, w);
+        return w.toString();
     }
 }

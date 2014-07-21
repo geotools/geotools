@@ -3,11 +3,29 @@ Geometry
 
 To create a Geometry object we make use of the GeometryFactory provided by JTS. GeometryFactory has a bunch of create methods that take Coordinate instances (and arrays) and wrap them up in the appropriate instance of Geometry.
 
+The OGC Simple Features for SQL specification implemented by JTS works with *Point*, *LineString* and *Polygon*.
+
 .. image:: /images/geometry.PNG
 
-You can create your own GeometryFactory with a specific PrecisionModel and CoordinateSequenceFactory. These "advanced" configuration options are interest if you need to take charge of how your coordinates are stored (perhaps as floats rather than doubles?)
+Each *Geometry* can be contained in an *Envelope* (acting as a bounding box that contains all the geometry coordinates).
 
-The GeometryFactory created by default works just fine.
+The OGC Simple Feature for SQL specification also provides support for GeometryCollections. GeometryCollections are themselves considered a Geometry.
+
+.. image:: /images/geometry_collection.PNG
+
+You can create your own GeometryFactory with a specific PrecisionModel and CoordinateSequenceFactory.
+
+.. image:: /images/geometry_factory.PNG
+
+.. note:: These "advanced" configuration options are interest if you need to take charge of how the coordinates are stored (perhaps as floats rather than doubles?) The two concepts work together: if you are storing your coordinates in an array of floats, then JTS only needs to consider float precision during calculations.
+
+   The GeometryFactory created by default works just fine.
+
+GeoTools extends these core Geometry classes to allow support for curves. These implementations generate coordinates allowing them to act as normal JTS Geometries (as required for JTS Operations).
+
+.. image:: /images/geometry2.PNG
+
+The linearization process used to generate coordinates makes use of the control points defining the curve and a tolerance provided by a CurvedGeometryFactory.
 
 Creating a Point
 ^^^^^^^^^^^^^^^^
@@ -36,7 +54,7 @@ Creating a LineString
 
 The following makes a line string in the shape of a check mark::
    
-   GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory( null );
+   GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
    
    Coordinate[] coords  =
     new Coordinate[] {new Coordinate(0, 2), new Coordinate(2, 0), new Coordinate(8, 6) };
@@ -45,7 +63,7 @@ The following makes a line string in the shape of a check mark::
 
 Alternative - Reading a LineString from WKT::
    
-   GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory( null );
+   GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
    
    WKTReader reader = new WKTReader( geometryFactory );
    LineString line = (LineString) reader.read("LINESTRING(0 2, 2 0, 8 6)");
@@ -59,7 +77,7 @@ Creating a Polygon
 
 The following makes a Polygon in the shape of a square::
 
-   GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory( null );
+   GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
    
    Coordinate[] coords  =
       new Coordinate[] {new Coordinate(4, 0), new Coordinate(2, 2),
@@ -78,13 +96,35 @@ Alternative - Reading a Polygon from WKT::
 
 You can also create a Polygon will holes in it. And once again use a MultiPolygon to represent a single geometry made up of distinct shapes.
 
+Creating CircularString
+^^^^^^^^^^^^^^^^^^^^^^^
 
-Arcs, Circles and Curves
-^^^^^^^^^^^^^^^^^^^^^^^^
+To create a CircularString (or a CircularRing) use the GeoTools CurvedGeometryFactory. When setting up a CurvedGeometryFactory the provided tolerance will be used during linearization:
 
-The JTS Topology Suite does not have any constructs to represent a "curve" or "circle" - it is strictly limited to geometry made up of straight (ie linear) lines.
+.. literalinclude:: /../src/main/java/org/geotools/geometry/GeometryExamples.java
+   :language: java
+   :start-after: // createCurve start
+   :end-before: // createCurve end
 
-In order to represent circles and curves you will need to produce them (yourself) using a little bit of math. If there is general interest in these kinds of functions we can add them to the GeoTools library.
+The circle arc is defined between coordinates 10,14 and 14, 10 passing through point 6,10. The example uses a PackedCoordianteSequence allowing an array of doubles to be used directly. Curve support is limited to 2D coordinates. A CircularLineString is returned in this case, a CircularRing would be produced if two or more curves were provided form a closed ring.
+
+Reading a Circle from WKT:
+   
+.. literalinclude:: /../src/main/java/org/geotools/geometry/GeometryExamples.java
+   :language: java
+   :start-after: // wktCurve start
+   :end-before: // wktCurve end
+
+A CompoundCurve (or closed CompoundRing) consists mix of CircularString and/or plain LineString components.
+
+Custom Curves
+^^^^^^^^^^^^^
+
+The JTS Topology Suite does not have any constructs to represent a "curve" or "circle" - GeoTools added that as an extension. The mathematics used by JTS is strictly limited to geometry made up of straight (ie linear) lines.
+
+The GeoTools curve implementations rely on using control points to define a curve, and converting it to a straight lines at the last possible moment.
+
+Curves can also be produced by hand using a little bit of math.
 
 Creating a Circle::
 
@@ -186,7 +226,6 @@ Geometry
 ^^^^^^^^
 
 Using Geometry is pretty straight forward, although a little intimidating when starting out due to the number of methods.
-
 
 .. image:: /images/geometry_use.PNG
 

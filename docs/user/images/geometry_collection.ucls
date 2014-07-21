@@ -3,99 +3,75 @@
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" name="com.vividsolutions.jts.geom.Geometry" project="docs" 
     file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="175" y="44"/>    
+    <position height="-1" width="-1" x="169" y="53"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="com.vividsolutions.jts.geom.Point" project="docs" 
+  <class id="2" language="java" name="com.vividsolutions.jts.geom.MultiPoint" project="docs" 
     file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="59" y="142"/>    
+    <position height="-1" width="-1" x="68" y="228"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="com.vividsolutions.jts.geom.LineString" project="docs" 
+  <class id="3" language="java" name="com.vividsolutions.jts.geom.GeometryCollection" project="docs" 
     file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="175" y="142"/>    
+    <position height="-1" width="-1" x="166" y="137"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="com.vividsolutions.jts.geom.Polygon" project="docs" 
+  <class id="4" language="java" name="com.vividsolutions.jts.geom.MultiLineString" project="docs" 
     file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="328" y="142"/>    
+    <position height="-1" width="-1" x="205" y="228"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="com.vividsolutions.jts.geom.LinearRing" project="docs" 
+  <class id="5" language="java" name="com.vividsolutions.jts.geom.MultiPolygon" project="docs" 
     file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="174" y="220"/>    
+    <position height="-1" width="-1" x="347" y="229"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="com.vividsolutions.jts.geom.Envelope" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="364" y="48"/>    
-    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="false">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <generalization id="7">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <association id="8">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="9" name="envelope"/>      
-      <multiplicity id="10" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="11">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <generalization id="12">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <generalization id="13">    
+  <generalization id="6">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
-  <association id="14">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="15" name="shell"/>      
-      <multiplicity id="16" minimum="0" maximum="1"/>    
+  <association id="7">    
+    <bendpoint x="38" y="137"/>    
+    <bendpoint x="37" y="52"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="8" name="geometries"/>      
+      <multiplicity id="9" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="17">    
-    <bendpoint x="327" y="224"/>    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="18" name="holes"/>      
-      <multiplicity id="19" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <generalization id="11">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <generalization id="12">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
     accessors="true" visibility="false">    
     <attributes public="false" package="false" protected="false" private="false" static="true"/>    

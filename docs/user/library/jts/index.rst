@@ -14,8 +14,8 @@ an implementation of Geometry which we use throughout our library.
 
 The GeoTools provides some help for working with JTS:
 
-* :doc:`gt-api <../api/index>` offers helper classes such as JTS and Geometries
-* :doc:`gt-main <../main/index>` offers helper classes to translate Geometry into a Java Shape
+* :doc:`gt-api <../api/index>` offers helper classes (such as *JTS* and *Geometries*) and extends JTS with a *CurvedGeometryFactory* for working with curves.
+* :doc:`gt-main <../main/index>` offers helper classes to translate Geometry into a Java Shape for display
 
 **References**
 

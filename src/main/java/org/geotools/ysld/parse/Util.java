@@ -26,6 +26,18 @@ public class Util {
      * Parses an expression from its string representation.
      */
     static Expression expression(String value, Factory factory) {
+        return expression(value, false, factory);
+    }
+
+    /**
+     * Parses an expression from its string representation.
+     * <p>
+     * The <tt>safe</tt> parameter when set to true will cause null to be returned
+     * when the string can not be parsed as a ECQL expression. When false it will
+     * return a literal.
+     * </p>
+     */
+    static Expression expression(String value, boolean safe, Factory factory) {
         try {
             Expression expr = ECQL.toExpression(value, factory.filter);
             if (expr instanceof PropertyName && !ATTRIBUTE_PATTERN.matcher(value).matches()) {
@@ -35,7 +47,7 @@ public class Util {
             return expr;
         } catch (CQLException e) {
             //TODO: log this?
-            return factory.filter.literal(value);
+            return safe ? null : factory.filter.literal(value);
             //throw new ParseException("Bad expression: "+value, evt, e);
         }
     }

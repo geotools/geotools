@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="com.vividsolutions.jts.geom.LineString" project="docs" 
     file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="299" y="55"/>    
+    <position height="-1" width="-1" x="353" y="52"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="com.vividsolutions.jts.geom.LinearRing" project="docs" 
     file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="194" y="198"/>    
+    <position height="-1" width="-1" x="179" y="198"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="org.geotools.geometry.jts.CompoundCurve" project="gt-api" 
     file="/gt-api/src/main/java/org/geotools/geometry/jts/CompoundCurve.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="309" y="295"/>    
+    <position height="-1" width="-1" x="238" y="296"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="org.geotools.geometry.jts.CircularString" project="gt-api" 
     file="/gt-api/src/main/java/org/geotools/geometry/jts/CircularString.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="631" y="295"/>    
+    <position height="-1" width="-1" x="525" y="297"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -57,7 +57,7 @@
   </class>  
   <class id="7" language="java" name="org.geotools.geometry.jts.CircularRing" project="gt-api" 
     file="/gt-api/src/main/java/org/geotools/geometry/jts/CircularRing.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="470" y="294"/>    
+    <position height="-1" width="-1" x="388" y="297"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -66,7 +66,7 @@
   </class>  
   <class id="8" language="java" name="org.geotools.geometry.jts.CompoundRing" project="gt-api" 
     file="/gt-api/src/main/java/org/geotools/geometry/jts/CompoundRing.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="128" y="297"/>    
+    <position height="-1" width="-1" x="89" y="298"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -76,7 +76,7 @@
   <interface id="9" language="java" name="org.geotools.geometry.jts.CompoundCurvedGeometry" project="gt-api" 
     file="/gt-api/src/main/java/org/geotools/geometry/jts/CompoundCurvedGeometry.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="203" y="422"/>    
+    <position height="-1" width="-1" x="173" y="422"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -86,72 +86,107 @@
   <interface id="10" language="java" name="org.geotools.geometry.jts.SingleCurvedGeometry" project="gt-api" 
     file="/gt-api/src/main/java/org/geotools/geometry/jts/SingleCurvedGeometry.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="556" y="423"/>    
+    <position height="-1" width="-1" x="475" y="420"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
-  <realization id="11">    
+  <class id="11" language="java" name="org.geotools.geometry.jts.MultiCurve" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/geometry/jts/MultiCurve.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="693" y="301"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="com.vividsolutions.jts.geom.MultiLineString" project="docs" 
+    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="693" y="52"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="13" language="java" name="org.geotools.geometry.jts.MultiCurvedGeometry" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/geometry/jts/MultiCurvedGeometry.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="693" y="420"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <realization id="14">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="10"/>  
   </realization>  
-  <association id="12">    
+  <association id="15">    
     <bendpoint x="73" y="198"/>    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="13" name="holes"/>      
-      <multiplicity id="14" minimum="0" maximum="2147483647"/>    
+      <attribute id="16" name="holes"/>      
+      <multiplicity id="17" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="15">    
+  <realization id="18">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="9"/>  
   </realization>  
-  <generalization id="16">    
+  <generalization id="19">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
-  <generalization id="17">    
+  <generalization id="20">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
-  <association id="18">    
-    <bendpoint x="191" y="140"/>    
+  <association id="21">    
+    <bendpoint x="181" y="141"/>    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="19" name="shell"/>      
-      <multiplicity id="20" minimum="0" maximum="1"/>    
+      <attribute id="22" name="shell"/>      
+      <multiplicity id="23" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="21">    
+  <generalization id="24">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
-  <generalization id="22">    
+  <generalization id="25">    
     <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="2"/>  
   </generalization>  
-  <generalization id="23">    
+  <realization id="26">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="13"/>  
+  </realization>  
+  <generalization id="27">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <generalization id="28">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
-  <generalization id="24">    
+  <generalization id="29">    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="2"/>  
   </generalization>  
-  <realization id="25">    
+  <realization id="30">    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="9"/>  
   </realization>  
-  <realization id="26">    
+  <realization id="31">    
     <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="10"/>  
   </realization>  
-  <generalization id="27">    
+  <generalization id="32">    
     <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="2"/>  
   </generalization>  

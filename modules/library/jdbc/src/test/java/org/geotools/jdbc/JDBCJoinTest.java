@@ -17,14 +17,12 @@
 package org.geotools.jdbc;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.geotools.data.Join;
-import org.geotools.data.Query;
 import org.geotools.data.Join.Type;
+import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
@@ -81,6 +79,57 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
             }
         }
         finally {
+            it.close();
+            ita.close();
+            itb.close();
+        }
+    }
+
+    public void testSimpleJoinInvertedAliases() throws Exception {
+        doTestSimpleJoinInvertedAliases(false);
+        doTestSimpleJoinInvertedAliases(true);
+    }
+
+    void doTestSimpleJoinInvertedAliases(boolean exposePrimaryKeys) throws Exception {
+        dataStore.setExposePrimaryKeyColumns(exposePrimaryKeys);
+        SimpleFeatureIterator ita = dataStore.getFeatureSource(tname("ft1")).getFeatures()
+                .features();
+        SimpleFeatureIterator itb = dataStore.getFeatureSource(tname("ftjoin")).getFeatures()
+                .features();
+
+        FilterFactory ff = dataStore.getFilterFactory();
+        Query q = new Query(tname("ft1"));
+        q.setAlias("b");
+        Join join = new Join(tname("ftjoin"), ff.equal(ff.property(aname("stringProperty")),
+                ff.property(aname("name")), true));
+        join.setAlias("a");
+        q.getJoins().add(join);
+
+        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        assertEquals(dataStore.getFeatureSource(tname("ft1")).getFeatures(q).size(),
+                features.size());
+
+        SimpleFeatureIterator it = features.features();
+        try {
+            assertTrue(it.hasNext() && ita.hasNext() && itb.hasNext());
+
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertEquals(5, f.getAttributeCount());
+
+                SimpleFeature g = (SimpleFeature) f.getAttribute(tname("a"));
+
+                SimpleFeature a = ita.next();
+                SimpleFeature b = itb.next();
+
+                for (int i = 0; i < a.getAttributeCount(); i++) {
+                    assertAttributeValuesEqual(a.getAttribute(i), f.getAttribute(i));
+                }
+                for (int i = 0; i < b.getAttributeCount(); i++) {
+                    assertAttributeValuesEqual(b.getAttribute(i), g.getAttribute(i));
+                }
+            }
+        } finally {
             it.close();
             ita.close();
             itb.close();

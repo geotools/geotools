@@ -18,7 +18,9 @@ package org.geotools.jdbc;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geotools.data.Join;
 import org.geotools.data.Query;
@@ -64,15 +66,17 @@ public class JoinInfo {
             //hack on the join filter as necessary
             Filter joinFilter = j.getJoinFilter();
 
+            Map<String, String> mappings = new HashMap<String, String>();
             if (query.getAlias() != null) {
                 //rewrite any user specified alias with the one we specified
-                joinFilter = 
-                    (Filter) joinFilter.accept(new JoinPrefixRewriter(query.getAlias(), "a"), null);
+                mappings.put(query.getAlias(), "a");
             }
             if (j.getAlias() != null) {
                 //rewrite any user specified alias with the one we specified
-                joinFilter = 
-                    (Filter) joinFilter.accept(new JoinPrefixRewriter(j.getAlias(), alias), null);
+                mappings.put(j.getAlias(), alias);
+            }
+            if (!mappings.isEmpty()) {
+                joinFilter = (Filter) joinFilter.accept(new JoinPrefixRewriter(mappings), null);
             }
 
             //qualify all property names in the join filter so that they known about their 
@@ -269,19 +273,24 @@ public class JoinInfo {
     }
 
     static class JoinPrefixRewriter extends DuplicatingFilterVisitor {
-        String from, to;
+        Map<String, String> mappings;
         
-        public JoinPrefixRewriter(String from, String to) {
-            this.from = from;
-            this.to = to;
+        public JoinPrefixRewriter(Map<String, String> mappings) {
+            this.mappings = mappings;
         }
 
         @Override
         public Object visit(PropertyName expression, Object extraData) {
             String name = expression.getPropertyName();
-            if (name.startsWith(from+".")) {
-                name = to + "." + name.substring((from+".").length());
+            for (Map.Entry<String, String> entry : mappings.entrySet()) {
+                String from = entry.getKey();
+                String to = entry.getValue();
+                if (name.startsWith(from + ".")) {
+                    name = to + "." + name.substring((from + ".").length());
+                    break;
+                }
             }
+
             return getFactory(extraData).property(name, expression.getNamespaceContext());
         }
     }

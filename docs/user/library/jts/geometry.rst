@@ -11,11 +11,11 @@ Each *Geometry* can be contained in an *Envelope* (acting as a bounding box that
 
 The OGC Simple Feature for SQL specification also provides support for GeometryCollections. GeometryCollections are themselves considered a Geometry.
 
-.. image:: /images/geometry_collection.PNG
+.. image:: /images/geometry_collection.png
 
 You can create your own GeometryFactory with a specific PrecisionModel and CoordinateSequenceFactory.
 
-.. image:: /images/geometry_factory.PNG
+.. image:: /images/geometry_factory.png
 
 .. note:: These "advanced" configuration options are interest if you need to take charge of how the coordinates are stored (perhaps as floats rather than doubles?) The two concepts work together: if you are storing your coordinates in an array of floats, then JTS only needs to consider float precision during calculations.
 
@@ -23,7 +23,7 @@ You can create your own GeometryFactory with a specific PrecisionModel and Coord
 
 GeoTools extends these core Geometry classes to allow support for curves. These implementations generate coordinates allowing them to act as normal JTS Geometries (as required for JTS Operations).
 
-.. image:: /images/geometry2.PNG
+.. image:: /images/geometry2.png
 
 The linearization process used to generate coordinates makes use of the control points defining the curve and a tolerance provided by a CurvedGeometryFactory.
 
@@ -108,7 +108,7 @@ To create a CircularString (or a CircularRing) use the GeoTools CurvedGeometryFa
 
 The circle arc is defined between coordinates 10,14 and 14, 10 passing through point 6,10. The example uses a PackedCoordianteSequence allowing an array of doubles to be used directly. Curve support is limited to 2D coordinates. A CircularLineString is returned in this case, a CircularRing would be produced if two or more curves were provided form a closed ring.
 
-Reading a Circle from WKT:
+Reading a circular arc from WKT:
    
 .. literalinclude:: /../src/main/java/org/geotools/geometry/GeometryExamples.java
    :language: java

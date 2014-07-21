@@ -28,7 +28,11 @@ public void createCurve(){
     // createCurve end    
 }
 
+<<<<<<< Updated upstream
 public void wktCurve() throws Exception{
+=======
+    public void wktCurve() throws ParseException {
+>>>>>>> Stashed changes
     // wktCurve start
     GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
     CurvedGeometryFactory curvedfactory = new CurvedGeometryFactory(Double.MAX_VALUE);

@@ -106,7 +106,7 @@ public enum Geometries {
     GEOMETRY(Geometry.class, 2007),
 
     /** Represent {@link GeometryCollection} */
-    GEOMETRYCOLLECTION(GeometryCollection.class, 2008),
+    GEOMETRYCOLLECTION(GeometryCollection.class, 2008);
     
     private final Class<? extends Geometry> binding;
     private final int sqlType;

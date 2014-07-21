@@ -114,7 +114,7 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     }
 
     public String getGeometryType() {
-        return "CircularString";
+        return "CompoundRing";
     }
 
     public Geometry reverse() {

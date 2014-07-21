@@ -127,7 +127,7 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     }
 
     public String getGeometryType() {
-        return "CircularString";
+        return "CircularRing";
     }
 
     @Override

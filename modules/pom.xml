@@ -58,11 +58,6 @@
       <!--     Javadoc generation.                                 -->
       <!--                                                         -->
       <!--     Notes:                                              -->
-      <!--       Do NOT enable deep copying of "doc-files"         -->
-      <!--       directories ("-docfilessubdirs" option), because  -->
-      <!--       it has the unwanted side effect to copy .svn      -->
-      <!--       directories as well.                              -->
-      <!--                                                         -->
       <!--       Do NOT link source code, because it duplicates    -->
       <!--       jxr-maven-plugin.                                 -->
       <!--                                                         -->
@@ -164,7 +159,7 @@
           <!-- documentation of external referenced classes.       -->
           <links>
             <link>http://docs.oracle.com/javase/7/docs/api/</link>
-            <link>http://docs.oracle.com/javaee/6/api/</link>
+            <link>http://docs.oracle.com/javaee/7/api/</link>
             <link>http://download.java.net/media/jai/javadoc/1.1.3/jai-apidocs</link>
             <link>http://download.java.net/media/jai-imageio/javadoc/1.1</link>
             <link>http://download.java.net/media/java3d/javadoc/1.5.1</link>

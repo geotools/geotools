@@ -54,6 +54,11 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     }
     
     @Override
+    public boolean isAggregatedSortSupported(String function) {
+        return "distinct".equalsIgnoreCase(function);
+    }
+    
+    @Override
     public boolean includeTable(String schemaName, String tableName, Connection cx)
             throws SQLException {
         return delegate.includeTable(schemaName, tableName, cx);

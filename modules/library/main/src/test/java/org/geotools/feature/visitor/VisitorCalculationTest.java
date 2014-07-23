@@ -24,6 +24,8 @@ import java.util.Set;
 
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.collection.ListFeatureCollection;
+import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollections;
@@ -37,6 +39,8 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -49,6 +53,7 @@ import com.vividsolutions.jts.geom.Envelope;
 public class VisitorCalculationTest extends DataTestCase {
 	SimpleFeatureCollection empty;
     SimpleFeatureCollection fc;
+    SimpleFeatureCollection invfc;
     SimpleFeatureType ft;
     SimpleFeatureCollection fc2;
     SimpleFeatureType ft2;
@@ -63,6 +68,7 @@ public class VisitorCalculationTest extends DataTestCase {
         super.setUp();
         empty = FeatureCollections.newCollection();
         fc = DataUtilities.collection(roadFeatures);
+        invfc = new TreeSetFeatureCollection(fc).sort(SortBy.REVERSE_ORDER);
         fc2 = DataUtilities.collection(riverFeatures);
         ft = roadType;
         ft2 = riverType;
@@ -327,6 +333,54 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(averageResult2, averageResult2.merge(averageVisitor.getResult()));
     }
     
+    public void testUniquePreserveOrder() throws IOException {
+        UniqueVisitor uniqueVisitor = new UniqueVisitor(0, ft);
+        uniqueVisitor.setPreserveOrder(true);
+        fc.accepts(uniqueVisitor, null);
+        Set value1 = uniqueVisitor.getResult().toSet();
+        assertEquals(1, value1.iterator().next());
+        
+        uniqueVisitor.reset();
+        invfc.accepts(uniqueVisitor, null);
+        value1 = uniqueVisitor.getResult().toSet();
+        assertEquals(3, value1.iterator().next());
+    }
+    
+    public void testUniquePagination() throws IOException {
+        UniqueVisitor uniqueVisitor = new UniqueVisitor(0, ft);
+        uniqueVisitor.setPreserveOrder(true);
+        uniqueVisitor.setStartIndex(0);
+        uniqueVisitor.setMaxFeatures(1);
+        fc.accepts(uniqueVisitor, null);
+        Set value1 = uniqueVisitor.getResult().toSet();
+        assertEquals(1, value1.size());
+        assertEquals(1, value1.iterator().next());
+        
+        uniqueVisitor.reset();
+        uniqueVisitor.setStartIndex(1);
+        uniqueVisitor.setMaxFeatures(2);
+        fc.accepts(uniqueVisitor, null);
+        value1 = uniqueVisitor.getResult().toSet();
+        assertEquals(2, value1.size());
+        assertEquals(2, value1.iterator().next());
+        
+        uniqueVisitor.reset();
+        uniqueVisitor.setStartIndex(2);
+        uniqueVisitor.setMaxFeatures(2);
+        fc.accepts(uniqueVisitor, null);
+        value1 = uniqueVisitor.getResult().toSet();
+        assertEquals(1, value1.size());
+        assertEquals(3, value1.iterator().next());
+        
+        uniqueVisitor.reset();
+        uniqueVisitor.setStartIndex(3);
+        uniqueVisitor.setMaxFeatures(2);
+        fc.accepts(uniqueVisitor, null);
+        value1 = uniqueVisitor.getResult().toSet();
+        // the UniqueVisitor returns null if the list of values is null
+        assertNull(value1);
+    }
+    
     public void testUnique() throws IllegalFilterException, IOException {
         UniqueVisitor uniqueVisitor = new UniqueVisitor(0, ft);
         fc.accepts(uniqueVisitor, null);
@@ -424,7 +478,7 @@ public class VisitorCalculationTest extends DataTestCase {
     	fc3.accepts(visit1, null);
     	CalcResult result = visit1.getResult();
 		double average = result.toDouble();
-    	System.out.println("AV="+average);
+    	
     	StandardDeviationVisitor visit2 = new StandardDeviationVisitor(expr, average);
     	fc3.accepts(visit2, null);
     	assertEquals(28.86, visit2.getResult().toDouble(), 0.01); 

@@ -16,6 +16,9 @@
  */
 package org.geotools.coverage.io.grib;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,15 +30,21 @@ import java.util.List;
 import javax.imageio.spi.ImageReaderSpi;
 
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.io.netcdf.NetCDFDriver;
 import org.geotools.coverage.io.netcdf.NetCDFReader;
 import org.geotools.data.DataSourceException;
+import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.test.TestData;
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
+import org.opengis.coverage.grid.GridEnvelope;
+import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterValue;
 
 /**
  * Unit test for testing Grib data.
@@ -151,6 +160,64 @@ public class GribTest {
             float[] result_2 = new float[1];
             grid.evaluate(nodataPoint, result_2);
             Assert.assertTrue(Float.isNaN(result_2[0]));
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    /**
+     * Test on a Grib image asking for a larger bounding box.
+     * 
+     * @throws DataSourceException
+     * @throws MalformedURLException
+     * @throws IOException
+     */
+    @Test
+    public void testGribImageWithLargeBBOX() throws MalformedURLException, IOException {
+        // Selection of the input file
+        final File inputFile = TestData.file(this, "sampleGrib.grb2");
+        // Get format
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(
+                inputFile.toURI().toURL(), null);
+        final NetCDFReader reader = new NetCDFReader(inputFile, null);
+        Assert.assertNotNull(format);
+        Assert.assertNotNull(reader);
+        try {
+            // Selection of all the Coverage names
+            String[] names = reader.getGridCoverageNames();
+            Assert.assertNotNull(names);
+
+            // Name of the first coverage
+            String coverageName = names[0];
+
+            // Parsing metadata values
+            assertEquals("true", reader.getMetadataValue(coverageName, "HAS_TIME_DOMAIN"));
+
+            // Expanding the envelope
+            final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                    .createValue();
+            final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
+            final GeneralEnvelope newEnvelope = new GeneralEnvelope(originalEnvelope);
+            newEnvelope.setCoordinateReferenceSystem(reader
+                    .getCoordinateReferenceSystem(coverageName));
+            newEnvelope.add(new DirectPosition2D(newEnvelope.getMinimum(0) - 10, newEnvelope
+                    .getMinimum(1) - 10));
+
+            // Selecting the same gridRange
+            GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
+            gg.setValue(new GridGeometry2D(gridRange, newEnvelope));
+
+            GeneralParameterValue[] values = new GeneralParameterValue[] { gg };
+            // Read with the larger BBOX
+            GridCoverage2D grid = reader.read(coverageName, values);
+            // Check if the result is not null
+            assertNotNull(grid);
         } finally {
             if (reader != null) {
                 try {

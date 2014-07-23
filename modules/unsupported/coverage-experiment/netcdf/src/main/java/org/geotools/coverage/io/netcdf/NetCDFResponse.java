@@ -600,8 +600,13 @@ class NetCDFResponse extends CoverageResponse{
             // take into account the fact that we might also decimate therefore
             // we cannot just use the crop grid to world but we need to correct
             // it.
-            final Rectangle sourceArea = CRS.transform(cropWorldToGrid, intersection)
-                    .toRectangle2D().getBounds();
+            Rectangle sourceArea = CRS.transform(cropWorldToGrid, intersection).toRectangle2D()
+                    .getBounds();
+            // Selection of the source original area for cropping the computed source area
+            // (may have negative values for the approximation)
+            final Rectangle initialArea = request.source.getSpatialDomain()
+                    .getRasterElements(true, null).iterator().next().toRectangle();
+            sourceArea = sourceArea.intersection(initialArea);
 
             if (sourceArea.isEmpty()) {
                 if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {

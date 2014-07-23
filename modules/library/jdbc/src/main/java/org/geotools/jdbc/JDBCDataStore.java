@@ -71,6 +71,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.CountVisitor;
+import org.geotools.feature.visitor.LimitingVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JoinInfo.JoinPart;
@@ -1375,7 +1376,16 @@ public final class JDBCDataStore extends ContentDataStore
         if ( expression != null ) {
             att = (AttributeDescriptor) expression.evaluate( featureType );
         }
-        
+
+        if(att == null && !(visitor instanceof CountVisitor)){
+            return null; // aggregate function optimization only supported for PropertyName expression
+        }
+        // if the visitor is limiting the result to a given start - max, we will
+        // try to apply limits to the aggregate query
+        LimitingVisitor limitingVisitor = null;
+        if(visitor instanceof LimitingVisitor) {
+            limitingVisitor = (LimitingVisitor) visitor;
+        }
         //result of the function
         try {
             Object result = null;
@@ -1385,11 +1395,11 @@ public final class JDBCDataStore extends ContentDataStore
             
             try {
                 if ( dialect instanceof PreparedStatementSQLDialect ) {
-                    st = selectAggregateSQLPS(function, att, featureType, query, cx);
+                    st = selectAggregateSQLPS(function, att, featureType, query, limitingVisitor,  cx);
                     rs = ((PreparedStatement)st).executeQuery();
                 } 
                 else {
-                    String sql = selectAggregateSQL(function, att, featureType, query);
+                    String sql = selectAggregateSQL(function, att, featureType, query, limitingVisitor);
                     LOGGER.fine( sql );
                     
                     st = cx.createStatement();
@@ -3065,7 +3075,7 @@ public final class JDBCDataStore extends ContentDataStore
         sort(featureType, query.getSortBy(), null, sql);
         
         // encode limit/offset, if necessary
-        applyLimitOffset(sql, query);
+        applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
         
         // add search hints if the dialect supports them
         applySearchHints(featureType, query, sql);
@@ -3112,7 +3122,7 @@ public final class JDBCDataStore extends ContentDataStore
         sort(featureType, query.getSortBy(), join.getPrimaryAlias(), sql);
         
         //finally encode limit/offset, if necessary
-        applyLimitOffset(sql, query);
+        applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
 
         return sql.toString();
     }
@@ -3276,7 +3286,7 @@ public final class JDBCDataStore extends ContentDataStore
         sort(featureType, query.getSortBy(), null, sql);
         
         // finally encode limit/offset, if necessary
-        applyLimitOffset(sql, query);
+        applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
 
         LOGGER.fine( sql.toString() );
         PreparedStatement ps = cx.prepareStatement(sql.toString(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
@@ -3317,7 +3327,7 @@ public final class JDBCDataStore extends ContentDataStore
         sort(featureType, query.getSortBy(), join.getPrimaryAlias(), sql);
 
         // finally encode limit/offset, if necessary
-        applyLimitOffset(sql, query);
+        applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
     
         LOGGER.fine( sql.toString() );
         PreparedStatement ps = cx.prepareStatement(sql.toString(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
@@ -3399,7 +3409,7 @@ public final class JDBCDataStore extends ContentDataStore
     protected String selectBoundsSQL(SimpleFeatureType featureType, Query query) throws SQLException {
         StringBuffer sql = new StringBuffer();
 
-        boolean offsetLimit = checkLimitOffset(query);
+        boolean offsetLimit = checkLimitOffset(query.getStartIndex(), query.getMaxFeatures());
         if(offsetLimit) {
             // envelopes are aggregates, just like count, so we must first isolate
             // the rows against which the aggregate will work in a subquery
@@ -3425,7 +3435,7 @@ public final class JDBCDataStore extends ContentDataStore
         
         // finally encode limit/offset, if necessary
         if(offsetLimit) {
-            applyLimitOffset(sql, query);
+            applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
             // build the prologue
             StringBuffer sb = new StringBuffer();
             sb.append("SELECT ");
@@ -3453,7 +3463,7 @@ public final class JDBCDataStore extends ContentDataStore
         
         StringBuffer sql = new StringBuffer();
 
-        boolean offsetLimit = checkLimitOffset(query);
+        boolean offsetLimit = checkLimitOffset(query.getStartIndex(), query.getMaxFeatures());
         if(offsetLimit) {
             // envelopes are aggregates, just like count, so we must first isolate
             // the rows against which the aggregate will work in a subquery
@@ -3481,7 +3491,7 @@ public final class JDBCDataStore extends ContentDataStore
         
         // finally encode limit/offset, if necessary
         if(offsetLimit) {
-            applyLimitOffset(sql, query);
+            applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
             // build the prologue
             StringBuffer sb = new StringBuffer();
             sb.append("SELECT ");
@@ -3529,38 +3539,38 @@ public final class JDBCDataStore extends ContentDataStore
      * as limit/offset usually alters the number of returned rows 
      * (and a count returns just one), and then count on the result of that first select
      */
-    protected String selectCountSQL(SimpleFeatureType featureType, Query query) throws SQLException, IOException {
+    protected String selectCountSQL(SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
         //JD: this method should not be called anymore
-        return selectAggregateSQL("count",null,featureType,query);
+        return selectAggregateSQL("count",null,featureType,query, visitor);
     }
 
     /**
      * Generates a 'SELECT count(*) FROM' prepared statement.
      */
-    protected PreparedStatement selectCountSQLPS(SimpleFeatureType featureType, Query query, Connection cx ) 
+    protected PreparedStatement selectCountSQLPS(SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx ) 
         throws SQLException, IOException {
         //JD: this method shold not be called anymore
-        return selectAggregateSQLPS("count",null,featureType,query,cx);
+        return selectAggregateSQLPS("count",null,featureType,query,visitor,cx);
     }
     
     /**
      * Generates a 'SELECT <function>() FROM' statement.
      */
     protected String selectAggregateSQL(String function, AttributeDescriptor att, 
-            SimpleFeatureType featureType, Query query) throws SQLException, IOException {
+            SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
         StringBuffer sql = new StringBuffer();
-        doSelectAggregateSQL(function, att, featureType, query, sql);
+        doSelectAggregateSQL(function, att, featureType, query, visitor, sql);
         return sql.toString();
     }
     
     /**
      * Generates a 'SELECT <function>() FROM' prepared statement.
      */
-    protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att, SimpleFeatureType featureType, Query query, Connection cx)
+    protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att, SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
         throws SQLException, IOException {
         
         StringBuffer sql = new StringBuffer();
-        List<FilterToSQL> toSQL = doSelectAggregateSQL(function, att, featureType, query, sql);
+        List<FilterToSQL> toSQL = doSelectAggregateSQL(function, att, featureType, query, visitor, sql);
         
         LOGGER.fine( sql.toString() );
           
@@ -3576,13 +3586,14 @@ public final class JDBCDataStore extends ContentDataStore
      * Helper method to factor out some commonalities between selectAggregateSQL, and selectAggregateSQLPS 
      */
     List<FilterToSQL> doSelectAggregateSQL(String function, AttributeDescriptor att, 
-            SimpleFeatureType featureType, Query query, StringBuffer sql) throws SQLException, IOException {
+            SimpleFeatureType featureType, Query query, LimitingVisitor visitor, StringBuffer sql) throws SQLException, IOException {
 
         JoinInfo join = !query.getJoins().isEmpty() 
             ? JoinInfo.create(query, featureType, this) : null;
 
-        boolean limitOffset = checkLimitOffset(query);
-        if(limitOffset) {
+        boolean queryLimitOffset = checkLimitOffset(query.getStartIndex(), query.getMaxFeatures());
+        boolean visitorLimitOffset = visitor == null ? false : checkLimitOffset(visitor.getStartIndex(), visitor.getMaxFeatures());
+        if(queryLimitOffset && !visitorLimitOffset) {
             if (join != null) {
                 //don't select * to avoid ambigous result set
                 sql.append("SELECT ");
@@ -3616,9 +3627,16 @@ public final class JDBCDataStore extends ContentDataStore
                 toSQL.add(filter(featureType, filter, sql));
             }
         }
+        if(dialect.isAggregatedSortSupported(function)) {
+            sort(featureType, query.getSortBy(), null, sql);
+        }
         
-        if(limitOffset) {
-            applyLimitOffset(sql, query);
+        
+        if(visitorLimitOffset) {
+            applyLimitOffset(sql, visitor.getStartIndex(), visitor.getMaxFeatures());
+        }
+        else if(queryLimitOffset) {
+            applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
             
             StringBuffer sql2 = new StringBuffer("SELECT ");
             encodeFunction(function,att,query,sql2);
@@ -4401,17 +4419,26 @@ public final class JDBCDataStore extends ContentDataStore
     }
     
     /**
+     * Applies the givenb limit/offset elements
+     * if the dialect supports them
+     * @param sql The sql to be modified
+     * @param offset starting index
+     * @param limit max number of features
+     */
+    void applyLimitOffset(StringBuffer sql, final Integer offset, final int limit) {
+        if(checkLimitOffset(offset, limit)) {
+            dialect.applyLimitOffset(sql, limit, offset != null ? offset : 0);
+        }
+    }
+    
+    /**
      * Applies the limit/offset elements to the query if they are specified
      * and if the dialect supports them
      * @param sql The sql to be modified
      * @param the query that holds the limit and offset parameters
      */
     void applyLimitOffset(StringBuffer sql, Query query) {
-        if(checkLimitOffset(query)) {
-            final Integer offset = query.getStartIndex();
-            final int limit = query.getMaxFeatures();
-            dialect.applyLimitOffset(sql, limit, offset != null ? offset : 0);
-        }
+        applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
     }
     
     /**
@@ -4419,14 +4446,12 @@ public final class JDBCDataStore extends ContentDataStore
      * @param query
      * @return true if the query needs limit/offset treatment and if the sql dialect can do that natively
      */
-    boolean checkLimitOffset(Query query) {
+    boolean checkLimitOffset(final Integer offset, final int limit) {
         // if we cannot, don't bother checking the query
         if(!dialect.isLimitOffsetSupported())
             return false;
         
-        // the check the query has at least a non default value for limit/offset
-        final Integer offset = query.getStartIndex();
-        final int limit = query.getMaxFeatures();
+        
         return limit != Integer.MAX_VALUE || (offset != null && offset > 0);
     }
     

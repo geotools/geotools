@@ -162,6 +162,11 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         super(dataStore);
     }
     
+    @Override
+    public boolean isAggregatedSortSupported(String function) {
+       return "distinct".equalsIgnoreCase(function);
+    }
+    
     public boolean isLooseBBOXEnabled() {
         return looseBBOXEnabled;
     }

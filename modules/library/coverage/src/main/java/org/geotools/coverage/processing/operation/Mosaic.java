@@ -655,20 +655,24 @@ public class Mosaic extends OperationJAI {
          * 
          * - Width - Height
          */
-        RenderingHints hints = ImageUtilities.getRenderingHints(parameters.getSource());
+        RenderingHints hintsStart = ImageUtilities.getRenderingHints(parameters.getSource());
+        RenderingHints hints = null;
         // Addition of the Hints
         if (parameters.hints != null) {
-            if (hints != null) {
+            if (hintsStart != null) {
+                hints = new Hints(hintsStart);
                 hints.add(parameters.hints); // May overwrite the image layout we have just set.
             } else {
-                hints = parameters.hints;
+                hints = new Hints(parameters.hints);
             }
         }
         // Layout associated to the input RenderingHints
-        ImageLayout layout = (hints != null) ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
-
+        ImageLayout layoutOld = (hints != null) ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT)
+                : null;
+        ImageLayout layout = null;
         // Check on the ImageLayout
-        if (layout != null) {
+        if (layoutOld != null) {
+            layout = (ImageLayout) layoutOld.clone();
             // Unset the previous dimension parameters
             layout.unsetValid(ImageLayout.MIN_X_MASK);
             layout.unsetValid(ImageLayout.MIN_Y_MASK);
@@ -689,7 +693,11 @@ public class Mosaic extends OperationJAI {
         layout.setHeight(gridRange.height);
 
         // Set the new layout for the rendering hints
-        hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+        if (hints == null) {
+            hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+        } else {
+            hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+        }
 
         /*
          * Performs the operation using JAI and construct the new grid coverage. Uses the coordinate system from the main source coverage in order to

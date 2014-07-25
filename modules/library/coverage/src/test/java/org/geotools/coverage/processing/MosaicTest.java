@@ -33,6 +33,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.media.jai.ImageLayout;
+import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 
 import org.geotools.TestData;
@@ -171,8 +173,15 @@ public class MosaicTest extends GridProcessingTestBase {
         sources.add(coverage2);
         // Setting of the sources
         param.parameter("Sources").setValue(sources);
+        // RenderingHints
+        Hints hints = new Hints();
+        // Ensure No Layout is set
+        Assert.assertTrue(!hints.containsKey(JAI.KEY_IMAGE_LAYOUT));
+        // Add a fake Layout for the operation
+        ImageLayout il = new ImageLayout();
+        hints.put(JAI.KEY_IMAGE_LAYOUT, il);
         // Mosaic operation
-        GridCoverage2D mosaic = (GridCoverage2D) processor.doOperation(param);
+        GridCoverage2D mosaic = (GridCoverage2D) processor.doOperation(param, hints);
 
         // Check that the final GridCoverage BoundingBox is equal to the union of the separate coverages bounding box
         Envelope2D expected = coverage1.getEnvelope2D();
@@ -201,6 +210,15 @@ public class MosaicTest extends GridProcessingTestBase {
                 + finalRes, actual.getMinY() + finalRes);
         result = ((int[]) mosaic.evaluate(point))[0];
         Assert.assertNotEquals(nodata, result, TOLERANCE);
+
+        // Ensure the Layout is already present after the mosaic
+        Assert.assertTrue(hints.containsKey(JAI.KEY_IMAGE_LAYOUT));
+        // Ensure no additional bound parameter is set
+        ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+        Assert.assertTrue(!layout.isValid(ImageLayout.MIN_X_MASK));
+        Assert.assertTrue(!layout.isValid(ImageLayout.MIN_Y_MASK));
+        Assert.assertTrue(!layout.isValid(ImageLayout.WIDTH_MASK));
+        Assert.assertTrue(!layout.isValid(ImageLayout.HEIGHT_MASK));
 
         // Coverage and RenderedImage disposal
         mosaic.dispose(true);

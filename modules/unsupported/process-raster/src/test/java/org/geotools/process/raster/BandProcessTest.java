@@ -82,6 +82,8 @@ public class BandProcessTest {
     @BeforeClass
     public static void setup() throws FileNotFoundException, IOException,
             NoninvertibleTransformException {
+        // Disable medialib
+        System.setProperty("com.sun.media.jai.disableMediaLib", "true");
         // First file selection
         File input = TestData.file(BandProcessTest.class, "sample.tif");
         AbstractGridFormat format = GridFormatFinder.findFormat(input);

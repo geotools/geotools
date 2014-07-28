@@ -616,9 +616,9 @@ public class Mosaic extends OperationJAI {
                 w.forceComponentColorModel();
                 img = w.getRenderedImage();
             }
-            boolean hasAlpha = img.getColorModel().hasAlpha();
+            boolean hasAlpha = img.getColorModel() != null ? img.getColorModel().hasAlpha() : false;
             if (hasAlpha) {
-                alphaChannel &= hasAlpha;
+                alphaChannel |= hasAlpha;
                 alpha[i] = w.retainLastBand().getPlanarImage();
             }
         }

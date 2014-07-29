@@ -23,6 +23,11 @@ public class PostGISCitextTest extends JDBCTestSupport {
     }
     
     @Override
+    protected String getFixtureId() {
+        return super.getFixtureId() + "citeext";
+    }
+
+    @Override
     protected boolean isOnline() throws Exception {
         if(!super.isOnline()) {
             return false;
@@ -47,7 +52,8 @@ public class PostGISCitextTest extends JDBCTestSupport {
             return true;
         } 
         catch (Throwable t) {
-            throw new RuntimeException(t);
+
+            return false;
         } 
         finally {
             if (st != null) {

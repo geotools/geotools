@@ -117,7 +117,7 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
                 SimpleFeature f = it.next();
                 assertEquals(5, f.getAttributeCount());
 
-                SimpleFeature g = (SimpleFeature) f.getAttribute(tname("a"));
+                SimpleFeature g = (SimpleFeature) f.getAttribute("a");
 
                 SimpleFeature a = ita.next();
                 SimpleFeature b = itb.next();

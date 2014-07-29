@@ -151,7 +151,7 @@ public class PostgisNGCreateDatabaseTest extends OnlineTestCase {
 
     @Override
     protected String getFixtureId() {
-        return "postgis";
+        return "postgis-createdrop";
     }
 
 }

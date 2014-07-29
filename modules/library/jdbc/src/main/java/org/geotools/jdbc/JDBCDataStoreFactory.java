@@ -235,7 +235,9 @@ public abstract class JDBCDataStoreFactory extends AbstractDataStoreFactory {
         dataStore.setDataStoreFactory(this);
         
         //call subclass hook and return
-        return createDataStoreInternal(dataStore, params);
+        JDBCDataStore result = createDataStoreInternal(dataStore, params);
+        assert result.getDataSource()!=null;
+        return result;
     }
 
     /**

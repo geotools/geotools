@@ -218,6 +218,13 @@ public final class JDBCDataStore extends ContentDataStore
     protected DataSource dataSource;
 
     /**
+     * Used with TRACE_ENABLED to record the thread responsible for disposing
+     * the JDBCDataStore. In the event dispose() is called a second time
+     * this throwable is used to identify the offending party.
+     */
+    private Throwable disposedBy=null;
+    
+    /**
      * the dialect of sql
      */
     protected SQLDialect dialect;
@@ -4578,13 +4585,6 @@ public final class JDBCDataStore extends ContentDataStore
         }
         
     }
-    
-    /**
-     * Used with TRACE_ENABLED to record the thread responsible for disposing
-     * the JDBCDataStore. In the event dispose() is called a second time
-     * this throwable is used to identify the offending party.
-     */
-    private Throwable disposedBy=null;
     
     public void dispose() {
         if(dataSource != null && dataSource instanceof ManageableDataSource) {

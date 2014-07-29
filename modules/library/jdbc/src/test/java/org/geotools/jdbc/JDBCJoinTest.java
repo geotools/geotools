@@ -99,10 +99,10 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
 
         FilterFactory ff = dataStore.getFilterFactory();
         Query q = new Query(tname("ft1"));
-        q.setAlias("b");
+        q.setAlias(tname("b"));
         Join join = new Join(tname("ftjoin"), ff.equal(ff.property(aname("stringProperty")),
                 ff.property(aname("name")), true));
-        join.setAlias("a");
+        join.setAlias(tname("a"));
         q.getJoins().add(join);
 
         SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);

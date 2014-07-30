@@ -48,45 +48,45 @@
   </class>  
   <class id="6" language="java" name="com.vividsolutions.jts.geom.Envelope" project="docs" 
     file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="364" y="48"/>    
+    <position height="-1" width="-1" x="364" y="44"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <generalization id="7">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <association id="8">    
+  <association id="7">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="9" name="envelope"/>      
-      <multiplicity id="10" minimum="0" maximum="1"/>    
+      <attribute id="8" name="envelope"/>      
+      <multiplicity id="9" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
   <generalization id="11">    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="3"/>  
   </generalization>  
-  <generalization id="12">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <generalization id="13">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <association id="14">    
+  <association id="12">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="15" name="shell"/>      
-      <multiplicity id="16" minimum="0" maximum="1"/>    
+      <attribute id="13" name="shell"/>      
+      <multiplicity id="14" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <generalization id="15">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="16">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
   <association id="17">    
     <bendpoint x="327" y="224"/>    
     <end type="SOURCE" refId="4" navigable="false">      

@@ -5,7 +5,7 @@ To create a Geometry object we make use of the GeometryFactory provided by JTS. 
 
 The OGC Simple Features for SQL specification implemented by JTS works with *Point*, *LineString* and *Polygon*.
 
-.. image:: /images/geometry.PNG
+.. image:: /images/geometry.png
 
 Each *Geometry* can be contained in an *Envelope* (acting as a bounding box that contains all the geometry coordinates).
 

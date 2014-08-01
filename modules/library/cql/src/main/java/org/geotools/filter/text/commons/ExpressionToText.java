@@ -70,10 +70,17 @@ public class ExpressionToText implements ExpressionVisitor {
      * @return output 
      */
     public StringBuilder dateToText( Date date, StringBuilder output ){
-        
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
+        final DateFormat formatter;
+
+        // If the Date has millisecond resolution, print the millis.
+        if (date.getTime() % 1000 == 0) {
+            formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
+        } else {
+            formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSz");
+        }
+
         formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-		String text = formatter.format(date);
+        String text = formatter.format(date);
 		
 		// GMT is not part of CQL syntax so it is removed 
 		text = text.replace("GMT", "");

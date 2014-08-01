@@ -31,7 +31,7 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 public class ProjectionHandlerTest {
 
-    static final double EPS = 1e-6;
+    static final double EPS = 1e-5;
 
     static CoordinateReferenceSystem WGS84;
     
@@ -191,18 +191,55 @@ public class ProjectionHandlerTest {
         // move it so that it crosses the dateline
         mercatorEnvelope.translate(mercatorEnvelope.getWidth() / 2, 0);
 
-        // get query area, we expect two separate query envelopes, the original and the
+        // get query area, we expect two separate query envelopes
         ProjectionHandler handler = ProjectionHandlerFinder.getHandler(mercatorEnvelope, WGS84, true);
         List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
         assertEquals(2, envelopes.size());
 
         ReferencedEnvelope reOrig = envelopes.get(0); // original
         assertEquals(170.0, reOrig.getMinX(), EPS);
-        assertEquals(190.0, reOrig.getMaxX(), EPS);
+        assertEquals(180.0, reOrig.getMaxX(), EPS);
 
         ReferencedEnvelope reAdded = envelopes.get(1); // added
         assertEquals(-180.0, reAdded.getMinX(), EPS);
         assertEquals(-170.0, reAdded.getMaxX(), EPS);
+    }
+
+    @Test
+    public void testQueryWrappingPacificMercator() throws Exception {
+        // <wcs:DimensionTrim>
+        // <wcs:Dimension>N</wcs:Dimension>
+        // <wcs:TrimLow>0</wcs:TrimLow>
+        // <wcs:TrimHigh>4838471</wcs:TrimHigh>
+        // </wcs:DimensionTrim>
+        // <wcs:DimensionTrim>
+        // <wcs:Dimension>E</wcs:Dimension>
+        // <wcs:TrimLow>1113195</wcs:TrimLow>
+        // <wcs:TrimHigh>5565975</wcs:TrimHigh>
+        // </wcs:DimensionTrim>
+        // <wcs:format>image/tiff</wcs:format>
+        // <wcs:Extension>
+        // <!-- Mercator centered on 150°, request is roughly for long(160,-160),lat(0, 40)-->
+        // <wcscrs:subsettingCrs>http://www.opengis.net/def/crs/EPSG/0/3832</wcscrs:subsettingCrs>
+        //
+
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3832");
+        ReferencedEnvelope mercatorEnvelope = new ReferencedEnvelope(1113195, 5565975, 0, 4838471,
+                crs);
+
+        // get query area, we expect two separate query envelopes across the dateline
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(mercatorEnvelope, WGS84,
+                true);
+        List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
+        assertEquals(2, envelopes.size());
+
+        ReferencedEnvelope reOrig = envelopes.get(0);
+        assertEquals(160.0, reOrig.getMinX(), EPS);
+        assertEquals(180.0, reOrig.getMaxX(), EPS);
+
+        ReferencedEnvelope reAdded = envelopes.get(1);
+        assertEquals(-180.0, reAdded.getMinX(), EPS);
+        assertEquals(-160.0, reAdded.getMaxX(), EPS);
     }
 
     @Test

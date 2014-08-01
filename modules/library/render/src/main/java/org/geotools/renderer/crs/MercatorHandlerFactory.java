@@ -41,13 +41,17 @@ public class MercatorHandlerFactory implements ProjectionHandlerFactory {
         MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope
                 .getCoordinateReferenceSystem());
         if (renderingEnvelope != null && mapProjection instanceof Mercator) {
+            ProjectionHandler handler;
+            double centralMeridian = mapProjection.getParameterValues()
+                    .parameter(AbstractProvider.CENTRAL_MERIDIAN.getName().getCode()).doubleValue();
             if(wrap && maxWraps > 0) {
-                double centralMeridian = mapProjection.getParameterValues().parameter(
-                        AbstractProvider.CENTRAL_MERIDIAN.getName().getCode()).doubleValue();
-                return new WrappingProjectionHandler(renderingEnvelope, VALID_AREA, sourceCrs, centralMeridian, maxWraps);
+                handler = new WrappingProjectionHandler(renderingEnvelope, VALID_AREA, sourceCrs,
+                        centralMeridian, maxWraps);
             } else {
-                return new ProjectionHandler(sourceCrs, VALID_AREA, renderingEnvelope);
+                handler = new ProjectionHandler(sourceCrs, VALID_AREA, renderingEnvelope);
+                handler.setCentralMeridian(centralMeridian);
             }
+            return handler;
         }
 
         return null;

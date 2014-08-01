@@ -70,7 +70,7 @@ public class ExpressionToText implements ExpressionVisitor {
      * @return output 
      */
     public StringBuilder dateToText( Date date, StringBuilder output ){
-        DateFormat formatter;
+        final DateFormat formatter;
 
         // If the Date has millisecond resolution, print the millis.
         if (date.getTime() % 1000 == 0) {

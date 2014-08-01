@@ -414,8 +414,8 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
         if (value != null) {
             if (count >= threshold) {
                 rehash(true);
-                index = hash % table.length;
             }
+            index = hash % table.length;
             table[index] = new Entry(key, value, table[index], index);
             count++;
         }

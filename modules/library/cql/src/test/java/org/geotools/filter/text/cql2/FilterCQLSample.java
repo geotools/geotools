@@ -72,6 +72,7 @@ public class FilterCQLSample {
     private static final FilterFactory FACTORY = CommonFactoryFinder.getFilterFactory((Hints) null);
 
     private static final String DATE_TIME_FORMATTER = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    private static final String DATE_TIME_FORMATTER_MILLIS = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     private static final Calendar CALENDAR = Calendar.getInstance();
     public static final String LESS_FILTER_SAMPLE = "ATTR1 < 1";
@@ -86,10 +87,15 @@ public class FilterCQLSample {
     public static final String PROPERTY_IS_NOT_NULL = "ATTR1 IS NOT NULL";
     private static final String FIRST_DATE = "2006-11-30T01:30:00Z";
     private static final String LAST_DATE = "2006-12-31T01:30:00Z";
+    private static final String FIRST_DATE_MILLIS = "2006-11-30T01:30:00.123Z";
+    private static final String LAST_DATE_MILLIS = "2006-12-31T01:30:00.456Z";
     public static final String FILTER_EQUAL_DATETIME = "ATTR1 TEQUALS " + FIRST_DATE;
     public static final String FILTER_BEFORE_DATE = "ATTR1 BEFORE " + FIRST_DATE;
+    public static final String FILTER_BEFORE_DATE_MILLIS = "ATTR1 BEFORE " + FIRST_DATE_MILLIS;
     public static final String FILTER_BEFORE_PERIOD_BETWEEN_DATES = "ATTR1 BEFORE " + FIRST_DATE
         + "/" + LAST_DATE;
+    public static final String FILTER_BEFORE_PERIOD_BETWEEN_DATES_MILLIS = "ATTR1 BEFORE " + FIRST_DATE_MILLIS
+            + "/" + LAST_DATE_MILLIS;
     public static final String FILTER_BEFORE_PERIOD_DATE_AND_DAYS = "ATTR1 BEFORE  " + FIRST_DATE
         + "/" + "P30D";
     public static final String FILTER_BEFORE_PERIOD_DATE_AND_YEARS = "ATTR1 BEFORE " + FIRST_DATE
@@ -281,6 +287,27 @@ public class FilterCQLSample {
                     e.printStackTrace();
                 }
             }
+        }
+
+        {
+            // ---------------------------------------
+            // Result filter for MILLIS tests
+            Before beforeFilter = null;
+
+            try {
+                SimpleDateFormat dateFormatterWithMillis = new SimpleDateFormat(DATE_TIME_FORMATTER_MILLIS);
+                dateFormatterWithMillis.setTimeZone(TimeZone.getTimeZone("GMT"));
+                Date dateTime = dateFormatterWithMillis.parse(FIRST_DATE_MILLIS);
+                beforeFilter = FACTORY.before(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            // ATTR1 BEFORE 2006-12-31T01:30:00.123Z
+            SAMPLES.put(FILTER_BEFORE_DATE_MILLIS, beforeFilter);
+
+            // ATTR1 BEFORE 2006-11-30T01:30:00.123Z/2006-12-30T01:30:00.123Z
+            SAMPLES.put(FILTER_BEFORE_PERIOD_BETWEEN_DATES_MILLIS, beforeFilter);
         }
 
         {

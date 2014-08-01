@@ -16,11 +16,15 @@
  */
 package org.geotools.util;
 
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 
 /**
@@ -131,5 +135,35 @@ public final class WeakValueHashMapTest {
             }
             assertTrue("equals:", strongMap.equals(weakMap));
         }
+    }
+
+    @Test
+    public void testArrayIndexOutOfBounds() {
+        // hard to reproduce bug, the sizes and actions here have been carefully crafted
+        // to make it happen
+        WeakValueHashMap<Integer, Integer> map = new WeakValueHashMap<Integer, Integer>(10);
+        List<Integer> values = new ArrayList<Integer>();
+        for (int i = 0; i < 7; i++) {
+            Integer v = new Integer(i);
+            values.add(v);
+            map.put(v, v);
+        }
+        Integer last = new Integer(9);
+        map.put(last, last);
+
+        // reduce the size enough that we put the map on its threshold for shrinking
+        for (int i = 0; i < 5; i++) {
+            map.remove(new Integer(i));
+        }
+
+        // now replace the last element, which will force the map to shrink
+        last = new Integer(9);
+        values.add(last);
+        map.put(last, last); // it used to throw the arrays out of bound here
+
+        assertEquals(3, map.size());
+        assertTrue(map.containsKey(new Integer(5)));
+        assertTrue(map.containsKey(new Integer(6)));
+        assertTrue(map.containsKey(new Integer(9)));
     }
 }

@@ -998,7 +998,7 @@ public class StreamingRenderer implements GTRenderer {
         Query query = new Query(Query.ALL);
         Filter filter = null;
         
-        LiteFeatureTypeStyle[] styles = (LiteFeatureTypeStyle[]) styleList.toArray(new LiteFeatureTypeStyle[styleList.size()]);
+        LiteFeatureTypeStyle[] styles = styleList.toArray(new LiteFeatureTypeStyle[styleList.size()]);
 
         // if map extent are not already expanded by a constant buffer, try to compute a layer
         // specific one based on stroke widths
@@ -1043,8 +1043,9 @@ public class StreamingRenderer implements GTRenderer {
             // enable advanced projection handling with the updated map extent
             if(isAdvancedProjectionHandlingEnabled()) {
                 // get the projection handler and set a tentative envelope
-                projectionHandler = ProjectionHandlerFinder.getHandler(mapExtent, featCrs, isMapWrappingEnabled());
-                if(projectionHandler != null) {
+                projectionHandler = ProjectionHandlerFinder.getHandler(envelope, featCrs,
+                        isMapWrappingEnabled());
+                if (projectionHandler != null) {
                     envelopes = projectionHandler.getQueryEnvelopes();
                 }
             }
@@ -1358,7 +1359,7 @@ public class StreamingRenderer implements GTRenderer {
             // or together all the filters
             org.opengis.filter.Filter ruleFiltersCombined;
             if (filtersToDS.size() == 1) {
-                ruleFiltersCombined = (Filter) filtersToDS.get(0);
+                ruleFiltersCombined = filtersToDS.get(0);
             } else {
                 ruleFiltersCombined = filterFactory.or(filtersToDS); 
             }
@@ -1919,7 +1920,7 @@ public class StreamingRenderer implements GTRenderer {
             if ((rCS == null) || !CRS.equalsIgnoreMetadata(rCS, sourceCrs)) {
                 // need to retag the features
                 try {
-                    return new ForceCoordinateSystemFeatureResults( (SimpleFeatureCollection) features, sourceCrs);
+                    return new ForceCoordinateSystemFeatureResults( features, sourceCrs);
                 } catch (Exception ee) {
                     LOGGER.log(Level.WARNING, ee.getLocalizedMessage(), ee);
                 }
@@ -2883,10 +2884,10 @@ public class StreamingRenderer implements GTRenderer {
             } else if (drawMe instanceof Feature) {
                 geom = (Geometry) ((Feature) drawMe).getDefaultGeometryProperty().getValue();
             } else {
-                geom = (Geometry) defaultGeometryPropertyName.evaluate(drawMe, Geometry.class);
+                geom = defaultGeometryPropertyName.evaluate(drawMe, Geometry.class);
             }
         } else {
-            geom = (Geometry) geomExpr.evaluate(drawMe, Geometry.class);
+            geom = geomExpr.evaluate(drawMe, Geometry.class);
         }
 
         return geom;    
@@ -3168,23 +3169,23 @@ public class StreamingRenderer implements GTRenderer {
                 if (i < length) {
                     // we found another READ_GRIDGEOMETRY2D, let's override it.
                     ((Parameter) readParams[i]).setValue(readGGParam);
-                    coverage = (GridCoverage2D) reader.read(readParams);
+                    coverage = reader.read(readParams);
                 } else {
                     // add the correct read geometry to the supplied
                     // params since we did not find anything
                     GeneralParameterValue[] readParams2 = new GeneralParameterValue[length + 1];
                     System.arraycopy(readParams, 0, readParams2, 0, length);
                     readParams2[length] = readGGParam;
-                    coverage = (GridCoverage2D) reader.read(readParams2);
+                    coverage = reader.read(readParams2);
                 }
             } else
                 // we have no parameters hence we just use the read grid
                 // geometry to get a coverage
-                coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { readGGParam });
+                coverage = reader.read(new GeneralParameterValue[] { readGGParam });
         } else if(readGG != null) {
-            coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { readGGParam });
+            coverage = reader.read(new GeneralParameterValue[] { readGGParam });
         } else {
-            coverage = (GridCoverage2D) reader.read(null);
+            coverage = reader.read(null);
         }
         return coverage;
     }
@@ -3258,7 +3259,7 @@ public class StreamingRenderer implements GTRenderer {
                     sa.crs = (findGeometryCS(layer, content, symbolizer));
                     try {
                         crsTransform = buildTransform(sa.crs, destinationCrs);
-                        atTransform = (MathTransform2D) ProjectiveTransform.create(worldToScreenTransform);
+                        atTransform = ProjectiveTransform.create(worldToScreenTransform);
                         fullTransform = buildFullTransform(sa.crs, destinationCrs, at);
                     } catch (Exception e) {
                         // fall through

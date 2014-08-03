@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.crs;
 
-import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+import static org.geotools.referencing.crs.DefaultGeographicCRS.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,7 +84,7 @@ public class ProjectionHandler {
         this.sourceCRS = CRS.getHorizontalCRS(sourceCRS);
         this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
         this.validAreaBounds = validAreaBounds != null ? new ReferencedEnvelope(validAreaBounds,
-                this.sourceCRS) : null;
+                DefaultGeographicCRS.WGS84) : null;
         this.validArea = null;
     }
     
@@ -103,14 +103,14 @@ public class ProjectionHandler {
             this.sourceCRS = sourceCRS;
             this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
             this.validAreaBounds = new ReferencedEnvelope(validArea.getEnvelopeInternal(),
-                    sourceCRS);
+                    DefaultGeographicCRS.WGS84);
             this.validArea = null;
         } else {
             this.renderingEnvelope = renderingEnvelope;
             this.sourceCRS = sourceCRS;
             this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
             this.validAreaBounds = new ReferencedEnvelope(validArea.getEnvelopeInternal(),
-                    sourceCRS);
+                    DefaultGeographicCRS.WGS84);
             this.validArea = validArea;
         }
     }
@@ -362,6 +362,9 @@ public class ProjectionHandler {
             // just skip expensive cutting
             ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), geometryCRS);
             ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
+            if (validAreaBounds.contains((Envelope) geWGS84)) {
+                return geometry;
+            }
 
             // we need to cut, first thing, we intersect the geometry envelope
             // and the valid area in WGS84, which is a neutral, everything can
@@ -386,6 +389,11 @@ public class ProjectionHandler {
     }
 
     private Geometry intersect(Geometry geometry, Geometry mask) {
+        // this seems to cause issues to JTS, reduce to
+        // single geometry when possible (http://jira.codehaus.org/browse/GEOS-6570)
+        if (geometry instanceof GeometryCollection && geometry.getNumGeometries() == 1) {
+            geometry = geometry.getGeometryN(0);
+        }
         Geometry result;
         try {
             result = geometry.intersection(mask);
@@ -397,8 +405,18 @@ public class ProjectionHandler {
             }
         }
         
+        // workaround for a JTS bug, sometimes it returns empty results
+        // even if the two geometries are indeed intersecting
+        if (result.isEmpty() && geometry.intersects(mask)) {
+            try {
+                result = EnhancedPrecisionOp.intersection(geometry, mask);
+            } catch (Exception e2) {
+                result = geometry;
+            }
+        }
+
         // handle in special way empty intersections
-        if (result instanceof GeometryCollection && ((GeometryCollection) result).isEmpty()) {
+        if (result.isEmpty()) {
             return null;
         } else {
             return result;

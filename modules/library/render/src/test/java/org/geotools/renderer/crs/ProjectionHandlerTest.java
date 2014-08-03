@@ -1,9 +1,6 @@
 package org.geotools.renderer.crs;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -108,7 +105,7 @@ public class ProjectionHandlerTest {
         ProjectionHandler handler = ProjectionHandlerFinder.getHandler(laeNorth, WGS84, true);
         Envelope va = handler.validAreaBounds;
         assertNotNull(va);
-                assertEquals(-180.0, va.getMinX(), 0d);
+        assertEquals(-180.0, va.getMinX(), 0d);
         assertEquals(180.0, va.getMaxX(), 0d);
         assertEquals(0, va.getMinY(), 0d);
         assertEquals(90, va.getMaxY(), 0d);

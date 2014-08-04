@@ -132,9 +132,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     private Filter listFilter;
 
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query, boolean isFiltered) throws IOException {
-//        super(store, mapping, query, null, removeQueryLimitIfDenormalised);
-        super(store, mapping, query, null);
+            Query query, boolean isFiltered, boolean removeQueryLimitIfDenormalised,
+            boolean hasPostFilter) throws IOException {
+        super(store, mapping, query, null, removeQueryLimitIfDenormalised, hasPostFilter);
         this.isFiltered = isFiltered;
         if (isFiltered) {
             filteredFeatures = new ArrayList<String>();
@@ -142,8 +142,13 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     }
     
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
+            Query query, boolean isFiltered, boolean removeQueryLimitIfDenormalised) throws IOException {
+        this(store, mapping, query, isFiltered, removeQueryLimitIfDenormalised, false);
+    }
+    
+    public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query) throws IOException {
-        this(store, mapping, query, null);
+        this(store, mapping, query, null, false);
     }
 
     /**
@@ -158,8 +163,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * @throws IOException
      */
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query, Query unrolledQuery) throws IOException {
-        super(store, mapping, query, unrolledQuery);
+            Query query, Query unrolledQuery, boolean removeQueryLimitIfDenormalised) throws IOException {
+        super(store, mapping, query, unrolledQuery, removeQueryLimitIfDenormalised);
     }
 
     @Override
@@ -378,7 +383,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         
         //reproject target feature
         targetFeature = reprojectAttribute(mapping.getTargetFeature());
-//        query.setMaxFeatures(dataMaxFeatures);
+        query.setMaxFeatures(dataMaxFeatures);
         sourceFeatures = mappedSource.getFeatures(query);
         if (reprojection != null) {
             xpathAttributeBuilder.setCRS(reprojection);

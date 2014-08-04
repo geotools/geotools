@@ -29,10 +29,10 @@ import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.feature.Types;
-import org.geotools.filter.FidFilterImpl;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
+import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -40,7 +40,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -113,6 +112,7 @@ public class MappingFeatureIteratorFactory {
         }        
 
         boolean isJoining = AppSchemaDataAccessConfigurator.isJoining();
+        boolean removeQueryLimitIfDenormalised = false;
 
         FeatureSource mappedSource = mapping.getSource();            
         
@@ -154,7 +154,7 @@ public class MappingFeatureIteratorFactory {
                 iterator = new MappingAttributeIterator(store, mapping, query, unrolledQuery);
             } else {
                 iterator = new DataAccessMappingFeatureIterator(store, mapping, query,
-                        unrolledQuery);
+                        unrolledQuery, false);
             }
         } else {
             // HACK HACK HACK
@@ -184,6 +184,7 @@ public class MappingFeatureIteratorFactory {
                 int maxFeatures = Query.DEFAULT_MAX;
                 if (filter != null && filter != Filter.INCLUDE) {
                     maxFeatures = query.getMaxFeatures();
+                    removeQueryLimitIfDenormalised = true;
                 }
                 if (isJoining) {
                    ((JoiningQuery)query).setDenormalised(mapping.isDenormalised());
@@ -202,57 +203,44 @@ public class MappingFeatureIteratorFactory {
                 // need to flag if this is non joining and has pre filter because it needs
                 // to find denormalised rows that match the id (but doesn't match pre filter)
                 boolean isFiltered = !isJoining && preFilter != null && preFilter != Filter.INCLUDE;
-                iterator = new DataAccessMappingFeatureIterator(store, mapping, query, isFiltered);
                 // HACK HACK HACK
                 // experimental/temporary solution for isList subsetting by filtering
-                // Because subsetting should be done before the feature is built.. so we're not 
+                // Because subsetting should be done before the feature is built.. so we're not
                 // using PostFilteringMappingFeatureIterator
+                boolean hasPostFilter = false;
                 if (isListFilter == null) {
-                // END OF HACK
+                    // END OF HACK
                     if (filter != null && filter != Filter.INCLUDE) {
-                        iterator = new PostFilteringMappingFeatureIterator(iterator, filter,
-                            maxFeatures);
+                        hasPostFilter = true;
                     }
+                }
+                iterator = new DataAccessMappingFeatureIterator(store, mapping, query, isFiltered,
+                        removeQueryLimitIfDenormalised, hasPostFilter);
+                if (isListFilter != null) {
+                    ((DataAccessMappingFeatureIterator) iterator).setListFilter(isListFilter);
+                }
+                if (hasPostFilter) {
+                    iterator = new PostFilteringMappingFeatureIterator(iterator, filter,
+                            maxFeatures);
                 }
             } else if (mappedSource instanceof MappingFeatureSource) {
                 // web service data access wrapper
                 iterator = new DataAccessMappingFeatureIterator(store, mapping, query);
+                if (isListFilter != null) {
+                    ((DataAccessMappingFeatureIterator) iterator).setListFilter(isListFilter);
+                }
             } else {
                 // non database sources e.g. property data store
-                Query unrolledQuery = store.unrollQuery(query, mapping);
-                Filter filter = unrolledQuery.getFilter();
-
-                if (!filter.equals(Filter.INCLUDE) && !filter.equals(Filter.EXCLUDE)
-                        && !(filter instanceof FidFilterImpl)) {
-                    // non joining with filters
-                    // the filter can't be passed to the data source as is and has to be
-                    // performed
-                    // per simple feature
-                    // also in case the data is denormalised and the 2nd row matches the filter, it
-                    // will still find the first row
-                    // since this iterator would group the sources by id before evaluating the
-                    // filter
-                    unrolledQuery.setFilter(Filter.INCLUDE);
-
-                    CoordinateReferenceSystem crs = query.getCoordinateSystemReproject();
-                    if (crs != null) {
-                        // remove reprojection too, as it should be done after filter is applied
-                        // to be consistent with app-schema with JDBC sources
-                        unrolledQuery.setCoordinateSystemReproject(null);
-                    }
-                    iterator = new FilteringMappingFeatureIterator(store, mapping, query,
-                            unrolledQuery, filter);
-                } else {
-                    // non database sources with no filters
-                    iterator = new DataAccessMappingFeatureIterator(store, mapping, query);
+                Filter filter = query.getFilter();
+                iterator = new DataAccessMappingFeatureIterator(store, mapping, query,
+                        !Filter.INCLUDE.equals(filter), true);
+                // HACK HACK HACK
+                // experimental/temporary solution for isList subsetting by filtering
+                if (isListFilter != null) {
+                    ((DataAccessMappingFeatureIterator) iterator).setListFilter(isListFilter);
                 }
+                // END OF HACK
             }
-             // HACK HACK HACK
-            // experimental/temporary solution for isList subsetting by filtering
-            if (isListFilter != null && iterator instanceof DataAccessMappingFeatureIterator) {
-                ((DataAccessMappingFeatureIterator) iterator).setListFilter(isListFilter);
-            }
-            // END OF HACK
         }
         return iterator;
     }

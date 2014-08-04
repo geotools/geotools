@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataAccess;
@@ -485,10 +484,14 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
 
                 if (!addThis) {
                     for (PropertyName requestedProperty : requestedProperties) {
-                        StepList requestedPropertySteps = requestedProperty.getNamespaceContext() == null ? null
-                                : XPath.steps(targetDescriptor,
-                                        requestedProperty.getPropertyName(),
+                        StepList requestedPropertySteps;
+                        if (requestedProperty.getNamespaceContext() == null) {
+                            requestedPropertySteps = XPath.steps(targetDescriptor, requestedProperty.getPropertyName(),
+                                    mapping.getNamespaces());
+                        } else {
+                            requestedPropertySteps = XPath.steps(targetDescriptor, requestedProperty.getPropertyName(),
                                         requestedProperty.getNamespaceContext());
+                        }
 
                         if (requestedPropertySteps == null ? matchProperty(
                                 requestedProperty.getPropertyName(), targetSteps) : matchProperty(

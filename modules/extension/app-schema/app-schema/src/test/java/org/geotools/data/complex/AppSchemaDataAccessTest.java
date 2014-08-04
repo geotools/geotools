@@ -356,11 +356,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
 
         AttributeDescriptor sub = (AttributeDescriptor) Types
                 .descriptor(subbedType, subName);
- //       assertNotNull(sub);
-
- //       assertEquals(Point.class, fromNode.getType().getBinding());
  
-
         FeatureCollection<FeatureType, Feature> content = source.getFeatures();
         FeatureIterator<Feature> features = content.features();
         int count = 0;

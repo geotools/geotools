@@ -49,7 +49,7 @@ public class MappingAttributeIterator extends DataAccessMappingFeatureIterator {
 
     public MappingAttributeIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, Query unrolledQuery) throws IOException {
-        super(store, mapping, query, unrolledQuery);
+        super(store, mapping, query, unrolledQuery, false);
         elementName = mapping.getTargetFeature().getName();
         checkAttributeMappings();
     }

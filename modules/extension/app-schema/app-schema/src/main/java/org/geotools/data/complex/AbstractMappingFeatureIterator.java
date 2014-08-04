@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import net.opengis.wfs20.ResolveValueType;
@@ -55,7 +54,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.NamespaceSupport;
@@ -127,11 +125,11 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     protected final int requestMaxFeatures;
 
     /**
-//     * maximum number of features to request when running the data(base?) query.  For denormalised
-//     * data sources, this neesd to be be Query.DEFAULT_MAX to trigger a full table scan.  In all
-//     * other cases it will be the same value as requestMaxFeatures
-//     */
-//    protected final int dataMaxFeatures;
+     * maximum number of features to request when running the data(base?) query.  For denormalised
+     * data sources, this neesd to be be Query.DEFAULT_MAX to trigger a full table scan.  In all
+     * other cases it will be the same value as requestMaxFeatures
+     */
+    protected final int dataMaxFeatures;
 
     /** counter to ensure maxFeatures is not exceeded */
     protected int featureCounter;
@@ -152,11 +150,15 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         this(store, mapping, query, null);
     }
 
-//    public AbstractMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-//            Query query, Query unrolledQuery) throws IOException {
-////        this(store, mapping, query, unrolledQuery, false);
-//        this(store, mapping, query, unrolledQuery);
-//    }
+    public AbstractMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
+            Query query, Query unrolledQuery) throws IOException {
+        this(store, mapping, query, unrolledQuery, false, false);
+    }
+    
+    public AbstractMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
+            Query query, Query unrolledQuery, boolean removeQueryLimitIfDenormalised) throws IOException {
+        this(store, mapping, query, unrolledQuery, removeQueryLimitIfDenormalised, false);
+    }
 
 
     //NC - changed
@@ -165,8 +167,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     //one of them can be null, but not both!
     
     public AbstractMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query, Query unrolledQuery) throws IOException {
-//            , boolean removeQueryLimitIfDenormalised) throws IOException {
+            Query query, Query unrolledQuery, boolean removeQueryLimitIfDenormalised, boolean hasPostFilter) throws IOException {
         this.store = store;
         this.attf = new AppSchemaFeatureFactoryImpl();
 
@@ -197,24 +198,29 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                                     // this...
         }
         
-        
-//        if (mapping.isDenormalised()) {
-//            // we need to disable the max number of features retrieved so we can
-//            // sort them manually just in case the data is denormalised.  Do this
-//            // by overriding the max features for this query just before executing
-//            // it.  Note that the original maxFeatures value was copied to
-//            // this.requestMaxFeatures in the constructor and will be re-applied after
-//            // the rows have been returned
-//            this.dataMaxFeatures = Query.DEFAULT_MAX;
-//            if (removeQueryLimitIfDenormalised) {
-//                this.requestMaxFeatures = Query.DEFAULT_MAX;
-//            } else {
+        if (mapping.isDenormalised()) {
+            // we need to disable the max number of features retrieved so we can
+            // sort them manually just in case the data is denormalised.  Do this
+            // by overriding the max features for this query just before executing
+            // it.  Note that the original maxFeatures value was copied to
+            // this.requestMaxFeatures in the constructor and will be re-applied after
+            // the rows have been returned
+            if (removeQueryLimitIfDenormalised) {
+                this.dataMaxFeatures = Query.DEFAULT_MAX;
+                if (hasPostFilter) {
+                   // true max features will be handled in PostFilteringMappingFeatureIterator
+                   this.requestMaxFeatures = Query.DEFAULT_MAX;
+                } else {
+                    this.requestMaxFeatures = query.getMaxFeatures(); 
+                }
+            } else {
+                this.dataMaxFeatures = query.getMaxFeatures();
                 this.requestMaxFeatures = query.getMaxFeatures();
-//            }
-//        } else {
-//            this.dataMaxFeatures = query.getMaxFeatures();
-//            this.requestMaxFeatures = query.getMaxFeatures();
-//        }
+            }
+        } else {
+            this.requestMaxFeatures = query.getMaxFeatures();
+            this.dataMaxFeatures = query.getMaxFeatures();
+        }
                 
         if (unrolledQuery==null) {
             unrolledQuery = getUnrolledQuery(query);
@@ -254,9 +260,14 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                 }
 
                 for (PropertyName requestedProperty : propertyNames) {
-                    StepList requestedPropertySteps = requestedProperty.getNamespaceContext() == null ? null
-                            : XPath.steps(targetDescriptor, requestedProperty.getPropertyName(),
+                    StepList requestedPropertySteps;                    
+                    if (requestedProperty.getNamespaceContext() == null) {
+                        requestedPropertySteps = XPath.steps(targetDescriptor, requestedProperty.getPropertyName(),
+                                namespaces);
+                    } else {
+                        requestedPropertySteps = XPath.steps(targetDescriptor, requestedProperty.getPropertyName(),
                                     requestedProperty.getNamespaceContext());
+                    }
                     if (requestedPropertySteps == null ? AppSchemaDataAccess.matchProperty(
                             requestedProperty.getPropertyName(), targetSteps) : AppSchemaDataAccess
                             .matchProperty(requestedPropertySteps, targetSteps)) {

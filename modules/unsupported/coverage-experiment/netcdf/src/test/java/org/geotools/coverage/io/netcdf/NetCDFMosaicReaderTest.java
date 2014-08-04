@@ -37,6 +37,9 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
+import javax.media.jai.operator.MeanDescriptor;
+import javax.media.jai.operator.SubtractDescriptor;
 import javax.swing.JFrame;
 
 import junit.framework.JUnit4TestAdapter;
@@ -58,6 +61,7 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
@@ -510,7 +514,84 @@ public class NetCDFMosaicReaderTest extends Assert {
             reader.dispose();
         }
     }
-    
+
+    @Test
+    public void testMultipleGranules() throws IOException, ParseException {
+        // prepare a "mosaic" with just one NetCDF
+        File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY_new.nc");
+        File nc2 = TestData.file(this, "20130108.METOPA.GOME2.NO2.DUMMY_new.nc");
+        File mosaic = new File(TestData.file(this, "."), "nc_heterogen");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+        FileUtils.copyFileToDirectory(nc2, mosaic);
+
+        File xml = TestData.file(this, "GOME2.NO2_new.xml");
+        FileUtils.copyFileToDirectory(xml, mosaic);
+
+        // The indexer
+        String indexer = "TimeAttribute=time\n"
+                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
+                + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
+        indexer += Prop.AUXILIARY_FILE + "=" + "GOME2.NO2_new.xml";
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+
+        String timeregex = "regex=[0-9]{8}";
+        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex);
+
+        // the datastore.properties file is also mandatory...
+        File dsp = TestData.file(this, "datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+
+        // have the reader harvest it
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(mosaic);
+        SimpleFeatureIterator it = null;
+        assertNotNull(reader);
+        try {
+            // use imageio with defined tiles
+            final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD
+                    .createValue();
+            useJai.setValue(false);
+            // specify time
+            ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+            final Date timeD = parseTimeStamp("2013-01-01T00:00:00.000Z");
+            time.setValue(new ArrayList() {
+                {
+                    add(timeD);
+                }
+            });
+            GeneralParameterValue[] params = new GeneralParameterValue[] { useJai, time };
+            GridCoverage2D coverage1 = reader.read(params);
+            // Specify a new time (Check if two times returns two different coverages)
+            final Date timeD2 = parseTimeStamp("2013-01-08T00:00:00.000Z");
+            time.setValue(new ArrayList() {
+                {
+                    add(timeD2);
+                }
+            });
+            params = new GeneralParameterValue[] { useJai, time };
+            GridCoverage2D coverage2 = reader.read(params);
+
+            // Ensure that the two images are different (different location)
+            String property = (String) coverage1.getProperty("OriginalFileSource");
+            String property2 = (String) coverage2.getProperty("OriginalFileSource");
+            assertNotEquals(property, property2);
+
+            // Ensure that only one coverage is present
+            String[] names = reader.getGridCoverageNames();
+            assertEquals(1, names.length);
+            assertEquals("z", names[0]);
+        } finally {
+            if (it != null) {
+                it.close();
+            }
+            reader.dispose();
+        }
+    }
+
     @Test
     public void testHarvest3Gome() throws IOException {
         // prepare a "mosaic" with just one NetCDF

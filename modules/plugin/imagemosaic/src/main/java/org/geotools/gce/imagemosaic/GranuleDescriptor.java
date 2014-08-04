@@ -291,6 +291,8 @@ public class GranuleDescriptor {
         ImageInputStreamSpi cachedStreamSPI;
 
         private GridToEnvelopeMapper geMapper;
+
+        private boolean singleDimensionalGranule;
         
 	private void init(final BoundingBox granuleBBOX, final URL granuleUrl,
 			final ImageReaderSpi suggestedSPI, final MultiLevelROI roiProvider,
@@ -298,6 +300,7 @@ public class GranuleDescriptor {
 		this.granuleBBOX = ReferencedEnvelope.reference(granuleBBOX);
 		this.granuleUrl = granuleUrl;
 		this.roiProvider = roiProvider;
+		this.singleDimensionalGranule = true;
 		this.handleArtifactsFiltering = handleArtifactsFiltering;
     		filterMe = handleArtifactsFiltering && roiProvider != null;
                 
@@ -429,10 +432,10 @@ public class GranuleDescriptor {
     }
 
     private boolean customizeReaderInitialization(ImageReader reader, Hints hints) {
-            String classString = reader.getClass().getName();
+            String classString = reader.getClass().getSuperclass().getName();
             // Special Management for NetCDF readers to set external Auxiliary File
             if (hints != null && hints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
-                if (classString.equalsIgnoreCase("org.geotools.imageio.netcdf.NetCDFImageReader")) {
+                if (classString.equalsIgnoreCase("org.geotools.imageio.unidata.UnidataImageReader")) {
                     try {
                         String auxiliaryFilePath = (String) hints.get(Utils.AUXILIARY_FILES_PATH);
                         if (hints.containsKey(Utils.PARENT_DIR)) {
@@ -443,6 +446,7 @@ public class GranuleDescriptor {
                             }
                         }
                         MethodUtils.invokeMethod(reader, "setAuxiliaryFilesPath", auxiliaryFilePath);
+                        singleDimensionalGranule = false;
                         return true;
                     } catch (NoSuchMethodException e) {
                         throw new RuntimeException(e);
@@ -702,8 +706,8 @@ public class GranuleDescriptor {
 			customizeReaderInitialization(reader, hints);
 			reader.setInput(inStream);
 			
-			// Checking for heterogeneous granules
-			if (request.isHeterogeneousGranules()){
+            // Checking for heterogeneous granules and if the mosaic is not multidimensional
+            if (request.isHeterogeneousGranules() && singleDimensionalGranule) {
 			    // create read parameters
 			    readParameters = new ImageReadParam();
 			    

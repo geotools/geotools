@@ -326,7 +326,9 @@ public class ProjectionHandler {
         
         // if not reprojection is going on, we don't need to cut
         CoordinateReferenceSystem geometryCRS = CRS.getHorizontalCRS(sourceCRS);
-        if (geometryCRS == null || CRS.equalsIgnoreMetadata(geometryCRS, renderingEnvelope.getCoordinateReferenceSystem())) {
+        if (geometryCRS == null
+                || CRS.findMathTransform(geometryCRS,
+                        renderingEnvelope.getCoordinateReferenceSystem()).isIdentity()) {
             return geometry;
         }
         

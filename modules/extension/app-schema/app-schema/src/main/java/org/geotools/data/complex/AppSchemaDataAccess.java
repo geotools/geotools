@@ -564,7 +564,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         // target schema attributes
         //List<AttributeMapping> attMappings = mapping.getAttributeMappings();
         
-        return mapping.findMappingsFor(propertySteps);
+        return mapping.findMappingsFor(propertySteps, true);
         
         /*for (final AttributeMapping entry : attMappings) {
             final StepList targetSteps = entry.getTargetXPath();

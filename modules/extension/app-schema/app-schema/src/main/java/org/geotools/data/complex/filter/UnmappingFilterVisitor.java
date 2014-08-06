@@ -816,7 +816,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         // break into single steps
         StepList simplifiedSteps = XPath.steps(root, targetXPath, namespaces);
 
-        List<Expression> matchingMappings = mappings.findMappingsFor(simplifiedSteps);
+        List<Expression> matchingMappings = mappings.findMappingsFor(simplifiedSteps, false);
 
         if (!nestedMappings.isEmpty()) {
             // means some attributes are mapped separately in feature chaining

@@ -671,7 +671,28 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                         sql.append(" INNER JOIN (");
                         StringBuffer topIds = new StringBuffer();
                         topIds.append("SELECT DISTINCT ");
-                        encodeColumnName(id, typeName, topIds, query.getHints());
+                        
+                        StringBuffer idSQL = new StringBuffer();
+                        encodeColumnName(id, typeName, idSQL, query.getHints());                                              
+                        topIds.append(idSQL);
+                        
+                        // apply SORTBY
+                        SortBy[] sort = query.getSortBy();   
+                        Set<String> orderByFields = new LinkedHashSet<String>();
+                        StringBuffer sortSQL = new StringBuffer();
+                        if (sort != null) {                 
+                            sort(typeName, null, sort, orderByFields, sortSQL);
+                        }
+                        if (!orderByFields.contains(idSQL.toString())) {
+                            // check for duplicate
+                            sortSQL.append(idSQL);
+                        }
+                        // make sure everything in ORDER BY is also in SELECT
+                        for (String orderBy : orderByFields) {
+                            if (!idSQL.toString().equals(orderBy)) {
+                                topIds.append(", ").append(orderBy);
+                            }
+                        }
                         topIds.append(" FROM ");
                         getDataStore().encodeTableName(typeName, topIds,
                                 query.getHints());
@@ -680,9 +701,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                             filterToSQL.setFieldEncoder(new JoiningFieldEncoder(typeName));
                             topIds.append(" ").append(filterToSQL.encodeToString(filter));
                         }
-                         // postgis doesn't guarantee sorting unless specified
-                        topIds.append(" ORDER BY ");
-                        encodeColumnName(id, typeName, topIds, query.getHints());
+                        topIds.append(" ORDER BY ");                        
+                        topIds.append(sortSQL);
                         // apply TOP using limit offset
                         getDataStore().dialect.applyLimitOffset(topIds, maxFeatures, startIndex);
                         sql.append(topIds);

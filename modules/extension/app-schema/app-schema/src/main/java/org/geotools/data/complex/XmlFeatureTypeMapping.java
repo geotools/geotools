@@ -545,7 +545,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
      * @return
      */
     @Override
-    public List<Expression> findMappingsFor(final StepList propertyName) {
+    public List<Expression> findMappingsFor(final StepList propertyName, boolean includeNestedMappings) {
         List<Expression> expressions = null;
         
         // get all matching mappings if index is not specified, otherwise

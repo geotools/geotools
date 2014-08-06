@@ -1360,8 +1360,8 @@ public class SldTransformerTest {
 
         assertEquals("#000000", text.map("fill").str("color"));
 
-        assertEquals(60, text.map("options").integer("auto-wrap").intValue());
-        assertEquals(150, text.map("options").integer("max-displacement").intValue());
+        assertEquals(60, text.map("options").integer("autoWrap").intValue());
+        assertEquals(150, text.map("options").integer("maxDisplacement").intValue());
     }
 
     @Test

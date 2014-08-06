@@ -43,29 +43,8 @@ public class SymbolizerHandler<T extends Symbolizer> extends YsldParseHandler {
         public void handle(YamlObject<?> obj, YamlParseContext context) {
             YamlMap map = obj.map();
             for (String key : map) {
-                sym.getOptions().put(toCamelCase(key), map.str(key));
+                sym.getOptions().put(key, map.str(key));
             }
-        }
-
-        String toCamelCase(String str) {
-            if (str == null || str.isEmpty()) {
-                return str;
-            }
-
-            StringBuilder sb = new StringBuilder();
-            boolean upper = false;
-            for (int i = 0; i < str.length(); i++) {
-                char ch = str.charAt(i);
-                if (ch == '-') {
-                    upper = true;
-                }
-                else {
-                    sb.append(upper?Character.toUpperCase(ch):ch);
-                    upper = false;
-                }
-            }
-
-            return sb.toString();
         }
     }
 }

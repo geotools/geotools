@@ -25,25 +25,10 @@ public class SymbolizerHandler extends SldTransformHandler {
         if (!options.isEmpty()) {
             context.scalar("options").mapping();
             for (Map.Entry<String,String> opt : options.entrySet()) {
-                context.scalar(fromCamelCase(opt.getKey())).scalar(opt.getValue());
+                context.scalar(opt.getKey()).scalar(opt.getValue());
             }
             context.endMapping();
         }
         return context;
-    }
-
-    String fromCamelCase(String camelCase) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < camelCase.length(); i++) {
-            char ch = camelCase.charAt(i);
-            if (Character.isUpperCase(ch)) {
-                ch = Character.toLowerCase(ch);
-                if (sb.length() > 0) {
-                    sb.append("-");
-                }
-            }
-            sb.append(ch);
-        }
-        return sb.toString();
     }
 }

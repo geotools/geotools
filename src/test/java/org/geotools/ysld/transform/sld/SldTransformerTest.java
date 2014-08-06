@@ -670,7 +670,7 @@ public class SldTransformerTest {
         YamlMap text = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
         assertEquals("[name]", text.str("label"));
         assertEquals("#000000", text.map("fill").str("color"));
-        assertEquals(true, text.map("options").bool("follow-line"));
+        assertEquals(true, text.map("options").bool("followLine"));
     }
 
     @Test
@@ -967,9 +967,9 @@ public class SldTransformerTest {
         YamlMap text = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
         assertEquals("[name]", text.str("label"));
         assertEquals("#000000", text.map("fill").str("color"));
-        assertEquals(true, text.map("options").bool("follow-line"));
-        assertEquals(90, text.map("options").integer("max-angle-delta").intValue());
-        assertEquals(400, text.map("options").integer("max-displacement").intValue());
+        assertEquals(true, text.map("options").bool("followLine"));
+        assertEquals(90, text.map("options").integer("maxAngleDelta").intValue());
+        assertEquals(400, text.map("options").integer("maxDisplacement").intValue());
         assertEquals(150, text.map("options").integer("repeat").intValue());
 
     }
@@ -1021,9 +1021,9 @@ public class SldTransformerTest {
         assertEquals("normal", text.map("font").str("style"));
         assertEquals("bold", text.map("font").str("weight"));
 
-        assertEquals(true, text.map("options").bool("follow-line"));
-        assertEquals(90, text.map("options").integer("max-angle-delta").intValue());
-        assertEquals(400, text.map("options").integer("max-displacement").intValue());
+        assertEquals(true, text.map("options").bool("followLine"));
+        assertEquals(90, text.map("options").integer("maxAngleDelta").intValue());
+        assertEquals(400, text.map("options").integer("maxDisplacement").intValue());
         assertEquals(150, text.map("options").integer("repeat").intValue());
     }
 

@@ -203,8 +203,8 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
                 right = (Expression) rights.next();
                 product[index][0] = left;
                 product[index][1] = right;
+                index++;
             }
-            index++;
         }
         return product;
     }

@@ -133,7 +133,11 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
 
     public int getCount(Query query) throws IOException {
         Query namedQuery = namedQuery(query);
-        int count = store.getCount(namedQuery);
+        int count = 0;
+//TODO: revisit this when we fix PostFiltering
+// if using startIndex and has a filter, it currently bombs because it can't find complex att
+// in simple feature source. 
+//        int count = store.getCount(namedQuery);
         if (count >= 0) {
             // normal case
             return count;
@@ -215,7 +219,7 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
      * @see org.geotools.data.FeatureSource#getQueryCapabilities()
      */
     public QueryCapabilities getQueryCapabilities() {
-        return new QueryCapabilities();
+        return mapping.getSource().getQueryCapabilities();
     }
 
 }

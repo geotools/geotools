@@ -428,13 +428,13 @@ public class UnidataUtilities {
         if (input instanceof File) {
         	final File file= (File) input;
             if (!file.isDirectory())
-                dataset = NetcdfDataset.openDataset(file.getPath());
+                dataset = NetcdfDataset.acquireDataset(file.getPath(), null);
             else
                 throw new IllegalArgumentException("Error occurred during NetCDF file reading: The input file is a Directory.");
         } else if (input instanceof String) {
             File file = new File((String) input);
             if (!file.isDirectory())
-                dataset = NetcdfDataset.openDataset(file.getPath());
+                dataset = NetcdfDataset.acquireDataset(file.getPath(), null);
             else
                 throw new IllegalArgumentException( "Error occurred during NetCDF file reading: The input file is a Directory.");
         } else if (input instanceof URL) {
@@ -443,16 +443,16 @@ public class UnidataUtilities {
             if (protocol.equalsIgnoreCase("file")) {
                 File file = ImageIOUtilities.urlToFile(tempURL);
                 if (!file.isDirectory()) {
-                    dataset = NetcdfDataset.openDataset(file.getPath());
+                    dataset = NetcdfDataset.acquireDataset(file.getPath(), null);
                 } else 
                     throw new IllegalArgumentException( "Error occurred during NetCDF file reading: The input file is a Directory.");
             } else if (protocol.equalsIgnoreCase("http") || protocol.equalsIgnoreCase("dods")) {
-                dataset = NetcdfDataset.openDataset(tempURL.toExternalForm());
+                dataset = NetcdfDataset.acquireDataset(tempURL.toExternalForm(), null);
             }
 
         } else if (input instanceof URIImageInputStream) {
             final URIImageInputStream uriInStream = (URIImageInputStream) input;
-            dataset = NetcdfDataset.openDataset(uriInStream.getUri().toString());
+            dataset = NetcdfDataset.acquireDataset(uriInStream.getUri().toString(), null);
         }
 
         else if (input instanceof AccessibleStream) {
@@ -460,7 +460,7 @@ public class UnidataUtilities {
             if(stream.getBinding().isAssignableFrom(File.class)){
                 final File file = ((AccessibleStream<File>) input).getTarget();
                 if (!file.isDirectory())
-                    dataset = NetcdfDataset.openDataset(file.getPath());
+                    dataset = NetcdfDataset.acquireDataset(file.getPath(), null);
             } else {
                 throw new IllegalArgumentException("Error occurred during NetCDF file reading: The input file is a Directory.");
             }

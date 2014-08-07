@@ -161,13 +161,13 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
         NetcdfDataset dataset = null;
         if (input instanceof URIImageInputStream) {
             URIImageInputStream uriInStream = (URIImageInputStream) input;
-            dataset = NetcdfDataset.openDataset(uriInStream.getUri().toString());
+            dataset = NetcdfDataset.acquireDataset(uriInStream.getUri().toString(), null);
         }
         if (input instanceof URL) {
             final URL tempURL = (URL) input;
             String protocol = tempURL.getProtocol();
             if (protocol.equalsIgnoreCase("http") || protocol.equalsIgnoreCase("dods")) {
-                dataset = NetcdfDataset.openDataset(tempURL.toExternalForm());
+                dataset = NetcdfDataset.acquireDataset(tempURL.toExternalForm(), null);
             }
         }
 

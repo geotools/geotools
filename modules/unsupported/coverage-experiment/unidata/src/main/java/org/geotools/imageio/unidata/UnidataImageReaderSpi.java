@@ -94,7 +94,7 @@ public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
             URIImageInputStream uriInStream = (URIImageInputStream) source;
             try {
                 // TODO perhaps it would be better to not make an online check. Might be slowing down.
-                NetcdfDataset openDataset = NetcdfDataset.openDataset(uriInStream.getUri().toString());
+                NetcdfDataset openDataset = NetcdfDataset.acquireDataset(uriInStream.getUri().toString(), null);
                 openDataset.close();
                 return true;
             } catch (IOException e) {
@@ -128,7 +128,7 @@ public abstract class UnidataImageReaderSpi extends GeoSpatialImageReaderSpi {
                 if (!isNetCDF) {
                     return false;
                 }
-                file = NetcdfDataset.openDataset(input.getPath());
+                file = NetcdfDataset.acquireDataset(input.getPath(), null);
                 if (file != null) {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine("File successfully opened");

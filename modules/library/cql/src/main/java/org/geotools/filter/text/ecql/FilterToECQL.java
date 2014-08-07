@@ -114,7 +114,7 @@ final class FilterToECQL implements FilterVisitor {
 			Identifier identifier = iter.next();
 			String id = identifier.toString();
 			
-			boolean needsQuotes = id.lastIndexOf('.') != -1; 
+			boolean needsQuotes = !id.matches("[0-9]+");
 			
 			if( needsQuotes ) {
 			    ecql.append('\'');

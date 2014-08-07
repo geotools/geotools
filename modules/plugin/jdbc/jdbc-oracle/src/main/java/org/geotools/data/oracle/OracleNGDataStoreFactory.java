@@ -17,8 +17,13 @@
 package org.geotools.data.oracle;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Map;
 
+import oracle.jdbc.OracleConnection;
+
+import org.geotools.data.Transaction;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -129,6 +134,17 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
             dataStore.setFetchSize(200);
         }
         
+        Connection cx = dataStore.getConnection(Transaction.AUTO_COMMIT);
+        try {
+            OracleConnection oracleConnection = dialect.unwrapConnection( cx );
+        } catch (SQLException e) {
+            throw new IOException(
+                    "Unable to obtain Oracle Connection require for SDO Geometry access)."+
+                    "Check connection pool implementation to unsure unwrap is available", e);
+        }
+        finally {
+            dataStore.closeSafe(cx);
+        }        
         return dataStore;
     }
     

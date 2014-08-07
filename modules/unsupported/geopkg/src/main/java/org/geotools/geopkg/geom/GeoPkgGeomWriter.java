@@ -36,6 +36,7 @@ public class GeoPkgGeomWriter {
         flags.setEnvelopeIndicator(g instanceof Point ? EnvelopeType.NONE : EnvelopeType.XY);
 
         Header h = new Header();
+        h.setVerison((byte)0);
         h.setFlags(flags);
         h.setEnvelope(g.getEnvelopeInternal());
         h.setSrid(g.getSRID());
@@ -45,7 +46,7 @@ public class GeoPkgGeomWriter {
         //byte[] buf = new byte[4 + 4 + flags.getEnvelopeIndicator().length];
         buf[0] = 0x47;
         buf[1] = 0x50;
-        buf[2] = 0x42;
+        buf[2] = h.getVerison();
         buf[3] = flags.toByte();
         out.write(buf, 4);
 

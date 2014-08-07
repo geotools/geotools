@@ -3,9 +3,18 @@ package org.geotools.geopkg.geom;
 import com.vividsolutions.jts.geom.Envelope;
 
 class Header {
+    byte verison;
     Flags flags;
     int srid;
     Envelope envelope;
+
+    public byte getVerison() {
+        return verison;
+    }
+
+    public void setVerison(byte verison) {
+        this.verison = verison;
+    }
 
     public Flags getFlags() {
         return flags;

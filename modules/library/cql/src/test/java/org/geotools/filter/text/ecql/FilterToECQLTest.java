@@ -39,7 +39,17 @@ public class FilterToECQLTest extends FilterToCQLTest {
 	public void id()throws Exception{
 		cqlTest("IN (1,2,3,4)");
 	}
-	
+
+    @Test
+    public void idString()throws Exception{
+        cqlTest("IN ('foo','bar')");
+    }
+
+    @Test
+    public void idUUID()throws Exception{
+        cqlTest("IN ('cb606c93-8642-4cff-84e8-1817e8307097')");
+    }
+
 	public void intersectWhithGeomExpressions() throws Exception {
     	cqlTest("INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))");
 		
@@ -58,7 +68,7 @@ public class FilterToECQLTest extends FilterToCQLTest {
 
         String output = filter.accept( toECQL, null ).toString();
         Assert.assertNotNull( output );
-        Assert.assertEquals( cql, cql,output );        
+        Assert.assertEquals( cql, cql, output );
     }
 	
 	

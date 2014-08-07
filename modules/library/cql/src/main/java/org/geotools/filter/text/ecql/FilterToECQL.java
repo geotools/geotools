@@ -18,6 +18,7 @@ package org.geotools.filter.text.ecql;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.geotools.filter.text.commons.ExpressionToText;
 import org.geotools.filter.text.commons.FilterToTextUtil;
@@ -77,8 +78,14 @@ import org.opengis.filter.temporal.TOverlaps;
  *
  */
 final class FilterToECQL implements FilterVisitor {
+    
+    /**
+     * Pattern used to match Id filters for output as plain number.
+     */
+    private static Pattern NUMBER = Pattern.compile("[0-9]+");
+    
     ExpressionToText expressionVisitor = new ExpressionToText();
-	
+    
 	@Override
 	public Object visitNullFilter(Object extraData) {
 		throw new NullPointerException("Cannot encode null as a Filter");
@@ -99,7 +106,7 @@ final class FilterToECQL implements FilterVisitor {
 	public Object visit(And filter, Object extraData) {
     	return FilterToTextUtil.buildBinaryLogicalOperator("AND", this, filter, extraData);
 	}
-
+	
 	/**
 	 * builds a ecql id expression: in (id1, id2, ...)
 	 */
@@ -114,7 +121,7 @@ final class FilterToECQL implements FilterVisitor {
 			Identifier identifier = iter.next();
 			String id = identifier.toString();
 			
-			boolean needsQuotes = id.lastIndexOf('.') != -1; 
+			boolean needsQuotes = !NUMBER.matcher( id ).matches();
 			
 			if( needsQuotes ) {
 			    ecql.append('\'');

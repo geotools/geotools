@@ -67,6 +67,7 @@ import net.opengis.wfs.GetFeatureType;
 import net.opengis.wfs.GetGmlObjectType;
 import net.opengis.wfs.LockFeatureType;
 import net.opengis.wfs.OutputFormatListType;
+import net.opengis.wfs.ResultTypeType;
 import net.opengis.wfs.TransactionType;
 import net.opengis.wfs.WFSCapabilitiesType;
 
@@ -78,6 +79,7 @@ import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.protocol.http.HttpMethod;
 import org.geotools.data.wfs.protocol.wfs.GetFeature;
+import org.geotools.data.wfs.protocol.wfs.GetFeature.ResultType;
 import org.geotools.data.wfs.protocol.wfs.Version;
 import org.geotools.data.wfs.protocol.wfs.WFSOperationType;
 import org.geotools.data.wfs.protocol.wfs.WFSProtocol;
@@ -477,7 +479,10 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
             }
         }
         
-
+        if (request.getResultType() == ResultType.HITS) {
+        	getFeatureKvp.put("RESULTTYPE", ResultTypeType.HITS_LITERAL.getLiteral());
+        }
+        
         WFSResponse response = issueGetRequest(requestType, url, getFeatureKvp);
 
         return response;

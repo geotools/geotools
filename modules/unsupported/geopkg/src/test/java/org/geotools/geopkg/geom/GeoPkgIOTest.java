@@ -1,5 +1,6 @@
 package org.geotools.geopkg.geom;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -18,5 +19,15 @@ public class GeoPkgIOTest {
 
         Geometry g2 = new GeoPkgGeomReader().read(bytes);
         assertTrue(g1.equals(g2));
+    }
+
+    @Test
+    public void testHeader() throws IOException {
+        Geometry g1 = new GeometryBuilder().point(0,0).buffer(10);
+        byte[] bytes = new GeoPkgGeomWriter().write(g1);
+
+        assertEquals(0x47, bytes[0]);
+        assertEquals(0x50, bytes[1]);
+        assertEquals(0x00, bytes[2]);
     }
 }

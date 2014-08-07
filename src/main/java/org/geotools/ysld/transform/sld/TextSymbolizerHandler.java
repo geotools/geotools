@@ -15,7 +15,7 @@ public class TextSymbolizerHandler extends SymbolizerHandler {
             context.scalar("label").push(new ExpressionHandler());
         }
         else if ("Font".equals(name)) {
-            context.scalar("font").push(new FontHandler());
+            context.push(new FontHandler());
         }
         else if ("LabelPlacement".equals(name)) {
             context.scalar("placement").push(new PlacementHandler());
@@ -24,7 +24,7 @@ public class TextSymbolizerHandler extends SymbolizerHandler {
             context.scalar("halo").push(new HaloHandler());
         }
         else if ("Fill".equals(name)) {
-            context.scalar("fill").push(new FillHandler());
+            context.push(new FillHandler());
         }
         else {
             super.element(xml, context);
@@ -47,11 +47,8 @@ public class TextSymbolizerHandler extends SymbolizerHandler {
         @Override
         public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
-            if ("Font".equals(name)) {
-                context.mapping();
-            }
-            else if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
-                context.push(new ParameterHandler().strip("font"));
+            if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
+                context.push(new ParameterHandler());
             }
         }
 
@@ -59,7 +56,7 @@ public class TextSymbolizerHandler extends SymbolizerHandler {
         public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if ("Font".equals(name)) {
-                context.endMapping().pop();
+                context.pop();
             }
         }
     }
@@ -124,7 +121,7 @@ public class TextSymbolizerHandler extends SymbolizerHandler {
                 context.mapping();
             }
             else if ("Fill".equals(name)) {
-                context.scalar("fill").push(new FillHandler());
+                context.push(new FillHandler());
             }
             else if ("Radius".equals(name)) {
                 context.scalar("radius").push(new ExpressionHandler());

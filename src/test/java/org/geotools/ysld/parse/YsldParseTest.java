@@ -30,8 +30,7 @@ public class YsldParseTest {
         "point: \n"+
         "  symbols: \n" +
         "  - mark: \n" +
-        "      fill: \n" +
-        "        color: *blue\n";
+        "      fill-color: *blue\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
@@ -44,8 +43,7 @@ public class YsldParseTest {
         "point: \n"+
         "  symbols: \n" +
         "  - mark: \n" +
-        "      fill: \n" +
-        "        color: blue\n";
+        "      fill-color: blue\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));

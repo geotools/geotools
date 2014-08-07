@@ -19,7 +19,7 @@ public class LineHandler extends SymbolizerHandler<LineSymbolizer> {
         super.handle(obj, context);
 
         YamlMap map = obj.map();
-        context.push(obj, "stroke",  new StrokeHandler(factory) {
+        context.push(obj, new StrokeHandler(factory) {
             @Override
             protected void stroke(Stroke stroke) {
                 sym.setStroke(stroke);

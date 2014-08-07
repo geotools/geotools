@@ -62,10 +62,10 @@ public class GraphicHandler extends SldTransformHandler  {
                 context.scalar("shape").push(new ExpressionHandler());
             }
             else if ("Stroke".equals(name)) {
-                context.scalar("stroke").push(new StrokeHandler());
+                context.push(new StrokeHandler());
             }
             else if ("Fill".equals(name)) {
-                context.scalar("fill").push(new FillHandler());
+                context.push(new FillHandler());
             }
             //TODO: se:OnlineResource
             //TODO: se:InlineContent

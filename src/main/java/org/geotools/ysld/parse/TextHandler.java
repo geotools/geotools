@@ -23,10 +23,10 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
         if (map.has("label")) {
             sym.setLabel(Util.expression(map.str("label"), factory));
         }
-        context.push("font", new FontHandler());
+        context.push(map, new FontHandler());
         context.push("halo", new HaloHandler());
         context.push("placement", new PlacementHandler());
-        context.push("fill", new FillHandler(factory) {
+        context.push(map, new FillHandler(factory) {
             @Override
             protected void fill(Fill fill) {
                 sym.setFill(fill);
@@ -52,17 +52,17 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
 
             YamlMap map = obj.map();
 
-            if (map.has("family")) {
-                font.setFontFamily(Util.expression(map.str("family"), factory));
+            if (map.has("font-family")) {
+                font.setFontFamily(Util.expression(map.str("font-family"), factory));
             }
-            if (map.has("size")) {
-                font.setSize(Util.expression(map.str("size"), factory));
+            if (map.has("font-size")) {
+                font.setSize(Util.expression(map.str("font-size"), factory));
             }
-            if (map.has("style")) {
-                font.setStyle(Util.expression(map.str("style"), factory));
+            if (map.has("font-style")) {
+                font.setStyle(Util.expression(map.str("font-style"), factory));
             }
-            if (map.has("weight")) {
-                font.setWeight(Util.expression(map.str("weight"), factory));
+            if (map.has("font-weight")) {
+                font.setWeight(Util.expression(map.str("font-weight"), factory));
             }
         }
     }
@@ -81,7 +81,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
 
             YamlMap map = obj.map();
 
-            context.push("fill", new FillHandler(factory) {
+            context.push(new FillHandler(factory) {
                 @Override
                 protected void fill(Fill fill) {
                     halo.setFill(fill);

@@ -8,14 +8,11 @@ public class FillHandler extends SldTransformHandler {
     @Override
     public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
-        if ("Fill".equals(name)) {
-            context.mapping();
-        }
-        else if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
-            context.push(new ParameterHandler().rename("fill", "color").strip("fill"));
+        if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
+            context.push(new ParameterHandler().rename("fill", "fill-color"));
         }
         else if ("GraphicFill".equals(name)) {
-            context.scalar("graphic").push(new GraphicHandler());
+            context.scalar("fill-graphic").push(new GraphicHandler());
         }
     }
 
@@ -23,7 +20,7 @@ public class FillHandler extends SldTransformHandler {
     public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("Fill".equals(name)) {
-            context.endMapping().pop();
+            context.pop();
         }
     }
 }

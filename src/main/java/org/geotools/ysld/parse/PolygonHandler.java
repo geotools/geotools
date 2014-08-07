@@ -17,13 +17,13 @@ public class PolygonHandler extends SymbolizerHandler<PolygonSymbolizer> {
         super.handle(obj, context);
 
         YamlMap map = obj.map();
-        context.push("stroke", new StrokeHandler(factory) {
+        context.push(map, new StrokeHandler(factory) {
             @Override
             protected void stroke(Stroke stroke) {
                 sym.setStroke(stroke);
             }
         });
-        context.push("fill", new FillHandler(factory) {
+        context.push(map, new FillHandler(factory) {
             @Override
             protected void fill(Fill fill) {
                 sym.setFill(fill);

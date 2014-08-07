@@ -29,13 +29,13 @@ public abstract class MarkHandler extends YsldParseHandler {
             mark.setWellKnownName(Util.expression(map.str("shape"), factory));
         }
 
-        context.push("stroke", new StrokeHandler(factory) {
+        context.push(map, new StrokeHandler(factory) {
             @Override
             protected void stroke(Stroke stroke) {
                 mark.setStroke(stroke);
             }
         });
-        context.push("fill", new FillHandler(factory) {
+        context.push(map, new FillHandler(factory) {
             @Override
             protected void fill(Fill fill) {
                 mark.setFill(fill);

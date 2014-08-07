@@ -13,7 +13,7 @@ public class LineSymbolizerHandler extends SymbolizerHandler {
             context.mapping().scalar("line").mapping();
         }
         else if ("Stroke".equals(name)) {
-            context.scalar("stroke").push(new StrokeHandler());
+            context.push(new StrokeHandler());
         }
         else if ("PerpindicularOffset".equals(name)) {
             context.scalar("offset").push(new ExpressionHandler());

@@ -13,10 +13,10 @@ public class PolygonSymbolizerHandler extends SymbolizerHandler {
             context.mapping().scalar("polygon").mapping();
         }
         else if ("Fill".equals(name)) {
-            context.scalar("fill").push(new FillHandler());
+            context.push(new FillHandler());
         }
         else if ("Stroke".equals(name)) {
-            context.scalar("stroke").push(new StrokeHandler());
+            context.push(new StrokeHandler());
         }
         else {
             super.element(xml, context);

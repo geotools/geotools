@@ -18,10 +18,14 @@ package org.geotools.geometry.jts;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.*;
 import org.junit.Test;
-import org.opengis.geometry.coordinate.ArcString;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.WKTReader;
 /**
  * 
@@ -93,7 +97,7 @@ public class WKTReader2Test {
         WKT = "CIRCULARSTRING(143.62025166838282 -30.037497356076827, 142.92857147299705 -32.75101196874403, 143.62025166838282 -30.037497356076827)";
         geometry = reader.read(WKT);
         assertNotNull("parsed perfect circle",geometry);
-        assertEquals(51, geometry.getNumPoints());
+        assertEquals(11, geometry.getNumPoints());
         
         WKT = "CIRCULARSTRING EMPTY";
         geometry = reader.read(WKT);

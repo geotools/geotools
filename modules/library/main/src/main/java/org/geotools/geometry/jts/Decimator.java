@@ -296,7 +296,7 @@ public final class Decimator {
 			LineString ls = (LineString) geometry;
             if (ls instanceof CurvedGeometry<?>) {
                 CurvedGeometry<LineString> curved = (CurvedGeometry<LineString>) ls;
-                ls = curved.linearize(Math.min(spanx, spany));
+                ls = curved.linearize(Math.min(Math.abs(spanx), Math.abs(spany)));
                 // do not generalize further, we already got a good representation
                 spanx = -1;
                 spany = -1;

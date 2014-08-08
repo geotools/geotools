@@ -132,7 +132,7 @@ public class CircularArcTest {
         // linearize, we should get back the control points, plus the regular points in the middle
         double[] expected = circle.samplePoints(halfStep, halfStep * 2, halfStep * 3, halfStep * 4,
                 halfStep * 5);
-        assertArrayEquals(expected, arc.linearize(10), Circle.EPS);
+        assertArrayEquals(expected, arc.linearize(0.1), Circle.EPS);
     }
 
     @Test
@@ -146,7 +146,7 @@ public class CircularArcTest {
         // linearize, we should get back the control points, plus the regular points in the middle
         double[] expected = circle.samplePoints(halfStep * 5, halfStep * 4, halfStep * 3,
                 halfStep * 2, halfStep);
-        assertArrayEquals(expected, arc.linearize(10), Circle.EPS);
+        assertArrayEquals(expected, arc.linearize(0.1), Circle.EPS);
         assertEquals(envelopeFrom(arc), arc.getEnvelope());
     }
 
@@ -161,7 +161,7 @@ public class CircularArcTest {
         // linearize, we should get back the control points, plus the regular points in the middle
         double[] expected = circle.samplePoints(0, halfStep * 2, halfStep * 3, halfStep * 4,
                 halfStep * 5);
-        assertArrayEquals(expected, arc.linearize(10), Circle.EPS);
+        assertArrayEquals(expected, arc.linearize(0.2), Circle.EPS);
     }
 
     @Test
@@ -174,7 +174,7 @@ public class CircularArcTest {
         assertCoordinateEquals(ORIGIN, arc.getCenter());
         // linearize, we should get back the control points, plus the regular points in the middle
         double[] expected = circle.samplePoints(halfStep, halfStep * 2, halfStep * 4, halfStep * 5);
-        assertArrayEquals(expected, arc.linearize(10), Circle.EPS);
+        assertArrayEquals(expected, arc.linearize(0.2), Circle.EPS);
     }
 
     @Test
@@ -185,8 +185,8 @@ public class CircularArcTest {
         CircularArc arc = circle.getCircularArc(halfStep, halfStep * 3, halfStep * 4);
         assertEquals(100, arc.getRadius(), 1e-9);
         assertCoordinateEquals(ORIGIN, arc.getCenter());
-        // linearize, we should get back the control points, plus the regular points in the middle
-        double[] expected = circle.samplePoints(halfStep, halfStep * 2, halfStep * 3, halfStep * 4);
+        // linearize, we should get back only control points, plus the regular points in the middle
+        double[] expected = circle.samplePoints(halfStep, halfStep * 3, halfStep * 4);
         assertArrayEquals(expected, arc.linearize(10), Circle.EPS);
     }
 
@@ -232,7 +232,7 @@ public class CircularArcTest {
         assertCoordinateEquals(ORIGIN, arc.getCenter());
         // linearize, we should get back the control points, plus the regular points in the middle
         double[] expected = circle.samplePoints(-step * 2, -step, 0, step, step * 2);
-        assertArrayEquals(expected, arc.linearize(10), Circle.EPS);
+        assertArrayEquals(expected, arc.linearize(0.2), Circle.EPS);
         assertEquals(envelopeFrom(arc, 100, 0), arc.getEnvelope());
     }
 

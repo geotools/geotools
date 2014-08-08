@@ -90,7 +90,7 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     }
 
     public LinearRing linearize(double tolerance) {
-        CoordinateSequence cs = delegate.getLinearizedCoordinateSequence(delegate.tolerance);
+        CoordinateSequence cs = delegate.getLinearizedCoordinateSequence(tolerance);
         return getFactory().createLinearRing(cs);
     }
 

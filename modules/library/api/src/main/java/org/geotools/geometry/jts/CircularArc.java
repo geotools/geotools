@@ -142,12 +142,26 @@ public class CircularArc {
         int segmentsPerQuadrant;
         if (tolerance == 0) {
             segmentsPerQuadrant = MAX_SEGMENTS_QUADRANT;
+        } else if (tolerance == Double.MAX_VALUE) {
+            segmentsPerQuadrant = BASE_SEGMENTS_QUADRANT;
         } else {
             segmentsPerQuadrant = BASE_SEGMENTS_QUADRANT;
             double currentTolerance = computeChordCircleDistance(segmentsPerQuadrant);
-            while (currentTolerance > tolerance && segmentsPerQuadrant < MAX_SEGMENTS_QUADRANT) {
-                segmentsPerQuadrant *= 2;
-                currentTolerance = computeChordCircleDistance(segmentsPerQuadrant);
+            if (currentTolerance < tolerance) {
+                while (currentTolerance < tolerance && segmentsPerQuadrant > 1) {
+                    // going down
+                    segmentsPerQuadrant /= 2;
+                    currentTolerance = computeChordCircleDistance(segmentsPerQuadrant);
+                }
+                if (currentTolerance > tolerance) {
+                    segmentsPerQuadrant *= 2;
+                }
+            } else {
+                while (currentTolerance > tolerance && segmentsPerQuadrant < MAX_SEGMENTS_QUADRANT) {
+                    // going up
+                    segmentsPerQuadrant *= 2;
+                    currentTolerance = computeChordCircleDistance(segmentsPerQuadrant);
+                }
             }
         }
 

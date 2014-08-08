@@ -1,6 +1,9 @@
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.*;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Mark;
+import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.GraphicalSymbol;
 
 public class SymbolsEncoder extends Encoder<GraphicalSymbol>{
@@ -16,45 +19,29 @@ public class SymbolsEncoder extends Encoder<GraphicalSymbol>{
             encode((Mark) symbol);
         }
         else if (symbol instanceof ExternalGraphic) {
-
+            push("external");
+            encode((ExternalGraphic) symbol);
         }
     }
 
     SymbolsEncoder encode(Mark mark) {
-        put("name", mark.getWellKnownName());
-        encode("stroke", mark.getStroke());
-        encode("fill", mark.getFill());
+        put("shape", mark.getWellKnownName());
+        inline(new StrokeEncoder(mark.getStroke()));
+        inline(new FillEncoder(mark.getFill()));
+        //encode("stroke", new StrokeEncoder(mark.getStroke()));
+        //encode("fill", mark.getFill());
         //url:
         //inline:
         return this;
     }
 
-    SymbolsEncoder encode(String key, Stroke stroke) {
-        if (stroke != null) {
-            push(key);
-            put("color", stroke.getColor());
-            put("width", stroke.getColor());
-            put("opacity", nullIf(stroke.getColor(), 1d));
-            pop();
-//            join:
-//            cap:
-//            dash:
-//            dash-offset:
-//            graphic-fill: ?
-//            graphic-stroke: ?
+    SymbolsEncoder encode(ExternalGraphic eg) {
+        OnLineResource r = eg.getOnlineResource();
+        if (r != null) {
+            put("url", r.getLinkage().toString());
         }
+
+        put("format", eg.getFormat());
         return this;
     }
-
-    SymbolsEncoder encode(String key, Fill fill) {
-        if (fill != null) {
-            push(key);
-            put("color", fill.getColor());
-            put("opacity", nullIf(fill.getOpacity(), 1d));
-            //graphic
-            pop();
-        }
-        return this;
-    }
-
 }

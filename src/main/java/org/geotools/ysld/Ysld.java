@@ -1,5 +1,6 @@
 package org.geotools.ysld;
 
+import org.geotools.ysld.encode.YsldEncoder;
 import org.geotools.ysld.parse.YsldParser;
 import org.geotools.ysld.transform.sld.SldTransformer;
 
@@ -101,6 +102,17 @@ public class Ysld {
     public static StyledLayerDescriptor parse(Object ysld) throws IOException {
         YsldParser p = new YsldParser(reader(ysld));
         return p.parse();
+    }
+
+    /**
+     * Encodes a GeoTools style object as Ysld.
+     *
+     * @param sld The sld to encode.
+     * @param output The output object, anything accepted by {@link #writer(Object)}
+     */
+    public static void encode(StyledLayerDescriptor sld, Object output) throws IOException {
+        YsldEncoder e = new YsldEncoder(writer(output));
+        e.encode(sld);
     }
 
     /**

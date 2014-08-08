@@ -1,6 +1,8 @@
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.*;
+import org.geotools.styling.SLD;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyledLayerDescriptor;
 
 import java.util.Collections;
 

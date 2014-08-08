@@ -64,10 +64,10 @@ public class RuleHandler extends YsldParseHandler {
                 }
 
                 if (t.at(0) != null) {
-                    rule.setMinScaleDenominator(Double.parseDouble(t.at(0)));
+                    rule.setMinScaleDenominator(Double.parseDouble(t.strAt(0)));
                 }
                 if (t.at(1) != null) {
-                    rule.setMaxScaleDenominator(Double.parseDouble(t.at(1)));
+                    rule.setMaxScaleDenominator(Double.parseDouble(t.strAt(1)));
                 }
             }
 

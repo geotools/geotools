@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class Tuple {
     static final Map<Integer,Pattern> PATTERNS = new HashMap<Integer, Pattern>();
 
-    public static Tuple of(String...values) {
+    public static Tuple of(Object...values) {
         Tuple t = of(values.length);
         t.values = values;
         return t;
@@ -32,7 +32,7 @@ public class Tuple {
         return new Tuple(n, p);
     }
 
-    String[] values;
+    Object[] values;
     Pattern pattern;
 
     Tuple(int n, Pattern pattern) {
@@ -55,14 +55,19 @@ public class Tuple {
         return this;
     }
 
-    public String at(int i) {
+    public Object at(int i) {
         return values[i];
+    }
+
+    public String strAt(int i) {
+        Object obj = at(i);
+        return obj != null ? obj.toString() : null;
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder("(");
         for (int i = 0; i < values.length; i++) {
-            String v = values[i];
+            Object v = values[i];
             if (v != null) {
                 sb.append(v);
             }

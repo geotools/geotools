@@ -64,8 +64,8 @@ public class Util {
             throw new IllegalArgumentException(String.format("Bad anchor: '%s', must be of form (<x>,<y>)", value), e);
         }
 
-        Expression x = t.at(0) != null ? expression(t.at(0), factory) : factory.filter.literal(0);
-        Expression y = t.at(1) != null ? expression(t.at(1), factory) : factory.filter.literal(0);
+        Expression x = t.at(0) != null ? expression(t.strAt(0), factory) : factory.filter.literal(0);
+        Expression y = t.at(1) != null ? expression(t.strAt(1), factory) : factory.filter.literal(0);
         return factory.style.createAnchorPoint(x, y);
     }
 
@@ -81,8 +81,8 @@ public class Util {
             throw new IllegalArgumentException(String.format("Bad displacement: '%s', must be of form (<x>,<y>)", value), e);
         }
 
-        Expression x = t.at(0) != null ? expression(t.at(0), factory) : factory.filter.literal(0);
-        Expression y = t.at(1) != null ? expression(t.at(1), factory) : factory.filter.literal(0);
+        Expression x = t.at(0) != null ? expression(t.strAt(0), factory) : factory.filter.literal(0);
+        Expression y = t.at(1) != null ? expression(t.strAt(1), factory) : factory.filter.literal(0);
         return factory.style.createDisplacement(x, y);
     }
 

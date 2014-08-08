@@ -1,11 +1,16 @@
 package org.geotools.ysld.encode;
 
-import org.geotools.ysld.Tuple;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.ysld.Tuple;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public abstract class Encoder<T> implements Iterator<Object> {
 
@@ -19,6 +24,10 @@ public abstract class Encoder<T> implements Iterator<Object> {
 
     Encoder(Iterator<T> it) {
         this.it = it;
+    }
+
+    Encoder(T obj) {
+        this.it = obj != null ? Collections.singleton(obj).iterator() : (Iterator) Collections.emptyIterator();
     }
 
     @Override
@@ -67,20 +76,33 @@ public abstract class Encoder<T> implements Iterator<Object> {
 
     Encoder put(String key, Expression expr) {
         if (expr != null) {
-            put(key, toStringOrNull(expr));
+            put(key, toObjOrNull(expr));
         }
         return this;
     }
 
     Encoder put(String key, Expression e1, Expression e2) {
-        Tuple t = Tuple.of(toStringOrNull(e1), toStringOrNull(e2));
+        Tuple t = Tuple.of(toObjOrNull(e1), toObjOrNull(e2));
         if (!t.isNull()) {
             put(key, t.toString());
         }
         return this;
     }
 
-    String toStringOrNull(Expression expr) {
+    Encoder inline(Encoder<?> e) {
+        if (e.hasNext()) {
+            e.next();
+            inline(e.root());
+        }
+        return this;
+    }
+
+    Encoder inline(Map<String,Object> values) {
+        stack.peek().putAll(values);
+        return this;
+    }
+
+    Object toObjOrNull(Expression expr) {
         String str = expr != null ? ECQL.toCQL(expr) : null;
         if (str != null) {
             // strip quotes
@@ -90,14 +112,40 @@ public abstract class Encoder<T> implements Iterator<Object> {
             if (str.charAt(str.length()-1) == '\'') {
                 str = str.substring(0, str.length()-1);
             }
+
         }
+
+        if (str != null) {
+            try {
+                return Long.parseLong(str);
+            }
+            catch(NumberFormatException e1) {
+                try {
+                    return Double.parseDouble(str);
+                }
+                catch(NumberFormatException e2) {
+                    if ("true".equalsIgnoreCase(str) || "false".equalsIgnoreCase(str)) {
+                        return Boolean.parseBoolean(str);
+                    }
+                }
+            }
+        }
+
         return str;
     }
 
     Expression nullIf(Expression expr, double value) {
+        return nullIf(expr, value, Double.class);
+    }
+
+    Expression nullIf(Expression expr, String value) {
+        return nullIf(expr, value, String.class);
+    }
+
+    <T> Expression nullIf(Expression expr, T value, Class<T> clazz) {
         if (expr instanceof Literal) {
-            Double d = expr.evaluate(null, Double.class);
-            if (d != null && d.doubleValue() == value) {
+            T t = expr.evaluate(null, clazz);
+            if (t != null && t.equals(value)) {
                 return null;
             }
         }

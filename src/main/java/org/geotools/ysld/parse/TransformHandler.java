@@ -1,22 +1,20 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.data.Parameter;
-import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.util.Converters;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
+
+import static org.geotools.ysld.ProcessUtil.*;
 
 public class TransformHandler extends YsldParseHandler {
 
@@ -45,7 +43,7 @@ public class TransformHandler extends YsldParseHandler {
 
         String input = map.strOr("input", "data");
 
-        Name qName = qName(name);
+        Name qName = processName(name);
 
         // load process parameter info
         Map<String,Parameter> processInfo = loadProcessInfo(qName);
@@ -97,7 +95,7 @@ public class TransformHandler extends YsldParseHandler {
             }
         }
 
-        featureStyle.setTransformation(functionFactory.function(qName(name), processArgs, null));
+        featureStyle.setTransformation(functionFactory.function(processName(name), processArgs, null));
     }
 
     void convertAndAdd(Object val, Parameter p, List<Expression> valueArgs) {
@@ -114,44 +112,5 @@ public class TransformHandler extends YsldParseHandler {
         }
     }
 
-    Name qName(String name) {
-        String[] split = name.split(":");
-        if (split.length == 1) {
-            return new NameImpl(split[0]);
-        }
 
-        return new NameImpl(split[0], split[1]);
-    }
-
-    FunctionFactory loadProcessFunctionFactory() {
-        Class functionFactoryClass = null;
-        try {
-            functionFactoryClass =
-                    Class.forName("org.geotools.process.function.ProcessFunctionFactory");
-        }
-        catch(ClassNotFoundException e) {
-            return null;
-        }
-
-        try {
-            return (FunctionFactory) functionFactoryClass.newInstance();
-        }
-        catch(Exception e) {
-            LOG.log(Level.WARNING, "Error creating process function factory", e);
-        }
-
-        return null;
-    }
-
-    Map<String,Parameter> loadProcessInfo(Name name) {
-        Class processorsClass = null;
-        try {
-            processorsClass = Class.forName("org.geotools.process.Processors");
-            Method getParameterInfo = processorsClass.getMethod("getParameterInfo", Name.class);
-            return (Map<String,Parameter>) getParameterInfo.invoke(null, name);
-        }
-        catch(Exception e) {
-            throw new RuntimeException("Error looking up process info", e);
-        }
-    }
 }

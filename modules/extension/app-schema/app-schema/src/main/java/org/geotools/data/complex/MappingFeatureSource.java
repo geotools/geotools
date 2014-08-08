@@ -35,6 +35,8 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.jdbc.JDBCFeatureSource;
+import org.geotools.jdbc.JDBCFeatureStore;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
@@ -138,6 +140,10 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
 // if using startIndex and has a filter, it currently bombs because it can't find complex att
 // in simple feature source. 
 //        int count = store.getCount(namedQuery);
+        if (!(this.mapping.getSource() instanceof JDBCFeatureSource
+                || this.mapping.getSource() instanceof JDBCFeatureStore)) {
+            count = store.getCount(namedQuery);
+        }
         if (count >= 0) {
             // normal case
             return count;

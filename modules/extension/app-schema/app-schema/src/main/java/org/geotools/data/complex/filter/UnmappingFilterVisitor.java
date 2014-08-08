@@ -199,12 +199,15 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         int index = 0;
         for (Iterator lefts = leftExpressions.iterator(); lefts.hasNext();) {
             left = (Expression) lefts.next();
+            int rightIndex = 0;
             for (Iterator rights = rightExpressions.iterator(); rights.hasNext();) {
+                index = index + rightIndex;
                 right = (Expression) rights.next();
                 product[index][0] = left;
                 product[index][1] = right;
-                index++;
+                rightIndex++;
             }
+            index++;
         }
         return product;
     }

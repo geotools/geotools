@@ -170,6 +170,23 @@
       </distributionManagement>
     </profile>
     <profile>
+      <id>deploy.boundless</id>
+      <distributionManagement>
+        <repository>
+          <id>boundless</id>
+          <uniqueVersion>false</uniqueVersion>
+          <name>Boundless Maven Repository</name>
+          <url>http://repo.boundlessgeo.com/main</url>
+        </repository>
+        <snapshotRepository>
+          <id>boundless</id>
+          <uniqueVersion>false</uniqueVersion>
+          <name>Boundless Maven Repository</name>
+          <url>http://repo.boundlessgeo.com/main</url>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
+    <profile>
       <id>site.local</id>
       <distributionManagement>
         <site>

@@ -35,6 +35,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.Filter;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -64,6 +65,10 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     int idxBaseLen;
 
     IndexedFidReader fidReader;
+    
+    Filter filter;
+    
+    boolean nextFeatureBuilt;
 
     public ShapefileFeatureReader(SimpleFeatureType schema, ShapefileReader shp, DbaseFileReader dbf, IndexedFidReader fidReader)
             throws IOException {
@@ -161,19 +166,34 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
             // read the geometry, so that we can decide if this row is to be skipped or not
             Envelope envelope = record.envelope();
             boolean skip = false;
+            boolean peeked = false;
+            nextFeatureBuilt = false;
             Geometry geometry = null;
+            Row row = null;
             if(schema.getGeometryDescriptor() != null) {
                 // ... if geometry is out of the target bbox, skip both geom and row
                 if (targetBBox != null && !targetBBox.isNull() && !targetBBox.intersects(envelope)) {
                     skip = true;
                     // ... if the geometry is awfully small avoid reading it (unless it's a point)
                 } else if (simplificationDistance > 0 && envelope.getWidth() < simplificationDistance
-                        && envelope.getHeight() < simplificationDistance) {
+                        && envelope.getHeight() < simplificationDistance
+                        && (filter != null || screenMap != null)) {
                     try {
-                        if (screenMap != null && screenMap.checkAndSet(envelope)) {
+                        // we need to commit to dbf.read in order to check row.isDeleted
+                        if (dbf != null) {
+                            row = dbf.readRow();
+                            peeked = true;
+                            if (row.isDeleted()) {
+                                continue;
+                            }
+                        }
+                        if (filter != null && filtered(row, record)) {
                             geometry = null;
                             skip = true;
-                        } else {
+                        } else if (screenMap != null && screenMap.checkAndSet(envelope)) {
+                            geometry = null;
+                            skip = true;
+                        } else if (!nextFeatureBuilt) {
                             // if we are using the screenmap better provide a slightly modified
                             // version of the geometry bounds or we'll end up with many holes
                             // in the rendering
@@ -190,19 +210,18 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
 
             if (!skip) {
                 // also grab the dbf row
-                Row row;
-                if (dbf != null) {
+                if (dbf != null && !peeked) {
                     row = dbf.readRow();
                     if(row.isDeleted()) {
                         continue;
                     }
-                } else {
-                    row = null;
                 }
-
-                nextFeature = buildFeature(record.number, geometry, row);
+                
+                if (!nextFeatureBuilt) {
+                    nextFeature = buildFeature(record.number, geometry, row);
+                }
             } else {
-                if (dbf != null) {
+                if (dbf != null && !peeked) {
                     dbf.skip();
                 }
             }
@@ -211,6 +230,19 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
         return nextFeature != null;
     }
 
+    private boolean filtered(Row row, Record record) throws IOException {
+        Geometry geometry = (Geometry) record.getSimplifiedShape();
+        SimpleFeature feature = buildFeature(record.number, geometry, row);
+        
+        boolean filtered = !filter.evaluate(feature);
+        if (!filtered) {
+            nextFeature = feature;
+            nextFeatureBuilt = true;
+        }
+
+        return filtered;
+    }
+    
     SimpleFeature buildFeature(int number, Geometry geometry, Row row) throws IOException {
         if (dbfindexes != null) {
             for (int i = 0; i < dbfindexes.length; i++) {
@@ -298,6 +330,16 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
 
     ShapeType getShapeType() {
         return shp.getHeader().getShapeType();
+    }
+    
+    /**
+     * If a filter is set, it will be assessed before applying the ScreenMap optimization.
+     * See {@link ShapefileDataStoreFactory#FILTER_BEFORE_SCREEN_MAP}.
+     * 
+     * @param filter the layer query filter
+     */
+    void setFilter(Filter filter) {
+        this.filter = filter;
     }
 
 }

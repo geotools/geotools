@@ -140,6 +140,13 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
             Boolean.class, "enable/disable the use of spatial index for local shapefiles", false,
             true, new KVP(Param.LEVEL, "advanced"));
 
+    /**
+     * Optional - specify screen map optimization technique
+     */
+    public static final Param FILTER_BEFORE_SCREEN_MAP = new Param("filter before screen map",
+            Boolean.class, "allow filters to be run before the screen map optimization", false,
+            false, new KVP(Param.LEVEL, "advanced"));
+
     public String getDisplayName() {
         return "Shapefile";
     }
@@ -150,7 +157,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
 
     public Param[] getParametersInfo() {
         return new Param[] { URLP, NAMESPACEP, ENABLE_SPATIAL_INDEX, CREATE_SPATIAL_INDEX, DBFCHARSET, DBFTIMEZONE,
-                MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE, FSTYPE };
+                MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE, FSTYPE, FILTER_BEFORE_SCREEN_MAP };
     }
 
     public boolean isAvailable() {
@@ -174,6 +181,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
             // should not be needed as default is TRUE
             isEnableSpatialIndex = Boolean.TRUE;
         }
+        Boolean isFilterBeforeScreenMap = lookup(FILTER_BEFORE_SCREEN_MAP, params, Boolean.class);
         
         // are we creating a directory of shapefiles store, or a single one?
         File dir = DataUtilities.urlToFile(url);
@@ -199,6 +207,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
             store.setTimeZone(dbfTimeZone);
             store.setIndexed(enableIndex);
             store.setIndexCreationEnabled(createIndex);
+            store.setFilterBeforeScreenMap(isFilterBeforeScreenMap);
             return store;
         }
     }

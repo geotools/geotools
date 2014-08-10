@@ -114,6 +114,8 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     IndexManager indexManager;
 
     ShapefileSetManager shpManager;
+    
+    boolean filterBeforeScreenMap = false;
 
     public ShapefileDataStore(URL url) {
         shpFiles = new ShpFiles(url);
@@ -195,6 +197,14 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
 
     public SimpleFeatureType getSchema() throws IOException {
         return getSchema(getTypeName());
+    }
+    
+    public boolean isFilterBeforeScreenMap() {
+        return filterBeforeScreenMap;
+    }
+
+    public void setFilterBeforeScreenMap(boolean filterBeforeScreenMap) {
+        this.filterBeforeScreenMap = filterBeforeScreenMap;
     }
 
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {

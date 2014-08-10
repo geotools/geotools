@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.files.ShpFileType.SHP;
+import static org.geotools.data.shapefile.files.ShpFileType.*;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -35,7 +35,6 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
@@ -269,27 +268,30 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         } else {
             dbfReader = shpManager.openDbfReader(goodRecs != null);
         }
-        ShapefileFeatureReader result;
+        ShapefileFeatureReader reader;
         if (goodRecs != null) {
-            result = new IndexedShapefileFeatureReader(readSchema, shapeReader, dbfReader, fidReader, 
+            reader = new IndexedShapefileFeatureReader(readSchema, shapeReader, dbfReader, fidReader, 
                     goodRecs);
         } else {
-            result = new ShapefileFeatureReader(readSchema, shapeReader, dbfReader, fidReader);
+            reader = new ShapefileFeatureReader(readSchema, shapeReader, dbfReader, fidReader);
+        }
+        if (filter != null && !Filter.INCLUDE.equals(filter)) {
+            reader.setFilter(filter);
         }
 
         // setup the target bbox if any, and the generalization hints if available
         if (q != null) {
             if (bbox != null && !bbox.isNull()) {
-                result.setTargetBBox(bbox);
+                reader.setTargetBBox(bbox);
             }
 
             Hints hints = q.getHints();
             if (hints != null) {
                 Number simplificationDistance = (Number) hints.get(Hints.GEOMETRY_DISTANCE);
                 if (simplificationDistance != null) {
-                    result.setSimplificationDistance(simplificationDistance.doubleValue());
+                    reader.setSimplificationDistance(simplificationDistance.doubleValue());
                 }
-                result.setScreenMap((ScreenMap) hints.get(Hints.SCREENMAP));
+                reader.setScreenMap((ScreenMap) hints.get(Hints.SCREENMAP));
 
                 if (Boolean.TRUE.equals(hints.get(Hints.FEATURE_2D))) {
                     shapeReader.setFlatGeometry(true);
@@ -298,14 +300,6 @@ class ShapefileFeatureSource extends ContentFeatureSource {
 
         }
 
-        // do the filtering
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        if(filter != null && !Filter.INCLUDE.equals(filter)) {
-            reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(result, filter);
-        } else {
-            reader = result;
-        }
-        
         // do the retyping
         if(!FeatureTypes.equals(readSchema, resultSchema)) {
            return new ReTypeFeatureReader(reader, resultSchema);

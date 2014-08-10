@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.data.FeatureReader;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
@@ -30,16 +32,33 @@ import org.geotools.data.shapefile.shp.ShapeType;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.shapefile.shp.ShapefileReader.Record;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.renderer.ScreenMap;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.Filter;
+import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
 class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
+
+    static final Logger LOGGER = Logging.getLogger(ShapefileFeatureReader.class);
+
+    protected static final Geometry SKIP = new Point(new LiteCoordinateSequence(Double.NaN,
+            Double.NaN), new GeometryFactory()) {
+        private static final long serialVersionUID = 6311215718936799001L;
+
+        public String toString() {
+            return "SKIP";
+        };
+    };
 
     SimpleFeatureType schema;
 
@@ -64,6 +83,8 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     int idxBaseLen;
 
     IndexedFidReader fidReader;
+
+    Filter filter;
 
     public ShapefileFeatureReader(SimpleFeatureType schema, ShapefileReader shp, DbaseFileReader dbf, IndexedFidReader fidReader)
             throws IOException {
@@ -158,37 +179,8 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
         while (nextFeature == null && filesHaveMore()) {
             Record record = shp.nextRecord();
 
-            // read the geometry, so that we can decide if this row is to be skipped or not
-            Envelope envelope = record.envelope();
-            boolean skip = false;
-            Geometry geometry = null;
-            if(schema.getGeometryDescriptor() != null) {
-                // ... if geometry is out of the target bbox, skip both geom and row
-                if (targetBBox != null && !targetBBox.isNull() && !targetBBox.intersects(envelope)) {
-                    skip = true;
-                    // ... if the geometry is awfully small avoid reading it (unless it's a point)
-                } else if (simplificationDistance > 0 && envelope.getWidth() < simplificationDistance
-                        && envelope.getHeight() < simplificationDistance) {
-                    try {
-                        if (screenMap != null && screenMap.checkAndSet(envelope)) {
-                            geometry = null;
-                            skip = true;
-                        } else {
-                            // if we are using the screenmap better provide a slightly modified
-                            // version of the geometry bounds or we'll end up with many holes
-                            // in the rendering
-                            geometry = (Geometry) record.getSimplifiedShape(screenMap);
-                        }
-                    } catch (Exception e) {
-                        geometry = (Geometry) record.getSimplifiedShape();
-                    }
-                    // ... otherwise business as usual
-                } else {
-                    geometry = (Geometry) record.shape();
-                }
-            }
-
-            if (!skip) {
+            Geometry geometry = getGeometry(record);
+            if (geometry != SKIP) {
                 // also grab the dbf row
                 Row row;
                 if (dbf != null) {
@@ -200,7 +192,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                     row = null;
                 }
 
-                nextFeature = buildFeature(record.number, geometry, row);
+                nextFeature = buildFeature(record.number, geometry, row, record.envelope());
             } else {
                 if (dbf != null) {
                     dbf.skip();
@@ -211,7 +203,42 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
         return nextFeature != null;
     }
 
-    SimpleFeature buildFeature(int number, Geometry geometry, Row row) throws IOException {
+    protected Geometry getGeometry(Record record) {
+        // read the geometry, so that we can decide if this row is to be skipped or not
+        Envelope envelope = record.envelope();
+        Geometry geometry = null;
+        if (schema.getGeometryDescriptor() != null) {
+            // ... if geometry is out of the target bbox, skip both geom and row
+            if (targetBBox != null && !targetBBox.isNull() && !targetBBox.intersects(envelope)) {
+                geometry = SKIP;
+                // ... if the geometry is awfully small avoid reading it (unless it's a point)
+            } else if (simplificationDistance > 0 && envelope.getWidth() < simplificationDistance
+                    && envelope.getHeight() < simplificationDistance) {
+                try {
+                    // if we have the screenmap, we either have no filter, and we
+                    // can directly alter the screenmap, or we have a filter, in that
+                    // case we just check if the screenmap is already busy
+                    if (screenMap != null && screenMap.get(envelope)) {
+                        geometry = SKIP;
+                    } else {
+                        // if we are using the screenmap better provide a slightly modified
+                        // version of the geometry bounds or we'll end up with many holes
+                        // in the rendering
+                        geometry = (Geometry) record.getSimplifiedShape(screenMap);
+                    }
+                } catch (Exception e) {
+                    geometry = (Geometry) record.getSimplifiedShape();
+                }
+                // ... otherwise business as usual
+            } else {
+                geometry = (Geometry) record.shape();
+            }
+        }
+        return geometry;
+    }
+
+    SimpleFeature buildFeature(int number, Geometry geometry, Row row, Envelope envelope)
+            throws IOException {
         if (dbfindexes != null) {
             for (int i = 0; i < dbfindexes.length; i++) {
                 if (dbfindexes[i] == -1) {
@@ -225,7 +252,29 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
         }
         // build the feature id
         String featureId = buildFeatureId(number);
-        return builder.buildFeature(featureId);
+        SimpleFeature feature = builder.buildFeature(featureId);
+        if (filter != null) {
+            // if we should not return the feature, just drop it and continue reading
+            if (!filter.evaluate(feature)) {
+                return null;
+            }
+        }
+
+        // update screenmap if present, now that we have the certainty
+        // that the record is to be returned and will be displayed
+        if (screenMap != null) {
+            // we are going to keep the feature, if we have the screenmap do update
+            // it (if we got here, we already checked the screenmap was not busy)
+            try {
+                screenMap.checkAndSet(envelope);
+            } catch (TransformException e) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.log(Level.FINE, "Failed to set screenmap", e);
+                }
+            }
+        }
+
+        return feature;
     }
     
     protected String buildFeatureId(int number) throws IOException {
@@ -298,6 +347,14 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
 
     ShapeType getShapeType() {
         return shp.getHeader().getShapeType();
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
     }
 
 }

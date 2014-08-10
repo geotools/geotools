@@ -19,17 +19,15 @@ package org.geotools.data.shapefile;
 import java.io.IOException;
 
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
-import org.geotools.data.shapefile.dbf.IndexedDbaseFileReader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader.Row;
+import org.geotools.data.shapefile.dbf.IndexedDbaseFileReader;
 import org.geotools.data.shapefile.fid.IndexedFidReader;
 import org.geotools.data.shapefile.index.CloseableIterator;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.shapefile.shp.ShapefileReader.Record;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -75,7 +73,7 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
 
     public boolean hasNext() throws IOException {
         while (nextFeature == null && this.goodRecs.hasNext()) {
-            next = (Data) goodRecs.next();
+            next = goodRecs.next();
 
             Long l = (Long) next.getValue(1);
             shp.goTo((int) l.longValue());
@@ -83,33 +81,7 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
             Record record = shp.nextRecord();
 
             // read the geometry, so that we can decide if this row is to be skipped or not
-            Envelope envelope = record.envelope();
-            Geometry geometry = null;
-
-            if(schema.getGeometryDescriptor() != null) {
-                // ... if geometry is out of the target bbox, skip both geom and row
-                if (targetBBox != null && !targetBBox.isNull() && !targetBBox.intersects(envelope)) {
-                    continue;
-                    // ... if the geometry is awfully small avoid reading it (unless it's a point)
-                } else if (simplificationDistance > 0 && envelope.getWidth() < simplificationDistance
-                        && envelope.getHeight() < simplificationDistance) {
-                    try {
-                        if (screenMap != null && screenMap.checkAndSet(envelope)) {
-                            continue;
-                        } else {
-                            // if we are using the screenmap better provide a slightly modified
-                            // version of the geometry bounds or we'll end up with many holes
-                            // in the rendering
-                            geometry = (Geometry) record.getSimplifiedShape(screenMap);
-                        }
-                    } catch (Exception e) {
-                        geometry = (Geometry) record.getSimplifiedShape();
-                    }
-                    // ... otherwise business as usual
-                } else {
-                    geometry = (Geometry) record.shape();
-                }
-            }
+            Geometry geometry = getGeometry(record);
 
             // read the dbf only if the geometry was not skipped
             Row row;
@@ -120,7 +92,7 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
                 row = null;
             }
 
-            nextFeature = buildFeature(record.number, geometry, row);
+            nextFeature = buildFeature(record.number, geometry, row, record.envelope());
         }
 
         return nextFeature != null;

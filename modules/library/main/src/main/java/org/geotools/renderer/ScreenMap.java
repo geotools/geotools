@@ -144,6 +144,19 @@ public class ScreenMap {
         }
     }
 
+    public boolean get(Envelope envelope) throws TransformException {
+        if (!canSimplify(envelope)) {
+            return false;
+        }
+
+        point[0] = (envelope.getMinX() + envelope.getMaxX()) / 2;
+        point[1] = (envelope.getMinY() + envelope.getMaxY()) / 2;
+        mt.transform(point, 0, point, 0, 1);
+        int r = (int) point[0];
+        int c = (int) point[1];
+        return get(r, c);
+    }
+
     /**
      * Returns true if the pixel at location x,y is set or out of bounds.
      */

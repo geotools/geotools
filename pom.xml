@@ -160,17 +160,6 @@
       </properties>
     </profile>
     <profile>
-      <id>deploy.opengeo</id>
-      <distributionManagement>
-        <repository>
-          <id>opengeo</id>
-          <uniqueVersion>false</uniqueVersion>
-          <name>OpenGeo Maven Repository</name>
-          <url>dav:http://repo.opengeo.org</url>
-        </repository>
-      </distributionManagement>
-    </profile>
-    <profile>
       <id>deploy.boundless</id>
       <distributionManagement>
         <repository>
@@ -1434,10 +1423,10 @@
       <url>dav:http://download.osgeo.org/webdav/geotools/</url>
     </repository>
     <snapshotRepository>
-        <id>opengeo</id>
+        <id>boundless</id>
         <uniqueVersion>false</uniqueVersion>
-        <name>OpenGeo Maven Repository</name>
-        <url>dav:http://repo.opengeo.org</url>
+        <name>Boundless Maven Repository</name>
+        <url>http://repo.boundlessgeo.com/main</url>
     </snapshotRepository>
   </distributionManagement>
 
@@ -1469,9 +1458,9 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
-      <id>opengeo</id>
-      <name>OpenGeo Maven Repository</name>
-      <url>http://repo.opengeo.org</url>
+      <id>boundless</id>
+      <name>Boundless Maven Repository</name>
+      <url>http://repo.boundlessgeo.com/main</url>
     </repository>
 
   </repositories>
@@ -1493,9 +1482,9 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
-      <id>opengeo</id>
-      <name>OpenGeo Maven Repository</name>
-      <url>http://repo.opengeo.org</url>
+      <id>boundless</id>
+      <name>Boundless Maven Repository</name>
+      <url>http://repo.boundlessgeo.com/main</url>
     </pluginRepository> 
     <pluginRepository>
      <id>sonatype-snapshots</id>

@@ -99,6 +99,13 @@ public class RenderUtilitiesTest extends TestCase {
 		double scale = RendererUtilities.calculateScale(re, 10 * 100, 10 * 100, 2.54);
 		assertEquals(1.0, scale, 0.00001); // no projection deformation here!
 	}
+	
+    public void testScaleGenericFeet() throws Exception {
+        ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(1587500, 1587510, 475000, 475010),
+                CRS.decode("EPSG:2927", true));
+        double scale = RendererUtilities.calculateScale(re, 10 * 100, 10 * 100, 2.54);
+        assertEquals(0.30564, scale, 0.00001); // includes some projection deformation
+    }
     
     public void testOGCScaleProjected() throws Exception {
         ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(0, 10,
@@ -107,6 +114,25 @@ public class RenderUtilitiesTest extends TestCase {
         double scale = RendererUtilities.calculateOGCScale(re, tenMetersPixels , new HashMap());
         assertEquals(1.0, scale, 0.0001);
     }
+    
+    public void testOGCScaleFeet() throws Exception {
+        try {
+            ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(0, 10,
+                    0, 10), CRS.decode("EPSG:2927", true));
+            int tenMetersPixels = (int) Math.round(10 / 0.00028);
+
+            RendererUtilities.SCALE_UNIT_COMPENSATION = false;
+            double scale = RendererUtilities.calculateOGCScale(re, tenMetersPixels , new HashMap());
+            assertEquals(1, scale, 0.0001);
+
+            RendererUtilities.SCALE_UNIT_COMPENSATION = true;
+            scale = RendererUtilities.calculateOGCScale(re, tenMetersPixels , new HashMap());
+            assertEquals(0.304803, scale, 0.0001);
+        } finally {
+            RendererUtilities.SCALE_UNIT_COMPENSATION = true;
+        }
+    }
+
     
     public void testOGCScaleGeographic() throws Exception {
         // same example as page 29 in the SLD OGC spec, but with the expected scale corrected

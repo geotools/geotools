@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.measure.unit.SI;
+import javax.measure.unit.Unit;
 import javax.swing.Icon;
 
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -82,6 +84,12 @@ import com.vividsolutions.jts.geom.Polygon;
 public final class RendererUtilities {
 
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RendererUtilities.class.getName());
+	
+	/**
+	 * Toggle for a bug fix that will invalidate a good number of SLDs out there (and thus, we allow people to
+	 * turn off the fix)
+	 */
+	static boolean SCALE_UNIT_COMPENSATION = Boolean.parseBoolean(System.getProperty("org.geotoools.render.lite.scale.unitCompensation", "true"));
 
     /**
      * Helber class for building affine transforms. We use one instance per thread,
@@ -427,17 +435,55 @@ public final class RendererUtilities {
     
     /**
      * This method performs the computation using the methods suggested by the OGC SLD specification, page 26.
+     * In GeoTools 12 this method started to take into account units of measure, if this is not desirable
+     * in your application you can set the system variable "org.geotoools.render.lite.scale.unitCompensation" 
+     * to false.
+     * 
      * @param envelope
      * @param imageWidth
      * @return
      */
     public static double calculateOGCScale(ReferencedEnvelope envelope, int imageWidth, Map hints) {
         // if it's geodetic, we're dealing with lat/lon unit measures
-        if(envelope.getCoordinateReferenceSystem() instanceof GeographicCRS) {
-            return (envelope.getWidth() * OGC_DEGREE_TO_METERS) / (imageWidth / getDpi(hints) * 0.0254);
+        CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
+        double width = envelope.getWidth();
+        if(crs instanceof GeographicCRS) {
+            return (width * OGC_DEGREE_TO_METERS) / (imageWidth / getDpi(hints) * 0.0254);
         } else {
-            return envelope.getWidth() / (imageWidth / getDpi(hints) * 0.0254);
+            double widthMeters = toMeters(width, crs);
+            return widthMeters / (imageWidth / getDpi(hints) * 0.0254);
         }
+    }
+    
+    /**
+     * Method used by the OGC scale calculation to turn a given length in the specified CRS towards meters.
+     * It assumes the horizontal component of the CRS has uniform axis unit of measures
+     * @param size
+     * @param crs
+     * @return
+     */
+    private static double toMeters(double size, CoordinateReferenceSystem crs) {
+        if(!SCALE_UNIT_COMPENSATION) {
+            return size;
+        }
+        if(crs == null) {
+            LOGGER.finer("toMeters: assuming the original size is in meters already, as crs is null");
+            return size;
+        } 
+        CoordinateReferenceSystem horizontal = CRS.getHorizontalCRS(crs);
+        if(horizontal != null) {
+            crs = horizontal;
+        }
+        Unit<?> unit = crs.getCoordinateSystem().getAxis(0).getUnit();
+        if(unit == null) {
+            LOGGER.finer("toMeters: assuming the original size is in meters already, as the first crs axis unit is null. CRS is " + crs);
+            return size;
+        }
+        if(!unit.isCompatible(SI.METER)) {
+            LOGGER.warning("toMeters: could not convert unit " + unit + " to meters");
+            return size;
+        }
+        return unit.getConverterTo(SI.METER).convert(size);
     }
     
     /**

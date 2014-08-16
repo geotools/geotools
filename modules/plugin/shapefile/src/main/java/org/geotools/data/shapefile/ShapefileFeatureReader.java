@@ -51,8 +51,8 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
 
     static final Logger LOGGER = Logging.getLogger(ShapefileFeatureReader.class);
 
-    protected static final Geometry SKIP = new Point(new LiteCoordinateSequence(Double.NaN,
-            Double.NaN), new GeometryFactory()) {
+    protected static final Geometry SKIP = new Point(new LiteCoordinateSequence(new double[] {
+            Double.NaN, Double.NaN }), new GeometryFactory()) {
         private static final long serialVersionUID = 6311215718936799001L;
 
         public String toString() {

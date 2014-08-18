@@ -194,7 +194,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>10-SNAPSHOT</version>
+  <version>10.8</version>
   <name>Geotools</name>
 
   <scm>

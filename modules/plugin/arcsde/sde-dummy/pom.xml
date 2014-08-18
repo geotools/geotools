@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>arcsde-plugin</artifactId>
-    <version>12-SNAPSHOT</version>
+    <version>12-RC1</version>
   </parent>
 
 

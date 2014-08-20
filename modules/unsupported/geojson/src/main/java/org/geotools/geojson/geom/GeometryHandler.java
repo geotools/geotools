@@ -52,6 +52,11 @@ public class GeometryHandler extends DelegatingHandler<Geometry> {
             delegate = proxy;
             return super.startObjectEntry(key);
         }
+        else if ("geometries".equals(key) && delegate == NULL) {
+            // geometry collection without type property first
+            delegate = new GeometryCollectionHandler(factory);
+            return super.startObjectEntry(key);
+        }
         else {
             return super.startObjectEntry(key);
         }

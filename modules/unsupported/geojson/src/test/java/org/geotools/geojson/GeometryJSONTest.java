@@ -319,6 +319,21 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
             "  }");
     }
 
+    private String collectionTypeLastText() {
+        return strip(
+                "{ "+
+                        "    'geometries': ["+
+                        "      { 'type': 'Point',"+
+                        "        'coordinates': [100.1, 0.1]"+
+                        "        },"+
+                        "      { 'type': 'LineString',"+
+                        "        'coordinates': [ [101.1, 0.1], [102.1, 1.1] ]"+
+                        "        }"+
+                        "    ], "+
+                        "    'type': 'GeometryCollection'" +
+                        "  }");
+    }
+
     GeometryCollection collection() {
         GeometryCollection gcol = gf.createGeometryCollection(new Geometry[]{
            gf.createPoint(new Coordinate(100.1,0.1)), 
@@ -428,5 +443,16 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
             coordinates[i] = c;
         }
         return coordinates;
+    }
+
+    public void testGeometryCollectionReadTypeLast() throws IOException {
+        Object obj = gjson.read(collectionTypeLastText());
+        assertTrue(obj instanceof GeometryCollection);
+
+        GeometryCollection gc = (GeometryCollection) obj;
+        assertEquals(2, gc.getNumGeometries());
+
+        assertTrue(gc.getGeometryN(0) instanceof Point);
+        assertTrue(gc.getGeometryN(1) instanceof LineString);
     }
 }

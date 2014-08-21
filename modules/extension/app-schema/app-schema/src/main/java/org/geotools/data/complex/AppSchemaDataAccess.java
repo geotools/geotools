@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataAccess;
@@ -52,6 +51,9 @@ import org.geotools.feature.Types;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.SortByImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.jdbc.JDBCFeatureSource;
+import org.geotools.jdbc.JDBCFeatureStore;
+import org.geotools.jdbc.JoiningJDBCFeatureSource;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -269,9 +271,17 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      */
     protected int getCount(final Query targetQuery) throws IOException {
         final FeatureTypeMapping mapping = getMappingByElement(getName(targetQuery));
-        final FeatureSource<FeatureType, Feature> mappedSource = mapping.getSource();
+        FeatureSource mappedSource = mapping.getSource();
+        // Wrap with JoiningJDBCFeatureSource like in DataAccessMappingFeatureIterator
+        // this is so it'd use the splitFilter in JoiningJDBCFeatureSource
+        // otherwise you'll get an error when it can't find complex attributes in the 
+        // simple feature source
+//        if (mappedSource instanceof JDBCFeatureSource) {
+//            mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureSource) mappedSource);
+//        } else if (mappedSource instanceof JDBCFeatureStore) {
+//            mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureStore) mappedSource);
+//        } 
         Query unmappedQuery = unrollQuery(targetQuery, mapping);
-        unmappedQuery.setMaxFeatures(targetQuery.getMaxFeatures());
         return mappedSource.getCount(unmappedQuery);
     }
 
@@ -332,6 +342,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             newQuery.setCoordinateSystemReproject(query.getCoordinateSystemReproject());
             newQuery.setHandle(query.getHandle());
             newQuery.setMaxFeatures(query.getMaxFeatures());
+            newQuery.setStartIndex(query.getStartIndex());
             
             List<SortBy> sort = new ArrayList<SortBy>();
             if (query.getSortBy() != null) {
@@ -370,16 +381,18 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                                             + "\nIf this cannot be helped, you can turn off joining in app-schema.properties file.",
                                     mapping.getFeatureIdExpression(), ns, separator, typeName));
                 }
+                
+                JoiningQuery jQuery = new JoiningQuery(newQuery);
+                jQuery.setDenormalised(((JoiningQuery) query).isDenormalised());
+                jQuery.setQueryJoins(((JoiningQuery) query).getQueryJoins());
+                jQuery.setSubset(((JoiningQuery) query).isSubset());
 
                 for (String att : extractor.getAttributeNameSet()) {
                     sort.add(new SortByImpl(filterFac.property(att), SortOrder.ASCENDING));
+                    jQuery.addId(att);
                 }
 
-                JoiningQuery jQuery = new JoiningQuery(newQuery,
-                        (!Expression.NIL.equals(mapping.getFeatureIdExpression()) && !(mapping
-                                .getFeatureIdExpression() instanceof Literal)));
-                jQuery.setQueryJoins(((JoiningQuery) query).getQueryJoins());
-                jQuery.setSubset(((JoiningQuery) query).isSubset());
+                
                 unrolledQuery = jQuery;
             } else {
                 unrolledQuery = newQuery;
@@ -482,10 +495,14 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
 
                 if (!addThis) {
                     for (PropertyName requestedProperty : requestedProperties) {
-                        StepList requestedPropertySteps = requestedProperty.getNamespaceContext() == null ? null
-                                : XPath.steps(targetDescriptor,
-                                        requestedProperty.getPropertyName(),
+                        StepList requestedPropertySteps;
+                        if (requestedProperty.getNamespaceContext() == null) {
+                            requestedPropertySteps = XPath.steps(targetDescriptor, requestedProperty.getPropertyName(),
+                                    mapping.getNamespaces());
+                        } else {
+                            requestedPropertySteps = XPath.steps(targetDescriptor, requestedProperty.getPropertyName(),
                                         requestedProperty.getNamespaceContext());
+                        }
 
                         if (requestedPropertySteps == null ? matchProperty(
                                 requestedProperty.getPropertyName(), targetSteps) : matchProperty(
@@ -558,7 +575,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         // target schema attributes
         //List<AttributeMapping> attMappings = mapping.getAttributeMappings();
         
-        return mapping.findMappingsFor(propertySteps);
+        return mapping.findMappingsFor(propertySteps, true);
         
         /*for (final AttributeMapping entry : attMappings) {
             final StepList targetSteps = entry.getTargetXPath();

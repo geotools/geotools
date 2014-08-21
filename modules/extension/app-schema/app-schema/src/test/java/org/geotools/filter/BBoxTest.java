@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
@@ -95,9 +94,9 @@ public class BBoxTest extends AppSchemaTestSupport {
         FeatureIterator<Feature> iterator = features.features();
         try {
             Feature f = iterator.next();
-            assertEquals(f.getIdentifier().toString(), "mf1");
+            assertEquals("mf1", f.getIdentifier().toString());
             f = iterator.next();
-            assertEquals(f.getIdentifier().toString(), "mf3");
+            assertEquals("mf3", f.getIdentifier().toString());
         }
         finally {
             iterator.close();

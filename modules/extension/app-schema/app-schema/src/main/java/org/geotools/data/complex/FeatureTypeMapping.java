@@ -85,12 +85,12 @@ public class FeatureTypeMapping {
      * No parameters constructor for use by the digester configuration engine as a JavaBean
      */
     public FeatureTypeMapping() {
-        this(null, null, new LinkedList<AttributeMapping>(), new NamespaceSupport(), true);
+        this(null, null, new LinkedList<AttributeMapping>(), new NamespaceSupport(), false);
     }
 
     public FeatureTypeMapping(FeatureSource<? extends FeatureType, ? extends Feature> source,
             AttributeDescriptor target, List<AttributeMapping> mappings, NamespaceSupport namespaces) {
-        this(source, target, mappings, namespaces, true);
+        this(source, target, mappings, namespaces, false);
     }
 
     public FeatureTypeMapping(FeatureSource<? extends FeatureType, ? extends Feature> source,
@@ -260,7 +260,7 @@ public class FeatureTypeMapping {
      * @param propertyName
      * @return
      */
-    public List<Expression> findMappingsFor(final StepList propertyName) {
+    public List<Expression> findMappingsFor(final StepList propertyName, boolean includeNestedMappings) {
         // collect all the mappings for the given property
         List candidates;
 
@@ -275,7 +275,7 @@ public class FeatureTypeMapping {
                 candidates.add(mapping);
             }
         }
-        List expressions = getExpressions(candidates);
+        List expressions = getExpressions(candidates, includeNestedMappings);        
 
         // Does the last step refer to a client property of the parent step?
         // The parent step could be the root element which may not be on the path.
@@ -348,26 +348,28 @@ public class FeatureTypeMapping {
      * 
      * @param attributeMappings
      */
-    private List getExpressions(List attributeMappings) {
+    private List getExpressions(List attributeMappings, boolean includeNestedMappings) {
         List expressions = new ArrayList(attributeMappings.size());
         AttributeMapping mapping;
         Expression sourceExpression;
         for (Iterator it = attributeMappings.iterator(); it.hasNext();) {
             mapping = (AttributeMapping) it.next();
             if (mapping instanceof JoiningNestedAttributeMapping) {
-                // if it's joining for simple content feature chaining it has to be null
-                // so it will be added to the post filter
-                expressions.add(null);
-            } else {
-                sourceExpression = mapping.getSourceExpression();
-                if (!Expression.NIL.equals(sourceExpression)) {
-                    // some filters can't handle Expression.NIL and just dies
-                    expressions.add(sourceExpression);
+                if (!includeNestedMappings) {
+                    // will be added to post filter
+                    expressions.add(null);
+                    continue;
                 }
+            }
+            sourceExpression = mapping.getSourceExpression();
+            if (!Expression.NIL.equals(sourceExpression)) {
+                // some filters can't handle Expression.NIL and just dies
+                expressions.add(sourceExpression);
             }
         }
         return expressions;
     }
+    
 
     public boolean isDenormalised() {
         return isDenormalised;

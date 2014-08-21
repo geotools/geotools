@@ -199,10 +199,13 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         int index = 0;
         for (Iterator lefts = leftExpressions.iterator(); lefts.hasNext();) {
             left = (Expression) lefts.next();
+            int rightIndex = 0;
             for (Iterator rights = rightExpressions.iterator(); rights.hasNext();) {
+                index = index + rightIndex;
                 right = (Expression) rights.next();
                 product[index][0] = left;
                 product[index][1] = right;
+                rightIndex++;
             }
             index++;
         }
@@ -816,7 +819,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         // break into single steps
         StepList simplifiedSteps = XPath.steps(root, targetXPath, namespaces);
 
-        List<Expression> matchingMappings = mappings.findMappingsFor(simplifiedSteps);
+        List<Expression> matchingMappings = mappings.findMappingsFor(simplifiedSteps, false);
 
         if (!nestedMappings.isEmpty()) {
             // means some attributes are mapped separately in feature chaining

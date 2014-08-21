@@ -43,6 +43,7 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -157,8 +158,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         instance.mapping.getFeatureIdExpression().accept(extractor, null);
         for (String pn : extractor.getAttributeNameSet()) {
             join.addId(pn);
-        }        
-        
+        }   
         joins.add(0, join);
         query.setQueryJoins(joins);
         

@@ -132,7 +132,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             return null;
         }
         
-        List<Expression> matchingMappings = mappings.findMappingsFor(exprSteps);
+        List<Expression> matchingMappings = mappings.findMappingsFor(exprSteps, false);
 
         if (matchingMappings.isEmpty()) {
             postStack.push(expression);

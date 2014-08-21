@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.geotools.util.CheckedArrayList;
 
@@ -36,6 +37,8 @@ import org.geotools.util.CheckedArrayList;
  * @since 2.4
  */
 public class TypeMapping implements Serializable {
+    private static final Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger("org.geotools.data.complex");
 
     private static final long serialVersionUID = 1444252634598922057L;
 
@@ -52,10 +55,13 @@ public class TypeMapping implements Serializable {
     private boolean isXmlDataStore;
 
     /**
-     * True if data is denormalised (the default).  If flag is false its safe to apply the maxFeatures
-     * limit to any SQL queries that are generated
+     * True if data is multiple rows represent 1 feature. The safe default is to assume it's true.
      */
     private boolean isDenormalised = true;
+    /**
+     * True if isDenormalised has been set in config.
+     */    
+    private boolean isDenormalisedSet = false;
   
     private String targetElementName;
 
@@ -123,10 +129,15 @@ public class TypeMapping implements Serializable {
     } 
 
     public boolean isDenormalised() {
+        if (!isDenormalisedSet) {
+            LOGGER.info("isDenormalised is not set in app-schema mapping file for: " + (mappingName == null ? targetElementName : mappingName) + ".\n"
+                    + "Setting isDenormalised can result in more efficient SQL queries.");
+        }
         return isDenormalised;
     }
 
     public void setIsDenormalised(String isDenormalised) {
+        this.isDenormalisedSet = true;
         this.isDenormalised = Boolean.valueOf(isDenormalised).booleanValue();
     }
     

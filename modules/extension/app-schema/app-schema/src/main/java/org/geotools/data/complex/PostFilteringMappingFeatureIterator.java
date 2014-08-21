@@ -40,11 +40,15 @@ public class PostFilteringMappingFeatureIterator implements IMappingFeatureItera
     protected int maxFeatures;
     protected int count = 0;
     
-    public PostFilteringMappingFeatureIterator(FeatureIterator<Feature> iterator, Filter filter, int maxFeatures) {
+    public PostFilteringMappingFeatureIterator(FeatureIterator<Feature> iterator, Filter filter, int maxFeatures, int offset) {
         this.delegate = iterator;
         this.filter = filter;
         this.maxFeatures = maxFeatures;
-        next = getFilteredNext();
+        int startIndex = -1;
+        while (startIndex < offset) {
+            next = getFilteredNext();
+            startIndex++;
+        }
     }
 
     public void close() {

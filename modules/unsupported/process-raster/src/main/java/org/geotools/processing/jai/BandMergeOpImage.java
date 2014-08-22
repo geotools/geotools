@@ -18,7 +18,11 @@
 package org.geotools.processing.jai;
 
 import java.awt.Rectangle;
+import java.awt.Transparency;
+import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.Raster;
@@ -42,6 +46,7 @@ import javax.media.jai.RasterFactory;
 
 import org.geotools.processing.jai.nodata.Range;
 
+import com.sun.media.jai.codecimpl.util.FloatDoubleColorModel;
 import com.sun.media.jai.util.ImageUtil;
 import com.sun.media.jai.util.JDKWorkarounds;
 
@@ -304,7 +309,103 @@ class BandMergeOpImage extends PointOpImage {
             layout.unsetValid(ImageLayout.COLOR_MODEL_MASK);
         }
 
+        if ((cm == null || !cm.hasAlpha()) && sm instanceof ComponentSampleModel) {
+            cm = getDefaultColorModel(sm);
+            layout.setColorModel(cm);
+        }
+
         return layout;
+    }
+
+    /**
+     * Create a colormodel without an alpha band in the case that no alpha band is present. Otherwise JAI set an alpha band by default for an image
+     * with 2 or 4 bands.
+     * 
+     * @param sm
+     * @return
+     */
+    public static ColorModel getDefaultColorModel(SampleModel sm) {
+
+        // Check on the data type
+        int dataType = sm.getDataType();
+        int numBands = sm.getNumBands();
+        if (dataType < DataBuffer.TYPE_BYTE || dataType == DataBuffer.TYPE_SHORT
+                || dataType > DataBuffer.TYPE_DOUBLE || numBands < 1 || numBands > 4) {
+            return null;
+        }
+
+        // Creation of the colorspace
+        ColorSpace cs = null;
+
+        switch (numBands) {
+        case 0:
+            throw new IllegalArgumentException("No input bands defined");
+        case 1:
+            cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
+            break;
+        case 2:
+        case 4:
+            // For 2 and 4 bands a custom colorspace is created
+            cs = new ColorSpace(dataType, numBands) {
+
+                @Override
+                public float[] toRGB(float[] colorvalue) {
+                    // TODO Auto-generated method stub
+                    return null;
+                }
+
+                @Override
+                public float[] toCIEXYZ(float[] colorvalue) {
+                    // TODO Auto-generated method stub
+                    return null;
+                }
+
+                @Override
+                public float[] fromRGB(float[] rgbvalue) {
+                    // TODO Auto-generated method stub
+                    return null;
+                }
+
+                @Override
+                public float[] fromCIEXYZ(float[] colorvalue) {
+                    // TODO Auto-generated method stub
+                    return null;
+                }
+            };
+            break;
+        case 3:
+            cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
+            break;
+        default:
+            return null;
+        }
+
+        // Definition of the colormodel
+        int dataTypeSize = DataBuffer.getDataTypeSize(dataType);
+        int[] bits = new int[numBands];
+        for (int i = 0; i < numBands; i++) {
+            bits[i] = dataTypeSize;
+        }
+
+        boolean useAlpha = false, premultiplied = false;
+        int transparency = Transparency.OPAQUE;
+        switch (dataType) {
+        case DataBuffer.TYPE_BYTE:
+            return new ComponentColorModel(cs, bits, useAlpha, premultiplied, transparency,
+                    dataType);
+        case DataBuffer.TYPE_USHORT:
+            return new ComponentColorModel(cs, bits, useAlpha, premultiplied, transparency,
+                    dataType);
+        case DataBuffer.TYPE_INT:
+            return new ComponentColorModel(cs, bits, useAlpha, premultiplied, transparency,
+                    dataType);
+        case DataBuffer.TYPE_FLOAT:
+            return new FloatDoubleColorModel(cs, useAlpha, premultiplied, transparency, dataType);
+        case DataBuffer.TYPE_DOUBLE:
+            return new FloatDoubleColorModel(cs, useAlpha, premultiplied, transparency, dataType);
+        default:
+            throw new IllegalArgumentException("Wrong data type used");
+        }
     }
 
     /**

@@ -17,7 +17,7 @@
  */
 package org.geotools.processing.jai;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -328,6 +328,13 @@ public class BandMergeTest {
                 .create(noData, destNoData, null, null, roi, sources);
         // Check if the bands number is the same
         assertEquals(BAND_NUMBER, merged.getNumBands());
+
+        // Ensure the final ColorModel exists and has not an alpha band
+        if (merged.getSampleModel().getDataType() != DataBuffer.TYPE_SHORT) {
+            assertNotNull(merged.getColorModel());
+            assertTrue(!merged.getColorModel().hasAlpha());
+        }
+
         // Upper-Left tile indexes
         int minTileX = merged.getMinTileX();
         int minTileY = merged.getMinTileY();

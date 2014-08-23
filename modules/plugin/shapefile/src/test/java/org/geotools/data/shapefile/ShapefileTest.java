@@ -48,6 +48,7 @@ import org.geotools.renderer.ScreenMap;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 
@@ -313,6 +314,47 @@ public class ShapefileTest extends TestCaseSupport {
     }
 
     @Test
+    public void testScreenMapIndexedReader() throws Exception {
+        URL shpUrl = TestData.url(this, SHP_FILTER_BEFORE_SCREENMAP + "/"
+                + SHP_FILTER_BEFORE_SCREENMAP + ".shp");
+
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put(ShapefileDataStoreFactory.URLP.key, shpUrl);
+        params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.TRUE);
+
+        ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory()
+                .createDataStore(params);
+
+        // make a fid query to get a indexed reader
+
+        String fidPrefix = ds.getTypeName().getLocalPart();
+        Filter filter = ff.id(ff.featureId(fidPrefix + ".0"), ff.featureId(fidPrefix + ".1"),
+                ff.featureId(fidPrefix + ".2"));
+        // force creation of a fid index
+        ds.indexManager.hasFidIndex(true);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(
+                new Query(ds.getTypeNames()[0], filter), Transaction.AUTO_COMMIT);
+        assertTrue(reader instanceof IndexedShapefileFeatureReader);
+
+        // prepare a screenmap that will heavily prune features
+        ScreenMap screenMap = new ScreenMap(-180, -90, 360, 180);
+        screenMap.setSpans(1.0, 1.0);
+        screenMap.setTransform(IdentityTransform.create(2));
+        ((ShapefileFeatureReader) reader).setScreenMap(screenMap);
+        ((ShapefileFeatureReader) reader).setSimplificationDistance(1.0);
+
+        int count = 0;
+        while (reader.hasNext()) {
+            SimpleFeature feature = reader.next();
+            assertNotNull(feature);
+            assertNotSame(ShapefileFeatureReader.SKIP, feature.getDefaultGeometry());
+            count++;
+        }
+        assertEquals(1, count);
+        reader.close();
+    }
+
+    @Test
     public void testScreenMapWithDeletedRow() throws Exception {
         // test screen map optimization without filterBeforeScreenMap enhancement
         // ensure that initial deleted record does not cause ScreenMap to return no elements
@@ -392,6 +434,7 @@ public class ShapefileTest extends TestCaseSupport {
         assertFalse(reader.hasNext());
 
         assertNotNull(feature);
+        assertNotEquals(ShapefileFeatureReader.SKIP, feature.getDefaultGeometry());
         assertEquals(expectedName, feature.getAttribute("NAME"));
         assertEquals(expectedFid, feature.getAttribute("feature_id"));
         

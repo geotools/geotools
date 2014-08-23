@@ -82,6 +82,9 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
 
             // read the geometry, so that we can decide if this row is to be skipped or not
             Geometry geometry = getGeometry(record);
+            if (geometry == SKIP) {
+                continue;
+            }
 
             // read the dbf only if the geometry was not skipped
             Row row;

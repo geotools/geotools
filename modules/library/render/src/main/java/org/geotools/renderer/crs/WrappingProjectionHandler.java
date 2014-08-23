@@ -16,8 +16,6 @@
  */
 package org.geotools.renderer.crs;
 
-import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +43,6 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class WrappingProjectionHandler extends ProjectionHandler {
 
-    protected double radius;
     private int maxWraps;
 
     private boolean datelineWrappingCheckEnabled = true;
@@ -59,28 +56,8 @@ public class WrappingProjectionHandler extends ProjectionHandler {
             ReferencedEnvelope validArea, CoordinateReferenceSystem sourceCrs, double centralMeridian, int maxWraps) throws FactoryException {
         super(sourceCrs, validArea, renderingEnvelope);
         this.maxWraps = maxWraps;
-
-        try {
-            CoordinateReferenceSystem targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
-            MathTransform mt = CRS.findMathTransform(WGS84, targetCRS, true);
-            double[] src = new double[] { centralMeridian, 0, 180 + centralMeridian, 0 };
-            double[] dst = new double[4];
-            mt.transform(src, 0, dst, 0, 2);
-
-            if(CRS.getAxisOrder(targetCRS) == CRS.AxisOrder.NORTH_EAST) {
-                radius = Math.abs(dst[3] - dst[1]);
-            }
-            else {
-                radius = Math.abs(dst[2] - dst[0]);
-            }
-            
-            if(radius <= 0) {
-                throw new RuntimeException("Computed Earth radius is 0, what is going on?");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Unexpected error computing the Earth radius "
-                    + "in the current projection", e);
-        }
+        // this will compute the radius
+        setCentralMeridian(centralMeridian);
     }
 
     @Override

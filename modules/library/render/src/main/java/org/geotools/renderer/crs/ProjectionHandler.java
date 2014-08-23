@@ -58,6 +58,8 @@ import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
  */
 public class ProjectionHandler {
 
+    static final double EPS = 1e-6;
+
     protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ProjectionHandler.class);
 
     ReferencedEnvelope renderingEnvelope;
@@ -69,6 +71,10 @@ public class ProjectionHandler {
     final CoordinateReferenceSystem sourceCRS;
 
     final CoordinateReferenceSystem targetCRS;
+
+    double datelineX = Double.NaN;
+
+    double radius = Double.NaN;
 
     /**
      * Initializes a projection handler 
@@ -185,30 +191,60 @@ public class ProjectionHandler {
             
             
         } else {
-            // check if we are crossing the dateline
-            ReferencedEnvelope re = transformEnvelope(renderingEnvelope, WGS84);
-            if (re.getMinX() >= -180.0 && re.getMaxX() <= 180)
-                return Collections.singletonList(transformEnvelope(renderingEnvelope, sourceCRS));
-    
-            // We need to split reprojected envelope and normalize it. To be lenient with
-            // situations in which the data is just broken (people saying 4326 just because they
-            // have no idea at all) we don't actually split, but add elements
-            List<ReferencedEnvelope> envelopes = new ArrayList<ReferencedEnvelope>();
-            envelopes.add(re);
-            if (re.getMinX() < -180) {
-                envelopes.add(new ReferencedEnvelope(re.getMinX() + 360, 180, re.getMinY(), re
-                        .getMaxY(), re.getCoordinateReferenceSystem()));
+            if (!Double.isNaN(datelineX) && renderingEnvelope.getMinX() < datelineX
+                    && renderingEnvelope.getMaxX() > datelineX
+                    && renderingEnvelope.getWidth() < radius) {
+                double minX = renderingEnvelope.getMinX();
+                double minY = renderingEnvelope.getMinY();
+                double maxX = renderingEnvelope.getMaxX();
+                double maxY = renderingEnvelope.getMaxY();
+                ReferencedEnvelope re1 = new ReferencedEnvelope(minX, datelineX - EPS, minY,
+                        maxY, renderingCRS);
+                ReferencedEnvelope tx1 = transformEnvelope(re1, WGS84);
+                tx1.expandToInclude(180, tx1.getMinY());
+                ReferencedEnvelope re2 = new ReferencedEnvelope(datelineX + EPS, maxX, minY,
+                        maxY, renderingCRS);
+                ReferencedEnvelope tx2 = transformEnvelope(re2, WGS84);
+                if (tx2.getMinX() > 180) {
+                    tx2.translate(-360, 0);
+                }
+                tx2.expandToInclude(-180, tx1.getMinY());
+                List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
+                result.add(tx1);
+                result.add(tx2);
+                mergeEnvelopes(result);
+                return result;
+            } else {
+                return getSourceEnvelopes(renderingEnvelope);
             }
-            if (re.getMaxX() > 180) {
-                envelopes.add(new ReferencedEnvelope(-180, re.getMaxX() - 360, re.getMinY(), re
-                        .getMaxY(), re.getCoordinateReferenceSystem()));
-            }
-    
-            mergeEnvelopes(envelopes);
-            reprojectEnvelopes(sourceCRS, envelopes);
-    
-            return envelopes;
         }
+    }
+
+    private List<ReferencedEnvelope> getSourceEnvelopes(ReferencedEnvelope renderingEnvelope)
+            throws TransformException, FactoryException {
+        // check if we are crossing the dateline
+        ReferencedEnvelope re = transformEnvelope(renderingEnvelope, WGS84);
+        if (re.getMinX() >= -180.0 && re.getMaxX() <= 180)
+            return Collections.singletonList(transformEnvelope(renderingEnvelope, sourceCRS));
+
+        // We need to split reprojected envelope and normalize it. To be lenient with
+        // situations in which the data is just broken (people saying 4326 just because they
+        // have no idea at all) we don't actually split, but add elements
+        List<ReferencedEnvelope> envelopes = new ArrayList<ReferencedEnvelope>();
+        envelopes.add(re);
+        if (re.getMinX() < -180) {
+            envelopes.add(new ReferencedEnvelope(re.getMinX() + 360, 180, re.getMinY(), re
+                    .getMaxY(), re.getCoordinateReferenceSystem()));
+        }
+        if (re.getMaxX() > 180) {
+            envelopes.add(new ReferencedEnvelope(-180, re.getMaxX() - 360, re.getMinY(), re
+                    .getMaxY(), re.getCoordinateReferenceSystem()));
+        }
+
+        mergeEnvelopes(envelopes);
+        reprojectEnvelopes(sourceCRS, envelopes);
+
+        return envelopes;
     }
 
     private ReferencedEnvelope transformEnvelope(ReferencedEnvelope envelope,
@@ -507,6 +543,43 @@ public class ProjectionHandler {
      */
     public ReferencedEnvelope getValidAreaBounds() {
         return validAreaBounds;
+    }
+
+    void setCentralMeridian(double centralMeridian) {
+        // compute the earth radius
+        try {
+            CoordinateReferenceSystem targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
+            MathTransform mt = CRS.findMathTransform(WGS84, targetCRS, true);
+            double[] src = new double[] { centralMeridian, 0, 180 + centralMeridian, 0 };
+            double[] dst = new double[4];
+            mt.transform(src, 0, dst, 0, 2);
+
+            if (CRS.getAxisOrder(targetCRS) == CRS.AxisOrder.NORTH_EAST) {
+                radius = Math.abs(dst[3] - dst[1]);
+            } else {
+                radius = Math.abs(dst[2] - dst[0]);
+            }
+
+            if (radius <= 0) {
+                throw new RuntimeException("Computed Earth radius is 0, what is going on?");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Unexpected error computing the Earth radius "
+                    + "in the current projection", e);
+        }
+
+        // compute the x of the dateline in the rendering CRS
+        try {
+            double[] ordinates = new double[] { 180, -80, 180, 80 };
+            MathTransform mt = CRS.findMathTransform(DefaultGeographicCRS.WGS84,
+                    renderingEnvelope.getCoordinateReferenceSystem());
+            mt.transform(ordinates, 0, ordinates, 0, 2);
+            datelineX = ordinates[0];
+        } catch (Exception e) {
+            // should never happen...
+            throw new RuntimeException(e);
+        }
+
     }
     
 }

@@ -203,6 +203,13 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
         return nextFeature != null;
     }
 
+    /**
+     * Reads the geometry, it will return {@link #SKIP} if the records is to be skipped because of
+     * the screenmap or because it does not match the target bbox
+     * 
+     * @param record
+     * @return
+     */
     protected Geometry getGeometry(Record record) {
         // read the geometry, so that we can decide if this row is to be skipped or not
         Envelope envelope = record.envelope();

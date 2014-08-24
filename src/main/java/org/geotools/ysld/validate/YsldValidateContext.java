@@ -1,0 +1,44 @@
+package org.geotools.ysld.validate;
+
+import org.geotools.ysld.parse.Factory;
+import org.yaml.snakeyaml.error.Mark;
+import org.yaml.snakeyaml.error.MarkedYAMLException;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+
+public class YsldValidateContext {
+
+    Deque<YsldValidateHandler> handlers = new ArrayDeque<>();
+
+    List<MarkedYAMLException> errors = new ArrayList<>();
+
+    Factory factory = new Factory();
+
+    public List<MarkedYAMLException> errors() {
+        return errors;
+    }
+
+    public YsldValidateContext error(String problem, Mark mark) {
+        return error(new MarkedYAMLException(null, null, problem, mark){});
+    }
+
+    public YsldValidateContext error(MarkedYAMLException e) {
+        errors.add(e);
+        return this;
+    }
+
+    public YsldValidateHandler peek() {
+        return handlers.peek();
+    }
+
+    public void pop() {
+        handlers.pop();
+    }
+
+    public void push(YsldValidateHandler handler) {
+        handlers.push(handler);
+    }
+}

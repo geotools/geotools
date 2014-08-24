@@ -55,12 +55,12 @@ public class GraphicParser extends YsldParseHandler {
             g.setInitialGap(Util.expression(map.str("initial-gap"), factory));
         }
 
-        context.push("symbols", new SymbolsHandler());
+        context.push("symbols", new SymbolsParser());
     }
 
-    class SymbolsHandler extends YsldParseHandler {
+    class SymbolsParser extends YsldParseHandler {
 
-        protected SymbolsHandler() {
+        protected SymbolsParser() {
             super(GraphicParser.this.factory);
         }
 

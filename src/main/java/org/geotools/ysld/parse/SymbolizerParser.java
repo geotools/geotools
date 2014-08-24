@@ -25,12 +25,12 @@ public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
         if (map.has("uom")) {
             sym.setUnitOfMeasure(UomOgcMapping.get(map.str("uom")).getUnit());
         }
-        context.push("options", new OptionsHandler());
+        context.push("options", new OptionsParser());
     }
 
-    class OptionsHandler extends YsldParseHandler {
+    class OptionsParser extends YsldParseHandler {
 
-        OptionsHandler() {
+        OptionsParser() {
             super(SymbolizerParser.this.factory);
         }
 

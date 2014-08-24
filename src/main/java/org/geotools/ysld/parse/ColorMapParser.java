@@ -37,14 +37,14 @@ public abstract class ColorMapParser extends YsldParseHandler {
                 LOG.warning("Unknown color map type: " + value);
             }
         }
-        context.push("entries", new EntriesHandler());
+        context.push("entries", new EntriesParser());
     }
 
     protected abstract void colorMap(ColorMap colorMap);
 
-    class EntriesHandler extends YsldParseHandler {
+    class EntriesParser extends YsldParseHandler {
 
-        protected EntriesHandler() {
+        protected EntriesParser() {
             super(ColorMapParser.this.factory);
         }
 

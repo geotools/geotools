@@ -20,8 +20,8 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
             sym.setLabel(Util.expression(map.str("label"), factory));
         }
         context.push(map, new FontHandler());
-        context.push("halo", new HaloHandler());
-        context.push("placement", new PlacementHandler());
+        context.push("halo", new HaloParser());
+        context.push("placement", new PlacementParser());
         context.push(map, new FillParser(factory) {
             @Override
             protected void fill(Fill fill) {
@@ -63,10 +63,10 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
         }
     }
 
-    class HaloHandler extends YsldParseHandler {
+    class HaloParser extends YsldParseHandler {
 
         Halo halo;
-        HaloHandler() {
+        HaloParser() {
             super(TextParser.this.factory);
             halo = this.factory.style.createHalo(null, null);
         }
@@ -90,14 +90,14 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
         }
     }
 
-    class PlacementHandler extends YsldParseHandler {
+    class PlacementParser extends YsldParseHandler {
 
         String type;
 
         PointPlacement point;
         LinePlacement line;
 
-        protected PlacementHandler() {
+        protected PlacementParser() {
             super(TextParser.this.factory);
             point = factory.style.createPointPlacement(null, null, null);
             line = factory.style.createLinePlacement(null);

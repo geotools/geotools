@@ -5,11 +5,14 @@ import org.geotools.ysld.parse.YsldParser;
 import org.geotools.ysld.transform.sld.SldTransformer;
 
 import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.ysld.validate.YsldValidator;
+import org.yaml.snakeyaml.error.MarkedYAMLException;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.*;
+import java.util.List;
 
 /**
  * Parses, encodes, and transforms Ysld.
@@ -31,18 +34,23 @@ public class Ysld {
      *
      * @throws java.lang.IllegalArgumentException If the input object can not be converted.
      */
-    public static Reader reader(Object input) throws IOException {
+    static YsldInput reader(Object input) throws IOException {
         if (input instanceof Reader) {
-            return (Reader) input;
+            return new YsldInput((Reader)input);
         }
         else if (input instanceof InputStream) {
-            return new BufferedReader(new InputStreamReader((InputStream)input));
+            return new YsldInput(new BufferedReader(new InputStreamReader((InputStream)input)));
         }
         else if (input instanceof File) {
-            return new BufferedReader(new FileReader((File)input));
+            return new YsldInput(new BufferedReader(new FileReader((File)input))) {
+                @Override
+                public void close() throws IOException {
+                    reader.close();
+                }
+            };
         }
         else if (input instanceof String) {
-            return new StringReader((String)input);
+            return new YsldInput(new StringReader((String)input));
         }
         else {
             throw new IllegalArgumentException("Unable to turn " + input + " into reader");
@@ -63,7 +71,7 @@ public class Ysld {
      *
      * @throws java.lang.IllegalArgumentException If the output object can not be converted.
      */
-    public static Writer writer(Object output) throws IOException {
+    static Writer writer(Object output) throws IOException {
         if (output instanceof Writer) {
             return (Writer) output;
         }
@@ -84,11 +92,17 @@ public class Ysld {
      * @param input THe input object, see {@link #reader(Object)} for details.
      */
     public static XMLStreamReader xmlReader(Object input) throws IOException{
-        XMLInputFactory xmlFactory = XMLInputFactory.newFactory();
+        YsldInput in = reader(input);
         try {
-            return xmlFactory.createXMLStreamReader(reader(input));
-        } catch (XMLStreamException e) {
-            throw new IOException(e);
+            XMLInputFactory xmlFactory = XMLInputFactory.newFactory();
+            try {
+                return xmlFactory.createXMLStreamReader(in.reader);
+            } catch (XMLStreamException e) {
+                throw new IOException(e);
+            }
+        }
+        finally {
+            in.close();
         }
     }
 
@@ -100,8 +114,13 @@ public class Ysld {
      * @return The GeoTools SLD object.
      */
     public static StyledLayerDescriptor parse(Object ysld) throws IOException {
-        YsldParser p = new YsldParser(reader(ysld));
-        return p.parse();
+        YsldInput in = reader(ysld);
+        try {
+            return new YsldParser(in.reader).parse();
+        }
+        finally {
+            in.close();
+        }
     }
 
     /**
@@ -129,6 +148,35 @@ public class Ysld {
         }
         catch(XMLStreamException e) {
             throw new IOException(e);
+        }
+    }
+
+    /**
+     * Validates a Ysld stream.
+     *
+     * @param ysld The Ysld.
+     *
+     * @return List of marked exceptions corresponding to validation errors.
+     */
+    public static List<MarkedYAMLException> validate(Object ysld) throws IOException {
+        YsldInput in = reader(ysld);
+        try {
+            return new YsldValidator().validate(in.reader);
+        }
+        finally {
+            in.close();;
+        }
+
+    }
+
+    static class YsldInput {
+        Reader reader;
+
+        YsldInput(Reader reader) {
+            this.reader = reader;
+        }
+
+        public void close() throws IOException {
         }
     }
 }

@@ -22,7 +22,7 @@ public class YsldParsePartialsTest {
             "      - mark:\n" +
             "         shape: triangle";
 
-        assertSLD(Ysld.parse(Ysld.reader(ysld)));
+        assertSLD(Ysld.parse(ysld));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class YsldParsePartialsTest {
             "    - mark:\n" +
             "       shape: triangle";
 
-        assertSLD(Ysld.parse(Ysld.reader(ysld)));
+        assertSLD(Ysld.parse(ysld));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class YsldParsePartialsTest {
             "  - mark:\n" +
             "     shape: triangle";
 
-        assertSLD(Ysld.parse(Ysld.reader(ysld)));
+        assertSLD(Ysld.parse(ysld));
     }
 
     void assertSLD(StyledLayerDescriptor sld) {

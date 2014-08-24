@@ -25,7 +25,7 @@ public class Util {
     /**
      * Parses an expression from its string representation.
      */
-    static Expression expression(String value, Factory factory) {
+    public static Expression expression(String value, Factory factory) {
         return expression(value, false, factory);
     }
 
@@ -37,7 +37,7 @@ public class Util {
      * return a literal.
      * </p>
      */
-    static Expression expression(String value, boolean safe, Factory factory) {
+    public static Expression expression(String value, boolean safe, Factory factory) {
         try {
             Expression expr = ECQL.toExpression(value, factory.filter);
             if (expr instanceof PropertyName && !ATTRIBUTE_PATTERN.matcher(value).matches()) {
@@ -55,7 +55,7 @@ public class Util {
     /**
      * Parses an anchor tuple.
      */
-    static AnchorPoint anchor(String value, Factory factory) {
+    public static AnchorPoint anchor(String value, Factory factory) {
         Tuple t = null;
         try {
             t = Tuple.of(2).parse(value);
@@ -72,7 +72,7 @@ public class Util {
     /**
      * Parses an displacement tuple.
      */
-    static Displacement displacement(String value, Factory factory) {
+    public static Displacement displacement(String value, Factory factory) {
         Tuple t = null;
         try {
             t = Tuple.of(2).parse(value);
@@ -95,7 +95,7 @@ public class Util {
     /**
      * Parses a color from string representation.
      */
-    static Expression color(String value, Factory factory) {
+    public static Expression color(String value, Factory factory) {
         Color color = null;
         Matcher m = HEX_PATTERN.matcher(value);
         if (m.matches()) {
@@ -131,7 +131,7 @@ public class Util {
     /**
      * Parses a float array from a space delimited list.
      */
-    static float[] floatArray(String value) {
+    public static float[] floatArray(String value) {
         List<Float> list = new ArrayList<Float>();
         for (String str : value.split(" ")) {
             list.add(Float.parseFloat(str));

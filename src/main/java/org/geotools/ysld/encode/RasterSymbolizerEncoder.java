@@ -28,7 +28,7 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         super.encode(sym);
     }
 
-    class ColorMapEncoder extends Encoder<ColorMap> {
+    class ColorMapEncoder extends YsldEncodeHandler<ColorMap> {
 
         ColorMapEncoder(ColorMap colorMap) {
             super(colorMap);
@@ -80,7 +80,7 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         }
     }
 
-    class ContrastEnhancementEncoder extends Encoder<ContrastEnhancement> {
+    class ContrastEnhancementEncoder extends YsldEncodeHandler<ContrastEnhancement> {
         public ContrastEnhancementEncoder(ContrastEnhancement contrast) {
             super(contrast);
         }

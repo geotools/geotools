@@ -7,7 +7,7 @@ import org.geotools.styling.Rule;
 import org.geotools.ysld.Tuple;
 import org.opengis.filter.Filter;
 
-public class RuleEncoder extends Encoder<Rule> {
+public class RuleEncoder extends YsldEncodeHandler<Rule> {
 
     public RuleEncoder(FeatureTypeStyle featureStyle) {
         super(featureStyle.rules().iterator());

@@ -2,7 +2,7 @@ package org.geotools.ysld.encode;
 
 import org.geotools.styling.Graphic;
 
-public class GraphicEncoder extends Encoder<Graphic> {
+public class GraphicEncoder extends YsldEncodeHandler<Graphic> {
 
     GraphicEncoder(Graphic g) {
         super(g);

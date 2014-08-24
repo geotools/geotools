@@ -8,7 +8,7 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 
-public class SymbolizersEncoder extends Encoder<Symbolizer> {
+public class SymbolizersEncoder extends YsldEncodeHandler<Symbolizer> {
 
     public SymbolizersEncoder(Rule rule) {
         super(rule.symbolizers().iterator());

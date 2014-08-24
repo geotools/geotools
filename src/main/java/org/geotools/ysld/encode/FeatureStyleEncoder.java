@@ -18,7 +18,7 @@ import static org.geotools.ysld.ProcessUtil.loadProcessFunctionFactory;
 import static org.geotools.ysld.ProcessUtil.loadProcessInfo;
 import static org.geotools.ysld.ProcessUtil.processName;
 
-public class FeatureStyleEncoder extends Encoder<FeatureTypeStyle> {
+public class FeatureStyleEncoder extends YsldEncodeHandler<FeatureTypeStyle> {
 
     static Logger LOG = Logging.getLogger(FeatureStyleEncoder.class);
 
@@ -38,7 +38,7 @@ public class FeatureStyleEncoder extends Encoder<FeatureTypeStyle> {
     }
 
 
-    class TransformEncoder extends Encoder<Expression> {
+    class TransformEncoder extends YsldEncodeHandler<Expression> {
         public TransformEncoder(Expression tx) {
             super(tx);
         }

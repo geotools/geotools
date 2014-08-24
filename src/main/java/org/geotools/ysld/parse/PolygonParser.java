@@ -3,12 +3,10 @@ package org.geotools.ysld.parse;
 import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.opengis.filter.expression.Expression;
-import org.yaml.snakeyaml.events.ScalarEvent;
 
-public class PolygonHandler extends SymbolizerHandler<PolygonSymbolizer> {
+public class PolygonParser extends SymbolizerParser<PolygonSymbolizer> {
 
-    public PolygonHandler(Rule rule, Factory factory) {
+    public PolygonParser(Rule rule, Factory factory) {
         super(rule, factory.style.createPolygonSymbolizer(), factory);
     }
 
@@ -17,13 +15,13 @@ public class PolygonHandler extends SymbolizerHandler<PolygonSymbolizer> {
         super.handle(obj, context);
 
         YamlMap map = obj.map();
-        context.push(map, new StrokeHandler(factory) {
+        context.push(map, new StrokeParser(factory) {
             @Override
             protected void stroke(Stroke stroke) {
                 sym.setStroke(stroke);
             }
         });
-        context.push(map, new FillHandler(factory) {
+        context.push(map, new FillParser(factory) {
             @Override
             protected void fill(Fill fill) {
                 sym.setFill(fill);

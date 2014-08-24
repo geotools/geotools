@@ -2,7 +2,7 @@ package org.geotools.ysld.encode;
 
 import org.geotools.styling.Stroke;
 
-public class StrokeEncoder extends Encoder<Stroke> {
+public class StrokeEncoder extends YsldEncodeHandler<Stroke> {
 
     StrokeEncoder(Stroke stroke) {
         super(stroke);

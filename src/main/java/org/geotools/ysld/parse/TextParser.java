@@ -4,14 +4,10 @@ import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.yaml.snakeyaml.events.Event;
-import org.yaml.snakeyaml.events.MappingEndEvent;
-import org.yaml.snakeyaml.events.ScalarEvent;
 
-public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
+public class TextParser extends SymbolizerParser<TextSymbolizer> {
 
-    public TextHandler(Rule rule, Factory factory) {
+    public TextParser(Rule rule, Factory factory) {
         super(rule, factory.style.createTextSymbolizer(), factory);
     }
 
@@ -26,7 +22,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
         context.push(map, new FontHandler());
         context.push("halo", new HaloHandler());
         context.push("placement", new PlacementHandler());
-        context.push(map, new FillHandler(factory) {
+        context.push(map, new FillParser(factory) {
             @Override
             protected void fill(Fill fill) {
                 sym.setFill(fill);
@@ -39,7 +35,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
         Font font;
 
         protected FontHandler() {
-            super(TextHandler.this.factory);
+            super(TextParser.this.factory);
 
             FilterFactory ff = factory.filter;
             font = factory.style.createFont(
@@ -71,7 +67,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
 
         Halo halo;
         HaloHandler() {
-            super(TextHandler.this.factory);
+            super(TextParser.this.factory);
             halo = this.factory.style.createHalo(null, null);
         }
 
@@ -81,7 +77,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
 
             YamlMap map = obj.map();
 
-            context.push(new FillHandler(factory) {
+            context.push(new FillParser(factory) {
                 @Override
                 protected void fill(Fill fill) {
                     halo.setFill(fill);
@@ -102,7 +98,7 @@ public class TextHandler extends SymbolizerHandler<TextSymbolizer> {
         LinePlacement line;
 
         protected PlacementHandler() {
-            super(TextHandler.this.factory);
+            super(TextParser.this.factory);
             point = factory.style.createPointPlacement(null, null, null);
             line = factory.style.createLinePlacement(null);
         }

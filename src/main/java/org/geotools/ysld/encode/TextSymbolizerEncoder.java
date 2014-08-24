@@ -22,7 +22,7 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
         super.encode(text);
     }
 
-    static class PlacementEncoder extends Encoder<LabelPlacement> {
+    static class PlacementEncoder extends YsldEncodeHandler<LabelPlacement> {
         PlacementEncoder(LabelPlacement placement) {
             super(placement);
         }
@@ -46,7 +46,7 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
         }
     }
 
-    static class HaloEncoder extends Encoder<Halo> {
+    static class HaloEncoder extends YsldEncodeHandler<Halo> {
         public HaloEncoder(Halo halo) {
             super(halo);
         }

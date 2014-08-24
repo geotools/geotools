@@ -4,15 +4,12 @@ package org.geotools.ysld.parse;
 import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.opengis.filter.expression.Expression;
-import org.yaml.snakeyaml.events.MappingEndEvent;
-import org.yaml.snakeyaml.events.ScalarEvent;
 
-public abstract class MarkHandler extends YsldParseHandler {
+public abstract class MarkParser extends YsldParseHandler {
 
     Mark mark;
 
-    protected MarkHandler(Factory factory) {
+    protected MarkParser(Factory factory) {
         super(factory);
         mark = factory.style.createMark();
         mark.setStroke(null);
@@ -29,13 +26,13 @@ public abstract class MarkHandler extends YsldParseHandler {
             mark.setWellKnownName(Util.expression(map.str("shape"), factory));
         }
 
-        context.push(map, new StrokeHandler(factory) {
+        context.push(map, new StrokeParser(factory) {
             @Override
             protected void stroke(Stroke stroke) {
                 mark.setStroke(stroke);
             }
         });
-        context.push(map, new FillHandler(factory) {
+        context.push(map, new FillParser(factory) {
             @Override
             protected void fill(Fill fill) {
                 mark.setFill(fill);

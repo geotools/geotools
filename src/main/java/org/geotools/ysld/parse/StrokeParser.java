@@ -4,14 +4,11 @@ import org.geotools.styling.Graphic;
 import org.geotools.styling.Stroke;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.opengis.filter.expression.Expression;
-import org.yaml.snakeyaml.events.MappingEndEvent;
-import org.yaml.snakeyaml.events.ScalarEvent;
 
-public abstract class StrokeHandler extends YsldParseHandler {
+public abstract class StrokeParser extends YsldParseHandler {
     Stroke stroke;
 
-    protected StrokeHandler(Factory factory) {
+    protected StrokeParser(Factory factory) {
         super(factory);
         stroke = factory.style.createStroke(null, null);
     }
@@ -44,13 +41,13 @@ public abstract class StrokeHandler extends YsldParseHandler {
             stroke.setDashOffset(Util.expression(map.str("stroke-dashoffset"), factory));
         }
 
-        context.push("stroke-graphic-fill", new GraphicHandler(factory) {
+        context.push("stroke-graphic-fill", new GraphicParser(factory) {
             @Override
             protected void graphic(Graphic g) {
                 stroke.setGraphicFill(g);
             }
         });
-        context.push("stroke-graphic-stroke", new GraphicHandler(factory) {
+        context.push("stroke-graphic-stroke", new GraphicParser(factory) {
             @Override
             protected void graphic(Graphic g) {
                 stroke.setGraphicStroke(g);

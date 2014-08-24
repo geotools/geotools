@@ -4,14 +4,12 @@ import org.geotools.styling.Rule;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
-import org.yaml.snakeyaml.events.ScalarEvent;
-import org.yaml.snakeyaml.events.SequenceEndEvent;
 
-public class SymbolizersHandler extends YsldParseHandler {
+public class SymbolizersParser extends YsldParseHandler {
 
     Rule rule;
 
-    public SymbolizersHandler(Rule rule, Factory factory) {
+    public SymbolizersParser(Rule rule, Factory factory) {
         super(factory);
         this.rule = rule;
     }
@@ -24,19 +22,19 @@ public class SymbolizersHandler extends YsldParseHandler {
             YamlMap sym = o.map();
 
             if (sym.has("point")) {
-                context.push(sym, "point", new PointHandler(rule, factory));
+                context.push(sym, "point", new PointParser(rule, factory));
             }
             else if (sym.has("line")) {
-                context.push(sym, "line", new LineHandler(rule, factory));
+                context.push(sym, "line", new LineParser(rule, factory));
             }
             else if (sym.has("polygon")) {
-                context.push(sym, "polygon", new PolygonHandler(rule, factory));
+                context.push(sym, "polygon", new PolygonParser(rule, factory));
             }
             else if (sym.has("text")) {
-                context.push(sym, "text", new TextHandler(rule, factory));
+                context.push(sym, "text", new TextParser(rule, factory));
             }
             else if (sym.has("raster")) {
-                context.push(sym, "raster", new RasterHandler(rule, factory));
+                context.push(sym, "raster", new RasterParser(rule, factory));
             }
         }
     }

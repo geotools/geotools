@@ -2,7 +2,7 @@ package org.geotools.ysld.encode;
 
 import org.geotools.styling.AnchorPoint;
 
-public class AnchorPointEncoder extends Encoder<AnchorPoint> {
+public class AnchorPointEncoder extends YsldEncodeHandler<AnchorPoint> {
 
     AnchorPointEncoder(AnchorPoint anchor) {
         super(anchor);

@@ -5,14 +5,11 @@ import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.opengis.filter.expression.Expression;
-import org.yaml.snakeyaml.events.MappingEndEvent;
-import org.yaml.snakeyaml.events.ScalarEvent;
 
-public abstract class FillHandler extends YsldParseHandler {
+public abstract class FillParser extends YsldParseHandler {
     Fill fill;
 
-    protected FillHandler(Factory factory) {
+    protected FillParser(Factory factory) {
         super(factory);
         fill = factory.style.createFill(null);
     }
@@ -27,7 +24,7 @@ public abstract class FillHandler extends YsldParseHandler {
         if (map.has("fill-opacity")) {
             fill.setOpacity(Util.expression(map.str("fill-opacity"), factory));
         }
-        context.push("fill-graphic", new GraphicHandler(factory) {
+        context.push("fill-graphic", new GraphicParser(factory) {
             @Override
             protected void graphic(Graphic g) {
                 fill.setGraphicFill(g);

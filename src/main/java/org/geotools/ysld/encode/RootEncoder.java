@@ -6,7 +6,7 @@ import org.geotools.styling.StyledLayerDescriptor;
 
 import java.util.Collections;
 
-public class RootEncoder extends Encoder<StyledLayerDescriptor> {
+public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
 
     RootEncoder(StyledLayerDescriptor sld) {
         super(Collections.singleton(sld).iterator());

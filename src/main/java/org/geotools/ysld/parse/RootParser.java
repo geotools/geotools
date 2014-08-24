@@ -3,16 +3,13 @@ package org.geotools.ysld.parse;
 import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.yaml.snakeyaml.events.Event;
-import org.yaml.snakeyaml.events.MappingStartEvent;
-import org.yaml.snakeyaml.events.ScalarEvent;
 
-public class RootHandler extends YsldParseHandler {
+public class RootParser extends YsldParseHandler {
 
     StyledLayerDescriptor sld;
     Style style;
 
-    public RootHandler() {
+    public RootParser() {
         super(new Factory());
     }
 
@@ -38,17 +35,17 @@ public class RootHandler extends YsldParseHandler {
         style.setName(root.str("name"));
 
         if (root.has("feature-styles")) {
-            context.push("feature-styles", new FeatureStyleHandler(style, factory));
+            context.push("feature-styles", new FeatureStyleParser(style, factory));
         }
         else if (root.has("rules")) {
-            context.push("rules", new RuleHandler(newFeatureTypeStyle(), factory));
+            context.push("rules", new RuleParser(newFeatureTypeStyle(), factory));
         }
         else if (root.has("symbolizers")) {
-            context.push("symbolizers", new SymbolizersHandler(newRule(), factory));
+            context.push("symbolizers", new SymbolizersParser(newRule(), factory));
         }
         else if (root.has("point") || root.has("line") || root.has("polygon")
             || root.has("text") || root.has("raster")) {
-            context.push(new SymbolizersHandler(newRule(), factory));
+            context.push(new SymbolizersParser(newRule(), factory));
         }
     }
 

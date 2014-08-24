@@ -10,11 +10,11 @@ import org.yaml.snakeyaml.events.ScalarEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public abstract class ExternalGraphicHandler extends YsldParseHandler {
+public abstract class ExternalGraphicParser extends YsldParseHandler {
 
     ExternalGraphic external;
 
-    public ExternalGraphicHandler(Factory factory) {
+    public ExternalGraphicParser(Factory factory) {
         super(factory);
         external = factory.style.createExternalGraphic((String)null, null);
     }

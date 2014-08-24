@@ -2,7 +2,7 @@ package org.geotools.ysld.encode;
 
 import org.geotools.styling.Fill;
 
-public class FillEncoder extends Encoder<Fill> {
+public class FillEncoder extends YsldEncodeHandler<Fill> {
 
     public FillEncoder(Fill fill) {
         super(fill);

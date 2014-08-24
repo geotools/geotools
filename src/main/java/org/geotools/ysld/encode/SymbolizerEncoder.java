@@ -4,7 +4,7 @@ import org.geotools.styling.Symbolizer;
 
 import java.util.Map;
 
-public abstract class SymbolizerEncoder<S extends Symbolizer> extends Encoder<S> {
+public abstract class SymbolizerEncoder<S extends Symbolizer> extends YsldEncodeHandler<S> {
 
     SymbolizerEncoder(S sym) {
         super(sym);

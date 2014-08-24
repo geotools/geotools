@@ -2,7 +2,7 @@ package org.geotools.ysld.encode;
 
 import org.geotools.styling.Displacement;
 
-public class DisplacementEncoder extends Encoder<Displacement> {
+public class DisplacementEncoder extends YsldEncodeHandler<Displacement> {
 
     DisplacementEncoder(Displacement displace) {
         super(displace);

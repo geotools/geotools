@@ -1,21 +1,16 @@
 package org.geotools.ysld.parse;
 
-import org.geotools.measure.Units;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.opengis.filter.expression.Expression;
-import org.yaml.snakeyaml.events.Event;
-import org.yaml.snakeyaml.events.MappingEndEvent;
-import org.yaml.snakeyaml.events.ScalarEvent;
 
-public class SymbolizerHandler<T extends Symbolizer> extends YsldParseHandler {
+public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
 
     protected T sym;
 
-    protected SymbolizerHandler(Rule rule, T sym, Factory factory) {
+    protected SymbolizerParser(Rule rule, T sym, Factory factory) {
         super(factory);
         rule.symbolizers().add(this.sym = sym);
     }
@@ -36,7 +31,7 @@ public class SymbolizerHandler<T extends Symbolizer> extends YsldParseHandler {
     class OptionsHandler extends YsldParseHandler {
 
         OptionsHandler() {
-            super(SymbolizerHandler.this.factory);
+            super(SymbolizerParser.this.factory);
         }
 
         @Override

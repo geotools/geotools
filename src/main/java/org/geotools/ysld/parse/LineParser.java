@@ -5,12 +5,10 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.opengis.filter.expression.Expression;
-import org.yaml.snakeyaml.events.ScalarEvent;
 
-public class LineHandler extends SymbolizerHandler<LineSymbolizer> {
+public class LineParser extends SymbolizerParser<LineSymbolizer> {
 
-    protected LineHandler(Rule rule, Factory factory) {
+    protected LineParser(Rule rule, Factory factory) {
         super(rule, factory.style.createLineSymbolizer(), factory);
     }
 
@@ -19,7 +17,7 @@ public class LineHandler extends SymbolizerHandler<LineSymbolizer> {
         super.handle(obj, context);
 
         YamlMap map = obj.map();
-        context.push(obj, new StrokeHandler(factory) {
+        context.push(obj, new StrokeParser(factory) {
             @Override
             protected void stroke(Stroke stroke) {
                 sym.setStroke(stroke);

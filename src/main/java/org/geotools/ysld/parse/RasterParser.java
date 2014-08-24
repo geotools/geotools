@@ -3,15 +3,11 @@ package org.geotools.ysld.parse;
 import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
-import org.yaml.snakeyaml.events.Event;
-import org.yaml.snakeyaml.events.MappingEndEvent;
-import org.yaml.snakeyaml.events.ScalarEvent;
 
-public class RasterHandler extends SymbolizerHandler<RasterSymbolizer> {
+public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
 
-    public RasterHandler(Rule rule, Factory factory) {
+    public RasterParser(Rule rule, Factory factory) {
         super(rule, factory.style.createRasterSymbolizer(), factory);
     }
 
@@ -25,7 +21,7 @@ public class RasterHandler extends SymbolizerHandler<RasterSymbolizer> {
             sym.setOpacity(Util.expression(map.str("opacity"), factory));
         }
 
-        context.push("color-map", new ColorMapHandler(factory) {
+        context.push("color-map", new ColorMapParser(factory) {
             @Override
             protected void colorMap(ColorMap colorMap) {
                 sym.setColorMap(colorMap);
@@ -40,7 +36,7 @@ public class RasterHandler extends SymbolizerHandler<RasterSymbolizer> {
         ContrastEnhancement contrast;
 
         protected ContrastEnhancementHandler() {
-            super(RasterHandler.this.factory);
+            super(RasterParser.this.factory);
             contrast = factory.style.createContrastEnhancement();
         }
 

@@ -8,17 +8,12 @@ import org.geotools.styling.Rule;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
-import org.opengis.filter.Filter;
-import org.yaml.snakeyaml.events.Event;
-import org.yaml.snakeyaml.events.MappingStartEvent;
-import org.yaml.snakeyaml.events.ScalarEvent;
-import org.yaml.snakeyaml.events.SequenceEndEvent;
 
-public class RuleHandler extends YsldParseHandler {
+public class RuleParser extends YsldParseHandler {
 
     FeatureTypeStyle featureStyle;
 
-    public RuleHandler(FeatureTypeStyle featureStyle, Factory factory) {
+    public RuleParser(FeatureTypeStyle featureStyle, Factory factory) {
         super(factory);
         this.featureStyle = featureStyle;
     }
@@ -71,7 +66,7 @@ public class RuleHandler extends YsldParseHandler {
                 }
             }
 
-            context.push(r, "symbolizers", new SymbolizersHandler(rule, factory));
+            context.push(r, "symbolizers", new SymbolizersParser(rule, factory));
         }
     }
 }

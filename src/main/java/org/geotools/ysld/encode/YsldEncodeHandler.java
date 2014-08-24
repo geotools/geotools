@@ -12,21 +12,21 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public abstract class Encoder<T> implements Iterator<Object> {
+public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     Deque<Map<String,Object>> stack = new ArrayDeque<Map<String, Object>>();
 
-    public Encoder() {
+    public YsldEncodeHandler() {
         reset();
     }
 
     Iterator<T> it;
 
-    Encoder(Iterator<T> it) {
+    YsldEncodeHandler(Iterator<T> it) {
         this.it = it;
     }
 
-    Encoder(T obj) {
+    YsldEncodeHandler(T obj) {
         this.it = obj != null ? Collections.singleton(obj).iterator() : (Iterator) Collections.emptyIterator();
     }
 
@@ -49,39 +49,39 @@ public abstract class Encoder<T> implements Iterator<Object> {
         throw new UnsupportedOperationException();
     }
 
-    Encoder reset() {
+    YsldEncodeHandler reset() {
         stack.clear();;
         stack.push(newMap());
         return this;
     }
 
-    Encoder push(String key) {
+    YsldEncodeHandler push(String key) {
         Map<String,Object> map = newMap();
         stack.peek().put(key, map);
         stack.push(map);
         return this;
     }
 
-    Encoder pop() {
+    YsldEncodeHandler pop() {
         stack.pop();
         return this;
     }
 
-    Encoder put(String key, Object val) {
+    YsldEncodeHandler put(String key, Object val) {
         if (val != null) {
             stack.peek().put(key, val);
         }
         return this;
     }
 
-    Encoder put(String key, Expression expr) {
+    YsldEncodeHandler put(String key, Expression expr) {
         if (expr != null) {
             put(key, toObjOrNull(expr));
         }
         return this;
     }
 
-    Encoder put(String key, Expression e1, Expression e2) {
+    YsldEncodeHandler put(String key, Expression e1, Expression e2) {
         Tuple t = Tuple.of(toObjOrNull(e1), toObjOrNull(e2));
         if (!t.isNull()) {
             put(key, t.toString());
@@ -89,7 +89,7 @@ public abstract class Encoder<T> implements Iterator<Object> {
         return this;
     }
 
-    Encoder inline(Encoder<?> e) {
+    YsldEncodeHandler inline(YsldEncodeHandler<?> e) {
         if (e.hasNext()) {
             e.next();
             inline(e.root());
@@ -97,7 +97,7 @@ public abstract class Encoder<T> implements Iterator<Object> {
         return this;
     }
 
-    Encoder inline(Map<String,Object> values) {
+    YsldEncodeHandler inline(Map<String,Object> values) {
         stack.peek().putAll(values);
         return this;
     }

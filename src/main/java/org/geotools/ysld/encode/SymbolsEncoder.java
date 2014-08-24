@@ -6,7 +6,7 @@ import org.geotools.styling.Mark;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.GraphicalSymbol;
 
-public class SymbolsEncoder extends Encoder<GraphicalSymbol>{
+public class SymbolsEncoder extends YsldEncodeHandler<GraphicalSymbol> {
 
     public SymbolsEncoder(Graphic g) {
         super(g.graphicalSymbols().iterator());

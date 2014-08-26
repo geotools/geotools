@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.factory.Hints;
+import org.geotools.gce.imagemosaic.jdbc.custom.JDBCPGRasterConfigurationBuilder;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
@@ -96,10 +97,23 @@ public class ImageMosaicJDBCFormat extends AbstractGridFormat implements Format 
 
 		try {
 			if (source instanceof File) {
-				sourceURL = ((File) source).toURI().toURL();
+			    File file = (File) source;
+			    String path = file.getPath(); 
+			    if (path.contains("pgraster:/")) {
+			        path = path.substring(path.indexOf("pgraster:/"));
+			        sourceURL = JDBCPGRasterConfigurationBuilder.createConfiguration(path, null);
+			    } else {
+				sourceURL = file.toURI().toURL();
+			    }
 			} else if (source instanceof URL) {
 				sourceURL = (URL) source;
 			} else if (source instanceof String) {
+			    String path = ((String)source);
+			    if (path.contains("pgraster:/")) {
+			        path = path.substring(path.indexOf("pgraster:/"));
+		                    sourceURL = JDBCPGRasterConfigurationBuilder.createConfiguration(path, null);
+		                } else {
+			    
 				final File tempFile = new File((String) source);
 
 				if (tempFile.exists()) {
@@ -112,6 +126,7 @@ public class ImageMosaicJDBCFormat extends AbstractGridFormat implements Format 
 					// return null;
 					// }
 				}
+		                }
 			}
 		} catch (Exception e) {
 			if (LOGGER.isLoggable(Level.FINE)) {
@@ -180,6 +195,7 @@ public class ImageMosaicJDBCFormat extends AbstractGridFormat implements Format 
 			return false;
 		}
 		
+		
 		if ((sourceUrl.getPath().endsWith(".xml")== false) 
 		        &&  (sourceUrl.getPath().endsWith(".XML")==false)) return false;
 
@@ -201,7 +217,7 @@ public class ImageMosaicJDBCFormat extends AbstractGridFormat implements Format 
 		return out.toString().indexOf("coverageName") != -1;
 	}
 
-	/**
+    /**
 	 * @see AbstractGridFormat#getReader(Object, Hints)
 	 */
 	@Override

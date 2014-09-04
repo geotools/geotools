@@ -154,6 +154,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     		put("NCHAR", String.class);
     		put("NVARCHAR", String.class);
     		put("NVARCHAR2", String.class);
+            put("DATE", java.sql.Date.class);
     	}
     };
     
@@ -1225,6 +1226,9 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     	overrides.put(Types.REAL, "DOUBLE PRECISION");
     	overrides.put(Types.DOUBLE, "DOUBLE PRECISION");
     	overrides.put(Types.FLOAT, "FLOAT");
+        // starting with Oracle 11 + recent JDBC drivers the DATE type does not have a mapping
+        // anymore in the JDBC driver, manually register it instead
+        overrides.put(Types.DATE, "DATE");
     }
     
     @Override

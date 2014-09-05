@@ -25,29 +25,31 @@ simple program to load and display a shapefile.
 
 We would like thank members of the `GeoTools User mailing list
 <https://lists.sourceforge.net/lists/listinfo/geotools-gt2-users>`_ for their feedback while we were
-preparing the course material, with special thanks to Tom Williamson for reviewing early drafts. If
-you have any questions or comments about this tutorial, please post them to the user list.
+preparing the course material, with special thanks to Eva Shon for testing/reviewing early drafts. If you have any questions or comments about this tutorial, please post them to the user list.
 
 Java Install
 ============
 
-We are going to be making use of Java so if you don't have a Java Development Kit (JDK) installed now is
-the time to do so. 
+We are going to be making use of Java so if you don't have a Java Development Kit (JDK) installed now is the time to do so. 
 
-#. Download the latest JDK from the the java.sun.com website:
+#. Download the latest Java 7 JDK (Java SE Development Kit):
 
-   http://java.sun.com/javase/downloads/index.jsp
+   * Oracle JDK: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+   * OpenJDK: http://openjdk.java.net
    
-#. At the time of writing the latest JDK was:
+#. At the time of writing the latest Java 7 release was:
    
-   jdk-7u1-windows-i586.exe
+   * jdk-7u67-windows-i586.exe
+   
+   GeoTools is not yet tested with Java 8, we are limited by build infrastructure and volunteers.
    
 #. Click through the installer you will need to set an acceptance a license agreement and so forth.
-   By default this will install to:     
+   By default this will install to:
    
    C:\\Program Files\\Java\\jdk1.7.0\\
      
 .. Note::
+
    In this tutorial we refer to file and directory paths as used by Windows. If you are fortunate
    enough to be using another operating system such as Linux or OSX all of the commands and source
    code below will work, just modify the paths to suit. 
@@ -79,17 +81,15 @@ Installing Maven
 
 #. Download Maven from http://maven.apache.org/download.html 
    
-   In this tutorial we refer to Maven version 2.2.1 which is the one used by many GeoTools
-   developers and users, at the time of writing. You can also use Maven version 3 but we don't have
-   as much experience using that version with GeoTools yet.
+   In this tutorial we refer to Maven version 3.2.3, we have had relatively little trouble with Maven version 3.
    
-#. Unzip the file apache-maven-2.2.1-bin.zip to C:\java\apache-maven-2.2.1
+#. Unzip the file apache-maven-3.2.3-bin.zip
 
 #. You need to have a couple of environmental variables set for maven to work. Use
    :menuselection:`Control Panel --> System --> Advanced --> Environmental Variables` to set the following.
    
-   * JAVA_HOME = :file:`C:\\Program Files\\Java\\jdk1.6.0_16`
-   * M2_HOME = :file:`C:\\java\\apache-maven-2.2.1`
+   * JAVA_HOME = :file:`C:\\Program Files\\Java\\jdk1.7.0\\`
+   * M2_HOME = :file:`C:\\java\\apache-maven-3.2.3`
    * PATH = :file:`%JAVA_HOME%\\bin;%M2_HOME%\\bin`
    
    .. image:: images/env-variables.jpg
@@ -141,8 +141,8 @@ Creating a new project
     ==================  ========================================================
        PLATFORM           LOCAL REPOSITORY
     ==================  ========================================================
-       Windows XP:      :file:`C:\\Documents and Settings\\Jody\\.m2\\repository`
-       Windows:         :file:`C:\\Users\\Jody\.m2\\repository`
+       Windows XP:      :file:`C:\\Documents and Settings\\You\\.m2\\repository`
+       Windows:         :file:`C:\\Users\\You\.m2\\repository`
        Linux and Mac:   :file:`~/.m2/repository`
     ==================  ========================================================
 
@@ -152,14 +152,23 @@ Creating a new project
    loading the file.
 
 #. We are going to start by defining the version number of GeoTools we wish to use. This workbook
-   was written for |release| although you may wish to try a newer version, or make use of a nightly
-   build by using |branch|-SNAPSHOT.
+   was written for |release| although you may wish to try a different version.
+   
+   For production a stable release is recommended:
     
    .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: <url>http://maven.apache.org</url>
         :end-before: <dependencies>
-
+   
+   To make use of a nightly build set the `geotools.version` property to |branch|-SNAPSHOT .
+    
+   .. literalinclude:: artifacts/pom2.xml
+        :language: xml
+        :start-after: <url>http://maven.apache.org</url>
+        :end-before: <dependencies>
+   
+   
 #. We specify the following dependencies (GeoTools modules which your application will need):
 
    .. literalinclude:: artifacts/pom.xml
@@ -174,22 +183,20 @@ Creating a new project
         :start-after: </dependencies>
         :end-before: </project>
 
+   If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
+   
+   .. literalinclude:: artifacts/pom2.xml
+     :language: xml
+     :start-after: </dependencies>
+     :end-before: </project>
+     
 #. Return to the command line and get maven to download the required jars for your project with this
    command::
     
       C:\java\example> mvn install
-    
+      
 #. If maven has trouble downloading any jar, you can try again by selecting
    :menuselection:`Project --> Update All Maven Dependencies`.
-    
-   If it really cannot connect you can switch to edit the `geotools.version` property in your
-   pom.xml to |branch|-SNAPSHOT (GeoTools development version) and then add a reference to the snapshot
-   repository as shown below:
-    
-   .. literalinclude:: artifacts/pom2.xml
-        :language: xml
-        :start-after: </dependencies>
-        :end-before: </project>
    
 
 Creating the Quickstart application
@@ -219,7 +226,7 @@ Running the application
    http://www.naturalearthdata.com/ project which is supported by the North American Cartographic
    Information Society.
    
-   * `50m-cultural.zip <http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/50m-cultural.zip>`_ 
+   * `50m_cultural.zip <http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/50m_cultural.zip>`_ 
 
    Unzip the above data into a location you can find easily such as the desktop.
 
@@ -234,7 +241,7 @@ Running the application
    
 #. A couple of things to note about the code example:
    
-* The shapefile is not loaded into memory. Instead it is read from disk each and every time it is needed
+* The shapefile is not loaded into memory. Instead it is read from disk each and every time it is needed.
   This approach allows you to work with data sets larger than available memory.
       
 * We are using a very basic display style here that just shows feature outlines. In the examples
@@ -276,7 +283,7 @@ Things to Try
      <http://docs.geotools.org/latest/javadocs/>`_ to work out what import statements are required
      in your source. The javadocs also list the GeoTools module in which each class is found.
 
-..  The ability to grab figure out what classes to import is a key skill; we are
+..  The ability to figure out what classes to import is a key skill; we are
     starting off here with a simple example with a single import.
   
 * Try and sort out what all the different "side car" files are - and what they are for. The sample
@@ -292,24 +299,6 @@ Things to Try
    :language: java
    :start-after: // start datastore
    :end-before:  // end datastore
-   
-
-* Important: GeoTools is an active open source project - you can quickly use maven to try out the
-  latest nightly build by changing your pom.xml file to use a "SNAPSHOT" release.
-  
-  At the time of writing |branch|-SNAPSHOT is under active development.
-
-  .. literalinclude:: artifacts/pom2.xml
-   :language: xml
-   :start-after: <url>http://maven.apache.org</url>
-   :end-before: <dependencies>
-
-  You will also need to change your pom.xml file to include the following snapshot repository:
-
-.. literalinclude:: artifacts/pom2.xml
-   :language: xml
-   :start-after: </dependencies>
-   :end-before: </project>
 
 * So what jars did maven actually use for the Quickstart application? Try the following on the
   command line:

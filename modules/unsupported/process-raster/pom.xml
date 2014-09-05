@@ -1,155 +1,205 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- =======================================================================    
-        Maven Project Configuration File                                        
-                                                                                
-        The Geotools Project                                                    
-            http://www.geotools.org/                                            
-                                                                                
-        Version: $Id$              
-     ======================================================================= -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+<!-- ======================================================================= 
+	Maven Project Configuration File The Geotools Project http://www.geotools.org/ 
+	Version: $Id$ ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                                  http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.geotools</groupId>
-        <artifactId>unsupported</artifactId>
-        <version>13-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>org.geotools</groupId>
+		<artifactId>unsupported</artifactId>
+		<version>13-SNAPSHOT</version>
+	</parent>
 
 
-  <!-- =========================================================== -->
-  <!--     Module Description                                      -->
-  <!-- =========================================================== -->
-    <groupId>org.geotools</groupId>
-    <artifactId>gt-process-raster</artifactId>
-    <packaging>jar</packaging>
-    <name>Process Raster</name>
+	<!-- =========================================================== -->
+	<!-- Module Description -->
+	<!-- =========================================================== -->
+	<groupId>org.geotools</groupId>
+	<artifactId>gt-process-raster</artifactId>
+	<packaging>jar</packaging>
+	<name>Process Raster</name>
 
-    <scm>
-        <connection>
+	<scm>
+		<connection>
             scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-raster/
         </connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-raster/</url>
-    </scm>
+		<url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-raster/</url>
+	</scm>
 
-    <description>
+	<description>
       Processes for handling of raster information; often wrapping up jai-tools
       functionality.
     </description>
-  
-    <licenses>
-        <license>
-            <name>Lesser General Public License (LGPL)</name>
-            <url>http://www.gnu.org/copyleft/lesser.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+
+	<licenses>
+		<license>
+			<name>Lesser General Public License (LGPL)</name>
+			<url>http://www.gnu.org/copyleft/lesser.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 
-  <!-- =========================================================== -->
-  <!--     Developers and Contributors                             -->
-  <!-- =========================================================== -->
-    <developers>
-        <developer>
-            <id>jive</id>
-            <name>Jody Garnett</name>
-            <email>jody.garnett@lisasoft.com</email>
-            <organization>LISAsoft</organization>
-            <organizationUrl>http://lisasoft.com</organizationUrl>
-            <timezone>+10</timezone>
-            <roles>
-                <role>Module Maintainer</role>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>mbedward</id>
-            <name>Michael Bedward</name>
-            <email>michael.bedward@gmail.com</email>
-            <timezone>+10</timezone>
-            <roles>
-                <role>Java Developer</role>
-                <role>Module Maintainer</role>
-            </roles>
-        </developer>
-    </developers>
+	<!-- =========================================================== -->
+	<!-- Developers and Contributors -->
+	<!-- =========================================================== -->
+	<developers>
+		<developer>
+			<id>jive</id>
+			<name>Jody Garnett</name>
+			<email>jody.garnett@lisasoft.com</email>
+			<organization>LISAsoft</organization>
+			<organizationUrl>http://lisasoft.com</organizationUrl>
+			<timezone>+10</timezone>
+			<roles>
+				<role>Module Maintainer</role>
+				<role>Java Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>mbedward</id>
+			<name>Michael Bedward</name>
+			<email>michael.bedward@gmail.com</email>
+			<timezone>+10</timezone>
+			<roles>
+				<role>Java Developer</role>
+				<role>Module Maintainer</role>
+			</roles>
+		</developer>
+	</developers>
 
+	<properties>
+		<jf.version>0.3-SNAPSHOT</jf.version>
+	</properties>
 
-  <!-- =========================================================== -->
-  <!--     Dependency Mangement                                    -->
-  <!-- =========================================================== -->
-    <dependencies>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-process</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-render</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+	<repositories>
+		<repository>
+			<id>jaitools-snapshots</id>
+			<name>jaitools snapshots</name>
+			<url>http://oss.sonatype.org/content/repositories/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
-        <dependency>
-          <groupId>org.jaitools</groupId>
-          <artifactId>jt-zonalstats</artifactId>
-          <version>${jt.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>org.jaitools</groupId>
-          <artifactId>jt-rangelookup</artifactId>
-          <version>${jt.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>org.jaitools</groupId>
-          <artifactId>jt-contour</artifactId>
-          <version>${jt.version}</version>
-        </dependency>    
-        <dependency>
-          <groupId>org.jaitools</groupId>
-          <artifactId>jt-vectorize</artifactId>
-          <version>${jt.version}</version>
-        </dependency>            
-        <dependency>
-          <groupId>org.jaitools</groupId>
-          <artifactId>jt-utils</artifactId>
-          <version>${jt.version}</version>
-        </dependency>
-        
-        <!-- Test dependencies -->
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-sample-data</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-shapefile</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-	        <groupId>org.geotools</groupId>
-	        <artifactId>gt-property</artifactId>
-	        <version>${project.version}</version>
-	        <scope>test</scope>
-        </dependency>
-        <dependency>
-	        <groupId>org.geotools</groupId>
-	        <artifactId>gt-geotiff</artifactId>
-	        <version>${project.version}</version>
-	        <scope>test</scope>
-        </dependency>
-        <dependency>
-	        <groupId>org.geotools</groupId>
-	        <artifactId>gt-epsg-hsql</artifactId>
-	        <version>${project.version}</version>
-	        <scope>test</scope>
-        </dependency>
-    </dependencies>
+	<!-- =========================================================== -->
+	<!-- Dependency Mangement -->
+	<!-- =========================================================== -->
+	<dependencies>
+		<dependency>
+			<groupId>org.jaitools</groupId>
+			<artifactId>jt-jiffle-language</artifactId>
+			<version>${jf.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.jaitools</groupId>
+					<artifactId>jt-utils</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+			<version>1.8.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant-launcher</artifactId>
+			<version>1.8.4</version>
+		</dependency>
+		<dependency>
+			<groupId>it.geosolutions.jaiext.bandmerge</groupId>
+			<artifactId>jt-bandmerge</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-process</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-render</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jaitools</groupId>
+			<artifactId>jt-zonalstats</artifactId>
+			<version>${jt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jaitools</groupId>
+			<artifactId>jt-rangelookup</artifactId>
+			<version>${jt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jaitools</groupId>
+			<artifactId>jt-contour</artifactId>
+			<version>${jt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jaitools</groupId>
+			<artifactId>jt-vectorize</artifactId>
+			<version>${jt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jaitools</groupId>
+			<artifactId>jt-utils</artifactId>
+			<version>${jt.version}</version>
+		</dependency>
+		<!-- JAI-Ext -->
+		<dependency>
+			<groupId>it.geosolutions.jaiext.bandmerge</groupId>
+			<artifactId>jt-bandmerge</artifactId>
+			<version>${jaiext.version}</version>
+		</dependency>
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-sample-data</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-shapefile</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-property</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-geotiff</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-epsg-hsql</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 </project>

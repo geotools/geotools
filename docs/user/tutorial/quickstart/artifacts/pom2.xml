@@ -18,7 +18,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -44,12 +44,12 @@
             <url>http://download.osgeo.org/webdav/geotools/</url>
         </repository>
         <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>opengeo</id>
-            <name>OpenGeo Maven Repository</name>
-            <url>http://repo.opengeo.org</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <id>boundless</id>
+          <name>Boundless Maven Repository</name>
+          <url>http://repo.boundlessgeo.com/main</url>
         </repository>
     </repositories>
 </project>

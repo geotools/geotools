@@ -46,7 +46,7 @@ We are going to be making use of Java so if you don't have a Java Development Ki
 #. Click through the installer you will need to set an acceptance a license agreement and so forth.
    By default this will install to:
    
-   C:\\Program Files\\Java\\jdk1.7.0\\
+   :file:`C:\\Program Files (x86)\\Java\jdk1.7.0_67`
      
 .. Note::
 
@@ -85,14 +85,14 @@ Installing Maven
    
 #. Unzip the file apache-maven-3.2.3-bin.zip
 
-#. You need to have a couple of environmental variables set for maven to work. Use
-   :menuselection:`Control Panel --> System --> Advanced --> Environmental Variables` to set the following.
+#. You need to have a couple of environmental variables set for maven to work. Navigate to
+   :menuselection:`Control Panel --> System --> Advanced`. Change to the :guilabel:`Advanced` tab and click :guilabel:`Environmental Variables` button.
    
-   * JAVA_HOME = :file:`C:\\Program Files\\Java\\jdk1.7.0\\`
+   * JAVA_HOME = :file:`C:\\Program Files (x86)\\Java\\jdk1.7.0_67`
    * M2_HOME = :file:`C:\\java\\apache-maven-3.2.3`
    * PATH = :file:`%JAVA_HOME%\\bin;%M2_HOME%\\bin`
    
-   .. image:: images/env-variables.jpg
+   .. image:: images/env-variables.png
       :scale: 60
    
 #. Open up a commands prompt :menuselection:`Accessories --> Command Prompt`
@@ -101,7 +101,15 @@ Installing Maven
    
       C:java> mvn --version
       
-#. This should produce something similar to the following output
+#. This should produce something similar to the following output::
+
+      C:\java>mvn -version
+      Apache Maven 3.2.3 (33f8c3e1027c3ddde99d3cdebad2656a31e8fdf4; 2014-08-11T13:58:10-07:00)
+      Maven home: C:\java\apache-maven-3.2.3
+      Java version: 1.7.0_67, vendor: Oracle Corporation
+      Java home: C:\Program Files (x86)\Java\jdk1.7.0_67\jre
+      Default locale: en_US, platform encoding: Cp1252
+      OS name: "windows 7", version: "6.1", arch: "x86", family: "windows"
 
    .. image:: images/maven-version.png
       :scale: 60
@@ -195,23 +203,21 @@ Creating a new project
     
       C:\java\example> mvn install
       
-#. If maven has trouble downloading any jar, you can try again by selecting
-   :menuselection:`Project --> Update All Maven Dependencies`.
+#. If maven has trouble downloading any jar, you can always try again. A national mirror is often faster than the default maven central.
    
-
 Creating the Quickstart application
 -----------------------------------
 
 Now we are ready to create the application.
 
-#. Go to the directory tutorial\\src\\main\\java\\org\\geotools and create a **tutorial** sub-directory.
+#. Go to the directory :file:`tutorial` and create directory :file:`rc\\main\\java\\org\\geotools\\tutorial\\quickstart`
 
 #. In the new sub-directory, create a new file **Quickstart.java** using your text editor.
 
 #. Fill in the following code:
   
-  .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/Quickstart.java
-        :language: java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/Quickstart.java
+      :language: java
 
 #. Go back to the top project directory (the one that contains your pom.xml file) and build the
    application with the command::
@@ -232,7 +238,7 @@ Running the application
 
 #. You can run the application using Maven on the command line::
    
-     mvn exec:java -Dexec.mainClass=org.geotools.tutorial.Quickstart
+     mvn exec:java -Dexec.mainClass=org.geotools.tutorial.quickstart.Quickstart
    
 #. The application will connect to your shapefile, produce a map context, and display the shapefile.
 

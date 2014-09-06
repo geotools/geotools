@@ -39,9 +39,10 @@ public class RectangularClipProcess implements VectorProcess {
     @DescribeResult(name = "result", description = "Clipped feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
-            @DescribeParameter(name = "clip", description = "Bounds of clipping rectangle") ReferencedEnvelope clip)
+            @DescribeParameter(name = "clip", description = "Bounds of clipping rectangle") ReferencedEnvelope clip,
+            @DescribeParameter(name = "preserveZ", description = "Attempt to preserve Z values from the original geometry (interpolate value for new points)") Boolean preserveZ)
             throws ProcessException {
-        return new ClipProcess().execute(features, JTS.toGeometry(clip));
+        return new ClipProcess().execute(features, JTS.toGeometry(clip),preserveZ);
     }
 
     

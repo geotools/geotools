@@ -25,7 +25,12 @@ quickly be distributed to to all GeoTools users.
    :maxdepth: 1
    
    intro
-   creating
+   source
+   read
+   store
+   write
+   optimisation
+   qa
 
 .. note::
    
@@ -40,18 +45,4 @@ quickly be distributed to to all GeoTools users.
 This is an intermediate workshop -if you are unfamiliar with mapping concepts you may wish to try the tutorials on features, geometries and coordinate reference systems first.
 
 Due to the length of this workshop we will create our data store in stages, trying out the functionality as we implement.
-
    
-.. note:: 
-   
-   Good tutorials do not just teach, they get pressed into production. By popular request the CSVDataStore outlined in this tutorial is available as an "unsupported" plugin:
-
-   * :download:`CSVDataStore.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java>`
-   * :download:`CSVDataStoreFactory.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java>`
-   * :download:`CSVFeatureReader.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureReader.java>`
-   * :download:`CSVFeatureSource.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureSource.java>`
-   * :download:`META-INF/services/org.geotools.data.DataStoreFactorySpi </../../modules/unsupported/csv/src/main/resources/META-INF/services/org.geotools.data.DataStoreFactorySpi>`
-   
-   There is also a fork of this work in the GeoServer codebase:
-   
-   * `org.geoserver.importer.csv <https://github.com/geoserver/geoserver/tree/6058e38a0c74247ee6fea3db81c3aecbca1f40d2/src/extension/importer/core/src/main/java/org/geoserver/importer/csv>`_ (GitHub)

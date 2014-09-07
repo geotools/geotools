@@ -1,4 +1,4 @@
-package org.geotools.tutorial.quickstart;
+package org.geotools.tutorial;
 
 import java.io.File;
 
@@ -37,7 +37,7 @@ public class Quickstart {
         // Create a map content and add our shapefile to it
         MapContent map = new MapContent();
         map.setTitle("Quickstart");
-        
+
         Style style = SLD.createSimpleStyle(featureSource.getSchema());
         Layer layer = new FeatureLayer(featureSource, style);
         map.addLayer(layer);

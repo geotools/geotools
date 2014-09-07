@@ -1,4 +1,4 @@
-package org.geotools.tutorial.quickstart;
+package org.geotools.tutorial;
 
 import java.io.File;
 
@@ -25,7 +25,7 @@ public class QuickstartCache {
     /**
      * This method demonstrates using a memory-based cache to speed up the display (e.g. when
      * zooming in and out).
-     * 
+     *
      * There is just one line extra compared to the main method, where we create an instance of
      * CachingFeatureStore.
      */

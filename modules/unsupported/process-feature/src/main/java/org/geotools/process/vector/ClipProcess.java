@@ -74,7 +74,7 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
  * @source $URL$
  */
 @DescribeProcess(title = "Clip", description = "Clips (crops) features to a given geometry")
-public class ClipProcess {
+public class ClipProcess implements VectorProcess{
 
 	static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     
@@ -84,7 +84,7 @@ public class ClipProcess {
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
             @DescribeParameter(name = "clip", description = "Geometry to use for clipping (in same CRS as input features)") Geometry clip,
-            @DescribeParameter(name = "preserveZ", description = "Attempt to preserve Z values from the original geometry (interpolate value for new points)") Boolean preserveZ)
+            @DescribeParameter(name = "preserveZ", min=0,description = "Attempt to preserve Z values from the original geometry (interpolate value for new points)") Boolean preserveZ)
             throws ProcessException {
         // only get the geometries in the bbox of the clip
         Envelope box = clip.getEnvelopeInternal();

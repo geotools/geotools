@@ -1,22 +1,31 @@
 package org.geotools.process.vector;
 
-import junit.framework.TestCase;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.feature.NameImpl;
 import org.geotools.test.TestData;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.type.Name;
 
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
-public class ClipProcessTest extends TestCase {
+public class ClipProcessTest extends Assert {
     
     private SimpleFeatureSource fsMeters;
     private SimpleFeatureSource fsDegrees;
@@ -24,7 +33,8 @@ public class ClipProcessTest extends TestCase {
     private SimpleFeatureSource fsCollinear;
     private SimpleFeatureSource fsMultilines;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         PropertyDataStore store = new PropertyDataStore(TestData.file(this, ""));
         fsMeters = store.getFeatureSource("squaresMeters");
         fsDegrees = store.getFeatureSource("squaresDegrees");
@@ -33,6 +43,7 @@ public class ClipProcessTest extends TestCase {
         fsCollinear = store.getFeatureSource("collinear");
     }
     
+    @Test
     public void testClipPoly3DIncluded() throws Exception {
         SimpleFeatureCollection features = fsMeters.getFeatures();
         ClipProcess cp = new ClipProcess();
@@ -41,6 +52,7 @@ public class ClipProcessTest extends TestCase {
         assertSquaresMetersIdentical(result);
     }
     
+    @Test
     public void testClipPoly3DOnBorder() throws Exception {
         SimpleFeatureCollection features = fsMeters.getFeatures();
         ClipProcess cp = new ClipProcess();
@@ -48,7 +60,8 @@ public class ClipProcessTest extends TestCase {
         assertEquals(2, result.size());
         assertSquaresMetersIdentical(result);
     }
-    
+
+    @Test
     public void testClipPoly3DNewVertices() throws Exception {
         SimpleFeatureCollection features = fsMeters.getFeatures();
         ClipProcess cp = new ClipProcess();
@@ -73,7 +86,8 @@ public class ClipProcessTest extends TestCase {
         assertFalse(fi.hasNext());
         fi.close();
     }
-    
+
+    @Test
     public void testClipPoly3DFullyInside() throws Exception {
         SimpleFeatureCollection features = fsMeters.getFeatures();
         ClipProcess cp = new ClipProcess();
@@ -128,7 +142,8 @@ public class ClipProcessTest extends TestCase {
         assertOrdinates(5000, 0, Double.NaN, cs, 3);
         assertOrdinates(0, 0, Double.NaN, cs, 4);
     }
-    
+
+    @Test
     public void testClipLine3DIncluded() throws Exception {
         SimpleFeatureCollection features = fsLines.getFeatures();
         ClipProcess cp = new ClipProcess();
@@ -147,7 +162,8 @@ public class ClipProcessTest extends TestCase {
         assertOrdinates(10000, 10000, 2, cs, 2);
         fi.close();
     }
-    
+
+    @Test
     public void testClipLine3DMidFirstSegment() throws Exception {
         SimpleFeatureCollection features = fsLines.getFeatures();
         ClipProcess cp = new ClipProcess();
@@ -165,7 +181,27 @@ public class ClipProcessTest extends TestCase {
         assertOrdinates(5000, 0, 0.5, cs, 1);
         fi.close();
     }
-    
+    @Test
+    public void testService() throws Exception{
+        VectorProcessFactory factory = new VectorProcessFactory();
+        Set<Name> names = factory.getNames(); 
+        assertFalse(names.isEmpty());
+        assertTrue(names.contains(new NameImpl("vec", "Clip")));
+        
+        SimpleFeatureCollection features = fsLines.getFeatures();
+        
+
+        Map<String, Object> arguments= new HashMap<String, Object>();
+        arguments.put("features", features);
+        arguments.put("clip", new WKTReader().read("POLYGON((-10 -10, -10 10, 5000 10, 5000 -10, -10 -10))"));
+        
+        Map<String, Object> output = factory.create(new NameImpl("vec", "Clip")).execute(arguments, null);
+        SimpleFeatureCollection result=(SimpleFeatureCollection) output.get("result");
+        assertEquals(1, result.size());
+       
+        
+    }
+    @Test
     public void testClipCollinearLine3DMidFirstSegment() throws Exception {
         SimpleFeatureCollection features = fsCollinear.getFeatures();
         ClipProcess cp = new ClipProcess();
@@ -185,7 +221,8 @@ public class ClipProcessTest extends TestCase {
         assertOrdinates(5000, 0, 0.5, cs, 3);
         fi.close();
     }
-    
+
+    @Test
     public void testClipLine3DMidSecondSegment() throws Exception {
         SimpleFeatureCollection features = fsLines.getFeatures();
         ClipProcess cp = new ClipProcess();
@@ -203,7 +240,8 @@ public class ClipProcessTest extends TestCase {
         assertOrdinates(10000, 10000, 2, cs, 1);
         fi.close();
     }
-    
+
+    @Test
     public void testClipExtractBend() throws Exception {
         SimpleFeatureCollection features = fsLines.getFeatures();
         ClipProcess cp = new ClipProcess();
@@ -222,7 +260,8 @@ public class ClipProcessTest extends TestCase {
         assertOrdinates(10000, 5000, 1.5, cs, 2);
         fi.close();
     }
-    
+
+    @Test
     public void testClipExtractSeparateBitsLowLine() throws Exception {
         SimpleFeatureCollection features = fsLines.getFeatures();
         ClipProcess cp = new ClipProcess();
@@ -247,7 +286,8 @@ public class ClipProcessTest extends TestCase {
         assertOrdinates(9000, 0, 0.9, cs, 1);
 
     }
-    
+
+    @Test
     public void testClipExtractSeparateBitsBothLines() throws Exception {
         SimpleFeatureCollection features = fsLines.getFeatures();
         ClipProcess cp = new ClipProcess();
@@ -272,7 +312,8 @@ public class ClipProcessTest extends TestCase {
         assertOrdinates(10000, 5000, 1.5, cs, 1);
 
     }
-    
+
+    @Test
     public void testClipMultiline() throws Exception {
         SimpleFeatureCollection features = fsMultilines.getFeatures();
         ClipProcess cp = new ClipProcess();

@@ -26,4 +26,4 @@ to GIS workshop making use of examples from GeoTools and other Java libraries.
    function
    process
    abstractdatastore
-   contentdatastore
+   datastore/index

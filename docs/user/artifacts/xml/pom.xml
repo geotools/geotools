@@ -27,12 +27,12 @@
             <url>http://download.osgeo.org/webdav/geotools/</url>
         </repository>
         <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>opengeo</id>
-            <name>OpenGeo Maven Repository</name>
-            <url>http://repo.opengeo.org</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <id>boundless</id>
+          <name>Boundless Maven Repository</name>
+          <url>http://repo.boundlessgeo.com/main</url>
         </repository>
     </repositories>
 

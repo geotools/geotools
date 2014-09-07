@@ -1,4 +1,12 @@
-package org.geotools.tutorial.datastore;
+/* GeoTools - The Open Source Java GIS Toolkit
+ * http://geotools.org
+ *
+ * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ * This file is hereby placed into the Public Domain. This means anyone is
+ * free to do whatever they wish with this file. Use it well and enjoy!
+ */
+package org.geotools.tutorial.csv;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;

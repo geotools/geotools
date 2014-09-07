@@ -38,7 +38,8 @@ public class QuickstartCache {
 
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
         SimpleFeatureSource featureSource = store.getFeatureSource();
-
+        
+        // CachingFeatureSource is deprecated as experimental (not yet production ready)
         CachingFeatureSource cache = new CachingFeatureSource(featureSource);
 
         // Create a map content and add our shapefile to it

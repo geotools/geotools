@@ -15,14 +15,10 @@ doing its job, as a result you are not responsible for many of the usual DataSto
 
 There is a tutorial showing how to read a simple comma separated value file:
 
-* :doc:`/tutorial/contentdatastore` (tutorial)
-* :download:`CSVDataStore.java </../src/main/java/org/geotools/tutorial/datastore/CSVDataStore.java>`
-* :download:`CSVFeatureReader.java </../src/main/java/org/geotools/tutorial/datastore/CSVFeatureReader.java>`
-* :download:`CSVFeatureSource.java </../src/main/java/org/geotools/tutorial/datastore/CSVFeatureSource.java>`
+* :doc:`/tutorial/datastore/index` (tutorial)
 
 Central to this design is the ContentEntry and ContentState classes. These classes are provided to you as you are implementing
-for general note keeping, you can override the instance that is created if you need to extend one of these classes to store
-information or caches specific to your implementation.
+for general note keeping. You can override the instance of ContentState that is created if you need to track additional details cache information specific to your implementation.
 
 * ContentEntry stores all the notes needed for a featureSource to function.
   

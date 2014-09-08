@@ -6,7 +6,7 @@
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file. Use it well and enjoy!
  */
-package org.geotools.tutorial.csv;
+package org.geotools.data.csv;
 
 import static org.junit.Assert.assertTrue;
 
@@ -47,6 +47,9 @@ import org.opengis.filter.identity.FeatureId;
 import com.csvreader.CsvReader;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * Informal test used to document expected functionality for workshop.
+ */
 public class CSVTest {
 
     @Test

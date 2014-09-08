@@ -138,3 +138,5 @@ Time to create a new project making use of this library:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVTest.java
       :language: java
+      :end-before: // locations.csv end
+      :append: }

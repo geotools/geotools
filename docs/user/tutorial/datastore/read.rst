@@ -1,14 +1,14 @@
 Using CSV DataStore to Read Files
 ---------------------------------
 
-In this part we examine the abilities of the PropertyDataStore implemented in Part 2.
+In this part we examine the abilities of the CSVDataStore.
 
 DataStore
 ^^^^^^^^^
 
 Now that we have implemented a simple DataStore we can explore some of the capabilites made available to us.
 
-PropertyDataStore API for data access:
+CSVDataStore API for data access:
 
 * DataStore.getTypeNames()
 * DataStore.getSchema( typeName )
@@ -16,7 +16,7 @@ PropertyDataStore API for data access:
 * DataStore.getFeatureSource( typeName )
 
 If you would like to follow along with these examples you can
-:download:`PropertyExamples.java </../src/main/java/org/geotools/data/property/PropertyExamples.java>`.
+:download:`CSVExamples.java </../src/main/java/org/geotools/tutorial/csv/CSVTest.java>`.
 
 * DataStore.getTypeNames()
   
@@ -24,7 +24,7 @@ If you would like to follow along with these examples you can
   
   getTypeNames() example:
 
-  .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVTest.java
      :language: java
      :start-after: // example1 start
      :end-before: // example1 end
@@ -42,7 +42,7 @@ If you would like to follow along with these examples you can
 
   getSchema( typeName ) example:
 
-  .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVTest.java
      :language: java
      :start-after: // example2 start
      :end-before: // example2 end
@@ -60,7 +60,7 @@ If you would like to follow along with these examples you can
   of our DataStore.
   
   The method signature may be more complicated than expected, we certainly did not talk
-  about Query or Transactions when we implemented our PropertyDataStore. This is something
+  about Query or Transactions when we implemented our CSVDataStore. This is something
   that AbstractDataStore is handling for you and will be discussed later in the section
   on optimisation.
 
@@ -118,7 +118,7 @@ If you would like to follow along with these examples you can
   With all of that in mind we can now proceed to our
   DataStore.getFeatureReader( featureType, filter, transaction ) example:
     
-  .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVTest.java
      :language: java
      :start-after: // example3 start
      :end-before: // example3 end
@@ -132,7 +132,7 @@ If you would like to follow along with these examples you can
 	
   Example with a quick "selection" Filter:
     
-  .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVTest.java
      :language: java
      :start-after: // example4 start
      :end-before: // example4 end
@@ -151,11 +151,11 @@ If you would like to follow along with these examples you can
   named FeatureType provided by the DataStore. The type of the returned instance indicates
   the capabilities available.
   
-  This far in our tutorial PropertyDataStore will only support an instance of FeatureSource.
+  This far in our tutorial CSVDataStore will only support an instance of FeatureSource.
 
   Example getFeatureSource:
     
-  .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVTest.java
      :language: java
      :start-after: // example5 start
      :end-before: // example5 end
@@ -222,7 +222,7 @@ provide optimised implementations that handles the above methods natively.
 
 * FeatureCollection Example:
   
-  .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVTest.java
      :language: java
      :start-after: // example6 start
      :end-before: // example6 end
@@ -236,19 +236,17 @@ provide optimised implementations that handles the above methods natively.
 
 .. note::
    
-   In the above example, FeatureSource.count(Query.ALL) will return -1, indicating that the value
-   is expensive for the DataStore to calculate, or at least that our PropertyDataStore
-   implementation does not provide an optimised implementation.
-   
-   FeatureCollection.size() will always produce an answer
+   Warning: When calling ``FeatureSource.count(Query.ALL)`` be aware a DataStore implementation may return ``-1`` indicating that the value is expensive for the DataStore to calculate. 
    
    You can think of this as:
    
    * FeatureSource is a way to perform a quick check for a precanned answer for count and bounds.
-     Some formats such as shapefile will keep this information in the header at the top of the
-     file.
+     The Shapefile format will keep this information in the header at the top of the
+     file. In a similar fashion a Database may be able to quickly check an index for this information.
    * FeatureCollection checks the contents, and possibly checks each item, for an answer to
      size and bounds.
+     
+   This is a terrible API tradeoff to have to make, resulting from implementations taking ten minuets to performing a "full table scan".
      
 Care should be taken when using the collection() method to capture the contents of a DataStore in
 memory. GIS applications often produce large volumes of information and can place a strain

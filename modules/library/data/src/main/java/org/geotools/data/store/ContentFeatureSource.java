@@ -399,7 +399,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             q.setFilter(ff.and(idFilter, query.getFilter()));
             bounds = getBoundsInternal(q);
             
-            // update with the diff contents, all added feaatures and all modified, not deleted ones
+            // update with the diff contents, all added feature and all modified, not deleted ones
             if(bounds != null) {
                 // new ones
                 it = diff.getAdded().values().iterator();

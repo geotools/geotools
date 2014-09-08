@@ -484,7 +484,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
     }
     public String getID() {
-        throw new UnsupportedOperationException();
+        return null; // Only useful for XML Content
     }
 
 }

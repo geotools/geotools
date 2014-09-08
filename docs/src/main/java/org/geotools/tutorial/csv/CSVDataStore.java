@@ -44,7 +44,6 @@ public class CSVDataStore extends ContentDataStore {
     CsvReader read() throws IOException {
         Reader reader = new FileReader(file);
         CsvReader csvReader = new CsvReader(reader);
-        csvReader.close();
         return csvReader;
     }
 

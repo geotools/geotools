@@ -25,6 +25,11 @@ import org.opengis.feature.type.Name;
 
 import com.csvreader.CsvReader;
 
+/**
+ * DataStore for Comma Seperated Value (CSV) files.
+ * 
+ * @author Jody Garnett (Boundless)
+ */
 public class CSVDataStore extends ContentDataStore {
 // header end
     

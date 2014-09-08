@@ -25,15 +25,11 @@ import org.opengis.filter.Filter;
 import com.csvreader.CsvReader;
 import com.vividsolutions.jts.geom.Point;
 
-/* GeoTools - The Open Source Java GIS Toolkit
- * http://geotools.org
- *
- * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
- *
- * This file is hereby placed into the Public Domain. This means anyone is
- * free to do whatever they wish with this file. Use it well and enjoy!
+/**
+ * Read-only access to CSV File.
+ * 
+ * @author Jody Garnett (Boundless)
  */
-// header start
 public class CSVFeatureSource extends ContentFeatureSource {
 
     public CSVFeatureSource(ContentEntry entry, Query query) {
@@ -125,6 +121,6 @@ public class CSVFeatureSource extends ContentFeatureSource {
             reader.close();
         }
     }
-    // schema start
+    // schema end
 
 }

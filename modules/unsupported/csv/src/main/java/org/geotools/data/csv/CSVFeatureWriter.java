@@ -1,3 +1,11 @@
+/* GeoTools - The Open Source Java GIS Toolkit
+ * http://geotools.org
+ *
+ * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ * This file is hereby placed into the Public Domain. This means anyone is
+ * free to do whatever they wish with this file. Use it well and enjoy!
+ */
 package org.geotools.data.csv;
 
 import java.io.File;
@@ -16,9 +24,9 @@ import com.vividsolutions.jts.geom.Point;
 
 // Obviously, WIP...
 /**
- * 
+ * Iterator supporting writing of feature content.
  *
- * @source $URL$
+ * @author Lee Breisacher
  */
 public class CSVFeatureWriter extends CSVFeatureReader implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 

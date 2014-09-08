@@ -7,6 +7,7 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -20,12 +21,22 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @source $URL$
  */
 public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
-
+    
+    /** State used when reading file */
     protected ContentState state;
-    protected CsvReader reader;
-    private SimpleFeature next;
-    protected SimpleFeatureBuilder builder;
+    
+    /**
+     * Current row number - used in the generation of FeatureId.
+     * TODO: Subclass ContentState to track row
+     */
     private int row;
+
+    protected CsvReader reader;
+    
+    /** Utility class used to build features */
+    protected SimpleFeatureBuilder builder;
+
+    /** Factory class for goemetry creation */
     private GeometryFactory geometryFactory;
 
     public CSVFeatureReader(ContentState contentState) throws IOException {
@@ -40,11 +51,24 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
         row = 0;
     }
-
+    /** Access FeatureType (documenting avaiable attributes) */
     public SimpleFeatureType getFeatureType() {
         return (SimpleFeatureType) state.getFeatureType();
     }
-
+    // class definition end
+    
+    // read start
+    /** The next feature */
+    private SimpleFeature next;
+    
+    /**
+     * Access the next feature (if available).
+     * 
+     * @return SimpleFeature read from property file
+     * @throws IOException If problem encountered reading file
+     * @throws IllegalAttributeException for invalid data
+     * @throws NoSuchElementException If hasNext() indicates no more features are available
+     */
     public SimpleFeature next() throws IOException, IllegalArgumentException,
             NoSuchElementException {
         SimpleFeature feature;
@@ -57,7 +81,24 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         }
         return feature;
     }
-    
+    /**
+     * Check if additional content is available.
+     * 
+     * @return <code>true</code> if additional content is available
+     * @throws IOException
+     */
+    public boolean hasNext() throws IOException {
+        if( next != null ){
+            return true;
+        }
+        else {
+            next = readFeature(); // read next feature so we can check
+            return next != null;
+        }
+    }
+    // read end
+    // parse start
+    /** Read a line of content from CSVReader and parse into values */
     SimpleFeature readFeature() throws IOException {
         if( reader == null ){
             throw new IOException("FeatureReader is closed; no additional features can be read");
@@ -84,22 +125,21 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         
         return this.buildFeature();
     }
+    // read start
     
+    /** Build feature using the current row number to generate FeatureId */
     protected SimpleFeature buildFeature() {
         row += 1;
         return builder.buildFeature( state.getEntry().getTypeName()+"."+row );
     }
+    // parse start
 
-    public boolean hasNext() throws IOException {
-        if( next != null ){
-            return true;
-        }
-        else {
-            next = readFeature(); // read next feature so we can check
-            return next != null;
-        }
-    }
-
+    // close start
+    /**
+     * Close the FeatureReader when not in use.
+     * 
+     * @throws IOException
+     */
     public void close() throws IOException {
         if( reader != null ){
             reader.close();
@@ -109,5 +149,5 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         geometryFactory = null;
         next = null;
     }
-
+    // close start
 }

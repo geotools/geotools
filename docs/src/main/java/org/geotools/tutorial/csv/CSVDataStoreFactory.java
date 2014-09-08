@@ -21,7 +21,7 @@ import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.util.KVP;
 
 /**
- * 
+ * Provide access to CSV Files.
  *
  * @source $URL$
  */
@@ -73,12 +73,9 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     // metadata end
 
     // getParametersInfo start
-    /** File extension used for CSV files */
-    private static final String FILE_TYPE = "csv";
-
     /** Parameter description of information required to connect */
-    public static final Param FILE_PARAM = new Param("file", File.class, FILE_TYPE + " file", true,
-            null, new KVP(Param.EXT, FILE_TYPE));
+    public static final Param FILE_PARAM = new Param("file", File.class, "Comma seperated value file", true,
+            null, new KVP(Param.EXT, "csv"));
 
     public Param[] getParametersInfo() {
         return new Param[] { FILE_PARAM };
@@ -96,7 +93,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
         try {
             File file = (File) FILE_PARAM.lookUp(params);
             if (file != null) {
-                return file.getPath().toLowerCase().endsWith("." + FILE_TYPE);
+                return file.getPath().toLowerCase().endsWith(".csv");
             }
         } catch (IOException e) {
             // ignore as we are expected to return true or false

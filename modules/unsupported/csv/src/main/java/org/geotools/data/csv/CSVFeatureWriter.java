@@ -11,107 +11,160 @@ package org.geotools.data.csv;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.io.IOUtils;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentState;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.csvreader.CsvWriter;
 import com.vividsolutions.jts.geom.Point;
 
-// Obviously, WIP...
 /**
  * Iterator supporting writing of feature content.
  *
+ * @author Jody Garnett (Boundless)
  * @author Lee Breisacher
  */
-public class CSVFeatureWriter extends CSVFeatureReader implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
+public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
+    private CSVFeatureReader delegate;
 
     private CsvWriter csvWriter;
-    private File tempFile;
-    private SimpleFeature each;
-    private boolean append = false;
-    private boolean appending = false;  // TODO this is way ugly
-    
-    public CSVFeatureWriter(ContentState contentState) throws IOException {
-        super(contentState);
-        this.tempFile = File.createTempFile("cvsDataStore", ".csv");
-        this.csvWriter = new CsvWriter(new FileWriter(this.tempFile), ',');
-        this.csvWriter.writeRecord(this.reader.getHeaders());
-    }
 
-    public CSVFeatureWriter(ContentState contentState, Query query, boolean append) throws IOException {
-        this(contentState);
+    private File temp;
+
+    private SimpleFeature currentFeature;
+
+    private ContentState state;
+
+    private boolean appending = false;
+
+//    private boolean copying = false;
+
+    public CSVFeatureWriter(ContentState state, Query query, boolean append) throws IOException {
+        this.state = state;
+
+        String typeName = query.getTypeName();
+        File file = ((CSVDataStore) state.getEntry().getDataStore()).file;
+        File directory = file.getParentFile();
+        this.temp = File.createTempFile(typeName + System.currentTimeMillis(), "csv", directory);
+        this.csvWriter = new CsvWriter(new FileWriter(this.temp), ',');
         if (append) {
-            this.appending = true;
-            while(this.hasNext()) {
-                this.each = this.next();
-                this.write();
-            }
-            this.appending = false;
+            Files.copy(file.toPath(), temp.toPath(), StandardCopyOption.REPLACE_EXISTING );
+            // skip through the contents to the end
+//            this.copying = true;
+//            try {
+//                while (reader.hasNext()) {
+//                    this.currentFeature = reader.next();
+//                    this.write();
+//                }
+//            }
+//            finally {
+//                this.copying = false;
+//            }
         }
-        this.append = append;
+        else {
+            this.delegate = new CSVFeatureReader(state,query);
+            this.csvWriter.writeRecord(delegate.reader.getHeaders());
+        }
+        this.appending = append;
     }
 
-    public void remove() throws IOException {
-        this.each = null;       // just mark it done which means it will not get written out.  
+    @Override
+    public SimpleFeatureType getFeatureType() {
+        return state.getFeatureType();
     }
 
     @Override
     public boolean hasNext() throws IOException {
-        if (this.append) {
-            return false;
+        if( csvWriter == null ){
+            throw new IOException("Writer has been closed");
         }
-        return super.hasNext();
-    }
-
-    public void write() throws IOException {
-        if (this.each == null) {
-            return;
+        if (this.appending) {
+            return false; // reader has no more contents
         }
-        for (int i = 0; i < this.each.getAttributeCount(); i++) {
-            Object attr = this.each.getAttribute(i);
-            if (attr instanceof Point) {
-                Point point = (Point) attr;
-                this.csvWriter.write(Double.toString(point.getX()));
-                this.csvWriter.write(Double.toString(point.getY()));
-            } else {
-                this.csvWriter.write(attr.toString());
-            }
-        }
-        this.csvWriter.endRecord();
-        this.each = null;       // indicate that it has been written
+        return delegate.hasNext();
     }
 
     @Override
-    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
-        if (this.append) {
-            this.builder.addAll(new Object[this.state.getEntry().getDataStore().getSchema(this.getFeatureType().getTypeName()).getAttributeCount()]);
-            this.each = this.buildFeature();
-            return this.each;
+    public SimpleFeature next() throws IOException, IllegalArgumentException,
+            NoSuchElementException {
+        if( csvWriter == null ){
+            throw new IOException("Writer has been closed");
         }
-        this.checkPendingWrite();
-        return this.each = super.next();
+        try {
+            if (this.appending) {
+                SimpleFeatureType featureType = state.getFeatureType();
+                String fid = featureType.getTypeName()+"."+System.currentTimeMillis();
+                Object values[] = DataUtilities.defaultValues( featureType );
+                
+                this.currentFeature = SimpleFeatureBuilder.build( featureType, values, fid );
+                return this.currentFeature;
+            }
+            else {
+                if (this.currentFeature != null) {
+                    this.write(); // the previous one was not written, so do it now.
+                }
+                this.currentFeature = delegate.next();
+                return this.currentFeature;
+            }
+        }
+        catch (IllegalArgumentException invalid ){
+            throw new IOException("Unable to create feature:"+invalid.getMessage(),invalid);
+        }
+    }
+
+    /**
+     * Mark our {@link #currentFeature} feature as null, it will be skipped when written effectively removing it.
+     */
+    public void remove() throws IOException {
+        this.currentFeature = null; // just mark it done which means it will not get written out.
+    }
+
+    public void write() throws IOException {
+        if (this.currentFeature == null) {
+            return; // current feature has been deleted
+        }
+        for (Property property : currentFeature.getProperties()) {
+            Object value = property.getValue();
+            if (value == null) {
+                this.csvWriter.write("");
+            } else if (value instanceof Point) {
+                Point point = (Point) value;
+                this.csvWriter.write(Double.toString(point.getX()));
+                this.csvWriter.write(Double.toString(point.getY()));
+            } else {
+                String txt = value.toString();
+                this.csvWriter.write(txt);
+            }
+        }
+        this.csvWriter.endRecord();
+        this.currentFeature = null; // indicate that it has been written
     }
 
     @Override
     public void close() throws IOException {
-        if (this.appending) {
-            return;
+        if (this.currentFeature != null) {
+            this.write(); // the previous one was not written, so do it now.
         }
-        this.checkPendingWrite();
-        super.close();
+        if( delegate != null ){
+            this.delegate.close();
+        }
         this.csvWriter.close();
-        ((CSVDataStore) this.state.getEntry().getDataStore()).write(this.tempFile);
+        
+        File file = ((CSVDataStore) state.getEntry().getDataStore()).file;
+        
+        Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING );
     }
 
-    private void checkPendingWrite() throws IOException {
-        if (this.each != null) {
-            // the previous one was not written, so do it now.
-            this.write();
-        }
-    }
+
 }

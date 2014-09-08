@@ -63,8 +63,8 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     public synchronized boolean isAvailable() {
         if (isAvailable == null) {
             try {
-                Class cvsReaderType = Class.forName("com.csvreader.CsvReader");
-                isAvailable = true;
+                Class<?> cvsReaderType = Class.forName("com.csvreader.CsvReader");
+                isAvailable = cvsReaderType != null;
             } catch (ClassNotFoundException e) {
                 isAvailable = false;
             }

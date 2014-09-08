@@ -1,9 +1,18 @@
+/* GeoTools - The Open Source Java GIS Toolkit
+ * http://geotools.org
+ *
+ * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ * This file is hereby placed into the Public Domain. This means anyone is
+ * free to do whatever they wish with this file. Use it well and enjoy!
+ */
 package org.geotools.data.csv;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -39,7 +48,7 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     /** Factory class for goemetry creation */
     private GeometryFactory geometryFactory;
 
-    public CSVFeatureReader(ContentState contentState) throws IOException {
+    public CSVFeatureReader(ContentState contentState, Query query) throws IOException {
         this.state = contentState;
         CSVDataStore csv = (CSVDataStore) contentState.getEntry().getDataStore();
         reader = csv.read(); // this may throw an IOException if it could not connect
@@ -97,6 +106,7 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         }
     }
     // read end
+    
     // parse start
     /** Read a line of content from CSVReader and parse into values */
     SimpleFeature readFeature() throws IOException {
@@ -125,14 +135,13 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         
         return this.buildFeature();
     }
-    // read start
     
     /** Build feature using the current row number to generate FeatureId */
     protected SimpleFeature buildFeature() {
         row += 1;
         return builder.buildFeature( state.getEntry().getTypeName()+"."+row );
     }
-    // parse start
+    // parse end
 
     // close start
     /**

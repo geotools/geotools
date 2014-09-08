@@ -34,6 +34,11 @@ import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.vividsolutions.jts.geom.Point;
 
+/**
+ * DataStore for Comma Separated Value (CSV) files.
+ * 
+ * @author Jody Garnett (Boundless)
+ */
 public class CSVDataStore extends ContentDataStore {
     File file;
 

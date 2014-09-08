@@ -9,7 +9,7 @@ Introducing CSVDataStore
 In our initial :doc:`feature tutorial </tutorial/feature/csv2shp>` we provided a code snippet to read in comma seperated value file and produce feature collection.
 
 In this tutorial we will build a CSV DataStore, and in the process explore several aspects of how DataStores work and best to make use of them.
- 
+
 If you would like to follow along with this workshop, start a new Java project in your favourite IDE, and ensure GeoTools is on your CLASSPATH (using maven or downloading the jars).
 
 .. note:: Terminology
@@ -31,7 +31,7 @@ The first line of our CSV file is a header that provides the column names:
 
 .. literalinclude:: artifacts/locations.csv
       :lines: 1
-   
+
 Each column name is treated as a simple String. More complicated formats have the option of isolating names into different name spaces.
 
 Each subsequent line is used to capture a single feature of information suitable for mapping.
@@ -47,15 +47,15 @@ Approach to Parsing CSV
 Here is our strategy for representing GeoTools concepts with a CSV file.
 
 * FeatureID or FID - uniquely defines a Feature.
-  
+
   We will use the row number in our CSV file.
 
 * FeatureType Name
-  
+
   Same as the name of the :file:`.csv` file (ie. "locations" for :file:`locations.csv`.)
 
 * DataStore
-  
+
   We will create a **CSVDataStore** to access all the FeatureTypes (.csv files) in a directory
 
 * FeatureType or Schema
@@ -63,15 +63,15 @@ Here is our strategy for representing GeoTools concepts with a CSV file.
   We will represent the names of the columns in our CSV (and if possible their types).
 
 * Geometry
-  
+
   Initially we will try and recognise several columns and map them into Point x and y ordinates. This technique is used to handle content from websites such as **geonames**.
-  
+
   We can also look at parsing a column using the Well-Known-Text representation of a Geometry.
-  
+
 # CoordinateReferenceSystem
-  
+
   Look for a :file:`prj` sidecar file (ie :file:`locations.prj` for :file:`locations.csv` .)
-    
+
 JavaCSV Reader
 ^^^^^^^^^^^^^^
 
@@ -91,10 +91,10 @@ References:
 Time to create a new project making use of this library:
 
 #. Create a new project:
-   
+
    * Using Eclipse: :menuselection:`New --> Project` to create a `Maven Project` with group `org.geotools.tutorial* and name `csv`.
    * Using Maven: ``mvn archetype:create -DgroupId=org.geotools.tutorial -DartifactId=csv``
-   
+
 #. Fill in project details, paying careful attention to the *gt.version* property you wish to use. You can choose a stable release (recommended) or use |branch|-SNAPSHOT for access to the latest nightly build.
 
    .. literalinclude:: artifacts/pom.xml
@@ -103,7 +103,7 @@ Time to create a new project making use of this library:
       :append: </project>
 
 #. Add the following dependencies:
-   
+
    .. literalinclude:: artifacts/pom.xml
       :language: xml
       :start-after: </properties>
@@ -125,16 +125,16 @@ Time to create a new project making use of this library:
 
 #. You can check against the completed :download:`pom.xml <artifacts/pom.xml>`
 
-#. Create our test-data in file:`src/test/resources`
-   
+#. Create a directory `src/test/resources` and in there create package `org.geotools.tutorial.csv`. Then add locations.csv to this package.
+
    * package: org.geotools.tutorial.csv
    * file: locations.csv
-   
+
    .. literalinclude:: artifacts/locations.csv
 
    Download :download:`locations.csv <artifacts/locations.csv>`.
 
-#. Here is a JUnit4 test case to confirm JavaCSV is available and can read our file:
+#. Below is a JUnit4 test case to confirm JavaCSV is available and can read our file. Create a directory `src/test/java` and in there create package `org.geotools.tutorial.csv`. Then add CSVTest.java to the package:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVTest.java
       :language: java

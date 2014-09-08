@@ -204,8 +204,8 @@ When downloading jars maven makes use of a "local repository" to store jars.
   ==================  ========================================================
      PLATFORM           LOCAL REPOSITORY
   ==================  ========================================================
-     Windows XP:      :file:`C:\\Documents and Settings\\Jody\\.m2\\repository`
-     Windows:         :file:`C:\\Users\\Jody\\.m2\repository`
+     Windows XP:      :file:`C:\\Documents and Settings\\You\\.m2\\repository`
+     Windows:         :file:`C:\\Users\\You\\.m2\repository`
      Linux and Mac:   :file:`~/.m2/repository`
   ==================  ========================================================
 
@@ -223,10 +223,20 @@ such as GeoTools publish their work.
 
 3. To make use of GeoTools we are going to add three things to this pom.xml file.
    
-4. At the top after moduleVersion add a *properties* element defining the version of GeoTools that
-   we want to use (|release| for this example).
+4. At the top after moduleVersion add a *properties* element defining the version of GeoTools we
+   want to use. This workbook was written for |release| although you may wish to try a different
+   version.
    
+   For production a stable release is recommended:
+    
    .. literalinclude:: artifacts/pom.xml
+        :language: xml
+        :start-after: <url>http://maven.apache.org</url>
+        :end-before: <dependencies>
+   
+   To make use of a nightly build set the `geotools.version` property to |branch|-SNAPSHOT .
+    
+   .. literalinclude:: artifacts/pom2.xml
         :language: xml
         :start-after: <url>http://maven.apache.org</url>
         :end-before: <dependencies>
@@ -242,10 +252,17 @@ such as GeoTools publish their work.
 6. Finally we need to list the external *repositories* where maven can download GeoTools and and
    other required jars from.
 
-.. literalinclude:: artifacts/pom.xml
+   .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </dependencies>
         :end-before: </project>
+
+   If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
+   
+   .. literalinclude:: artifacts/pom2.xml
+     :language: xml
+     :start-after: </dependencies>
+     :end-before: </project>
 
 7. For comparison here is the completed :download:`pom.xml <artifacts/pom.xml>` file for download.
 
@@ -256,14 +273,6 @@ Tips:
 
 * If maven has trouble downloading any jar; you can try again by selecting
   :menuselection:`Project --> Update All Maven Dependencies`.
-  
-  If it really cannot connect you will need to switch to |branch|-SNAPSHOT and add the following
-  snap shot repository.
-    
-  .. literalinclude:: artifacts/pom2.xml
-     :language: xml
-     :start-after: </dependencies>
-     :end-before: </project>
    
 * If the dependencies do not update automatically
   use :menuselection:`Project --> Clean`
@@ -273,34 +282,36 @@ Quickstart Application
 
 Now that your environment is setup we can put together a simple Quickstart. This example will display a shapefile on screen.
 
-1. Create the org.geotools.tutorial.Quickstart class using your IDE.
+#. Create the package org.geotools.tutorial.quickstart using your IDE.
+
+#. Create the org.geotools.tutorial.quickstart.Quickstart class using your IDE.
    
    .. image:: images/class.jpg
       :scale: 60
    
-2. Fill in the following code:
+#. Fill in the following code:
   
   .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/Quickstart.java
         :language: java
         
-3. We need to download some sample data to work with. The http://www.naturalearthdata.com/ project
-   is a great project supported by the North American Cartographic Information Society.
-   
-   * `50m-cultural.zip <http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/50m-cultural.zip>`_ 
+#. We need to download some sample data to work with. The http://www.naturalearthdata.com/ project
+   is a great project supported by the North American Cartographic Information Society.  Head to the link below and download some cultural vectors. You can use the 'Download all 50m cultural themes' at top.
+
+   * `1:50m Cultural Vectors <http://www.naturalearthdata.com/downloads/50m-cultural-vectors/>`_
 
    Please unzip the above data into a location you can find easily such as the desktop.
 
-4. Run the application to open a file chooser. Choose a shapefile from the example dataset.
+#. Run the application to open a file chooser. Choose a shapefile from the example dataset.
 
    .. image:: images/QuickstartOpen.png
       :scale: 60
    
-5. The application will connect to your shapefile, produce a map content, and display the shapefile.
+#. The application will connect to your shapefile, produce a map content, and display the shapefile.
 
    .. image:: images/QuickstartMap.png
       :scale: 60
    
-6. A couple of things to note about the code example:
+#. A couple of things to note about the code example:
    
 * The shapefile is not loaded into memory - instead it is read from disk each and every time it is needed
   This approach allows you to work with data sets larger than available memory.
@@ -342,6 +353,11 @@ Here are some additional challenges for you to try:
   .. code-block:: java
 
      import org.geotools.data.CachingFeatureSource;
+     
+  .. Note::
+
+     When building you may see a message that CachingFeatureSource is deprecated. It's ok to ignore
+     it, it's just a warning. The class is still under test but usable.
 
 ..  The ability to grab figure out what classes to import is a key skill; we are
     starting off here with a simple example with a single import.

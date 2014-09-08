@@ -160,8 +160,8 @@ When downloading jars maven makes use of a "local repository" to store jars.
   ==================  ========================================================
      PLATFORM           LOCAL REPOSITORY
   ==================  ========================================================
-     Windows XP:      :file:`C:\\Documents and Settings\\Jody\\.m2\\repository`
-     Windows:         :file:`C:\\Users\\Jody\\.m2\\repository`
+     Windows XP:      :file:`C:\\Documents and Settings\\You\\.m2\\repository`
+     Windows:         :file:`C:\\Users\\You\\.m2\\repository`
      Linux and Mac:   :file:`~/.m2/repository`
   ==================  ========================================================
 
@@ -173,9 +173,19 @@ such as GeoTools publish their work.
    
    In the Projects panel open up the Project Files folder and double click on pom.xml to open it.
    
-2. We are going to start by defining the version number of GeoTools we wish to use. 
-
+2. We are going to start by defining the version number of GeoTools we wish to use. This workbook
+   was written for |release| although you may wish to try a different version.
+   
+   For production a stable release is recommended:
+    
    .. literalinclude:: artifacts/pom.xml
+        :language: xml
+        :start-after: <url>http://maven.apache.org</url>
+        :end-before: <dependencies>
+   
+   To make use of a nightly build set the `geotools.version` property to |branch|-SNAPSHOT .
+    
+   .. literalinclude:: artifacts/pom2.xml
         :language: xml
         :start-after: <url>http://maven.apache.org</url>
         :end-before: <dependencies>
@@ -191,12 +201,19 @@ such as GeoTools publish their work.
         :start-after: </properties>
         :end-before: <repositories>
   
-4. And the repositories where these jars can be downloaded from.
+4. And the repositories where these jars can be downloaded from:
 
    .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </dependencies>
         :end-before: </project>
+
+   If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
+   
+   .. literalinclude:: artifacts/pom2.xml
+     :language: xml
+     :start-after: </dependencies>
+     :end-before: </project>
     
 5. You can now right click on Libraries in the Projects window, then Download missing Dependencies
    from the pop-up menu. When downloading it will check the repositories we have listed
@@ -218,7 +235,9 @@ Quickstart Application
 
 Now that your environment is setup we can put together a simple Quickstart. This example will display a shapefile on screen.
 
-#. Create the org.geotools.tutorial.Quickstart class using your IDE.
+#. Create the package org.geotools.tutorial.quickstart.
+
+#. Create the org.geotools.tutorial.quickstart.Quickstart class using your IDE.
    
 #. Fill in the following code:
 
@@ -236,9 +255,9 @@ Running the Application
 ------------------------
 
 #. We need to download some sample data to work with. The http://www.naturalearthdata.com/ project
-   is a great project supported by the North American Cartographic Information Society.
-   
-   * `50m-cultural.zip <http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/50m-cultural.zip>`_ 
+   is a great project supported by the North American Cartographic Information Society. Head to the link below and download some cultural vectors. You can use the 'Download all 50m cultural themes' at top.
+
+   * `1:50m Cultural Vectors <http://www.naturalearthdata.com/downloads/50m-cultural-vectors/>`_
 
    Please unzip the above data into a location you can find easily such as the desktop.
 
@@ -294,6 +313,11 @@ Here are some additional challenges for you to try:
 
        import org.geotools.data.CachingFeatureSource;
   
+  .. Note::
+
+     When building you may see a message that CachingFeatureSource is deprecated. It's ok to ignore
+     it, it's just a warning. The class is still under test but usable.
+     
 * Try and sort out what all the different "side car" files are – and what they are for. The sample
   data set includes "shp", "dbf" and "shx". How many other side car files are there?
 

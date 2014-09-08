@@ -15,7 +15,7 @@ The first step is to create a basic DataStore that only supports feature extract
 data from a csv file into the GeoTools feature model.
 
 .. figure:: images/CSVDataStore.png
-   
+
    CSVDataStore
 
 To implement a DataStore we will subclass ContentDataStore. This is a helpful base class for
@@ -26,7 +26,7 @@ all of this for us - as long as we can teach it how to access our content.
 ContentDataStore requires us to implement the following two methods:
 
 * createTypeNames()
-* createFeatureSource(ContentEntry entry) 
+* createFeatureSource(ContentEntry entry)
 
 The class *ContentEntry* is a bit of a scratch pad used to keep track of things for each type.
 
@@ -38,7 +38,7 @@ Our initial implementation will result in a read-only datastore for accessing CS
       :language: java
       :start-after: // header start
       :end-before: // header end
-      
+
 #. We are going to be working with a single CSV file
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
@@ -51,7 +51,7 @@ Our initial implementation will result in a read-only datastore for accessing CS
 
    A DataStore may provide access to several different data products. The method **createTypeNames** provides a list of the information being published. This is called once; the result cached; and then the same list is returned by ContentDataStore.getTypeNames() each time.
 
-   This answer is cached as a DataStore may have to do some heavy lifting to obtain this answer. WFS clients need to connect to a web service, download and parse a large XML document to obtain this list. JDBCDataStore needs to review the metadata published by the Database and determine which tables have spatial content. 
+   This answer is cached as a DataStore may have to do some heavy lifting to obtain this answer. WFS clients need to connect to a web service, download and parse a large XML document to obtain this list. JDBCDataStore needs to review the metadata published by the Database and determine which tables have spatial content.
 
    By caching this answer we prevent developers having to this work many times.
 
@@ -69,7 +69,7 @@ Our initial implementation will result in a read-only datastore for accessing CS
    It is worth talking a little bit about **ContentEntry** which is passed into this method as a parameter. **ContentEntry** is used as a scratchpad holding all recorded information about the content we are working with.
 
    .. figure:: images/ContentEntry.png
-   
+
       ContentEntry
 
    **ContentEntry** also contains a back pointer to the **ContentDataStore** in case your implementation of **FeatureSource** needs to phone home.
@@ -123,13 +123,13 @@ DataStoreFactoryFinder provides the ability to create DataStores representing ex
 information and the ability to create new physical storage.
 
 1. PropertyDataStoreFactory
-   
+
    * The "no argument" consturctor is required as it will be used by the
      Factory Service Provider (SPI) plug-in system.
    * getImplementationHints() is used to report on any "Hints" used for configuration
      by our factory. As an example our Factory could allow people to specify a specific
      FeatureFactory to use when creating a feature for each line.
-     
+
    Create PropertyDataStoreFactory as follows:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStoreFactory.java
@@ -146,60 +146,60 @@ information and the ability to create new physical storage.
       :end-before: // metadata end
 
 3. The user is expected to supply a Map of connection parameters when creating a datastore.
-   
+
    The allowable connection parameters are described using *Param[]*. Each *Param* describes a *key* used to store the value in the map, and the expected java type for the value. Additional fields indicate if the value is required and if a default value is available.
-   
+
    This array of parameters form an API contract used to drive the creation of user interfaces.
-   
+
    The API contract is open ended (we cannot hope to guess all the options needed in the future). The helper class **KVP** provides an easy to use implementation of **Map<String,Object>**. The keys used here are formally defined as static constants - complete with javadoc describing their use. If several authors agree on a new hint it will be added to these static constants.
-   
+
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStoreFactory.java
       :language: java
       :start-after: // getParametersInfo start
       :end-before: // getParametersInfo end
-      
+
 4. Next we have some code to check if a set of provided connection parameters can actually be used.
-   
+
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStoreFactory.java
       :language: java
       :start-after: // canProcess start
       :end-before: // canProcess end
-   
+
    .. note::
-      
+
       The directoryLookup has gotten considerably more complicated since this tutorial
       was first written. One of the benifits of CSVDataStore being used
       in real world situtations.
-   
+
 5. Armed with a map of connection parameters we can now create a Datastore for an **existing** csv file.
 
    Here is the code that finally calls our CSVDataStore constructor:
-   
+
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStoreFactory.java
       :language: java
       :start-after: // createDataStore start
       :end-before: // createDataStore end
 
 6. How about creating a DataStore for a **new** csv file?
-     
+
    Since initially our DataStore is read-only we will just throw an UnsupportedOperationException at this time.
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStoreFactory.java
       :language: java
       :start-after: // createNewDataStore start
       :end-before: // createNewDataStore end
-   
+
 6. The Factory Service Provider (SPI) system operates by looking at the META-INF/services
    folder and checking for implemetnations of DataStoreFactorySpi
 
-   To "register" our CSVDataStoreFactory please create the following file:
+   To "register" our CSVDataStoreFactory please create the following in `src/main/resources/`:
 
    *  META-INF/services/org.geotools.data.DataStoreFactorySpi
 
    This file requires the filename of the factory that implements the DataStoreSpi interface.
 
    Fill in the following content for your **org.geotools.data.DataStoreFactorySpi** file::
-    
+
        org.geotools.tutorial.csv.CSVDataStoreFactory
-   
+
 That is it, in the next section we will try out your new DataStore.

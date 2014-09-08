@@ -32,15 +32,16 @@ import com.csvreader.CsvReader;
  */
 public class CSVDataStore extends ContentDataStore {
 // header end
-    
+
     // constructor start
     File file;
-    
+
     public CSVDataStore( File file ){
         this.file = file;
     }
     // constructor end
-    
+
+    // reader start
     /**
      * Allow read access to file; for our package visible "friends".
      * Please close the reader when done.
@@ -51,17 +52,18 @@ public class CSVDataStore extends ContentDataStore {
         CsvReader csvReader = new CsvReader(reader);
         return csvReader;
     }
+    // reader end
 
     // createTypeNames start
     protected List<Name> createTypeNames() throws IOException {
         String name = file.getName();
         name = name.substring(0, name.lastIndexOf('.'));
-        
+
         Name typeName = new NameImpl( name );
         return Collections.singletonList(typeName);
     }
     // createTypeNames end
-    
+
     // createFeatureSource start
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {

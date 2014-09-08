@@ -176,7 +176,6 @@ Creating a new project
         :start-after: <url>http://maven.apache.org</url>
         :end-before: <dependencies>
    
-   
 #. We specify the following dependencies (GeoTools modules which your application will need):
 
    .. literalinclude:: artifacts/pom.xml
@@ -210,7 +209,8 @@ Creating the Quickstart application
 
 Now we are ready to create the application.
 
-#. Go to the directory :file:`tutorial` and create directory :file:`rc\\main\\java\\org\\geotools\\tutorial\\quickstart`
+#. Crete the *org.geotools.tutorial.quickstart* package by navigating to the directory
+   :file:`tutorial` and create the directory :file:`src\\main\\java\\org\\geotools\\tutorial\\quickstart`
 
 #. In the new sub-directory, create a new file **Quickstart.java** using your text editor.
 
@@ -230,10 +230,10 @@ Running the application
         
 #. If you need some shapefiles to work with you will find a selection of data at the
    http://www.naturalearthdata.com/ project which is supported by the North American Cartographic
-   Information Society.
+   Information Society. Head to the link below and download some cultural vectors. You can use the 'Download all 50m cultural themes' at top.
    
-   * `50m_cultural.zip <http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/50m_cultural.zip>`_ 
-
+   * `1:50m Cultural Vectors <http://www.naturalearthdata.com/downloads/50m-cultural-vectors/>`_
+   
    Unzip the above data into a location you can find easily such as the desktop.
 
 #. You can run the application using Maven on the command line::
@@ -283,11 +283,15 @@ Things to Try
 
      import org.geotools.data.CachingFeatureSource;
 
-
   .. Hint::
      When working in a text editor instead of an IDE use the `GeoTools javadocs 
      <http://docs.geotools.org/latest/javadocs/>`_ to work out what import statements are required
      in your source. The javadocs also list the GeoTools module in which each class is found.
+
+  .. Note::
+
+     When building you may see a message that CachingFeatureSource is deprecated. It's ok to ignore
+     it, it's just a warning. The class is still under test but usable.
 
 ..  The ability to figure out what classes to import is a key skill; we are
     starting off here with a simple example with a single import.

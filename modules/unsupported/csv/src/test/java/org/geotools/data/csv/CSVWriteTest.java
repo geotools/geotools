@@ -50,12 +50,12 @@ import com.vividsolutions.jts.geom.Geometry;
 /**
  * Informal test used to document expected functionality for workshop.
  */
-public class CSVTest {
+public class CSVWriteTest {
 
     @Test
     public void test() throws Exception {
         List<String> cities = new ArrayList<String>();
-        URL url = CSVTest.class.getResource("locations.csv");
+        URL url = CSVWriteTest.class.getResource("locations.csv");
         File file = new File(url.toURI());
         try (FileReader reader = new FileReader(file)) {
             CsvReader locations = new CsvReader(reader);
@@ -72,7 +72,7 @@ public class CSVTest {
     @Test
     public void example1() throws Exception {
         System.out.println("example1 start\n");
-        URL url = CSVTest.class.getResource("locations.csv");
+        URL url = CSVWriteTest.class.getResource("locations.csv");
         File file = new File(url.toURI());
 
         // example1 start
@@ -91,7 +91,7 @@ public class CSVTest {
     @Test
     public void example2() throws Exception {
         System.out.println("example2 start\n");
-        URL url = CSVTest.class.getResource("locations.csv");
+        URL url = CSVWriteTest.class.getResource("locations.csv");
         File file = new File(url.toURI());
         // example2 start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
@@ -140,7 +140,7 @@ public class CSVTest {
     @Test
     public void example3() throws Exception {
         System.out.println("example3 start\n");
-        URL url = CSVTest.class.getResource("locations.csv");
+        URL url = CSVWriteTest.class.getResource("locations.csv");
         File file = new File(url.toURI());
         // example3 start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
@@ -171,7 +171,7 @@ public class CSVTest {
     @Test
     public void example4() throws Exception {
         System.out.println("example4 start\n");
-        URL url = CSVTest.class.getResource("locations.csv");
+        URL url = CSVWriteTest.class.getResource("locations.csv");
         File file = new File(url.toURI());
 
         // example4 start
@@ -212,7 +212,7 @@ public class CSVTest {
     @Test
     public void example5() throws Exception {
         System.out.println("example5 start\n");
-        URL url = CSVTest.class.getResource("locations.csv");
+        URL url = CSVWriteTest.class.getResource("locations.csv");
         File file = new File(url.toURI());
         // example5 start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
@@ -242,7 +242,7 @@ public class CSVTest {
     @Test
     public void example6() throws Exception {
         System.out.println("example6 start\n");
-        URL url = CSVTest.class.getResource("locations.csv");
+        URL url = CSVWriteTest.class.getResource("locations.csv");
         File file = new File(url.toURI());
 
         // example6 start

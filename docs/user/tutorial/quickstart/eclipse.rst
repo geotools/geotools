@@ -422,7 +422,7 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
    * M2_HOME = :file:`C:\java\apache-maven-2.2.1`
    * PATH = :file:`%JAVA_HOME%\bin;%M2_HOME%\bin`
 
-   .. image:: images/env-variables.jpg
+   .. image:: images/env-variables.png
       :scale: 60
 
 4. Open up a commands prompt :menuselection:`Accessories --> Command Prompt`

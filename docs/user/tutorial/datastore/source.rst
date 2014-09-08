@@ -285,7 +285,7 @@ information and the ability to create new physical storage.
 6. The Factory Service Provider (SPI) system operates by looking at the META-INF/services
    folder and checking for implemetnations of DataStoreFactorySpi
 
-   To "register" our CSVDataStoreFactory please create the following file:
+   To "register" our CSVDataStoreFactory please create the following in `src/main/resources/`:
 
    *  META-INF/services/org.geotools.data.DataStoreFactorySpi
 

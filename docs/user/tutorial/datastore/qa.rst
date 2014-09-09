@@ -3,8 +3,8 @@
 :Version: |release|
 :License: Creative Commons with attribution
 
-Feedback and Quality Assurance
-------------------------------
+Quality Assurance
+-----------------
 
 Since this tutorial has been written the result has been broken out into a distinct **gt-csv** module. This work has also been forked into service as part of the GeoServer importer module.
 

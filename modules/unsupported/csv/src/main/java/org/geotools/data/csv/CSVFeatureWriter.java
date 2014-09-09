@@ -161,6 +161,9 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         if( csvWriter == null ){
             throw new IOException("Writer alread closed");
         }
+        if (this.currentFeature != null) {
+            this.write(); // the previous one was not written, so do it now.
+        }
         // Step 1: Write out remaining contents (if applicable)
         while (hasNext()) {
             next();

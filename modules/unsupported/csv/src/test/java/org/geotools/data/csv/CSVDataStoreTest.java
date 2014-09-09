@@ -1,10 +1,6 @@
 package org.geotools.data.csv;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -114,7 +110,8 @@ public class CSVDataStoreTest {
         assertEquals( 9, count );
         
         ReferencedEnvelope bounds = rows.getBounds();
-        assertFalse( bounds.isEmpty() || bounds.isNull() );
+        
+        assertNull( bounds );
         
         SimpleFeatureCollection features = rows.getFeatures();
         SimpleFeatureIterator cursor = features.features();
@@ -184,6 +181,7 @@ public class CSVDataStoreTest {
         rows = (SimpleFeatureStore) csv.getFeatureSource( TYPE_NAME );
         SimpleFeatureCollection features = rows.getFeatures();
         assertEquals(9, features.size());
+        
         SimpleFeatureIterator cursor = features.features();
         List<String> filteredCities = this.filteredCities();
         while (cursor.hasNext()) {

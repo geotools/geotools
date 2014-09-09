@@ -1,1 +1,110 @@
-sample output
+Removing tempfile /var/folders/ry/g15z7xd500qfyynn2fc78c9h0000gn/T/example5377473672283500230
+transactionExample start
+
+Step 1
+------
+start     auto-commit: [locations.2, locations.3, locations.1, locations.6, locations.7, locations.11, locations.4, locations.12, locations.5, locations.10, locations.8, locations.9]
+start              t1: [locations.2, locations.3, locations.1, locations.6, locations.7, locations.11, locations.4, locations.12, locations.5, locations.10, locations.8, locations.9]
+start              t2: [locations.2, locations.3, locations.1, locations.6, locations.7, locations.11, locations.4, locations.12, locations.5, locations.10, locations.8, locations.9]
+
+Step 2 transaction 1 removes feature 'fid1'
+------
+t1 remove auto-commit: [locations.2, locations.3, locations.1, locations.6, locations.7, locations.11, locations.4, locations.12, locations.5, locations.10, locations.8, locations.9]
+t1 remove          t1: [locations.2, locations.3, locations.1, locations.6, locations.7, locations.11, locations.4, locations.12, locations.5, locations.10, locations.8, locations.9]
+t1 remove          t2: [locations.2, locations.3, locations.1, locations.6, locations.7, locations.11, locations.4, locations.12, locations.5, locations.10, locations.8, locations.9]
+
+Step 3 transaction 2 adds a new feature 'locations.1'
+------
+t2 add    auto-commit: [locations.2, locations.3, locations.1, locations.6, locations.7, locations.11, locations.4, locations.12, locations.5, locations.10, locations.8, locations.9]
+t2 add             t1: [locations.2, locations.3, locations.1, locations.6, locations.7, locations.11, locations.4, locations.12, locations.5, locations.10, locations.8, locations.9]
+t1 add             t2: [locations.2, locations.3, new0, locations.1, locations.6, locations.7, locations.11, locations.4, locations.12, locations.5, locations.10, locations.8, locations.9]
+
+Step 4 transaction 1 commits the removal of feature 'fid1'
+------
+t1 commit auto-commit: [locations.2, locations.3, locations.1, locations.6, locations.7, locations.11, locations.4, locations.12, locations.5, locations.10, locations.8, locations.9]
+t1 commit          t1: [locations.2, locations.3, locations.1, locations.6, locations.7, locations.11, locations.4, locations.12, locations.5, locations.10, locations.8, locations.9]
+t1 commit          t2: [locations.2, locations.3, new0, locations.1, locations.6, locations.7, locations.11, locations.4, locations.12, locations.5, locations.10, locations.8, locations.9]
+
+Step 5 transaction 2 commits the addition of 'locations.1'
+------
+t2 commit auto-commit: [locations.2, locations.3, locations.1, locations.13, locations.6, locations.7, locations.4, locations.11, locations.5, locations.12, locations.8, locations.9, locations.10]
+t2 commit          t1: [locations.2, locations.3, locations.1, locations.13, locations.6, locations.7, locations.4, locations.11, locations.5, locations.12, locations.8, locations.9, locations.10]
+t2 commit          t2: [locations.2, locations.3, locations.1, locations.13, locations.6, locations.7, locations.4, locations.11, locations.5, locations.12, locations.8, locations.9, locations.10]
+
+transactionExample end
+
+transactionExample contents start
+LAT,LON,CITY,NUMBER,YEAR
+11.116667,46.066667,Trento,140,2002
+-93.0852,44.9441,St Paul,125,2003
+100.493889,13.752222,Bangkok,150,2004
+-75.69,45.420833,Ottawa,200,2004
+-93.251867,44.9801,Minneapolis,350,2005
+6.6335,46.519833,Lausanne,560,2006
+-123.365556,48.428611,Victoria,721,2007
+18.423889,-33.925278,Cape Town,550,2008
+151.211111,-33.859972,Sydney,436,2009
+2.183333,41.383333,Barcelona,914,2010
+-104.984722,39.739167,Denver,869,2011
+-1.133333,52.95,Nottingham,800,2013
+45.52,-122.681944,Portland,800,2014
+transactionExample contents end
+Removing tempfile /var/folders/ry/g15z7xd500qfyynn2fc78c9h0000gn/T/example6197300385891431662
+replaceAll start
+
+
+replaceAll end
+
+replaceAll contents start
+LAT,LON,CITY,NUMBER,YEAR
+45.52,-122.681944,Portland,800,2014
+replaceAll contents end
+Removing tempfile /var/folders/ry/g15z7xd500qfyynn2fc78c9h0000gn/T/example1878514733685897000
+featureStoreExample start
+
+
+featureStoreExample end
+
+Removing tempfile /var/folders/ry/g15z7xd500qfyynn2fc78c9h0000gn/T/example2090561414085507098
+appendContent start
+
+
+appendContent end
+
+appendContent contents start
+LAT,LON,CITY,NUMBER,YEAR
+11.116667,46.066667,Trento,140,2002
+-93.0852,44.9441,St Paul,125,2003
+100.493889,13.752222,Bangkok,150,2004
+-75.69,45.420833,Ottawa,200,2004
+-93.251867,44.9801,Minneapolis,350,2005
+6.6335,46.519833,Lausanne,560,2006
+-123.365556,48.428611,Victoria,721,2007
+18.423889,-33.925278,Cape Town,550,2008
+151.211111,-33.859972,Sydney,436,2009
+2.183333,41.383333,Barcelona,914,2010
+-104.984722,39.739167,Denver,869,2011
+-1.133333,52.95,Nottingham,800,2013
+appendContent contents end
+Removing tempfile /var/folders/ry/g15z7xd500qfyynn2fc78c9h0000gn/T/example3726248315637583953
+removeAllExample start
+
+remove locations.1
+remove locations.2
+remove locations.3
+remove locations.4
+remove locations.5
+remove locations.6
+remove locations.7
+remove locations.8
+remove locations.9
+remove locations.10
+remove locations.11
+remove locations.12
+commit locations
+
+removeAllExample end
+
+removeAllExample contents start
+LAT,LON,CITY,NUMBER,YEAR
+removeAllExample contents end

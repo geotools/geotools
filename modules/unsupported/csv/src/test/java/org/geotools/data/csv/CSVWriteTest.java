@@ -80,7 +80,13 @@ public class CSVWriteTest {
         URL resource = TestData.getResource(CSVWriteTest.class, "locations.csv");
         Files.copy(resource.openStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
-
+    
+    private void fileContents( String test, File modified) throws IOException {
+        System.out.println(test +" contents start");
+        Files.copy( modified.toPath(), System.out );
+        System.out.println(test +" contents end");
+    }
+    
     @After
     public void removeTemporaryLocations() throws IOException {
         File list[] = tmp.listFiles();
@@ -201,6 +207,8 @@ public class CSVWriteTest {
         store.dispose(); // clear out any listeners
         // transactionExample end
         System.out.println("\ntransactionExample end\n");
+
+        fileContents("transactionExample",file);
     }
 
     @Test
@@ -236,6 +244,8 @@ public class CSVWriteTest {
         }
         // removeAllExample end
         System.out.println("\nremoveAllExample end\n");
+        
+        fileContents("removeAllExample",file);
     }
 
     @Test
@@ -277,20 +287,23 @@ public class CSVWriteTest {
         }
         // replaceAll end
         System.out.println("\nreplaceAll end\n");
+        
+        fileContents("replaceAll",file);
     }
 
     @Test
     public void appendContent() throws Exception {
-        System.out.println("copyContent start\n");
+        System.out.println("appendContent start\n");
         File directory = tmp;
-        // copyContent start
+        // appendContent start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
         SimpleFeatureType featureType = store.getSchema("locations");
         
+        File file2 = new File(directory,"duplicate.rst");
         Map<String, Serializable> params2 = new HashMap<String, Serializable>();
-        params2.put("file", new File(directory,"duplicate.rst"));
+        params2.put("file", file2);
         
         CSVDataStoreFactory factory = new CSVDataStoreFactory();
         DataStore duplicate = factory.createNewDataStore(params2);
@@ -304,6 +317,7 @@ public class CSVWriteTest {
         reader = store.getFeatureReader(query, Transaction.AUTO_COMMIT);
         
         writer = duplicate.getFeatureWriterAppend("duplicate", Transaction.AUTO_COMMIT);
+        // writer = duplicate.getFeatureWriter("duplicate", Transaction.AUTO_COMMIT);
         try {
             while (reader.hasNext()) {
                 feature = reader.next();
@@ -317,8 +331,10 @@ public class CSVWriteTest {
             writer.close();
         }
 
-        // copyContent end
-        System.out.println("\ncopyContent end\n");
+        // appendContent end
+        System.out.println("\nappendContent end\n");
+        
+        fileContents("appendContent",file2);
 
     }
 }

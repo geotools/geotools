@@ -57,33 +57,15 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     int nextRow = 0;
     // header end
     // constructor start
-    public CSVFeatureWriter(ContentState state, Query query, boolean append) throws IOException {
+    public CSVFeatureWriter(ContentState state, Query query) throws IOException {
         this.state = state;
-
         String typeName = query.getTypeName();
         File file = ((CSVDataStore) state.getEntry().getDataStore()).file;
         File directory = file.getParentFile();
         this.temp = File.createTempFile(typeName + System.currentTimeMillis(), "csv", directory);
         this.csvWriter = new CsvWriter(new FileWriter(this.temp), ',');
-        if (append) {
-            Files.copy(file.toPath(), temp.toPath(), StandardCopyOption.REPLACE_EXISTING );
-            CsvReader count = null;
-            try {
-                count = ((CSVDataStore)state.getEntry().getDataStore()).read();
-                count.getHeaders();
-                while(count.readRecord()){
-                    nextRow++;
-                }
-            }
-            finally {
-                count.close();
-            }
-        }
-        else {
-            this.delegate = new CSVFeatureReader(state,query);
-            this.csvWriter.writeRecord(delegate.reader.getHeaders());
-        }
-        this.appending = append;
+        this.delegate = new CSVFeatureReader(state,query);
+        this.csvWriter.writeRecord(delegate.reader.getHeaders());
     }
     // constructor end
     

@@ -3,8 +3,8 @@
 :Version: |release|
 :License: Creative Commons with attribution
 
-Creating CSVDataStore
----------------------
+Implementing FeatureSource
+--------------------------
 
 Now with the setup out of the way we can get to work.
 

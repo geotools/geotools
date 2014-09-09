@@ -3,13 +3,25 @@
 :Version: |release|
 :License: Creative Commons with attribution
 
-Using CSVDataStore to Write Files
----------------------------------
-
-In this part we will explore the full capabilities of our completed CSVDataStore.
+Using FeatureStore
+------------------
 
 Now that we have completed our CSVDataStore implementation, we can explore the remaining
 capabilities of the DataStore API.
+
+DataStore actually extends DataAccess which was introduced to allow GeoTools to work with more
+general content including properties, attributes and associations.
+
+.. figure:: images/DataAccess.png
+   
+   DataAccess
+
+DataStore, along with a few subclasses, are limited to work with SimpleFeature (values only, order
+significant).
+
+.. figure:: images/DataStore.png
+   
+   DataStore
 
 CSVDataStore API for data modification:
 
@@ -35,7 +47,9 @@ FeatureStore
 ''''''''''''
 
 FeatureStore provides Transaction support and modification operations. FeatureStore is an
-extension of FeatureSource. You may check the result of getFeatureSource( typeName ) with the instanceof operator.
+extension of FeatureSource.
+
+You may check the result of getFeatureSource( typeName ) with the instanceof operator.
 
 Example of FeatureStore use:
 
@@ -53,7 +67,7 @@ FeatureStore defines:
 * FeatureStore.setFeatures( featureReader )
 * FeatureStore.setTransaction( transaction )
 
-Once again, many DataStores are able to provide optimised implementations of these operations.
+Once again, many DataStores are able to provide optimized implementations of these operations.
 
 Transaction Example:
 
@@ -69,6 +83,13 @@ This produces the following output:
      :start-after: transactionExample start
      :end-before: transactionExample end
 
+Resulting in the following file:
+
+  .. literalinclude:: artifacts/write-output.txt
+     :language: text
+     :start-after: transactionExample contents start
+     :end-before: transactionExample contents end
+
 .. note::
    
    Please review the above code example carefully as it is the best explanation
@@ -77,17 +98,20 @@ This produces the following output:
    Specifically:
    
    * "auto-commit" represents the current contents of the file on disk
+   
    * Notice how the transactions only reflect the changes the user made relative to
      the current file contents.
      
      This is shown after t1 commit, where transaction t2 is seeing 4 features (ie the
      current file contents plus the one feature that has been added on t2).
+     
    * This really shows that FeatureSource and FeatureStore are "views" into your data.
      
-     * If you configure two FeatureStores with the same transaction they will act the same.
-     * Transaction is important and represents what you are working on
-       FeatureStore is not as important and is just used to make working with your data
-       easier (or more efficient) than direct use of FeatureWriter.
+     If you configure two FeatureStores with the same transaction they will act the same.
+     
+     Transaction is important and represents what you are working on FeatureStore is not as
+     important and is just used to make working with your data easier (or more efficient)
+     than direct use of FeatureWriter.
   
 FeatureLocking
 ''''''''''''''
@@ -114,15 +138,7 @@ the correct authorization.
 FeatureWriter
 ^^^^^^^^^^^^^
 
-We have a number of FeatureWriters available for different uses; these implementations
-are used by the default implementation of AbstractFeatureStore and AbstractFeatureLocking.
-
-These classes serve as a good example of how to use FeatureWriter.
-
-FeatureWriter Filter
-''''''''''''''''''''
-
-The DataStore.getFeatureWriter( typeName, filter, transaction ) method 
+The **DataStore.getFeatureWriter( typeName, filter, transaction )** method 
 creates a FeatureWriter used to modify features indicated by a constraint.
 
 Example - removing all features:
@@ -132,14 +148,25 @@ Example - removing all features:
    :start-after: // removeAllExample start
    :end-before: // removeAllExample end
 
-This FeatureWriter does not allow the addition of new content. It can be used for modification and removal only.
+This produces the following output:
 
-DataStores can often provide an optimized implementation.
+  .. literalinclude:: artifacts/write-output.txt
+     :language: text
+     :start-after: removeAllExample start
+     :end-before: removeAllExample end
 
-FeatureWriter
-'''''''''''''
+And the following file:
 
-The DataStore.getFeatureWriter( typeName, transaction )  method creates a general purpose
+  .. literalinclude:: artifacts/write-output.txt
+     :language: text
+     :start-after: removeAllExample contents start
+     :end-before: removeAllExample contents end
+
+
+This FeatureWriter does not allow the addition of new content. It can be used for modification
+and removal only. DataStores can often provide an optimized implementation.
+
+The **DataStore.getFeatureWriter( typeName, transaction )** method creates a general purpose
 FeatureWriter. New content may be added after iterating through the
 provided content.
 
@@ -150,17 +177,28 @@ Example - completely replace all features:
    :start-after: // replaceAll start
    :end-before: // replaceAll end
 
-FeatureWriter Append
-''''''''''''''''''''
+The modified file:
 
-The DataStore.getFeatureWriterAppend( typeName, transaction ) method creates a FeatureWriter
+  .. literalinclude:: artifacts/write-output.txt
+     :language: text
+     :start-after: replaceAll contents start
+     :end-before: replaceAll contents end
+     
+The **DataStore.getFeatureWriterAppend( typeName, transaction )** method creates a FeatureWriter
 for adding content.
 
 Example - making a copy:
 
 .. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/CSVWriteTest.java
    :language: java
-   :start-after: // copyContent start
-   :end-before: // copyContent end
+   :start-after: // appendContent start
+   :end-before: // appendContent end
 
-DataStores can often provide an optimised implementation of this method.
+The modified file:
+
+  .. literalinclude:: artifacts/write-output.txt
+     :language: text
+     :start-after: appendContent contents start
+     :end-before: appendContent contents end
+     
+DataStores can often provide an optimized implementation of this method.

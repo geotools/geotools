@@ -43,8 +43,7 @@ public class CSVFeatureStore extends ContentFeatureStore {
     @Override
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query,
             int flags) throws IOException {
-        boolean append = (flags | WRITER_ADD) == WRITER_ADD;
-        return new CSVFeatureWriter(getState(), query, append);
+        return new CSVFeatureWriter(getState(), query);
     }
     // getWriter end
     

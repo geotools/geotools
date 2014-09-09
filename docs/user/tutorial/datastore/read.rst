@@ -1,5 +1,5 @@
-Using CSV DataStore to Read Files
----------------------------------
+Using FeatureSource
+-------------------
 
 In this part we examine the abilities of the CSVDataStore.
 

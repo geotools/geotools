@@ -3,8 +3,8 @@
 :Version: |release|
 :License: Creative Commons with attribution
 
-Making CSVDataStore Writable
-----------------------------
+Implementing FeatureStore
+-------------------------
 
 In this part we will complete the CSVDataStore. At the end of this section we
 will have a full functional CSVDataStore supporting both read and write operations.
@@ -121,9 +121,6 @@ are always on the same transaction, but other than that this approach is working
 
 #. Our first responsibility is to implement a CSVFeatureWriter for internal use. Transaction and Event
    Notification are handled by wrappers applied to our CSVFeatureWriter.
-   
-   There is one optimisation we are asked to handle, if the user is simply addiing content we
-   can skip to the end of the file and append content on the end.
     
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureStore.java
       :language: java
@@ -132,7 +129,13 @@ are always on the same transaction, but other than that this approach is working
    
    .. note:: 
       
-      You can control what wrappers are applied, by as shown in the following table.
+      
+      In general the "Gang of Four" decorator pattern is used to layer functionality around the
+      raw **FeatureReader** and **FeatureWriters** you provided. This is very similar to the design
+      of the **java-io** library (where a BufferedInputStream can be wrapped around a raw
+      FileInputStream).
+      
+      You can control what decorators/wrappers are applied, by as shown in the following table.
       
           ==================== ===============
           Handle               Override

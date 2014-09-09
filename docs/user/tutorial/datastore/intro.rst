@@ -6,7 +6,7 @@
 Introducing CSVDataStore
 ------------------------
 
-In our initial :doc:`feature tutorial </tutorial/feature/csv2shp>` we provided a code snippet to read in comma seperated value file and produce feature collection.
+In our initial :doc:`feature tutorial </tutorial/feature/csv2shp>` we provided a code snippet to read in comma separated value file and produce feature collection.
 
 In this tutorial we will build a CSV DataStore, and in the process explore several aspects of how DataStores work and best to make use of them.
 

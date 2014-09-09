@@ -11,12 +11,10 @@ package org.geotools.data.csv;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.io.IOUtils;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
@@ -26,6 +24,7 @@ import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.vividsolutions.jts.geom.Point;
 
@@ -49,7 +48,8 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     private boolean appending = false;
 
 //    private boolean copying = false;
-
+    int nextRow = 0;
+    
     public CSVFeatureWriter(ContentState state, Query query, boolean append) throws IOException {
         this.state = state;
 
@@ -60,17 +60,17 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this.csvWriter = new CsvWriter(new FileWriter(this.temp), ',');
         if (append) {
             Files.copy(file.toPath(), temp.toPath(), StandardCopyOption.REPLACE_EXISTING );
-            // skip through the contents to the end
-//            this.copying = true;
-//            try {
-//                while (reader.hasNext()) {
-//                    this.currentFeature = reader.next();
-//                    this.write();
-//                }
-//            }
-//            finally {
-//                this.copying = false;
-//            }
+            CsvReader count = null;
+            try {
+                count = ((CSVDataStore)state.getEntry().getDataStore()).read();
+                count.getHeaders();
+                while(count.readRecord()){
+                    nextRow++;
+                }
+            }
+            finally {
+                count.close();
+            }
         }
         else {
             this.delegate = new CSVFeatureReader(state,query);
@@ -115,7 +115,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
                 }
             }
             SimpleFeatureType featureType = state.getFeatureType();
-            String fid = featureType.getTypeName()+"."+System.currentTimeMillis();
+            String fid = featureType.getTypeName()+"."+nextRow;
             Object values[] = DataUtilities.defaultValues( featureType );
             
             this.currentFeature = SimpleFeatureBuilder.build( featureType, values, fid );
@@ -151,6 +151,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
             }
         }
         this.csvWriter.endRecord();
+        nextRow++;
         this.currentFeature = null; // indicate that it has been written
     }
 

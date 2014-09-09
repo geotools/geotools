@@ -100,6 +100,9 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         if( next != null ){
             return true;
         }
+        else if (reader == null ){
+            return false;
+        }
         else {
             next = readFeature(); // read next feature so we can check
             return next != null;

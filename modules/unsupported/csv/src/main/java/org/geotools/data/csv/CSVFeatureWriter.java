@@ -101,22 +101,25 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         if( csvWriter == null ){
             throw new IOException("Writer has been closed");
         }
+        if (this.currentFeature != null) {
+            this.write(); // the previous one was not written, so do it now.
+        }
         try {
-            if (this.appending) {
-                SimpleFeatureType featureType = state.getFeatureType();
-                String fid = featureType.getTypeName()+"."+System.currentTimeMillis();
-                Object values[] = DataUtilities.defaultValues( featureType );
-                
-                this.currentFeature = SimpleFeatureBuilder.build( featureType, values, fid );
-                return this.currentFeature;
-            }
-            else {
-                if (this.currentFeature != null) {
-                    this.write(); // the previous one was not written, so do it now.
+            if( !appending ){
+                if( delegate.reader != null && delegate.hasNext() ){
+                    this.currentFeature = delegate.next();
+                    return this.currentFeature;
                 }
-                this.currentFeature = delegate.next();
-                return this.currentFeature;
+                else {
+                    this.appending = true;
+                }
             }
+            SimpleFeatureType featureType = state.getFeatureType();
+            String fid = featureType.getTypeName()+"."+System.currentTimeMillis();
+            Object values[] = DataUtilities.defaultValues( featureType );
+            
+            this.currentFeature = SimpleFeatureBuilder.build( featureType, values, fid );
+            return this.currentFeature;
         }
         catch (IllegalArgumentException invalid ){
             throw new IOException("Unable to create feature:"+invalid.getMessage(),invalid);

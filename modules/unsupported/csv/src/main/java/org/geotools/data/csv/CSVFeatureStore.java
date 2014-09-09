@@ -52,8 +52,8 @@ public class CSVFeatureStore extends ContentFeatureStore {
     CSVFeatureSource delegate = new CSVFeatureSource(entry, query) {
         @Override
         public void setTransaction(Transaction transaction) {
-            // Keep these two implementations on the same transaction
-            CSVFeatureStore.this.setTransaction(transaction);
+            super.setTransaction(transaction);
+            CSVFeatureStore.this.setTransaction(transaction); // Keep these two implementations on the same transaction
         }
     };
 

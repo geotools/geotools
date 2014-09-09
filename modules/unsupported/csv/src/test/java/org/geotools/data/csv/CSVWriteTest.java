@@ -8,269 +8,317 @@
  */
 package org.geotools.data.csv;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
-import java.io.FileReader;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.referencing.CRS;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.geotools.test.TestData;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
-import org.opengis.filter.identity.FeatureId;
 
-import com.csvreader.CsvReader;
-import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * Informal test used to document expected functionality for workshop.
+ * <p>
+ * This test has a setup method used to copy locations.csv to a temporary file.
+ * 
  */
 public class CSVWriteTest {
+    File tmp;
 
-    @Test
-    public void test() throws Exception {
-        List<String> cities = new ArrayList<String>();
-        URL url = CSVWriteTest.class.getResource("locations.csv");
-        File file = new File(url.toURI());
-        try (FileReader reader = new FileReader(file)) {
-            CsvReader locations = new CsvReader(reader);
-            locations.readHeaders();
-            while (locations.readRecord()) {
-                cities.add(locations.get("CITY"));
-            }
+    File file;
+
+    @Before
+    public void createTemporaryLocations() throws IOException {
+        // Setting the system-wide default at startup time
+        System.setProperty("org.geotools.referencing.forceXY", "true");
+        
+        tmp = File.createTempFile("example", "");
+        boolean exists = tmp.exists();
+        if (exists) {
+            System.err.println("Removing tempfile " + tmp);
+            tmp.delete();
         }
-        assertTrue(cities.contains("Victoria"));
+        boolean created = tmp.mkdirs();
+        if (!created) {
+            System.err.println("Could not create " + tmp);
+            System.exit(1);
+        }
+        file = new File(tmp, "locations.csv");
+
+        URL resource = TestData.getResource(CSVWriteTest.class, "locations.csv");
+        Files.copy(resource.openStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
-    // locations.csv end
-
-    @Test
-    public void example1() throws Exception {
-        System.out.println("example1 start\n");
-        URL url = CSVWriteTest.class.getResource("locations.csv");
-        File file = new File(url.toURI());
-
-        // example1 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put("file", file);
-
-        DataStore store = DataStoreFinder.getDataStore(params);
-
-        String names[] = store.getTypeNames();
-        System.out.println("typenames: " + names.length);
-        System.out.println("typename[0]: " + names[0]);
-        // example1 end
-        System.out.println("\nexample1 end\n");
+    @After
+    public void removeTemporaryLocations() throws IOException {
+        File list[] = tmp.listFiles();
+        for (int i = 0; i < list.length; i++) {
+            list[i].delete();
+        }
+        tmp.delete();
     }
 
     @Test
-    public void example2() throws Exception {
-        System.out.println("example2 start\n");
-        URL url = CSVWriteTest.class.getResource("locations.csv");
-        File file = new File(url.toURI());
-        // example2 start
+    public void featureStoreExample() throws Exception {
+        System.out.println("featureStoreExample start\n");
+        // featureStoreExample start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
+
+        SimpleFeatureSource featureSource = store.getFeatureSource("locations");
+        if (!(featureSource instanceof SimpleFeatureStore)) {
+            throw new IllegalStateException("Modification not supported");
+        }
+        SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
+
+        // featureStoreExample end
+        System.out.println("\nfeatureStoreExample end\n");
+    }
+
+    @Test
+    public void transactionExample() throws Exception {
+        System.out.println("transactionExample start\n");
+        // transactionExample start
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put("file", file);
+        DataStore store = DataStoreFinder.getDataStore(params);
+
+        Transaction t1 = new DefaultTransaction("transaction 1");
+        Transaction t2 = new DefaultTransaction("transactoin 2");
 
         SimpleFeatureType type = store.getSchema("locations");
+        SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
+        SimpleFeatureStore featureStore1 = (SimpleFeatureStore) store.getFeatureSource("locations");
+        SimpleFeatureStore featureStore2 = (SimpleFeatureStore) store.getFeatureSource("locations");
 
-        System.out.println("featureType  name: " + type.getName());
-        System.out.println("featureType count: " + type.getAttributeCount());
+        featureStore1.setTransaction(t1);
+        featureStore2.setTransaction(t2);
 
-        System.out.println("featuretype attributes list:");
-        // access by list
-        for (AttributeDescriptor descriptor : type.getAttributeDescriptors()) {
-            System.out.print("  " + descriptor.getName());
-            System.out.print(" (" + descriptor.getMinOccurs() + "," + descriptor.getMaxOccurs()
-                    + ",");
-            System.out.print((descriptor.isNillable() ? "nillable" : "manditory") + ")");
-            System.out.print(" type: " + descriptor.getType().getName());
-            System.out.println(" binding: " + descriptor.getType().getBinding().getSimpleName());
-        }
-        // access by index
-        AttributeDescriptor attributeDescriptor = type.getDescriptor(0);
-        System.out.println("attribute 0    name: " + attributeDescriptor.getName());
-        System.out.println("attribute 0    type: " + attributeDescriptor.getType().toString());
-        System.out.println("attribute 0 binding: " + attributeDescriptor.getType().getBinding());
+        System.out.println("Step 1");
+        System.out.println("------");
+        System.out.println("start     auto-commit: "
+                + DataUtilities.fidSet(featureStore.getFeatures()));
+        System.out.println("start              t1: "
+                + DataUtilities.fidSet(featureStore1.getFeatures()));
+        System.out.println("start              t2: "
+                + DataUtilities.fidSet(featureStore2.getFeatures()));
 
-        // access by name
-        AttributeDescriptor cityDescriptor = type.getDescriptor("CITY");
-        System.out.println("attribute 'CITY'    name: " + cityDescriptor.getName());
-        System.out.println("attribute 'CITT'    type: " + cityDescriptor.getType().toString());
-        System.out.println("attribute 'CITY' binding: " + cityDescriptor.getType().getBinding());
+        // select feature to remove
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Filter filter1 = ff.id(Collections.singleton(ff.featureId("fid1")));
+        featureStore1.removeFeatures(filter1); // road1 removes fid1 on t1
 
-        // default geometry
-        GeometryDescriptor geometryDescriptor = type.getGeometryDescriptor();
-        System.out.println("default geom    name: " + geometryDescriptor.getName());
-        System.out.println("default geom    type: " + geometryDescriptor.getType().toString());
-        System.out.println("default geom binding: " + geometryDescriptor.getType().getBinding());
-        System.out.println("default geom     crs: "
-                + CRS.toSRS(geometryDescriptor.getCoordinateReferenceSystem()));
+        System.out.println();
+        System.out.println("Step 2 transaction 1 removes feature 'fid1'");
+        System.out.println("------");
+        System.out.println("t1 remove auto-commit: "
+                + DataUtilities.fidSet(featureStore.getFeatures()));
+        System.out.println("t1 remove          t1: "
+                + DataUtilities.fidSet(featureStore1.getFeatures()));
+        System.out.println("t1 remove          t2: "
+                + DataUtilities.fidSet(featureStore2.getFeatures()));
 
-        // example2 end
-        System.out.println("\nexample2 end\n");
+        // new feature to add!
+        // 45.52, -122.681944, Portland, 800, 2014
+        GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
+        Point portland = gf.createPoint(new Coordinate( 45.52, -122.681944));
+        SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] { portland, "Portland", 800, 2014 }, "locations.1");
+        SimpleFeatureCollection collection = DataUtilities.collection(feature);
+        featureStore2.addFeatures(collection);
+
+        System.out.println();
+        System.out.println("Step 3 transaction 2 adds a new feature '" + feature.getID() + "'");
+        System.out.println("------");
+        System.out.println("t2 add    auto-commit: "
+                + DataUtilities.fidSet(featureStore.getFeatures()));
+        System.out.println("t2 add             t1: "
+                + DataUtilities.fidSet(featureStore1.getFeatures()));
+        System.out.println("t1 add             t2: "
+                + DataUtilities.fidSet(featureStore2.getFeatures()));
+
+        // commit transaction one
+        t1.commit();
+
+        System.out.println();
+        System.out.println("Step 4 transaction 1 commits the removal of feature 'fid1'");
+        System.out.println("------");
+        System.out.println("t1 commit auto-commit: "
+                + DataUtilities.fidSet(featureStore.getFeatures()));
+        System.out.println("t1 commit          t1: "
+                + DataUtilities.fidSet(featureStore1.getFeatures()));
+        System.out.println("t1 commit          t2: "
+                + DataUtilities.fidSet(featureStore2.getFeatures()));
+
+        // commit transaction two
+        t2.commit();
+
+        System.out.println();
+        System.out
+                .println("Step 5 transaction 2 commits the addition of '" + feature.getID() + "'");
+        System.out.println("------");
+        System.out.println("t2 commit auto-commit: "
+                + DataUtilities.fidSet(featureStore.getFeatures()));
+        System.out.println("t2 commit          t1: "
+                + DataUtilities.fidSet(featureStore1.getFeatures()));
+        System.out.println("t2 commit          t2: "
+                + DataUtilities.fidSet(featureStore2.getFeatures()));
+
+        t1.close();
+        t2.close();
+        store.dispose(); // clear out any listeners
+        // transactionExample end
+        System.out.println("\ntransactionExample end\n");
     }
 
     @Test
-    public void example3() throws Exception {
-        System.out.println("example3 start\n");
-        URL url = CSVWriteTest.class.getResource("locations.csv");
-        File file = new File(url.toURI());
-        // example3 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put("file", file);
-        DataStore datastore = DataStoreFinder.getDataStore(params);
-
-        Query query = new Query("locations");
-
-        System.out.println("open feature reader");
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = datastore.getFeatureReader(query,
-                Transaction.AUTO_COMMIT);
-        try {
-            int count = 0;
-            while (reader.hasNext()) {
-                SimpleFeature feature = reader.next();
-                System.out.println("  " + feature.getID() + " " + feature.getAttribute("CITY"));
-                count++;
-            }
-            System.out.println("close feature reader");
-            System.out.println("read in " + count + " features");
-        } finally {
-            reader.close();
-        }
-        // example3 end
-        System.out.println("\nexample3 end\n");
-    }
-
-    @Test
-    public void example4() throws Exception {
-        System.out.println("example4 start\n");
-        URL url = CSVWriteTest.class.getResource("locations.csv");
-        File file = new File(url.toURI());
-
-        // example4 start
+    public void removeAllExample() throws Exception {
+        System.out.println("removeAllExample start\n");
+        // removeAllExample start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-
-        Set<FeatureId> selection = new HashSet<FeatureId>();
-        selection.add(ff.featureId("locations.7"));
-
-        Filter filter = ff.id(selection);
-        Query query = new Query("locations", filter);
-
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader(query,
-                Transaction.AUTO_COMMIT);
-
+        Transaction t = new DefaultTransaction("locations");
         try {
-            while (reader.hasNext()) {
-                SimpleFeature feature = reader.next();
-                System.out.println("feature " + feature.getID());
+            FeatureWriter<SimpleFeatureType, SimpleFeature> writer = store.getFeatureWriter(
+                    "locations", Filter.INCLUDE, t);
 
-                for (Property property : feature.getProperties()) {
-                    System.out.print("\t");
-                    System.out.print(property.getName());
-                    System.out.print(" = ");
-                    System.out.println(property.getValue());
+            SimpleFeature feature;
+            try {
+                while (writer.hasNext()) {
+                    feature = writer.next();
+                    System.out.println("remove " + feature.getID());
+                    writer.remove(); // marking contents for removal
                 }
+            } finally {
+                writer.close();
             }
+            System.out.println("commit " + t); // now the contents are removed
+            t.commit();
+        } catch (Throwable eek) {
+            t.rollback();
         } finally {
-            reader.close();
+            t.close();
+            store.dispose();
         }
-        // example4 end
-        System.out.println("\nexample4 end\n");
+        // removeAllExample end
+        System.out.println("\nremoveAllExample end\n");
     }
 
     @Test
-    public void example5() throws Exception {
-        System.out.println("example5 start\n");
-        URL url = CSVWriteTest.class.getResource("locations.csv");
-        File file = new File(url.toURI());
-        // example5 start
+    public void replaceAll() throws Exception {
+        System.out.println("replaceAll start\n");
+        // replaceAll start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
-        SimpleFeatureSource featureSource = store.getFeatureSource("locations");
+        final SimpleFeatureType type = store.getSchema("locations");
+        final FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        SimpleFeature f;
+        DefaultFeatureCollection collection = new DefaultFeatureCollection();
+        
+        // 45.52, -122.681944, Portland, 800, 2014
+        GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
+        Point portland = gf.createPoint(new Coordinate( 45.52, -122.681944));
+        f = SimpleFeatureBuilder.build(type, new Object[] { portland, "Portland", 800, 2014 }, "locations.1");
+        collection.add(f);
 
-        Filter filter = CQL.toFilter("CITY = 'Denver'");
-        SimpleFeatureCollection features = featureSource.getFeatures(filter);
-        System.out.println("found :" + features.size() + " feature");
-        SimpleFeatureIterator iterator = features.features();
+        writer = store.getFeatureWriter("locations", Transaction.AUTO_COMMIT);
         try {
+            // remove all features
+            while (writer.hasNext()) {
+                writer.next();
+                writer.remove();
+            }
+            // copy new features in
+            SimpleFeatureIterator iterator = collection.features();
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-                Geometry geometry = (Geometry) feature.getDefaultGeometry();
-                System.out.println(feature.getID() + " default geometry " + geometry);
+                SimpleFeature newFeature = writer.next(); // new blank feature
+                newFeature.setAttributes(feature.getAttributes());
+                writer.write();
             }
-        } catch (Throwable t) {
-            iterator.close();
+        } finally {
+            writer.close();
         }
-
-        // example5 end
-        System.out.println("\nexample5 end\n");
+        // replaceAll end
+        System.out.println("\nreplaceAll end\n");
     }
 
     @Test
-    public void example6() throws Exception {
-        System.out.println("example6 start\n");
-        URL url = CSVWriteTest.class.getResource("locations.csv");
-        File file = new File(url.toURI());
-
-        // example6 start
+    public void appendContent() throws Exception {
+        System.out.println("copyContent start\n");
+        File directory = tmp;
+        // copyContent start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
-
-        SimpleFeatureSource featureSource = store.getFeatureSource("locations");
-        SimpleFeatureCollection featureCollection = featureSource.getFeatures();
+        SimpleFeatureType featureType = store.getSchema("locations");
         
-        List<String> list = new ArrayList<String>();
-        try (SimpleFeatureIterator features = featureCollection.features();) {
-            while (features.hasNext()) {
-                list.add(features.next().getID());
+        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        params2.put("file", new File(directory,"duplicate.rst"));
+        
+        CSVDataStoreFactory factory = new CSVDataStoreFactory();
+        DataStore duplicate = factory.createNewDataStore(params2);
+        duplicate.createSchema( featureType );
+        
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        SimpleFeature feature, newFeature;
+
+        Query query = new Query(featureType.getTypeName(), Filter.INCLUDE);
+        reader = store.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        
+        writer = duplicate.getFeatureWriterAppend("duplicate", Transaction.AUTO_COMMIT);
+        try {
+            while (reader.hasNext()) {
+                feature = reader.next();
+                newFeature = writer.next();
+                
+                newFeature.setAttributes( feature.getAttributes() );
+                writer.write();
             }
-        } // try-with-resource will call features.close()
+        } finally {
+            reader.close();
+            writer.close();
+        }
 
-        System.out.println("           List Contents: " + list);
-        System.out.println("    FeatureSource  count: " + featureSource.getCount(Query.ALL));
-        System.out.println("    FeatureSource bounds: " + featureSource.getBounds(Query.ALL));
-        System.out.println("FeatureCollection   size: " + featureCollection.size());
-        System.out.println("FeatureCollection bounds: " + featureCollection.getBounds());
+        // copyContent end
+        System.out.println("\ncopyContent end\n");
 
-        // Load into memory!
-        DefaultFeatureCollection collection = DataUtilities.collection(featureCollection);
-        System.out.println("         collection size: " + collection.size());
-        // example6 end
-        System.out.println("\nexample6 end\n");
     }
-
 }

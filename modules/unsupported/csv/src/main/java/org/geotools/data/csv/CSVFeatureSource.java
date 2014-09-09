@@ -122,6 +122,7 @@ public class CSVFeatureSource extends ContentFeatureSource {
     }
     // schema end
     
+    // visitor start
     /**
      * Make handleVisitor package visible allowing CSVFeatureStore to delegate to
      * this implementation.
@@ -130,4 +131,5 @@ public class CSVFeatureSource extends ContentFeatureSource {
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return super.handleVisitor(query, visitor);
     }
+    // visitor start
 }

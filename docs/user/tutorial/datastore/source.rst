@@ -32,6 +32,8 @@ The class *ContentEntry* is a bit of a scratch pad used to keep track of things 
 
 Our initial implementation will result in a read-only datastore for accessing CSV content:
 
+#. Set up a org.geotools.tutorial.csv package in :file:`src/main/java`.
+
 #. To begin create the file CSVDataStore extending ContentDataStore
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
@@ -102,7 +104,7 @@ Next we can create the **CSVFeatureSource** mentioned above. This class is respo
       :start-after: // header
       :end-before: // getDataStore start
 
-#. As a connivence we can type narrow our **getDataStore()** method to explicitly to return a **CSVDataStore**. In addition to being accurate, this prevents a lot of casts resulting in more readable code.
+#. To assist others we can type narrow our **getDataStore()** method to explicitly to return a **CSVDataStore**. In addition to being accurate, this prevents a lot of casts resulting in more readable code.
   
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureSource.java
       :language: java
@@ -173,7 +175,7 @@ FeatureReader interface:
 To implement our FeatureReader, we will need to do several things: open a File and read through it
 line by line, parsing Features as we go. Because this class actually does some work, we are going to include a few more comments in the code to keep our heads on straight.
 
-1. Create the file CSVSFeatureReader as follows:
+1. Create the class **CSVFeatureReader** as follows:
    
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureReader.java
       :language: java
@@ -263,6 +265,20 @@ information and the ability to create new physical storage.
       :language: java
       :start-after: // getParametersInfo start
       :end-before: // getParametersInfo end
+      
+   .. note:: Does anything really use this?
+      
+      The **gt-swing** module is able to construct a user interface based on these **Param**
+      descriptions. The uDig and GeoServer projects have similar auto-generated screens.
+      
+      .. figure:: /tutorial/filter/images/shapeWizard1.png
+         
+         Shapefile User Parameters
+      
+      .. figure:: /tutorial/filter/images/shapeWizard2.png
+        
+        Shapefile Advanced Parameters
+
       
 4. Next we have some code to check if a set of provided connection parameters can actually be used.
    

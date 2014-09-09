@@ -16,7 +16,7 @@ CSVDataStore API for data access:
 * DataStore.getFeatureSource( typeName )
 
 If you would like to follow along with these examples you can
-:download:`CSVExamples.java </../src/main/java/org/geotools/tutorial/csv/CSVTest.java>`.
+:download:`CSVTest.java </../src/main/java/org/geotools/tutorial/csv/CSVTest.java>`.
 
 * DataStore.getTypeNames()
   

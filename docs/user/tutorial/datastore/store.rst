@@ -9,7 +9,6 @@ Implementing FeatureStore
 In this part we will complete the CSVDataStore. At the end of this section we
 will have a full functional CSVDataStore supporting both read and write operations.
 
-
 .. figure:: images/CSVDataStoreWrite.png
    
    CSVDataStore Read-Write
@@ -164,6 +163,20 @@ are always on the same transaction, but other than that this approach is working
       :language: java
       :start-after: // internal start
       :end-before: // internal end
+      
+   We have to do one "fix" to allow handle visitor method to be called - add the following to
+      **CSVFeatureSource**.
+      
+   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureSource.java
+      :language: java
+      :start-after: // visitor start
+      :end-before: // visitor end
+      
+   .. note::
+   
+      Why does this work - because Java visibility rules are insane.
+      Even though the method is marked *protected* it now has *package*
+      visibility can be called by its peer CSVFeatureStore. 
       
 #. Use the delegate to implement the public FeatureSource methods.
    

@@ -110,10 +110,10 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
         File file = (File) FILE_PARAM.lookUp(params);
         return new CSVDataStore(file);
     }
-
     // createDataStore end
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.csv");
+    
     // createNewDataStore start
+    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.csv");
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
         File file = (File) FILE_PARAM.lookUp(params);
         if (file.exists() ){

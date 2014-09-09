@@ -6,18 +6,18 @@
 Using CSVDataStore to Write Files
 ---------------------------------
 
-In this part we will explore the full capabilities of our completed PropertyDataStore.
+In this part we will explore the full capabilities of our completed CSVDataStore.
 
-Now that we have completed our PropertyDataStore implementation, we can explore the remaining
+Now that we have completed our CSVDataStore implementation, we can explore the remaining
 capabilities of the DataStore API.
 
-PropertyDataStore API for data modification:
+CSVDataStore API for data modification:
 
-* PropertyDataStore.createSchema( featureType )
-* PropertyDataStore.getFeatureWriter( typeName, filter, Transaction )
-* PropertyDataStore.getFeatureWriter( typeName, Transaction )
-* PropertyDataStore.getFeatureWriterAppend( typeName, Transaction )
-* PropertyDataStore.getFeatureSource( typeName )
+* CSVDataStore.createSchema( featureType )
+* CSVDataStore.getFeatureWriter( typeName, filter, Transaction )
+* CSVDataStore.getFeatureWriter( typeName, Transaction )
+* CSVDataStore.getFeatureWriterAppend( typeName, Transaction )
+* CSVDataStore.getFeatureSource( typeName )
 
 FeatureSource
 ^^^^^^^^^^^^^
@@ -39,7 +39,7 @@ extension of FeatureSource. You may check the result of getFeatureSource( typeNa
 
 Example of FeatureStore use:
 
-.. literalinclude:: /../../modules/plugin/property/src/test/java/org/geotools/data/property/PropertyExamples.java
+.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/CSVWriteTest.java
    :language: java
    :start-after: // featureStoreExample start
    :end-before: // featureStoreExample end
@@ -57,7 +57,7 @@ Once again, many DataStores are able to provide optimised implementations of the
 
 Transaction Example:
 
-.. literalinclude:: /../../modules/plugin/property/src/test/java/org/geotools/data/property/PropertyExamples.java
+.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/CSVWriteTest.java
    :language: java
    :start-after: // transactionExample start
    :end-before: // transactionExample end
@@ -127,7 +127,7 @@ creates a FeatureWriter used to modify features indicated by a constraint.
 
 Example - removing all features:
 
-.. literalinclude:: /../../modules/plugin/property/src/test/java/org/geotools/data/property/PropertyExamples.java
+.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/CSVWriteTest.java
    :language: java
    :start-after: // removeAllExample start
    :end-before: // removeAllExample end
@@ -145,7 +145,7 @@ provided content.
 
 Example - completely replace all features:
 
-.. literalinclude:: /../../modules/plugin/property/src/test/java/org/geotools/data/property/PropertyExamples.java
+.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/CSVWriteTest.java
    :language: java
    :start-after: // replaceAll start
    :end-before: // replaceAll end
@@ -158,7 +158,7 @@ for adding content.
 
 Example - making a copy:
 
-.. literalinclude:: /../../modules/plugin/property/src/test/java/org/geotools/data/property/PropertyExamples.java
+.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/CSVWriteTest.java
    :language: java
    :start-after: // copyContent start
    :end-before: // copyContent end

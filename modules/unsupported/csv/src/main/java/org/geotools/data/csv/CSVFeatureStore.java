@@ -35,6 +35,8 @@ public class CSVFeatureStore extends ContentFeatureStore {
     public CSVFeatureStore(ContentEntry entry, Query query) {
         super(entry, query);
     }
+    // header end
+    // getWriter start
     //
     // CSVFeatureStore implementations
     //
@@ -44,6 +46,8 @@ public class CSVFeatureStore extends ContentFeatureStore {
         boolean append = (flags | WRITER_ADD) == WRITER_ADD;
         return new CSVFeatureWriter(getState(), query, append);
     }
+    // getWriter end
+    
     // transaction start
     /**
      * Delegate used for FeatureSource methods (We do this because Java cannot inherit from both ContentFeatureStore and CSVFeatureSource at the same
@@ -65,11 +69,8 @@ public class CSVFeatureStore extends ContentFeatureStore {
         }
     }
     // transaction end
-    // internal start
-    public CSVFeatureSource getDelegate() {
-        return delegate;
-    }
     
+    // internal start
     //
     // Internal Delegate Methods
     // Implement FeatureSource methods using CSVFeatureSource implementation

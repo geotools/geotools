@@ -40,15 +40,20 @@ import com.vividsolutions.jts.geom.Point;
  * @author Jody Garnett (Boundless)
  */
 public class CSVDataStore extends ContentDataStore {
+ // header end
+
+    // constructor start
     File file;
 
-    public CSVDataStore(File file) {
+    public CSVDataStore( File file ){
         this.file = file;
     }
+    // constructor end
 
+    // reader start
     /**
-     * Allow read access to file; for our package visible "friends". Please close the reader when done.
-     * 
+     * Allow read access to file; for our package visible "friends".
+     * Please close the reader when done.
      * @return CsvReader for file
      */
     CsvReader read() throws IOException {
@@ -56,28 +61,19 @@ public class CSVDataStore extends ContentDataStore {
         CsvReader csvReader = new CsvReader(reader);
         return csvReader;
     }
-    
+    // reader end
 
+    // createTypeNames start
     protected List<Name> createTypeNames() throws IOException {
         String name = file.getName();
         name = name.substring(0, name.lastIndexOf('.'));
 
-        Name typeName = new NameImpl(name);
+        Name typeName = new NameImpl( name );
         return Collections.singletonList(typeName);
     }
-
-    // createSchema start
-    /**
-     * Allow read access to file; for our package visible "friends". Please close the reader when done.
-     * 
-     * @return CsvReader for file
-     */
-    CsvWriter write() throws IOException {
-        Writer reader = new FileWriter(file);
-        CsvWriter csvWriter = new CsvWriter(reader,',');
-        return csvWriter;
-    }
+    // createTypeNames end
     
+    // createSchema start
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         List<String> header = new ArrayList<String>();
@@ -96,7 +92,8 @@ public class CSVDataStore extends ContentDataStore {
                 continue;
             header.add(descriptor.getLocalName());
         }
-        CsvWriter writer = write();
+        // Write out header, producing an empty file of the correct type
+        CsvWriter writer = new CsvWriter(new FileWriter(file),',');
         try {
             writer.writeRecord( header.toArray(new String[header.size()]));
         }

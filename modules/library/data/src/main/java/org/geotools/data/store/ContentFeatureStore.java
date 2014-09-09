@@ -183,19 +183,20 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
      *   <li>reprojection</li>
      *   <li>filtering</li>
      *   <li>max feature limiting</li>
-     *   <li>sorting<li>
-     *   <li>locking<li>
+     *   <li>sorting</li>
+     *   <li>locking</li>
      * </ul>
      * Then it <b>*must*</b> set the corresponding flags to <code>true</code>:
      * <ul>
      *   <li>{@link #canReproject()}</li>
      *   <li>{@link #canFilter()}</li>
      *   <li>{@link #canLimit()}</li>
-     *   <li>{@link #canSort()}<li>
-     *   <li>{@link #canLock()}<li>
+     *   <li>{@link #canSort()}</li>
+     *   <li>{@link #canLock()}</li>
      * </ul>
      * </p>
-     * 
+     * @param query Query
+     * @param flags See {@link #WRITER_ADD} and {@link #WRITER_UPDATE}
      */
     protected abstract FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal( Query query, int flags ) 
         throws IOException;

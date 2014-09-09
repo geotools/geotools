@@ -6,7 +6,8 @@
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file. Use it well and enjoy!
  */
-package org.geotools.data.csv;
+// header start
+package org.geotools.tutorial.csv;
 
 import java.io.IOException;
 
@@ -17,13 +18,13 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
 import com.csvreader.CsvReader;
 import com.vividsolutions.jts.geom.Point;
+
 /**
  * Read-only access to CSV File.
  * 
@@ -121,13 +122,5 @@ public class CSVFeatureSource extends ContentFeatureSource {
         }
     }
     // schema end
-    
-    /**
-     * Make handleVisitor package visible allowing CSVFeatureStore to delegate to
-     * this implementation.
-     */
-    @Override
-    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
-        return super.handleVisitor(query, visitor);
-    }
+
 }

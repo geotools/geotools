@@ -33,7 +33,6 @@ are can be distributed to to all GeoTools users.
 References:
 
 * :doc:`/library/data/property`
-* `org.geotools.data.property <http://svn.osgeo.org/geotools/trunk/modules/plugin/property/src/main/java/org/geotools/data/property/>`_ (source code)
 
 .. note::
    
@@ -44,15 +43,6 @@ References:
    While **ContentDataStore** is a lot less work to use; it is not yet as fully featured
    as AbstractDataStore. You may wish to try both tutorials before deciding on a course
    of action.
-
-.. note::
- 
-   Help Review
-   
-   This article is being updated from GeoTools 2.0 - where it was in docbook.
-    
-   As is usual for open source documentation is held hostage pending a volunteer to QA, or money.
-   Open source stops with the code, documentation sounds like work so please help with feedback!
 
 Part 1 - Introducing PropertyDataStore
 --------------------------------------

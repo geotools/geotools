@@ -1,0 +1,77 @@
+example1 start
+
+typenames: 1
+typename[0]: locations
+
+example1 end
+
+example2 start
+
+featureType  name: locations
+featureType count: 4
+featuretype attributes list:
+  Location (0,1,nillable) type: Location binding: Point
+  CITY (0,1,nillable) type: CITY binding: String
+  NUMBER (0,1,nillable) type: NUMBER binding: String
+  YEAR (0,1,nillable) type: YEAR binding: String
+attribute 0    name: Location
+attribute 0    type: GeometryTypeImpl Location<Point>
+attribute 0 binding: class com.vividsolutions.jts.geom.Point
+attribute 'CITY'    name: CITY
+attribute 'CITT'    type: AttributeTypeImpl CITY<String>
+attribute 'CITY' binding: class java.lang.String
+default geom    name: Location
+default geom    type: GeometryTypeImpl Location<Point>
+default geom binding: class com.vividsolutions.jts.geom.Point
+default geom     crs: CRS:84
+
+example2 end
+
+example3 start
+
+open feature reader
+  locations.1 Trento
+  locations.2 St Paul
+  locations.3 Bangkok
+  locations.4 Ottawa
+  locations.5 Minneapolis
+  locations.6 Lausanne
+  locations.7 Victoria
+  locations.8 Cape Town
+  locations.9 Sydney
+  locations.10 Barcelona
+  locations.11 Denver
+  locations.12 Nottingham
+close feature reader
+read in 12 features
+
+example3 end
+
+example4 start
+
+feature locations.7
+	Location = POINT (-123.365556 48.428611)
+	CITY = Victoria
+	NUMBER = 721
+	YEAR = 2007
+
+example4 end
+
+example5 start
+
+found :1 feature
+locations.11 default geometry POINT (-104.984722 39.739167)
+
+example5 end
+
+example6 start
+
+           List Contents: [locations.1, locations.2, locations.3, locations.4, locations.5, locations.6, locations.7, locations.8, locations.9, locations.10, locations.11, locations.12]
+    FeatureSource  count: 12
+    FeatureSource bounds: null
+FeatureCollection   size: 12
+FeatureCollection bounds: ReferencedEnvelope[-123.365556 : 151.211111, -33.925278 : 52.95]
+         collection size: 12
+
+example6 end
+

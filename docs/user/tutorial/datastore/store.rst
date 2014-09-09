@@ -244,7 +244,7 @@ A couple common questions:
   * Private classes focused on ease of development for DataStore developers - examples include
     ContentEntry, ContentEntry, BatchFeatureEvent
     
-    .. image:: images/internal.png
+    .. image:: images/Internal.png
   
   .. note::
      

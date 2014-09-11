@@ -110,6 +110,8 @@
       </xs:element>
     </xs:sequence>
     <xs:attribute name="name" use="required" />
+    <xs:attribute name="path"/>
+    <xs:attribute name="remove"/>
   </xs:complexType>
 
 </xs:schema> 

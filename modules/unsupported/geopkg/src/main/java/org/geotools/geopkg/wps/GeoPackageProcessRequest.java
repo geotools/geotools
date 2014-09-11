@@ -2,6 +2,7 @@ package org.geotools.geopkg.wps;
 
 import java.awt.Color;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +27,7 @@ public class GeoPackageProcessRequest {
         protected String description = null;
         protected URI srs = null;
         protected Envelope bbox = null;
-        
+
         public String getName() {
             return name;
         }
@@ -255,7 +256,17 @@ public class GeoPackageProcessRequest {
     }
     
     protected List<Layer> layers = new ArrayList<Layer>();
+    protected URL path = null;
+    protected boolean remove = true;
         
+    public Boolean getRemove() {
+        return remove;
+    }
+
+    public void setRemove(Boolean remove) {
+        this.remove = remove;
+    }
+
     public void addLayer(Layer layer) {
         layers.add(layer);
     }
@@ -276,4 +287,10 @@ public class GeoPackageProcessRequest {
         this.name = name;
     }
 
+    public URL getPath() {
+        return path;
+    }
+    public void setPath(URL path) {
+        this.path = path;
+    }
 }

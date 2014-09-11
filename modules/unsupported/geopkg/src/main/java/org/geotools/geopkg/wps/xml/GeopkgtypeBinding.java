@@ -1,6 +1,8 @@
 package org.geotools.geopkg.wps.xml;
 
 
+import java.net.URL;
+
 import org.geotools.geopkg.wps.GeoPackageProcessRequest;
 import org.geotools.xml.*;
 
@@ -90,7 +92,18 @@ public class GeopkgtypeBinding extends AbstractComplexBinding {
 	    GeoPackageProcessRequest request = new GeoPackageProcessRequest();
 	    
 	    request.setName((String) node.getAttributeValue("name"));
+	    String attributeValue = (String) node.getAttributeValue("path");
+	    if(attributeValue != null && !attributeValue.isEmpty()){
+	           URL url = new URL(attributeValue);
+	            request.setPath(url);
+	    }
 	    
+	    String removeFile = (String) node.getAttributeValue("remove");
+            if(removeFile != null && !removeFile.isEmpty()){
+                    request.setRemove(Boolean.parseBoolean(removeFile));
+            }else{
+                request.setRemove(true);
+            }
 	    for (Object child : node.getChildren()){
 	        request.addLayer((GeoPackageProcessRequest.Layer) ((Node) child).getValue());
 	    }

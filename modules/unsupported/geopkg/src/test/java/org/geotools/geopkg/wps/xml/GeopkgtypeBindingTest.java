@@ -75,7 +75,7 @@ public class GeopkgtypeBindingTest extends GPKGTestSupport {
     }
     
     public void testParse() throws Exception {
-        buildDocument("<geopackage name='mygeopackage'>"
+        buildDocument("<geopackage name='mygeopackage' path='file://test' remove='true'>"
                 + "<features name=\"features1\" identifier=\"f1\">"
                 + "<description>features1 description</description>"
                 + "<featuretype>featuretypename</featuretype>"
@@ -113,6 +113,10 @@ public class GeopkgtypeBindingTest extends GPKGTestSupport {
         Object result = parse(GPKG.geopkgtype);
         assertTrue(result instanceof GeoPackageProcessRequest);
         GeoPackageProcessRequest request = (GeoPackageProcessRequest) result;
+        
+        assertNotNull(request.getRemove());
+        assertTrue(request.getRemove());
+        assertTrue(request.getPath().toString().equalsIgnoreCase("file://test"));
         assertEquals(2, request.getLayerCount());
         
         assertTrue(request.getLayer(0) instanceof GeoPackageProcessRequest.FeaturesLayer);

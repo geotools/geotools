@@ -28,6 +28,8 @@ import org.geotools.util.logging.Logging;
 
 public class MBTilesFile {
 
+    public static final String PRAGMA_JOURNAL_MODE_OFF = "PRAGMA journal_mode=OFF";
+
     public class TileIterator implements Iterator<MBTilesTile>, Closeable {
 
         ResultSet rs;
@@ -131,10 +133,25 @@ public class MBTilesFile {
     protected volatile JDBCDataStore dataStore;
 
     /**
+     * Boolean indicating if journal must be disabled or not
+     */
+    protected boolean disableJournal;
+
+    /**
      * Creates a new empty MbTilesFile, generating a new file.
      */
     public MBTilesFile() throws IOException {
         this(File.createTempFile("temp", ".mbtiles"));
+    }
+    
+    /**
+     * Creates a new empty MbTilesFile, generating a new file, also deciding if journal must be disabled or not. 
+     * <p>
+     * This constructor assumes no credentials are required to connect to the database.
+     * </p>
+     */
+    public MBTilesFile(boolean disableJournal) throws IOException {
+        this(File.createTempFile("temp", ".mbtiles"), disableJournal);
     }
 
     /**
@@ -144,15 +161,25 @@ public class MBTilesFile {
      * </p>
      */
     public MBTilesFile(File file) throws IOException {
-        this(file, null, null);
+        this(file, null, null, false);
+    }
+    
+    /**
+     * Creates a MbTilesFile from an existing file, also deciding if journal must be disabled or not. 
+     * <p>
+     * This constructor assumes no credentials are required to connect to the database.
+     * </p>
+     */
+    public MBTilesFile(File file, boolean disableJournal) throws IOException {
+        this(file, null, null, disableJournal);
     }
 
     /**
      * Creates a MbTilesFile from an existing file specifying database credentials.
      */
-    public MBTilesFile(File file, String user, String passwd) throws IOException {
+    public MBTilesFile(File file, String user, String passwd, boolean disableJournal) throws IOException {
         this.file = file;
-
+        this.disableJournal = disableJournal;
         Map<String, Object> params = new HashMap<String, Object> ();
         if (user != null) {
             params.put(MBTilesDataStoreFactory.USER.key, user);
@@ -233,8 +260,13 @@ public class MBTilesFile {
         try {
             Connection cx = connPool.getConnection();
             try {
+                
+                if(disableJournal){
+                    disableJournal(cx);
+                }
+                
                 PreparedStatement ps;
-
+                
                 if (entry.getData() != null) {
                     ps = prepare(cx,
                             format("INSERT OR REPLACE INTO %s VALUES (?,?,?,?)", TABLE_TILES))
@@ -638,6 +670,10 @@ public class MBTilesFile {
     protected void saveMetaDataEntry(String name, String value, Connection cx) throws SQLException {
         PreparedStatement ps;
 
+        if(disableJournal){
+            disableJournal(cx);
+        }
+        
         if (value != null) {
             ps = prepare(cx, format("INSERT OR REPLACE INTO %s VALUES (?,?)", TABLE_METADATA))
                     .set(name).set(value).log(Level.FINE).statement();
@@ -702,6 +738,19 @@ public class MBTilesFile {
 
     protected void runScript(String filename, Connection cx) throws SQLException {
         SqlUtil.runScript(getClass().getResourceAsStream(filename), cx);
+    }
+    
+    private void disableJournal(Connection cx) throws SQLException {
+        PreparedStatement prepared = prepare(cx,PRAGMA_JOURNAL_MODE_OFF).statement();
+        try{
+            prepared.execute();
+        }catch(Exception e){
+            throw new SQLException(e);
+        }finally{
+            if(prepared != null){
+                    prepared.close();
+            }
+        }
     }
 
 }

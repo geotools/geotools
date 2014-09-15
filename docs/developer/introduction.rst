@@ -15,7 +15,7 @@ Where possible this document is concise with references to the web for details l
 
 For this guide to be useful it needs to be continually added to and improved as tools are developed, processes improved and projects grow.
 
-Community members should improving or adding sections to reflect current best practice. Where possible we suggest free, cross-platform tools or those that are available to open source developers for use. Where applicable, accepted conventions and open standards are used.
+Community members should improve or add sections to reflect current best practice. Where possible we suggest free, cross-platform tools or those that are available to open source developers for use. Where applicable, accepted conventions and open standards are used.
 
 System Overview
 ^^^^^^^^^^^^^^^^^

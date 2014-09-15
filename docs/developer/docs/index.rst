@@ -43,7 +43,7 @@ You can also build use ant; which is faster to start up (and will not build the 
      
      ant full
 
-2. You can also build specifc documentation::
+2. You can also build specific documentation::
      
      ant index
      ant user

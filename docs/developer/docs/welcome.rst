@@ -9,9 +9,9 @@ but not experienced with spatial constructs and ideas. We must focus on results,
 
 Here are some examples:
 
-* Introduce the concept of a Feature, but not Java Generics
+* Introduce the concept of a Feature, but not Java Generics.
 * Show first, explain after - given your target audience showing them the source code first will
-  put them at ease. That way when you are talking about what a Feature means afterwords they will
+  put them at ease. That way when you are talking about what a Feature means afterwards they will
   know to pay attention (it is after all a real concept that they must deal with in the form
   of a Java interface).
 * Leave the specifications out of it as much as possible. You can link to the specifications as

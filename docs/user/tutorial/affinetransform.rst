@@ -379,7 +379,7 @@ coordinates.
 Inversion
 ---------
 
-.. sidebar:: Maigc Part II
+.. sidebar:: Magic Part II
    
    The ability to invert a matrix and go
    the other way allows you to determine
@@ -529,7 +529,7 @@ Conclusion
 ==========
 
 I hope this tutorial helps to demystify affine transforms, once you are used to working with them
-you will never return to doing coordiante calcualtions "by hand".
+you will never return to doing coordinate calculations "by hand".
 
 Take a look at the Java API of the java.awt.geom.AffineTransform class to see further
 possibilities. (rotate, shear,...)

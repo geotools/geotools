@@ -39,13 +39,13 @@ This is more interesting, the code was forked in order to add new abilities:
    
 * `org.geoserver.importer.csv <https://github.com/geoserver/geoserver/tree/master/src/extension/importer/core/src/main/java/org/geoserver/importer/csv>`_ (GitHub)
 
-The implementation is strictly concerned with reading content (as part of an import process) and has added a nifty CSVStratagy (with implementations for CSVAttributesOnly, CSVLatLonStratagy, CSVSpecifiedLatLngStratagy and SpecifiedWKTStratagy).
+The implementation is strictly concerned with reading content (as part of an import process) and has added a nifty CSVStrategy (with implementations for CSVAttributesOnly, CSVLatLonStrategy, CSVSpecifiedLatLngStrategy and SpecifiedWKTStrategy).
 
 Sounds like a sensible addition.
    
 Info
 ^^^^
 
-This is more a case of polish, you can fill in a "info" data strucutre to more accurately describe your information to the uDig or GeoServer catalog.
+This is more a case of polish, you can fill in a "info" data structure to more accurately describe your information to the uDig or GeoServer catalog.
 
 In our case we could pick up any comments at the top of the file and use them as the initial file description.

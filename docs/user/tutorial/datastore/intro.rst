@@ -77,7 +77,7 @@ JavaCSV Reader
 
 Rather than go through the joy of parsing a CSV file by hand, we are going to make use of a library to read CSV files.
 
-The **JavaCVS** project looks nice and simple and is available in maven:
+The **JavaCSV** project looks nice and simple and is available in maven:
 
 * http://opencsv.sourceforge.net (Apache 2.0)
 

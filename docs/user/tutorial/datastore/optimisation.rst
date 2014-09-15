@@ -256,7 +256,7 @@ for Optimization.
 DataStore Optimization
 ''''''''''''''''''''''
 
-DataStore leaves open a number of methods for high-level optmisations:
+DataStore leaves open a number of methods for high-level optimisations:
 
 * ContentDataStore.getCount( query )
 * ContentDataStore.getBounds( query )
@@ -268,7 +268,7 @@ FeatureStore Optimization
 ''''''''''''''''''''''''''
 
 DataStores operating against rich external data sources can often perform high level Optimizations.
-JDBCDataStores for instance can often construct SQL statements that completely fulfil a request
+JDBCDataStores for instance can often construct SQL statements that completely fulfill a request
 without making use of FeatureWriters at all.
 
 When performing these queries please remember two things:
@@ -284,7 +284,7 @@ When performing these queries please remember two things:
    Since the FeatureId for CSV files is determined by row number, you can quickly scan to
    to a requested FeatureID by skipping an appropriate number of rows.
    
-   Use this knoweldge to implement an optimized version of FeatureSource.removeFeatures(Filter filter)
+   Use this knowledge to implement an optimized version of FeatureSource.removeFeatures(Filter filter)
    that detects the use of an Id filter.
    
    Hint: The Id Filter contains a Set<FeatureId> - and you deliberately constructed your FeatureId

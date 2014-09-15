@@ -2,7 +2,7 @@ Reference Material
 ==================
 
 The bulk of our user guide is devoted to reference material, on a module by module basis. Please
-keep in mind that this is reference material focused on results - ie code examples to accomplish
+keep in mind that this is reference material focused on results - i.e. code examples to accomplish
 a specific purpose.
 
 We do not need a bunch of design documentation here, show us what your code can do.
@@ -70,17 +70,17 @@ Tools:
 
 * Inkscape
   
-  Used for the diagrams (please don't use viso); and the result exported as a PNG for the docs
+  Used for the diagrams (please don't use visio); and the result exported as a PNG for the docs.
 
 * ObjectAid
   
-  Used for the class diagrams (Drag and Drop taht always reflects the current class definition).
+  Used for the class diagrams (Drag and Drop that always reflects the current class definition).
   Set to automatically generate a PNG file.
 
 Documenting a Module
 --------------------
 
-Each module is required to have one page of documetnation (preferably with a code example).::
+Each module is required to have one page of documentation (preferably with a code example).::
 
     ArcGrid Plugin
     --------------
@@ -159,7 +159,7 @@ Index Page
 Index is similar in structure to the simple example above; the difference is we will be
 gathering up the other pages.
 
-1. Create a page similar to the following tempalte (or copy an example page you like)::
+1. Create a page similar to the following template (or copy an example page you like)::
 
         ====
         NAME
@@ -263,7 +263,7 @@ The faq is pretty simple; please use headings so that people can quickly find co
         into memory (specifically into a spatial index) if you want faster performance out of it.
         
         For raster rendering you have a great deal of control over performance using JAI TileCache settings
-        in addition to convering your rasters into an efficient format (anything is better than jpeg).
+        in addition to converting your rasters into an efficient format (anything is better than JPEG).
         
         References:
         

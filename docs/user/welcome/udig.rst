@@ -8,7 +8,7 @@ Welcome to uDig Developers
    .. image:: /images/logo/udig_64.gif
    
    User-friendly Desktop Internet GIS (uDig) supports GeoTools functionality
-   in a slick "Eclipse Rich Client Platform" applicaiton.
+   in a slick "Eclipse Rich Client Platform" application.
 
 This page gathers up some notes for those of us looking to put uDig to good use. The uDig project operates as a Eclipse RCP smash up of as many geospatial projects as it can get a hold of - and GeoTools is its first victim.
 
@@ -17,9 +17,9 @@ The uDig project does its best to stick to OpenGIS interfaces (the same interfac
 Catalog to manage DataStores
 ----------------------------
 
-DataStores represent physical connections to external servers (often with their own conneciton
+DataStores represent physical connections to external servers (often with their own connection
 pool and resources to be cleaned up after). As such it is important that you always use the uDig
-Catalog to allow the applicaiton to know when you are obtaining resources, and clean up the mess
+Catalog to allow the application to know when you are obtaining resources, and clean up the mess
 if your code happens to crash.
 
 References:

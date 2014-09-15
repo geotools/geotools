@@ -8,11 +8,11 @@ Implementing FeatureSource
 
 Now with the setup out of the way we can get to work.
 
-CVSDataStore
+CSVDataStore
 ^^^^^^^^^^^^
 
 The first step is to create a basic DataStore that only supports feature extraction. We will read
-data from a csv file into the GeoTools feature model.
+data from a CSV file into the GeoTools feature model.
 
 .. figure:: images/CSVDataStore.png
    
@@ -64,7 +64,7 @@ Our initial implementation will result in a read-only datastore for accessing CS
 
    By caching this answer we prevent developers having to this work many times.
 
-   After all that lead-in you will be disappointed to note that our list will be a single value - the name of the csv file.
+   After all that lead-in you will be disappointed to note that our list will be a single value - the name of the CSV file.
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
       :language: java
@@ -133,7 +133,7 @@ Next we can create the **CSVFeatureSource** mentioned above. This class is respo
       :start-after: // count start
       :end-before: // count end
       
-#. The second optimisation requiers an implementation of **getBoundsInternal(Query)** making use of any spatial index, or header, record the data bounds. This value is used when rendering to determine the clipping area.
+#. The second optimisation requires an implementation of **getBoundsInternal(Query)** making use of any spatial index, or header, record the data bounds. This value is used when rendering to determine the clipping area.
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureSource.java
       :language: java
@@ -219,7 +219,7 @@ Now that we have implemented accessing and reading content what could possibly b
 This is GeoTools so we need to wire in our new creation to the Factory Service Provider (SPI) plug-in system so that application can smoothly integrate our new creation.
 
 
-To make your DataStore truly independent and plugable, you must create a class implementing the
+To make your DataStore truly independent and pluggable, you must create a class implementing the
 **DataStoreFactorySPI** interface.
 
 This allows the Service Provider Interface mechanism to dynamically plug in your new DataStore with

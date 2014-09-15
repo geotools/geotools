@@ -4,21 +4,21 @@ Tutorial
 The target audience is an experienced Java developer who is new to GIS. We try and lead with
 careful step by step instructions (code first!) followed by any discussion.
 
-The expected way for someone to use the tutorial is to follow the insturctions; and then only
+The expected way for someone to use the tutorial is to follow the instructions; and then only
 read the details about any section they are unsure of.
 
 With this in mind please do not mix explaining with code.
 
-Here is an example tempalte to get you started.
+Here is an example template to get you started.
 
 1. Start with a nice welcome section; credit both yourself (and your employer?) and outline
-   what your user should do to prepair.::
+   what your user should do to prepare.::
    
         :Author: Jody Garnett
         :Author: Michael Bedward
         :Thanks: geotools-user list
         :Version: |release|
-        :License: Create Commons with attribution
+        :License: Creative Commons with attribution
         
         .. include:: <isonum.txt>
         
@@ -43,10 +43,10 @@ Here is an example tempalte to get you started.
         Jody Garnett
         
            Jody Garnett is the lead architect for the uDig project; and on the steering
-           committee for GeoTools; GeoServer and uDig. Taking the roll of geospatial
+           committee for GeoTools; GeoServer and uDig. Taking the role of geospatial
            consultant a bit too literally Jody has presented workshops and training
            courses in every continent (except Antarctica). Jody Garnett is an employee
-           of LISAsoft.
+           of Boundless.
         
         Michael Bedward
         
@@ -59,7 +59,7 @@ Here is an example tempalte to get you started.
    is good this way in that it will be sure to package the referenced file up as part of the docs
    
    Remember the focus is on providing clear step by step instructions. While you can be friendly
-   in the text; when providing instructions do not mix explaination with tasks to be performed::
+   in the text; when providing instructions do not mix explanation with tasks to be performed::
    
         Query Lab Application
         =====================
@@ -123,7 +123,7 @@ Here is an example tempalte to get you started.
               :start-after: // docs start data menu
               :end-before: // docs end data menu
 
-3. The last section should be instructions for running the applicaiton; with screen snapshots
+3. The last section should be instructions for running the application; with screen snapshots
    showing what the expected result should be.::
    
         Running the Application
@@ -147,7 +147,7 @@ Here is an example tempalte to get you started.
 
 4. The heart of the tutorial is the things "things to try" section.
    
-   This is where most of the learning occurs. The preeceeding step by step instructions should be
+   This is where most of the learning occurs. The preceding step by step instructions should be
    aimed for *everyone* to be able to complete (and feel successful). As such the content is often
    very safe.
    
@@ -191,8 +191,8 @@ Here is an example tempalte to get you started.
 5. Finally you can use the rest of the document for a normal tutorial; explaining the topic as
    you see fit.
    
-   This is where you can break out class diagrams (ObjectAid recommeneded) and diagrams showing
-   how things fit togteher.
+   This is where you can break out class diagrams (ObjectAid recommended) and diagrams showing
+   how things fit together.
    
    Here is an example::
    
@@ -265,7 +265,7 @@ Example Code
 Please add any example code to the doc/src/java/main/ so we can be sure:
 
 * Compiles and Functions
-* Is kept up todate as API changes occur
+* Is kept up to date as API changes occur
 
 It is the responsibility of those making an API change to update the example code, by always
 using literal include you can be sure your tutorial will still function.
@@ -276,5 +276,5 @@ people get started.
 Advanced
 --------
   
-Advanced Tutorials on speific topics; the target audience is now a fellow GeoTools developer
+Advanced Tutorials on specific topics; the target audience is now a fellow GeoTools developer
 who wishes to implement a new plugin.

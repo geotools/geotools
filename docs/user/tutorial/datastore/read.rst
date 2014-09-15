@@ -6,7 +6,7 @@ In this part we examine the abilities of the CSVDataStore.
 DataStore
 ^^^^^^^^^
 
-Now that we have implemented a simple DataStore we can explore some of the capabilites made available to us.
+Now that we have implemented a simple DataStore we can explore some of the capabilities made available to us.
 
 CSVDataStore API for data access:
 
@@ -106,7 +106,7 @@ If you would like to follow along with these examples you can
 
   .. note::
      
-     Since this tutorial was writen Query has expanding its capabilities
+     Since this tutorial was written Query has expanding its capabilities
      (and the capabilities of your DataStore) to include support for reprojection.
      
      It also offers an "open ended" pathway for expansion using "query hints".
@@ -246,7 +246,7 @@ provide optimised implementations that handles the above methods natively.
    * FeatureCollection checks the contents, and possibly checks each item, for an answer to
      size and bounds.
      
-   This is a terrible API tradeoff to have to make, resulting from implementations taking ten minuets to performing a "full table scan".
+   This is a terrible API tradeoff to have to make, resulting from implementations taking ten minutes to performing a "full table scan".
      
 Care should be taken when using the collection() method to capture the contents of a DataStore in
 memory. GIS applications often produce large volumes of information and can place a strain

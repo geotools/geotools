@@ -45,14 +45,14 @@ Examples:
    
       mvn test -P online
 
-2. Additionally many of these online tests depend on test fixtures (ie connection parameters) being supplied describing the server to connect to.
+2. Additionally many of these online tests depend on test fixtures (i.e. connection parameters) being supplied describing the server to connect to.
 3. The first time you run they will often create a series of "example" test fixtures
    
    * ``~/.geotools/postgis.properties.example``
    * ``~/.geotools/db2.properties.example``
    * ``~/.geotools/wps.properties.example``
 
-4. Rename one of the files to not end with "example" (ie rename to postgis.properties)
+4. Rename one of the files to not end with "example" (i.e. rename to postgis.properties)
 5. edit the file to fill in the connection parameters for the server you are testing against, and save.
 6. You can now run the online test against your server
    
@@ -65,7 +65,7 @@ Image tests
 
 Some tests in raster and rendering handling needs to compare images using a human perception model instead of a raw pixel by pixel comparison. To do this we use `"PerceptualDiff" <http://pdiff.sourceforge.net/>`_, an open source command line tool that can do this kind of comparison.
 
-In order for those tests to run PerceptualDiff needs to be installed in your computer, and added in the PATH of your execution environment (if you are on a Debian based distribution all that is needed to achive that is ''sudo apt-get install perceptualdiff'').
+In order for those tests to run PerceptualDiff needs to be installed in your computer, and added in the PATH of your execution environment (if you are on a Debian based distribution all that is needed to achieve that is ''sudo apt-get install perceptualdiff'').
 
 If these tests are failing you can also have the system show you the expected and actual image in a GUI popup, to enable it you'll have to use the following profile::
    

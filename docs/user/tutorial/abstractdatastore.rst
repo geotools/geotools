@@ -10,7 +10,7 @@ AbstractDataStore Tutorial
 
 .. sidebar:: gt-property plugin
    
-   This tutorial takes you through the steps of creating **ProeprtyDataStore** originally this
+   This tutorial takes you through the steps of creating **PropertyDataStore** originally this
    format was only used by this tutorial to show how the DataStore API worked.
    
    Over time the property file format has become widely used due to its simplicity; as a result 
@@ -434,7 +434,7 @@ In this part we examine the abilities of the PropertyDataStore implemented in Pa
 DataStore
 ^^^^^^^^^
 
-Now that we have implemented a simple DataStore we can explore some of the capabilites made available to us.
+Now that we have implemented a simple DataStore we can explore some of the capabilities made available to us.
 
 PropertyDataStore API for data access:
 
@@ -887,7 +887,7 @@ now we can go ahead and define the class.
       :end-before: // constructor end
 
    A BufferedWriter is created over the provided File, and the provided featureType is used to
-   implement getAttribtueCount() and getAttributeType( index ).
+   implement getAttributeCount() and getAttributeType( index ).
 
 2. Add hasNext() and next() implementations:
 
@@ -1255,7 +1255,7 @@ We have a total of three distinct uses for FeatureWriters:
   An optimised version that does not create new content can be created.
 * AbstractDataStore.getFeatureWriterAppend( typeName, transaction)
   
-  An optimised version that duplicates the origional file, and opens it in append mode can be
+  An optimised version that duplicates the original file, and opens it in append mode can be
   created. We can also perform special tricks such as returning a Feature delegate to the user,
   which records when it has been modified.
 
@@ -1268,14 +1268,14 @@ for optimisation.
 DataStore Optimisation
 ''''''''''''''''''''''
 
-AbstractDataStore leaves open a number of methods for high-level optmisations:
+AbstractDataStore leaves open a number of methods for high-level optimisations:
 
 * PropertyDataStore.getCount( query )
 * PropertyDatastore.getBounds( query )
 
 These methods are designed to allow you to easily report the contents of information that
 is often contained in your file header. Implementing them is optional, and each method
-provides a way for you to indicate if the information is unavilable.
+provides a way for you to indicate if the information is unavailable.
 
 * PropertyDatastore.getFeatureSource( typeName );
 
@@ -1286,7 +1286,7 @@ FeatureStore Optimisation
 '''''''''''''''''''''''''
 
 DataStores operating against rich external data sources can often perform high level optimisations.
-JDBCDataStores for instance can often construct SQL statements that completely fulfil a request
+JDBCDataStores for instance can often construct SQL statements that completely fulfill a request
 without making use of FeatureWriters at all.
 
 When performing these queries please remember two things:
@@ -1336,7 +1336,7 @@ We can fill in the following methods for PropertyDataStore:
      and multiple lines
    
    We can offer a simple optimisation by counting the number of lines in our file,
-   when the Query requests all features (using Filter.INLCUDE):
+   when the Query requests all features (using Filter.INCLUDE):
 
    .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java
       :language: java
@@ -1564,12 +1564,12 @@ References:
    * Escapes are not necessary for single and double quotes; however, by the rule above, single and
      double quote characters preceded by a backslash still yield single and double quote
      characters, respectively.
-   * Only a single 'u' character is allowed in a Uniocde escape sequence.
+   * Only a single 'u' character is allowed in a Unicode escape sequence.
    
 Info
 ^^^^
 
-Another reported issue. You can fill in a "info" data strucutre to more accurately describe your
+Another reported issue. You can fill in a "info" data structure to more accurately describe your
 information to the uDig or GeoServer catalog.
 
    .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java

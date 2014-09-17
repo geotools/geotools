@@ -435,4 +435,17 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
                 .getMaximum(1), ge.getCoordinateReferenceSystem());
     }
     
+    @Override
+    public String[] getMetadataNames() {
+        return new String[] { REPROJECTING_READER };
+    }
+    
+    @Override
+    public String getMetadataValue(String name) {
+        if(REPROJECTING_READER.equals(name)) {
+            return "true";
+        }
+        return super.getMetadataValue(name);
+    }
+    
 }

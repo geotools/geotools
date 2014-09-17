@@ -111,6 +111,14 @@ public interface GridCoverage2DReader extends GridCoverageReader {
 
     
     /**
+     * This property is present, and evaluates to "true", if the reader can do reprojection
+     * on its own (that is, it is not backed by actual data, but by a remote service that
+     * can perform reprojection for us).
+     */
+    public static final String REPROJECTING_READER = "ReprojectingReader";
+
+    
+    /**
      * Return the original {@link GeneralEnvelope} for the default coverage served by the underlying store.
      * 
      * @return the original {@link GeneralEnvelope} for the default coverage served by the underlying store.

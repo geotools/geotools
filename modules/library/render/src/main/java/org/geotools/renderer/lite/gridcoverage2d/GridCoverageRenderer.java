@@ -758,7 +758,7 @@ public final class GridCoverageRenderer {
                 ReferencedEnvelope.reference(destinationEnvelope), interpolation);
         // are we dealing with a remote service wrapped in a reader, one that can handle reprojection
         // by itself?
-        if("true".equals(reader.getMetadataValue(GridCoverage2DReader.REPROJECTING_READER))) {
+        if(GridCoverageReaderHelper.isReprojectingReader(reader)) {
             GridCoverage2D coverage = rh.readCoverage(readParams);
             coverages = new ArrayList<>();
             coverages.add(coverage);
@@ -774,18 +774,18 @@ public final class GridCoverageRenderer {
         }
 
         // reproject if needed
-        final CoordinateReferenceSystem coverageCRS = reader.getCoordinateReferenceSystem();
+        double[] bgValues = GridCoverageRendererUtilities.colorToArray(background);
         List<GridCoverage2D> reprojectedCoverages = new ArrayList<GridCoverage2D>();
-        if (!CRS.equalsIgnoreMetadata(coverageCRS, destinationCRS)) {
-            double[] bgValues = GridCoverageRendererUtilities.colorToArray(background);
-            for (GridCoverage2D coverage : coverages) {
+        for (GridCoverage2D coverage : coverages) {
+            final CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem();
+            if (!CRS.equalsIgnoreMetadata(coverageCRS, destinationCRS)) {
                 GridCoverage2D reprojected = reproject(coverage, true, bgValues);
                 if (reprojected != null) {
                     reprojectedCoverages.add(reprojected);
                 }
+            } else {
+                reprojectedCoverages.addAll(coverages);
             }
-        } else {
-            reprojectedCoverages.addAll(coverages);
         }
 
         // displace them if needed via a projection handler

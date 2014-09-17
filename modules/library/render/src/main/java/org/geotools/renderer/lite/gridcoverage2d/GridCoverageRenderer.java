@@ -751,17 +751,27 @@ public final class GridCoverageRenderer {
         CoordinateReferenceSystem sourceCRS = reader.getCoordinateReferenceSystem();
         CoordinateReferenceSystem targetCRS = destinationEnvelope.getCoordinateReferenceSystem();
 
+        ProjectionHandler handler = null;
+        List<GridCoverage2D> coverages;
         // read all the coverages we need, cut and whatnot
         GridCoverageReaderHelper rh = new GridCoverageReaderHelper(reader, destinationSize,
                 ReferencedEnvelope.reference(destinationEnvelope), interpolation);
-        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(rh.getReadEnvelope(),
-                sourceCRS, wrapEnabled);
-        if (handler instanceof WrappingProjectionHandler) {
-            // raster data is monolithic and can cover the whole world, disable
-            // the geometry wrapping heuristic
-            ((WrappingProjectionHandler) handler).setDatelineWrappingCheckEnabled(false);
+        // are we dealing with a remote service wrapped in a reader, one that can handle reprojection
+        // by itself?
+        if("true".equals(reader.getMetadataValue(GridCoverage2DReader.REPROJECTING_READER))) {
+            GridCoverage2D coverage = rh.readCoverage(readParams);
+            coverages = new ArrayList<>();
+            coverages.add(coverage);
+        } else {
+            handler = ProjectionHandlerFinder.getHandler(rh.getReadEnvelope(),
+                    sourceCRS, wrapEnabled);
+            if (handler instanceof WrappingProjectionHandler) {
+                // raster data is monolithic and can cover the whole world, disable
+                // the geometry wrapping heuristic
+                ((WrappingProjectionHandler) handler).setDatelineWrappingCheckEnabled(false);
+            }
+            coverages = rh.readCoverages(readParams, handler);
         }
-        List<GridCoverage2D> coverages = rh.readCoverages(readParams, handler);
 
         // reproject if needed
         final CoordinateReferenceSystem coverageCRS = reader.getCoordinateReferenceSystem();

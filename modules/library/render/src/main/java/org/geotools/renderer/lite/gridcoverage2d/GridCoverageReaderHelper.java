@@ -88,7 +88,7 @@ public class GridCoverageReaderHelper {
     private boolean sameCRS;
 
     public GridCoverageReaderHelper(GridCoverage2DReader reader, Rectangle mapRasterArea,
-            ReferencedEnvelope mapExtent, Interpolation interpolation) throws FactoryException {
+            ReferencedEnvelope mapExtent, Interpolation interpolation) throws FactoryException, IOException {
         this.reader = reader;
         this.mapExtent = mapExtent;
         this.requestedGridGeometry = new GridGeometry2D(new GridEnvelope2D(mapRasterArea),
@@ -100,7 +100,7 @@ public class GridCoverageReaderHelper {
         // we are going to read
         sameCRS = CRS.equalsIgnoreMetadata(mapExtent.getCoordinateReferenceSystem(),
                 reader.getCoordinateReferenceSystem());
-        paddingRequired = !sameCRS || !(interpolation instanceof InterpolationNearest);
+        paddingRequired = (!sameCRS || !(interpolation instanceof InterpolationNearest)) && !isReprojectingReader(reader);
         if (paddingRequired) {
             // expand the map raster area
             GridEnvelope2D requestedGridEnvelope = new GridEnvelope2D(mapRasterArea);
@@ -121,6 +121,18 @@ public class GridCoverageReaderHelper {
             this.mapExtent = mapExtent;
             this.mapRasterArea = mapRasterArea;
         }
+    }
+
+    /**
+     * Returns true if the reader is a reprojecting one, that is, one that can handle 
+     * the coverage reprojection on its own
+     * 
+     * @param reader
+     * @return
+     * @throws IOException
+     */
+    public static boolean isReprojectingReader(GridCoverage2DReader reader) throws IOException {
+        return "true".equals(reader.getMetadataValue(GridCoverage2DReader.REPROJECTING_READER));
     }
 
     public ReferencedEnvelope getReadEnvelope() {

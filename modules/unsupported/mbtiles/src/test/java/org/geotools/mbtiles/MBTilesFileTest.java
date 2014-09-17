@@ -5,13 +5,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.geotools.util.logging.Logging;
 import org.junit.Test;
 
 public class MBTilesFileTest {
+    
+    private static final Logger LOGGER = Logging.getLogger(MBTilesFileTest.class);
     
     @Test
     public void testMBTilesMetaData() throws IOException {
@@ -48,6 +55,61 @@ public class MBTilesFileTest {
         MBTilesFile file = new MBTilesFile();
         file.init();
         file.init();
+    }
+    
+    @Test
+    public void testMBTilesWithoutJournal() throws IOException {
+        // Create the temporary file
+        File temp = File.createTempFile("temp2_", ".mbtiles");
+        MBTilesFile file = new MBTilesFile(temp,true);
+        file.init();
+        // Define the Journal file
+        final File journal = new File(temp.getAbsolutePath() + "-journal");      
+        // Initialize the journal file
+        final AtomicLong counter = new AtomicLong(0);
+        // Define a counter thread
+        Thread th = new Thread(new Runnable() {
+            
+            @Override
+            public void run() {
+                
+                while(true){
+                    if(journal.exists()){
+                        counter.incrementAndGet();  
+                    }
+                } 
+            }
+        });
+        // launch the thread
+        th.start();
+        // add data to the mbtile
+        for(int i = 0; i< 10; i++){
+            for(int j = 0; j< 10; j++){
+                MBTilesTile tile1 = new MBTilesTile(1,i,j);
+                tile1.setData("dummy data 1".getBytes());
+                file.saveTile(tile1);
+            }
+        }
+        // Stop the thread
+        try{
+            th.interrupt();
+        }catch(Exception e ){
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+        
+        // Close files
+        try{
+            file.close();
+        }catch(Exception e ){
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+        try{
+            temp.delete();
+        }catch(Exception e ){
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+        // Ensure journal has never been found
+        assertTrue(counter.get() == 0);
     }
 
     @Test

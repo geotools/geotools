@@ -500,7 +500,7 @@ public class Parser {
      * @return The namespace support containing prefix to uri mappings.
      * @since 2.4
      */
-    public NamespaceSupport getNamespaces() {
+    public ParserNamespaceSupport getNamespaces() {
         return handler.getNamespaceSupport();
     }
 

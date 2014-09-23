@@ -1,0 +1,15 @@
+How to configure test cases:
+
+- Install Solr server as described in https://lucene.apache.org/solr/4_9_0/tutorial.html
+
+- After WAR deployment is done downlaod JTS (http://sourceforge.net/projects/jts-topo-suite/) and copy all JTS <lib> folder JARs into WEB-INF/lib of Solr web application (this enable WKT for Solr 4 Spatial as descripted in https://cwiki.apache.org/confluence/display/solr/Spatial+Search)
+
+- Create new CORE named TestGeotoolsCore coping the directory on /test/resources/TestGeotoolsCore into SOLR_HOME as the same level of collection1
+
+- Solr server autodiscovery new CORE as described in https://wiki.apache.org/solr/Solr.xml%204.4%20and%20beyond and https://wiki.apache.org/solr/Core%20Discovery%20%284.4%20and%20beyond%29
+
+- Copy solr.properties file to $home/.geotools/ (replace SOLR server URL, please check if NO "#" character is present in URL used)
+
+- The test data set wifiAccessPoint.xml will be loaded by each test case into SOLR server automatically at test startup.
+
+- Run tests

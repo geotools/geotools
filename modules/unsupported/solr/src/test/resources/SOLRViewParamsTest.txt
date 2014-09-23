@@ -1,0 +1,14 @@
+Test1 with Q: matches single ID 60110 on BBOX using "q" in viewparams
+http://localhost:8787/geoserver/test/wms?service=WMS&version=1.1.0&request=GetMap&layers=test:min&styles=&bbox=138.00488866331716,-37.206055,153.63672,-28.217836&width=573&height=330&srs=EPSG:4326&format=application/openlayers&viewParams=q:id:60110
+
+Test2 with Q: matches siteId with regex 008[0-9].*39 on BBOX using "q" in viewparams
+http://localhost:8787/geoserver/test/wms?service=WMS&version=1.1.0&request=GetMap&layers=test:min&styles=&bbox=138.00488866331716,-37.206055,153.63672,-28.217836&width=573&height=330&srs=EPSG:4326&format=application/openlayers&viewParams=q:siteId:/008[0-9].*39/
+
+Test3 with Q: matches busPurpose not empty in viewparams
+http://localhost:8787/geoserver/test/wms?service=WMS&version=1.1.0&request=GetMap&layers=test:min&styles=&bbox=138.00488866331716,-37.206055,153.63672,-28.217836&width=573&height=330&srs=EPSG:4326&format=application/openlayers&viewParams=q:busPurpose:*
+
+Test4 with Q: matches busPurpose 'mineral?'
+http://localhost:8787/geoserver/test/wms?service=WMS&version=1.1.0&request=GetMap&layers=test:min&styles=&bbox=138.00488866331716,-37.206055,153.63672,-28.217836&width=573&height=330&srs=EPSG:4326&format=application/openlayers&viewParams=q:busPurpose:/mineral.?/
+
+Test5 with FQ: matches busPurpose 'mineral?' AND id is odd
+http://localhost:8787/geoserver/test/wms?service=WMS&version=1.1.0&request=GetMap&layers=test:min&styles=&bbox=138.00488866331716,-37.206055,153.63672,-28.217836&width=573&height=330&srs=EPSG:4326&format=application/openlayers&viewParams=fq:id:/[0-9].*[13579]/%20AND%20busPurpose:/mineral.?/

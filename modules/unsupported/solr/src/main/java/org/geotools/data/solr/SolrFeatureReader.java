@@ -71,7 +71,8 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * @param solrDataStore the SOLR store
      * @throws SolrServerException
      */
-    public SolrFeatureReader(SimpleFeatureType featureType, String solrUrl, SolrQuery solrQuery, SolrDataStore solrDataStore) throws SolrServerException {
+    public SolrFeatureReader(SimpleFeatureType featureType, HttpSolrServer server,
+            SolrQuery solrQuery, SolrDataStore solrDataStore) throws SolrServerException {
         this.featureType = featureType;
         this.solrQuery = solrQuery;
         this.wktReader = new WKTReader();
@@ -80,7 +81,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
         this.builder = new SimpleFeatureBuilder(featureType);
 
-        server = new HttpSolrServer(solrUrl);
+        this.server = server;
 
         //Add always pk as field if not already present
         if(solrQuery.getFields()!=null && !solrQuery.getFields().contains(pkey.getName())){
@@ -150,7 +151,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                 if (type instanceof GeometryDescriptor) {
                     GeometryDescriptor gatt = (GeometryDescriptor) type;
                     if (value != null) {
-                        Geometry geometry = (Geometry) wktReader.read(value.toString());
+                        Geometry geometry = wktReader.read(value.toString());
                         if (geometry!= null && geometry.getUserData() == null ) {
                             geometry.setUserData( gatt.getCoordinateReferenceSystem() );
                         }
@@ -206,7 +207,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
     @Override
     public void close() throws IOException {
-        server.shutdown();
+        // nothing to do
     }
 
 }

@@ -83,14 +83,15 @@ public class SolrFeatureSource extends ContentFeatureSource{
         }
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         try{ 
-            reader = new SolrFeatureReader(getSchema(),store.getUrl().toString(),q,this.getDataStore());
+            reader = new SolrFeatureReader(getSchema(), store.getSolrServer(), q,
+                    this.getDataStore());
             // if post filter, wrap it
             if (postFilter != null && postFilter != Filter.INCLUDE) {
                 reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader,postFilter);
             }
             try{           
                 if (reader.hasNext()) {
-                    SimpleFeature f = (SimpleFeature) reader.next();
+                    SimpleFeature f = reader.next();
                     bounds.init(f.getBounds());
                     while (reader.hasNext()) {
                         f = reader.next();
@@ -133,10 +134,9 @@ public class SolrFeatureSource extends ContentFeatureSource{
                 if(store.getLogger().isLoggable(Level.FINE)){
                     store.getLogger().log(Level.FINE, q.toString() );
                 }
-                HttpSolrServer server = new HttpSolrServer(store.getUrl().toString());
+                HttpSolrServer server = store.getSolrServer();
                 QueryResponse rsp = server.query(q);   
                 count = rsp.getResults().size();
-                server.shutdown();
             }
         } catch (Throwable e) { // NOSONAR
             if (e instanceof Error) {
@@ -170,7 +170,7 @@ public class SolrFeatureSource extends ContentFeatureSource{
             if(store.getLogger().isLoggable(Level.FINE)){
                 store.getLogger().log(Level.FINE, q.toString() );
             }
-            reader = new SolrFeatureReader(querySchema,store.getUrl().toString(),q,store);
+            reader = new SolrFeatureReader(querySchema, store.getSolrServer(), q, store);
             if (postFilter != null && postFilter != Filter.INCLUDE) {
                 reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader,postFilter);
                 if(!returnedSchema.equals(querySchema))
@@ -283,7 +283,7 @@ public class SolrFeatureSource extends ContentFeatureSource{
                             allAttributes.add(extraAttribute);
                     }
                     String[] allAttributeArray = 
-                            (String[]) allAttributes.toArray(new String[allAttributes.size()]);
+                            allAttributes.toArray(new String[allAttributes.size()]);
                     querySchema = SimpleFeatureTypeBuilder.retype(getSchema(), allAttributeArray);
                 }
             }

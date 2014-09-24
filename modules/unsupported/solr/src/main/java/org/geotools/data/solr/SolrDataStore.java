@@ -84,6 +84,8 @@ public class SolrDataStore extends ContentDataStore {
     //Attributes configurations of the store entries
     private Map<String, SolrLayerConfiguration> solrConfigurations = new ConcurrentHashMap<String, SolrLayerConfiguration>();
 
+    HttpSolrServer solrServer;
+
     /**
      * Create the data store
      * @param url the URL of SOLR server
@@ -92,6 +94,11 @@ public class SolrDataStore extends ContentDataStore {
     public SolrDataStore(URL url, String field) {
         this.url = url;
         this.field = field;
+        this.solrServer = new HttpSolrServer(url.toString());
+        this.solrServer.setAllowCompression(true);
+        this.solrServer.setConnectionTimeout(10000);
+        this.solrServer.setFollowRedirects(true);
+        this.solrServer.setSoTimeout(10000);
     }
 
     /**
@@ -116,7 +123,6 @@ public class SolrDataStore extends ContentDataStore {
         if(solrAttributes.isEmpty()){
             solrAttributes = new ArrayList<SolrAttribute>();
             try{
-                HttpSolrServer solrServer = new HttpSolrServer(url.toString());
                 LukeRequest lq = new LukeRequest();
                 lq.setShowSchema(true);
                 LukeResponse processSchema = lq.process(solrServer);           
@@ -177,7 +183,6 @@ public class SolrDataStore extends ContentDataStore {
         try{
             if(typeNames == null || typeNames.isEmpty()){
                 typeNames = new ArrayList<Name>();
-                HttpSolrServer server = new HttpSolrServer(url.toString());
                 SolrQuery query = new SolrQuery();
                 query.setQuery( "*:*" );
                 query.addFacetField(field);
@@ -186,7 +191,7 @@ public class SolrDataStore extends ContentDataStore {
                 query.setFacetSort(FacetParams.FACET_SORT_INDEX);
                 query.setRows(0);
                 query.setParam("omitHeader", true);
-                QueryResponse rsp = server.query( query );
+                QueryResponse rsp = solrServer.query(query);
                 if(LOGGER.isLoggable(Level.FINE)){
                     LOGGER.log(Level.FINE, "SOLR query done: " + query.toString());
                 }
@@ -194,7 +199,6 @@ public class SolrDataStore extends ContentDataStore {
                 for(Count field : uniqueFacetFields){
                     typeNames.add(new NameImpl(namespaceURI, field.getName()));
                 }
-                server.shutdown();
             }
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
@@ -417,6 +421,19 @@ public class SolrDataStore extends ContentDataStore {
         }
         if(fqViewParamers != null && !fqViewParamers.isEmpty()){
             query.addFilterQuery(fqViewParamers);
+        }
+    }
+
+    HttpSolrServer getSolrServer() {
+        return solrServer;
+    }
+
+    @Override
+    public void dispose() {
+        try {
+            solrServer.shutdown();
+        } finally {
+            super.dispose();
         }
     }
 

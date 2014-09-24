@@ -36,7 +36,9 @@ import org.geotools.factory.FactoryRegistry;
 
 public class SolrDataStoreFinderTest extends TestCase {
 
-    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SolrDataStoreFinderTest.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger(SolrDataStoreFinderTest.class);
+
     private DataStore source;
 
     public void testDbcpFactory() throws IOException {
@@ -45,7 +47,7 @@ public class SolrDataStoreFinderTest extends TestCase {
 
         Map map = new HashMap();
         map.put(SolrDataStoreFactory.URL.key, new URL("http://localhost:8080/solr"));
-        map.put(SolrDataStoreFactory.FIELD.key,"layer_type");
+        map.put(SolrDataStoreFactory.FIELD.key, "layer_type");
         map.put(SolrDataStoreFactory.NAMESPACE.key, "namesapce");
 
         Iterator ps = getAvailableDataSources();
@@ -63,11 +65,12 @@ public class SolrDataStoreFinderTest extends TestCase {
         }
 
         assertNotNull(source);
-        assertTrue(source instanceof  SolrDataStore);
+        assertTrue(source instanceof SolrDataStore);
     }
 
     private FactoryRegistry getServiceRegistry() {
-        FactoryRegistry registry = new FactoryCreator(Arrays.asList(new Class<?>[] { DataStoreFactorySpi.class}));
+        FactoryRegistry registry = new FactoryCreator(
+                Arrays.asList(new Class<?>[] { DataStoreFactorySpi.class }));
         return registry;
     }
 
@@ -77,11 +80,12 @@ public class SolrDataStoreFinderTest extends TestCase {
 
     public Iterator getAvailableDataSources() {
         Set availableDS = new HashSet();
-        Iterator it = getServiceRegistry().getServiceProviders(DataStoreFactorySpi.class, null, null);
+        Iterator it = getServiceRegistry().getServiceProviders(DataStoreFactorySpi.class, null,
+                null);
         SolrDataStoreFactory dsFactory;
         while (it.hasNext()) {
             Object ds = it.next();
-            if(ds instanceof SolrDataStoreFactory ){
+            if (ds instanceof SolrDataStoreFactory) {
                 dsFactory = (SolrDataStoreFactory) ds;
                 if (dsFactory.isAvailable()) {
                     availableDS.add(dsFactory);
@@ -90,5 +94,5 @@ public class SolrDataStoreFinderTest extends TestCase {
         }
         return availableDS.iterator();
     }
-    
+
 }

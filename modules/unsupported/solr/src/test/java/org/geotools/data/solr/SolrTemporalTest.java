@@ -25,10 +25,10 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.temporal.Period;
 
-public class SolrTemporalTest extends SolrTestSupport{
+public class SolrTemporalTest extends SolrTestSupport {
 
     public void testCompareDateFilter() throws Exception {
-        init();       
+        init();
         Date testDate = df.parse("2009-06-28 00:00:00");
         FilterFactory ff = dataStore.getFilterFactory();
 
@@ -36,7 +36,7 @@ public class SolrTemporalTest extends SolrTestSupport{
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(4, features.size());
         SimpleFeatureIterator it = features.features();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Date date = (Date) it.next().getAttribute("installed_tdt");
             assertTrue(date.before(testDate) || date.equals(testDate));
         }
@@ -46,7 +46,7 @@ public class SolrTemporalTest extends SolrTestSupport{
         features = featureSource.getFeatures(f);
         assertEquals(5, features.size());
         it = features.features();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Date date = (Date) it.next().getAttribute("installed_tdt");
             assertTrue(date.after(testDate) || date.equals(testDate));
         }
@@ -72,14 +72,14 @@ public class SolrTemporalTest extends SolrTestSupport{
     }
 
     public void testBeforeFilter() throws Exception {
-        init();  
+        init();
         Date testDate = df.parse("2009-28-06 00:00:00");
         FilterFactory ff = dataStore.getFilterFactory();
         Filter f = ff.before(ff.property("installed_tdt"), ff.literal(testDate));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
-        assertEquals(4,features.size());
+        assertEquals(4, features.size());
     }
-    
+
     public void testBeforeInterval() throws Exception {
         init();
         Period period = period("2000-12-11 00:00:00", "2011-05-21 00:00:00");
@@ -106,7 +106,7 @@ public class SolrTemporalTest extends SolrTestSupport{
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
     }
-    
+
     public void testEnds() throws Exception {
         init();
         Period period = period("2002-20-06 03:44:56", "2004-20-06 03:44:56");
@@ -115,7 +115,7 @@ public class SolrTemporalTest extends SolrTestSupport{
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
     }
-    
+
     public void testEndedBy() throws Exception {
         init();
         Period period = period("2004-11-06 03:44:56", "2004-20-06 03:44:56");
@@ -124,7 +124,7 @@ public class SolrTemporalTest extends SolrTestSupport{
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
     }
-    
+
     public void testDuring() throws Exception {
         init();
         Period period = period("2004-19-06 03:44:56", "2004-20-06 03:44:58");
@@ -142,7 +142,7 @@ public class SolrTemporalTest extends SolrTestSupport{
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
     }
-    
+
     public void testTEquals() throws Exception {
         init();
         Date testDate = df.parse("2013-01-10 00:13:11");
@@ -151,6 +151,5 @@ public class SolrTemporalTest extends SolrTestSupport{
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
     }
-
 
 }

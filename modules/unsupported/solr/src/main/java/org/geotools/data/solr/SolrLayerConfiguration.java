@@ -28,14 +28,15 @@ import java.util.List;
 public class SolrLayerConfiguration implements Serializable {
 
     private static final long serialVersionUID = 1838874365349725912L;
-    
+
     /**
      * A KEY to identify SOLR layer configuration
      */
     public static final String KEY = "SolrLayerConfiguration";
-    
+
     /**
      * A KEY to store PK field name into "user data" of feature type
+     * 
      * @see {@link SolrFeatureSource#buildFeatureType}
      */
     public static final String ID = "id_field";

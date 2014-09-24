@@ -48,22 +48,33 @@ import com.vividsolutions.jts.io.WKTReader;
 public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     private Iterator<SolrDocument> solrDocIterator;
+
     private SimpleFeatureType featureType;
+
     private Boolean next;
+
     private SimpleFeatureBuilder builder;
+
     private SolrAttribute pkey;
+
     private HttpSolrServer server;
+
     private WKTReader wktReader;
+
     private SolrDataStore solrDataStore;
+
     private String cursorMark;
+
     private String nextCursorMark;
+
     private SolrQuery solrQuery;
+
     private long counter;
 
     /**
-     * Creates the feature reader for SOLR store
-     * <br>
-     * The feature reader use SOLR CURSOR to paginate request, so multiple SOLR query will be executed
+     * Creates the feature reader for SOLR store <br>
+     * The feature reader use SOLR CURSOR to paginate request, so multiple SOLR query will be
+     * executed
      * 
      * @param featureType the feature type to query
      * @param solrUrl the URL of SOLR server
@@ -83,21 +94,22 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
         this.server = server;
 
-        //Add always pk as field if not already present
-        if(solrQuery.getFields()!=null && !solrQuery.getFields().contains(pkey.getName())){
+        // Add always pk as field if not already present
+        if (solrQuery.getFields() != null && !solrQuery.getFields().contains(pkey.getName())) {
             solrQuery.addField(pkey.getName());
         }
 
-        //Can't use pagination with start, then first query for cursor mark of start
-        if(solrQuery.getStart()!=null && solrQuery.getStart() > 0){
-            cursorMark = getCursorMarkForStart(server,solrQuery);            
-        }else{
-            cursorMark = CursorMarkParams.CURSOR_MARK_START;        
-        }        
-        solrQuery.set(CursorMarkParams.CURSOR_MARK_PARAM, cursorMark);        
+        // Can't use pagination with start, then first query for cursor mark of start
+        if (solrQuery.getStart() != null && solrQuery.getStart() > 0) {
+            cursorMark = getCursorMarkForStart(server, solrQuery);
+        } else {
+            cursorMark = CursorMarkParams.CURSOR_MARK_START;
+        }
+        solrQuery.set(CursorMarkParams.CURSOR_MARK_PARAM, cursorMark);
         QueryResponse rsp = server.query(solrQuery);
-        if(this.solrDataStore.getLogger().isLoggable(Level.FINE)){
-            this.solrDataStore.getLogger().log(Level.FINE, "SOLR query done: " + solrQuery.toString());
+        if (this.solrDataStore.getLogger().isLoggable(Level.FINE)) {
+            this.solrDataStore.getLogger().log(Level.FINE,
+                    "SOLR query done: " + solrQuery.toString());
         }
         this.solrDocIterator = rsp.getResults().iterator();
         nextCursorMark = rsp.getNextCursorMark();
@@ -105,17 +117,19 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     }
 
     /*
-     * Can't use CURSOR MARK with "start" parameter, so
-     * get initial SOLR CURSOR MARK to positioning CURSOR at the row specified by start query parameter 
+     * Can't use CURSOR MARK with "start" parameter, so get initial SOLR CURSOR MARK to positioning
+     * CURSOR at the row specified by start query parameter
      */
-    private String getCursorMarkForStart(HttpSolrServer server, SolrQuery solrQuery) throws SolrServerException{
+    private String getCursorMarkForStart(HttpSolrServer server, SolrQuery solrQuery)
+            throws SolrServerException {
         Integer prevRows = solrQuery.getRows();
         solrQuery.setRows(solrQuery.getStart());
-        solrQuery.setStart(0);   
+        solrQuery.setStart(0);
         solrQuery.set(CursorMarkParams.CURSOR_MARK_PARAM, CursorMarkParams.CURSOR_MARK_START);
-        QueryResponse rsp = server.query(solrQuery);  
-        if(this.solrDataStore.getLogger().isLoggable(Level.FINE)){
-            this.solrDataStore.getLogger().log(Level.FINE, "SOLR query done: " + solrQuery.toString());
+        QueryResponse rsp = server.query(solrQuery);
+        if (this.solrDataStore.getLogger().isLoggable(Level.FINE)) {
+            this.solrDataStore.getLogger().log(Level.FINE,
+                    "SOLR query done: " + solrQuery.toString());
         }
         String nextC = rsp.getNextCursorMark();
         solrQuery.setRows(prevRows);
@@ -128,45 +142,48 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     }
 
     /**
-     * SOLR multiValues fields are returned as single String field, with values concatenated and separated by ";"
+     * SOLR multiValues fields are returned as single String field, with values concatenated and
+     * separated by ";"
      */
     @Override
-    public SimpleFeature next() throws IOException, IllegalArgumentException,NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException,
+            NoSuchElementException {
         String fid = "";
-        try{
-            if(!hasNext()) {
-                throw new NoSuchElementException("No more features in this reader, you should call " +
-                        "hasNext() to check for feature availability");
+        try {
+            if (!hasNext()) {
+                throw new NoSuchElementException(
+                        "No more features in this reader, you should call "
+                                + "hasNext() to check for feature availability");
             }
             SolrDocument doc = this.solrDocIterator.next();
-            fid = featureType.getTypeName() + "." +  doc.getFieldValue(pkey.getName()) ;
+            fid = featureType.getTypeName() + "." + doc.getFieldValue(pkey.getName());
 
             final int attributeCount = featureType.getAttributeCount();
-            for(int i = 0; i < attributeCount; i++) {
+            for (int i = 0; i < attributeCount; i++) {
                 AttributeDescriptor type = featureType.getDescriptor(i);
                 Object value = doc.getFieldValue(type.getLocalName());
-                if(value instanceof List<?>){
-                    value = StringUtils.join(((List) value).toArray(),";");
+                if (value instanceof List<?>) {
+                    value = StringUtils.join(((List) value).toArray(), ";");
                 }
                 if (type instanceof GeometryDescriptor) {
                     GeometryDescriptor gatt = (GeometryDescriptor) type;
                     if (value != null) {
                         Geometry geometry = wktReader.read(value.toString());
-                        if (geometry!= null && geometry.getUserData() == null ) {
-                            geometry.setUserData( gatt.getCoordinateReferenceSystem() );
+                        if (geometry != null && geometry.getUserData() == null) {
+                            geometry.setUserData(gatt.getCoordinateReferenceSystem());
                         }
                         builder.add(geometry);
                     }
-                }else{
+                } else {
                     builder.add(value);
                 }
             }
             return builder.buildFeature(fid);
         } catch (ParseException e) {
             throw new RuntimeException(e);
-        }finally{
-            if(this.solrDataStore.getLogger().isLoggable(Level.FINE)){
-                this.solrDataStore.getLogger().log(Level.FINE, "Created " + fid );
+        } finally {
+            if (this.solrDataStore.getLogger().isLoggable(Level.FINE)) {
+                this.solrDataStore.getLogger().log(Level.FINE, "Created " + fid);
             }
             next = null;
             counter++;
@@ -179,25 +196,25 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     @Override
     public boolean hasNext() {
         if (next == null) {
-            if(this.solrDocIterator.hasNext()){
+            if (this.solrDocIterator.hasNext()) {
                 next = true;
-            }else{
-                if(counter < solrQuery.getRows() && !cursorMark.equals(nextCursorMark)){
+            } else {
+                if (counter < solrQuery.getRows() && !cursorMark.equals(nextCursorMark)) {
                     cursorMark = nextCursorMark;
                     solrQuery.set(CursorMarkParams.CURSOR_MARK_PARAM, cursorMark);
                     try {
                         QueryResponse rsp = server.query(solrQuery);
-                        if(this.solrDataStore.getLogger().isLoggable(Level.FINE)){
-                            this.solrDataStore.getLogger().log(Level.FINE, solrQuery.toString() );
+                        if (this.solrDataStore.getLogger().isLoggable(Level.FINE)) {
+                            this.solrDataStore.getLogger().log(Level.FINE, solrQuery.toString());
                         }
                         this.solrDocIterator = rsp.getResults().iterator();
                         nextCursorMark = rsp.getNextCursorMark();
                         next = this.solrDocIterator.hasNext();
                     } catch (SolrServerException e) {
-                        this.solrDataStore.getLogger().log( Level.SEVERE, e.getMessage(), e );
+                        this.solrDataStore.getLogger().log(Level.SEVERE, e.getMessage(), e);
                         next = false;
                     }
-                }else{
+                } else {
                     next = false;
                 }
             }

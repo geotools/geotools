@@ -39,28 +39,28 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
-public class SolrGeometryTest extends SolrTestSupport{
+public class SolrGeometryTest extends SolrTestSupport {
 
     public void testCrossesFilter() throws Exception {
         init("not-active");
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LineString ls = gf.createLineString(sf.create(new double[] {0,0,2,2},2));
+        LineString ls = gf.createLineString(sf.create(new double[] { 0, 0, 2, 2 }, 2));
         Crosses f = ff.crosses(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.12");
+        assertEquals(fsi.next().getID(), "not-active.12");
     }
-    
+
     public void testNotCrossesFilter() throws Exception {
         init("not-active");
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LineString ls = gf.createLineString(sf.create(new double[] {0,0,1,1},2));
+        LineString ls = gf.createLineString(sf.create(new double[] { 0, 0, 1, 1 }, 2));
         Crosses f = ff.crosses(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(0, features.size());
@@ -71,13 +71,13 @@ public class SolrGeometryTest extends SolrTestSupport{
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls = gf.createPolygon(sf.create(new double[] {3,2,6,2,6,7,3,7,3,2}, 2));
+        Polygon ls = gf.createPolygon(sf.create(new double[] { 3, 2, 6, 2, 6, 7, 3, 7, 3, 2 }, 2));
         Equals f = ff.equal(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.13");
+        assertEquals(fsi.next().getID(), "not-active.13");
     }
 
     public void testDisjointFilter() throws Exception {
@@ -85,115 +85,116 @@ public class SolrGeometryTest extends SolrTestSupport{
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Point ls = gf.createPoint(sf.create(new double[] {0,0}, 2));
+        Point ls = gf.createPoint(sf.create(new double[] { 0, 0 }, 2));
         Disjoint f = ff.disjoint(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(2, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.12");
+        assertEquals(fsi.next().getID(), "not-active.12");
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.13");
+        assertEquals(fsi.next().getID(), "not-active.13");
     }
-    
+
     public void testTouchesFilter() throws Exception {
         init("not-active");
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Point ls = gf.createPoint(sf.create(new double[] {1,1}, 2));
+        Point ls = gf.createPoint(sf.create(new double[] { 1, 1 }, 2));
         Touches f = ff.touches(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.12");
+        assertEquals(fsi.next().getID(), "not-active.12");
     }
-    
+
     public void testWithinFilter() throws Exception {
         init("not-active");
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls = gf.createPolygon(sf.create(new double[] {0,0,0,6,6,6,6,0,0,0}, 2));
+        Polygon ls = gf.createPolygon(sf.create(new double[] { 0, 0, 0, 6, 6, 6, 6, 0, 0, 0 }, 2));
         Within f = ff.within(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.12");
+        assertEquals(fsi.next().getID(), "not-active.12");
     }
-    
+
     public void testOverlapsFilter() throws Exception {
         init("not-active");
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls = gf.createPolygon(sf.create(new double[] {5.5,6,7,6,7,7,5.5,7,5.5,6}, 2));
+        Polygon ls = gf.createPolygon(sf.create(
+                new double[] { 5.5, 6, 7, 6, 7, 7, 5.5, 7, 5.5, 6 }, 2));
         Overlaps f = ff.overlaps(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.13");
+        assertEquals(fsi.next().getID(), "not-active.13");
     }
-    
+
     public void testIntersectsFilter() throws Exception {
         init("not-active");
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls = gf.createPolygon(sf.create(new double[] {6,6,7,6,7,7,6,7,6,6}, 2));
+        Polygon ls = gf.createPolygon(sf.create(new double[] { 6, 6, 7, 6, 7, 7, 6, 7, 6, 6 }, 2));
         Intersects f = ff.intersects(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.13");
+        assertEquals(fsi.next().getID(), "not-active.13");
     }
-    
+
     public void testContainsFilter() throws Exception {
         init("not-active");
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls = gf.createPolygon(sf.create(new double[] {2,2,3,2,3,3,2,3,2,2}, 2));
+        Polygon ls = gf.createPolygon(sf.create(new double[] { 2, 2, 3, 2, 3, 3, 2, 3, 2, 2 }, 2));
         Contains f = ff.contains(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.12");
+        assertEquals(fsi.next().getID(), "not-active.12");
     }
-    
+
     public void testDWithinFilter() throws Exception {
         init("not-active");
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Point ls = gf.createPoint(sf.create(new double[] {1,1}, 2));
-        DWithin f = ff.dwithin(ff.property("geo"), ff.literal(ls),3,SI.METRE.getSymbol());
+        Point ls = gf.createPoint(sf.create(new double[] { 1, 1 }, 2));
+        DWithin f = ff.dwithin(ff.property("geo"), ff.literal(ls), 3, SI.METRE.getSymbol());
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(2, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.12");
+        assertEquals(fsi.next().getID(), "not-active.12");
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.13");
+        assertEquals(fsi.next().getID(), "not-active.13");
     }
-    
+
     public void testBeyondFilter() throws Exception {
         init("not-active");
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Point ls = gf.createPoint(sf.create(new double[] {1,1}, 2));
-        Beyond f = ff.beyond(ff.property("geo"), ff.literal(ls),1,SI.METRE.getSymbol());
+        Point ls = gf.createPoint(sf.create(new double[] { 1, 1 }, 2));
+        Beyond f = ff.beyond(ff.property("geo"), ff.literal(ls), 1, SI.METRE.getSymbol());
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.13");
+        assertEquals(fsi.next().getID(), "not-active.13");
     }
-    
+
 }

@@ -43,17 +43,27 @@ import org.opengis.temporal.Period;
 import com.vividsolutions.jts.geom.Geometry;
 
 @Ignore
-public class SolrTestSupport extends OnlineTestCase{
+public class SolrTestSupport extends OnlineTestCase {
 
-    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger(SolrTestSupport.class);
+
     protected SolrFeatureSource featureSource;
+
     protected SolrDataStore dataStore;
+
     protected String testFile = "wifiAccessPoint.xml";
+
     protected String layerName = "active";
+
     protected int SOURCE_SRID = 4326;
+
     protected String pkField;
+
     private ArrayList<SolrAttribute> attributes;
+
     private static boolean setUpIsDone = false;
+
     protected DateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
 
     public void setUpSolrFile(String url) throws Exception {
@@ -61,27 +71,27 @@ public class SolrTestSupport extends OnlineTestCase{
             return;
         }
         // do the setup
-        File testDir = (Paths.get(getClass().getResource("/"+testFile).toURI()).getParent()).toFile();
-        ProcessBuilder pb = new ProcessBuilder("java","-Durl="+url+"/update","-jar","post.jar", testFile);
+        File testDir = (Paths.get(getClass().getResource("/" + testFile).toURI()).getParent())
+                .toFile();
+        ProcessBuilder pb = new ProcessBuilder("java", "-Durl=" + url + "/update", "-jar",
+                "post.jar", testFile);
         pb.directory(testDir);
         LOGGER.log(Level.FINE, "Starting SOLR import");
         final Process command = pb.start();
         LOGGER.log(Level.FINE, "Started SOLR import");
         String line;
-        BufferedReader bri = new BufferedReader
-                (new InputStreamReader(command.getInputStream()));
-        BufferedReader bre = new BufferedReader
-                (new InputStreamReader(command.getErrorStream()));
+        BufferedReader bri = new BufferedReader(new InputStreamReader(command.getInputStream()));
+        BufferedReader bre = new BufferedReader(new InputStreamReader(command.getErrorStream()));
         while ((line = bri.readLine()) != null) {
-            LOGGER.log(Level.FINE,line);
+            LOGGER.log(Level.FINE, line);
         }
         bri.close();
         while ((line = bre.readLine()) != null) {
-            LOGGER.log(Level.FINE,line);
+            LOGGER.log(Level.FINE, line);
         }
         bre.close();
         int i = command.waitFor();
-        assertTrue(i==0);
+        assertTrue(i == 0);
         LOGGER.log(Level.FINE, "SOLR import DONE!");
         setUpIsDone = true;
     }
@@ -90,19 +100,19 @@ public class SolrTestSupport extends OnlineTestCase{
     protected void connect() throws Exception {
         String url = fixture.getProperty(SolrDataStoreFactory.URL.key);
         String field = fixture.getProperty(SolrDataStoreFactory.FIELD.key);
-        setUpSolrFile(url);       
+        setUpSolrFile(url);
 
         Map params = new HashMap();
         params.put(SolrDataStoreFactory.URL.key, url);
-        params.put(SolrDataStoreFactory.FIELD.key,field);
+        params.put(SolrDataStoreFactory.FIELD.key, field);
         params.put(SolrDataStoreFactory.NAMESPACE.key, SolrDataStoreFactory.NAMESPACE.sample);
 
         SolrDataStoreFactory factory = new SolrDataStoreFactory();
         dataStore = (SolrDataStore) factory.createDataStore(params);
 
         attributes = dataStore.getSolrAttributes(this.layerName);
-        for(SolrAttribute at : attributes){
-            if(at.isPk()){
+        for (SolrAttribute at : attributes) {
+            if (at.isPk()) {
                 this.pkField = at.getName();
             }
             if (Geometry.class.isAssignableFrom(at.getType())) {
@@ -111,21 +121,21 @@ public class SolrTestSupport extends OnlineTestCase{
             at.setUse(true);
         }
 
-
     }
 
-    protected void init() throws Exception{
+    protected void init() throws Exception {
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
         init(this.layerName);
     }
 
-    protected void init(String layerName) throws Exception{
+    protected void init(String layerName) throws Exception {
         this.layerName = layerName;
-        SolrLayerConfiguration solrLayerConfiguration = new SolrLayerConfiguration(new ArrayList<SolrAttribute>());
+        SolrLayerConfiguration solrLayerConfiguration = new SolrLayerConfiguration(
+                new ArrayList<SolrAttribute>());
         solrLayerConfiguration.setLayerName(this.layerName);
         solrLayerConfiguration.getAttributes().addAll(attributes);
         dataStore.setSolrConfigurations(solrLayerConfiguration);
-        featureSource = (SolrFeatureSource) dataStore.getFeatureSource(this.layerName); 
+        featureSource = (SolrFeatureSource) dataStore.getFeatureSource(this.layerName);
     }
 
     @Override

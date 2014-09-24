@@ -25,7 +25,7 @@ import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.test.OnlineTestCase;
 
-public class SolrDataStoreTest extends OnlineTestCase{
+public class SolrDataStoreTest extends OnlineTestCase {
 
     public void testGetNames() throws IOException {
         String url = fixture.getProperty(SolrDataStoreFactory.URL.key);
@@ -33,7 +33,7 @@ public class SolrDataStoreTest extends OnlineTestCase{
 
         Map params = new HashMap();
         params.put(SolrDataStoreFactory.URL.key, url);
-        params.put(SolrDataStoreFactory.FIELD.key,field);
+        params.put(SolrDataStoreFactory.FIELD.key, field);
         params.put(SolrDataStoreFactory.NAMESPACE.key, SolrDataStoreFactory.NAMESPACE.sample);
 
         SolrDataStoreFactory factory = new SolrDataStoreFactory();

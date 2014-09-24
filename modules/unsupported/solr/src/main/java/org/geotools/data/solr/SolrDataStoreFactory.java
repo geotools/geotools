@@ -33,40 +33,40 @@ import org.geotools.util.KVP;
  * 
  */
 
-public class SolrDataStoreFactory extends AbstractDataStoreFactory{
+public class SolrDataStoreFactory extends AbstractDataStoreFactory {
 
     /**
      * Url to the SOLR server core
      */
-    public static final Param URL = new Param("solr_url", URL.class, "url to a SOLR server CORE", true, "http://localhost:8080/solr/collection1",
-            new KVP(Param.LEVEL, "user"));
+    public static final Param URL = new Param("solr_url", URL.class, "url to a SOLR server CORE",
+            true, "http://localhost:8080/solr/collection1", new KVP(Param.LEVEL, "user"));
 
     /**
      * SOLR field that holds the layers names
      */
-    public static final Param FIELD = new Param("layer_name_field", String.class, "field used in SOLR that holds the layer names", true, "layer_type",
-            new KVP(Param.LEVEL, "user"));
+    public static final Param FIELD = new Param("layer_name_field", String.class,
+            "field used in SOLR that holds the layer names", true, "layer_type", new KVP(
+                    Param.LEVEL, "user"));
 
     /**
      * Field that holds the namespace
      */
-    public static final Param NAMESPACE = new Param("namespace", String.class, "Namespace prefix", false, "solr");
+    public static final Param NAMESPACE = new Param("namespace", String.class, "Namespace prefix",
+            false, "solr");
 
     @Override
-    public DataStore createDataStore(Map<String, Serializable> params)
-            throws IOException {
+    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
         URL url = (URL) URL.lookUp(params);
         String namespace = (String) NAMESPACE.lookUp(params);
         String field = (String) FIELD.lookUp(params);
-        SolrDataStore store = new SolrDataStore(url,field);
+        SolrDataStore store = new SolrDataStore(url, field);
         store.setNamespaceURI(namespace);
         store.setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
         return store;
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, Serializable> params)
-            throws IOException {
+    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
         return createDataStore(params);
     }
 
@@ -87,7 +87,7 @@ public class SolrDataStoreFactory extends AbstractDataStoreFactory{
 
     @Override
     public Param[] getParametersInfo() {
-        return new Param[] { URL , FIELD, NAMESPACE };
+        return new Param[] { URL, FIELD, NAMESPACE };
     }
 
     @Override

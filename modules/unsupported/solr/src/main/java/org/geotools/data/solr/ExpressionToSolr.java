@@ -46,11 +46,12 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTWriter;
 
 /**
- * Encodes a OGC expression into a SOLR query syntax 
+ * Encodes a OGC expression into a SOLR query syntax
+ * 
  * @see {@link FilterToSolr}
  */
 
-public class ExpressionToSolr implements ExpressionVisitor{
+public class ExpressionToSolr implements ExpressionVisitor {
 
     /**
      * Default format used to SOLR to compare date type fields, timezone will set to UTC
@@ -113,39 +114,41 @@ public class ExpressionToSolr implements ExpressionVisitor{
         if (literal instanceof Geometry) {
             Geometry geometry = (Geometry) literal;
             WKTWriter writer = new WKTWriter();
-            String wkt = writer.write( geometry );
-            temp.append( wkt );
-        }
-        else if( literal instanceof Number ){
+            String wkt = writer.write(geometry);
+            temp.append(wkt);
+        } else if (literal instanceof Number) {
             // don't convert to string
-            temp.append( literal.toString() );
-        }
-        else if (literal instanceof Date ){
-            temp.append("\""+dateFormatUTC.format(literal)+"\"");
-        }
-        else if (literal instanceof Period){
-            if(filter instanceof After){
+            temp.append(literal.toString());
+        } else if (literal instanceof Date) {
+            temp.append("\"" + dateFormatUTC.format(literal) + "\"");
+        } else if (literal instanceof Period) {
+            if (filter instanceof After) {
                 Period period = (Period) literal;
                 temp.append(dateFormatUTC.format(period.getEnding().getPosition().getDate()));
             }
-            if(filter instanceof Before || filter instanceof Begins || filter instanceof BegunBy){
+            if (filter instanceof Before || filter instanceof Begins || filter instanceof BegunBy) {
                 Period period = (Period) literal;
-                temp.append("\""+dateFormatUTC.format(period.getBeginning().getPosition().getDate())+"\"");
+                temp.append("\""
+                        + dateFormatUTC.format(period.getBeginning().getPosition().getDate())
+                        + "\"");
             }
-            if(filter instanceof Ends || filter instanceof EndedBy){
+            if (filter instanceof Ends || filter instanceof EndedBy) {
                 Period period = (Period) literal;
-                temp.append("\""+dateFormatUTC.format(period.getEnding().getPosition().getDate())+"\"");
+                temp.append("\"" + dateFormatUTC.format(period.getEnding().getPosition().getDate())
+                        + "\"");
             }
-            if(filter instanceof During || filter instanceof TContains){
+            if (filter instanceof During || filter instanceof TContains) {
                 Period period = (Period) literal;
-                temp.append("\""+dateFormatUTC.format(period.getBeginning().getPosition().getDate())+"\"");
+                temp.append("\""
+                        + dateFormatUTC.format(period.getBeginning().getPosition().getDate())
+                        + "\"");
                 temp.append(" TO ");
-                temp.append("\""+dateFormatUTC.format(period.getEnding().getPosition().getDate())+"\"");
+                temp.append("\"" + dateFormatUTC.format(period.getEnding().getPosition().getDate())
+                        + "\"");
             }
-        }
-        else {
-            String escaped =  FilterToSolr.escapeSpecialCharacters(literal.toString());
-            escaped = "\""+escaped+"\"";
+        } else {
+            String escaped = FilterToSolr.escapeSpecialCharacters(literal.toString());
+            escaped = "\"" + escaped + "\"";
             temp.append(escaped);
         }
         output.append(temp);
@@ -155,8 +158,8 @@ public class ExpressionToSolr implements ExpressionVisitor{
     @Override
     public Object visit(PropertyName expression, Object extraData) {
         StringBuffer temp = new StringBuffer("");
-        StringWriter output = FilterToSolr.asStringWriter(extraData);        
-        temp.append( expression.getPropertyName() );
+        StringWriter output = FilterToSolr.asStringWriter(extraData);
+        temp.append(expression.getPropertyName());
         output.append(temp);
         return temp;
     }

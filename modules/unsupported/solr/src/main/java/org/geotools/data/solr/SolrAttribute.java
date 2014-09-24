@@ -20,17 +20,12 @@ package org.geotools.data.solr;
 import java.io.Serializable;
 
 /**
- * Describes a SOLR field, that is, a field stored in remote SOLR document
- * </br>
- * This class carries information about:
- * <li> The name of field
- * <li> The mapped field type
- * <li> If the field can be used as the PK in the feature
- * <li> If the field can be used as attribute in the feature
- * <li> If the field is multiValued as defined in SOLR schema
- * <li> If the field has no data in SOLR store
- * <li> The native srid if the filed if a geometry type 
- * the geometry type and native srid (as in most databases those informations are not available on.
+ * Describes a SOLR field, that is, a field stored in remote SOLR document </br> This class carries
+ * information about: <li>The name of field <li>The mapped field type <li>If the field can be used
+ * as the PK in the feature <li>If the field can be used as attribute in the feature <li>If the
+ * field is multiValued as defined in SOLR schema <li>If the field has no data in SOLR store <li>The
+ * native srid if the filed if a geometry type the geometry type and native srid (as in most
+ * databases those informations are not available on.
  * 
  * @see {@link SolrUtils#decodeSolrFieldType}
  * @see {@link SolrDataStore#getSolrAttributes}
@@ -42,12 +37,18 @@ public class SolrAttribute implements Serializable {
     private static final long serialVersionUID = 8839579461838862328L;
 
     private String name;
+
     private Class<?> type;
+
     private Boolean pk = false;
+
     private Boolean use = false;
+
     private Boolean multivalued = false;
+
     private Boolean empty = true;
-    private Integer srid;   
+
+    private Integer srid;
 
     public SolrAttribute(String name, Class<?> type) {
         super();
@@ -95,7 +96,7 @@ public class SolrAttribute implements Serializable {
 
     public void setSrid(Integer srid) {
         this.srid = srid;
-    } 
+    }
 
     public Boolean getEmpty() {
         return empty;
@@ -106,7 +107,7 @@ public class SolrAttribute implements Serializable {
     }
 
     public void setMultivalued(Boolean multivalued) {
-        this.multivalued = multivalued;        
+        this.multivalued = multivalued;
     }
 
     public Boolean getMultivalued() {
@@ -155,7 +156,8 @@ public class SolrAttribute implements Serializable {
 
     @Override
     public String toString() {
-        return "SolrAttribute [name=" + name + ", pk=" + pk + ", srid=" + srid + ", type=" + type + ", use=" + use + ", empty" + empty+"]";
+        return "SolrAttribute [name=" + name + ", pk=" + pk + ", srid=" + srid + ", type=" + type
+                + ", use=" + use + ", empty" + empty + "]";
     }
 
 }

@@ -59,35 +59,35 @@ import org.opengis.filter.sort.SortOrder;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * Datastore implementation for SOLR document
- * <br>
+ * Datastore implementation for SOLR document <br>
  * The types provided from the datastore are obtained querying with distinct a specific SOLR field
  */
 
 public class SolrDataStore extends ContentDataStore {
 
-    //Url of SOLR server
+    // Url of SOLR server
     private URL url;
 
-    //Field to filter to obtain the types that the datastore provides. 
+    // Field to filter to obtain the types that the datastore provides.
     private String field;
 
-    //Types that the datastore provides obtained by differents values of field "field"
+    // Types that the datastore provides obtained by differents values of field "field"
     private List<Name> typeNames;
 
-    //Attributes present in SOLR schema
+    // Attributes present in SOLR schema
     private ArrayList<SolrAttribute> solrAttributes = new ArrayList<SolrAttribute>();
 
-    //SOLR uuid attributes
+    // SOLR uuid attributes
     private SolrAttribute pk = null;
 
-    //Attributes configurations of the store entries
+    // Attributes configurations of the store entries
     private Map<String, SolrLayerConfiguration> solrConfigurations = new ConcurrentHashMap<String, SolrLayerConfiguration>();
 
     HttpSolrServer solrServer;
 
     /**
      * Create the data store
+     * 
      * @param url the URL of SOLR server
      * @param field SOLR field to query to obtain the store types
      */
@@ -102,15 +102,13 @@ public class SolrDataStore extends ContentDataStore {
     }
 
     /**
-     * Retrieve SOLR attribute for specific type
-     * <br/>
-     * Two SOLR LukeRequest are needed to discover SOLR fields and theirs schema for dynamic and static kinds.
-     * <br/>
-     * For each discovered field a SOLR request is needed to verify if the field has no values in the actual type,
-     * this information will be stored in {@link SolrAttribute#setEmpty}.
-     * <br/>
-     * SolrJ not extracts information about uniqueKey so custom class {@link ExtendedFieldSchemaInfo} is used.
-     * <br/>
+     * Retrieve SOLR attribute for specific type <br/>
+     * Two SOLR LukeRequest are needed to discover SOLR fields and theirs schema for dynamic and
+     * static kinds. <br/>
+     * For each discovered field a SOLR request is needed to verify if the field has no values in
+     * the actual type, this information will be stored in {@link SolrAttribute#setEmpty}. <br/>
+     * SolrJ not extracts information about uniqueKey so custom class
+     * {@link ExtendedFieldSchemaInfo} is used. <br/>
      * MultiValued SOLR field is mapped as String type
      * 
      * @param layerName the type to use to query the SOLR field {@link SolrDataStore#field}
@@ -119,20 +117,20 @@ public class SolrDataStore extends ContentDataStore {
      * @see {@link ExtendedFieldSchemaInfo#ExtendedFieldSchemaInfo}
      * 
      */
-    public ArrayList<SolrAttribute> getSolrAttributes(String layerName){
-        if(solrAttributes.isEmpty()){
+    public ArrayList<SolrAttribute> getSolrAttributes(String layerName) {
+        if (solrAttributes.isEmpty()) {
             solrAttributes = new ArrayList<SolrAttribute>();
-            try{
+            try {
                 LukeRequest lq = new LukeRequest();
                 lq.setShowSchema(true);
-                LukeResponse processSchema = lq.process(solrServer);           
+                LukeResponse processSchema = lq.process(solrServer);
 
                 lq = new LukeRequest();
                 lq.setShowSchema(false);
-                LukeResponse processField = lq.process(solrServer);                   
+                LukeResponse processField = lq.process(solrServer);
                 Map<String, FieldInfo> fis = processField.getFieldInfo();
                 SortedSet<String> keys = new TreeSet<String>(fis.keySet());
-                for(String k : keys){
+                for (String k : keys) {
                     FieldInfo fieldInfo = fis.get(k);
                     String name = fieldInfo.getName();
                     String type = fieldInfo.getType();
@@ -140,38 +138,41 @@ public class SolrDataStore extends ContentDataStore {
                     SolrQuery query = new SolrQuery();
                     query.setQuery("*:*");
                     query.setRows(0);
-                    query.addFilterQuery(this.field+":*");
-                    if(layerName!=null && layerName.isEmpty()){
-                        query.addFilterQuery(name+":"+layerName);
-                    }else{
-                        query.addFilterQuery(name+":*");
+                    query.addFilterQuery(this.field + ":*");
+                    if (layerName != null && layerName.isEmpty()) {
+                        query.addFilterQuery(name + ":" + layerName);
+                    } else {
+                        query.addFilterQuery(name + ":*");
                     }
-                    QueryResponse rsp = solrServer.query( query );
+                    QueryResponse rsp = solrServer.query(query);
                     long founds = rsp.getResults().getNumFound();
 
-                    FieldTypeInfo fty = processSchema.getFieldTypeInfo(type);                             
-                    if(fty != null){
+                    FieldTypeInfo fty = processSchema.getFieldTypeInfo(type);
+                    if (fty != null) {
                         Class<?> objType = SolrUtils.decodeSolrFieldType(fty.getClassName());
-                        if(objType != null){
-                            ExtendedFieldSchemaInfo extendedFieldSchemaInfo = new SolrUtils.ExtendedFieldSchemaInfo(processSchema,processField,name);
+                        if (objType != null) {
+                            ExtendedFieldSchemaInfo extendedFieldSchemaInfo = new SolrUtils.ExtendedFieldSchemaInfo(
+                                    processSchema, processField, name);
                             SolrAttribute at = new SolrAttribute(name, objType);
-                            if(extendedFieldSchemaInfo.getUniqueKey()){
+                            if (extendedFieldSchemaInfo.getUniqueKey()) {
                                 at.setPk(true);
                                 at.setUse(true);
                             }
-                            if(extendedFieldSchemaInfo.getMultivalued() && !Geometry.class.isAssignableFrom(at.getType())){
+                            if (extendedFieldSchemaInfo.getMultivalued()
+                                    && !Geometry.class.isAssignableFrom(at.getType())) {
                                 at.setType(String.class);
                             }
-                            at.setEmpty(founds==0);
+                            at.setEmpty(founds == 0);
                             solrAttributes.add(at);
-                        }               
+                        }
                     }
                 }
-                //Reorder fields: empty after
-                List<BeanComparator> sortFields = Arrays.asList(new BeanComparator("empty"),new BeanComparator("name"));
+                // Reorder fields: empty after
+                List<BeanComparator> sortFields = Arrays.asList(new BeanComparator("empty"),
+                        new BeanComparator("name"));
                 ComparatorChain multiSort = new ComparatorChain(sortFields);
                 Collections.sort(solrAttributes, multiSort);
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
@@ -180,11 +181,11 @@ public class SolrDataStore extends ContentDataStore {
 
     @Override
     protected List<Name> createTypeNames() throws IOException {
-        try{
-            if(typeNames == null || typeNames.isEmpty()){
+        try {
+            if (typeNames == null || typeNames.isEmpty()) {
                 typeNames = new ArrayList<Name>();
                 SolrQuery query = new SolrQuery();
-                query.setQuery( "*:*" );
+                query.setQuery("*:*");
                 query.addFacetField(field);
                 query.setFacet(true);
                 query.setFacetMinCount(1);
@@ -192,26 +193,25 @@ public class SolrDataStore extends ContentDataStore {
                 query.setRows(0);
                 query.setParam("omitHeader", true);
                 QueryResponse rsp = solrServer.query(query);
-                if(LOGGER.isLoggable(Level.FINE)){
+                if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(Level.FINE, "SOLR query done: " + query.toString());
                 }
                 List<Count> uniqueFacetFields = rsp.getFacetFields().get(0).getValues();
-                for(Count field : uniqueFacetFields){
+                for (Count field : uniqueFacetFields) {
                     typeNames.add(new NameImpl(namespaceURI, field.getName()));
                 }
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return typeNames;
     }
 
     @Override
-    protected ContentFeatureSource createFeatureSource(ContentEntry entry)
-            throws IOException {
+    protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
         ContentEntry type = ensureEntry(entry.getName());
         return new SolrFeatureSource(type);
-    }    
+    }
 
     @Override
     public FilterFactory getFilterFactory() {
@@ -219,9 +219,9 @@ public class SolrDataStore extends ContentDataStore {
     }
 
     /**
-     * The filter capabilities which reports which spatial operations the
-     * underlying SOLR server can handle natively.
-     *
+     * The filter capabilities which reports which spatial operations the underlying SOLR server can
+     * handle natively.
+     * 
      * @return The filter capabilities, never <code>null</code>.
      */
     public FilterCapabilities getFilterCapabilities() {
@@ -240,7 +240,7 @@ public class SolrDataStore extends ContentDataStore {
      * Add the type configuration to this datastore
      */
     public void setSolrConfigurations(SolrLayerConfiguration configuration) {
-        entries.remove(new NameImpl(namespaceURI,configuration.getLayerName()));
+        entries.remove(new NameImpl(namespaceURI, configuration.getLayerName()));
         this.solrConfigurations.put(configuration.getLayerName(), configuration);
     }
 
@@ -252,36 +252,38 @@ public class SolrDataStore extends ContentDataStore {
     }
 
     /**
-     * Get the field used to filter the types that the datastore provides. 
+     * Get the field used to filter the types that the datastore provides.
      */
     public String getField() {
         return field;
     }
 
     /**
-     * Gets the primary key attribute a type in this datastore.</br>
-     * If the key is not currently available a call to {@link #getSolrAttributes} is needed.
+     * Gets the primary key attribute a type in this datastore.</br> If the key is not currently
+     * available a call to {@link #getSolrAttributes} is needed.
+     * 
      * @param layerName the type to use to query the SOLR field {@link SolrDataStore#field}
      */
-    public SolrAttribute getPrimaryKey(String layerName){
-        if(pk == null){
+    public SolrAttribute getPrimaryKey(String layerName) {
+        if (pk == null) {
             ArrayList<SolrAttribute> attributes = getSolrAttributes(layerName);
-            for(SolrAttribute at : attributes){
-                if(at.isPk()){
+            for (SolrAttribute at : attributes) {
+                if (at.isPk()) {
                     pk = at;
                     break;
                 }
-            }    
+            }
         }
         return pk;
     }
 
     /**
-     * Builds the SolrJ query with support of subset of fields, limit/offset, sorting, OGC filter encoding and viewParams
-     * <br>
-     * The SOLR query always need the order by PK field to enable pagination and efficient data retrieving
-     * <br>
-     * Currently only additional "q" and "fq" SOLR parameters can be passed using vireParams, this conditions are added in AND with others
+     * Builds the SolrJ query with support of subset of fields, limit/offset, sorting, OGC filter
+     * encoding and viewParams <br>
+     * The SOLR query always need the order by PK field to enable pagination and efficient data
+     * retrieving <br>
+     * Currently only additional "q" and "fq" SOLR parameters can be passed using vireParams, this
+     * conditions are added in AND with others
      * 
      * @param featureType the feature type to query
      * @param q the OGC query to translate in SOLR request
@@ -292,60 +294,62 @@ public class SolrDataStore extends ContentDataStore {
     protected SolrQuery select(SimpleFeatureType featureType, Query q) {
         SolrQuery query = new SolrQuery();
         query.setParam("omitHeader", true);
-        try{                 
-            //Column names
-            if(q.getPropertyNames() != null){
-                for(String prop : q.getPropertyNames()){
+        try {
+            // Column names
+            if (q.getPropertyNames() != null) {
+                for (String prop : q.getPropertyNames()) {
                     query.addField(prop);
-                }            
+                }
             }
-            query.setQuery( "*:*" );
+            query.setQuery("*:*");
 
-            //Encode limit/offset, if necessary
-            if(q.getStartIndex() != null && q.getStartIndex() >= 0){
+            // Encode limit/offset, if necessary
+            if (q.getStartIndex() != null && q.getStartIndex() >= 0) {
                 query.setStart(q.getStartIndex());
             }
-            if(q.getMaxFeatures() > 0){
+            if (q.getMaxFeatures() > 0) {
                 query.setRows(q.getMaxFeatures());
-            } 
-
-            //Sort
-            ORDER naturalSortOrder = ORDER.asc;
-            if( q.getSortBy() != null){               
-                for(SortBy sort : q.getSortBy()){
-                    if(sort.getPropertyName() != null){
-                        query.addSort(sort.getPropertyName().getPropertyName(), sort.getSortOrder().equals(SortOrder.ASCENDING)?ORDER.asc:ORDER.desc);
-                    }else{
-                        naturalSortOrder = sort.getSortOrder().equals(SortOrder.ASCENDING)?ORDER.asc:ORDER.desc;
-                    }
-                }            
             }
 
-            //Always add natural sort by PK to support pagination
+            // Sort
+            ORDER naturalSortOrder = ORDER.asc;
+            if (q.getSortBy() != null) {
+                for (SortBy sort : q.getSortBy()) {
+                    if (sort.getPropertyName() != null) {
+                        query.addSort(sort.getPropertyName().getPropertyName(), sort.getSortOrder()
+                                .equals(SortOrder.ASCENDING) ? ORDER.asc : ORDER.desc);
+                    } else {
+                        naturalSortOrder = sort.getSortOrder().equals(SortOrder.ASCENDING) ? ORDER.asc
+                                : ORDER.desc;
+                    }
+                }
+            }
+
+            // Always add natural sort by PK to support pagination
             query.addSort(getPrimaryKey(featureType.getTypeName()).getName(), naturalSortOrder);
 
-            //Encode OGC filer           
+            // Encode OGC filer
             FilterToSolr f2s = initializeFilterToSolr(featureType);
             String fq = this.field + ":" + featureType.getTypeName();
             String ffq = f2s.encodeToString(q.getFilter());
-            if(ffq!=null && !ffq.isEmpty()){
-                fq = fq + " AND " + ffq ;
+            if (ffq != null && !ffq.isEmpty()) {
+                fq = fq + " AND " + ffq;
             }
-            query.setFilterQueries(fq);  
+            query.setFilterQueries(fq);
 
-            //Add viewpPrams
-            addViewparams(q,query);
+            // Add viewpPrams
+            addViewparams(q, query);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         return query;
     }
 
     /**
-     * Builds the SolrJ count query with support of limit/offset, OGC filter encoding and viewParams
-     * <br>
-     * Currently only additional "q" and "fq" SOLR parameters can be passed using vireParams, this conditions are added in AND with others
+     * Builds the SolrJ count query with support of limit/offset, OGC filter encoding and viewParams <br>
+     * Currently only additional "q" and "fq" SOLR parameters can be passed using vireParams, this
+     * conditions are added in AND with others
      * 
      * @param featureType the feature type to query
      * @param q the OGC query to translate in SOLR request
@@ -356,39 +360,39 @@ public class SolrDataStore extends ContentDataStore {
     protected SolrQuery count(SimpleFeatureType featureType, Query q) {
         SolrQuery query = new SolrQuery();
         query.setParam("omitHeader", true);
-        query.setQuery( "*:*" );
-        try{      
+        query.setQuery("*:*");
+        try {
 
-            //Encode limit/offset, if necessary
-            if(q.getStartIndex() != null && q.getStartIndex() >= 0){
+            // Encode limit/offset, if necessary
+            if (q.getStartIndex() != null && q.getStartIndex() >= 0) {
                 query.setStart(q.getStartIndex());
             }
-            if(q.getMaxFeatures() > 0){
+            if (q.getMaxFeatures() > 0) {
                 query.setRows(q.getMaxFeatures());
-            } 
+            }
 
-            //Encode OGC filer    
+            // Encode OGC filer
             FilterToSolr f2s = initializeFilterToSolr(featureType);
             String fq = this.field + ":" + featureType.getTypeName();
             String ffq = f2s.encodeToString(q.getFilter());
-            if(ffq!=null && !ffq.isEmpty()){
-                fq = fq + " AND " + ffq ;
+            if (ffq != null && !ffq.isEmpty()) {
+                fq = fq + " AND " + ffq;
             }
-            query.setFilterQueries(fq); 
+            query.setFilterQueries(fq);
 
-            //Add viewparams parameters
-            addViewparams(q,query);
+            // Add viewparams parameters
+            addViewparams(q, query);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         return query;
-    }		
+    }
 
     /*
      * Set parameters for OGC filter encoder
      */
-    private FilterToSolr initializeFilterToSolr(SimpleFeatureType featureType){
+    private FilterToSolr initializeFilterToSolr(SimpleFeatureType featureType) {
         FilterToSolr f2s = new FilterToSolr();
         f2s.setPrimaryKey(this.getPrimaryKey(featureType.getName().getLocalPart()));
         f2s.setFeatureTypeName(featureType.getName().getLocalPart());
@@ -398,28 +402,29 @@ public class SolrDataStore extends ContentDataStore {
     /*
      * Add viewParams to SOLR query
      */
-    private void addViewparams(Query q, SolrQuery query){
+    private void addViewparams(Query q, SolrQuery query) {
         String qViewParamers = null;
         String fqViewParamers = null;
         Hints hints = q.getHints();
-        if(hints != null) {
-            Map<String, String> parameters = (Map<String, String>) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS);
-            if(parameters != null){
+        if (hints != null) {
+            Map<String, String> parameters = (Map<String, String>) hints
+                    .get(Hints.VIRTUAL_TABLE_PARAMETERS);
+            if (parameters != null) {
                 for (String param : parameters.keySet()) {
                     // Accepts only q and fq query parameters
-                    if(param.equalsIgnoreCase("q")){
-                        qViewParamers = parameters.get(param);                      
+                    if (param.equalsIgnoreCase("q")) {
+                        qViewParamers = parameters.get(param);
                     }
-                    if(param.equalsIgnoreCase("fq")){
-                        fqViewParamers = parameters.get(param);  
+                    if (param.equalsIgnoreCase("fq")) {
+                        fqViewParamers = parameters.get(param);
                     }
                 }
             }
-        }   
-        if(qViewParamers != null && !qViewParamers.isEmpty()){
-            query.set("q",query.get("q").concat(" AND ").concat(qViewParamers));
         }
-        if(fqViewParamers != null && !fqViewParamers.isEmpty()){
+        if (qViewParamers != null && !qViewParamers.isEmpty()) {
+            query.set("q", query.get("q").concat(" AND ").concat(qViewParamers));
+        }
+        if (fqViewParamers != null && !fqViewParamers.isEmpty()) {
             query.addFilterQuery(fqViewParamers);
         }
     }

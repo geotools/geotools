@@ -34,33 +34,41 @@ public class SolrUtils {
     /**
      * Maps SOLR types to JAVA types
      */
-    public static Class<?> decodeSolrFieldType(String className){
-        if(className.equals("org.apache.solr.schema.TextField") || className.equals("org.apache.solr.schema.StrField"))
+    public static Class<?> decodeSolrFieldType(String className) {
+        if (className.equals("org.apache.solr.schema.TextField")
+                || className.equals("org.apache.solr.schema.StrField"))
             return String.class;
-        if(className.equals("org.apache.solr.schema.TrieLongField") || className.equals("org.apache.solr.schema.LongField"))
+        if (className.equals("org.apache.solr.schema.TrieLongField")
+                || className.equals("org.apache.solr.schema.LongField"))
             return Long.class;
-        if(className.equals("org.apache.solr.schema.BoolField"))
+        if (className.equals("org.apache.solr.schema.BoolField"))
             return Boolean.class;
-        if(className.equals("org.apache.solr.schema.SpatialRecursivePrefixTreeFieldType") || className.equals("org.apache.solr.schema.LatLonType"))
+        if (className.equals("org.apache.solr.schema.SpatialRecursivePrefixTreeFieldType")
+                || className.equals("org.apache.solr.schema.LatLonType"))
             return Geometry.class;
-        if(className.equals("org.apache.solr.schema.DateField") || className.equals("org.apache.solr.schema.TrieDateField"))
+        if (className.equals("org.apache.solr.schema.DateField")
+                || className.equals("org.apache.solr.schema.TrieDateField"))
             return Date.class;
-        if(className.equals("org.apache.solr.schema.IntField") || className.equals("org.apache.solr.schema.TrieIntField"))
+        if (className.equals("org.apache.solr.schema.IntField")
+                || className.equals("org.apache.solr.schema.TrieIntField"))
             return Integer.class;
-        if(className.equals("org.apache.solr.schema.FloatField") || className.equals("org.apache.solr.schema.TrieFloatField"))
-            return Float.class;		
+        if (className.equals("org.apache.solr.schema.FloatField")
+                || className.equals("org.apache.solr.schema.TrieFloatField"))
+            return Float.class;
 
         return null;
     }
 
     /**
-     * Add methods to extract unique and multivalued informations from SOLR schema obtained by {@link LukeResponse}
+     * Add methods to extract unique and multivalued informations from SOLR schema obtained by
+     * {@link LukeResponse}
      */
-    public static class ExtendedFieldSchemaInfo{
+    public static class ExtendedFieldSchemaInfo {
 
         private Boolean uniqueKey = false;
+
         private Boolean multivalued = false;
-        
+
         /**
          * Fills the uniqueKey and multivalued field details
          * 
@@ -68,31 +76,32 @@ public class SolrUtils {
          * @param processField LukeResponse with dynamic and static fields details
          * @param fieldName name of SOLR field to examine
          */
-        public ExtendedFieldSchemaInfo(LukeResponse processSchema,LukeResponse processField, String fieldName) {
+        public ExtendedFieldSchemaInfo(LukeResponse processSchema, LukeResponse processField,
+                String fieldName) {
             NamedList schema = (NamedList) processSchema.getResponse().get("schema");
-            NamedList<NamedList> flds = (NamedList<NamedList>)  schema.get("fields");           
+            NamedList<NamedList> flds = (NamedList<NamedList>) schema.get("fields");
             for (Entry<String, NamedList> entry : flds) {
                 String fn = entry.getKey();
-                if(fn.equals(fieldName)){
-                    NamedList om =  entry.getValue();
-                    if(om.get("uniqueKey") != null){
-                        this.uniqueKey = new Boolean(om.get("uniqueKey").toString());                        
-                    }else{
+                if (fn.equals(fieldName)) {
+                    NamedList om = entry.getValue();
+                    if (om.get("uniqueKey") != null) {
+                        this.uniqueKey = new Boolean(om.get("uniqueKey").toString());
+                    } else {
                         this.uniqueKey = false;
                     }
                     break;
                 }
             }
 
-            flds = (NamedList<NamedList>)  processField.getResponse().get("fields");
+            flds = (NamedList<NamedList>) processField.getResponse().get("fields");
             for (Entry<String, NamedList> entry : flds) {
                 String fn = entry.getKey();
-                if(fn.equals(fieldName)){
-                    NamedList om =  entry.getValue();
-                    if(om.get("schema") !=null && om.get("schema").toString().contains("M")){
-                        this.multivalued = true;                       
-                    }else{
-                        this.multivalued = false;  
+                if (fn.equals(fieldName)) {
+                    NamedList om = entry.getValue();
+                    if (om.get("schema") != null && om.get("schema").toString().contains("M")) {
+                        this.multivalued = true;
+                    } else {
+                        this.multivalued = false;
                     }
                     break;
                 }
@@ -102,7 +111,7 @@ public class SolrUtils {
 
         public Boolean getUniqueKey() {
             return uniqueKey;
-        }	
+        }
 
         public Boolean getMultivalued() {
             return multivalued;

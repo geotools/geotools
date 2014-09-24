@@ -27,8 +27,8 @@ import org.geotools.factory.Hints;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
-public class SolrViewParametersTest extends SolrTestSupport{
-    
+public class SolrViewParametersTest extends SolrTestSupport {
+
     public void testSinglesQParameters() throws Exception {
         init("not-active");
         Map<String, String> vparams = new HashMap<String, String>();
@@ -43,9 +43,9 @@ public class SolrViewParametersTest extends SolrTestSupport{
         assertEquals(1, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.12");
-    }   
-    
+        assertEquals(fsi.next().getID(), "not-active.12");
+    }
+
     public void testMultipleQParameters() throws Exception {
         init();
         Map<String, String> vparams = new HashMap<String, String>();
@@ -60,11 +60,11 @@ public class SolrViewParametersTest extends SolrTestSupport{
         assertEquals(2, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getAttribute("modem_b"),false);
+        assertEquals(fsi.next().getAttribute("modem_b"), false);
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getAttribute("modem_b"),false);
-    }   
-    
+        assertEquals(fsi.next().getAttribute("modem_b"), false);
+    }
+
     public void testSinglesFQParameters() throws Exception {
         init("not-active");
         Map<String, String> vparams = new HashMap<String, String>();
@@ -79,9 +79,9 @@ public class SolrViewParametersTest extends SolrTestSupport{
         assertEquals(1, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(),"not-active.12");
-    }  
-    
+        assertEquals(fsi.next().getID(), "not-active.12");
+    }
+
     public void testMultipleFQParameters() throws Exception {
         init();
         Map<String, String> vparams = new HashMap<String, String>();
@@ -96,11 +96,11 @@ public class SolrViewParametersTest extends SolrTestSupport{
         assertEquals(2, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getAttribute("modem_b"),false);
+        assertEquals(fsi.next().getAttribute("modem_b"), false);
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getAttribute("modem_b"),false);
-    }   
-    
+        assertEquals(fsi.next().getAttribute("modem_b"), false);
+    }
+
     public void testMixQandFQParameters() throws Exception {
         init();
         Map<String, String> vparams = new HashMap<String, String>();
@@ -116,9 +116,9 @@ public class SolrViewParametersTest extends SolrTestSupport{
         assertEquals(2, features.size());
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getAttribute("modem_b"),false);
+        assertEquals(fsi.next().getAttribute("modem_b"), false);
         assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getAttribute("modem_b"),false);
-    }   
-    
+        assertEquals(fsi.next().getAttribute("modem_b"), false);
+    }
+
 }

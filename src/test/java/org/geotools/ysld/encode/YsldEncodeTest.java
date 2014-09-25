@@ -164,12 +164,11 @@ public class YsldEncodeTest {
         
         StringWriter out = new StringWriter();
         Ysld.encode(sld, out);
-        System.out.println(out.toString());
-        
+
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         
         YamlMap tsx = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
-        assertEquals( "name", tsx.str("label") );
-        assertEquals( "circle",  tsx.seq("symbols").map(0).map("mark").str("shape") );
+        assertEquals( "name", obj.lookup("feature-styles/0/rules/0/symbolizers/1/text/label") );
+        assertEquals( "circle",  obj.lookup("feature-styles/0/rules/0/symbolizers/1/text/symbols/0/mark/shape") );
     }
 }

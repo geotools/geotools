@@ -7,29 +7,43 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Base class for Yaml object wrappers.
  */
 public class YamlObject<T> {
-
-    public static YamlObject create(Object raw) {
+    
+    /**
+     * Convert raw object to Yaml wrapper.
+     * <p>
+     * <ul>
+     * <li>Map wrapped as {@link YamlMap}</li>
+     * <li>List wrapped as {@link YamlSeq}</li>
+     * </ul>
+     * Other data (Literals, Expressions) are considered atomic
+     * and do not provide a YamlObject representation.
+     * 
+     * @param raw
+     * @return Yaml object wrapper
+     */
+    @SuppressWarnings("unchecked")
+    public static <W> YamlObject<W> create(W raw) {
         if (raw == null) {
             return null;
         }
 
         if (raw instanceof YamlObject) {
-            return (YamlObject) raw;
+            return (YamlObject<W>) raw;
         }
 
         if (raw instanceof Map) {
-            return new YamlMap(raw);
+            return (YamlObject<W>) new YamlMap(raw);
         }
 
         if (raw instanceof List) {
-            return new YamlSeq(raw);
+            return (YamlObject<W>) new YamlSeq(raw);
         }
-
         throw new IllegalArgumentException("Unable to create yaml object from: " + raw);
     }
 
@@ -63,6 +77,68 @@ public class YamlObject<T> {
     }
 
     /**
+     * Raw value access via path.
+     * <p>
+     * Indended for quick value lookup during test cases.
+     * <ul>
+     * <li>raw("1"): first value in a sequence</li>
+     * <li>raw("x"): value for "x" in a map</li>
+     * <li>raw("rules/2/symbolizers/3"): third symbolizer in second rule</li>
+     * 
+     * @param path
+     * @return raw value, or null if not available
+     */
+    public Object lookup(String path ){
+        Object here = this;
+        for( String key : path.split("/") ){
+            // Step 1: cast to wrapper if required for further navigation
+            if (here instanceof Map) {
+                here = new YamlMap(here);
+            }
+            if (here instanceof List) {
+                here = new YamlSeq(here);
+            }
+            if (here.getClass().isArray()){
+                here = new YamlSeq(here);
+            }
+            
+            // Step 2: navigate into data structure
+            int index;
+            try {
+                index = Integer.parseInt(key);
+            }
+            catch( NumberFormatException nan){
+                index = -1;
+            }                
+            if( here instanceof YamlMap ){
+                YamlMap map = (YamlMap) here;
+                if( index != -1 ){
+                    String tempKey = map.key(index);
+                    here = map.get(tempKey);
+                }
+                else if( map.has(key)){
+                    here = map.get(key);
+                }
+                else {
+                    throw new NoSuchElementException( "Key: "+key+", Keys: "+map.raw.keySet());
+                }
+            }
+            else if( here instanceof YamlSeq){
+                YamlSeq list = (YamlSeq) here;
+                if( index != -1 ){
+                    here = list.get(index);
+                }
+                else {
+                    throw new IndexOutOfBoundsException( "Index: "+key+", Size: "+list.raw.size());
+                }
+            }
+            else {
+                throw new NoSuchElementException("Key: "+key+", For:"+here.getClass().getSimpleName());
+            }
+        }
+        return here;
+    }
+    /**
      * Returns the raw object.
      */
     public T raw() {
@@ -72,9 +148,9 @@ public class YamlObject<T> {
     /**
      * Converts an object to the specified class.
      */
-    protected <T> T convert(Object obj, Class<T> clazz) {
+    protected <C> C convert(Object obj, Class<C> clazz) {
         if (!clazz.isInstance(obj)) {
-            T converted = Converters.convert(obj, clazz);
+            C converted = Converters.convert(obj, clazz);
             if (converted != null) {
                 obj = converted;
             }
@@ -89,6 +165,11 @@ public class YamlObject<T> {
         }
     }
 
+    /**
+     * Yaml representation.
+     * 
+     * @return Yaml representation
+     */
     @Override
     public String toString() {
         StringWriter w = new StringWriter();

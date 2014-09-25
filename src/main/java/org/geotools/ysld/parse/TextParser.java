@@ -28,6 +28,14 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
                 sym.setFill(fill);
             }
         });
+        context.push(map, new GraphicParser(factory){
+            @Override
+            protected void graphic(Graphic g) {
+                if( sym instanceof TextSymbolizer2 ){
+                    ((TextSymbolizer2)sym).setGraphic(g);
+                }
+            }
+        });
     }
 
     class FontHandler extends YsldParseHandler {

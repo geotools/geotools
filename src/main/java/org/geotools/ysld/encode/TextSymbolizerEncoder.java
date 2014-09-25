@@ -5,6 +5,7 @@ import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
 
 public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
 
@@ -19,6 +20,9 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
         inline(new HaloEncoder(text.getHalo()));
         inline(new FontEncoder(text.getFont()));
         inline(new PlacementEncoder(text.getLabelPlacement()));
+        if(text instanceof TextSymbolizer2){
+            inline( new GraphicEncoder( ((TextSymbolizer2)text).getGraphic() ) );
+        }
         super.encode(text);
     }
 

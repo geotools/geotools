@@ -137,6 +137,25 @@ public class YsldParseTest {
         assertTrue(e.getParameters().get(0) instanceof Literal);
         assertEquals("weightAttr", e.getParameters().get(0).evaluate(null, String.class));
         assertEquals("pop2000", e.getParameters().get(1).evaluate(null, String.class));
-
+    }
+    
+    @Test
+    public void testLabelShield() throws Exception {
+        String yaml =
+                "feature-styles:\n"+
+                "- name: name\n"+
+                " rules:\n"+
+                " - symbolizers:\n"+
+                "   - line:\n"+
+                "       stroke-color: '#555555'\n"+
+                "       stroke-width: 1.0\n"+
+                "    - text:\n"+
+                "       label: name\n"+
+                "       symbols:\n"+
+                "        - mark:\n"+
+                "           shape: circle\n"+
+                "           fill-color: '#995555'\n"+
+                "       geometry: geom";
+                        
     }
 }

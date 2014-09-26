@@ -199,10 +199,9 @@
   <name>Geotools</name>
 
   <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/
-    </connection>
-    <url>http://svn.geotools.org/trunk/</url>
+    <connection>scm:git:git://github.com/geotools/geotools.git</connection>
+    <developerConnection>scm:git:[fetch=]git://github.com/geotools/geotools.git[push=]git@github.com:geotools/geotools.git</developerConnection>
+    <url>https://github.com/geotools/geotools</url>
   </scm>
 
   <description>
@@ -251,7 +250,7 @@
         geotools-geotools-gt2-users@lists.sourceforge.net
       </post>
       <archive>
-        http://sourceforge.net/mailarchive/forum.php?forum=geotools-gt2-users
+        http://sourceforge.net/p/geotools/mailman/geotools-gt2-users/
       </archive>
     </mailingList>
     <mailingList>
@@ -263,31 +262,19 @@
         geotools-devel@lists.sourceforge.net
       </post>
       <archive>
-        http://sourceforge.net/mailarchive/forum.php?forum=geotools-devel
-      </archive>
-    </mailingList>
-    <mailingList>
-      <name>geotools-gt2-i18n</name>
-      <subscribe>
-        http://lists.sourceforge.net/lists/listinfo/geotools-gt2-i18n
-      </subscribe>
-      <post>
-        geotools-geotools-gt2-i18n@lists.sourceforge.net
-      </post>
-      <archive>
-        http://sourceforge.net/mailarchive/forum.php?forum=geotools-gt2-i18n
+        http://sourceforge.net/p/geotools/mailman/geotools-devel/
       </archive>
     </mailingList>
     <mailingList>
       <name>geotools-gt2-commits</name>
       <subscribe>
-        http://lists.sourceforge.net/lists/listinfo/geotools-gt2-commits
+        https://lists.sourceforge.net/lists/listinfo/geotools-commits
       </subscribe>
       <post>
         geotools-geotools-gt2-commits@lists.sourceforge.net
       </post>
       <archive>
-        http://sourceforge.net/mailarchive/forum.php?forum=geotools-gt2-commits
+        http://sourceforge.net/p/geotools/mailman/geotools-commits/
       </archive>
     </mailingList>
   </mailingLists>

@@ -31,6 +31,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.jdbc.JoinInfo.JoinPart;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 
 /**
  * Feature reader that wraps multiple feature readers in a join query.
@@ -65,10 +66,8 @@ public class JDBCJoiningFeatureReader extends JDBCFeatureReader {
     void init(Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, 
         JoinInfo join, Hints hints) throws SQLException, IOException {
         joinReaders = new ArrayList<JDBCFeatureReader>();
-        int offset = featureType.getAttributeCount();
-        if (!featureSource.isExposePrimaryKeyColumns()) {
-            offset += getPrimaryKey().getColumns().size();
-        }
+        int offset = featureType.getAttributeCount()
+                + getPrimaryKeyOffset(featureSource, getPrimaryKey(), featureType);
 
         for (JoinPart part : join.getParts()) {
             SimpleFeatureType ft = part.getQueryFeatureType();
@@ -85,11 +84,32 @@ public class JDBCJoiningFeatureReader extends JDBCFeatureReader {
                 }
             };
             joinReaders.add(joinReader);
-            offset += ft.getAttributeCount() + joinReader.getPrimaryKey().getColumns().size();
+            offset += ft.getAttributeCount()
+                    + getPrimaryKeyOffset(featureSource, joinReader.getPrimaryKey(), ft);
         }
 
         //builder for the final joined feature
         joinFeatureBuilder = new SimpleFeatureBuilder(retype(featureType, join));
+    }
+
+    private int getPrimaryKeyOffset(JDBCFeatureSource featureSource, PrimaryKey pk,
+            SimpleFeatureType featureType) {
+        // if we are not exposing them, they are all extras
+        int pkSize = pk.getColumns().size();
+        if (!featureSource.isExposePrimaryKeyColumns()) {
+            return pkSize;
+        }
+
+        // otherwise, we have to check if they are requested or not, as we are going to
+        // have them anyways as part of the sql query, but not necessarily in the requested ft
+        int requestedPkColumns = 0;
+        for (AttributeDescriptor ad : featureType.getAttributeDescriptors()) {
+            if (ad.getUserData().get(JDBCDataStore.JDBC_PRIMARY_KEY_COLUMN) == Boolean.TRUE) {
+                requestedPkColumns++;
+            }
+        }
+
+        return pkSize - requestedPkColumns;
     }
 
     @Override

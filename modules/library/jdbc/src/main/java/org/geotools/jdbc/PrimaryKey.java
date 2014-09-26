@@ -53,4 +53,14 @@ public class PrimaryKey {
     public String getTableName() {
         return tableName;
     }
+
+    public PrimaryKeyColumn getColumn(String name) {
+        for (PrimaryKeyColumn col : columns) {
+            if (name.equals((col.getName()))) {
+                return col;
+            }
+        }
+        
+        return null;
+    }
 }

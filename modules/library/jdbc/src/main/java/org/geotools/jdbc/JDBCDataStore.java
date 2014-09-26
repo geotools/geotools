@@ -162,7 +162,12 @@ public final class JDBCDataStore extends ContentDataStore
     public static final String JDBC_READ_ONLY = "org.geotools.jdbc.readOnly";
     
     /**
-     * The key for attribute descriptor user data which specifies the original database column data 
+     * Boolean marker stating whether an attribute is part of the primary key
+     */
+    public static final String JDBC_PRIMARY_KEY_COLUMN = "org.geotools.jdbc.pk.column";
+
+    /**
+     * The key for attribute descriptor user data which specifies the original database column data
      * type.
      */
     public static final String JDBC_NATIVE_TYPENAME = "org.geotools.jdbc.nativeTypeName";
@@ -424,6 +429,9 @@ public final class JDBCDataStore extends ContentDataStore
      * / attributes which compose the primary key.
      */
     public void setExposePrimaryKeyColumns(boolean exposePrimaryKeyColumns) {
+        if (this.exposePrimaryKeyColumns != exposePrimaryKeyColumns) {
+            entries.clear();
+        }
         this.exposePrimaryKeyColumns = exposePrimaryKeyColumns;
     }
     

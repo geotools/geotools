@@ -347,6 +347,10 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                     ab.setBinding(binding);
                     att = ab.buildDescriptor(name, ab.buildType());
                 }
+                // mark primary key columns
+                if (pkey.getColumn(att.getLocalName()) != null) {
+                    att.getUserData().put(JDBCDataStore.JDBC_PRIMARY_KEY_COLUMN, true);
+                }
                 
                 //call dialect callback
                 dialect.postCreateAttribute( att, tableName, databaseSchema, cx);
@@ -504,7 +508,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 FeatureReader<SimpleFeatureType, SimpleFeature> i = getReader(q);
                 try {
                     if (i.hasNext()) {
-                        SimpleFeature f = (SimpleFeature) i.next();
+                        SimpleFeature f = i.next();
                         bounds.init(f.getBounds());
 
                         while (i.hasNext()) {
@@ -671,7 +675,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                             allAttributes.add(extraAttribute);
                     }
                     String[] allAttributeArray = 
-                        (String[]) allAttributes.toArray(new String[allAttributes.size()]);
+                        allAttributes.toArray(new String[allAttributes.size()]);
                     querySchema = SimpleFeatureTypeBuilder.retype(getSchema(), allAttributeArray);
                 }
             }

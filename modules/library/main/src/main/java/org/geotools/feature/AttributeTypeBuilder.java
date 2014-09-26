@@ -289,6 +289,7 @@ public class AttributeTypeBuilder {
 		minOccurs = descriptor.getMinOccurs();
 		maxOccurs = descriptor.getMaxOccurs();
 		isNillable = descriptor.isNillable();
+		userData = descriptor.getUserData();
 	}
 	
 	// Type methods

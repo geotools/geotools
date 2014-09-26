@@ -85,6 +85,52 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
         }
     }
 
+    public void testSimpleJoinOnPrimaryKey() throws Exception {
+        dataStore.setExposePrimaryKeyColumns(true);
+
+        SimpleFeatureIterator ita = dataStore.getFeatureSource(tname("ft1")).getFeatures()
+                .features();
+        SimpleFeatureIterator itb = dataStore.getFeatureSource(tname("ftjoin")).getFeatures()
+                .features();
+
+        FilterFactory ff = dataStore.getFilterFactory();
+        Query q = new Query(tname("ft1"));
+        Join join = new Join(tname("ftjoin"), ff.equal(ff.property(aname("id")),
+                ff.property(aname("ftjoin.id")), true));
+        join.setAlias(tname("ftjoin"));
+        q.getJoins().add(join);
+
+        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        assertEquals(dataStore.getFeatureSource(tname("ft1")).getFeatures(q).size(),
+                features.size());
+
+        SimpleFeatureIterator it = features.features();
+        try {
+            assertTrue(it.hasNext() && ita.hasNext() && itb.hasNext());
+
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertEquals(6, f.getAttributeCount());
+
+                SimpleFeature g = (SimpleFeature) f.getAttribute(tname("ftjoin"));
+
+                SimpleFeature a = ita.next();
+                SimpleFeature b = itb.next();
+
+                for (int i = 0; i < a.getAttributeCount(); i++) {
+                    assertAttributeValuesEqual(a.getAttribute(i), f.getAttribute(i));
+                }
+                for (int i = 0; i < b.getAttributeCount(); i++) {
+                    assertAttributeValuesEqual(b.getAttribute(i), g.getAttribute(i));
+                }
+            }
+        } finally {
+            it.close();
+            ita.close();
+            itb.close();
+        }
+    }
+
     public void testSimpleJoinInvertedAliases() throws Exception {
         doTestSimpleJoinInvertedAliases(false);
         doTestSimpleJoinInvertedAliases(true);

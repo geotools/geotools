@@ -65,7 +65,10 @@ public class JDBCJoiningFeatureReader extends JDBCFeatureReader {
     void init(Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, 
         JoinInfo join, Hints hints) throws SQLException, IOException {
         joinReaders = new ArrayList<JDBCFeatureReader>();
-        int offset = featureType.getAttributeCount() + getPrimaryKey().getColumns().size();
+        int offset = featureType.getAttributeCount();
+        if (!featureSource.isExposePrimaryKeyColumns()) {
+            offset += getPrimaryKey().getColumns().size();
+        }
 
         for (JoinPart part : join.getParts()) {
             SimpleFeatureType ft = part.getQueryFeatureType();

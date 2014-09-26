@@ -305,6 +305,9 @@ public class PostGISDialect extends BasicSQLDialect {
             return null;
 
         String tableName = featureType.getTypeName();
+        if (dataStore.getVirtualTables().get(tableName) != null) {
+            return null;
+        }
 
         Statement st = null;
         ResultSet rs = null;
@@ -406,7 +409,7 @@ public class PostGISDialect extends BasicSQLDialect {
             // it's either a generic geography or geometry not registered in the medatata tables
             return Geometry.class;
         } else {
-            Class geometryClass = (Class) TYPE_TO_CLASS_MAP.get(gType.toUpperCase());
+            Class geometryClass = TYPE_TO_CLASS_MAP.get(gType.toUpperCase());
             if (geometryClass == null) {
                 geometryClass = Geometry.class;
             }

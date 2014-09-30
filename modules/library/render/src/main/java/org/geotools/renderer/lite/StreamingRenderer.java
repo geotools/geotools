@@ -195,6 +195,12 @@ public class StreamingRenderer implements GTRenderer {
      */
     public static final String SCALE_OGC = "OGC";
 
+    /**
+     * The rendering buffer grows the query area to account for features that are contributing to
+     * the requested area due to their large symbolizer, or long label
+     */
+    public static final String RENDERING_BUFFER = "renderingBufferge";
+
     /** Tolerance used to compare doubles for equality */
     private static final double TOLERANCE = 1e-6;
 
@@ -1756,8 +1762,10 @@ public class StreamingRenderer implements GTRenderer {
                             ruleList, elseRuleList, fts.getTransformation());
                 }
                 if (screenMapEnabled(lfts)) {
-                    lfts.screenMap = new ScreenMap(screenSize.x, screenSize.y, screenSize.width,
-                            screenSize.height);
+                    int renderingBuffer = getRenderingBuffer();
+                    lfts.screenMap = new ScreenMap(screenSize.x - renderingBuffer, screenSize.y
+                            - renderingBuffer, screenSize.width + renderingBuffer * 2,
+                            screenSize.height + renderingBuffer * 2);
                 }
                                                    
                 result.add(lfts);
@@ -2811,7 +2819,7 @@ public class StreamingRenderer implements GTRenderer {
     private int getRenderingBuffer() {
         if (rendererHints == null)
             return renderingBufferDEFAULT;
-        Number result = (Number) rendererHints.get("renderingBuffer");
+        Number result = (Number) rendererHints.get(RENDERING_BUFFER);
         if (result == null)
             return renderingBufferDEFAULT;
         return result.intValue();

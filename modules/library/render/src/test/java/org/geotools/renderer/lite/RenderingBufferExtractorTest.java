@@ -16,20 +16,22 @@
  */
 package org.geotools.renderer.lite;
 
+import static org.junit.Assert.*;
+
 import java.awt.Color;
 import java.io.File;
 import java.net.URL;
 
-import static org.junit.Assert.*;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.Graphic;
+import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.Symbolizer;
+import org.geotools.styling.TextSymbolizer;
 import org.geotools.test.TestData;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
@@ -46,13 +48,27 @@ public class RenderingBufferExtractorTest {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     @Test
-    public void testNoStroke() {
+    public void testTextNoStroke() {
         Style style = sb.createStyle(sb.createTextSymbolizer());
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         assertEquals(0, rbe.getBuffer());
         assertTrue(rbe.isEstimateAccurate());
         rbe.visit(style);
-        assertEquals(0, rbe.getBuffer());
+        assertEquals(15, rbe.getBuffer());
+        assertTrue(rbe.isEstimateAccurate());
+    }
+
+    @Test
+    public void testTextDisplaced() {
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.setFont(sb.createFont("Arial", 20));
+        PointPlacement pp = sb.createPointPlacement(1, 1, 10, 10, 0);
+        ts.setLabelPlacement(pp);
+        Style style = sb.createStyle(ts);
+        MetaBufferEstimator rbe = new MetaBufferEstimator();
+        rbe.visit(style);
+        // 20 (font) + 20 * 0.5 (anchor) + 10 (offset)
+        assertEquals(40, rbe.getBuffer());
         assertTrue(rbe.isEstimateAccurate());
     }
 

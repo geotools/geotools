@@ -262,6 +262,46 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)
      */
     public void visit(TextSymbolizer text) {
+        // while we cannot account for the label size, we should at least
+        // account for its height, anchor point, and eventual offsets
+        if(text.getFont() != null) {
+
+            int textSize = getPositiveValue(text.getFont().getSize());
+            int delta = -1;
+            if (text.getLabelPlacement() instanceof PointPlacement) {
+                PointPlacement pp = (PointPlacement) text.getLabelPlacement();
+                Displacement pd = pp.getDisplacement();
+                if (pd != null) {
+                    int dx = getPositiveValue(pd.getDisplacementX());
+                    int dy = getPositiveValue(pd.getDisplacementY());
+                    delta = Math.max(dx, dy);
+                }
+                AnchorPoint ap = pp.getAnchorPoint();
+                if (ap != null) {
+                    double ax = Math.abs(getDouble(ap.getAnchorPointX()) - 0.5);
+                    double ay = Math.abs(getDouble(ap.getAnchorPointY()) - 0.5);
+                    int anchorDelta = (int) Math.ceil(Math.max(ax, ay) * textSize);
+                    if (delta > 0) {
+                        delta += anchorDelta;
+                    } else {
+                        delta = anchorDelta;
+                    }
+                }
+            }
+            int total = -1;
+            if (delta > 0) {
+                if (textSize > 0) {
+                    total = delta + textSize;
+                } else {
+                    total = delta;
+                }
+            } else if (textSize > 0) {
+                total = textSize;
+            }
+
+            buffer = Math.max(buffer, total);
+        }
+        
         // take into account label shields if any
         if(text instanceof TextSymbolizer2) {
             Graphic graphic = ((TextSymbolizer2) text).getGraphic();
@@ -387,6 +427,19 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         }
     }
     
+    private double getDouble(Expression ex) {
+        if (isConstant(ex)) {
+            Double result = ex.evaluate(null, Double.class);
+            if (result != null) {
+                return result;
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    }
+
     private boolean isConstant(Expression ex) {
         // quick common cases first
         if(ex instanceof Literal) {

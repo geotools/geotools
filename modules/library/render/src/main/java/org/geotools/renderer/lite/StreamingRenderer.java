@@ -199,7 +199,7 @@ public class StreamingRenderer implements GTRenderer {
      * The rendering buffer grows the query area to account for features that are contributing to
      * the requested area due to their large symbolizer, or long label
      */
-    public static final String RENDERING_BUFFER = "renderingBufferge";
+    public static final String RENDERING_BUFFER = "renderingBuffer";
 
     /** Tolerance used to compare doubles for equality */
     private static final double TOLERANCE = 1e-6;

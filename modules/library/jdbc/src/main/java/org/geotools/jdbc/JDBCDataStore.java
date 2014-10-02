@@ -3263,7 +3263,9 @@ public final class JDBCDataStore extends ContentDataStore
                 
                 if(SortBy.NATURAL_ORDER.equals(sort[i])|| SortBy.REVERSE_ORDER.equals(sort[i])) {
                     if(key instanceof NullPrimaryKey)
-                        throw new IOException("Cannot do natural order without a primary key");
+                        throw new IOException(
+                                "Cannot do natural order without a primary key, please add it or "
+                                        + "specify a manual sort over existing attributes");
                     
                     for ( PrimaryKeyColumn col : key.getColumns() ) {
                         dialect.encodeColumnName(prefix, col.getName(), sql);

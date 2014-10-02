@@ -71,6 +71,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
      
     public void testLineWrite() throws Exception {
         assertEquals(lineText(), gjson.toString(line()));
+        assertEquals(line2Text(), gjson.toString(line2()));
         assertEquals(line3dText(), gjson.toString(line3d()));
     }
     
@@ -79,8 +80,17 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
             "{'type': 'LineString', 'coordinates': [[100.1,0.1],[101.1,1.1]]}");
     }
 
+    String line2Text() {
+        return strip("null");
+    }
+
     LineString line() {
         LineString l = gf.createLineString(array(new double[][]{{100.1, 0.1},{101.1,1.1}}));
+        return l;
+    }
+
+    LineString line2() {
+        LineString l = gf.createLineString(array(new double[][]{}));
         return l;
     }
     
@@ -96,6 +106,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     
     public void testLineRead() throws Exception {
         assertTrue(line().equals(gjson.readLine(reader(lineText()))));
+        assertNull(gjson.readLine(reader(line2Text())));
         assertTrue(line3d().equals(gjson.readLine(reader(line3dText()))));
     }
        

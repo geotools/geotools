@@ -115,7 +115,11 @@ public class GeometryJSON {
      * @param output The output. See {@link GeoJSONUtil#toWriter(Object)} for details.
      */
     public void write(Geometry geometry, Object output) throws IOException {
-        GeoJSONUtil.encode(create(geometry), output);
+        if (geometry == null || geometry.getCoordinates().length == 0) {
+            GeoJSONUtil.encode("null", output); 
+        } else {
+            GeoJSONUtil.encode(create(geometry), output);
+        }
     }
 
     /**

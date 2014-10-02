@@ -21,7 +21,21 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     /** optional user parameter */
     public static final Param USER = new Param(JDBCDataStoreFactory.USER.key, JDBCDataStoreFactory.USER.type, 
             JDBCDataStoreFactory.USER.description, false, JDBCDataStoreFactory.USER.sample);
-    
+
+    /**
+     * base location to store database files
+     */
+    File baseDirectory = null;
+
+    /**
+     * Sets the base location to store database files.
+     *
+     * @param baseDirectory A directory.
+     */
+    public void setBaseDirectory(File baseDirectory) {
+        this.baseDirectory = baseDirectory;
+    }
+
     @Override
     protected String getDatabaseID() {
         return "geopkg";
@@ -50,6 +64,12 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     @Override
     protected String getJDBCUrl(Map params) throws IOException {
         String db = (String) DATABASE.lookUp(params);
+        if (baseDirectory != null) {
+            // check for a relative path
+            if (!new File(db).isAbsolute()) {
+                db = new File(baseDirectory, db).getAbsolutePath();
+            }
+        }
         return "jdbc:sqlite:" + db;
     }
 

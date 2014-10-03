@@ -49,6 +49,9 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
+import ucar.nc2.Variable;
+import ucar.nc2.dataset.NetcdfDataset;
+
 /**
  * Testing Low Level Unidata reader infrastructure.
  * 
@@ -171,6 +174,60 @@ public final class UnidataTest extends Assert {
                 }  
             }
         } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testNoValid2DVariable() throws Exception {
+        final File file = TestData.file(this, "noVars.nc");
+        NetcdfDataset dataset = NetcdfDataset.acquireDataset(file.getAbsolutePath(), null);
+        List<Variable> variables = dataset.getVariables();
+        boolean speedVariableIsPresent = false;
+        String speedVariableName = "";
+
+        for (Variable variable: variables) {
+            if (variable.getShortName().equals("spd")) {
+                speedVariableIsPresent = true;
+                speedVariableName = variable.getFullName();
+                break;
+            }
+        }
+
+        assertTrue(speedVariableIsPresent);
+
+        final NetCDFImageReaderSpi unidataImageReaderSpi = new NetCDFImageReaderSpi();
+        assertTrue(unidataImageReaderSpi.canDecodeInput(file));
+        NetCDFImageReader reader = null;
+        try {
+
+            // sample dataset containing a water_speed variable having 
+            // only time, depth dimensions. No lon/lat dims are present
+            // resulting into variable not usable.
+            reader = (NetCDFImageReader) unidataImageReaderSpi.createReaderInstance();
+            reader.setInput(file);
+            final List<Name> names = reader.getCoveragesNames();
+
+            boolean isSpeedCoverageAvailable = false;
+            for (Name name: names) {
+                if (name.toString().equals(speedVariableName)) {
+                    isSpeedCoverageAvailable = true;
+                    break;
+                }
+            }
+            // Checking that only "mask" variable is found  
+            assertFalse(isSpeedCoverageAvailable);
+        } finally {
+            if (dataset != null) {
+                dataset.close();
+            }
+
             if (reader != null) {
                 try {
                     reader.dispose();

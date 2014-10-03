@@ -341,6 +341,7 @@ public class UnidataUtilities {
             if (dimensions.size()<2) {
                 return false;
             }
+            int twoDimensionalCoordinates = 0;
             for( Dimension dimension : dimensions ) {
                 String dimName = dimension.getFullName();
                 // check the dimension to be defined
@@ -362,10 +363,23 @@ public class UnidataUtilities {
                     if (axisType == null) {
                         return false;
                     }
+                    switch (axisType) {
+                    case GeoX: 
+                    case GeoY:
+                    case Lat:
+                    case Lon:
+                        twoDimensionalCoordinates++;
+                        break;
+                    default:
+                        break;
+                    }
                 }
             }
-            
-            
+            if (twoDimensionalCoordinates < 2) {
+                // 2D Grid is missing
+                return false;
+            }
+
             DataType dataType = var.getDataType();
             if (dataType == DataType.CHAR) {
                 return false;

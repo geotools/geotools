@@ -265,7 +265,8 @@ public class H2Dialect extends SQLDialect {
             return;
         }
         String idxTableName = featureType.getTypeName() + "_HATBOX";
-        ResultSet rs = metadata.getTables(null, schemaName, idxTableName, new String[]{"TABLE"});
+        ResultSet rs = metadata.getTables(null, dataStore.escapeNamePattern(metadata, schemaName),
+                dataStore.escapeNamePattern(metadata, idxTableName), new String[]{"TABLE"});
         try {
             if (rs.next()) {
                 featureType.getGeometryDescriptor().getUserData().put(H2_SPATIAL_INDEX, idxTableName);

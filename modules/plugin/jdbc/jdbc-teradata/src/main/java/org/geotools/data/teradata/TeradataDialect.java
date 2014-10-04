@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -682,9 +683,11 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
      */
     List<TessellationInfo> lookupTessellationInfos(Connection cx, String schemaName, String tableName, 
         String columnName) throws SQLException {
-        
-        ResultSet tables = cx.getMetaData().getTables(
-                null, "sysspatial", TESSELLATION, new String[]{"TABLE"});
+
+        DatabaseMetaData metadata = cx.getMetaData();
+        ResultSet tables = metadata.getTables(
+                null, dataStore.escapeNamePattern(metadata, "sysspatial"),
+                dataStore.escapeNamePattern(metadata, TESSELLATION), new String[]{"TABLE"});
         try {
             if (!tables.next()) {
                 LOGGER.warning("sysspatial." + TESSELLATION + " does not exist. Unable to " +
@@ -742,8 +745,10 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                     tinfo.setTableName(tableName);
                     
                     //look up the spatial index table
-                    tables = cx.getMetaData().getTables(
-                        null, schemaName, tableName+"_"+columnName+"_idx", new String[]{"TABLE","VIEW"});
+                    tables = metadata.getTables(
+                            null, dataStore.escapeNamePattern(metadata, schemaName),
+                            dataStore.escapeNamePattern(metadata, tableName + "_" + columnName + "_idx")
+                            , new String[]{"TABLE", "VIEW"});
                     try {
                         if (tables.next()) {
                             tinfo.setIndexTableName(tables.getString("TABLE_NAME"));
@@ -775,7 +780,10 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
 
         ResultSet columns =  null;
         try {
-            columns = cx.getMetaData().getColumns(null, schemaName, tableName, columnName);
+            DatabaseMetaData metaData = cx.getMetaData();
+            columns = metaData.getColumns(null, dataStore.escapeNamePattern(metaData, schemaName),
+                    dataStore.escapeNamePattern(metaData, tableName),
+                    dataStore.escapeNamePattern(metaData, columnName));
             columns.next();
     
             return columns.getString("TYPE_NAME");

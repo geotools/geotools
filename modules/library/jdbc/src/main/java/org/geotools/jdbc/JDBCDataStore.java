@@ -298,6 +298,8 @@ public final class JDBCDataStore extends ContentDataStore
      */
     protected List<ConnectionLifecycleListener> connectionLifecycleListeners = new CopyOnWriteArrayList<ConnectionLifecycleListener>();
 
+    private volatile NamePatternEscaping namePatternEscaping;
+
     public JDBCFeatureSource getAbsoluteFeatureSource(String typeName) throws IOException {
         ContentFeatureSource featureSource = getFeatureSource(typeName);
         if (featureSource instanceof JDBCFeatureSource) {
@@ -986,8 +988,8 @@ public final class JDBCDataStore extends ContentDataStore
                     queryTypes.add(desiredTableType);
                 }
             }
-            ResultSet tables = metaData.getTables(null, databaseSchema, "%",
-                    queryTypes.toArray(new String[0]));
+            ResultSet tables = metaData.getTables(null, escapeNamePattern(metaData, databaseSchema),
+                    "%", queryTypes.toArray(new String[0]));
             if(fetchSize > 1) {
                 tables.setFetchSize(fetchSize);
             }
@@ -1099,7 +1101,8 @@ public final class JDBCDataStore extends ContentDataStore
         
         ResultSet tables = null;
         try {
-            tables = metaData.getTables(null, databaseSchema, tableName, new String[] {"VIEW"});
+            tables = metaData.getTables(null, escapeNamePattern(metaData, databaseSchema),
+                    escapeNamePattern(metaData, tableName), new String[] {"VIEW"});
             return tables.next();
         } finally {
             closeSafe(tables);
@@ -1195,8 +1198,8 @@ public final class JDBCDataStore extends ContentDataStore
             String tableName, String columnName) throws SQLException {
         ResultSet columns =  null;
         try {
-            columns = metaData.getColumns(null, databaseSchema,
-                    tableName, columnName);
+            columns = metaData.getColumns(null, escapeNamePattern(metaData, databaseSchema),
+                    escapeNamePattern(metaData, tableName), escapeNamePattern(metaData, columnName));
             columns.next();
     
             int binding = columns.getInt("DATA_TYPE");
@@ -2229,8 +2232,10 @@ public final class JDBCDataStore extends ContentDataStore
     protected void ensureAssociationTablesExist(Connection cx)
         throws IOException, SQLException {
         // look for feature relationship table
-        ResultSet tables = cx.getMetaData()
-                             .getTables(null, databaseSchema, FEATURE_RELATIONSHIP_TABLE, null);
+        DatabaseMetaData metadata = cx.getMetaData();
+        ResultSet tables = metadata
+                             .getTables(null, escapeNamePattern(metadata, databaseSchema),
+                                     escapeNamePattern(metadata, FEATURE_RELATIONSHIP_TABLE), null);
 
         try {
             if (!tables.next()) {
@@ -2251,7 +2256,8 @@ public final class JDBCDataStore extends ContentDataStore
         }
 
         // look for feature association table
-        tables = cx.getMetaData().getTables(null, databaseSchema, FEATURE_ASSOCIATION_TABLE, null);
+        tables = metadata.getTables(null, escapeNamePattern(metadata, databaseSchema),
+                escapeNamePattern(metadata, FEATURE_ASSOCIATION_TABLE), null);
 
         try {
             if (!tables.next()) {
@@ -2272,7 +2278,8 @@ public final class JDBCDataStore extends ContentDataStore
         }
 
         // look up for geometry table
-        tables = cx.getMetaData().getTables(null, databaseSchema, GEOMETRY_TABLE, null);
+        tables = metadata.getTables(null, escapeNamePattern(metadata, databaseSchema),
+                escapeNamePattern(metadata, GEOMETRY_TABLE), null);
 
         try {
             if (!tables.next()) {
@@ -2293,7 +2300,8 @@ public final class JDBCDataStore extends ContentDataStore
         }
 
         // look up for multi geometry table
-        tables = cx.getMetaData().getTables(null, databaseSchema, MULTI_GEOMETRY_TABLE, null);
+        tables = metadata.getTables(null, escapeNamePattern(metadata, databaseSchema),
+                escapeNamePattern(metadata, MULTI_GEOMETRY_TABLE), null);
 
         try {
             if (!tables.next()) {
@@ -2314,7 +2322,8 @@ public final class JDBCDataStore extends ContentDataStore
         }
 
         // look up for metadata for geometry association table
-        tables = cx.getMetaData().getTables(null, databaseSchema, GEOMETRY_ASSOCIATION_TABLE, null);
+        tables = metadata.getTables(null, escapeNamePattern(metadata, databaseSchema),
+                escapeNamePattern(metadata, GEOMETRY_ASSOCIATION_TABLE), null);
 
         try {
             if (!tables.next()) {
@@ -4761,5 +4770,18 @@ public final class JDBCDataStore extends ContentDataStore
         }
     }
 
-    
+    /**
+     * Escapes a name pattern used in e.g. {@link java.sql.DatabaseMetaData#getColumns(String, String, String, String)}
+     * when passed in argument is an exact name and not a pattern.
+     *
+     * When a table name or column name contains underscore (or percen, but this is rare) the
+     * underscore is treated as a placeholder and not an actual character. So if our intention is
+     * to match an exact name, we must escape such characters.
+     */
+    public String escapeNamePattern(DatabaseMetaData metaData, String name) throws SQLException {
+        if (namePatternEscaping == null) {
+            namePatternEscaping = new NamePatternEscaping(metaData.getSearchStringEscape());
+        }
+        return namePatternEscaping.escape(name);
+    }
 }

@@ -202,6 +202,8 @@ public class EnsureAuthorizationTest {
     }
 
     private void configureMetadata() throws SQLException {
+        ((MockDatabaseMetaData)cx.getMetaData()).setSearchStringEscape("");
+
         MockResultSet tableTypes = new MockResultSet("TABLE_TYPES");
         tableTypes.addColumn("TABLE_TYPE");
         tableTypes.addRow(new Object[] {"TABLE"});

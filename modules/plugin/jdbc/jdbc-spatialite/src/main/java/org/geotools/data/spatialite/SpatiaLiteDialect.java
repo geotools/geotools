@@ -410,7 +410,8 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
             GeometryDescriptor gd = (GeometryDescriptor) ad;
             String idxTableName = "idx_" + featureType.getTypeName() + "_" + gd.getLocalName();
             
-            ResultSet rs = metadata.getTables(null, schemaName, idxTableName, new String[]{"TABLE"});
+            ResultSet rs = metadata.getTables(null, dataStore.escapeNamePattern(metadata, schemaName),
+                    dataStore.escapeNamePattern(metadata, idxTableName), new String[]{"TABLE"});
             try {
                 if (rs.next()) {
                     gd.getUserData().put(SPATIALITE_SPATIAL_INDEX, idxTableName);

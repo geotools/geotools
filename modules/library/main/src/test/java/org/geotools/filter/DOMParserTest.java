@@ -16,8 +16,6 @@
  */
 package org.geotools.filter;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -279,6 +277,11 @@ public class DOMParserTest extends FilterTestSupport {
         PropertyIsNotEqualTo filter = (PropertyIsNotEqualTo) parseDocumentFirst("testNotEqual.xml");
         
         assertTrue(filter.isMatchingCase());
+    }
+
+    public void testNull() throws Exception {
+        // used to throw a NPE
+        assertNull(FilterDOMParser.parseFilter(null));
     }
 
     public Filter parseDocument(String uri) throws Exception {

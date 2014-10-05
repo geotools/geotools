@@ -130,7 +130,7 @@
        </modules>
      </profile>
      <profile>
-	  <id>solr</id>
+      <id>solr</id>
       <activation>
          <property><name>all</name></property>
        </activation>
@@ -153,6 +153,7 @@
          <module>feature-aggregate</module>
          <module>mongodb</module>
          <module>property-ng</module>
+         <module>solr</module>
        </modules>
      </profile>
   </profiles>

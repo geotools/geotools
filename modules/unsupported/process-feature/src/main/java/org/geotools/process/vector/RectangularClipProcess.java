@@ -24,6 +24,11 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
+import org.geotools.referencing.CRS;
+
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * A process clipping the geometries in the input feature collection to a specified rectangle
@@ -42,7 +47,18 @@ public class RectangularClipProcess implements VectorProcess {
             @DescribeParameter(name = "clip", description = "Bounds of clipping rectangle") ReferencedEnvelope clip,
             @DescribeParameter(name = "preserveZ",min=0, description = "Attempt to preserve Z values from the original geometry (interpolate value for new points)") Boolean preserveZ)
             throws ProcessException {
-        return new ClipProcess().execute(features, JTS.toGeometry(clip),preserveZ);
+        CoordinateReferenceSystem featuresCRS = features.getSchema().getCoordinateReferenceSystem();
+        if (featuresCRS != null && !CRS.equalsIgnoreMetadata(featuresCRS, clip.getCoordinateReferenceSystem())) {
+            boolean lenient = true;
+            try {
+                clip = clip.transform(featuresCRS, lenient);
+            } catch (TransformException e) {
+                throw new ProcessException(e);
+            } catch (FactoryException e) {
+                throw new ProcessException(e);
+            }
+        }
+        return new ClipProcess().execute(features, JTS.toGeometry(clip), preserveZ);
     }
 
     

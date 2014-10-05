@@ -27,19 +27,19 @@ import java.util.regex.Pattern;
  */
 class NamePatternEscaping {
     private final String escape;
-    private final String quotedReplacement;
     private final Pattern replacementPattern;
+    private final String replacement;
 
     public NamePatternEscaping(String escape) {
         this.escape = escape == null ? "" : escape;
         String quotedEscape = Pattern.quote(this.escape);
-        quotedReplacement = Matcher.quoteReplacement(this.escape);
         replacementPattern = Pattern.compile("(" + quotedEscape + "|[_%])");
+        replacement = Matcher.quoteReplacement(this.escape) + "$1";
     }
 
     public String escape(String name) {
         if (needsEscaping(name)) {
-            return replacementPattern.matcher(name).replaceAll(quotedReplacement + "$1");
+            return replacementPattern.matcher(name).replaceAll(replacement);
         } else {
             return name;
         }

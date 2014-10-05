@@ -36,7 +36,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.helpers.NamespaceSupport;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -129,17 +128,12 @@ public final class FilterDOMParser {
     public static org.opengis.filter.Filter parseFilter(Node root) {
         
         final ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FILTER_FACT);
-        
-        
-        LOGGER.finer("parsingFilter " + root.getLocalName());
-
-        //NodeList children = root.getChildNodes();
-        //LOGGER.finest("children "+children);
         if ((root == null) || (root.getNodeType() != Node.ELEMENT_NODE)) {
             LOGGER.finest("bad node input ");
 
             return null;
         }
+        LOGGER.finer("parsingFilter " + root.getLocalName());
 
         LOGGER.finest("processing root " + root.getLocalName() + " " + root.getNodeName());
 

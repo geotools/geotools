@@ -279,6 +279,11 @@ public class DOMParserTest extends FilterTestSupport {
         assertTrue(filter.isMatchingCase());
     }
 
+    public void testNull() throws Exception {
+        // used to throw a NPE
+        assertNull(FilterDOMParser.parseFilter(null));
+    }
+
     public Filter parseDocument(String uri) throws Exception {
         org.opengis.filter.Filter filter = null;
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

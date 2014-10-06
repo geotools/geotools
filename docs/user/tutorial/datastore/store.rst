@@ -188,8 +188,8 @@ are always on the same transaction, but other than that this approach is working
 #. You can see what this looks like in context by reviewing :download:`CSVFeatureStore.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureStore.java>`
    from the **gt-csv** plugin.
 
-CSVFeaureWriter
-^^^^^^^^^^^^^^^
+CSVFeatureWriter
+^^^^^^^^^^^^^^^^
 
 This class uses an interesting trick to simulate updating a file in place, while still supporting
 streaming operation. We will be outputting content to a temporary file, leaving the original for
@@ -204,7 +204,14 @@ trick encountered earlier.
 
 A couple common questions:
 
-* Q: How do the wrappers work?
+* Q: How do you make a Transaction out of our simple reader?
+  
+  ContentFeatureSource uses wrappers (or delegates) to process the data on the fly.
+  
+  Example: So if a Filter is provided the wrapper will skip over features so the user only sees the content
+  they requested?
+
+* Q: How do you know what wrappers to use?
   
   ContentFeatureSource checks to see if a wrapper is needed, and if so uses the MaxFetureReader
   wrapper.

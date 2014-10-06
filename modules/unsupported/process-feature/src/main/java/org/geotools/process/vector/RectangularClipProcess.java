@@ -48,7 +48,8 @@ public class RectangularClipProcess implements VectorProcess {
             @DescribeParameter(name = "preserveZ",min=0, description = "Attempt to preserve Z values from the original geometry (interpolate value for new points)") Boolean preserveZ)
             throws ProcessException {
         CoordinateReferenceSystem featuresCRS = features.getSchema().getCoordinateReferenceSystem();
-        if (featuresCRS != null && !CRS.equalsIgnoreMetadata(featuresCRS, clip.getCoordinateReferenceSystem())) {
+        if (featuresCRS != null && clip.getCoordinateReferenceSystem() != null
+                && !CRS.equalsIgnoreMetadata(featuresCRS, clip.getCoordinateReferenceSystem())) {
             boolean lenient = true;
             try {
                 clip = clip.transform(featuresCRS, lenient);

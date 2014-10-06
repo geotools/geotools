@@ -1,8 +1,10 @@
 package org.geotools.renderer.lite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
@@ -15,6 +17,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
@@ -29,6 +32,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Graphic;
@@ -88,6 +92,10 @@ public class ScreenMapShapefileTest {
         SimpleFeatureStore featureStore = (SimpleFeatureStore) shapeFileDataStore
                 .getFeatureSource(shapeFileDataStore.getTypeNames()[0]);
         featureStore.addFeatures(DataUtilities.collection(feature));
+
+        FontCache.getDefaultInstance().registerFont(
+                Font.createFont(Font.TRUETYPE_FONT, TestData.getResource(this, "Vera.ttf")
+                        .openStream()));
     }
 
     @After 
@@ -192,7 +200,7 @@ public class ScreenMapShapefileTest {
         StyleBuilder sb = new StyleBuilder();
         PointPlacement pp = sb.createPointPlacement(0.5, 0.5, 50, 0, 0);
         TextSymbolizer ts = sb.createTextSymbolizer();
-        ts.setFont(sb.createFont("Serif", 20));
+        ts.setFont(sb.createFont("Bitstream Vera Sans", 20));
         ts.setLabel(sb.getFilterFactory().literal("name"));
         ts.setLabelPlacement(pp);
         ts.getOptions().put("partials", "true");

@@ -387,9 +387,9 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         }
     }
 
-    private void initMapping(CoordinateSystem cs) {
+    private void initMapping(List<CoordinateAxis> axes) {
         // check other dimensions
-        for (CoordinateAxis axis : cs.getCoordinateAxes()) {
+        for (CoordinateAxis axis : axes) {
             // get from coordinate vars
             final CoordinateVariable<?> cv = coordinatesVariables.get(axis.getFullName());
             if (cv != null) {
@@ -451,7 +451,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                 }
             }
         }
-        initMapping(dataset.getCoordinateSystems().get(0));
+        initMapping(dataset.getCoordinateAxes());
     }
 
     @Override

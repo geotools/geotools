@@ -33,35 +33,66 @@ import org.geotools.util.logging.Logging;
  * @source $URL$
  */
 public abstract class RegExPropertiesCollector extends PropertiesCollector {
-	
+
     private final static Logger LOGGER = Logging.getLogger(RegExPropertiesCollector.class);
-    
-	public RegExPropertiesCollector(
-			PropertiesCollectorSPI spi,
-			List<String> propertyNames,
-			String regex) {
-		super(spi, propertyNames);
-		pattern = Pattern.compile(regex);
-	}
 
-	private Pattern pattern;
+    private boolean fullPath = false;
 
-	@Override
-	public RegExPropertiesCollector collect(File file) {
-		super.collect(file);
-		
-		// get name of the file
-		final String name= FilenameUtils.getBaseName(file.getAbsolutePath());
-		
-		// get matches 
-		final Matcher matcher = pattern.matcher(name);
-		 while (matcher.find()) {
-			 addMatch(matcher.group());
-         }
-		
-		 return this;
-	}
-	
+    public boolean isFullPath() {
+        return fullPath;
+    }
+
+    public void setFullPath(boolean fullPath) {
+        this.fullPath = fullPath;
+    }
+
+    /**
+     * @deprecated 
+     * use {@link RegExPropertiesCollector#RegExPropertiesCollector(PropertiesCollectorSPI, List, String, boolean) instead
+     */
+    @Deprecated
+    public RegExPropertiesCollector(PropertiesCollectorSPI spi, List<String> propertyNames,
+            String regex) {
+        this(spi, propertyNames, regex, false);
+    }
+
+    public RegExPropertiesCollector(PropertiesCollectorSPI spi, List<String> propertyNames,
+            String regex, boolean fullPath) {
+        super(spi, propertyNames);
+        this.fullPath = fullPath;
+        pattern = Pattern.compile(regex);
+    }
+
+    private Pattern pattern;
+
+    @Override
+    public RegExPropertiesCollector collect(File file) {
+        super.collect(file);
+
+        // get name of the file
+        final String absolutePath = file.getAbsolutePath();
+        final String name = fullPath ? absolutePath : FilenameUtils.getBaseName(absolutePath);
+
+        // get matches
+        final Matcher matcher = pattern.matcher(name);
+
+        while (matcher.find()) {
+            if (!fullPath) {
+                addMatch(matcher.group());
+            } else {
+                // Chaining group Strings together
+                int count = matcher.groupCount();
+                String match = "";
+                for (int i = 1; i <= count; i++) {
+                    match += matcher.group(i);
+                }
+                addMatch(match);
+
+            }
+        }
+        return this;
+    }
+
     @Override
     public void setProperties(Map<String, Object> map) {
 

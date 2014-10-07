@@ -39,8 +39,10 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
     
     public final static String REGEX = "regex";
     public final static String FORMAT = "format";
+    public final static String FULL_PATH = "fullPath";
     public final static String REGEX_PREFIX = REGEX + "=";
     public final static String FORMAT_PREFIX = FORMAT + "=";
+    public final static String FULL_PATH_PREFIX = FULL_PATH + "=";
 
     public String getName() {
         return "TimestampFileNameExtractorSPI";
@@ -53,12 +55,12 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
-	
-    
+
     public PropertiesCollector create(final Object o, final List<String> propertyNames) {
         URL source = null;
         String regex = null;
         String format = null;
+        boolean fullPath = false;
         if (o instanceof URL) {
             source = (URL) o;
         } else if (o instanceof File) {
@@ -69,23 +71,40 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
             } catch (MalformedURLException e) {
 
                 String value = (String) o;
-                
+
                 // look for the regex
-                if(value.startsWith(REGEX_PREFIX)) {
+                int idx = 0;
+                if (value.startsWith(REGEX_PREFIX)) {
                     String tmp = value.substring(REGEX_PREFIX.length());
-                    if(tmp.contains("," + FORMAT_PREFIX)) {
-                        int idx = tmp.indexOf("," + FORMAT_PREFIX);
+                    if (tmp.contains("," + FORMAT_PREFIX)) {
+                        idx = tmp.indexOf("," + FORMAT_PREFIX);
+                        regex = tmp.substring(0, idx);
+                        value = tmp.substring(idx + 1);
+                    } else if (tmp.contains("," + FULL_PATH_PREFIX)) {
+                        idx = tmp.indexOf("," + FULL_PATH_PREFIX);
                         regex = tmp.substring(0, idx);
                         value = tmp.substring(idx + 1);
                     } else {
                         regex = tmp;
                     }
                 }
-                
+
                 // look for the format
                 if (value.startsWith(FORMAT_PREFIX)) {
-                    format = value.substring(FORMAT_PREFIX.length());
-                } 
+                    if (value.contains("," + FULL_PATH_PREFIX)){
+                        idx = value.indexOf("," + FULL_PATH_PREFIX);
+                        format = value.substring(0, idx);
+                        value = value.substring(idx + 1);
+                    } else {
+                        format = value;
+                    }
+                    format = format.substring(FORMAT_PREFIX.length());
+                }
+
+                // look for the full path param
+                if (value.startsWith(FULL_PATH_PREFIX)) {
+                   fullPath = Boolean.valueOf(value.substring(FULL_PATH_PREFIX.length()));
+                }
             }
         } else {
             return null;
@@ -96,8 +115,12 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
             final Properties properties = Utils.loadPropertiesFromURL(source);
             regex = properties.getProperty(REGEX);
             format = properties.getProperty(FORMAT);
+            String fullPathParam = properties.getProperty(FULL_PATH);
+            if (fullPathParam != null && fullPathParam.trim().length() > 0) {
+                fullPath = Boolean.valueOf(fullPathParam);
+            }
         }
-        
+
         if(regex != null) {
             regex = regex.trim();
         }
@@ -106,12 +129,8 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
         }
         
         if (regex != null) {
-            return new TimestampFileNameExtractor(this, propertyNames, regex, format);
+            return new TimestampFileNameExtractor(this, propertyNames, regex, format, fullPath);
         }
-
         return null;
-
     }
-    
-
 }

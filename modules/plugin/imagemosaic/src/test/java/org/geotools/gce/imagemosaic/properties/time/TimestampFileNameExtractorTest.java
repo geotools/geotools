@@ -77,6 +77,32 @@ public class TimestampFileNameExtractorTest {
 
     }
 
+    @Test
+    public void testParseFullPathTimestamp() {
+        PropertiesCollectorSPI spi = getTimestampSpi();
+        String regex = "(?:\\\\)(\\d{8})(?:\\\\)(?:file.)(T\\d{6})(?:.txt)";
+        PropertiesCollector collector = spi.create("regex=" + regex + ",fullPath=true", Arrays.asList("time"));
+        File file = new File("c:\\data\\20120602\\file.T120000.txt");
+        collector.collect(file);
+        collector.setProperties(feature);
+        Date time = (Date) feature.getAttribute("time");
+        assertNotNull(time);
+        assertEquals("2012-06-02T12:00:00.000Z", df.format(time));
+    }
+
+    @Test
+    public void testParseFullPathTimestampWithCustomFormat() {
+        PropertiesCollectorSPI spi = getTimestampSpi();
+        String regex = "(?:\\\\)(\\d{8})(?:\\\\)(?:file.)(t\\d{2}z)(?:.txt)";
+        PropertiesCollector collector = spi.create("regex=" + regex + ",format=yyyyMMdd't'HH'z',fullPath=true", Arrays.asList("time"));
+        File file = new File("c:\\data\\20120602\\file.t12z.txt");
+        collector.collect(file);
+        collector.setProperties(feature);
+        Date time = (Date) feature.getAttribute("time");
+        assertNotNull(time);
+        assertEquals("2012-06-02T12:00:00.000Z", df.format(time));
+    }
+
     private PropertiesCollectorSPI getTimestampSpi() {
         Set<PropertiesCollectorSPI> spis = PropertiesCollectorFinder.getPropertiesCollectorSPI();
         for (PropertiesCollectorSPI spi : spis) {

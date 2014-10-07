@@ -43,9 +43,18 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
 
     private DateFormat customFormat;
 
+    /**
+     * @deprecated
+     * use {@link TimestampFileNameExtractor#TimestampFileNameExtractor(PropertiesCollectorSPI, List, String, String, boolean) 
+     */
     public TimestampFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
             String regex, String format) {
-        super(spi, propertyNames, regex);
+        this(spi, propertyNames, regex, format, false);
+    }
+
+    public TimestampFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
+            String regex, String format, boolean fullPath) {
+        super(spi, propertyNames, regex, fullPath);
         if (format != null) {
             customFormat = new SimpleDateFormat(format);
             customFormat.setTimeZone(TimeZone.getTimeZone("GMT"));

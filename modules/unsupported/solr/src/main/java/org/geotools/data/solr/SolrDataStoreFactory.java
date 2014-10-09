@@ -38,14 +38,14 @@ public class SolrDataStoreFactory extends AbstractDataStoreFactory {
     /**
      * Url to the SOLR server core
      */
-    public static final Param URL = new Param("solr_url", URL.class, "url to a SOLR server CORE",
+    public static final Param URL = new Param("solr_url", URL.class, "Url to a SOLR server CORE",
             true, "http://localhost:8080/solr/collection1", new KVP(Param.LEVEL, "user"));
 
     /**
      * SOLR field that holds the layers names
      */
     public static final Param FIELD = new Param("layer_name_field", String.class,
-            "field used in SOLR that holds the layer names", true, "layer_type", new KVP(
+            "Field used in SOLR that holds the layer names", true, "layer_type", new KVP(
                     Param.LEVEL, "user"));
 
     /**

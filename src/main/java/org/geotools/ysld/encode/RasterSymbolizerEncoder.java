@@ -70,7 +70,7 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         public String next() {
             ColorMapEntry entry = entries.next();
 
-            return Tuple.of(toObjOrNull(entry.getColor()), toObjOrNull(entry.getOpacity()),
+            return Tuple.of(toColorOrNull(entry.getColor()), toObjOrNull(entry.getOpacity()),
                 toObjOrNull(entry.getQuantity()), entry.getLabel()).toString();
         }
 

@@ -10,7 +10,7 @@ public class StrokeEncoder extends YsldEncodeHandler<Stroke> {
 
     @Override
     protected void encode(Stroke stroke) {
-        put("stroke-color", stroke.getColor());
+        putColor("stroke-color", stroke.getColor());
         put("stroke-width", stroke.getWidth());
         put("stroke-opacity", nullIf(stroke.getOpacity(), 1d));
         put("stroke-linejoin", nullIf(stroke.getLineJoin(), "miter"));

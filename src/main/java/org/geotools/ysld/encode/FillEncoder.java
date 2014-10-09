@@ -10,7 +10,7 @@ public class FillEncoder extends YsldEncodeHandler<Fill> {
 
     @Override
     protected void encode(Fill fill) {
-        put("fill-color", fill.getColor());
+        putColor("fill-color", fill.getColor());
         put("fill-opacity", nullIf(fill.getOpacity(), 1d));
         if (fill.getGraphicFill() != null) {
             push("fill-graphic").inline(new GraphicEncoder(fill.getGraphicFill()));

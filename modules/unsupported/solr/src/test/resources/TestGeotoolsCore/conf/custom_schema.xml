@@ -1,2 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <field name="geo" type="location_rpt" indexed="true" stored="true" multiValued="true" />  
+<field name="geo2" type="location_rpt" indexed="true" stored="true" multiValued="true" />

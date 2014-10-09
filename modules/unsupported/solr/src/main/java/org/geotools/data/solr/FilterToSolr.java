@@ -706,7 +706,7 @@ public class FilterToSolr implements FilterVisitor {
         ExpressionToSolr visitor = new ExpressionToSolr();
         e1.accept(visitor, extraData);
         if (filter instanceof BBOX) {
-            output.append(":\"IsWithin(");
+            output.append(":\"Intersects(");
             e2.accept(visitor, extraData);
             output.append(")\"");
         } else if (filter instanceof Disjoint) {

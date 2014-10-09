@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FilteringFeatureReader;
@@ -77,7 +76,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
         Filter[] split = splitFilter(query.getFilter(), this);
         Filter preFilter = split[0];
         Filter postFilter = split[1];
-        DefaultQuery preQuery = new DefaultQuery(query);
+        Query preQuery = new Query(query);
         preQuery.setFilter(preFilter);
         SolrQuery q = getDataStore().select(getSchema(), preQuery);
         if (getDataStore().getLogger().isLoggable(Level.FINE)) {
@@ -131,7 +130,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
                 }
                 return count;
             } else {
-                DefaultQuery preQuery = new DefaultQuery(query);
+                Query preQuery = new Query(query);
                 preQuery.setFilter(preFilter);
                 SolrQuery q = store.count(getSchema(), preQuery);
                 if (store.getLogger().isLoggable(Level.FINE)) {
@@ -160,7 +159,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
             Filter[] split = splitFilter(query.getFilter(), this);
             Filter preFilter = split[0];
             Filter postFilter = split[1];
-            DefaultQuery preQuery = new DefaultQuery(query);
+            Query preQuery = new Query(query);
             preQuery.setFilter(preFilter);
 
             // Build the feature type returned by this query. Also build an eventual extra feature
@@ -201,6 +200,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
                 entry.getTypeName());
         String pkField = null;
         if (layerConfiguration != null) {
+            String defaultGeometryName = null;
             for (SolrAttribute attribute : layerConfiguration.getAttributes()) {
                 if (attribute.isUse()) {
                     AttributeDescriptor att = null;
@@ -217,6 +217,10 @@ public class SolrFeatureSource extends ContentFeatureSource {
                                 ab.setBinding(attribute.getType());
                                 att = ab.buildDescriptor(attribute.getName(),
                                         ab.buildGeometryType());
+                                if (attribute.isDefaultGeometry() != null
+                                        && attribute.isDefaultGeometry()) {
+                                    defaultGeometryName = attribute.getName();
+                                }
                             }
                         } catch (Exception e) {
                             String msg = "Error occured determing srid for " + attribute.getName();
@@ -230,6 +234,9 @@ public class SolrFeatureSource extends ContentFeatureSource {
                     }
                     tb.add(att);
                 }
+            }
+            if (defaultGeometryName != null) {
+                tb.setDefaultGeometry(defaultGeometryName);
             }
         }
         final SimpleFeatureType ft = tb.buildFeatureType();

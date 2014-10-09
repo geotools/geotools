@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -36,17 +37,26 @@ import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.test.OnlineTestCase;
-import org.junit.Ignore;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-@Ignore
-public class SolrTestSupport extends OnlineTestCase {
+public abstract class SolrTestSupport extends OnlineTestCase {
 
     protected static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(SolrTestSupport.class);
+
+    static {
+        // uncomment to turn up logging
+
+        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
+        handler.setLevel(java.util.logging.Level.FINE);
+
+        org.geotools.util.logging.Logging.getLogger("org.geotools.data.solr").setLevel(
+                java.util.logging.Level.FINE);
+        org.geotools.util.logging.Logging.getLogger("org.geotools.data.solr").addHandler(handler);
+    }
 
     protected SolrFeatureSource featureSource;
 
@@ -129,11 +139,25 @@ public class SolrTestSupport extends OnlineTestCase {
     }
 
     protected void init(String layerName) throws Exception {
+        init(layerName, "geo");
+    }
+
+    protected void init(String layerName, String geometryField) throws Exception {
         this.layerName = layerName;
         SolrLayerConfiguration solrLayerConfiguration = new SolrLayerConfiguration(
                 new ArrayList<SolrAttribute>());
         solrLayerConfiguration.setLayerName(this.layerName);
-        solrLayerConfiguration.getAttributes().addAll(attributes);
+        List<SolrAttribute> layerAttributes = new ArrayList<>();
+        for (SolrAttribute solrAttribute : attributes) {
+            if (geometryField.equals(solrAttribute.getName())) {
+                SolrAttribute copy = new SolrAttribute(solrAttribute);
+                copy.setDefaultGeometry(true);
+                layerAttributes.add(copy);
+            } else {
+                layerAttributes.add(solrAttribute);
+            }
+        }
+        solrLayerConfiguration.getAttributes().addAll(layerAttributes);
         dataStore.setSolrConfigurations(solrLayerConfiguration);
         featureSource = (SolrFeatureSource) dataStore.getFeatureSource(this.layerName);
     }

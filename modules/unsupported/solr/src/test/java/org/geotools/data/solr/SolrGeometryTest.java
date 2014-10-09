@@ -21,7 +21,10 @@ import javax.measure.unit.SI;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
@@ -195,6 +198,22 @@ public class SolrGeometryTest extends SolrTestSupport {
         SimpleFeatureIterator fsi = features.features();
         assertTrue(fsi.hasNext());
         assertEquals(fsi.next().getID(), "not-active.13");
+    }
+    
+    public void testAlternateGeometry() throws Exception {
+        init("active", "geo2");
+        SimpleFeatureType schema = featureSource.getSchema();
+        GeometryDescriptor gd = schema.getGeometryDescriptor();
+        assertNotNull(gd);
+        assertEquals("geo2", gd.getLocalName());
+
+        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        BBOX bbox = ff.bbox("", 6.5, 23.5, 7.5, 24.5, "EPSG:4326");
+        SimpleFeatureCollection features = featureSource.getFeatures(bbox);
+        assertEquals(1, features.size());
+        SimpleFeatureIterator fsi = features.features();
+        assertTrue(fsi.hasNext());
+        assertEquals(fsi.next().getID(), "active.9");
     }
 
 }

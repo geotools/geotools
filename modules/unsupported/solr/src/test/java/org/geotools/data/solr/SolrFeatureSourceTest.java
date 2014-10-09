@@ -57,7 +57,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         assertEquals(0l, Math.round(bounds.getMinX()));
         assertEquals(0l, Math.round(bounds.getMinY()));
         assertEquals(24, Math.round(bounds.getMaxX()));
-        assertEquals(43, Math.round(bounds.getMaxY()));
+        assertEquals(44, Math.round(bounds.getMaxY()));
     }
 
     public void testCountWithIsEqualFilter() throws Exception {

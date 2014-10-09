@@ -50,6 +50,8 @@ public class SolrAttribute implements Serializable {
 
     private Integer srid;
 
+    private Boolean defaultGeometry = false;
+
     public SolrAttribute(String name, Class<?> type) {
         super();
         this.name = name;
@@ -57,6 +59,19 @@ public class SolrAttribute implements Serializable {
         this.use = false;
         this.multivalued = false;
     }
+
+
+    public SolrAttribute(SolrAttribute other) {
+        this.name = other.name;
+        this.type = other.type;
+        this.pk = other.pk;
+        this.use = other.use;
+        this.multivalued = other.multivalued;
+        this.empty = other.empty;
+        this.srid = other.srid;
+        this.defaultGeometry = other.defaultGeometry;
+    }
+
 
     public String getName() {
         return name;
@@ -115,13 +130,24 @@ public class SolrAttribute implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "SolrAttribute [name=" + name + ", type=" + type + ", pk=" + pk + ", use=" + use
+                + ", multivalued=" + multivalued + ", empty=" + empty + ", srid=" + srid
+                + ", defaultGeometry=" + defaultGeometry + "]";
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((defaultGeometry == null) ? 0 : defaultGeometry.hashCode());
+        result = prime * result + ((empty == null) ? 0 : empty.hashCode());
+        result = prime * result + ((multivalued == null) ? 0 : multivalued.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + (pk ? 1231 : 1237);
+        result = prime * result + ((pk == null) ? 0 : pk.hashCode());
         result = prime * result + ((srid == null) ? 0 : srid.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
+        result = prime * result + ((use == null) ? 0 : use.hashCode());
         return result;
     }
 
@@ -134,12 +160,30 @@ public class SolrAttribute implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         SolrAttribute other = (SolrAttribute) obj;
+        if (defaultGeometry == null) {
+            if (other.defaultGeometry != null)
+                return false;
+        } else if (!defaultGeometry.equals(other.defaultGeometry))
+            return false;
+        if (empty == null) {
+            if (other.empty != null)
+                return false;
+        } else if (!empty.equals(other.empty))
+            return false;
+        if (multivalued == null) {
+            if (other.multivalued != null)
+                return false;
+        } else if (!multivalued.equals(other.multivalued))
+            return false;
         if (name == null) {
             if (other.name != null)
                 return false;
         } else if (!name.equals(other.name))
             return false;
-        if (pk != other.pk)
+        if (pk == null) {
+            if (other.pk != null)
+                return false;
+        } else if (!pk.equals(other.pk))
             return false;
         if (srid == null) {
             if (other.srid != null)
@@ -151,13 +195,21 @@ public class SolrAttribute implements Serializable {
                 return false;
         } else if (!type.equals(other.type))
             return false;
+        if (use == null) {
+            if (other.use != null)
+                return false;
+        } else if (!use.equals(other.use))
+            return false;
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "SolrAttribute [name=" + name + ", pk=" + pk + ", srid=" + srid + ", type=" + type
-                + ", use=" + use + ", empty" + empty + "]";
+    public Boolean isDefaultGeometry() {
+        return defaultGeometry;
     }
+
+    public void setDefaultGeometry(Boolean defaultGeometry) {
+        this.defaultGeometry = defaultGeometry;
+    }
+
 
 }

@@ -50,8 +50,10 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
@@ -331,7 +333,8 @@ public class SolrDataStore extends ContentDataStore {
             // Encode OGC filer
             FilterToSolr f2s = initializeFilterToSolr(featureType);
             String fq = this.field + ":" + featureType.getTypeName();
-            String ffq = f2s.encodeToString(q.getFilter());
+            Filter simplified = SimplifyingFilterVisitor.simplify(q.getFilter());
+            String ffq = f2s.encodeToString(simplified);
             if (ffq != null && !ffq.isEmpty()) {
                 fq = fq + " AND " + ffq;
             }

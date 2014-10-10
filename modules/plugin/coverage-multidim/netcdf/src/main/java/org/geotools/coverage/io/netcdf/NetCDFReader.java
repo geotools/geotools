@@ -272,6 +272,9 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
                         .equalsIgnoreCase("time_domain_maximum"))) {
                     return parseDomain(name, timeDomain);
                 }
+                if (name.equalsIgnoreCase("time_domain_datatype")) {
+                    return parseDomain(name, timeDomain);
+                }
             }
 
             if (hasElevationDomain) {
@@ -281,6 +284,9 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
 
                 if (name.equalsIgnoreCase("elevation_domain_minimum")
                         || name.equalsIgnoreCase("elevation_domain_maximum")) {
+                    return parseDomain(name, verticalDomain);
+                }
+                if (name.equalsIgnoreCase("elevation_domain_datatype")) {
                     return parseDomain(name, verticalDomain);
                 }
             }
@@ -348,8 +354,8 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
                 // global domain
                 SortedSet<? extends NumberRange<Double>> verticalElements = verticalDomain.getVerticalElements(true, null);
                 return buildVerticalList(verticalElements);
-            } else if (name.endsWith(DATATYPE_SUFFIX)) {
-                return NumberRange.class.getName();
+            } else if (name.endsWith("datatype")) {
+                return Double.class.getName();
             } else {
                 // min or max requests
                 SortedSet<? extends NumberRange<Double>> verticalElements = verticalDomain.getVerticalElements(false, null);
@@ -370,8 +376,8 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
                 // global domain
                 SortedSet<? extends DateRange> temporalElements = temporalDomain.getTemporalElements(true, null);
                 return buildTemporalList(temporalElements);
-            } else if (name.endsWith(DATATYPE_SUFFIX)) {
-                return DateRange.class.getName();
+            } else if (name.endsWith("datatype")) {
+                return Date.class.getName();
             } else {
                 SortedSet<? extends DateRange> temporalElements = temporalDomain.getTemporalElements(false, null);
                 DateRange overall = temporalElements.iterator().next();

@@ -211,7 +211,8 @@ class NetCDFRequest extends CoverageReadRequest{
                 request.setVerticalSubset(verticalSubset);
             } else {
                 final NumberRange<Double> requestedVerticalEnv = verticalSubset.iterator().next();
-                if (!verticalExtent.contains(requestedVerticalEnv)) {
+
+                if (verticalExtent != null && !verticalExtent.isEmpty() && !verticalExtent.iterator().next().contains(requestedVerticalEnv)) {
                     // Find the nearest vertical Envelope
                     NumberRange<Double> nearestEnvelope = verticalExtent.iterator().next();
 

@@ -300,7 +300,7 @@ public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
         try {
             logger.setLevel(java.util.logging.Level.SEVERE);
             logger.addHandler(handler);
-            dataStore.createVirtualTable(vt);
+            dataStore.addVirtualTable(vt);
             ContentFeatureSource fs = dataStore.getFeatureSource("invalid_attribute");
 
             // now hack the sql view definition to inject an invalid column name,
@@ -323,7 +323,7 @@ public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
             if (fi != null) {
                 fi.close();
             }
-            dataStore.dropVirtualTable("invalid_attribute");
+            dataStore.removeVirtualTable("invalid_attribute");
 
             // shake the vm to make it run the finalizers
             System.gc();

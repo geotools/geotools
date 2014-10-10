@@ -141,7 +141,17 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         st.setFetchSize(featureSource.getDataStore().getFetchSize());
         
         ((BasicSQLDialect)featureSource.getDataStore().getSQLDialect()).onSelect(st, cx, featureType);
-        rs = st.executeQuery(sql);
+        try {
+            rs = st.executeQuery(sql);
+        } catch (Exception e1) {
+            // make sure to mark as closed, otherwise we are going to log that it was not
+            try {
+                close();
+            } catch (IOException e2) {
+
+            }
+            throw new SQLException(e1);
+        }
     }
     
     public JDBCFeatureReader( PreparedStatement st, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Hints hints ) 

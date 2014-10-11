@@ -18,7 +18,6 @@ package org.geotools.data.store;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,7 +28,6 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.InProcessLockingManager;
 import org.geotools.data.LockingManager;
@@ -41,7 +39,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.SchemaException;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -512,7 +509,7 @@ public abstract class ContentDataStore implements DataStore {
      * entry exists.
      */
     public ContentEntry getEntry( Name name ) {
-        return (ContentEntry) entries.get(name);
+        return entries.get(name);
     }
 
     //
@@ -561,35 +558,46 @@ public abstract class ContentDataStore implements DataStore {
     final protected ContentEntry entry(Name name) throws IOException {
         ContentEntry entry = null;
 
-        //do we already know about the entry
-        if (!entries.containsKey(name)) {
-            //is this type available?
-            List<Name> typeNames = createTypeNames();
-            
-            boolean found = typeNames.contains(name);
-            if (!found && name.getNamespaceURI() == null) { //try match without namespace
-                for (Name typeName : typeNames){
-                    if (typeName.getLocalPart().equals(name.getLocalPart())) {
-                        name = typeName;
-                        found = true;
-                    }
-                }
-            } 
-            
-            if (found) {
-                //yes, create an entry for it
-                synchronized (this) {
-                    if (!entries.containsKey(name)) {
-                        entry = new ContentEntry(this, name);
-                        entries.put(name, entry);
-                    }
-                }
-
-                entry = (ContentEntry) entries.get(name);
+        boolean found = entries.containsKey(name);
+        if (!found && name.getNamespaceURI() == null
+                && this.namespaceURI != null) {
+            Name defaultNsName = new NameImpl(namespaceURI, name.getLocalPart());
+            if (entries.containsKey(defaultNsName)) {
+                name = defaultNsName;
+                found = true;
             }
         }
 
-        return (ContentEntry) entries.get(name);
+        // try a namespace-less match (createTypeNames() can be expensive, we leave it as last
+        // resort)
+        if (!found) {
+            List<Name> typeNames = createTypeNames();
+            found = typeNames.contains(name);
+            if (!found && name.getNamespaceURI() == null) {
+                for (Name typeName : typeNames) {
+                    if (typeName.getLocalPart().equals(name.getLocalPart())) {
+                        name = typeName;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (found) {
+            // yes, create an entry for it
+            synchronized (this) {
+                if (!entries.containsKey(name)) {
+                    entry = new ContentEntry(this, name);
+                    entries.put(name, entry);
+                }
+            }
+
+            entry = entries.get(name);
+        }
+
+
+        return entries.get(name);
     }
 
     /**

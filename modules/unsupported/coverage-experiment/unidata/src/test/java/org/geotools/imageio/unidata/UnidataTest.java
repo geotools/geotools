@@ -202,15 +202,15 @@ public final class UnidataTest extends Assert {
 
         assertTrue(speedVariableIsPresent);
 
-        final NetCDFImageReaderSpi unidataImageReaderSpi = new NetCDFImageReaderSpi();
+        final DummyUnidataImageReaderSpi unidataImageReaderSpi = new DummyUnidataImageReaderSpi();
         assertTrue(unidataImageReaderSpi.canDecodeInput(file));
-        NetCDFImageReader reader = null;
+        DummyUnidataImageReader reader = null;
         try {
 
             // sample dataset containing a water_speed variable having 
             // only time, depth dimensions. No lon/lat dims are present
             // resulting into variable not usable.
-            reader = (NetCDFImageReader) unidataImageReaderSpi.createReaderInstance();
+            reader = (DummyUnidataImageReader) unidataImageReaderSpi.createReaderInstance();
             reader.setInput(file);
             final List<Name> names = reader.getCoveragesNames();
 

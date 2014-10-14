@@ -166,6 +166,12 @@ public class SolrDataStore extends ContentDataStore {
                             }
                             at.setEmpty(founds == 0);
                             solrAttributes.add(at);
+                        } else {
+                            if (LOGGER.isLoggable(Level.FINE)) {
+                                LOGGER.log(Level.FINE, "Skipping attribute " + fty.getName()
+                                        + " as we don't know how to map its type to a java object "
+                                        + fty.getClassName());
+                            }
                         }
                     }
                 }

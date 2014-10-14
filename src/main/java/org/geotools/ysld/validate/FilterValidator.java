@@ -12,7 +12,7 @@ public class FilterValidator extends ScalarValidator {
             ECQL.toFilter(value);
             return null;
         } catch (CQLException e) {
-            return "Invalid filter: " + e.getMessage();
+            return e.getSyntaxError();
         }
     }
 }

@@ -7,6 +7,8 @@ import java.util.Map;
 
 /**
  * List of common color names.
+ * 
+ * @see http://en.wikipedia.org/wiki/X11_color_names
  */
 public class Colors {
     static Map<String,Color> colorMap = new HashMap<String, Color>();

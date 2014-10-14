@@ -26,8 +26,9 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         this.it = it;
     }
 
+    @SuppressWarnings("unchecked")
     YsldEncodeHandler(T obj) {
-        this.it = obj != null ? Collections.singleton(obj).iterator() : (Iterator) Collections.emptyIterator();
+        this.it = obj != null ? Collections.singleton(obj).iterator() : (Iterator<T>) Collections.emptyIterator();
     }
 
     @Override
@@ -49,39 +50,39 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         throw new UnsupportedOperationException();
     }
 
-    YsldEncodeHandler reset() {
+    YsldEncodeHandler<T> reset() {
         stack.clear();;
         stack.push(newMap());
         return this;
     }
 
-    YsldEncodeHandler push(String key) {
+    YsldEncodeHandler<T> push(String key) {
         Map<String,Object> map = newMap();
         stack.peek().put(key, map);
         stack.push(map);
         return this;
     }
 
-    YsldEncodeHandler pop() {
+    YsldEncodeHandler<T> pop() {
         stack.pop();
         return this;
     }
 
-    YsldEncodeHandler put(String key, Object val) {
+    YsldEncodeHandler<T> put(String key, Object val) {
         if (val != null) {
             stack.peek().put(key, val);
         }
         return this;
     }
 
-    YsldEncodeHandler put(String key, Expression expr) {
+    YsldEncodeHandler<T> put(String key, Expression expr) {
         if (expr != null) {
             put(key, toObjOrNull(expr));
         }
         return this;
     }
 
-    YsldEncodeHandler put(String key, Expression e1, Expression e2) {
+    YsldEncodeHandler<T> put(String key, Expression e1, Expression e2) {
         Tuple t = Tuple.of(toObjOrNull(e1), toObjOrNull(e2));
         if (!t.isNull()) {
             put(key, t.toString());
@@ -89,7 +90,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         return this;
     }
 
-    YsldEncodeHandler putColor(String key, Expression expr) {
+    YsldEncodeHandler<T> putColor(String key, Expression expr) {
         boolean special = false;
         if (expr instanceof Literal) {
             // special case for color literals, drop the # so that we don't need to quote it
@@ -108,7 +109,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         return this;
     }
 
-    YsldEncodeHandler inline(YsldEncodeHandler<?> e) {
+    YsldEncodeHandler<T> inline(YsldEncodeHandler<?> e) {
         if (e.hasNext()) {
             e.next();
             inline(e.root());
@@ -116,7 +117,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         return this;
     }
 
-    YsldEncodeHandler inline(Map<String,Object> values) {
+    YsldEncodeHandler<T> inline(Map<String,Object> values) {
         stack.peek().putAll(values);
         return this;
     }

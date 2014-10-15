@@ -17,7 +17,9 @@ public abstract class SymbolizerEncoder<S extends Symbolizer> extends YsldEncode
         put("uom", sym.getUnitOfMeasure());
         if (!sym.getOptions().isEmpty()) {
             for (Map.Entry<String,String> kv : sym.getOptions().entrySet()) {
-                put(SymbolizerHandler.OPTION_PREFIX + kv.getKey(), kv.getValue());
+                String option = SymbolizerHandler.OPTION_PREFIX + kv.getKey();
+                String text = kv.getValue();
+                put(option, toObjOrNull(text));
             }
         }
     }

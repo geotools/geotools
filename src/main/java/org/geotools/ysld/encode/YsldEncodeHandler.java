@@ -156,6 +156,27 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
         return str;
     }
+    
+    Object toObjOrNull(String text) {
+        String str = text == null ? null : stripQuotes(text);
+        if (str != null) {
+            try {
+                return Long.parseLong(str);
+            }
+            catch(NumberFormatException e1) {
+                try {
+                    return Double.parseDouble(str);
+                }
+                catch(NumberFormatException e2) {
+                    if ("true".equalsIgnoreCase(str) || "false".equalsIgnoreCase(str)) {
+                        return Boolean.parseBoolean(str);
+                    }
+                }
+            }
+        }
+        return text;
+    }
+    
 
     Expression nullIf(Expression expr, double value) {
         return nullIf(expr, value, Double.class);

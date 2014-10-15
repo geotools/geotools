@@ -1,7 +1,6 @@
 package org.geotools.ysld.transform.sld;
 
 import org.geotools.ysld.YamlMap;
-import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YsldTests;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
@@ -670,7 +669,7 @@ public class SldTransformerTest {
         YamlMap text = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
         assertEquals("[name]", text.str("label"));
         assertEquals("#000000", text.str("fill-color"));
-        assertEquals(true, text.map("options").bool("followLine"));
+        assertEquals(true, text.bool("-followLine"));
     }
 
     @Test
@@ -967,10 +966,10 @@ public class SldTransformerTest {
         YamlMap text = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
         assertEquals("[name]", text.str("label"));
         assertEquals("#000000", text.str("fill-color"));
-        assertEquals(true, text.map("options").bool("followLine"));
-        assertEquals(90, text.map("options").integer("maxAngleDelta").intValue());
-        assertEquals(400, text.map("options").integer("maxDisplacement").intValue());
-        assertEquals(150, text.map("options").integer("repeat").intValue());
+        assertEquals(true, text.bool("-followLine"));
+        assertEquals(90, text.integer("-maxAngleDelta").intValue());
+        assertEquals(400, text.integer("-maxDisplacement").intValue());
+        assertEquals(150, text.integer("-repeat").intValue());
 
     }
     @Test
@@ -1021,10 +1020,10 @@ public class SldTransformerTest {
         assertEquals("normal", text.str("font-style"));
         assertEquals("bold", text.str("font-weight"));
 
-        assertEquals(true, text.map("options").bool("followLine"));
-        assertEquals(90, text.map("options").integer("maxAngleDelta").intValue());
-        assertEquals(400, text.map("options").integer("maxDisplacement").intValue());
-        assertEquals(150, text.map("options").integer("repeat").intValue());
+        assertEquals(true, text.bool("-followLine"));
+        assertEquals(90, text.integer("-maxAngleDelta").intValue());
+        assertEquals(400, text.integer("-maxDisplacement").intValue());
+        assertEquals(150, text.integer("-repeat").intValue());
     }
 
     @Test
@@ -1360,8 +1359,8 @@ public class SldTransformerTest {
 
         assertEquals("#000000", text.str("fill-color"));
 
-        assertEquals(60, text.map("options").integer("autoWrap").intValue());
-        assertEquals(150, text.map("options").integer("maxDisplacement").intValue());
+        assertEquals(60, text.integer("-autoWrap").intValue());
+        assertEquals(150, text.integer("-maxDisplacement").intValue());
     }
 
     @Test

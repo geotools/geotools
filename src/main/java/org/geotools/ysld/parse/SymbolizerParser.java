@@ -5,6 +5,7 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
+import org.geotools.ysld.transform.sld.SymbolizerHandler;
 
 public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
 
@@ -25,21 +26,21 @@ public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
         if (map.has("uom")) {
             sym.setUnitOfMeasure(UomOgcMapping.get(map.str("uom")).getUnit());
         }
-        context.push("options", new OptionsParser());
-    }
-
-    class OptionsParser extends YsldParseHandler {
-
-        OptionsParser() {
-            super(SymbolizerParser.this.factory);
+        if (map.has("options")) {
+            // TODO: remove this before production
+            YamlMap options = map.map("options");
+            for(String key : options){
+                sym.getOptions().put(key, options.str(key));
+            }
         }
-
-        @Override
-        public void handle(YamlObject<?> obj, YamlParseContext context) {
-            YamlMap map = obj.map();
-            for (String key : map) {
-                sym.getOptions().put(key, map.str(key));
+        else {
+            for(String key : map){
+                if( key.startsWith(SymbolizerHandler.OPTION_PREFIX)){
+                    String option = key.substring(SymbolizerHandler.OPTION_PREFIX.length());
+                    sym.getOptions().put(option, map.str(key));
+                }
             }
         }
     }
+    
 }

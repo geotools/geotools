@@ -13,6 +13,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Map;
 
 import static org.geotools.ysld.Ysld.transform;
 import static org.geotools.ysld.Ysld.xmlReader;
@@ -709,7 +710,8 @@ public class YsldParseCookbookTest {
         Style style = parse("line", "curved-label.sld");
         TextSymbolizer text = SLD.textSymbolizer(style);
         assertEquals("name", SLD.textLabelString(text));
-        assertEquals("true", text.getOptions().get("followLine"));
+        Map<String, String> options = text.getOptions();
+        assertEquals("true", options.get("followLine"));
     }
 
     @Test
@@ -1027,10 +1029,11 @@ public class YsldParseCookbookTest {
         assertEquals("name", SLD.textLabelString(text));
         assertEquals(Color.black, SLD.color(text.getFill()));
 
-        assertEquals("true", text.getOptions().get("followLine"));
-        assertEquals("90", text.getOptions().get("maxAngleDelta"));
-        assertEquals("400", text.getOptions().get("maxDisplacement"));
-        assertEquals("150", text.getOptions().get("repeat"));
+        Map<String, String> options = text.getOptions();
+        assertEquals("true", options.get("followLine"));
+        assertEquals("90", options.get("maxAngleDelta"));
+        assertEquals("400", options.get("maxDisplacement"));
+        assertEquals("150", options.get("repeat"));
     }
 
     @Test
@@ -1084,10 +1087,11 @@ public class YsldParseCookbookTest {
         assertEquals("normal", Filters.asString(font.getStyle()));
         assertEquals("bold", Filters.asString(font.getWeight()));
 
-        assertEquals("true", text.getOptions().get("followLine"));
-        assertEquals("90", text.getOptions().get("maxAngleDelta"));
-        assertEquals("400", text.getOptions().get("maxDisplacement"));
-        assertEquals("150", text.getOptions().get("repeat"));
+        Map<String, String> options = text.getOptions();
+        assertEquals("true", options.get("followLine"));
+        assertEquals("90", options.get("maxAngleDelta"));
+        assertEquals("400", options.get("maxDisplacement"));
+        assertEquals("150", options.get("repeat"));
     }
 
     @Test
@@ -1440,8 +1444,9 @@ public class YsldParseCookbookTest {
         assertEquals("normal", Filters.asString(font.getStyle()));
         assertEquals("bold", Filters.asString(font.getWeight()));
 
-        assertEquals("60", text.getOptions().get("autoWrap"));
-        assertEquals("150", text.getOptions().get("maxDisplacement"));
+        Map<String, String> options = text.getOptions();
+        assertEquals("60", options.get("autoWrap"));
+        assertEquals("150", options.get("maxDisplacement"));
     }
 
     @Test

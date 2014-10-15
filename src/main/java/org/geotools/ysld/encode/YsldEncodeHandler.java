@@ -13,7 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
-
     Deque<Map<String,Object>> stack = new ArrayDeque<Map<String, Object>>();
 
     public YsldEncodeHandler() {

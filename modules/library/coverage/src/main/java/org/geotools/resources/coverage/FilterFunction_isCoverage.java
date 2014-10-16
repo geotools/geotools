@@ -16,8 +16,12 @@
  */
 package org.geotools.resources.coverage;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.VolatileFunction;
 
 
@@ -28,8 +32,10 @@ import org.opengis.filter.expression.VolatileFunction;
  */
 public class FilterFunction_isCoverage  extends FunctionExpressionImpl implements VolatileFunction {
 
+    public static FunctionName NAME = new FunctionNameImpl("isCoverage",Boolean.class);
+    
     public FilterFunction_isCoverage() {
-        super("isCoverage");
+        super(NAME);
     }
 
     public Object evaluate(SimpleFeature feature) {

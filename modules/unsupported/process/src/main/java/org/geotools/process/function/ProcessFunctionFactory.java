@@ -92,7 +92,7 @@ public class ProcessFunctionFactory implements FunctionFactory {
 
     public Function function(Name processName, List<Expression> args, Literal fallback) {
         // if the param function just return it
-        if(processName.equals(new NameImpl(ParameterFunction.NAME))) {
+        if(processName.equals(new NameImpl(ParameterFunction.NAME.getName()))) {
             return new ParameterFunction(fallback, args);
         }
         
@@ -140,12 +140,17 @@ public class ProcessFunctionFactory implements FunctionFactory {
                 for (Name processName : factory.getNames()) {
                     Map<String, Parameter<?>> resultInfo = factory.getResultInfo(processName, null);
                     
+                    org.opengis.parameter.Parameter<?> result = getPrimary(resultInfo);
                     // check there is a single output
-                    if (resultInfo != null && getPrimary(resultInfo) != null) {
+                    if (result != null) {
                         Map<String, Parameter<?>> parameterInfo = factory.getParameterInfo(processName);
                         List<String> argumentNames = new ArrayList<String>(parameterInfo.keySet());
+                        List<org.opengis.parameter.Parameter<?>> args = new ArrayList<org.opengis.parameter.Parameter<?>>( argumentNames.size() );
+                        for(String argumentName : argumentNames ){
+                            args.add( parameterInfo.get(argumentName));
+                        }
 
-                        FunctionName functionName = new FunctionNameImpl(processName, argumentNames);
+                        FunctionName functionName = new FunctionNameImpl(processName, result, args);
                         functionNames.add(functionName);
                         processToFunction.put(processName, functionName);
                     }
@@ -153,17 +158,20 @@ public class ProcessFunctionFactory implements FunctionFactory {
             }
             
             // add the parameter function
-            functionNames.add(new FunctionNameImpl(ParameterFunction.NAME, -1));
+            functionNames.add(ParameterFunction.NAME);
         }
     }
     
-    private String getPrimary(Map<String, Parameter<?>> resultInfo) {
+    private Parameter getPrimary(Map<String, Parameter<?>> resultInfo) {
+        if(resultInfo == null ){
+            return null;
+        }
         if(resultInfo.size() == 1) {
-            return resultInfo.values().iterator().next().getName();
+            return resultInfo.values().iterator().next();
         } else {
             for (Parameter<?> param : resultInfo.values()) {
                 if(param.isRequired()) {
-                    return param.getName();
+                    return param;
                 }
             }
         }

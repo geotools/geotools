@@ -21,6 +21,8 @@ package org.geotools.filter.function.math;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.VolatileFunction;
 
 /**
@@ -30,16 +32,13 @@ import org.opengis.filter.expression.VolatileFunction;
  */
 public class FilterFunction_random extends FunctionExpressionImpl implements VolatileFunction {
 
+    public static FunctionName NAME = new FunctionNameImpl("random",Double.class);
+    
     public FilterFunction_random() {
-        super("random");
-    }
-
-    public int getArgCount() {
-        return 0;
+        super(NAME);
     }
 
     public Object evaluate(Object feature) {
-
         return new Double(Math.random());
     }
 }

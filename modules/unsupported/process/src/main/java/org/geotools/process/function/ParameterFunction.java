@@ -16,9 +16,12 @@
  */
 package org.geotools.process.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.process.Process;
@@ -48,7 +51,8 @@ import org.opengis.filter.expression.Literal;
  */
 class ParameterFunction implements Function {
     
-    static final String NAME = "parameter"; 
+    static final FunctionName NAME = new FunctionNameImpl("parameter", parameter("parameterMap",
+            Map.class), parameter("argumentName", String.class),parameter("values", Object.class,0,Integer.MAX_VALUE));
 
     Literal fallbackValue;
 
@@ -64,10 +68,10 @@ class ParameterFunction implements Function {
     }
 
     public String getName() {
-        return NAME;
+        return NAME.getName();
     }
     public FunctionName getFunctionName() {
-        return new FunctionNameImpl(NAME, parameters.size() );
+        return NAME;
     }
     public List<Expression> getParameters() {
         return parameters;

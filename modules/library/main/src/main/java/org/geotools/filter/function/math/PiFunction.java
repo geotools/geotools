@@ -18,6 +18,8 @@
 package org.geotools.filter.function.math;
 
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 
 
 /**
@@ -31,9 +33,10 @@ import org.geotools.filter.FunctionExpressionImpl;
  * @source $URL$
  */
 public class PiFunction extends FunctionExpressionImpl {
-
+    public static FunctionName NAME = new FunctionNameImpl("pi",
+            Double.class);
 	public PiFunction() {
-	    super("pi");
+	    super(NAME);
 	}
 
 	public String toString() {

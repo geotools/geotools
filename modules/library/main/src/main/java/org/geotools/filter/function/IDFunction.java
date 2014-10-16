@@ -41,7 +41,7 @@ public class IDFunction extends FunctionExpressionImpl {
             String.class);
     
 	public IDFunction() {
-	    super("id");
+	    super(NAME);
 	}
 
 	public String toString() {

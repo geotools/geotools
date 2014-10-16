@@ -379,27 +379,37 @@ private static void functionList() {
                 }
                 else {
                     System.out.print("{");
-                    System.out.print( argument.getType().getName() );
-                    System.out.print(",");
+                    System.out.print( argument.getType().getSimpleName() );
                     if( argument.isRequired()){
-                        System.out.print("required,");
+                        System.out.print(",required");
                     }
                     else if( argument.getMinOccurs() == 0 && argument.getMaxOccurs() == 1 ) {
-                        System.out.print("optional,");
+                        System.out.print(",optional");
                     }
                     else {
-                        System.out.print(argument.getMinOccurs());
+                        int min = argument.getMinOccurs();
+                        int max = argument.getMaxOccurs();
+                        System.out.print(",");
+                        System.out.print(min);
                         System.out.print(":");
-                        System.out.print(argument.getMaxOccurs());
+                        System.out.print(max==Integer.MAX_VALUE?"unbounded":max);
                     }
                     System.out.print("}");
                 }
             }
+            Parameter<?> result = functionName.getReturn();
+
             System.out.print(")");
-            System.out.print(":"+functionName.getReturn().getName());
-            if( functionName.getReturn().getType() != Object.class ){
+            System.out.print(":"+result.getName());
+            if( result.getType() != Object.class ){
                 System.out.print("{");
-                System.out.print( functionName.getReturn().getType().getName() );
+                Class<?> type = result.getType();
+                if( type != null ){
+                    System.out.print( type.getSimpleName() );
+                }
+                else {
+                    System.out.print( "null" );
+                }
                 System.out.print("}");
             }
             System.out.println();

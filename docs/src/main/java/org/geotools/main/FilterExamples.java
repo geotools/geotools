@@ -418,8 +418,96 @@ private static void functionList() {
     // functionList end
 }
 
+private static void functionListPretty() {
+    Set<FunctionFactory> functionFactories = CommonFactoryFinder.getFunctionFactories(null);
+    
+    for (FunctionFactory factory : functionFactories) {
+        String factoryName = factory.getClass().getSimpleName();
+        System.out.println( factoryName );
+        System.out.println( "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+                .substring(0, factoryName.length()) );
+        System.out.println();
+        
+        List<FunctionName> functionNames = factory.getFunctionNames();
+        ArrayList<FunctionName> sorted = new ArrayList<FunctionName> ( functionNames );
+        Collections.sort( sorted, new Comparator<FunctionName>() {
+            public int compare(FunctionName o1, FunctionName o2) {
+                if( o1 == null && o2 == null ) return 0;
+                if( o1 == null && o2 != null ) return 1;
+                if( o1 != null && o2 == null ) return -1;
+                
+                return o1.getName().compareTo( o2.getName() );
+            }
+        } );
+        
+        System.out.println("Contains "+sorted.size()+" functions.");
+        System.out.println();
+        
+        for (FunctionName functionName : sorted ) {
+            Parameter<?> result = functionName.getReturn();
+
+            StringBuilder fn = new StringBuilder();
+            fn.append(functionName.getName());
+            fn.append("(");
+            int i = 0;
+            for (Parameter<?> argument : functionName.getArguments()) {
+                if (i++ > 0) {
+                    fn.append(", ");
+                } 
+                fn.append(argument.getName());
+            }
+            fn.append(")");
+            fn.append(": "+result.getName());
+
+            System.out.println(fn.toString());
+            for( int h=0;h<fn.length();h++){
+                System.out.print("'");
+            }
+            System.out.println();
+            
+            System.out.println();
+            for (Parameter<?> argument : functionName.getArguments()) {
+                System.out.println("* "+argument(argument));
+                System.out.println();
+            }
+            System.out.println("* "+argument(result));
+            System.out.println();
+        }
+    }
+}
+
+public static String argument(Parameter<?> argument){
+    StringBuilder arg = new StringBuilder();
+    arg.append(argument.getName());
+    Class<?> type = argument.getType();
+
+    if( type == null || (type == Object.class && argument.isRequired()) ){
+        // nothing more is known
+    }
+    else {
+        int min = argument.getMinOccurs();
+        int max = argument.getMaxOccurs();
+
+        arg.append(": ");
+        arg.append( type.getSimpleName() );
+        
+        arg.append(" ");
+        arg.append(min);
+        arg.append(":");
+        arg.append(max==Integer.MAX_VALUE?"unbounded":max);
+
+        if( argument.isRequired()){
+            arg.append(" required");
+        }
+        else if( argument.getMinOccurs() == 0 && argument.getMaxOccurs() == 1 ) {
+            arg.append(" optional");
+        }
+    }
+    return arg.toString();
+}
+
 public static void main(String args[]) {
-    functionList();
+    functionListPretty();
 }
 
 }

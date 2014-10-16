@@ -352,12 +352,6 @@ FunctionName):
    :start-after: // functionList start
    :end-before: // functionList end
 
-Function List
-'''''''''''''
-
-And the available functions at the time of writing:
-
-.. literalinclude:: /artifacts/function_list
 
 Variable Arguments
 ''''''''''''''''''

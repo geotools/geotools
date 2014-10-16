@@ -3,7 +3,6 @@ package org.geotools.ysld;
 import org.geotools.ysld.encode.YsldEncoder;
 import org.geotools.ysld.parse.YsldParser;
 import org.geotools.ysld.transform.sld.SldTransformer;
-
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.ysld.validate.YsldValidator;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
@@ -11,6 +10,7 @@ import org.yaml.snakeyaml.error.MarkedYAMLException;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
 import java.io.*;
 import java.util.List;
 
@@ -19,6 +19,9 @@ import java.util.List;
  */
 public class Ysld {
 
+    public static String OPTION_PREFIX = "+";
+
+    
     /**
      * Creates a {@link java.io.Reader} from an input object.
      * <p>

@@ -5,7 +5,7 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.geotools.ysld.transform.sld.SymbolizerHandler;
+import org.geotools.ysld.Ysld;
 
 public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
 
@@ -35,8 +35,8 @@ public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
         }
         else {
             for(String key : map){
-                if( key.startsWith(SymbolizerHandler.OPTION_PREFIX)){
-                    String option = key.substring(SymbolizerHandler.OPTION_PREFIX.length());
+                if( key.startsWith(Ysld.OPTION_PREFIX)){
+                    String option = key.substring(Ysld.OPTION_PREFIX.length());
                     sym.getOptions().put(option, map.str(key));
                 }
             }

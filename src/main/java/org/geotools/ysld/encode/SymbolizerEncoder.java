@@ -3,7 +3,7 @@ package org.geotools.ysld.encode;
 import java.util.Map;
 
 import org.geotools.styling.Symbolizer;
-import org.geotools.ysld.transform.sld.SymbolizerHandler;
+import org.geotools.ysld.Ysld;
 
 public abstract class SymbolizerEncoder<S extends Symbolizer> extends YsldEncodeHandler<S> {
 
@@ -17,7 +17,7 @@ public abstract class SymbolizerEncoder<S extends Symbolizer> extends YsldEncode
         put("uom", sym.getUnitOfMeasure());
         if (!sym.getOptions().isEmpty()) {
             for (Map.Entry<String,String> kv : sym.getOptions().entrySet()) {
-                String option = SymbolizerHandler.OPTION_PREFIX + kv.getKey();
+                String option = Ysld.OPTION_PREFIX + kv.getKey();
                 String text = kv.getValue();
                 put(option, toObjOrNull(text));
             }

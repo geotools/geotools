@@ -38,6 +38,7 @@ The gt-main module is responsible for:
 
    data
    filter
+   function_list
    feature
    collection
    shape

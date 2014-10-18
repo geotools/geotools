@@ -28,7 +28,7 @@ public class SortedSimpleFeatureCollection extends DecoratingSimpleFeatureCollec
     @Override
     public SimpleFeatureIterator features() {
         try {
-            SimpleFeatureIterator features = ((SimpleFeatureCollection) delegate).features();
+            SimpleFeatureIterator features = delegate.features();
             // sort if necessary
             if (sort != null) {
                 features = new SortedFeatureIterator(features, getSchema(), sort, -1);

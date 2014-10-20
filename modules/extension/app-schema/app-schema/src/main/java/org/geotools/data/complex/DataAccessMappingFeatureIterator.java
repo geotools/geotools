@@ -114,7 +114,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     protected FeatureCollection<? extends FeatureType, ? extends Feature> sourceFeatures;
 
-    protected List<Expression> foreignIds = null;
+    protected List<Expression> foreignIds;
 
     protected AttributeDescriptor targetFeature;
 
@@ -123,7 +123,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * features by id because they might come from denormalised view. The rows might not match the
      * filter therefore doesn't exist in the mapped source but match the id of other rows.
      */
-    private boolean isFiltered = false;
+    private boolean isFiltered;
     
     private ArrayList<String> filteredFeatures;
     /**
@@ -132,18 +132,17 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     private Filter listFilter;
 
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query, boolean isFiltered, boolean removeQueryLimitIfDenormalised,
-            boolean hasPostFilter) throws IOException {
+            Query query, boolean isFiltered, boolean removeQueryLimitIfDenormalised) throws IOException {
+        this(store, mapping, query, isFiltered, removeQueryLimitIfDenormalised, false);        
+    }
+    
+    public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
+            Query query, boolean isFiltered, boolean removeQueryLimitIfDenormalised, boolean hasPostFilter) throws IOException {
         super(store, mapping, query, null, removeQueryLimitIfDenormalised, hasPostFilter);
         this.isFiltered = isFiltered;
         if (isFiltered) {
             filteredFeatures = new ArrayList<String>();
         }
-    }
-    
-    public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query, boolean isFiltered, boolean removeQueryLimitIfDenormalised) throws IOException {
-        this(store, mapping, query, isFiltered, removeQueryLimitIfDenormalised, false);
     }
     
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,

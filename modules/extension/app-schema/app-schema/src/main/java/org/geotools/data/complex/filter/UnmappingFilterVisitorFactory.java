@@ -17,7 +17,6 @@
 package org.geotools.data.complex.filter;
 
 import org.geotools.data.complex.FeatureTypeMapping;
-import org.geotools.data.complex.XmlFeatureTypeMapping;
 
 /**
  * @author Russell Petty (GeoScience Victoria)
@@ -27,7 +26,7 @@ import org.geotools.data.complex.XmlFeatureTypeMapping;
  *
  * @source $URL$
  */
-public class UnmappingFilterVistorFactory {
+public class UnmappingFilterVisitorFactory {
     public static UnmappingFilterVisitor getInstance(FeatureTypeMapping mapping) {
        return new UnmappingFilterVisitor(mapping);
     }

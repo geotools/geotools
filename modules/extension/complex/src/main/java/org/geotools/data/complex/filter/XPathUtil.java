@@ -513,7 +513,6 @@ public class XPathUtil {
                 }
                  
             }
-            steps = removeRootStep(steps, root);
             //            
             // if (step.indexOf('[') != -1) {
             // int start = step.indexOf('[');
@@ -531,13 +530,7 @@ public class XPathUtil {
             // steps.add(new Step(qName, 1));
             // }
         }
-
         
-
-        return steps;
-    }
-    
-    public static StepList removeRootStep(StepList steps, AttributeDescriptor root) {
         // XPath simplification phase: if the xpath expression contains more
         // nodes
         // than the root node itself, and the root node is present, remove the
@@ -552,6 +545,7 @@ public class XPathUtil {
                 steps.remove(0);
             }
         }
+        
         return steps;
     }
 

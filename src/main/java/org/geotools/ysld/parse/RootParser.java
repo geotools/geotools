@@ -23,6 +23,11 @@ public class RootParser extends YsldParseHandler {
         layer.styles().add(style = factory.style.createStyle());
 
         YamlMap root = obj.map();
+        
+        if(root.has("gridset")){
+            context.setDocHint(ZoomContext.HINT_ID, getZoomContext(root.get("gridset")));
+        }
+        
         style.setName(root.str("name"));
         if (root.has("title")) {
             style.setTitle(root.str("title"));
@@ -47,6 +52,15 @@ public class RootParser extends YsldParseHandler {
             || root.has("text") || root.has("raster")) {
             context.push(new SymbolizersParser(newRule(), factory));
         }
+    }
+
+    protected ZoomContext getZoomContext(Object object) {
+        if(object instanceof String) {
+            if("simple:".equalsIgnoreCase(((String) object).substring(0, "simple:".length()))){
+                return SimpleZoomContext.parse((String)object);
+            }
+        }
+        throw new IllegalArgumentException();
     }
 
     public FeatureTypeStyle newFeatureTypeStyle() {

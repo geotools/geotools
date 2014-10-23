@@ -10,14 +10,14 @@
       <include name="**/pom.xml"/>
       <include name="**/GeoTools.java"/>
       <include name="**/common.py"/>
-      <replacefilter token="12-SNAPSHOT" value="12.0"/>
+      <replacefilter token="12.0.1.1" value="12.0.1"/>
     </replace>
   </target>
   
   <target name="readme">
     <replace file="../README.html">
-      <replacefilter token="@RELEASE@" value="12.0"/>
-      <replacefilter token="@DATE@" value="Sep 23, 2014"/>
+      <replacefilter token="@RELEASE@" value="12.0.1"/>
+      <replacefilter token="@DATE@" value="Oct 23, 2014"/>
     </replace>
   </target>
 

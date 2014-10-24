@@ -384,14 +384,7 @@ public class YsldParseTest {
                 ));
         
     }
-    
-    @SuppressWarnings("unchecked")
-    @Test
-    public void testZoomDefault() throws IOException {
-        String yaml =
-            "feature-styles: \n"+
-            "- name: name\n"+
-            "  rules:\n"+
+    final static String GOOGLE_MERCATOR_TEST_RULES=
             "  - zoom: (0,0)\n"+
             "  - zoom: (1,1)\n"+
             "  - zoom: (2,2)\n"+
@@ -412,45 +405,72 @@ public class YsldParseTest {
             "  - zoom: (17,17)\n"+
             "  - zoom: (18,18)\n"+
             "  - zoom: (19,19)\n";
+    
+    // m/px
+    double[] GOOGLE_MERCATOR_PIXEL_SIZES = {
+            156543.0339280410,
+            78271.51696402048,
+            39135.75848201023,
+            19567.87924100512,
+            9783.939620502561,
+            4891.969810251280,
+            2445.984905125640,
+            1222.992452562820,
+            611.4962262814100,
+            305.7481131407048,
+            152.8740565703525,
+            76.43702828517624,
+            38.21851414258813,
+            19.10925707129406,
+            9.554628535647032,
+            4.777314267823516,
+            2.388657133911758,
+            1.194328566955879,
+            0.5971642834779395,
+            0.29858214173896974,
+            0.14929107086948487
+    };
+    
+    double INCHES_PER_METRE = 39.3701;
+    double OGC_DPI = 90;
+    
+    @Test
+    public void testZoomDefault() throws IOException {
+        String yaml =
+            "feature-styles: \n"+
+            "- name: name\n"+
+            "  rules:\n"+
+            GOOGLE_MERCATOR_TEST_RULES;
         
-        // m/px
-        double[] googlePixelSizes = {
-                156543.0339280410,
-                78271.51696402048,
-                39135.75848201023,
-                19567.87924100512,
-                9783.939620502561,
-                4891.969810251280,
-                2445.984905125640,
-                1222.992452562820,
-                611.4962262814100,
-                305.7481131407048,
-                152.8740565703525,
-                76.43702828517624,
-                38.21851414258813,
-                19.10925707129406,
-                9.554628535647032,
-                4.777314267823516,
-                2.388657133911758,
-                1.194328566955879,
-                0.5971642834779395,
-                0.29858214173896974,
-                0.14929107086948487
-        };
+        doTestForGoogleMercator(yaml);
         
-        double INCHES_PER_METRE = 39.3701;
-        double OGC_DPI = 90;
+    }
+    @Test
+    public void testNamed() throws IOException {
+        String yaml =
+            "grid:\n"+
+            "  name: WebMercator\n"+
+            "feature-styles: \n"+
+            "- name: name\n"+
+            "  rules:\n"+
+            GOOGLE_MERCATOR_TEST_RULES;
         
-        double scaleDenominators[] = new double[googlePixelSizes.length];
-        for(int i=0; i<googlePixelSizes.length; i++){
-            scaleDenominators[i]=OGC_DPI*INCHES_PER_METRE*googlePixelSizes[i];
+        doTestForGoogleMercator(yaml);
+        
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void doTestForGoogleMercator(String yaml) throws IOException {
+        double scaleDenominators[] = new double[GOOGLE_MERCATOR_PIXEL_SIZES.length];
+        for(int i=0; i<GOOGLE_MERCATOR_PIXEL_SIZES.length; i++){
+            scaleDenominators[i]=OGC_DPI*INCHES_PER_METRE*GOOGLE_MERCATOR_PIXEL_SIZES[i];
         }
         
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
         
-        for(int i=0; i<googlePixelSizes.length; i++){
-            scaleDenominators[i]=OGC_DPI*INCHES_PER_METRE*googlePixelSizes[i];
+        for(int i=0; i<GOOGLE_MERCATOR_PIXEL_SIZES.length; i++){
+            scaleDenominators[i]=OGC_DPI*INCHES_PER_METRE*GOOGLE_MERCATOR_PIXEL_SIZES[i];
         }
         
         assertThat(fs.rules().size(), is(20));
@@ -473,7 +493,6 @@ public class YsldParseTest {
                     i,scaleDenominators[i]
                ));
         }
-        
     }
 
 }

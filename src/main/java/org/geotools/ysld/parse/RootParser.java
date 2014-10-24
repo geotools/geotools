@@ -1,8 +1,15 @@
 package org.geotools.ysld.parse;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
+
+import com.google.common.base.Optional;
 
 public class RootParser extends YsldParseHandler {
 
@@ -24,8 +31,8 @@ public class RootParser extends YsldParseHandler {
 
         YamlMap root = obj.map();
         
-        if(root.has("gridset")){
-            context.setDocHint(ZoomContext.HINT_ID, getZoomContext(root.get("gridset")));
+        if(root.has("grid")){
+            context.setDocHint(ZoomContext.HINT_ID, getZoomContext(root.map("grid")));
         }
         
         style.setName(root.str("name"));
@@ -54,15 +61,68 @@ public class RootParser extends YsldParseHandler {
         }
     }
 
-    protected ZoomContext getZoomContext(Object object) {
-        if(object instanceof String) {
-            if("simple:".equalsIgnoreCase(((String) object).substring(0, "simple:".length()))){
-                return SimpleZoomContext.parse((String)object);
-            }
+    @SuppressWarnings("unchecked")
+    protected ZoomContext getZoomContext(YamlMap map) {
+        ZoomContext result = null;
+        if(map.has("name")) {
+            result = getNamedZoomContext(map.str("name")).orNull();
         }
-        throw new IllegalArgumentException();
+        
+        if(result==null && map.has("scales")) {
+            final List<?> raw = map.seq("scales").raw();
+            final List<Double> scaleDenoms = new ArrayList<>(raw.size());
+            for(Number s: (List<Number>)raw) {
+                scaleDenoms.add(s.doubleValue());
+            }
+            final int initialLevel = map.intOr("initial-level", 0); 
+            
+            result = new ListZoomContext(scaleDenoms, initialLevel);
+        }
+        
+        if (result==null && map.has("initial-scale")) {
+            final double initialScale = map.doub("initial-scale");
+            final double ratio = map.doubOr("ratio", 2d);
+            final int initialLevel = map.intOr("initial-level", 0);
+            
+            result = new RatioZoomContext(initialLevel, initialScale, ratio);
+        }
+        
+        if(result==null) {
+            throw new IllegalArgumentException();
+        }
+        
+        return result;
     }
-
+    
+    protected Optional<ZoomContext> getNamedZoomContext(String name){
+        // TODO Simple extension point so gs-ysld can plug in GWC based lookup.
+        return getWellKnownZoomContext(name);
+    }
+    
+    static final Map<String, ZoomContext> wellKnownZoomContexts;
+    static {
+        wellKnownZoomContexts = new HashMap<>();
+        
+        ZoomContext googleMercatorExtended = new RatioZoomContext(559082263.9508929, 2);
+        wellKnownZoomContexts.put("WebMercator".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("SphericalMercator".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("GoogleMercator".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("EPSG:3587".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("EPSG:900913".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("EPSG:3857".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("EPSG:3785".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("OSGEO:41001".toUpperCase(), googleMercatorExtended);
+    }
+    /**
+     * Retrieve a ZoomContext by name from the set of well known contexts.
+     * @param name
+     * @return
+     */
+    // FIXME this should go somewhere else
+    public static Optional<ZoomContext> getWellKnownZoomContext(String name) {
+        return Optional.fromNullable(wellKnownZoomContexts.get(name.toUpperCase()));
+    }
+    
     public FeatureTypeStyle newFeatureTypeStyle() {
         FeatureTypeStyle fts = factory.style.createFeatureTypeStyle();
         style.featureTypeStyles().add(fts);

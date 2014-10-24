@@ -7,14 +7,14 @@ import org.junit.Test;
 
 import com.google.common.base.Optional;
 
-public class SimpleZoomContextTest {
+public class RatioZoomContextTest {
     
     static final double EPSILON = 0.0000001;
     
     @Test
     public void testLevels() {
         
-        SimpleZoomContext ctxt = new SimpleZoomContext(5000000, 2); 
+        RatioZoomContext ctxt = new RatioZoomContext(5000000, 2); 
         
         assertThat(ctxt.getScaleDenominator(0), Matchers.closeTo(5000000, EPSILON));
         assertThat(ctxt.getScaleDenominator(1), Matchers.closeTo(5000000/2, EPSILON));
@@ -24,7 +24,7 @@ public class SimpleZoomContextTest {
     @Test
     public void testNonIntegerRatio() {
         
-        SimpleZoomContext ctxt = new SimpleZoomContext(5000000, 1.5); 
+        RatioZoomContext ctxt = new RatioZoomContext(5000000, 1.5); 
         
         assertThat(ctxt.getScaleDenominator(0), Matchers.closeTo(5000000, EPSILON));
         assertThat(ctxt.getScaleDenominator(1), Matchers.closeTo(5000000/1.5, EPSILON));
@@ -34,7 +34,7 @@ public class SimpleZoomContextTest {
     @Test
     public void testNonZeroInitial() {
         
-        SimpleZoomContext ctxt = new SimpleZoomContext(2, 5000000, 2); 
+        RatioZoomContext ctxt = new RatioZoomContext(2, 5000000, 2); 
         
         assertThat(ctxt.getScaleDenominator(0), Matchers.closeTo(5000000*4, EPSILON));
         assertThat(ctxt.getScaleDenominator(1), Matchers.closeTo(5000000*2, EPSILON));
@@ -46,7 +46,7 @@ public class SimpleZoomContextTest {
     @Test
     public void testSingletonRangeInitial() {
         
-        SimpleZoomContext ctxt = new SimpleZoomContext(5000000, 2); 
+        RatioZoomContext ctxt = new RatioZoomContext(5000000, 2); 
         
         ScaleRange result = ctxt.getRange(Optional.of(0), Optional.of(0));
         
@@ -59,7 +59,7 @@ public class SimpleZoomContextTest {
     @Test
     public void testSingletonRange() {
         
-        SimpleZoomContext ctxt = new SimpleZoomContext(5000000, 2); 
+        RatioZoomContext ctxt = new RatioZoomContext(5000000, 2); 
         
         ScaleRange result = ctxt.getRange(Optional.of(2), Optional.of(2));
         
@@ -72,7 +72,7 @@ public class SimpleZoomContextTest {
     @Test
     public void testRange() {
         
-        SimpleZoomContext ctxt = new SimpleZoomContext(5000000, 2); 
+        RatioZoomContext ctxt = new RatioZoomContext(5000000, 2); 
         
         ScaleRange result = ctxt.getRange(Optional.of(0), Optional.of(2));
         

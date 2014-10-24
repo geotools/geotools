@@ -191,7 +191,8 @@ public class YsldParseTest {
     @Test
     public void testZoomSimple() throws IOException {
         String yaml =
-            "gridset: simple:2x5000000\n"+
+            "grid:\n"+
+            "  initial-scale: 5000000\n"+
             "feature-styles: \n"+
             "- name: name\n"+
             "  rules:\n"+
@@ -213,7 +214,8 @@ public class YsldParseTest {
     @Test
     public void testZoomSimpleRange() throws IOException {
         String yaml =
-            "gridset: simple:2x5000000\n"+
+            "grid:\n"+
+            "  initial-scale: 5000000\n"+
             "feature-styles: \n"+
             "- name: name\n"+
             "  rules:\n"+
@@ -235,7 +237,9 @@ public class YsldParseTest {
     @Test
     public void testZoomSimpleWithDifferentInitial() throws IOException {
         String yaml =
-            "gridset: simple:2x5000000@3\n"+
+            "grid:\n"+
+            "  initial-scale: 5000000\n"+
+            "  initial-level: 3\n"+
             "feature-styles: \n"+
             "- name: name\n"+
             "  rules:\n"+
@@ -257,6 +261,126 @@ public class YsldParseTest {
                         not(appliesToScale(5000000/2*8)),
                         not(appliesToScale(5000000*2*8))
                     )
+                ));
+        
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testZoomList() throws IOException {
+        String yaml =
+            "grid:\n"+
+            "  scales:\n"+
+            "  - 5000000\n"+
+            "  - 2000000\n"+
+            "  - 1000000\n"+
+            "  - 500000\n"+
+            "feature-styles: \n"+
+            "- name: name\n"+
+            "  rules:\n"+
+            "  - zoom: (0,0)\n"+
+            "  - zoom: (2,2)\n";
+        
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        
+        assertThat((Iterable<Rule>)fs.rules(), hasItems(
+                allOf(
+                        appliesToScale(5000000d),
+                        not(appliesToScale(2000000d))
+                    ),
+                allOf(
+                        appliesToScale(1000000d),
+                        not(appliesToScale(2000000d)),
+                        not(appliesToScale(500000d))
+                    )
+                ));
+        
+    }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testZoomListWithInitial() throws IOException {
+        String yaml =
+            "grid:\n"+
+            "  initial-level: 3\n"+
+            "  scales:\n"+
+            "  - 5000000\n"+
+            "  - 2000000\n"+
+            "  - 1000000\n"+
+            "  - 500000\n"+
+            "feature-styles: \n"+
+            "- name: name\n"+
+            "  rules:\n"+
+            "  - zoom: (3,3)\n"+
+            "  - zoom: (5,5)\n";
+        
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        
+        assertThat((Iterable<Rule>)fs.rules(), hasItems(
+                allOf(
+                        appliesToScale(5000000d),
+                        not(appliesToScale(2000000d))
+                    ),
+                allOf(
+                        appliesToScale(1000000d),
+                        not(appliesToScale(2000000d)),
+                        not(appliesToScale(500000d))
+                    )
+                ));
+        
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testZoomListWithRanges() throws IOException {
+        String yaml =
+            "grid:\n"+
+            "  scales:\n"+
+            "  - 5000000\n"+
+            "  - 2000000\n"+
+            "  - 1000000\n"+
+            "  - 500000\n"+
+            "  - 200000\n"+
+            "  - 100000\n"+
+            "feature-styles: \n"+
+            "- name: name\n"+
+            "  rules:\n"+
+            "  - zoom: (,1)\n"+
+            "  - zoom: (2,3)\n"+
+            "  - zoom: (4,)\n";
+        
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        
+        assertThat((Iterable<Rule>)fs.rules(), hasItems(
+                allOf(
+                        appliesToScale(5000000d),
+                        appliesToScale(2000000d),
+                        not(appliesToScale(1000000d)),
+                        not(appliesToScale(500000d)),
+                        not(appliesToScale(200000d)),
+                        not(appliesToScale(100000d))
+                        ),
+                allOf(
+                        not(appliesToScale(5000000d)),
+                        not(appliesToScale(2000000d)),
+                        appliesToScale(1000000d),
+                        appliesToScale(500000d),
+                        not(appliesToScale(200000d)),
+                        not(appliesToScale(100000d))
+                        ),
+                allOf(
+                        not(appliesToScale(5000000d)),
+                        not(appliesToScale(2000000d)),
+                        not(appliesToScale(1000000d)),
+                        not(appliesToScale(500000d)),
+                        appliesToScale(200000d),
+                        appliesToScale(100000d)
+                        )
                 ));
         
     }

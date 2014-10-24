@@ -1,7 +1,6 @@
 package org.geotools.ysld.parse;
 
 import com.google.common.base.Optional;
-import com.sun.istack.internal.Nullable;
 
 /**
  * Represents a mapping between zoom level and scale.

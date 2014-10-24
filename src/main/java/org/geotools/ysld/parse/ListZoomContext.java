@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.common.base.Preconditions;
-
 /**
  * A zoom context specified by an explicit list of scale denominators.
  * 
@@ -57,7 +55,7 @@ public class ListZoomContext extends MedialZoomContext {
         
         if(nextScale==0) return 0;
         
-        return (scale+nextScale)/2;
+        return Math.sqrt(scale*nextScale); // Geometric mean as zoom levels are usually exponential
     }
     
 }

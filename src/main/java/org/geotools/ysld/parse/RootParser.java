@@ -96,33 +96,10 @@ public class RootParser extends YsldParseHandler {
     
     protected Optional<ZoomContext> getNamedZoomContext(String name){
         // TODO Simple extension point so gs-ysld can plug in GWC based lookup.
-        return getWellKnownZoomContext(name);
+        return Util.getWellKnownZoomContext(name);
     }
     
-    static final Map<String, ZoomContext> wellKnownZoomContexts;
-    static {
-        wellKnownZoomContexts = new HashMap<>();
-        
-        ZoomContext googleMercatorExtended = new RatioZoomContext(559082263.9508929, 2);
-        wellKnownZoomContexts.put("WebMercator".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("SphericalMercator".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("GoogleMercator".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("EPSG:3587".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("EPSG:900913".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("EPSG:3857".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("EPSG:3785".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("OSGEO:41001".toUpperCase(), googleMercatorExtended);
-    }
-    /**
-     * Retrieve a ZoomContext by name from the set of well known contexts.
-     * @param name
-     * @return
-     */
-    // FIXME this should go somewhere else
-    public static Optional<ZoomContext> getWellKnownZoomContext(String name) {
-        return Optional.fromNullable(wellKnownZoomContexts.get(name.toUpperCase()));
-    }
-    
+
     public FeatureTypeStyle newFeatureTypeStyle() {
         FeatureTypeStyle fts = factory.style.createFeatureTypeStyle();
         style.featureTypeStyles().add(fts);

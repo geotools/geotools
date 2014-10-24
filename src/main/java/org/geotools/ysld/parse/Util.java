@@ -9,9 +9,13 @@ import org.geotools.ysld.Tuple;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 
+import com.google.common.base.Optional;
+
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -143,5 +147,28 @@ public class Util {
         }
 
         return array;
+    }
+    
+    static final Map<String, ZoomContext> wellKnownZoomContexts;
+    static {
+        wellKnownZoomContexts = new HashMap<>();
+        
+        ZoomContext googleMercatorExtended = new RatioZoomContext(559082263.9508929, 2);
+        wellKnownZoomContexts.put("WebMercator".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("SphericalMercator".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("GoogleMercator".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("EPSG:3587".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("EPSG:900913".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("EPSG:3857".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("EPSG:3785".toUpperCase(), googleMercatorExtended);
+        wellKnownZoomContexts.put("OSGEO:41001".toUpperCase(), googleMercatorExtended);
+    }
+    /**
+     * Retrieve a ZoomContext by name from the set of well known contexts.
+     * @param name
+     * @return
+     */
+    public static Optional<ZoomContext> getWellKnownZoomContext(String name) {
+        return Optional.fromNullable(wellKnownZoomContexts.get(name.toUpperCase()));
     }
 }

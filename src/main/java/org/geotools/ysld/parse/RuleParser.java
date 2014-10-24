@@ -114,6 +114,6 @@ public class RuleParser extends YsldParseHandler {
     @SuppressWarnings("unchecked")
     protected ZoomContext getZoomContext(YamlParseContext context) {
         return ((Optional<ZoomContext>)context.getDocHint(ZoomContext.HINT_ID))
-            .or(RootParser.getWellKnownZoomContext("WebMercator")).get();
+            .or(Util.getWellKnownZoomContext("WebMercator")).get();
     }
 }

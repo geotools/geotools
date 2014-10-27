@@ -1,15 +1,13 @@
 package org.geotools.ysld.parse;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-
-import com.google.common.base.Optional;
 
 public class RootParser extends YsldParseHandler {
 
@@ -65,7 +63,7 @@ public class RootParser extends YsldParseHandler {
     protected ZoomContext getZoomContext(YamlMap map) {
         ZoomContext result = null;
         if(map.has("name")) {
-            result = getNamedZoomContext(map.str("name")).orNull();
+            result = getNamedZoomContext(map.str("name"));
         }
         
         if(result==null && map.has("scales")) {
@@ -94,8 +92,9 @@ public class RootParser extends YsldParseHandler {
         return result;
     }
     
-    protected Optional<ZoomContext> getNamedZoomContext(String name){
+    protected @Nullable ZoomContext getNamedZoomContext(String name){
         // TODO Simple extension point so gs-ysld can plug in GWC based lookup.
+        
         return Util.getWellKnownZoomContext(name);
     }
     

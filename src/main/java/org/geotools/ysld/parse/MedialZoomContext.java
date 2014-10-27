@@ -1,6 +1,6 @@
 package org.geotools.ysld.parse;
 
-import com.google.common.base.Optional;
+import javax.annotation.Nullable;
 
 /**
  * A zoom context that can find half way points between zoom levels.
@@ -20,16 +20,16 @@ public abstract class MedialZoomContext implements ZoomContext{
     protected abstract double getMedialScale(int level);
     
     @Override
-    public ScaleRange getRange(Optional<Integer> min, Optional<Integer> max) {
+    public ScaleRange getRange(@Nullable Integer min, @Nullable Integer max) {
         double minDenom = 0;
         double maxDenom = Double.POSITIVE_INFINITY;
         // Note that scale denominator is inverse to zoom so the maximum denominator is controlled
         // by the minimum zoom and vis versa
-        if(min.isPresent()) {
-            maxDenom=getMedialScale(min.get()-1);
+        if(min!=null) {
+            maxDenom=getMedialScale(min-1);
         }
-        if(max.isPresent()) {
-            minDenom=getMedialScale(max.get());
+        if(max!=null) {
+            minDenom=getMedialScale(max);
         }
         return new ScaleRange(minDenom, maxDenom);
     }

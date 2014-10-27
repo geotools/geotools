@@ -1,15 +1,16 @@
 package org.geotools.ysld.parse;
 
+import javax.annotation.Nullable;
+
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.ysld.Tuple;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
+import org.geotools.temporal.object.Utils;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
-
-import com.google.common.base.Optional;
 
 public class RuleParser extends YsldParseHandler {
 
@@ -50,16 +51,16 @@ public class RuleParser extends YsldParseHandler {
             rule.setElseFilter(r.boolOr("else", false));
             
             // Prefer scale over zoom
-            Optional<ScaleRange> range = parseScale(r).or(parseZoom(r, context));
-            if(range.isPresent()) {
-            	range.get().applyTo(rule);
+            @Nullable ScaleRange range = Util.defaultForNull(parseScale(r),parseZoom(r, context));
+            if(range!=null) {
+            	range.applyTo(rule);
             }
             
             context.push(r, "symbolizers", new SymbolizersParser(rule, factory));
         }
     }
 
-    private Optional<ScaleRange> parseScale(YamlMap r) {
+    private @Nullable ScaleRange parseScale(YamlMap r) {
         if (r.has("scale")) {
             String value = r.str("scale");
             Tuple t = null;
@@ -78,13 +79,13 @@ public class RuleParser extends YsldParseHandler {
             if (t.at(1) != null) {
                 max = Double.parseDouble(t.strAt(1));
             }
-            return Optional.of(new ScaleRange(min, max));
+            return new ScaleRange(min, max);
         } else  {
-            return Optional.absent();
+            return null;
         }
     }
 
-    private Optional<ScaleRange> parseZoom(YamlMap r, YamlParseContext context) {
+    private ScaleRange parseZoom(YamlMap r, YamlParseContext context) {
         if (r.has("zoom")) {
             ZoomContext zCtxt = getZoomContext(context);
             String value = r.str("zoom");
@@ -96,24 +97,25 @@ public class RuleParser extends YsldParseHandler {
                 throw new IllegalArgumentException(
                         String.format("Bad zoom value: '%s', must be of form (<min>,<max>)", value), e);
             }
-            Optional<Integer> min = Optional.absent();
-            Optional<Integer> max = Optional.absent();
+            @Nullable Integer min = null;
+            @Nullable Integer max = null;
             if (t.at(0) != null) {
-                min = Optional.of(Integer.parseInt(t.strAt(0)));
+                min = Integer.parseInt(t.strAt(0));
             }
             if (t.at(1) != null) {
-                max =  Optional.of(Integer.parseInt(t.strAt(1)));
+                max =  Integer.parseInt(t.strAt(1));
             }
-            return Optional.of(zCtxt.getRange(min, max));
+            return zCtxt.getRange(min, max);
         } else {
-            return Optional.absent();
+            return null;
         }
 
     }
 
     @SuppressWarnings("unchecked")
     protected ZoomContext getZoomContext(YamlParseContext context) {
-        return ((Optional<ZoomContext>)context.getDocHint(ZoomContext.HINT_ID))
-            .or(Util.getWellKnownZoomContext("WebMercator")).get();
+        return Util.forceDefaultForNull(
+                (ZoomContext)context.getDocHint(ZoomContext.HINT_ID),
+                Util.getWellKnownZoomContext("WebMercator"));
     }
 }

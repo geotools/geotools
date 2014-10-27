@@ -3,12 +3,12 @@ package org.geotools.ysld.parse;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
-import com.google.common.base.Optional;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 public class YamlParseContext {
 
@@ -57,8 +57,8 @@ public class YamlParseContext {
         return !stack.isEmpty();
     }
 
-    public Optional<?> getDocHint(String key) {
-        return Optional.fromNullable(docHints.get(key));
+    public @Nullable Object getDocHint(String key) {
+        return docHints.get(key);
     }
     
     public void setDocHint(String key, Object value) {

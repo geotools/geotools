@@ -11,8 +11,6 @@ import java.util.Arrays;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import com.google.common.base.Optional;
-
 public class ListZoomContextTest {
 
 static final double EPSILON = 0.0000001;
@@ -67,7 +65,7 @@ static final double EPSILON = 0.0000001;
         
         ListZoomContext ctxt = new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d)); 
         
-        ScaleRange result = ctxt.getRange(Optional.of(1), Optional.of(1));
+        ScaleRange result = ctxt.getRange(1, 1);
         
         assertThat(result.maxDenom, greaterThan(2000000d));
         assertThat(result.maxDenom, lessThan(5000000d));
@@ -81,7 +79,7 @@ static final double EPSILON = 0.0000001;
         
         ListZoomContext ctxt = new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d)); 
         
-        ScaleRange result = ctxt.getRange(Optional.of(0), Optional.of(0));
+        ScaleRange result = ctxt.getRange(0, 0);
         
         assertThat(result.maxDenom, greaterThan(5000000d));
         assertThat(result.minDenom, lessThan(5000000d));
@@ -94,7 +92,7 @@ static final double EPSILON = 0.0000001;
         
         ListZoomContext ctxt = new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d)); 
         
-        ScaleRange result = ctxt.getRange(Optional.of(2), Optional.of(2));
+        ScaleRange result = ctxt.getRange(2, 2);
         
         assertThat(result.maxDenom, greaterThan(1000000d));
         assertThat(result.minDenom, lessThan(1000000d));
@@ -107,7 +105,7 @@ static final double EPSILON = 0.0000001;
         
         ListZoomContext ctxt = new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d)); 
         
-        ScaleRange result = ctxt.getRange(Optional.of(1), Optional.of(3));
+        ScaleRange result = ctxt.getRange(1, 3);
         
         assertThat(result.maxDenom, greaterThan(2000000d));
         assertThat(result.maxDenom, lessThan(5000000d));
@@ -121,7 +119,7 @@ static final double EPSILON = 0.0000001;
         
         ListZoomContext ctxt = new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d)); 
         
-        ScaleRange result = ctxt.getRange(Optional.of(0), Optional.of(3));
+        ScaleRange result = ctxt.getRange(0, 3);
         
         assertThat(result.maxDenom, greaterThan(5000000d));
         
@@ -134,7 +132,7 @@ static final double EPSILON = 0.0000001;
         
         ListZoomContext ctxt = new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d)); 
         
-        ScaleRange result = ctxt.getRange(Optional.of(3), Optional.of(5));
+        ScaleRange result = ctxt.getRange(3, 5);
         
         assertThat(result.maxDenom, greaterThan(500000d));
         assertThat(result.maxDenom, lessThan(1000000d));
@@ -147,7 +145,7 @@ static final double EPSILON = 0.0000001;
         
         ListZoomContext ctxt = new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d)); 
         
-        ScaleRange result = ctxt.getRange(Optional.<Integer>absent(), Optional.of(3));
+        ScaleRange result = ctxt.getRange(null, 3);
         
         assertThat(result.maxDenom, is(Double.POSITIVE_INFINITY));
         
@@ -160,7 +158,7 @@ static final double EPSILON = 0.0000001;
         
         ListZoomContext ctxt = new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d)); 
         
-        ScaleRange result = ctxt.getRange(Optional.of(3), Optional.<Integer>absent());
+        ScaleRange result = ctxt.getRange(3, null);
         
         assertThat(result.maxDenom, greaterThan(500000d));
         assertThat(result.maxDenom, lessThan(1000000d));
@@ -173,7 +171,7 @@ static final double EPSILON = 0.0000001;
         
         ListZoomContext ctxt = new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d)); 
         
-        ScaleRange result = ctxt.getRange(Optional.of(-1), Optional.of(3));
+        ScaleRange result = ctxt.getRange(-1, 3);
         
         assertThat(result.maxDenom, is(Double.POSITIVE_INFINITY));
         
@@ -186,7 +184,7 @@ static final double EPSILON = 0.0000001;
         
         ListZoomContext ctxt = new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d)); 
         
-        ScaleRange result = ctxt.getRange(Optional.of(3), Optional.of(6));
+        ScaleRange result = ctxt.getRange(3, 6);
         
         assertThat(result.maxDenom, greaterThan(500000d));
         assertThat(result.maxDenom, lessThan(1000000d));

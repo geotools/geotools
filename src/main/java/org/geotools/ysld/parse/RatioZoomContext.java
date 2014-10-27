@@ -1,7 +1,5 @@
 package org.geotools.ysld.parse;
 
-import com.google.common.base.Preconditions;
-
 /**
  * ZoomContext defined by an initial scale and a ratio between levels.
  * 
@@ -33,8 +31,12 @@ public class RatioZoomContext extends ContinuousZoomContext implements ZoomConte
      */
     public RatioZoomContext(final int initialLevel, final double initialScale, final double ratio) {
         super();
-        Preconditions.checkArgument(initialScale>0, "initialScale must be greater than 0");
-        Preconditions.checkArgument(ratio>1, "ratio must be greater than 1");
+        if(initialScale<=0){
+            throw new IllegalArgumentException("initialScale must be greater than 0");
+        }
+        if(ratio<=1) {
+            throw new IllegalArgumentException("ratio must be greater than 1");
+        }
         this.initialLevel = initialLevel;
         this.initialScale = initialScale;
         this.ratio = ratio;

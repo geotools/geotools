@@ -1,6 +1,6 @@
 package org.geotools.ysld.parse;
 
-import com.google.common.base.Optional;
+import javax.annotation.Nullable;
 
 /**
  * Represents a mapping between zoom level and scale.
@@ -25,5 +25,5 @@ public interface ZoomContext {
      * @param max Maximum zoom level.  Absent for open ended.
      * @return
      */
-    public ScaleRange getRange(Optional<Integer> min, Optional<Integer> max);
+    public ScaleRange getRange(@Nullable Integer min, @Nullable Integer max);
 }

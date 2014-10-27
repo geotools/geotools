@@ -9,8 +9,6 @@ import org.geotools.ysld.Tuple;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 
-import com.google.common.base.Optional;
-
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.annotation.Nullable;
 
 /**
  * Parsing utilities
@@ -168,7 +168,29 @@ public class Util {
      * @param name
      * @return
      */
-    public static Optional<ZoomContext> getWellKnownZoomContext(String name) {
-        return Optional.fromNullable(wellKnownZoomContexts.get(name.toUpperCase()));
+    public static @Nullable ZoomContext getWellKnownZoomContext(String name) {
+        return wellKnownZoomContexts.get(name.toUpperCase());
+    }
+    
+    /**
+     * Returns the first non-null parameter or null.
+     */
+    @SafeVarargs
+    @Nullable public static <T> T defaultForNull(@Nullable T... options) {
+        for (T o: options) {
+            if(o!=null) return o;
+        }
+        return null;
+    }
+    
+    /**
+     * Returns the first non-null parameter or throws NullPointerException.
+     */
+    @SafeVarargs
+    public static <T> T forceDefaultForNull(@Nullable T... options) {
+        for (T o: options) {
+            if(o!=null) return o;
+        }
+        throw new NullPointerException();
     }
 }

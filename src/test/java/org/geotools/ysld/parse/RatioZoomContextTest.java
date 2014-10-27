@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import com.google.common.base.Optional;
-
 public class RatioZoomContextTest {
     
     static final double EPSILON = 0.0000001;
@@ -48,7 +46,7 @@ public class RatioZoomContextTest {
         
         RatioZoomContext ctxt = new RatioZoomContext(5000000, 2); 
         
-        ScaleRange result = ctxt.getRange(Optional.of(0), Optional.of(0));
+        ScaleRange result = ctxt.getRange(0, 0);
         
         assertThat(result.maxDenom, Matchers.greaterThan(5000000d));
         assertThat(result.minDenom, Matchers.lessThan(5000000d));
@@ -61,7 +59,7 @@ public class RatioZoomContextTest {
         
         RatioZoomContext ctxt = new RatioZoomContext(5000000, 2); 
         
-        ScaleRange result = ctxt.getRange(Optional.of(2), Optional.of(2));
+        ScaleRange result = ctxt.getRange(2, 2);
         
         assertThat(result.maxDenom, Matchers.greaterThan(5000000d/4));
         assertThat(result.minDenom, Matchers.lessThan(5000000d/4));
@@ -74,7 +72,7 @@ public class RatioZoomContextTest {
         
         RatioZoomContext ctxt = new RatioZoomContext(5000000, 2); 
         
-        ScaleRange result = ctxt.getRange(Optional.of(0), Optional.of(2));
+        ScaleRange result = ctxt.getRange(0, 2);
         
         assertThat(result.maxDenom, Matchers.greaterThan(5000000d));
         assertThat(result.maxDenom, Matchers.lessThan(5000000d*2));

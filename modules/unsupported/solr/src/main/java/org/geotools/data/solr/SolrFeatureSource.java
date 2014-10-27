@@ -138,7 +138,13 @@ public class SolrFeatureSource extends ContentFeatureSource {
                 }
                 HttpSolrServer server = store.getSolrServer();
                 QueryResponse rsp = server.query(q);
-                count = rsp.getResults().size();
+                count = new Long(rsp.getResults().getNumFound()-rsp.getResults().getStart()).intValue();
+                //Manage max manually
+                if (query.getMaxFeatures() > 0 && query.getMaxFeatures() < Integer.MAX_VALUE) {
+                    if(count > query.getMaxFeatures()){
+                        count = query.getMaxFeatures();
+                    }
+                }
             }
         } catch (Throwable e) { // NOSONAR
             if (e instanceof Error) {

@@ -39,7 +39,7 @@ import org.geotools.data.SchemaNotFoundException;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.filter.UnmappingFilterVisitor;
-import org.geotools.data.complex.filter.UnmappingFilterVistorFactory;
+import org.geotools.data.complex.filter.UnmappingFilterVisitorFactory;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningQuery;
@@ -276,11 +276,11 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         // this is so it'd use the splitFilter in JoiningJDBCFeatureSource
         // otherwise you'll get an error when it can't find complex attributes in the 
         // simple feature source
-//        if (mappedSource instanceof JDBCFeatureSource) {
-//            mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureSource) mappedSource);
-//        } else if (mappedSource instanceof JDBCFeatureStore) {
-//            mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureStore) mappedSource);
-//        } 
+        if (mappedSource instanceof JDBCFeatureSource) {
+            mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureSource) mappedSource);
+        } else if (mappedSource instanceof JDBCFeatureStore) {
+            mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureStore) mappedSource);
+        } 
         Query unmappedQuery = unrollQuery(targetQuery, mapping);
         return mappedSource.getCount(unmappedQuery);
     }
@@ -570,34 +570,8 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         
         final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();
         StepList propertySteps = XPath.steps(targetDescriptor, property.getPropertyName(), mapping.getNamespaces());
-        
-        // add all surrogate attributes involved in mapping of the requested
-        // target schema attributes
-        //List<AttributeMapping> attMappings = mapping.getAttributeMappings();
-        
+   
         return mapping.findMappingsFor(propertySteps, true);
-        
-        /*for (final AttributeMapping entry : attMappings) {
-            final StepList targetSteps = entry.getTargetXPath();
-           
-            if (propertySteps.size() >= targetSteps.size()) {
-                int i = 0;
-                boolean match = true;
-                for (; i < targetSteps.size(); i++) {
-                    if (!propertySteps.get(i).equals(targetSteps.get(i))) {
-                        match = false;
-                        break;
-                    }
-                }
-                
-                if (match && i == propertySteps.size()) {
-                    return entry.getSourceExpression();            
-                }
-                
-            }
-        }
-        
-        return null;*/
     }
 
     /**
@@ -608,7 +582,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * @return TODO: implement filter unrolling
      */
     public static Filter unrollFilter(Filter complexFilter, FeatureTypeMapping mapping) {
-        UnmappingFilterVisitor visitor = UnmappingFilterVistorFactory.getInstance(mapping);
+        UnmappingFilterVisitor visitor = UnmappingFilterVisitorFactory.getInstance(mapping);
         Filter unrolledFilter = (Filter) complexFilter.accept(visitor, null);
         return unrolledFilter;
     }

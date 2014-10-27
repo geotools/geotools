@@ -180,12 +180,7 @@ public class MappingFeatureIteratorFactory {
                 Filter preFilter = splitter.getFilterPre();
                 query.setFilter(preFilter);
                 filter = splitter.getFilterPost();
-
-                int maxFeatures = Query.DEFAULT_MAX;
-                if (filter != null && filter != Filter.INCLUDE) {
-                    maxFeatures = query.getMaxFeatures();
-                    removeQueryLimitIfDenormalised = true;
-                }
+                
                 if (isJoining) {
                    ((JoiningQuery)query).setDenormalised(mapping.isDenormalised());
                 }
@@ -214,6 +209,16 @@ public class MappingFeatureIteratorFactory {
                         hasPostFilter = true;
                     }
                 }
+                int offset = 0;
+                int maxFeatures = 1000000;
+                if (hasPostFilter) {      
+                    // can't apply offset to the SQL query if using post filters
+                    // it has to be applied to the post filter
+                    offset = query.getStartIndex() == null ? 0 : query.getStartIndex();
+                    query.setStartIndex(null);
+                    maxFeatures = query.getMaxFeatures();
+                    removeQueryLimitIfDenormalised = true;
+                } 
                 iterator = new DataAccessMappingFeatureIterator(store, mapping, query, isFiltered,
                         removeQueryLimitIfDenormalised, hasPostFilter);
                 if (isListFilter != null) {
@@ -221,7 +226,7 @@ public class MappingFeatureIteratorFactory {
                 }
                 if (hasPostFilter) {
                     iterator = new PostFilteringMappingFeatureIterator(iterator, filter,
-                            maxFeatures);
+                            maxFeatures, offset);
                 }
             } else if (mappedSource instanceof MappingFeatureSource) {
                 // web service data access wrapper

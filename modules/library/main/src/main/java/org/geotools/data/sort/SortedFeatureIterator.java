@@ -54,7 +54,8 @@ public class SortedFeatureIterator implements SimpleFeatureIterator {
      * @param iterator The iterator to be sorted
      * @param schema The iterator schema
      * @param sortBy The sorting directives
-     * @param maxFeatures The maximum number of features to keep in memory
+     * @param maxFeatures The maximum number of features to keep in memory, or a negative number to
+     *        use the system default
      * @throws IOException
      */
     public SortedFeatureIterator(SimpleFeatureIterator iterator, SimpleFeatureType schema,

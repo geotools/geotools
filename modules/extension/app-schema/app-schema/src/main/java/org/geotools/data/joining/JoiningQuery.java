@@ -17,6 +17,7 @@
 package org.geotools.data.joining;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.geotools.data.Query;
@@ -34,16 +35,11 @@ import org.opengis.filter.sort.SortBy;
  */
 public class JoiningQuery extends Query {
     
-    // true if idExpression has been mapped to a database column
-    // false if it's a string constant or has been omitted, and PK should be used if available
-//    private boolean hasIdColumn;
-    
-    public static class QueryJoin {
+    public static class QueryJoin extends JoiningQuery {
         protected String joiningTypeName;    
         protected Expression foreignKeyName;    
         protected Expression joiningKeyName;
         protected SortBy[] sortBy;
-        protected List<String> ids = new ArrayList<String>(); 
                 
         public String getJoiningTypeName() {
             return joiningTypeName;
@@ -56,10 +52,6 @@ public class JoiningQuery extends Query {
         public Expression getForeignKeyName() {
             return foreignKeyName;
         }
-        
-        public SortBy[] getSortBy() {
-            return sortBy;
-        }
 
         public void setForeignKeyName(Expression foreignKeyName) {
             this.foreignKeyName = foreignKeyName;
@@ -71,19 +63,7 @@ public class JoiningQuery extends Query {
 
         public void setJoiningKeyName(Expression joiningKeyName) {
             this.joiningKeyName = joiningKeyName;
-        }
-        
-        public void setSortBy(SortBy[] sortBy){
-            this.sortBy = sortBy;
-        }
-        
-        public void addId(String pn) {
-            this.ids.add(pn);
-        }
-        
-        public List<String> getIds() {
-            return ids;
-        }
+        }  
     }
     
     protected List<QueryJoin> queryJoins;
@@ -97,7 +77,7 @@ public class JoiningQuery extends Query {
     
     private boolean isDenormalised;
     
-    protected List<String> ids = new ArrayList<String>(); 
+    protected List<String> ids; 
     
     public JoiningQuery(JoiningQuery query) {
         super(query);
@@ -109,9 +89,11 @@ public class JoiningQuery extends Query {
     
     public JoiningQuery(Query query){
         super(query);
+        ids = new ArrayList<String>();
     }
     
     public JoiningQuery() {
+        ids = new ArrayList<String>();
     }   
     
     public void setQueryJoins(List<QueryJoin> queryJoins){
@@ -119,6 +101,9 @@ public class JoiningQuery extends Query {
     }
     
     public List<QueryJoin> getQueryJoins(){
+        if (queryJoins == null) {
+            return Collections.EMPTY_LIST;
+        }
         return queryJoins;
     }
     

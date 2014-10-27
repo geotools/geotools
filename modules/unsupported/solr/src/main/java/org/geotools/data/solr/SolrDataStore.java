@@ -166,6 +166,12 @@ public class SolrDataStore extends ContentDataStore {
                             }
                             at.setEmpty(founds == 0);
                             solrAttributes.add(at);
+                        } else {
+                            if (LOGGER.isLoggable(Level.FINE)) {
+                                LOGGER.log(Level.FINE, "Skipping attribute " + fty.getName()
+                                        + " as we don't know how to map its type to a java object "
+                                        + fty.getClassName());
+                            }
                         }
                     }
                 }
@@ -351,7 +357,7 @@ public class SolrDataStore extends ContentDataStore {
 
     /**
      * Builds the SolrJ count query with support of limit/offset, OGC filter encoding and viewParams <br>
-     * Currently only additional "q" and "fq" SOLR parameters can be passed using vireParams, this
+     * Currently only additional "q" and "fq" SOLR parameters can be passed using viewParams, this
      * conditions are added in AND with others
      * 
      * @param featureType the feature type to query
@@ -364,15 +370,15 @@ public class SolrDataStore extends ContentDataStore {
         SolrQuery query = new SolrQuery();
         query.setParam("omitHeader", true);
         query.setQuery("*:*");
+        query.setFields(this.getPrimaryKey(featureType.getName().getLocalPart()).getName());
         try {
 
             // Encode limit/offset, if necessary
+           
             if (q.getStartIndex() != null && q.getStartIndex() >= 0) {
                 query.setStart(q.getStartIndex());
             }
-            if (q.getMaxFeatures() > 0) {
-                query.setRows(q.getMaxFeatures());
-            }
+            query.setRows(0);
 
             // Encode OGC filer
             FilterToSolr f2s = initializeFilterToSolr(featureType);

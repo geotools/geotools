@@ -18,13 +18,19 @@ import org.opengis.filter.expression.PropertyName;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Arrays;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.classextension.EasyMock.replay;
+import static org.easymock.classextension.EasyMock.verify;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.describedAs;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -181,7 +187,7 @@ public class YsldParseTest {
                         greaterThan(scale)
                     ),
                     Matchers.<Rule>hasProperty("minScaleDenominator", 
-                        lessThan(scale)
+                        lessThanOrEqualTo(scale)
                     )),
                     scale
                 );
@@ -442,7 +448,8 @@ public class YsldParseTest {
             "  rules:\n"+
             GOOGLE_MERCATOR_TEST_RULES;
         
-        doTestForGoogleMercator(yaml);
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        doTestForGoogleMercator(sld);
         
     }
     @Test
@@ -455,18 +462,19 @@ public class YsldParseTest {
             "  rules:\n"+
             GOOGLE_MERCATOR_TEST_RULES;
         
-        doTestForGoogleMercator(yaml);
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        doTestForGoogleMercator(sld);
         
     }
     
     @SuppressWarnings("unchecked")
-    private void doTestForGoogleMercator(String yaml) throws IOException {
+    private void doTestForGoogleMercator(StyledLayerDescriptor sld) throws IOException {
         double scaleDenominators[] = new double[GOOGLE_MERCATOR_PIXEL_SIZES.length];
         for(int i=0; i<GOOGLE_MERCATOR_PIXEL_SIZES.length; i++){
             scaleDenominators[i]=OGC_DPI*INCHES_PER_METRE*GOOGLE_MERCATOR_PIXEL_SIZES[i];
         }
         
-        StyledLayerDescriptor sld = Ysld.parse(yaml);
+
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
         
         for(int i=0; i<GOOGLE_MERCATOR_PIXEL_SIZES.length; i++){
@@ -494,5 +502,87 @@ public class YsldParseTest {
                ));
         }
     }
-
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testNamedWithFinder() throws IOException {
+        String yaml =
+            "grid:\n"+
+            "  name: test\n"+
+            "feature-styles: \n"+
+            "- name: name\n"+
+            "  rules:\n"+
+            "  - zoom: (0,0)";
+        
+        ZoomContextFinder finder = createMock(ZoomContextFinder.class);
+        ZoomContext context = createMock(ZoomContext.class);
+        
+        expect(finder.get("test")).andReturn(context);
+        expect(context.getRange(0, 0)).andReturn(new ScaleRange(42, 64));
+        
+        replay(finder, context);
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder));
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        fs.rules().get(0).getMaxScaleDenominator();
+        assertThat((Iterable<Rule>)fs.rules(), hasItems(
+                allOf(
+                        Matchers.<Rule>hasProperty("maxScaleDenominator", Matchers.closeTo(64,0.0000001d)),
+                        Matchers.<Rule>hasProperty("minScaleDenominator", Matchers.closeTo(42,0.0000001d))
+                    )));
+        
+        verify(finder, context);
+    }
+    
+    @Test
+    public void testWellKnownWithCustomFinder() throws IOException {
+        String yaml =
+            "grid:\n"+
+            "  name: WebMercator\n"+
+            "feature-styles: \n"+
+            "- name: name\n"+
+            "  rules:\n"+
+            GOOGLE_MERCATOR_TEST_RULES;
+        
+        ZoomContextFinder finder = createMock(ZoomContextFinder.class);
+        
+        expect(finder.get("WebMercator")).andReturn(null);
+        
+        replay(finder);
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder));
+        doTestForGoogleMercator(sld); // The additional finder doesn't have a WebMercator context and so should not interfere.
+        
+        verify(finder);
+    }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testCustomFinderOverridesWellKnown() throws IOException {
+        String yaml =
+                "grid:\n"+
+                "  name: WebMercator\n"+
+                "feature-styles: \n"+
+                "- name: name\n"+
+                "  rules:\n"+
+                "  - zoom: (0,0)";
+            
+            ZoomContextFinder finder = createMock(ZoomContextFinder.class);
+            ZoomContext context = createMock(ZoomContext.class);
+            
+            expect(finder.get("WebMercator")).andReturn(context);
+            expect(context.getRange(0, 0)).andReturn(new ScaleRange(42, 64));
+            
+            replay(finder, context);
+            
+            StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder));
+            FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+            fs.rules().get(0).getMaxScaleDenominator();
+            assertThat((Iterable<Rule>)fs.rules(), hasItems(
+                    allOf(
+                            Matchers.<Rule>hasProperty("maxScaleDenominator", Matchers.closeTo(64,0.0000001d)),
+                            Matchers.<Rule>hasProperty("minScaleDenominator", Matchers.closeTo(42,0.0000001d))
+                        )));
+            
+            verify(finder, context);
+    }
 }

@@ -2,6 +2,7 @@ package org.geotools.ysld;
 
 import org.geotools.ysld.encode.YsldEncoder;
 import org.geotools.ysld.parse.YsldParser;
+import org.geotools.ysld.parse.ZoomContextFinder;
 import org.geotools.ysld.transform.sld.SldTransformer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.ysld.validate.YsldValidator;
@@ -109,6 +110,24 @@ public class Ysld {
         }
     }
 
+    /**
+     * Parses a Ysld stream into GeoTools style objects.
+     *
+     * @param ysld The Ysld content, anything accepted by {@link #reader(Object)}.
+     *
+     * @return The GeoTools SLD object.
+     */
+    public static StyledLayerDescriptor parse(Object ysld, List<ZoomContextFinder> zCtxtFinders) throws IOException {
+        YsldInput in = reader(ysld);
+        try {
+            YsldParser parser = new YsldParser(in.reader);
+            parser.setZoomContextFinders(zCtxtFinders);
+            return parser.parse();
+        }
+        finally {
+            in.close();
+        }
+    }
     /**
      * Parses a Ysld stream into GeoTools style objects.
      *

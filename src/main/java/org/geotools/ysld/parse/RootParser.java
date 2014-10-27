@@ -1,6 +1,7 @@
 package org.geotools.ysld.parse;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -15,7 +16,13 @@ public class RootParser extends YsldParseHandler {
     Style style;
 
     public RootParser() {
+        this(Collections.<ZoomContextFinder>emptyList());
+    }
+    public RootParser(List<ZoomContextFinder> zCtxtFinders) {
         super(new Factory());
+        this.zCtxtFinders=new ArrayList<>(zCtxtFinders.size()+1);
+        this.zCtxtFinders.addAll(zCtxtFinders);
+        this.zCtxtFinders.add(WellKnownZoomContextFinder.getInstance());
     }
 
     @Override
@@ -58,7 +65,17 @@ public class RootParser extends YsldParseHandler {
             context.push(new SymbolizersParser(newRule(), factory));
         }
     }
-
+    
+    final List<ZoomContextFinder> zCtxtFinders; 
+    protected @Nullable ZoomContext getNamedZoomContext(String name){
+        for(ZoomContextFinder finder: zCtxtFinders) {
+            ZoomContext found = finder.get(name);
+            if(found!=null) {
+                return found;
+            }
+        }
+        return null;
+    }
     @SuppressWarnings("unchecked")
     protected ZoomContext getZoomContext(YamlMap map) {
         ZoomContext result = null;
@@ -92,11 +109,7 @@ public class RootParser extends YsldParseHandler {
         return result;
     }
     
-    protected @Nullable ZoomContext getNamedZoomContext(String name){
-        // TODO Simple extension point so gs-ysld can plug in GWC based lookup.
-        
-        return Util.getWellKnownZoomContext(name);
-    }
+
     
 
     public FeatureTypeStyle newFeatureTypeStyle() {

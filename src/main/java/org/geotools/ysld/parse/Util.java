@@ -149,29 +149,6 @@ public class Util {
         return array;
     }
     
-    static final Map<String, ZoomContext> wellKnownZoomContexts;
-    static {
-        wellKnownZoomContexts = new HashMap<>();
-        
-        ZoomContext googleMercatorExtended = new RatioZoomContext(559082263.9508929, 2);
-        wellKnownZoomContexts.put("WebMercator".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("SphericalMercator".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("GoogleMercator".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("EPSG:3587".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("EPSG:900913".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("EPSG:3857".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("EPSG:3785".toUpperCase(), googleMercatorExtended);
-        wellKnownZoomContexts.put("OSGEO:41001".toUpperCase(), googleMercatorExtended);
-    }
-    /**
-     * Retrieve a ZoomContext by name from the set of well known contexts.
-     * @param name
-     * @return
-     */
-    public static @Nullable ZoomContext getWellKnownZoomContext(String name) {
-        return wellKnownZoomContexts.get(name.toUpperCase());
-    }
-    
     /**
      * Returns the first non-null parameter or null.
      */

@@ -2,7 +2,7 @@ package org.geotools.ysld.parse;
 
 import org.geotools.styling.Rule;
 
-class ScaleRange {
+public class ScaleRange {
     final double minDenom;
     final double maxDenom;
     

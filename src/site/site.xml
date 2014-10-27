@@ -7,7 +7,7 @@
     <menu name="Geotools" inherited="top">
       <item name ="User documentation" href="http://docs.geotools.org/latest/userguide"/>
       <item name="Download"     href="http://sourceforge.net/projects/geotools/files"/>
-      <item name="Full Javadoc" href="http://www.geotools.org/apidocs/"/>
+      <item name="Full Javadoc" href="http://docs.geotools.org/latest/javadocs"/>
       <item name="Legal review" href="review.html"/>
     </menu>
 

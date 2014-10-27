@@ -37,8 +37,10 @@ public class WellKnownZoomContextFinder implements ZoomContextFinder {
         contexts.put("OSGEO:41001".toUpperCase(), googleMercatorExtended);
         canonicalNames.add("EPSG:3857");
         
-        ZoomContext plateCarree = null;  // TODO decide on a definition
+        ZoomContext plateCarree = new RatioZoomContext(559082264.0287178, 2);
         contexts.put("PlateCarree".toUpperCase(), plateCarree);
+        contexts.put("WGS84".toUpperCase(), plateCarree);
+        contexts.put("GoogleCRS84Quad".toUpperCase(), plateCarree);
         contexts.put("EPSG:4326".toUpperCase(), plateCarree);
         canonicalNames.add("EPSG:4326");
     }

@@ -65,7 +65,7 @@ public abstract class ColorMapParser extends YsldParseHandler {
 
                 ColorMapEntry e = factory.style.createColorMapEntry();
                 if (q.at(0) != null) {
-                    e.setColor(Util.expression(q.strAt(0), factory));
+                    e.setColor(Util.color(q.strAt(0), factory));
                 }
                 if (q.at(1) != null) {
                     e.setOpacity(Util.expression(q.strAt(1), factory));

@@ -15,6 +15,8 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.geotools.styling.ColorMap;
+import org.opengis.style.RasterSymbolizer;
 
 import java.awt.*;
 import java.io.IOException;
@@ -696,5 +698,33 @@ public class YsldParseTest {
         p = (PolygonSymbolizer) SLD.symbolizers(SLD.defaultStyle(sld))[0];
         assertEquals(Color.BLUE, SLD.color(SLD.stroke(p)));
         assertNull(SLD.fill(p));
+    }
+    
+    @Test
+    public void testColourMapValuesWithoutHash() throws Exception {
+        String yaml =
+                "raster: \n"+
+                "  color-map:\n"+
+                "    type: values\n"+
+                "    entries:\n"+
+                "    - (ff0000, 1.0, 0, start)\n"+
+                "    - (00ff00, 1.0, 500, middle)\n"+
+                "    - (0000ff, 1.0, 1000, end)\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        RasterSymbolizer symb = (RasterSymbolizer) fs.rules().get(0).symbolizers().get(0);
+        
+        // need to use the geotools.styling interface as it provides the accessors for the entries.
+        ColorMap map = (ColorMap) symb.getColorMap();
+        
+        Color colour1 = (Color) map.getColorMapEntry(0).getColor().evaluate(null);
+        Color colour2 = (Color) map.getColorMapEntry(1).getColor().evaluate(null);
+        Color colour3 = (Color) map.getColorMapEntry(2).getColor().evaluate(null);
+        
+        assertThat(colour1, is(Color.RED));
+        assertThat(colour2, is(Color.GREEN));
+        assertThat(colour3, is(Color.BLUE));
     }
 }

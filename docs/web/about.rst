@@ -13,8 +13,8 @@ For an overview of the capabilities of GeoTools please check the User Guide
 
 Current `version <http://docs.geotools.org/latest/developer/conventions/version.html>`_ information:
 
-* `8.0 <http://sourceforge.net/projects/geotools/files/GeoTools%208.0%20Releases/>`_: Development
-* `2.7 <http://sourceforge.net/projects/geotools/files/GeoTools%202.7%20Releases/>`_: Stable
+* `12.x <http://sourceforge.net/projects/geotools/files/GeoTools%2012%20Releases/>`_: Development
+* `11.x <http://sourceforge.net/projects/geotools/files/GeoTools%2011%20Releases/>`_: Stable
 
 GeoTools is used by a `number of projects <http://docs.codehaus.org/display/GEOTOOLS/Screenshots>`_
 including Web Feature Servers, Web Map Servers, and desktop applications.

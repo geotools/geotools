@@ -1,13 +1,16 @@
 package org.geotools.ysld.parse;
 
+import static org.geotools.ysld.TestUtils.rangeContains;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
+import org.geotools.ysld.TestUtils;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -67,11 +70,12 @@ static final double EPSILON = 0.0000001;
         
         ScaleRange result = ctxt.getRange(1, 1);
         
-        assertThat(result.maxDenom, greaterThan(2000000d));
-        assertThat(result.maxDenom, lessThan(5000000d));
-        
-        assertThat(result.minDenom, greaterThan(1000000d));
-        assertThat(result.minDenom, lessThan(2000000d));
+        assertThat(result, not(rangeContains(1/EPSILON)));
+        assertThat(result, not(rangeContains(10_000_000d)));
+        assertThat(result, not(rangeContains(5_000_000d)));
+        assertThat(result, (rangeContains(2_000_000d)));
+        assertThat(result, not(rangeContains(1_000_000d)));
+        assertThat(result, not(rangeContains(EPSILON)));
     }
     
     @Test
@@ -81,10 +85,11 @@ static final double EPSILON = 0.0000001;
         
         ScaleRange result = ctxt.getRange(0, 0);
         
-        assertThat(result.maxDenom, greaterThan(5000000d));
-        assertThat(result.minDenom, lessThan(5000000d));
-        
-        assertThat(result.minDenom, greaterThan(2000000d));
+        //assertThat(result, rangeContains(1/EPSILON));
+        assertThat(result, (rangeContains(5_000_000d)));
+        assertThat(result, not(rangeContains(2_000_000d)));
+        assertThat(result, not(rangeContains(1_000_000d)));
+        assertThat(result, not(rangeContains(EPSILON)));
     }
     
     @Test
@@ -94,10 +99,11 @@ static final double EPSILON = 0.0000001;
         
         ScaleRange result = ctxt.getRange(2, 2);
         
-        assertThat(result.maxDenom, greaterThan(1000000d));
-        assertThat(result.minDenom, lessThan(1000000d));
-        
-        assertThat(result.maxDenom, lessThan(2000000d));
+        assertThat(result, not(rangeContains(1/EPSILON)));
+        assertThat(result, not(rangeContains(5_000_000d)));
+        assertThat(result, not(rangeContains(2_000_000d)));
+        assertThat(result, (rangeContains(1_000_000d)));
+        //assertThat(result, rangeContains(EPSILON));
     }
     
     @Test
@@ -107,11 +113,14 @@ static final double EPSILON = 0.0000001;
         
         ScaleRange result = ctxt.getRange(1, 3);
         
-        assertThat(result.maxDenom, greaterThan(2000000d));
-        assertThat(result.maxDenom, lessThan(5000000d));
-        
-        assertThat(result.minDenom, lessThan(500000d));
-        assertThat(result.minDenom, greaterThan(200000d));
+        assertThat(result, not(rangeContains(1/EPSILON)));
+        assertThat(result, not(rangeContains(5_000_000d)));
+        assertThat(result, (rangeContains(2_000_000d)));
+        assertThat(result, (rangeContains(1_000_000d)));
+        assertThat(result, (rangeContains(500_000d)));
+        assertThat(result, not(rangeContains(200_000d)));
+        assertThat(result, not(rangeContains(100_000d)));
+        assertThat(result, not(rangeContains(EPSILON)));
     }
     
     @Test
@@ -121,10 +130,14 @@ static final double EPSILON = 0.0000001;
         
         ScaleRange result = ctxt.getRange(0, 3);
         
-        assertThat(result.maxDenom, greaterThan(5000000d));
-        
-        assertThat(result.minDenom, lessThan(500000d));
-        assertThat(result.minDenom, greaterThan(200000d));
+        //assertThat(result, (rangeContains(1/EPSILON)));
+        assertThat(result, (rangeContains(5_000_000d)));
+        assertThat(result, (rangeContains(2_000_000d)));
+        assertThat(result, (rangeContains(1_000_000d)));
+        assertThat(result, (rangeContains(500_000d)));
+        assertThat(result, not(rangeContains(200_000d)));
+        assertThat(result, not(rangeContains(100_000d)));
+        assertThat(result, not(rangeContains(EPSILON)));
     }
     
     @Test
@@ -134,10 +147,15 @@ static final double EPSILON = 0.0000001;
         
         ScaleRange result = ctxt.getRange(3, 5);
         
-        assertThat(result.maxDenom, greaterThan(500000d));
-        assertThat(result.maxDenom, lessThan(1000000d));
+        assertThat(result, not(rangeContains(1/EPSILON)));
+        assertThat(result, not(rangeContains(5_000_000d)));
+        assertThat(result, not(rangeContains(2_000_000d)));
+        assertThat(result, not(rangeContains(1_000_000d)));
+        assertThat(result, (rangeContains(500_000d)));
+        assertThat(result, (rangeContains(200_000d)));
+        assertThat(result, (rangeContains(100_000d)));
+        //assertThat(result, (rangeContains(EPSILON)));
         
-        assertThat(result.minDenom, lessThan(100000d));
     }
     
     @Test
@@ -147,10 +165,14 @@ static final double EPSILON = 0.0000001;
         
         ScaleRange result = ctxt.getRange(null, 3);
         
-        assertThat(result.maxDenom, is(Double.POSITIVE_INFINITY));
-        
-        assertThat(result.minDenom, lessThan(500000d));
-        assertThat(result.minDenom, greaterThan(200000d));
+        assertThat(result, (rangeContains(1/EPSILON)));
+        assertThat(result, (rangeContains(5_000_000d)));
+        assertThat(result, (rangeContains(2_000_000d)));
+        assertThat(result, (rangeContains(1_000_000d)));
+        assertThat(result, (rangeContains(500_000d)));
+        assertThat(result, not(rangeContains(200_000d)));
+        assertThat(result, not(rangeContains(100_000d)));
+        assertThat(result, not(rangeContains(EPSILON)));
     }
     
     @Test
@@ -160,10 +182,14 @@ static final double EPSILON = 0.0000001;
         
         ScaleRange result = ctxt.getRange(3, null);
         
-        assertThat(result.maxDenom, greaterThan(500000d));
-        assertThat(result.maxDenom, lessThan(1000000d));
-        
-        assertThat(result.minDenom, is(0d));
+        assertThat(result, not(rangeContains(1/EPSILON)));
+        assertThat(result, not(rangeContains(5_000_000d)));
+        assertThat(result, not(rangeContains(2_000_000d)));
+        assertThat(result, not(rangeContains(1_000_000d)));
+        assertThat(result, (rangeContains(500_000d)));
+        assertThat(result, (rangeContains(200_000d)));
+        assertThat(result, (rangeContains(100_000d)));
+        assertThat(result, (rangeContains(EPSILON)));
     }
     
     @Test
@@ -173,10 +199,14 @@ static final double EPSILON = 0.0000001;
         
         ScaleRange result = ctxt.getRange(-1, 3);
         
-        assertThat(result.maxDenom, is(Double.POSITIVE_INFINITY));
-        
-        assertThat(result.minDenom, lessThan(500000d));
-        assertThat(result.minDenom, greaterThan(200000d));
+        assertThat(result, (rangeContains(1/EPSILON)));
+        assertThat(result, (rangeContains(5_000_000d)));
+        assertThat(result, (rangeContains(2_000_000d)));
+        assertThat(result, (rangeContains(1_000_000d)));
+        assertThat(result, (rangeContains(500_000d)));
+        assertThat(result, not(rangeContains(200_000d)));
+        assertThat(result, not(rangeContains(100_000d)));
+        assertThat(result, not(rangeContains(EPSILON)));
     }
     
     @Test
@@ -186,9 +216,13 @@ static final double EPSILON = 0.0000001;
         
         ScaleRange result = ctxt.getRange(3, 6);
         
-        assertThat(result.maxDenom, greaterThan(500000d));
-        assertThat(result.maxDenom, lessThan(1000000d));
-        
-        assertThat(result.minDenom, is(0d));
+        assertThat(result, not(rangeContains(1/EPSILON)));
+        assertThat(result, not(rangeContains(5_000_000d)));
+        assertThat(result, not(rangeContains(2_000_000d)));
+        assertThat(result, not(rangeContains(1_000_000d)));
+        assertThat(result, (rangeContains(500_000d)));
+        assertThat(result, (rangeContains(200_000d)));
+        assertThat(result, (rangeContains(100_000d)));
+        assertThat(result, (rangeContains(EPSILON)));
     }
 }

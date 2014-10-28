@@ -8,7 +8,6 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.ysld.Ysld;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -25,13 +24,11 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
+import static org.geotools.ysld.TestUtils.appliesToScale;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.describedAs;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -175,24 +172,6 @@ public class YsldParseTest {
                 "           fill-color: '#995555'\n"+
                 "       geometry: geom";
                         
-    }
-    
-    /**
-     * Matches a rule if it applies to a given scale
-     * @param scale denominator of the scale
-     */
-    @SuppressWarnings("unchecked")
-    static Matcher<Rule> appliesToScale(double scale) {
-        return describedAs("rule applies to scale denom %0",
-                allOf(
-                    Matchers.<Rule>hasProperty("maxScaleDenominator", 
-                        greaterThan(scale)
-                    ),
-                    Matchers.<Rule>hasProperty("minScaleDenominator", 
-                        lessThanOrEqualTo(scale)
-                    )),
-                    scale
-                );
     }
     
     @SuppressWarnings("unchecked")

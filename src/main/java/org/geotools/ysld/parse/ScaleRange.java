@@ -25,4 +25,21 @@ public class ScaleRange {
         r.setMaxScaleDenominator(maxDenom);
         r.setMinScaleDenominator(minDenom);
     }
+    
+    public boolean contains(double denom) {
+        return minDenom<=denom && maxDenom>denom;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("[1:%f, 1:%f)", minDenom, maxDenom);
+    }
+
+    public double getMinDenom() {
+        return minDenom;
+    }
+
+    public double getMaxDenom() {
+        return maxDenom;
+    }
 }

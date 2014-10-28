@@ -1,7 +1,10 @@
 package org.geotools.ysld.parse;
 
+import static org.geotools.ysld.TestUtils.rangeContains;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.*;
 
+import org.geotools.ysld.TestUtils;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -48,10 +51,9 @@ public class RatioZoomContextTest {
         
         ScaleRange result = ctxt.getRange(0, 0);
         
-        assertThat(result.maxDenom, Matchers.greaterThan(5000000d));
-        assertThat(result.minDenom, Matchers.lessThan(5000000d));
-        assertThat(result.maxDenom, Matchers.lessThan(5000000d*2));
-        assertThat(result.minDenom, Matchers.greaterThan(5000000d/2));
+        assertThat(result, rangeContains(5_000_000d));
+        assertThat(result, not(rangeContains(5_000_000d*2)));
+        assertThat(result, not(rangeContains(5_000_000d/2)));
     }
     
     @Test
@@ -61,10 +63,9 @@ public class RatioZoomContextTest {
         
         ScaleRange result = ctxt.getRange(2, 2);
         
-        assertThat(result.maxDenom, Matchers.greaterThan(5000000d/4));
-        assertThat(result.minDenom, Matchers.lessThan(5000000d/4));
-        assertThat(result.maxDenom, Matchers.lessThan(5000000d*2/4));
-        assertThat(result.minDenom, Matchers.greaterThan(5000000d/2/4));
+        assertThat(result, rangeContains(5_000_000d/4));
+        assertThat(result, not(rangeContains(5_000_000d/2)));
+        assertThat(result, not(rangeContains(5_000_000d/8)));
     }
    
     @Test
@@ -74,11 +75,11 @@ public class RatioZoomContextTest {
         
         ScaleRange result = ctxt.getRange(0, 2);
         
-        assertThat(result.maxDenom, Matchers.greaterThan(5000000d));
-        assertThat(result.maxDenom, Matchers.lessThan(5000000d*2));
-
-        assertThat(result.minDenom, Matchers.lessThan(5000000d/4));
-        assertThat(result.minDenom, Matchers.greaterThan(5000000d/2/4));
+        assertThat(result, rangeContains(5_000_000d/1));
+        assertThat(result, rangeContains(5_000_000d/2));
+        assertThat(result, rangeContains(5_000_000d/4));
+        assertThat(result, not(rangeContains(5_000_000d*2)));
+        assertThat(result, not(rangeContains(5_000_000d/8)));
     }
    
 }

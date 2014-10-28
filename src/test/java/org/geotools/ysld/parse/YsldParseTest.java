@@ -26,6 +26,7 @@ import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
 import static org.geotools.ysld.TestUtils.appliesToScale;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.describedAs;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
@@ -393,6 +394,50 @@ public class YsldParseTest {
             "  - zoom: (18,18)\n"+
             "  - zoom: (19,19)\n";
     
+    final static String WGS84_TEST_RULES=
+            "  - zoom: (0,0)\n"+
+            "    name: WGS84:00\n"+
+            "  - zoom: (1,1)\n"+
+            "    name: WGS84:01\n"+
+            "  - zoom: (2,2)\n"+
+            "    name: WGS84:02\n"+
+            "  - zoom: (3,3)\n"+
+            "    name: WGS84:03\n"+
+            "  - zoom: (4,4)\n"+
+            "    name: WGS84:04\n"+
+            "  - zoom: (5,5)\n"+
+            "    name: WGS84:05\n"+
+            "  - zoom: (6,6)\n"+
+            "    name: WGS84:06\n"+
+            "  - zoom: (7,7)\n"+
+            "    name: WGS84:07\n"+
+            "  - zoom: (8,8)\n"+
+            "    name: WGS84:08\n"+
+            "  - zoom: (9,9)\n"+
+            "    name: WGS84:09\n"+
+            "  - zoom: (10,10)\n"+
+            "    name: WGS84:10\n"+
+            "  - zoom: (11,11)\n"+
+            "    name: WGS84:11\n"+
+            "  - zoom: (12,12)\n"+
+            "    name: WGS84:12\n"+
+            "  - zoom: (13,13)\n"+
+            "    name: WGS84:13\n"+
+            "  - zoom: (14,14)\n"+
+            "    name: WGS84:14\n"+
+            "  - zoom: (15,15)\n"+
+            "    name: WGS84:15\n"+
+            "  - zoom: (16,16)\n"+
+            "    name: WGS84:16\n"+
+            "  - zoom: (17,17)\n"+
+            "    name: WGS84:17\n"+
+            "  - zoom: (18,18)\n"+
+            "    name: WGS84:18\n"+
+            "  - zoom: (19,19)\n"+
+            "    name: WGS84:19\n"+
+            "  - zoom: (20,20)\n"+
+            "    name: WGS84:20\n";
+    
     // m/px
     double[] GOOGLE_MERCATOR_PIXEL_SIZES = {
             156543.0339280410,
@@ -421,16 +466,40 @@ public class YsldParseTest {
     double INCHES_PER_METRE = 39.3701;
     double OGC_DPI = 90;
     
+    final double[] WGS84_SCALE_DENOMS = {
+            279_541_132.0143589,
+            139_770_566.00717944,
+            69_885_283.00358972,
+            34_942_641.50179486,
+            17_471_320.75089743,
+            8_735_660.375448715,
+            4_367_830.1877243575,
+            2_183_915.0938621787,
+            1_091_957.5469310894,
+            545_978.7734655447,
+            272_989.38673277234,
+            136_494.69336638617,
+            68_247.34668319309,
+            34_123.67334159654,
+            17_061.83667079827,
+            8_530.918335399136,
+            4_265.459167699568,
+            2_132.729583849784,
+            1_066.364791924892,
+            533.182395962446,
+            266.591197981223
+    };
+    
     @Test
     public void testZoomDefault() throws IOException {
         String yaml =
             "feature-styles: \n"+
             "- name: name\n"+
             "  rules:\n"+
-            GOOGLE_MERCATOR_TEST_RULES;
+            WGS84_TEST_RULES;
         
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        doTestForGoogleMercator(sld);
+        doTestForWGS84(sld);
         
     }
     @Test
@@ -482,6 +551,47 @@ public class YsldParseTest {
                     i,scaleDenominators[i]
                ));
         }
+    }
+    
+    @Test
+    public void testWGS84Scales() throws Exception {
+        ZoomContext context = WellKnownZoomContextFinder.getInstance().get("DEFAULT");
+        
+        for(int i=0; i<WGS84_SCALE_DENOMS.length; i++) {
+            assertThat(context.getScaleDenominator(i), closeTo(WGS84_SCALE_DENOMS[i], 0.000000001));
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void doTestForWGS84(StyledLayerDescriptor sld) throws IOException {
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        
+        assertThat(fs.rules().size(), is(21));
+        
+        Rule first = fs.rules().get(0);
+        assertThat(first, allOf(
+                appliesToScale(WGS84_SCALE_DENOMS[0]),
+                not(appliesToScale(WGS84_SCALE_DENOMS[1]))
+            ));
+
+        for(int i = 1; i<20; i++){
+            Rule r = fs.rules().get(i);
+            assertThat(r ,describedAs("rule applies only to level %0 (%1)",
+                    allOf(
+                        appliesToScale(WGS84_SCALE_DENOMS[i]),
+                        not(appliesToScale(WGS84_SCALE_DENOMS[i+1])),
+                        not(appliesToScale(WGS84_SCALE_DENOMS[i+-1]))
+                    ),
+                    i,WGS84_SCALE_DENOMS[i]
+               ));
+        }
+        
+        Rule last = fs.rules().get(20);
+        assertThat(last ,allOf(
+                appliesToScale(WGS84_SCALE_DENOMS[20]),
+                not(appliesToScale(WGS84_SCALE_DENOMS[19]))
+            ));
+
     }
     
     @SuppressWarnings("unchecked")

@@ -7,7 +7,6 @@ import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.ysld.Tuple;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
-import org.geotools.temporal.object.Utils;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
@@ -112,10 +111,9 @@ public class RuleParser extends YsldParseHandler {
 
     }
 
-    @SuppressWarnings("unchecked")
     protected ZoomContext getZoomContext(YamlParseContext context) {
         return Util.forceDefaultForNull(
                 (ZoomContext)context.getDocHint(ZoomContext.HINT_ID),
-                WellKnownZoomContextFinder.getInstance().get("WebMercator"));
+                WellKnownZoomContextFinder.getInstance().get("DEFAULT"));
     }
 }

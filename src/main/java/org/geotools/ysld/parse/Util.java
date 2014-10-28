@@ -24,7 +24,20 @@ import javax.annotation.Nullable;
  */
 public class Util {
 
+    /**
+     * Pattern to catch attribute expressions.
+     */
     static final Pattern ATTRIBUTE_PATTERN = Pattern.compile("\\[.+\\]");
+
+    /**
+     * Pattern to catch url style well known names
+     */
+    static final Pattern WELLKNOWNNAME_PATTERN = Pattern.compile("\\w+://.+");
+
+    /**
+     * Pattern to catch 6 digit hex colors. 
+     */
+    static final Pattern COLOR_PATTERN = Pattern.compile("#\\p{XDigit}{6}");
 
     /**
      * Parses an expression from its string representation.
@@ -38,7 +51,7 @@ public class Util {
      * <p>
      * The <tt>safe</tt> parameter when set to true will cause null to be returned
      * when the string can not be parsed as a ECQL expression. When false it will
-     * return a literal.
+     * result in an exception thrown back.
      * </p>
      */
     public static Expression expression(String value, boolean safe, Factory factory) {
@@ -50,9 +63,22 @@ public class Util {
             }
             return expr;
         } catch (CQLException e) {
-            //TODO: log this?
-            return safe ? null : factory.filter.literal(value);
-            //throw new ParseException("Bad expression: "+value, evt, e);
+            // couple of special cases
+            // 1. color literal starting with '#'
+            // 2. shape literal starting with shape://
+            if (COLOR_PATTERN.matcher(value).matches()) {
+                // drop the hash and return as literal
+                return factory.filter.literal(value);
+            }
+            else if (WELLKNOWNNAME_PATTERN.matcher(value).matches()) {
+                return factory.filter.literal(value);
+            }
+            else {
+                if (safe) {
+                    return null;
+                }
+            }
+            throw new IllegalArgumentException("Bad expression: "+value, e);
         }
     }
 

@@ -38,6 +38,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class YsldParseTest {
 
@@ -535,10 +536,10 @@ public class YsldParseTest {
         
         assertThat(fs.rules().size(), is(20));
         
-        assertThat(fs.rules().get(0) ,allOf(
+        assertThat(fs.rules().get(0), allOf(
                 appliesToScale(scaleDenominators[0]),
                 not(appliesToScale(scaleDenominators[1]))
-            ));
+        ));
         assertThat(fs.rules().get(19) ,allOf(
                 appliesToScale(scaleDenominators[19]),
                 not(appliesToScale(scaleDenominators[18]))
@@ -574,7 +575,7 @@ public class YsldParseTest {
         assertThat(first, allOf(
                 appliesToScale(WGS84_SCALE_DENOMS[0]),
                 not(appliesToScale(WGS84_SCALE_DENOMS[1]))
-            ));
+        ));
 
         for(int i = 1; i<20; i++){
             Rule r = fs.rules().get(i);
@@ -699,32 +700,46 @@ public class YsldParseTest {
         assertEquals(Color.BLUE, SLD.color(SLD.stroke(p)));
         assertNull(SLD.fill(p));
     }
-    
+
     @Test
     public void testColourMapValuesWithoutHash() throws Exception {
         String yaml =
-                "raster: \n"+
-                "  color-map:\n"+
-                "    type: values\n"+
-                "    entries:\n"+
-                "    - (ff0000, 1.0, 0, start)\n"+
-                "    - (00ff00, 1.0, 500, middle)\n"+
-                "    - (0000ff, 1.0, 1000, end)\n"+
-                "";
-        
+                "raster: \n" +
+                        "  color-map:\n" +
+                        "    type: values\n" +
+                        "    entries:\n" +
+                        "    - (ff0000, 1.0, 0, start)\n" +
+                        "    - (00ff00, 1.0, 500, middle)\n" +
+                        "    - (0000ff, 1.0, 1000, end)\n" +
+                        "";
+
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
         RasterSymbolizer symb = (RasterSymbolizer) fs.rules().get(0).symbolizers().get(0);
-        
+
         // need to use the geotools.styling interface as it provides the accessors for the entries.
         ColorMap map = (ColorMap) symb.getColorMap();
-        
+
         Color colour1 = (Color) map.getColorMapEntry(0).getColor().evaluate(null);
         Color colour2 = (Color) map.getColorMapEntry(1).getColor().evaluate(null);
         Color colour3 = (Color) map.getColorMapEntry(2).getColor().evaluate(null);
-        
+
         assertThat(colour1, is(Color.RED));
         assertThat(colour2, is(Color.GREEN));
         assertThat(colour3, is(Color.BLUE));
+    }
+
+    @Test
+    public void testBadExpression() throws Exception {
+        String yaml =
+            "polygon: \n"+
+            "  stroke-width: round(foo) 1000\n";
+        try {
+            Ysld.parse(yaml);
+            fail("Bad expression should have thrown exception");
+        }
+        catch(IllegalArgumentException e) {
+            // expected
+        }
     }
 }

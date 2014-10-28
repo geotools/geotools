@@ -3,6 +3,7 @@ package org.geotools.ysld.parse;
 import org.geotools.process.function.ProcessFunction;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
 import org.geotools.styling.StyledLayerDescriptor;
@@ -34,6 +35,7 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -584,5 +586,26 @@ public class YsldParseTest {
                         )));
             
             verify(finder, context);
+    }
+
+    @Test
+    public void testParseNoStrokeFillDefaults() throws Exception {
+        String yaml =
+            "polygon: \n"+
+            "  fill-color: blue\n";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        PolygonSymbolizer p = (PolygonSymbolizer) SLD.symbolizers(SLD.defaultStyle(sld))[0];
+        assertEquals(Color.BLUE, SLD.color(SLD.fill(p)));
+        assertNull(SLD.stroke(p));
+
+        yaml =
+            "polygon: \n"+
+            "  stroke-color: blue\n";
+
+        sld = Ysld.parse(yaml);
+        p = (PolygonSymbolizer) SLD.symbolizers(SLD.defaultStyle(sld))[0];
+        assertEquals(Color.BLUE, SLD.color(SLD.stroke(p)));
+        assertNull(SLD.fill(p));
     }
 }

@@ -7,11 +7,11 @@ public class ScaleRange {
     final double maxDenom;
     
     public ScaleRange(double minDenom, double maxDenom) {
-        if(!(minDenom>=0 && minDenom<Double.POSITIVE_INFINITY && !Double.isNaN(minDenom))) {
-            throw new IllegalArgumentException("minDenom must be finite and non negative");
+        if(!(minDenom>=0 && !Double.isNaN(minDenom))) {
+            throw new IllegalArgumentException("minDenom must be non-negative");
         }
-        if(!(maxDenom>0 && !Double.isNaN(minDenom))) {
-            throw new IllegalArgumentException("maxDenom must be positive");
+        if(!(maxDenom>=0 && !Double.isNaN(minDenom))) {
+            throw new IllegalArgumentException("maxDenom must be non-negative");
         }
         if(!(minDenom<=maxDenom)) {
             throw new IllegalArgumentException("maxDenom must be greater than or equal to minDenom");

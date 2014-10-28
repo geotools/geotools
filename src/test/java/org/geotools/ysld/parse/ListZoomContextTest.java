@@ -225,4 +225,36 @@ static final double EPSILON = 0.0000001;
         assertThat(result, (rangeContains(100_000d)));
         assertThat(result, (rangeContains(EPSILON)));
     }
+    @Test
+    public void testRangeEntirelyPastEnd() {
+        
+        ListZoomContext ctxt = new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d)); 
+        
+        ScaleRange result = ctxt.getRange(7, 8);
+        
+        assertThat(result, not(rangeContains(1/EPSILON)));
+        assertThat(result, not(rangeContains(5_000_000d)));
+        assertThat(result, not(rangeContains(2_000_000d)));
+        assertThat(result, not(rangeContains(1_000_000d)));
+        assertThat(result, not(rangeContains(500_000d)));
+        assertThat(result, not(rangeContains(200_000d)));
+        assertThat(result, not(rangeContains(100_000d)));
+        assertThat(result, not(rangeContains(EPSILON)));
+    }
+    @Test
+    public void testRangeEntirelyPastStart() {
+        
+        ListZoomContext ctxt = new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d)); 
+        
+        ScaleRange result = ctxt.getRange(-3, -2);
+        
+        assertThat(result, not(rangeContains(1/EPSILON)));
+        assertThat(result, not(rangeContains(5_000_000d)));
+        assertThat(result, not(rangeContains(2_000_000d)));
+        assertThat(result, not(rangeContains(1_000_000d)));
+        assertThat(result, not(rangeContains(500_000d)));
+        assertThat(result, not(rangeContains(200_000d)));
+        assertThat(result, not(rangeContains(100_000d)));
+        assertThat(result, not(rangeContains(EPSILON)));
+    }
 }

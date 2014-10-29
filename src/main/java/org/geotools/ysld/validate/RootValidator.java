@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
 
 public class RootValidator extends YsldValidateHandler {
 
-    static Pattern COLOR = Pattern.compile("(fill|stroke)-color");
+    static Pattern COLOR = Pattern.compile("(?:fill|stroke)-color");
+    static Pattern EXPRESSION = Pattern.compile("stroke-(?:width|opacity|linejoin|linecap|dashoffset)|offset|shape|gamma|geometry|label|font-(?:family|size|style|weight)|size|rotation|gap|initial-gap|radius|opacity");
 
     @Override
     public void scalar(ScalarEvent evt, YsldValidateContext context) {
@@ -19,6 +20,9 @@ public class RootValidator extends YsldValidateHandler {
         }
         else if ("filter".equals(key)) {
             context.push(new FilterValidator());
+        }
+        else if (EXPRESSION.matcher(key).matches()) {
+            context.push(new ExpressionValidator());
         }
     }
 }

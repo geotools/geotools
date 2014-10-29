@@ -4,10 +4,12 @@ package org.geotools.ysld.encode;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Mark;
+import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyledLayer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer2;
@@ -18,6 +20,7 @@ import org.geotools.ysld.Ysld;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.RasterSymbolizer;
@@ -178,56 +181,22 @@ public class YsldEncodeTest {
     @Test
     public void testEmptyColorMap() throws Exception {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
-        FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
-        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
-
-        UserLayer layer = styleFactory.createUserLayer();
-        sld.layers().add(layer);
-
-        Style style = styleFactory.createStyle();
-        layer.userStyles().add(style);
-
-        Rule rule = styleFactory.createRule();
-
-        style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
-        style.featureTypeStyles().get(0).rules().add(rule);
-
-        
-        RasterSymbolizer symb = styleFactory.createRasterSymbolizer();
-        
-        rule.symbolizers().add((Symbolizer)symb);
+        StyledLayerDescriptor sld = sld(styleFactory.createRasterSymbolizer());
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld, out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
-        
+
         assertFalse(symbMap.has("color-map"));
     }
     @Test
     public void testEmptyContrastEnhancement() throws Exception {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
-        FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
-        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
-
-        UserLayer layer = styleFactory.createUserLayer();
-        sld.layers().add(layer);
-
-        Style style = styleFactory.createStyle();
-        layer.userStyles().add(style);
-
-        Rule rule = styleFactory.createRule();
-
-        style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
-        style.featureTypeStyles().get(0).rules().add(rule);
-
-        
-        RasterSymbolizer symb = styleFactory.createRasterSymbolizer();
-        
-        rule.symbolizers().add((Symbolizer)symb);
+        StyledLayerDescriptor sld = sld(styleFactory.createRasterSymbolizer());
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld, out);
@@ -236,6 +205,39 @@ public class YsldEncodeTest {
         YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
         
         assertFalse(symbMap.has("contrast-enhancement"));
+    }
+
+    @Test
+    public void testExpressionNil() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        p.getGraphic().setSize(Expression.NIL);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(p), out);
+
+        System.out.println(out.toString());
+    }
+
+    StyledLayerDescriptor sld(Symbolizer sym) {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+
+        UserLayer layer = styleFactory.createUserLayer();
+        sld.layers().add(layer);
+
+        Style style = styleFactory.createStyle();
+        layer.userStyles().add(style);
+
+        Rule rule = styleFactory.createRule();
+
+        style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
+        style.featureTypeStyles().get(0).rules().add(rule);
+
+        RasterSymbolizer symb = styleFactory.createRasterSymbolizer();
+
+        rule.symbolizers().add((Symbolizer)sym);
+        return sld;
     }
 
 }

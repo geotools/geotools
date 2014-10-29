@@ -75,7 +75,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     }
 
     YsldEncodeHandler<T> put(String key, Expression expr) {
-        if (expr != null) {
+        if (expr != null && expr != Expression.NIL) {
             put(key, toObjOrNull(expr));
         }
         return this;
@@ -133,7 +133,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     }
 
     Object toObjOrNull(Expression expr) {
-        String str = expr != null ? ECQL.toCQL(expr) : null;
+        String str = !isNull(expr) ? ECQL.toCQL(expr) : null;
         if (str != null) {
             str = stripQuotes(str);
         }
@@ -220,5 +220,9 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
             str = str.substring(0, str.length()-1);
         }
         return str;
+    }
+
+    boolean isNull(Expression expr) {
+        return expr == null || expr == Expression.NIL;
     }
 }

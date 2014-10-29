@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DescribeStoredQueriesResponse xmlns="http://www.opengis.net/wfs/2.0"
+    xmlns:omso="http://inspire.ec.europa.eu/schemas/omso/2.0rc3" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:ows_common="http://www.opengis.net/ows/1.1" xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0"
+    xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:fe="http://www.opengis.net/fes/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd
+  http://inspire.ec.europa.eu/schemas/omso/2.0rc3 http://inspire.ec.europa.eu/draft-schemas/omso/2.0rc3/SpecialisedObservations.xsd
+  http://inspire.ec.europa.eu/schemas/common/1.0 http://inspire.ec.europa.eu/schemas/common/1.0/common.xsd
+  http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd">
+    <StoredQueryDescription id="fmi::forecast::hirlam::pressure::grid">
+        <Title>Hirlam Pressure Grid</Title>
+        <Abstract>
+            Hirlam forecast model&apos;s pressure levels as a grid data encoded in GRIB format.
+        </Abstract>
+        <Parameter name="starttime" type="dateTime">
+            <Title>Begin of the time interval</Title>
+            <Abstract>
+                Parameter begin specifies the begin of time interval in ISO-format (for example 2012-02-27T00:00:00Z).
+            </Abstract>
+        </Parameter>
+        <Parameter name="endtime" type="dateTime">
+            <Title>End of time interval</Title>
+            <Abstract>
+                End of time interval in ISO-format (for example 2012-02-27T00:00:00Z).
+            </Abstract>
+        </Parameter>
+        <Parameter name="bbox" type="xsi:string">
+            <Title>Bounding box of area for which to return data.</Title>
+            <Abstract>
+                Bounding box of area for which to return data (lon,lat,lon,lat). For example 21,61,22,62
+            </Abstract>
+        </Parameter>
+        <Parameter name="parameters" type="NameList">
+            <Title>Parameters to return</Title>
+            <Abstract>
+                Comma separated list of meteorological parameters to return.
+            </Abstract>
+        </Parameter>
+        <Parameter name="levels" type="xsi:uint">
+            <Title>Pressure levels</Title>
+            <Abstract>
+                Pressure levels
+            </Abstract>
+        </Parameter>
+        <Parameter name="format" type="xsi:string">
+            <Title>Dataset format.</Title>
+            <Abstract>
+                Encoding format for the returned dataset. Formats available are grib1, grib2 and netcdf. Default format
+                is grib2.
+            </Abstract>
+        </Parameter>
+        <QueryExpressionText xmlns:wfs_001="http://inspire.ec.europa.eu/schemas/omso/2.0rc3"
+            xsi:schemaLocation="http://inspire.ec.europa.eu/schemas/omso/2.0rc3 http://inspire.ec.europa.eu/draft-schemas/omso/2.0rc3/SpecialisedObservations.xsd"
+            returnFeatureTypes="wfs_001:GridSeriesObservation" language="urn:ogc:def:queryLanguage:OGC-WFS::WFS_QueryExpression"
+            isPrivate="true" />
+    </StoredQueryDescription>
+</DescribeStoredQueriesResponse>

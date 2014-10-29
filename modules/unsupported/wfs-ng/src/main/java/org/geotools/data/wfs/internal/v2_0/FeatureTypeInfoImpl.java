@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
 
 import net.opengis.ows11.KeywordsType;
 import net.opengis.ows11.LanguageStringType;
@@ -85,6 +86,10 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
     @Override
     public String getName() {
         return eType.getName().getLocalPart();
+    }
+    
+    public QName getQName() {
+        return eType.getName();
     }
 
     @Override

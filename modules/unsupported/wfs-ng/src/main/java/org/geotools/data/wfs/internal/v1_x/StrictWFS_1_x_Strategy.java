@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -78,6 +78,8 @@ import org.geotools.data.wfs.internal.TransactionRequest.Delete;
 import org.geotools.data.wfs.internal.TransactionRequest.Insert;
 import org.geotools.data.wfs.internal.TransactionRequest.TransactionElement;
 import org.geotools.data.wfs.internal.TransactionRequest.Update;
+import org.geotools.data.wfs.internal.DescribeStoredQueriesRequest;
+import org.geotools.data.wfs.internal.ListStoredQueriesRequest;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSExtensions;
 import org.geotools.data.wfs.internal.WFSGetCapabilities;
@@ -237,6 +239,20 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
         return dft;
     }
 
+    @Override
+    protected EObject createListStoredQueriesRequestPost(
+            ListStoredQueriesRequest request) throws IOException {
+        // Not implemented in 1.0.0 or 1.1.0, this method should never be entered
+        throw new UnsupportedOperationException("WFS 1.0.0 / 1.1.0 does not support Stored Queries!");
+    }
+    
+    @Override
+    protected EObject createDescribeStoredQueriesRequestPost(
+            DescribeStoredQueriesRequest request) throws IOException {
+        // Not implemented in 1.0.0 or 1.1.0, this method should never be entered
+        throw new UnsupportedOperationException("WFS 1.0.0 / 1.1.0 does not support Stored Queries!");
+    }
+    
     @Override
     protected EObject createTransactionRequest(TransactionRequest request) throws IOException {
         final WfsFactory factory = WfsFactory.eINSTANCE;

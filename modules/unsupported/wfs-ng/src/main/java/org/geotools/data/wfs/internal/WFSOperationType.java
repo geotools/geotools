@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -30,7 +30,8 @@ package org.geotools.data.wfs.internal;
 public enum WFSOperationType {
     GET_CAPABILITIES("GetCapabilities"), DESCRIBE_FEATURETYPE("DescribeFeatureType"), GET_FEATURE(
             "GetFeature"), GET_GML_OBJECT("GetGmlObject"), LOCK_FEATURE("LockFeature"), GET_FEATURE_WITH_LOCK(
-            "GetFeatureWithLock"), TRANSACTION("Transaction");
+            "GetFeatureWithLock"), TRANSACTION("Transaction"), LIST_STORED_QUERIES("ListStoredQueries"),
+            DESCRIBE_STORED_QUERIES("DescribeStoredQueries");
 
     private String operationName;
 

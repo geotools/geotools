@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -74,7 +74,9 @@ public class QueryExpressionTextDelegate extends CopyingHandler implements Parse
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (QueryExpressionText.getLocalPart().equals(localName)) {
-            result.setValue(buffer.toString());
+            if (buffer != null) {
+                result.setValue(buffer.toString());
+            }
         }
         else {
             super.endElement(uri, localName, qName);

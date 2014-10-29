@@ -117,6 +117,9 @@ version="1.2.0" updateSequence="ABC123">
 				<Value>4000</Value>
 			</AllowedValues>
 		</Constraint>
+        <Constraint name="NoValuesAllowed">
+            <NoValues/>
+        </Constraint>
 	</OperationsMetadata>
 	<Contents>
 		<DatasetDescriptionSummary>

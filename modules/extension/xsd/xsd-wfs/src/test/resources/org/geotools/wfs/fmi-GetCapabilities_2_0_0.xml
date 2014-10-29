@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WFS_Capabilities xmlns="http://www.opengis.net/wfs/2.0"
+  xmlns:gml="http://www.opengis.net/gml/3.2"
+  xmlns:fes="http://www.opengis.net/fes/2.0"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:ows="http://www.opengis.net/ows/1.1"
+  xmlns:omso="http://inspire.ec.europa.eu/schemas/omso/2.0rc3"
+  xmlns:ef="http://inspire.ec.europa.eu/schemas/ef/3.0rc3"
+  xmlns:inspire_dls="http://inspire.ec.europa.eu/schemas/inspire_dls/1.0"
+  xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  version="2.0.0"
+  xsi:schemaLocation="http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd
+  http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsAll.xsd
+  http://inspire.ec.europa.eu/schemas/omso/2.0rc3 http://inspire.ec.europa.eu/draft-schemas/omso/2.0rc3/SpecialisedObservations.xsd
+  http://inspire.ec.europa.eu/schemas/inspire_dls/1.0 http://inspire.ec.europa.eu/schemas/inspire_dls/1.0/inspire_dls.xsd
+  http://inspire.ec.europa.eu/schemas/common/1.0 http://inspire.ec.europa.eu/schemas/common/1.0/common.xsd
+  http://inspire.ec.europa.eu/schemas/ef/3.0rc3 http://inspire.ec.europa.eu/draft-schemas/ef/3.0rc3/EnvironmentalMonitoringFacilities.xsd">
+
+  <ows:ServiceIdentification>
+    <ows:Title>FMI Atmospheric and Oceanographic Open Data Download Service</ows:Title>
+    <ows:Abstract>
+      Finnish Meteorological Institute's Atmospheric and Oceanographic Open Data Download Service.
+    </ows:Abstract>
+    <ows:Keywords>
+      <ows:Keyword>Weather</ows:Keyword>
+      <ows:Keyword>Ocean</ows:Keyword>
+      <ows:Keyword>Radar</ows:Keyword>
+      <ows:Keyword>Observation</ows:Keyword>
+      <ows:Keyword>Forecast</ows:Keyword>
+      <ows:Keyword>Model</ows:Keyword>
+      <ows:Keyword>Hirlam</ows:Keyword>
+      <ows:Type>String</ows:Type>
+    </ows:Keywords>
+    <ows:ServiceType>WFS</ows:ServiceType>
+    <ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
+    <ows:Fees>
+      The use of this service and the returned data is free-of-charge, but users must
+      register and agree to the terms of service to gain access to the data.
+    </ows:Fees>
+    <ows:AccessConstraints>
+
+
+1.1.2013
+
+1. General
+The use of the material is governed by the terms and conditions specified in this licence.
+
+The producer of the open data sets and the holder of copyright or database rights is the Finnish Meteorological Institute or the Finnish Transport Agency (hereinafter the Licensor).
+
+When used, the material or the service including or utilising the material must be accompanied by information on the original source and the date of the current version as follows:
+the producer of the material and the retrieval date;
+a note if the data have been adapted.
+The licensee refers to a natural or legal person who takes the material covered by this licence into use.
+
+The licensor does not charge a fee for using the material subject to this licence.
+
+By receiving the material, the licensee accepts the terms of this licence.
+
+2. Terms of use
+2.1. The right to use the material
+This licence grants a worldwide, free of charge, perpetual, non-exclusive right, under which the material received by the licensee can be freely:
+
+copied, distributed and published;
+adapted and utilised commercially and non-commercially;
+combined with other products; and
+used as part of an application or a service.
+2.2. The licensee’s obligations and responsibilities
+When using and transmitting the material or products made of the material, the licensee must:
+
+mention the original source of the material in accordance with Section 1. General;
+present a copy of this licence or a link to it;
+require that the attribution practice specified under Section 1. General of this licence is followed when the licensee grants licenses to a product or service that uses some or all of the material subject to this licence;
+remove the note of the original source if so required explicitly by the licensor.
+This licence does not create any cooperation or business relationship between the licensee and the licensor. In connection with the material, the licensee must not indicate that the licensor endorses or recommends the licensee’s use of the material.
+
+Malicious use of the download service maintained by the licensor is prohibited.
+
+2.3. The licensor’s obligations and responsibilities
+The licensor is responsible for ensuring that it has the right to grant a licence to the material specified in Section 1. General.
+
+The material is licensed ‘as is’ and the licensor is not liable for decisions made on the basis of the material, for any errors in the material, or for direct or indirect damage caused by the use of the material. The licensor does not grant any warranty for the material and does not guarantee that the material is accurate and up-to-date.
+
+The licensor does not guarantee that the material is constantly available, and the licensor may terminate the distribution of the material without prior notice. The licensor may also change the interface for downloading the material without prior notice.
+
+3. Applicable law
+This licence is governed by Finnish law.
+
+4. Changes to this licence
+At any time, the licensor may change the licence terms or may apply a different licence to the material. However, the terms of this licence continue to be applied to individual materials that had already been downloaded when the licence changed.
+
+
+</ows:AccessConstraints>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName>Finnish Meteorological Institute</ows:ProviderName>
+    <ows:ProviderSite xlink:href="http://en.ilmatieteenlaitos.fi"/>
+    <ows:ServiceContact>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>+358 29 539 1000</ows:Voice>
+          <ows:Facsimile>+358 29 539 2303</ows:Facsimile>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>P.O. BOX 503</ows:DeliveryPoint>
+          <ows:City>Helsinki</ows:City>
+          <ows:AdministrativeArea>Uusimaa</ows:AdministrativeArea>
+          <ows:PostalCode>00101</ows:PostalCode>
+          <ows:Country>Finland</ows:Country>
+          <ows:ElectronicMailAddress>avoin-data@fmi.fi</ows:ElectronicMailAddress>
+        </ows:Address>
+
+        <ows:OnlineResource xlink:href="http://en.ilmatieteenlaitos.fi/open-data"/>
+        <ows:ContactInstructions>
+
+          For technical help or error reports considering FMI Open Data Web Services, please consult our web page http://en.ilmatieteenlaitos.fi/open-data
+
+        </ows:ContactInstructions>
+      </ows:ContactInfo>
+      <ows:Role>PointOfContact</ows:Role>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://data.fmi.fi/fmi-apikey//wfs/eng"/>
+          <ows:Post xlink:href="http://data.fmi.fi/fmi-apikey//wfs/eng"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="AcceptVersions">
+        <ows:AllowedValues>
+          <ows:Value>2.0.0</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="DescribeFeatureType">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://data.fmi.fi/fmi-apikey//wfs/eng"/>
+          <ows:Post xlink:href="http://data.fmi.fi/fmi-apikey//wfs/eng"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="ListStoredQueries">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://data.fmi.fi/fmi-apikey//wfs/eng"/>
+          <ows:Post xlink:href="http://data.fmi.fi/fmi-apikey//wfs/eng"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="DescribeStoredQueries">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://data.fmi.fi/fmi-apikey//wfs/eng"/>
+          <ows:Post xlink:href="http://data.fmi.fi/fmi-apikey//wfs/eng"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="GetPropertyValue">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://data.fmi.fi/fmi-apikey//wfs/eng"/>
+          <ows:Post xlink:href="http://data.fmi.fi/fmi-apikey//wfs/eng"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="GetFeature">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://data.fmi.fi/fmi-apikey//wfs/eng"/>
+          <ows:Post xlink:href="http://data.fmi.fi/fmi-apikey//wfs/eng"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Parameter name="version">
+      <ows:AllowedValues>
+        <ows:Value>2.0.0</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+    <!--
+      *****************************************************
+    -->
+    <!--
+      * CONFORMANCE DECLARATION *
+    -->
+    <!--
+      *****************************************************
+    -->
+    <ows:Constraint name="ImplementsBasicWFS">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsTransactionalWFS">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsLockingWFS">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="KVPEncoding">
+      <ows:NoValues/>
+      <ows:DefaultValue>TRUE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="XMLEncoding">
+      <ows:NoValues/>
+      <ows:DefaultValue>TRUE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="SOAPEncoding">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsInheritance">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsRemoteResolve">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsResultPaging">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsStandardJoins">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsSpatialJoins">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsTemporalJoins">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsFeatureVersioning">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ManageStoredQueries">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+
+    <!-- Limited by estimation calculated before actual data quarry as following: 
+     time steps * locations * parameters. -->
+    <ows:Constraint name="CountDefault">
+      <ows:NoValues/>
+      <ows:DefaultValue>20000</ows:DefaultValue>
+    </ows:Constraint>
+
+    <!-- Support only StoredQueries -->
+    <ows:Constraint name="QueryExpressions">
+      <ows:AllowedValues>
+        <ows:Value>wfs:StoredQuery</ows:Value>
+      </ows:AllowedValues>
+    </ows:Constraint>
+
+    <!--
+      *****************************************************
+    -->
+   <!-- * INSPIRE extended capabilities
+   -->
+    <!--
+      *****************************************************
+    -->
+    <ows:ExtendedCapabilities>
+      <inspire_dls:ExtendedCapabilities>
+        <inspire_common:MetadataUrl>
+          <inspire_common:URL>http://catalog.fmi.fi/geonetwork/srv/en/csw?SERVICE=CSW&amp;VERSION=2.0.2&amp;REQUEST=GetRecordById&amp;ID=9fec2667-ccdd-431b-99e0-fd2ed5de4ca1&amp;outputSchema=http://www.isotc211.org/2005/gmd&amp;elementSetName=full</inspire_common:URL>
+          <inspire_common:MediaType>application/gml+xml</inspire_common:MediaType>
+        </inspire_common:MetadataUrl>
+        <!-- Language support -->
+        <inspire_common:SupportedLanguages>
+          <inspire_common:DefaultLanguage>
+            <inspire_common:Language>fin</inspire_common:Language>
+          </inspire_common:DefaultLanguage>
+          <inspire_common:SupportedLanguage>
+            <inspire_common:Language>eng</inspire_common:Language>
+          </inspire_common:SupportedLanguage>
+        </inspire_common:SupportedLanguages>
+        <!-- The language of this response document: -->
+        <inspire_common:ResponseLanguage>
+          <inspire_common:Language>eng</inspire_common:Language>
+        </inspire_common:ResponseLanguage>
+
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000549</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000550</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000551</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000552</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000554</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000555</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000556</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000557</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000558</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000559</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000560</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000561</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code>1000565</inspire_common:Code>
+          <inspire_common:Namespace>FI</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+
+      </inspire_dls:ExtendedCapabilities>
+    </ows:ExtendedCapabilities>
+  </ows:OperationsMetadata>
+
+  <!-- Returned FeatureTypes -->
+  <FeatureTypeList>
+    <FeatureType xmlns:wfsns001="http://inspire.ec.europa.eu/schemas/omso/2.0rc3" xsi:schemaLocation="http://inspire.ec.europa.eu/schemas/omso/2.0rc3 http://inspire.ec.europa.eu/draft-schemas/omso/2.0rc3/SpecialisedObservations.xsd">
+      <Name>wfsns001:GridSeriesObservation</Name>
+      <Title>Observation</Title>
+      <Abstract>Timeseries data of surface weather observations from meteorological and road
+        weather observation stations, as well as air quality measurement stations, as well as
+        point forecasts of the basic surface weather parameters for the major towns and cities
+        in Finland. Each of these features contains measured or predicted atmospheric property
+        values from one station over the requested time period and resolution.</Abstract>
+      <DefaultCRS>http://www.opengis.net/def/crs/EPSG/0/4258</DefaultCRS>
+      <OtherCRS>http://www.opengis.net/def/crs/EPSG/0/4326</OtherCRS>
+      <OtherCRS>http://www.opengis.net/def/crs/EPSG/0/3035</OtherCRS>
+      <OtherCRS>http://www.opengis.net/def/crs/EPSG/0/3067</OtherCRS>
+      <OtherCRS>http://www.opengis.net/def/crs/EPSG/0/3047</OtherCRS>
+      <OtherCRS>http://www.opengis.net/def/crs/EPSG/0/2393</OtherCRS>
+      <OtherCRS>http://www.opengis.net/def/crs/EPSG/0/3857</OtherCRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-180 -90</ows:LowerCorner>
+        <ows:UpperCorner>180 90</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType xmlns:wfsns001="http://inspire.ec.europa.eu/schemas/omso/2.0rc3" xsi:schemaLocation="http://inspire.ec.europa.eu/schemas/omso/2.0rc3 http://inspire.ec.europa.eu/draft-schemas/omso/2.0rc3/SpecialisedObservations.xsd">
+      <Name>wfsns001:PointTimeSeriesObservation</Name>
+      <Title>Observation</Title>
+      <Abstract>Timeseries data of surface weather observations from meteorological and
+        road weather observation stations, as well as air quality measurement stations,
+        as well as point forecasts of the basic surface weather parameters for the major
+        towns and cities in Finland. Each of these features contains measured or
+        predicted atmospheric property values from one station over the requested time
+        period and resolution.</Abstract>
+      <DefaultCRS>http://www.opengis.net/def/crs/EPSG/0/4258</DefaultCRS>
+      <OtherCRS>http://www.opengis.net/def/crs/EPSG/0/4326</OtherCRS>
+      <OtherCRS>http://www.opengis.net/def/crs/EPSG/0/3035</OtherCRS>
+      <OtherCRS>http://www.opengis.net/def/crs/EPSG/0/3067</OtherCRS>
+      <OtherCRS>http://www.opengis.net/def/crs/EPSG/0/3047</OtherCRS>
+      <OtherCRS>http://www.opengis.net/def/crs/EPSG/0/2393</OtherCRS>
+      <OtherCRS>http://www.opengis.net/def/crs/EPSG/0/3857</OtherCRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-180 -90</ows:LowerCorner>
+        <ows:UpperCorner>180 90</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    
+  </FeatureTypeList>
+
+  <fes:Filter_Capabilities>
+    <fes:Conformance>
+      <fes:Constraint name="ImplementsQuery">
+        <ows:NoValues/>
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsAdHocQuery">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsFunctions">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsMinStandardFilter">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsStandardFilter">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsMinSpatialFilter">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsSpatialFilter">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsMinTemporalFilter">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsTemporalFilter">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsVersionNav">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsSorting">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsExtendedOperators">
+        <ows:NoValues/>
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+    </fes:Conformance>
+  </fes:Filter_Capabilities>
+</WFS_Capabilities>

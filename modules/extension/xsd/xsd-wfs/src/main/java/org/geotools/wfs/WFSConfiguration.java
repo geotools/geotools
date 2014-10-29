@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -61,6 +61,7 @@ import org.geotools.wfs.bindings.WFS_CapabilitiesTypeBinding;
 import org.geotools.wfs.bindings._XlinkPropertyNameBinding;
 import org.geotools.wfs.v2_0.bindings.QueryExpressionTextDelegate;
 import org.geotools.xml.Configuration;
+import org.geotools.xml.XSD;
 import org.picocontainer.MutablePicoContainer;
 
 
@@ -79,7 +80,7 @@ public abstract class WFSConfiguration extends Configuration {
      *
      * @generated
      */
-    protected WFSConfiguration(WFS wfs) {
+    protected WFSConfiguration(XSD wfs) {
         super(wfs);
     }
 

@@ -83,6 +83,23 @@ public class GeoPackageTest {
         assertTableExists("gpkg_contents");
         assertTableExists("gpkg_geometry_columns");
         assertTableExists("gpkg_spatial_ref_sys");
+        assertApplicationId();
+    }
+    
+    void assertApplicationId() throws Exception {
+        Connection cx = geopkg.getDataSource().getConnection();
+        Statement st = cx.createStatement();
+        try {
+            ResultSet rs = st.executeQuery("PRAGMA application_id;");
+            assertEquals(rs.getInt(1), 0x47503130);
+        }
+        catch(Exception e) {
+            fail(e.getMessage());
+        }
+        finally {
+            st.close();
+            cx.close();
+        }
     }
 
     void assertTableExists(String table) throws Exception {

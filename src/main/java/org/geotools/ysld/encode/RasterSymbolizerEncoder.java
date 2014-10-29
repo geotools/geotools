@@ -14,14 +14,27 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         super(sym);
     }
 
+    private boolean emptyColourMap(ColorMap map) {
+        if(map==null) return true;
+        ColorMapEntry[] entries = map.getColorMapEntries();
+        if(entries==null) return true;
+        return map.getColorMapEntries().length==0;
+    }
+    private boolean emptyContrastEnhancement(ContrastEnhancement ch) {
+        if(ch==null) return true;
+        if(ch.getMethod()==null) return true;
+        if(ch.getGammaValue()==null) return true;
+        return false;
+    }
+    
     @Override
     protected void encode(RasterSymbolizer sym) {
         put("opacity", sym.getOpacity());
-        if (sym.getColorMap() != null) {
+        if (!emptyColourMap(sym.getColorMap())) {
             inline(new ColorMapEncoder(sym.getColorMap()));
         }
 
-        if (sym.getContrastEnhancement() != null) {
+        if (!emptyContrastEnhancement(sym.getContrastEnhancement())) {
             inline(new ContrastEnhancementEncoder(sym.getContrastEnhancement()));
         }
 

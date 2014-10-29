@@ -9,15 +9,18 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UserLayer;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlSeq;
 import org.geotools.ysld.Ysld;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 import org.opengis.style.GraphicalSymbol;
+import org.opengis.style.RasterSymbolizer;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -27,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class YsldEncodeTest {
 
@@ -170,4 +174,68 @@ public class YsldEncodeTest {
         assertEquals( "name", yaml.lookup("feature-styles/0/rules/0/symbolizers/1/text/label") );
         assertEquals( "circle",  yaml.lookup("feature-styles/0/rules/0/symbolizers/1/text/symbols/0/mark/shape") );
     }
+    
+    @Test
+    public void testEmptyColorMap() throws Exception {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+
+        UserLayer layer = styleFactory.createUserLayer();
+        sld.layers().add(layer);
+
+        Style style = styleFactory.createStyle();
+        layer.userStyles().add(style);
+
+        Rule rule = styleFactory.createRule();
+
+        style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
+        style.featureTypeStyles().get(0).rules().add(rule);
+
+        
+        RasterSymbolizer symb = styleFactory.createRasterSymbolizer();
+        
+        rule.symbolizers().add((Symbolizer)symb);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
+        
+        assertFalse(symbMap.has("color-map"));
+    }
+    @Test
+    public void testEmptyContrastEnhancement() throws Exception {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+
+        UserLayer layer = styleFactory.createUserLayer();
+        sld.layers().add(layer);
+
+        Style style = styleFactory.createStyle();
+        layer.userStyles().add(style);
+
+        Rule rule = styleFactory.createRule();
+
+        style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
+        style.featureTypeStyles().get(0).rules().add(rule);
+
+        
+        RasterSymbolizer symb = styleFactory.createRasterSymbolizer();
+        
+        rule.symbolizers().add((Symbolizer)symb);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
+        
+        assertFalse(symbMap.has("contrast-enhancement"));
+    }
+
 }

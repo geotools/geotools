@@ -924,7 +924,7 @@ public class Utils {
 		final WritableRaster raster = RasterFactory.createWritableRaster(sm,
 				null);
 		final BufferedImage sampleImage = new BufferedImage(defaultCM, raster,
-				defaultCM.isAlphaPremultiplied(), null);
+				false, null);
 
 		// serialize it
 		OutputStream outStream = null;

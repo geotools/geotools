@@ -139,8 +139,6 @@ public class ImageMosaicReaderTest extends Assert{
 
 	private URL rgbAURL;
 
-	private URL rgbAURLTiff;
-
 	private URL overviewURL;
 
 	static boolean INTERACTIVE;
@@ -1750,7 +1748,6 @@ public class ImageMosaicReaderTest extends Assert{
 		index_unique_paletteAlphaURL = TestData.url(this,"index_alpha_unique_palette/");
 		
 		imposedEnvelopeURL=TestData.url(this,"env");
-		rgbAURLTiff = TestData.url(this, "tiff_rgba/");
 	
 	}
 
@@ -2040,66 +2037,7 @@ public class ImageMosaicReaderTest extends Assert{
             reader.dispose();
         }
     }
-
-    @Test
-    public void testHarvestSingleFileRGBA() throws Exception {
-        File source = DataUtilities.urlToFile(rgbAURLTiff);
-        File testDataDir = TestData.file(this, ".");
-        File directory1 = new File(testDataDir, "singleHarvestRGBA1");
-        File directory2 = new File(testDataDir, "singleHarvestRGBA2");
-        if (directory1.exists()) {
-            FileUtils.deleteDirectory(directory1);
-        }
-        FileUtils.copyDirectory(source, directory1);
-        // remove all mosaic related files
-        for (File file : FileUtils.listFiles(directory1, new RegexFileFilter("rgba.*"), null)) {
-            assertTrue(file.delete());
-        }
-        // move this file to another dir, we'll harvest it later
-        String fileNameToMove = "passA2006128211927.tiff";
-        File monthFive = new File(directory1, fileNameToMove);
-        if (directory2.exists()) {
-            FileUtils.deleteDirectory(directory2);
-        }
-        directory2.mkdirs();
-        File renamed = new File(directory2, fileNameToMove);
-        assertTrue(monthFive.renameTo(renamed));
-
-        // ok, let's create a mosaic with a single granule and check its times
-        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
-        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
-        ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
-        try {
-
-            // now go and harvest the other file
-            List<HarvestedSource> summary = reader.harvest(null, renamed, null);
-            assertEquals(1, summary.size());
-            HarvestedSource hf = summary.get(0);
-            assertEquals(renamed.getCanonicalFile(), ((File) hf.getSource()).getCanonicalFile());
-            assertTrue(hf.success());
-
-            // check the granule catalog
-            String coverageName = reader.getGridCoverageNames()[0];
-            GranuleSource granules = reader.getGranules(coverageName, true);
-            assertEquals(2, granules.getCount(Query.ALL));
-            Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
-                assertTrue(fi.hasNext());
-                SimpleFeature f = fi.next();
-                assertEquals("passA2006128194218.tiff", f.getAttribute("location"));
-                f = fi.next();
-                String expected = "../singleHarvestRGBA2/passA2006128211927.tiff".replace('/',
-                        File.separatorChar);
-                assertEquals(expected, f.getAttribute("location"));
-            } finally {
-                fi.close();
-            }
-        } finally {
-            reader.dispose();
-        }
-    }
-
+    
     @Test
     public void testHarvestMultipleFiles() throws Exception {
         File source = DataUtilities.urlToFile(timeURL);

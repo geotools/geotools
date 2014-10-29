@@ -76,7 +76,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     protected static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.data.complex");
     
-    protected FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
+    private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
     
     protected FeatureTypeFactory ftf = new ComplexFeatureTypeFactoryImpl();
 
@@ -156,8 +156,8 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     }
     
     public AbstractMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query, Query unrolledQuery, boolean hasPostFilter) throws IOException {
-        this(store, mapping, query, unrolledQuery, false, hasPostFilter);
+            Query query, Query unrolledQuery, boolean removeQueryLimitIfDenormalised) throws IOException {
+        this(store, mapping, query, unrolledQuery, removeQueryLimitIfDenormalised, false);
     }
 
 
@@ -189,7 +189,15 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         
         Object includeProps = query.getHints().get(Query.INCLUDE_MANDATORY_PROPS);
         includeMandatory = includeProps instanceof Boolean && ((Boolean)includeProps).booleanValue();
-               
+        
+        // NC - property names
+        if (query != null && query.getProperties() != null) {
+            setPropertyNames(query.getProperties());
+        } else {
+            setPropertyNames(null); // we need the actual property names (not surrogates) to do
+                                    // this...
+        }
+        
         if (mapping.isDenormalised()) {
             // we need to disable the max number of features retrieved so we can
             // sort them manually just in case the data is denormalised.  Do this
@@ -198,10 +206,10 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             // this.requestMaxFeatures in the constructor and will be re-applied after
             // the rows have been returned
             if (removeQueryLimitIfDenormalised) {
-                this.dataMaxFeatures = 1000000;
+                this.dataMaxFeatures = Query.DEFAULT_MAX;
                 if (hasPostFilter) {
                    // true max features will be handled in PostFilteringMappingFeatureIterator
-                   this.requestMaxFeatures = 1000000;
+                   this.requestMaxFeatures = Query.DEFAULT_MAX;
                 } else {
                     this.requestMaxFeatures = query.getMaxFeatures(); 
                 }
@@ -216,14 +224,6 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                 
         if (unrolledQuery==null) {
             unrolledQuery = getUnrolledQuery(query);
-        }       
-        
-         // NC - property names
-        if (query != null && query.getProperties() != null) {
-            setPropertyNames(query.getProperties());
-        } else {
-            setPropertyNames(null); // we need the actual property names (not surrogates) to do
-                                    // this...
         }
         xpathAttributeBuilder = new XPath();
         xpathAttributeBuilder.setFeatureFactory(attf);
@@ -611,4 +611,13 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     protected abstract Feature computeNext() throws IOException;   
 
     public abstract boolean hasNext();
+
+//    public int getRequestMaxFeatures() {
+//        return requestMaxFeatures;
+//    }
+//
+//    public int getDataMaxFeatures() {
+//        return dataMaxFeatures;
+//    }
+
 }

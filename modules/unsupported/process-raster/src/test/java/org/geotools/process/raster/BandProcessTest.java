@@ -29,27 +29,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.jai.JAI;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.BandMergeDescriptor;
 import javax.media.jai.operator.CropDescriptor;
 import javax.media.jai.operator.MeanDescriptor;
 import javax.media.jai.operator.SubtractDescriptor;
 import javax.media.jai.operator.TranslateDescriptor;
-import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
-import org.geotools.image.jai.Registry;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
 import org.jaitools.imageutils.ROIGeometry;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -88,11 +82,6 @@ public class BandProcessTest {
     @BeforeClass
     public static void setup() throws FileNotFoundException, IOException,
             NoninvertibleTransformException {
-        // Disable medialib
-        System.setProperty("com.sun.media.jai.disableMediaLib", "true");
-        // Disable bandmerge and mosaic native operation
-        Registry.setNativeAccelerationAllowed("BandMerge", false);
-        Registry.setNativeAccelerationAllowed("Mosaic", false);
         // First file selection
         File input = TestData.file(BandProcessTest.class, "sample.tif");
         AbstractGridFormat format = GridFormatFinder.findFormat(input);
@@ -115,15 +104,6 @@ public class BandProcessTest {
         coverage3 = (GridCoverage2D) reader.read(null);
         // Reader disposal
         reader.dispose();
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        // Enable medialib
-        System.setProperty("com.sun.media.jai.disableMediaLib", "false");
-        // Enable bandmerge and mosaic native operation
-        Registry.setNativeAccelerationAllowed("BandMerge", true);
-        Registry.setNativeAccelerationAllowed("Mosaic", true);
     }
 
     // Ensure that the merging and selecting two equal images returns the same images

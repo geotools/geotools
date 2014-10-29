@@ -43,6 +43,7 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -152,11 +153,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         join.setForeignKeyName(sourceExpression);
         join.setJoiningKeyName(nestedSourceExpression);
         join.setJoiningTypeName(instance.baseTableQuery.getTypeName());
-        join.setDenormalised(fMapping.isDenormalised());
-        join.setSortBy(instance.baseTableQuery.getSortBy()); // incorporate order 
-        // pass on paging from the parent table to the same query within this join
-        join.setMaxFeatures(instance.baseTableQuery.getMaxFeatures());
-        join.setStartIndex(instance.baseTableQuery.getStartIndex());
+        join.setSortBy(instance.baseTableQuery.getSortBy()); // incorporate order      
         FilterAttributeExtractor extractor = new FilterAttributeExtractor();
         instance.mapping.getFeatureIdExpression().accept(extractor, null);
         for (String pn : extractor.getAttributeNameSet()) {
@@ -165,7 +162,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         joins.add(0, join);
         query.setQueryJoins(joins);
         
-        if (selectedProperties != null && !selectedProperties.isEmpty()) {
+        if (selectedProperties != null) {
             selectedProperties = new ArrayList<PropertyName>(selectedProperties);
             selectedProperties.add(filterFac.property(this.nestedTargetXPath.toString()));
         }

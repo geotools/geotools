@@ -1,12 +1,8 @@
 package org.geotools.ysld.validate;
 
-import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.ysld.Ysld;
-import org.geotools.ysld.parse.Factory;
-import org.geotools.ysld.parse.Util;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
@@ -18,7 +14,6 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 public class YsldValidateTest {
 

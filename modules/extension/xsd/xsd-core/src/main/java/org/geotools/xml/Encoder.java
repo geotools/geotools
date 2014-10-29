@@ -591,7 +591,7 @@ public class Encoder {
             throw new IOException(e);
         }
         xmls.getTransformer().setOutputProperties(outputProps);
-        xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "xml");
+        xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
         xmls.setResult(new StreamResult(out));
         
         //TODO
@@ -1367,11 +1367,9 @@ O:
             return "CDATA"; //TODO: this properly
         }
 
-	public String getURI(int index) {
-	    String uri = atts.item(index).getNamespaceURI();
-	    if (uri == null) uri = "";
-	    return uri;
-	} 
+        public String getURI(int index) {
+            return atts.item(index).getNamespaceURI();
+        }
 
         public String getValue(int index) {
             return atts.item(index).getNodeValue();

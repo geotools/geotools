@@ -704,7 +704,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         requestTrace("Encoded ", request.getOperation(), " request: ", out);
 
-        //System.err.println(out.toString());
+        System.err.println(out.toString());
         
         return new ByteArrayInputStream(out.toByteArray());
 

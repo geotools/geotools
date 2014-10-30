@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
@@ -22,7 +20,6 @@ public class RootParser extends YsldParseHandler {
         super(new Factory());
         this.zCtxtFinders=new ArrayList<>(zCtxtFinders.size()+1);
         this.zCtxtFinders.addAll(zCtxtFinders);
-        this.zCtxtFinders.add(WellKnownZoomContextFinder.getInstance());
     }
 
     @Override
@@ -67,20 +64,12 @@ public class RootParser extends YsldParseHandler {
     }
     
     final List<ZoomContextFinder> zCtxtFinders; 
-    protected @Nullable ZoomContext getNamedZoomContext(String name){
-        for(ZoomContextFinder finder: zCtxtFinders) {
-            ZoomContext found = finder.get(name);
-            if(found!=null) {
-                return found;
-            }
-        }
-        return null;
-    }
+    
     @SuppressWarnings("unchecked")
     protected ZoomContext getZoomContext(YamlMap map) {
         ZoomContext result = null;
         if(map.has("name")) {
-            result = getNamedZoomContext(map.str("name"));
+            result = Util.getNamedZoomContext(map.str("name"), zCtxtFinders);
         }
         
         if(result==null && map.has("scales")) {
@@ -109,9 +98,7 @@ public class RootParser extends YsldParseHandler {
         return result;
     }
     
-
     
-
     public FeatureTypeStyle newFeatureTypeStyle() {
         FeatureTypeStyle fts = factory.style.createFeatureTypeStyle();
         style.featureTypeStyles().add(fts);

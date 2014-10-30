@@ -196,4 +196,14 @@ public class Util {
         }
         throw new NullPointerException();
     }
+
+    public static @Nullable ZoomContext getNamedZoomContext(String name, List<ZoomContextFinder> zCtxtFinders){
+        for(ZoomContextFinder finder: zCtxtFinders) {
+            ZoomContext found = finder.get(name);
+            if(found!=null) {
+                return found;
+            }
+        }
+        return WellKnownZoomContextFinder.getInstance().get(name);
+    }
 }

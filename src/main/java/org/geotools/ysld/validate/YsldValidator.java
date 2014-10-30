@@ -1,5 +1,6 @@
 package org.geotools.ysld.validate;
 
+import org.geotools.ysld.parse.ZoomContextFinder;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
 import org.yaml.snakeyaml.events.AliasEvent;
@@ -12,12 +13,16 @@ import org.yaml.snakeyaml.events.SequenceStartEvent;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Collections;
 import java.util.List;
 
 public class YsldValidator {
-
+    
+    List<ZoomContextFinder> zCtxtFinders = Collections.emptyList();
+    
     public List<MarkedYAMLException> validate(Reader input) throws IOException {
         YsldValidateContext context = new YsldValidateContext();
+        context.zCtxtFinders = this.zCtxtFinders;
         context.push(new RootValidator());
 
         try {
@@ -56,5 +61,10 @@ public class YsldValidator {
         }
 
         return context.errors();
+    }
+
+    public void setZCtxtFinders(List<ZoomContextFinder> zCtxtFinders) {
+        if(zCtxtFinders==null) throw new NullPointerException("zCtxtFinders can not be null");
+        this.zCtxtFinders = zCtxtFinders;
     }
 }

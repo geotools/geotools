@@ -111,12 +111,49 @@ public class YsldValidateTest {
             assertThat(errors.get(i).getProblemMark(), problemOn(i*2+firstErrorLine));
         }
     }
+    
+    @Test
+    public void testWellKnownZoomContext() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "grid:\n"+
+                "  name: EPSG:4326\n");
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors.size(), is(0));
+    }
+    
+    @Test
+    public void testNotWellKnownZoomContext() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "grid:\n"+
+                "  name: SIGMA:957\n");
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors.size(), is(1));
+        
+        assertThat(errors.get(0).getProblemMark(), problemOn(2));
+    }
 
     List<MarkedYAMLException> dump(List<MarkedYAMLException> errors) {
         for (MarkedYAMLException e : errors) {
             System.out.println(e.toString());
         }
         return errors;
+    }
+    
+    @Test
+    public void testWellKnownZoomContextWithOtherError() throws Exception {
+        // Making sure that doing the grid validation doesn't screw up other validation later
+        StringBuilder builder =  new StringBuilder();
+        builder.append("grid:\n");
+        builder.append("  name: EPSG:4326\n");
+        builder.append("filter: foo\n");
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors.size(), is(1));
+        assertThat(errors.get(0).getProblemMark(), problemOn(3));
     }
 
     List<MarkedYAMLException> validate(String ysld) throws IOException {

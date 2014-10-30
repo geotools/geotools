@@ -13,6 +13,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -181,9 +182,25 @@ public class Ysld {
      * @return List of marked exceptions corresponding to validation errors.
      */
     public static List<MarkedYAMLException> validate(Object ysld) throws IOException {
+        
+        return validate(ysld, Collections.<ZoomContextFinder>emptyList());
+        
+    }
+    
+    /**
+     * Validates a Ysld stream.
+     *
+     * @param ysld The Ysld.
+     * @param zContextFinders additional zoom context finders in order of priority.
+     * 
+     * @return List of marked exceptions corresponding to validation errors.
+     */
+    public static List<MarkedYAMLException> validate(Object ysld, List<ZoomContextFinder> zContextFinders) throws IOException {
         YsldInput in = reader(ysld);
         try {
-            return new YsldValidator().validate(in.reader);
+            YsldValidator validator = new YsldValidator();
+            validator.setZCtxtFinders(zContextFinders);
+            return validator.validate(in.reader);
         }
         finally {
             in.close();;

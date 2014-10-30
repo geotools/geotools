@@ -23,6 +23,9 @@ public class RootValidator extends YsldValidateHandler {
         }
         else if (EXPRESSION.matcher(key).matches()) {
             context.push(new ExpressionValidator());
+        } else if ("grid".equals(key)) {
+            context.push(new GridValidator());
         }
     }
+    
 }

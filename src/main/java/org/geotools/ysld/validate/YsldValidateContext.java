@@ -1,11 +1,13 @@
 package org.geotools.ysld.validate;
 
 import org.geotools.ysld.parse.Factory;
+import org.geotools.ysld.parse.ZoomContextFinder;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
@@ -16,6 +18,8 @@ public class YsldValidateContext {
     List<MarkedYAMLException> errors = new ArrayList<>();
 
     Factory factory = new Factory();
+
+    List<ZoomContextFinder> zCtxtFinders = Collections.emptyList();
 
     public List<MarkedYAMLException> errors() {
         return errors;

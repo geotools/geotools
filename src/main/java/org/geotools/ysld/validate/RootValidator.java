@@ -10,7 +10,7 @@ public class RootValidator extends YsldValidateHandler {
     // Colour Expressions
     static Pattern COLOR = Pattern.compile("(?:fill|stroke)-color");
     // Name expressions
-    static Pattern NAME = Pattern.compile("shape|font-(?:family|style|weight)");
+    static Pattern NAME = Pattern.compile("shape|font-(?:family|style|weight)|stroke(?:linecap|linejoin)");
     // General expressions
     static Pattern EXPRESSION = Pattern.compile("stroke-(?:width|opacity|linejoin|linecap|dashoffset)|offset|shape|gamma|geometry|label|font-(?:family|size|style|weight)|size|rotation|gap|initial-gap|radius|opacity");
     

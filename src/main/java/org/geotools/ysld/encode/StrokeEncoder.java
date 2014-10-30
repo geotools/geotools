@@ -14,7 +14,7 @@ public class StrokeEncoder extends YsldEncodeHandler<Stroke> {
         put("stroke-width", stroke.getWidth());
         put("stroke-opacity", nullIf(stroke.getOpacity(), 1d));
         put("stroke-linejoin", nullIf(stroke.getLineJoin(), "miter"));
-        put("stroke-linecap", nullIf(stroke.getLineCap(), "butt"));
+        putName("stroke-linecap", nullIf(stroke.getLineCap(), "butt"));
         put("stroke-dasharray", toStringOrNull(stroke.getDashArray()));
         put("stroke-dashoffset", nullIf(stroke.getDashOffset(), 0));
 

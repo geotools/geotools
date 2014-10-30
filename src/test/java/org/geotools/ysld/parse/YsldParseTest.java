@@ -1,7 +1,5 @@
 package org.geotools.ysld.parse;
 
-import org.geotools.filter.AttributeExpressionImpl;
-import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.process.function.ProcessFunction;
 import org.geotools.styling.FeatureTypeStyle;

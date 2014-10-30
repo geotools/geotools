@@ -128,7 +128,7 @@ public class YsldEncodeTest {
         Function p3 = filterFactory.function("parameter",
                 filterFactory.literal("radius"), filterFactory.literal("100"));
         Function p4 = filterFactory.function("parameter",
-                filterFactory.literal("pixelsPerCell"), filterFactory.literal("10"));
+                filterFactory.literal("pixelsPerCell"), filterFactory.literal(10));
 
         Function rt = filterFactory.function("vec:Heatmap", p1, p2, p3, p4);
         featureStyle.setTransformation(rt);
@@ -141,7 +141,7 @@ public class YsldEncodeTest {
         assertEquals("vec:Heatmap", tx.get("name"));
 
         YamlMap params = tx.map("params");
-        assertEquals("pop2000", params.get("weightAttr"));
+        assertEquals("'pop2000'", params.get("weightAttr"));
         assertEquals("100", params.str("radius"));
         assertEquals("10", params.str("pixelsPerCell"));
 
@@ -222,6 +222,22 @@ public class YsldEncodeTest {
     }
     
     @Test
+    public void testNameExpressionLiteral() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        Expression nameExpression = CommonFactoryFinder.getFilterFactory2().literal("test");
+        Mark mark = CommonFactoryFinder.getStyleFactory().createMark();
+        mark.setWellKnownName(nameExpression);
+        p.getGraphic().graphicalSymbols().add(mark);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(p), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").seq("symbols").map(0).map("mark").str("shape");
+        
+        assertThat(result, equalTo("test"));
+    }
+    @Test
     public void testNameExpressionAttribute() throws Exception {
         PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression nameExpression = CommonFactoryFinder.getFilterFactory2().property("test");
@@ -236,6 +252,35 @@ public class YsldEncodeTest {
         String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").seq("symbols").map(0).map("mark").str("shape");
         
         assertThat(result, equalTo("[test]"));
+    }
+    
+    @Test
+    public void testNonNameExpressionLiteral() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        Expression expression = CommonFactoryFinder.getFilterFactory2().literal("test");
+        p.setGeometry(expression);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(p), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").str("geometry");
+        
+        assertThat(result, equalTo("'test'"));
+    }
+    @Test
+    public void testNonNameExpressionAttribute() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        Expression expression = CommonFactoryFinder.getFilterFactory2().property("test");
+        p.setGeometry(expression);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(p), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").str("geometry");
+        
+        assertThat(result, equalTo("test"));
     }
 
     StyledLayerDescriptor sld(Symbolizer sym) {

@@ -138,7 +138,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     Object toColorOrNull(Expression expr) {
         Object obj = toObjOrNull(expr, false);
         if (obj instanceof String && expr instanceof Literal) {
-            String str = obj.toString();
+            String str = this.stripQuotes(obj.toString());
             if (str.startsWith("#")) {
                 obj = str.substring(1);
             }
@@ -148,34 +148,51 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     Object toObjOrNull(Expression expr) {
         return toObjOrNull(expr, false);
     }
-    Object toObjOrNull(Expression expr, boolean explicitAttribute) {
+    
+    
+    Object makeNumberIfPossible(String str) {
+        if(str==null) return null;
+        
+        try {
+            return Long.parseLong(str);
+        }
+        catch(NumberFormatException e1) {
+            try {
+                return Double.parseDouble(str);
+            }
+            catch(NumberFormatException e2) {
+                if ("true".equalsIgnoreCase(str) || "false".equalsIgnoreCase(str)) {
+                    return Boolean.parseBoolean(str);
+                }
+            }
+        }
+        return str;
+    }
+    boolean isNumericLiteral(Expression expr) {
+        if(expr==null) return false;
+        if(!(expr instanceof Literal)) return false;
+        Object value = ((Literal) expr).getValue();
+        if(value instanceof Number) return true;
+        
+        if(value instanceof String && makeNumberIfPossible((String)value) instanceof Number) return true;
+        
+        return false;
+    }
+    
+    Object toObjOrNull(Expression expr, boolean isname) {
 
         String str = !isNull(expr) ? ECQL.toCQL(expr) : null;
-        if (str != null) {
+        if (expr instanceof Literal && str != null && (isname || isNumericLiteral(expr))) {
             str = stripQuotes(str);
         }
         
-        if(explicitAttribute && expr instanceof PropertyName && str!=null && !str.isEmpty() && !str.startsWith("[")) {
+        if(isname && expr instanceof PropertyName && str!=null && !str.isEmpty() && !str.startsWith("[")) {
             str = String.format("[%s]", str);
         }
-
-        if (str != null) {
-            try {
-                return Long.parseLong(str);
-            }
-            catch(NumberFormatException e1) {
-                try {
-                    return Double.parseDouble(str);
-                }
-                catch(NumberFormatException e2) {
-                    if ("true".equalsIgnoreCase(str) || "false".equalsIgnoreCase(str)) {
-                        return Boolean.parseBoolean(str);
-                    }
-                }
-            }
-        }
-
-        return str;
+        
+        Object result = makeNumberIfPossible(str);
+        
+        return result;
     }
     
     Object toObjOrNull(String text) {

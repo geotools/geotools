@@ -47,6 +47,8 @@ public class Util {
     }
     /**
      * Parses a name expression from its string representation.
+     * <p>
+     * Encode using YsldEncodeHandler.putName
      */
     public static Expression name(String value, Factory factory) {
         return name(value, false, factory);
@@ -95,6 +97,7 @@ public class Util {
      * when the string can not be parsed as a ECQL expression. When false it will
      * result in an exception thrown back.
      * </p>
+     * Encode using YsldEncodeHandler.putName
      */
     public static Expression name(String value, boolean safe, Factory factory) {
         try {

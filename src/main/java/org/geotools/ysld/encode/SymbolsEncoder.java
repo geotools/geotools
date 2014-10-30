@@ -25,7 +25,7 @@ public class SymbolsEncoder extends YsldEncodeHandler<GraphicalSymbol> {
     }
 
     SymbolsEncoder encode(Mark mark) {
-        put("shape", mark.getWellKnownName());
+        putName("shape", mark.getWellKnownName());
         inline(new StrokeEncoder(mark.getStroke()));
         inline(new FillEncoder(mark.getFill()));
         //encode("stroke", new StrokeEncoder(mark.getStroke()));

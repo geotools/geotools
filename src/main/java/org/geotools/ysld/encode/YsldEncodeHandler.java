@@ -4,6 +4,7 @@ import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.ysld.Tuple;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
@@ -73,16 +74,29 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         }
         return this;
     }
-
+    
+    /**
+     * Should be used to encode values parsed with Util.name
+     * @param key
+     * @param expr
+     * @return
+     */
+    YsldEncodeHandler<T> putName(String key, Expression expr) {
+        if (expr != null && expr != Expression.NIL) {
+            put(key, toObjOrNull(expr, true));
+        }
+        return this;
+    }
+    
     YsldEncodeHandler<T> put(String key, Expression expr) {
         if (expr != null && expr != Expression.NIL) {
-            put(key, toObjOrNull(expr));
+            put(key, toObjOrNull(expr, false));
         }
         return this;
     }
 
     YsldEncodeHandler<T> put(String key, Expression e1, Expression e2) {
-        Tuple t = Tuple.of(toObjOrNull(e1), toObjOrNull(e2));
+        Tuple t = Tuple.of(toObjOrNull(e1, false), toObjOrNull(e2, false));
         if (!t.isNull()) {
             put(key, t.toString());
         }
@@ -122,7 +136,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     }
 
     Object toColorOrNull(Expression expr) {
-        Object obj = toObjOrNull(expr);
+        Object obj = toObjOrNull(expr, false);
         if (obj instanceof String && expr instanceof Literal) {
             String str = obj.toString();
             if (str.startsWith("#")) {
@@ -131,11 +145,18 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         }
         return obj;
     }
-
     Object toObjOrNull(Expression expr) {
+        return toObjOrNull(expr, false);
+    }
+    Object toObjOrNull(Expression expr, boolean explicitAttribute) {
+
         String str = !isNull(expr) ? ECQL.toCQL(expr) : null;
         if (str != null) {
             str = stripQuotes(str);
+        }
+        
+        if(explicitAttribute && expr instanceof PropertyName && str!=null && !str.isEmpty() && !str.startsWith("[")) {
+            str = String.format("[%s]", str);
         }
 
         if (str != null) {

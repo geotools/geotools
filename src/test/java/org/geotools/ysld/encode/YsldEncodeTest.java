@@ -17,6 +17,7 @@ import org.geotools.styling.UserLayer;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlSeq;
 import org.geotools.ysld.Ysld;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
@@ -32,8 +33,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 
 public class YsldEncodeTest {
 
@@ -216,6 +219,23 @@ public class YsldEncodeTest {
         Ysld.encode(sld(p), out);
 
         System.out.println(out.toString());
+    }
+    
+    @Test
+    public void testNameExpressionAttribute() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        Expression nameExpression = CommonFactoryFinder.getFilterFactory2().property("test");
+        Mark mark = CommonFactoryFinder.getStyleFactory().createMark();
+        mark.setWellKnownName(nameExpression);
+        p.getGraphic().graphicalSymbols().add(mark);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(p), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").seq("symbols").map(0).map("mark").str("shape");
+        
+        assertThat(result, equalTo("[test]"));
     }
 
     StyledLayerDescriptor sld(Symbolizer sym) {

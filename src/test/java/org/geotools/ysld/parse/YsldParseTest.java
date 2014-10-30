@@ -1,5 +1,8 @@
 package org.geotools.ysld.parse;
 
+import org.geotools.filter.AttributeExpressionImpl;
+import org.geotools.filter.expression.PropertyAccessor;
+import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.process.function.ProcessFunction;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.PointSymbolizer;
@@ -7,6 +10,7 @@ import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
 import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.TextSymbolizer;
 import org.geotools.ysld.Ysld;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -18,9 +22,10 @@ import org.opengis.filter.expression.PropertyName;
 import org.geotools.styling.ColorMap;
 import org.opengis.style.RasterSymbolizer;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
@@ -30,7 +35,10 @@ import static org.geotools.ysld.TestUtils.appliesToScale;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.describedAs;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
@@ -129,7 +137,7 @@ public class YsldParseTest {
             "- transform:\n" +
             "    name: vec:Heatmap\n" +
             "    params:\n" +
-            "      weightAttr: pop2000\n" +
+            "      weightAttr: '''pop2000'''\n" +
             "      radius: 100\n" +
             "      pixelsPerCell: 10\n" +
             "      outputBBOX: wms_bbox\n" +
@@ -705,13 +713,13 @@ public class YsldParseTest {
     public void testColourMapValuesWithoutHash() throws Exception {
         String yaml =
                 "raster: \n" +
-                        "  color-map:\n" +
-                        "    type: values\n" +
-                        "    entries:\n" +
-                        "    - (ff0000, 1.0, 0, start)\n" +
-                        "    - (00ff00, 1.0, 500, middle)\n" +
-                        "    - (0000ff, 1.0, 1000, end)\n" +
-                        "";
+                "  color-map:\n" +
+                "    type: values\n" +
+                "    entries:\n" +
+                "    - (ff0000, 1.0, 0, start)\n" +
+                "    - (00ff00, 1.0, 500, middle)\n" +
+                "    - (0000ff, 1.0, 1000, end)\n" +
+                "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
@@ -728,8 +736,44 @@ public class YsldParseTest {
         assertThat(colour2, is(Color.GREEN));
         assertThat(colour3, is(Color.BLUE));
     }
-
+    
+    @SuppressWarnings("unchecked")
     @Test
+    public void testLabelConcat() throws Exception {
+        String yaml =
+                "text: \n" +
+                "  label: Concatenate('literal0',attribute1,'literal2')\n" +
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        TextSymbolizer symb = (TextSymbolizer) fs.rules().get(0).symbolizers().get(0);
+        
+        Expression label = symb.getLabel();
+        assertThat(label, instanceOf(ConcatenateFunction.class));
+        List<Expression> params = ((ConcatenateFunction)label).getParameters();
+        assertThat(params.size(), is(3));
+        assertThat(params.get(0), allOf(instanceOf(Literal.class), hasProperty("value", equalTo("literal0"))));
+        assertThat(params.get(1), allOf(instanceOf(PropertyName.class), hasProperty("propertyName", equalTo("attribute1"))));
+        assertThat(params.get(2), allOf(instanceOf(Literal.class), hasProperty("value", equalTo("literal2"))));
+    }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testLabelAttribute() throws Exception {
+        String yaml =
+                "text: \n" +
+                "  label: testAttribute\n" +
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        TextSymbolizer symb = (TextSymbolizer) fs.rules().get(0).symbolizers().get(0);
+        
+        Expression label = symb.getLabel();
+        assertThat(label, allOf(instanceOf(PropertyName.class), hasProperty("propertyName", equalTo("testAttribute"))));
+    }
+    
+   @Test
     public void testBadExpression() throws Exception {
         String yaml =
             "polygon: \n"+

@@ -45,6 +45,12 @@ public class Util {
     public static Expression expression(String value, Factory factory) {
         return expression(value, false, factory);
     }
+    /**
+     * Parses a name expression from its string representation.
+     */
+    public static Expression name(String value, Factory factory) {
+        return name(value, false, factory);
+    }
 
     /**
      * Parses an expression from its string representation.
@@ -57,6 +63,43 @@ public class Util {
     public static Expression expression(String value, boolean safe, Factory factory) {
         try {
             Expression expr = ECQL.toExpression(value, factory.filter);
+            /*if (expr instanceof PropertyName && !ATTRIBUTE_PATTERN.matcher(value).matches()) {
+                // treat as literal
+                return factory.filter.literal(((PropertyName) expr).getPropertyName());
+            }*/
+            return expr;
+        } catch (CQLException e) {
+            // couple of special cases
+            // 1. color literal starting with '#'
+            // 2. shape literal starting with shape://
+            if (COLOR_PATTERN.matcher(value).matches()) {
+                // drop the hash and return as literal
+                return factory.filter.literal(value);
+            }
+            else if (WELLKNOWNNAME_PATTERN.matcher(value).matches()) {
+                return factory.filter.literal(value);
+            }
+            else {
+                if (safe) {
+                    return null;
+                }
+            }
+            throw new IllegalArgumentException("Bad expression: "+value, e);
+        }
+    }
+    
+    /**
+     * Parses a name expression from its string representation.
+     * <p>
+     * The <tt>safe</tt> parameter when set to true will cause null to be returned
+     * when the string can not be parsed as a ECQL expression. When false it will
+     * result in an exception thrown back.
+     * </p>
+     */
+    public static Expression name(String value, boolean safe, Factory factory) {
+        try {
+            Expression expr = ECQL.toExpression(value, factory.filter);
+            // Avoids ugly '''name''' syntax
             if (expr instanceof PropertyName && !ATTRIBUTE_PATTERN.matcher(value).matches()) {
                 // treat as literal
                 return factory.filter.literal(((PropertyName) expr).getPropertyName());

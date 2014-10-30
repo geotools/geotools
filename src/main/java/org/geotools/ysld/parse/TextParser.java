@@ -57,16 +57,16 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
             YamlMap map = obj.map();
 
             if (map.has("font-family")) {
-                font.setFontFamily(Util.expression(map.str("font-family"), factory));
+                font.setFontFamily(Util.name(map.str("font-family"), factory));
             }
             if (map.has("font-size")) {
                 font.setSize(Util.expression(map.str("font-size"), factory));
             }
             if (map.has("font-style")) {
-                font.setStyle(Util.expression(map.str("font-style"), factory));
+                font.setStyle(Util.name(map.str("font-style"), factory));
             }
             if (map.has("font-weight")) {
-                font.setWeight(Util.expression(map.str("font-weight"), factory));
+                font.setWeight(Util.name(map.str("font-weight"), factory));
             }
         }
     }

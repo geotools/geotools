@@ -23,7 +23,7 @@ public abstract class MarkParser extends YsldParseHandler {
         YamlMap map = obj.map();
 
         if (map.has("shape")) {
-            mark.setWellKnownName(Util.expression(map.str("shape"), factory));
+            mark.setWellKnownName(Util.name(map.str("shape"), factory));
         }
 
         context.push(map, new StrokeParser(factory) {

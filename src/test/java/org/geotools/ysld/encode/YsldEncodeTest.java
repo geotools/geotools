@@ -133,6 +133,10 @@ public class YsldEncodeTest {
         Function rt = filterFactory.function("vec:Heatmap", p1, p2, p3, p4);
         featureStyle.setTransformation(rt);
 
+        Rule rule = styleFactory.createRule();
+        rule.setName("Za'Ha'Dum");
+        featureStyle.rules().add(rule);
+        
         StringWriter out = new StringWriter();
         Ysld.encode(sld, out);
 
@@ -144,7 +148,11 @@ public class YsldEncodeTest {
         assertEquals("'pop2000'", params.get("weightAttr"));
         assertEquals("100", params.str("radius"));
         assertEquals("10", params.str("pixelsPerCell"));
-
+        
+        System.out.print(out.toString());
+        
+        YamlMap ruleMap = obj.seq("feature-styles").map(0).seq("rules").map(0);
+        assertThat(ruleMap.str("name"), equalTo("Za'Ha'Dum"));
     }
     
     @Test

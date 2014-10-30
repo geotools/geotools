@@ -134,7 +134,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         stack.peek().putAll(values);
         return this;
     }
-
+    
     Object toColorOrNull(Expression expr) {
         Object obj = toObjOrNull(expr, false);
         if (obj instanceof String && expr instanceof Literal) {
@@ -145,6 +145,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         }
         return obj;
     }
+    
     Object toObjOrNull(Expression expr) {
         return toObjOrNull(expr, false);
     }

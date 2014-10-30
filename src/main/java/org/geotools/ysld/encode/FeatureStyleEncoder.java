@@ -33,6 +33,7 @@ public class FeatureStyleEncoder extends YsldEncodeHandler<FeatureTypeStyle> {
         put("abstract", featureStyle.getAbstract());
         if (featureStyle.getTransformation() != null) {
             push("transform").inline(new TransformEncoder(featureStyle.getTransformation()));
+            pop();
         }
         put("rules", new RuleEncoder(featureStyle));
     }

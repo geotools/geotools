@@ -29,7 +29,7 @@ public abstract class StrokeParser extends YsldParseHandler {
             stroke().setLineJoin(Util.expression(map.str("stroke-linejoin"), factory));
         }
         if (map.has("stroke-linecap")) {
-            stroke().setLineCap(Util.name(map.str("stroke-linecap"), factory));
+            stroke().setLineCap(Util.expression(map.str("stroke-linecap"), factory));
         }
         if (map.has("stroke-dasharray")) {
             stroke().setDashArray(Util.floatArray(map.str("stroke-dasharray")));

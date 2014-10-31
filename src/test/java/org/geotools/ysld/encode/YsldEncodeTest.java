@@ -9,7 +9,6 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer2;
@@ -30,7 +29,6 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -145,11 +143,9 @@ public class YsldEncodeTest {
         assertEquals("vec:Heatmap", tx.get("name"));
 
         YamlMap params = tx.map("params");
-        assertEquals("'pop2000'", params.get("weightAttr"));
+        assertEquals("pop2000", params.get("weightAttr"));
         assertEquals("100", params.str("radius"));
         assertEquals("10", params.str("pixelsPerCell"));
-        
-        System.out.print(out.toString());
         
         YamlMap ruleMap = obj.seq("feature-styles").map(0).seq("rules").map(0);
         assertThat(ruleMap.str("name"), equalTo("Za'Ha'Dum"));
@@ -185,7 +181,7 @@ public class YsldEncodeTest {
 
         YamlMap yaml = new YamlMap(new Yaml().load(out.toString()));
         
-        assertEquals( "name", yaml.lookup("feature-styles/0/rules/0/symbolizers/1/text/label") );
+        assertEquals( "${name}", yaml.lookup("feature-styles/0/rules/0/symbolizers/1/text/label") );
         assertEquals( "circle",  yaml.lookup("feature-styles/0/rules/0/symbolizers/1/text/symbols/0/mark/shape") );
     }
     
@@ -259,7 +255,7 @@ public class YsldEncodeTest {
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").seq("symbols").map(0).map("mark").str("shape");
         
-        assertThat(result, equalTo("[test]"));
+        assertThat(result, equalTo("${test}"));
     }
     
     @Test
@@ -274,7 +270,7 @@ public class YsldEncodeTest {
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").str("geometry");
         
-        assertThat(result, equalTo("'test'"));
+        assertThat(result, equalTo("test"));
     }
     @Test
     public void testNonNameExpressionAttribute() throws Exception {
@@ -288,7 +284,25 @@ public class YsldEncodeTest {
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").str("geometry");
         
-        assertThat(result, equalTo("test"));
+        assertThat(result, equalTo("${test}"));
+    }
+    @Test
+    public void testEmbededExpression() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        Expression expression = CommonFactoryFinder.getFilterFactory2().function("Concatenate", 
+                CommonFactoryFinder.getFilterFactory2().literal("literal0"),
+                CommonFactoryFinder.getFilterFactory2().property("attribute1"),
+                CommonFactoryFinder.getFilterFactory2().literal("literal2")
+                );
+        p.setGeometry(expression);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(p), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").str("geometry");
+        
+        assertThat(result, equalTo("literal0${attribute1}literal2"));
     }
 
     StyledLayerDescriptor sld(Symbolizer sym) {

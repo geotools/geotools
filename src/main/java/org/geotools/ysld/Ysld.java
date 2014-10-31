@@ -4,6 +4,8 @@ import org.geotools.ysld.encode.YsldEncoder;
 import org.geotools.ysld.parse.YsldParser;
 import org.geotools.ysld.parse.ZoomContextFinder;
 import org.geotools.ysld.transform.sld.SldTransformer;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.SLDParser;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.ysld.validate.YsldValidator;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
@@ -165,13 +167,26 @@ public class Ysld {
      *
      */
     public static void transform(XMLStreamReader sld, Writer ysld) throws IOException {
+        throw new UnsupportedOperationException();/*
         SldTransformer tx = new SldTransformer(sld, ysld);
         try {
             tx.transform();
         }
         catch(XMLStreamException e) {
             throw new IOException(e);
-        }
+        }*/
+    }
+    /**
+     * Transforms an SLD stream to Ysld.
+     *
+     * @param sld SLD xml reader.
+     * @param ysld Ysld writer.
+     *
+     */
+    public static void transform(InputStream sld, Writer ysld) throws IOException {
+        SLDParser parser = new SLDParser(CommonFactoryFinder.getStyleFactory(), sld);
+        StyledLayerDescriptor style = parser.parseSLD();
+        Ysld.encode(style, ysld);
     }
 
     /**

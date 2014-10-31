@@ -94,7 +94,7 @@ public class ExpressionHandler extends SldTransformHandler {
 
         @Override
         public void characters(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
-            scalar.append("[").append(xml.getText()).append("]");
+            scalar.append("${").append(xml.getText()).append("}");
         }
 
         @Override

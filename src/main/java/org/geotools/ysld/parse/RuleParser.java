@@ -19,7 +19,14 @@ public class RuleParser extends YsldParseHandler {
         super(factory);
         this.featureStyle = featureStyle;
     }
-
+    
+    String removeExpressionBrackets(String s) {
+        if(s.startsWith("${") && s.endsWith("}")) {
+            return s.substring(2, s.length()-1);
+        }
+        return s;
+    }
+    
     @Override
     public void handle(YamlObject<?> obj, YamlParseContext context) {
         YamlSeq seq = obj.seq();
@@ -41,7 +48,7 @@ public class RuleParser extends YsldParseHandler {
             
             if (r.has("filter")) {
                 try {
-                    rule.setFilter(ECQL.toFilter(r.str("filter")));
+                    rule.setFilter(ECQL.toFilter(removeExpressionBrackets(r.str("filter"))));
                 } catch (CQLException e) {
                     throw new RuntimeException("Error parsing filter", e);
                 }

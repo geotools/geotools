@@ -367,7 +367,7 @@ public class SldTransformerTest {
 
         YamlMap text =
             style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
-        assertEquals("[name]", text.str("label"));
+        assertEquals("${name}", text.str("label"));
         assertEquals("#000000", text.str("fill-color"));
     }
 
@@ -422,7 +422,7 @@ public class SldTransformerTest {
         YamlMap text =
             style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
 
-        assertEquals("[name]", text.str("label"));
+        assertEquals("${name}", text.str("label"));
 
         assertEquals("Arial", text.str("font-family"));
         assertEquals(12, text.integer("font-size").intValue());
@@ -669,7 +669,7 @@ public class SldTransformerTest {
 
         YamlMap style = transform("line", "curved-label.sld");
         YamlMap text = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
-        assertEquals("[name]", text.str("label"));
+        assertEquals("${name}", text.str("label"));
         assertEquals("#000000", text.str("fill-color"));
         assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"followLine"));
     }
@@ -822,7 +822,7 @@ public class SldTransformerTest {
         assertEquals("#FF0000", line.str("stroke-color"));
 
         YamlMap text = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
-        assertEquals("[name]", text.str("label"));
+        assertEquals("${name}", text.str("label"));
         assertEquals("#000000", text.str("fill-color"));
     }
 
@@ -966,7 +966,7 @@ public class SldTransformerTest {
         YamlMap style = transform("line", "optimized-label.sld");
 
         YamlMap text = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
-        assertEquals("[name]", text.str("label"));
+        assertEquals("${name}", text.str("label"));
         assertEquals("#000000", text.str("fill-color"));
         assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"followLine"));
         assertEquals(90, text.integer(Ysld.OPTION_PREFIX+"maxAngleDelta").intValue());
@@ -1014,7 +1014,7 @@ public class SldTransformerTest {
 
         YamlMap text = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
 
-        assertEquals("[name]", text.str("label"));
+        assertEquals("${name}", text.str("label"));
         assertEquals("#000000", text.str("fill-color"));
 
         assertEquals("Arial", text.str("font-family"));
@@ -1165,7 +1165,7 @@ public class SldTransformerTest {
         assertEquals("#FFFFFF", poly.str("stroke-color"));
         assertEquals(2, poly.integer("stroke-width").intValue());
 
-        assertEquals("[name]", text.str("label"));
+        assertEquals("${name}", text.str("label"));
     }
 
     @Test
@@ -1234,7 +1234,7 @@ public class SldTransformerTest {
 
         YamlMap obj = transform("poly", "halo-label.sld");
         YamlMap text = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
-        assertEquals("[name]", text.str("label"));
+        assertEquals("${name}", text.str("label"));
         assertEquals(3, text.map("halo").integer("radius").intValue());
         assertEquals("#FFFFFF", text.map("halo").str("fill-color"));
 
@@ -1349,7 +1349,7 @@ public class SldTransformerTest {
 
         YamlMap obj = transform("poly", "styled-label.sld");
         YamlMap text = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
-        assertEquals("[name]", text.str("label"));
+        assertEquals("${name}", text.str("label"));
 
         assertEquals("Arial", text.str("font-family"));
         assertEquals(11, text.integer("font-size").intValue());
@@ -1477,7 +1477,7 @@ public class SldTransformerTest {
         assertEquals(7, poly.integer("stroke-width").intValue());
 
         YamlMap text = rule.seq("symbolizers").map(1).map("text");
-        assertEquals("[name]", text.str("label"));
+        assertEquals("${name}", text.str("label"));
         assertEquals("Arial", text.str("font-family"));
         assertEquals(14, text.integer("font-size").intValue());
         assertEquals("normal", text.str("font-style"));

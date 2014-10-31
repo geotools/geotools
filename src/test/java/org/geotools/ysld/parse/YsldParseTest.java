@@ -30,6 +30,9 @@ import static org.easymock.classextension.EasyMock.createMock;
 import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
 import static org.geotools.ysld.TestUtils.appliesToScale;
+import static org.geotools.ysld.TestUtils.attribute;
+import static org.geotools.ysld.TestUtils.function;
+import static org.geotools.ysld.TestUtils.literal;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.describedAs;
@@ -76,10 +79,27 @@ public class YsldParseTest {
     }
 
     @Test
-    public void testFunction() throws Exception {
+    public void testFilterFunctionNoMarker() throws Exception {
         String yaml =
         "rules: \n"+
         "- filter: strEndsWith(foo,'bar') = true\n";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        Rule r = SLD.defaultStyle(sld).featureTypeStyles().get(0).rules().get(0);
+
+        PropertyIsEqualTo f = (PropertyIsEqualTo) r.getFilter();
+        Function func = (Function) f.getExpression1();
+        assertEquals("strEndsWith", func.getName());
+        assertTrue(func.getParameters().get(0) instanceof PropertyName);
+        assertTrue(func.getParameters().get(1) instanceof Literal);
+
+        Literal lit = (Literal) f.getExpression2();
+    }
+    @Test
+    public void testFilterFunctionWithMarker() throws Exception {
+        String yaml =
+        "rules: \n"+
+        "- filter: ${strEndsWith(foo,'bar') = true}\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         Rule r = SLD.defaultStyle(sld).featureTypeStyles().get(0).rules().get(0);
@@ -135,12 +155,12 @@ public class YsldParseTest {
             "- transform:\n" +
             "    name: vec:Heatmap\n" +
             "    params:\n" +
-            "      weightAttr: '''pop2000'''\n" +
+            "      weightAttr: pop2000\n" +
             "      radius: 100\n" +
             "      pixelsPerCell: 10\n" +
-            "      outputBBOX: wms_bbox\n" +
-            "      outputWidth: wms_width\n" +
-            "      outputHeight: wms_height\n";
+            "      outputBBOX: ${wms_bbox}\n" +
+            "      outputWidth: ${wms_width}\n" +
+            "      outputHeight: ${wms_height}\n";
 
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -172,15 +192,15 @@ public class YsldParseTest {
                 " rules:\n"+
                 " - symbolizers:\n"+
                 "   - line:\n"+
-                "       stroke-color: '#555555'\n"+
+                "       stroke-color: 555555\n"+
                 "       stroke-width: 1.0\n"+
                 "    - text:\n"+
                 "       label: name\n"+
                 "       symbols:\n"+
                 "        - mark:\n"+
                 "           shape: circle\n"+
-                "           fill-color: '#995555'\n"+
-                "       geometry: geom";
+                "           fill-color: 995555\n"+
+                "       geometry: ${geom}";
                         
     }
     
@@ -737,10 +757,25 @@ public class YsldParseTest {
     
     @SuppressWarnings("unchecked")
     @Test
-    public void testLabelConcat() throws Exception {
+    public void testLabelLiteral() throws Exception {
         String yaml =
                 "text: \n" +
-                "  label: Concatenate('literal0',attribute1,'literal2')\n" +
+                "  label: test literal\n" +
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        TextSymbolizer symb = (TextSymbolizer) fs.rules().get(0).symbolizers().get(0);
+        
+        Expression label = symb.getLabel();
+        assertThat(label, allOf(instanceOf(Literal.class), hasProperty("value", equalTo("test literal"))));
+    }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testLabelEmbeded() throws Exception {
+        String yaml =
+                "text: \n" +
+                "  label: literal0${attribute1}literal2\n" +
                 "";
         
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -751,16 +786,16 @@ public class YsldParseTest {
         assertThat(label, instanceOf(ConcatenateFunction.class));
         List<Expression> params = ((ConcatenateFunction)label).getParameters();
         assertThat(params.size(), is(3));
-        assertThat(params.get(0), allOf(instanceOf(Literal.class), hasProperty("value", equalTo("literal0"))));
-        assertThat(params.get(1), allOf(instanceOf(PropertyName.class), hasProperty("propertyName", equalTo("attribute1"))));
-        assertThat(params.get(2), allOf(instanceOf(Literal.class), hasProperty("value", equalTo("literal2"))));
+        assertThat(params.get(0), literal(equalTo("literal0")));
+        assertThat(params.get(1), attribute("attribute1"));
+        assertThat(params.get(2), literal(equalTo("literal2")));
     }
     @SuppressWarnings("unchecked")
     @Test
     public void testLabelAttribute() throws Exception {
         String yaml =
                 "text: \n" +
-                "  label: testAttribute\n" +
+                "  label: ${testAttribute}\n" +
                 "";
         
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -768,14 +803,14 @@ public class YsldParseTest {
         TextSymbolizer symb = (TextSymbolizer) fs.rules().get(0).symbolizers().get(0);
         
         Expression label = symb.getLabel();
-        assertThat(label, allOf(instanceOf(PropertyName.class), hasProperty("propertyName", equalTo("testAttribute"))));
+        assertThat(label, attribute("testAttribute"));
     }
     
    @Test
     public void testBadExpression() throws Exception {
         String yaml =
             "polygon: \n"+
-            "  stroke-width: round(foo) 1000\n";
+            "  stroke-width: ${round(foo) 1000}\n";
         try {
             Ysld.parse(yaml);
             fail("Bad expression should have thrown exception");
@@ -784,4 +819,44 @@ public class YsldParseTest {
             // expected
         }
     }
+   
+   @Test
+   public void testDynamicColor() throws Exception {
+       String yaml =
+       "point: \n"+
+       "  symbols: \n" +
+       "  - mark: \n" +
+       "      fill-color: ${colourAttribute}\n";
+
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       assertThat(SLD.fill(p).getColor(), attribute("colourAttribute"));
+   }
+   @Test
+   public void testEvilExpression1() throws Exception {
+       String yaml =
+       "point: \n"+
+       "  symbols: \n" +
+       "  - mark: \n" +
+       "      fill-color: \\$\\}\\\\\n";
+
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       assertThat(SLD.fill(p).getColor(), literal(equalTo("$}\\")));
+   }
+   
+   
+   @Test
+   public void testEvilExpression2() throws Exception {
+       String yaml =
+       "point: \n"+
+       "  symbols: \n" +
+       "  - mark: \n" +
+       "      fill-color: ${strEndsWith(attribute, '\\}')}\n";
+
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       assertThat(SLD.fill(p).getColor(), function("strEndsWith", attribute("attribute"), literal(equalTo("}"))));
+   }
+
 }

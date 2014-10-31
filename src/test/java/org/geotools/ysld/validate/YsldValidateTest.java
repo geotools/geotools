@@ -99,8 +99,8 @@ public class YsldValidateTest {
                 "- symbolizers:\n"+
                 "  - line:\n");
         for(String key: EXPRESSION_KEYS) {
-            builder.append("      ").append(key).append(": ").append("round([len] 1000)").append("\n"); // Invalid
-            builder.append("      ").append(key).append(": ").append("round([len] / 1000)").append("\n"); // Valid
+            builder.append("      ").append(key).append(": ").append("${round([len] 1000)}").append("\n"); // Invalid
+            builder.append("      ").append(key).append(": ").append("${round([len] / 1000)}").append("\n"); // Valid
         }
         List<MarkedYAMLException> errors = validate(builder.toString());
         assertThat(errors.size(), is(EXPRESSION_KEYS.length));

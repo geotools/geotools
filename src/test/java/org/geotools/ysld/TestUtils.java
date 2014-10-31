@@ -2,13 +2,21 @@ package org.geotools.ysld;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.describedAs;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 import org.geotools.styling.Rule;
 import org.geotools.ysld.parse.ScaleRange;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 
 public enum TestUtils {
     ;
@@ -43,6 +51,61 @@ public enum TestUtils {
                     )),
                     scale
                 );
+    }
+    
+    /**
+     * Matches a Literal expression with a value matching m
+     * @param m
+     * @return
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public
+       static Matcher<Expression> literal(Matcher m) {
+           return (Matcher)allOf(
+                   instanceOf(Literal.class), 
+                   hasProperty("value", m)
+                   );
+     }
+
+    /**
+     * Matches as an attribute expression for a named attribute.
+     * @param name
+     * @return
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public
+       static Matcher<Expression> attribute(String name) {
+           return (Matcher)allOf(
+                   instanceOf(PropertyName.class), 
+                   hasProperty("propertyName", equalTo(name))
+                   );
+    }
+    
+    /**
+     * Matches a function with the given name and parameters matching the given matchers.
+     * @param name
+     * @param parameters
+     * @return
+     */
+    @SafeVarargs
+    public static Matcher<Expression> function(String name, Matcher<Expression>... parameters) {
+        return function(name, hasItems(parameters));
+    }
+    
+    /**
+     * Matches a function with the given name and a parameter list matching the given matcher.
+     * @param name
+     * @param parameters
+     * @return
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public static Matcher<Expression> function(String name, 
+            Matcher<? extends Iterable<Expression>> parameters) {
+        return (Matcher)allOf(
+                   instanceOf(Function.class), 
+                   hasProperty("functionName", hasProperty("name", equalTo(name))),
+                   hasProperty("parameters", parameters)
+                   );
     }
     
 }

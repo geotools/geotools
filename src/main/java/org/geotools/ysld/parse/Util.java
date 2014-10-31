@@ -1,19 +1,19 @@
 package org.geotools.ysld.parse;
 
-import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.filter.function.FilterFunction_strConcat;
+import org.geotools.filter.function.string.ConcatenateFunction;
+import org.geotools.renderer.style.ExpressionExtractor;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
 import org.geotools.ysld.Colors;
 import org.geotools.ysld.Tuple;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,15 +45,41 @@ public class Util {
     public static Expression expression(String value, Factory factory) {
         return expression(value, false, factory);
     }
-    /**
-     * Parses a name expression from its string representation.
-     * <p>
-     * Encode using YsldEncodeHandler.putName
-     */
-    public static Expression name(String value, Factory factory) {
-        return name(value, false, factory);
+    private static void collectExpressions (List<Expression> list, Expression expr) {
+        if(expr==null) return;
+        if (expr instanceof ConcatenateFunction || expr instanceof FilterFunction_strConcat) {
+            for(Expression param: ((Function)expr).getParameters()) {
+                collectExpressions(list, param);
+            }
+            return;
+        } else {
+            if(expr instanceof Literal) {
+                Object value = ((Literal) expr).getValue();
+                if(value==null) return;
+                if(value instanceof String && ((String) value).isEmpty()) return;
+            }
+            list.add(expr);
+        }
     }
-
+    
+    
+    public static Expression unwrapConcatenates(Expression expr,
+            Factory factory) {
+        List<Expression> list = splitConcatenates(expr);
+        if(list.isEmpty()) {
+            return factory.filter.literal(null);
+        } else if(list.size()==1) {
+            return list.get(0);
+        } else {
+            return factory.filter.function("Concatenate", list.toArray(new Expression[]{}));
+        }
+    }
+    
+    public static List<Expression> splitConcatenates(Expression expr) {
+        List<Expression> list = new ArrayList<>();
+        collectExpressions(list, expr);
+        return list;
+    }
     /**
      * Parses an expression from its string representation.
      * <p>
@@ -63,70 +89,19 @@ public class Util {
      * </p>
      */
     public static Expression expression(String value, boolean safe, Factory factory) {
-        try {
-            Expression expr = ECQL.toExpression(value, factory.filter);
-            /*if (expr instanceof PropertyName && !ATTRIBUTE_PATTERN.matcher(value).matches()) {
-                // treat as literal
-                return factory.filter.literal(((PropertyName) expr).getPropertyName());
-            }*/
-            return expr;
-        } catch (CQLException e) {
-            // couple of special cases
-            // 1. color literal starting with '#'
-            // 2. shape literal starting with shape://
-            if (COLOR_PATTERN.matcher(value).matches()) {
-                // drop the hash and return as literal
-                return factory.filter.literal(value);
-            }
-            else if (WELLKNOWNNAME_PATTERN.matcher(value).matches()) {
-                return factory.filter.literal(value);
-            }
-            else {
-                if (safe) {
-                    return null;
-                }
-            }
-            throw new IllegalArgumentException("Bad expression: "+value, e);
-        }
+        
+        Expression expr = ExpressionExtractor.extractCqlExpressions(value);
+        
+        
+        expr = unwrapConcatenates(expr, factory);
+        //Expression expr = ECQL.toExpression(value, factory.filter);
+        /*if (expr instanceof PropertyName && !ATTRIBUTE_PATTERN.matcher(value).matches()) {
+            // treat as literal
+            return factory.filter.literal(((PropertyName) expr).getPropertyName());
+        }*/
+        return expr;
     }
     
-    /**
-     * Parses a name expression from its string representation.
-     * <p>
-     * The <tt>safe</tt> parameter when set to true will cause null to be returned
-     * when the string can not be parsed as a ECQL expression. When false it will
-     * result in an exception thrown back.
-     * </p>
-     * Encode using YsldEncodeHandler.putName
-     */
-    public static Expression name(String value, boolean safe, Factory factory) {
-        try {
-            Expression expr = ECQL.toExpression(value, factory.filter);
-            // Avoids ugly '''name''' syntax
-            if (expr instanceof PropertyName && !ATTRIBUTE_PATTERN.matcher(value).matches()) {
-                // treat as literal
-                return factory.filter.literal(((PropertyName) expr).getPropertyName());
-            }
-            return expr;
-        } catch (CQLException e) {
-            // couple of special cases
-            // 1. color literal starting with '#'
-            // 2. shape literal starting with shape://
-            if (COLOR_PATTERN.matcher(value).matches()) {
-                // drop the hash and return as literal
-                return factory.filter.literal(value);
-            }
-            else if (WELLKNOWNNAME_PATTERN.matcher(value).matches()) {
-                return factory.filter.literal(value);
-            }
-            else {
-                if (safe) {
-                    return null;
-                }
-            }
-            throw new IllegalArgumentException("Bad expression: "+value, e);
-        }
-    }
 
     /**
      * Parses an anchor tuple.

@@ -2,6 +2,7 @@ package org.geotools.ysld.encode;
 
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.ysld.Tuple;
+import org.geotools.ysld.parse.Util;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -11,6 +12,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
@@ -169,29 +171,27 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         }
         return str;
     }
-    boolean isNumericLiteral(Expression expr) {
-        if(expr==null) return false;
-        if(!(expr instanceof Literal)) return false;
-        Object value = ((Literal) expr).getValue();
-        if(value instanceof Number) return true;
-        
-        if(value instanceof String && makeNumberIfPossible((String)value) instanceof Number) return true;
-        
-        return false;
+    
+    String escapeForEmbededCQL(String s) {
+        return s; // TODO
     }
     
     Object toObjOrNull(Expression expr, boolean isname) {
-
-        String str = !isNull(expr) ? ECQL.toCQL(expr) : null;
-        if (expr instanceof Literal && str != null && (isname || isNumericLiteral(expr))) {
-            str = stripQuotes(str);
+        if(isNull(expr)) return null;
+        
+        List<Expression> subExpressions = Util.splitConcatenates(expr);
+        StringBuilder builder = new StringBuilder();
+        for(Expression subExpr: subExpressions) {
+            if(isNull(subExpr)) {
+                // Do nothing
+            } else if(subExpr instanceof Literal) {
+                builder.append(escapeForEmbededCQL(((Literal) subExpr).getValue().toString()));
+            } else {
+                builder.append("${").append(escapeForEmbededCQL(ECQL.toCQL(subExpr))).append("}");
+            }
         }
         
-        if(isname && expr instanceof PropertyName && str!=null && !str.isEmpty() && !str.startsWith("[")) {
-            str = String.format("[%s]", str);
-        }
-        
-        Object result = makeNumberIfPossible(str);
+        Object result = makeNumberIfPossible(builder.toString());
         
         return result;
     }

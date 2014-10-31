@@ -18,7 +18,7 @@ public class NameValidator extends ScalarValidator {
     @Override
     protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
         try {
-            Util.name(value, context.factory);
+            Util.expression(value, context.factory);
             return null;
         } catch (IllegalArgumentException e) {
             if(e.getCause() instanceof CQLException) {

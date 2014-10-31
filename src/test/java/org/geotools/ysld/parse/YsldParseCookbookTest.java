@@ -1,11 +1,13 @@
 package org.geotools.ysld.parse;
 
+import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.YsldTests;
 import org.geotools.filter.Filters;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.*;
 import org.geotools.styling.Font;
 import org.geotools.styling.Stroke;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.style.ContrastMethod;
 
@@ -18,6 +20,7 @@ import java.util.Map;
 import static org.geotools.ysld.Ysld.transform;
 import static org.geotools.ysld.Ysld.xmlReader;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class YsldParseCookbookTest {
 
@@ -1431,7 +1434,7 @@ public class YsldParseCookbookTest {
         assertEquals(2, SLD.width(poly.getStroke()));
 
         TextSymbolizer text = SLD.textSymbolizer(style);
-        assertEquals("name", SLD.textLabelString(text));
+        assertThat(SLD.textLabel(text), TestUtils.attribute("name"));
         assertEquals(Color.black, SLD.color(text.getFill()));
 
         PointPlacement place = (PointPlacement) text.getLabelPlacement();
@@ -1833,7 +1836,7 @@ public class YsldParseCookbookTest {
 
     Style parse(String dir, String file) throws IOException {
         StringWriter writer = new StringWriter();
-        transform(xmlReader(YsldTests.sld(dir, file)), writer);
+        transform(YsldTests.sld(dir, file), writer);
         //System.out.println(writer.toString());
         YsldParser p = new YsldParser(new StringReader(writer.toString()));
         return SLD.defaultStyle(p.parse());

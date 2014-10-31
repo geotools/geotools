@@ -304,6 +304,38 @@ public class YsldEncodeTest {
         
         assertThat(result, equalTo("literal0${attribute1}literal2"));
     }
+    @Test
+    public void testEmbededExpressionEscapeLiteral() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        Expression expression = CommonFactoryFinder.getFilterFactory2().literal("$}\\");
+        p.setGeometry(expression);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(p), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").str("geometry");
+        
+        assertThat(result, equalTo("\\$\\}\\\\"));
+    }
+    
+    @Test
+    public void testEmbededExpressionEscapeExpression() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        Expression expression = CommonFactoryFinder.getFilterFactory2().function("strEndsWith", 
+                CommonFactoryFinder.getFilterFactory2().property("attribute1"),
+                CommonFactoryFinder.getFilterFactory2().literal("}")
+                );
+        p.setGeometry(expression);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(p), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").str("geometry");
+        
+        assertThat(result, equalTo("${strEndsWith(attribute1,'\\}')}"));
+    }
 
     StyledLayerDescriptor sld(Symbolizer sym) {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();

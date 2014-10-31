@@ -5,7 +5,6 @@ import org.geotools.ysld.Tuple;
 import org.geotools.ysld.parse.Util;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
@@ -14,6 +13,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     Deque<Map<String,Object>> stack = new ArrayDeque<Map<String, Object>>();
@@ -172,8 +172,9 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         return str;
     }
     
+    static final Pattern EMBEDED_EXPRESSION_ESCAPE = Pattern.compile("[$}\\\\]");
     String escapeForEmbededCQL(String s) {
-        return s; // TODO
+        return EMBEDED_EXPRESSION_ESCAPE.matcher(s).replaceAll("\\\\$0");
     }
     
     Object toObjOrNull(Expression expr, boolean isname) {

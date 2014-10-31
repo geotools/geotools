@@ -770,7 +770,7 @@ public class YsldParseTest {
         Expression label = symb.getLabel();
         assertThat(label, allOf(instanceOf(Literal.class), hasProperty("value", equalTo("test literal"))));
     }
-    @SuppressWarnings("unchecked")
+
     @Test
     public void testLabelEmbeded() throws Exception {
         String yaml =
@@ -790,7 +790,7 @@ public class YsldParseTest {
         assertThat(params.get(1), attribute("attribute1"));
         assertThat(params.get(2), literal(equalTo("literal2")));
     }
-    @SuppressWarnings("unchecked")
+
     @Test
     public void testLabelAttribute() throws Exception {
         String yaml =
@@ -804,6 +804,56 @@ public class YsldParseTest {
         
         Expression label = symb.getLabel();
         assertThat(label, attribute("testAttribute"));
+    }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testExpressionLiteral() throws Exception {
+        String yaml =
+                "text: \n" +
+                "  geometry: test literal\n" +
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        TextSymbolizer symb = (TextSymbolizer) fs.rules().get(0).symbolizers().get(0);
+        
+        Expression expr = symb.getGeometry();
+        assertThat(expr, allOf(instanceOf(Literal.class), hasProperty("value", equalTo("test literal"))));
+    }
+
+    @Test
+    public void testExpressionEmbeded() throws Exception {
+        String yaml =
+                "text: \n" +
+                "  geometry: literal0${attribute1}literal2\n" +
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        TextSymbolizer symb = (TextSymbolizer) fs.rules().get(0).symbolizers().get(0);
+        
+        Expression expr = symb.getGeometry();
+        assertThat(expr, instanceOf(ConcatenateFunction.class));
+        List<Expression> params = ((ConcatenateFunction)expr).getParameters();
+        assertThat(params.size(), is(3));
+        assertThat(params.get(0), literal(equalTo("literal0")));
+        assertThat(params.get(1), attribute("attribute1"));
+        assertThat(params.get(2), literal(equalTo("literal2")));
+    }
+
+    @Test
+    public void testExpressionAttribute() throws Exception {
+        String yaml =
+                "text: \n" +
+                "  geometry: ${testAttribute}\n" +
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        TextSymbolizer symb = (TextSymbolizer) fs.rules().get(0).symbolizers().get(0);
+        
+        Expression expr = symb.getGeometry();
+        assertThat(expr, attribute("testAttribute"));
     }
     
    @Test
@@ -832,6 +882,7 @@ public class YsldParseTest {
        PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
        assertThat(SLD.fill(p).getColor(), attribute("colourAttribute"));
    }
+   
    @Test
    public void testEvilExpression1() throws Exception {
        String yaml =

@@ -38,7 +38,7 @@ public abstract class StrokeParser extends YsldParseHandler {
             stroke().setDashOffset(Util.expression(map.str("stroke-dashoffset"), factory));
         }
 
-        context.push("stroke-graphic-fill", new GraphicParser(factory) {
+        context.push("stroke-graphic", new GraphicParser(factory) {
             @Override
             protected void graphic(Graphic g) {
                 stroke().setGraphicFill(g);

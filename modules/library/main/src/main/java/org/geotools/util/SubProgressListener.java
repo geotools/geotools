@@ -51,17 +51,29 @@ public class SubProgressListener extends DelegateProgressListener {
     float progress;
    
     /**
-     * Create a sub progress monitor, used to delegate work to a separate
-     * process.
+     * Create a sub progress monitor, used to delegate work to a separate process.
+     * 
+     * @param progress parent progress to notify as we get work done
+     * @param start the starting offset for the progress
+     * @param amount amount of progress represented
+     */
+    public SubProgressListener(org.opengis.util.ProgressListener progress, float start, float amount) {
+        super(progress);
+        this.start = start;
+        this.amount = (amount > 0.0f) ? amount : 0.0f;
+        this.scale = this.amount / 100.0f;
+    }
+
+    /**
+     * Create a sub progress monitor, used to delegate work to a separate process.
+     * 
      * @param progress parent progress to notify as we get work done
      * @param amount amount of progress represented
      */
     public SubProgressListener( org.opengis.util.ProgressListener progress, float amount ) {
-        super(progress);
-        this.start = progress.getProgress();
-        this.amount = (amount > 0.0f) ? amount : 0.0f;
-        this.scale = this.amount / 100.0f;
+        this(progress, progress.getProgress(), amount);
     }
+
     public void started() {
         progress = 0.0f;
     }

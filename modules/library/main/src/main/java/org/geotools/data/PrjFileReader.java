@@ -39,6 +39,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @source $URL$
  */
 public class PrjFileReader {
+    
+    /* Used to check if we can use memory mapped buffers safely. In case the OS cannot be detected, we act as if it was Windows and
+     * do not use memory mapped buffers */
+    private final static Boolean USE_MEMORY_MAPPED_BUFFERS = !System.getProperty("os.name",
+            "Windows").contains("Windows");
 
 	ByteBuffer buffer;
 
@@ -128,7 +133,7 @@ public class PrjFileReader {
 	private void init() throws IOException {
 		// create the ByteBuffer
 		// if we have a FileChannel, lets map it
-		if (channel instanceof FileChannel) {
+		if (channel instanceof FileChannel && USE_MEMORY_MAPPED_BUFFERS) {
 			FileChannel fc = (FileChannel) channel;
 			buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
 			buffer.position((int) fc.position());

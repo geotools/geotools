@@ -84,7 +84,13 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 public class CatalogManager {
 
     private final static PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
-    private final static GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);;
+    private final static GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
+
+    /* Used to check if we can use memory mapped buffers safely. In case the OS cannot be detected, we act as if it was Windows and
+     * do not use memory mapped buffers */
+    private final static Boolean USE_MEMORY_MAPPED_BUFFERS = !System.getProperty("os.name",
+            "Windows").contains("Windows");
+
 
     /** Default Logger * */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CatalogManager.class);
@@ -129,7 +135,7 @@ public class CatalogManager {
             if (file.getProtocol().equalsIgnoreCase("file")) {
                 params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.TRUE);
             }
-            params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, Boolean.TRUE);
+            params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, USE_MEMORY_MAPPED_BUFFERS);
             params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
             params.put(Utils.Prop.LOCATION_ATTRIBUTE, runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE));
             catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, create, Utils.SHAPE_SPI,runConfiguration.getHints());

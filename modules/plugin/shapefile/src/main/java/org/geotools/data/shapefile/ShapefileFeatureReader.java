@@ -319,6 +319,15 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
         }
 
     }
+    
+    @Override
+    protected void finalize() throws Throwable {
+        if(shp != null) {
+            LOGGER.log(Level.WARNING, "There is code leaving shapefile readers unclosed, "
+                    + "this might result in file system locks not being cleared. File is: " + schema.getTypeName());
+            close();
+        }
+    }
 
     /**
      * Sets the target bbox, will be used to skip over features we do not need

@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Paths;
 
 import org.geotools.data.shapefile.files.FileWriter;
 import org.geotools.data.shapefile.files.Result;
@@ -66,7 +67,8 @@ public class ShpFilesLockingTest implements FileWriter {
         shpFiles = new ShpFiles( new File( path ));
 
         File file = shpFiles.acquireReadFile(SHP, this);
-        assertEquals( new File(path).getCanonicalPath(), file.getPath());
+        // under windows the two paths can be just different in terms of case..
+        assertEquals( new File(path).getCanonicalPath().toLowerCase(), file.getPath().toLowerCase());
         assertEquals(1, shpFiles.numberOfLocks());
         
         shpFiles.unlockRead(file, this);
@@ -88,7 +90,8 @@ public class ShpFilesLockingTest implements FileWriter {
         shpFiles = new ShpFiles( new File( path ));
 
         File file = shpFiles.acquireWriteFile(SHP, this);
-        assertEquals(new File( path ).getCanonicalPath(), file.getPath());
+        // under windows the two paths can be just different in terms of case..
+        assertEquals(new File( path ).getCanonicalPath().toLowerCase(), file.getPath().toLowerCase());
         assertEquals(1, shpFiles.numberOfLocks());
         
         shpFiles.unlockWrite(file, this);

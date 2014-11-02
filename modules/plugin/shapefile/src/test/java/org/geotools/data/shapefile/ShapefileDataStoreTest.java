@@ -1691,6 +1691,24 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         ShapefileFeatureStore store = (ShapefileFeatureStore) ds.getFeatureSource("statepop");
         assertEquals(store.getSupportedHints(), store.delegate.getSupportedHints());
     }
+    
+    @Test
+    public void testReadDelete() throws Exception {
+        File shpFile = copyShapefiles(STATE_POP);
+        ShapefileDataStore ds = new ShapefileDataStore(shpFile.toURI().toURL());
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(new Query(ds.getTypeNames()[0]), Transaction.AUTO_COMMIT)) {
+            reader.getFeatureType();
+            while(reader.hasNext()) {
+                reader.next();
+            }
+        }
+        ds.dispose();
+        
+        assertTrue(shpFile.delete());
+        assertTrue(sibling(shpFile, "shx").delete());
+        assertTrue(sibling(shpFile, "dbf").delete());
+    }
+
 
     private void performSpatialQuery(ShapefileDataStore ds) throws IOException {
         SimpleFeatureSource featureSource = ds.getFeatureSource();

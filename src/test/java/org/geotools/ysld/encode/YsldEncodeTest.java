@@ -2,6 +2,7 @@ package org.geotools.ysld.encode;
 
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
@@ -16,14 +17,14 @@ import org.geotools.styling.UserLayer;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlSeq;
 import org.geotools.ysld.Ysld;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
+import org.opengis.style.ChannelSelection;
 import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.RasterSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
+import org.hamcrest.Matchers;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class YsldEncodeTest {
 
@@ -336,7 +338,60 @@ public class YsldEncodeTest {
         
         assertThat(result, equalTo("${strEndsWith(attribute1,'\\}')}"));
     }
-
+    
+    @Test
+    public void testGrayBandSelection() throws Exception {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory();
+        RasterSymbolizer r = factory.createRasterSymbolizer();
+        ChannelSelection sel = factory.channelSelection(factory.createSelectedChannelType("foo", factory.createContrastEnhancement()));
+        r.setChannelSelection(sel);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(r), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap channelMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster").map("channels");
+        
+        assertTrue(channelMap.has("gray"));
+        assertFalse(channelMap.has("red"));
+        assertFalse(channelMap.has("green"));
+        assertFalse(channelMap.has("blue"));
+        
+        assertThat(channelMap.map("gray").str("name"), Matchers.equalTo("foo"));
+        assertFalse(channelMap.map("gray").has("contrast-enhancement"));
+        
+    }
+    @Test
+    public void testRGBBandSelection() throws Exception {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory();
+        RasterSymbolizer r = factory.createRasterSymbolizer();
+        ChannelSelection sel = factory.channelSelection(
+                factory.createSelectedChannelType("foo", factory.createContrastEnhancement()),
+                factory.createSelectedChannelType("bar", factory.createContrastEnhancement()),
+                factory.createSelectedChannelType("baz", factory.createContrastEnhancement())
+                );
+        r.setChannelSelection(sel);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(r), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap channelMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster").map("channels");
+        
+        assertFalse(channelMap.has("gray"));
+        assertTrue(channelMap.has("red"));
+        assertTrue(channelMap.has("green"));
+        assertTrue(channelMap.has("blue"));
+        
+        assertThat(channelMap.map("red").str("name"), equalTo("foo"));
+        assertFalse(channelMap.map("red").has("contrast-enhancement"));
+        assertThat(channelMap.map("green").str("name"), equalTo("bar"));
+        assertFalse(channelMap.map("green").has("contrast-enhancement"));
+        assertThat(channelMap.map("blue").str("name"), equalTo("baz"));
+        assertFalse(channelMap.map("blue").has("contrast-enhancement"));
+        
+    }
+    
     StyledLayerDescriptor sld(Symbolizer sym) {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 

@@ -4,7 +4,9 @@ import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.RasterSymbolizer;
+import org.geotools.ysld.Band;
 import org.geotools.ysld.Tuple;
+import org.opengis.style.ChannelSelection;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -26,6 +28,13 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         if(ch.getGammaValue()==null) return true;
         return false;
     }
+    private boolean emptyChannelSelection(ChannelSelection ch) {
+        if(ch==null) return true;
+        for(Band b: Band.values()) {
+            if(b.getFrom(ch)!=null) return false;
+        }
+        return true;
+    }
     
     @Override
     protected void encode(RasterSymbolizer sym) {
@@ -36,6 +45,9 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
 
         if (!emptyContrastEnhancement(sym.getContrastEnhancement())) {
             inline(new ContrastEnhancementEncoder(sym.getContrastEnhancement()));
+        }
+        if (!emptyChannelSelection(sym.getChannelSelection())) {
+            inline(new ChannelSelectionEncoder(sym.getChannelSelection()));
         }
 
         super.encode(sym);
@@ -106,5 +118,24 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
             }
             put("gamma", contrast.getGammaValue());
         }
+    }
+    
+    class ChannelSelectionEncoder extends YsldEncodeHandler<ChannelSelection> {
+        
+        public ChannelSelectionEncoder(ChannelSelection obj) {
+            super(obj);
+        }
+        
+        @Override
+        protected void encode(ChannelSelection next) {
+            push("channels");
+            for(Band band: Band.values())
+            if(band.getFrom(next) != null) {
+                push(band.key);
+                put("name", band.getFrom(next).getChannelName());
+                pop();
+            }
+        }
+    
     }
 }

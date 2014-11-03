@@ -905,7 +905,7 @@ public class YsldParseTest {
    
    
    @Test
-   public void testRasterBandSelectionGrey() throws Exception {
+   public void testRasterBandSelectionGray() throws Exception {
        String yaml =
        "raster:\n"+
        "  channels:\n" +
@@ -979,13 +979,12 @@ public class YsldParseTest {
        assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
    }
    
-   @Ignore
    @Test
-   public void testRasterBandSelectionGreyTerse() throws Exception {
+   public void testRasterBandSelectionGrayTerse() throws Exception {
        String yaml =
        "raster:\n"+
        "  channels:\n" +
-       "    grey: 1\n";
+       "    gray: 1\n";
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);
        RasterSymbolizer r = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
@@ -994,7 +993,6 @@ public class YsldParseTest {
        assertThat(grayChannel.getContrastEnhancement(), nullContrast());
    }
    
-   @Ignore
    @Test
    public void testRasterBandSelectionRGBTerse() throws Exception {
        String yaml =

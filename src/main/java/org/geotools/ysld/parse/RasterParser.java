@@ -1,5 +1,7 @@
 package org.geotools.ysld.parse;
 
+import java.util.Map;
+
 import org.geotools.styling.*;
 import org.geotools.ysld.Band;
 import org.geotools.ysld.YamlMap;
@@ -75,6 +77,14 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
             this.selection = sym.getChannelSelection();
         }
         
+        void parse(Band band, SelectedChannelType sel, YamlMap map, YamlParseContext context) {
+            if(map.get(band.key) instanceof Map) {
+                context.push(band.key, new SelectedChannelHandler(sel));
+            } else {
+                sel.setChannelName(map.str(band.key));
+            }
+        }
+        
         @Override
         public void handle(YamlObject<?> obj, YamlParseContext context) {
             
@@ -83,16 +93,16 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
                 if(map.has(Band.RED.key) || map.has(Band.GREEN.key) || map.has(Band.BLUE.key)) throw new IllegalArgumentException("grey and RGB can not be combined");
                 SelectedChannelType gray = factory.style.selectedChannelType(null, null);
                 selection.setGrayChannel(gray);
-                context.push(Band.GRAY.key, new SelectedChannelHandler(gray));
+                parse(Band.GRAY, gray, map, context);
             } else {
                 if(!(map.has(Band.RED.key) && map.has(Band.GREEN.key) && map.has(Band.BLUE.key))) throw new IllegalArgumentException("all of red green and blue must be preset");
                 SelectedChannelType red = factory.style.selectedChannelType(null, null);
                 SelectedChannelType green = factory.style.selectedChannelType(null, null);
                 SelectedChannelType blue = factory.style.selectedChannelType(null, null);
                 selection.setRGBChannels(red, green, blue);
-                context.push(Band.RED.key, new SelectedChannelHandler(red));
-                context.push(Band.GREEN.key, new SelectedChannelHandler(green));
-                context.push(Band.BLUE.key, new SelectedChannelHandler(blue));
+                parse(Band.RED, red, map, context);
+                parse(Band.GREEN, green, map, context);
+                parse(Band.BLUE, blue, map, context);
             }
         }
         

@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.nullValue;
 
 import org.geotools.styling.Rule;
 import org.geotools.ysld.parse.ScaleRange;
@@ -16,6 +17,7 @@ import org.hamcrest.Matchers;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
 
 public enum TestUtils {
@@ -66,7 +68,19 @@ public enum TestUtils {
                    hasProperty("value", m)
                    );
      }
-
+    
+    /**
+     * Matches a nil expression or null.
+     * @return
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public
+       static Matcher<Expression> nilExpression() {
+           return (Matcher)Matchers.anyOf(
+                   nullValue(),
+                   instanceOf(NilExpression.class)
+                   );
+     }
     /**
      * Matches as an attribute expression for a named attribute.
      * @param name

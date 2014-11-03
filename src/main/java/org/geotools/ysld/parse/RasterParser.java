@@ -28,7 +28,7 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
             }
         });
         context.push("contrast-enhancement", new ContrastEnhancementHandler());
-
+        context.push("channels", new ChannelsHandler());
     }
 
     class ContrastEnhancementHandler extends YsldParseHandler {
@@ -38,12 +38,15 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
         protected ContrastEnhancementHandler() {
             super(RasterParser.this.factory);
             contrast = factory.style.createContrastEnhancement();
+            set();
         }
-
+        
+        protected void set() {
+            sym.setContrastEnhancement(contrast);
+        }
+        
         @Override
         public void handle(YamlObject<?> obj, YamlParseContext context) {
-            sym.setContrastEnhancement(contrast);
-
             YamlMap map = obj.map();
             if (map.has("mode")) {
                 String mode = map.str("mode");
@@ -59,6 +62,61 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
                 contrast.setGammaValue(Util.expression(map.str("gamma"), factory));
 
             }
+        }
+    }
+    
+    class ChannelsHandler extends YsldParseHandler {
+        
+        ChannelSelection selection;
+        
+        protected ChannelsHandler() {
+            super(RasterParser.this.factory);
+            this.selection = sym.getChannelSelection();
+        }
+        
+        @Override
+        public void handle(YamlObject<?> obj, YamlParseContext context) {
+            
+            YamlMap map = obj.map();
+            if (map.has("gray")) {
+                if(map.has("red") || map.has("green") || map.has("blue")) throw new IllegalArgumentException("grey and RGB can not be combined");
+                SelectedChannelType gray = factory.style.selectedChannelType(null, null);
+                selection.setGrayChannel(gray);
+                context.push("gray", new SelectedChannelHandler(gray));
+            } else {
+                if(!(map.has("red") && map.has("green") && map.has("blue"))) throw new IllegalArgumentException("all of red green and blue must be preset");
+                SelectedChannelType red = factory.style.selectedChannelType(null, null);
+                SelectedChannelType green = factory.style.selectedChannelType(null, null);
+                SelectedChannelType blue = factory.style.selectedChannelType(null, null);
+                selection.setRGBChannels(red, green, blue);
+                context.push("red", new SelectedChannelHandler(red));
+                context.push("green", new SelectedChannelHandler(green));
+                context.push("blue", new SelectedChannelHandler(blue));
+            }
+        }
+        
+    }
+    
+    class SelectedChannelHandler extends YsldParseHandler {
+        SelectedChannelType sel;
+        
+        public SelectedChannelHandler(SelectedChannelType sel) {
+            super(RasterParser.this.factory);
+            this.sel = sel;
+        }
+        
+        @Override
+        public void handle(YamlObject<?> obj, YamlParseContext context) {
+            String name = obj.map().str("name");
+            sel.setChannelName(name);
+            context.push("contrast-enhancement", new ContrastEnhancementHandler(){
+    
+                @Override
+                protected void set() {
+                    sel.setContrastEnhancement(this.contrast);
+                }
+                
+            });
         }
     }
 }

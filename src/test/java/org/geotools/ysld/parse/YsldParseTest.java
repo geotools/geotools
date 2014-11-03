@@ -10,7 +10,9 @@ import org.geotools.styling.SLD;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.ysld.Ysld;
+import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
@@ -18,7 +20,10 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.geotools.styling.ColorMap;
+import org.opengis.style.ContrastEnhancement;
+import org.opengis.style.ContrastMethod;
 import org.opengis.style.RasterSymbolizer;
+import org.opengis.style.SelectedChannelType;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -31,9 +36,10 @@ import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
 import static org.geotools.ysld.TestUtils.appliesToScale;
 import static org.geotools.ysld.TestUtils.attribute;
-import static org.geotools.ysld.TestUtils.function;
 import static org.geotools.ysld.TestUtils.literal;
+import static org.geotools.ysld.TestUtils.nilExpression;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.describedAs;
 import static org.hamcrest.Matchers.equalTo;
@@ -42,6 +48,7 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -898,16 +905,113 @@ public class YsldParseTest {
    
    
    @Test
-   public void testEvilExpression2() throws Exception {
+   public void testRasterBandSelectionGrey() throws Exception {
        String yaml =
-       "point: \n"+
-       "  symbols: \n" +
-       "  - mark: \n" +
-       "      fill-color: ${strEndsWith(attribute, '\\}')}\n";
-
+       "raster:\n"+
+       "  channels:\n" +
+       "    gray:\n" +
+       "      name: foo\n";
+       
        StyledLayerDescriptor sld = Ysld.parse(yaml);
-       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
-       assertThat(SLD.fill(p).getColor(), function("strEndsWith", attribute("attribute"), literal(equalTo("}"))));
+       RasterSymbolizer r = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
+       SelectedChannelType grayChannel = r.getChannelSelection().getGrayChannel();
+       assertThat(grayChannel.getChannelName(), equalTo("foo"));
+       assertThat(grayChannel.getContrastEnhancement(), nullContrast());
    }
-
+   @Test
+   public void testRasterBandSelectionGreyWithContrast() throws Exception {
+       String yaml =
+       "raster:\n"+
+       "  channels:\n" +
+       "    gray:\n" +
+       "      name: foo\n"+
+       "      contrast-enhancement:\n"+
+       "        mode: normalize\n"+
+       "        gamma: 1.2\n";
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       RasterSymbolizer r = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
+       SelectedChannelType grayChannel = r.getChannelSelection().getGrayChannel();
+       assertThat(grayChannel.getChannelName(), equalTo("foo"));
+       assertThat(grayChannel.getContrastEnhancement().getGammaValue(), literal(equalTo("1.2")));
+       assertThat(grayChannel.getContrastEnhancement().getMethod(), equalTo(ContrastMethod.NORMALIZE));
+   }
+   
+   @SuppressWarnings({ "rawtypes", "unchecked" })
+   static Matcher<ContrastEnhancement> nullContrast() {
+       return (Matcher)describedAs("Null Contrast Enhancement", 
+               anyOf(
+                   nullValue(), 
+                   allOf(
+                       hasProperty("gammaValue", nilExpression()),
+                       hasProperty("method", 
+                           anyOf(
+                               nullValue(),
+                               is(ContrastMethod.NONE))))));
+   }
+   
+   @Test
+   public void testRasterBandSelectionRGB() throws Exception {
+       String yaml =
+       "raster:\n"+
+       "  channels:\n" +
+       "    red:\n" +
+       "      name: foo\n"+
+       "    green:\n" +
+       "      name: bar\n"+
+       "      contrast-enhancement:\n"+
+       "        mode: normalize\n"+
+       "    blue:\n" +
+       "      name: baz\n";
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       RasterSymbolizer r = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
+       
+       SelectedChannelType[] rgbChannels = r.getChannelSelection().getRGBChannels();
+       
+       assertThat(rgbChannels[0].getChannelName(), equalTo("foo"));
+       assertThat(rgbChannels[1].getChannelName(), equalTo("bar"));
+       assertThat(rgbChannels[2].getChannelName(), equalTo("baz"));
+       
+       assertThat(rgbChannels[0].getContrastEnhancement(), nullContrast());
+       assertThat(rgbChannels[1].getContrastEnhancement().getGammaValue(), nilExpression());
+       assertThat(rgbChannels[1].getContrastEnhancement().getMethod(), equalTo(ContrastMethod.NORMALIZE));
+       assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
+   }
+   
+   @Ignore
+   @Test
+   public void testRasterBandSelectionGreyTerse() throws Exception {
+       String yaml =
+       "raster:\n"+
+       "  channels:\n" +
+       "    grey: 1\n";
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       RasterSymbolizer r = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
+       SelectedChannelType grayChannel = r.getChannelSelection().getGrayChannel();
+       assertThat(grayChannel.getChannelName(), equalTo("1"));
+       assertThat(grayChannel.getContrastEnhancement(), nullContrast());
+   }
+   
+   @Ignore
+   @Test
+   public void testRasterBandSelectionRGBTerse() throws Exception {
+       String yaml =
+       "raster:\n"+
+       "  channels:\n" +
+       "    red: 1\n"+
+       "    green: 2\n"+
+       "    blue: 3\n";
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       RasterSymbolizer r = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
+       SelectedChannelType[] rgbChannels = r.getChannelSelection().getRGBChannels();
+       assertThat(rgbChannels[0].getChannelName(), equalTo("1"));
+       assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
+       assertThat(rgbChannels[1].getChannelName(), equalTo("2"));
+       assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
+       assertThat(rgbChannels[2].getChannelName(), equalTo("3"));
+       assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
+   }
 }

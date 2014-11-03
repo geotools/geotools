@@ -12,3 +12,4 @@ org.geotools.util.EnumerationConverterFactory
 org.geotools.util.QNameConverterFactory
 org.geotools.util.MeasureConverterFactory
 org.geotools.temporal.TemporalConverterFactory
+org.geotools.util.NameConverterFactory

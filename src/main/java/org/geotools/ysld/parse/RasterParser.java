@@ -1,6 +1,7 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.styling.*;
+import org.geotools.ysld.Band;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.opengis.style.ContrastMethod;
@@ -78,20 +79,20 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
         public void handle(YamlObject<?> obj, YamlParseContext context) {
             
             YamlMap map = obj.map();
-            if (map.has("gray")) {
-                if(map.has("red") || map.has("green") || map.has("blue")) throw new IllegalArgumentException("grey and RGB can not be combined");
+            if (map.has(Band.GRAY.key)) {
+                if(map.has(Band.RED.key) || map.has(Band.GREEN.key) || map.has(Band.BLUE.key)) throw new IllegalArgumentException("grey and RGB can not be combined");
                 SelectedChannelType gray = factory.style.selectedChannelType(null, null);
                 selection.setGrayChannel(gray);
-                context.push("gray", new SelectedChannelHandler(gray));
+                context.push(Band.GRAY.key, new SelectedChannelHandler(gray));
             } else {
-                if(!(map.has("red") && map.has("green") && map.has("blue"))) throw new IllegalArgumentException("all of red green and blue must be preset");
+                if(!(map.has(Band.RED.key) && map.has(Band.GREEN.key) && map.has(Band.BLUE.key))) throw new IllegalArgumentException("all of red green and blue must be preset");
                 SelectedChannelType red = factory.style.selectedChannelType(null, null);
                 SelectedChannelType green = factory.style.selectedChannelType(null, null);
                 SelectedChannelType blue = factory.style.selectedChannelType(null, null);
                 selection.setRGBChannels(red, green, blue);
-                context.push("red", new SelectedChannelHandler(red));
-                context.push("green", new SelectedChannelHandler(green));
-                context.push("blue", new SelectedChannelHandler(blue));
+                context.push(Band.RED.key, new SelectedChannelHandler(red));
+                context.push(Band.GREEN.key, new SelectedChannelHandler(green));
+                context.push(Band.BLUE.key, new SelectedChannelHandler(blue));
             }
         }
         

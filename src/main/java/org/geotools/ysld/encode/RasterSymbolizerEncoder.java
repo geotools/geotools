@@ -6,7 +6,9 @@ import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.ysld.Band;
 import org.geotools.ysld.Tuple;
-import org.opengis.style.ChannelSelection;
+import org.geotools.styling.ChannelSelection;
+import org.geotools.styling.SelectedChannelType;
+import org.opengis.style.ContrastMethod;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -24,9 +26,9 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
     }
     private boolean emptyContrastEnhancement(ContrastEnhancement ch) {
         if(ch==null) return true;
-        if(ch.getMethod()==null) return true;
-        if(ch.getGammaValue()==null) return true;
-        return false;
+        if(ch.getMethod()!=null && ch.getMethod()!=ContrastMethod.NONE) return false;
+        if(ch.getGammaValue()!=null) return false;
+        return true;
     }
     private boolean emptyChannelSelection(ChannelSelection ch) {
         if(ch==null) return true;
@@ -129,13 +131,33 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         @Override
         protected void encode(ChannelSelection next) {
             push("channels");
-            for(Band band: Band.values())
-            if(band.getFrom(next) != null) {
-                push(band.key);
-                put("name", band.getFrom(next).getChannelName());
-                pop();
+            for(Band band: Band.values()){
+                SelectedChannelType channel = (SelectedChannelType) band.getFrom(next);
+                if(channel != null) {
+                    inline(new SelectedChannelTypeEncoder(band, channel));
+                }
             }
         }
     
     }
+    
+    class SelectedChannelTypeEncoder extends YsldEncodeHandler<SelectedChannelType> {
+        
+        private Band band;
+
+        public SelectedChannelTypeEncoder(Band band, SelectedChannelType it) {
+            super(it);
+            this.band=band;
+        }
+        
+        @Override
+        protected void encode(SelectedChannelType channel) {
+            push(band.key);
+            put("name", channel.getChannelName());
+            if (!emptyContrastEnhancement(channel.getContrastEnhancement())) {
+                inline(new ContrastEnhancementEncoder(channel.getContrastEnhancement()));
+            }
+        }
+    }
+
 }

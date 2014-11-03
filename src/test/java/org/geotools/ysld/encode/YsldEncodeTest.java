@@ -19,11 +19,16 @@ import org.geotools.ysld.YamlSeq;
 import org.geotools.ysld.Ysld;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.style.ChannelSelection;
+import org.opengis.style.ContrastMethod;
 import org.opengis.style.GraphicalSymbol;
 import org.geotools.styling.RasterSymbolizer;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.yaml.snakeyaml.Yaml;
 
@@ -33,12 +38,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class YsldEncodeTest {
+
+    private static final double EPSILON = 0.0000000001;
 
     @Test
     public void testFunction() throws Exception {
@@ -352,13 +360,18 @@ public class YsldEncodeTest {
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         YamlMap channelMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster").map("channels");
         
-        assertTrue(channelMap.has("gray"));
-        assertFalse(channelMap.has("red"));
-        assertFalse(channelMap.has("green"));
-        assertFalse(channelMap.has("blue"));
+        assertThat(channelMap, yHasEntry("gray"));
+        assertThat(channelMap, not(yHasEntry("red")));
+        assertThat(channelMap, not(yHasEntry("green")));
+        assertThat(channelMap, not(yHasEntry("blue")));
+
         
-        assertThat(channelMap.map("gray").str("name"), Matchers.equalTo("foo"));
-        assertFalse(channelMap.map("gray").has("contrast-enhancement"));
+        assertThat(channelMap.map("gray"), 
+                yHasEntry("name", 
+                    equalTo("foo")));
+        assertThat(channelMap.map("gray"), 
+                not(yHasEntry("contrast-enhancement")));
+
         
     }
     @Test
@@ -378,6 +391,27 @@ public class YsldEncodeTest {
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         YamlMap channelMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster").map("channels");
         
+        assertThat(channelMap, not(yHasEntry("gray")));
+        assertThat(channelMap, yHasEntry("red"));
+        assertThat(channelMap, yHasEntry("green"));
+        assertThat(channelMap, yHasEntry("blue"));
+        
+        assertThat(channelMap.map("red"), 
+                yHasEntry("name", 
+                    equalTo("foo")));
+        assertThat(channelMap.map("red"), 
+                not(yHasEntry("contrast-enhancement")));
+        assertThat(channelMap.map("green"), 
+                yHasEntry("name", 
+                    equalTo("bar")));
+        assertThat(channelMap.map("green"), 
+                not(yHasEntry("contrast-enhancement")));
+        assertThat(channelMap.map("blue"), 
+                yHasEntry("name", 
+                    equalTo("baz")));
+        assertThat(channelMap.map("blue"), 
+                not(yHasEntry("contrast-enhancement")));
+
         assertFalse(channelMap.has("gray"));
         assertTrue(channelMap.has("red"));
         assertTrue(channelMap.has("green"));
@@ -390,6 +424,118 @@ public class YsldEncodeTest {
         assertThat(channelMap.map("blue").str("name"), equalTo("baz"));
         assertFalse(channelMap.map("blue").has("contrast-enhancement"));
         
+    }
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    Matcher<Object> yHasEntry(final String key, final Matcher<? extends Object> m) {
+        return new BaseMatcher() {
+
+            @Override
+            public boolean matches(Object arg0) {
+                if(!(arg0 instanceof YamlMap)) return false;
+                YamlMap map = (YamlMap) arg0;
+                
+                if(! map.has(key)) return false;
+                Object value = null;
+                try {
+                    value = map.map(key);
+                } catch (IllegalArgumentException ex1) {
+                    try {
+                        value = map.seq(key);
+                    } catch (IllegalArgumentException ex2) {
+                        value = map.get(key);
+                    }
+                }
+                return (m.matches(value));
+            }
+
+            @Override
+            public void describeTo(Description arg0) {
+                arg0.appendText("YamlMap with entry ").appendValue(key).appendText(" and value ").appendDescriptionOf(m);
+            }
+            
+        };
+    }
+    Matcher<Object> yHasEntry(final String key) { 
+        return yHasEntry(key, Matchers.any(Object.class));
+    }
+    @Test
+    public void testGrayBandSelectionWithContrast() throws Exception {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
+        RasterSymbolizer r = styleFactory.createRasterSymbolizer();
+        ChannelSelection sel = styleFactory.channelSelection(styleFactory.createSelectedChannelType("foo", 
+                styleFactory.createContrastEnhancement(filterFactory.literal(1.2)
+                        )));
+        r.setChannelSelection(sel);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(r), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap channelMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster").map("channels");
+        
+        assertThat(channelMap, yHasEntry("gray"));
+        assertThat(channelMap, not(yHasEntry("red")));
+        assertThat(channelMap, not(yHasEntry("green")));
+        assertThat(channelMap, not(yHasEntry("blue")));
+
+        
+        assertThat(channelMap.map("gray"), 
+                yHasEntry("name", 
+                    equalTo("foo")));
+        assertThat(channelMap.map("gray"), 
+                yHasEntry("contrast-enhancement", 
+                    yHasEntry("gamma", 
+                        equalTo(1.2d))));
+    }
+    @Test
+    public void testRGBBandSelectionWithContrast() throws Exception {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
+        RasterSymbolizer r = styleFactory.createRasterSymbolizer();
+        ChannelSelection sel = styleFactory.channelSelection(
+                styleFactory.createSelectedChannelType("foo", 
+                        styleFactory.createContrastEnhancement()),
+                styleFactory.createSelectedChannelType("bar", 
+                        styleFactory.createContrastEnhancement(
+                                filterFactory.literal(1.2))),
+                styleFactory.createSelectedChannelType("baz", 
+                        styleFactory.createContrastEnhancement())
+                );
+        ((org.geotools.styling.ContrastEnhancement)sel.getRGBChannels()[2].getContrastEnhancement()).setMethod(ContrastMethod.HISTOGRAM);
+        r.setChannelSelection(sel);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(r), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap channelMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster").map("channels");
+        
+        assertThat(channelMap, not(yHasEntry("gray")));
+        assertThat(channelMap, yHasEntry("red"));
+        assertThat(channelMap, yHasEntry("green"));
+        assertThat(channelMap, yHasEntry("blue"));
+        
+        assertThat(channelMap.map("red"), 
+                yHasEntry("name", 
+                    equalTo("foo")));
+        assertThat(channelMap.map("red"), 
+                not(yHasEntry("contrast-enhancement")));
+        assertThat(channelMap.map("green"), 
+                yHasEntry("name", 
+                    equalTo("bar")));
+        assertThat(channelMap.map("green"), 
+                yHasEntry("contrast-enhancement", 
+                    yHasEntry("gamma", 
+                        equalTo(1.2d))));
+        assertThat(channelMap.map("blue"), 
+                yHasEntry("name", 
+                    equalTo("baz")));
+        assertThat(channelMap.map("blue"), 
+                yHasEntry("contrast-enhancement", 
+                    yHasEntry("mode", 
+                        equalTo("histogram"))));
     }
     
     StyledLayerDescriptor sld(Symbolizer sym) {

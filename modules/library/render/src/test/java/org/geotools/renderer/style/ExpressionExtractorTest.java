@@ -114,8 +114,20 @@ public class ExpressionExtractorTest extends TestCase {
         Expression cat = ExpressionExtractor.catenateExpressions(Arrays.asList(l, pn));
         assertTrue(cat instanceof Function);
         Function f = (Function) cat;
-        assertEquals("strConcat", f.getName());
+        assertEquals("Concatenate", f.getName());
         assertEquals(l, f.getParameters().get(0));
         assertEquals(pn, f.getParameters().get(1));
+    }
+    public void testCatenateThree() {
+        Literal l1 = ff.literal("http://test?param=");
+        PropertyName pn = ff.property("intAttribute");
+        Literal l2 = ff.literal("&param2=foo");
+        Expression cat = ExpressionExtractor.catenateExpressions(Arrays.asList(l1, pn, l2));
+        assertTrue(cat instanceof Function);
+        Function f = (Function) cat;
+        assertEquals("Concatenate", f.getName());
+        assertEquals(l1, f.getParameters().get(0));
+        assertEquals(pn, f.getParameters().get(1));
+        assertEquals(l2, f.getParameters().get(2));
     }
 }

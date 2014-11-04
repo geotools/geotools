@@ -274,8 +274,8 @@ public class GridCoverageReaderHelper {
         if (sameCRS) {
             Envelope gridEnvelope = JTS.transform(polygon, crsToGrid2D).getEnvelopeInternal();
             GridEnvelope2D gridRange = new GridEnvelope2D((int) gridEnvelope.getMinX(),
-                    (int) gridEnvelope.getMinY(), (int) gridEnvelope.getWidth(),
-                    (int) gridEnvelope.getHeight());
+                    (int) gridEnvelope.getMinY(), (int) Math.round(gridEnvelope.getWidth()),
+                    (int) Math.round(gridEnvelope.getHeight()));
             readingGridGeometry = new GridGeometry2D(gridRange, gridToCRS2D, readerCRS);
         } else {
             ReferencedEnvelope readEnvelope = new ReferencedEnvelope(polygon.getEnvelopeInternal(),

@@ -47,6 +47,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
+import java.util.Collections;
 
 /**
  * This class represents AttributeMapping for attributes that are nested inside another complex
@@ -391,7 +392,7 @@ public class NestedAttributeMapping extends AttributeMapping {
         filter = filterFac.equals(propertyName, filterFac.literal(foreignKeyValue));              
         query.setFilter(filter);
         
-        if (selectedProperties!=null && !selectedProperties.isEmpty()) {
+        if (selectedProperties!=null) {
             selectedProperties = new ArrayList<PropertyName>(selectedProperties);
             selectedProperties.add(propertyName);
         }

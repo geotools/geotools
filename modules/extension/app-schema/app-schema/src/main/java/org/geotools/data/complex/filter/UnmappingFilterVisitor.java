@@ -71,6 +71,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.Contains;
@@ -808,7 +809,8 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return combinedExpressions;
     }
 
-    public List<Expression> visit(PropertyName expr, Object arg1) {
+    public Object visit(PropertyName expr, Object arg1) {
+
         String targetXPath = expr.getPropertyName();
         NamespaceSupport namespaces = mappings.getNamespaces();
         AttributeDescriptor root = mappings.getTargetFeature();

@@ -17,31 +17,68 @@
 
 package org.geotools.data.store;
 
-import static org.junit.Assert.*;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+
+import static org.junit.Assert.*;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureEvent;
 import org.geotools.data.FeatureListener;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureWriter;
+import org.geotools.data.Query;
+import org.geotools.data.Transaction;
+import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.simple.SimpleFeatureWriter;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
+
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.LineString;
 
 /**
  * Tests events in autocommit and with transactions
  * 
  * @author Niels Charlier, Scitus Development
  */
-public class ContentFeatureSourceEventsTest extends AbstractContentTest {
+public class ContentFeatureSourceEventsTest {
 
+    /**
+     * Mock feature type name.
+     */
+    private static final Name TYPENAME = new NameImpl("Mock");
 
+    /**
+     * Mock feature type.
+     */
+    private static final SimpleFeatureType TYPE = buildType();
+
+    /**
+     * The list of features on which paging is tested.
+     */
+    @SuppressWarnings("serial")
+    private static final List<SimpleFeature> FEATURES = new ArrayList<SimpleFeature>() {
+        {
+            add(buildFeature("mock.3"));
+            add(buildFeature("mock.1"));
+            add(buildFeature("mock.2"));
+        }
+    };
     
     private static class Listener implements FeatureListener {
         String name;
@@ -57,7 +94,7 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
         }
 
         FeatureEvent getEvent(int i) {
-            return events.get(i);
+            return (FeatureEvent) events.get(i);
         }
     }
     
@@ -171,6 +208,200 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
         assertEquals(1, listener2.events.size());
     }
 
+    /**
+     * Build the test type.
+     */
+    private static SimpleFeatureType buildType() {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName(TYPENAME);
+        builder.add("geom", LineString.class);
+        return builder.buildFeatureType();
+    }
+
+    /**
+     * Build a test feature with the specified id.
+     */
+    private static SimpleFeature buildFeature(String id) {
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(TYPE);
+        builder.add(new Envelope(0, 1, 0, 1));
+        return builder.buildFeature(id);
+    }
+
+    /**
+     * {@link ContentDataStore} for the test features.
+     * 
+     */
+    private static class MockContentDataStore extends ContentDataStore {
+
+        /**
+         * @see org.geotools.data.store.ContentDataStore#createTypeNames()
+         */
+        @SuppressWarnings("serial")
+        @Override
+        protected List<Name> createTypeNames() throws IOException {
+            return new ArrayList<Name>() {
+                {
+                    add(TYPENAME);
+                }
+            };
+        }
+
+        /**
+         * @see org.geotools.data.store.ContentDataStore#createFeatureSource(org.geotools.data.store.ContentEntry)
+         */
+        @Override
+        protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
+            return new MockContentFeatureStore(entry, null);
+        }
+
+    }
+
+    /**
+     * {@link ContentFeatureSource} that returns the test features.
+     */
+    @SuppressWarnings("unchecked")
+    private static class MockContentFeatureStore extends ContentFeatureStore {
+
+        public MockContentFeatureStore(ContentEntry entry, Query query) {
+            super(entry, query);
+        }
+
+        /**
+         * Not implemented.
+         */
+        @Override
+        protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
+            throw new UnsupportedOperationException();            
+        }
+
+        /**
+         * Not implemented.
+         */
+        @Override
+        protected int getCountInternal(Query query) throws IOException {
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * @see org.geotools.data.store.ContentFeatureSource#getReaderInternal(org.geotools.data.Query)
+         */
+        @Override
+        protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
+                throws IOException {
+            return new MockSimpleFeatureReader();
+        }
+
+        /**
+         * @see org.geotools.data.store.ContentFeatureSource#buildFeatureType()
+         */
+        @Override
+        protected SimpleFeatureType buildFeatureType() throws IOException {
+            return TYPE;
+        }
+
+        @Override
+        protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query,
+                int flags) throws IOException {
+            return new MockSimpleFeatureWriter();
+        }
+
+    }
+
+    /**
+     * Decorate the list of test features as a {@link SimpleFeatureReader}.
+     */
+    private static class MockSimpleFeatureReader implements SimpleFeatureReader {
+
+        /**
+         * Index of the next test feature to be returned.
+         */
+        private int index = 0;
+
+        /**
+         * @see org.geotools.data.FeatureReader#getFeatureType()
+         */
+        @Override
+        public SimpleFeatureType getFeatureType() {
+            return TYPE;
+        }
+
+        /**
+         * @see org.geotools.data.FeatureReader#next()
+         */
+        @Override
+        public SimpleFeature next() throws IOException, IllegalArgumentException,
+                NoSuchElementException {
+            return FEATURES.get(index++);
+        }
+
+        /**
+         * @see org.geotools.data.FeatureReader#hasNext()
+         */
+        @Override
+        public boolean hasNext() throws IOException {
+            return index < FEATURES.size();
+        }
+
+        /**
+         * @see org.geotools.data.FeatureReader#close()
+         */
+        @Override
+        public void close() throws IOException {
+            // ignored
+        }
+
+    }
     
+    /**
+     * Decorate the list of test features as a {@link SimpleFeatureReader}.
+     */
+    private static class MockSimpleFeatureWriter implements SimpleFeatureWriter {
+
+        /**
+         * Index of the next test feature to be returned.
+         */
+        private int index = 0;
+        
+        SimpleFeature newFeature;
+
+        @Override
+        public SimpleFeatureType getFeatureType() {
+            return TYPE;
+        }
+
+        @Override
+        public SimpleFeature next() throws IOException {
+            if (index >= FEATURES.size()) {
+                newFeature = buildFeature("mock." + (++index));
+                return newFeature;
+            }
+            return FEATURES.get(index++);
+        }
+
+        @Override
+        public void remove() throws IOException {
+            if (index > 0 && index <= FEATURES.size()){
+                SimpleFeature feature = FEATURES.remove(index-1);
+            }
+        }
+
+        @Override
+        public void write() throws IOException {
+            if (index > FEATURES.size()) {
+               FEATURES.add(newFeature);
+            } 
+        }
+
+        @Override
+        public boolean hasNext() throws IOException {
+            return index < FEATURES.size();
+        }
+
+        @Override
+        public void close() throws IOException {
+            // ignored            
+        }
+        
+    }
 
 }

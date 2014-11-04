@@ -133,6 +133,8 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         if (!"auto".equals(override)) {
             if (override.equalsIgnoreCase("geoserver")) {
                 strategy = new GeoServerPre200Strategy();
+            } else if (override.equalsIgnoreCase("mapserver")) {
+                strategy = new MapServerWFSStrategy();
             } else if (override.equalsIgnoreCase("cubewerx")) {
                 strategy = new CubeWerxStrategy();
             } else if (override.equalsIgnoreCase("ionic")) {

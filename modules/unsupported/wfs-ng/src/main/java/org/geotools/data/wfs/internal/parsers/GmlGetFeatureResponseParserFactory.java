@@ -61,6 +61,7 @@ public class GmlGetFeatureResponseParserFactory implements WFSResponseFactory {
             .asList(//
             "text/xml; subtype=gml/3.1.1",//
                     "text/xml;subtype=gml/3.1.1",//
+                    "text/xml; subtype=gml/3.1.1; charset=UTF-8",
                     "text/xml; subtype=gml/3.1.1/profiles/gmlsf/0",//
                     "text/xml;subtype=gml/3.1.1/profiles/gmlsf/0",//
                     "application/gml+xml; subtype=gml/3.1.1",//
@@ -72,6 +73,7 @@ public class GmlGetFeatureResponseParserFactory implements WFSResponseFactory {
                     "text/xml", // oddly, GeoServer returns plain 'text/xml' instead of the propper
                                 // subtype when resultType=hits. Guess we should make this something
                                 // the specific strategy can hanlde?
+                    "text/xml; charset=UTF-8",
                     "text/gml; subtype=gml/3.1.1",// the incorrectly advertised GeoServer format
                     "GML2",//
                     "text/xml; subtype=gml/2.1.2"//

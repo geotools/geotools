@@ -17,19 +17,35 @@
 package org.geotools.data.wfs.internal.v1_x;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import net.opengis.wfs.FeatureTypeType;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.apache.commons.io.IOUtils;
+import org.geotools.data.wfs.internal.WFSOperationType;
+import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.xs.bindings.XSDoubleBinding;
 import org.geotools.xs.bindings.XSIntegerBinding;
 import org.geotools.xs.bindings.XSStringBinding;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.spatial.BBOX;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * This strategy addresses a bug in most MapServer implementations where a filter is required in
@@ -37,41 +53,11 @@ import org.opengis.filter.spatial.BBOX;
  * BBox Filter is constructed that is the entire layer.
  */
 public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
-
-    private static final FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
-
-    public MapServerWFSStrategy() {
-        super();
-    }
-
-    @Override
-    public Filter[] splitFilters(final QName typeName, final Filter filter) {
-
-        Filter[] splitFilters = super.splitFilters(typeName, filter);
-
-        Filter supported = splitFilters[0];
-
-        if (Filter.INCLUDE.equals(supported)) {
-
-            ReferencedEnvelope wgs84Bounds = super.getFeatureTypeInfo(typeName)
-                    .getWGS84BoundingBox();
-
-            BBOX newFilter;
-            if (wgs84Bounds == null) {
-                newFilter = fac.bbox(null, -180, -90, 180, 90, "EPSG:4326");
-            } else {
-                newFilter = fac.bbox(null, wgs84Bounds.getMinX(), wgs84Bounds.getMinY(),
-                        wgs84Bounds.getMaxX(), wgs84Bounds.getMaxY(), "EPSG:4326");
-            }
-
-            splitFilters[0] = newFilter;
-        }
-        return splitFilters;
-    }
-    
+ 
     @Override
     public FeatureTypeType translateTypeInfo(FeatureTypeType typeInfo){
-        if ("wfs".equals(typeInfo.getName().getPrefix())) {
+        if ("wfs".equals(typeInfo.getName().getPrefix()) || 
+            "http://www.opengis.net/wfs".equals(typeInfo.getName().getNamespaceURI())) {
             QName newName = new QName( "http://mapserver.gis.umn.edu/mapserver", typeInfo.getName().getLocalPart(), "ms");
             typeInfo.setName(newName);
         }
@@ -85,5 +71,86 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
         mappings.put(new QName("http://www.w3.org/2001/XMLSchema", "Integer"), XSIntegerBinding.class);
         mappings.put(new QName("http://www.w3.org/2001/XMLSchema", "Real"), XSDoubleBinding.class);
         return mappings;
+    }
+    
+    @Override
+    public InputStream getPostContents(WFSRequest request) throws IOException {
+        InputStream in = super.getPostContents(request);
+        
+        if (request.getOperation().compareTo(WFSOperationType.GET_FEATURE) == 0 && 
+            getVersion().compareTo("1.0.0") == 0) {            
+            try {
+                StringWriter writer = new StringWriter();
+                IOUtils.copy(in, writer, "UTF-8");
+                String pc = writer.toString();
+                
+                // Some older versions of MapServer do not support the following gml:Box coordinate format:
+                // <gml:coord><gml:X>-59.0</gml:X><gml:Y>-35.0</gml:Y></gml:coord><gml:coord>< gml:X>-58.0</gml:X><gml:Y>-34.0</gml:Y></gml:coord>
+                // Rewrite the coordinates in the following format:
+                // <gml:coordinates cs="," decimal="." ts=" ">-59,-35 -58,-34</gml:coordinates>
+                
+                boolean reformatted = false;
+                if (pc.contains("gml:Box") && pc.contains("gml:coord") && 
+                    pc.contains("gml:X") && pc.contains("gml:Y")) {
+                    
+                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                    factory.setNamespaceAware(true);
+                    DocumentBuilder builder = factory.newDocumentBuilder();
+                    Document doc = builder.parse(new ByteArrayInputStream(pc.getBytes()));
+
+                    NodeList boxes = doc.getElementsByTagName("gml:Box");
+                    for (int b = 0; b < boxes.getLength(); b++) {
+                        Element box = (Element)boxes.item(b);
+                        NodeList coords = box.getElementsByTagName("gml:coord");
+                        if (coords != null && coords.getLength() == 2) {
+                            Element coord1 = (Element)coords.item(0);
+                            Element coord2 = (Element)coords.item(1);
+                            if (coord1 != null && coord2 != null) {
+                                Element coordX1 = (Element)(coord1.getElementsByTagName("gml:X").item(0));
+                                Element coordY1 = (Element)(coord1.getElementsByTagName("gml:Y").item(0));
+                                Element coordX2 = (Element)(coord2.getElementsByTagName("gml:X").item(0));
+                                Element coordY2 = (Element)(coord2.getElementsByTagName("gml:Y").item(0));
+                                if (coordX1 != null && coordY1 != null && coordX2 != null && coordY2 != null) {
+                                    reformatted = true;
+                                    String x1 = coordX1.getTextContent();
+                                    String y1 = coordY1.getTextContent();
+                                    String x2 = coordX2.getTextContent();
+                                    String y2 = coordY2.getTextContent();
+                                    
+                                    box.removeChild(coord1);
+                                    box.removeChild(coord2);
+
+                                    Element coordinates = doc.createElement("gml:coordinates");
+                                    coordinates.setAttribute("cs", ",");
+                                    coordinates.setAttribute("decimal", ".");
+                                    coordinates.setAttribute("ts", " ");
+                                    coordinates.appendChild(doc.createTextNode(x1 + "," + y1 + " " +  x2 + "," + y2));
+                                    box.appendChild(coordinates);
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (reformatted) {
+                        DOMSource domSource = new DOMSource(doc);
+                        StringWriter domsw = new StringWriter();
+                        StreamResult result = new StreamResult(domsw);
+                        TransformerFactory tf = TransformerFactory.newInstance();
+                        Transformer transformer = tf.newTransformer();
+                        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+                        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                        transformer.transform(domSource, result);
+                        domsw.flush();
+                        pc = domsw.toString();
+                    }
+                }
+                in = new ByteArrayInputStream(pc.getBytes());
+            }
+            catch(SAXException | ParserConfigurationException | TransformerException | IOException ex) {
+                LOGGER.log(Level.FINE, "Unexpected exception while rewriting 1.0.0 GETFEATURE request with BBOX filter", ex.getMessage());
+            }
+        }
+        
+        return in;
     }
 }

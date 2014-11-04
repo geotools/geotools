@@ -29,9 +29,9 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 
 /**
  * JNDI DataStoreFactory for sql server database.
- * 
+ *
  * @author Christian Mueller
- * 
+ *
  *
  *
  *
@@ -42,16 +42,18 @@ public class SQLServerJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
     public SQLServerJNDIDataStoreFactory() {
         super(new SQLServerDataStoreFactory());
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
+        //parameters.put(PORT.key, PORT);
         parameters.put(INTSEC.key, INTSEC);
         parameters.put(NATIVE_PAGING.key, NATIVE_PAGING);
         parameters.put(NATIVE_SERIALIZATION.key, NATIVE_SERIALIZATION);
         parameters.put(GEOMETRY_METADATA_TABLE.key, GEOMETRY_METADATA_TABLE);
         parameters.put(FORCE_SPATIAL_INDEX.key, FORCE_SPATIAL_INDEX);
         parameters.put(TABLE_HINTS.key, TABLE_HINTS);
+        parameters.put(SQLServerDataStoreFactory.INSTANCE.key, SQLServerDataStoreFactory.INSTANCE);
     }
 }

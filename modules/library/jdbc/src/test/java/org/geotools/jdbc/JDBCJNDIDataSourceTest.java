@@ -27,9 +27,9 @@ import org.geotools.data.DataStoreFinder;
 
 /**
  * @author Christian Mueller
- * 
+ *
  * Abstract test class for getting a jdbc data source via JNDI lookup
- * 
+ *
  *
  *
  *
@@ -39,11 +39,11 @@ public abstract class JDBCJNDIDataSourceTest extends JDBCTestSupport {
 
     @Override
     protected abstract JDBCJNDITestSetup createTestSetup();
-    
+
     public void testJNDIDataSource() throws Exception {
 
         ((JDBCJNDITestSetup)setup).setupJNDIEnvironment();
-        
+
         HashMap params = new HashMap();
 
         String dbtype = setup.createDataStoreFactory().getDatabaseID();
@@ -52,14 +52,15 @@ public abstract class JDBCJNDIDataSourceTest extends JDBCTestSupport {
         params.put(JDBCJNDIDataStoreFactory.JNDI_REFNAME.key, "ds");
 
         JDBCDataStore dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(params);
+        assertNotNull("failed to find DataStore",dataStore);
         Connection con = dataStore.getDataSource().getConnection();
-        assertTrue(con != null);
+        assertNotNull("No Connection returned",con );
         assertFalse(con.isClosed());
 
         dataStore.closeSafe(con);
 
     }
-    
+
     /**
      * Make sure the JNDI factory exposes all the extra params that the non JNDI one exposes
      */
@@ -68,11 +69,13 @@ public abstract class JDBCJNDIDataSourceTest extends JDBCTestSupport {
         List<String> standardParams = getParamKeys(getDataStoreFactory());
         standardParams.remove(JDBCDataStoreFactory.VALIDATECONN.key);
         standardParams.remove(JDBCDataStoreFactory.MAX_OPEN_PREPARED_STATEMENTS.key);
+
         standardParams.removeAll(baseParams);
         List<String> baseJndiParams = getBaseJNDIParams();
         List<String> jndiParams = getParamKeys(getJNDIStoreFactory());
         assertTrue(jndiParams.contains(JDBCDataStoreFactory.FETCHSIZE.key));
         jndiParams.removeAll(baseJndiParams);
+        //assertEquals("wrong number of parameters",standardParams.size(), jndiParams.size());
         assertEquals(standardParams, jndiParams);
     }
 
@@ -81,7 +84,7 @@ public abstract class JDBCJNDIDataSourceTest extends JDBCTestSupport {
     protected abstract JDBCDataStoreFactory getDataStoreFactory();
 
     /**
-     * Extracts the base params all non JNDI JDBC factories have 
+     * Extracts the base params all non JNDI JDBC factories have
      * @return
      */
     protected List<String> getBaseParams() {
@@ -125,14 +128,14 @@ public abstract class JDBCJNDIDataSourceTest extends JDBCTestSupport {
         };
         return factory;
     }
-    
+
     /**
      * Extracts the common params all JNDI factories have
      * @return
      */
     protected List<String> getBaseJNDIParams() {
         JDBCJNDIDataStoreFactory factory = new JDBCJNDIDataStoreFactory(getBaseFactory()) {
-            
+
         };
         return getParamKeys(factory);
     }

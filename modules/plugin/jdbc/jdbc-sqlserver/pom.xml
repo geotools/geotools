@@ -80,7 +80,7 @@
       <id>sqlServerDriver</id>
         <dependencies>
           <dependency>
-           <groupId>com.microsoft</groupId>
+           <groupId>com.microsoft.sqlserver</groupId>
            <artifactId>sqljdbc4</artifactId>
            <version>${sqlServerDriverVersion}</version>
           </dependency>
@@ -89,6 +89,6 @@
   </profiles>
 
   <properties>
-    <sqlServerDriverVersion>3.0</sqlServerDriverVersion>
+    <sqlServerDriverVersion>4.0</sqlServerDriverVersion>
   </properties>
 </project>

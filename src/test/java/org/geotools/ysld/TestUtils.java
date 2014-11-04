@@ -72,6 +72,16 @@ public enum TestUtils {
      }
     
     /**
+     * Matches a Literal expression with a value matching o
+     * @param m
+     * @return
+     */
+    public
+       static Matcher<Expression> literal(Object o) {
+           return literal(lexEqualTo(o));
+     }
+    
+    /**
      * Matches a nil expression or null.
      * @return
      */

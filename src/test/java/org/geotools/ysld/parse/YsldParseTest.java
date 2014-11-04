@@ -3,6 +3,7 @@ package org.geotools.ysld.parse;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.process.function.ProcessFunction;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
@@ -1022,12 +1023,28 @@ public class YsldParseTest {
                "  symbols: \n" +
                "  - mark: \n" +
                "      fill-color: FF0000\n"+
-               "      fill-opacity: 0.5\n";
+               "      fill-opacity: 0.5\n"; // Not just 'opacity'
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);
        
        PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
        
        assertThat(((Mark) p.getGraphic().graphicalSymbols().get(0)).getFill().getOpacity(), literal(lexEqualTo(0.5d)));
+   }
+   
+   @Test
+   public void testLineOffset() throws Exception {
+       // See GEOT-3912
+       String yaml =
+               "line:\n"+
+               "  stroke-color: 555555\n"+
+               "  stroke-width: 1.0\n"+
+               "  offset: 5";
+                       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       
+       LineSymbolizer l = SLD.lineSymbolizer(SLD.defaultStyle(sld));
+       
+       assertThat(l.getPerpendicularOffset(), is(literal(5)));
    }
 }

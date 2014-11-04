@@ -12,6 +12,8 @@ import static org.hamcrest.Matchers.nullValue;
 
 import org.geotools.styling.Rule;
 import org.geotools.ysld.parse.ScaleRange;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.opengis.filter.expression.Expression;
@@ -122,4 +124,24 @@ public enum TestUtils {
                    );
     }
     
+    /**
+     * Compares the string representation of the object being matched to that of value.
+     * @param value
+     * @return
+     */
+    public static Matcher<? extends Object> lexEqualTo (final Object value) {
+        return new BaseMatcher<Object>() {
+            
+            @Override
+            public boolean matches(Object arg0) {
+                return arg0.toString().equals(value.toString());
+            }
+            
+            @Override
+            public void describeTo(Description arg0) {
+                arg0.appendText("lexicaly equal to ").appendValue(value.toString());
+            }
+            
+        };
+    }
 }

@@ -22,6 +22,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.geotools.styling.ColorMap;
 import org.opengis.style.ContrastEnhancement;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.Mark;
 import org.opengis.style.RasterSymbolizer;
 import org.opengis.style.SelectedChannelType;
 
@@ -38,6 +39,7 @@ import static org.geotools.ysld.TestUtils.appliesToScale;
 import static org.geotools.ysld.TestUtils.attribute;
 import static org.geotools.ysld.TestUtils.literal;
 import static org.geotools.ysld.TestUtils.nilExpression;
+import static org.geotools.ysld.TestUtils.lexEqualTo;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.closeTo;
@@ -1011,5 +1013,21 @@ public class YsldParseTest {
        assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
        assertThat(rgbChannels[2].getChannelName(), equalTo("3"));
        assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
+   }
+   
+   @Test
+   public void testMarkOpacity() throws Exception {
+       String yaml =
+               "point: \n"+
+               "  symbols: \n" +
+               "  - mark: \n" +
+               "      fill-color: FF0000\n"+
+               "      fill-opacity: 0.5\n";
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       
+       assertThat(((Mark) p.getGraphic().graphicalSymbols().get(0)).getFill().getOpacity(), literal(lexEqualTo(0.5d)));
    }
 }

@@ -26,19 +26,10 @@ public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
         if (map.has("uom")) {
             sym.setUnitOfMeasure(UomOgcMapping.get(map.str("uom")).getUnit());
         }
-        if (map.has("options")) {
-            // TODO: remove this before production
-            YamlMap options = map.map("options");
-            for(String key : options){
-                sym.getOptions().put(key, options.str(key));
-            }
-        }
-        else {
-            for(String key : map){
-                if( key.startsWith(Ysld.OPTION_PREFIX)){
-                    String option = key.substring(Ysld.OPTION_PREFIX.length());
-                    sym.getOptions().put(option, map.str(key));
-                }
+        for(String key : map){
+            if( key.startsWith(Ysld.OPTION_PREFIX)){
+                String option = key.substring(Ysld.OPTION_PREFIX.length());
+                sym.getOptions().put(option, map.str(key));
             }
         }
     }

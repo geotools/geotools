@@ -21,7 +21,7 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
         inline(new FontEncoder(text.getFont()));
         inline(new PlacementEncoder(text.getLabelPlacement()));
         if(text instanceof TextSymbolizer2){
-            inline( new GraphicEncoder( ((TextSymbolizer2)text).getGraphic() ) );
+            inline( new GraphicEncoder( ((TextSymbolizer2)text).getGraphic(), false) );
         }
         super.encode(text);
     }
@@ -33,14 +33,14 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
 
         @Override
         protected void encode(LabelPlacement placement) {
-            push("placement");
+            //push("placement");
             if (placement instanceof LinePlacement) {
-                put("type", "line");
+                put("placement", "line");
                 put("offset", ((LinePlacement) placement).getPerpendicularOffset());
             }
             else if (placement instanceof PointPlacement) {
                 PointPlacement pp = (PointPlacement) placement;
-                put("type", "point");
+                put("placement", "point");
 
                 inline(new AnchorPointEncoder(pp.getAnchorPoint()));
                 inline(new DisplacementEncoder(pp.getDisplacement()));

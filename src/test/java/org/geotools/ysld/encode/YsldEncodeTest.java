@@ -4,6 +4,7 @@ package org.geotools.ysld.encode;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
@@ -191,10 +192,77 @@ public class YsldEncodeTest {
 
         YamlMap yaml = new YamlMap(new Yaml().load(out.toString()));
         
-        assertEquals( "${name}", yaml.lookup("feature-styles/0/rules/0/symbolizers/1/text/label") );
-        assertEquals( "circle",  yaml.lookup("feature-styles/0/rules/0/symbolizers/1/text/symbols/0/mark/shape") );
+        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/1/text"), yHasEntry("label", equalTo("${name}")) );
+        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/1/text"), yHasEntry("graphic") );
+        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/1/text/graphic/symbols/0/mark"), yHasEntry("shape", equalTo("circle")) );
+    }
+    @Test
+    public void testLabelDisplacement() throws IOException {
+        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+
+        StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
+
+        UserLayer layer = sf.createUserLayer();
+        sld.layers().add(layer);
+        Style style = sf.createStyle();
+        layer.userStyles().add(style);
+        FeatureTypeStyle featureStyle = sf.createFeatureTypeStyle();
+        style.featureTypeStyles().add(featureStyle);
+        Rule rule = sf.createRule();
+        featureStyle.rules().add(rule);
+        
+        
+        LabelPlacement place = 
+                sf.createPointPlacement(
+                    sf.createAnchorPoint(ff.literal(0.75), ff.literal(0.25)),
+                    sf.createDisplacement(ff.literal(10), ff.literal(15)),
+                    ff.literal(90));
+        TextSymbolizer2 text = (TextSymbolizer2) sf.textSymbolizer(null, ff.property("geom"), null, null, ff.property("name"),null,place,null,null);
+        rule.symbolizers().add(text);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+
+        YamlMap yaml = new YamlMap(new Yaml().load(out.toString()));
+        
+        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("placement", equalTo("point")) );
+        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("displacement", equalTo("(10,15)")) );
+        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("anchor", equalTo("(0.75,0.25)")) );
+        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("rotation", equalTo(90)) );
     }
     
+    @Test
+    public void testLabelLinePlacement() throws IOException {
+        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+
+        StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
+
+        UserLayer layer = sf.createUserLayer();
+        sld.layers().add(layer);
+        Style style = sf.createStyle();
+        layer.userStyles().add(style);
+        FeatureTypeStyle featureStyle = sf.createFeatureTypeStyle();
+        style.featureTypeStyles().add(featureStyle);
+        Rule rule = sf.createRule();
+        featureStyle.rules().add(rule);
+        
+        
+        LabelPlacement place = 
+                sf.createLinePlacement(ff.literal(10));
+        
+        TextSymbolizer2 text = (TextSymbolizer2) sf.textSymbolizer(null, ff.property("geom"), null, null, ff.property("name"),null,place,null,null);
+        rule.symbolizers().add(text);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+
+        YamlMap yaml = new YamlMap(new Yaml().load(out.toString()));
+        
+        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("placement", equalTo("line")) );
+        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("offset", equalTo(10)) );
+    }
     @Test
     public void testEmptyColorMap() throws Exception {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();

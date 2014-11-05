@@ -21,14 +21,14 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
         }
         context.push(map, new FontHandler());
         context.push("halo", new HaloParser());
-        context.push("placement", new PlacementParser());
+        context.push(map, new PlacementParser());
         context.push(map, new FillParser(factory) {
             @Override
             protected void fill(Fill fill) {
                 sym.setFill(fill);
             }
         });
-        context.push(map, new GraphicParser(factory){
+        context.push("graphic", new GraphicParser(factory){
             @Override
             protected void graphic(Graphic g) {
                 if( sym instanceof TextSymbolizer2 ){
@@ -114,8 +114,8 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
         @Override
         public void handle(YamlObject<?> obj, YamlParseContext context) {
             YamlMap map = obj.map();
-            if (map.has("type")) {
-                sym.setLabelPlacement("line".equals(map.str("type")) ? line : point);
+            if (map.has("placement")) {
+                sym.setLabelPlacement("line".equals(map.str("placement")) ? line : point);
             }
             else {
                 sym.setLabelPlacement(point);

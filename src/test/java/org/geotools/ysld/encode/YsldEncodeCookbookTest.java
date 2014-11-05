@@ -442,9 +442,9 @@ public class YsldEncodeCookbookTest {
         assertEquals("normal", text.str("font-style"));
         assertEquals("bold", text.str("font-weight"));
 
-        assertEquals("point", text.map("placement").str("type"));
-        assertEquals("(0.5,0.0)", text.map("placement").str("anchor"));
-        assertEquals("(0,5)", text.map("placement").str("displacement"));
+        assertEquals("point", text.str("placement"));
+        assertEquals("(0.5,0.0)", text.str("anchor"));
+        assertEquals("(0,5)", text.str("displacement"));
 
         assertEquals("000000", text.str("fill-color"));
     }
@@ -500,8 +500,7 @@ public class YsldEncodeCookbookTest {
         YamlMap text =
                 style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
 
-        YamlMap pp = text.map("placement");
-        assertEquals(-45, pp.integer("rotation").intValue());
+        assertEquals(-45, text.integer("rotation").intValue());
     }
 
     @Test
@@ -1378,8 +1377,8 @@ public class YsldEncodeCookbookTest {
         assertEquals("normal", text.str("font-style"));
         assertEquals("bold", text.str("font-weight"));
 
-        assertEquals("point", text.map("placement").str("type"));
-        assertEquals("(0.5,0.5)", text.map("placement").str("anchor"));
+        assertEquals("point", text.str("placement"));
+        assertEquals("(0.5,0.5)", text.str("anchor"));
 
         assertEquals("000000", text.str("fill-color"));
 
@@ -1507,8 +1506,8 @@ public class YsldEncodeCookbookTest {
         assertEquals("normal", text.str("font-style"));
         assertEquals("bold", text.str("font-weight"));
 
-        assertEquals("point", text.map("placement").str("type"));
-        assertEquals("(0.5,0.5)", text.map("placement").str("anchor"));
+        assertEquals("point", text.str("placement"));
+        assertEquals("(0.5,0.5)", text.str("anchor"));
 
         assertEquals("FFFFFF", text.str("fill-color"));
 

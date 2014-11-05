@@ -76,6 +76,19 @@ public class YamlObject<T> {
         throw new IllegalArgumentException("Object " + this + " is not a sequence");
     }
 
+    static Object yamlize(Object o) {
+        if (o instanceof Map) {
+            o = new YamlMap(o);
+        }
+        if (o instanceof List) {
+            o = new YamlSeq(o);
+        }
+        if (o.getClass().isArray()){
+            o = new YamlSeq(o);
+        }
+        return o;
+    }
+    
     /**
      * Raw value access via path.
      * <p>
@@ -92,15 +105,7 @@ public class YamlObject<T> {
         Object here = this;
         for( String key : path.split("/") ){
             // Step 1: cast to wrapper if required for further navigation
-            if (here instanceof Map) {
-                here = new YamlMap(here);
-            }
-            if (here instanceof List) {
-                here = new YamlSeq(here);
-            }
-            if (here.getClass().isArray()){
-                here = new YamlSeq(here);
-            }
+            here = yamlize(here);
             
             // Step 2: navigate into data structure
             int index;
@@ -144,7 +149,15 @@ public class YamlObject<T> {
     public T raw() {
         return raw;
     }
-
+    
+    /**
+     * See {@link lookup}. Ensures that the result is wrapped as a YamlObject if it is a map, list, or array.
+     * @param path
+     * @return
+     */
+    public Object lookupY(String path ){
+        return yamlize(lookup(path));
+    }
     /**
      * Converts an object to the specified class.
      */

@@ -10,6 +10,7 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
 import org.geotools.ysld.Ysld;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -23,6 +24,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.geotools.styling.ColorMap;
 import org.opengis.style.ContrastEnhancement;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.LinePlacement;
 import org.opengis.style.Mark;
 import org.opengis.style.PointPlacement;
 import org.opengis.style.RasterSymbolizer;
@@ -1064,8 +1066,8 @@ public class YsldParseTest {
        
        PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
        assertThat(p.getGraphic().getDisplacement(), allOf(
-               hasProperty("displacementX", literal("10")),
-               hasProperty("displacementY", literal("42"))));
+               hasProperty("displacementX", literal(10)),
+               hasProperty("displacementY", literal(42))));
        // SLD/SE 1.1 feature that may not be supported by renderer
    }
    @SuppressWarnings("unchecked")
@@ -1082,8 +1084,8 @@ public class YsldParseTest {
        
        PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
        assertThat(p.getGraphic().getAnchorPoint(), allOf(
-               hasProperty("anchorPointX", literal("0.75")),
-               hasProperty("anchorPointY", literal("0.25"))));
+               hasProperty("anchorPointX", literal(0.75)),
+               hasProperty("anchorPointY", literal(0.25))));
        // SLD/SE 1.1 feature that may not be supported by renderer
    }
    
@@ -1092,15 +1094,14 @@ public class YsldParseTest {
    public void testTextDisplacement() throws Exception {
        String yaml =
                "text: \n"+
-               "  placement:\n"+
-               "    displacement: (10, 42)\n";
+               "  displacement: (10, 42)\n";
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);
        
        TextSymbolizer p = SLD.textSymbolizer(SLD.defaultStyle(sld));
        assertThat(((PointPlacement)p.getLabelPlacement()).getDisplacement(), allOf(
-               hasProperty("displacementX", literal("10")),
-               hasProperty("displacementY", literal("42"))));
+               hasProperty("displacementX", literal(10)),
+               hasProperty("displacementY", literal(42))));
    }
    
    @SuppressWarnings("unchecked")
@@ -1108,14 +1109,56 @@ public class YsldParseTest {
    public void testTextAnchor() throws Exception {
        String yaml =
                "text: \n"+
-               "  placement:\n"+
-               "    anchor: (0.75, 0.25)\n";
+               "  anchor: (0.75, 0.25)\n";
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);
        
        TextSymbolizer t = SLD.textSymbolizer(SLD.defaultStyle(sld));
        assertThat(((PointPlacement)t.getLabelPlacement()).getAnchorPoint(), allOf(
-               hasProperty("anchorPointX", literal("0.75")),
-               hasProperty("anchorPointY", literal("0.25"))));
+               hasProperty("anchorPointX", literal(0.75)),
+               hasProperty("anchorPointY", literal(0.25))));
    }
+   
+   @Test
+   public void testTextPlacementType() throws Exception {
+       String yaml =
+               "text: \n"+
+               "  placement: line\n"+
+               "  offset: 4\n";
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       
+       TextSymbolizer t = SLD.textSymbolizer(SLD.defaultStyle(sld));
+       assertThat(t.getLabelPlacement(), instanceOf(LinePlacement.class));
+       Expression e = ((LinePlacement)t.getLabelPlacement()).getPerpendicularOffset();
+       assertThat(((LinePlacement)t.getLabelPlacement()).getPerpendicularOffset(), 
+               literal(4));
+   }
+   
+   @SuppressWarnings("unchecked")
+   @Test
+   public void testTextGraphicDisplacement() throws Exception {
+       String yaml =
+               "text:\n"+
+               "    label: ${name}\n"+
+               "    displacement: (42,64)\n"+
+               "    graphic:\n"+
+               "      displacement: (10,15)\n"+
+               "      symbols:\n"+
+               "      - mark:\n"+
+               "          shape: circle\n"+
+               "          fill-color: 995555\n"+
+               "";
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       
+       TextSymbolizer2 p = (TextSymbolizer2) SLD.textSymbolizer(SLD.defaultStyle(sld));
+       assertThat(p.getGraphic().getDisplacement(), allOf(
+               hasProperty("displacementX", literal(10)),
+               hasProperty("displacementY", literal(15))));
+       assertThat(((PointPlacement)p.getLabelPlacement()).getDisplacement(), allOf(
+               hasProperty("displacementX", literal(42)),
+               hasProperty("displacementY", literal(64))));
+   }
+
 }

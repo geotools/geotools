@@ -38,7 +38,6 @@ public class WfsQueryTypeTest extends WFSTestSupport {
 
     @Override
     public void testParse() throws Exception {
-        // TODO Auto-generated method stub
         
     }
     

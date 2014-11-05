@@ -24,6 +24,7 @@ import org.geotools.styling.ColorMap;
 import org.opengis.style.ContrastEnhancement;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.Mark;
+import org.opengis.style.PointPlacement;
 import org.opengis.style.RasterSymbolizer;
 import org.opengis.style.SelectedChannelType;
 
@@ -1046,5 +1047,75 @@ public class YsldParseTest {
        LineSymbolizer l = SLD.lineSymbolizer(SLD.defaultStyle(sld));
        
        assertThat(l.getPerpendicularOffset(), is(literal(5)));
+       // SLD/SE 1.1 feature that may not be supported by renderer
+   }
+   
+   @SuppressWarnings("unchecked")
+   @Test
+   public void testPointDisplacement() throws Exception {
+       String yaml =
+               "point: \n"+
+               "  displacement: (10, 42)\n"+
+               "  symbols: \n" +
+               "  - mark: \n" +
+               "      fill-color: FF0000\n";
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       assertThat(p.getGraphic().getDisplacement(), allOf(
+               hasProperty("displacementX", literal("10")),
+               hasProperty("displacementY", literal("42"))));
+       // SLD/SE 1.1 feature that may not be supported by renderer
+   }
+   @SuppressWarnings("unchecked")
+   @Test
+   public void testPointAnchor() throws Exception {
+       String yaml =
+               "point: \n"+
+               "  anchor: (0.75, 0.25)\n"+
+               "  symbols: \n" +
+               "  - mark: \n" +
+               "      fill-color: FF0000\n";
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       assertThat(p.getGraphic().getAnchorPoint(), allOf(
+               hasProperty("anchorPointX", literal("0.75")),
+               hasProperty("anchorPointY", literal("0.25"))));
+       // SLD/SE 1.1 feature that may not be supported by renderer
+   }
+   
+   @SuppressWarnings("unchecked")
+   @Test
+   public void testTextDisplacement() throws Exception {
+       String yaml =
+               "text: \n"+
+               "  placement:\n"+
+               "    displacement: (10, 42)\n";
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       
+       TextSymbolizer p = SLD.textSymbolizer(SLD.defaultStyle(sld));
+       assertThat(((PointPlacement)p.getLabelPlacement()).getDisplacement(), allOf(
+               hasProperty("displacementX", literal("10")),
+               hasProperty("displacementY", literal("42"))));
+   }
+   
+   @SuppressWarnings("unchecked")
+   @Test
+   public void testTextAnchor() throws Exception {
+       String yaml =
+               "text: \n"+
+               "  placement:\n"+
+               "    anchor: (0.75, 0.25)\n";
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       
+       TextSymbolizer t = SLD.textSymbolizer(SLD.defaultStyle(sld));
+       assertThat(((PointPlacement)t.getLabelPlacement()).getAnchorPoint(), allOf(
+               hasProperty("anchorPointX", literal("0.75")),
+               hasProperty("anchorPointY", literal("0.25"))));
    }
 }

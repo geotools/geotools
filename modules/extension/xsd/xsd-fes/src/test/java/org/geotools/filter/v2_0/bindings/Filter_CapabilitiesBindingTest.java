@@ -19,28 +19,19 @@ package org.geotools.filter.v2_0.bindings;
 
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import net.opengis.fes20.AvailableFunctionsType;
 import net.opengis.fes20.ComparisonOperatorType;
 import net.opengis.fes20.ComparisonOperatorsType;
 import net.opengis.fes20.FilterCapabilitiesType;
+import net.opengis.fes20.GeometryOperandType;
 import net.opengis.fes20.IdCapabilitiesType;
 import net.opengis.fes20.ResourceIdentifierType;
 import net.opengis.fes20.ScalarCapabilitiesType;
 import net.opengis.fes20.SpatialCapabilitiesType;
+import net.opengis.fes20.SpatialOperatorType;
 
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
-import org.geotools.gml3.v3_2.GML;
-import org.opengis.filter.capability.ArithmeticOperators;
-import org.opengis.filter.capability.FilterCapabilities;
-import org.opengis.filter.capability.GeometryOperand;
-import org.opengis.filter.capability.IdCapabilities;
-import org.opengis.filter.capability.Operator;
-import org.opengis.filter.capability.ScalarCapabilities;
-import org.opengis.filter.capability.SpatialCapabilities;
-import org.opengis.filter.capability.SpatialOperator;
 
 public class Filter_CapabilitiesBindingTest extends FESTestSupport {
     public void testParse() throws Exception {
@@ -146,19 +137,23 @@ public class Filter_CapabilitiesBindingTest extends FESTestSupport {
         assertEquals(11, spatial.getSpatialOperators().getSpatialOperator().size());
         
         assertEquals(8, spatial.getGeometryOperands().getGeometryOperand().size());
-        
+
         // Functions
         AvailableFunctionsType functions = filterCapabilities.getFunctions();
         assertNotNull(functions);
-        /*
-        SpatialOperator bbox = spatial.getSpatialOperators().getOperator("BBOX");
+        SpatialOperatorType bbox = null;
+        for (SpatialOperatorType op : spatial.getSpatialOperators().getSpatialOperator()) {
+            if ("BBOX".equals(op.getName())) {
+                bbox = op;
+                break;
+            }
+        }
         assertNotNull(bbox);
-        assertEquals(1, bbox.getGeometryOperands().size());
-        
-        GeometryOperand envelope = bbox.getGeometryOperands().iterator().next();
-        
-        assertEquals("http://schemas.opengis.net/gml", envelope.getNamespaceURI());
-        assertEquals("Envelope", envelope.getLocalPart());
-        */
+        assertEquals(1, bbox.getGeometryOperands().getGeometryOperand().size());
+
+        GeometryOperandType envelope = bbox.getGeometryOperands().getGeometryOperand().iterator().next();
+
+        assertEquals("http://schemas.opengis.net/gml", envelope.getName().getNamespaceURI());
+        assertEquals("Envelope", envelope.getName().getLocalPart());
     }
 }

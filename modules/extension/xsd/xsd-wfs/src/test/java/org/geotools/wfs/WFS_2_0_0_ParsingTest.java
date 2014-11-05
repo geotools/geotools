@@ -2,23 +2,6 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
- *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
- *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
- */
-
-/*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
- *
  *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -33,17 +16,14 @@
  */
 package org.geotools.wfs;
 
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -328,7 +308,7 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
         tmp.deleteOnExit();
 
         InputStream in = getClass().getResourceAsStream("geoserver-DescribeFeatureType.xml");
-        copy(in, tmp);
+        Files.copy(in, tmp.toPath());
 
         in = getClass().getResourceAsStream("geoserver-GetFeature.xml");
 
@@ -396,20 +376,6 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
         } finally {
             features.close();
         }
-    }
-
-    void copy(InputStream in, File to) throws Exception {
-        Writer writer = new BufferedWriter(new FileWriter(to));
-        InputStreamReader reader = new InputStreamReader(in);
-
-        int b = -1;
-
-        while ((b = reader.read()) != -1) {
-            writer.write(b);
-        }
-
-        writer.flush();
-        writer.close();
     }
 
     public void _testParseGetFeatureStreaming() throws Exception {

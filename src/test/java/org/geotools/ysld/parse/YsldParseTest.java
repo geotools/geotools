@@ -12,6 +12,8 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.ysld.Ysld;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
@@ -509,27 +511,27 @@ public class YsldParseTest {
     double OGC_DPI = 90;
     
     final double[] WGS84_SCALE_DENOMS = {
-            279_541_132.0143589,
-            139_770_566.00717944,
-            69_885_283.00358972,
-            34_942_641.50179486,
-            17_471_320.75089743,
-            8_735_660.375448715,
-            4_367_830.1877243575,
-            2_183_915.0938621787,
-            1_091_957.5469310894,
-            545_978.7734655447,
-            272_989.38673277234,
-            136_494.69336638617,
-            68_247.34668319309,
-            34_123.67334159654,
-            17_061.83667079827,
-            8_530.918335399136,
-            4_265.459167699568,
-            2_132.729583849784,
-            1_066.364791924892,
-            533.182395962446,
-            266.591197981223
+            559_082_263.9508929d,
+            279_541_132.0143589d,
+            139_770_566.00717944d,
+            69_885_283.00358972d,
+            34_942_641.50179486d,
+            17_471_320.75089743d,
+            8_735_660.375448715d,
+            4_367_830.1877243575d,
+            2_183_915.0938621787d,
+            1_091_957.5469310894d,
+            545_978.7734655447d,
+            272_989.38673277234d,
+            136_494.69336638617d,
+            68_247.34668319309d,
+            34_123.67334159654d,
+            17_061.83667079827d,
+            8_530.918335399136d,
+            4_265.459167699568d,
+            2_132.729583849784d,
+            1_066.364791924892d,
+            533.182395962446d
     };
     
     @Test
@@ -594,13 +596,32 @@ public class YsldParseTest {
                ));
         }
     }
+    Matcher<Double> mCloseTo(final double value, final double epsilon) {
+        return new BaseMatcher<Double>(){
+
+            @Override
+            public boolean matches(Object arg0) {
+                return Math.abs(value/(Double)arg0-1)<=epsilon;
+            }
+
+            @Override
+            public void describeTo(Description arg0) {
+                arg0.appendText("divided by ")
+                .appendValue(value)
+                .appendText(" within ")
+                .appendValue(epsilon)
+                .appendText(" of 1.");
+            }
+            
+        };
+    }
     
     @Test
     public void testWGS84Scales() throws Exception {
         ZoomContext context = WellKnownZoomContextFinder.getInstance().get("DEFAULT");
         
         for(int i=0; i<WGS84_SCALE_DENOMS.length; i++) {
-            assertThat(context.getScaleDenominator(i), closeTo(WGS84_SCALE_DENOMS[i], 0.000000001));
+            assertThat(context.getScaleDenominator(i), mCloseTo(WGS84_SCALE_DENOMS[i], 0.00000001d));
         }
     }
     

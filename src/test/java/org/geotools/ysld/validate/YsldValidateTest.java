@@ -117,7 +117,7 @@ public class YsldValidateTest {
         StringBuilder builder =  new StringBuilder();
         builder.append(
                 "grid:\n"+
-                "  name: EPSG:4326\n");
+                "  name: WGS84\n");
         
         List<MarkedYAMLException> errors = validate(builder.toString());
         assertThat(errors.size(), is(0));
@@ -148,7 +148,7 @@ public class YsldValidateTest {
         // Making sure that doing the grid validation doesn't screw up other validation later
         StringBuilder builder =  new StringBuilder();
         builder.append("grid:\n");
-        builder.append("  name: EPSG:4326\n");
+        builder.append("  name: WebMercator\n");
         builder.append("filter: foo\n");
         
         List<MarkedYAMLException> errors = validate(builder.toString());

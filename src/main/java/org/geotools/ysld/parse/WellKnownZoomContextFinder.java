@@ -27,25 +27,31 @@ public class WellKnownZoomContextFinder implements ZoomContextFinder {
         contexts = new HashMap<>();
         canonicalNames = new TreeSet<>();
         
+        // Google Spherical Mercator at 96 DPI
         ZoomContext googleMercatorExtended = new RatioZoomContext(559_082_263.9508929, 2);
         contexts.put("WebMercator".toUpperCase(), googleMercatorExtended);
         contexts.put("SphericalMercator".toUpperCase(), googleMercatorExtended);
         contexts.put("GoogleMercator".toUpperCase(), googleMercatorExtended);
         contexts.put("EPSG:3587".toUpperCase(), googleMercatorExtended);
-        contexts.put("EPSG:900913".toUpperCase(), googleMercatorExtended);
+        contexts.put("EPSG:900913".toUpperCase(), googleMercatorExtended); // The name used by GWC
         contexts.put("EPSG:3857".toUpperCase(), googleMercatorExtended);
         contexts.put("EPSG:3785".toUpperCase(), googleMercatorExtended);
         contexts.put("OSGEO:41001".toUpperCase(), googleMercatorExtended);
         canonicalNames.add("EPSG:3857");
         
-        ZoomContext plateCarree = new RatioZoomContext(279_541_132.0143589, 2);
+        // WGS84 Plate Carrée starting with one 256x256 tile at 96 DPI
+        // Do NOT use the name EPSG:4326 as GWC defines a gridset named that. with different levels.
+        ZoomContext plateCarree = new RatioZoomContext(559_082_263.9508929, 2);
         contexts.put("PlateCarree".toUpperCase(), plateCarree);
         contexts.put("PlateCarrée".toUpperCase(), plateCarree);
         contexts.put("WGS84".toUpperCase(), plateCarree);
-        contexts.put("EPSG:4326".toUpperCase(), plateCarree);
         contexts.put("CRS84".toUpperCase(), plateCarree);
         contexts.put("DEFAULT".toUpperCase(), plateCarree);
-        canonicalNames.add("EPSG:4326");
+        contexts.put("GoogleCRS84Quad".toUpperCase(), plateCarree); // The Name used by GWC
+        canonicalNames.add("WGS84");
+        
+        // Note the above two contexts have identical zoom levels but are conceptually distinct due
+        // to the difference in CRS.
         
         ZoomContext niceScales = new ListZoomContext(Arrays.asList(
                 5_000_000_000d,

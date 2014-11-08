@@ -16,11 +16,13 @@
  */
 package org.geotools.filter;
 
+import java.util.Collections;
 import java.util.Date;
 
 import junit.framework.TestCase;
 
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
 import org.opengis.parameter.Parameter;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -50,6 +52,16 @@ public class FunctionImplTest extends TestCase {
         
         fn = FunctionImpl.functionName("foo", "value", "geom::,");
         check(fn.getArguments().get(0), "geom", Geometry.class, -1, -1);
+    }
+    
+    public void testToString() throws Exception {
+    	FunctionImpl func = new FunctionImpl();
+    	Expression param = new LiteralExpressionImpl(42);
+    	func.setName("TestFunction");
+    	func.setParameters(Collections.singletonList(param));
+    	
+    	String result = func.toString();
+    	assertEquals("TestFunction([42])", result);
     }
     
     void check(Parameter p, String name, Class type, int min, int max) {

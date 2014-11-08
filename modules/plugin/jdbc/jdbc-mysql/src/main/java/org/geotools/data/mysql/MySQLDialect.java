@@ -329,7 +329,8 @@ public class MySQLDialect extends SQLDialect {
         
         //create teh geometry_columns table if necessary
         DatabaseMetaData md = cx.getMetaData();
-        ResultSet rs = md.getTables(null, schemaName, "geometry_columns", new String[]{"TABLE"});
+        ResultSet rs = md.getTables(null, dataStore.escapeNamePattern(md, schemaName),
+                dataStore.escapeNamePattern(md, "geometry_columns"), new String[]{"TABLE"});
         try {
             if (!rs.next()) {
                 //create it

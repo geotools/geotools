@@ -181,7 +181,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                 
                 // check the column name is known
                 if(colNames == null) {
-                    colNames = getColumnNames(metaData, schema, table);
+                    colNames = getColumnNames(store, metaData, schema, table);
                 }
                 if(!colNames.contains(colName)) {
                     LOGGER.warning("Unknown column " + colName + " in table " + table);
@@ -227,11 +227,13 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
         }
     }
 
-    Set<String> getColumnNames(DatabaseMetaData metaData, String schema, String table) throws SQLException {
+    Set<String> getColumnNames(JDBCDataStore store, DatabaseMetaData metaData, String schema,
+                               String table) throws SQLException {
         ResultSet rs = null;
         Set<String> result = new HashSet<String>();
         try {
-            rs = metaData.getColumns(null, schema, table, null);      
+            rs = metaData.getColumns(null, store.escapeNamePattern(metaData, schema),
+                    store.escapeNamePattern(metaData, table), null);
             while(rs.next()) {
                 result.add(rs.getString("COLUMN_NAME"));
             }

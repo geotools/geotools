@@ -99,7 +99,10 @@ public class HeuristicPrimaryKeyFinder extends PrimaryKeyFinder {
             }
 
             // look up the type ( should only be one row )
-            ResultSet columns = metaData.getColumns(null, databaseSchema, tableName, columnName);
+            ResultSet columns = metaData.getColumns(null,
+                    store.escapeNamePattern(metaData, databaseSchema),
+                    store.escapeNamePattern(metaData, tableName),
+                    store.escapeNamePattern(metaData, columnName));
             columns.next();
 
             Class columnType = store.getSQLDialect().getMapping(columns, cx);

@@ -278,6 +278,116 @@ public class SLDTransformerTest {
     }
 
     /**
+     * Tests whether LabelPlacement works with a completely empty
+     * PointPlacement as the spec allows.
+     *
+     * See also http://jira.codehaus.org/browse/GEOS-6748
+     */
+    @Test
+    public void testPointPlacementEmpty(){
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                   + "<StyledLayerDescriptor version=\"1.0.0\" xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
+                   + "  xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+                   + "  xsi:schemaLocation=\"http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd\">"
+                   + "  <NamedLayer>"
+                   + "    <Name>foo</Name>"
+                   + "    <UserStyle>"
+                   + "      <Name>pointplacement</Name>"
+                   + "      <FeatureTypeStyle>"
+                   + "        <Rule>"
+                   + "          <MaxScaleDenominator>32000</MaxScaleDenominator>"
+                   + "          <TextSymbolizer>"
+                   + "            <Label>"
+                   + "              <ogc:PropertyName>NAME</ogc:PropertyName>"
+                   + "            </Label>"
+                   + "            <Font>"
+                   + "              <CssParameter name=\"font-family\">Arial</CssParameter>"
+                   + "              <CssParameter name=\"font-weight\">Bold</CssParameter>"
+                   + "              <CssParameter name=\"font-size\">14</CssParameter>"
+                   + "            </Font>"
+                   + "            <LabelPlacement>" // completely empty PointPlacement
+                   + "              <PointPlacement />"
+                   + "            </LabelPlacement>"
+                   + "          </TextSymbolizer>"
+                   + "        </Rule>"
+                   + "      </FeatureTypeStyle>"
+                   + "    </UserStyle>"
+                   + "  </NamedLayer>"
+                   + "</StyledLayerDescriptor>";
+        StringReader reader = new StringReader(xml);
+        SLDParser sldParser = new SLDParser(sf, reader);
+
+        Style[] parsed = sldParser.readXML();
+        assertNotNull("parsed xml", parsed);
+        assertTrue("parsed xml into style", parsed.length > 0);
+
+        Style style = parsed[0];
+        assertNotNull(style);
+        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        TextSymbolizer textSymbolize = (TextSymbolizer) rule.symbolizers().get(0);
+        LabelPlacement labelPlacement = textSymbolize.getLabelPlacement();
+
+        assertNotNull(labelPlacement);
+    }
+
+    /**
+     * Tests whether LabelPlacement works with a  PointPlacement that has no
+     * explicit AnchorPoint as the spec allows.
+     *
+     * See also http://jira.codehaus.org/browse/GEOS-6748
+     */
+    @Test
+    public void testPointPlacementNoAnchorPoint(){
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                   + "<StyledLayerDescriptor version=\"1.0.0\" xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
+                   + "  xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+                   + "  xsi:schemaLocation=\"http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd\">"
+                   + "  <NamedLayer>"
+                   + "    <Name>foo</Name>"
+                   + "    <UserStyle>"
+                   + "      <Name>pointplacement</Name>"
+                   + "      <FeatureTypeStyle>"
+                   + "        <Rule>"
+                   + "          <TextSymbolizer>"
+                   + "            <Label>"
+                   + "              <ogc:PropertyName>NAME</ogc:PropertyName>"
+                   + "            </Label>"
+                   + "            <Font>"
+                   + "              <CssParameter name=\"font-family\">Arial</CssParameter>"
+                   + "              <CssParameter name=\"font-weight\">Bold</CssParameter>"
+                   + "              <CssParameter name=\"font-size\">14</CssParameter>"
+                   + "            </Font>"
+                   + "            <LabelPlacement>"
+                   + "              <PointPlacement>" // PointPlacement w/o AnchorPoint
+                   + "                <Rotation>"
+                   + "                  42"
+                   + "                </Rotation>"
+                   + "              </PointPlacement>"
+                   + "            </LabelPlacement>"
+                   + "          </TextSymbolizer>"
+                   + "        </Rule>"
+                   + "      </FeatureTypeStyle>"
+                   + "    </UserStyle>"
+                   + "  </NamedLayer>"
+                   + "</StyledLayerDescriptor>";
+        StringReader reader = new StringReader(xml);
+        SLDParser sldParser = new SLDParser(sf, reader);
+
+        Style[] parsed = sldParser.readXML();
+        assertNotNull("parsed xml", parsed);
+        assertTrue("parsed xml into style", parsed.length > 0);
+
+        Style style = parsed[0];
+        assertNotNull(style);
+        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        TextSymbolizer textSymbolize = (TextSymbolizer) rule.symbolizers().get(0);
+        PointPlacement pointPlacement = (PointPlacement) textSymbolize.getLabelPlacement();
+
+        assertNotNull(pointPlacement);
+        assertNotNull(pointPlacement.getRotation());
+    }
+
+    /**
      * Another bug reported from uDig 1.2; we are trying to save a LineSymbolizer (and then restore
      * it) and the stroke is comming back black and with width 1 all the time.
      * 

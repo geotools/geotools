@@ -341,8 +341,11 @@ public class SLDTransformer extends TransformerBase {
         public void visit(PointPlacement pp) {
             start("LabelPlacement");
             start("PointPlacement");
-            pp.getAnchorPoint().accept(this);
-            
+
+            if (pp.getAnchorPoint() != null) {
+                pp.getAnchorPoint().accept(this);
+            }
+
             visit( pp.getDisplacement() );
 
             encodeValue("Rotation", null, pp.getRotation(), Double.valueOf(0.0));

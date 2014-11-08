@@ -223,6 +223,7 @@ public class GeoPackage {
      */
     void init(Connection cx) throws SQLException {
         
+        runSQL("PRAGMA application_id = 0x47503130;", cx);
         //runSQL("SELECT InitSpatialMetaData();");
         runScript(SPATIAL_REF_SYS + ".sql", cx);
         runScript(GEOMETRY_COLUMNS + ".sql", cx);

@@ -23,10 +23,12 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.math.FilterFunction_random;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor.FIDValidator;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -36,6 +38,7 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.Identifier;
 
 /**
@@ -185,12 +188,46 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         assertEquals(expected, result);
     }
     
-    public void testSingleNegation() {
+    public void testNegateEquals() {
     	Filter f = ff.not(ff.equals(ff.property("prop"), ff.literal(10)));
     	Filter result = (Filter) f.accept(visitor, null);
-    	assertEquals(f, result);
+        assertEquals(ff.notEqual(ff.property("prop"), ff.literal(10)), result);
     }
     
+    public void testNegateGreater() {
+        Filter f = ff.not(ff.greater(ff.property("prop"), ff.literal(10)));
+        Filter result = (Filter) f.accept(visitor, null);
+        assertEquals(ff.lessOrEqual(ff.property("prop"), ff.literal(10)), result);
+    }
+
+    public void testNegateGreaterOrEqual() {
+        Filter f = ff.not(ff.greaterOrEqual(ff.property("prop"), ff.literal(10)));
+        Filter result = (Filter) f.accept(visitor, null);
+        assertEquals(ff.less(ff.property("prop"), ff.literal(10)), result);
+    }
+
+    public void testNegateLess() {
+        Filter f = ff.not(ff.less(ff.property("prop"), ff.literal(10)));
+        Filter result = (Filter) f.accept(visitor, null);
+        assertEquals(ff.greaterOrEqual(ff.property("prop"), ff.literal(10)), result);
+    }
+
+    public void testNegateLessOrEqual() {
+        Filter f = ff.not(ff.lessOrEqual(ff.property("prop"), ff.literal(10)));
+        Filter result = (Filter) f.accept(visitor, null);
+        assertEquals(ff.greater(ff.property("prop"), ff.literal(10)), result);
+    }
+
+    public void testNegateBetween() {
+        PropertyName prop = ff.property("prop");
+        Literal l10 = ff.literal(10);
+        Literal l20 = ff.literal(20);
+        Filter f = ff.not(ff.between(prop, l10, l20));
+        Filter result = (Filter) f.accept(visitor, null);
+        assertEquals(ff.or(Arrays.asList((Filter) ff.less(prop, l10), ff.greater(prop, l20))),
+                result);
+    }
+
     public void testDoubleNegation() {
     	PropertyIsEqualTo equal = ff.equals(ff.property("prop"), ff.literal(10));
 		Filter f = ff.not(ff.not(equal));
@@ -202,7 +239,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     	PropertyIsEqualTo equal = ff.equals(ff.property("prop"), ff.literal(10));
 		Filter f = ff.not(ff.not(ff.not(equal)));
     	Filter result = (Filter) f.accept(visitor, null);
-    	assertEquals(ff.not(equal), result);
+        assertEquals(ff.notEqual(ff.property("prop"), ff.literal(10)), result);
     }
     
     public void testStableFunction() {
@@ -348,4 +385,184 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         assertEquals(ff.or(Arrays.asList(f1, f3)), s8);
     }
     
+    public void testAndDisjointRanges() throws Exception {
+        testAndDisjointRanges(Integer.class, 10, 5);
+        testAndDisjointRanges(Byte.class, (byte) 10, (byte) 5);
+        testAndDisjointRanges(Long.class, 10l, 5l);
+        testAndDisjointRanges(Float.class, 10f, 5f);
+        testAndDisjointRanges(Double.class, 10d, 5d);
+        testAndDisjointRanges(String.class, "ppp", "bbb");
+    }
+
+    private <T> void testAndDisjointRanges(Class<T> type, T max, T min) throws Exception {
+        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+
+        Filter original = ff.and(ff.greater(ff.property("a"), ff.literal(max)),
+                ff.less(ff.property("a"), ff.literal(min)));
+        Filter simplified = (Filter) original.accept(visitor, null);
+        assertEquals(original, simplified);
+
+        visitor.setFeatureType(schema);
+        Filter simplified2 = (Filter) original.accept(visitor, null);
+        assertEquals(Filter.EXCLUDE, simplified2);
+    }
+
+    public void testOrDisjointRanges() throws Exception {
+        testOrDisjointRanges(Integer.class, 10, 5);
+        testOrDisjointRanges(Byte.class, (byte) 10, (byte) 5);
+        testOrDisjointRanges(Long.class, 10l, 5l);
+        testOrDisjointRanges(Float.class, 10f, 5f);
+        testOrDisjointRanges(Double.class, 10d, 5d);
+        testOrDisjointRanges(String.class, "ppp", "bbb");
+    }
+
+    private <T> void testOrDisjointRanges(Class<T> type, T max, T min) throws Exception {
+        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setFeatureType(schema);
+
+        Filter original = ff.or(ff.greater(ff.property("a"), ff.literal(max)),
+                ff.less(ff.property("a"), ff.literal(min)));
+        Filter simplified = (Filter) original.accept(visitor, null);
+        assertEquals(original, simplified);
+    }
+
+    public void testAndTouchingRanges() throws Exception {
+        testAndTouchingRanges(Integer.class, 10);
+        testAndTouchingRanges(Byte.class, (byte) 10);
+        testAndTouchingRanges(Long.class, 10l);
+        testAndTouchingRanges(Float.class, 10f);
+        testAndTouchingRanges(Double.class, 10d);
+        testAndTouchingRanges(String.class, "ppp");
+    }
+
+    private <T> void testAndTouchingRanges(Class<T> type, T value) throws Exception {
+        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setFeatureType(schema);
+
+        Filter original = ff.and(ff.greaterOrEqual(ff.property("a"), ff.literal(value)),
+                ff.lessOrEqual(ff.property("a"), ff.literal(value)));
+        Filter simplified = (Filter) original.accept(visitor, null);
+        assertEquals(ff.equal(ff.property("a"), ff.literal(value), false), simplified);
+    }
+
+    public void testOrTouchingRanges() throws Exception {
+        testOrTouchingRanges(Integer.class, 10);
+        testOrTouchingRanges(Byte.class, (byte) 10);
+        testOrTouchingRanges(Long.class, 10l);
+        testOrTouchingRanges(Float.class, 10f);
+        testOrTouchingRanges(Double.class, 10d);
+        testOrTouchingRanges(String.class, "ppp");
+    }
+
+    private <T> void testOrTouchingRanges(Class<T> type, T value) throws Exception {
+        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setFeatureType(schema);
+
+        Filter original = ff.or(ff.greaterOrEqual(ff.property("a"), ff.literal(value)),
+                ff.lessOrEqual(ff.property("a"), ff.literal(value)));
+        Filter simplified = (Filter) original.accept(visitor, null);
+        assertEquals(Filter.INCLUDE, simplified);
+    }
+
+    public void testAndOverlappingRanges() throws Exception {
+        testAndOverlappingRanges(Integer.class, 5, 7, 10);
+        testAndOverlappingRanges(Byte.class, (byte) 5, (byte) 7, (byte) 10);
+        testAndOverlappingRanges(Long.class, 5l, 7l, 10l);
+        testAndOverlappingRanges(Float.class, 5f, 7f, 10f);
+        testAndOverlappingRanges(Double.class, 5d, 7d, 10d);
+        testAndOverlappingRanges(String.class, "bbb", "nnn", "ppp");
+    }
+
+    private <T> void testAndOverlappingRanges(Class<T> type, T min, T mid, T max) throws Exception {
+        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setFeatureType(schema);
+
+        // excluding extrema, not possible to turn it into a between filter
+        Filter original = ff.and(Arrays.asList( //
+                (Filter) ff.greater(ff.property("a"), ff.literal(min)), //
+                ff.less(ff.property("a"), ff.literal(max)), //
+                ff.less(ff.property("a"), ff.literal(mid))
+                ));
+        
+        Filter simplified = (Filter) original.accept(visitor, null);
+        assertEquals(ff.and(ff.greater(ff.property("a"), ff.literal(min)), //
+                ff.less(ff.property("a"), ff.literal(mid))), simplified);
+    }
+
+    public void testOrOverlappingRanges() throws Exception {
+        testOrOverlappingRanges(Integer.class, 5, 10);
+        testOrOverlappingRanges(Byte.class, (byte) 5, (byte) 10);
+        testOrOverlappingRanges(Long.class, 5l, 10l);
+        testOrOverlappingRanges(Float.class, 5f, 10f);
+        testOrOverlappingRanges(Double.class, 5d, 10d);
+        testOrOverlappingRanges(String.class, "bbb", "ppp");
+    }
+
+    private <T> void testOrOverlappingRanges(Class<T> type, T min, T max) throws Exception {
+        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setFeatureType(schema);
+
+        // excluding extrema, not possible to turn it into a between filter
+        Filter original = ff.or(Arrays.asList( //
+                (Filter) ff.greater(ff.property("a"), ff.literal(min)), //
+                ff.greater(ff.property("a"), ff.literal(max))));
+
+        Filter simplified = (Filter) original.accept(visitor, null);
+        assertEquals(ff.greater(ff.property("a"), ff.literal(min)), simplified);
+    }
+
+    public void testAndOverlappingRangesToBetween() throws Exception {
+        testAndOverlappingRangesToBetween(Integer.class, 5, 7, 10);
+        testAndOverlappingRangesToBetween(Byte.class, (byte) 5, (byte) 7, (byte) 10);
+        testAndOverlappingRangesToBetween(Long.class, 5l, 7l, 10l);
+        testAndOverlappingRangesToBetween(Float.class, 5f, 7f, 10f);
+        testAndOverlappingRangesToBetween(Double.class, 5d, 7d, 10d);
+        testAndOverlappingRangesToBetween(String.class, "bbb", "nnn", "ppp");
+    }
+
+    private <T> void testAndOverlappingRangesToBetween(Class<T> type, T min, T mid, T max)
+            throws Exception {
+        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setFeatureType(schema);
+
+        // excluding extrema, not possible to turn it into a between filter
+        Filter original = ff.and(Arrays.asList( //
+                (Filter) ff.greaterOrEqual(ff.property("a"), ff.literal(min)), //
+                ff.less(ff.property("a"), ff.literal(max)), //
+                ff.lessOrEqual(ff.property("a"), ff.literal(mid))));
+
+        Filter simplified = (Filter) original.accept(visitor, null);
+        assertEquals(ff.between(ff.property("a"), ff.literal(min), ff.literal(mid)), simplified);
+    }
+
+    public void testOrPseudoBetween() throws Exception {
+        testOrPseudoBetween(Integer.class, 5, 10);
+        testOrPseudoBetween(Byte.class, (byte) 5, (byte) 10);
+        testOrPseudoBetween(Long.class, 5l, 10l);
+        testOrPseudoBetween(Float.class, 5f, 10f);
+        testOrPseudoBetween(Double.class, 5d, 10d);
+        testOrPseudoBetween(String.class, "bbb", "ppp");
+    }
+
+    private <T> void testOrPseudoBetween(Class<T> type, T min, T max) throws Exception {
+        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setFeatureType(schema);
+
+        // (a > min && a <= max) or (a <= min)
+        Filter original = ff.or(Arrays.asList( //
+                ff.and(ff.greater(ff.property("a"), ff.literal(min)), //
+                        ff.lessOrEqual(ff.property("a"), ff.literal(max))), //
+                ff.lessOrEqual(ff.property("a"), ff.literal(min))));
+
+        Filter simplified = (Filter) original.accept(visitor, null);
+        assertEquals(ff.lessOrEqual(ff.property("a"), ff.literal(max)), simplified);
+    }
 }

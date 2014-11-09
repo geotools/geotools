@@ -16,26 +16,25 @@
  */
 package org.geotools.parameter;
 
-import java.util.List;
-import java.util.Arrays;
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.media.jai.JAI;
-import javax.media.jai.ParameterList;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.OperationRegistry;
+import javax.media.jai.ParameterList;
 import javax.media.jai.RegistryElementDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
 
-import org.opengis.util.GenericName;
+import org.geotools.metadata.iso.citation.Citations;
+import org.junit.Test;
+import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.parameter.ParameterDescriptor;
-
-import org.geotools.TestData;
-import org.geotools.metadata.iso.citation.Citations;
-
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.opengis.util.GenericName;
 
 
 /**

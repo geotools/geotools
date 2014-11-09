@@ -129,15 +129,15 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return new DisplacementImpl( dx, dy );
     }
 
-    public ExternalGraphicImpl externalGraphic(Icon inline,
+    public ExternalGraphic externalGraphic(Icon inline,
             Collection<ColorReplacement> replacements) {
-        ExternalGraphicImpl externalGraphic = new ExternalGraphicImpl( inline, replacements, null );
+        ExternalGraphic externalGraphic = new ExternalGraphicImpl( inline, replacements, null );
         return externalGraphic;
     }
 
-    public ExternalGraphicImpl externalGraphic(OnLineResource resource,
+    public ExternalGraphic externalGraphic(OnLineResource resource,
             String format, Collection<ColorReplacement> replacements) {
-        ExternalGraphicImpl externalGraphic = new ExternalGraphicImpl( null, replacements, resource);
+        ExternalGraphic externalGraphic = new ExternalGraphicImpl( null, replacements, resource);
         externalGraphic.setFormat( format );
         return externalGraphic;
     }

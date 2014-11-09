@@ -1,5 +1,22 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.styling.builder;
 
+import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +38,8 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
     private String format;
 
     private OnLineResource resource;
+    
+    private String location;
 
     private Set<ColorReplacementBuilder> replacements = new HashSet<ColorReplacementBuilder>();
 
@@ -65,6 +84,11 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
         this.resource = resource;
         return this;
     }
+    
+    public ExternalGraphicBuilder location(String location) {
+		this.location = location;
+		return this;
+    }
 
     public ExternalGraphic build() {
         if (unset) {
@@ -77,9 +101,10 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
         }
         if (inline != null) {
             externalGraphic = sf.externalGraphic(inline, set);
-        } else {
+        } else if(resource != null) {
             externalGraphic = sf.externalGraphic(resource, format, set);
-
+        } else {
+        	externalGraphic = sf.createExternalGraphic(location, format);
         }
         if (parent == null)
             reset();
@@ -102,6 +127,11 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
         this.inline = original.getInlineContent();
         this.replacements.clear();
         this.resource = original.getOnlineResource();
+        try {
+			this.location = original.getLocation().toString();
+		} catch (MalformedURLException e) {
+			// ignore
+		}
         if (original.getColorReplacements() != null) {
             for (ColorReplacement cr : original.getColorReplacements()) {
                 replacements.add(new ColorReplacementBuilder().reset(cr));

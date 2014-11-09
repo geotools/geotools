@@ -1,0 +1,21 @@
+/**
+ * Example usage of GeoTools-specific extension properties
+ */
+* {
+  label: [name];
+  -gt-label-padding: 0;
+  -gt-label-group: false;
+  -gt-label-max-displacement: 0;
+  -gt-label-min-group-distance: -1;
+  -gt-label-repeat: 0;
+  -gt-label-all-group: false;
+  -gt-label-remove-overlaps: false;
+  -gt-label-allow-overruns: true;
+  -gt-label-follow-line: false;
+  -gt-label-max-angle-delta: 22.5;
+  -gt-label-auto-wrap: 0;
+  -gt-label-force-ltr: true;
+  -gt-label-conflict-resolution: true;
+  -gt-label-fit-goodness: 0.50;
+  -gt-label-priority: [priority];
+}

@@ -1,0 +1,26 @@
+[type='highway'] {
+  stroke: #00FF00;
+  z-index: 3;
+}
+
+[type='secondary'] {
+  stroke: #00CC00;
+  z-index: 2;
+}
+
+[type='local-roads'] {
+  stroke: #00AA00;
+  z-index: 1;
+}
+
+[@scale < 10000000] {
+  stroke-width: 8px;
+}
+
+[@scale > 10000000] [@scale < 20000000] {
+  stroke-width: 4px;
+}
+
+[@scale > 20000000] {
+  stroke-width: 2px;
+}

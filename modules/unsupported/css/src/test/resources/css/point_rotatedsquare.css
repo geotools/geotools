@@ -1,0 +1,9 @@
+* {
+  mark: symbol(square);
+}
+
+:mark {
+  fill: #009900;
+  size: 12px;
+  rotation: 45deg;
+}

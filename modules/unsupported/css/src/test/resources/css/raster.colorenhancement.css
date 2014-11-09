@@ -1,0 +1,21 @@
+/*
+ * The raster-color-enhancement property specifies image processing filters to
+ * be applied to an entire raster layer.
+ *
+ * The keyword "none" will cause colors to be included directly; with high
+ * values encoded as white and low values encoded as black. This is the default
+ * behavior.
+ * raster-color-enhancement: none;
+ *
+ * The keyword "normalize" will stretch or compress values so that the minimum
+ * value in the raster is mapped to black and the maximum is mapped to white,
+ * with intermediate colors mapped linearly along the scale between the two.
+ * raster-color-enhancement: normalize;
+ *
+ * The keyword "histogram" will calculate a color curve such that the output
+ * image has roughly the same number of pixels at each brightness.
+ */
+* {
+  raster-channels: 1;
+  raster-color-enhancement: histogram;
+}

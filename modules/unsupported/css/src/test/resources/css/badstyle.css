@@ -1,0 +1,7 @@
+/* Test error handling; syntax errors in CQL filters bypass the CssParser and
+ * cause errors at conversion time 
+ */
+
+[a="b"] {
+    stroke: black;
+}

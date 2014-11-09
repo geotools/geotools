@@ -1,0 +1,11 @@
+* {
+  stroke: red;
+}
+
+[@scale>10000] {
+  stroke-width: 2px;
+}
+
+[@scale<10000] {
+  stroke-width: 4px;
+}

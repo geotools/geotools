@@ -1,0 +1,453 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+package org.geotools.styling.css;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.geotools.styling.Style;
+import org.geotools.styling.css.selector.PseudoClass;
+import org.geotools.styling.css.selector.Selector;
+import org.geotools.styling.css.util.PseudoClassExtractor;
+import org.geotools.util.Converters;
+
+/**
+ * A rule in CSS
+ * 
+ * @author Andrea Aime - GeoSolutions
+ *
+ */
+public class CssRule {
+
+    public static final Integer NO_Z_INDEX = null;
+
+    Selector selector;
+
+    Map<PseudoClass, List<Property>> properties;
+
+    String comment;
+
+    List<CssRule> ancestry;
+
+    /**
+     * Builds a CSS rule
+     * 
+     * @param selector The rule selector
+     * @param properties The set of rule properties
+     */
+    public CssRule(Selector selector, List<Property> properties) {
+        super();
+        this.setSelector(selector);
+        PseudoClassExtractor extractor = new PseudoClassExtractor();
+        selector.accept(extractor);
+        this.setProperties(new HashMap<PseudoClass, List<Property>>());
+        Set<PseudoClass> pseudoClasses = extractor.getPseudoClasses();
+        for (PseudoClass ps : pseudoClasses) {
+            this.getProperties().put(ps, properties);
+        }
+    }
+
+    /**
+     * Builds a CSS rule
+     * 
+     * @param selector The rule selector
+     * @param properties The set of rule properties
+     * @param comment The rule comment (can be used to generate SLD's title and abstract
+     */
+    public CssRule(Selector selector, List<Property> properties, String comment) {
+        this(selector, properties);
+        this.setComment(comment);
+    }
+
+    /**
+     * Builds a CSS rule
+     * 
+     * @param selector The rule selector
+     * @param properties The set of rule properties, already organized by pseudo-selector
+     * @param comment The rule comment (can be used to generate SLD's title and abstract
+     */
+    CssRule(Selector selector, Map<PseudoClass, List<Property>> properties, String comment) {
+        this.setSelector(selector);
+        this.setProperties(properties);
+        this.setComment(comment);
+    }
+
+    @Override
+    public String toString() {
+        String base = "Rule [selector=" + getSelector() + ", properties=" + getProperties() + "]";
+        if (getAncestry() == null) {
+            return base;
+        }
+        StringBuilder sb = new StringBuilder(base);
+        sb.append("\nAncestry (lowest to highest priority):");
+        int idx = 1;
+        for (CssRule ancestor : getAncestry()) {
+            sb.append("\n")
+                    .append(idx)
+                    .append(") ")
+                    .append("[selector=" + ancestor.getSelector() + "\n   properties="
+                            + ancestor.getProperties() + "]");
+            idx++;
+        }
+
+        return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getComment() == null) ? 0 : getComment().hashCode());
+        result = prime * result + ((getProperties() == null) ? 0 : getProperties().hashCode());
+        result = prime * result + ((getSelector() == null) ? 0 : getSelector().hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CssRule other = (CssRule) obj;
+        if (getComment() == null) {
+            if (other.getComment() != null)
+                return false;
+        } else if (!getComment().equals(other.getComment()))
+            return false;
+        if (getProperties() == null) {
+            if (other.getProperties() != null)
+                return false;
+        } else if (!getProperties().equals(other.getProperties()))
+            return false;
+        if (getSelector() == null) {
+            if (other.getSelector() != null)
+                return false;
+        } else if (!getSelector().equals(other.getSelector()))
+            return false;
+        return true;
+    }
+
+    /**
+     * Returns the property values by pseudo-class, matching those that satisfy the specified name
+     * prefixes
+     * 
+     * @param pseudoClass
+     * @param symbolizerPrefixes
+     * @return
+     */
+    public Map<String, List<Value>> getPropertyValues(PseudoClass pseudoClass,
+            String... symbolizerPrefixes) {
+        List<Property> psProperties = getProperties().get(pseudoClass);
+        if (psProperties == null) {
+            return Collections.emptyMap();
+        }
+        Map<String, List<Value>> result = new HashMap<>();
+        if (symbolizerPrefixes != null && symbolizerPrefixes.length > 0) {
+            for (String symbolizerPrefix : symbolizerPrefixes) {
+                for (Property property : psProperties) {
+                    if (symbolizerPrefix == null || property.getName().startsWith(symbolizerPrefix)
+                            || property.getName().startsWith("-gt-" + symbolizerPrefix)) {
+                        result.put(property.getName(), property.getValues());
+                    }
+                }
+            }
+        } else {
+            for (Property property : psProperties) {
+                result.put(property.getName(), property.getValues());
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Returns true if the rule has any property for the given name, in the give pseudo-class
+     * 
+     * @param pseudoClass
+     * @param propertyName
+     * @return
+     */
+    public boolean hasProperty(PseudoClass pseudoClass, String propertyName) {
+        List<Property> psProperties = getProperties().get(pseudoClass);
+        if (psProperties == null) {
+            return false;
+        }
+        for (Property property : psProperties) {
+            if (propertyName.equals(property.getName())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if any of the properties specified is found in the given pseudo-class
+     * 
+     * @param pseudoClass
+     * @param propertyNames
+     * @return
+     */
+    public boolean hasAnyProperty(PseudoClass pseudoClass, Collection<String> propertyNames) {
+        List<Property> psProperties = getProperties().get(pseudoClass);
+        if (psProperties == null) {
+            return false;
+        }
+        for (Property property : psProperties) {
+            if (propertyNames.contains(property.getName())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * This rule covers the other if it has the same selector, and has all the properties of the
+     * other, plus eventually some more
+     * 
+     * @param other
+     * @return
+     */
+    public boolean covers(CssRule other) {
+        if (!other.getSelector().equals(getSelector())) {
+            return false;
+        }
+        Set<PseudoClass> pseudoClasses = this.getProperties().keySet();
+        Set<PseudoClass> otherPseudoClasses = other.getProperties().keySet();
+        if (!pseudoClasses.containsAll(otherPseudoClasses)) {
+            return false;
+        }
+        for (PseudoClass pc : otherPseudoClasses) {
+            List<Property> properties = this.getProperties().get(pc);
+            List<Property> otherProperties = other.getProperties().get(pc);
+            for (Property p : otherProperties) {
+                if (!properties.contains(p)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Extracts a sub-rule at the given z-index. Will return null if this rule has nothing at that
+     * specific z-index
+     * 
+     * @param zIndex
+     * @return
+     */
+    public CssRule getSubRuleByZIndex(Integer zIndex) {
+        Map<PseudoClass, List<Property>> zProperties = new HashMap<>();
+        List<Integer> zIndexes = new ArrayList<>();
+        for (Map.Entry<PseudoClass, List<Property>> entry : this.getProperties().entrySet()) {
+            List<Property> props = entry.getValue();
+            collectZIndexesInProperties(props, zIndexes);
+            // the list of z-index values is positional, people will normally set them in
+            // increasing order, but we don't want to make assumptions... users could
+            // even repeat the same z-index multiple times, take care of that as well
+            ListIterator<Integer> it = zIndexes.listIterator();
+            while (it.hasNext()) {
+                int zIndexPosition = it.nextIndex();
+                Integer nextZIndex = it.next();
+                if (nextZIndex == NO_Z_INDEX) {
+                    // this set of properties is z-index indepenent
+                    zProperties.put(entry.getKey(), props);
+                } else if (!nextZIndex.equals(zIndex)) {
+                    continue;
+                } else {
+                    // extract the property values at that position
+                    List<Property> zIndexProperties = new ArrayList<>();
+                    for (Property property : props) {
+                        if (isZIndex(property)) {
+                            continue;
+                        }
+                        List<Value> values = property.getValues();
+                        if (zIndexPosition < values.size()) {
+                            Property p = new Property(property.getName(), Arrays.asList(values
+                                    .get(zIndexPosition)));
+                            zIndexProperties.add(p);
+                        }
+                    }
+                    // if we collected any, add to the result
+                    if (zIndexProperties.size() > 0) {
+                        zProperties.put(entry.getKey(), zIndexProperties);
+                    }
+                }
+            }
+        }
+
+        if (zProperties.size() > 0) {
+            return new CssRule(this.getSelector(), zProperties, this.getComment());
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns all z-index values used by this rule
+     * 
+     * @return
+     */
+    public Set<Integer> getZIndexes() {
+        Set<Integer> indexes = new TreeSet<>(new ZIndexComparator());
+        List<Integer> singleListIndexes = new ArrayList<>();
+        for (List<Property> list : getProperties().values()) {
+            collectZIndexesInProperties(list, singleListIndexes);
+            indexes.addAll(singleListIndexes);
+        }
+
+        return indexes;
+    }
+
+    /**
+     * Returns the z-index values, in the order they are submitted
+     * 
+     * @param properties
+     * @return
+     */
+    void collectZIndexesInProperties(List<Property> properties, List<Integer> zIndexes) {
+        if (zIndexes.size() > 0) {
+            zIndexes.clear();
+        }
+        for (Property property : properties) {
+            if (isZIndex(property)) {
+                if (zIndexes.size() > 0) {
+                    // we have two z-index in the same set of properties? keep the latest
+                    zIndexes.clear();
+                }
+                List<Value> values = property.getValues();
+                for (Value value : values) {
+                    if (value instanceof Value.Literal) {
+                        String body = ((Value.Literal) value).body;
+                        Integer zIndex = Converters.convert(body, Integer.class);
+                        if (zIndex == null) {
+                            throw new IllegalArgumentException(
+                                    "Invalid value for z-index, it should be an integer: " + body);
+                        } else {
+                            zIndexes.add(zIndex);
+                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "z-index must be integer literals, they cannot be expressions, multi-values or any other type: "
+                                        + value);
+                    }
+                }
+            }
+        }
+        // if we did not find the z-index property, the only z-index is teh default one (which is
+        if (zIndexes.isEmpty()) {
+            zIndexes.add(null);
+        }
+    }
+
+    private boolean isZIndex(Property property) {
+        String name = property.getName();
+        return "z-index".equals(name) || "raster-z-index".equals(name);
+    }
+
+    /**
+     * Returns the rule selector
+     * 
+     * @return
+     */
+    public Selector getSelector() {
+        return selector;
+    }
+
+    public void setSelector(Selector selector) {
+        this.selector = selector;
+    }
+
+    /**
+     * Returns the rules properties, organized by pseudo-class
+     * 
+     * @return
+     */
+    public Map<PseudoClass, List<Property>> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<PseudoClass, List<Property>> properties) {
+        this.properties = properties;
+    }
+
+    /**
+     * Returns the rule comment
+     * 
+     * @return
+     */
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    /**
+     * Returns the original rules from which this rule originated (rules get re-organized and
+     * combined a lot during the translation process to Geotools {@link Style}
+     */
+    public List<CssRule> getAncestry() {
+        return ancestry;
+    }
+
+    public void setAncestry(List<CssRule> ancestry) {
+        this.ancestry = ancestry;
+    }
+
+    /**
+     * Returns true if the style has at least one property activating a symbolizer, e.g., fill,
+     * stroke, mark, label or raster-channel
+     * 
+     * @param rootProperties
+     * @return
+     */
+    boolean hasSymbolizerProperty() {
+        List<Property> rootProperties = getProperties().get(PseudoClass.ROOT);
+        if (rootProperties == null) {
+            return false;
+        }
+        for (Property property : rootProperties) {
+            String name = property.getName();
+            switch (name) {
+            case "fill":
+            case "stroke":
+            case "mark":
+            case "label":
+            case "raster-channels":
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+}

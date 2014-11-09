@@ -1,0 +1,10 @@
+/*
+ * The GeoTools RasterSymbolizer representation has a Geometry property, so I
+ * exposed it via CSS.  I am not really sure what it does, but it is important
+ * enough that GeoTools preserves it when serializing to SLD.  It takes a CQL
+ * filter expression (Don't forget to enclose that in [square brackets]).
+ */
+* {
+  raster-channels: auto;
+  raster-geometry: [the_geom];
+}

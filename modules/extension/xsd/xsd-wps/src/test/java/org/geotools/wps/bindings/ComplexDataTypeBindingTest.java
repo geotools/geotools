@@ -16,12 +16,22 @@
  */
 package org.geotools.wps.bindings;
 
+import java.io.Reader;
+import java.io.StringReader;
+
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wps10.ComplexDataType;
+import net.opengis.wps10.DataType;
+import net.opengis.wps10.Wps10Factory;
 
+import org.eclipse.emf.ecore.EObject;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.wps.WPS;
 import org.geotools.wps.WPSTestSupport;
+import org.geotools.xml.EncoderDelegate;
+import org.w3c.dom.Element;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.ext.LexicalHandler;
 
 import com.vividsolutions.jts.geom.Polygon;
 
@@ -93,5 +103,36 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
         FeatureCollection features = (FeatureCollection) fc.getFeature().get( 0 );
         assertEquals( 1, features.size() );
     
+    }
+    
+    @SuppressWarnings("unchecked")
+    public void testComplexDataBinding() throws Exception {
+        String xml = 
+          "<wps:Data xmlns:wps='http://www.opengis.net/wps/1.0.0'></wps:Data>"; 
+        buildDocument(xml);
+       
+        Object o = parse(WPS.DataType);
+        assertTrue( o instanceof DataType );
+        
+        ComplexDataType object = Wps10Factory.eINSTANCE.createComplexDataType();
+        object.getData().add(0, new EncoderDelegate() {
+
+                @Override
+                public void encode(ContentHandler output) throws Exception {
+                    ((LexicalHandler) output).startCDATA();
+                    Reader r = new StringReader("test data");
+                    char[] buffer = new char[1024];
+                    int read;
+                    while ((read = r.read(buffer)) > 0) {
+                        output.characters(buffer, 0, read);
+                    }
+                    r.close();
+                    ((LexicalHandler) output).endCDATA();
+                }
+            });
+        
+        Element value = new ComplexDataTypeBinding(Wps10Factory.eINSTANCE).encode(object, document, document.createElement("test"));
+        
+        assertEquals( "<![CDATA[test data]]>", value.getFirstChild().getNodeValue() );
     }
 }

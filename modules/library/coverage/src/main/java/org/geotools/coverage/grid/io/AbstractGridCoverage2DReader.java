@@ -530,7 +530,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         double[] result;
         if (numOverviews > 0) {
             int imageIdx = pickOverviewLevel(coverageName, policy, requestedResolution);
-            result = overViewResolutions[imageIdx];
+            result = imageIdx > 0 ? overViewResolutions[imageIdx - 1] : highestRes;
         } else {
             result = getHighestRes();
         }

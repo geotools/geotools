@@ -19,6 +19,10 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
         if (map.has("label")) {
             sym.setLabel(Util.expression(map.str("label"), factory));
         }
+        if (map.has("priority")) {
+            sym.setPriority(Util.expression(map.str("priority"), factory));
+        }
+
         context.push(map, new FontHandler());
         context.push("halo", new HaloParser());
         context.push(map, new PlacementParser());

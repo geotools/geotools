@@ -391,14 +391,22 @@ public abstract class UnidataImageReader extends GeoSpatialImageReader implement
                     case GeoX: case GeoY: case Lat: case Lon:
                         continue;
                     case Height: case Pressure: case RadialElevation: case RadialDistance: case GeoZ:
-                        if (UnidataCRSUtilities.VERTICAL_AXIS_NAMES.contains(name)) {
+                        if (UnidataCRSUtilities.VERTICAL_AXIS_NAMES.contains(name) && !dimensionsMapping.containsKey(UnidataUtilities.ELEVATION_DIM)) {
+                            // Main elevation dimension
                             dimensionsMapping.put(UnidataUtilities.ELEVATION_DIM, name);
                         } else {
+                            // additional elevation dimension
                             dimensionsMapping.put(name.toUpperCase(), name);
                         }
                         break;
                     case Time:
-                        dimensionsMapping.put(UnidataUtilities.TIME_DIM, name);
+                        if (!dimensionsMapping.containsKey(UnidataUtilities.TIME_DIM)) {
+                            // Main time dimension
+                            dimensionsMapping.put(UnidataUtilities.TIME_DIM, name);
+                        } else {
+                            // additional time dimension
+                            dimensionsMapping.put(name.toUpperCase(), name);
+                        }
                         break;
                 }
             }else {

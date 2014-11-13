@@ -77,8 +77,8 @@ exits the map pane.
    :end-before: // mouselistener end
 
 
-Linking to Action clsses for interactive use
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Linking to Action classes for interactive use
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The swing module includes a small selection of Action classes that make it easy to create toobar buttons or other controls for zooming, panning and resetting the map display.
 
@@ -130,13 +130,13 @@ Example
         });
         buttons.add(zoomOutButton);
 
-        JButton pamButton = new JButton("Move");
-        pamButton.addActionListener(new ActionListener() {
+        JButton panButton = new JButton("Move");
+        panButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mapPane.setState(JMapPane.Pan);
             }
         });
-        buttons.add(pamButton);
+        buttons.add(panButton);
 
         frame.add(buttons, BorderLayout.NORTH);
 

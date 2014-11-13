@@ -65,6 +65,10 @@ public class YamlParseContext {
         docHints.put(key, value);
     }
     
+    public void mergeDocHints(Map<String, Object> hints) {
+        docHints.putAll(hints);
+    }
+    
     static class Entry {
         YamlObject obj;
         YamlParseHandler handler;

@@ -5,11 +5,13 @@ import org.geotools.ysld.parse.YsldParser;
 import org.geotools.ysld.parse.ZoomContextFinder;
 import org.geotools.ysld.transform.sld.SldTransformer;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.SLDParser;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.ysld.validate.YsldValidator;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
 
+import javax.annotation.Nullable;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -117,14 +119,20 @@ public class Ysld {
      * Parses a Ysld stream into GeoTools style objects.
      *
      * @param ysld The Ysld content, anything accepted by {@link #reader(Object)}.
+     * @param locator Resource locator for resolving relative URIs.
      *
      * @return The GeoTools SLD object.
      */
-    public static StyledLayerDescriptor parse(Object ysld, List<ZoomContextFinder> zCtxtFinders) throws IOException {
+    public static StyledLayerDescriptor parse(Object ysld, @Nullable List<ZoomContextFinder> zCtxtFinders, @Nullable ResourceLocator locator) throws IOException {
         YsldInput in = reader(ysld);
         try {
             YsldParser parser = new YsldParser(in.reader);
-            parser.setZoomContextFinders(zCtxtFinders);
+            if(zCtxtFinders!=null) {
+                parser.setZoomContextFinders(zCtxtFinders);
+            }
+            if(locator!=null) {
+                parser.setResourceLocator(locator);
+            }
             return parser.parse();
         }
         finally {
@@ -139,13 +147,7 @@ public class Ysld {
      * @return The GeoTools SLD object.
      */
     public static StyledLayerDescriptor parse(Object ysld) throws IOException {
-        YsldInput in = reader(ysld);
-        try {
-            return new YsldParser(in.reader).parse();
-        }
-        finally {
-            in.close();
-        }
+        return parse(ysld, (List<ZoomContextFinder>)null, (ResourceLocator)null);
     }
 
     /**

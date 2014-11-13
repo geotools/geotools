@@ -1,6 +1,7 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.yaml.snakeyaml.events.Event;
@@ -28,8 +29,8 @@ public abstract class ExternalGraphicParser extends YsldParseHandler {
         if (map.has("url")) {
             String value = map.str("url");
             try {
-                external.setLocation(new URL(value));
-            } catch (MalformedURLException e) {
+                external.setLocation(((ResourceLocator)context.getDocHint("resourceLocator")).locateResource(value));
+            } catch (IllegalArgumentException e) {
                 external.setURI("file:"+value);
                 //external.setLocation(DataUtilities.fileToURL(new File(value)));
             }

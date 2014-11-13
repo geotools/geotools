@@ -1,11 +1,14 @@
 package org.geotools.ysld.parse;
 
+import org.easymock.classextension.EasyMock;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.process.function.ProcessFunction;
+import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
 import org.geotools.styling.StyledLayerDescriptor;
@@ -37,7 +40,10 @@ import org.opengis.style.SelectedChannelType;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.easymock.EasyMock.expect;
@@ -693,7 +699,7 @@ public class YsldParseTest {
         
         replay(finder, context);
         
-        StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder));
+        StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), (ResourceLocator)null);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
         fs.rules().get(0).getMaxScaleDenominator();
         assertThat((Iterable<Rule>)fs.rules(), hasItems(
@@ -721,7 +727,7 @@ public class YsldParseTest {
         
         replay(finder);
         
-        StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder));
+        StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), (ResourceLocator)null);
         doTestForGoogleMercator(sld); // The additional finder doesn't have a WebMercator context and so should not interfere.
         
         verify(finder);
@@ -745,7 +751,7 @@ public class YsldParseTest {
             
             replay(finder, context);
             
-            StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder));
+            StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), (ResourceLocator)null);
             FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
             fs.rules().get(0).getMaxScaleDenominator();
             assertThat((Iterable<Rule>)fs.rules(), hasItems(
@@ -1197,6 +1203,63 @@ public class YsldParseTest {
        assertThat(((PointPlacement)p.getLabelPlacement()).getDisplacement(), allOf(
                hasProperty("displacementX", literal(42)),
                hasProperty("displacementY", literal(64))));
+   }
+   
+   @SuppressWarnings("unchecked")
+   @Test
+   public void testRelativeExternalGraphicNoResolver() throws Exception {
+       String yaml =
+               "feature-styles:\n"+
+               "- name: name\n"+
+               "  rules:\n"+
+               "  - symbolizers:\n"+
+               "    - point:\n"+
+               "        size: 32\n"+
+               "        symbols:\n"+
+               "        - external:\n"+
+               "            url: smileyface.png\n"+
+               "            format: image/png\n";
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       
+       assertThat(p.getGraphic().graphicalSymbols().get(0), instanceOf(ExternalGraphic.class));
+       ExternalGraphic eg = (ExternalGraphic) p.getGraphic().graphicalSymbols().get(0);
+       assertThat(eg.getLocation(), equalTo(new URL("file:smileyface.png")));
+       assertThat(eg.getOnlineResource().getLinkage(), anyOf(equalTo(new URI("smileyface.png")),equalTo(new URI("file:smileyface.png"))));
+   }
+   
+   @Test
+   public void testRelativeExternalGraphicWithResolver() throws Exception {
+       String yaml =
+               "feature-styles:\n"+
+               "- name: name\n"+
+               "  rules:\n"+
+               "  - symbolizers:\n"+
+               "    - point:\n"+
+               "        size: 32\n"+
+               "        symbols:\n"+
+               "        - external:\n"+
+               "            url: smileyface.png\n"+
+               "            format: image/png\n";
+       
+       ResourceLocator locator = EasyMock.createMock(ResourceLocator.class);
+       
+       expect(locator.locateResource("smileyface.png")).andReturn(new URL("http://itworked/smileyface.png"));
+       
+       replay(locator);
+       
+       StyledLayerDescriptor sld = Ysld.parse(yaml, Collections.<ZoomContextFinder> emptyList(), locator);
+       
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       
+       assertThat(p.getGraphic().graphicalSymbols().get(0), instanceOf(ExternalGraphic.class));
+       ExternalGraphic eg = (ExternalGraphic) p.getGraphic().graphicalSymbols().get(0);
+       assertThat(eg.getLocation(), equalTo(new URL("http://itworked/smileyface.png")));
+       assertThat(eg.getOnlineResource().getLinkage(), equalTo(new URI("http://itworked/smileyface.png")));
+       
+       verify(locator);
    }
 
 }

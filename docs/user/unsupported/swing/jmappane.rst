@@ -55,7 +55,7 @@ transforms directly via the *getWorldToScreen()* and *getScreenToWorld()* method
 draw on top of the map pane or calculate the current map scale::
 
   // Find the current map scale (map unit to screen pixel)
-  AffineTransform tr = mapPane.getWorldToScreen();
+  AffineTransform tr = mapPane.getWorldToScreenTransform();
   double scale = tr.getScaleX();  
   // Note: tr.getScaleY() would return the same value
 

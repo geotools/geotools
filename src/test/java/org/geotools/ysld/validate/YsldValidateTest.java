@@ -55,6 +55,22 @@ public class YsldValidateTest {
         assertThat(e.getProblemMark(), problemAt(1, 9));
     }
     
+    @Test
+    public void testFilterOK() throws Exception {
+        String ysld = "filter: scalerank < 4";
+        
+        List<MarkedYAMLException> errors = validate(ysld);
+        assertEquals(0, errors.size());
+    }
+    
+    @Test
+    public void testFilterOWithBracesK() throws Exception {
+        String ysld = "filter: ${scalerank < 4}";
+        
+        List<MarkedYAMLException> errors = validate(ysld);
+        assertEquals(0, errors.size());
+    }
+    
     @SuppressWarnings("unchecked")
     Matcher<Mark> problemAt(int line, int column) {
         return Matchers.describedAs("Problem at Line %0 Column %1", allOf(

@@ -11,6 +11,7 @@ import org.geotools.styling.SLD;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
+import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.Ysld;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -18,7 +19,9 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -127,7 +130,21 @@ public class YsldParseTest {
 
         Literal lit = (Literal) f.getExpression2();
     }
+    
+    @Test
+    public void testFilterFunctionWithMarker2() throws Exception {
+        String yaml =
+        "rules: \n"+
+        "- filter: ${scalerank < 4}\n";
 
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        Rule r = SLD.defaultStyle(sld).featureTypeStyles().get(0).rules().get(0);
+        
+        Filter f = r.getFilter();
+        assertThat(f, Matchers.instanceOf(PropertyIsLessThan.class));
+        assertThat(((PropertyIsLessThan) f).getExpression1(), attribute("scalerank"));
+        assertThat(((PropertyIsLessThan) f).getExpression2(), literal(4));
+    }
     @Test
     public void testRenderingTransformation() throws IOException {
         String yaml =

@@ -227,4 +227,11 @@ public class Util {
         }
         return WellKnownZoomContextFinder.getInstance().get(name);
     }
+    
+    public static String removeExpressionBrackets(String s) {
+        if(s.startsWith("${") && s.endsWith("}")) {
+            return s.substring(2, s.length()-1);
+        }
+        return s;
+    }
 }

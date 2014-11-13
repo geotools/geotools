@@ -387,9 +387,9 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         }
     }
 
-    private void initMapping(List<CoordinateAxis> axes) {
+    private void initMapping(List<CoordinateAxis> coordinateAxis) {
         // check other dimensions
-        for (CoordinateAxis axis : axes) {
+        for (CoordinateAxis axis : coordinateAxis) {
             // get from coordinate vars
             final CoordinateVariable<?> cv = coordinatesVariables.get(axis.getFullName());
             if (cv != null) {
@@ -398,14 +398,22 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                     case GeoX: case GeoY: case Lat: case Lon:
                         continue;
                     case Height: case Pressure: case RadialElevation: case RadialDistance: case GeoZ:
-                        if (NetCDFCRSUtilities.VERTICAL_AXIS_NAMES.contains(name)) {
+                        if (NetCDFCRSUtilities.VERTICAL_AXIS_NAMES.contains(name) && !dimensionsMapping.containsKey(NetCDFUtilities.ELEVATION_DIM)) {
+                            // Main elevation dimension
                             dimensionsMapping.put(NetCDFUtilities.ELEVATION_DIM, name);
                         } else {
+                            // additional elevation dimension
                             dimensionsMapping.put(name.toUpperCase(), name);
                         }
                         break;
                     case Time:
-                        dimensionsMapping.put(NetCDFUtilities.TIME_DIM, name);
+                        if (!dimensionsMapping.containsKey(NetCDFUtilities.TIME_DIM)) {
+                            // Main time dimension
+                            dimensionsMapping.put(NetCDFUtilities.TIME_DIM, name);
+                        } else {
+                            // additional time dimension
+                            dimensionsMapping.put(name.toUpperCase(), name);
+                        }
                         break;
                 }
             }else {

@@ -16,6 +16,7 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
     @Override
     protected void encode(TextSymbolizer text) {
         put("label", text.getLabel());
+        put("priority", text.getPriority());
         inline(new FillEncoder(text.getFill()));
         inline(new HaloEncoder(text.getHalo()));
         inline(new FontEncoder(text.getFont()));

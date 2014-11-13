@@ -13,9 +13,11 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
+import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UserLayer;
 import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 import org.geotools.ysld.Ysld;
 import org.junit.Test;
@@ -622,10 +624,24 @@ public class YsldEncodeTest {
         style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
         style.featureTypeStyles().get(0).rules().add(rule);
 
-        RasterSymbolizer symb = styleFactory.createRasterSymbolizer();
-
         rule.symbolizers().add((Symbolizer)sym);
         return sld;
+    }
+
+    @Test
+    public void testTextSymbolizerPriority() throws Exception {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+
+        TextSymbolizer symb = styleFactory.createTextSymbolizer();
+        symb.setPriority(filterFactory.property("foo"));
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(symb), out);
+
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap text = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("text");
+        assertEquals("${foo}", text.str("priority"));
     }
 
 }

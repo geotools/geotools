@@ -1262,4 +1262,20 @@ public class YsldParseTest {
        verify(locator);
    }
 
+    @Test
+    public void testTextSymbolizerPriority() throws Exception {
+        String yaml =
+            "text:\n"+
+                    "    label: ${name}\n"+
+                    "    priority: ${pop}\n"+
+                    "";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+
+        TextSymbolizer2 p = (TextSymbolizer2) SLD.textSymbolizer(SLD.defaultStyle(sld));
+        assertNotNull(p.getPriority());
+        assertTrue(p.getPriority() instanceof PropertyName);
+        assertEquals("pop", ((PropertyName) p.getPriority()).getPropertyName());
+    }
+
 }

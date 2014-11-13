@@ -171,12 +171,12 @@ You will find ready to go actions that also change the map state::
        // -ve means wheel moved up, +ve means down
        int sign = (clicks < 0 ? -1 : 1);
 
-       Envelope env = mapPane.getMapArea();
+       Envelope env = mapPane.getDisplayArea();
        double width = env.getWidth();
        double delta = width * clickToZoom * sign;
 
        env.expandBy(delta);
-       mapPane.setMapArea(env);
+       mapPane.setDisplayArea(env);
        mapPane.repaint();
     }
   

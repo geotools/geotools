@@ -836,4 +836,59 @@ public class NetCDFReaderTest extends Assert {
             }
         }
     }
+    
+    @Test
+    public void testNetCDFWithDifferentTimeDimensions() throws MalformedURLException, IOException {
+        // Selection of the input file
+        final File workDir = new File(TestData.file(this, "."), "times");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+
+        FileUtils.copyFile(TestData.file(this, "times.zip"), new File(workDir, "times.zip"));
+        TestData.unzipFile(this, "times/times.zip");
+
+        final File inputFile = TestData.file(this, "times/times.nc");
+        // Get format
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(
+                inputFile.toURI().toURL(), null);
+        final NetCDFReader reader = new NetCDFReader(inputFile, null);
+        Assert.assertNotNull(format);
+        Assert.assertNotNull(reader);
+        try {
+            // Selection of all the Coverage names
+            String[] names = reader.getGridCoverageNames();
+            assertNotNull(names);
+            assertEquals(2, names.length);
+
+            // Parsing metadata values
+            assertEquals("true", reader.getMetadataValue(names[0], "HAS_TIME_DOMAIN"));
+
+            List<DimensionDescriptor> descriptors = reader.getDimensionDescriptors(names[0]);
+            assertEquals(1, descriptors.size());
+            DimensionDescriptor descriptor = descriptors.get(0);
+            assertEquals("time", descriptor.getStartAttribute());
+            assertEquals("TIME", descriptor.getName());
+
+            descriptors = reader.getDimensionDescriptors(names[1]);
+            assertEquals(1, descriptors.size());
+            descriptor = descriptors.get(0);
+            assertEquals("time1", descriptor.getStartAttribute());
+            assertEquals("TIME", descriptor.getName());
+
+            assertEquals("true", reader.getMetadataValue(names[1], "HAS_TIME_DOMAIN"));
+
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+            FileUtils.deleteDirectory(TestData.file(this, "times"));
+        }
+    }
+
 }

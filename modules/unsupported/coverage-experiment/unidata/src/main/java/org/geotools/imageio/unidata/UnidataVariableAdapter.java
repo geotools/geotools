@@ -1103,7 +1103,7 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         // Check if we have time and elevation domain and set the attribute if needed
         String timeAttribute = null;
         if (date != null) {
-            timeAttribute = reader.dimensionsMapping.get(UnidataUtilities.TIME_DIM);
+            timeAttribute = getTimeAttribute(cs);
             feature.setAttribute(timeAttribute, date);
         }
 
@@ -1138,6 +1138,16 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         return feature;
     }
     
+    private String getTimeAttribute(CoordinateSystem cs) {
+        CoordinateAxis timeAxis = cs.getTaxis();
+        String name = timeAxis.getFullName();
+        String timeAttribute = reader.dimensionsMapping.get(name.toUpperCase());
+        if (timeAttribute == null) {
+            timeAttribute = reader.dimensionsMapping.get(UnidataUtilities.TIME_DIM);
+        }
+        return timeAttribute;
+    }
+
     /** Return the zIndex-th value of the vertical dimension of the specified variable, as a double, or {@link Double#NaN} 
      * in case that variable doesn't have a vertical axis.
      * 
@@ -1227,6 +1237,11 @@ public class UnidataVariableAdapter extends CoverageSourceDescriptor {
         @Override
         public boolean hasTimeAxis() {
             return cs.hasTimeAxis();
+        }
+
+        @Override
+        public CoordinateAxis getTaxis() {
+            return cs.getTaxis();
         }
 
         @Override

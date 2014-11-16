@@ -754,9 +754,84 @@ public class ImagePyramidReaderTest extends Assert {
         // Testing output coverage for level 0
         TestUtils.checkCoverage(reader.getImageMosaicReaderForLevel(0), new GeneralParameterValue[] {gg,useJai ,time}, "time test");
 	}
-    
- 
-	
+
+
+    /**
+     * This test is designed to test the retrieval of the TIME domain metadata values through
+     * {@link org.geotools.gce.imagepyramid.ImagePyramidReader#getMetadataValue(String, String)}. This method is called
+     * by GeoServer.
+     */
+    @Test
+    public void timePyramidForGeoserver() throws IOException,
+            MismatchedDimensionException, NoSuchAuthorityCodeException, InvalidParameterValueException, ParseException {
+
+        //
+        // Get the resource.
+        //
+        final URL testFile = TestData.getResource(this, "timepyramid/timepyramid.properties");
+        assertNotNull(testFile);
+
+        //
+        // Get the reader
+        //
+        final ImagePyramidReader reader = new ImagePyramidReader(
+                testFile,
+                new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+        assertNotNull(reader);
+        String coverageName = reader.getGridCoverageNames()[0];
+        assertEquals("true", reader.getMetadataValue(coverageName, "HAS_TIME_DOMAIN"));
+        final String timeMetadata = reader.getMetadataValue(coverageName, "TIME_DOMAIN");
+        assertNotNull(timeMetadata);
+        assertEquals(timeMetadata.split(",")[0],reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
+        assertEquals(timeMetadata.split(",")[timeMetadata.split(",").length-1],reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
+
+        //
+        // alpha on output
+        //
+        final ParameterValue<Color> transp = ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
+        transp.setValue(Color.black);
+
+        //
+        // Show the coverage
+        //
+        GridCoverage2D coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] {  transp });
+        assertNotNull(coverage);
+        assertTrue("coverage dimensions different from what we expected",coverage.getGridGeometry().getGridRange().getSpan(0) == 200&& coverage.getGridGeometry().getGridRange().getSpan(1) == 200);
+        if (TestData.isInteractiveTest())
+            coverage.show("testComplete");
+        else
+            PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage()).getTiles();
+
+        // limit yourself to reading just a bit of it
+        final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final Dimension dim= new Dimension();
+        dim.setSize(reader.getOriginalGridRange().getSpan(0)/2.0, reader.getOriginalGridRange().getSpan(1)/2.0);
+        final Rectangle rasterArea=(( GridEnvelope2D)reader.getOriginalGridRange());
+        rasterArea.setSize(dim);
+        final GridEnvelope2D range= new GridEnvelope2D(rasterArea);
+        gg.setValue(new GridGeometry2D(range,envelope));
+
+        final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        // use imageio with defined tiles
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        useJai.setValue(false);
+
+
+        // specify time
+        final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+        time.setValue(
+                new ArrayList(){{
+                    add(new DateRange(formatD.parse("2004-01-01T00:00:00.000Z"), formatD.parse("2004-07-01T00:00:00.000Z")));
+                }}
+        );
+        // Testing output coverage for level 0
+        TestUtils.checkCoverage(reader.getImageMosaicReaderForLevel(0), new GeneralParameterValue[] {gg,useJai ,time}, "time test");
+    }
+
+
 
 //	/**
 //	 * Tests to read a pyramid from inside a JAR. The source is passed as an {@link URL}

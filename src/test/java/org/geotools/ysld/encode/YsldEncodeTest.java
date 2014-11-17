@@ -16,6 +16,7 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UserLayer;
+import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
@@ -40,6 +41,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.geotools.ysld.TestUtils.lexEqualTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
@@ -642,6 +644,27 @@ public class YsldEncodeTest {
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         YamlMap text = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("text");
         assertEquals("${foo}", text.str("priority"));
+    }
+    
+    @Test
+    public void testColourNoQuotes() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        
+        Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
+        m1.setFill(CommonFactoryFinder.getStyleFactory().createFill(CommonFactoryFinder.getFilterFactory2().literal("#112233")));
+        m1.setStroke(CommonFactoryFinder.getStyleFactory().createStroke(CommonFactoryFinder.getFilterFactory2().literal("#445566"), CommonFactoryFinder.getFilterFactory2().literal(3)));
+        p.getGraphic().graphicalSymbols().add(m1);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(p), out);
+        
+        System.out.append(out.toString());
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").seq("symbols").map(0).map("mark");
+        
+        assertThat(result, yHasEntry("fill-color", equalTo(112233)));
+        assertThat(result, yHasEntry("stroke-color", equalTo(445566)));
     }
 
 }

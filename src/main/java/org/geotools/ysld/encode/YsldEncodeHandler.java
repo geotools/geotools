@@ -114,7 +114,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
             if (str != null && str.startsWith("#")) {
                 str = str.substring(1);
-                put(key, str);
+                put(key, makeNumberIfPossible(str));
                 special = true;
             }
         }
@@ -142,7 +142,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         if (obj instanceof String && expr instanceof Literal) {
             String str = this.stripQuotes(obj.toString());
             if (str.startsWith("#")) {
-                obj = str.substring(1);
+                obj = makeNumberIfPossible(str.substring(1));
             }
         }
         return obj;

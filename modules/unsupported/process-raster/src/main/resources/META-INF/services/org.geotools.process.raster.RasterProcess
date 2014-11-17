@@ -12,3 +12,5 @@ org.geotools.process.raster.RasterAsPointCollectionProcess
 org.geotools.process.raster.RasterZonalStatistics
 org.geotools.process.raster.ScaleCoverage 
 org.geotools.process.raster.StyleCoverage
+org.geotools.process.raster.algebra.JiffleScriptProcess
+org.geotools.process.raster.algebra.JiffleScriptListProcess

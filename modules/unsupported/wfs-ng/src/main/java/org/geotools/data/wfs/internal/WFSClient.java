@@ -134,7 +134,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
             if (override.equalsIgnoreCase("geoserver")) {
                 strategy = new GeoServerPre200Strategy();
             } else if (override.equalsIgnoreCase("mapserver")) {
-                strategy = new MapServerWFSStrategy();
+                strategy = new MapServerWFSStrategy(capabilitiesDoc);
             } else if (override.equalsIgnoreCase("cubewerx")) {
                 strategy = new CubeWerxStrategy();
             } else if (override.equalsIgnoreCase("ionic")) {
@@ -194,8 +194,8 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                 strategy = new GeoServerPre200Strategy();
             } else if (uri.contains("/ArcGIS/services/")) {
                 strategy = new StrictWFS_1_x_Strategy(); // new ArcGISServerStrategy();
-            } else if (uri.contains("mapserver")) {
-                strategy = new MapServerWFSStrategy();
+            } else if (uri.contains("mapserver") || uri.contains("map=")) {
+                strategy = new MapServerWFSStrategy(capabilitiesDoc);
             }
         }
 

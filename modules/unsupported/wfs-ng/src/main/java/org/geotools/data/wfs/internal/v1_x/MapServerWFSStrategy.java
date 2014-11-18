@@ -44,6 +44,7 @@ import org.geotools.xs.bindings.XSIntegerBinding;
 import org.geotools.xs.bindings.XSStringBinding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -53,6 +54,13 @@ import org.xml.sax.SAXException;
  * BBox Filter is constructed that is the entire layer.
  */
 public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
+    
+    private String mapServerVersion = "";
+    
+    public MapServerWFSStrategy(Document capabilitiesDoc){
+        super();
+        getMapServerVersion(capabilitiesDoc);
+    }
  
     @Override
     public FeatureTypeType translateTypeInfo(FeatureTypeType typeInfo){
@@ -78,73 +86,76 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
         InputStream in = super.getPostContents(request);
         
         if (request.getOperation().compareTo(WFSOperationType.GET_FEATURE) == 0 && 
-            getVersion().compareTo("1.0.0") == 0) {            
+            getVersion().compareTo("1.0.0") == 0 &&
+            mapServerVersion != null) {
             try {
-                StringWriter writer = new StringWriter();
-                IOUtils.copy(in, writer, "UTF-8");
-                String pc = writer.toString();
-                
-                // Some older versions of MapServer do not support the following gml:Box coordinate format:
+                // Pre-5.6.7 versions of MapServer do not support the following gml:Box coordinate format:
                 // <gml:coord><gml:X>-59.0</gml:X><gml:Y>-35.0</gml:Y></gml:coord><gml:coord>< gml:X>-58.0</gml:X><gml:Y>-34.0</gml:Y></gml:coord>
                 // Rewrite the coordinates in the following format:
                 // <gml:coordinates cs="," decimal="." ts=" ">-59,-35 -58,-34</gml:coordinates>
-                
-                boolean reformatted = false;
-                if (pc.contains("gml:Box") && pc.contains("gml:coord") && 
-                    pc.contains("gml:X") && pc.contains("gml:Y")) {
-                    
-                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                    factory.setNamespaceAware(true);
-                    DocumentBuilder builder = factory.newDocumentBuilder();
-                    Document doc = builder.parse(new ByteArrayInputStream(pc.getBytes()));
+                String [] tokens = mapServerVersion.split("\\.");
+                if (tokens.length == 3 && versionCompare(mapServerVersion, "5.6.7") < 0) {
+                    StringWriter writer = new StringWriter();
+                    IOUtils.copy(in, writer, "UTF-8");
+                    String pc = writer.toString();
 
-                    NodeList boxes = doc.getElementsByTagName("gml:Box");
-                    for (int b = 0; b < boxes.getLength(); b++) {
-                        Element box = (Element)boxes.item(b);
-                        NodeList coords = box.getElementsByTagName("gml:coord");
-                        if (coords != null && coords.getLength() == 2) {
-                            Element coord1 = (Element)coords.item(0);
-                            Element coord2 = (Element)coords.item(1);
-                            if (coord1 != null && coord2 != null) {
-                                Element coordX1 = (Element)(coord1.getElementsByTagName("gml:X").item(0));
-                                Element coordY1 = (Element)(coord1.getElementsByTagName("gml:Y").item(0));
-                                Element coordX2 = (Element)(coord2.getElementsByTagName("gml:X").item(0));
-                                Element coordY2 = (Element)(coord2.getElementsByTagName("gml:Y").item(0));
-                                if (coordX1 != null && coordY1 != null && coordX2 != null && coordY2 != null) {
-                                    reformatted = true;
-                                    String x1 = coordX1.getTextContent();
-                                    String y1 = coordY1.getTextContent();
-                                    String x2 = coordX2.getTextContent();
-                                    String y2 = coordY2.getTextContent();
-                                    
-                                    box.removeChild(coord1);
-                                    box.removeChild(coord2);
+                    boolean reformatted = false;
+                    if (pc.contains("gml:Box") && pc.contains("gml:coord") && 
+                        pc.contains("gml:X") && pc.contains("gml:Y")) {
 
-                                    Element coordinates = doc.createElement("gml:coordinates");
-                                    coordinates.setAttribute("cs", ",");
-                                    coordinates.setAttribute("decimal", ".");
-                                    coordinates.setAttribute("ts", " ");
-                                    coordinates.appendChild(doc.createTextNode(x1 + "," + y1 + " " +  x2 + "," + y2));
-                                    box.appendChild(coordinates);
+                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        factory.setNamespaceAware(true);
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document doc = builder.parse(new ByteArrayInputStream(pc.getBytes()));
+
+                        NodeList boxes = doc.getElementsByTagName("gml:Box");
+                        for (int b = 0; b < boxes.getLength(); b++) {
+                            Element box = (Element)boxes.item(b);
+                            NodeList coords = box.getElementsByTagName("gml:coord");
+                            if (coords != null && coords.getLength() == 2) {
+                                Element coord1 = (Element)coords.item(0);
+                                Element coord2 = (Element)coords.item(1);
+                                if (coord1 != null && coord2 != null) {
+                                    Element coordX1 = (Element)(coord1.getElementsByTagName("gml:X").item(0));
+                                    Element coordY1 = (Element)(coord1.getElementsByTagName("gml:Y").item(0));
+                                    Element coordX2 = (Element)(coord2.getElementsByTagName("gml:X").item(0));
+                                    Element coordY2 = (Element)(coord2.getElementsByTagName("gml:Y").item(0));
+                                    if (coordX1 != null && coordY1 != null && coordX2 != null && coordY2 != null) {
+                                        reformatted = true;
+                                        String x1 = coordX1.getTextContent();
+                                        String y1 = coordY1.getTextContent();
+                                        String x2 = coordX2.getTextContent();
+                                        String y2 = coordY2.getTextContent();
+
+                                        box.removeChild(coord1);
+                                        box.removeChild(coord2);
+
+                                        Element coordinates = doc.createElement("gml:coordinates");
+                                        coordinates.setAttribute("cs", ",");
+                                        coordinates.setAttribute("decimal", ".");
+                                        coordinates.setAttribute("ts", " ");
+                                        coordinates.appendChild(doc.createTextNode(x1 + "," + y1 + " " +  x2 + "," + y2));
+                                        box.appendChild(coordinates);
+                                    }
                                 }
                             }
                         }
+
+                        if (reformatted) {
+                            DOMSource domSource = new DOMSource(doc);
+                            StringWriter domsw = new StringWriter();
+                            StreamResult result = new StreamResult(domsw);
+                            TransformerFactory tf = TransformerFactory.newInstance();
+                            Transformer transformer = tf.newTransformer();
+                            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+                            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                            transformer.transform(domSource, result);
+                            domsw.flush();
+                            pc = domsw.toString();
+                        }
                     }
-                    
-                    if (reformatted) {
-                        DOMSource domSource = new DOMSource(doc);
-                        StringWriter domsw = new StringWriter();
-                        StreamResult result = new StreamResult(domsw);
-                        TransformerFactory tf = TransformerFactory.newInstance();
-                        Transformer transformer = tf.newTransformer();
-                        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-                        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-                        transformer.transform(domSource, result);
-                        domsw.flush();
-                        pc = domsw.toString();
-                    }
+                    in = new ByteArrayInputStream(pc.getBytes());
                 }
-                in = new ByteArrayInputStream(pc.getBytes());
             }
             catch(SAXException | ParserConfigurationException | TransformerException | IOException ex) {
                 LOGGER.log(Level.FINE, "Unexpected exception while rewriting 1.0.0 GETFEATURE request with BBOX filter", ex.getMessage());
@@ -152,5 +163,66 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
         }
         
         return in;
+    }
+
+    //
+    // Mapserver returns its version in the WFS 1.0.0 getcapabilities response
+    //
+    void getMapServerVersion(Document capabilitiesDoc) {
+        if (getVersion().compareTo("1.0.0") == 0) {
+            Element cap = capabilitiesDoc.getDocumentElement();
+            NodeList childNodes = cap.getChildNodes();
+            for (int i = 0; i < childNodes.getLength(); i++) {
+                Node child = childNodes.item(i);
+                if (child.getNodeType() == Element.COMMENT_NODE) {
+                    String nodeValue = child.getNodeValue();
+                    if (nodeValue != null && nodeValue.contains("MapServer version")) {
+                        String [] tokens = nodeValue.split("\\s");
+                        if (tokens.length >= 4) {
+                            mapServerVersion = tokens[3];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Compares two version strings. 
+     * 
+     * Use this instead of String.compareTo() for a non-lexicographical 
+     * comparison that works for version strings. e.g. "1.10".compareTo("1.6").
+     * 
+     * @note It does not work if "1.10" is supposed to be equal to "1.10.0".
+     * 
+     * @param str1 a string of ordinal numbers separated by decimal points. 
+     * @param str2 a string of ordinal numbers separated by decimal points.
+     * @return The result is a negative integer if str1 is _numerically_ less than str2. 
+     *         The result is a positive integer if str1 is _numerically_ greater than str2. 
+     *         The result is zero if the strings are _numerically_ equal.
+     */
+    // Code from Stack Overflow:
+    // http://stackoverflow.com/questions/6701948/efficient-way-to-compare-version-strings-in-java
+    //
+    private Integer versionCompare(String str1, String str2)
+    {
+        String[] vals1 = str1.split("\\.");
+        String[] vals2 = str2.split("\\.");
+        int i = 0;
+        // set index to first non-equal ordinal or length of shortest version string
+        while (i < vals1.length && i < vals2.length && vals1[i].equals(vals2[i])) {
+            i++;
+        }
+        // compare first non-equal ordinal number
+        if (i < vals1.length && i < vals2.length) {
+            int diff = Integer.valueOf(vals1[i]).compareTo(Integer.valueOf(vals2[i]));
+            return Integer.signum(diff);
+        }
+        // the strings are equal or one string is a substring of the other
+        // e.g. "1.2.3" = "1.2.3" or "1.2.3" < "1.2.3.4"
+        else {
+            return Integer.signum(vals1.length - vals2.length);
+        }
     }
 }

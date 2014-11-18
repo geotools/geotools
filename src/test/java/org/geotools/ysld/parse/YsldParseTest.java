@@ -52,6 +52,7 @@ import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
 import static org.geotools.ysld.TestUtils.appliesToScale;
 import static org.geotools.ysld.TestUtils.attribute;
+import static org.geotools.ysld.TestUtils.isColor;
 import static org.geotools.ysld.TestUtils.literal;
 import static org.geotools.ysld.TestUtils.nilExpression;
 import static org.geotools.ysld.TestUtils.lexEqualTo;
@@ -230,14 +231,14 @@ public class YsldParseTest {
                 " rules:\n"+
                 " - symbolizers:\n"+
                 "   - line:\n"+
-                "       stroke-color: 555555\n"+
+                "       stroke-color: 0x555555\n"+
                 "       stroke-width: 1.0\n"+
                 "    - text:\n"+
                 "       label: name\n"+
                 "       symbols:\n"+
                 "        - mark:\n"+
                 "           shape: circle\n"+
-                "           fill-color: 995555\n"+
+                "           fill-color: 0x995555\n"+
                 "       geometry: ${geom}";
                         
     }
@@ -791,9 +792,9 @@ public class YsldParseTest {
                 "  color-map:\n" +
                 "    type: values\n" +
                 "    entries:\n" +
-                "    - (ff0000, 1.0, 0, start)\n" +
-                "    - (00ff00, 1.0, 500, middle)\n" +
-                "    - (0000ff, 1.0, 1000, end)\n" +
+                "    - (0xff0000, 1.0, 0, start)\n" +
+                "    - (0x00ff00, 1.0, 500, middle)\n" +
+                "    - (0x0000ff, 1.0, 1000, end)\n" +
                 "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -953,7 +954,76 @@ public class YsldParseTest {
        assertThat(SLD.fill(p).getColor(), literal(equalTo("$}\\")));
    }
    
+   @Test
+   public void testColorHex() throws Exception {
+       String yaml =
+       "point: \n"+
+       "  symbols: \n" +
+       "  - mark: \n" +
+       "      fill-color: 0x001122\n"+
+       "      stroke-color: 0x334455\n";
+
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       assertThat(SLD.fill(p).getColor(), literal(isColor("001122")));
+       assertThat(SLD.stroke(p).getColor(), literal(isColor("334455")));
+   }
    
+   @Test
+   public void testColorQuotedHex() throws Exception {
+       String yaml =
+       "point: \n"+
+       "  symbols: \n" +
+       "  - mark: \n" +
+       "      fill-color: '0x001122'\n"+
+       "      stroke-color: '0x334455'\n";
+
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       assertThat(SLD.fill(p).getColor(), literal(isColor("001122")));
+       assertThat(SLD.stroke(p).getColor(), literal(isColor("334455")));
+   }
+   @Test
+   public void testColorQuotedHash() throws Exception {
+       String yaml =
+       "point: \n"+
+       "  symbols: \n" +
+       "  - mark: \n" +
+       "      fill-color: '#001122'\n"+
+       "      stroke-color: '#334455'\n";
+
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       assertThat(SLD.fill(p).getColor(), literal(isColor("001122")));
+       assertThat(SLD.stroke(p).getColor(), literal(isColor("334455")));
+   }
+   @Test
+   public void testColorQuotedBare() throws Exception {
+       String yaml =
+       "point: \n"+
+       "  symbols: \n" +
+       "  - mark: \n" +
+       "      fill-color: '001122'\n"+
+       "      stroke-color: '334455'\n";
+
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       assertThat(SLD.fill(p).getColor(), literal(isColor("001122")));
+       assertThat(SLD.stroke(p).getColor(), literal(isColor("334455")));
+   }
+   @Test
+   public void testColorSexegesimal() throws Exception {
+       String yaml =
+       "point: \n"+
+       "  symbols: \n" +
+       "  - mark: \n" +
+       "      fill-color: 1:17:40:20:15\n";
+
+       StyledLayerDescriptor sld = Ysld.parse(yaml);
+       PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+       assertThat(SLD.fill(p).getColor(), literal(isColor("FFFFFF")));
+   }
+
    @Test
    public void testRasterBandSelectionGray() throws Exception {
        String yaml =
@@ -1069,7 +1139,7 @@ public class YsldParseTest {
                "point: \n"+
                "  symbols: \n" +
                "  - mark: \n" +
-               "      fill-color: FF0000\n"+
+               "      fill-color: 0xFF0000\n"+
                "      fill-opacity: 0.5\n"; // Not just 'opacity'
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -1084,7 +1154,7 @@ public class YsldParseTest {
        // See GEOT-3912
        String yaml =
                "line:\n"+
-               "  stroke-color: 555555\n"+
+               "  stroke-color: 0x555555\n"+
                "  stroke-width: 1.0\n"+
                "  offset: 5";
                        
@@ -1104,7 +1174,7 @@ public class YsldParseTest {
                "  displacement: (10, 42)\n"+
                "  symbols: \n" +
                "  - mark: \n" +
-               "      fill-color: FF0000\n";
+               "      fill-color: 0xFF0000\n";
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);
        
@@ -1122,7 +1192,7 @@ public class YsldParseTest {
                "  anchor: (0.75, 0.25)\n"+
                "  symbols: \n" +
                "  - mark: \n" +
-               "      fill-color: FF0000\n";
+               "      fill-color: 0xFF0000\n";
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);
        
@@ -1191,7 +1261,7 @@ public class YsldParseTest {
                "      symbols:\n"+
                "      - mark:\n"+
                "          shape: circle\n"+
-               "          fill-color: 995555\n"+
+               "          fill-color: 0x995555\n"+
                "";
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);

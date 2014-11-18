@@ -17,7 +17,7 @@ public abstract class StrokeParser extends YsldParseHandler {
         YamlMap map = obj.map();
 
         if (map.has("stroke-color")) {
-            stroke().setColor(Util.color(map.str("stroke-color"), factory));
+            stroke().setColor(Util.color(map.get("stroke-color"), factory));
         }
         if (map.has("stroke-width")) {
             stroke().setWidth(Util.expression(map.str("stroke-width"), factory));

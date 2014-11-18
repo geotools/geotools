@@ -6,6 +6,7 @@ import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.ysld.Band;
 import org.geotools.ysld.Tuple;
+import org.geotools.ysld.parse.Util;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.SelectedChannelType;
 import org.opengis.style.ContrastMethod;

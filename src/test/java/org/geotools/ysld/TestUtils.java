@@ -1,6 +1,7 @@
 package org.geotools.ysld;
 
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.describedAs;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
@@ -9,6 +10,8 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.nullValue;
+
+import java.awt.Color;
 
 import org.geotools.styling.Rule;
 import org.geotools.ysld.parse.ScaleRange;
@@ -154,4 +157,44 @@ public enum TestUtils {
             
         };
     }
+
+    public static Matcher<String> asHexInt(final Matcher<Integer> m) {
+           return new BaseMatcher<String>() {
+                @Override
+                public boolean matches(Object arg0) {
+                    return m.matches(Integer.parseInt((String)arg0, 16));
+                }
+                
+                @Override
+                public void describeTo(Description arg0) {
+                    arg0.appendText("Hexadecimal string ").appendDescriptionOf(m);
+                }
+           };
+       }
+
+    @SuppressWarnings("unchecked")
+       public static Matcher<Object> isColor(Color c){
+           String hex = String.format("#%06x",c.getRGB()&0x00FFFFFF);
+           return Matchers.describedAs(
+                   "is the colour %0 %1",
+                   anyOf(
+                       allOf(
+                           instanceOf(String.class),
+                           asHexInt(equalTo(c.getRGB()&0x00FFFFFF))
+                           ),
+                       allOf(
+                           instanceOf(Color.class),
+                           equalTo(c)
+                       ),
+                       allOf(
+                           instanceOf(Integer.class),
+                           equalTo(c.getRGB()&0x00FFFFFF)
+                       )
+                   ), hex, c);
+       }
+
+    public static Matcher<Object> isColor(String s){
+           Color c = new Color(Integer.parseInt(s,16));
+           return isColor(c);
+       }
 }

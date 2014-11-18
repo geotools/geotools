@@ -6,6 +6,8 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
+import org.geotools.ysld.TestUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 
@@ -14,7 +16,9 @@ import java.io.StringWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.geotools.ysld.TestUtils.isColor;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class YsldEncodeCookbookTest {
@@ -48,7 +52,7 @@ public class YsldEncodeCookbookTest {
 
         YamlMap mark = point.seq("symbols").map(0).map("mark");
         assertEquals("circle", mark.str("shape"));
-        assertEquals("FF0000", mark.str("fill-color"));
+        assertThat(mark.get("fill-color"), isColor("FF0000"));
     }
 
     @Test
@@ -81,8 +85,8 @@ public class YsldEncodeCookbookTest {
                 .map("point").seq("symbols").map(0).map("mark");
         assertEquals("circle", mark.str("shape"));
 
-        assertEquals("FF0000", mark.str("fill-color"));
-        assertEquals("000000", mark.str("stroke-color"));
+        assertThat(mark.get("fill-color"), isColor("FF0000"));
+        assertThat(mark.get("stroke-color"), isColor("000000"));
         assertEquals(2, mark.integer("stroke-width").intValue());
     }
 
@@ -341,9 +345,9 @@ public class YsldEncodeCookbookTest {
         YamlMap mark =
                 style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").seq("symbols").map(0).map("mark");
         assertEquals("triangle", mark.str("shape"));
-        assertEquals("009900", mark.str("fill-color"));
+        assertThat(mark.get("fill-color"), isColor("009900"));
         assertEquals(0.2, mark.doub("fill-opacity"), 0.1);
-        assertEquals("000000", mark.str("stroke-color"));
+        assertThat(mark.get("stroke-color"), isColor("000000"));
         assertEquals(2, mark.integer("stroke-width").intValue());
     }
 
@@ -381,7 +385,7 @@ public class YsldEncodeCookbookTest {
         YamlMap text =
                 style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
         assertEquals("${name}", text.str("label"));
-        assertEquals("000000", text.str("fill-color"));
+        assertThat(text.get("fill-color"), isColor("000000"));
     }
 
     @Test
@@ -446,7 +450,7 @@ public class YsldEncodeCookbookTest {
         assertEquals("(0.5,0.0)", text.str("anchor"));
         assertEquals("(0,5)", text.str("displacement"));
 
-        assertEquals("000000", text.str("fill-color"));
+        assertThat(text.get("fill-color"), isColor("000000"));
     }
 
     @Test
@@ -521,7 +525,7 @@ public class YsldEncodeCookbookTest {
         YamlMap style = encode("line", "simple.sld");
         YamlMap line =
                 style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("line");
-        assertEquals("000000", line.str("stroke-color"));
+        assertThat(line.get("stroke-color"), isColor("000000"));
         assertEquals(3, line.integer("stroke-width").intValue());
     }
     @Test
@@ -589,7 +593,7 @@ public class YsldEncodeCookbookTest {
         assertEquals("type = 'local-road'", rule.str("filter"));
 
         YamlMap line = rule.seq("symbolizers").map(0).map("line");
-        assertEquals("009933", line.str("stroke-color"));
+        assertThat(line.get("stroke-color"), isColor("009933"));
         assertEquals(2, line.integer("stroke-width").intValue());
 
         rule = style.seq("feature-styles").map(1).seq("rules").map(0);
@@ -597,7 +601,7 @@ public class YsldEncodeCookbookTest {
         assertEquals("type = 'secondary'", rule.str("filter"));
 
         line = rule.seq("symbolizers").map(0).map("line");
-        assertEquals("0055CC", line.str("stroke-color"));
+        assertThat(line.get("stroke-color"), isColor("0055CC"));
         assertEquals(3, line.integer("stroke-width").intValue());
 
         rule = style.seq("feature-styles").map(2).seq("rules").map(0);
@@ -605,7 +609,7 @@ public class YsldEncodeCookbookTest {
         assertEquals("type = 'highway'", rule.str("filter"));
 
         line = rule.seq("symbolizers").map(0).map("line");
-        assertEquals("FF0000", line.str("stroke-color"));
+        assertThat(line.get("stroke-color"), isColor("FF0000"));
         assertEquals(6, line.integer("stroke-width").intValue());
     }
 
@@ -641,13 +645,13 @@ public class YsldEncodeCookbookTest {
 
         YamlMap rule = style.seq("feature-styles").map(0).seq("rules").map(0);
         YamlMap line = rule.seq("symbolizers").map(0).map("line");
-        assertEquals("333333", line.str("stroke-color"));
+        assertThat(line.get("stroke-color"), isColor("333333"));
         assertEquals(5, line.integer("stroke-width").intValue());
         assertEquals("round", line.str("stroke-linecap"));
 
         rule = style.seq("feature-styles").map(1).seq("rules").map(0);
         line = rule.seq("symbolizers").map(0).map("line");
-        assertEquals("6699FF", line.str("stroke-color"));
+        assertThat(line.get("stroke-color"), isColor("6699FF"));
         assertEquals(3, line.integer("stroke-width").intValue());
         assertEquals("round", line.str("stroke-linecap"));
     }
@@ -682,7 +686,7 @@ public class YsldEncodeCookbookTest {
         YamlMap style = encode("line", "curved-label.sld");
         YamlMap text = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
         assertEquals("${name}", text.str("label"));
-        assertEquals("000000", text.str("fill-color"));
+        assertThat(text.get("fill-color"), isColor("000000"));
         assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"followLine"));
     }
 
@@ -724,7 +728,7 @@ public class YsldEncodeCookbookTest {
         YamlMap rule = style.seq("feature-styles").map(0).seq("rules").map(0);
 
         YamlMap line = rule.seq("symbolizers").map(0).map("line");
-        assertEquals("0000FF", line.str("stroke-color"));
+        assertThat(line.get("stroke-color"), isColor("0000FF"));
         assertEquals(1, line.integer("stroke-width").intValue());
         assertEquals("10.0 10.0", line.str("stroke-dasharray"));
 
@@ -735,7 +739,7 @@ public class YsldEncodeCookbookTest {
         YamlMap g = line.map("stroke-graphic-stroke");
         assertEquals(5, g.integer("size").intValue());
         assertEquals("circle", g.seq("symbols").map(0).map("mark").str("shape"));
-        assertEquals("000033", g.seq("symbols").map(0).map("mark").str("stroke-color"));
+        assertThat(g.seq("symbols").map(0).map("mark").get("stroke-color"), isColor("000033"));
         assertEquals(1, g.seq("symbols").map(0).map("mark").integer("stroke-width").intValue());
     }
 
@@ -758,7 +762,7 @@ public class YsldEncodeCookbookTest {
 
         YamlMap style = encode("line", "dashed-line.sld");
         YamlMap line = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("line");
-        assertEquals("0000FF", line.str("stroke-color"));
+        assertThat(line.get("stroke-color"), isColor("0000FF"));
         assertEquals(3, line.integer("stroke-width").intValue());
         assertEquals("5.0 2.0", line.str("stroke-dasharray"));
     }
@@ -800,8 +804,8 @@ public class YsldEncodeCookbookTest {
 
         assertEquals(4, g.integer("size").intValue());
         assertEquals("circle", g.seq("symbols").map(0).map("mark").str("shape"));
-        assertEquals("666666", g.seq("symbols").map(0).map("mark").str("fill-color"));
-        assertEquals("333333", g.seq("symbols").map(0).map("mark").str("stroke-color"));
+        assertThat(g.seq("symbols").map(0).map("mark").get("fill-color"), isColor("666666"));
+        assertThat(g.seq("symbols").map(0).map("mark").get("stroke-color"), isColor("333333"));
         assertEquals(1, g.seq("symbols").map(0).map("mark").integer("stroke-width").intValue());
     }
     @Test
@@ -831,11 +835,11 @@ public class YsldEncodeCookbookTest {
         YamlMap style = encode("line", "default-label.sld");
 
         YamlMap line = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("line");
-        assertEquals("FF0000", line.str("stroke-color"));
-
+        assertThat(line.get("stroke-color"), isColor("FF0000"));
+        
         YamlMap text = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
         assertEquals("${name}", text.str("label"));
-        assertEquals("000000", text.str("fill-color"));
+        assertThat(text.get("fill-color"), isColor("000000"));
     }
 
     @Test
@@ -875,7 +879,7 @@ public class YsldEncodeCookbookTest {
         YamlMap line = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("line");
         YamlMap mark = line.map("stroke-graphic-stroke").seq("symbols").map(0).map("mark");
         assertEquals("shape://vertline", mark.str("shape"));
-        assertEquals("333333", mark.str("stroke-color"));
+        assertThat(line.get("stroke-color"), isColor("333333"));
         assertEquals(1, mark.integer("stroke-width").intValue());
 
     }
@@ -928,7 +932,7 @@ public class YsldEncodeCookbookTest {
         assertEquals(1.8E8, Double.parseDouble(m.group(1)), 0.1);
 
         YamlMap line = rule.seq("symbolizers").map(0).map("line");
-        assertEquals("009933", line.str("stroke-color"));
+        assertThat(line.get("stroke-color"), isColor("009933"));
         assertEquals(6, line.integer("stroke-width").intValue());
 
         rule = style.seq("feature-styles").map(0).seq("rules").map(1);
@@ -939,7 +943,7 @@ public class YsldEncodeCookbookTest {
         assertEquals(3.6E8, Double.parseDouble(m.group(2)), 0.1);
 
         line = rule.seq("symbolizers").map(0).map("line");
-        assertEquals("009933", line.str("stroke-color"));
+        assertThat(line.get("stroke-color"), isColor("009933"));
         assertEquals(4, line.integer("stroke-width").intValue());
 
         rule = style.seq("feature-styles").map(0).seq("rules").map(2);
@@ -950,7 +954,7 @@ public class YsldEncodeCookbookTest {
         assertEquals(3.6E8, Double.parseDouble(m.group(1)), 0.1);
 
         line = rule.seq("symbolizers").map(0).map("line");
-        assertEquals("009933", line.str("stroke-color"));
+        assertThat(line.get("stroke-color"), isColor("009933"));
         assertEquals(2, line.integer("stroke-width").intValue());
     }
 
@@ -988,7 +992,7 @@ public class YsldEncodeCookbookTest {
 
         YamlMap text = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
         assertEquals("${name}", text.str("label"));
-        assertEquals("000000", text.str("fill-color"));
+        assertThat(text.get("fill-color"), isColor("000000"));
         assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"followLine"));
         assertEquals(90, text.integer(Ysld.OPTION_PREFIX+"maxAngleDelta").intValue());
         assertEquals(400, text.integer(Ysld.OPTION_PREFIX+"maxDisplacement").intValue());
@@ -1036,7 +1040,7 @@ public class YsldEncodeCookbookTest {
         YamlMap text = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
 
         assertEquals("${name}", text.str("label"));
-        assertEquals("000000", text.str("fill-color"));
+        assertThat(text.get("fill-color"), isColor("000000"));
 
         assertEquals("Arial", text.str("font-family"));
         assertEquals(10, text.integer("font-size").intValue());
@@ -1067,7 +1071,7 @@ public class YsldEncodeCookbookTest {
         YamlMap obj = encode("poly", "simple.sld");
         YamlMap poly = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("polygon");
 
-        assertEquals("000080", poly.str("fill-color"));
+        assertThat(poly.get("fill-color"), isColor("000080"));
     }
 
     @Test
@@ -1136,21 +1140,22 @@ public class YsldEncodeCookbookTest {
         assertEquals("pop < '200000'", rule.str("filter"));
 
         YamlMap poly = rule.seq("symbolizers").map(0).map("polygon");
-        assertEquals("66FF66", poly.str("fill-color"));
+        assertThat(poly.get("fill-color"), isColor("66FF66"));
 
         rule = obj.seq("feature-styles").map(0).seq("rules").map(1);
         assertEquals("MediumPop", rule.str("name"));
         assertEquals("pop >= '200000' AND pop < '500000'", rule.str("filter"));
 
         poly = rule.seq("symbolizers").map(0).map("polygon");
-        assertEquals("33CC33", poly.str("fill-color"));
+        assertThat(poly.get("fill-color"), isColor("33CC33"));
 
         rule = obj.seq("feature-styles").map(0).seq("rules").map(2);
         assertEquals("LargePop", rule.str("name"));
         assertEquals("pop > '500000'", rule.str("filter"));
 
         poly = rule.seq("symbolizers").map(0).map("polygon");
-        assertEquals("009900", poly.str("fill-color"));
+        assertThat(poly.get("fill-color"), isColor("009900"));
+
 
     }
 
@@ -1182,8 +1187,8 @@ public class YsldEncodeCookbookTest {
         YamlMap poly = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("polygon");
         YamlMap text = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
 
-        assertEquals("40FF40", poly.str("fill-color"));
-        assertEquals("FFFFFF", poly.str("stroke-color"));
+        assertThat(poly.get("fill-color"), isColor("40FF40"));
+        assertThat(poly.get("stroke-color"), isColor("FFFFFF"));
         assertEquals(2, poly.integer("stroke-width").intValue());
 
         assertEquals("${name}", text.str("label"));
@@ -1257,8 +1262,7 @@ public class YsldEncodeCookbookTest {
         YamlMap text = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("text");
         assertEquals("${name}", text.str("label"));
         assertEquals(3, text.map("halo").integer("radius").intValue());
-        assertEquals("FFFFFF", text.map("halo").str("fill-color"));
-
+        assertThat(text.map("halo").get("fill-color"), isColor("FFFFFF"));
     }
 
     @Test
@@ -1292,7 +1296,6 @@ public class YsldEncodeCookbookTest {
 
         YamlMap mark = poly.map("fill-graphic").seq("symbols").map(0).map("mark");
         assertEquals("shape://times", mark.str("shape"));
-        assertEquals("990099", mark.str("stroke-color"));
         assertEquals(1, mark.integer("stroke-width").intValue());
 
         assertEquals(16, poly.map("fill-graphic").integer("size").intValue());
@@ -1320,8 +1323,8 @@ public class YsldEncodeCookbookTest {
         YamlMap obj = encode("poly", "stroke.sld");
         YamlMap poly = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("polygon");
 
-        assertEquals("000080", poly.str("fill-color"));
-        assertEquals("FFFFFF", poly.str("stroke-color"));
+        assertThat(poly.get("fill-color"), isColor("000080"));
+        assertThat(poly.get("stroke-color"), isColor("FFFFFF"));
         assertEquals(2, poly.integer("stroke-width").intValue());
     }
 
@@ -1380,7 +1383,7 @@ public class YsldEncodeCookbookTest {
         assertEquals("point", text.str("placement"));
         assertEquals("(0.5,0.5)", text.str("anchor"));
 
-        assertEquals("000000", text.str("fill-color"));
+        assertThat(text.get("fill-color"), isColor("000000"));
 
         assertEquals(60, text.integer(Ysld.OPTION_PREFIX+"autoWrap").intValue());
         assertEquals(150, text.integer(Ysld.OPTION_PREFIX+"maxDisplacement").intValue());
@@ -1409,10 +1412,10 @@ public class YsldEncodeCookbookTest {
         YamlMap obj = encode("poly", "transparent.sld");
         YamlMap poly = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("polygon");
 
-        assertEquals("000080", poly.str("fill-color"));
+        assertThat(poly.get("fill-color"), isColor("000080"));
         assertEquals(0.5, poly.doub("fill-opacity"), 0.1);
 
-        assertEquals("FFFFFF", poly.str("stroke-color"));
+        assertThat(poly.get("stroke-color"), isColor("FFFFFF"));
         assertEquals(2, poly.integer("stroke-width").intValue());
     }
 
@@ -1495,8 +1498,8 @@ public class YsldEncodeCookbookTest {
         assertEquals(1.0E8, Double.parseDouble(m.group(1)), 0.1);
 
         YamlMap poly = rule.seq("symbolizers").map(0).map("polygon");
-        assertEquals("0000CC", poly.str("fill-color"));
-        assertEquals("000000", poly.str("stroke-color"));
+        assertThat(poly.get("fill-color"), isColor("0000CC"));
+        assertThat(poly.get("stroke-color"), isColor("000000"));
         assertEquals(7, poly.integer("stroke-width").intValue());
 
         YamlMap text = rule.seq("symbolizers").map(1).map("text");
@@ -1509,7 +1512,7 @@ public class YsldEncodeCookbookTest {
         assertEquals("point", text.str("placement"));
         assertEquals("(0.5,0.5)", text.str("anchor"));
 
-        assertEquals("FFFFFF", text.str("fill-color"));
+        assertThat(text.get("fill-color"), isColor("FFFFFF"));
 
         rule = obj.seq("feature-styles").map(0).seq("rules").map(1);
         assertEquals("Medium", rule.str("name"));
@@ -1520,8 +1523,8 @@ public class YsldEncodeCookbookTest {
         assertEquals(2.0E8, Double.parseDouble(m.group(2)), 0.1);
 
         poly = rule.seq("symbolizers").map(0).map("polygon");
-        assertEquals("0000CC", poly.str("fill-color"));
-        assertEquals("000000", poly.str("stroke-color"));
+        assertThat(poly.get("fill-color"), isColor("0000CC"));
+        assertThat(poly.get("stroke-color"), isColor("000000"));
         assertEquals(4, poly.integer("stroke-width").intValue());
 
         rule = obj.seq("feature-styles").map(0).seq("rules").map(2);
@@ -1532,8 +1535,8 @@ public class YsldEncodeCookbookTest {
 
         poly = rule.seq("symbolizers").map(0).map("polygon");
         poly = rule.seq("symbolizers").map(0).map("polygon");
-        assertEquals("0000CC", poly.str("fill-color"));
-        assertEquals("000000", poly.str("stroke-color"));
+        assertThat(poly.get("fill-color"), isColor("0000CC"));
+        assertThat(poly.get("stroke-color"), isColor("000000"));
         assertEquals(1, poly.integer("stroke-width").intValue());
     }
 
@@ -1556,8 +1559,8 @@ public class YsldEncodeCookbookTest {
         YamlMap obj = encode("raster", "alpha-channel.sld");
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
-        assertEquals("(008000,,70,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(008000,0,256,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("(0x008000,,70,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("(0x008000,0,256,)", raster.map("color-map").seq("entries").str(1));
     }
 
     @Test
@@ -1585,8 +1588,8 @@ public class YsldEncodeCookbookTest {
 
         assertEquals("normalize", raster.map("contrast-enhancement").str("mode"));
         assertEquals(0.5, raster.map("contrast-enhancement").doub("gamma"), 0.1);
-        assertEquals("(008000,,70,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(663333,,256,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("(0x008000,,70,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("(0x663333,,256,)", raster.map("color-map").seq("entries").str(1));
     }
 
     @Test
@@ -1609,8 +1612,8 @@ public class YsldEncodeCookbookTest {
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
         assertEquals("intervals", raster.map("color-map").str("type"));
-        assertEquals("(008000,,150,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(663333,,256,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("(0x008000,,150,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("(0x663333,,256,)", raster.map("color-map").seq("entries").str(1));
     }
 
     @Test
@@ -1638,14 +1641,14 @@ public class YsldEncodeCookbookTest {
         YamlMap obj = encode("raster", "many-color-gradient.sld");
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
-        assertEquals("(000000,,95,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(0000FF,,110,)", raster.map("color-map").seq("entries").str(1));
-        assertEquals("(00FF00,,135,)", raster.map("color-map").seq("entries").str(2));
-        assertEquals("(FF0000,,160,)", raster.map("color-map").seq("entries").str(3));
-        assertEquals("(FF00FF,,185,)", raster.map("color-map").seq("entries").str(4));
-        assertEquals("(FFFF00,,210,)", raster.map("color-map").seq("entries").str(5));
-        assertEquals("(00FFFF,,235,)", raster.map("color-map").seq("entries").str(6));
-        assertEquals("(FFFFFF,,256,)", raster.map("color-map").seq("entries").str(7));
+        assertEquals("(0x000000,,95,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("(0x0000FF,,110,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("(0x00FF00,,135,)", raster.map("color-map").seq("entries").str(2));
+        assertEquals("(0xFF0000,,160,)", raster.map("color-map").seq("entries").str(3));
+        assertEquals("(0xFF00FF,,185,)", raster.map("color-map").seq("entries").str(4));
+        assertEquals("(0xFFFF00,,210,)", raster.map("color-map").seq("entries").str(5));
+        assertEquals("(0x00FFFF,,235,)", raster.map("color-map").seq("entries").str(6));
+        assertEquals("(0xFFFFFF,,256,)", raster.map("color-map").seq("entries").str(7));
 
     }
 
@@ -1669,9 +1672,9 @@ public class YsldEncodeCookbookTest {
         YamlMap obj = encode("raster", "three-color-gradient.sld");
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
-        assertEquals("(0000FF,,150,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(FFFF00,,200,)", raster.map("color-map").seq("entries").str(1));
-        assertEquals("(FF0000,,250,)", raster.map("color-map").seq("entries").str(2));
+        assertEquals("(0x0000FF,,150,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("(0xFFFF00,,200,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("(0xFF0000,,250,)", raster.map("color-map").seq("entries").str(2));
     }
 
     @Test
@@ -1695,8 +1698,8 @@ public class YsldEncodeCookbookTest {
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
         assertEquals(0.3, raster.doub("opacity"), 0.1);
-        assertEquals("(008000,,70,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(663333,,256,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("(0x008000,,70,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("(0x663333,,256,)", raster.map("color-map").seq("entries").str(1));
     }
 
     @Test
@@ -1718,8 +1721,8 @@ public class YsldEncodeCookbookTest {
         YamlMap obj = encode("raster", "two-color-gradient.sld");
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
-        assertEquals("(008000,,70,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(663333,,256,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("(0x008000,,70,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("(0x663333,,256,)", raster.map("color-map").seq("entries").str(1));
     }
 
     YamlMap encode(String dirname, String filename) throws Exception {

@@ -1,9 +1,12 @@
 package org.geotools.ysld;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.geotools.ysld.parse.Util;
 
 public class Tuple {
     static final Map<Integer,Pattern> PATTERNS = new HashMap<Integer, Pattern>();
@@ -69,7 +72,11 @@ public class Tuple {
         for (int i = 0; i < values.length; i++) {
             Object v = values[i];
             if (v != null) {
-                sb.append(v);
+                if(v instanceof Color) {
+                    sb.append(Util.serializeColor((Color) v));
+                } else {
+                    sb.append(v);
+                }
             }
             sb.append(",");
         }

@@ -137,7 +137,7 @@ public class Util {
         return factory.style.createDisplacement(x, y);
     }
 
-    static final Pattern HEX_PATTERN = Pattern.compile("\\s*#?([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})\\s*");
+    static final Pattern HEX_PATTERN = Pattern.compile("\\s*(?:(?:0x)|#)?([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})\\s*");
 
     static final Pattern RGB_PATTERN = Pattern.compile(
             "\\s*rgb\\s*\\(\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*\\)\\s*", Pattern.CASE_INSENSITIVE);
@@ -146,23 +146,29 @@ public class Util {
     /**
      * Parses a color from string representation.
      */
-    public static Expression color(String value, Factory factory) {
+    public static Expression color(Object value, Factory factory) {
         Color color = null;
-        Matcher m = HEX_PATTERN.matcher(value);
-        if (m.matches()) {
-            color = parseColorAsHex(m);
-        }
-        if (color == null) {
-            m = RGB_PATTERN.matcher(value);
+        if(value instanceof String) {
+            Matcher m = HEX_PATTERN.matcher((String)value);
             if (m.matches()) {
-                color = parseColorAsRGB(m);
+                color = parseColorAsHex(m);
             }
+            if (color == null) {
+                m = RGB_PATTERN.matcher((String)value);
+                if (m.matches()) {
+                    color = parseColorAsRGB(m);
+                }
+            }
+            if (color == null) {
+                color = Colors.get((String)value);
+            }
+        } else if(value instanceof Integer) {
+            color = new Color((int)value);
         }
-        if (color == null) {
-            color = Colors.get(value);
-        }
-
-        return color != null ? factory.filter.literal(color) : expression(value, factory);
+        
+        if (value!=null) value = value.toString();
+        
+        return color != null ? factory.filter.literal(color) : expression((String)value, factory);
     }
 
     static Color parseColorAsHex(Matcher m) {
@@ -233,5 +239,26 @@ public class Util {
             return s.substring(2, s.length()-1);
         }
         return s;
+    }
+    public static Object makeNumberIfPossible(String str) {
+        if(str==null) return null;
+        
+        try {
+            return Long.parseLong(str);
+        }
+        catch(NumberFormatException e1) {
+            try {
+                return Double.parseDouble(str);
+            }
+            catch(NumberFormatException e2) {
+                if ("true".equalsIgnoreCase(str) || "false".equalsIgnoreCase(str)) {
+                    return Boolean.parseBoolean(str);
+                }
+            }
+        }
+        return str;
+    }
+    public static String serializeColor(Color c) {
+        return String.format("0x%06X", c.getRGB() & 0x00_FF_FF_FF);
     }
 }

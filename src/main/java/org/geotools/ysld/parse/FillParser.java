@@ -17,7 +17,7 @@ public abstract class FillParser extends YsldParseHandler {
     public void handle(YamlObject<?> obj, YamlParseContext context) {
         YamlMap map = obj.map();
         if (map.has("fill-color")) {
-            fill().setColor(Util.color(map.str("fill-color"), factory));
+            fill().setColor(Util.color(map.get("fill-color"), factory));
         }
         if (map.has("fill-opacity")) {
             fill().setOpacity(Util.expression(map.str("fill-opacity"), factory));

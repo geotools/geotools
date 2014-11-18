@@ -2,6 +2,7 @@ package org.geotools.ysld.encode;
 
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LabelPlacement;
@@ -40,8 +41,11 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
+import static org.geotools.ysld.TestUtils.isColor;
 import static org.geotools.ysld.TestUtils.lexEqualTo;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
@@ -279,7 +283,7 @@ public class YsldEncodeTest {
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
-        assertFalse(symbMap.has("color-map"));
+        assertThat(symbMap, not(yHasEntry("color-map")));
     }
     @Test
     public void testEmptyContrastEnhancement() throws Exception {
@@ -295,7 +299,35 @@ public class YsldEncodeTest {
         
         assertFalse(symbMap.has("contrast-enhancement"));
     }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testColorMap() throws Exception {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
 
+        RasterSymbolizer symb = styleFactory.createRasterSymbolizer();
+        ColorMapEntry e1 = styleFactory.createColorMapEntry();
+        e1.setColor(filterFactory.literal("#000011"));
+        e1.setQuantity(filterFactory.literal(0.0d));
+        ColorMapEntry e2 = styleFactory.createColorMapEntry();
+        e2.setColor(filterFactory.literal("#0000EE"));
+        e2.setQuantity(filterFactory.literal(1.0d));
+        symb.getColorMap().addColorMapEntry(e1);
+        symb.getColorMap().addColorMapEntry(e2);
+        StyledLayerDescriptor sld = sld(symb);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
+
+        assertThat(symbMap, yHasEntry("color-map", yHasEntry("entries", allOf(
+                yHasItem(0, equalTo("(0x000011,,0.0,)")),
+                yHasItem(1, equalTo("(0x0000EE,,1.0,)"))))));
+    }
+    
     @Test
     public void testExpressionNil() throws Exception {
         PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
@@ -499,6 +531,36 @@ public class YsldEncodeTest {
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
+    Matcher<Object> yHasItem(final int i, final Matcher<? extends Object> m) {
+        return new BaseMatcher() {
+
+            @Override
+            public boolean matches(Object arg0) {
+                if(!(arg0 instanceof YamlSeq)) return false;
+                YamlSeq seq = (YamlSeq) arg0;
+                
+                Object value = null;
+                try {
+                    value = seq.map(i);
+                } catch (IllegalArgumentException ex1) {
+                    try {
+                        value = seq.seq(i);
+                    } catch (IllegalArgumentException ex2) {
+                        value = seq.get(i);
+                    }
+                }
+                return (m.matches(value));
+            }
+
+            @Override
+            public void describeTo(Description arg0) {
+                arg0.appendText("YamlSeq with item ").appendValue(i).appendText(" that ").appendDescriptionOf(m);
+            }
+            
+        };
+    }    
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     Matcher<Object> yHasEntry(final String key, final Matcher<? extends Object> m) {
         return new BaseMatcher() {
 
@@ -646,13 +708,23 @@ public class YsldEncodeTest {
         assertEquals("${foo}", text.str("priority"));
     }
     
+    public static String kvpLine(String text, String key) {
+        Pattern p = Pattern.compile("^\\s*"+key+":\\s*(.*?)\\s*$");
+        for(String line : text.split("\\r?\\n")) {
+            java.util.regex.Matcher m = p.matcher(line);
+            if(m.matches()) {
+                return m.group(1);
+            }
+        }
+        return null;
+    }
     @Test
     public void testColourNoQuotes() throws Exception {
         PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         
         Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
         m1.setFill(CommonFactoryFinder.getStyleFactory().createFill(CommonFactoryFinder.getFilterFactory2().literal("#112233")));
-        m1.setStroke(CommonFactoryFinder.getStyleFactory().createStroke(CommonFactoryFinder.getFilterFactory2().literal("#445566"), CommonFactoryFinder.getFilterFactory2().literal(3)));
+        m1.setStroke(CommonFactoryFinder.getStyleFactory().createStroke(CommonFactoryFinder.getFilterFactory2().literal("#005566"), CommonFactoryFinder.getFilterFactory2().literal(3)));
         p.getGraphic().graphicalSymbols().add(m1);
         
         StringWriter out = new StringWriter();
@@ -663,8 +735,11 @@ public class YsldEncodeTest {
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").seq("symbols").map(0).map("mark");
         
-        assertThat(result, yHasEntry("fill-color", equalTo(112233)));
-        assertThat(result, yHasEntry("stroke-color", equalTo(445566)));
+        assertThat(result, yHasEntry("fill-color", isColor("112233")));
+        assertThat(result, yHasEntry("stroke-color", isColor("005566")));
+        
+        assertThat(kvpLine(out.toString(), "fill-color"), equalTo("0x112233"));
+        assertThat(kvpLine(out.toString(), "stroke-color"), equalTo("0x005566"));
     }
 
 }

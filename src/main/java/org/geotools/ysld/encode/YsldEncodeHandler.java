@@ -6,6 +6,7 @@ import org.geotools.ysld.parse.Util;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
+import java.awt.Color;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
@@ -13,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
@@ -114,7 +116,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
             if (str != null && str.startsWith("#")) {
                 str = str.substring(1);
-                put(key, makeNumberIfPossible(str));
+                put(key, makeColorIfPossible(str));
                 special = true;
             }
         }
@@ -141,9 +143,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         Object obj = toObjOrNull(expr, false);
         if (obj instanceof String && expr instanceof Literal) {
             String str = this.stripQuotes(obj.toString());
-            if (str.startsWith("#")) {
-                obj = makeNumberIfPossible(str.substring(1));
-            }
+            obj=makeColorIfPossible(str);
         }
         return obj;
     }
@@ -152,24 +152,16 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         return toObjOrNull(expr, false);
     }
     
-    
-    Object makeNumberIfPossible(String str) {
-        if(str==null) return null;
-        
-        try {
-            return Long.parseLong(str);
+    static final Pattern COLOR_PATTERN =  Pattern.compile("^#?([a-fA-F0-9]{6})$");
+    Object makeColorIfPossible(String str) {
+        Matcher m = COLOR_PATTERN.matcher(str);
+        if(m.matches()) {
+            // If it matches the regexp, then we know it should parse
+            int i = Integer.parseInt(m.group(1), 16);
+            return new Color(i);
+        } else {
+            return str;
         }
-        catch(NumberFormatException e1) {
-            try {
-                return Double.parseDouble(str);
-            }
-            catch(NumberFormatException e2) {
-                if ("true".equalsIgnoreCase(str) || "false".equalsIgnoreCase(str)) {
-                    return Boolean.parseBoolean(str);
-                }
-            }
-        }
-        return str;
     }
     
     static final Pattern EMBEDED_EXPRESSION_ESCAPE = Pattern.compile("[$}\\\\]");
@@ -192,7 +184,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
             }
         }
         
-        Object result = makeNumberIfPossible(builder.toString());
+        Object result = Util.makeNumberIfPossible(builder.toString());
         
         return result;
     }

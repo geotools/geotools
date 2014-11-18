@@ -22,7 +22,7 @@ public class YsldRepresenter extends Representer {
         public Node representData(Object data) {
             Color c = (Color) data;
             String value = Util.serializeColor(c);
-            return representScalar(Tag.INT, value);
+            return representScalar(Tag.STR, value);
         }
         
     }

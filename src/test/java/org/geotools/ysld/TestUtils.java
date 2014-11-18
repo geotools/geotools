@@ -159,19 +159,37 @@ public enum TestUtils {
     }
 
     public static Matcher<String> asHexInt(final Matcher<Integer> m) {
-           return new BaseMatcher<String>() {
-                @Override
-                public boolean matches(Object arg0) {
-                    return m.matches(Integer.parseInt((String)arg0, 16));
-                }
-                
-                @Override
-                public void describeTo(Description arg0) {
-                    arg0.appendText("Hexadecimal string ").appendDescriptionOf(m);
-                }
-           };
-       }
-
+       return new BaseMatcher<String>() {
+            @Override
+            public boolean matches(Object arg0) {
+                return m.matches(Integer.parseInt((String)arg0, 16));
+            }
+            
+            @Override
+            public void describeTo(Description arg0) {
+                arg0.appendText("Hexadecimal string ").appendDescriptionOf(m);
+            }
+       };
+    }
+    public static Matcher<String> asColor(final Matcher<Color> m) {
+        return new BaseMatcher<String>() {
+             @Override
+             public boolean matches(Object arg0) {
+                 Color c;
+                 try { 
+                     c = Color.decode((String)arg0); 
+                 } catch (NumberFormatException ex) {
+                     c = new Color(Integer.parseInt((String)arg0,16));
+                 }
+                 return m.matches(c);
+             }
+             
+             @Override
+             public void describeTo(Description arg0) {
+                 arg0.appendText("represents colour ").appendDescriptionOf(m);
+             }
+        };
+    }
     @SuppressWarnings("unchecked")
        public static Matcher<Object> isColor(Color c){
            String hex = String.format("#%06x",c.getRGB()&0x00FFFFFF);
@@ -180,7 +198,7 @@ public enum TestUtils {
                    anyOf(
                        allOf(
                            instanceOf(String.class),
-                           asHexInt(equalTo(c.getRGB()&0x00FFFFFF))
+                           asColor(equalTo(c))
                            ),
                        allOf(
                            instanceOf(Color.class),
@@ -194,7 +212,8 @@ public enum TestUtils {
        }
 
     public static Matcher<Object> isColor(String s){
-           Color c = new Color(Integer.parseInt(s,16));
+           Color c;
+           c = new Color(Integer.parseInt(s,16));
            return isColor(c);
        }
 }

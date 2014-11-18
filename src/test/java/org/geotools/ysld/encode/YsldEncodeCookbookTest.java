@@ -1559,8 +1559,8 @@ public class YsldEncodeCookbookTest {
         YamlMap obj = encode("raster", "alpha-channel.sld");
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
-        assertEquals("(0x008000,,70,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(0x008000,0,256,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("('#008000',,70,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("('#008000',0,256,)", raster.map("color-map").seq("entries").str(1));
     }
 
     @Test
@@ -1588,8 +1588,8 @@ public class YsldEncodeCookbookTest {
 
         assertEquals("normalize", raster.map("contrast-enhancement").str("mode"));
         assertEquals(0.5, raster.map("contrast-enhancement").doub("gamma"), 0.1);
-        assertEquals("(0x008000,,70,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(0x663333,,256,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("('#008000',,70,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("('#663333',,256,)", raster.map("color-map").seq("entries").str(1));
     }
 
     @Test
@@ -1612,8 +1612,8 @@ public class YsldEncodeCookbookTest {
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
         assertEquals("intervals", raster.map("color-map").str("type"));
-        assertEquals("(0x008000,,150,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(0x663333,,256,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("('#008000',,150,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("('#663333',,256,)", raster.map("color-map").seq("entries").str(1));
     }
 
     @Test
@@ -1641,14 +1641,14 @@ public class YsldEncodeCookbookTest {
         YamlMap obj = encode("raster", "many-color-gradient.sld");
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
-        assertEquals("(0x000000,,95,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(0x0000FF,,110,)", raster.map("color-map").seq("entries").str(1));
-        assertEquals("(0x00FF00,,135,)", raster.map("color-map").seq("entries").str(2));
-        assertEquals("(0xFF0000,,160,)", raster.map("color-map").seq("entries").str(3));
-        assertEquals("(0xFF00FF,,185,)", raster.map("color-map").seq("entries").str(4));
-        assertEquals("(0xFFFF00,,210,)", raster.map("color-map").seq("entries").str(5));
-        assertEquals("(0x00FFFF,,235,)", raster.map("color-map").seq("entries").str(6));
-        assertEquals("(0xFFFFFF,,256,)", raster.map("color-map").seq("entries").str(7));
+        assertEquals("('#000000',,95,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("('#0000FF',,110,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("('#00FF00',,135,)", raster.map("color-map").seq("entries").str(2));
+        assertEquals("('#FF0000',,160,)", raster.map("color-map").seq("entries").str(3));
+        assertEquals("('#FF00FF',,185,)", raster.map("color-map").seq("entries").str(4));
+        assertEquals("('#FFFF00',,210,)", raster.map("color-map").seq("entries").str(5));
+        assertEquals("('#00FFFF',,235,)", raster.map("color-map").seq("entries").str(6));
+        assertEquals("('#FFFFFF',,256,)", raster.map("color-map").seq("entries").str(7));
 
     }
 
@@ -1672,9 +1672,9 @@ public class YsldEncodeCookbookTest {
         YamlMap obj = encode("raster", "three-color-gradient.sld");
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
-        assertEquals("(0x0000FF,,150,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(0xFFFF00,,200,)", raster.map("color-map").seq("entries").str(1));
-        assertEquals("(0xFF0000,,250,)", raster.map("color-map").seq("entries").str(2));
+        assertEquals("('#0000FF',,150,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("('#FFFF00',,200,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("('#FF0000',,250,)", raster.map("color-map").seq("entries").str(2));
     }
 
     @Test
@@ -1698,8 +1698,8 @@ public class YsldEncodeCookbookTest {
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
         assertEquals(0.3, raster.doub("opacity"), 0.1);
-        assertEquals("(0x008000,,70,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(0x663333,,256,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("('#008000',,70,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("('#663333',,256,)", raster.map("color-map").seq("entries").str(1));
     }
 
     @Test
@@ -1721,8 +1721,8 @@ public class YsldEncodeCookbookTest {
         YamlMap obj = encode("raster", "two-color-gradient.sld");
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
-        assertEquals("(0x008000,,70,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("(0x663333,,256,)", raster.map("color-map").seq("entries").str(1));
+        assertEquals("('#008000',,70,)", raster.map("color-map").seq("entries").str(0));
+        assertEquals("('#663333',,256,)", raster.map("color-map").seq("entries").str(1));
     }
 
     YamlMap encode(String dirname, String filename) throws Exception {

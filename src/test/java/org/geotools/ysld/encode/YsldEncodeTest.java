@@ -324,8 +324,8 @@ public class YsldEncodeTest {
         YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
         assertThat(symbMap, yHasEntry("color-map", yHasEntry("entries", allOf(
-                yHasItem(0, equalTo("(0x000011,,0.0,)")),
-                yHasItem(1, equalTo("(0x0000EE,,1.0,)"))))));
+                yHasItem(0, equalTo("('#000011',,0.0,)")),
+                yHasItem(1, equalTo("('#0000EE',,1.0,)"))))));
     }
     
     @Test
@@ -738,8 +738,8 @@ public class YsldEncodeTest {
         assertThat(result, yHasEntry("fill-color", isColor("112233")));
         assertThat(result, yHasEntry("stroke-color", isColor("005566")));
         
-        assertThat(kvpLine(out.toString(), "fill-color"), equalTo("0x112233"));
-        assertThat(kvpLine(out.toString(), "stroke-color"), equalTo("0x005566"));
+        assertThat(kvpLine(out.toString(), "fill-color"), equalTo("'#112233'"));
+        assertThat(kvpLine(out.toString(), "stroke-color"), equalTo("'#005566'"));
     }
 
 }

@@ -112,7 +112,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         if (expr instanceof Literal) {
             // special case for color literals, drop the # so that we don't need to quote it
             String str = ECQL.toCQL(expr);
-            str = stripQuotes(str);
+            str = Util.stripQuotes(str);
 
             if (str != null && str.startsWith("#")) {
                 str = str.substring(1);
@@ -142,7 +142,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     Object toColorOrNull(Expression expr) {
         Object obj = toObjOrNull(expr, false);
         if (obj instanceof String && expr instanceof Literal) {
-            String str = this.stripQuotes(obj.toString());
+            String str = Util.stripQuotes(obj.toString());
             obj=makeColorIfPossible(str);
         }
         return obj;
@@ -190,7 +190,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     }
     
     Object toObjOrNull(String text) {
-        String str = text == null ? null : stripQuotes(text);
+        String str = text == null ? null : Util.stripQuotes(text);
         if (str != null) {
             try {
                 return Long.parseLong(str);
@@ -238,20 +238,6 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     Map<String,Object> newMap() {
         return new LinkedHashMap<String, Object>();
-    }
-
-    String stripQuotes(String str) {
-        if (str == null) {
-            return str;
-        }
-        // strip quotes
-        if (str.charAt(0) == '\'') {
-            str = str.substring(1);
-        }
-        if (str.charAt(str.length()-1) == '\'') {
-            str = str.substring(0, str.length()-1);
-        }
-        return str;
     }
 
     boolean isNull(Expression expr) {

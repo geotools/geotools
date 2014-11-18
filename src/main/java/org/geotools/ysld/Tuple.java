@@ -73,7 +73,9 @@ public class Tuple {
             Object v = values[i];
             if (v != null) {
                 if(v instanceof Color) {
+                    sb.append('\'');
                     sb.append(Util.serializeColor((Color) v));
+                    sb.append('\'');
                 } else {
                     sb.append(v);
                 }

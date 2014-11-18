@@ -231,14 +231,14 @@ public class YsldParseTest {
                 " rules:\n"+
                 " - symbolizers:\n"+
                 "   - line:\n"+
-                "       stroke-color: 0x555555\n"+
+                "       stroke-color: '#555555'\n"+
                 "       stroke-width: 1.0\n"+
                 "    - text:\n"+
                 "       label: name\n"+
                 "       symbols:\n"+
                 "        - mark:\n"+
                 "           shape: circle\n"+
-                "           fill-color: 0x995555\n"+
+                "           fill-color: '#995555'\n"+
                 "       geometry: ${geom}";
                         
     }
@@ -786,15 +786,15 @@ public class YsldParseTest {
     }
 
     @Test
-    public void testColourMapValuesWithoutHash() throws Exception {
+    public void testColourMap() throws Exception {
         String yaml =
                 "raster: \n" +
                 "  color-map:\n" +
                 "    type: values\n" +
                 "    entries:\n" +
-                "    - (0xff0000, 1.0, 0, start)\n" +
-                "    - (0x00ff00, 1.0, 500, middle)\n" +
-                "    - (0x0000ff, 1.0, 1000, end)\n" +
+                "    - ('#ff0000, 1.0, 0, start)\n" +
+                "    - ('#00ff00', 1.0, 500, middle)\n" +
+                "    - ('#0000ff', 1.0, 1000, end)\n" +
                 "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -804,6 +804,7 @@ public class YsldParseTest {
         // need to use the geotools.styling interface as it provides the accessors for the entries.
         ColorMap map = (ColorMap) symb.getColorMap();
 
+        System.out.println(map.getColorMapEntry(0).getColor().evaluate(null));
         Color colour1 = (Color) map.getColorMapEntry(0).getColor().evaluate(null);
         Color colour2 = (Color) map.getColorMapEntry(1).getColor().evaluate(null);
         Color colour3 = (Color) map.getColorMapEntry(2).getColor().evaluate(null);
@@ -1139,7 +1140,7 @@ public class YsldParseTest {
                "point: \n"+
                "  symbols: \n" +
                "  - mark: \n" +
-               "      fill-color: 0xFF0000\n"+
+               "      fill-color: '#FF0000'\n"+
                "      fill-opacity: 0.5\n"; // Not just 'opacity'
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -1154,7 +1155,7 @@ public class YsldParseTest {
        // See GEOT-3912
        String yaml =
                "line:\n"+
-               "  stroke-color: 0x555555\n"+
+               "  stroke-color: '#555555'\n"+
                "  stroke-width: 1.0\n"+
                "  offset: 5";
                        
@@ -1174,7 +1175,7 @@ public class YsldParseTest {
                "  displacement: (10, 42)\n"+
                "  symbols: \n" +
                "  - mark: \n" +
-               "      fill-color: 0xFF0000\n";
+               "      fill-color: '#FF0000'\n";
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);
        
@@ -1192,7 +1193,7 @@ public class YsldParseTest {
                "  anchor: (0.75, 0.25)\n"+
                "  symbols: \n" +
                "  - mark: \n" +
-               "      fill-color: 0xFF0000\n";
+               "      fill-color: '#FF0000'\n";
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);
        
@@ -1261,7 +1262,7 @@ public class YsldParseTest {
                "      symbols:\n"+
                "      - mark:\n"+
                "          shape: circle\n"+
-               "          fill-color: 0x995555\n"+
+               "          fill-color: '#995555'\n"+
                "";
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);

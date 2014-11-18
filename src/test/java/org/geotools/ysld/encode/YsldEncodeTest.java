@@ -741,5 +741,25 @@ public class YsldEncodeTest {
         assertThat(kvpLine(out.toString(), "fill-color"), equalTo("'#112233'"));
         assertThat(kvpLine(out.toString(), "stroke-color"), equalTo("'#005566'"));
     }
-
+    
+    @Test
+    public void testScientificNotationCase() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        
+        Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
+        m1.setFill(CommonFactoryFinder.getStyleFactory().createFill(
+                CommonFactoryFinder.getFilterFactory2().literal("#112233"),
+                CommonFactoryFinder.getFilterFactory2().literal(Double.MIN_NORMAL)));
+        p.getGraphic().graphicalSymbols().add(m1);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(p), out);
+        
+        System.out.append(out.toString());
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").seq("symbols").map(0).map("mark");
+        
+        assertThat(kvpLine(out.toString(),"fill-opacity"), equalTo(Double.toString(Double.MIN_NORMAL).toUpperCase()));
+    }
 }

@@ -26,6 +26,8 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -65,6 +67,7 @@ public class WFSDataStore extends ContentDataStore {
 
     private final Map<QName, FeatureType> remoteFeatureTypes;
     private final Map<String, StoredQueryDescriptionType> storedQueryDescriptionTypes;
+    private ReadWriteLock storedQueryDescriptionTypesLock;
 
     private ListStoredQueriesResponseType remoteStoredQueries;
 
@@ -76,6 +79,7 @@ public class WFSDataStore extends ContentDataStore {
         this.names = new ConcurrentHashMap<Name, QName>();
         this.remoteFeatureTypes = new ConcurrentHashMap<QName, FeatureType>();
         this.storedQueryDescriptionTypes = new ConcurrentHashMap<String, StoredQueryDescriptionType>();
+        this.storedQueryDescriptionTypesLock = new ReentrantReadWriteLock();
         // default factories
         setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
         setGeometryFactory(new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY));
@@ -220,29 +224,39 @@ public class WFSDataStore extends ContentDataStore {
 
         StoredQueryDescriptionType desc = null;
 
-        final String lockObj = storedQueryId.intern();
+        storedQueryDescriptionTypesLock.readLock().lock();
+        desc = storedQueryDescriptionTypes.get(storedQueryId);
+        storedQueryDescriptionTypesLock.readLock().unlock();
 
-        synchronized (lockObj) {
+        if (desc == null) {
+            storedQueryDescriptionTypesLock.writeLock().lock();
+
+            // Make sure another thread has not retrieved this information while waiting for locks
             desc = storedQueryDescriptionTypes.get(storedQueryId);
-            if (desc == null) {
-                DescribeStoredQueriesRequest request = client.createDescribeStoredQueriesRequest();
 
-                URI id;
-                try {
-                    id = new URI(storedQueryId);
-                } catch(URISyntaxException use) {
-                    throw new IOException(use);
+            try {
+                // If desc is still null, retrieve it
+                if (desc == null) {
+                    DescribeStoredQueriesRequest request = client.createDescribeStoredQueriesRequest();
+
+                    URI id;
+                    try {
+                         id = new URI(storedQueryId);
+                    } catch(URISyntaxException use) {
+                         throw new IOException(use);
+                    }
+
+                    request.getStoredQueryIds().add(id);
+
+                    DescribeStoredQueriesResponse response = client.issueRequest(request);
+
+                    desc = response.getStoredQueryDescriptions().get(0);
+                    storedQueryDescriptionTypes.put(storedQueryId, desc);
                 }
-
-                request.getStoredQueryIds().add(id);
-
-                DescribeStoredQueriesResponse response = client.issueRequest(request);
-
-                desc = response.getStoredQueryDescriptions().get(0);
-                storedQueryDescriptionTypes.put(storedQueryId, desc);
+            } finally {
+                storedQueryDescriptionTypesLock.writeLock().unlock();
             }
         }
-
         return desc;
     }
 

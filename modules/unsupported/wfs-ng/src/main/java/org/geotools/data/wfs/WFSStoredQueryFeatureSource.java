@@ -44,10 +44,10 @@ public class WFSStoredQueryFeatureSource extends WFSFeatureSource {
     @Override
     protected GetFeatureRequest createGetFeature(Query query,
             ResultType resultType) throws IOException
-            {
+    {
         GetFeatureRequest request = super.createGetFeature(query, resultType);
         request.setStoredQuery(true);
         request.setStoredQueryDescriptionType(desc);
         return request;
-            }
+    }
 }

@@ -2,7 +2,6 @@ package org.geotools.gce.imagemosaic;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,7 +22,6 @@ import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.factory.Hints;
-import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.Utilities;
 
 /**
@@ -218,7 +216,10 @@ abstract class ImageMosaicWalker implements Runnable {
 
             }
         } catch (Exception e) {
+            // we got an exception, we should stop the walk
             eventHandler.fireException(e);
+
+            this.stop();
             return;
         } finally {
             //

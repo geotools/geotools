@@ -47,7 +47,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     /**
      * Factory used to create model objects
      */
-    EFactory factory;
+    protected EFactory factory;
     
     /**
      * type "hint", allows bindings to specify the type that gets parsed manually

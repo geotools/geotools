@@ -336,15 +336,16 @@ public class Utils {
 				public void exceptionOccurred(ImageMosaicEventHandlers.ExceptionEvent event) {
 					final Throwable t = event.getException();
 					exceptions.add(t);
-					if (LOGGER.isLoggable(Level.SEVERE))
-						LOGGER.log(Level.SEVERE, t.getLocalizedMessage(), t);
-
+					if (LOGGER.isLoggable(Level.SEVERE)){
+					    LOGGER.log(Level.SEVERE, t.getLocalizedMessage(), t);
+					}
 				}
 
 				@Override
 				public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
-					if (LOGGER.isLoggable(Level.FINE))
-						LOGGER.fine(event.getMessage());
+					if (LOGGER.isLoggable(Level.FINE)){
+					    LOGGER.fine(event.getMessage());
+					}
 
 				}
 
@@ -359,8 +360,9 @@ public class Utils {
 		}
 
 		// check that nothing bad happened
-		if (exceptions.size() > 0)
-			return false;
+		if (exceptions.size() > 0){
+		    return false;
+		}
 		return true;
 	}
 

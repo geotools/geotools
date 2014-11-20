@@ -30,11 +30,9 @@ import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 
 public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
-    private Wfs20Factory factory;
     
     public FeatureTypeTypeBinding(Wfs20Factory factory) {
         super(factory);
-        this.factory = factory;
     }
     
     @Override
@@ -71,7 +69,7 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
                 OutputFormatListType oflt = ((FeatureTypeType)object).getOutputFormats();
                 
                 if (oflt == null) {
-                    oflt = factory.createOutputFormatListType();
+                    oflt = ((Wfs20Factory)factory).createOutputFormatListType();
                 }
                 
                 oflt.getFormat().add(outputFormatValue);

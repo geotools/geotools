@@ -21,8 +21,8 @@ import java.io.StringWriter;
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
 import net.opengis.wps10.ComplexDataType;
@@ -36,11 +36,9 @@ import org.geotools.xml.EMFUtils;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.EncoderDelegate;
 import org.geotools.xml.Node;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerImpl;
-import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
 
 /**
  *&lt;complexType name="ComplexDataType" mixed="true">
@@ -139,30 +137,16 @@ public class ComplexDataTypeBinding extends AbstractComplexBinding
                             if (!data.isEmpty() && data.get(0) instanceof EncoderDelegate) {
                                     EncoderDelegate encoder = (EncoderDelegate) data.get(0);
                                     StringWriter output = new StringWriter();
-                                    Transformer transformer = ((SAXTransformerFactory)SAXTransformerFactory.newInstance()).newTransformer();
-                                    SerializationHandler outputHandler = ((TransformerImpl)transformer).getOutputHandler(new StreamResult(output));
-                                    encoder.encode(outputHandler);
-                                    
-                                    value.appendChild(document.createTextNode(cleanUpHeader(output.toString())));
+                                    TransformerHandler serializer = ((SAXTransformerFactory)SAXTransformerFactory.newInstance()).newTransformerHandler();
+                                    serializer.setResult(new StreamResult(output));
+                                    encoder.encode(serializer);
+                                    CDATASection cData = document.createCDATASection(WPS.cleanUpHeader(output.toString()));
+                                    cData.normalize();
+                                    value.appendChild(cData);
                             }
                     }
             }
             return value;
     }
 
-    /**
-     * Remove <?xml version='1.0' encoding='UTF-8'?> from header
-     * leaving the responsibility to the encoder
-     *   
-     * @param string
-     * @return
-     */
-    private String cleanUpHeader(String content) {
-            
-            if (content.startsWith("<?xml")) {
-                    content = content.substring(content.indexOf(">") + 1);
-            }
-            
-            return content;
-    }
 }

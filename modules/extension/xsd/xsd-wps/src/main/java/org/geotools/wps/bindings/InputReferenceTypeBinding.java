@@ -17,16 +17,28 @@
 
 package org.geotools.wps.bindings;
 
-import javax.xml.namespace.QName;
+import java.io.StringWriter;
 
+import javax.xml.namespace.QName;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
+
+import net.opengis.wps10.ExecuteType;
+import net.opengis.wps10.InputReferenceType;
 import net.opengis.wps10.MethodType;
 import net.opengis.wps10.Wps10Factory;
-import net.opengis.wps10.InputReferenceType;
 
+import org.eclipse.emf.ecore.EObject;
 import org.geotools.wps.WPS;
-import org.geotools.xml.Node;
-import org.geotools.xml.ElementInstance;
+import org.geotools.wps.WPSConfiguration;
 import org.geotools.xml.ComplexEMFBinding;
+import org.geotools.xml.EMFUtils;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Encoder;
+import org.geotools.xml.Node;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Binding for inputReference attribute of Method element
@@ -61,4 +73,31 @@ public class InputReferenceTypeBinding extends ComplexEMFBinding {
 
         return super.parse(instance, node, value);
     }
+
+	@Override
+	public Element encode(Object object, Document document, Element value)
+			throws Exception {
+		EObject eobject = (EObject) object;
+        if (EMFUtils.has(eobject, "body")) {
+        	Object v = EMFUtils.get(((EObject) object), "body");
+        	if (v instanceof ExecuteType) {
+                StringWriter output = new StringWriter();
+        		Encoder e = new Encoder(new WPSConfiguration());
+                e.setIndenting(true);
+                e.setOmitXMLDeclaration(true);
+                e.setNamespaceAware(true);
+                TransformerHandler serializer = ((SAXTransformerFactory)SAXTransformerFactory.newInstance()).newTransformerHandler();
+                serializer.setResult(new StreamResult(output));
+                e.encode(v, WPS.Execute, serializer);
+                
+                //add the body manually
+                Element body = document.createElementNS( WPS.NAMESPACE, "Body");
+                body.setTextContent(WPS.cleanUpHeader(output.toString()));
+                value.appendChild( body );
+        	}
+        }
+        
+        return value;
+	}
+    
 }

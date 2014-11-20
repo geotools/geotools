@@ -21,7 +21,6 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.gml2.GML;
 import org.geotools.ows.v1_1.OWS;
 import org.geotools.xml.SchemaLocationResolver;
 import org.geotools.xml.XSD;
@@ -277,5 +276,20 @@ public final class WPS extends XSD {
     public static final QName processVersion = 
         new QName("http://www.opengis.net/wps/1.0.0","processVersion");
 
+	/**
+     * Remove <?xml version='1.0' encoding='UTF-8'?> from header
+     * leaving the responsibility to the encoder
+     *   
+     * @param string
+     * @return
+     */
+    public static String cleanUpHeader(String content) {
+            
+            if (content.startsWith("<?xml")) {
+            	content = content.substring(content.indexOf(">") + 1);
+            }
+            
+            return content;
+    }
 }
     

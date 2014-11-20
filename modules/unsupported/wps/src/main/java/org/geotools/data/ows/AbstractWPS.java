@@ -477,7 +477,9 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             request.performPostOutput(out);
 
-            InputStream in = new ByteArrayInputStream(out.toByteArray());
+            StringBuffer requestBody = new StringBuffer(out.toString());
+            
+            InputStream in = new ByteArrayInputStream(fixEncoding(requestBody).getBytes());
 
             try
             {
@@ -498,7 +500,17 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
         return response;
     }
 
-    public AbstractWPSGetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request) throws IOException,
+    private static String fixEncoding(StringBuffer out) {
+    	String fixed = out.toString();
+    	
+    	fixed = fixed.replaceAll("&amp;", "&");
+    	fixed = fixed.replaceAll("&lt;", "<");
+    	fixed = fixed.replaceAll("&gt;", ">");
+    	
+    	return fixed;
+	}
+
+	public AbstractWPSGetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request) throws IOException,
         ServiceException
     {
         return (AbstractWPSGetCapabilitiesResponse) internalIssueRequest(request);

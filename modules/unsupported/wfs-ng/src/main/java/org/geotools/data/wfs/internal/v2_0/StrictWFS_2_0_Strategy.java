@@ -628,7 +628,15 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     public Set<String> getSupportedCRSIdentifiers(QName typeName) {
-        // TODO Auto-generated method stub
-        return null;
+        FeatureTypeType type = typeInfos.get(typeName);
+
+        Set<String> ret = new HashSet<String>();
+        if (type.getDefaultCRS() != null) {
+            ret.add(type.getDefaultCRS());
+        }
+
+        ret.addAll(type.getOtherCRS());
+
+        return ret;
     }
 }

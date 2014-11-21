@@ -3078,7 +3078,79 @@ public class ImageMosaicReaderTest extends Assert{
         assertEquals(83.2542, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_STDDEV")), DELTA);
     }
 
+    @Test
+    public void testStopCreationWhileWalkingMosaicDir() throws Exception {
 
+        final File workDir = new File(TestData.file(this, "."), "stop-it");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        FileUtils
+                .copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+        TestData.unzipFile(this, "stop-it/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, "stop-it");
+
+        // place H2 file in the dir
+        FileWriter out = null;
+        try {
+            out = new FileWriter(
+                    new File(TestData.file(this, "."), "/stop-it/datastore.properties"));
+            out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n");
+            out.write("database=imagemosaic\n");
+            out.write("dbtype=h2\n");
+            out.write("Loose\\ bbox=true #important for performances\n");
+            out.write("Estimated\\ extends=false #important for performances\n");
+            out.write("user=geosolutions\n");
+            out.write("passwd=geosolutions\n");
+            out.write("validate \\connections=true #important for avoiding errors\n");
+            out.write("Connection\\ timeout=3600\n");
+            out.write("max \\connections=10 #important for performances, internal pooling\n");
+            out.write("min \\connections=5  #important for performances, internal pooling\n");
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
+
+        // now start the test
+        final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+
+        final String[] metadataNames = reader.getMetadataNames();
+        assertNotNull(metadataNames);
+        assertEquals(metadataNames.length, 12);
+
+        // Getting some metadata 
+        assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+        final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
+        assertNotNull(timeMetadata);
+        assertEquals(2, timeMetadata.split(",").length);
+        assertEquals(timeMetadata.split(",")[0], reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
+        assertEquals(timeMetadata.split(",")[1], reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
+        assertEquals("java.sql.Timestamp", reader.getMetadataValue("TIME_DOMAIN_DATATYPE"));
+
+        // Disposing the reader before recreating the mosaic
+        reader.dispose();
+
+        // Deleting mosaic files so that the mosaic will be created again
+        File mosaicFile = new File(TestData.file(this, "."), "/stop-it/stop-it.properties");
+        mosaicFile.delete();
+        File sampleImageFile = new File(TestData.file(this, "."), "/stop-it/sample_image");
+        sampleImageFile.delete();
+
+        // Since we have deleted some mosaic files but we didn't cleanup the DB tables
+        // the reader should recreate a new mosaic. However the walker should fail and 
+        // stop while creating the DB tables (they already exist),  returning back no readers.
+        reader = (ImageMosaicReader) format.getReader(timeElevURL);
+
+        // No reader should have been created.
+        assertNull(reader);
+    }
+    
     @AfterClass
 	public static void close(){
 		System.clearProperty("org.geotools.referencing.forceXY");

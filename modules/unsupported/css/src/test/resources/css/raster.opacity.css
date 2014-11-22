@@ -1,0 +1,12 @@
+/**
+ * The raster-opacity property specifies an opacity in the range 0 (fully
+ * transparent) to 1 (fully opaque.) to be applied to the entire raster.
+ * Note that a color ramp may specify varying opacity, in which case the
+ * opacities multiply - if raster-opacity is .5 and a pixel is assigned opacity
+ * value 0.5 by a color ramp, then the pixel will be rendered with opacity
+ * 0.25.
+ */
+* {
+  raster-channels: auto;
+  raster-opacity: 0.5;
+}

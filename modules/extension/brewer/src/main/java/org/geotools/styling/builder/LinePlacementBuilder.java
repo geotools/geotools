@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.styling.builder;
 
 import org.geotools.styling.LinePlacement;
@@ -23,6 +39,41 @@ public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
 
     public LinePlacementBuilder() {
         this(null);
+    }
+
+    public LinePlacementBuilder offset(double offset) {
+        this.offset = literal(offset);
+        return this;
+    }
+
+    public LinePlacementBuilder offset(Expression offset) {
+        this.offset = offset;
+        return this;
+    }
+
+    public LinePlacementBuilder gap(double gap) {
+        this.gap = literal(gap);
+        return this;
+    }
+
+    public LinePlacementBuilder gap(Expression gap) {
+        this.gap = gap;
+        return this;
+    }
+
+    public LinePlacementBuilder repeated(boolean repeated) {
+        this.repeated = repeated;
+        return this;
+    }
+
+    public LinePlacementBuilder generalizedLine(boolean generalizedLine) {
+        this.generalizedLine = generalizedLine;
+        return this;
+    }
+
+    public LinePlacementBuilder aligned(boolean aligned) {
+        this.aligned = aligned;
+        return this;
     }
 
     LinePlacementBuilder(TextSymbolizerBuilder parent) {

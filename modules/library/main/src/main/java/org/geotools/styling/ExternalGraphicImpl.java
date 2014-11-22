@@ -75,9 +75,13 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
     }
     
     
-    @Deprecated
     public void setURI(String uri) {
         this.uri = uri;
+    }
+    
+    @Override
+	public String getURI() {
+    	return this.uri;
     }
 
     /**
@@ -256,7 +260,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
             return null;
         }
         else if (item instanceof ExternalGraphicImpl){
-            return (ExternalGraphicImpl) item;
+            return (ExternalGraphic) item;
         }
         else if (item instanceof org.opengis.style.ExternalGraphic){
             org.opengis.style.ExternalGraphic graphic = (org.opengis.style.ExternalGraphic) item;

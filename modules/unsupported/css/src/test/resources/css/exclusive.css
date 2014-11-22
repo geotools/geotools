@@ -1,0 +1,36 @@
+* {
+  stroke: black;
+  fill: grey;
+}
+
+[COLOR_MAP=1] {
+  fill: blue;
+}
+
+[COLOR_MAP=2] {
+  fill: green;
+}
+
+[COLOR_MAP=3] {
+  fill: red;
+}
+
+[COLOR_MAP=4] {
+  fill: yellow;
+}
+
+[COLOR_MAP=5] {
+  fill: orange;
+}
+
+[COLOR_MAP=6] {
+  fill: purple;
+}
+
+[COLOR_MAP=7] {
+  fill: coral;
+}
+
+[COLOR_MAP=8] {
+  fill: yellowgreen;
+}

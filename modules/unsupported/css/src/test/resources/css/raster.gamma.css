@@ -1,0 +1,13 @@
+/*
+ * The raster-gamma property specifies a gamma correction
+ * (http://en.wikipedia.org/wiki/Gamma_correction) to be applied to the output raster.
+ * Gamma correction has the general effect of brightening or darkening shadows
+ * in the image.
+ *
+ * A gamma value of 1 leaves the image unaltered (this is the default).  Values
+ * smaller than one darken the image, while values larger than one lighten it.
+ */
+* {
+  raster-channels: 1;
+  raster-gamma: 0.5;
+}

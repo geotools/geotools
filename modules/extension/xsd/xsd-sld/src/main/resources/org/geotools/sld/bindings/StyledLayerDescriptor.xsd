@@ -358,6 +358,7 @@
           <xsd:sequence>
             <xsd:element ref="sld:Geometry" minOccurs="0"/>
             <xsd:element ref="sld:Stroke" minOccurs="0"/>
+            <xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>
@@ -479,6 +480,7 @@
             <xsd:element ref="sld:Geometry" minOccurs="0"/>
             <xsd:element ref="sld:Fill" minOccurs="0"/>
             <xsd:element ref="sld:Stroke" minOccurs="0"/>
+            <xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>
@@ -521,6 +523,7 @@
           <xsd:sequence>
             <xsd:element ref="sld:Geometry" minOccurs="0"/>
             <xsd:element ref="sld:Graphic" minOccurs="0"/>
+            <xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>
@@ -793,6 +796,7 @@
             <xsd:element ref="sld:ContrastEnhancement" minOccurs="0"/>
             <xsd:element ref="sld:ShadedRelief" minOccurs="0"/>
             <xsd:element ref="sld:ImageOutline" minOccurs="0"/>
+            <xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>

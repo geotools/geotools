@@ -1,0 +1,36 @@
+states {
+  label: [STATE_ABBR];
+  label-anchor: 50% 50%;
+  font-fill: black;
+  geometry: [the_geom];
+  stroke: black;
+  stroke-width: 3;
+  fill-opacity: 0.7;
+  /* stroke-z-index: 10; */
+}
+
+/* the parser used to extract titles from the first comment in a run, but it
+ * makes more sense for it to use the last since it is closest to the rule that
+ * it will be applied to.
+ */
+
+/*
+ * @title: Persons < 2M
+ */
+states [PERSONS<2000000] {
+  fill: #4DFF4D;
+}
+
+/*
+ * @title: 2M < Persons < 4M
+ */
+states [PERSONS>=2000000][PERSONS<4000000] {
+  fill: #FF4D4D;
+}
+
+/*
+ * @title: 4M < Persons
+ */
+states [PERSONS>=4000000] {
+  fill: #4D4DFF;
+}

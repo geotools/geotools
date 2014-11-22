@@ -1,0 +1,34 @@
+/*
+ * The simplest possible style that applies to raster data.  Raster display is
+ * activated by the raster-channels property, which selects bands of the raster to display.
+ * Raster bands can have any string for a name, but most (all?) GeoTools
+ * coverage stores use numerals (so the first band is named "1", the second is
+ * named "2", etc.)
+ *
+ * The raster-channels property can take four forms.
+ *
+ * If it contains simply the keyword "auto" then the style will attempt to
+ * guess how to render the raster by inspection - a single-band raster is
+ * rendered in greyscale, a 3-band raster is interpreted as RGB.  I believe
+ * (but have not verified) that rasters with other numbers of bands will be
+ * interpreted as greyscale by discarding all but the first band.
+ * raster-channels: auto;
+ *
+ * If it contains a single string other than "auto" then that string will be
+ * taken as the name of a band which will be used for a grey channel in the
+ * output.
+ * raster-channel: 1;
+ *
+ * If it contains three strings then they will be taken as the names of the
+ * bands to use for Red, Green, and Blue channels respectively.
+ * raster-channel: 1 2 3;
+ *
+ * As with other styling properties, commas (',') delimit values to be used in
+ * separate rendering passes, so: raster-channel: 1, 2, 3; overlays channels 1,
+ * 2, and 3 on top of each other in greyscale, rather than combining them into
+ * an RGB image.
+ */
+
+* {
+  raster-channels: auto;
+}

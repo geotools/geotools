@@ -41,7 +41,7 @@ public class CookbookLineTest extends AbstractStyleTest {
         // check the size
         LineSymbolizer ls = (LineSymbolizer) collector.symbolizers.get(0);
         assertEquals(3, (int) ls.getStroke().getWidth().evaluate(null, Integer.class));
-        assertEquals(Color.BLACK, (Color) ls.getStroke().getColor().evaluate(null, Color.class));
+        assertEquals(Color.BLACK, ls.getStroke().getColor().evaluate(null, Color.class));
     }
 
     @Test
@@ -64,12 +64,12 @@ public class CookbookLineTest extends AbstractStyleTest {
         // check the first line
         LineSymbolizer ls = (LineSymbolizer) collector.symbolizers.get(0);
         assertEquals(5, (int) ls.getStroke().getWidth().evaluate(null, Integer.class));
-        assertEquals("#333333", (String) ls.getStroke().getColor().evaluate(null, String.class));
+        assertEquals("#333333", ls.getStroke().getColor().evaluate(null, String.class));
 
         // check the second line
         ls = (LineSymbolizer) collector.symbolizers.get(1);
         assertEquals(3, (int) ls.getStroke().getWidth().evaluate(null, Integer.class));
-        assertEquals("#6699FF", (String) ls.getStroke().getColor().evaluate(null, String.class));
+        assertEquals("#6699FF", ls.getStroke().getColor().evaluate(null, String.class));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class CookbookLineTest extends AbstractStyleTest {
         // check the size
         LineSymbolizer ls = (LineSymbolizer) collector.symbolizers.get(0);
         assertEquals(3, (int) ls.getStroke().getWidth().evaluate(null, Integer.class));
-        assertEquals(Color.BLUE, (Color) ls.getStroke().getColor().evaluate(null, Color.class));
+        assertEquals(Color.BLUE, ls.getStroke().getColor().evaluate(null, Color.class));
         assertTrue(Arrays.equals(new float[] { 5, 2 }, ls.getStroke().getDashArray()));
     }
 
@@ -108,7 +108,7 @@ public class CookbookLineTest extends AbstractStyleTest {
         // check the simple line
         LineSymbolizer ls = (LineSymbolizer) collector.symbolizers.get(0);
         assertEquals(3, (int) ls.getStroke().getWidth().evaluate(null, Integer.class));
-        assertEquals("#333333", (String) ls.getStroke().getColor().evaluate(null, String.class));
+        assertEquals("#333333", ls.getStroke().getColor().evaluate(null, String.class));
 
         // check the rail
         ls = (LineSymbolizer) collector.symbolizers.get(1);
@@ -167,7 +167,7 @@ public class CookbookLineTest extends AbstractStyleTest {
         // check the line
         LineSymbolizer ls = (LineSymbolizer) collector.symbolizers.get(0);
         assertEquals(1, (int) ls.getStroke().getWidth().evaluate(null, Integer.class));
-        assertEquals(Color.BLUE, (Color) ls.getStroke().getColor().evaluate(null, Color.class));
+        assertEquals(Color.BLUE, ls.getStroke().getColor().evaluate(null, Color.class));
         assertTrue(Arrays.equals(new float[] { 10, 10 }, ls.getStroke().getDashArray()));
 
         // check the dots
@@ -205,9 +205,7 @@ public class CookbookLineTest extends AbstractStyleTest {
 
         // placement
         PointPlacement pp = (PointPlacement) ps.getLabelPlacement();
-        assertEquals(0, pp.getRotation().evaluate(null, Double.class), 0.0);
-        assertEquals(0., pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0);
-        assertEquals(0, pp.getAnchorPoint().getAnchorPointY().evaluate(null, Double.class), 0);
+        assertEquals(null, pp);
     }
 
     @Test

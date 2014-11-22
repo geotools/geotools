@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================= 
+  Maven Project Configuration File The Geotools Project http://www.geotools.org/ 
+  Version: $Id: pom.xml 33582 2009-07-17 04:40:35Z mbedward $ ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>13-SNAPSHOT</version>
+  </parent>
+
+  <!-- =========================================================== -->
+  <!-- Module Description -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-css</artifactId>
+  <packaging>jar</packaging>
+  <name>Cartographic CSS parser</name>
+
+  <description>
+      Parses a cartographic oriented CSS variant and offers translation tools to SLDles
+    </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!-- Developers and Contributors -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Andrea Aime</name>
+      <id>aaime</id>
+      <email>andrea.aime@geo-solutions.it</email>
+      <organization>GeoSolutions</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-cql</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-brewer</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.parboiled</groupId>
+      <artifactId>parboiled-java</artifactId>
+      <version>1.1.6</version>
+    </dependency>
+    <!-- todo: remove once we have all the samples needed -->
+    <dependency>
+      <groupId>org.geoscript</groupId>
+      <artifactId>geocss_2.10</artifactId>
+      <version>0.8.4-aa2</version>
+    </dependency>
+    <dependency>
+      <groupId>xmlunit</groupId>
+      <artifactId>xmlunit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-sld</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+</project>

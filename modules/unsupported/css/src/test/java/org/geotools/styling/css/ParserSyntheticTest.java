@@ -412,8 +412,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertNull(r.getComment());
         assertTrue(r.getSelector() instanceof And);
         And s = (And) r.getSelector();
-        assertEquals(new Data(ECQL.toFilter("att < 15")), s.children.get(0));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.children.get(1));
+        assertEquals(new Data(ECQL.toFilter("att < 15")), s.children.get(1));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.children.get(0));
     }
 
     @Test
@@ -524,8 +524,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof And);
         assertNull(r.getComment());
         And s = (And) r.getSelector();
-        assertEquals(new Id("states.2"), s.children.get(0));
-        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true), s.children.get(1));
+        assertEquals(new Id("states.2"), s.children.get(1));
+        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true), s.children.get(0));
         assertEquals(new Data(ECQL.toFilter("myAtt > 10")), s.children.get(2));
 
     }
@@ -547,9 +547,9 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertEquals(new Data(ECQL.toFilter("myAtt > 10")), s.children.get(1));
         assertTrue(s.children.get(0) instanceof And);
         And and = (And) s.children.get(0);
-        assertEquals(new Id("states.2"), and.children.get(0));
+        assertEquals(new Id("states.2"), and.children.get(1));
         assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true),
-                and.children.get(1));
+                and.children.get(0));
 
     }
 

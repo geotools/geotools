@@ -23,6 +23,10 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.geotools.util.logging.Logging;
 
 /**
  * A selector identifies which features are going to be matched by a certain feature, possibly
@@ -35,11 +39,21 @@ import java.util.Map;
  */
 public abstract class Selector implements Comparable<Selector> {
     
+    static final Logger LOGGER = Logging.getLogger(Selector.class);
+
     public static final Selector ACCEPT = new Accept();
 
     public static final Selector REJECT = new Reject();
 
     public static Selector and(Selector s1, Selector s2) {
+        Selector result = andInternal(s1, s2);
+        if (LOGGER.isLoggable(Level.FINEST)) {
+            LOGGER.finest("Combined " + s1 + " and " + s2 + " into: " + result);
+        }
+        return result;
+    }
+
+    private static Selector andInternal(Selector s1, Selector s2) {
         // merge with Accept
         if (s1 instanceof Accept) {
             return s2;
@@ -77,8 +91,8 @@ public abstract class Selector implements Comparable<Selector> {
         classifieds.remove(Accept.class);
 
         // perform combinations for selected types
-        List<Class<? extends Selector>> classes = Arrays.asList(Data.class, Id.class,
-                ScaleRange.class, TypeName.class, PseudoClass.class);
+        List<Class<? extends Selector>> classes = Arrays.asList(TypeName.class, ScaleRange.class,
+                Id.class, Data.class, PseudoClass.class);
         for (Class<? extends Selector> clazz : classes) {
             List<Selector> classSelectors = classifieds.get(clazz);
             if (classSelectors == null) {
@@ -105,8 +119,11 @@ public abstract class Selector implements Comparable<Selector> {
 
         // build the result
         List<Selector> finalList = new ArrayList<>();
-        for (List<Selector> list : classifieds.values()) {
-            finalList.addAll(list);
+        for (Class c : classes) {
+            List<Selector> list = classifieds.get(c);
+            if (list != null) {
+                finalList.addAll(list);
+            }
         }
         if (finalList.size() == 0) {
             return ACCEPT;
@@ -118,18 +135,18 @@ public abstract class Selector implements Comparable<Selector> {
     }
     
     private static Selector foldInOr(Or or, Selector anded) {
-		List<Selector> newChildren = new ArrayList<>();
-    	for (Selector s : or.children) {
-			Selector combined = and(s, anded);
-			if(combined == ACCEPT) {
-				return ACCEPT;
-			} else if(combined != REJECT) {
-				newChildren.add(combined);
-			}
-		}
-    	
-    	return new Or(newChildren);
-	}
+        List<Selector> newChildren = new ArrayList<>();
+        for (Selector s : or.children) {
+            Selector combined = and(s, anded);
+            if (combined == ACCEPT) {
+                return ACCEPT;
+            } else if (combined != REJECT) {
+                newChildren.add(combined);
+            }
+        }
+
+        return new Or(newChildren);
+    }
 
 	public static Selector or(Selector s1, Selector s2) {
         // merge with Reject

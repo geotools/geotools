@@ -17,13 +17,15 @@
 package org.geotools.styling.css.selector;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 public class PseudoClass extends Selector {
 
 	public static Selector combineAnd(List<PseudoClass> selectors) {
-        return new And(new ArrayList<Selector>(selectors));
+        // just remove duplicate pseudo classes
+        return new And(new ArrayList<>(new LinkedHashSet<Selector>(selectors)));
 	}
 
 	public static final PseudoClass ROOT = new PseudoClass(null, -1) {

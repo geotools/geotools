@@ -118,7 +118,7 @@ public abstract class Signature implements Cloneable {
 
         public boolean contains(Signature otherSignature, int k) {
             BitsetSignature other = (BitsetSignature) otherSignature;
-            final int max = Math.min(bs.size(), k);
+            final int max = Math.min(bs.size(), k + 1);
             int found = 0;
             for (int i = 0; i < max; i++) {
                 boolean ob = other.bs.get(i);

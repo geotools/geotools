@@ -109,6 +109,11 @@ public class DomainCoverage {
          */
         public List<SLDSelector> difference(SLDSelector other) {
             List<SLDSelector> result = new ArrayList<>();
+            
+            // fast interaction tests
+            if (!this.scaleRange.intersects(other.scaleRange)) {
+                return Collections.singletonList(this);
+            }
 
             // first case, portions of scale range not overlapping
             NumberRange<?>[] scaleRangeDifferences = this.scaleRange.subtract(other.scaleRange);
@@ -231,6 +236,24 @@ public class DomainCoverage {
 
                 // so far, this sorting done just for the sake of readability during debugging
                 Collections.sort(elements, new ScaleDependentFilterComparator());
+                List<SLDSelector> combined = new ArrayList<>();
+                SLDSelector prev = null;
+                for (SLDSelector ss : elements) {
+                    if (prev == null) {
+                        prev = ss;
+                    } else if (prev.scaleRange.equals(ss.scaleRange)) {
+                        org.opengis.filter.Or or = FF.or(ss.filter, prev.filter);
+                        Filter simplified = simplify(or);
+                        prev = new SLDSelector(prev.scaleRange, simplified);
+                    } else {
+                        combined.add(prev);
+                        prev = ss;
+                    }
+                }
+                if (prev != null) {
+                    combined.add(prev);
+                }
+                this.elements = combined;
                 return derivedRules;
             } else {
                 return Collections.emptyList();
@@ -314,7 +337,13 @@ public class DomainCoverage {
 
     @Override
     public String toString() {
-        return elements.toString();
+        StringBuilder sb = new StringBuilder("DomainCoverage[items=").append(elements.size())
+                .append(",\n");
+        for (SLDSelector selector : elements) {
+            sb.append(selector).append("\n");
+        }
+        sb.append("] // DomainCoverage end");
+        return sb.toString();
     }
 
 }

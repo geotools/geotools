@@ -103,29 +103,28 @@ public abstract class FilteredPowerSetBuilder<T, R> {
      * @param result
      */
     void fill(Signature s, int k, int n, List<R> result) {
-        if (k == n) {
-            if (!rejected(s, k)) {
-                List<T> objects = listFromSignature(s);
-                if (!objects.isEmpty()) {
-                    if (accept(objects)) {
-                        R combined = buildResult(objects);
-                        if (combined != null) {
-                            result.add(combined);
-                        }
-                    } else {
-                        rejects.add((Signature) s.clone());
-                    }
-                }
+        List<T> objects = listFromSignature(s);
+        if (!objects.isEmpty()) {
+            if (!accept(objects)) {
+                rejects.add((Signature) s.clone());
+                return;
             }
-            return;
         }
-        s.set(k, true);
-        if (!rejected(s, k)) {
-            fill(s, k + 1, n, result);
-        }
-        s.set(k, false);
-        if (!rejected(s, k)) {
-            fill(s, k + 1, n, result);
+
+        if (k == n) {
+            R combined = buildResult(objects);
+            if (combined != null) {
+                result.add(combined);
+            }
+        } else {
+            s.set(k, true);
+            if (!rejected(s, k)) {
+                fill(s, k + 1, n, result);
+            }
+            s.set(k, false);
+            if (!rejected(s, k)) {
+                fill(s, k + 1, n, result);
+            }
         }
     }
 

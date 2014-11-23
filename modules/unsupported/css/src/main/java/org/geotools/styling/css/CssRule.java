@@ -96,23 +96,9 @@ public class CssRule {
 
     @Override
     public String toString() {
-        String base = "Rule [selector=" + getSelector() + ", properties=" + getProperties() + "]";
-        if (getAncestry() == null) {
-            return base;
-        }
-        StringBuilder sb = new StringBuilder(base);
-        sb.append("\nAncestry (lowest to highest priority):");
-        int idx = 1;
-        for (CssRule ancestor : getAncestry()) {
-            sb.append("\n")
-                    .append(idx)
-                    .append(") ")
-                    .append("[selector=" + ancestor.getSelector() + "\n   properties="
-                            + ancestor.getProperties() + "]");
-            idx++;
-        }
-
-        return sb.toString();
+        String base = "Rule [\n    selector=" + getSelector() + ",\n    properties="
+                + getProperties() + "]";
+        return base;
     }
 
     @Override

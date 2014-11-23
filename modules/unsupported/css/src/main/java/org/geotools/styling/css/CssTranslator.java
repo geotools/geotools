@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,6 +78,7 @@ import org.geotools.styling.css.util.OgcFilterBuilder;
 import org.geotools.styling.css.util.ScaleRangeExtractor;
 import org.geotools.styling.css.util.TypeNameExtractor;
 import org.geotools.util.Range;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
@@ -94,6 +97,8 @@ import org.w3c.dom.css.CSSRule;
  * @author Andrea Aime - GeoSolutions
  */
 public class CssTranslator {
+
+    static final Logger LOGGER = Logging.getLogger(CssTranslator.class);
 
     static final int MAX_OUTPUT_RULES = Integer.valueOf(System.getProperty(
             "org.geotools.css.maxOutputRules", "10000"));
@@ -181,6 +186,10 @@ public class CssTranslator {
     public Style translate(Stylesheet stylesheet, int maxCombinations) {
         List<CssRule> allRules = stylesheet.getRules();
 
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Starting with " + allRules.size() + "  rules in the stylesheet");
+        }
+
         // prepare the full SLD builder
         StyleBuilder styleBuilder = new StyleBuilder();
         styleBuilder.name("Default Styler");
@@ -188,6 +197,11 @@ public class CssTranslator {
         // split rules by index and typename, then build the power set for each group and
         // generate the rules and symbolizers
         List<List<CssRule>> zIndexRules = organizeByZIndex(allRules);
+
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Split the rules into " + zIndexRules + "  sets after z-index separation");
+        }
+
         for (List<CssRule> rules : zIndexRules) {
             Collections.sort(rules, Collections.reverseOrder(new CssRuleComparator()));
             Map<String, List<CssRule>> typenameRules = organizeByTypeName(rules);
@@ -226,12 +240,22 @@ public class CssTranslator {
                 // be quite complicated to un-tangle)
                 List<CssRule> flattenedRules = flattenScaleRanges(localRules);
 
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Preparing power set expansion with " + flattenedRules.size()
+                            + "  rules for feature type: " + featureTypeName);
+                }
+
                 // expand the css rules power set
                 RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules,
                         maxCombinations);
                 List<CssRule> combinedRules = builder.buildPowerSet();
 
                 Collections.sort(combinedRules, Collections.reverseOrder(new CssRuleComparator()));
+
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Generated " + combinedRules.size()
+                            + " combined rules after filtered power set expansion");
+                }
 
                 // create a SLD rule for each css one, making them exclusive, that is,
                 // remove from each rule the union of the zoom/data domain matched by previous rules
@@ -243,7 +267,16 @@ public class CssTranslator {
                     if (!cssRule.hasSymbolizerProperty()) {
                         continue;
                     }
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("Current domain coverage: " + coverage);
+                        LOGGER.fine("Adding rule to domain coverage: " + cssRule);
+                        LOGGER.fine("Rules left to process: " + (combinedRules.size() - i));
+                    }
                     List<CssRule> derivedRules = coverage.addRule(cssRule);
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("Derived rules not yet covered in domain coverage: "
+                                + derivedRules.size() + "\n" + derivedRules);
+                    }
                     for (CssRule derived : derivedRules) {
                         buildSldRule(derived, ftsBuilder, targetFeatureType);
                     }
@@ -1325,6 +1358,13 @@ public class CssTranslator {
             System.err.println(ErrorUtils.printParseErrors(result));
             System.exit(-3);
         }
+
+        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
+        handler.setLevel(java.util.logging.Level.FINE);
+
+        org.geotools.util.logging.Logging.getLogger("org.geotools.styling.css").setLevel(
+                java.util.logging.Level.FINE);
+        org.geotools.util.logging.Logging.getLogger("org.geotools.styling.css").addHandler(handler);
 
         Stylesheet ss = result.parseTreeRoot.getValue();
         CssTranslator translator = new CssTranslator();

@@ -22,10 +22,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.util.FilteredPowerSetBuilder;
+import org.geotools.util.logging.Logging;
 
 /**
  * Gives a list of Rules, it builds their power set, making it so that any set of rules extracted as
@@ -35,6 +38,9 @@ import org.geotools.styling.css.util.FilteredPowerSetBuilder;
  * 
  */
 public class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
+
+    static final Logger LOGGER = Logging.getLogger(RulePowerSetBuilder.class);
+
     List<CssRule> lastRuleSet;
 
     Selector lastCombinedSelector;
@@ -44,12 +50,18 @@ public class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRul
     int count = 0;
 
     public RulePowerSetBuilder(List<CssRule> domain) {
-        super(domain);
+        super(sortAscendingSpecificity(domain));
     }
 
     public RulePowerSetBuilder(List<CssRule> domain, int maxCombinations) {
-        super(domain);
+        super(sortAscendingSpecificity(domain));
         this.maxCombinations = maxCombinations;
+    }
+
+    private static List<CssRule> sortAscendingSpecificity(List<CssRule> rules) {
+        List<CssRule> copy = new ArrayList<>(rules);
+        Collections.sort(copy, new CssRuleComparator());
+        return copy;
     }
 
     @Override
@@ -72,10 +84,6 @@ public class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRul
             combined = rules.get(0);
         } else {
             Selector combinedSelector = combineSelectors(rules);
-
-            // sort by specificity, from lowest to highest
-            // TODO: check if this is really needed
-            Collections.sort(rules, new CssRuleComparator());
 
             // apply cascading on properties
             Map<PseudoClass, Map<String, Property>> properties = new LinkedHashMap<>();
@@ -120,9 +128,10 @@ public class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRul
 
         // make sure we're not going beyond the max generated rules
         if (maxCombinations > 0 && count++ > maxCombinations) {
-            throw new IllegalStateException(
-                    "The CSS rule combinations have already generated more than " + maxCombinations
-                            + " SLD rules, giving up. Please simplify your CSS style");
+            LOGGER.severe("Bailing out, the CSS rule combinations have already generated more than "
+                    + "maxCombinations SLD rules, giving up. Please simplify your CSS style");
+        } else if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("New rule: " + combined);
         }
 
         return combined;
@@ -148,7 +157,11 @@ public class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRul
 
     @Override
     protected boolean accept(List<CssRule> rules) {
-        return rules.get(0).getSelector() != Selector.REJECT;
+        if (count > maxCombinations) {
+            return false;
+        }
+        Selector combined = combineSelectors(rules);
+        return combined != Selector.REJECT;
     }
 
     Selector combineSelectors(List<CssRule> rules) {

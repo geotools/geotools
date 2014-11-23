@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class PseudoClass extends Selector {
 
-	public static Selector combineAnd(List<PseudoClass> selectors) {
+    public static Selector combineAnd(List<PseudoClass> selectors, Object ctx) {
         // just remove duplicate pseudo classes
         return new And(new ArrayList<>(new LinkedHashSet<Selector>(selectors)));
 	}

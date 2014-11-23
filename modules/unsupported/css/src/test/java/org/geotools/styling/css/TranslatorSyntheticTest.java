@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -468,6 +469,15 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void labelMixedMode() throws Exception {
+        String css = "* { label: [att1]'\n('[att2]')';}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer2 ts = assertSingleSymbolizer(rule, TextSymbolizer2.class);
+        assertExpression("concatenate(att1, '\n(', att2, ')')", ts.getLabel());
+    }
+
+    @Test
     public void rasterBasic() throws Exception {
         String css = "* { raster-channels: auto;}";
         Style style = translate(css);
@@ -547,7 +557,19 @@ public class TranslatorSyntheticTest extends CssBaseTest {
                 + "\n  ";
         Style style = translate(css);
         Rule rule = assertSingleRule(style);
-        PointSymbolizer ps = assertSingleSymbolizer(rule, PointSymbolizer.class);
+        assertSingleSymbolizer(rule, PointSymbolizer.class);
+    }
+
+    @Test
+    public void scaleWithinOr() throws IOException, CQLException {
+        String css = "[@scale < 10000],[foo='bar'] { fill: orange; }";
+        // used to just blow
+        Style style = translate(css);
+        assertEquals("Expected single feature type style, found "
+                + style.featureTypeStyles().size(), 1, style.featureTypeStyles().size());
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        List<? extends Rule> rules = fts.rules();
+        assertEquals(3, rules.size());
     }
 
 }

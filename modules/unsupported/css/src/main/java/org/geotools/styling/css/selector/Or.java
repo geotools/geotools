@@ -32,7 +32,7 @@ public class Or extends Composite {
     @Override
     public Specificity getSpecificity() {
         Specificity max = Specificity.ZERO;
-        for (Selector s : children) {
+        for (Selector s : getChildren()) {
             Specificity curr = s.getSpecificity();
             if (curr.compareTo(max) > 0) {
                 max = curr;
@@ -44,6 +44,11 @@ public class Or extends Composite {
     
     public Object accept(SelectorVisitor visitor) {
     	return visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Or [children=" + getChildren() + "]";
     }
 
 }

@@ -31,7 +31,7 @@ public class And extends Composite {
     @Override
     public Specificity getSpecificity() {
         Specificity sum = Specificity.ZERO;
-        for (Selector s : children) {
+        for (Selector s : getChildren()) {
             sum = sum.sum(s.getSpecificity());
         }
 
@@ -41,7 +41,7 @@ public class And extends Composite {
 
     @Override
     public String toString() {
-        return "And [children=" + children + "]";
+        return "And [children=" + getChildren() + "]";
     }
     
     public Object accept(SelectorVisitor visitor) {

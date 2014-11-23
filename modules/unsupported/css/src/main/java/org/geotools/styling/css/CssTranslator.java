@@ -203,7 +203,7 @@ public class CssTranslator {
         }
 
         for (List<CssRule> rules : zIndexRules) {
-            Collections.sort(rules, Collections.reverseOrder(new CssRuleComparator()));
+            Collections.sort(rules, CssRuleComparator.DESCENDING);
             Map<String, List<CssRule>> typenameRules = organizeByTypeName(rules);
 
             // build the SLD
@@ -245,12 +245,17 @@ public class CssTranslator {
                             + "  rules for feature type: " + featureTypeName);
                 }
 
+                // The simplifying visitor that will cache the results to avoid re-computing
+                // over and over the same simplifications
+                CachedSimplifyingFilterVisitor cachedSimplifier = new CachedSimplifyingFilterVisitor(
+                        targetFeatureType);
+
                 // expand the css rules power set
                 RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules,
-                        maxCombinations);
+                        cachedSimplifier, maxCombinations);
                 List<CssRule> combinedRules = builder.buildPowerSet();
 
-                Collections.sort(combinedRules, Collections.reverseOrder(new CssRuleComparator()));
+                Collections.sort(combinedRules, CssRuleComparator.DESCENDING);
 
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Generated " + combinedRules.size()
@@ -259,7 +264,7 @@ public class CssTranslator {
 
                 // create a SLD rule for each css one, making them exclusive, that is,
                 // remove from each rule the union of the zoom/data domain matched by previous rules
-                DomainCoverage coverage = new DomainCoverage(targetFeatureType);
+                DomainCoverage coverage = new DomainCoverage(targetFeatureType, cachedSimplifier);
                 for (int i = 0; i < combinedRules.size(); i++) {
                     // skip eventual combinations that are not sporting any
                     // root pseudo class
@@ -301,7 +306,7 @@ public class CssTranslator {
             if (rule.getSelector() instanceof Or) {
                 Or or = (Or) rule.getSelector();
                 List<Selector> others = new ArrayList<>();
-                for (Selector child : or.children) {
+                for (Selector child : or.getChildren()) {
                     ScaleRangeExtractor extractor = new ScaleRangeExtractor();
                     Range<Double> range = extractor.getScaleRange(child);
                     if (range == null) {
@@ -365,7 +370,7 @@ public class CssTranslator {
         for (TypeName tn : typeNames) {
             List<CssRule> typeNameRules = new ArrayList<>();
             for (CssRule rule : rules) {
-                Selector combined = Selector.and(tn, rule.getSelector());
+                Selector combined = Selector.and(tn, rule.getSelector(), null);
                 if (combined != Selector.REJECT) {
                     typeNameRules
                             .add(new CssRule(combined, rule.getProperties(), rule.getComment()));

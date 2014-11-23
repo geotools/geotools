@@ -31,6 +31,7 @@ import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.selector.TypeName;
 import org.opengis.filter.Filter;
+import org.opengis.filter.expression.Expression;
 import org.parboiled.Action;
 import org.parboiled.BaseParser;
 import org.parboiled.Context;
@@ -52,8 +53,7 @@ public class CssParser extends BaseParser<Object> {
 
     Rule StyleSheet() {
         return Sequence(OneOrMore(CssRule()), WhiteSpaceOrIgnoredComment(), EOI,
-                push(new Stylesheet(
-                popAll(CssRule.class))));
+                push(new Stylesheet(popAll(CssRule.class))));
     }
 
     Rule CssRule() {
@@ -95,7 +95,7 @@ public class CssParser extends BaseParser<Object> {
 
     Rule AndSelector() {
         return Sequence(BasicSelector(), WhiteSpace(), FirstOf(AndSelector(), BasicSelector()), //
-                swap() && push(Selector.and((Selector) pop(), (Selector) pop())));
+                swap() && push(Selector.and((Selector) pop(), (Selector) pop(), null)));
     }
 
     Rule OrSelector() {
@@ -111,8 +111,16 @@ public class CssParser extends BaseParser<Object> {
 
     @SuppressSubnodes
     Rule NumberedPseudoClassSelector() {
-        return Sequence(":nth-", ClassName(), '(', Number(), push(match()), ')', swap()
-                && push(PseudoClass.newPseudoClass((String) pop(), Integer.valueOf((String) pop()))));
+        return Sequence(
+                ":nth-",
+                ClassName(),
+                '(',
+                Number(),
+                push(match()),
+                ')',
+                swap()
+                        && push(PseudoClass.newPseudoClass((String) pop(),
+                                Integer.valueOf((String) pop()))));
     }
 
     Rule ClassName() {
@@ -121,8 +129,8 @@ public class CssParser extends BaseParser<Object> {
 
     @SuppressSubnodes
     Rule TypenameSelector() {
-        return Sequence(Sequence(Identifier(), Optional(':', Identifier())),
-                push(new TypeName(match())));
+        return Sequence(Sequence(Identifier(), Optional(':', Identifier())), push(new TypeName(
+                match())));
     }
 
     @SuppressSubnodes
@@ -145,7 +153,14 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule MinScaleSelector() {
-        return Sequence("[", WhiteSpace(), "@scale", WhiteSpace(), ">", WhiteSpace(), Number(),
+        return Sequence(
+                "[",
+                WhiteSpace(),
+                "@scale",
+                WhiteSpace(),
+                ">",
+                WhiteSpace(),
+                Number(),
                 push(new ScaleRange(Double.valueOf(match()), true, Double.POSITIVE_INFINITY, true)), //
                 WhiteSpace(), "]");
     }
@@ -173,8 +188,40 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule SimpleValue() {
-        return FirstOf(URLFunction(), Function(), Color(), NamedColor(), Measure(), String(),
-                ValueIdentifier(), ECQLExpression());
+        return FirstOf(URLFunction(), Function(), Color(), NamedColor(), Measure(),
+                ValueIdentifier(), MixedExpression());
+    }
+
+    Rule MixedExpression() {
+        return Sequence(push(MARKER), OneOrMore(FirstOf(ECQLExpression(), String())), new Action() {
+
+            @Override
+            public boolean run(Context ctx) {
+                Object value = pop();
+                List<Expression> expressions = new ArrayList<>();
+                Object firstValue = null;
+                while (value != MARKER) {
+                    firstValue = value;
+                    if (value instanceof Value) {
+                        expressions.add(((Value) value).toExpression());
+                    }
+                    value = pop();
+                }
+
+                if (expressions.size() == 0) {
+                    return false;
+                } else if (expressions.size() == 1) {
+                    push(firstValue);
+                } else {
+                    Collections.reverse(expressions);
+                    org.opengis.filter.expression.Function function = Data.FF.function(
+                            "Concatenate", expressions.toArray(new Expression[expressions.size()]));
+                    push(new Value.Expression(function));
+                }
+                return true;
+            }
+
+        });
     }
 
     Rule MultiValue() {
@@ -185,8 +232,7 @@ public class CssParser extends BaseParser<Object> {
     Rule Function() {
         return Sequence(Identifier(), push(match()), '(', Value(),
                 ZeroOrMore(WhiteSpace(), ',', WhiteSpace(), Value()), ')',
-                push(buildFunction(
-                        popAll(Value.class), (String) pop())));
+                push(buildFunction(popAll(Value.class), (String) pop())));
     }
 
     Value.Function buildFunction(List<Value> values, String name) {
@@ -214,9 +260,9 @@ public class CssParser extends BaseParser<Object> {
 
     Rule String() {
         return FirstOf(
-                Sequence('\'', ZeroOrMore(Sequence(TestNot(AnyOf("\r\n'\\")), ANY)),
+                Sequence('\'', ZeroOrMore(Sequence(TestNot(AnyOf("'\\")), ANY)),
                         push(new Value.Literal(match())), '\''),
-                Sequence('"', ZeroOrMore(Sequence(TestNot(AnyOf("\r\n\"\\")), ANY)),
+                Sequence('"', ZeroOrMore(Sequence(TestNot(AnyOf("\"\\")), ANY)),
                         push(new Value.Literal(match())), '"'));
     }
 
@@ -385,7 +431,6 @@ public class CssParser extends BaseParser<Object> {
     Rule WhiteSpaceOrComment() {
         return ZeroOrMore(FirstOf(RuleComment(), WhiteSpace1()));
     }
-
 
     @SuppressNode
     Rule WhiteSpace() {

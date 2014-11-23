@@ -37,7 +37,7 @@ public class NotImpl extends LogicFilterImpl implements Not {
     }
 
 	public Filter getFilter() {
-		return (Filter)children.get(0);
+        return children.iterator().next();
 	}
 
 	public void setFilter(Filter filter) {
@@ -45,7 +45,8 @@ public class NotImpl extends LogicFilterImpl implements Not {
 			children.add(filter);
 		}
 		else {
-			children.set(0,filter);
+            children.clear();
+            children.add(filter);
 		}
 	}
 	

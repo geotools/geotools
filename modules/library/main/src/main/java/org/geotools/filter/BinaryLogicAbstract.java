@@ -16,7 +16,8 @@
  */
 package org.geotools.filter;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -27,21 +28,21 @@ import java.util.List;
  * @source $URL$
  */
 public abstract class BinaryLogicAbstract extends AbstractFilter {
-    protected List<org.opengis.filter.Filter> children;
+    protected LinkedHashSet<org.opengis.filter.Filter> children;
 
     protected BinaryLogicAbstract(List<org.opengis.filter.Filter> children) {
-        this.children = children;
+        this.children = new LinkedHashSet(children);
     }
 	/**
 	 * Returned list is unmodifieable.
 	 * For a cheaper access option use visitor
 	 */
 	public List<org.opengis.filter.Filter> getChildren() {
-	    return Collections.unmodifiableList(children);
+        return new ArrayList<>(children);
 	}
 	
     public void setChildren(List<org.opengis.filter.Filter> children) {
-        this.children = children;
+        this.children = new LinkedHashSet(children);
     }
 
 }

@@ -54,7 +54,9 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
     public SelectedChannelTypeImpl(org.opengis.style.SelectedChannelType gray) {
         filterFactory = CommonFactoryFinder.getFilterFactory2(null);
         name = gray.getChannelName();
-        contrastEnhancement = new ContrastEnhancementImpl( gray.getContrastEnhancement() );        
+        if (gray.getContrastEnhancement() != null) {
+            contrastEnhancement = new ContrastEnhancementImpl(gray.getContrastEnhancement());
+        }
     }
 
     public String getChannelName() {

@@ -1,0 +1,11 @@
+/* comments work */
+
+Layer[name='bob'][gender='male'], Layer[foo>bar] {
+     stroke: #00FF00;
+     stroke-linecap : "bevel";
+     stroke-linejoin: "round";
+     stroke-opacity: 0.9;
+     stroke-width  :  [magnitude / 1000]  ;
+     stroke-dashoffset: 2.0;
+     stroke-dasharray: 1.0 3.0;
+}

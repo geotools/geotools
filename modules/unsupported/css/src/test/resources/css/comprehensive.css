@@ -1,0 +1,40 @@
+/*
+ * All respected CSS properties
+ */
+
+* {
+  stroke: url(http://example.com/example.gif) #FFFFFF;
+  stroke-dasharray: 1.0 2.0 1.0 4.0;
+  stroke-dashoffset: 2px;
+  stroke-linecap: square;
+  stroke-linejoin: mitre;
+  stroke-miterlimit: 2px;
+  stroke-opacity: 0.7;
+  stroke-width: 2px;
+  stroke-repeat: repeat;
+  stroke-rotation: 12deg;
+  stroke-mime: "image/gif";
+  fill: url(http://example.com/example.png) #FFFFFF;
+  fill-opacity: 0.7;
+  fill-mime: "image/png";
+  fill-size: 32px;
+  fill-rotation: 12deg;
+  mark: symbol(circle);
+  mark-opacity: 70%;
+  mark-size: 16px;
+  mark-rotation: 12deg;
+  mark-mime: none;
+  label: [PROPNAME];
+  label-offset: 1 2;
+  label-rotation: 45deg;
+  label-anchor: 50% 0%;
+  font-family: "Times New Roman";
+  font-fill: green;
+  font-opacity: 50%;
+  font-style: oblique;
+  font-weight: bold;
+  font-size: 17px;
+  halo-radius: 2px;
+  halo-color: #FFFFFF;
+  halo-opacity: 0.7;
+}

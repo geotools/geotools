@@ -1,0 +1,20 @@
+[PROP=10] {
+  stroke: #000001;
+}
+
+[PROP=20] {
+  stroke: #000002;
+}
+
+/* This makes for an interesting case, the rule could disappear, but it's not wrong to have it with stroke #000005 */
+[PROP>30] {
+  stroke: #000003;
+}
+
+[PROP<5] {
+  stroke: #000004;
+}
+
+[PROP>25] {
+  stroke: #000005;
+}

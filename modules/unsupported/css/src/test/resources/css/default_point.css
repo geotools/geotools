@@ -1,0 +1,10 @@
+/* A translation of the point style from the GeoServer release data */
+
+* {
+  mark: symbol(square);
+}
+
+:mark {
+  fill: #ff0000;
+  size: 6px;
+}

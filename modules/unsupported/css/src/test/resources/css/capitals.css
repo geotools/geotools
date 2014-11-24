@@ -1,0 +1,10 @@
+* { 
+  mark: symbol(circle);
+}
+
+:mark {
+  fill: white;
+  stroke: black;
+  stroke-width: 2px;
+  size: 6px;
+}

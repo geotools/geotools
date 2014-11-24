@@ -1,0 +1,15 @@
+/**
+ * Example usage of GeoTools-specific extension properties
+ */
+* {
+  fill: red;
+  -gt-fill-label-obstacle: true;
+  -gt-graphic-margin: 10 20 40 30;
+  -gt-fill-random: grid;
+  -gt-fill-random-seed: 125;
+  -gt-fill-random-tile-size: 128;
+  -gt-fill-random-symbol-count: 15;
+  -gt-fill-random-space-around: 3;
+  -gt-fill-random-rotation: free;
+  
+}

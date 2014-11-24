@@ -85,6 +85,14 @@ public interface ExternalGraphic extends org.opengis.style.ExternalGraphic,Symbo
      * @param uri the uri of the external graphic
      */
     public void setURI(String uri);
+    
+    /**
+     * Returns the un-parsed URI for the mark (useful if the uri is using transformations or relative locations)
+     * 
+     * @param uri
+     * @return
+     */
+    public String getURI();
 
     /**
      * Provides the URL for where the external graphic resource can be located.
@@ -142,4 +150,5 @@ public interface ExternalGraphic extends org.opengis.style.ExternalGraphic,Symbo
      * @return properties
      */
     public Map<String,Object> getCustomProperties();
+	
 }

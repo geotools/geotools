@@ -1,0 +1,24 @@
+/*
+ * The raster-color-map property specifies a series of colors to associate with
+ * specific values in a raster. Note that this only applies with grey-scale
+ * rasters - that is, when raster-color-map is used, it should always be in
+ * conjunction with a raster-channels value specifying only a single value.
+ *
+ * A raster-color-map property consists at least one color map entry, created
+ * by the color-map-entry function.  The color-map-entry must contain a CSS
+ * color and a numeric value:
+ * raster-color-map: color-map-entry(#ff0000, 0)
+ *
+ * Optionally, it may also include an opacity value:
+ * raster-color-map: color-map-entry(#ff0000, 0, 0.5)
+ *
+ * By default values in between entries in the color map will have colors
+ * smoothly interpolated.  This behavior can be controlled using the
+ * raster-color-map-type property.
+ */
+* {
+  raster-channels: 1;
+  raster-color-map: color-map-entry(#ff0000, 0)
+                    color-map-entry(#00ff00, 50, 0.5)
+                    color-map-entry(#00ff00, 100);
+}

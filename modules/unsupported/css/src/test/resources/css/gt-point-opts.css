@@ -1,0 +1,8 @@
+/**
+ * Example usage of GeoTools-specific extension properties
+ */
+* {
+  mark: symbol("cicle");
+  mark-size: 10;
+  -gt-mark-label-obstacle: true;
+}

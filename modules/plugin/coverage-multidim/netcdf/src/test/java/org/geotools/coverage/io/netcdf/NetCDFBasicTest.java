@@ -726,7 +726,6 @@ public final class NetCDFBasicTest extends Assert {
             assertEquals("TIME", descriptor.getName());
 
             assertEquals("true", reader.getMetadataValue(names[1], "HAS_TIME_DOMAIN"));
-
         } finally {
             if (reader != null) {
                 try {

@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -164,7 +165,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
 
         // get the names
         names = access.getNames(null);
-        setNames = new HashSet<String>();
+        setNames = new TreeSet<String>();
         for (Name name: names) {
             String nameString = name.toString();
             if (defaultName == null) {

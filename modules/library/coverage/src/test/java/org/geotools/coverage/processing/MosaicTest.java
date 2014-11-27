@@ -85,6 +85,9 @@ public class MosaicTest extends GridProcessingTestBase {
     /** Tolerance value for the double comparison */
     private static final double TOLERANCE = 0.01d;
 
+    /** Tile size used for testing the Mosaic*/
+    private static final int TILE_SIZE = 10;
+
     /**
      * WKT used for testing that the operation throws an exception when the input {@link GridCoverage2D}s does not have the same
      * {@link CoordinateReferenceSystem}.
@@ -180,6 +183,8 @@ public class MosaicTest extends GridProcessingTestBase {
         // Add a fake Layout for the operation
         ImageLayout il = new ImageLayout();
         hints.put(JAI.KEY_IMAGE_LAYOUT, il);
+        il.setTileHeight(TILE_SIZE);
+        il.setTileWidth(TILE_SIZE);
         // Mosaic operation
         GridCoverage2D mosaic = (GridCoverage2D) processor.doOperation(param, hints);
 
@@ -191,6 +196,11 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
+
+        // Check that Tiling has been defined correctly
+        RenderedImage renderedImage = mosaic.getRenderedImage();
+        Assert.assertTrue(renderedImage.getTileHeight() == TILE_SIZE);
+        Assert.assertTrue(renderedImage.getTileWidth() == TILE_SIZE);
 
         // Check that the final Coverage resolution is equal to that of the first coverage
         double initialRes = calculateResolution(coverage1);
@@ -219,6 +229,8 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(!layout.isValid(ImageLayout.MIN_Y_MASK));
         Assert.assertTrue(!layout.isValid(ImageLayout.WIDTH_MASK));
         Assert.assertTrue(!layout.isValid(ImageLayout.HEIGHT_MASK));
+        Assert.assertTrue(layout.isValid(ImageLayout.TILE_HEIGHT_MASK));
+        Assert.assertTrue(layout.isValid(ImageLayout.TILE_WIDTH_MASK));
 
         // Coverage and RenderedImage disposal
         mosaic.dispose(true);

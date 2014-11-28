@@ -503,7 +503,9 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
     private static String fixEncoding(StringBuffer out) {
     	String fixed = out.toString();
     	
-    	fixed = fixed.replaceAll("&amp;", "&");
+    	while (fixed.contains("&amp;")) {
+    	    fixed = fixed.replaceAll("&amp;", "&");
+    	}
     	fixed = fixed.replaceAll("&lt;", "<");
     	fixed = fixed.replaceAll("&gt;", ">");
     	

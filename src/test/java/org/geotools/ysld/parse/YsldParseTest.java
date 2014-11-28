@@ -1,6 +1,7 @@
 package org.geotools.ysld.parse;
 
 import org.easymock.classextension.EasyMock;
+import org.geotools.filter.function.RecodeFunction;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.process.function.ProcessFunction;
 import org.geotools.styling.ExternalGraphic;
@@ -151,6 +152,20 @@ public class YsldParseTest {
         assertThat(f, Matchers.instanceOf(PropertyIsLessThan.class));
         assertThat(((PropertyIsLessThan) f).getExpression1(), attribute("scalerank"));
         assertThat(((PropertyIsLessThan) f).getExpression2(), literal(4));
+    }
+    @Test
+    public void testFilterWithEscape() throws Exception {
+        String yaml =
+        "rules: \n"+
+        "- filter: ${foo = '\\$\\}'}\n";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        Rule r = SLD.defaultStyle(sld).featureTypeStyles().get(0).rules().get(0);
+        
+        Filter f = r.getFilter();
+        assertThat(f, Matchers.instanceOf(PropertyIsEqualTo.class));
+        assertThat(((PropertyIsEqualTo) f).getExpression1(), attribute("foo"));
+        assertThat(((PropertyIsEqualTo) f).getExpression2(), literal("$}"));
     }
     @Test
     public void testRenderingTransformation() throws IOException {
@@ -900,6 +915,152 @@ public class YsldParseTest {
         assertThat(params.get(2), literal(equalTo("literal2")));
     }
 
+    @Test
+    public void testExpressionLong() throws Exception {
+        String yaml =
+        "polygon:\n" +
+        "  fill-color: ${recode(MAPCOLOR7, 1.0, '#FFC3C3', 2.0, '#FFE3C3', 3.0, '#FFFFC3', 4.0, '#C3FFE3', 5.0, '#C3FFFF', 6.0, '#C3C3FF', 7.0, '#BFC3FF')}\n";        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        PolygonSymbolizer symb = (PolygonSymbolizer) fs.rules().get(0).symbolizers().get(0);
+        
+        Expression expr = symb.getFill().getColor();
+        assertThat(expr, instanceOf(RecodeFunction.class));
+        List<Expression> params = ((RecodeFunction)expr).getParameters();
+        assertThat(params.size(), is(7*2+1));
+        int i=0;
+        assertThat(params.get(i++), attribute("MAPCOLOR7"));
+        assertThat(params.get(i++), literal(equalTo(1.0)));
+        assertThat(params.get(i++), literal(isColor("FFC3C3")));
+        assertThat(params.get(i++), literal(equalTo(2.0)));
+        assertThat(params.get(i++), literal(isColor("FFE3C3")));
+        assertThat(params.get(i++), literal(equalTo(3.0)));
+        assertThat(params.get(i++), literal(isColor("FFFFC3")));
+        assertThat(params.get(i++), literal(equalTo(4.0)));
+        assertThat(params.get(i++), literal(isColor("C3FFE3")));
+        assertThat(params.get(i++), literal(equalTo(5.0)));
+        assertThat(params.get(i++), literal(isColor("C3FFFF")));
+        assertThat(params.get(i++), literal(equalTo(6.0)));
+        assertThat(params.get(i++), literal(isColor("C3C3FF")));
+        assertThat(params.get(i++), literal(equalTo(7.0)));
+        assertThat(params.get(i++), literal(isColor("BFC3FF")));
+    }
+    @Test
+    public void testExpressionLongBreak() throws Exception {
+        String yaml =
+        "polygon:\n" +
+        "  fill-color: ${recode(MAPCOLOR7, \n"
+        + "    1.0, '#FFC3C3', \n"
+        + "    2.0, '#FFE3C3', \n"
+        + "    3.0, '#FFFFC3', \n"
+        + "    4.0, '#C3FFE3', \n"
+        + "    5.0, '#C3FFFF', \n"
+        + "    6.0, '#C3C3FF', \n"
+        + "    7.0, '#BFC3FF')}\n";        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        PolygonSymbolizer symb = (PolygonSymbolizer) fs.rules().get(0).symbolizers().get(0);
+        
+        Expression expr = symb.getFill().getColor();
+        assertThat(expr, instanceOf(RecodeFunction.class));
+        List<Expression> params = ((RecodeFunction)expr).getParameters();
+        assertThat(params.size(), is(7*2+1));
+        int i=0;
+        assertThat(params.get(i++), attribute("MAPCOLOR7"));
+        assertThat(params.get(i++), literal(equalTo(1.0)));
+        assertThat(params.get(i++), literal(isColor("FFC3C3")));
+        assertThat(params.get(i++), literal(equalTo(2.0)));
+        assertThat(params.get(i++), literal(isColor("FFE3C3")));
+        assertThat(params.get(i++), literal(equalTo(3.0)));
+        assertThat(params.get(i++), literal(isColor("FFFFC3")));
+        assertThat(params.get(i++), literal(equalTo(4.0)));
+        assertThat(params.get(i++), literal(isColor("C3FFE3")));
+        assertThat(params.get(i++), literal(equalTo(5.0)));
+        assertThat(params.get(i++), literal(isColor("C3FFFF")));
+        assertThat(params.get(i++), literal(equalTo(6.0)));
+        assertThat(params.get(i++), literal(isColor("C3C3FF")));
+        assertThat(params.get(i++), literal(equalTo(7.0)));
+        assertThat(params.get(i++), literal(isColor("BFC3FF")));
+    }
+    
+    @Ignore // This was a test to understand what was going on.  Expect it to fail
+    @Test
+    public void testExpressionLongBreakFolded() throws Exception {
+        String yaml =
+        "polygon:\n" +
+        "  fill-color: >\n"
+        + "    ${recode(MAPCOLOR7, \n"
+        + "    1.0, '#FFC3C3', \n"
+        + "    2.0, '#FFE3C3', \n"
+        + "    3.0, '#FFFFC3', \n"
+        + "    4.0, '#C3FFE3', \n"
+        + "    5.0, '#C3FFFF', \n"
+        + "    6.0, '#C3C3FF', \n"
+        + "    7.0, '#BFC3FF')}\n";
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        PolygonSymbolizer symb = (PolygonSymbolizer) fs.rules().get(0).symbolizers().get(0);
+        
+        Expression expr = symb.getFill().getColor();
+        assertThat(expr, instanceOf(RecodeFunction.class));
+        List<Expression> params = ((RecodeFunction)expr).getParameters();
+        assertThat(params.size(), is(7*2+1));
+        int i=0;
+        assertThat(params.get(i++), attribute("MAPCOLOR7"));
+        assertThat(params.get(i++), literal(equalTo(1.0)));
+        assertThat(params.get(i++), literal(isColor("FFC3C3")));
+        assertThat(params.get(i++), literal(equalTo(2.0)));
+        assertThat(params.get(i++), literal(isColor("FFE3C3")));
+        assertThat(params.get(i++), literal(equalTo(3.0)));
+        assertThat(params.get(i++), literal(isColor("FFFFC3")));
+        assertThat(params.get(i++), literal(equalTo(4.0)));
+        assertThat(params.get(i++), literal(isColor("C3FFE3")));
+        assertThat(params.get(i++), literal(equalTo(5.0)));
+        assertThat(params.get(i++), literal(isColor("C3FFFF")));
+        assertThat(params.get(i++), literal(equalTo(6.0)));
+        assertThat(params.get(i++), literal(isColor("C3C3FF")));
+        assertThat(params.get(i++), literal(equalTo(7.0)));
+        assertThat(params.get(i++), literal(isColor("BFC3FF")));
+    }
+    @Ignore // This was a test to understand what was going on.  Expect it to fail
+    @Test
+    public void testExpressionLongBreakPreserved() throws Exception {
+        String yaml =
+        "polygon:\n" +
+        "  fill-color: |\n"
+        + "    ${recode(MAPCOLOR7, \n"
+        + "    1.0, '#FFC3C3', \n"
+        + "    2.0, '#FFE3C3', \n"
+        + "    3.0, '#FFFFC3', \n"
+        + "    4.0, '#C3FFE3', \n"
+        + "    5.0, '#C3FFFF', \n"
+        + "    6.0, '#C3C3FF', \n"
+        + "    7.0, '#BFC3FF')}\n";        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        PolygonSymbolizer symb = (PolygonSymbolizer) fs.rules().get(0).symbolizers().get(0);
+        
+        Expression expr = symb.getFill().getColor();
+        assertThat(expr, instanceOf(RecodeFunction.class));
+        List<Expression> params = ((RecodeFunction)expr).getParameters();
+        assertThat(params.size(), is(7*2+1));
+        int i=0;
+        assertThat(params.get(i++), attribute("MAPCOLOR7"));
+        assertThat(params.get(i++), literal(equalTo(1.0)));
+        assertThat(params.get(i++), literal(isColor("FFC3C3")));
+        assertThat(params.get(i++), literal(equalTo(2.0)));
+        assertThat(params.get(i++), literal(isColor("FFE3C3")));
+        assertThat(params.get(i++), literal(equalTo(3.0)));
+        assertThat(params.get(i++), literal(isColor("FFFFC3")));
+        assertThat(params.get(i++), literal(equalTo(4.0)));
+        assertThat(params.get(i++), literal(isColor("C3FFE3")));
+        assertThat(params.get(i++), literal(equalTo(5.0)));
+        assertThat(params.get(i++), literal(isColor("C3FFFF")));
+        assertThat(params.get(i++), literal(equalTo(6.0)));
+        assertThat(params.get(i++), literal(isColor("C3C3FF")));
+        assertThat(params.get(i++), literal(equalTo(7.0)));
+        assertThat(params.get(i++), literal(isColor("BFC3FF")));
+    }
     @Test
     public void testExpressionAttribute() throws Exception {
         String yaml =

@@ -164,9 +164,9 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         }
     }
     
-    static final Pattern EMBEDED_EXPRESSION_ESCAPE = Pattern.compile("[$}\\\\]");
+    static final Pattern EMBEDED_EXPRESSION_TO_ESCAPE = Pattern.compile("[$}\\\\]");
     String escapeForEmbededCQL(String s) {
-        return EMBEDED_EXPRESSION_ESCAPE.matcher(s).replaceAll("\\\\$0");
+        return EMBEDED_EXPRESSION_TO_ESCAPE.matcher(s).replaceAll("\\\\$0");
     }
     
     Object toObjOrNull(Expression expr, boolean isname) {

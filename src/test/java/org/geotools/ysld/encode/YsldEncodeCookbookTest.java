@@ -276,15 +276,15 @@ public class YsldEncodeCookbookTest {
 
         YamlMap rule = style.seq("feature-styles").map(0).seq("rules").map(0);
         assertEquals("SmallPop", rule.str("name"));
-        assertEquals("pop < '50000'", rule.str("filter"));
+        assertEquals("${pop < '50000'}", rule.str("filter"));
 
         rule = style.seq("feature-styles").map(0).seq("rules").map(1);
         assertEquals("MediumPop", rule.str("name"));
-        assertEquals("pop >= '50000' AND pop < '100000'", rule.str("filter"));
+        assertEquals("${pop >= '50000' AND pop < '100000'}", rule.str("filter"));
 
         rule = style.seq("feature-styles").map(0).seq("rules").map(2);
         assertEquals("LargePop", rule.str("name"));
-        assertEquals("pop >= '100000'", rule.str("filter"));
+        assertEquals("${pop >= '100000'}", rule.str("filter"));
     }
 
     @Test
@@ -590,7 +590,7 @@ public class YsldEncodeCookbookTest {
 
         YamlMap rule = style.seq("feature-styles").map(0).seq("rules").map(0);
         assertEquals("local-road", rule.str("name"));
-        assertEquals("type = 'local-road'", rule.str("filter"));
+        assertEquals("${type = 'local-road'}", rule.str("filter"));
 
         YamlMap line = rule.seq("symbolizers").map(0).map("line");
         assertThat(line.get("stroke-color"), isColor("009933"));
@@ -598,7 +598,7 @@ public class YsldEncodeCookbookTest {
 
         rule = style.seq("feature-styles").map(1).seq("rules").map(0);
         assertEquals("secondary", rule.str("name"));
-        assertEquals("type = 'secondary'", rule.str("filter"));
+        assertEquals("${type = 'secondary'}", rule.str("filter"));
 
         line = rule.seq("symbolizers").map(0).map("line");
         assertThat(line.get("stroke-color"), isColor("0055CC"));
@@ -606,7 +606,7 @@ public class YsldEncodeCookbookTest {
 
         rule = style.seq("feature-styles").map(2).seq("rules").map(0);
         assertEquals("highway", rule.str("name"));
-        assertEquals("type = 'highway'", rule.str("filter"));
+        assertEquals("${type = 'highway'}", rule.str("filter"));
 
         line = rule.seq("symbolizers").map(0).map("line");
         assertThat(line.get("stroke-color"), isColor("FF0000"));
@@ -1137,21 +1137,21 @@ public class YsldEncodeCookbookTest {
 
         YamlMap rule = obj.seq("feature-styles").map(0).seq("rules").map(0);
         assertEquals("SmallPop", rule.str("name"));
-        assertEquals("pop < '200000'", rule.str("filter"));
+        assertEquals("${pop < '200000'}", rule.str("filter"));
 
         YamlMap poly = rule.seq("symbolizers").map(0).map("polygon");
         assertThat(poly.get("fill-color"), isColor("66FF66"));
 
         rule = obj.seq("feature-styles").map(0).seq("rules").map(1);
         assertEquals("MediumPop", rule.str("name"));
-        assertEquals("pop >= '200000' AND pop < '500000'", rule.str("filter"));
+        assertEquals("${pop >= '200000' AND pop < '500000'}", rule.str("filter"));
 
         poly = rule.seq("symbolizers").map(0).map("polygon");
         assertThat(poly.get("fill-color"), isColor("33CC33"));
 
         rule = obj.seq("feature-styles").map(0).seq("rules").map(2);
         assertEquals("LargePop", rule.str("name"));
-        assertEquals("pop > '500000'", rule.str("filter"));
+        assertEquals("${pop > '500000'}", rule.str("filter"));
 
         poly = rule.seq("symbolizers").map(0).map("polygon");
         assertThat(poly.get("fill-color"), isColor("009900"));

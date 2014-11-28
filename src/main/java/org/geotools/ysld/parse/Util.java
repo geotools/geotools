@@ -234,9 +234,12 @@ public class Util {
         return WellKnownZoomContextFinder.getInstance().get(name);
     }
     
+    static final Pattern EMBEDED_EXPRESSION_ESCAPED = Pattern.compile("\\\\([$}\\\\])");
+    static final Pattern EMBEDED_FILTER = Pattern.compile("^\\s*\\$\\{(.*?)\\}\\s*$");
     public static String removeExpressionBrackets(String s) {
-        if(s.startsWith("${") && s.endsWith("}")) {
-            return s.substring(2, s.length()-1);
+        Matcher m1 = EMBEDED_FILTER.matcher(s);
+        if(m1.matches()) {
+            return EMBEDED_EXPRESSION_ESCAPED.matcher(m1.group(1)).replaceAll("$1");
         }
         return s;
     }

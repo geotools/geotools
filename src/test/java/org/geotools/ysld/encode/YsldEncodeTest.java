@@ -84,7 +84,7 @@ public class YsldEncodeTest {
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         String filter = obj.seq("feature-styles").map(0).seq("rules").map(0).str("filter");
-        assertEquals("strEndsWith(foo,'bar') = 'true'", filter);
+        assertEquals("${strEndsWith(foo,'bar') = 'true'}", filter);
     }
 
     @Test
@@ -449,6 +449,69 @@ public class YsldEncodeTest {
         String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").str("geometry");
         
         assertThat(result, equalTo("${strEndsWith(attribute1,'\\}')}"));
+    }
+    
+    @Test
+    public void testFilter() throws Exception {
+        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+        
+        UserLayer layer = styleFactory.createUserLayer();
+        sld.layers().add(layer);
+        
+        Style style = styleFactory.createStyle();
+        layer.userStyles().add(style);
+        
+        Rule rule = styleFactory.createRule();
+        
+        rule.setFilter(filterFactory.less(filterFactory.property("foo"), filterFactory.literal(2)));
+        
+        style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
+        style.featureTypeStyles().get(0).rules().add(rule);
+        
+        PointSymbolizer p = styleFactory.createPointSymbolizer();
+        rule.symbolizers().add((Symbolizer)p);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0);
+        
+        assertThat(result, yHasEntry("filter", equalTo("${foo < 2}")));
+    }
+    @Test
+    public void testFilterEscape() throws Exception {
+        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+        
+        UserLayer layer = styleFactory.createUserLayer();
+        sld.layers().add(layer);
+        
+        Style style = styleFactory.createStyle();
+        layer.userStyles().add(style);
+        
+        Rule rule = styleFactory.createRule();
+        
+        rule.setFilter(filterFactory.less(filterFactory.property("foo"), filterFactory.literal("}$")));
+        
+        style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
+        style.featureTypeStyles().get(0).rules().add(rule);
+        
+        PointSymbolizer p = styleFactory.createPointSymbolizer();
+        rule.symbolizers().add((Symbolizer)p);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0);
+        
+        assertThat(result, yHasEntry("filter", equalTo("${foo < '\\}\\$'}")));
     }
     
     @Test

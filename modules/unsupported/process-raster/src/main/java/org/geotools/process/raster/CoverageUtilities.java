@@ -3,6 +3,7 @@ package org.geotools.process.raster;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.DataBuffer;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.media.jai.ROI;
@@ -10,9 +11,12 @@ import javax.media.jai.ROI;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.process.ProcessException;
+import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.ClassChanger;
 import org.geotools.util.Utilities;
@@ -21,6 +25,8 @@ import org.jaitools.media.jai.rangelookup.RangeLookupTable;
 import org.jaitools.numeric.Range;
 import org.opengis.coverage.SampleDimensionType;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.TransformException;
 
@@ -36,6 +42,27 @@ import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
  * @source $URL$
  */
 public class CoverageUtilities {
+
+    public static final String NORTH = "NORTH";
+
+    public static final String SOUTH = "SOUTH";
+
+    public static final String WEST = "WEST";
+
+    public static final String EAST = "EAST";
+
+    public static final String XRES = "XRES";
+
+    public static final String YRES = "YRES";
+
+    public static final String ROWS = "ROWS";
+
+    public static final String COLS = "COLS";
+
+    public static final String MINY = "MINY";
+
+    public static final String MINX = "MINX";
+
     /**
      * Do not allows instantiation of this class.
      */
@@ -321,5 +348,47 @@ public class CoverageUtilities {
 //	        throw new IllegalArgumentException("Unknown DataBuffer type " + type);
 //	    }
 //	}
+
+    /**
+     * Get the parameters of the region covered by the {@link GridCoverage2D coverage}.
+     * 
+     * @param gridCoverage the coverage.
+     * @return the {@link HashMap map} of parameters. ( {@link #NORTH} and the other static vars can be used to retrieve them.
+     */
+    public static HashMap<String, Double> getRegionParamsFromGridCoverage(
+            GridCoverage2D gridCoverage) {
+        HashMap<String, Double> envelopeParams = new HashMap<String, Double>();
+
+        Envelope envelope = gridCoverage.getEnvelope();
+
+        DirectPosition lowerCorner = envelope.getLowerCorner();
+        double[] westSouth = lowerCorner.getCoordinate();
+        DirectPosition upperCorner = envelope.getUpperCorner();
+        double[] eastNorth = upperCorner.getCoordinate();
+
+        GridGeometry2D gridGeometry = gridCoverage.getGridGeometry();
+        GridEnvelope2D gridRange = gridGeometry.getGridRange2D();
+        int height = gridRange.height;
+        int width = gridRange.width;
+        int minX = gridRange.x;
+        int minY = gridRange.y;
+
+        AffineTransform gridToCRS = (AffineTransform) gridGeometry.getGridToCRS();
+        double xRes = XAffineTransform.getScaleX0(gridToCRS);
+        double yRes = XAffineTransform.getScaleY0(gridToCRS);
+
+        envelopeParams.put(NORTH, eastNorth[1]);
+        envelopeParams.put(SOUTH, westSouth[1]);
+        envelopeParams.put(WEST, westSouth[0]);
+        envelopeParams.put(EAST, eastNorth[0]);
+        envelopeParams.put(XRES, xRes);
+        envelopeParams.put(YRES, yRes);
+        envelopeParams.put(ROWS, (double) height);
+        envelopeParams.put(COLS, (double) width);
+        envelopeParams.put(MINY, (double) minY);
+        envelopeParams.put(MINX, (double) minX);
+
+        return envelopeParams;
+    }
 
 }

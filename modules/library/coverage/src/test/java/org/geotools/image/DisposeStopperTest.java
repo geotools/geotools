@@ -33,15 +33,21 @@ import javax.imageio.stream.ImageInputStream;
 import org.geotools.TestData;
 import org.geotools.coverage.processing.CropTest;
 import org.geotools.resources.image.ImageUtilities;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.sun.media.jai.operator.ImageReadDescriptor;
 
 public class DisposeStopperTest {
 
+    @Before
+    public void setUp() throws Exception {
+        TestData.unzipFile(CropTest.class, "test.zip");
+    }
+
     @Test
     public void testDispose() throws FileNotFoundException, IOException {
-        final File tiff = TestData.file(CropTest.class, "sampleData128.tif");
+        final File tiff = TestData.file(CropTest.class, "test.tif");
 
         final TIFFImageReader reader = (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader) new TIFFImageReaderSpi()
                 .createReaderInstance();
@@ -58,7 +64,7 @@ public class DisposeStopperTest {
             assertNotNull(image);
 
             // I still can get data since using the stopper the image isn't disposed
-            assertEquals(1, image.getData().getSample(1, 5, 0));
+            assertEquals(0, image.getData().getSample(1, 1, 0));
 
             ImageUtilities.disposeImage(image);
             image.getData().getSample(1, 5, 0);

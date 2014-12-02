@@ -26,6 +26,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
@@ -117,7 +118,8 @@ public final class MarchingSquaresVectorizer {
     private static final java.util.logging.Logger LOGGER = java.util.logging.Logger
             .getLogger("MarchingSquaresVectorizer");
 
-    public static final Range<Integer> DEFAULT_RANGE = new Range<Integer>(Integer.class, 0, 0); 
+    public static final List<Range<Integer>> DEFAULT_RANGES = Collections
+            .singletonList(new Range<Integer>(Integer.class, 0, 0)); 
 
     public static final double DEFAULT_SIMPLIFIER_FACTOR = 2.0d;
 
@@ -306,15 +308,16 @@ public final class MarchingSquaresVectorizer {
     private ImageLoadingType imageLoadingType;
 
     /** 
-     * A range of values to be excluded from the valid polygon search. 
+     * Ranges of values to be excluded from the valid polygon search. 
      * MarchingSquare is born to extract polygons from NOT-ZERO pixels.
      * For RGB images we compute luminance and we work on NOT-ZERO luminance.
-     * The exclusion range allows to specify a different range of values to be excluded.
+     * The exclusion range allows to specify different range of values to be excluded.
      * This may be helpful when you want to exclude "Dark" pixels from the output, 
      * where "Dark" means having a luminance between 0 and a reference value (As an 
-     * instance: 10) 
+     * instance: 10) as well as "white pixels" such as clouds (adding a range like
+     * 254, 255). 
      * */
-    private Range<Integer> exclusionLuminanceRange = DEFAULT_RANGE;
+    private List<Range<Integer>> exclusionLuminanceRanges = DEFAULT_RANGES;
 
     /** Specifies if we want footprint in model coordinates or raster coordinates */
     private FootprintCoordinates footprintCoordinates = FootprintCoordinates.getDefault();
@@ -327,15 +330,15 @@ public final class MarchingSquaresVectorizer {
      * @param thresholdArea the minimum area required by a polygon to be included in the result
      * @param simplifierFactor the simplifier factor to be applied to compute the simplified version of the biggest polygon.
      * @param imageLoadingType the type of imageLoading (DEFERRED vs IMMEDIATE).
-     * @param exclusionLuminanceRange the range of luminance values to be excluded by the computation.
+     * @param exclusionLuminanceRanges the ranges of luminance values to be excluded by the computation.
      */
     public MarchingSquaresVectorizer(GridCoverage2D inGeodata, RenderingHints hints,
             double thresholdArea, double simplifierFactor, ImageLoadingType imageLoadingType,
-            Range<Integer> exclusionLuminanceRange) {
+            List<Range<Integer>> exclusionLuminanceRanges) {
         this.inGeodata = inGeodata;
         this.thresholdArea = thresholdArea;
         this.simplifierFactor = simplifierFactor;
-        this.exclusionLuminanceRange = exclusionLuminanceRange;
+        this.exclusionLuminanceRanges = exclusionLuminanceRanges;
 
         RenderingHints localHints = (hints != null) ? (RenderingHints) hints.clone() : null;
         if ((localHints != null) && localHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
@@ -357,16 +360,16 @@ public final class MarchingSquaresVectorizer {
      * @param hints hints to be used by inner processing, it usually contains tile caches, schedulers
      * @param thresholdArea the minimum area required by a polygon to be included in the result
      * @param imageLoadingType the type of imageLoading (DEFERRED vs IMMEDIATE).
-     * @param exclusionLuminanceRange the range of luminance values to be excluded by the computation.
+     * @param exclusionLuminanceRanges the range of luminance values to be excluded by the computation.
      */
     public MarchingSquaresVectorizer(final RenderedImage ri, final RenderingHints hints,
             final double thresholdArea, ImageLoadingType imageLoadingType,
-            final Range<Integer> exclusionLuminanceRange) {
+            final List<Range<Integer>> exclusionLuminanceRanges) {
         this.inputRenderedImage = ri;
         this.footprintCoordinates = FootprintCoordinates.RASTER_SPACE;
         this.computeSimplifiedFootprint = false;
         this.thresholdArea = thresholdArea;
-        this.exclusionLuminanceRange = exclusionLuminanceRange;
+        this.exclusionLuminanceRanges = exclusionLuminanceRanges;
 
         RenderingHints localHints = (hints != null) ? (RenderingHints) hints.clone() : null;
         if ((localHints != null) && localHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
@@ -890,7 +893,7 @@ public final class MarchingSquaresVectorizer {
 
             switch (dataType) {
             case DataBuffer.TYPE_USHORT:
-                inputRI = LookupDescriptor.create(inputRI, createLookupTableUShort(exclusionLuminanceRange),
+                inputRI = LookupDescriptor.create(inputRI, createLookupTableUShort(exclusionLuminanceRanges),
                         localHints);
                 break;
             case DataBuffer.TYPE_SHORT:
@@ -899,7 +902,7 @@ public final class MarchingSquaresVectorizer {
                 inputRI = RescaleDescriptor.create(inputRI, new double[] { scale },
                         new double[] { offset }, localHints);
                 imagesStack.push(inputRI);
-                inputRI = LookupDescriptor.create(inputRI, createLookupTableByte(exclusionLuminanceRange), localHints);
+                inputRI = LookupDescriptor.create(inputRI, createLookupTableByte(exclusionLuminanceRanges), localHints);
                 break;
             case DataBuffer.TYPE_INT:
                 scale = MAX_8BIT_VALUE / Integer.MAX_VALUE;
@@ -907,7 +910,7 @@ public final class MarchingSquaresVectorizer {
                 inputRI = RescaleDescriptor.create(inputRI, new double[] { scale },
                         new double[] { offset }, localHints);
                 imagesStack.push(inputRI);
-                inputRI = LookupDescriptor.create(inputRI, createLookupTableByte(exclusionLuminanceRange), localHints);
+                inputRI = LookupDescriptor.create(inputRI, createLookupTableByte(exclusionLuminanceRanges), localHints);
                 break;
             default:
                 throw new UnsupportedOperationException("Wrong data type:" + dataType);
@@ -916,7 +919,7 @@ public final class MarchingSquaresVectorizer {
 
             assert inputRI.getSampleModel().getDataType() == DataBuffer.TYPE_BYTE;
         } else {
-            inputRI = LookupDescriptor.create(inputRI, createLookupTableByte(exclusionLuminanceRange), localHints);
+            inputRI = LookupDescriptor.create(inputRI, createLookupTableByte(exclusionLuminanceRanges), localHints);
         }
         return inputRI;
     }
@@ -1353,27 +1356,30 @@ public final class MarchingSquaresVectorizer {
         return gf.createPolygon(gf.createLinearRing(coords), null);
     }
 
-    private LookupTableJAI createLookupTableByte(Range<Integer> exclusionValue) {
+    private LookupTableJAI createLookupTableByte(List<Range<Integer>> exclusionValues) {
         final byte[] b = new byte[256];
         Arrays.fill(b, (byte) 0);
-        final int minValue = exclusionValue.getMinValue();
-        final int maxValue = exclusionValue.getMaxValue();
-        for (int i = minValue; i <= maxValue; i++) {
-            b[i] = (byte) INVALID_PIXEL_I;
+        for (Range<Integer> exclusionValue : exclusionValues) {
+            final int minValue = exclusionValue.getMinValue();
+            final int maxValue = exclusionValue.getMaxValue();
+            for (int i = minValue; i <= maxValue; i++) {
+                b[i] = (byte) INVALID_PIXEL_I;
+            }
         }
 
         return new LookupTableJAI(b);
     }
 
-    private LookupTableJAI createLookupTableUShort(Range<Integer> exclusionValue) {
+    private LookupTableJAI createLookupTableUShort(List<Range<Integer>> exclusionValues) {
         final byte[] bUShort = new byte[65536];
         Arrays.fill(bUShort, (byte) 0);
-        final int minValue = exclusionValue.getMinValue();
-        final int maxValue = exclusionValue.getMaxValue();
-        for (int i = minValue; i <= maxValue; i++) {
-            bUShort[i] = (byte) INVALID_PIXEL_I;
+        for (Range<Integer> exclusionValue : exclusionValues) {
+            final int minValue = exclusionValue.getMinValue();
+            final int maxValue = exclusionValue.getMaxValue();
+            for (int i = minValue; i <= maxValue; i++) {
+                bUShort[i] = (byte) INVALID_PIXEL_I;
+            }
         }
-
         return new LookupTableJAI(bUShort);
     }
 

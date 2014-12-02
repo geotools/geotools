@@ -53,9 +53,11 @@ import javax.media.jai.BorderExtenderReflect;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
+import javax.media.jai.LookupTableJAI;
 import javax.media.jai.OpImage;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
 
 import org.geotools.geometry.GeneralEnvelope;
@@ -91,15 +93,18 @@ import com.sun.media.jai.util.Rational;
  * @author Simone Giannecchini, GeoSolutions
  */
 public final class ImageUtilities {
-	
 
-	 /**
+    public static final double[][] RGB_TO_GRAY_MATRIX = { { 0.114, 0.587, 0.299, 0 } };
+
+    public static final double[][] RGBA_TO_GRAY_MATRIX = { { 0.114, 0.587, 0.299, 0, 0 } };
+
+    /**
      * {@code true} if JAI media lib is available.
      */
     private static final boolean mediaLibAvailable;
     static {
 
-    	// do we wrappers at hand?
+        // do we wrappers at hand?
         boolean mediaLib = false;
         Class<?> mediaLibImage = null;
         try {
@@ -1180,5 +1185,113 @@ public final class ImageUtilities {
                  break;
             }
         return values;
+    }
+    /**
+     * Allow to dispose this image, as well as the related image sources, readers, stream, ROI.
+     * 
+     * @param inputImage the image to be disposed.
+     */
+    public static void disposeImage(RenderedImage inputImage) {
+        if (inputImage != null) {
+            if (inputImage instanceof PlanarImage) {
+                PlanarImage planarImage = (PlanarImage) inputImage;
+
+                final int nSources = planarImage.getNumSources();
+                if (nSources > 0) {
+                    for (int k = 0; k < nSources; k++) {
+                        Object source = null;
+                        try {
+                            source = planarImage.getSourceObject(k);
+
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            // Ignore
+                        }
+                        if (source != null) {
+                            if (source instanceof PlanarImage) {
+                                disposeImage((PlanarImage) source);
+                            } else if (source instanceof BufferedImage) {
+                                ((BufferedImage) source).flush();
+                                source = null;
+                            }
+                        }
+                    }
+                } else {
+                    // Trying disposing the reader
+                    Object imageReader = inputImage
+                            .getProperty(ImageReadDescriptor.PROPERTY_NAME_IMAGE_READER);
+                    if ((imageReader != null) && (imageReader instanceof ImageReader)) {
+                        final ImageReader reader = (ImageReader) imageReader;
+                        final ImageInputStream stream = (ImageInputStream) reader.getInput();
+                        try {
+                            stream.close();
+                        } catch (Throwable e) {
+                            // swallow this
+                        }
+                        try {
+                            reader.dispose();
+                        } catch (Throwable e) {
+                            // swallow this
+                        }
+                    }
+                }
+
+                // Looking for an ROI image and disposing it too
+                final Object roi = inputImage.getProperty("ROI");
+                if ((roi != null) && ((roi instanceof ROI) || (roi instanceof RenderedImage))) {
+                    if (roi instanceof ROI) {
+                        ROI roiImage = (ROI) roi;
+                        Rectangle bounds = roiImage.getBounds();
+                        if (!(bounds.isEmpty())) {
+                            PlanarImage image = roiImage.getAsImage();
+                            if (image != null) {
+                                image.dispose();
+                                image = null;
+                                roiImage = null;
+                            }
+                        }
+                    } else {
+                        PlanarImage roiImage = PlanarImage.wrapRenderedImage((RenderedImage) roi);
+                        roiImage.dispose();
+                        roiImage = null;
+                    }
+                }
+
+                if (inputImage instanceof PlanarImage) {
+                    ((PlanarImage) inputImage).dispose();
+                } else if (inputImage instanceof BufferedImage) {
+                    ((BufferedImage) inputImage).flush();
+                    inputImage = null;
+                }
+            } else if (inputImage instanceof BufferedImage) {
+                ((BufferedImage) inputImage).flush();
+                inputImage = null;
+            }
+        }
+    }
+    /**
+     * Transform a data type into a representative {@link String}.
+     * 
+     * @param dataType
+     * @return a representative {@link String}.
+     */
+    public static String getDatabufferTypeName(int dataType) {
+        switch (dataType) {
+        case DataBuffer.TYPE_USHORT:
+            return "TYPE_USHORT";
+        case DataBuffer.TYPE_SHORT:
+            return "TYPE_SHORT";
+        case DataBuffer.TYPE_INT:
+            return "TYPE_INT";
+        case DataBuffer.TYPE_BYTE:
+            return "TYPE_BYTE";
+        case DataBuffer.TYPE_FLOAT:
+            return "TYPE_FLOAT";
+        case DataBuffer.TYPE_DOUBLE:
+            return "TYPE_DOUBLE";
+        case DataBuffer.TYPE_UNDEFINED:
+        default:
+            throw new UnsupportedOperationException("Wrong data type:" + dataType);
+
+        }
     }
 }

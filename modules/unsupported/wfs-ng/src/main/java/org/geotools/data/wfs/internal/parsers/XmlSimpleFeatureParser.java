@@ -124,8 +124,6 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
             parser = factory.newPullParser();
             parser.setInput(inputStream, "UTF-8");
             parser.nextTag();
-
-            // TODO: namespace?
             parser.require(START_TAG, null, WFS.FeatureCollection.getLocalPart());
 
             String nof = parser.getAttributeValue(null, "numberOfFeatures");
@@ -270,7 +268,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
      * @throws XmlPullParserException
      */
     private Geometry parseGeom() throws NoSuchAuthorityCodeException, FactoryException,
-    XmlPullParserException, IOException {
+            XmlPullParserException, IOException {
         final QName startingGeometryTagName = new QName(parser.getNamespace(), parser.getName());
         int dimension = crsDimension(2);
         CoordinateReferenceSystem crs = crs(DefaultGeographicCRS.WGS84);
@@ -891,13 +889,6 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
                 if (featureNamespace.equals(namespace) && featureName.equals(name)) {
                     String featureId = parser.getAttributeValue(GML.id.getNamespaceURI(),
                             GML.id.getLocalPart());
-                    /*
-                    if (featureId == null) {
-                        featureId = parser.getAttributeValue(
-                                                        org.geotools.gml3.v3_2.GML.id.getNamespaceURI(),
-                                                        org.geotools.gml3.v3_2.GML.id.getLocalPart());
-                    }
-                     */
 
                     if (featureId == null) {
                         featureId = parser.getAttributeValue(null, "fid");

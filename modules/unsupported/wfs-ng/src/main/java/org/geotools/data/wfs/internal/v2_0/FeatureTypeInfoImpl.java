@@ -53,7 +53,7 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
     @Override
     public String getTitle() {
         return eType.getTitle() == null || eType.getTitle().isEmpty() ? null : String.valueOf(eType
-                .getTitle().get(0));
+                .getTitle().get(0).getValue());
     }
 
     @Override

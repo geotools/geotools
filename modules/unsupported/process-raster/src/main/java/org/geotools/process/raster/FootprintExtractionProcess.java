@@ -16,6 +16,8 @@
  */
 package org.geotools.process.raster;
 
+import java.util.List;
+
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -46,9 +48,9 @@ import com.vividsolutions.jts.geom.Geometry;
  * Luminance is computed on the input dataset and not-zero luminance pixels will be used. 
  * 
  * <p> 
- * An optional {@code exclusionRange} parameter is supported to define which luminance values 
+ * An optional {@code exclusionRanges} parameter is supported to define which luminance values 
  * should be excluded from the search. This allows you, as an instance, to exclude
- * "Dark pixels / Almost black pixels" from the results.
+ * "Dark pixels / Almost black pixels / White pixels" from the results.
  * 
  * <p>
  * An optional {@code thresholdArea} parameter is supported to exclude small polygons from 
@@ -86,7 +88,7 @@ public class FootprintExtractionProcess implements RasterProcess {
      * 
      * @param coverage the data coverage
      * 
-     * @param exclusionRange An optional {@code exclusionRange} parameter is supported to define 
+     * @param exclusionRanges An optional {@code exclusionRanges} parameter is supported to define 
      *        which luminance values should be excluded from the search. This allows you, as an 
      *        instance, to exclude "Dark pixels / Almost black pixels" from the results.
      * 
@@ -118,7 +120,7 @@ public class FootprintExtractionProcess implements RasterProcess {
     @DescribeResult(name = "result", description = "The compute footprint geometry")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "data", description = "Source raster") GridCoverage2D coverage,
-            @DescribeParameter(name = "exclusionRange", description = "the range of luminance values to be excluded by the computation.", min = 0) Range<Integer> exclusionRange,
+            @DescribeParameter(name = "exclusionRanges", description = "the ranges of luminance values to be excluded by the computation.", min = 0) List<Range<Integer>> exclusionRanges,
             @DescribeParameter(name = "thresholdArea", description = "Indicates the minimum area of a polygon to be included in the final result", min = 0) Double thresholdArea, 
             @DescribeParameter(name = "computeSimplifiedFootprint", description = "Indicates whether the simplified footprint should be computed", min = 0) Boolean computeSimplifiedFootprint, 
             @DescribeParameter(name = "simplifierFactor", description = "Indicates the simplifier factor to be applied when computing the simplified footprint", min = 0) Double simplifierFactor, 
@@ -136,8 +138,8 @@ public class FootprintExtractionProcess implements RasterProcess {
         }
 
         // Checking for defaults
-        if (exclusionRange == null) {
-            exclusionRange = MarchingSquaresVectorizer.DEFAULT_RANGE;
+        if (exclusionRanges == null) {
+            exclusionRanges = MarchingSquaresVectorizer.DEFAULT_RANGES;
         }
 
         if (computeSimplifiedFootprint == null) {
@@ -164,7 +166,7 @@ public class FootprintExtractionProcess implements RasterProcess {
             thresholdArea = MarchingSquaresVectorizer.DEFAULT_THRESHOLD_AREA;
         }
 
-        MarchingSquaresVectorizer vectorizer = new MarchingSquaresVectorizer(coverage, null, thresholdArea, simplifierFactor, imageLoadingType, exclusionRange);
+        MarchingSquaresVectorizer vectorizer = new MarchingSquaresVectorizer(coverage, null, thresholdArea, simplifierFactor, imageLoadingType, exclusionRanges);
         vectorizer.setComputeSimplifiedFootprint(computeSimplifiedFootprint);
         vectorizer.setForceValid(forceValid);
         vectorizer.setRemoveCollinear(removeCollinear);

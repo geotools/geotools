@@ -35,7 +35,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -98,6 +101,8 @@ public class FootprintExtractionProcessTest {
     private Geometry referenceGeometry;
 
     private File cloudFile;
+
+    private File islandFile;
 
     static enum WritingFormat {
         WKB {
@@ -218,6 +223,7 @@ public class FootprintExtractionProcessTest {
     public void setup() throws IOException, ParseException {
         process = new FootprintExtractionProcess();
         cloudFile = TestData.file(this, "cloud.tif");
+        islandFile = TestData.file(this, "island.tif");
         final File geometryFile = TestData.file(this, "cloud.wkt");
         referenceGeometry = wktRead(geometryFile);
     }
@@ -384,8 +390,8 @@ public class FootprintExtractionProcessTest {
 
             // Exclude pixels with luminance less than 20.
             final int referenceLuminance = 10;
-            Range<Integer> exclusionRange = new Range<Integer>(Integer.class, 0, referenceLuminance);
-            SimpleFeatureCollection fc = process.execute(cov, exclusionRange, 10d, false, null,
+            List<Range<Integer>> exclusionRanges = Collections.singletonList(new Range<Integer>(Integer.class, 0, referenceLuminance));
+            SimpleFeatureCollection fc = process.execute(cov, exclusionRanges, 10d, false, null,
                     true, true, null, null);
             iter = fc.features();
 
@@ -410,6 +416,49 @@ public class FootprintExtractionProcessTest {
 
             // The computed polygon should have different shape due to dark pixels being excluded
             assertFalse(referenceGeometry.equalsExact(geometry, TOLERANCE));
+        } finally {
+            if (iter != null) {
+                iter.close();
+            }
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+
+                }
+            }
+            if (cov != null) {
+                try {
+                    cov.dispose(true);
+                } catch (Throwable t) {
+
+                }
+            }
+        }
+    }
+
+    @Test
+    public void islandPolygonExtractionWithoutDarkPixelsAndWhiteClouds() throws Exception {
+        GeoTiffReader reader = null;
+        FeatureIterator<SimpleFeature> iter = null;
+        GridCoverage2D cov = null;
+        try {
+            reader = new GeoTiffReader(islandFile);
+            cov = reader.read(null);
+
+            // Test removing black areas and clouds
+            List<Range<Integer>> exclusionRanges = new ArrayList<Range<Integer>>();
+            exclusionRanges.add(new Range<Integer>(Integer.class, 0, 10));
+            exclusionRanges.add(new Range<Integer>(Integer.class, 253, 255));
+            SimpleFeatureCollection fc = process.execute(cov, exclusionRanges, 10d, false, null,
+                    true, true, null, null);
+            iter = fc.features();
+
+            SimpleFeature feature = iter.next();
+            Geometry geometry = (Geometry) feature.getDefaultGeometry();
+            Geometry islandWkt = wktRead(TestData.file(this, "island.wkt"));
+            assertTrue(islandWkt.equalsExact(geometry, TOLERANCE));
+
         } finally {
             if (iter != null) {
                 iter.close();

@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<WFS_Capabilities version="1.0.0" xmlns="http://www.opengis.net/wfs" xmlns:ows="http://www.opengis.net/ows" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-capabilities.xsd">
+  <Service>
+    <Name>WFS service voor AgriculturalAndAquacultureFacilities van de gezamenlijke provincies</Name>
+    <Title>WFS service voor AgriculturalAndAquacultureFacilities van de gezamenlijke provincies</Title>
+    <Abstract>Deze WFS service heeft betrekking op AgriculturalAndAquacultureFacilities.</Abstract>
+    <OnlineResource/>
+    <Fees>none</Fees>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://localhost/test/getcapabilities_1_0_0_EmptyOnlineResource.xml?"/>
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://localhost/test/getcapabilities_1_0_0_EmptyOnlineResource.xml"/>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <DescribeFeatureType>
+        <SchemaDescriptionLanguage>
+          <XMLSCHEMA/>
+        </SchemaDescriptionLanguage>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://localhost/test/getcapabilities_1_0_0_EmptyOnlineResource.xml?"/>
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://localhost/test/getcapabilities_1_0_0_EmptyOnlineResource.xml"/>
+          </HTTP>
+        </DCPType>
+      </DescribeFeatureType>
+      <GetFeature>
+        <ResultFormat>
+          <GML2/>
+        </ResultFormat>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://localhost/test/getcapabilities_1_0_0_EmptyOnlineResource.xml?"/>
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://localhost/test/getcapabilities_1_0_0_EmptyOnlineResource.xml"/>
+          </HTTP>
+        </DCPType>
+      </GetFeature>
+    </Request>
+  </Capability>
+  <FeatureTypeList>
+    <Operations>
+      <Query/>
+    </Operations>
+    <FeatureType>
+      <Name xmlns:app="http://www.ipo.nl/InSpider">app:Stalgroep</Name>
+      <Title>app:Stalgroep</Title>
+      <SRS>EPSG:28992</SRS>
+      <Operations>
+        <Query/>
+      </Operations>
+      <LatLongBoundingBox minx="-39.504373" miny="46.072145" maxx="91.823489" maxy="88.225486"/>
+    </FeatureType>
+  </FeatureTypeList>
+  <ogc:Filter_Capabilities>
+    <ogc:Spatial_Capabilities>
+      <ogc:Spatial_Operators>
+        <ogc:BBOX/>
+        <ogc:Equals/>
+        <ogc:Disjoint/>
+        <ogc:Intersect/>
+        <ogc:Touches/>
+        <ogc:Crosses/>
+        <ogc:Within/>
+        <ogc:Contains/>
+        <ogc:Overlaps/>
+        <ogc:Beyond/>
+        <ogc:DWithin/>
+      </ogc:Spatial_Operators>
+    </ogc:Spatial_Capabilities>
+    <ogc:Scalar_Capabilities>
+      <ogc:Logical_Operators/>
+      <ogc:Comparison_Operators>
+        <ogc:Simple_Comparisons/>
+        <ogc:Like/>
+        <ogc:Between/>
+        <ogc:NullCheck/>
+      </ogc:Comparison_Operators>
+      <ogc:Arithmetic_Operators>
+        <ogc:Simple_Arithmetic/>
+        <ogc:Functions>
+          <ogc:Function_Names>
+            <ogc:Function_Name nArgs="1">Area</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Centroid</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">ExtraProp</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">GeometryFromWKT</ogc:Function_Name>
+            <ogc:Function_Name nArgs="0">GetCurrentScale</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">IDiv</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">IMod</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">InteriorPoint</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">IsCurve</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">IsPoint</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">IsSurface</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Length</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Lower</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">MoveGeometry</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Upper</ogc:Function_Name>
+          </ogc:Function_Names>
+        </ogc:Functions>
+      </ogc:Arithmetic_Operators>
+    </ogc:Scalar_Capabilities>
+  </ogc:Filter_Capabilities>
+</WFS_Capabilities>

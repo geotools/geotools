@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,9 @@
  */
 package org.geotools.filter.v2_0;
 
+import net.opengis.fes20.Fes20Factory;
+import net.opengis.ows10.Ows10Factory;
+
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.v1_1.SortByTypeBinding;
 import org.geotools.filter.v1_1.SortOrderTypeBinding;
@@ -23,6 +26,10 @@ import org.geotools.filter.v1_1.SortPropertyTypeBinding;
 import org.geotools.filter.v2_0.bindings.AfterBinding;
 import org.geotools.filter.v2_0.bindings.AndBinding;
 import org.geotools.filter.v2_0.bindings.AnyInteractsBinding;
+import org.geotools.filter.v2_0.bindings.ArgumentTypeBinding;
+import org.geotools.filter.v2_0.bindings.ArgumentsTypeBinding;
+import org.geotools.filter.v2_0.bindings.AvailableFunctionTypeBinding;
+import org.geotools.filter.v2_0.bindings.AvailableFunctionsTypeBinding;
 import org.geotools.filter.v2_0.bindings.BBOXTypeBinding;
 import org.geotools.filter.v2_0.bindings.BeforeBinding;
 import org.geotools.filter.v2_0.bindings.BeginsBinding;
@@ -32,6 +39,9 @@ import org.geotools.filter.v2_0.bindings.BinaryComparisonOpTypeBinding;
 import org.geotools.filter.v2_0.bindings.BinaryLogicOpTypeBinding;
 import org.geotools.filter.v2_0.bindings.BinarySpatialOpTypeBinding;
 import org.geotools.filter.v2_0.bindings.BinaryTemporalOpTypeBinding;
+import org.geotools.filter.v2_0.bindings.ComparisonOperatorTypeBinding;
+import org.geotools.filter.v2_0.bindings.ComparisonOperatorsTypeBinding;
+import org.geotools.filter.v2_0.bindings.ConformanceTypeBinding;
 import org.geotools.filter.v2_0.bindings.ContainsBinding;
 import org.geotools.filter.v2_0.bindings.CrossesBinding;
 import org.geotools.filter.v2_0.bindings.DWithinBinding;
@@ -42,7 +52,11 @@ import org.geotools.filter.v2_0.bindings.EndedByBinding;
 import org.geotools.filter.v2_0.bindings.EndsBinding;
 import org.geotools.filter.v2_0.bindings.EqualsBinding;
 import org.geotools.filter.v2_0.bindings.FilterTypeBinding;
+import org.geotools.filter.v2_0.bindings.Filter_CapabilitiesTypeBinding;
 import org.geotools.filter.v2_0.bindings.FunctionTypeBinding;
+import org.geotools.filter.v2_0.bindings.GeometryOperandsTypeBinding;
+import org.geotools.filter.v2_0.bindings.GeometryOperandsType_GeometryOperandBinding;
+import org.geotools.filter.v2_0.bindings.Id_CapabilitiesTypeBinding;
 import org.geotools.filter.v2_0.bindings.IntersectsBinding;
 import org.geotools.filter.v2_0.bindings.LiteralBinding;
 import org.geotools.filter.v2_0.bindings.MeetsBinding;
@@ -61,6 +75,11 @@ import org.geotools.filter.v2_0.bindings.PropertyIsLikeTypeBinding;
 import org.geotools.filter.v2_0.bindings.PropertyIsNotEqualToBinding;
 import org.geotools.filter.v2_0.bindings.PropertyIsNullTypeBinding;
 import org.geotools.filter.v2_0.bindings.ResourceIdTypeBinding;
+import org.geotools.filter.v2_0.bindings.ResourceIdentifierTypeBinding;
+import org.geotools.filter.v2_0.bindings.Scalar_CapabilitiesTypeBinding;
+import org.geotools.filter.v2_0.bindings.SpatialOperatorTypeBinding;
+import org.geotools.filter.v2_0.bindings.SpatialOperatorsTypeBinding;
+import org.geotools.filter.v2_0.bindings.Spatial_CapabilitiesTypeBinding;
 import org.geotools.filter.v2_0.bindings.TContainsBinding;
 import org.geotools.filter.v2_0.bindings.TEqualsBinding;
 import org.geotools.filter.v2_0.bindings.TOverlapsBinding;
@@ -68,6 +87,7 @@ import org.geotools.filter.v2_0.bindings.TouchesBinding;
 import org.geotools.filter.v2_0.bindings.ValueReferenceBinding;
 import org.geotools.filter.v2_0.bindings.VersionTypeBinding;
 import org.geotools.filter.v2_0.bindings.WithinBinding;
+import org.geotools.filter.v2_0.bindings._LogicalOperatorsBinding;
 import org.geotools.gml3.v3_2.GMLConfiguration;
 import org.geotools.ows.v1_1.OWSConfiguration;
 import org.geotools.xml.Configuration;
@@ -110,24 +130,25 @@ public class FESConfiguration extends Configuration {
 //        container.registerComponentImplementation(FES.AbstractSelectionClauseType,AbstractSelectionClauseTypeBinding.class);
 //        container.registerComponentImplementation(FES.AbstractSortingClauseType,AbstractSortingClauseTypeBinding.class);
 //        container.registerComponentImplementation(FES.AliasesType,AliasesTypeBinding.class);
-//        container.registerComponentImplementation(FES.ArgumentsType,ArgumentsTypeBinding.class);
-//        container.registerComponentImplementation(FES.ArgumentType,ArgumentTypeBinding.class);
-//        container.registerComponentImplementation(FES.AvailableFunctionsType,AvailableFunctionsTypeBinding.class);
-//        container.registerComponentImplementation(FES.AvailableFunctionType,AvailableFunctionTypeBinding.class);
+        container.registerComponentImplementation(FES.ArgumentsType,ArgumentsTypeBinding.class);
+        container.registerComponentImplementation(FES.ArgumentType,ArgumentTypeBinding.class);
+        container.registerComponentImplementation(FES.AvailableFunctionsType,AvailableFunctionsTypeBinding.class);
+        container.registerComponentImplementation(FES.AvailableFunctionType,AvailableFunctionTypeBinding.class);
         container.registerComponentImplementation(FES.BBOXType,BBOXTypeBinding.class);
         container.registerComponentImplementation(FES.BinaryComparisonOpType,BinaryComparisonOpTypeBinding.class);
         container.registerComponentImplementation(FES.BinaryLogicOpType,BinaryLogicOpTypeBinding.class);
         container.registerComponentImplementation(FES.BinarySpatialOpType,BinarySpatialOpTypeBinding.class);
         container.registerComponentImplementation(FES.BinaryTemporalOpType,BinaryTemporalOpTypeBinding.class);
 //        container.registerComponentImplementation(FES.ComparisonOperatorNameType,ComparisonOperatorNameTypeBinding.class);
-//        container.registerComponentImplementation(FES.ComparisonOperatorsType,ComparisonOperatorsTypeBinding.class);
-//        container.registerComponentImplementation(FES.ComparisonOperatorType,ComparisonOperatorTypeBinding.class);
+        container.registerComponentImplementation(FES.ComparisonOperatorsType,ComparisonOperatorsTypeBinding.class);
+        container.registerComponentImplementation(FES.ComparisonOperatorType,ComparisonOperatorTypeBinding.class);
 //        container.registerComponentImplementation(FES.ComparisonOpsType,ComparisonOpsTypeBinding.class);
+        container.registerComponentImplementation(FES.ConformanceType,ConformanceTypeBinding.class);
         container.registerComponentImplementation(FES.DistanceBufferType,DistanceBufferTypeBinding.class);
         container.registerComponentImplementation(FES.FilterType,FilterTypeBinding.class);
         container.registerComponentImplementation(FES.FunctionType,FunctionTypeBinding.class);
-//        container.registerComponentImplementation(FES.GeometryOperandsType,GeometryOperandsTypeBinding.class);
-//        container.registerComponentImplementation(FES.Id_CapabilitiesType,Id_CapabilitiesTypeBinding.class);
+        container.registerComponentImplementation(FES.GeometryOperandsType,GeometryOperandsTypeBinding.class);
+        container.registerComponentImplementation(FES.Id_CapabilitiesType,Id_CapabilitiesTypeBinding.class);
 //        container.registerComponentImplementation(FES.LiteralType,LiteralTypeBinding.class);
 //        container.registerComponentImplementation(FES.LogicOpsType,LogicOpsTypeBinding.class);
 //        container.registerComponentImplementation(FES.LowerBoundaryType,LowerBoundaryTypeBinding.class);
@@ -135,17 +156,17 @@ public class FESConfiguration extends Configuration {
         
 //        container.registerComponentImplementation(FES.PropertyIsNilType,PropertyIsNilTypeBinding.class);
         
-//        container.registerComponentImplementation(FES.ResourceIdentifierType,ResourceIdentifierTypeBinding.class);
+        container.registerComponentImplementation(FES.ResourceIdentifierType,ResourceIdentifierTypeBinding.class);
         container.registerComponentImplementation(FES.ResourceIdType,ResourceIdTypeBinding.class);
-//        container.registerComponentImplementation(FES.Scalar_CapabilitiesType,Scalar_CapabilitiesTypeBinding.class);
+        container.registerComponentImplementation(FES.Scalar_CapabilitiesType,Scalar_CapabilitiesTypeBinding.class);
 //        container.registerComponentImplementation(FES.SchemaElement,SchemaElementBinding.class);
         container.registerComponentImplementation(FES.SortByType,SortByTypeBinding.class);
         container.registerComponentImplementation(FES.SortOrderType,SortOrderTypeBinding.class);
         container.registerComponentImplementation(FES.SortPropertyType,SortPropertyTypeBinding.class);
-//        container.registerComponentImplementation(FES.Spatial_CapabilitiesType,Spatial_CapabilitiesTypeBinding.class);
+        container.registerComponentImplementation(FES.Spatial_CapabilitiesType,Spatial_CapabilitiesTypeBinding.class);
 //        container.registerComponentImplementation(FES.SpatialOperatorNameType,SpatialOperatorNameTypeBinding.class);
-//        container.registerComponentImplementation(FES.SpatialOperatorsType,SpatialOperatorsTypeBinding.class);
-//        container.registerComponentImplementation(FES.SpatialOperatorType,SpatialOperatorTypeBinding.class);
+        container.registerComponentImplementation(FES.SpatialOperatorsType,SpatialOperatorsTypeBinding.class);
+        container.registerComponentImplementation(FES.SpatialOperatorType,SpatialOperatorTypeBinding.class);
 //        container.registerComponentImplementation(FES.SpatialOpsType,SpatialOpsTypeBinding.class);
 //        container.registerComponentImplementation(FES.Temporal_CapabilitiesType,Temporal_CapabilitiesTypeBinding.class);
 //        container.registerComponentImplementation(FES.TemporalOperandsType,TemporalOperandsTypeBinding.class);
@@ -159,9 +180,9 @@ public class FESConfiguration extends Configuration {
 //        container.registerComponentImplementation(FES.UpperBoundaryType,UpperBoundaryTypeBinding.class);
 //        container.registerComponentImplementation(FES.VersionActionTokens,VersionActionTokensBinding.class);
         container.registerComponentImplementation(FES.VersionType,VersionTypeBinding.class);
-//        container.registerComponentImplementation(FES._Filter_Capabilities,_Filter_CapabilitiesBinding.class);
-//        container.registerComponentImplementation(FES._LogicalOperators,_LogicalOperatorsBinding.class);
-//        container.registerComponentImplementation(FES.GeometryOperandsType_GeometryOperand,GeometryOperandsType_GeometryOperandBinding.class);
+        container.registerComponentImplementation(FES._Filter_Capabilities,Filter_CapabilitiesTypeBinding.class);
+        container.registerComponentImplementation(FES._LogicalOperators,_LogicalOperatorsBinding.class);
+        container.registerComponentImplementation(FES.GeometryOperandsType_GeometryOperand,GeometryOperandsType_GeometryOperandBinding.class);
 //        container.registerComponentImplementation(FES.TemporalOperandsType_TemporalOperand,TemporalOperandsType_TemporalOperandBinding.class);
         
         //Elements
@@ -219,5 +240,6 @@ public class FESConfiguration extends Configuration {
         super.configureContext(container);
 
         container.registerComponentImplementation(FilterFactory.class, FilterFactoryImpl.class);
+        container.registerComponentInstance(Fes20Factory.eINSTANCE);
     }
 } 

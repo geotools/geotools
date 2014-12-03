@@ -53,7 +53,6 @@ import javax.media.jai.BorderExtenderReflect;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
-import javax.media.jai.LookupTableJAI;
 import javax.media.jai.OpImage;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;

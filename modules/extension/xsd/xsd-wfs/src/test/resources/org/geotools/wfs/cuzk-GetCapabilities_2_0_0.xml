@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WFS_Capabilities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:fes="http://www.opengis.net/fes/2.0" version="2.0.0" xmlns="http://www.opengis.net/wfs/2.0">
+  <ows:ServiceIdentification>
+    <ows:Title>CZE INSPIRE Download Service - Cadastral Parcels</ows:Title>
+    <ows:Abstract>WFS download service for the theme Cadastral Parcels (CP) is a public download service for provision of data from the Information System of the Cadastre of Real Estates (ISKN) that makes possible repetitive download of these data in files by cadastral units and an online access to these data using the WFS 2.0.0. technology. The download service provides harmonised data from the theme Cadastral Parcels (CP) in GML formate according to INSPIRE. The service is available only for cadastral units with a digital map (DKM/KMD) – effective for CP.CadastralParcel and CP.CadastralBoundary layers. The layer CP.CadastralZoning is available for the whole territory of the Czech Republic. The service fulfils technical guidance for INSPIRE download services v. 3.0.1 and simultaneously fulfils the OGC WFS 2.0.0 standard.</ows:Abstract>
+    <ows:ServiceType>OGC WFS</ows:ServiceType>
+    <ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName>Czech Office for Surveying, Mapping and Cadastre</ows:ProviderName>
+    <ows:ProviderSite xlink:type="simple" xlink:href="www.cuzk.cz" />
+    <ows:ServiceContact>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>+420 284 044 455</ows:Voice>
+          <ows:Facsimile>+420 284 041 557</ows:Facsimile>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>Pod Sídlištěm 1800/9</ows:DeliveryPoint>
+          <ows:City>Praha 8</ows:City>
+          <ows:AdministrativeArea>Kobylisy</ows:AdministrativeArea>
+          <ows:PostalCode>182 11</ows:PostalCode>
+          <ows:Country>Czech Republic</ows:Country>
+          <ows:ElectronicMailAddress>cuzk.helpdesk@cuzk.cz</ows:ElectronicMailAddress>
+        </ows:Address>
+        <ows:OnlineResource xlink:type="simple" xlink:href="http://services.cuzk.cz/doc/inspire-cp-download.pdf" />
+        <ows:HoursOfService>Mo-Fr 7:00 AM - 5:00 PM CET</ows:HoursOfService>
+      </ows:ContactInfo>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:type="simple" xlink:href="http://services.cuzk.cz/wfs/inspire-cp-wfs.asp?" />
+          <ows:Post xlink:type="simple" xlink:href="http://services.cuzk.cz/wfs/inspire-cp-wfs.asp?" />
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="DescribeFeatureType">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:type="simple" xlink:href="http://services.cuzk.cz/wfs/inspire-cp-wfs.asp?" />
+          <ows:Post xlink:type="simple" xlink:href="http://services.cuzk.cz/wfs/inspire-cp-wfs.asp?" />
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="ListStoredQueries">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:type="simple" xlink:href="http://services.cuzk.cz/wfs/inspire-cp-wfs.asp?" />
+          <ows:Post xlink:type="simple" xlink:href="http://services.cuzk.cz/wfs/inspire-cp-wfs.asp?" />
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="DescribeStoredQueries">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:type="simple" xlink:href="http://services.cuzk.cz/wfs/inspire-cp-wfs.asp?" />
+          <ows:Post xlink:type="simple" xlink:href="http://services.cuzk.cz/wfs/inspire-cp-wfs.asp?" />
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="GetFeature">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:type="simple" xlink:href="http://services.cuzk.cz/wfs/inspire-cp-wfs.asp?" />
+          <ows:Post xlink:type="simple" xlink:href="http://services.cuzk.cz/wfs/inspire-cp-wfs.asp?" />
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Parameter name="AcceptVersions">
+      <ows:AllowedValues>
+        <ows:Value>2.0.0</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+    <ows:Constraint name="ImplementsBasicWFS">
+      <ows:NoValues />
+      <ows:DefaultValue>TRUE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsTransactionalWFS">
+      <ows:NoValues />
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsLockingWFS">
+      <ows:NoValues />
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="KVPEncoding">
+      <ows:NoValues />
+      <ows:DefaultValue>TRUE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="XMLEncoding">
+      <ows:NoValues />
+      <ows:DefaultValue>TRUE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="SOAPEncoding">
+      <ows:NoValues />
+      <ows:DefaultValue>TRUE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsInheritance">
+      <ows:NoValues />
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsRemoteResolve">
+      <ows:NoValues />
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsResultPaging">
+      <ows:NoValues />
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsStandardJoins">
+      <ows:NoValues />
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsSpatialJoins">
+      <ows:NoValues />
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsTemporalJoins">
+      <ows:NoValues />
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsFeatureVersioning">
+      <ows:NoValues />
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ManageStoredQueries">
+      <ows:NoValues />
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:ExtendedCapabilities>
+      <inspire_dls:ExtendedCapabilities xmlns:inspire_dls="http://inspire.ec.europa.eu/schemas/inspire_dls/1.0">
+        <inspire_common:MetadataUrl xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">
+          <inspire_common:URL>http://geoportal.cuzk.cz/getHTML.aspx?mode=Metadata&amp;fnc=getRecord&amp;identifierid=CZ-CUZK-WFS-CP</inspire_common:URL>
+        </inspire_common:MetadataUrl>
+        <inspire_common:SupportedLanguages xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">
+          <inspire_common:DefaultLanguage>
+            <inspire_common:Language>eng</inspire_common:Language>
+          </inspire_common:DefaultLanguage>
+        </inspire_common:SupportedLanguages>
+        <inspire_common:ResponseLanguage xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">
+          <inspire_common:Language>eng</inspire_common:Language>
+        </inspire_common:ResponseLanguage>
+        <inspire_dls:SpatialDataSetIdentifier>
+          <inspire_common:Code xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">CZ-00025712-CUZK_CP</inspire_common:Code>
+          <inspire_common:Namespace xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">ČÚZK</inspire_common:Namespace>
+        </inspire_dls:SpatialDataSetIdentifier>
+      </inspire_dls:ExtendedCapabilities>
+    </ows:ExtendedCapabilities>
+  </ows:OperationsMetadata>
+  <FeatureTypeList>
+    <FeatureType xmlns:CP="urn:x-inspire:specification:gmlas:CadastralParcels:3.0">
+      <Name>CP:CadastralBoundary</Name>
+      <Title>Cadastral Parcel Boundaries</Title>
+      <Abstract>The data correspond with the INSPIRE Directive for the thema Cadastral Parcels (CP). It originates in the cadastral map that is a binding national map series at large scale, contains points of horizontal geodetic control, planimetric component and map lettering and can be maintained in the form of digital map, analogue map or digitized map. The data published in this feature type contain only cadastral boundaries from the territory where the digital map occures. More in the Cadastral Law 344/1992 Coll., Cadastral Public Note No. 26/2007 Coll. as ammended and INSPIRE Data Specification on Cadastral Parcels v 3.0.1.</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>Cadastral Parcel Boundaries</ows:Keyword>
+      </ows:Keywords>
+      <DefaultCRS>urn:ogc:def:crs:EPSG::5514</DefaultCRS>
+      <OtherCRS>ESRI:102067</OtherCRS>
+      <OtherCRS>ESRI:102066</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::900913</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::32633</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::32634</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::28403</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::28404</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::5221</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::5224</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::5225</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::4326</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::4258</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::3035</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::2065</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:OGC::CRS84</OtherCRS>
+      <OtherCRS>CRS:84</OtherCRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.2.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>10 43</ows:LowerCorner>
+        <ows:UpperCorner>22 55</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL xlink:type="simple" xlink:href="http://geoportal.cuzk.cz/getHTML.aspx?mode=Metadata&amp;fnc=getRecord&amp;identifierid=CZ-CUZK-CP" />
+    </FeatureType>
+    <FeatureType xmlns:CP="urn:x-inspire:specification:gmlas:CadastralParcels:3.0">
+      <Name>CP:CadastralParcel</Name>
+      <Title>Cadastral parcel polygons</Title>
+      <Abstract>The data correspond with the INSPIRE Directive for the thema Cadastral Parcels (CP). It originates in the cadastral map that is a binding national map series at large scale, contains points of horizontal geodetic control, planimetric component and map lettering and can be maintained in the form of digital map, analogue map or digitized map. The data published in this feature type contain only parcels from the territory where the digital map occures. More in the Cadastral Law 344/1992 Coll., Cadastral Public Note No. 26/2007 Coll. as ammended and INSPIRE Data Specification on Cadastral Parcels v 3.0.1.</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>Cadastral parcel polygons</ows:Keyword>
+      </ows:Keywords>
+      <DefaultCRS>urn:ogc:def:crs:EPSG::5514</DefaultCRS>
+      <OtherCRS>ESRI:102067</OtherCRS>
+      <OtherCRS>ESRI:102066</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::900913</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::32633</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::32634</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::28403</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::28404</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::5221</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::5224</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::5225</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::4326</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::4258</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::3035</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::2065</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:OGC::CRS84</OtherCRS>
+      <OtherCRS>CRS:84</OtherCRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.2.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>10 43</ows:LowerCorner>
+        <ows:UpperCorner>22 55</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL xlink:type="simple" xlink:href="http://geoportal.cuzk.cz/getHTML.aspx?mode=Metadata&amp;fnc=getRecord&amp;identifierid=CZ-CUZK-CP" />
+    </FeatureType>
+    <FeatureType xmlns:CP="urn:x-inspire:specification:gmlas:CadastralParcels:3.0">
+      <Name>CP:CadastralZoning</Name>
+      <Title>Cadastral Zoning polygons</Title>
+      <Abstract>The data correspond with the INSPIRE Directive for the thema Cadastral Parcels (CP). It originates in the cadastral map that is a binding national map series at large scale, contains points of horizontal geodetic control, planimetric component and map lettering and can be maintained in the form of digital map, analogue map or digitized map. The data published in this Feature type contain only cadastral districts (for the whole Czech Republic). More in the Cadastral Law 344/1992 Coll., Cadastral Public Note No. 26/2007 Coll. as ammended and INSPIRE Data Specification on Cadastral Parcels v 3.0.1.</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>Cadastral Zoning polygons</ows:Keyword>
+      </ows:Keywords>
+      <DefaultCRS>urn:ogc:def:crs:EPSG::5514</DefaultCRS>
+      <OtherCRS>ESRI:102067</OtherCRS>
+      <OtherCRS>ESRI:102066</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::900913</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::32633</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::32634</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::28403</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::28404</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::5221</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::5224</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::5225</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::4326</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::4258</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::3035</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:EPSG::2065</OtherCRS>
+      <OtherCRS>urn:ogc:def:crs:OGC::CRS84</OtherCRS>
+      <OtherCRS>CRS:84</OtherCRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.2.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>10 43</ows:LowerCorner>
+        <ows:UpperCorner>22 55</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL xlink:type="simple" xlink:href="http://geoportal.cuzk.cz/getHTML.aspx?mode=Metadata&amp;fnc=getRecord&amp;identifierid=CZ-CUZK-CP" />
+    </FeatureType>
+  </FeatureTypeList>
+  <fes:Filter_Capabilities>
+    <fes:Conformance>
+      <fes:Constraint name="ImplementsQuery">
+        <ows:NoValues />
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsAdHocQuery">
+        <ows:NoValues />
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsFunctions">
+        <ows:NoValues />
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsMinStandardFilter">
+        <ows:NoValues />
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsStandardFilter">
+        <ows:NoValues />
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsMinSpatialFilter">
+        <ows:NoValues />
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsSpatialFilter">
+        <ows:NoValues />
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsMinTemporalFilter">
+        <ows:NoValues />
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsTemporalFilter">
+        <ows:NoValues />
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsVersionNav">
+        <ows:NoValues />
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsSorting">
+        <ows:NoValues />
+        <ows:DefaultValue>TRUE</ows:DefaultValue>
+      </fes:Constraint>
+      <fes:Constraint name="ImplementsExtendedOperators">
+        <ows:NoValues />
+        <ows:DefaultValue>FALSE</ows:DefaultValue>
+      </fes:Constraint>
+    </fes:Conformance>
+  </fes:Filter_Capabilities>
+</WFS_Capabilities>

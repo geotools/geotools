@@ -131,6 +131,12 @@
       <artifactId>net.opengis.wfs</artifactId>
       <version>${project.version}</version>
     </dependency>
+     <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-cql</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+    </dependency>
     <dependency>
       <groupId>xpp3</groupId>
       <artifactId>xpp3</artifactId>

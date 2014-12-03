@@ -112,7 +112,9 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
     
     public Object getProperty(Object object, QName name) throws Exception {
         SimpleFeature feature = (SimpleFeature) object;
-        if ( KML.Geometry.equals( name ) ) {
+        if (KML.Geometry.getLocalPart().equals(name.getLocalPart())
+                || org.geotools.kml.v22.KML.AbstractGeometryGroup.getLocalPart().equals(
+                        name.getLocalPart())) {
             return feature.getDefaultGeometry();
         }
         

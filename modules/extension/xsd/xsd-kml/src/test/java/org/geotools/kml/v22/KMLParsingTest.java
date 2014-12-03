@@ -1,5 +1,6 @@
 package org.geotools.kml.v22;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import com.vividsolutions.jts.geom.Point;
 public class KMLParsingTest extends KMLTestSupport {
 
     public void testParseDocument() throws Exception {
-        SimpleFeature doc = parseSamples();
+        SimpleFeature doc = parseSamples("KML_Samples.kml");
 
         assertNotNull(doc);
         assertEquals("document", doc.getType().getTypeName());
@@ -23,7 +24,7 @@ public class KMLParsingTest extends KMLTestSupport {
     }
 
     public void testParseFolder() throws Exception {
-        SimpleFeature doc = parseSamples();
+        SimpleFeature doc = parseSamples("KML_Samples.kml");
         SimpleFeature folder = (SimpleFeature) ((List)doc.getAttribute("Feature")).get(0); 
 
         assertEquals("Placemarks", folder.getAttribute("name"));
@@ -32,7 +33,7 @@ public class KMLParsingTest extends KMLTestSupport {
     }
 
     public void testParsePlacemark() throws Exception {
-        SimpleFeature doc = parseSamples();
+        SimpleFeature doc = parseSamples("KML_Samples.kml");
         SimpleFeature folder = (SimpleFeature) ((List)doc.getAttribute("Feature")).get(0); 
         SimpleFeature placemark = (SimpleFeature) ((List)folder.getAttribute("Feature")).get(0);
         
@@ -185,10 +186,22 @@ public class KMLParsingTest extends KMLTestSupport {
         assertEquals(Integer.class, t.getDescriptor("ElevationGain").getType().getBinding());
     }
 
-    SimpleFeature parseSamples() throws Exception {
+    public void testDecodeSchemalessExtendedData() throws Exception {
+        SimpleFeature doc = parseSamples("schemalessExtendedData.kml");
+        List<SimpleFeature> features = (List<SimpleFeature>) doc.getAttribute("Feature");
+
+        for (SimpleFeature f : features) {
+            Map<Object, Object> ud = f.getUserData();
+            Object o = ud.get("UntypedExtendedData");
+            // every features from the schemalessExtendedData.kml sample contain at least 1 extended data attribute
+            assert (o != null && o instanceof HashMap && ((HashMap) o).keySet().size() > 1);
+        }
+    }
+
+    SimpleFeature parseSamples(String sampleName) throws Exception {
         Parser p = new Parser(createConfiguration());
         SimpleFeature doc =
-            (SimpleFeature) p.parse(getClass().getResourceAsStream("KML_Samples.kml"));
+            (SimpleFeature) p.parse(getClass().getResourceAsStream(sampleName));
         return doc;
     }
 }

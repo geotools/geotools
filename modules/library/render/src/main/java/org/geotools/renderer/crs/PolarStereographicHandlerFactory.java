@@ -47,7 +47,7 @@ public class PolarStereographicHandlerFactory implements ProjectionHandlerFactor
         MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope
                 .getCoordinateReferenceSystem());
         if (renderingEnvelope != null && mapProjection instanceof PolarStereographic) {
-            boolean north;
+            final boolean north;
             // variant B uses standard_parallel
             ParameterValue<?> stdParallel = null;
             try {
@@ -88,7 +88,9 @@ public class PolarStereographicHandlerFactory implements ProjectionHandlerFactor
                     // check if we are crossing the antimeridian and are fully below the pole,
                     // in this case we'd end up reading the full globe when we'd have to just
                     // read two portions near the dateline
-                    if (renderingEnvelope.getMaxY() < 0 && renderingEnvelope.getMinX() < 0
+                    List<ReferencedEnvelope> envelopes;
+                    if (!north && renderingEnvelope.getMaxY() < 0
+                            && renderingEnvelope.getMinX() < 0
                             && renderingEnvelope.getMaxX() > 0) {
                         ReferencedEnvelope e1 = new ReferencedEnvelope(renderingEnvelope.getMinX(),
                                 -1e-6, renderingEnvelope.getMinY(), renderingEnvelope.getMaxY(),
@@ -97,14 +99,28 @@ public class PolarStereographicHandlerFactory implements ProjectionHandlerFactor
                                 renderingEnvelope.getMaxX(), renderingEnvelope.getMinY(),
                                 renderingEnvelope.getMaxY(),
                                 renderingEnvelope.getCoordinateReferenceSystem());
-                        List<ReferencedEnvelope> envelopes = new ArrayList<ReferencedEnvelope>();
+                        envelopes = new ArrayList<ReferencedEnvelope>();
                         envelopes.add(e1);
                         envelopes.add(e2);
                         reprojectEnvelopes(sourceCRS, envelopes);
-                        return envelopes;
+                    } else if (north && renderingEnvelope.getMinY() > 0
+                            && renderingEnvelope.getMinX() < 0 && renderingEnvelope.getMaxX() > 0) {
+                        ReferencedEnvelope e1 = new ReferencedEnvelope(renderingEnvelope.getMinX(),
+                                -1e-6, renderingEnvelope.getMinY(), renderingEnvelope.getMaxY(),
+                                renderingEnvelope.getCoordinateReferenceSystem());
+                        ReferencedEnvelope e2 = new ReferencedEnvelope(1e-6,
+                                renderingEnvelope.getMaxX(), renderingEnvelope.getMinY(),
+                                renderingEnvelope.getMaxY(),
+                                renderingEnvelope.getCoordinateReferenceSystem());
+                        envelopes = new ArrayList<ReferencedEnvelope>();
+                        envelopes.add(e1);
+                        envelopes.add(e2);
+                        reprojectEnvelopes(sourceCRS, envelopes);
                     } else {
-                        return super.getQueryEnvelopes();
+                        envelopes = super.getQueryEnvelopes();
                     }
+
+                    return envelopes;
                 }
             };
         }

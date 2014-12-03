@@ -82,10 +82,37 @@ public class ExtendedDataTypeBinding extends AbstractComplexBinding {
             }
         }
 
+        /**
+         * Schema-less extended data (see https://developers.google.com/kml/documentation/extendeddata especially the
+         * "Adding Untyped Name/Value Pairs" section):
+         *
+         * <ExtendedData>
+         *  <Data name="string">
+         *    <displayName>...</displayName> <!-- string -->
+         *    <value>...</value> <!-- string -->
+         *  </Data>
+         * </ExtendedData>
+         *
+         */
+        for (Node freeExtendedData : (List<Node>) node.getChildren("Data")) {
+            for (Node n : (List<Node>) freeExtendedData.getChildren("Data")) {
+                Node v = n.getChild("value");
+                if (v != null)
+                    typedData.put((String) n.getAttributeValue("name"), v.getValue());
+            }
+        }
+
         extendedData.put("schemas", schemas);
         extendedData.put("untyped", unTypedData);
         extendedData.put("typed", typedData);
         return extendedData;
+    }
+
+    public Object getProperty(Object object, QName name) throws Exception {
+        if ("Data".equals(name.getLocalPart())) {
+            return object;
+        }
+        return super.getProperty(object, name);
     }
 
 }

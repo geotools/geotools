@@ -273,13 +273,12 @@ public interface Graphic extends GraphicLegend,
     /**
      * Location inside of the Graphic (or Label) to position the main-geometry point.
      * <p>
-     * The coordinates are provided as 0.0 to 1.0 range amounting to a percentage
-     * of the graphic width/height. So the default of 0.5/0.5 indicates that the
-     * graphic would be centered.
+     * The coordinates are provided as 0.0 to 1.0 range amounting to a percentage of the graphic
+     * width/height. So the default of 0.5/0.5 indicates that the graphic would be centered.
      * <p>
-     * Please keep in mind that a system may shuffel things around a bit in order
-     * to prevent graphics from overlapping (so this AnchorPoint is only a hint
-     * about how things should be if there is enough room).
+     * Please keep in mind that a system may shuffle things around a bit in order to prevent
+     * graphics from overlapping (so this AnchorPoint is only a hint about how things should be if
+     * there is enough room).
      *
      * @return AnchorPoint , if null should use a default point X=0.5 Y=0.5
      */

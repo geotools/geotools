@@ -1,6 +1,9 @@
 package org.geotools.styling;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
@@ -13,11 +16,6 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 
-/**
- * 
- *
- * @source $URL$
- */
 public class StyleAttributeExtractorTest {
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     StyleBuilder sb = new StyleBuilder(ff);
@@ -37,6 +35,7 @@ public class StyleAttributeExtractorTest {
         assertTrue(extractor.getDefaultGeometryUsed());
     }
     
+    @Test
     public void testGeometryTransformation() {
         PointSymbolizer ps = sb.createPointSymbolizer();
         ps.setGeometry(ff.function("offset", ff.property("the_geom"), ff.property("offx"), ff.property("offy")));
@@ -53,6 +52,7 @@ public class StyleAttributeExtractorTest {
         assertFalse(extractor.getDefaultGeometryUsed());
     }
     
+    @Test
     public void testPropertyFucntion() {
         PointSymbolizer ps = sb.createPointSymbolizer();
         ps.setGeometry(ff.function("offset", ff.property("the_geom"), ff.property("offx"), ff.property("offy")));
@@ -86,6 +86,19 @@ public class StyleAttributeExtractorTest {
         } finally {
             EnvFunction.clearLocalValues();
         }
+    }
+    
+    public void testGraphicAnchor() {
+        Graphic g = sb.createGraphic();
+        g.setAnchorPoint(sb.createAnchorPoint(ff.property("ax"), ff.property("ay")));
+        StyleAttributeExtractor extractor = new StyleAttributeExtractor();
+        g.accept(extractor);
+
+        // check the plain names
+        Set<String> atts = extractor.getAttributeNameSet();
+        assertEquals(2, atts.size());
+        assertTrue(atts.contains("ax"));
+        assertTrue(atts.contains("ay"));
     }
 
 }

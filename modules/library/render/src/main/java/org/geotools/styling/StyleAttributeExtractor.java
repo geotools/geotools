@@ -24,7 +24,6 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.renderer.style.ExpressionExtractor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
@@ -120,7 +119,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
      */
     public void visit(Fill fill) {
         if (fill.getBackgroundColor() != null) {
-            fill.getBackgroundColor().accept((ExpressionVisitor) this, null);
+            fill.getBackgroundColor().accept(this, null);
         }
 
         if (fill.getColor() != null) {
@@ -354,6 +353,9 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         
         if (gr.getDisplacement() != null)
             gr.getDisplacement().accept(this);
+
+        if (gr.getAnchorPoint() != null)
+            gr.getAnchorPoint().accept(this);
     }
 
     /**

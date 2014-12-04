@@ -98,6 +98,11 @@ public class ImageAssert {
                     && ReferenceImageDialog.show(realignImage(actualImage));
             if (useAsReference) {
                 try {
+                    File parent = expectedFile.getParentFile();
+                    if (!parent.exists() && !parent.mkdirs()) {
+                        throw new AssertionError("Could not create directory that will contain :"
+                                + expectedFile.getParent());
+                    }
                     new ImageWorker(actualImage).writePNG(expectedFile, "FILTERED", 0.9f, false,
                             false);
                 } catch (IOException e) {

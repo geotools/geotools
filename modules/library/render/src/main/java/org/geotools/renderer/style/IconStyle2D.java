@@ -17,7 +17,6 @@
 package org.geotools.renderer.style;
 
 import java.awt.Composite;
-import java.awt.geom.AffineTransform;
 
 import javax.swing.Icon;
 
@@ -29,9 +28,7 @@ import javax.swing.Icon;
  *
  * @source $URL$
  */
-public class IconStyle2D extends Style2D {
-    private static final AffineTransform IDENTITY_TRANSFORM = new AffineTransform();
-
+public class IconStyle2D extends Style2D implements PointStyle2D {
     private Icon icon;
 
     private float rotation;
@@ -42,20 +39,10 @@ public class IconStyle2D extends Style2D {
 
     private float displacementY;
 
-    /**
-     * Constructor.
-     * 
-     * @param renderer
-     *            GlyphRenderer to be used for rendering this GlyphStyle2D
-     * @param graphic
-     *            Graphic for defining the glyph.
-     * @param externalGraphic
-     *            ExternalGraphic for defining the glyph.
-     * @param The
-     *            rotation of the icon
-     * @param The
-     *            opacity of the icon
-     */
+    private float anchorPointX = 0.5f;
+
+    private float anchorPointY = 0.5f;
+
     public IconStyle2D(Icon icon, Object feature, float displacementX, float displacementY,
             float rotation, Composite composite) {
         this.icon = icon;
@@ -63,6 +50,11 @@ public class IconStyle2D extends Style2D {
         this.composite = composite;
         this.displacementX = displacementX;
         this.displacementY = displacementY;
+    }
+
+    public IconStyle2D(Icon icon, Object feature, Composite composite) {
+        this.icon = icon;
+        this.composite = composite;
     }
 
     /**
@@ -125,5 +117,21 @@ public class IconStyle2D extends Style2D {
 
     public void setDisplacementY(float displacementY) {
         this.displacementY = displacementY;
+    }
+
+    public float getAnchorPointX() {
+        return anchorPointX;
+    }
+
+    public void setAnchorPointX(float anchorPointX) {
+        this.anchorPointX = anchorPointX;
+    }
+
+    public float getAnchorPointY() {
+        return anchorPointY;
+    }
+
+    public void setAnchorPointY(float anchorPointY) {
+        this.anchorPointY = anchorPointY;
     };
 }

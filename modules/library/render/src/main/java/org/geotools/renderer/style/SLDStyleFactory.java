@@ -35,7 +35,6 @@ import java.net.MalformedURLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +45,8 @@ import javax.swing.ImageIcon;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.style.RandomFillBuilder.PositionRandomizer;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -532,7 +533,7 @@ public class SLDStyleFactory {
 	 * @return
 	 */
 	Style2D createPointStyle(Object feature, Symbolizer symbolizer, Graphic sldGraphic, Range scaleRange, boolean forceVector) {
-		Style2D retval = null;
+        Style2D retval = null;
 
 		// extract base properties
 		float opacity = evalOpacity(sldGraphic.getOpacity(), feature);
@@ -540,12 +541,20 @@ public class SLDStyleFactory {
 				AlphaComposite.SRC_OVER, opacity);
 		float displacementX = 0;
 		float displacementY = 0;
-		if (sldGraphic.getDisplacement() != null) {
-			displacementX = evalToFloat(sldGraphic.getDisplacement()
+        Displacement displacement = sldGraphic.getDisplacement();
+        if (displacement != null) {
+            displacementX = evalToFloat(displacement
 					.getDisplacementX(), feature, 0f);
-			displacementY = evalToFloat(sldGraphic.getDisplacement()
+            displacementY = evalToFloat(displacement
 					.getDisplacementY(), feature, 0f);
 		}
+        float anchorPointX = 0.5f;
+        float anchorPointY = 0.5f;
+        AnchorPoint anchorPoint = sldGraphic.getAnchorPoint();
+        if (anchorPoint != null) {
+            anchorPointX = evalToFloat(anchorPoint.getAnchorPointX(), feature, 0.5f);
+            anchorPointY = evalToFloat(anchorPoint.getAnchorPointY(), feature, 0.5f);
+        }
 		double size = 0;
 
 		// by spec size is optional, and the default value is context dependend,
@@ -605,7 +614,7 @@ public class SLDStyleFactory {
 					} else if(icon instanceof ImageIcon) {
 					    // when the icon is an image better use the graphic style, we have
 					    // better rendering code for it
-					    GraphicStyle2D g2d = getGraphicStyle(eg, (Feature) feature, size, 1);
+					    GraphicStyle2D g2d = getGraphicStyle(eg, feature, size, 1);
 	                    if (g2d == null) {
 	                        continue;
 	                    } else {
@@ -616,16 +625,15 @@ public class SLDStyleFactory {
 	                    }
 					} else {
 						if (icon.getIconHeight() != size && size != 0) {
-							double scale = ((double) size)
+							double scale = (size)
 									/ icon.getIconHeight();
 							icon = new RescaledIcon(icon, scale);
 						}
-						retval = new IconStyle2D(icon, feature, displacementX,
-								displacementY, rotation, composite);
+                        retval = new IconStyle2D(icon, feature, composite);
 						break;
 					}
 				} else {
-					GraphicStyle2D g2d = getGraphicStyle(eg, (Feature) feature, size, 1);
+					GraphicStyle2D g2d = getGraphicStyle(eg, feature, size, 1);
 					if (g2d != null) {
 						g2d.setRotation(rotation);
 						g2d.setOpacity(opacity);
@@ -639,13 +647,19 @@ public class SLDStyleFactory {
 					LOGGER.finer("rendering mark @ PointRenderer "
 							+ symbol.toString());
 				}
-				retval = createMarkStyle((Mark) symbol, feature, symbolizer, size, rotation);
+                retval = createMarkStyle((Mark) symbol, feature, symbolizer, size);
 				break;
 			}
 		}
 
 		if (retval != null) {
 			setScaleRange(retval, scaleRange);
+            PointStyle2D ps = (PointStyle2D) retval;
+            ps.setDisplacementX(displacementX);
+            ps.setDisplacementY(displacementY);
+            ps.setAnchorPointX(anchorPointX);
+            ps.setAnchorPointY(anchorPointY);
+            ps.setRotation(rotation);
 		} else {
             // from SLD spec:
             // The default if neither an ExternalGraphic nor a Mark is specified is to use the default
@@ -659,13 +673,13 @@ public class SLDStyleFactory {
             if (size <= 0) {
                 size = 6;
             }
-            retval = createMarkStyle(defaultMark, feature, symbolizer, size, rotation);
+            retval = createMarkStyle(defaultMark, feature, symbolizer, size);
         }
 
 		return retval;
 	}
 
-    MarkStyle2D createMarkStyle(Mark mark, Object feature, Symbolizer symbolizer, double size, float rotation) {
+    MarkStyle2D createMarkStyle(Mark mark, Object feature, Symbolizer symbolizer, double size) {
         Shape shape = getShape(mark, feature);
 
         if (shape == null) {
@@ -687,7 +701,6 @@ public class SLDStyleFactory {
             size = DEFAULT_MARK_SIZE;
         }
         ms2d.setSize(size);
-        ms2d.setRotation(rotation);
 
         return ms2d;
     }
@@ -845,7 +858,7 @@ public class SLDStyleFactory {
 			geomName = ""; // ie default geometry
 		}
 		PropertyName property = ff.property(geomName);
-		return (Geometry) property.evaluate(feature, Geometry.class);
+		return property.evaluate(feature, Geometry.class);
 	}
 
     /**
@@ -1508,7 +1521,7 @@ public class SLDStyleFactory {
 		if (exp == null) {
 			return fallback;
 		}
-		Float fo = (Float) exp.evaluate(f, Float.class);
+		Float fo = exp.evaluate(f, Float.class);
 		if (fo != null) {
 			return fo.floatValue();
 		}

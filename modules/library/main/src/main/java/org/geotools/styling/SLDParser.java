@@ -550,7 +550,7 @@ public class SLDParser {
                     featureTypeConstraints.add(ftc);
             }
         }
-        return (FeatureTypeConstraint[]) featureTypeConstraints
+        return featureTypeConstraints
                 .toArray(new FeatureTypeConstraint[featureTypeConstraints.size()]);
     }
 
@@ -858,9 +858,9 @@ public class SLDParser {
         }
 
         if (sti.size() > 0) {
-            ft.setSemanticTypeIdentifiers((String[]) sti.toArray(new String[0]));
+            ft.setSemanticTypeIdentifiers(sti.toArray(new String[0]));
         }
-        ft.setRules((Rule[]) rules.toArray(new Rule[0]));
+        ft.setRules(rules.toArray(new Rule[0]));
 
         return ft;
     }
@@ -937,7 +937,7 @@ public class SLDParser {
                     legends.add(parseGraphic(g.item(k)));
                 }
 
-                rule.setLegendGraphic((Graphic[]) legends.toArray(new Graphic[0]));
+                rule.setLegendGraphic(legends.toArray(new Graphic[0]));
             } else if (childName.equalsIgnoreCase("LineSymbolizer")) {
                 symbolizers.add(parseLineSymbolizer(child));
             } else if (childName.equalsIgnoreCase("PolygonSymbolizer")) {
@@ -951,7 +951,7 @@ public class SLDParser {
             }
         }
 
-        rule.setSymbolizers((Symbolizer[]) symbolizers.toArray(new Symbolizer[0]));
+        rule.setSymbolizers(symbolizers.toArray(new Symbolizer[0]));
 
         return rule;
     }
@@ -1219,7 +1219,7 @@ public class SLDParser {
 
         }
 
-        symbol.setFonts((Font[]) fonts.toArray(new Font[0]));
+        symbol.setFonts(fonts.toArray(new Font[0]));
 
         return symbol;
     }
@@ -1516,7 +1516,7 @@ public class SLDParser {
             }
         }
 
-        ChannelSelection dap = factory.createChannelSelection((SelectedChannelType[]) channels
+        ChannelSelection dap = factory.createChannelSelection(channels
                 .toArray(new SelectedChannelType[channels.size()]));
 
         return dap;
@@ -1682,6 +1682,8 @@ public class SLDParser {
                 graphic.setSize(parseCssParameter(child));
             } else if (childName.equalsIgnoreCase("displacement")) {
                 graphic.setDisplacement(parseDisplacement(child));
+            } else if (childName.equalsIgnoreCase("anchorPoint")) {
+                graphic.setAnchorPoint(parseAnchorPoint(child));
             } else if (childName.equalsIgnoreCase("rotation")) {
                 graphic.setRotation(parseCssParameter(child));
             }

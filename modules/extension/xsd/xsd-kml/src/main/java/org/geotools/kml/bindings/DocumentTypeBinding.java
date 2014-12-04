@@ -129,7 +129,7 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
     
     public List getProperties(Object object) throws Exception {
         Object[] prop = new Object[2];
-        prop[0] = KML.Placemark;
+        prop[0] = getPlacemarkName();
         if ( object instanceof FeatureCollection ) {
             FeatureCollection fc = (FeatureCollection) object;
             //TODO: this does not close the iterator!!
@@ -147,6 +147,10 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
         ArrayList l = new ArrayList();
         l.add( prop );
         return l;
+    }
+
+    protected Object getPlacemarkName() {
+        return KML.Placemark;
     }
     
 }

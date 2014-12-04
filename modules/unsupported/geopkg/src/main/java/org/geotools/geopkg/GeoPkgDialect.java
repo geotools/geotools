@@ -34,9 +34,17 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class GeoPkgDialect extends PreparedStatementSQLDialect {
+   
+    protected GeoPkgGeomWriter geomWriter;
+    
+    public GeoPkgDialect(JDBCDataStore dataStore, GeoPkgGeomWriter.Configuration writerConfig) {
+        super(dataStore);
+        geomWriter = new GeoPkgGeomWriter(writerConfig);
+    }
 
     public GeoPkgDialect(JDBCDataStore dataStore) {
         super(dataStore);
+        geomWriter = new GeoPkgGeomWriter();
     }
 
     @Override
@@ -89,7 +97,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
         else {
             try {
-                ps.setBytes(column, new GeoPkgGeomWriter().write(g));
+                ps.setBytes(column, geomWriter.write(g));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

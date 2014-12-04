@@ -17,7 +17,7 @@ public enum EnvelopeType {
         }
         return null;
     }
-    
+
     public byte getValue() {
         return value;
     }

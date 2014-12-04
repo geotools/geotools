@@ -4,15 +4,38 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.geotools.geopkg.geom.GeometryHeaderFlags.GeopackageBinaryType;
+
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.ByteOrderValues;
 import com.vividsolutions.jts.io.OutStream;
 import com.vividsolutions.jts.io.OutputStreamOutStream;
 import com.vividsolutions.jts.io.WKBWriter;
 
 public class GeoPkgGeomWriter {
+    
+    public static class Configuration {
+        protected boolean writeEnvelope = true;
+        
+        public boolean isWriteEnvelope() {
+            return writeEnvelope;
+        }
+
+        public void setWriteEnvelope(boolean writeEnvelope) {
+            this.writeEnvelope = writeEnvelope;
+        }
+    }
+    
+    protected Configuration config;
+        
+    public GeoPkgGeomWriter() {
+        config = new Configuration();
+    }
+
+    public GeoPkgGeomWriter(Configuration config) {
+        this.config = config;
+    }
 
     public byte[] write(Geometry g) throws IOException {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -31,19 +54,22 @@ public class GeoPkgGeomWriter {
         }
 
         GeometryHeaderFlags flags = new GeometryHeaderFlags((byte)0);
-        flags.setVersion((byte)0);
-        flags.setEndianess(ByteOrderValues.BIG_ENDIAN);
-        flags.setEnvelopeIndicator(g instanceof Point ? EnvelopeType.NONE : EnvelopeType.XY);
-
+        
+        flags.setBinaryType(GeopackageBinaryType.StandardGeoPackageBinary);
+        flags.setEmpty(g.isEmpty());
+        flags.setEndianess(ByteOrderValues.BIG_ENDIAN);        
+        flags.setEnvelopeIndicator(config.isWriteEnvelope() ? EnvelopeType.XY : EnvelopeType.NONE);
+        
         GeometryHeader h = new GeometryHeader();
         h.setVersion((byte)0);
         h.setFlags(flags);
-        h.setEnvelope(g.getEnvelopeInternal());
         h.setSrid(g.getSRID());
+        if (config.isWriteEnvelope()) {
+            h.setEnvelope(g.getEnvelopeInternal());
+        }
         
         //write out magic + flags + srid + envelope
         byte[] buf = new byte[8];
-        //byte[] buf = new byte[4 + 4 + flags.getEnvelopeIndicator().length];
         buf[0] = 0x47;
         buf[1] = 0x50;
         buf[2] = h.getVersion();
@@ -69,8 +95,6 @@ public class GeoPkgGeomWriter {
             out.write(buf, 8);
         }
         
-        //out.write(buf, buf.length);
-
         new WKBWriter(2, order).write(g, out);
     }
 }

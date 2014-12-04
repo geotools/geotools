@@ -97,7 +97,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     }
 
     Geometry geometry(byte[] b) throws IOException {
-        return b != null ? new GeoPkgGeomReader().read(b) : null;
+        return b != null ? new GeoPkgGeomReader(b).get() : null;
     }
 
     @Override

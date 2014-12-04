@@ -17,7 +17,7 @@ public class GeoPkgIOTest {
         Geometry g1 = new GeometryBuilder().point(0,0).buffer(10);
         byte[] bytes = new GeoPkgGeomWriter().write(g1);
 
-        Geometry g2 = new GeoPkgGeomReader().read(bytes);
+        Geometry g2 = new GeoPkgGeomReader(bytes).get();
         assertTrue(g1.equals(g2));
     }
 

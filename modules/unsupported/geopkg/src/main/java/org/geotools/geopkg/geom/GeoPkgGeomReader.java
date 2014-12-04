@@ -13,23 +13,55 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 
 public class GeoPkgGeomReader {
-
-    public Geometry read(byte[] bytes) throws IOException {
-        return read(new ByteArrayInStream(bytes));
-    }
-
-    public Geometry read(InputStream in) throws IOException {
-        return read(new InputStreamInStream(in));
+    
+    protected InStream input;
+    
+    protected GeometryHeader header = null;
+    
+    protected Geometry geometry = null;
+    
+    public GeoPkgGeomReader(InStream input) {
+        this.input = input;
     }
     
-    protected Geometry read(InStream input) throws IOException {
-        // read the header
-        GeometryHeader h = readHeader(input);
+    public GeoPkgGeomReader(InputStream input) throws IOException {
+        this.input = new InputStreamInStream(input);
+    }
+    
+    public GeoPkgGeomReader(byte[] bytes) {
+        this.input = new ByteArrayInStream(bytes);
+    }
         
+    public GeometryHeader getHeader() throws IOException {
+        if (header == null) {
+            header = readHeader();
+        }
+        return header;
+    }
+    
+    public Geometry get() throws IOException {
+        if (header == null) {
+            header = readHeader();
+        }
+        if (geometry == null) {
+            geometry = read();
+        }
+        return geometry;
+    }
+    
+    public Envelope getEnvelope() throws IOException {
+        if (getHeader().getFlags().getEnvelopeIndicator() == EnvelopeType.NONE) {
+            return get().getEnvelopeInternal();
+        } else {
+            return getHeader().getEnvelope();
+        }
+    }
+    
+    protected Geometry read() throws IOException { //header must be read!      
         // read the geometry
         try {
             Geometry g = new WKBReader().read(input);
-            g.setSRID(h.getSrid());
+            g.setSRID(header.getSrid());
             return g;
         } catch (ParseException e) {
             throw new IOException(e);
@@ -47,11 +79,11 @@ public class GeoPkgGeomReader {
      * 
      * flags layout:
      *   bit     7       6       5       4       3       2       1       0
-     *   use     V       V       V       V       E       E       E       B
+     *   use     -       -       X       Y       E       E       E       B
 
      *   use:
-     *   V: version number (4-bit unsigned integer)
-     *      0 = version 1
+     *   X: GeoPackageBinary type (0: StandardGeoPackageBinary, 1: ExtendedGeoPackageBinary)
+     *   Y: 0: non-empty geometry, 1: empty geometry
      *      
      *   E: envelope contents indicator code (3-bit unsigned integer)
      *     value |                    description                               | envelope length (bytes)
@@ -64,19 +96,19 @@ public class GeoPkgGeomReader {
      *       0 = Big Endian   (most significant bit first)
      *       1 = Little Endian (least significant bit first)
      */
-    protected GeometryHeader readHeader(InStream in) throws IOException {
+    protected GeometryHeader readHeader() throws IOException {
         GeometryHeader h = new GeometryHeader();
 
         // read first 4 bytes  
         // TODO: something with the magic number
         byte[] buf = new byte[4];
-        in.read(buf);
+        input.read(buf);
 
         // next byte flags
         h.setFlags(new GeometryHeaderFlags((byte)buf[3]));
 
         // set endianness
-        ByteOrderDataInStream din = new ByteOrderDataInStream(in);
+        ByteOrderDataInStream din = new ByteOrderDataInStream(input);
         din.setOrder(h.getFlags().getEndianess());
 
         // read the srid

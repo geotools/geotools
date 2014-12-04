@@ -16,11 +16,13 @@
  */
 package org.geotools.styling;
 
-import static org.junit.Assert.*;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
 import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -133,7 +135,7 @@ public class SLDTransformerTest {
         RasterSymbolizer rasterSymbolizer = styleFactory.createRasterSymbolizer();
 
         // set opacity
-        rasterSymbolizer.setOpacity((Expression) CommonFactoryFinder.getFilterFactory(
+        rasterSymbolizer.setOpacity(CommonFactoryFinder.getFilterFactory(
                 GeoTools.getDefaultHints()).literal(0.25));
 
         // set channel selection
@@ -1123,7 +1125,7 @@ public class SLDTransformerTest {
 
     	SLDParser sldParser = new SLDParser(sf);
     	sldParser.setInput(new StringReader(xml));
-    	Style importedStyle = (Style) sldParser.readXML()[0];
+    	Style importedStyle = sldParser.readXML()[0];
     	TextSymbolizer2 copy = (TextSymbolizer2)importedStyle.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
 
         // compare it
@@ -1165,7 +1167,7 @@ public class SLDTransformerTest {
 
         SLDParser sldParser = new SLDParser(sf);
         sldParser.setInput(new StringReader(xml));
-        Style importedStyle = (Style) sldParser.readXML()[0];
+        Style importedStyle = sldParser.readXML()[0];
         LineSymbolizer copy = (LineSymbolizer) importedStyle.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         
         // compare
@@ -1246,7 +1248,7 @@ public class SLDTransformerTest {
         
         SLDParser parser = new SLDParser(sf);
         parser.setInput(new StringReader(xml));
-        Style importedStyle = (Style) parser.readXML()[0];
+        Style importedStyle = parser.readXML()[0];
         PointSymbolizer psCopy = (PointSymbolizer) importedStyle.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         ExternalGraphic egCopy = (ExternalGraphic) psCopy.getGraphic().graphicalSymbols().get(0);
         assertEquals(chartURI, egCopy.getLocation().toExternalForm());
@@ -1411,6 +1413,28 @@ public class SLDTransformerTest {
         String transformedStyleXml = writerWriter.toString();
 
         validateWellKnownNameWithExpressionStyle(transformedStyleXml);
+    }
+
+    @Test
+    public void testAnchorPointInGraphic() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        
+        Graphic graphic;
+        graphic = sb.createGraphic();
+        Displacement disp = sb.createDisplacement(10, 10);
+        AnchorPoint ap = sb.createAnchorPoint(1, 0.3);
+        graphic.setDisplacement(disp);
+        graphic.setAnchorPoint(ap);
+        
+        SLDTransformer st = new SLDTransformer();     
+        String xml = st.transform(graphic);
+        System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+        
+        assertXpathEvaluatesTo("10.0", "//sld:Graphic/sld:Displacement/sld:DisplacementX", doc);
+        assertXpathEvaluatesTo("10.0", "//sld:Graphic/sld:Displacement/sld:DisplacementY", doc);
+        assertXpathEvaluatesTo("1.0", "//sld:Graphic/sld:AnchorPoint/sld:AnchorPointX", doc);
+        assertXpathEvaluatesTo("0.3", "//sld:Graphic/sld:AnchorPoint/sld:AnchorPointY", doc);
     }
 
     private Style validateWellKnownNameWithExpressionStyle(String xmlStyle) {

@@ -28,11 +28,19 @@ import java.awt.image.BufferedImage;
  * @source $URL$
  * @version $Id$
  */
-public class GraphicStyle2D extends Style2D {
+public class GraphicStyle2D extends Style2D implements PointStyle2D {
 	BufferedImage image;
 	int border = 0;
 	float rotation;
 	float opacity;
+
+    float displacementX;
+
+    float displacementY;
+
+    float anchorPointX = 0.5f;
+
+    float anchorPointY = 0.5f;
 
 	/**
 	 * Creates a new GraphicStyle2D object.
@@ -50,22 +58,19 @@ public class GraphicStyle2D extends Style2D {
 		this.opacity = opacity;
 	}
 	
-	/**
-	 * Creates a new GraphicStyle2D object.
-	 * 
-	 * @param image
-	 *            The image that will be used to depict the centroid/point/...
-	 * @param rotation
-	 *            The image rotation
-	 * @param opacity
-	 *            The image opacity
-	 */
+
 	public GraphicStyle2D(BufferedImage image, float rotation, float opacity, int border) {
 		this.image = image;
 		this.rotation = rotation;
 		this.opacity = opacity;
 		this.border = border;
 	}
+
+    public GraphicStyle2D(BufferedImage image, float opacity, int border) {
+        this.image = image;
+        this.opacity = opacity;
+        this.border = border;
+    }
 
 
 	/**
@@ -124,5 +129,37 @@ public class GraphicStyle2D extends Style2D {
 	public void setBorder(int border) {
 		this.border = border;
 	}
+
+    public float getDisplacementX() {
+        return displacementX;
+    }
+
+    public void setDisplacementX(float displacementX) {
+        this.displacementX = displacementX;
+    }
+
+    public float getDisplacementY() {
+        return displacementY;
+    }
+
+    public void setDisplacementY(float displacementY) {
+        this.displacementY = displacementY;
+    }
+
+    public float getAnchorPointX() {
+        return anchorPointX;
+    }
+
+    public void setAnchorPointX(float anchorPointX) {
+        this.anchorPointX = anchorPointX;
+    }
+
+    public float getAnchorPointY() {
+        return anchorPointY;
+    }
+
+    public void setAnchorPointY(float anchorPointY) {
+        this.anchorPointY = anchorPointY;
+    }
 
 }

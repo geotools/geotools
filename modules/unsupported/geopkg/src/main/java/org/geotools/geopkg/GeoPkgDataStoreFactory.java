@@ -2,12 +2,9 @@ package org.geotools.geopkg;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.data.DataStore;
-import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;

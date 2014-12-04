@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
 
-public class TileReader implements Iterator<Tile>, Closeable{
+public class TileReader implements Iterator<Tile>, Closeable {
 
     ResultSet rs;
     Connection cx;

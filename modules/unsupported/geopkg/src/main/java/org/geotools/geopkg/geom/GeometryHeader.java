@@ -2,25 +2,25 @@ package org.geotools.geopkg.geom;
 
 import com.vividsolutions.jts.geom.Envelope;
 
-class Header {
-    byte verison;
-    Flags flags;
-    int srid;
-    Envelope envelope;
+public class GeometryHeader {
+    private byte version;
+    private GeometryHeaderFlags flags;
+    private int srid;
+    private Envelope envelope;
 
-    public byte getVerison() {
-        return verison;
+    public byte getVersion() {
+        return version;
     }
 
-    public void setVerison(byte verison) {
-        this.verison = verison;
+    public void setVersion(byte version) {
+        this.version = version;
     }
 
-    public Flags getFlags() {
+    public GeometryHeaderFlags getFlags() {
         return flags;
     }
 
-    public void setFlags(Flags flags) {
+    public void setFlags(GeometryHeaderFlags flags) {
         this.flags = flags;
     }
 

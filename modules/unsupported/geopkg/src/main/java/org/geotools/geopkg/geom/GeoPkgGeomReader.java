@@ -22,14 +22,14 @@ public class GeoPkgGeomReader {
         return read(new InputStreamInStream(in));
     }
     
-    Geometry read(InStream input) throws IOException {
+    protected Geometry read(InStream input) throws IOException {
         // read the header
-        Header h = readHeader(input);
+        GeometryHeader h = readHeader(input);
         
         // read the geometry
         try {
             Geometry g = new WKBReader().read(input);
-            g.setSRID(h.srid);
+            g.setSRID(h.getSrid());
             return g;
         } catch (ParseException e) {
             throw new IOException(e);
@@ -64,8 +64,8 @@ public class GeoPkgGeomReader {
      *       0 = Big Endian   (most significant bit first)
      *       1 = Little Endian (least significant bit first)
      */
-    Header readHeader(InStream in) throws IOException {
-        Header h = new Header();
+    protected GeometryHeader readHeader(InStream in) throws IOException {
+        GeometryHeader h = new GeometryHeader();
 
         // read first 4 bytes  
         // TODO: something with the magic number
@@ -73,35 +73,35 @@ public class GeoPkgGeomReader {
         in.read(buf);
 
         // next byte flags
-        h.flags = new Flags((byte)buf[3]);
+        h.setFlags(new GeometryHeaderFlags((byte)buf[3]));
 
         // set endianness
         ByteOrderDataInStream din = new ByteOrderDataInStream(in);
-        din.setOrder(h.flags.getEndianess());
+        din.setOrder(h.getFlags().getEndianess());
 
         // read the srid
-        h.srid = din.readInt();
+        h.setSrid(din.readInt());
 
         // read the envlope
-        if (h.flags.getEnvelopeIndicator() != EnvelopeType.NONE) {
+        if (h.getFlags().getEnvelopeIndicator() != EnvelopeType.NONE) {
             double x1 = din.readDouble();
             double x2 = din.readDouble();
             double y1 = din.readDouble();
             double y2 = din.readDouble();
     
-            if (h.flags.getEnvelopeIndicator().value > 1) {
+            if (h.getFlags().getEnvelopeIndicator().getValue() > 1) {
                 // 2 = minz,maxz; 3 = minm,maxm - we ignore these for now 
                 din.readDouble();
                 din.readDouble();
             }
     
-            if (h.flags.getEnvelopeIndicator().value > 3) {
+            if (h.getFlags().getEnvelopeIndicator().getValue() > 3) {
                 // 4 = minz,maxz,minm,maxm - we ignore these for now
                 din.readDouble();
                 din.readDouble();
             }
     
-            h.envelope = new Envelope(x1, x2, y1, y2);
+            h.setEnvelope (new Envelope(x1, x2, y1, y2));
         }
         return h;
     }

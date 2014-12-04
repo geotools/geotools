@@ -17,6 +17,8 @@
 package org.geotools.kml.bindings;
 
 import java.net.URI;
+import java.util.AbstractMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -37,7 +39,9 @@ import org.geotools.xml.Node;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.Name;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Point;
 
@@ -301,12 +305,12 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
 	            return feature.getAttribute( "description" );
 	        }
 	      
-	        if ( KML.styleUrl.equals( name ) )  {
-	            URI uri = (URI) feature.getAttribute( "Style" );
-	            if ( uri != null ) {
-	                return styleMap.get( uri );
-	            }
-	        }
+                if (KML.styleUrl.getLocalPart().equals(name.getLocalPart())) {
+                    URI uri = (URI) feature.getAttribute("Style");
+                    if (uri != null) {
+                        return styleMap.get(uri);
+                    }
+                }
 	        
 	        //&lt;element default="1" minOccurs="0" name="visibility" type="boolean"/&gt;
 	        //&lt;element default="1" minOccurs="0" name="open" type="boolean"/&gt;
@@ -320,7 +324,22 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
 	        //&lt;element maxOccurs="unbounded" minOccurs="0" ref="kml:StyleSelector"/&gt;
 	        //&lt;element minOccurs="0" ref="kml:Region"/&gt;
 	        //&lt;element minOccurs="0" name="Metadata" type="kml:MetadataType"/&gt;
-    	}
+
+                // this is KML 2.2-specific
+                if ("ExtendedData".equals(name.getLocalPart())) {
+                    SimpleFeatureType t = feature.getFeatureType();
+                    List<Map.Entry<Name, Object>> attributes = new LinkedList<Map.Entry<Name, Object>>();
+
+                    for (AttributeDescriptor ad : t.getAttributeDescriptors()) {
+                        Object obj = feature.getAttribute(ad.getName());
+                        // do not include geographic attributes
+                        if (!(obj instanceof Geometry))
+                            attributes
+                                    .add(new AbstractMap.SimpleEntry<Name, Object>(ad.getName(), obj));
+                    }
+                    return attributes;
+                }
+        }
         return super.getProperty(object, name);
     }
 }

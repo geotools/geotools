@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml:kml xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:xal="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0">
+  <kml:Document id="internal">
+    <kml:Placemark id="fid--67f197d8_14a06525485_-7ffd">
+      <kml:ExtendedData>
+        <kml:Data name="attr_title">
+          <kml:value>sample polygon</kml:value>
+        </kml:Data>
+        <kml:Data name="attr_abstract">
+          <kml:value>This is a sample polygon, traced by a colleague on a random web application ; the purpose of this abstract is to exceed the limit of 255 characters. Lorem ipsum sit dolor amet Kogi adipisicing cray narwhal, polaroid Schlitz squid Cosby sweater sed post-ironic. </kml:value>
+        </kml:Data>
+      </kml:ExtendedData>
+      <kml:Polygon>
+        <kml:outerBoundaryIs>
+          <kml:LinearRing>
+            <kml:coordinates>3.712417204121436,47.823567739883735 2.8703378662722088,46.351932267724095 4.25007669089144,45.28512084942913 5.324942980251323,45.097114570394886 6.019185404945122,45.26562264198204 5.750034312907976,46.78015632253074 6.301964004250202,47.776484440425975 5.63871543495874,48.150373206861296 3.712417204121436,47.823567739883735</kml:coordinates>
+          </kml:LinearRing>
+        </kml:outerBoundaryIs>
+      </kml:Polygon>
+    </kml:Placemark>
+    <kml:Placemark id="fid--67f197d8_14a06525485_-7ffe">
+      <kml:ExtendedData>
+        <kml:Data name="attr_1123 éééà title with spaces and 1234">
+          <kml:value>My 2nd sample point somewhere in France</kml:value>
+        </kml:Data>
+        <kml:Data name="attr_Abstract">
+          <kml:value>This 2nd sample point is located somewhere in France, near Étampes. My 2nd sample point somewhere in France. this abstract also contains accented characters to check the support in generated geometry files.</kml:value>
+        </kml:Data>
+      </kml:ExtendedData>
+      <kml:Point>
+        <kml:coordinates>2.1,48.45</kml:coordinates>
+      </kml:Point>
+    </kml:Placemark>
+    <kml:Placemark id="fid--67f197d8_14a06525485_-7fff">
+      <kml:ExtendedData>
+        <kml:Data name="attr_abstract">
+          <kml:value>My sample linestring</kml:value>
+        </kml:Data>
+        <kml:Data name="attr_title">
+          <kml:value>My sample linestring</kml:value>
+        </kml:Data>
+      </kml:ExtendedData>
+      <kml:LineString>
+        <kml:coordinates>2.4,48.5 4.3,45.5 -2.4,48.8</kml:coordinates>
+      </kml:LineString>
+    </kml:Placemark>
+  </kml:Document>
+</kml:kml>

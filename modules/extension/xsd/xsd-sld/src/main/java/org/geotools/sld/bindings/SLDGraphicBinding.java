@@ -28,6 +28,8 @@ import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.AnchorPoint;
+import org.opengis.style.Displacement;
 import org.picocontainer.MutablePicoContainer;
 
 
@@ -134,6 +136,16 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
         Expression size = (Expression) node.getChildValue("Size");
         Expression rotation = (Expression) node.getChildValue("Rotation");
 
-        return styleFactory.createGraphic(graphics, marks, null, opacity, size, rotation);
+        Graphic graphic = styleFactory
+                .createGraphic(graphics, marks, null, opacity, size, rotation);
+
+        if (node.getChild("Displacement") != null) {
+            graphic.setDisplacement((Displacement) node.getChildValue("Displacement"));
+        }
+        if (node.getChild("AnchorPoint") != null) {
+            graphic.setAnchorPoint((AnchorPoint) node.getChildValue("AnchorPoint"));
+        }
+
+        return graphic;
     }
 }

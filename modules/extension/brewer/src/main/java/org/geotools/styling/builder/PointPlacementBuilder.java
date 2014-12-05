@@ -27,7 +27,7 @@ import org.opengis.filter.expression.Expression;
 public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> {
     private Expression rotation;
 
-    private AnchorPointBuilder anchor = new AnchorPointBuilder(this).unset();
+    private AnchorPointBuilder anchor = new AnchorPointBuilder(this, 0, 0).unset();
 
     private DisplacementBuilder displacement = new DisplacementBuilder(this).unset();
 
@@ -85,7 +85,7 @@ public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> 
 
     public PointPlacementBuilder reset(PointPlacement placement) {
         if (placement == null) {
-            return reset();
+            return unset();
         }
         rotation = placement.getRotation();
         anchor.reset(placement.getAnchorPoint());

@@ -900,6 +900,30 @@ public class CssTranslator {
                 if (size != null) {
                     gb.size(size);
                 }
+                double[] anchor = getDoubleArray(values, propertyName + "-anchor", i);
+                double[] offsets = getDoubleArray(values, propertyName + "-offset", i);
+                if (anchor != null) {
+                    if (anchor.length == 2) {
+                        gb.anchor().x(anchor[0]);
+                        gb.anchor().y(anchor[1]);
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Invalid anchor specification, should be two "
+                                        + "floats between 0 and 1 with a space in between, instead it is "
+                                        + getValue(values, propertyName + "-anchor", i));
+                    }
+                }
+                if (offsets != null) {
+                    if (offsets.length == 2) {
+                        gb.displacement().x(offsets[0]);
+                        gb.displacement().y(offsets[1]);
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Invalid anchor specification, should be two "
+                                        + "floats (or 1 for line placement with a certain offset) instead it is "
+                                        + getValue(values, propertyName + "-anchor", i));
+                    }
+                }
                 if ("mark".equals(propertyName)) {
                     Expression opacity = getExpression(values, "mark-opacity", i);
                     if (opacity != null) {

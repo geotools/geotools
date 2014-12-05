@@ -16,13 +16,17 @@
  */
 package org.geotools.styling.css;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Arrays;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Fill;
@@ -43,6 +47,7 @@ import org.junit.Test;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.Displacement;
 import org.opengis.style.FeatureTypeStyle;
 import org.opengis.style.GraphicFill;
 import org.opengis.style.Mark;
@@ -329,6 +334,23 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         Mark mark = (Mark) g.graphicalSymbols().get(0);
         assertLiteral("circle", mark.getWellKnownName());
         assertLiteral("#0000ff", mark.getFill().getColor());
+    }
+
+    @Test
+    public void markAnchorDisplacement() throws Exception {
+        String css = "* { mark: symbol(circle); mark-size: 10; mark-anchor: 0 1; mark-offset: 10 20;}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PointSymbolizer ps = assertSingleSymbolizer(rule, PointSymbolizer.class);
+        Graphic g = ps.getGraphic();
+        AnchorPoint ap = g.getAnchorPoint();
+        assertNotNull(ap);
+        assertEquals(0, ap.getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(1, ap.getAnchorPointY().evaluate(null, Double.class), 0d);
+        Displacement d = g.getDisplacement();
+        assertNotNull(d);
+        assertEquals(10, d.getDisplacementX().evaluate(null, Double.class), 0d);
+        assertEquals(20, d.getDisplacementY().evaluate(null, Double.class), 0d);
     }
 
     @Test

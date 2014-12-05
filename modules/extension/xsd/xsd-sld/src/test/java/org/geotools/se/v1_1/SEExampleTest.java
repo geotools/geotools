@@ -24,6 +24,7 @@ import java.util.Map;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.ExternalMark;
@@ -41,11 +42,11 @@ import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.UomOgcMapping;
-import org.geotools.xml.Parser;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.Displacement;
 import org.opengis.style.OverlapBehavior;
 import org.opengis.style.Rule;
 
@@ -213,6 +214,22 @@ public class SEExampleTest extends SETestSupport {
         assertNull(em.getOnlineResource());
     }
     
+    public void testParsePointSymbolizerAnchorDisplacement() throws Exception {
+        PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer5.xml");
+
+        Graphic g = sym.getGraphic();
+        assertEquals(15.0, g.getSize().evaluate(null, Double.class));
+        assertEquals(1, g.graphicalSymbols().size());
+        AnchorPoint ap = g.getAnchorPoint();
+        assertNotNull(ap);
+        assertEquals(0, ap.getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(1, ap.getAnchorPointY().evaluate(null, Double.class), 0d);
+        Displacement d = g.getDisplacement();
+        assertNotNull(d);
+        assertEquals(10, d.getDisplacementX().evaluate(null, Double.class), 0d);
+        assertEquals(20, d.getDisplacementY().evaluate(null, Double.class), 0d);
+    }
+
     public void testParseLineSymbolizer() throws Exception {
         /*<LineSymbolizer version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se http://www.opengis.net/se/1.1.0/Symbolizer.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="http://www.opengeospatial.org/se/units/metre">
             <Name>MyLineSymbolizer</Name>

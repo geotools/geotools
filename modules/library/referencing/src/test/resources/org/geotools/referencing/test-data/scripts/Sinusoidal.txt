@@ -1,0 +1,76 @@
+// Test points for the Sinusoidal projection
+//
+// (C) 2014, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with libproj4 utility "cs2cs"
+// cs2cs -v +datum=WGS84 +proj=lonlat +to +proj=sinu +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs
+//
+// Mihail Andreev - November 2014
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    java -cp target/classes:target/test-classes:_CLASS_PATH_ -ea org.geotools.referencing.ScriptRunner src/test/resources/org/geotools/referencing/test-data/scripts/Sinusoidal.txt
+//
+// the _CLASS_PATH_ can be generated with
+//
+//    mvn dependency:build-classpath
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+// CRS used for the test 
+set _WGS84_  = GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563 ] ], PRIMEM["Greenwich",0.0], UNIT["degree",0.01745329251994328 ]]
+
+////////////////////////////////////////////
+// Sinusoidal
+
+set _sinusoidal_ = PROJCS["MODIS Sinusoidal",_WGS84_,PROJECTION["Sinusoidal"],UNIT["m",1.0] ]
+
+
+source crs = _WGS84_
+target crs = _sinusoidal_
+
+test tolerance = (0.001, 0.01)
+
+source pt = (0, 0)
+target pt = (0, 0)
+
+source pt = (10, 10)
+target pt = (1096393.64,  1105854.83)
+
+source pt = (-50, -50)
+target pt = (-3584787.68, -5540847.04)
+
+// precision change with for higher lon values
+test tolerance = (0.01, 0.001)
+
+source pt = (130, 0)
+target pt = (14471533.80,     0.00)
+
+source pt = (130, 60)
+target pt = (7254000.20,  6654072.82)
+
+// -----------
+source crs = _sinusoidal_
+target crs = _WGS84_
+
+test tolerance = (0.0001, 0.0001)
+
+source pt = (0, 0)
+target pt = (0, 0)
+
+source pt = (7254000.20,  6654072.82)
+target pt = (130, 60)
+
+source pt = (14471533.80,     0.00)
+target pt = (130, 0)
+
+

@@ -20,8 +20,13 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultTransaction;
+import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
+import org.geotools.data.simple.SimpleFeatureWriter;
 import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.gce.geotiff.GeoTiffReader;
@@ -47,6 +52,7 @@ import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.PropertyDescriptor;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -139,6 +145,145 @@ public class GeoPackageTest {
 
         re.close();
         ra.close();
+    }
+    
+    @Test 
+    public void testFunctions() throws Exception {
+        ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
+        SimpleFeatureReader re = Features.simple(shp.getFeatureReader());
+
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, shp.getFeatureSource(), null);
+              
+        Connection cx = geopkg.getDataSource().getConnection();
+        Statement st = cx.createStatement();
+        try {            
+            while(re.hasNext()) {
+                SimpleFeature f = re.next();
+                ResultSet rs = st.executeQuery((String.format(
+                        "SELECT ST_MinX(the_geom), ST_MinY(the_geom), ST_MaxX(the_geom), ST_MaxY(the_geom), ST_IsEmpty(the_geom) FROM bugsites WHERE ID=" + f.getProperty("ID").getValue())));
+                assertEquals(rs.getDouble(1), ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMinX(), 0.0001 );
+                assertEquals(rs.getDouble(2), ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMinY(), 0.0001 );
+                assertEquals(rs.getDouble(3), ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMaxX(), 0.0001 );
+                assertEquals(rs.getDouble(4), ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMaxY(), 0.0001 );
+                assertEquals(rs.getDouble(5)==1, ((Geometry) f.getDefaultGeometry()).isEmpty() );
+                rs.close();
+            }
+        }
+        catch(Exception e) {
+            fail(e.getMessage());
+        }
+        finally {
+            st.close();
+            cx.close();
+            re.close();
+        }
+    }
+    
+    @Test 
+    public void testFunctionsNoEnvelope() throws Exception {
+        ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
+        SimpleFeatureReader re = Features.simple(shp.getFeatureReader());
+
+        FeatureEntry entry = new FeatureEntry();
+
+        geopkg.getWriterConfiguration().setWriteEnvelope(false);
+        geopkg.add(entry, shp.getFeatureSource(), null);
+              
+        Connection cx = geopkg.getDataSource().getConnection();
+        Statement st = cx.createStatement();
+        try {            
+            while(re.hasNext()) {
+                SimpleFeature f = re.next();
+                ResultSet rs = st.executeQuery((String.format(
+                        "SELECT ST_MinX(the_geom), ST_MinY(the_geom), ST_MaxX(the_geom), ST_MaxY(the_geom), ST_IsEmpty(the_geom) FROM bugsites WHERE ID=" + f.getProperty("ID").getValue())));
+                assertEquals(rs.getDouble(1), ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMinX(), 0.0001 );
+                assertEquals(rs.getDouble(2), ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMinY(), 0.0001 );
+                assertEquals(rs.getDouble(3), ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMaxX(), 0.0001 );
+                assertEquals(rs.getDouble(4), ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMaxY(), 0.0001 );
+                assertEquals(rs.getDouble(5)==1, ((Geometry) f.getDefaultGeometry()).isEmpty() );
+                rs.close();
+            }
+        }
+        catch(Exception e) {
+            fail(e.getMessage());
+        }
+        finally {
+            st.close();
+            cx.close();
+            re.close();
+        }
+    }
+    
+    @Test 
+    public void testSpatialIndex() throws Exception {
+        ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
+        SimpleFeatureCollection coll = shp.getFeatureSource().getFeatures();
+
+        FeatureEntry entry = new FeatureEntry();
+        entry.setBounds(coll.getBounds());
+        geopkg.create(entry, shp.getSchema());
+        
+        //write some features before and some after
+        SimpleFeatureIterator it = coll.features();
+        
+        //some features
+        Transaction tx = new DefaultTransaction();
+        SimpleFeatureWriter w = geopkg.writer(entry, true, null, tx);
+        for (int i=0; i<3; i++) {
+            SimpleFeature f = it.next(); 
+            SimpleFeature g = w.next();
+            for (PropertyDescriptor pd : coll.getSchema().getDescriptors()) {
+                String name = pd.getName().getLocalPart();
+                g.setAttribute(name, f.getAttribute(name));
+            }
+                                         
+            w.write();
+        }
+        tx.commit();
+        tx.close();
+        w.close();
+        
+        //create spatial index
+        geopkg.createSpatialIndex(entry);
+                
+
+        //the rest of features
+        tx = new DefaultTransaction();
+        w = geopkg.writer(entry, true, null, tx);        
+        while(it.hasNext()) {
+            SimpleFeature f = it.next(); 
+            SimpleFeature g = w.next();
+            for (PropertyDescriptor pd : coll.getSchema().getDescriptors()) {
+                String name = pd.getName().getLocalPart();
+                g.setAttribute(name, f.getAttribute(name));
+            }
+                                         
+            w.write();
+        }
+        tx.commit();
+        tx.close();
+        w.close();
+        
+        it.close();
+        
+        //test if the index was properly created
+              
+        Connection cx = geopkg.getDataSource().getConnection();
+        Statement st = cx.createStatement();
+        try {            
+            ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM rtree_bugsites_the_geom");
+            rs.next();
+            
+            assertEquals(rs.getInt(1), coll.size());
+        }
+        catch(Exception e) {
+            fail(e.getMessage());
+        }
+        finally {
+            st.close();
+            cx.close();
+        }
     }
 
     @Test

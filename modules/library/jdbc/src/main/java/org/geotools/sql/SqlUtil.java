@@ -10,8 +10,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.Date;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.geotools.util.logging.Logging;
 
@@ -158,6 +161,69 @@ public class SqlUtil {
         }
     }
     
+    private static final Pattern PROPERTY_PATTERN = Pattern.compile("\\$\\{(.+?)\\}");
+    
+    public static void runScript(InputStream stream, Connection cx, Map<String, String> properties) throws SQLException{    
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+
+        Statement st = cx.createStatement();
+        int insideBlock = 0;
+        
+        try {
+            StringBuilder buf = new StringBuilder();
+            String sql = reader.readLine();
+            while (sql != null) {
+                sql = sql.trim();
+                if (!sql.isEmpty() && !sql.startsWith("--")) {                    
+                    buf.append(sql).append(" ");
+                    
+                    if (sql.startsWith("BEGIN")) {
+                        insideBlock++;
+                    } else if (insideBlock > 0 && sql.startsWith("END")) {
+                        insideBlock--;
+                    }
+        
+                    if (sql.endsWith(";") && insideBlock==0) {                            
+                        Matcher matcher = PROPERTY_PATTERN.matcher(buf);
+                        while (matcher.find()) {
+                            String propertyName = matcher.group(1);
+                            String propertyValue = properties.get(propertyName);
+                            if (propertyValue == null) {
+                                throw new RuntimeException("Missing property " + propertyName + " for sql script");
+                            } else {
+                                buf.replace(matcher.start(), matcher.end(), propertyValue);
+                                matcher.reset();
+                            }
+                        }
+                        
+                        String stmt = buf.toString();
+        
+                        LOGGER.fine(stmt);
+                        st.addBatch(stmt);
+    
+                        buf.setLength(0);
+                    }
+                }
+                sql = reader.readLine();
+            }
+            st.executeBatch();
+        }
+        catch(IOException e) {
+            throw new SQLException(e);
+        }
+        finally {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                LOGGER.log(Level.FINER, e.getMessage(), e);
+            }
+            try {
+                st.close();
+            } catch (SQLException e) {
+                LOGGER.log(Level.WARNING, "Error closing statement", e);
+            }
+        }
+    }    
 
     public static PreparedStatementBuilder prepare(Connection conn, String sql) throws SQLException {
         return new PreparedStatementBuilder(conn, sql); 

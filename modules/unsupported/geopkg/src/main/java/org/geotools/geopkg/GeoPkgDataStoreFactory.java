@@ -2,12 +2,10 @@ package org.geotools.geopkg;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.data.DataStore;
-import org.geotools.data.DataAccessFactory.Param;
+import org.geotools.geopkg.geom.GeoPkgGeomWriter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -26,6 +24,16 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
      * base location to store database files
      */
     File baseDirectory = null;
+        
+    GeoPkgGeomWriter.Configuration writerConfig;
+    
+    public GeoPkgDataStoreFactory() {
+        this.writerConfig = new GeoPkgGeomWriter.Configuration();
+    }
+    
+    public GeoPkgDataStoreFactory(GeoPkgGeomWriter.Configuration writerConfig) {
+        this.writerConfig = writerConfig;
+    }
 
     /**
      * Sets the base location to store database files.
@@ -53,7 +61,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
 
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
-        return new GeoPkgDialect(dataStore);
+        return new GeoPkgDialect(dataStore, writerConfig);
     }
 
     @Override
@@ -109,6 +117,8 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         //dataSource.setTestOnBorrow(true);
         //dataSource.setValidationQuery(getValidationQuery());
         addConnectionProperties(dataSource);
+        
+        dataSource.setAccessToUnderlyingConnectionAllowed(true);
         
         return dataSource;
     }

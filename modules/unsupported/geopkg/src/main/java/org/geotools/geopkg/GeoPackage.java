@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp.DelegatingConnection;
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -44,7 +45,12 @@ import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geopkg.geom.GeoPkgGeomReader;
+import org.geotools.geopkg.geom.GeoPkgGeomWriter;
+import org.geotools.geopkg.geom.GeometryFunction;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.JDBCFeatureStore;
+import org.geotools.jdbc.PrimaryKey;
 import org.geotools.referencing.CRS;
 import org.geotools.sql.SqlUtil;
 import org.geotools.util.logging.Logging;
@@ -56,8 +62,10 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.sqlite.Function;
 
 import com.vividsolutions.jts.geom.Geometry;
+
 
 /**
  * Provides access to a GeoPackage database.
@@ -97,6 +105,9 @@ public class GeoPackage {
     
     public static final String EXTENSIONS = "gpkg_extensions";
     
+
+    public static final String SPATIAL_INDEX = "gpkg_spatial_index";
+    
     public static enum DataType {
         Feature("features"), Raster("rasters"), Tile("tiles"), 
         FeatureWithRaster("featuresWithRasters");
@@ -130,6 +141,13 @@ public class GeoPackage {
      * datastore for vector access, lazily created
      */
     volatile JDBCDataStore dataStore;
+    
+
+    protected GeoPkgGeomWriter.Configuration writerConfig = new GeoPkgGeomWriter.Configuration();
+    
+    public GeoPkgGeomWriter.Configuration getWriterConfiguration() {
+        return writerConfig;
+    }
 
     /**
      * Creates a new empty GeoPackage, generating a new file.
@@ -165,7 +183,7 @@ public class GeoPackage {
         params.put(GeoPkgDataStoreFactory.DATABASE.key, file.getPath());
         params.put(GeoPkgDataStoreFactory.DBTYPE.key, GeoPkgDataStoreFactory.DBTYPE.sample);
 
-        this.connPool = new GeoPkgDataStoreFactory().createDataSource(params);
+        this.connPool = new GeoPkgDataStoreFactory(writerConfig).createDataSource(params);
     }
 
     GeoPackage(DataSource dataSource) {
@@ -223,6 +241,8 @@ public class GeoPackage {
      */
     void init(Connection cx) throws SQLException {
         
+        createFunctions(cx);
+        
         runSQL("PRAGMA application_id = 0x47503130;", cx);
         //runSQL("SELECT InitSpatialMetaData();");
         runScript(SPATIAL_REF_SYS + ".sql", cx);
@@ -235,6 +255,52 @@ public class GeoPackage {
         runScript(METADATA_REFERENCE + ".sql", cx);
         runScript(DATA_COLUMN_CONSTRAINTS + ".sql", cx);
         runScript(EXTENSIONS + ".sql", cx);
+    }
+    
+    void createFunctions(Connection cx) throws SQLException {
+        while (cx instanceof DelegatingConnection) {
+            cx = ((DelegatingConnection) cx).getDelegate();
+        }
+        
+        //minx
+        Function.create(cx, "ST_MinX", new GeometryFunction() {
+            @Override
+            public Object execute(GeoPkgGeomReader reader) throws IOException {
+                return reader.getEnvelope().getMinX();
+            }
+        });
+        
+        //maxx
+        Function.create(cx, "ST_MaxX", new GeometryFunction() {
+            @Override
+            public Object execute(GeoPkgGeomReader reader) throws IOException {
+                return reader.getEnvelope().getMaxX();
+            }            
+        });
+        
+        //miny
+        Function.create(cx, "ST_MinY", new GeometryFunction() {
+            @Override
+            public Object execute(GeoPkgGeomReader reader) throws IOException {
+                return reader.getEnvelope().getMinY();
+            }            
+        });
+        
+        //maxy
+        Function.create(cx, "ST_MaxY", new GeometryFunction() {
+            @Override
+            public Object execute(GeoPkgGeomReader reader) throws IOException {
+                return reader.getEnvelope().getMaxY();
+            }            
+        });
+        
+        //empty
+        Function.create(cx, "ST_IsEmpty", new GeometryFunction() {
+            @Override
+            public Object execute(GeoPkgGeomReader reader) throws IOException {
+                return reader.getHeader().getFlags().isEmpty();
+            }
+        });
     }
 
     /**
@@ -783,6 +849,37 @@ public class GeoPackage {
         }
         catch(SQLException ex) {
             throw new IOException(ex);
+        }
+    }
+    
+    /**
+     * Create a spatial index
+     * 
+     * @param e feature entry to create spatial index for
+     */
+    public void createSpatialIndex(FeatureEntry e) throws IOException {
+        Map<String, String> properties = new HashMap<String, String>();
+        
+        PrimaryKey pk = ((JDBCFeatureStore) (dataStore.getFeatureSource(e.getTableName()))).getPrimaryKey();
+        if (pk.getColumns().size() != 1) {
+            throw new IOException("Spatial index only supported for primary key of single column.");
+        }
+        
+        properties.put("t", e.getTableName());
+        properties.put("c", e.getGeometryColumn());
+        properties.put("i", pk.getColumns().get(0).getName());
+        
+        Connection cx;        
+        try {
+            cx = connPool.getConnection();            
+            try {
+                runScript(SPATIAL_INDEX + ".sql", cx, properties);            
+            } finally {
+                cx.close();
+            }
+            
+        } catch (SQLException ex) {            
+            throw new IOException(ex);            
         }
     }
 
@@ -1515,6 +1612,10 @@ public class GeoPackage {
         SqlUtil.runScript(getClass().getResourceAsStream(filename), cx);        
     }
     
+    void runScript(String filename, Connection cx, Map<String, String> properties) throws SQLException{        
+        SqlUtil.runScript(getClass().getResourceAsStream(filename), cx, properties);        
+    }
+    
     private static void close(Connection cx) {
         if (cx != null) {
             try {
@@ -1559,6 +1660,6 @@ public class GeoPackage {
     JDBCDataStore createDataStore() throws IOException {
         Map params = new HashMap();
         params.put(GeoPkgDataStoreFactory.DATASOURCE.key, connPool);
-        return new GeoPkgDataStoreFactory().createDataStore(params);
+        return new GeoPkgDataStoreFactory(writerConfig).createDataStore(params);
     }
 }

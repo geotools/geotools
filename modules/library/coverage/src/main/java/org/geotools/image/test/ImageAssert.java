@@ -40,8 +40,17 @@ import org.geotools.util.logging.Logging;
  */
 public class ImageAssert {
 
+    /**
+     * Makes the test interactive, showing a Swing dialog with before/after and a choice to
+     * overwrite the expected image
+     */
     static final boolean INTERACTIVE = Boolean.getBoolean("org.geotools.image.test.interactive");
     
+    /**
+     * Forces the image comparison tests to be skipped
+     */
+    static final boolean SKIP = Boolean.getBoolean("org.geotools.image.test.skip");
+
     static final Logger LOGGER = Logging.getLogger(Logger.class);
 
     /**
@@ -55,6 +64,9 @@ public class ImageAssert {
      */
     public static void assertEquals(File expectedFile, RenderedImage actualImage, int threshold)
             throws IOException {
+        if (SKIP) {
+            return;
+        }
         assertImagesResemble(expectedFile, actualImage, Mode.IgnoreAntialiasing, threshold, true);
     }
 

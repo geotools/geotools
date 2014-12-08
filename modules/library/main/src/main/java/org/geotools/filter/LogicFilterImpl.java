@@ -123,7 +123,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      * @deprecated use {@link #getChildren()}
      */
     List getSubFilters() {
-        return new ArrayList<>(children);
+        return children;
     }
     
     /**
@@ -169,22 +169,24 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      *         otherwise.
      */
     public boolean equals(Object obj) {
-        if (obj == this)
+        if (obj == this )
             return true;
         if ((obj != null) && (obj.getClass() == this.getClass())) {
             LogicFilterImpl logFilter = (LogicFilterImpl) obj;
-            if (LOGGER.isLoggable(Level.FINEST)) {
+            if( LOGGER.isLoggable(Level.FINEST)) {
                 LOGGER.finest("filter type match:"
-                        + (Filters.getFilterType(logFilter) == Filters.getFilterType(this)));
-                LOGGER.finest("same size:" + (logFilter.children.size() == this.children.size())
-                        + "; inner size: " + logFilter.children.size() + "; outer size: "
-                        + this.children.size());
-                LOGGER.finest("contains:" + logFilter.children.containsAll(this.children));
+                        + (Filters.getFilterType( logFilter ) == Filters.getFilterType( this )));
+                LOGGER.finest("same size:"
+                        + (logFilter.getSubFilters().size() == this.children.size())
+                        + "; inner size: " + logFilter.getSubFilters().size()
+                        + "; outer size: " + this.children.size());
+                LOGGER.finest("contains:"
+                        + logFilter.getSubFilters().containsAll(this.children));
             }
 
-            return ((Filters.getFilterType(logFilter) == Filters.getFilterType(this))
-                    && (logFilter.children.size() == this.children.size()) && logFilter.children
-                        .containsAll(this.children));
+            return ((Filters.getFilterType( logFilter ) == Filters.getFilterType( this ))
+            && (logFilter.getSubFilters().size() == this.children.size())
+            && logFilter.getSubFilters().containsAll(this.children));
         } else {
             return false;
         }

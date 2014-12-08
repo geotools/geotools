@@ -21,11 +21,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 import org.apache.commons.collections.map.CaseInsensitiveMap;
@@ -50,7 +50,7 @@ public class HttpUtil {
 
     public static String createUri(final URL baseUrl, final Map<String, String> queryStringKvp) {
         String query = baseUrl.getQuery();
-        Map<String, String> finalKvpMap = new HashMap<String, String>(queryStringKvp);
+        Map<String, String> finalKvpMap = new TreeMap<String, String>(queryStringKvp);
         if (query != null && query.length() > 0) {
             Map<String, String> userParams = new CaseInsensitiveMap(queryStringKvp);
             

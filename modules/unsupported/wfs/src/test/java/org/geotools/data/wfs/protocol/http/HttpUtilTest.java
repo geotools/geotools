@@ -21,19 +21,19 @@ public class HttpUtilTest {
 		
 		URL url1 = new URL("http://localhost:8080/geoserver/topp/ows");
 		assertEquals(
-				"http://localhost:8080/geoserver/topp/ows?typeName=topp%3Astates&request=GetFeature&service=WFS&version=1.1.0",
+				"http://localhost:8080/geoserver/topp/ows?request=GetFeature&service=WFS&typeName=topp%3Astates&version=1.1.0",
 				HttpUtil.createUri(url1, queryStringKvp));
 		
 		// when the request url is read from the capabilities, there might be a "&amp;"
 		// at the end of the url
 		URL url2 = new URL("http://localhost:8080/map/mapserv?map=/opt/data/carto/world.www.map&amp;");
 		assertEquals(
-				"http://localhost:8080/map/mapserv?typeName=topp%3Astates&request=GetFeature&map=%2Fopt%2Fdata%2Fcarto%2Fworld.www.map&service=WFS&version=1.1.0",
+				"http://localhost:8080/map/mapserv?map=%2Fopt%2Fdata%2Fcarto%2Fworld.www.map&request=GetFeature&service=WFS&typeName=topp%3Astates&version=1.1.0",
 				HttpUtil.createUri(url2, queryStringKvp));
 		
 		URL url3 = new URL("http://localhost:8080/map/mapserv?map=/opt/data/carto/world.www.map&test=1");
 		assertEquals(
-				"http://localhost:8080/map/mapserv?typeName=topp%3Astates&test=1&request=GetFeature&map=%2Fopt%2Fdata%2Fcarto%2Fworld.www.map&service=WFS&version=1.1.0",
+				"http://localhost:8080/map/mapserv?map=%2Fopt%2Fdata%2Fcarto%2Fworld.www.map&request=GetFeature&service=WFS&test=1&typeName=topp%3Astates&version=1.1.0",
 				HttpUtil.createUri(url3, queryStringKvp));
 	}
 

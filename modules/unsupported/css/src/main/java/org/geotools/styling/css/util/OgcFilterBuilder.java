@@ -83,7 +83,7 @@ public class OgcFilterBuilder implements SelectorVisitor {
     @Override
     public Object visit(And and) {
         List<Filter> filters = new ArrayList<>();
-        for (Selector child : and.children) {
+        for (Selector child : and.getChildren()) {
             Filter filter = (Filter) child.accept(this);
             if (filter == Filter.EXCLUDE) {
                 return Filter.EXCLUDE;
@@ -102,7 +102,7 @@ public class OgcFilterBuilder implements SelectorVisitor {
     @Override
     public Object visit(Or or) {
         List<Filter> filters = new ArrayList<>();
-        for (Selector child : or.children) {
+        for (Selector child : or.getChildren()) {
             Filter filter = (Filter) child.accept(this);
             if (filter == Filter.INCLUDE) {
                 return Filter.INCLUDE;

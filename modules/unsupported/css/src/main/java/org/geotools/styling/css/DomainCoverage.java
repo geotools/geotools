@@ -19,9 +19,12 @@ package org.geotools.styling.css;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.selector.Data;
 import org.geotools.styling.css.selector.Or;
@@ -32,6 +35,7 @@ import org.geotools.styling.css.util.ScaleRangeExtractor;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
@@ -43,7 +47,7 @@ import org.opengis.filter.FilterFactory2;
  * @author Andrea Aime - GeoSolutions
  * 
  */
-public class DomainCoverage {
+class DomainCoverage {
 
     /**
      * The full range of scales possible. Once this is covered, the whole domain is
@@ -109,7 +113,7 @@ public class DomainCoverage {
          */
         public List<SLDSelector> difference(SLDSelector other) {
             List<SLDSelector> result = new ArrayList<>();
-            
+
             // fast interaction tests
             if (!this.scaleRange.intersects(other.scaleRange)) {
                 return Collections.singletonList(this);
@@ -124,9 +128,10 @@ public class DomainCoverage {
             // second case, scale ranges overlapping, but filter/pseudoclass not
             NumberRange<?> scaleRangeIntersection = this.scaleRange.intersect(other.scaleRange);
             if (scaleRangeIntersection != null && !scaleRangeIntersection.isEmpty()) {
-                Filter filterDifference = simplify(FF.and(this.filter, FF.not(other.filter)));
-                if (filterDifference != Filter.EXCLUDE) {
-                    result.add(new SLDSelector(scaleRangeIntersection, filterDifference));
+                And difference = FF.and(this.filter, FF.not(other.filter));
+                Filter simplifiedDifference = simplify(difference);
+                if (simplifiedDifference != Filter.EXCLUDE) {
+                    result.add(new SLDSelector(scaleRangeIntersection, simplifiedDifference));
                 }
             }
 
@@ -135,13 +140,51 @@ public class DomainCoverage {
 
         @Override
         public String toString() {
-            return "ScaleDependentFilter [scaleRange=" + scaleRange + ", filter=" + filter + "]";
+            return "SLDSelector [scaleRange=" + scaleRange + ", filter=" + ECQL.toCQL(filter) + "]";
         }
 
-        public Selector toSelector() {
-            Selector selector = Selector.and(new ScaleRange(scaleRange), new Data(filter));
+        public Selector toSelector(SimplifyingFilterVisitor visitor) {
+            Selector selector = Selector.and(new ScaleRange(scaleRange), new Data(filter), visitor);
 
             return selector;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + getOuterType().hashCode();
+            result = prime * result + ((filter == null) ? 0 : filter.hashCode());
+            result = prime * result + ((scaleRange == null) ? 0 : scaleRange.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            SLDSelector other = (SLDSelector) obj;
+            if (!getOuterType().equals(other.getOuterType()))
+                return false;
+            if (filter == null) {
+                if (other.filter != null)
+                    return false;
+            } else if (!filter.equals(other.filter))
+                return false;
+            if (scaleRange == null) {
+                if (other.scaleRange != null)
+                    return false;
+            } else if (!scaleRange.equals(other.scaleRange))
+                return false;
+            return true;
+        }
+
+        private DomainCoverage getOuterType() {
+            return DomainCoverage.this;
         }
 
     }
@@ -152,7 +195,7 @@ public class DomainCoverage {
      * @author Andrea Aime - GeoSolutions
      *
      */
-    private class ScaleDependentFilterComparator implements Comparator<SLDSelector> {
+    private class SLDSelectorComparator implements Comparator<SLDSelector> {
 
         @Override
         public int compare(SLDSelector o1, SLDSelector o2) {
@@ -185,13 +228,31 @@ public class DomainCoverage {
     private FeatureType targetFeatureType;
 
     /**
+     * A simplifier visitor that will cache results that have been simplified already, since this
+     * class unites/intersects filters a lot in order to compute the coverage
+     */
+    private SimplifyingFilterVisitor simplifier;
+
+    /**
+     * The set of selectors generated so far. We can get several repeated selectors due to
+     * conditional pseudo-classes, but only the first one will be not covered
+     */
+    Set<List<SLDSelector>> generatedSelectors = new HashSet<>();
+
+    /**
+     * When true, the detailed (expensive) coverage computation will generate exclusive rules
+     */
+    boolean detailedCoverageEnabled = true;
+
+    /**
      * Create a new domain coverage for the given feature type
      * 
      * @param targetFeatureType
      */
-    public DomainCoverage(FeatureType targetFeatureType) {
+    public DomainCoverage(FeatureType targetFeatureType, SimplifyingFilterVisitor simplifier) {
         this.elements = new ArrayList<>();
         this.targetFeatureType = targetFeatureType;
+        this.simplifier = simplifier;
     }
 
     /**
@@ -206,18 +267,24 @@ public class DomainCoverage {
 
         // turns the rule in a set of domain coverage expressions (simplified selectors)
         List<SLDSelector> ruleCoverage = toSLDSelectors(selector, targetFeatureType);
+        if (generatedSelectors.contains(ruleCoverage)) {
+            return Collections.emptyList();
+        } else {
+            generatedSelectors.add(ruleCoverage);
+        }
 
         // for each rule we have in the domain, get the differences, if any, with this rule,
         // emit them as derived rules, and increase the coverage
         if (elements.isEmpty()) {
             elements.addAll(ruleCoverage);
-            return Collections.singletonList(rule);
+            return coverageToRules(rule, ruleCoverage);
         } else {
             List<SLDSelector> reducedCoverage = new ArrayList<>(ruleCoverage);
             for (SLDSelector element : elements) {
                 List<SLDSelector> difference = new ArrayList<>();
                 for (SLDSelector rc : reducedCoverage) {
-                    difference.addAll(rc.difference(element));
+                    List<SLDSelector> ruleDifference = rc.difference(element);
+                    difference.addAll(ruleDifference);
                 }
                 reducedCoverage = difference;
                 if (reducedCoverage.isEmpty()) {
@@ -228,14 +295,14 @@ public class DomainCoverage {
             if (!reducedCoverage.isEmpty()) {
                 List<CssRule> derivedRules = new ArrayList<>();
                 for (SLDSelector rc : reducedCoverage) {
-                    derivedRules.add(new CssRule(rc.toSelector(), rule.getProperties(), rule
-                            .getComment()));
+                    derivedRules.add(new CssRule(rc.toSelector(simplifier), rule.getProperties(),
+                            rule.getComment()));
                 }
 
                 elements.addAll(reducedCoverage);
 
                 // so far, this sorting done just for the sake of readability during debugging
-                Collections.sort(elements, new ScaleDependentFilterComparator());
+                Collections.sort(elements, new SLDSelectorComparator());
                 List<SLDSelector> combined = new ArrayList<>();
                 SLDSelector prev = null;
                 for (SLDSelector ss : elements) {
@@ -261,6 +328,19 @@ public class DomainCoverage {
         }
     }
 
+    private List<CssRule> coverageToRules(CssRule rule, List<SLDSelector> ruleCoverage) {
+        if (ruleCoverage.size() == 1) {
+            return Collections.singletonList(rule);
+        } else {
+            List<CssRule> result = new ArrayList<>();
+            for (SLDSelector ss : ruleCoverage) {
+                new CssRule(ss.toSelector(simplifier), rule.getProperties(), rule.getComment());
+            }
+
+            return result;
+        }
+    }
+
     /**
      * Turns the specified selector into a list of "standardized" SLDSelector
      * 
@@ -272,7 +352,7 @@ public class DomainCoverage {
         List<SLDSelector> result = new ArrayList<>();
         if (selector instanceof Or) {
             Or or = (Or) selector;
-            for (Selector s : or.children) {
+            for (Selector s : or.getChildren()) {
                 if (s instanceof Or) {
                     throw new IllegalArgumentException(
                             "Unexpected or selector nested inside another one, "
@@ -330,9 +410,7 @@ public class DomainCoverage {
      * @return
      */
     Filter simplify(Filter filter) {
-        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
-        visitor.setFeatureType(targetFeatureType);
-        return (Filter) filter.accept(visitor, null);
+        return (Filter) filter.accept(simplifier, null);
     }
 
     @Override
@@ -344,6 +422,10 @@ public class DomainCoverage {
         }
         sb.append("] // DomainCoverage end");
         return sb.toString();
+    }
+
+    void setDetailedCoverageEnabled(boolean detailedCoverageEnabled) {
+        this.detailedCoverageEnabled = detailedCoverageEnabled;
     }
 
 }

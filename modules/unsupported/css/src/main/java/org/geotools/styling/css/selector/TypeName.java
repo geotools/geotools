@@ -22,7 +22,7 @@ public class TypeName extends Selector {
 	
 	public static final TypeName DEFAULT = new TypeName(null);
 
-    public static Selector combineAnd(List<TypeName> selectors) {
+    public static Selector combineAnd(List<TypeName> selectors, Object context) {
         TypeName firstNonDefault = null;
         for (TypeName selector : selectors) {
         	if(!DEFAULT.equals(selector)) {

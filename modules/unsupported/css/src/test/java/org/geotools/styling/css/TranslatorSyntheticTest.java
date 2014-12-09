@@ -16,13 +16,18 @@
  */
 package org.geotools.styling.css;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Fill;
@@ -43,6 +48,7 @@ import org.junit.Test;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.Displacement;
 import org.opengis.style.FeatureTypeStyle;
 import org.opengis.style.GraphicFill;
 import org.opengis.style.Mark;
@@ -332,6 +338,23 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void markAnchorDisplacement() throws Exception {
+        String css = "* { mark: symbol(circle); mark-size: 10; mark-anchor: 0 1; mark-offset: 10 20;}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PointSymbolizer ps = assertSingleSymbolizer(rule, PointSymbolizer.class);
+        Graphic g = ps.getGraphic();
+        AnchorPoint ap = g.getAnchorPoint();
+        assertNotNull(ap);
+        assertEquals(0, ap.getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(1, ap.getAnchorPointY().evaluate(null, Double.class), 0d);
+        Displacement d = g.getDisplacement();
+        assertNotNull(d);
+        assertEquals(10, d.getDisplacementX().evaluate(null, Double.class), 0d);
+        assertEquals(20, d.getDisplacementY().evaluate(null, Double.class), 0d);
+    }
+
+    @Test
     public void externalGraphic() throws Exception {
         String css = "* { mark: url(test.svg); mark-size: 10; mark-rotation: 45; mark-mime: 'image/png';}";
         Style style = translate(css);
@@ -446,6 +469,15 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void labelMixedMode() throws Exception {
+        String css = "* { label: [att1]'\n('[att2]')';}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer2 ts = assertSingleSymbolizer(rule, TextSymbolizer2.class);
+        assertExpression("concatenate(att1, '\n(', att2, ')')", ts.getLabel());
+    }
+
+    @Test
     public void rasterBasic() throws Exception {
         String css = "* { raster-channels: auto;}";
         Style style = translate(css);
@@ -525,7 +557,19 @@ public class TranslatorSyntheticTest extends CssBaseTest {
                 + "\n  ";
         Style style = translate(css);
         Rule rule = assertSingleRule(style);
-        PointSymbolizer ps = assertSingleSymbolizer(rule, PointSymbolizer.class);
+        assertSingleSymbolizer(rule, PointSymbolizer.class);
+    }
+
+    @Test
+    public void scaleWithinOr() throws IOException, CQLException {
+        String css = "[@scale < 10000],[foo='bar'] { fill: orange; }";
+        // used to just blow
+        Style style = translate(css);
+        assertEquals("Expected single feature type style, found "
+                + style.featureTypeStyles().size(), 1, style.featureTypeStyles().size());
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        List<? extends Rule> rules = fts.rules();
+        assertEquals(3, rules.size());
     }
 
 }

@@ -528,8 +528,24 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 	double[] getHighestRes() {
 		return highestRes;
 	}
-	
+
 	/**
+     * Retrieve meta data value from requested coverage and for requested metadata
+     * @param coverageName
+     * @param name
+     * @return
+     */
+    @Override
+    public String getMetadataValue(String coverageName, String name) {
+        String metadataValue = super.getMetadataValue(coverageName, name);
+        if (metadataValue != null){
+            return metadataValue;
+        }
+        return getImageMosaicMetadataValue(name);
+
+    }
+
+    /**
 	 * Retrieve data value for requested metadata
 	 */
 	public String getMetadataValue(final String name) {
@@ -537,6 +553,10 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 	    if(value!=null){
 	        return value;
 	    }
+        return getImageMosaicMetadataValue(name);
+	}
+
+    private String getImageMosaicMetadataValue(String name) {
 	    ImageMosaicReader firstLevelReader=null;
 		try {
 			firstLevelReader= getImageMosaicReaderForLevel(0);
@@ -546,14 +566,14 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
             }
             return null;
 		}
-    	
+
         if (name.equalsIgnoreCase(HAS_TIME_DOMAIN)){
         	return String.valueOf(this.hasTimeDomain(firstLevelReader));
-        } 
-        
+        }
+
     	if(TIME_DOMAIN.equalsIgnoreCase(name)||
 				TIME_DOMAIN_MAXIMUM.equalsIgnoreCase(name)||
-				TIME_DOMAIN_MINIMUM.equalsIgnoreCase(name)) 
+				TIME_DOMAIN_MINIMUM.equalsIgnoreCase(name))
 		{
 	        if (this.hasTimeDomain(firstLevelReader)){
 	           return this.getTimeDomain(firstLevelReader, name);
@@ -565,7 +585,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 			return null;
 		}
 	}
-	
+
 	public String[] getMetadataNames() {
 	    final String []parentNames = super.getMetadataNames();
             final List<String> metadataNames = new ArrayList<String>();

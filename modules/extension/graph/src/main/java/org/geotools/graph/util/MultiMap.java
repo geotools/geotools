@@ -137,13 +137,5 @@ public class MultiMap implements Map, Serializable {
   public Object remove(Object key) {
     return(m_map.remove(key));
   }
-  
-  public Object remove(Object key, Object value) {
-    Collection c = (Collection)m_map.get(key);
-    c.remove(value);
-    return(value);
-  }
-  
-
     
 }

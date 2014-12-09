@@ -22,7 +22,7 @@ import org.geotools.util.Range;
 
 public class ScaleRange extends Selector {
 
-    public static Selector combineAnd(List<ScaleRange> selectors) {
+    public static Selector combineAnd(List<ScaleRange> selectors, Object ctx) {
         if (selectors.size() == 1) {
             return selectors.get(0);
         }

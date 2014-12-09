@@ -47,6 +47,7 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
     }
 
     public DisplacementBuilder x(Expression x) {
+        unset = false;
         this.x = x;
         return this;
     }
@@ -60,6 +61,7 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
     }
 
     public DisplacementBuilder y(Expression y) {
+        unset = false;
         this.y = y;
         return this;
     }
@@ -95,7 +97,7 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
 
     public DisplacementBuilder reset(org.opengis.style.Displacement displacement) {
         if (displacement == null) {
-            return reset();
+            return unset();
         }
         x = displacement.getDisplacementX();
         y = displacement.getDisplacementY();

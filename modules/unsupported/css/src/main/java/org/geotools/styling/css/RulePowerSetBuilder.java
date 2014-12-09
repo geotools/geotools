@@ -17,17 +17,21 @@
 package org.geotools.styling.css;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.util.FilteredPowerSetBuilder;
+import org.geotools.styling.css.util.PseudoClassRemover;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -37,7 +41,7 @@ import org.geotools.util.logging.Logging;
  * @author Andrea Aime - GeoSolutions
  * 
  */
-public class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
+class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
 
     static final Logger LOGGER = Logging.getLogger(RulePowerSetBuilder.class);
 
@@ -48,24 +52,55 @@ public class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRul
     int maxCombinations = -1;
 
     int count = 0;
+    
+    SimplifyingFilterVisitor simplifier;
 
-    public RulePowerSetBuilder(List<CssRule> domain) {
-        super(sortAscendingSpecificity(domain));
+    /**
+     * These are pseudo class bits that mix in the main rule set, or not, depending on whether their
+     * pseudo class is a match. They are treated separately to reduce the number of rules the power
+     * set generates
+     */
+    List<CssRule> mixins;
+
+    private static List[] classifyRules(List<CssRule> domain) {
+        List<CssRule> main = new ArrayList<>();
+        List<CssRule> mixins = new ArrayList<>();
+        for (CssRule rule : domain) {
+            if (rule.getProperties().get(PseudoClass.ROOT) == null) {
+                Selector simplified = (Selector) rule.selector.accept(new PseudoClassRemover());
+                rule = new CssRule(simplified, rule.properties, rule.comment);
+                mixins.add(rule);
+            } else {
+                main.add(rule);
+            }
+        }
+        Collections.sort(main, CssRuleComparator.ASCENDING);
+        Collections.sort(mixins, CssRuleComparator.ASCENDING);
+
+        return new List[] { main, mixins };
     }
 
-    public RulePowerSetBuilder(List<CssRule> domain, int maxCombinations) {
-        super(sortAscendingSpecificity(domain));
+
+    public RulePowerSetBuilder(List<CssRule> domain, SimplifyingFilterVisitor simplifier) {
+        this(classifyRules(domain), simplifier, -1);
+    }
+
+    RulePowerSetBuilder(List<CssRule> domain, SimplifyingFilterVisitor simplifier,
+            int maxCombinations) {
+        this(classifyRules(domain), simplifier, maxCombinations);
+    }
+
+    protected RulePowerSetBuilder(List[] domainMixins, SimplifyingFilterVisitor simplifier,
+            int maxCombinations) {
+        super(domainMixins[0]);
+        this.mixins = domainMixins[1];
         this.maxCombinations = maxCombinations;
+        this.simplifier = simplifier;
     }
 
-    private static List<CssRule> sortAscendingSpecificity(List<CssRule> rules) {
-        List<CssRule> copy = new ArrayList<>(rules);
-        Collections.sort(copy, new CssRuleComparator());
-        return copy;
-    }
 
     @Override
-    protected CssRule buildResult(List<CssRule> rules) {
+    protected List<CssRule> buildResult(List<CssRule> rules) {
         boolean foundSymbolizerProperty = false;
         for (CssRule rule : rules) {
             if (rule.hasSymbolizerProperty()) {
@@ -83,58 +118,141 @@ public class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRul
         if (rules.size() == 1) {
             combined = rules.get(0);
         } else {
-            Selector combinedSelector = combineSelectors(rules);
+            combined = combineRules(rules);
+        }
 
-            // apply cascading on properties
-            Map<PseudoClass, Map<String, Property>> properties = new LinkedHashMap<>();
-            for (CssRule cssRule : rules) {
-                for (Map.Entry<PseudoClass, List<Property>> entry : cssRule.getProperties()
-                        .entrySet()) {
-                    PseudoClass ps = entry.getKey();
-                    Map<String, Property> psProperties = properties.get(ps);
-                    if (psProperties == null) {
-                        psProperties = new HashMap<String, Property>();
-                        properties.put(ps, psProperties);
-                    }
-                    for (Property p : entry.getValue()) {
-                        psProperties.put(p.getName(), p);
-                    }
-                    if (ps != PseudoClass.ROOT) {
-                        // we also have to fill values for the pseudo classes owned by this one
-                        for (PseudoClass containedClass : properties.keySet()) {
-                            if (ps.contains(containedClass)) {
-                                Map<String, Property> containedProperties = properties
-                                        .get(containedClass);
-                                for (Property p : entry.getValue()) {
-                                    containedProperties.put(p.getName(), p);
-                                }
-                            }
-                        }
+        // do we have mixins to consider now?
+        List<CssRule> results = new ArrayList<>();
+        if (mixins == null || mixins.size() == 0) {
+            results.add(combined);
+        } else {
+            List<CssRule> applicableMixins = getApplicableMixins(combined);
+
+            if (applicableMixins.size() > 0) {
+                int idx = 0;
+
+                // let's see if all mixins are applying without conditinos
+                for (; idx < applicableMixins.size(); idx++) {
+                    CssRule mixin = applicableMixins.get(idx);
+                    Selector mixedSelector = Selector.and(mixin.selector, combined.selector,
+                            simplifier);
+                    if (mixedSelector == Selector.REJECT) {
+                        // this mixin is no good
+                        continue;
+                    } else if (mixedSelector.equals(combined.selector)) {
+                        // this mixin always applies
+                        combined = combineRules(Arrays.asList(combined, mixin));
+                    } else {
+                        break;
                     }
                 }
-            }
 
-            // build the new rule
-            Map<PseudoClass, List<Property>> newProperties = new LinkedHashMap<>();
-            for (Map.Entry<PseudoClass, Map<String, Property>> entry : properties.entrySet()) {
-                newProperties.put(entry.getKey(),
-                        new ArrayList<Property>(entry.getValue().values()));
+                // in this case we stumbled into a mixin that adds a condition to the selector,
+                // from here on we have to perform another power set expansion with the remaining
+                // mixins
+                if (idx < applicableMixins.size()) {
+                    List<CssRule> list = new ArrayList<>();
+                    list.add(combined);
+                    list.addAll(applicableMixins.subList(idx, applicableMixins.size()));
+                    RulePowerSetBuilder builder = new RulePowerSetBuilder(new List[] { list,
+                            Collections.emptyList() }, simplifier, maxCombinations - count);
+                    List<CssRule> conditionalPowerSet = builder.buildPowerSet();
+                    results.addAll(conditionalPowerSet);
+                } else {
+                    results.add(combined);
+                }
+
+            } else {
+                results.add(combined);
             }
-            String comment = getCombinedComment(rules);
-            CssRule result = new CssRule(combinedSelector, newProperties, comment);
-            result.setAncestry(rules);
-            combined = result;
         }
 
         // make sure we're not going beyond the max generated rules
-        if (maxCombinations > 0 && count++ > maxCombinations) {
+        count += results.size();
+        if (maxCombinations > 0 && count > maxCombinations) {
             LOGGER.severe("Bailing out, the CSS rule combinations have already generated more than "
                     + "maxCombinations SLD rules, giving up. Please simplify your CSS style");
         } else if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("New rule: " + combined);
         }
 
+        return results;
+    }
+
+    private CssRule combineRules(List<CssRule> rules) {
+        CssRule combined;
+        // build the main rule
+        Selector combinedSelector = combineSelectors(rules);
+
+        // apply cascading on properties
+        Map<PseudoClass, Map<String, Property>> properties = new LinkedHashMap<>();
+        for (CssRule cssRule : rules) {
+            for (Map.Entry<PseudoClass, List<Property>> entry : cssRule.getProperties().entrySet()) {
+                PseudoClass ps = entry.getKey();
+                Map<String, Property> psProperties = properties.get(ps);
+                if (psProperties == null) {
+                    psProperties = new HashMap<String, Property>();
+                    properties.put(ps, psProperties);
+                }
+                for (Property p : entry.getValue()) {
+                    psProperties.put(p.getName(), p);
+                }
+                if (ps != PseudoClass.ROOT) {
+                    // we also have to fill values for the pseudo classes owned by this one
+                    for (PseudoClass containedClass : properties.keySet()) {
+                        if (ps.contains(containedClass)) {
+                            Map<String, Property> containedProperties = properties
+                                    .get(containedClass);
+                            for (Property p : entry.getValue()) {
+                                containedProperties.put(p.getName(), p);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // build the new rule
+        Map<PseudoClass, List<Property>> newProperties = new LinkedHashMap<>();
+        for (Map.Entry<PseudoClass, Map<String, Property>> entry : properties.entrySet()) {
+            newProperties.put(entry.getKey(), new ArrayList<Property>(entry.getValue().values()));
+        }
+        String comment = getCombinedComment(rules);
+        combined = new CssRule(combinedSelector, newProperties, comment);
+        combined.setAncestry(rules);
         return combined;
+    }
+
+    /**
+     * Returns all the mixins that can be combined with the rule at hand, that is, mixins that have
+     * their pseudo-classes matched by the main rule symbolizers. Two lists will be returned, an
+     * in-conditional one, where the mixins just blend into the main rule, and a conditional one,
+     * where the mixin adds its own conditions, and thus require its own power set expansion
+     * 
+     * @param rule
+     * @return
+     */
+    private List<CssRule> getApplicableMixins(CssRule rule) {
+        Set<PseudoClass> mixablePseudoClasses = rule.getMixablePseudoClasses();
+
+        List<CssRule> result = new ArrayList<>();
+        for (CssRule mixin : mixins) {
+            Set<PseudoClass> pseudoClasses = mixin.properties.keySet();
+            // scroll to avoid building extra sets
+            boolean found = false;
+            for (PseudoClass pseudoClass : pseudoClasses) {
+                if (mixablePseudoClasses.contains(pseudoClass)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                result.add(mixin);
+            }
+        }
+
+        return result;
     }
 
     private String getCombinedComment(List<CssRule> rules) {
@@ -175,7 +293,7 @@ public class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRul
             s = rules.get(0).getSelector();
             for (int i = 1; i < rules.size() && s != Selector.REJECT; i++) {
                 CssRule rule = rules.get(i);
-                s = Selector.and(s, rule.getSelector());
+                s = Selector.and(s, rule.getSelector(), simplifier);
             }
         }
         this.lastRuleSet = rules;
@@ -197,25 +315,9 @@ public class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRul
         }
 
         // sort by selectivity
-        Collections.sort(filtered, Collections.reverseOrder(new CssRuleComparator()));
+        Collections.sort(filtered, CssRuleComparator.DESCENDING);
 
-        // we can have rules with the same selector, generated when combining a rule with *,
-        // fold them if they are covering each other (and they should)
-        List<CssRule> folded = new ArrayList<>();
-        CssRule prev = filtered.get(0);
-        for (int i = 1; i < filtered.size(); i++) {
-            CssRule curr = filtered.get(i);
-            if (curr.covers(prev)) {
-                prev = curr;
-            } else if (prev.covers(curr)) {
-                // nothing to do, skip it
-            } else {
-                folded.add(prev);
-                prev = curr;
-            }
-        }
-        folded.add(prev);
-        return folded;
+        return filtered;
     }
 
 }

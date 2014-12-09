@@ -36,7 +36,7 @@ public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
 
     private Expression rotation;
 
-    private AnchorPointBuilder anchorPoint = new AnchorPointBuilder(this).unset();
+    private AnchorPointBuilder anchorPoint = new AnchorPointBuilder(this, 0, 0).unset();
 
     private DisplacementBuilder displacement = new DisplacementBuilder(this).unset();
 

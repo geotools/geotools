@@ -40,7 +40,7 @@ public class AbstractSelectorVisitor implements SelectorVisitor {
 
 	@Override
 	public Object visit(And and) {
-		for (Selector s : and.children) {
+		for (Selector s : and.getChildren()) {
 			s.accept(this);
 		}
 		return null;
@@ -48,7 +48,7 @@ public class AbstractSelectorVisitor implements SelectorVisitor {
 
 	@Override
 	public Object visit(Or or) {
-		for (Selector s : or.children) {
+		for (Selector s : or.getChildren()) {
 			s.accept(this);
 		}
 		return null;

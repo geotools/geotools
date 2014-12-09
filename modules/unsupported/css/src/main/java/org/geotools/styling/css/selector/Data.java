@@ -22,6 +22,7 @@ import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.util.FilterSpecificityExtractor;
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.opengis.feature.type.FeatureType;
@@ -30,7 +31,9 @@ import org.opengis.filter.FilterFactory2;
 
 public class Data extends Selector {
 
-    public static Selector combineAnd(List<Data> selectors) {
+    public static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+
+    public static Selector combineAnd(List<Data> selectors, Object ctx) {
         if (selectors.size() == 1) {
             return selectors.get(0);
         }
@@ -42,10 +45,14 @@ public class Data extends Selector {
             featureType = selector.featureType;
         }
 
-        FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
         org.opengis.filter.And and = FF.and(filters);
-        UnboundSimplifyingFilterVisitor visitor = new UnboundSimplifyingFilterVisitor();
-        visitor.setFeatureType(featureType);
+        SimplifyingFilterVisitor visitor;
+        if (ctx instanceof SimplifyingFilterVisitor) {
+            visitor = (SimplifyingFilterVisitor) ctx;
+        } else {
+            visitor = new UnboundSimplifyingFilterVisitor();
+            visitor.setFeatureType(featureType);
+        }
         Filter simplified = (Filter) and.accept(visitor, null);
         if (Filter.INCLUDE.equals(simplified)) {
             return ACCEPT;
@@ -99,7 +106,7 @@ public class Data extends Selector {
 
     @Override
     public String toString() {
-        return "OGCFilter [filter=" + filter + "]";
+        return "OGCFilter [filter=" + ECQL.toCQL(filter) + "]";
     }
 
     @Override

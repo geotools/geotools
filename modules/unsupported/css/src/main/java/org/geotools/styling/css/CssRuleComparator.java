@@ -16,6 +16,7 @@
  */
 package org.geotools.styling.css;
 
+import java.util.Collections;
 import java.util.Comparator;
 
 /**
@@ -25,6 +26,15 @@ import java.util.Comparator;
  * 
  */
 class CssRuleComparator implements Comparator<CssRule> {
+
+    public static final CssRuleComparator ASCENDING = new CssRuleComparator();
+
+    public static final Comparator<CssRule> DESCENDING = Collections.reverseOrder(ASCENDING);
+
+    private CssRuleComparator() {
+
+    }
+
 	@Override
 	public int compare(CssRule o1, CssRule o2) {
 		return o1.getSelector().compareTo(o2.getSelector());

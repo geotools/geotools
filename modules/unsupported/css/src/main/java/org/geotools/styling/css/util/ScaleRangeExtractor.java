@@ -48,9 +48,13 @@ public class ScaleRangeExtractor extends AbstractSelectorVisitor {
 	}
 
     public static Range<Double> getScaleRange(Selector selector) {
-        ScaleRangeExtractor extractor = new ScaleRangeExtractor();
-        selector.accept(extractor);
-		return extractor.range;
+        try {
+            ScaleRangeExtractor extractor = new ScaleRangeExtractor();
+            selector.accept(extractor);
+            return extractor.range;
+        } catch (IllegalStateException e) {
+            throw new IllegalArgumentException("Failed to extract scale range from: " + selector);
+        }
     }
 
 	@Override

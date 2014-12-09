@@ -112,9 +112,9 @@ public abstract class FilteredPowerSetBuilder<T, R> {
         }
 
         if (k == n) {
-            R combined = buildResult(objects);
+            List<R> combined = buildResult(objects);
             if (combined != null) {
-                result.add(combined);
+                result.addAll(combined);
             }
         } else {
             s.set(k, true);
@@ -137,7 +137,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
      * @param objects
      * @return
      */
-    protected abstract R buildResult(List<T> objects);
+    protected abstract List<R> buildResult(List<T> objects);
 
     /**
      * Checks if a certain list of objects should be accepted, or not. If rejected, a signature will

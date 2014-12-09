@@ -810,7 +810,12 @@ public class SLDTransformer extends TransformerBase {
             element("Opacity", gr.getOpacity(), 1.0);
             element("Size", gr.getSize());
             element("Rotation", gr.getRotation(), 0.0);
-            visit(gr.getDisplacement());
+            if (gr.getAnchorPoint() != null) {
+                visit(gr.getAnchorPoint());
+            }
+            if (gr.getDisplacement() != null) {
+                visit(gr.getDisplacement());
+            }
 
             end("Graphic");
         }

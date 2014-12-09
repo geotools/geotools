@@ -547,6 +547,8 @@
           <xsd:element ref="sld:Opacity" minOccurs="0"/>
           <xsd:element ref="sld:Size" minOccurs="0"/>
           <xsd:element ref="sld:Rotation" minOccurs="0"/>
+          <xsd:element ref="sld:AnchorPoint" minOccurs="0"/>
+          <xsd:element ref="sld:Displacement" minOccurs="0"/>
         </xsd:sequence>
       </xsd:sequence>
     </xsd:complexType>

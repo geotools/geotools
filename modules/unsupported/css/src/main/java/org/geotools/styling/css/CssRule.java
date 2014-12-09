@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -28,6 +29,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.geotools.styling.Style;
+import org.geotools.styling.css.Value.Function;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.util.PseudoClassExtractor;
@@ -434,6 +436,101 @@ public class CssRule {
         }
 
         return false;
+    }
+
+    /**
+     * Returns the list of pseudo classes that can be mixed into this rule, meaning we have root
+     * properties in which these pseudo classes can be mixed in.
+     * 
+     * @param rootProperties
+     * @return
+     */
+    Set<PseudoClass> getMixablePseudoClasses() {
+        List<Property> rootProperties = getProperties().get(PseudoClass.ROOT);
+        if (rootProperties == null) {
+            return Collections.emptySet();
+        }
+        Set<PseudoClass> result = new HashSet<>();
+        for (Property property : rootProperties) {
+            String name = property.getName();
+            switch (name) {
+            case "fill":
+            case "stroke":
+                result.add(PseudoClass.newPseudoClass("symbol"));
+                addPseudoClassesForConditionallyMixableProperty(result, property);
+                break;
+            case "mark":
+                result.add(PseudoClass.newPseudoClass("symbol"));
+                result.add(PseudoClass.newPseudoClass("mark"));
+                addIndexedPseudoClasses(result, "mark");
+                break;
+            case "label":
+                result.add(PseudoClass.newPseudoClass("symbol"));
+                result.add(PseudoClass.newPseudoClass("shield"));
+                addIndexedPseudoClasses(result, "shield");
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Adds pseudo classes for fill and stroke, whose ability to mix-in depends on whether a
+     * function (symbol) or a straight value was used for the value of the property
+     * 
+     * @param result
+     * @param property
+     */
+    private void addPseudoClassesForConditionallyMixableProperty(Set<PseudoClass> result,
+            Property property) {
+        String propertyName = property.getName();
+        List<Value> values = property.getValues();
+        if (values.size() == 1 && values.get(0) instanceof Function) {
+            result.add(PseudoClass.newPseudoClass(propertyName));
+            addIndexedPseudoClasses(result, propertyName);
+        } else {
+            for (int i = 0; i < values.size(); i++) {
+                if (values.get(i) instanceof Function) {
+                    result.add(PseudoClass.newPseudoClass("symbol", i));
+                    result.add(PseudoClass.newPseudoClass(propertyName, i + 1));
+                }
+            }
+        }
+    }
+
+    /**
+     * Collects all properties starting with the propertyName, and adds pseudo classes up to the max
+     * index found in said properties
+     * 
+     * @param result
+     * @param propertyName
+     */
+    private void addIndexedPseudoClasses(Set<PseudoClass> result, String propertyName) {
+        Map<String, List<Value>> properties = getPropertyValues(PseudoClass.ROOT, propertyName);
+        int maxRepeatCount = getMaxRepeatCount(properties);
+        if (maxRepeatCount > 1) {
+            for (int i = 1; i <= maxRepeatCount; i++) {
+                result.add(PseudoClass.newPseudoClass("symbol", i));
+                result.add(PseudoClass.newPseudoClass(propertyName, i));
+            }
+        }
+    }
+
+    /**
+     * Returns the max number of property values in the provided property set (for repeated
+     * symbolizers)
+     * 
+     * @param valueMap
+     * @return
+     */
+    private int getMaxRepeatCount(Map<String, List<Value>> valueMap) {
+        int max = 1;
+        for (List<Value> values : valueMap.values()) {
+            max = Math.max(max, values.size());
+        }
+
+        return max;
     }
 
 }

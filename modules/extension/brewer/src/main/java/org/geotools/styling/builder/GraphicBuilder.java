@@ -45,9 +45,9 @@ public class GraphicBuilder extends
 
 	Expression rotation;
 
-	private AnchorPointBuilder anchor = new AnchorPointBuilder(this);
+    private AnchorPointBuilder anchor = new AnchorPointBuilder(this, 0.5, 0.5).unset();
 
-	private DisplacementBuilder displacement = new DisplacementBuilder(this);
+    private DisplacementBuilder displacement = new DisplacementBuilder(this).unset();
 
 	public GraphicBuilder() {
 		this(null);
@@ -133,6 +133,16 @@ public class GraphicBuilder extends
 		return builder;
 	}
 
+    public AnchorPointBuilder anchor() {
+        unset = false;
+        return anchor;
+    }
+
+    public DisplacementBuilder displacement() {
+        unset = false;
+        return displacement;
+    }
+
 	public Graphic build() {
 		if (unset) {
 			return null;
@@ -160,6 +170,8 @@ public class GraphicBuilder extends
 	}
 
 	public GraphicBuilder unset() {
+        displacement.unset();
+        anchor.unset();
 		return (GraphicBuilder) super.unset();
 	}
 
@@ -169,8 +181,8 @@ public class GraphicBuilder extends
 		opacity = literal(1.0);
         size = null;
 		rotation = literal(0);
-		displacement.reset();
-		anchor.reset();
+        displacement.unset();
+        anchor.unset();
 		return this;
 	}
 

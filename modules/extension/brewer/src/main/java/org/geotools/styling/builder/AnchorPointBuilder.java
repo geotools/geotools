@@ -37,16 +37,22 @@ import org.opengis.filter.expression.Expression;
  * @source $URL$
  */
 public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
+    double defaultX;
+
+    double defaultY;
+
     private Expression x;
 
     private Expression y;
 
     public AnchorPointBuilder() {
-        this(null);
+        this(null, 0, 0);
     }
 
-    public AnchorPointBuilder(AbstractStyleBuilder<?> parent) {
+    public AnchorPointBuilder(AbstractStyleBuilder<?> parent, double defaultX, double defaultY) {
         super(parent);
+        this.defaultX = defaultX;
+        this.defaultY = defaultY;
         reset();
     }
 
@@ -62,6 +68,7 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
     }
 
     public AnchorPointBuilder x(Expression x) {
+        unset = false;
         this.x = x;
         return this;
     }
@@ -75,6 +82,7 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
     }
 
     public AnchorPointBuilder y(Expression y) {
+        unset = false;
         this.y = y;
         return this;
     }
@@ -88,8 +96,8 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
     }
 
     public AnchorPointBuilder reset() {
-        x = literal(0);
-        y = literal(0);
+        x = literal(defaultX);
+        y = literal(defaultY);
         unset = false;
         return this;
     }
@@ -110,7 +118,7 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
 
     public AnchorPointBuilder reset(org.opengis.style.AnchorPoint anchorPoint) {
         if (anchorPoint == null) {
-            return reset();
+            return unset();
         }
         x = anchorPoint.getAnchorPointX();
         y = anchorPoint.getAnchorPointY();

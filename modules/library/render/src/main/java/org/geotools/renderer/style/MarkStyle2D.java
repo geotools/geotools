@@ -33,13 +33,23 @@ import org.geotools.resources.Classes;
  * @source $URL$
  * @version $Id$
  */
-public class MarkStyle2D extends PolygonStyle2D {
+public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
     
     static boolean maxMarkSizeEnabled = Boolean.getBoolean("org.geotools.maxMarkSizeEnabled");
     
     Shape shape;
+
     double size;
+
     float rotation;
+
+    float displacementX;
+
+    float displacementY;
+
+    float anchorPointX = 0.5f;
+
+    float anchorPointY = 0.5f;
 
     /**
      * Returns the shape rotation, in radians
@@ -68,27 +78,38 @@ public class MarkStyle2D extends PolygonStyle2D {
      * @return a shape that can be used to draw the mark 
      */
     public Shape getTransformedShape(float x, float y) {
-        return getTransformedShape(x, y, rotation);
+        return getTransformedShape(x, y, 0, rotation);
     }
     
     /**
-     * Returns a shape that can be used to draw the mark at the x, y coordinates
-     * with appropriated rotation and size (according to the current style)
+     * Returns a shape that can be used to draw the mark at the x, y coordinates with appropriated
+     * rotation and size (according to the current style)
      *
      * @param x the x coordinate where the mark will be drawn
      * @param y the y coordinate where the mark will be drawn
-     * @param rotation a custom rotation, other than the mark build in one
+     * @param baseRotation a custom rotation that will be applied before offsets
+     * @param rotation the mark rotation
      *
-     * @return a shape that can be used to draw the mark 
+     * @return a shape that can be used to draw the mark
      */
-    public Shape getTransformedShape(float x, float y, float rotation) {
+    public Shape getTransformedShape(float x, float y, float baseRotation, float rotation) {
         if (shape != null) {
             Rectangle2D bounds = shape.getBounds2D();
             double shapeSize = (maxMarkSizeEnabled ? Math.max(bounds.getWidth(), bounds.getHeight()) : bounds.getHeight());
             double scale = size / shapeSize;
             TransformedShape ts = new TransformedShape();
             ts.shape = shape;
-            ts.translate(x, y);
+            // shapes are already centered, we need to displace them only if the anchor is not 0.5 0.5
+            float dx = (float) (bounds.getWidth() * scale * (0.5 - anchorPointX) + displacementX);
+            float dy = (float) (bounds.getHeight() * scale * (0.5 - anchorPointY) + displacementY);
+            if (baseRotation != 0) {
+                ts.translate(x, y);
+                ts.rotate(baseRotation);
+                ts.translate(dx, dy);
+            } else {
+                ts.translate(x + dx, y + dy);
+            }
+
             ts.rotate(rotation);
             // flip the symbol to take into account the screen orientation
             // where the y grows from top to bottom
@@ -159,4 +180,37 @@ public class MarkStyle2D extends PolygonStyle2D {
     public static void setMaxMarkSizeEnabled(boolean useMaxMarkSize) {
         MarkStyle2D.maxMarkSizeEnabled = useMaxMarkSize;
     }
+
+    public float getDisplacementX() {
+        return displacementX;
+    }
+
+    public void setDisplacementX(float displacementX) {
+        this.displacementX = displacementX;
+    }
+
+    public float getDisplacementY() {
+        return displacementY;
+    }
+
+    public void setDisplacementY(float displacementY) {
+        this.displacementY = displacementY;
+    }
+
+    public float getAnchorPointX() {
+        return anchorPointX;
+    }
+
+    public void setAnchorPointX(float anchorPointX) {
+        this.anchorPointX = anchorPointX;
+    }
+
+    public float getAnchorPointY() {
+        return anchorPointY;
+    }
+
+    public void setAnchorPointY(float anchorPointY) {
+        this.anchorPointY = anchorPointY;
+    }
+
 }

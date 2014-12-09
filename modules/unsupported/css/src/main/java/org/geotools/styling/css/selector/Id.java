@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class Id extends Selector {
 
-    public static Selector combineAnd(List<Id> selectors) {
+    public static Selector combineAnd(List<Id> selectors, Object ctx) {
         Set<String> identifiers = new HashSet<>(selectors.get(0).ids);
         for (Id selector : selectors) {
             identifiers.retainAll(selector.ids);

@@ -363,4 +363,47 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
         
         return new org.geotools.data.Parameter(name, type, min, max);
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((fallbackValue == null) ? 0 : fallbackValue.hashCode());
+        result = prime * result + ((functionName == null) ? 0 : functionName.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((params == null) ? 0 : params.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        FunctionImpl other = (FunctionImpl) obj;
+        if (fallbackValue == null) {
+            if (other.fallbackValue != null)
+                return false;
+        } else if (!fallbackValue.equals(other.fallbackValue))
+            return false;
+        if (functionName == null) {
+            if (other.functionName != null)
+                return false;
+        } else if (!functionName.equals(other.functionName))
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (params == null) {
+            if (other.params != null)
+                return false;
+        } else if (!params.equals(other.params))
+            return false;
+        return true;
+    }
 }

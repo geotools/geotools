@@ -17,6 +17,7 @@
 package org.geotools.filter.visitor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +27,7 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
@@ -156,73 +158,41 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     @Override
     public Object visit(And filter, Object extraData) {
         // drill down and flatten
-        List<Filter> flattened = new ArrayList<Filter>(filter.getChildren().size());
-        for (Filter child : filter.getChildren()) {
-            Filter cloned = (Filter) child.accept(this, extraData);
+        List<Filter> filters = collect(filter, And.class, extraData, new ArrayList<Filter>());
 
-            if (cloned instanceof And) {
-                And and = (And) cloned;
-                flattened.addAll(and.getChildren());
-            } else {
-                flattened.add(cloned);
-            }
+        filters = basicAndSimplification(filters);
+
+        filters = extraAndSimplification(extraData, filters);
+
+        // we might end up with an empty list
+        if (filters.size() == 0) {
+            return Filter.INCLUDE;
         }
 
-        // if there are nested Ors, try distribution, see if this helps reduce the
-        // overall expression
-        for (int i = 0; i < flattened.size(); i++) {
-            Filter f = flattened.get(i);
-            if (f instanceof Or) {
-                Or or = ((Or) f);
-                Filter reduced = null;
-                boolean twoOrMore = false;
-                for (Filter child : or.getChildren()) {
-                    List<Filter> newList = new ArrayList<>(flattened);
-                    newList.remove(or);
-                    newList.add(child);
-                    And and = getFactory(extraData).and(newList);
-                    Filter simplified = (Filter) and.accept(this, extraData);
-                    if (simplified == Filter.EXCLUDE) {
-                        continue;
-                    } else if (simplified == Filter.INCLUDE) {
-                        return Filter.INCLUDE;
-                    } else if (reduced == null) {
-                        reduced = simplified;
-                    } else if (!simplified.equals(reduced)) {
-                        twoOrMore = true;
-                    }
-                }
 
-                if (reduced == null) {
-                    return Filter.EXCLUDE;
-                } else if (!twoOrMore) {
-                    flattened.clear();
-                    if (!(reduced instanceof And)) {
-                        flattened.add(reduced);
-                    } else {
-                        flattened.addAll(((And) reduced).getChildren());
-                    }
-                    // this assumes we'll never stumble into a single children or,
-                    // because those are simplified out at the beginning of this procedure
-                    i = 0;
-                }
-            }
+        // remove the logic we have only one filter
+        if (filters.size() == 1) {
+            return filters.get(0);
         }
 
+        return getFactory(extraData).and(filters);
+    }
+
+    protected List<Filter> basicAndSimplification(List<Filter> filters) {
         // perform range simplifications (by intersection), if possible
         if (featureType != null) {
-            RangeCombiner combiner = new RangeCombiner.And(ff, featureType, flattened);
-            flattened = combiner.getReducedFilters();
+            RangeCombiner combiner = new RangeCombiner.And(ff, featureType, filters);
+            filters = combiner.getReducedFilters();
         }
 
         // eliminate include and exclude
-        List<Filter> simplified = new ArrayList<Filter>(flattened.size());
-        for (Filter child : flattened) {
+        List<Filter> simplified = new ArrayList<Filter>(filters.size());
+        for (Filter child : filters) {
             // if any of the child filters is exclude,
             // the whole chain of AND is equivalent to
             // EXCLUDE
             if (child == Filter.EXCLUDE) {
-                return Filter.EXCLUDE;
+                return Arrays.asList((Filter) Filter.EXCLUDE);
             }
 
             // these can be skipped
@@ -241,26 +211,34 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 if (f1.equals(f2)) {
                     simplified.remove(j);
                 } else if (dualFilters(f1, f2)) {
-                    return Filter.EXCLUDE;
+                    return Arrays.asList((Filter) Filter.EXCLUDE);
                 } else {
                     j++;
                 }
             }
         }
+        return simplified;
+    }
 
-        // we might end up with an empty list
-        if (simplified.size() == 0) {
-            return Filter.INCLUDE;
+    protected <T extends BinaryLogicOperator> List<Filter> collect(T filter, Class<T> type,
+            Object extraData,
+            List<Filter> collected) {
+        for (Filter child : filter.getChildren()) {
+            if (type.isInstance(child)) {
+                T and = (T) child;
+                collect(and, type, extraData, collected);
+            } else {
+                Filter cloned = (Filter) child.accept(this, extraData);
+                if (type.isInstance(cloned)) {
+                    T and = (T) cloned;
+                    collect(and, type, extraData, collected);
+                } else {
+                    collected.add(cloned);
+                }
+            }
         }
 
-
-        // remove the logic we have only one filter
-        if (simplified.size() == 1) {
-            return simplified.get(0);
-        }
-
-        // else return the cloned and simplified up list
-        return getFactory(extraData).and(simplified);
+        return collected;
     }
 
 
@@ -303,64 +281,76 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     @Override
     public Object visit(Or filter, Object extraData) {
         // scan, clone and simplify the children
-        List<Filter> newChildren = new ArrayList<Filter>(filter.getChildren().size());
-        for (Filter child : filter.getChildren()) {
-            Filter cloned = (Filter) child.accept(this, extraData);
+        List<Filter> filters = collect(filter, Or.class, extraData, new ArrayList<Filter>());
 
+        filters = basicOrSimplification(filters);
+
+        filters = extraOrSimplification(extraData, filters);
+
+        // we might end up with an empty list
+        if (filters.size() == 0) {
+            return Filter.EXCLUDE;
+        }
+
+        // remove the logic we have only one filter
+        if (filters.size() == 1) {
+            return filters.get(0);
+        }
+
+        // else return the cloned and simplified up list
+        return getFactory(extraData).or(filters);
+    }
+
+    protected List<Filter> basicOrSimplification(List<Filter> filters) {
+        // perform range simplifications (by intersection), if possible
+        if (featureType != null) {
+            RangeCombiner combiner = new RangeCombiner.Or(ff, featureType, filters);
+            filters = combiner.getReducedFilters();
+        }
+
+        // eliminate include and exclude
+        List<Filter> simplified = new ArrayList<Filter>(filters.size());
+        for (Filter child : filters) {
             // if any of the child filters is INCLUDE,
             // the whole chain of OR is equivalent to
             // INCLUDE
-            if (cloned == Filter.INCLUDE) {
-                return Filter.INCLUDE;
+            if (child == Filter.INCLUDE) {
+                return Arrays.asList((Filter) Filter.INCLUDE);
             }
 
             // these can be skipped
-            if (cloned == Filter.EXCLUDE) {
+            if (child == Filter.EXCLUDE) {
                 continue;
             }
 
-            if (cloned instanceof Or) {
-                Or or = (Or) cloned;
-                newChildren.addAll(or.getChildren());
-            } else {
-                newChildren.add(cloned);
-            }
-        }
-        
-        // perform range simplifications (by intersection), if possible
-        if (featureType != null) {
-            RangeCombiner combiner = new RangeCombiner.Or(ff, featureType, newChildren);
-            newChildren = combiner.getReducedFilters();
+            simplified.add(child);
         }
 
-        // see if we have dual filters that can lead to Filter.INCLUDE
-        for (int i = 0; i < newChildren.size(); i++) {
-            for (int j = i + 1; j < newChildren.size();) {
-                Filter f1 = newChildren.get(i);
-                Filter f2 = newChildren.get(j);
+        // see if we have dual filters that can lead to Filter.Exclude, or duplicated filters
+        for (int i = 0; i < simplified.size(); i++) {
+            for (int j = i + 1; j < simplified.size();) {
+                Filter f1 = simplified.get(i);
+                Filter f2 = simplified.get(j);
                 if (f1.equals(f2)) {
-                    newChildren.remove(j);
+                    simplified.remove(j);
                 } else if (dualFilters(f1, f2)) {
-                    return Filter.INCLUDE;
+                    return Arrays.asList((Filter) Filter.INCLUDE);
                 } else {
                     j++;
                 }
             }
         }
-
-        // we might end up with an empty list
-        if (newChildren.size() == 0) {
-            return Filter.EXCLUDE;
-        }
-
-        // remove the logic we have only one filter
-        if (newChildren.size() == 1) {
-            return newChildren.get(0);
-        }
-
-        // else return the cloned and simplified up list
-        return getFactory(extraData).or(newChildren);
+        return simplified;
     }
+
+    protected List<Filter> extraAndSimplification(Object extraData, List<Filter> filters) {
+        return filters;
+    }
+
+    protected List<Filter> extraOrSimplification(Object extraData, List<Filter> filters) {
+        return filters;
+    }
+
 
     /**
      * Uses the current {@link FIDValidator} to wipe out illegal feature ids from the returned

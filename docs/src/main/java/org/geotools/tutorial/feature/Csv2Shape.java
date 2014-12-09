@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.UIManager;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
@@ -50,6 +52,13 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class Csv2Shape {
 
     public static void main(String[] args) throws Exception {
+        // Set cross-platform look & feel for compatability
+        try {
+          UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+          System.out.println(e.getStackTrace());
+          return;
+        }
 
         File file = JFileDataStoreChooser.showOpenFile("csv", null);
         if (file == null) {

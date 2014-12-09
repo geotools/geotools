@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import org.geotools.data.wms.xml.Attribution;
 import org.geotools.data.wms.xml.Dimension;
 import org.geotools.data.wms.xml.Extent;
 import org.geotools.data.wms.xml.MetadataURL;
@@ -160,6 +161,9 @@ public class Layer implements Comparable<Layer> {
             .synchronizedMap(new WeakHashMap<CoordinateReferenceSystem, Envelope>());
     
     private List<MetadataURL> metadataURL;
+
+    /** Element related to the Attribution tag in the GetCapabilities*/
+    private Attribution attribution;
 
     /**
      * Called to clear the internal cache of this layer; and any children.
@@ -895,7 +899,14 @@ public class Layer implements Comparable<Layer> {
         this.metadataURL = metadataURL;
     }
 
-    
+    public Attribution getAttribution() {
+        return attribution;
+    }
+
+    public void setAttribution(Attribution attribution) {
+        this.attribution = attribution;
+    }
+
     @Override
     public String toString() {
         if (this.title != null) {
@@ -903,5 +914,4 @@ public class Layer implements Comparable<Layer> {
         }
         return name;
     }
-
 }

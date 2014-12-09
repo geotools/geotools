@@ -74,3 +74,4 @@ Unsupported plugins:
    wfs
    wfs-ng
    vpf
+   kml

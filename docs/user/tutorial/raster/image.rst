@@ -92,7 +92,7 @@ We are going to use these same facilities now to prompt the user:
       :start-after: // docs start get layers
       :end-before: // docs end get layers
 
-The use of **Parameter** objects for each input file. The arguments passed to the Parameter
+Observer the use of **Parameter** objects for each input file. The arguments passed to the Parameter
 constructor are:
    
 :key: an identifier for the Parameter
@@ -164,10 +164,9 @@ and pass it to a **JMapFrame**.
 Running the application
 =======================
 
-If you need some sample data to display you can download the uDig
-`sample dataset <http://udig.refractions.net/docs/data-v1_2.zip>`_ which contains:
+If you need some sample data to display you can download the `uDig sample dataset <http://udig.refractions.net/docs/data-v1_2.zip>`_ which contains:
 
-* bluemarble.tif
+* clouds.jpg
 * countries.shp
 
 

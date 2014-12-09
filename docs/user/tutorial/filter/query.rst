@@ -71,7 +71,7 @@ example.
       :start-after: <url>http://maven.apache.org</url>
       :end-before: <repositories>
 
-2. Create the *QueryLab* class and copy and paste the following to get going.
+2. Create the *QueryLab* class and copy and paste the following to get going:
    
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
@@ -107,8 +107,7 @@ Here is the code to create the controls:
    
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
-      :start-after: // docs start data menu
-      :end-before: // docs end data menu
+      :lines: 124-138, 145
    
 Connect to DataStore
 ---------------------
@@ -199,8 +198,7 @@ Now we can run the application and try out some of these ideas:
    the File menu.
 
    The **JDataStoreWizard** will prompt you for a file. Please select the **cities.shp**
-   shapefile available as part of the `uDig sample dataset
-   <http://udig.refractions.net/docs/data-v1_2.zip>` used in previous tutorials.
+   shapefile available as part of the `uDig sample dataset <http://udig.refractions.net/docs/data-v1_2.zip>`_ used in previous tutorials.
 
    .. image:: images/shapeWizard1.png
 
@@ -269,14 +267,14 @@ Things to Try
   .. image:: images/postgisWizard1.png
   
   If you don't have a PostGIS database you can try connecting to a public online database at
-  `Refractions Research <http://www.refractions.net/>` with the following credentials:
+  `Refractions Research <http://www.refractions.net/>`_ with the following credentials:
   
   :host:
     www.refractions.net
   :port:
     5432
   :database:
-    bc-demo
+    demo-bc
   :user:
     demo
   :passwd:
@@ -305,9 +303,6 @@ Things to Try
      encoder.encode( filter, org.geotools.filter.v1_0.OGC.FILTER, outputstream );
   
   For these examples to work you will need a dependency on *gt-xml*.
-
-* One of the stated advantages of using **Query** is to cut down on the amount of data requested
-  when working. Here is an example of calculating the center of the 
 
 *  Earlier we covered the use FeatureIterator to sift through the contents of a FeatureCollection.
    Using this idea with **Query** allows you to work with just the geometry when determining the
@@ -408,7 +403,7 @@ following query will request THE_GEOM and POPULATION from a FeatureSource |ldquo
 
 FeatureCollection
 -----------------
-Previously we added features to a FeatureCollection during the CSV2SHP example. This was easy as the
+Previously we added features to a FeatureCollection during the Csv2Shp example. This was easy as the
 FeatureCollection was in memory at the time. When working with spatial data we try to not have a
 FeatureCollection in memory because spatial data gets big in a hurry.
 

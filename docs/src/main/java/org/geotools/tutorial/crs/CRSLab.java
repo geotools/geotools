@@ -150,10 +150,12 @@ public class CRSLab {
         SimpleFeatureType featureType = SimpleFeatureTypeBuilder.retype(schema, worldCRS);
         dataStore.createSchema(featureType);
 
+        String createdName = dataStore.getTypeNames()[0];
+
         // carefully open an iterator and writer to process the results
         Transaction transaction = new DefaultTransaction("Reproject");
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                        dataStore.getFeatureWriterAppend(featureType.getTypeName(), transaction);
+                        dataStore.getFeatureWriterAppend(createdName, transaction);
         SimpleFeatureIterator iterator = featureCollection.features();
         try {
             while (iterator.hasNext()) {

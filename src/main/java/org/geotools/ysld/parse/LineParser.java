@@ -17,7 +17,7 @@ public class LineParser extends SymbolizerParser<LineSymbolizer> {
         super.handle(obj, context);
 
         YamlMap map = obj.map();
-        context.push(obj, new StrokeParser(factory) {
+        context.push(new StrokeParser(factory) {
             @Override
             protected void stroke(Stroke stroke) {
                 sym.setStroke(stroke);

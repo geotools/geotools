@@ -23,10 +23,10 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
             sym.setPriority(Util.expression(map.str("priority"), factory));
         }
 
-        context.push(map, new FontHandler());
+        context.push(new FontHandler());
         context.push("halo", new HaloParser());
-        context.push(map, new PlacementParser());
-        context.push(map, new FillParser(factory) {
+        context.push(new PlacementParser());
+        context.push(new FillParser(factory) {
             @Override
             protected void fill(Fill fill) {
                 sym.setFill(fill);

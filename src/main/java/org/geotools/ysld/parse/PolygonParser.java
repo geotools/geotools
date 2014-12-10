@@ -15,13 +15,13 @@ public class PolygonParser extends SymbolizerParser<PolygonSymbolizer> {
         super.handle(obj, context);
 
         YamlMap map = obj.map();
-        context.push(map, new StrokeParser(factory) {
+        context.push(new StrokeParser(factory) {
             @Override
             protected void stroke(Stroke stroke) {
                 sym.setStroke(stroke);
             }
         });
-        context.push(map, new FillParser(factory) {
+        context.push(new FillParser(factory) {
             @Override
             protected void fill(Fill fill) {
                 sym.setFill(fill);

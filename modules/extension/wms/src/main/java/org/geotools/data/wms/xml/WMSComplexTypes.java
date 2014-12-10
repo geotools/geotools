@@ -2649,9 +2649,9 @@ public class WMSComplexTypes {
 					 //Dimension dim = layer.getDimension(ext.getName());
 					 //dim.setExtent(ext);
 				 }
-				// if (sameName(elems[9], value[i])) {
-				// //TODO attribution ignored
-				// }
+				 if (sameName(elems[9], value[i])) {
+				     layer.setAttribution((Attribution) value[i].getValue());
+				 }
 				// if (sameName(elems[10], value[i])) {
 				// //TODO authorityURL ignored
 				// }
@@ -3427,7 +3427,27 @@ public class WMSComplexTypes {
 		public Object getValue(Element element, ElementValue[] value,
 				Attributes attrs, Map hints) throws SAXException,
 				OperationNotSupportedException {
-			return null;
+
+		        String title = null;
+		        URL onlineResource = null;
+		        LogoURL logoURL = null;
+
+                        int length = Math.min(elems.length, value.length);
+                        for (int i = 0; i < length; i++) {
+                            if (sameName(elems[0], value[i])) {
+                                title = (String) value[i].getValue();
+                            }
+
+                            if (sameName(elems[1], value[i])) {
+                                onlineResource = (URL) value[i].getValue();
+                            }
+
+                            if (sameName(elems[2], value[i])) {
+                                logoURL = (LogoURL) value[i].getValue();
+                            }
+                        }
+
+			return new Attribution(title, onlineResource, logoURL);
 			// throw new OperationNotSupportedException();
 		}
 
@@ -3446,7 +3466,7 @@ public class WMSComplexTypes {
 		 * @see org.geotools.xml.schema.Type#getInstanceType()
 		 */
 		public Class getInstanceType() {
-			return null;
+			return Attribution.class;
 		}
 
 		/*
@@ -3538,7 +3558,27 @@ public class WMSComplexTypes {
 		public Object getValue(Element element, ElementValue[] value,
 				Attributes attrs, Map hints) throws SAXException,
 				OperationNotSupportedException {
-			return null;
+
+
+		    String widthName = attrs.getValue("width");
+                    if (widthName == null || widthName.length() == 0) {
+                            throw new SAXException(
+                                            "LogoURL element contains no 'width' attribute");
+                    }
+
+                    String heightName = attrs.getValue("height");
+                    if (heightName == null || heightName.length() == 0) {
+                            throw new SAXException(
+                                            "LogoURL element contains no 'height' attribute");
+                    }
+
+                    int width = Integer.parseInt(widthName);
+                    int height = Integer.parseInt(heightName);
+
+                    URL url = (URL)value[1].getValue();
+                    String format = (String)(((Object[])value[0].getValue())[0]);
+
+			return new LogoURL(format, url, width, height);
 			// throw new OperationNotSupportedException();
 		}
 
@@ -3557,7 +3597,7 @@ public class WMSComplexTypes {
 		 * @see org.geotools.xml.schema.Type#getInstanceType()
 		 */
 		public Class getInstanceType() {
-			return null;
+			return LogoURL.class;
 		}
 
 		/*

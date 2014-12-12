@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.geotools.TestData;
@@ -27,6 +28,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureWriter;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.gce.geotiff.GeoTiffReader;
@@ -53,6 +55,7 @@ import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.filter.FilterFactory;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -216,7 +219,7 @@ public class GeoPackageTest {
     }
     
     @Test 
-    public void testSpatialIndex() throws Exception {
+    public void testSpatialIndexWriting() throws Exception {
         ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
         SimpleFeatureCollection coll = shp.getFeatureSource().getFeatures();
 
@@ -284,6 +287,29 @@ public class GeoPackageTest {
             st.close();
             cx.close();
         }
+    }
+    
+    @Test 
+    public void testSpatialIndexReading() throws Exception {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        
+        ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
+
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, shp.getFeatureSource(), null);
+        
+        assertFalse(geopkg.hasSpatialIndex(entry));
+        
+        geopkg.createSpatialIndex(entry);
+        
+        assertTrue(geopkg.hasSpatialIndex(entry));
+        
+        Set ids = geopkg.searchSpatialIndex(entry, 590230.0, 4915038.0, 590234.0, 4915040.0);
+        SimpleFeatureReader sfr = geopkg.reader(entry, ff.id(ids), null);
+        
+        assertTrue(sfr.hasNext());
+        assertEquals("bugsites.1", sfr.next().getID().toString());
+        assertFalse(sfr.hasNext());       
     }
 
     @Test

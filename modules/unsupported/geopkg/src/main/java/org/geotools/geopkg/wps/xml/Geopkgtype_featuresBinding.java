@@ -69,6 +69,10 @@ public class Geopkgtype_featuresBinding extends LayertypeBinding {
                 layer.setPropertyNames( qnames);
             }
             layer.setFilter((Filter) node.getChildValue("filter"));
+            Boolean indexed = (Boolean) node.getChildValue("indexed");
+            if (indexed != null) {
+                layer.setIndexed(indexed);
+            }
             return layer;
         }
 

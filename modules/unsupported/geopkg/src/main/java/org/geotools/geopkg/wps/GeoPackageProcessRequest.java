@@ -67,6 +67,7 @@ public class GeoPackageProcessRequest {
         protected QName featureType = null;
         protected Set<QName> propertyNames = null;
         protected Filter filter = null;
+        protected boolean indexed = false;
 
         @Override
         public LayerType getType() {
@@ -95,6 +96,14 @@ public class GeoPackageProcessRequest {
 
         public void setFilter(Filter filter) {
             this.filter = filter;
+        }
+
+        public boolean isIndexed() {
+            return indexed;
+        }
+
+        public void setIndexed(boolean indexed) {
+            this.indexed = indexed;
         }
     }
     

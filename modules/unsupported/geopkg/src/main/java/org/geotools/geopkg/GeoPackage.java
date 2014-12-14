@@ -1388,6 +1388,17 @@ public class GeoPackage {
                 finally {
                     close(st);
                 }
+                
+                //create an index on the tile
+                st = cx.prepareStatement(format(
+                        "create index %s_zyx_idx on %s(zoom_level, tile_column, tile_row);", 
+                        e.getTableName(),  e.getTableName()));
+                try {
+                    st.execute();
+                }
+                finally {
+                    close(st);
+                }
             }
             finally {
                 close(cx);

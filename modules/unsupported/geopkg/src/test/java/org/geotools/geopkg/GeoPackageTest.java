@@ -516,6 +516,9 @@ public class GeoPackageTest {
             rs.next();
             assertEquals(rs.getInt(1), entry.getTileMatricies().size());
             
+            rs.close();
+            ps.close();
+            
             ps = cx.prepareStatement(
                     "SELECT * from gpkg_tile_matrix_set WHERE table_name = ?");
             ps.setString(1, entry.getTableName());
@@ -529,6 +532,15 @@ public class GeoPackageTest {
             assertEquals(rs.getDouble(6), entry.getBounds().getMaxY(), 0.01);
             
             assertFalse(rs.next());
+
+            rs.close();
+            ps.close();
+            
+            //index
+            ps = cx.prepareStatement(
+                    "SELECT * from sqlite_master WHERE type='index' and name = ?");
+            ps.setString(1, entry.getTableName() + "_zyx_idx");
+            rs = ps.executeQuery();
 
             rs.close();
             ps.close();

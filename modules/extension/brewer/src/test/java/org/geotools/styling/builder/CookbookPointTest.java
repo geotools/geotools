@@ -233,7 +233,7 @@ public class CookbookPointTest extends AbstractStyleTest {
         rb.point().graphic().size(6).mark().name("circle").fill().color(Color.RED);
         TextSymbolizerBuilder tb = rb.text().label("name");
         tb.fill().color(Color.BLACK);
-        tb.newFont().familyName("Arial").size(12).styleName(Font.Style.NORMAL)
+        tb.newFont().familyName("Arial").size(12)
                 .weightName(Font.Weight.BOLD);
         tb.pointPlacement().displacement().x(0).y(5);
         tb.pointPlacement().anchor().x(0.5);
@@ -269,7 +269,7 @@ public class CookbookPointTest extends AbstractStyleTest {
         rb.point().graphic().size(6).mark().name("circle").fill().color(Color.RED);
         TextSymbolizerBuilder tb = rb.text().label("name");
         tb.fill().color(Color.BLACK);
-        tb.newFont().familyName("Arial").size(12).styleName(Font.Style.NORMAL)
+        tb.newFont().familyName("Arial").size(12)
                 .weightName(Font.Weight.BOLD);
         tb.pointPlacement().displacement().x(0).y(5);
         tb.pointPlacement().anchor().x(0.5);

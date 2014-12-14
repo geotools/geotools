@@ -16,6 +16,7 @@
  */
 package org.geotools.styling.css;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,21 +36,69 @@ import org.opengis.filter.expression.Expression;
 import org.parboiled.Action;
 import org.parboiled.BaseParser;
 import org.parboiled.Context;
+import org.parboiled.Parboiled;
 import org.parboiled.Rule;
 import org.parboiled.annotations.BuildParseTree;
 import org.parboiled.annotations.SuppressNode;
 import org.parboiled.annotations.SuppressSubnodes;
+import org.parboiled.parserunners.ReportingParseRunner;
+import org.parboiled.support.ParsingResult;
 import org.parboiled.support.ValueStack;
 
 /**
- * Parser for the cartographic CSS
+ * Parser for the cartographic CSS. In order to parse a CSS either get a parser using the
+ * {@link #getInstance()} method, or directly call {@link #parse(String)}
  * 
  * @author Andrea Aime - GeoSolutions
  */
 @BuildParseTree
 public class CssParser extends BaseParser<Object> {
 
+    static CssParser INSTANCE;
+
     static final Object MARKER = new Object();
+
+    /**
+     * Allows Parboiled to do its magic, while disallowing normal users from instantiating this
+     * class
+     */
+    protected CssParser() {
+
+    }
+
+    /**
+     * Returns the single instance of the CSS parser. The CSSParser should not be instantiated
+     * directly, Parboiled needs to do it instead.
+     * 
+     * @return
+     */
+    public static CssParser getInstance() {
+        // we need to lazily create it, otherwise Parboiled won't be able to instrument the class
+        if (INSTANCE == null) {
+            INSTANCE = Parboiled.createParser(CssParser.class);
+        }
+
+        return INSTANCE;
+    }
+
+    /**
+     * Turns the CSS provided into a {@link Stylesheet} object, will throw a
+     * {@link CSSParseException} in case of syntax errors
+     * 
+     * @return
+     * @throws IOException
+     */
+    public static Stylesheet parse(String css) throws CSSParseException {
+        CssParser parser = getInstance();
+        ReportingParseRunner<Stylesheet> runner = new ReportingParseRunner<Stylesheet>(
+                parser.StyleSheet());
+        ParsingResult<Stylesheet> result = runner.run(css);
+        if (result.hasErrors()) {
+            throw new CSSParseException(result.parseErrors);
+        }
+        Stylesheet ss = result.parseTreeRoot.getValue();
+        return ss;
+    }
 
     Rule StyleSheet() {
         return Sequence(OneOrMore(CssRule()), WhiteSpaceOrIgnoredComment(), EOI,

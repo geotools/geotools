@@ -85,10 +85,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Style;
-import org.parboiled.Parboiled;
-import org.parboiled.errors.ErrorUtils;
-import org.parboiled.parserunners.ReportingParseRunner;
-import org.parboiled.support.ParsingResult;
 import org.w3c.dom.css.CSSRule;
 
 /**
@@ -1377,17 +1373,12 @@ public class CssTranslator {
                             + outputParent.getPath());
             System.exit(-2);
         }
-        CssParser parser = Parboiled.createParser(CssParser.class);
-        String css = FileUtils.readFileToString(input);
-
+        
         long start = System.currentTimeMillis();
-        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet())
-                .run(css);
-        if (result.hasErrors()) {
-            System.err.println(ErrorUtils.printParseErrors(result));
-            System.exit(-3);
-        }
 
+        String css = FileUtils.readFileToString(input);
+        Stylesheet styleSheet = CssParser.parse(css);
+        
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         handler.setLevel(java.util.logging.Level.FINE);
 
@@ -1395,9 +1386,8 @@ public class CssTranslator {
                 java.util.logging.Level.FINE);
         org.geotools.util.logging.Logging.getLogger("org.geotools.styling.css").addHandler(handler);
 
-        Stylesheet ss = result.parseTreeRoot.getValue();
         CssTranslator translator = new CssTranslator();
-        Style style = translator.translate(ss);
+        Style style = translator.translate(styleSheet);
 
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();

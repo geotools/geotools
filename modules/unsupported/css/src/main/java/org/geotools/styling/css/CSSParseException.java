@@ -18,6 +18,8 @@ package org.geotools.styling.css;
 
 import java.util.List;
 
+import org.parboiled.errors.DefaultInvalidInputErrorFormatter;
+import org.parboiled.errors.InvalidInputError;
 import org.parboiled.errors.ParseError;
 import org.parboiled.support.Position;
 
@@ -46,8 +48,11 @@ public class CSSParseException extends IllegalArgumentException {
         StringBuilder sb = new StringBuilder();
         for (ParseError pe : errors) {
             Position pos = pe.getInputBuffer().getPosition(pe.getStartIndex());
-            sb.append(pe.getErrorMessage()).append(" at line ").append(pos.line)
-                    .append(", column " + pos.column);
+            String message = pe.getErrorMessage() != null ? pe.getErrorMessage()
+                    : pe instanceof InvalidInputError ? new DefaultInvalidInputErrorFormatter()
+                            .format((InvalidInputError) pe) : pe.getClass().getSimpleName();
+            sb.append(message).append(" (line ").append(pos.line).append(", column ")
+                    .append(pos.column).append(")");
             sb.append('\n');
         }
         sb.setLength(sb.length() - 1);

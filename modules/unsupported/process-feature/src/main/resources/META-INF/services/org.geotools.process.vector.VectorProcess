@@ -7,6 +7,7 @@ org.geotools.process.vector.ClipProcess
 org.geotools.process.vector.CollectGeometries
 org.geotools.process.vector.CountProcess
 org.geotools.process.vector.FeatureProcess
+org.geotools.process.vector.FeatureClassStats
 org.geotools.process.vector.GridProcess
 org.geotools.process.vector.HeatmapProcess
 org.geotools.process.vector.InclusionFeatureCollection

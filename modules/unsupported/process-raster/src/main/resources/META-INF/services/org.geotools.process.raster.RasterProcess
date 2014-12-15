@@ -4,6 +4,7 @@ org.geotools.process.raster.AreaGridProcess
 org.geotools.process.raster.BandMergeProcess
 org.geotools.process.raster.BandSelectProcess
 org.geotools.process.raster.ContourProcess
+org.geotools.process.raster.CoverageClassStats
 org.geotools.process.raster.CropCoverage 
 org.geotools.process.raster.MultiplyCoveragesProcess 
 org.geotools.process.raster.PolygonExtractionProcess

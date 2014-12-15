@@ -107,7 +107,9 @@ Here is the code to create the controls:
    
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
-      :lines: 124-138, 145
+      :start-after: // docs start data menu
+      :end-before: // docs end data menu
+      :append:     }
    
 Connect to DataStore
 ---------------------

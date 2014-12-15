@@ -126,16 +126,30 @@
 				<Name>Countries</Name>
 				<Title>Countries</Title>
 				<BoundingBox CRS="CRS:84" minx="-184" miny="-90" maxx="180" maxy="85"/>
+				<Attribution>
+					<Title>test</Title>
+					<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.example.com"/>
+				</Attribution>
 			</Layer>
 			<Layer queryable="1" opaque="1">
 				<Name>Topography</Name>
 				<Title>Topography</Title>
 				<BoundingBox CRS="CRS:84" minx="-179.999999999999" miny="-90.0000000017335" maxx="179.999999996401" maxy="89.9999999999998"/>
+				<Attribution>
+					<Title>test</Title>
+				</Attribution>			
 			</Layer>
 			<Layer queryable="0" opaque="1">
 				<Name>Hillshading</Name>
 				<Title>Hillshading</Title>
 				<BoundingBox CRS="CRS:84" minx="-179.999999999999" miny="-90.0000000017335" maxx="179.999999996401" maxy="89.9999999999998"/>
+				<Attribution>
+      				<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.example.com"/>
+					<LogoURL>
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.osgeo.org/sites/all/themes/osgeo/logo.png"/>
+					</LogoURL>				
+				</Attribution>			
 			</Layer>
 			<Layer queryable="1" opaque="0">
 				<Name>Builtup areas</Name>

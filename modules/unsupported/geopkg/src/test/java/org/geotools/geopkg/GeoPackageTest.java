@@ -40,6 +40,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
+import org.geotools.data.memory.MemoryFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -47,6 +48,8 @@ import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureWriter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.image.WorldImageFormat;
@@ -72,11 +75,16 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 public class GeoPackageTest {
 
@@ -230,8 +238,46 @@ public class GeoPackageTest {
         re.close();
         ra.close();
     }
-
+    
     @Test
+    public void test3DGeometry() throws Exception {
+        //create feature with 3d geometry
+        Point geom = new GeometryFactory(new PrecisionModel(), 4326).createPoint(new Coordinate(5,3,8));
+        SimpleFeatureTypeBuilder tBuilder = new SimpleFeatureTypeBuilder();
+        tBuilder.setName( "mytype" );
+        tBuilder.add( "name", String.class);
+        tBuilder.add( "geom", Geometry.class, 4326);
+        SimpleFeatureType type = tBuilder.buildFeatureType();
+        SimpleFeatureBuilder fBuilder = new SimpleFeatureBuilder(type);        
+        MemoryFeatureCollection featCollection = new MemoryFeatureCollection(type);
+        fBuilder.add("testfeature");
+        fBuilder.add(geom);
+        featCollection.add(fBuilder.buildFeature("fid-0001"));
+        
+        FeatureEntry entry = new FeatureEntry();
+        //important, store in database that there is a z
+        entry.setZ(true);
+        geopkg.add(entry, featCollection);
+
+        assertTableExists("mytype");
+
+        //check metadata contents
+        assertFeatureEntry(entry);
+        
+        //read feature and verify dimension
+        SimpleFeatureReader ra = geopkg.reader(entry, null, null);
+        assertTrue(ra.hasNext());
+        
+        SimpleFeature f = ra.next();
+        Point readGeom = (Point) f.getAttribute("geom");
+        
+        assertEquals(3, readGeom.getCoordinateSequence().getDimension());
+        assertEquals(geom.getCoordinate().z, readGeom.getCoordinate().z, 0.0001);
+        
+        ra.close();
+    }
+    
+    @Test 
     public void testFunctions() throws Exception {
         ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
         SimpleFeatureReader re = Features.simple(shp.getFeatureReader());

@@ -1,6 +1,7 @@
 package org.geotools.styling.builder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
 
@@ -127,7 +128,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         pb.stroke().colorHex("#FFFFFF").width(2);
         TextSymbolizerBuilder tb = rb.text().label("name");
         tb.pointPlacement().anchor().x(0.5).y(0.5);
-        tb.newFont().familyName("Arial").size(11).styleName("normal").weightName("bold");
+        tb.newFont().familyName("Arial").size(11).weightName("bold");
         tb.fill().color(Color.BLACK);
         tb.halo().radius(3).fill().color(Color.WHITE);
         tb.option("autoWrap", 60).option("maxDisplacement", 150);
@@ -214,7 +215,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         pb.fill().colorHex("#0000CC");
         pb.stroke().color(Color.BLACK).width(7);
         TextSymbolizerBuilder tb = rb.text().label("name");
-        tb.newFont().familyName("Arial").size(14).styleName("normal").weightName("bold");
+        tb.newFont().familyName("Arial").size(14).weightName("bold");
         tb.pointPlacement().anchor().x(0.5).y(0.5);
         tb.fill().color(Color.WHITE);
         

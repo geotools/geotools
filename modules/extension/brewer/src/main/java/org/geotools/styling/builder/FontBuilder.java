@@ -28,6 +28,8 @@ import org.opengis.filter.expression.Expression;
  * @source $URL$
  */
 public class FontBuilder extends AbstractStyleBuilder<Font> {
+    boolean familiesSet = false;
+
     private List<Expression> families = new ArrayList<Expression>();
 
     private Expression style;
@@ -48,6 +50,9 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
     public Font build() {
         if (unset) {
             return null;
+        }
+        if (families.isEmpty()) {
+            families.add(FF.literal("Serif"));
         }
         Font font = sf.font(families, style, weight, size);
         if (parent == null) {
@@ -109,7 +114,11 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
     }
 
     public FontBuilder reset() {
-        unset = false;
+        Font df = sf.getDefaultFont();
+        this.families = new ArrayList<Expression>();
+        this.size = df.getSize();
+        this.style = df.getStyle();
+        this.weight = df.getWeight();
         return this;
     }
 

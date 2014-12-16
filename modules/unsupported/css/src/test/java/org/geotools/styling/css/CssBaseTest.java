@@ -16,16 +16,15 @@
  */
 package org.geotools.styling.css;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.opengis.style.Style;
-import org.parboiled.Parboiled;
 import org.parboiled.errors.ErrorUtils;
-import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParseTreeUtils;
 import org.parboiled.support.ParsingResult;
 import org.parboiled.support.ToStringFormatter;
@@ -34,7 +33,7 @@ import org.parboiled.trees.GraphUtils;
 
 public class CssBaseTest {
 
-    protected CssParser parser = Parboiled.createParser(CssParser.class);
+    CssParser parser = CssParser.getInstance();
 
     protected void assertProperty(CssRule r, int propertyIdx, String propertyName,
             Value expectedValue) {
@@ -73,12 +72,7 @@ public class CssBaseTest {
     }
 
     protected Stylesheet parse(String css) {
-        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet())
-                .run(css);
-        assertNoErrors(result);
-
-        Stylesheet ss = result.parseTreeRoot.getValue();
-        return ss;
+        return CssParser.parse(css);
     }
 
     protected void assertNoErrors(ParsingResult<?> result) {

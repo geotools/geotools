@@ -89,7 +89,7 @@
     <online.skip.pattern>**/*OnlineTest.java</online.skip.pattern>
     <stress.skip.pattern>**/*StressTest.java</stress.skip.pattern>
     <test.exclude.pattern>disabled</test.exclude.pattern>
-    <test.maxHeapSize>512M</test.maxHeapSize>
+    <test.maxHeapSize>256M</test.maxHeapSize>
     <javadoc.maxHeapSize>1024M</javadoc.maxHeapSize>
     <test.forkMode>once</test.forkMode>
     <src.output>${basedir}/target</src.output>

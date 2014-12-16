@@ -16,10 +16,14 @@
  */
 package org.geotools.styling.css;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -32,6 +36,7 @@ import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.TypeName;
 import org.junit.Test;
+import org.parboiled.errors.ParseError;
 import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
 
@@ -633,6 +638,22 @@ public class ParserSyntheticTest extends CssBaseTest {
         r = ss.getRules().get(1);
         assertEquals(r.getSelector(), new TypeName("states"));
         assertProperty(r, 0, "fill", new Value.Literal("#ff0000"));
+    }
+
+    @Test
+    public void testExceptionMessage() {
+        // lets forget a semicolon in the third line
+        String css = "* \n { fill: blue; \n stroke: yellow }";
+        try {
+            CssParser.parse(css);
+            fail("Should have failed with an exception");
+        } catch (CSSParseException e) {
+            List<ParseError> errors = e.getErrors();
+            assertEquals(1, errors.size());
+            assertEquals(
+                    "Invalid input '}', expected ' ', '\\r', '\\t', '\\f', '\\n', SimpleValue, ',', WhiteSpace or ';' (line 3, column 17)",
+                    e.getMessage());
+        }
     }
 
 }

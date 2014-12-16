@@ -58,16 +58,16 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  */
 public class GeoPkgDialect extends PreparedStatementSQLDialect {
    
-    protected GeoPkgGeomWriter geomWriter;
+    protected GeoPkgGeomWriter.Configuration geomWriterConfig;
     
     public GeoPkgDialect(JDBCDataStore dataStore, GeoPkgGeomWriter.Configuration writerConfig) {
         super(dataStore);
-        geomWriter = new GeoPkgGeomWriter(writerConfig);
+        this.geomWriterConfig = writerConfig;
     }
 
     public GeoPkgDialect(JDBCDataStore dataStore) {
         super(dataStore);
-        geomWriter = new GeoPkgGeomWriter();
+        geomWriterConfig = new GeoPkgGeomWriter.Configuration();
     }
 
     @Override
@@ -120,7 +120,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
         else {
             try {
-                ps.setBytes(column, geomWriter.write(g));
+                ps.setBytes(column, new GeoPkgGeomWriter(dimension, geomWriterConfig).write(g));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -274,6 +274,20 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         } catch (IOException e) {
             throw new SQLException(e);
         }
+    }
+    
+    @Override
+    public int getGeometryDimension(String schemaName, String tableName, String columnName, Connection cx) throws SQLException {
+        try {
+            FeatureEntry fe = geopkg().feature(tableName);
+            if (fe != null) {
+                return 2 + (fe.isZ() ? 1 : 0) + (fe.isM() ? 1 : 0);
+            } else { //fallback - shouldn't happen
+                return super.getGeometryDimension(schemaName, tableName, columnName, cx);
+            }
+        } catch (IOException e) {
+            throw new SQLException(e);
+        }        
     }
 
     public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {

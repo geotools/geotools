@@ -17,8 +17,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +44,7 @@ import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureWriter;
 import org.geotools.factory.Hints;
+import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -61,6 +64,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.identity.Identifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.sqlite.Function;
 
@@ -1482,6 +1486,112 @@ public class GeoPackage {
             throw new IOException(e);
         }
         
+    }
+    
+    protected String getSpatialIndexName(FeatureEntry entry) {
+        return "rtree_" + entry.getTableName() + "_" + entry.getGeometryColumn();        
+    }
+    
+    /**
+     * Verifies if a spatial index is present
+     * 
+     * @param entry The feature entry.
+     * @return whether this feature entry has a spatial index available.
+     * @throws IOException
+     */
+    public boolean hasSpatialIndex(FeatureEntry entry) throws IOException {
+        try {
+            Connection cx = connPool.getConnection();
+
+            try {
+                PreparedStatement ps = prepare(cx, "SELECT name FROM sqlite_master WHERE type='table' AND name=? ")
+                        .set(getSpatialIndexName(entry))
+                        .log(Level.FINE).statement();
+                
+                try {   
+                    ResultSet rs = ps.executeQuery();
+                    
+                    try {
+                        return rs.next();
+                    } finally {
+                        close(rs);
+                    }
+                } finally {
+                    close(ps);
+                }
+            } finally {
+                close (cx);
+            }
+        }
+        catch(SQLException e) {
+            throw new IOException(e);
+        }
+    }
+    
+    /**
+     * Searches a spatial index.
+     * 
+     * @param entry The feature entry.
+     * @param minX Optional minimum x boundary.
+     * @param minY Optional minimum y boundary.
+     * @param maxX Optional maximum x boundary.
+     * @param maxY Optional maximum y boundary.
+     */
+    public Set<Identifier> searchSpatialIndex(FeatureEntry entry, Double minX, Double minY, Double maxX, Double maxY) throws IOException {
+        List<String> q = new ArrayList();
+        
+        if (minX != null) {
+            q.add("minx >= " + minX);
+        }
+        if (minY != null) {
+            q.add("miny >= " + minY);
+        }
+        if (maxX != null) {
+            q.add("maxx <= " + maxX);
+        }
+        if (maxY != null) {
+            q.add("maxy <= " + maxY);
+        }
+
+        StringBuffer sql = new StringBuffer("SELECT id FROM ").append(getSpatialIndexName(entry));
+        if (!q.isEmpty()) {
+            sql.append(" WHERE ");
+            for (String s : q) {
+                sql.append(s).append(" AND ");
+            }
+            sql.setLength(sql.length()-5);
+        }
+        
+        try {
+
+            Connection cx = connPool.getConnection();
+
+            try {
+                Statement st = cx.createStatement();
+                try {
+                    ResultSet rs = st.executeQuery(sql.toString());
+                    
+                    try {
+                        HashSet<Identifier> ids = new HashSet<Identifier>();
+                        
+                        while (rs.next()) {
+                            ids.add(new FeatureIdImpl(rs.getString(1)));
+                        }
+                        
+                        return ids;        
+                    } finally {
+                        close(rs);
+                    }
+                } finally {
+                    close(st);
+                }
+            } finally {
+                close(cx);
+            }
+        }
+        catch(SQLException e) {
+            throw new IOException(e);
+        }
     }
         
     /**

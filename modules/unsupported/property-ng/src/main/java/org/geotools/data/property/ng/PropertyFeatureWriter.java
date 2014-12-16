@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -43,11 +43,13 @@ import com.vividsolutions.jts.geom.Geometry;
 /**
  * Uses PropertyAttributeWriter to generate a property file on disk.
  *
+ * @author Jody Garnett
+ * @author Torben Barsballe (Boundless)
  *
  * @source $URL$
  */
 public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
-
+    
     PropertyDataStore store;
     ContentFeatureSource featureSource;
     File read;
@@ -59,7 +61,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     SimpleFeature origional = null;
     SimpleFeature live = null;
     private ContentState state;
-
+    
     public PropertyFeatureWriter(ContentFeatureSource source, ContentState contentState, Query query, boolean append) throws IOException {
         this.state = contentState;
         this.featureSource = source;
@@ -73,24 +75,22 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         
         // start reading
         delegate = new PropertyFeatureReader(namespaceURI, read );
-
         type = delegate.getFeatureType();
-
+        
         // open writer
         writer = new BufferedWriter(new FileWriter(write));
         // write header
         writer.write("_=");
         writer.write(DataUtilities.encodeType(type));
     }
-
     // constructor end
-
+    
     // getFeatureType start
     public SimpleFeatureType getFeatureType() {
         return state.getFeatureType();
     }
-
     // getFeatureType end
+    
     // hasNext start
     public boolean hasNext() throws IOException {
         if (writer == null) {
@@ -106,8 +106,8 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         }
         return delegate.hasNext();
     }
-
     // hasNext end
+    
     // writeImplementation start
     private void writeImplementation(SimpleFeature f) throws IOException {
         if (writer == null) {
@@ -158,6 +158,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         }
     }
     // writeImplementation end
+    
     // next start
     public SimpleFeature next() throws IOException {
         if (writer == null) {
@@ -167,20 +168,20 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         try {
             if (hasNext()) {
                 delegate.next(); // grab next line
-
+                
                 fid = delegate.fid;
                 Object values[] = new Object[type.getAttributeCount()];
                 for (int i = 0; i < type.getAttributeCount(); i++) {
                     values[i] = delegate.read(i);
                 }
-
+                
                 origional = SimpleFeatureBuilder.build(type, values, fid);
                 live = SimpleFeatureBuilder.copy(origional);
                 return live;
             } else {
                 fid = type.getTypeName() + "." + System.currentTimeMillis();
                 Object values[] = DataUtilities.defaultValues(type);
-
+                
                 origional = null;
                 live = SimpleFeatureBuilder.build(type, values, fid);
                 return live;
@@ -191,8 +192,8 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
             throw new DataSourceException(message, e);
         }
     }
-
     // next end
+    
     // write start
     public void write() throws IOException {
         if (live == null) {
@@ -218,8 +219,8 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         origional = null;
         live = null;
     }
-
     // write end
+    
     // remove start
     public void remove() throws IOException {
         if (live == null) {
@@ -235,7 +236,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         live = null; // prevent live and remove from being written out
     }
     // remove end
-
+    
     // close start
     public void close() throws IOException {
         if (writer == null) {
@@ -254,7 +255,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         writer = null;
         delegate = null;
         read.delete();
-
+        
         if (write.exists() && !write.renameTo(read)) {
             FileOutputStream outStream = new FileOutputStream(read);
             FileInputStream inStream = new FileInputStream(write);
@@ -263,7 +264,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
             try {
                 long len = in.size();
                 long copied = out.transferFrom(in, 0, in.size());
-
+                
                 if (len != copied) {
                     throw new IOException("unable to complete write");
                 }

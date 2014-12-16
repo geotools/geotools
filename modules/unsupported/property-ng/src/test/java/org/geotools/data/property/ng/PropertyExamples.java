@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.property.ng;
 
 import java.io.BufferedWriter;
@@ -35,9 +51,9 @@ import org.opengis.filter.FilterFactory;
  * @source $URL$
  */
 public class PropertyExamples {
-
+    
     static File directory;
-
+    
     public static void main(String[] args) {
         File tmp = null;
         try {
@@ -53,8 +69,8 @@ public class PropertyExamples {
                 System.exit(1);
             }
             File example = new File(tmp, "example.properties");
-
-            BufferedWriter writer = new BufferedWriter(new FileWriter(example));            
+            
+            BufferedWriter writer = new BufferedWriter(new FileWriter(example));
             writer.write("_=id:Integer,name:String,geom:Point");
             writer.newLine();
             writer.write("fid1=1|jody garnett|POINT(0 0)");
@@ -89,7 +105,7 @@ public class PropertyExamples {
             System.out.println("remove " + tmp);
         }
     }
-
+    
     private static void featureStoreExample() throws Exception {
         System.out.println("featureStoreExample start\n");
         // featureStoreExample start
@@ -100,21 +116,21 @@ public class PropertyExamples {
             throw new IllegalStateException("Modification not supported");
         }
         SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
-
+        
         // featureStoreExample end
         System.out.println("\nfeatureStoreExample end\n");
     }
-
+    
     private static void transactionExample() throws Exception {
         System.out.println("transactionExample start\n");
         // transactionExample start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
-
+        
         Transaction t1 = new DefaultTransaction("transaction 1");
         Transaction t2 = new DefaultTransaction("transactoin 2");
-
+        
         SimpleFeatureType type = store.getSchema("example");
         SimpleFeatureStore featureStore = (SimpleFeatureStore) store
                 .getFeatureSource("example");
@@ -122,7 +138,7 @@ public class PropertyExamples {
                 .getFeatureSource("example");
         SimpleFeatureStore featureStore2 = (SimpleFeatureStore) store
                 .getFeatureSource("example");
-
+        
         featureStore1.setTransaction(t1);
         featureStore2.setTransaction(t2);
         
@@ -143,7 +159,7 @@ public class PropertyExamples {
         System.out.println("t1 remove auto-commit: "+DataUtilities.fidSet(featureStore.getFeatures()) );
         System.out.println("t1 remove          t1: "+DataUtilities.fidSet(featureStore1.getFeatures()) );
         System.out.println("t1 remove          t2: "+DataUtilities.fidSet(featureStore2.getFeatures()) );
- 
+        
         // new feature to add!
         SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] {
                 5, "chris", null }, "fid5");
@@ -152,14 +168,14 @@ public class PropertyExamples {
         
         SimpleFeatureCollection collection = DataUtilities.collection(feature);
         featureStore2.addFeatures(collection);
-
+        
         System.out.println();
         System.out.println("Step 3 transaction 2 adds a new feature '"+feature.getID()+"'");
         System.out.println("------");
         System.out.println("t2 add    auto-commit: "+DataUtilities.fidSet(featureStore.getFeatures()) );
         System.out.println("t2 add             t1: "+DataUtilities.fidSet(featureStore1.getFeatures()) );
         System.out.println("t1 add             t2: "+DataUtilities.fidSet(featureStore2.getFeatures()) );
-
+        
         // commit transaction one
         t1.commit();
         
@@ -169,36 +185,36 @@ public class PropertyExamples {
         System.out.println("t1 commit auto-commit: "+DataUtilities.fidSet(featureStore.getFeatures()) );
         System.out.println("t1 commit          t1: "+DataUtilities.fidSet(featureStore1.getFeatures()) );
         System.out.println("t1 commit          t2: "+DataUtilities.fidSet(featureStore2.getFeatures()) );
-
+        
         // commit transaction two
         t2.commit();
-
+        
         System.out.println();
         System.out.println("Step 5 transaction 2 commits the addition of '"+feature.getID()+"'");
         System.out.println("------");
         System.out.println("t2 commit auto-commit: "+DataUtilities.fidSet(featureStore.getFeatures()) );
         System.out.println("t2 commit          t1: "+DataUtilities.fidSet(featureStore1.getFeatures()) );
         System.out.println("t2 commit          t2: "+DataUtilities.fidSet(featureStore2.getFeatures()) );
-
+        
         t1.close();
         t2.close();
         store.dispose(); // clear out any listeners
         // transactionExample end
         System.out.println("\ntransactionExample end\n");
     }
-
+    
     private static void removeAllExample() throws Exception {
         System.out.println("removeAllExample start\n");
         // removeAllExample start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
-
+        
         Transaction t = new DefaultTransaction("transaction");
         try {
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer = store
                     .getFeatureWriter("example", Filter.INCLUDE, t);
-
+            
             SimpleFeature feature;
             try {
                 while (writer.hasNext()) {
@@ -221,14 +237,14 @@ public class PropertyExamples {
         // removeAllExample end
         System.out.println("\nremoveAllExample end\n");
     }
-
+    
     private void replaceAll() throws Exception {
         System.out.println("replaceAll start\n");
         // replaceAll start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
-
+        
         final SimpleFeatureType type = store.getSchema("example");
         final FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
         SimpleFeature f;
@@ -245,7 +261,7 @@ public class PropertyExamples {
         f = SimpleFeatureBuilder.build(type, new Object[] { 4, "justin" },
                 "fid4");
         collection.add(f);
-
+        
         writer = store.getFeatureWriter("road", Transaction.AUTO_COMMIT);
         try {
             // remove all features
@@ -267,14 +283,14 @@ public class PropertyExamples {
         // replaceAll end
         System.out.println("\nreplaceAll end\n");
     }
-
+    
     private static void appendContent() throws Exception {
         System.out.println("copyContent start\n");
         // copyContent start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
-
+        
         FeatureReader<SimpleFeatureType,SimpleFeature> reader;
         FeatureWriter<SimpleFeatureType,SimpleFeature> writer;
         SimpleFeature feature, newFeature;
@@ -300,9 +316,7 @@ public class PropertyExamples {
             reader.close();
             writer.close();
         }
-        
         // copyContent end
         System.out.println("\ncopyContent end\n");
-
     }
 }

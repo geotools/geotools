@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -37,11 +37,13 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Implementation used for writeable property files.
  * Supports limited caching of number of features and bounds.
  *
+ * @author Jody Garnett
+ * @author Torben Barsballe (Boundless)
  *
  * @source $URL$
  */
 public class PropertyFeatureStore extends ContentFeatureStore {
-
+    
     String typeName;
     SimpleFeatureType featureType;
     PropertyDataStore store;
@@ -55,7 +57,7 @@ public class PropertyFeatureStore extends ContentFeatureStore {
     protected boolean canEvent() {
         return false;
     }
-
+    
     protected QueryCapabilities buildQueryCapabilities() {
         return new QueryCapabilities(){
             public boolean isUseProvidedFIDSupported() {
@@ -63,13 +65,13 @@ public class PropertyFeatureStore extends ContentFeatureStore {
             }
         };
     }
-
+    
     @Override
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query,
             int flags) throws IOException {
         return new PropertyFeatureWriter(this,getState(), query, (flags | WRITER_ADD) == WRITER_ADD);
     }
-
+    
     /**
      * Delegate used for FeatureSource methods (We do this because Java cannot inherit from both 
      * ContentFeatureStore and CSVFeatureSource at the same time
@@ -98,18 +100,18 @@ public class PropertyFeatureStore extends ContentFeatureStore {
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         return delegate.getBoundsInternal(query);
     }
-
+    
     @Override
     protected int getCountInternal(Query query) throws IOException {
         return delegate.getCountInternal(query);
     }
-
+    
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         return delegate.getReaderInternal(query);
     }
-
+    
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
         return delegate.buildFeatureType();
@@ -127,28 +129,28 @@ public class PropertyFeatureStore extends ContentFeatureStore {
     public PropertyDataStore getDataStore() {
         return delegate.getDataStore();
     }
-
+    
     @Override
     public ContentEntry getEntry() {
         return delegate.getEntry();
     }
-
+    
     public Transaction getTransaction() {
         return delegate.getTransaction();
     }
-
+    
     public ContentState getState() {
         return delegate.getState();
     }
-
+    
     public ResourceInfo getInfo() {
         return delegate.getInfo();
     }
-
+    
     public Name getName() {
         return delegate.getName();
     }
-
+    
     public QueryCapabilities getQueryCapabilities() {
         return delegate.getQueryCapabilities();
     }

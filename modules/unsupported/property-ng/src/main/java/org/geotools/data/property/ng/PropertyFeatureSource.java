@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -35,7 +35,8 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * 
+ * @author Jody Garnett
+ * @author Torben Barsballe (Boundless)
  * 
  * @source $URL$
  */
@@ -43,14 +44,14 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     String typeName;
     SimpleFeatureType featureType;
     PropertyDataStore store;
-
+    
     public PropertyFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
         this.store = (PropertyDataStore) entry.getDataStore();
         this.typeName = entry.getTypeName();
     }
     
- 
+    
     public PropertyDataStore getDataStore() {
         return (PropertyDataStore) super.getDataStore();
     }
@@ -68,7 +69,7 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         ReferencedEnvelope bounds = new ReferencedEnvelope(getSchema()
                 .getCoordinateReferenceSystem());
-
+        
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
         try {
             while (featureReader.hasNext()) {
@@ -80,7 +81,7 @@ public class PropertyFeatureSource extends ContentFeatureSource {
         }
         return bounds;
     }
-
+    
     @Override
     protected int getCountInternal(Query query) throws IOException {
         int count = 0;
@@ -95,7 +96,7 @@ public class PropertyFeatureSource extends ContentFeatureSource {
         }
         return count;
     }
-
+    
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
         String typeName = getEntry().getTypeName();
@@ -109,10 +110,10 @@ public class PropertyFeatureSource extends ContentFeatureSource {
             throw new DataSourceException(typeName + " schema not available", e);
         }
     }
-
+    
     private String property(String key) throws IOException {
         File file = new File( store.dir, typeName+".properties");
-
+        
         BufferedReader reader = new BufferedReader(new FileReader(file));
         try {
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
@@ -125,8 +126,7 @@ public class PropertyFeatureSource extends ContentFeatureSource {
         }
         return null;
     }
-
-
+    
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {

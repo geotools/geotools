@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -48,7 +48,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * users docs.
  * 
  * @author Jody Garnett, Refractions Research Inc.
- *
+ * @author Torben Barsballe (Boundless)
  *
  * @source $URL$
  */
@@ -58,7 +58,7 @@ public class PropertyDataStore extends ContentDataStore {
     public PropertyDataStore(File dir) {
         this(dir, null);
     }
-
+    
     // constructor start
     public PropertyDataStore(File dir, String namespaceURI) {
         if (!dir.isDirectory()) {
@@ -69,7 +69,7 @@ public class PropertyDataStore extends ContentDataStore {
         }
         this.dir = dir;
         setNamespaceURI(namespaceURI);
-
+        
         // factories
         setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
         setGeometryFactory(new GeometryFactory());
@@ -77,7 +77,7 @@ public class PropertyDataStore extends ContentDataStore {
         setFeatureFactory(CommonFactoryFinder.getFeatureFactory(null));
     }
     // constructor end
-
+    
     // createSchema start
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         String typeName = featureType.getTypeName();
@@ -91,9 +91,8 @@ public class PropertyDataStore extends ContentDataStore {
         writer.flush();
         writer.close();
     }
-
     // createSchema end
-
+    
     // info start
     public ServiceInfo getInfo() {
         DefaultServiceInfo info = new DefaultServiceInfo();
@@ -106,13 +105,12 @@ public class PropertyDataStore extends ContentDataStore {
         }
         return info;
     }
-
     // info end
-
+    
     public void setNamespaceURI(String namespaceURI) {
         this.namespaceURI = namespaceURI;
     }
-
+    
     protected java.util.List<Name> createTypeNames() throws IOException {
         String list[] = dir.list(new FilenameFilter() {
             public boolean accept(File dir, String name) {
@@ -135,7 +133,7 @@ public class PropertyDataStore extends ContentDataStore {
         }
         return names;
     }
-
+    
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
         File file = new File( this.dir, entry.getTypeName()+".properties");

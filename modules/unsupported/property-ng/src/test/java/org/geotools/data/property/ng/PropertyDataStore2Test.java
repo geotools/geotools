@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,6 @@ import java.io.FileWriter;
 
 import junit.framework.TestCase;
 
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
 import org.geotools.data.property.ng.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -32,7 +31,6 @@ import org.geotools.referencing.CRS;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -61,11 +59,11 @@ public class PropertyDataStore2Test extends TestCase {
     protected void setUp() throws Exception {
         File dir = new File(".", "propertyTestData" );
         dir.mkdir();
-               
+        
         File file = new File( dir ,"road.properties");
-        if( file.exists()){
+        if (file.exists()) {
             file.delete();
-        }        
+        }
         BufferedWriter writer = new BufferedWriter( new FileWriter( file ) );
         writer.write("_=id:Integer,*geom:Geometry,name:String"); writer.newLine();
         writer.write("fid1=1|LINESTRING(0 0,10 10)|jody"); writer.newLine();
@@ -94,7 +92,7 @@ public class PropertyDataStore2Test extends TestCase {
         writer2.write("fid4=4|LINESTRING(0 5, 5 0, 10 5, 5 10, 0 5)");
         writer2.close();
         sridStore = new PropertyDataStore( dir2, "propertyTestData2" );
-
+        
         super.setUp();
     }
     protected void tearDown() throws Exception {
@@ -112,7 +110,7 @@ public class PropertyDataStore2Test extends TestCase {
         }
         dir.delete();
         
-        super.tearDown();                
+        super.tearDown();
     }
     
     /**
@@ -124,7 +122,7 @@ public class PropertyDataStore2Test extends TestCase {
         SimpleFeatureSource road = sridStore.getFeatureSource("road2");
         SimpleFeatureCollection features = road.getFeatures();
         assertEquals(4, features.size());
-
+        
         SimpleFeature feature;
         Geometry geom;
         Property prop;
@@ -135,11 +133,11 @@ public class PropertyDataStore2Test extends TestCase {
             prop = feature.getProperty("geom");
             assertTrue(prop.getType() instanceof GeometryType);
             geomType = (GeometryType) prop.getType();
-
+            
             Object val = prop.getValue();
             assertTrue(val != null && val instanceof Geometry);
             geom = (Geometry) val;
-
+            
             Object userData = geom.getUserData();
             assertTrue(userData != null && userData instanceof CoordinateReferenceSystem);
             // ensure the same CRS is passed on to userData for encoding
@@ -156,7 +154,7 @@ public class PropertyDataStore2Test extends TestCase {
     }
     public void testQuery() throws Exception {
         SimpleFeatureSource road = store.getFeatureSource( "road" );
-                
+        
         Query query = new Query( "road", Filter.INCLUDE,
                 new String[]{ "name" } );
         
@@ -168,7 +166,6 @@ public class PropertyDataStore2Test extends TestCase {
     public void testQueryReproject() throws Exception {
         CoordinateReferenceSystem world = CRS.decode("EPSG:4326"); // world lon/lat
         CoordinateReferenceSystem local = CRS.decode("EPSG:3005"); // british columbia
-        
         
         SimpleFeatureSource road = store.getFeatureSource( "road" );
         SimpleFeatureType origionalType = road.getSchema();
@@ -184,9 +181,9 @@ public class PropertyDataStore2Test extends TestCase {
         
         assertNotNull( resultType );
         assertNotSame( resultType, origionalType );
-
+        
         assertEquals( world, resultType.getCoordinateReferenceSystem() );
-
-        GeometryDescriptor geometryDescriptor = resultType.getGeometryDescriptor();        
+        
+        assertNotNull(resultType.getGeometryDescriptor());
     }
 }

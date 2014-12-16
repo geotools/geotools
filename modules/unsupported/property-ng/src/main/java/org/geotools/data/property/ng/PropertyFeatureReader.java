@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -73,6 +73,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * </pre>
  * 
  * @author Jody Garnett (LISAsoft)
+ * @author Torben Barsballe (Boundless)
  * 
  * @source $URL$
  * @version $Id
@@ -80,28 +81,22 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.property");
-
     BufferedReader reader;
-
     SimpleFeatureType type;
-
     String line;
-
     String next;
-
     String[] text;
-
     String fid;
     
     public PropertyFeatureReader(String namespace, File file) throws IOException {
         reader = new BufferedReader(new FileReader(file));
-
+        
         // read until "_=";
         while ((line = reader.readLine()) != null) {
             if (line.startsWith("_="))
                 break;
         }
-
+        
         if ((line == null) || !line.startsWith("_=")) {
             throw new IOException("Property file schema not available found");
         }
@@ -116,11 +111,11 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
         line = null;
         next = null;
     }
-
+    
     public SimpleFeatureType getFeatureType() {
         return type;
     }
-
+    
     /**
      * Grab the next feature from the property file.
      * 
@@ -133,7 +128,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
         if (hasNext()) {
             line = next;
             next = null;
-
+            
             int split = line.indexOf('=');
             fid = line.substring(0, split);
             text = line.substring(split + 1).split("\\|", -1);// use -1 as limit to include empty trailing spaces
@@ -144,7 +139,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
             throw new NoSuchElementException();
         }
         Object[] values = new Object[type.getAttributeCount()];
-
+        
         for (int i = 0; i < type.getAttributeCount(); i++) {
             try {
                 values[i] = read(i);
@@ -156,7 +151,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
         }
         return SimpleFeatureBuilder.build(type, values, fid);
     }
-
+    
     /**
      * Read attribute in position marked by <code>index</code>.
      * 
@@ -171,9 +166,9 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
         if (line == null) {
             throw new IOException("No content available - did you remeber to call next?");
         }
-
+        
         AttributeDescriptor attType = type.getDescriptor(index);
-
+        
         String stringValue = null;
         try {
             // read the value
@@ -193,7 +188,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
         }
         // Use of Converters to convert from String to requested java binding
         Object value = Converters.convert(stringValue, attType.getType().getBinding());
-
+        
         if (attType.getType() instanceof GeometryType) {
             // this is to be passed on in the geometry objects so the srs name gets encoded
             CoordinateReferenceSystem crs = ((GeometryType) attType.getType())
@@ -209,11 +204,10 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
     }
 
     /**
-     * DOCUMENT ME!
+     * Check if additional content is available.
      * 
-     * @return DOCUMENT ME!
-     * 
-     * @throws IOException DOCUMENT ME!
+     * @return <code>true</code> if additional content is available
+     * @throws IOException
      */
     public boolean hasNext() throws IOException {
         if (next != null) {
@@ -222,7 +216,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
         next = readLine();
         return next != null;
     }
-
+    
     String readLine() throws IOException {
         StringBuilder buffer = new StringBuilder();
         while (true) {
@@ -252,7 +246,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
         raw = raw.replace("\\t", "\t");
         return raw;
     }
-
+    
     /**
      * Trim leading white space as described Properties.
      * 
@@ -274,7 +268,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
         }
         return txt.substring(start);
     }
-
+    
     /**
      * Be sure to call close when you are finished with this reader; as it must close the file it has open.
      * 

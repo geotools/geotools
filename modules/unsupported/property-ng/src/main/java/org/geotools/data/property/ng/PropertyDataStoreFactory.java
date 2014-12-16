@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -26,24 +26,23 @@ import java.util.Map;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataAccessFactory.Param;
 
 
 /**
  * DataStore factory that creates {@linkplain org.geotools.data.property.ng.PropertyDataStore}s
  *
- * @author Jody garnett
- *
+ * @author Jody Garnett
+ * @author Torben Barsballe (Boundless)
  *
  * @source $URL$
  * @version $Id$
  */
 public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     // private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(PropertyDataStoreFactory.class.getPackage().getName());
-
+    
     public static final Param DIRECTORY = new Param("directory", File.class,
             "Directory containting property files", true);
-
+    
     public static final Param NAMESPACE = new Param("namespace", String.class,
             "namespace of datastore", false);
     /**
@@ -61,28 +60,28 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
             throw new IOException("Directory is required");
         }
     }
-
+    
     // createNewDataStore start
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
         File dir = (File)DIRECTORY.lookUp(params);
-
+        
         if (dir.exists()) {
             throw new IOException(dir + " already exists");
         }
-
+        
         String namespaceURI = (String) NAMESPACE.lookUp(params);
         return new PropertyDataStore(dir,namespaceURI);
     }
     // createNewDataStore end
-
+    
     public String getDisplayName() {
         return "Properties NG";
     }
-
+    
     public String getDescription() {
         return "Allows access to Java Property files containing Feature information";
     }
-
+    
     /**
      * @see #DIRECTORY
      * @see PropertyDataStoreFactory#NAMESPACE
@@ -90,7 +89,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     public Param[] getParametersInfo() {
         return new Param[] { DIRECTORY, NAMESPACE };
     }
-
+    
     /**
      * Test to see if this datastore is available, if it has all the
      * appropriate libraries to construct a datastore.  This datastore just
@@ -98,14 +97,14 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
      * advertise data store capabilities they don't actually have.
      *
      * @return <tt>true</tt> if and only if this factory is available to create
-     *         DataStores.
+     * DataStores.
      *
      * @task <code>true</code> property datastore is always available
      */
     public boolean isAvailable() {
         return true;
     }
-
+    
     /**
      * Works for a file directory or property file
      *

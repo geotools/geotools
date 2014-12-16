@@ -30,6 +30,7 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -39,9 +40,21 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @source $URL$
  */
 public class PropertyFeatureSource extends ContentFeatureSource {
+    String typeName;
+    SimpleFeatureType featureType;
+    PropertyDataStore store;
+
     public PropertyFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
+        this.store = (PropertyDataStore) entry.getDataStore();
+        this.typeName = entry.getTypeName();
     }
+    
+ 
+    public PropertyDataStore getDataStore() {
+        return (PropertyDataStore) super.getDataStore();
+    }
+    
     @Override
     protected QueryCapabilities buildQueryCapabilities() {
         return new QueryCapabilities(){
@@ -98,8 +111,7 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     }
 
     private String property(String key) throws IOException {
-        PropertyDataStore dataStore = (PropertyDataStore) getEntry().getDataStore();
-        File file = dataStore.file;
+        File file = new File( store.dir, typeName+".properties");
 
         BufferedReader reader = new BufferedReader(new FileReader(file));
         try {
@@ -118,7 +130,16 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-        PropertyDataStore dataStore = (PropertyDataStore) getEntry().getDataStore();
-        return new PropertyFeatureReader(dataStore.getNamespaceURI(),dataStore.file);
+        File file = new File( store.dir, typeName+".properties");
+        return new PropertyFeatureReader(store.getNamespaceURI(), file);
+    }
+    
+    /**
+     * Make handleVisitor package visible allowing PropertyFeatureStore to delegate to
+     * this implementation.
+     */
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        return super.handleVisitor(query, visitor);
     }
 }

@@ -49,8 +49,8 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class PropertyDataStore2Test extends TestCase {
     PropertyDataStore store;
-    
     PropertyDataStore sridStore;
+    
     /**
      * Constructor for SimpleDataStoreTest.
      * @param arg0
@@ -73,7 +73,7 @@ public class PropertyDataStore2Test extends TestCase {
         writer.write("fid3=3|LINESTRING(5 0, 5 10)|dave"); writer.newLine();
         writer.write("fid4=4|LINESTRING(0 5, 5 0, 10 5, 5 10, 0 5)|justin");
         writer.close();
-        store = new PropertyDataStore( file, "propertyTestData" );
+        store = new PropertyDataStore( dir, "propertyTestData" );
         
         // Create a similar data store but with srid in the geometry column
         File dir2 = new File(".", "propertyTestData2");
@@ -93,7 +93,7 @@ public class PropertyDataStore2Test extends TestCase {
         writer2.newLine();
         writer2.write("fid4=4|LINESTRING(0 5, 5 0, 10 5, 5 10, 0 5)");
         writer2.close();
-        sridStore = new PropertyDataStore( file2, "propertyTestData2" );
+        sridStore = new PropertyDataStore( dir2, "propertyTestData2" );
 
         super.setUp();
     }

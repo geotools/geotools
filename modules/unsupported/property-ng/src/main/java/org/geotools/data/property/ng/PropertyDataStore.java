@@ -20,6 +20,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -52,25 +53,23 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @source $URL$
  */
 public class PropertyDataStore extends ContentDataStore {
-    protected File file;
-
+    protected File dir;
+    
     public PropertyDataStore(File dir) {
         this(dir, null);
     }
 
     // constructor start
-    public PropertyDataStore(File file, String namespaceURI) {
-        if (file.isDirectory()) {
-            throw new IllegalArgumentException(file + " must be a property file");
+    public PropertyDataStore(File dir, String namespaceURI) {
+        if (!dir.isDirectory()) {
+            throw new IllegalArgumentException(dir + " is not a directory");
         }
         if (namespaceURI == null) {
-            if( file.getParent() != null ){
-                namespaceURI = file.getParentFile().getName();
-            }
+            namespaceURI = dir.getName();
         }
-        this.file = file;
+        this.dir = dir;
         setNamespaceURI(namespaceURI);
-        //
+
         // factories
         setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
         setGeometryFactory(new GeometryFactory());
@@ -81,13 +80,14 @@ public class PropertyDataStore extends ContentDataStore {
 
     // createSchema start
     public void createSchema(SimpleFeatureType featureType) throws IOException {
+        String typeName = featureType.getTypeName();
+        File file = new File(dir, typeName + ".properties");
         if( file.exists() ){
             throw new FileNotFoundException("Unable to create a new property file: file exists "+file);
         }
-        String typeName = featureType.getTypeName();
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write("_=");
-        writer.write(DataUtilities.spec(featureType));
+        writer.write(DataUtilities.encodeType(featureType));
         writer.flush();
         writer.close();
     }
@@ -97,9 +97,9 @@ public class PropertyDataStore extends ContentDataStore {
     // info start
     public ServiceInfo getInfo() {
         DefaultServiceInfo info = new DefaultServiceInfo();
-        info.setDescription("Features from " + file );
+        info.setDescription("Features from Directory " + dir);
         info.setSchema(FeatureTypes.DEFAULT_NAMESPACE);
-        info.setSource(file.toURI());
+        info.setSource(dir.toURI());
         try {
             info.setPublisher(new URI(System.getProperty("user.name")));
         } catch (URISyntaxException e) {
@@ -114,10 +114,16 @@ public class PropertyDataStore extends ContentDataStore {
     }
 
     protected java.util.List<Name> createTypeNames() throws IOException {
-        String name = file.getName();
-        String typeName = name.substring(0,name.lastIndexOf('.'));
+        String list[] = dir.list(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".properties");
+            }
+        });
         List<Name> typeNames = new ArrayList<Name>();
-        typeNames.add( new NameImpl(namespaceURI, typeName));
+        for (int i = 0; i < list.length; i++) {
+            String typeName = list[i].substring(0, list[i].lastIndexOf('.'));
+            typeNames.add( new NameImpl(namespaceURI, typeName));
+        }
         return typeNames;
     }
     
@@ -132,13 +138,15 @@ public class PropertyDataStore extends ContentDataStore {
 
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
+        File file = new File( this.dir, entry.getTypeName()+".properties");
+        if( !file.exists()){
+            throw new FileNotFoundException( file.getAbsolutePath() );
+        }
+        
         if( file.canWrite() ){
             return new PropertyFeatureStore( entry, Query.ALL );
-        }
-        else {
+        } else {
             return new PropertyFeatureSource( entry, Query.ALL );
         }
     }
-
-
 }

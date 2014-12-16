@@ -22,9 +22,14 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
+import org.geotools.data.ResourceInfo;
+import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
+import org.geotools.data.store.ContentState;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.FeatureVisitor;
+import org.opengis.feature.type.Name;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -40,11 +45,9 @@ public class PropertyFeatureStore extends ContentFeatureStore {
     String typeName;
     SimpleFeatureType featureType;
     PropertyDataStore store;
-    PropertyFeatureSource delegate;
     
     PropertyFeatureStore( ContentEntry entry, Query query ) throws IOException{
         super( entry, query );
-        delegate = new PropertyFeatureSource(entry,  query );
         this.store = (PropertyDataStore) entry.getDataStore();
         this.typeName = entry.getTypeName();
     }
@@ -61,17 +64,36 @@ public class PropertyFeatureStore extends ContentFeatureStore {
         };
     }
 
-    
-    public PropertyDataStore getDataStore() {
-        return (PropertyDataStore) super.getDataStore();
-    }
-
     @Override
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query,
             int flags) throws IOException {
         return new PropertyFeatureWriter(this,getState(), query, (flags | WRITER_ADD) == WRITER_ADD);
     }
 
+    /**
+     * Delegate used for FeatureSource methods (We do this because Java cannot inherit from both 
+     * ContentFeatureStore and CSVFeatureSource at the same time
+     */
+    PropertyFeatureSource delegate = new PropertyFeatureSource(entry, query) {
+        @Override
+        public void setTransaction(Transaction transaction) {
+            super.setTransaction(transaction);
+            PropertyFeatureStore.this.setTransaction(transaction); // Keep these two implementations on the same transaction
+        }
+    };
+    
+    //
+    // Internal Delegate Methods
+    // Implement FeatureSource methods using CSVFeatureSource implementation
+    //
+    @Override
+    public void setTransaction(Transaction transaction) {
+        super.setTransaction(transaction);
+        if( delegate.getTransaction() != transaction ){
+            delegate.setTransaction( transaction );
+        }
+    }
+    
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         return delegate.getBoundsInternal(query);
@@ -92,5 +114,42 @@ public class PropertyFeatureStore extends ContentFeatureStore {
     protected SimpleFeatureType buildFeatureType() throws IOException {
         return delegate.buildFeatureType();
     }
+    
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        return delegate.handleVisitor(query, visitor);
+    }
+    //
+    // Public Delegate Methods
+    // Implement FeatureSource methods using CSVFeatureSource implementation
+    //
+    @Override
+    public PropertyDataStore getDataStore() {
+        return delegate.getDataStore();
+    }
 
+    @Override
+    public ContentEntry getEntry() {
+        return delegate.getEntry();
+    }
+
+    public Transaction getTransaction() {
+        return delegate.getTransaction();
+    }
+
+    public ContentState getState() {
+        return delegate.getState();
+    }
+
+    public ResourceInfo getInfo() {
+        return delegate.getInfo();
+    }
+
+    public Name getName() {
+        return delegate.getName();
+    }
+
+    public QueryCapabilities getQueryCapabilities() {
+        return delegate.getQueryCapabilities();
+    }
 }

@@ -68,12 +68,6 @@ import org.opengis.filter.identity.FeatureId;
  */
 public class PropertyDataStoreTest extends TestCase {
     private PropertyDataStore store;
-
-    private PropertyDataStore storeDots;
-
-    private PropertyDataStore storeMultiline;
-
-    private PropertyDataStore storeTable;
     
     static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
 
@@ -100,7 +94,6 @@ public class PropertyDataStoreTest extends TestCase {
         writer.write("fid4=4|justin"); writer.newLine();
         writer.write("fid5=5|");
         writer.close();
-        store = new PropertyDataStore( file, "propertyTestData" );
         
         file = new File( dir ,"dots.in.name.properties");
         if( file.exists()){
@@ -113,7 +106,6 @@ public class PropertyDataStoreTest extends TestCase {
         writer.write("fid3=3|dave"); writer.newLine();
         writer.write("fid4=4|justin");
         writer.close();
-        storeDots = new PropertyDataStore( file, "propertyTestData" );
         
         file = new File( dir ,"multiline.properties");
         if( file.exists()){
@@ -127,7 +119,6 @@ public class PropertyDataStoreTest extends TestCase {
         writer.write("fid3=3|dave"); writer.newLine();
         writer.write("fid4=4|justin\\\n");
         writer.close();
-        storeMultiline = new PropertyDataStore( file, "propertyTestData" );
 
         file = new File( dir ,"table.properties");
         if( file.exists()){
@@ -140,23 +131,16 @@ public class PropertyDataStoreTest extends TestCase {
         writer.write("GenericEntity.f007=description-f007|"); writer.newLine();
         writer.write("  GenericEntity.f009=description-f009| "); writer.newLine();
         writer.close();
-        storeTable = new PropertyDataStore( file, "propertyTestData" );
 
+        store = new PropertyDataStore( dir, "propertyTestData" );
+        
         super.setUp();
     }
     protected void tearDown() throws Exception {
         if( store != null ){
             store.dispose();
         }
-        if( storeDots != null ){
-            storeDots.dispose();
-        }
-        if( storeMultiline != null ){
-            storeMultiline.dispose();
-        }
-        if( storeTable != null ){
-            storeTable.dispose();
-        }
+
         File dir = new File( "propertyTestData" );
         File list[]=dir.listFiles();
         for( int i=0; i<list.length;i++){
@@ -169,8 +153,11 @@ public class PropertyDataStoreTest extends TestCase {
     public void testGetNames() throws IOException {
         String names[] = store.getTypeNames();
         Arrays.sort(names);
-        assertEquals( 1, names.length );
-        assertEquals( "road", names[0] );
+        assertEquals( 4, names.length );
+        assertEquals( "dots.in.name", names[0] );
+        assertEquals( "multiline", names[1] );
+        assertEquals( "road", names[2] );
+        assertEquals( "table", names[3] );
     }
 
     public void testGetSchema() throws IOException {
@@ -460,7 +447,7 @@ public class PropertyDataStoreTest extends TestCase {
      * @throws Exception
      */
     public void testMultiLine() throws Exception {
-        SimpleFeatureSource road = storeMultiline.getFeatureSource( "multiline" );
+        SimpleFeatureSource road = store.getFeatureSource( "multiline" );
         FeatureId fid1 = ff.featureId("fid1");
         Filter select = ff.id( Collections.singleton(fid1));
         SimpleFeatureCollection featureCollection = road.getFeatures( select );
@@ -484,7 +471,7 @@ public class PropertyDataStoreTest extends TestCase {
      * @throws Exception
      */
     public void testTable() throws Exception{
-        SimpleFeatureSource table = storeTable.getFeatureSource( "table" );
+        SimpleFeatureSource table = store.getFeatureSource( "table" );
         //GenericEntity.f004=description-f004|name-f004
         FeatureId fid1 = ff.featureId("GenericEntity.f004");
         Filter select = ff.id( Collections.singleton(fid1));

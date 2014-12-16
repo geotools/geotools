@@ -42,13 +42,14 @@ import com.vividsolutions.jts.geom.Geometry;
 /**
  * Read a property file directly.
  * <p>
- * This implementation does not perform any filtering or processing; it leaves that up to wrappers to manipulate the content into the format or
- * projection requested by the user.
+ * This implementation does not perform any filtering or processing; it leaves that up to wrappers 
+ * to manipulate the content into the format or projection requested by the user.
  * <p>
  * 
  * <p>
- * The content of this file should start with a the property "_" with the value being the typeSpec describing the featureType. Thereafter each line
- * will should have a FeatureID as the property and the attribtues as the value separated by | characters.
+ * The content of this file should start with a the property "_" with the value being the typeSpec 
+ * describing the featureType. Thereafter each line will should have a FeatureID as the property and
+ * the attributes as the value separated by | characters.
  * </p>
  * 
  * <pre>
@@ -61,7 +62,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * </pre>
  * 
  * <p>
- * Many values may be represented by a special tag: <code><null></code>. An empty element: <code>||</code> is interpreted as the empty string:
+ * Many values may be represented by a special tag: <code><null></code>. 
+ * An empty element: <code>||</code> is interpreted as the empty string:
  * </p>
  * 
  * <pre>

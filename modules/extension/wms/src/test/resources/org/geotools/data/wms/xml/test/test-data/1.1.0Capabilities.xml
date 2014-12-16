@@ -109,6 +109,10 @@ web site (http://geogratis.cgdi.gc.ca/).</Abstract>
         <Name>bathymetry</Name>
         <Title>Elevation/Bathymetry</Title>
         <SRS>EPSG:42304</SRS>
+    <Attribution>
+      <Title>test</Title>
+      <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.example.com"/>
+    </Attribution>        
     </Layer>
     <Layer queryable="0" opaque="0" cascaded="0">
         <Name>land_fn</Name>
@@ -117,6 +121,9 @@ web site (http://geogratis.cgdi.gc.ca/).</Abstract>
         <LatLonBoundingBox minx="-178.838" miny="31.8844" maxx="179.94" maxy="89.8254" />
         <BoundingBox SRS="EPSG:42304"
                     minx="-2.75056e+06" miny="-936638" maxx="3.58387e+06" maxy="4.67312e+06" />
+    <Attribution>
+      <Title>test</Title>
+    </Attribution>                     
     </Layer>
     <Layer queryable="1" opaque="0" cascaded="0">
         <Name>park</Name>
@@ -125,6 +132,13 @@ web site (http://geogratis.cgdi.gc.ca/).</Abstract>
         <LatLonBoundingBox minx="-173.433" miny="41.4271" maxx="-13.3643" maxy="83.7466" />
         <BoundingBox SRS="EPSG:42304"
                     minx="-2.3468e+06" miny="-67422.4" maxx="2.84037e+06" maxy="3.83012e+06" />
+    <Attribution>
+      <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.example.com"/>
+      <LogoURL>
+        <Format>image/png</Format>
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.osgeo.org/sites/all/themes/osgeo/logo.png"/>
+      </LogoURL>    
+    </Attribution>                    
     </Layer>
     <Layer queryable="0" opaque="0" cascaded="0">
         <Name>drain_fn</Name>

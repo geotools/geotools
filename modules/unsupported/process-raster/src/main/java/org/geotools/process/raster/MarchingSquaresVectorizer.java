@@ -70,7 +70,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
+import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 
 /**
  * Algorithm computing the image footprint. Some optimizations are made.
@@ -714,7 +714,7 @@ public final class MarchingSquaresVectorizer {
             final double tolerance = Math.max(xRes, yRes) * simplifierFactor;
 
             // Avoid simplification on small polygons
-            simplifiedFootprintGeometry = (area > MIN_AREA_TO_BE_SIMPLIFIED) ? DouglasPeuckerSimplifier
+            simplifiedFootprintGeometry = (area > MIN_AREA_TO_BE_SIMPLIFIED) ? TopologyPreservingSimplifier
                     .simplify(finalSimplifiedFootprint, tolerance) : finalSimplifiedFootprint;
 
             if (simplifiedFootprintGeometry == null) {

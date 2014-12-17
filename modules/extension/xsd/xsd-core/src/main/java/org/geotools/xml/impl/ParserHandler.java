@@ -43,6 +43,7 @@ import org.geotools.xml.Configuration;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.ParserDelegate;
 import org.geotools.xml.ParserDelegate2;
+import org.geotools.xml.ParserNamespaceSupport;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.Schemas;
 import org.geotools.xs.XS;
@@ -55,7 +56,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.NamespaceSupport;
 
 
 /**
@@ -77,7 +77,7 @@ public class ParserHandler extends DefaultHandler {
     protected Stack handlers;
 
     /** namespace support **/
-    NamespaceSupport namespaces;
+    ParserNamespaceSupport namespaces;
 
     /** imported schemas **/
     XSDSchema[] schemas;
@@ -137,7 +137,7 @@ public class ParserHandler extends DefaultHandler {
     
     public ParserHandler(Configuration config) {
         this.config = config;
-        namespaces = new NamespaceSupport();
+        namespaces = new ParserNamespaceSupport();
         validating = false;
         validator = new ValidatorHandler();
         uriHandlers.add(new HTTPURIHandler());
@@ -231,7 +231,7 @@ public class ParserHandler extends DefaultHandler {
         return logger;
     }
 
-    public NamespaceSupport getNamespaceSupport() {
+    public ParserNamespaceSupport getNamespaceSupport() {
         return namespaces;
     }
 

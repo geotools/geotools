@@ -27,6 +27,8 @@ import org.geotools.data.property.ng.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.filter.text.cql2.CQL;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
@@ -41,7 +43,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * Test non functionality of PropertyDataStore.
  * 
  * @author Jody Garnett, Refractions Research Inc.
- *
+ * @author Torben Barsballe (Boundless)
  *
  * @source $URL$
  */
@@ -185,5 +187,20 @@ public class PropertyDataStore2Test extends TestCase {
         assertEquals( world, resultType.getCoordinateReferenceSystem() );
         
         assertNotNull(resultType.getGeometryDescriptor());
+    }
+    
+    public void testGetFeaturesFilterSize() throws Exception {
+        Filter f = CQL.toFilter("name = 'brent'");
+        SimpleFeatureSource features = (SimpleFeatureSource) store.getFeatureSource("road");
+        assertEquals(1, features.getFeatures(f).size());
+        
+    }
+    
+    public void testGetFeaturesFilterBounds() throws Exception {
+        Filter f = CQL.toFilter("name = 'brent'");
+        SimpleFeatureSource features = (SimpleFeatureSource) store.getFeatureSource("road");
+        ReferencedEnvelope envelope = new ReferencedEnvelope(20, 30, 20, 30, null);
+        assertEquals(envelope, features.getFeatures(f).getBounds());
+        
     }
 }

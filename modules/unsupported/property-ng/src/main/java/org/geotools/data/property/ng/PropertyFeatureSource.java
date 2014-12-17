@@ -33,6 +33,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 
 /**
  * @author Jody Garnett
@@ -67,34 +68,40 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        ReferencedEnvelope bounds = new ReferencedEnvelope(getSchema()
-                .getCoordinateReferenceSystem());
-        
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
-        try {
-            while (featureReader.hasNext()) {
-                SimpleFeature feature = featureReader.next();
-                bounds.include(feature.getBounds());
+        if (query.getFilter() == Filter.INCLUDE) { //filtering not implemented
+            ReferencedEnvelope bounds = new ReferencedEnvelope(getSchema()
+                    .getCoordinateReferenceSystem());
+            
+            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
+            try {
+                while (featureReader.hasNext()) {
+                    SimpleFeature feature = featureReader.next();
+                    bounds.include(feature.getBounds());
+                }
+            } finally {
+                featureReader.close();
             }
-        } finally {
-            featureReader.close();
+            return bounds;
         }
-        return bounds;
+        return null; // feature by feature scan required to count records
     }
     
     @Override
     protected int getCountInternal(Query query) throws IOException {
-        int count = 0;
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
-        try {
-            while (featureReader.hasNext()) {
-                featureReader.next();
-                count++;
+        if (query.getFilter() == Filter.INCLUDE) { //filtering not implemented
+            int count = 0;
+            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
+            try {
+                while (featureReader.hasNext()) {
+                    featureReader.next();
+                    count++;
+                }
+            } finally {
+                featureReader.close();
             }
-        } finally {
-            featureReader.close();
+            return count;
         }
-        return count;
+        return -1; // feature by feature scan required to count records
     }
     
     @Override

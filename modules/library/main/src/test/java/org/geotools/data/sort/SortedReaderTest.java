@@ -1,5 +1,6 @@
 package org.geotools.data.sort;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -44,6 +45,7 @@ public class SortedReaderTest {
     SortBy[] peopleDesc;
 
     SortBy[] fidAsc;
+    SortBy[] notExistAsc;
 
     SimpleFeatureType schema;
 
@@ -118,6 +120,7 @@ public class SortedReaderTest {
         peopleAsc = new SortBy[] { ff.sort("PERSONS", SortOrder.ASCENDING) };
         peopleDesc = new SortBy[] { ff.sort("PERSONS", SortOrder.DESCENDING) };
         dateAsc = new SortBy[] { ff.sort("date", SortOrder.ASCENDING) };
+        notExistAsc = new SortBy[] { ff.sort("doesNotExist", SortOrder.ASCENDING) };
         fidAsc = new SortBy[] { SortBy.NATURAL_ORDER };
     }
 
@@ -131,6 +134,7 @@ public class SortedReaderTest {
         assertTrue(SortedFeatureReader.canSort(schema, peopleAsc));
         assertTrue(SortedFeatureReader.canSort(schema, peopleDesc));
         assertTrue(SortedFeatureReader.canSort(schema, fidAsc));
+        assertFalse(SortedFeatureReader.canSort(schema, notExistAsc));
     }
 
     @Test

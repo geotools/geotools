@@ -33,6 +33,7 @@ import javax.media.jai.GeometricOpImage;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
+import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RasterAccessor;
 import javax.media.jai.RasterFormatTag;
@@ -45,6 +46,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.opengis.metadata.spatial.PixelOrientation;
@@ -106,7 +108,27 @@ public class GridCoverage2DRIA extends GeometricOpImage {
      * @return an instance of Coverage2RenderedImageAdapter
      */
     public static GridCoverage2DRIA create(final GridCoverage2D src, final GridGeometry2D dst, final double nodata) {
+        return create(src, dst, nodata, null);
+    }
 
+    /**
+     * Wrap the src coverage in the dst layout. <BR>
+     * The resulting RenderedImage will contain the data in src, and will be accessible via the grid
+     * specs of dst,
+     * 
+     * @param src
+     *            the data coverage to be remapped on dst grid
+     * @param dst
+     *            the provider of the final grid
+     * @param nodata
+     *            the nodata value to set for cells not covered by src but included in dst. All
+     *            bands will share the same nodata value.
+     * @param hints hints to use for the Rendering, Actually only ImageLayout is considered
+     * @return an instance of Coverage2RenderedImageAdapter
+     */
+    public static GridCoverage2DRIA create(GridCoverage2D src, GridGeometry2D dst,
+            double nodata, Hints hints) {
+        
         Utilities.ensureNonNull("dst", dst);
         
      // === Create destination Layout, retaining source tiling to minimize quirks
@@ -122,6 +144,14 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
         imageLayout.setColorModel(src.getRenderedImage().getColorModel());
         imageLayout.setSampleModel(src.getRenderedImage().getSampleModel());
+        
+        if(hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)){
+            ImageLayout l = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+            if(l.isValid(ImageLayout.TILE_HEIGHT_MASK) && l.isValid(ImageLayout.TILE_WIDTH_MASK)){
+                imageLayout.setTileHeight(Math.min(imageLayout.getHeight(null), l.getTileHeight(null)));
+                imageLayout.setTileWidth(Math.min(imageLayout.getWidth(null), l.getTileWidth(null)));
+            }
+        }
 
         // === BorderExtender
         //
@@ -134,6 +164,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         return new GridCoverage2DRIA(src, dst, vectorize(src.getRenderedImage()), imageLayout,
                 null, false, extender, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
                 new double[] { nodata });
+        
     }
     
     // need it

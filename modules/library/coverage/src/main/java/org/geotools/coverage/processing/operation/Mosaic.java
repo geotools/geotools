@@ -182,19 +182,19 @@ public class Mosaic extends OperationJAI {
         FIRST("first") {
             @Override
             public ResampledRasters resampleGridGeometry(GridCoverage2D[] sources,
-                    GridGeometry2D external, ParameterValueGroup parameters) {
+                    GridGeometry2D external, ParameterValueGroup parameters, Hints hints) {
                 // Index associated to the first coverage
                 int index = PRIMARY_SOURCE_INDEX;
                 // Selection of the first GridGeometry2D object to use
                 GridGeometry2D finalGG = extractFinalGridGeometry(sources, index);
                 // GridCoverage resampling
-                return resampleCoverages(sources, finalGG, parameters);
+                return resampleCoverages(sources, finalGG, parameters, hints);
             }
         },
         FINE("fine") {
             @Override
             public ResampledRasters resampleGridGeometry(GridCoverage2D[] sources,
-                    GridGeometry2D external, ParameterValueGroup parameters) {
+                    GridGeometry2D external, ParameterValueGroup parameters, Hints hints) {
 
                 // Number of the sources to use
                 int numSources = sources.length;
@@ -224,13 +224,13 @@ public class Mosaic extends OperationJAI {
                 // Calculation of the final GridGeometry to use
                 GridGeometry2D finalGG = extractFinalGridGeometry(sources, index);
                 // Coverage resampling
-                return resampleCoverages(sources, finalGG, parameters);
+                return resampleCoverages(sources, finalGG, parameters, hints);
             }
         },
         COARSE("coarse") {
             @Override
             public ResampledRasters resampleGridGeometry(GridCoverage2D[] sources,
-                    GridGeometry2D external, ParameterValueGroup parameters) {
+                    GridGeometry2D external, ParameterValueGroup parameters, Hints hints) {
                 // Number of the sources to use
                 int numSources = sources.length;
                 // Selection of the first GridGeometry
@@ -259,19 +259,19 @@ public class Mosaic extends OperationJAI {
                 // Calculation of the final GridGeometry to use
                 GridGeometry2D finalGG = extractFinalGridGeometry(sources, index);
                 // Coverage resampling
-                return resampleCoverages(sources, finalGG, parameters);
+                return resampleCoverages(sources, finalGG, parameters, hints);
             }
         },
         EXTERNAL("external") {
             @Override
             public ResampledRasters resampleGridGeometry(GridCoverage2D[] sources,
-                    GridGeometry2D external, ParameterValueGroup parameters) {
+                    GridGeometry2D external, ParameterValueGroup parameters, Hints hints) {
                 // Check if the external GridGeometry is present
                 if (external == null) {
                     throw new CoverageProcessingException("No input GridGeometry found");
                 }
                 // Coverage resampling
-                return resampleCoverages(sources, external, parameters);
+                return resampleCoverages(sources, external, parameters, hints);
             }
         };
 
@@ -289,10 +289,11 @@ public class Mosaic extends OperationJAI {
          * @param sources
          * @param external
          * @param parameters
+         * @param hints 
          * @return
          */
         public abstract ResampledRasters resampleGridGeometry(GridCoverage2D[] sources,
-                GridGeometry2D external, ParameterValueGroup parameters);
+                GridGeometry2D external, ParameterValueGroup parameters, Hints hints);
 
         /**
          * Static method to use for choosing the {@link GridGeometryPolicy} object associated to the input string.
@@ -322,7 +323,7 @@ public class Mosaic extends OperationJAI {
          * @return
          */
         private static ResampledRasters resampleCoverages(GridCoverage2D[] sources,
-                GridGeometry2D external, ParameterValueGroup parameters) {
+                GridGeometry2D external, ParameterValueGroup parameters, Hints hints) {
             // Number of the sources to use
             int numSources = sources.length;
 
@@ -387,7 +388,7 @@ public class Mosaic extends OperationJAI {
                     }
 
                     // Resample to the new resolution
-                    rasters[i] = GridCoverage2DRIA.create(coverage, newGG, fillValue);
+                    rasters[i] = GridCoverage2DRIA.create(coverage, newGG, fillValue, hints);
                 }
             }
 
@@ -555,7 +556,7 @@ public class Mosaic extends OperationJAI {
             policy = GridGeometryPolicy.FIRST;
         }
         // Resample to the defined GridGeometry
-        ResampledRasters rr = policy.resampleGridGeometry(sources, gg, parameters);
+        ResampledRasters rr = policy.resampleGridGeometry(sources, gg, parameters, hints);
         // Get the resampled RenderedImages
         RenderedImage[] rasters = rr.getRasters();
 
@@ -712,7 +713,7 @@ public class Mosaic extends OperationJAI {
                 data, // The underlying data
                 crs, // The coordinate system (may not be 2D).
                 toCRS, // The grid transform (may not be 2D).
-                null, // The sample dimensions
+                primarySource.getSampleDimensions(), // The sample dimensions
                 sources, // The source grid coverages.
                 properties); // Properties
     }

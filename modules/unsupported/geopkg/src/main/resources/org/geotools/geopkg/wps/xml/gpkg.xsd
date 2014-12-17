@@ -82,6 +82,7 @@
                 <xs:element name="featuretype" type="xs:string" />
                 <xs:element name="propertynames" minOccurs="0" type="xs:string" />
                 <xs:element name="filter" minOccurs="0" type="fes:FilterType" />
+      			<xs:element name="indexed" type="xs:boolean" minOccurs="0" />
               </xs:sequence>
             </xs:extension>
           </xs:complexContent>

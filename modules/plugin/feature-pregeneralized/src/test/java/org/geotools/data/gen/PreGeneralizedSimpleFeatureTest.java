@@ -19,20 +19,26 @@ package org.geotools.data.gen;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.geotools.data.DataStore;
+import org.geotools.data.Query;
 import org.geotools.data.gen.info.GeneralizationInfos;
 import org.geotools.data.gen.info.GeneralizationInfosProvider;
 import org.geotools.data.gen.info.GeneralizationInfosProviderImpl;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.factory.Hints;
+import org.geotools.factory.Hints.Key;
 import org.geotools.feature.NameImpl;
 import org.junit.Assert;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * 
@@ -46,6 +52,65 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
         super.setUp();
         TestSetup.initialize();
     }
+
+    public void testNoHint() {
+        assertFalse(testHint(null));
+    }
+
+    public void testDinstanceHint() {
+        assertTrue(testHint(Hints.GEOMETRY_DISTANCE));
+    }
+
+    public void testSimplificationHint() {
+        assertTrue(testHint(Hints.GEOMETRY_SIMPLIFICATION));
+    }
+
+    private boolean testHint(Key hintKey) {
+        String baseName = "streams";
+        String typeName = "GenStreams";
+        try {
+            //Get base features
+            DataStore baseDs = TestSetup.REPOSITORY.dataStore("dsStreams");
+            SimpleFeatureSource fs = baseDs.getFeatureSource(baseName);
+            SimpleFeatureCollection fColl = fs.getFeatures();
+            SimpleFeatureIterator iterator = fColl.features();
+            Geometry original = null;
+            try {
+                if (iterator.hasNext()) {
+                    original = (Geometry) iterator.next().getDefaultGeometry();
+                }
+            } finally {
+                iterator.close();
+            }
+            double width = original.getEnvelope().getEnvelopeInternal().getWidth();
+
+            //Get generalized features
+            GeneralizationInfosProvider provider = new GeneralizationInfosProviderImpl();
+            GeneralizationInfos ginfos = provider.getGeneralizationInfos("src/test/resources/geninfo_horizontal.xml");
+            PreGeneralizedDataStore ds = new PreGeneralizedDataStore(ginfos, TestSetup.REPOSITORY);
+            fs = ds.getFeatureSource(typeName);
+            Query query = new Query();
+            if(hintKey != null){
+                Hints hints = new Hints(Hints.GEOMETRY_SIMPLIFICATION,width/2);
+                query.setHints(hints);
+            }
+            Geometry simplified = null;
+            fColl = fs.getFeatures(query);
+            iterator = fColl.features();
+            try {
+                if (iterator.hasNext())
+                    simplified = (Geometry) iterator.next().getDefaultGeometry();
+            } finally {
+                iterator.close();
+            }
+            return original.getNumPoints()>simplified.getNumPoints();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            Assert.fail();
+            return false;
+        }
+    }
+
 
     public void testSimpleFeatureBasics() {
 

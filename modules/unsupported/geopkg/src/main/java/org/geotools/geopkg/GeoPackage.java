@@ -380,7 +380,7 @@ public class GeoPackage {
                 try {
                     prepare(ps)
                         .set(srid)
-                        .set(crs.getName().toString())
+                        .set(auth + ":" + srid)
                         .set(auth)
                         .set(srid)
                         .set(crs.toWKT())

@@ -6,7 +6,7 @@ GeoTools is written in the Java Programming Language. The library is targeted fo
 Java Runtime Environment:
 
 * Java 7 - GeoTools 11.x and above (OpenJDK and Oracle JRE tested)
-* Java 6 - Geotools 8.x to GeoTools 9.x (Oracle JRE tested)
+* Java 6 - Geotools 8.x to GeoTools 10.x (Oracle JRE tested)
 * Java 5 - GeoTools 2.5.x to GeoTools 8.x (Sun JRE tested)
 * Java 1.4 - GeoTools 2.x to GeoTools 2.4.x (Sun JRE tested)
 
@@ -41,9 +41,9 @@ GeoTools requires a Java 1.7 SDK for versions 11.0 and above. If your project us
 Java      Initial          Final            Compiler Setting 
 ========= ================ ================ =================
 Java 7    GeoTools 11.x    And Above        compiler=1.7 
-Java 6    Geotools 8.x     GeoTools 9.x     compiler=1.6 
+Java 6    Geotools 8.x     GeoTools 10.x    compiler=1.6 
 Java 5    GeoTools 2.5.x   GeoTools 8.x     compiler=1.5 
-Java 1.4  GeoTools 2.x     GeoTools 2.4.x   compiler = 1.4 
+Java 1.4  GeoTools 2.x     GeoTools 2.4.x   compiler=1.4 
 ========= ================ ================ =================
 
 Why JAVA_HOME does not work on Windows

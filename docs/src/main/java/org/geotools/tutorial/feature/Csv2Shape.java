@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This file is hereby placed into the Public Domain. This means anyone is
  *    free to do whatever they wish with this file. Use it well and enjoy!
@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.UIManager;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -50,6 +52,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class Csv2Shape {
 
     public static void main(String[] args) throws Exception {
+        // Set cross-platform look & feel for compatability
+        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 
         File file = JFileDataStoreChooser.showOpenFile("csv", null);
         if (file == null) {

@@ -64,3 +64,16 @@ order to draw something on screen.
   applications. It makes use of the SWT toolkit so while you can use it
   as an example of how to do really fast rendering you will not be able
   to directly use the code in a swing application.
+
+Q: What about Raster Advanced Projection Handling?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Advanced Proejction Handling is a feature provided by the GridCoverageRenderer class
+for handling Raster reprojection. It is expecially useful when trying to
+read a GridCoverage with a BoundingBox crossing the DateLine: the final image 
+is not cut on the DateLine but it is replicated as many times as the DateLine
+is crossed.
+
+This feature can be enabled/disabled using the related method
+*setAdvancedProjectionHandlingEnabled()* in the same class.
+

@@ -151,6 +151,8 @@ public class CSVDataStoreTest {
      */
     @Test
     public void testFilter() throws FileNotFoundException, IOException {
+        Query query = new Query();
+        query.setFilter(this.newTestFilter());
         DataStore csv = this.getDataStore();
         SimpleFeatureSource rows = csv.getFeatureSource( TYPE_NAME );
         SimpleFeatureCollection matches = rows.getFeatures(this.newTestFilter());
@@ -159,12 +161,66 @@ public class CSVDataStoreTest {
         SimpleFeatureIterator iter = matches.features();
         while(iter.hasNext()) {
             SimpleFeature f = iter.next();
-            filteredCities.contains(f.getAttribute(CITY_COL));
+            assertTrue(filteredCities.contains(f.getAttribute(CITY_COL)));
             count++;
         }
         iter.close();
         assertEquals(3, count);
         assertEquals(3, matches.size());
+    }
+    
+    /**
+     * Test query with a start index
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    @Test
+    public void testOffset() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setStartIndex(3);
+        DataStore csv = this.getDataStore();
+        SimpleFeatureSource rows = csv.getFeatureSource( TYPE_NAME );
+        SimpleFeatureCollection matches = rows.getFeatures(query);
+        List<String> offsetCities = this.offsetCities();
+        int count = 0;
+        SimpleFeatureIterator iter = matches.features();
+        while(iter.hasNext()) {
+            SimpleFeature f = iter.next();
+            assertTrue(offsetCities.contains(f.getAttribute(CITY_COL)));
+            count++;
+        }
+        iter.close();
+        assertEquals(6, count);
+        assertEquals(6, matches.size());
+        assertEquals(6, rows.getCount(query));
+        
+        
+    }
+    
+    /**
+     * Test query with maxFeatures
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    @Test
+    public void testLimit() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setMaxFeatures(3);
+        DataStore csv = this.getDataStore();
+        SimpleFeatureSource rows = csv.getFeatureSource( TYPE_NAME );
+        SimpleFeatureCollection matches = rows.getFeatures(query);
+        List<String> limitCities = this.limitCities();
+        int count = 0;
+        SimpleFeatureIterator iter = matches.features();
+        while(iter.hasNext()) {
+            SimpleFeature f = iter.next();
+            assertTrue(limitCities.contains(f.getAttribute(CITY_COL)));
+            count++;
+        }
+        iter.close();
+        assertEquals(3, count);
+        assertEquals(3, matches.size());
+        assertEquals(3, rows.getCount(query));
     }
 
     /**
@@ -241,6 +297,14 @@ public class CSVDataStoreTest {
     
     private List<String> filteredCities() {
         return Arrays.asList("Lausanne", "Victoria", "Cape Town");
+    }
+    
+    private List<String> offsetCities() {
+        return Arrays.asList("Ottawa", "Minneapolis", "Lausanne", "Victoria", "Cape Town", "Sydney");
+    }
+    
+    private List<String> limitCities() {
+        return Arrays.asList("Trento", "St Paul", "Bangkok");
     }
     
     private Point newPoint(Coordinate coords) {

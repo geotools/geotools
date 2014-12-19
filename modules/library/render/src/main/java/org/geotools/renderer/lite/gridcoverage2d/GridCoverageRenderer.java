@@ -763,12 +763,14 @@ public final class GridCoverageRenderer {
             coverages = new ArrayList<>();
             coverages.add(coverage);
         } else {
-            handler = ProjectionHandlerFinder.getHandler(rh.getReadEnvelope(),
-                    sourceCRS, wrapEnabled);
-            if (handler instanceof WrappingProjectionHandler) {
-                // raster data is monolithic and can cover the whole world, disable
-                // the geometry wrapping heuristic
-                ((WrappingProjectionHandler) handler).setDatelineWrappingCheckEnabled(false);
+            if (advancedProjectionHandlingEnabled) {
+                handler = ProjectionHandlerFinder.getHandler(rh.getReadEnvelope(), sourceCRS,
+                        wrapEnabled);
+                if (handler instanceof WrappingProjectionHandler) {
+                    // raster data is monolithic and can cover the whole world, disable
+                    // the geometry wrapping heuristic
+                    ((WrappingProjectionHandler) handler).setDatelineWrappingCheckEnabled(false);
+                }
             }
             coverages = rh.readCoverages(readParams, handler);
         }
@@ -777,6 +779,9 @@ public final class GridCoverageRenderer {
         double[] bgValues = GridCoverageRendererUtilities.colorToArray(background);
         List<GridCoverage2D> reprojectedCoverages = new ArrayList<GridCoverage2D>();
         for (GridCoverage2D coverage : coverages) {
+            if (coverage == null) {
+                continue;
+            }
             final CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem();
             if (!CRS.equalsIgnoreMetadata(coverageCRS, destinationCRS)) {
                 GridCoverage2D reprojected = reproject(coverage, true, bgValues);

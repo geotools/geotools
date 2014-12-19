@@ -107,15 +107,36 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
         return new QName(uri, localName);
     }
 
-    public Calendar parseDateTime(String arg0) {
+    /** <p>Parses the lexical representation of the given dateTime value
+     * and converts it into an instance of {@link java.util.Calendar}.
+     * Valid lexical representations of a dateTime value include
+     * <pre>
+     *   YYYY-MM-DDThh:mm:ss
+     *   YYYY-MM-DDThh:mm:ss.sss
+     *   YYYY-MM-DDThh:mm:ssZ
+     *   YYYY-MM-DDThh:mm:ss-01:00
+     * </pre>
+     * The former examples are all specified in UTC time. The last example
+     * uses a negative offset of one hour to UTC.</p>
+     * @param arg0 The input string being parsed.
+     * @param lenient parameter used for allowing lenient parsing
+     * @return The input string converted into an instance of
+     *   {@link java.util.Calendar}.
+     * @see javax.xml.bind.ParseConversionEvent
+     */
+    public Calendar parseDateTime(String arg0, boolean lenient) {
         XsDateTimeFormat format = new XsDateTimeFormat();
         ParsePosition pos = new ParsePosition(0);
-        Calendar cal = (Calendar) format.parseObject(arg0, pos);
+        Calendar cal = (Calendar) format.parseObject(arg0, pos, lenient);
         if (cal == null) {
             throw new IllegalArgumentException("Failed to parse dateTime " + arg0 +
                     						   " at:" + arg0.substring(pos.getErrorIndex()));
         }
         return cal;
+    }
+
+    public Calendar parseDateTime(String arg0) {
+        return parseDateTime(arg0, false);
     }
 
     public byte[] parseBase64Binary(String arg0) {

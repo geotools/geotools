@@ -18,6 +18,7 @@ package org.geotools.xml.impl;
 
 import java.text.FieldPosition;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -62,7 +63,21 @@ public class XsDateTimeFormat extends Format {
         return pOffset;
     }
 
+    public Object parseObject(String source, boolean lenient) throws ParseException {
+        ParsePosition pos = new ParsePosition(0);
+        Object result = parseObject(source, pos, lenient);
+        if (pos.getIndex() == 0) {
+            throw new ParseException("Format.parseObject(String) failed",
+                pos.getErrorIndex());
+        }
+        return result;
+    }
+
     public Object parseObject(String pString, ParsePosition pParsePosition) {
+        return parseObject(pString, pParsePosition, false);
+    }
+
+    public Object parseObject(String pString, ParsePosition pParsePosition, boolean lenient) {
         if (pString == null) {
             throw new NullPointerException("The String argument must not be null.");
         }
@@ -126,8 +141,20 @@ public class XsDateTimeFormat extends Format {
 	            if (offset < length  &&  pString.charAt(offset) == 'T') {
 	                ++offset;
 	            } else {
-	                pParsePosition.setErrorIndex(offset);
-	                return null;
+                        // If lenient, add T
+                        if (lenient) {
+                            if (offset >= length) {
+                                pString = pString + "T";
+                            } else {
+                                pString = pString.substring(0, offset) + "T"
+                                        + pString.substring(offset);
+                            }
+                            ++offset;
+                            length = pString.length();
+                        } else {
+                            pParsePosition.setErrorIndex(offset);
+                            return null;
+                        }
 	            }
 	        }
         } else {
@@ -136,49 +163,103 @@ public class XsDateTimeFormat extends Format {
 
         int hour, minute, second, millis;
         if (parseTime) {
-	        offset = parseInt(pString, offset, digits);
-	        if (digits.length() != 2) {
-	            pParsePosition.setErrorIndex(offset);
-	            return null;
+                int offsetBefore = offset;
+                offset = parseInt(pString, offset, digits);
+                if (digits.length() != 2) {
+                    // If lenient, add 00
+                    if (lenient) {
+                        pString = pString.substring(0, offsetBefore) + "00" + pString.substring(offset);
+                        offset = parseInt(pString, offsetBefore, digits);
+                        length = pString.length();
+                    } else {
+                        pParsePosition.setErrorIndex(offset);
+                        return null;
+                    }
 	        }
 	        hour = Integer.parseInt(digits.toString());
 	
 	        if (offset < length  &&  pString.charAt(offset) == ':') {
 	            ++offset;
 	        } else {
-	            pParsePosition.setErrorIndex(offset);
-	            return null;
+                    // If lenient, add :
+                    if (lenient) {
+                        if (offset >= length) {
+                            pString = pString + ":";
+                        } else {
+                            pString = pString.substring(0, offset) + ":" + pString.substring(offset);
+                        }
+                        ++offset;
+                        length = pString.length();
+                    } else {
+                        pParsePosition.setErrorIndex(offset);
+                        return null;
+                    }
 	        }
 	
+	        offsetBefore = offset;
 	        offset = parseInt(pString, offset, digits);
 	        if (digits.length() != 2) {
-	            pParsePosition.setErrorIndex(offset);
-	            return null;
+                    // If lenient, add 00
+                    if (lenient) {
+                        pString = pString.substring(0, offsetBefore) + "00" + pString.substring(offset);
+                        offset = parseInt(pString, offsetBefore, digits);
+                        length = pString.length();
+                    } else {
+                        pParsePosition.setErrorIndex(offset);
+                        return null;
+                    }
 	        }
 	        minute = Integer.parseInt(digits.toString());
 	
 	        if (offset < length  &&  pString.charAt(offset) == ':') {
 	            ++offset;
 	        } else {
-	            pParsePosition.setErrorIndex(offset);
-	            return null;
+                    // If lenient, add :
+                    if (lenient) {
+                        if (offset >= length) {
+                            pString = pString + ":";
+                        } else {
+                            pString = pString.substring(0, offset) + ":" + pString.substring(offset);
+                        }
+                        ++offset;
+                        length = pString.length();
+                    } else {
+                        pParsePosition.setErrorIndex(offset);
+                        return null;
+                    }
 	        }
 	
+	        offsetBefore = offset;
 	        offset = parseInt(pString, offset, digits);
 	        if (digits.length() != 2) {
-	            pParsePosition.setErrorIndex(offset);
-	            return null;
+                    // If lenient, add 00
+                    if (lenient) {
+                        pString = pString.substring(0, offsetBefore) + "00" + pString.substring(offset);
+                        offset = parseInt(pString, offsetBefore, digits);
+                        length = pString.length();
+                    } else {
+                        pParsePosition.setErrorIndex(offset);
+                        return null;
+                    }
 	        }
 	        second = Integer.parseInt(digits.toString());
 	
 	        if (offset < length  &&  pString.charAt(offset) == '.') {
 	            ++offset;
+	            offsetBefore = offset;
 	            offset = parseInt(pString, offset, digits);
 	            if (digits.length() > 0) {
 	                millis = Integer.parseInt(digits.toString());
                     if (millis > 999) {
-                        pParsePosition.setErrorIndex(offset);
-                        return null;
+                        // If lenient, add 000
+                        if (lenient) {
+                            pString = pString.substring(0, offsetBefore) + "000"
+                                    + pString.substring(offset);
+                            length = pString.length();
+                        } else {
+                            pParsePosition.setErrorIndex(offset);
+                            return null;
+                        }
                     }
                     for (int i = digits.length();  i < 3;  i++) {
                         millis *= 10;

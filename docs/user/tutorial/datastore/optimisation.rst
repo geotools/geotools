@@ -165,7 +165,7 @@ in play.
 
 
 
-. note:: Challenge
+.. note:: Challenge
 
   The canRetype() operations is easy to support, check the query and only provide values for the
   requested attributes. This is an especially valuable Optimization to perform at a low-level as

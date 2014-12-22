@@ -36,21 +36,22 @@ Our initial implementation will result in a read-only datastore for accessing CS
 
 #. To begin create the file CSVDataStore extending ContentDataStore
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStore.java
       :language: java
-      :start-after: // header start
+      :prepend: package org.geotools.tutorial.csv;
+      :start-after: package org.geotools.data.csv;
       :end-before: // header end
 
 #. Add the reader
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStore.java
       :language: java
       :start-after: // reader start
       :end-before: // reader end
 
 #. We are going to be working with a single CSV file
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStore.java
       :language: java
       :start-after: // constructor start
       :end-before: // constructor end
@@ -66,7 +67,7 @@ Our initial implementation will result in a read-only datastore for accessing CS
 
    After all that lead-in you will be disappointed to note that our list will be a single value - the name of the CSV file.
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStore.java
       :language: java
       :start-after: // createTypeNames start
       :end-before: // createTypeNames end
@@ -85,7 +86,7 @@ Our initial implementation will result in a read-only datastore for accessing CS
 
 #. Implement createFeatureSource. Technically the **ContentEntry** is provided as "parameter object" holding the type name requested by the user, and any other context known to the DataStore.
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStore.java
       :language: java
       :start-after: // createFeatureSource start
       :end-before: // createFeatureSource end
@@ -99,21 +100,22 @@ Next we can create the **CSVFeatureSource** mentioned above. This class is respo
 
 #. Create the file CSVFeatureSource.
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureSource.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java
       :language: java
-      :start-after: // header
+      :prepend: package org.geotools.tutorial.csv;
+      :start-after: package org.geotools.data.csv;
       :end-before: // getDataStore start
 
 #. To assist others we can type narrow our **getDataStore()** method to explicitly to return a **CSVDataStore**. In addition to being accurate, this prevents a lot of casts resulting in more readable code.
   
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureSource.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java
       :language: java
       :start-after: // getDataStore start
       :end-before: // getDataStore end
 
 #. The method **getReaderInternal( Query )** used to provide streaming access to out data - reading one feature at a time. The **CSVFeatureReader** returned is similar to an iterator, and is implemented in the next section.
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureSource.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java
       :language: java
       :start-after: // reader start
       :end-before: // reader end
@@ -128,14 +130,14 @@ Next we can create the **CSVFeatureSource** mentioned above. This class is respo
    
    For CSV files we can check to see if the Query includes all features - in which case we can skip over the header and quickly count the number of lines in our file. This is much faster than reading and parsing each feature one at a time.
    
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureSource.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java
       :language: java
       :start-after: // count start
       :end-before: // count end
       
 #. The second optimisation requires an implementation of **getBoundsInternal(Query)** making use of any spatial index, or header, record the data bounds. This value is used when rendering to determine the clipping area.
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureSource.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java
       :language: java
       :start-after: // bounds start
       :end-before: // bounds end
@@ -146,7 +148,7 @@ Next we can create the **CSVFeatureSource** mentioned above. This class is respo
    
    The FeatureType generated here is based on the CSV Header, along with a few educated guesses to recognise LAT and LON columns as comprising a single Location.
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureSource.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java
       :language: java
       :start-after: // schema start
       :end-before: // schema end
@@ -177,14 +179,16 @@ line by line, parsing Features as we go. Because this class actually does some w
 
 1. Create the class **CSVFeatureReader** as follows:
    
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureReader.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureReader.java
       :language: java
+      :prepend: package org.geotools.tutorial.csv;
+      :start-after: package org.geotools.data.csv;
       :end-before: // class definition end
       :append: }
 
 2. Implement the iterator next() and hasNext() methods using a field to hold the value to return next.
    
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureReader.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureReader.java
       :language: java
       :start-after: // read start
       :end-before: // read end
@@ -194,7 +198,7 @@ line by line, parsing Features as we go. Because this class actually does some w
 
 3. Using the **CSVReader** library to parse the content saves a lot of work - and lets us focus on building features. The utility class **FeatureBuilder** gathers up state, employing a **FeatureFactory** on your behalf to construct each feature.
    
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureReader.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureReader.java
       :language: java
       :start-after: // parse start
       :end-before: // parse end
@@ -203,7 +207,7 @@ line by line, parsing Features as we go. Because this class actually does some w
 
 4. Finally we can **close()** the CSVFeatureReader when no longer used. Returning any system resources (in this case an open file handle).
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureReader.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureReader.java
       :language: java
       :start-after: // close start
       :end-before: // cose end
@@ -240,15 +244,17 @@ information and the ability to create new physical storage.
      
    Create CSVDataStoreFactory as follows:
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStoreFactory.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStoreFactory.java
       :language: java
+      :prepend: package org.geotools.tutorial.csv;
+      :start-after: package org.geotools.data.csv;
       :end-before: // definition end
 
 2. We have a couple of methods to describe the DataStore.
 
    This *isAvaialble* method is interesting in that it can become a performance bottleneck if not implemented efficiently. DataStoreFactorySPI factories *all* called when a user attempts to connect, only the factories marked as *available* are shortlisted for further interaction.
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStoreFactory.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStoreFactory.java
       :language: java
       :start-after: // metadata start
       :end-before: // metadata end
@@ -261,7 +267,7 @@ information and the ability to create new physical storage.
    
    The API contract is open ended (we cannot hope to guess all the options needed in the future). The helper class **KVP** provides an easy to use implementation of **Map<String,Object>**. The keys used here are formally defined as static constants - complete with javadoc describing their use. If several authors agree on a new hint it will be added to these static constants.
    
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStoreFactory.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStoreFactory.java
       :language: java
       :start-after: // getParametersInfo start
       :end-before: // getParametersInfo end
@@ -282,7 +288,7 @@ information and the ability to create new physical storage.
       
 4. Next we have some code to check if a set of provided connection parameters can actually be used.
    
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStoreFactory.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStoreFactory.java
       :language: java
       :start-after: // canProcess start
       :end-before: // canProcess end
@@ -300,7 +306,7 @@ information and the ability to create new physical storage.
      
    Since initially our DataStore is read-only we will just throw an UnsupportedOperationException at this time.
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStoreFactory.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStoreFactory.java
       :language: java
       :start-after: // createNewDataStore start
       :end-before: // createNewDataStore end

@@ -11,12 +11,12 @@ Since this tutorial has been written the result has been broken out into a disti
 Unsupported Module
 ^^^^^^^^^^^^^^^^^^
 
-Good tutorials do not just teach, they get pressed into production. By popular request the CSVDataStore outlined in this tutorial is available as an "unsupported" plugin:
+Good tutorials do not just teach, they get pressed into production. The CSVDataStore outlined in the original tutorial was forked into geoserver with some modifications. You can see the :doc:`strategy page </tutorial/datastore/strategy>` for details on the changes. The original tutorial code is still available here:
 
-* :download:`CSVDataStore.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java>`
-* :download:`CSVDataStoreFactory.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java>`
-* :download:`CSVFeatureReader.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureReader.java>`
-* :download:`CSVFeatureSource.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureSource.java>`
+* :download:`CSVDataStore.java </../src/main/java/org/geotools/tutorial/csv2/CSVDataStore.java>`
+* :download:`CSVDataStoreFactory.java </../src/main/java/org/geotools/tutorial/csv2/CSVDataStoreFactory.java>`
+* :download:`CSVFeatureReader.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureReader.java>`
+* :download:`CSVFeatureSource.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java>`
 * :download:`META-INF/services/org.geotools.data.DataStoreFactorySpi </../../modules/unsupported/csv/src/main/resources/META-INF/services/org.geotools.data.DataStoreFactorySpi>`
 
 To get an idea of what kind of "extra work" is required for a supported module:
@@ -31,17 +31,6 @@ Directory Support
 Earlier copies of this tutorial would read an entire directory of files at a time. This functionality has been factored out into a support class and is used by implementations such as ShapefileDataStore.
 
 The same steps can be taken to CSVDataStore - although it is a real trade off between the code being clear vs less typing.
-
-GeoServer Fork
-^^^^^^^^^^^^^^
-
-This is more interesting, the code was forked in order to add new abilities:
-   
-* `org.geoserver.importer.csv <https://github.com/geoserver/geoserver/tree/master/src/extension/importer/core/src/main/java/org/geoserver/importer/csv>`_ (GitHub)
-
-The implementation is strictly concerned with reading content (as part of an import process) and has added a nifty CSVStrategy (with implementations for CSVAttributesOnly, CSVLatLonStrategy, CSVSpecifiedLatLngStrategy and SpecifiedWKTStrategy).
-
-Sounds like a sensible addition.
    
 Info
 ^^^^

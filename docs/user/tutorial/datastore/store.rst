@@ -32,7 +32,7 @@ Now that we are going to be writing files we can fill in the createNewDataStore 
 
 1. Open up CSVDataStoreFactory and fill in the method **createNewDataStore( Map params )** which we skipped over earlier.
 
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStoreFactory.java
       :language: java
       :start-after: // createNewDataStore start
       :end-before: // createNewDataStore end
@@ -43,7 +43,7 @@ Now that we are going to be writing files we can fill in the createNewDataStore 
    Because GeoTools is a well mannered library it can be configured to use different logging
    engines. This allows it to integrate smoothly with larger projects.
 
-#. To see this change in context review :download:`CSVDataStoreFactory.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java>`
+#. To see this change in context review :download:`CSVDataStoreFactory.java </../src/main/java/org/geotools/tutorial/csv2/CSVDataStoreFactory.java>`
    from the **gt-csv** plugin.
    
 There is no DataStoreFinder method for creating new content. We expect this method to be called
@@ -65,7 +65,7 @@ functionality.
    
    Add createSchema( featureType ):
    
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStore.java
       :language: java
       :start-after: // createSchema start
       :end-before: // createSchema end
@@ -77,12 +77,12 @@ functionality.
    
    The **FeatureStore** interface provides additional methods allowing the modification of content.
 
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVDataStore.java
       :language: java
       :start-after: // createFeatureSource start
       :end-before: // createFeatureSource end
 
-#. If you would like to review the **gt-csv** plugin has the completed :download:`CSVDataStore.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java>`
+#. If you would like to review the **gt-csv** plugin has the completed :download:`CSVDataStore.java </../src/main/java/org/geotools/tutorial/csv2/CSVDataStore.java>`
    file.
    
 CSVFeatureStore
@@ -112,7 +112,7 @@ are always on the same transaction, but other than that this approach is working
 
 #. Create **CSVFeatureStore**:
 
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
       :language: java
       :start-after: package org.geotools.data.csv;
       :end-before: // header end
@@ -121,7 +121,7 @@ are always on the same transaction, but other than that this approach is working
 #. Our first responsibility is to implement a CSVFeatureWriter for internal use. Transaction and Event
    Notification are handled by wrappers applied to our CSVFeatureWriter.
     
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
       :language: java
       :start-after: // getWriter start
       :end-before: // getWriter end
@@ -152,14 +152,14 @@ are always on the same transaction, but other than that this approach is working
 
 #. Next we can set up our delegate, taking care to ensure both use the same Transaction.
    
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
       :language: java
       :start-after: // transaction start
       :end-before: // transaction end
       
 #. Use the delegate to implement the internal ContentDataStore methods. 
 
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
       :language: java
       :start-after: // internal start
       :end-before: // internal end
@@ -167,7 +167,7 @@ are always on the same transaction, but other than that this approach is working
    We have to do one "fix" to allow handle visitor method to be called - add the following to
       **CSVFeatureSource**.
       
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureSource.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
       :language: java
       :start-after: // visitor start
       :end-before: // visitor end
@@ -180,12 +180,11 @@ are always on the same transaction, but other than that this approach is working
       
 #. Use the delegate to implement the public FeatureSource methods.
    
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
       :language: java
       :start-after: // public start
-      :end-before: // public end
 
-#. You can see what this looks like in context by reviewing :download:`CSVFeatureStore.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureStore.java>`
+#. You can see what this looks like in context by reviewing :download:`CSVFeatureStore.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java`
    from the **gt-csv** plugin.
 
 CSVFeatureWriter
@@ -286,7 +285,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
 
 #. Create the file CSVFeatureWriter.java:
 
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java
       :language: java
       :start-after: package org.geotools.data.csv;
       :end-before: // header end
@@ -303,14 +302,14 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
    
    Putting all that together:
    
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java
       :language: java
       :start-after: // constructor start
       :end-before: // constructor end
 
 #. Add FeatureWriter.getFeatureType() implementation:
 
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java
       :language: java
       :start-after: // featureType start
       :end-before: // featureType end
@@ -318,7 +317,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
 #. Add hasNext() implementation, making use of delegate before switching over to 
    returning false when appending.
 
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java
       :language: java
       :start-after: // hasNext start
       :end-before: // hasNext end
@@ -336,7 +335,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
    
    Here is what that looks like:
 
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java
       :language: java
       :start-after: // next start
       :end-before: // next end
@@ -352,14 +351,14 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
 
 7. Add remove() implementation, marking the currentFeature as null.
 
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java
       :language: java
       :start-after: // remove start
       :end-before: // remove end
 
 6. Add write() implementation:
    
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java
       :language: java
       :start-after: // write start
       :end-before: // write end
@@ -379,11 +378,11 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
    
    The last thing our FeatureWriter must do is replace the existing File with our new one.
 
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java
       :language: java
       :start-after: // close start
       :end-before: // close end
 
-#. You can see what this looks like in context by reviewing :download:`CSVFeatureWriter.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java>`
+#. You can see what this looks like in context by reviewing :download:`CSVFeatureWriter.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java`
    from the **gt-csv** plugin.
    

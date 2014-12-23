@@ -13,10 +13,10 @@ Unsupported Module
 
 Good tutorials do not just teach, they get pressed into production. By popular request the CSVDataStore outlined in this tutorial is available as an "unsupported" plugin:
 
-* :download:`CSVDataStore.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java>`
-* :download:`CSVDataStoreFactory.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java>`
-* :download:`CSVFeatureReader.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureReader.java>`
-* :download:`CSVFeatureSource.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureSource.java>`
+* :download:`CSVDataStore.java </../src/main/java/org/geotools/tutorial/csv2/CSVDataStore.java>`
+* :download:`CSVDataStoreFactory.java </../src/main/java/org/geotools/tutorial/csv2/CSVDataStoreFactory.java>`
+* :download:`CSVFeatureReader.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureReader.java>`
+* :download:`CSVFeatureSource.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java>`
 * :download:`META-INF/services/org.geotools.data.DataStoreFactorySpi </../../modules/unsupported/csv/src/main/resources/META-INF/services/org.geotools.data.DataStoreFactorySpi>`
 
 To get an idea of what kind of "extra work" is required for a supported module:

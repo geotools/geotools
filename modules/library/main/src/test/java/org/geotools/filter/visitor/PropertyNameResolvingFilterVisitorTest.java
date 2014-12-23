@@ -20,9 +20,14 @@ import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.spatial.BBOX;
+
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * 
@@ -42,6 +47,8 @@ public class PropertyNameResolvingFilterVisitorTest extends TestCase {
         SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
         b.setName( "test" );
         b.add( "name", String.class );
+        b.add("geom", Polygon.class, DefaultGeographicCRS.WGS84);
+        b.setDefaultGeometry("geom");
         featureType = b.buildFeatureType();
     }
     
@@ -52,5 +59,15 @@ public class PropertyNameResolvingFilterVisitorTest extends TestCase {
         f = (PropertyIsEqualTo) f.accept( new PropertyNameResolvingVisitor(featureType),null);
         
         assertEquals( "name", f.getExpression1().toString() );
+    }
+    
+    public void testResolveEmptyName() {
+        //We use a geometry filter here to test that expression1 does not get filled with the default geometry
+        BBOX f = factory.bbox("", 0.0, 0.0, 1.0, 1.0, DefaultGeographicCRS.WGS84.toString());
+        assertEquals( "", f.getExpression1().toString() );
+        
+        f = (BBOX) f.accept( new PropertyNameResolvingVisitor(featureType),null);
+        
+        assertEquals( "", f.getExpression1().toString() );
     }
 }

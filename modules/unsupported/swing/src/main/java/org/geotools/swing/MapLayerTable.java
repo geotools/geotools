@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -540,7 +541,14 @@ public class MapLayerTable extends JPanel {
 
         @Override
         public void layerAdded(MapLayerListEvent event) {
-            table.onAddLayer(event.getElement());
+            if (event.getElement() == null) {
+                List<Layer> layers = table.mapPane.getMapContent().layers();
+                for (Layer l : layers.subList(event.getFromIndex(), event.getToIndex() + 1)) {
+                    table.onAddLayer(l);
+                }
+            } else {
+                table.onAddLayer(event.getElement());
+            }
         }
 
         @Override

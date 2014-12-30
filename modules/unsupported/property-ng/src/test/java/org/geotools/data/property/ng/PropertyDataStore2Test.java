@@ -245,4 +245,22 @@ public class PropertyDataStore2Test extends TestCase {
         assertEquals(3, matches.size());
         assertEquals(3, features.getCount(query));
     }
+    
+    /**
+     * Test query with maxFeatures and startIndex
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    @Test
+    public void testLimitOffset() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setMaxFeatures(3);
+        query.setStartIndex(3);
+        SimpleFeatureSource features = (SimpleFeatureSource) store.getFeatureSource("road");
+
+        SimpleFeatureCollection matches = features.getFeatures(query);
+
+        assertEquals(1, matches.size());
+        assertEquals(1, features.getCount(query));
+    }
 }

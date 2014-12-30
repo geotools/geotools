@@ -251,6 +251,26 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         store.autoConfigureStores(Arrays.asList("store1", "store2", "gt:store3"));
         assertEquals(2, store.getFeatureSource(BASIC_POLYGONS).getCount(query));
     }
+    
+    /**
+     * Test query with maxFeatures and startIndex
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    @Test
+    public void testLimitOffset() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setMaxFeatures(2);
+        query.setStartIndex(2);
+        // just the first store
+        store.autoConfigureStores(Arrays.asList("store1"));
+        assertEquals(1, store.getFeatureSource(BASIC_POLYGONS).getCount(query));
+
+        // add all stores
+        store.resetConfiguration();
+        store.autoConfigureStores(Arrays.asList("store1", "store2", "gt:store3"));
+        assertEquals(2, store.getFeatureSource(BASIC_POLYGONS).getCount(query));
+    }
 
     @Test
     public void testReadFiltered() throws Exception {

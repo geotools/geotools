@@ -1311,6 +1311,15 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             assertEquals(count/2, features.size());
             assertEquals(count/2, featureSource.getCount(query));
             
+            // execute Query that uses both limit and offset
+            query = new Query(Query.ALL);
+            query.setMaxFeatures(count/2);
+            query.setStartIndex(2);
+            
+            features = featureSource.getFeatures(query);
+            assertEquals(Math.min(count-2, count/2), features.size());
+            assertEquals(Math.min(count-2, count/2), featureSource.getCount(query));
+            
             // execute Query that doesn't return any feature
             query = new Query(Query.ALL);
             bounds = new ReferencedEnvelope(bounds.getMaxX() + 1, bounds.getMaxX() + 2, 

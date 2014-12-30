@@ -222,6 +222,33 @@ public class CSVDataStoreTest {
         assertEquals(3, matches.size());
         assertEquals(3, rows.getCount(query));
     }
+    
+    /**
+     * Test query with maxFeatures and startIndex
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    @Test
+    public void testLimitOffset() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setMaxFeatures(3);
+        query.setStartIndex(3);
+        DataStore csv = this.getDataStore();
+        SimpleFeatureSource rows = csv.getFeatureSource( TYPE_NAME );
+        SimpleFeatureCollection matches = rows.getFeatures(query);
+        List<String> limitCities = this.limitOffsetCities();
+        int count = 0;
+        SimpleFeatureIterator iter = matches.features();
+        while(iter.hasNext()) {
+            SimpleFeature f = iter.next();
+            assertTrue(limitCities.contains(f.getAttribute(CITY_COL)));
+            count++;
+        }
+        iter.close();
+        assertEquals(3, count);
+        assertEquals(3, matches.size());
+        assertEquals(3, rows.getCount(query));
+    }
 
     /**
      * Test FeatureStore/Writer update
@@ -305,6 +332,10 @@ public class CSVDataStoreTest {
     
     private List<String> limitCities() {
         return Arrays.asList("Trento", "St Paul", "Bangkok");
+    }
+    
+    private List<String> limitOffsetCities() {
+        return Arrays.asList("Ottawa", "Minneapolis", "Lausanne");
     }
     
     private Point newPoint(Coordinate coords) {

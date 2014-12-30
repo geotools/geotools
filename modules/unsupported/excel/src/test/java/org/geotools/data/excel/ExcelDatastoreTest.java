@@ -254,4 +254,22 @@ public class ExcelDatastoreTest extends DataTestCase {
             assertTrue(2 >= source.getCount(query));
         }
     }
+    
+    /**
+     * Test query with maxFeatures and startIndex
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    public void testLimitOffset() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setMaxFeatures(2);
+        query.setStartIndex(1);
+        for (ExcelDataStore ed : eds) {
+            System.out.println(ed.getName());
+
+            List<Name> names = ed.getNames();
+            ExcelFeatureSource source = (ExcelFeatureSource) ed.getFeatureSource(names.get(0));
+            assertEquals(Math.min(2, source.getCount(Query.ALL)-1), source.getCount(query));
+        }
+    }
 }

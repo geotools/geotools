@@ -122,6 +122,19 @@ public class SFSFeatureSourceTest extends OnlineTest {
             assertEquals(1, odsfs.getCount(query));
         }
     }
+    
+    public void testCountFeaturesLimitOffset() throws MalformedURLException, IOException, NoSuchAuthorityCodeException, FactoryException {
+        if (super.onlineTest("testCountFeaturesLimitOffset")) {
+            SFSDataStoreFactory factory = new SFSDataStoreFactory();
+            SFSDataStore ods = (SFSDataStore) factory.createDataStore(createParams());
+            SFSFeatureSource odsfs = (SFSFeatureSource) ods.getFeatureSource(FEATURESOURCE);
+            Query query = new Query(Query.ALL);
+            query.setMaxFeatures(1);
+            query.setStartIndex(1);
+            
+            assertEquals(1, odsfs.getCount(query));
+        }
+    }
 
     public void testFeatureBounds() throws MalformedURLException, IOException, NoSuchAuthorityCodeException, FactoryException {
         if (super.onlineTest("testFeatureBounds")) {

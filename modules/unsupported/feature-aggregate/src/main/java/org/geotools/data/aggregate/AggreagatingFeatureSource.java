@@ -93,7 +93,11 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         AggregatingDataStore store = getStore();
         List<Future<Long>> counts = new ArrayList<Future<Long>>();
         for (SourceType st : config.getSourceTypes()) {
-            Future<Long> f = store.submit(new CountCallable(store, query, st.getStoreName(), st.getTypeName()));
+            //Remove maxFeatures and startIndex from the query, these should be handled after aggregating
+            Query q = new Query(query);
+            q.setMaxFeatures(Query.DEFAULT_MAX);
+            q.setStartIndex(0);
+            Future<Long> f = store.submit(new CountCallable(store, q, st.getStoreName(), st.getTypeName()));
             counts.add(f);
         }
 

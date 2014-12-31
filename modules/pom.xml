@@ -79,7 +79,7 @@
             <!-- Shuts off non-error and non-warning messages.-->
           <quiet>true</quiet>
             <!-- The maximum Java heap size to be used to run javadoc. -->
-          <maxmemory>512M</maxmemory>
+          <maxmemory>${javadoc.maxHeapSize}</maxmemory>
             <!-- Specifies the encoding name of the source files.-->
           <encoding>UTF-8</encoding>
             <!-- Set an additional parameter for the command line. -->

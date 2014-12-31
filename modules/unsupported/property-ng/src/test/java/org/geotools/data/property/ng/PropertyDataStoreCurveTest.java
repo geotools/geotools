@@ -1,0 +1,145 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+package org.geotools.data.property.ng;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+
+import junit.framework.TestCase;
+
+import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
+import org.geotools.data.Transaction;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
+import org.geotools.geometry.jts.CircularRing;
+import org.geotools.geometry.jts.CircularString;
+import org.geotools.geometry.jts.CompoundCurve;
+import org.geotools.geometry.jts.CompoundRing;
+import org.geotools.geometry.jts.CurvedGeometry;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.FilterFactory2;
+
+/**
+ * Test functioning of PropertyDataStore (used as conformance testing and
+ * examples for the AbstractDataStore tutorial).
+ * 
+ * @author Jody Garnett (LISAsoft)
+ * 
+ * @source $URL$
+ */
+public class PropertyDataStoreCurveTest extends TestCase {
+    PropertyDataStore store;
+
+    static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder
+            .getFilterFactory(null);
+
+    /**
+     * Constructor for SimpleDataStoreTest.
+     * 
+     * @param arg0
+     */
+    public PropertyDataStoreCurveTest(String arg0) {
+        super(arg0);
+    }
+
+    protected void setUp() throws Exception {
+        File dir = new File(".", "propertyCurveTestData");
+        dir.mkdir();
+
+        File file = new File(dir, "curvelines.properties");
+        if (file.exists()) {
+            file.delete();
+        }
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.write("_=geom:LineString:4326,name:String");
+        writer.newLine();
+        writer.write("cp.1=COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))|Compound");
+        writer.newLine();
+        writer.write("cp.2=CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0)|Circle ");
+        writer.newLine();
+        writer.write("cp.3=CIRCULARSTRING(-7 -8, -5 -6, -3 -8, -1 -10, 1 -8))|Wave");
+        writer.newLine();
+        writer.close();
+
+        store = new PropertyDataStore(dir);
+        super.setUp();
+    }
+
+    protected void tearDown() throws Exception {
+        File dir = new File("propertyCurveTestData");
+        File list[] = dir.listFiles();
+        for (int i = 0; i < list.length; i++) {
+            list[i].delete();
+        }
+        dir.delete();
+        super.tearDown();
+    }
+
+    public void testReadCurves() throws Exception {
+        String names[] = store.getTypeNames();
+        assertEquals(1, names.length);
+        assertEquals("curvelines", names[0]);
+        Query query = new Query("curvelines");
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = store
+                .getFeatureReader(query, Transaction.AUTO_COMMIT);
+        try {
+            assertTrue(reader.hasNext());
+            Object geom = reader.next().getDefaultGeometry();
+            assertTrue(geom instanceof CompoundRing);
+            CurvedGeometry<?> curved = (CurvedGeometry<?>) geom;
+            assertEquals(Double.MAX_VALUE, curved.getTolerance());
+
+            assertTrue(reader.hasNext());
+            geom = reader.next().getDefaultGeometry();
+            assertTrue(geom instanceof CircularRing);
+            curved = (CurvedGeometry<?>) geom;
+            assertEquals(Double.MAX_VALUE, curved.getTolerance());
+
+            assertTrue(reader.hasNext());
+            geom = reader.next().getDefaultGeometry();
+            assertTrue(geom instanceof CircularString);
+            curved = (CurvedGeometry<?>) geom;
+            assertEquals(Double.MAX_VALUE, curved.getTolerance());
+        } finally {
+            reader.close();
+        }
+    }
+
+    public void testReadCurvesWithTolerance() throws Exception {
+        String names[] = store.getTypeNames();
+        assertEquals(1, names.length);
+        assertEquals("curvelines", names[0]);
+        Query query = new Query("curvelines");
+        query.getHints().put(Hints.LINEARIZATION_TOLERANCE, 0.1);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = store
+                .getFeatureReader(query, Transaction.AUTO_COMMIT);
+        try {
+            int count = 0;
+            while (reader.hasNext()) {
+                Object geom = reader.next().getDefaultGeometry();
+                assertTrue(geom instanceof CurvedGeometry);
+                CurvedGeometry<?> curved = (CurvedGeometry<?>) geom;
+                assertEquals(0.1, curved.getTolerance(), 0d);
+            }
+        } finally {
+            reader.close();
+        }
+    }
+}

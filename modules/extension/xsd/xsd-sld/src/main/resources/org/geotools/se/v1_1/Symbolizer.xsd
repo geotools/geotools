@@ -347,13 +347,16 @@
 					<xsd:element ref="se:LabelPlacement" minOccurs="0"/>
 					<xsd:element ref="se:Halo" minOccurs="0"/>
 					<xsd:element ref="se:Fill" minOccurs="0"/>
- 
+          
 					<!-- geotools specific extension -->
+                    <xsd:element ref="se:Priority" minOccurs="0"/>
 					<xsd:element ref="se:VendorOption" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+    <xsd:element name="Priority" type="se:ParameterValueType">
+    </xsd:element>
 	<xsd:element name="Label" type="se:ParameterValueType">
 		<xsd:annotation>
 			<xsd:documentation>

@@ -1,127 +1,214 @@
-/* GeoTools - The Open Source Java GIS Toolkit
- * http://geotools.org
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *    
+ * 	  (c) 2014 Open Source Geospatial Foundation - all rights reserved
+ * 	  (c) 2012 - 2014 OpenPlans
  *
- * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
  *
- * This file is hereby placed into the Public Domain. This means anyone is
- * free to do whatever they wish with this file. Use it well and enjoy!
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
  */
-// header start
 package org.geotools.data.csv;
 
 import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
-import java.util.logging.Logger;
 
+import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFactorySpi;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.FileDataStore;
+import org.geotools.data.FileDataStoreFactorySpi;
+import org.geotools.data.csv.parse.CSVAttributesOnlyStrategy;
+import org.geotools.data.csv.parse.CSVLatLonStrategy;
+import org.geotools.data.csv.parse.CSVSpecifiedLatLngStrategy;
+import org.geotools.data.csv.parse.CSVSpecifiedWKTStrategy;
+import org.geotools.data.csv.parse.CSVStrategy;
 import org.geotools.util.KVP;
-import org.geotools.util.logging.Logging;
 
-/**
- * Provide access to CSV Files.
- *
- * @source $URL$
- */
-public class CSVDataStoreFactory implements DataStoreFactorySpi {
-    /**
-     * Public "no argument" constructor called by Factory Service Provider (SPI) entry listed in
-     * META-INF/services/org.geotools.data.DataStoreFactorySPI
-     */
-    public CSVDataStoreFactory() {
-    }
+public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
 
-    /** No implementation hints required at this time */
-    public Map<Key, ?> getImplementationHints() {
-        return Collections.emptyMap();
-    }
+    private static final String FILE_TYPE = "csv";
 
-    // definition end
-    // metadata start
+    public static final String[] EXTENSIONS = new String[] { "." + FILE_TYPE };
+
+    public static final Param FILE_PARAM = new Param("file", File.class, FILE_TYPE + " file", false);
+
+    public static final Param URL_PARAM = new Param("url", URL.class, FILE_TYPE + " file", false);
+
+    public static final Param NAMESPACEP = new Param("namespace", URI.class,
+            "uri to the namespace", false, null, new KVP(Param.LEVEL, "advanced"));
+
+    public static final Param STRATEGYP = new Param("strategy", String.class, "strategy", false);
+
+    public static final Param LATFIELDP = new Param("latField", String.class,
+            "Latitude field. Assumes a CSVSpecifiedLatLngStrategy", false);
+
+    public static final Param LnGFIELDP = new Param("lngField", String.class,
+            "Longitude field. Assumes a CSVSpecifiedLatLngStrategy", false);
+
+    public static final Param WKTP = new Param("wktField", String.class,
+            "WKT field. Assumes a CSVSpecifiedWKTStrategy", false);
+
+    public static final Param[] parametersInfo = new Param[] { FILE_PARAM };
+
+    @Override
     public String getDisplayName() {
-        return "CSV";
+        return FILE_TYPE.toUpperCase();
     }
 
+    @Override
     public String getDescription() {
-        return "Comma delimited text file.";
+        return "Comma delimited text file";
     }
 
-    /** Confirm DataStore availability, null if unknown */
-    Boolean isAvailable = null;
-
-    /**
-     * Test to see if this DataStore is available, for example if it has all the appropriate libraries to construct an instance.
-     * 
-     * This method is used for interactive applications, so as to not advertise support for formats that will not function.
-     * 
-     * @return <tt>true</tt> if and only if this factory is available to create DataStores.
-     */
-    public synchronized boolean isAvailable() {
-        if (isAvailable == null) {
-            try {
-                Class<?> cvsReaderType = Class.forName("com.csvreader.CsvReader");
-                isAvailable = cvsReaderType != null;
-            } catch (ClassNotFoundException e) {
-                isAvailable = false;
-            }
-        }
-        return isAvailable;
-    }
-
-    // metadata end
-
-    // getParametersInfo start
-    /** Parameter description of information required to connect */
-    public static final Param FILE_PARAM = new Param("file", File.class, "Comma seperated value file", true,
-            null, new KVP(Param.EXT, "csv"));
-
+    @Override
     public Param[] getParametersInfo() {
-        return new Param[] { FILE_PARAM };
+        return parametersInfo;
     }
 
-    // getParametersInfo end
-    // canProcess start
-    /**
-     * Works for csv file.
-     * 
-     * @param params connection parameters
-     * @return true for connection parameters indicating a csv file
-     */
+    private boolean canProcessExtension(String filename) {
+        String extension = FilenameUtils.getExtension(filename);
+        return FILE_TYPE.equalsIgnoreCase(extension);
+    }
+
+    private File fileFromParams(Map<String, Serializable> params) throws IOException {
+        File file = (File) FILE_PARAM.lookUp(params);
+        if (file != null) {
+            return file;
+        }
+        URL url = (URL) URL_PARAM.lookUp(params);
+        if (url != null) {
+            return DataUtilities.urlToFile(url);
+        }
+        return null;
+    }
+
+    @Override
     public boolean canProcess(Map<String, Serializable> params) {
         try {
-            File file = (File) FILE_PARAM.lookUp(params);
+            File file = fileFromParams(params);
             if (file != null) {
-                return file.getPath().toLowerCase().endsWith(".csv");
+                return canProcessExtension(file.getPath());
             }
         } catch (IOException e) {
-            // ignore as we are expected to return true or false
         }
         return false;
     }
 
-    // canProcess end
-
-    // createDataStore start
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
-        File file = (File) FILE_PARAM.lookUp(params);
-        return new CSVDataStore(file);
-    }
-    // createDataStore end
-    
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.csv");
-    
-    // createNewDataStore start
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
-        File file = (File) FILE_PARAM.lookUp(params);
-        if (file.exists() ){
-            LOGGER.warning("File already exsists: "+file);
+    @Override
+    public boolean isAvailable() {
+        try {
+            CSVDataStore.class.getName();
+        } catch (Exception e) {
+            return false;
         }
-        return new CSVDataStore(file);
+        return true;
     }
-    // createNewDataStore end
 
+    @Override
+    public Map<Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
+    }
+
+    public FileDataStore createDataStoreFromFile(File file) throws IOException {
+        return createDataStoreFromFile(file, null);
+    }
+
+    public FileDataStore createDataStoreFromFile(File file, URI namespace) throws IOException {
+        if (file == null) {
+            throw new IllegalArgumentException("Cannot create store from null file");
+        } else if (!file.exists()) {
+            throw new IllegalArgumentException("Cannot create store with file that does not exist");
+        }
+        Map<String, Serializable> noParams = Collections.emptyMap();
+        return createDataStoreFromFile(file, namespace, noParams);
+    }
+
+    @Override
+    public FileDataStore createDataStore(Map<String, Serializable> params) throws IOException {
+        File file = fileFromParams(params);
+        if (file == null) {
+            throw new IllegalArgumentException(
+                    "Could not find file from params to create csv data store");
+        }
+        URI namespace = (URI) NAMESPACEP.lookUp(params);
+        return createDataStoreFromFile(file, namespace, params);
+    }
+
+    private FileDataStore createDataStoreFromFile(File file, URI namespace,
+            Map<String, Serializable> params) throws IOException {
+        CSVFileState csvFileState = new CSVFileState(file, namespace);
+        Object strategyParam = STRATEGYP.lookUp(params);
+        CSVStrategy csvStrategy = null;
+        if (strategyParam != null) {
+            String strategyString = strategyParam.toString();
+            if (strategyString.equalsIgnoreCase("guess")) {
+                csvStrategy = new CSVLatLonStrategy(csvFileState);
+            } else if (strategyString.equalsIgnoreCase("specify")) {
+                Object latParam = LATFIELDP.lookUp(params);
+                Object lngParam = LnGFIELDP.lookUp(params);
+                if (latParam == null || lngParam == null) {
+                    throw new IllegalArgumentException(
+                            "'specify' csv strategy selected, but lat/lng params both not specified");
+                }
+                csvStrategy = new CSVSpecifiedLatLngStrategy(csvFileState, latParam.toString(),
+                        lngParam.toString());
+            } else if (strategyString.equalsIgnoreCase("wkt")) {
+                Object wktParam = WKTP.lookUp(params);
+                if (wktParam == null) {
+                    throw new IllegalArgumentException(
+                            "'wkt' csv strategy selected, but wktField param not specified");
+                }
+                csvStrategy = new CSVSpecifiedWKTStrategy(csvFileState, wktParam.toString());
+            } else {
+                csvStrategy = new CSVAttributesOnlyStrategy(csvFileState);
+            }
+        } else {
+            csvStrategy = new CSVAttributesOnlyStrategy(csvFileState);
+        }
+        return new CSVDataStore(csvFileState, csvStrategy);
+    }
+
+    @Override
+    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+        return createDataStore(params);
+    }
+
+    @Override
+    public FileDataStore createDataStore(URL url) throws IOException {
+        File file = DataUtilities.urlToFile(url);
+        return createDataStoreFromFile(file);
+    }
+
+    @Override
+    public String[] getFileExtensions() {
+        return EXTENSIONS;
+    }
+
+    @Override
+    public boolean canProcess(URL url) {
+        return canProcessExtension(DataUtilities.urlToFile(url).toString());
+    }
+
+    @Override
+    public String getTypeName(URL url) throws IOException {
+        DataStore ds = createDataStore(url);
+        String[] names = ds.getTypeNames();
+        assert names.length == 1 : "Invalid number of type names for csv file store";
+        ds.dispose();
+        return names[0];
+    }
 }

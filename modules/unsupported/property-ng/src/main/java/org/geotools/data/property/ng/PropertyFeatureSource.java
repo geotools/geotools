@@ -69,9 +69,8 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) { //filtering not implemented
-            ReferencedEnvelope bounds = new ReferencedEnvelope(getSchema()
-                    .getCoordinateReferenceSystem());
-            
+            ReferencedEnvelope bounds = ReferencedEnvelope.create( 
+                    getSchema().getCoordinateReferenceSystem() ); 
             FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
             try {
                 while (featureReader.hasNext()) {

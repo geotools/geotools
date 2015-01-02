@@ -29,6 +29,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
@@ -49,6 +50,7 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class PropertyDataStore2Test extends TestCase {
     PropertyDataStore store;
+    PropertyDataStore store3d;
     PropertyDataStore sridStore;
     
     /**
@@ -95,6 +97,23 @@ public class PropertyDataStore2Test extends TestCase {
         writer2.close();
         sridStore = new PropertyDataStore( dir2, "propertyTestData2" );
         
+        // Create a data store with a 3D geometry
+        File dir3 = new File(".", "propertyTestData3");
+        dir3.mkdir();
+        File file3 = new File(dir3, "road3.properties");
+        if (file3.exists()) {
+            file3.delete();
+        }
+        
+        BufferedWriter writer3 = new BufferedWriter(new FileWriter(file3));
+        writer3.write("_=id:Integer,geom:Geometry:srid=4327");
+        writer3.newLine();
+        writer3.write("fid1=1|LINESTRING(0 0 0,10 10 0)");
+        writer3.newLine();
+        writer3.write("fid2=2|LINESTRING(20 20 10,30 30 20)");
+        writer3.close();
+        store3d = new PropertyDataStore( dir3, "propertyTestData3" );
+        
         super.setUp();
     }
     protected void tearDown() throws Exception {
@@ -106,9 +125,16 @@ public class PropertyDataStore2Test extends TestCase {
         dir.delete();
         
         dir = new File( "propertyTestData2" );
-        File list2[] = dir.listFiles();
-        for( int i=0; i<list2.length;i++){
-            list2[i].delete();
+        list = dir.listFiles();
+        for( int i=0; i<list.length;i++){
+            list[i].delete();
+        }
+        dir.delete();
+        
+        dir = new File( "propertyTestData3" );
+        list = dir.listFiles();
+        for( int i=0; i<list.length;i++){
+            list[i].delete();
         }
         dir.delete();
         
@@ -146,7 +172,28 @@ public class PropertyDataStore2Test extends TestCase {
             assertEquals(userData, geomType.getCoordinateReferenceSystem());
         }
     }
-      
+    
+    public void test3D() throws Exception {
+        SimpleFeatureSource fs = store3d.getFeatureSource("road3");
+        Query q = new Query( "road3", Filter.INCLUDE);
+        assertEquals(2, fs.getCount(q));
+        ReferencedEnvelope bounds = new ReferencedEnvelope3D(0, 30, 0, 30, 0, 20, 
+                fs.getSchema().getCoordinateReferenceSystem());
+        assertEquals(bounds, fs.getBounds());
+        assertEquals(bounds, fs.getBounds(q));
+        
+        SimpleFeatureCollection features = fs.getFeatures();
+        assertEquals(2, features.size());
+        
+        SimpleFeatureIterator i = features.features();
+        for (SimpleFeature feature = i.next(); i.hasNext(); feature = i.next()) {
+            Property p = feature.getProperty("geom");
+            assertTrue(p.getType() instanceof GeometryType);
+            assertTrue(p.getValue() instanceof Geometry);
+        }
+        
+    }
+    
     public void testSimple() throws Exception {
         SimpleFeatureSource road = store.getFeatureSource( "road" );
         SimpleFeatureCollection features = road.getFeatures();

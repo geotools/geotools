@@ -193,9 +193,9 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
         Object value = null;
         
         // Use of Converters to convert from String to requested java binding
-        if(attType instanceof GeometryDescriptor && stringValue != null && !stringValue.trim().isEmpty()) {
+        if(attType instanceof GeometryDescriptor && stringValue != null && !stringValue.isEmpty()) {
             try {
-                Geometry geometry = wktReader.read(stringValue.trim());
+                Geometry geometry = wktReader.read(stringValue);
                 value = Converters.convert(geometry, attType.getType().getBinding());
             } catch (ParseException e) {
                 // to be consistent with converters

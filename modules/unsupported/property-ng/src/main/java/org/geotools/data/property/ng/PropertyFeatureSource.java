@@ -141,9 +141,8 @@ public class PropertyFeatureSource extends ContentFeatureSource {
         File file = new File( store.dir, typeName+".properties");
         PropertyFeatureReader reader = new PropertyFeatureReader(store.getNamespaceURI(), file);
         
-        Object toleranceHint = query.getHints().get(Hints.LINEARIZATION_TOLERANCE);
-        if(toleranceHint instanceof Double) {
-            double tolerance = (double) toleranceHint;
+        Double tolerance = (Double)query.getHints().get(Hints.LINEARIZATION_TOLERANCE);
+        if (tolerance != null) {
             reader.setWKTReader(new WKTReader2(tolerance));
         }
         

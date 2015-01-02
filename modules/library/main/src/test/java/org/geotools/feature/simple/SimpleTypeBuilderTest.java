@@ -125,4 +125,17 @@ public class SimpleTypeBuilderTest extends TestCase {
                 "geo1" });
         assertEquals("geo1", retyped.getGeometryDescriptor().getLocalName());
     }
+    
+    public void testRetypeNull() {
+        builder.setName("testNull");
+        builder.add("geom", Polygon.class, DefaultGeographicCRS.WGS84);
+        SimpleFeatureType type = builder.buildFeatureType();
+
+        //A null value in the attribute list should not cause a failure
+        SimpleFeatureType retyped = SimpleFeatureTypeBuilder.retype(type, new String[] { null });
+        assertEquals(0, retyped.getAttributeCount());
+        
+        retyped = SimpleFeatureTypeBuilder.retype(type, new String[] { "geom", null });
+        assertEquals(1, retyped.getAttributeCount());
+    }
 }

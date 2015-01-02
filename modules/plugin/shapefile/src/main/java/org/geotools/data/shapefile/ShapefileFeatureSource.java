@@ -59,6 +59,7 @@ import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.filter.GeometryFilterImpl;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.ScreenMap;
@@ -70,6 +71,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.referencing.FactoryException;
@@ -77,6 +79,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -326,6 +329,19 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             if(filter != null && !Filter.INCLUDE.equals(filter)) {
                 FilterAttributeExtractor fat = new FilterAttributeExtractor();
                 filter.accept(fat, null);
+                
+                //If the filter is a geometry filter that contains blank attribute names, 
+                //then add all geometry attributes to the schema.
+                if (filter instanceof GeometryFilterImpl  
+                        && fat.getAttributeNameSet().contains("")) {
+                    SimpleFeatureType ft = getSchema();
+                    for ( PropertyDescriptor pd : ft.getDescriptors() ) {
+                        if ( Geometry.class.isAssignableFrom( pd.getType().getBinding() ) ) {
+                            attributes.add(pd.getName().getLocalPart());
+                        }
+                    }
+                }
+                
                 attributes.addAll(fat.getAttributeNameSet());
             }
             

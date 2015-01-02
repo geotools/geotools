@@ -1028,7 +1028,10 @@ public class SimpleFeatureTypeBuilder {
 
         // add attributes in order
         for (int i = 0; i < types.size(); i++) {
-            b.add(original.getDescriptor(types.get(i)));
+            AttributeDescriptor descriptor = original.getDescriptor(types.get(i));
+            if (descriptor != null) {
+                b.add(descriptor);
+            }
         }
         
         // handle default geometry

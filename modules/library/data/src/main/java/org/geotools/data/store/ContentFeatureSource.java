@@ -448,11 +448,15 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         query = joinQuery( query );
         query = resolvePropertyNames( query );
         
-        //calculate the count
+        // calculate the count
         int count = getCountInternal( query );
-
+        
+        // if internal is not counted, return
+        if (count < 0) {
+            return count;
+        }
         // if the internal actually counted, consider transactions
-        if(count >= 0 && !canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
+        if(!canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
             DiffTransactionState state = (DiffTransactionState) getTransaction().getState(getEntry());
             Diff diff = state.getDiff();
             synchronized (diff) {
@@ -499,6 +503,21 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                     }
                 }
             }
+        }
+        
+        // offset
+        int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
+        if( !canOffset() && offset > 0 ) {
+            // skip the first n records
+            count = Math.max(0, count - offset);
+            
+        }
+        
+        // max feature limit
+        if ( !canLimit() ) {
+            if (query.getMaxFeatures() != -1 && query.getMaxFeatures() < Integer.MAX_VALUE ) {
+                count = Math.min(query.getMaxFeatures(), count);
+            }    
         }
         
         return count;

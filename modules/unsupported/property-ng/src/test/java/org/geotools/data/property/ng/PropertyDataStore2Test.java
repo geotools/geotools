@@ -16,12 +16,19 @@
  */
 package org.geotools.data.property.ng;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.geotools.data.DataStore;
 import org.geotools.data.Query;
 import org.geotools.data.property.ng.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -31,6 +38,7 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
+import org.junit.Test;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -249,5 +257,57 @@ public class PropertyDataStore2Test extends TestCase {
         ReferencedEnvelope envelope = new ReferencedEnvelope(20, 30, 20, 30, null);
         assertEquals(envelope, features.getFeatures(f).getBounds());
         
+    }
+    
+    /**
+     * Test query with a start index
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    @Test
+    public void testOffset() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setStartIndex(3);
+        SimpleFeatureSource features = (SimpleFeatureSource) store.getFeatureSource("road");
+
+        SimpleFeatureCollection matches = features.getFeatures(query);
+
+        assertEquals(1, matches.size());
+        assertEquals(1, features.getCount(query));
+    }
+    
+    /**
+     * Test query with maxFeatures
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    @Test
+    public void testLimit() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setMaxFeatures(3);
+        SimpleFeatureSource features = (SimpleFeatureSource) store.getFeatureSource("road");
+
+        SimpleFeatureCollection matches = features.getFeatures(query);
+
+        assertEquals(3, matches.size());
+        assertEquals(3, features.getCount(query));
+    }
+    
+    /**
+     * Test query with maxFeatures and startIndex
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    @Test
+    public void testLimitOffset() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setMaxFeatures(3);
+        query.setStartIndex(3);
+        SimpleFeatureSource features = (SimpleFeatureSource) store.getFeatureSource("road");
+
+        SimpleFeatureCollection matches = features.getFeatures(query);
+
+        assertEquals(1, matches.size());
+        assertEquals(1, features.getCount(query));
     }
 }

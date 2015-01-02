@@ -17,6 +17,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.LineString;
@@ -120,7 +121,20 @@ public abstract class AbstractContentTest {
          */
         @Override
         protected int getCountInternal(Query query) throws IOException {
-            throw new UnsupportedOperationException();
+            if (query.getFilter() == Filter.INCLUDE) {
+                int count = 0;
+                FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
+                try {
+                    while (featureReader.hasNext()) {
+                        featureReader.next();
+                        count++;
+                    }
+                } finally {
+                    featureReader.close();
+                }
+                return count;
+            }
+            return -1;
         }
 
         /**

@@ -2497,6 +2497,7 @@ public class DataUtilities {
      * For example, this method ensures that propertyName's such as "gml:name" are rewritten as
      * simply "name".
      * </p>
+     * This method will not rewrite empty PropertyNames.
      */
     public static Query resolvePropertyNames(Query query, SimpleFeatureType schema) {
         Filter resolved = resolvePropertyNames(query.getFilter(), schema);

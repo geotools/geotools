@@ -443,6 +443,11 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 41.512517, null);
         q.setFilter(ff.bbox(ff.property(""), queryBounds));
         
+        //Read schema should contain the geometry property
+        assertEquals(3, ((ShapefileFeatureStore)fs).delegate.getReadSchema(q).getAttributeCount());
+        //Result schema should not contain the geometry property
+        assertEquals(2, ((ShapefileFeatureStore)fs).delegate.getResultSchema(q).getAttributeCount());
+        
         // grab the features
         SimpleFeatureCollection fc = fs.getFeatures(q);
         assertTrue(fc.size() > 0);

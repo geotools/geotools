@@ -59,6 +59,7 @@ import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.filter.GeometryFilterImpl;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.ScreenMap;
@@ -70,13 +71,25 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.Beyond;
+import org.opengis.filter.spatial.Contains;
+import org.opengis.filter.spatial.Crosses;
+import org.opengis.filter.spatial.DWithin;
+import org.opengis.filter.spatial.Disjoint;
+import org.opengis.filter.spatial.Touches;
+import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -91,6 +104,92 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Andrea Aime - GeoSolutions
  */
 class ShapefileFeatureSource extends ContentFeatureSource {
+
+    /**
+     * Attribute extract that resolves empty PropertyName
+     * references to the default geometry where appropriate.
+     */
+    private final class AbsoluteAttributeExtractor extends FilterAttributeExtractor {
+        private AbsoluteAttributeExtractor(SimpleFeatureType featureType) {
+            super(featureType);
+        }
+
+        @Override
+        public Object visit( final BBOX filter, Object data ) {
+            data = geom( filter.getExpression1(), data );
+            data = geom( filter.getExpression2(), data );
+            return data;
+        }
+
+        @Override
+        public Object visit(Beyond filter, Object data) {
+            data = geom( filter.getExpression1(), data );
+            data = geom( filter.getExpression2(), data );
+            return data;
+        }
+
+        @Override
+        public Object visit(Contains filter, Object data) {
+            data = geom( filter.getExpression1(), data );
+            data = geom( filter.getExpression2(), data );
+            return data;
+        }
+
+        @Override
+        public Object visit(Crosses filter, Object data) {
+            data = geom( filter.getExpression1(), data );
+            data = geom( filter.getExpression2(), data );
+            return data;
+        }
+
+        @Override
+        public Object visit(Disjoint filter, Object data) {
+            data = geom( filter.getExpression1(), data );
+            data = geom( filter.getExpression2(), data );
+            return data;
+        }
+
+        @Override
+        public Object visit(DWithin filter, Object data) {
+            data = geom( filter.getExpression1(), data );
+            data = geom( filter.getExpression2(), data );
+            return data;
+        }
+
+        @Override
+        public Object visit(Touches filter, Object data) {
+            data = geom( filter.getExpression1(), data );
+            data = geom( filter.getExpression2(), data );
+            return data;
+        }
+
+        @Override
+        public Object visit(TOverlaps filter, Object data) {
+            data = geom( filter.getExpression1(), data );
+            data = geom( filter.getExpression2(), data );
+            return data;
+        }
+
+        // Fill in geometries rather than XPath
+        Object geom(Expression expr, Object data) {
+            String propertyName = expr instanceof PropertyName
+                    ? ((PropertyName) expr).getPropertyName()
+                    : null;
+            if( propertyName != null && propertyName.trim().isEmpty() ){
+                if( data != null && data != attributeNames ){
+                    this.attributeNames = (Set<String>) data;
+                }
+                propertyNames.add( (PropertyName) expr );
+                // fill in all geometries .. for shapefile there is only one
+                GeometryDescriptor geometryDescriptor = this.featureType.getGeometryDescriptor();
+                this.attributeNames.add( geometryDescriptor.getName().getLocalPart() );
+                return data;
+            }
+            else {
+                return expr.accept(this, data );
+            }
+        }
+    }
 
     static final Logger LOGGER = Logging.getLogger(ShapefileFeatureSource.class);
 
@@ -317,20 +416,22 @@ class ShapefileFeatureSource extends ContentFeatureSource {
     }
     
     SimpleFeatureType getReadSchema(Query q) {
-        if (q.getPropertyNames() == null) {
+        if (q.getPropertyNames() == Query.ALL_NAMES) {
             return getSchema();
-        } else {
-            LinkedHashSet<String> attributes = new LinkedHashSet<String>();
-            attributes.addAll(Arrays.asList(q.getPropertyNames()));
-            Filter filter = q.getFilter();
-            if(filter != null && !Filter.INCLUDE.equals(filter)) {
-                FilterAttributeExtractor fat = new FilterAttributeExtractor();
-                filter.accept(fat, null);
-                attributes.addAll(fat.getAttributeNameSet());
-            }
-            
-            return SimpleFeatureTypeBuilder.retype(getSchema(), new ArrayList<String>(attributes));
         }
+        // Step 1: start with requested property names 
+        LinkedHashSet<String> attributes = new LinkedHashSet<String>();
+        attributes.addAll(Arrays.asList(q.getPropertyNames()));
+        
+        Filter filter = q.getFilter();
+        if(filter != null && !Filter.INCLUDE.equals(filter)) {
+            // Step 2: Add query attributes (if needed)
+            // Step 3: Fill empty XPath with appropriate property names
+            FilterAttributeExtractor fat = new AbsoluteAttributeExtractor(getSchema());
+            filter.accept(fat, null);
+            attributes.addAll(fat.getAttributeNameSet());
+        }
+        return SimpleFeatureTypeBuilder.retype(getSchema(), new ArrayList<String>(attributes));
     }
 
     /**

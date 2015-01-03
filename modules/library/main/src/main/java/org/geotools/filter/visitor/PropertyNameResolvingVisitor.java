@@ -49,6 +49,9 @@ public class PropertyNameResolvingVisitor extends DuplicatingFilterVisitor {
     }
     
     public Object visit(PropertyName expression, Object extraData) {
+        if ("".equals(expression.getPropertyName())) {
+            return super.visit(expression, extraData);
+        }
         AttributeDescriptor att = expression.evaluate( featureType, null);
         if ( att != null ) {
             return getFactory(extraData).property( att.getLocalName() );

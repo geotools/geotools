@@ -184,8 +184,7 @@ are always on the same transaction, but other than that this approach is working
       :language: java
       :start-after: // public start
 
-#. You can see what this looks like in context by reviewing :download:`CSVFeatureStore.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java`
-   from the **gt-csv** plugin.
+#. You can see what this looks like in context by reviewing the :download:`CSVFeatureStore.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java>` from the **gt-csv** plugin.
 
 CSVFeatureWriter
 ^^^^^^^^^^^^^^^^
@@ -383,6 +382,5 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
       :start-after: // close start
       :end-before: // close end
 
-#. You can see what this looks like in context by reviewing :download:`CSVFeatureWriter.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java`
-   from the **gt-csv** plugin.
+#. You can see what this looks like in context by reviewing the :download:`CSVFeatureWriter.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java>` from the **gt-csv** plugin.
    

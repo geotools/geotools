@@ -1088,6 +1088,8 @@ public class SLDTransformer extends TransformerBase {
             for (int i = 0; i < rules.length; i++) {
                 rules[i].accept(this);
             }
+            
+            encodeVendorOptions(fts.getOptions());
 
             end("FeatureTypeStyle");
         }

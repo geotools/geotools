@@ -487,6 +487,16 @@ public class SEExampleTest extends SETestSupport {
         
     }
     
+    public void testParseFeatureStyleVendor() throws Exception {
+        FeatureTypeStyle fts = (FeatureTypeStyle) parse("example-featurestyle-vendor.xml");
+        assertEquals("oceansea:Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
+        assertEquals(1, fts.rules().size());
+        Map<String, String> options = fts.getOptions();
+        assertEquals(1, options.size());
+        assertEquals("value", options.get("key"));
+
+    }
+
     public void testParseCoverageStyle() throws Exception {
         /*
         <CoverageStyle version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se http://www.opengis.net/se/1.1.0/FeatureStyle.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

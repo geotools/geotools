@@ -16,16 +16,19 @@
  */
 package org.geotools.sld.bindings;
 
-import org.opengis.util.InternationalString;
-import org.picocontainer.MutablePicoContainer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import java.util.List;
+
 import javax.xml.namespace.QName;
+
+import org.geotools.sld.CssParameter;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
+import org.opengis.util.InternationalString;
+import org.picocontainer.MutablePicoContainer;
 
 
 /**
@@ -156,6 +159,12 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
         if (node.hasChild("Rule")) {
             List rules = node.getChildValues("Rule");
             featureTypeStyle.setRules((Rule[]) rules.toArray(new Rule[rules.size()]));
+        }
+
+        // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
+        for (CssParameter param : (List<CssParameter>) node.getChildValues(CssParameter.class)) {
+            featureTypeStyle.getOptions()
+                    .put(param.getName(), param.getExpression().evaluate(null, String.class));
         }
 
         return featureTypeStyle;

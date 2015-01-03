@@ -565,4 +565,17 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Filter simplified = (Filter) original.accept(visitor, null);
         assertEquals(ff.lessOrEqual(ff.property("a"), ff.literal(max)), simplified);
     }
+
+    public void testRangeExpression() throws Exception {
+        SimpleFeatureType schema = DataUtilities.createType("test", "pop:String");
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setFeatureType(schema);
+        Function func = ff.function("parseLong", ff.property("pop"));
+        Filter f1 = ff.less(func, ff.literal(20000));
+        Filter f2 = ff.between(func, ff.literal(20000), ff.literal(50000));
+        Filter or = ff.or(f1, f2);
+
+        Filter simplified = (Filter) or.accept(visitor, null);
+        assertEquals(ff.lessOrEqual(func, ff.literal(50000)), simplified);
+    }
 }

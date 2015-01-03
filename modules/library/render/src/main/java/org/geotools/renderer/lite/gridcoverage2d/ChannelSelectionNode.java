@@ -106,65 +106,74 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
 		final BandMergeNode subChainSink = new BandMergeNode(getHints());
 		//anchoring the chain for later disposal
 		setSink(subChainSink);
-		final SelectedChannelType[] rgb=cs.getRGBChannels();
-		final SelectedChannelType gray=cs.getGrayChannel();
-		// both of them are set?
-		if((rgb!=null&&rgb[0]!=null&&rgb[1]!=null&&rgb[2]!=null)&&(gray!=null))
-			throw new IllegalArgumentException(Errors.format(
-					ErrorKeys.ILLEGAL_ARGUMENT_$1, "Both gray and rgb channel selection are valid!"));
-		final SelectedChannelType[] sc = gray==null?rgb:new SelectedChannelType[]{gray};
 		
-		// If we do not really select any bands from the original coverage, we try to entirely skip this operation
-		// this means that either we have to select 1 real band, or we have to select 3 real bands
-		// Notice that we also try to be as resilient as possible since 
-		if (sc != null && ((sc.length ==1 &&sc[0]!=null)||(sc.length ==3 &&sc[0]!=null&&sc[1]!=null&&sc[2]!=null))) {
-			// //
-			//
-			// Note that we can either select 1 (GRAY) or 3 (RGB) bands.
-			//
-			// //
-			if (sc.length != 3 && sc.length != 1)
-				throw new IllegalArgumentException(Errors.format(
-						ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(sc.length)));
-			for (int i = 0; i < sc.length; i++) {
+        if (cs != null) {
+            final SelectedChannelType[] rgb = cs.getRGBChannels();
+            final SelectedChannelType gray = cs.getGrayChannel();
+            // both of them are set?
+            if ((rgb != null && rgb[0] != null && rgb[1] != null && rgb[2] != null)
+                    && (gray != null))
+                throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1,
+                        "Both gray and rgb channel selection are valid!"));
+            final SelectedChannelType[] sc = gray == null ? rgb
+                    : new SelectedChannelType[] { gray };
 
-				// get the channel element
-				final SelectedChannelType channel = sc[i];
-				if(LOGGER.isLoggable(Level.FINE))
-						LOGGER.fine("Channel "+i+" was "+ channel.getChannelName());
-	
-				// //
-				//
-				// BAND SELECTION
-				
-				//
-				// //
-				final BandSelectionNode bandSelectionNode = new BandSelectionNode();
-				bandSelectionNode.addSource(chainSource);
-				bandSelectionNode.visit(channel);
+            // If we do not really select any bands from the original coverage, we try to entirely
+            // skip this operation
+            // this means that either we have to select 1 real band, or we have to select 3 real
+            // bands
+            // Notice that we also try to be as resilient as possible since
+            if (sc != null
+                    && ((sc.length == 1 && sc[0] != null) || (sc.length == 3 && sc[0] != null
+                            && sc[1] != null && sc[2] != null))) {
+                // //
+                //
+                // Note that we can either select 1 (GRAY) or 3 (RGB) bands.
+                //
+                // //
+                if (sc.length != 3 && sc.length != 1)
+                    throw new IllegalArgumentException(Errors.format(ErrorKeys.BAD_BAND_NUMBER_$1,
+                            Integer.valueOf(sc.length)));
+                for (int i = 0; i < sc.length; i++) {
 
-				// //
-				//
-				// CONTRAST ENHANCEMENT
-				//
-				// //
-				final ContrastEnhancementNode contrastenhancementNode = new ContrastEnhancementNode();
-				contrastenhancementNode.addSource(bandSelectionNode);
-				bandSelectionNode.addSink(contrastenhancementNode);
-				contrastenhancementNode.visit(channel != null ? channel.getContrastEnhancement() : null);
+                    // get the channel element
+                    final SelectedChannelType channel = sc[i];
+                    if (LOGGER.isLoggable(Level.FINE))
+                        LOGGER.fine("Channel " + i + " was " + channel.getChannelName());
 
-				// //
-				//
-				// BAND MERGE
-				//
-				// //
-				contrastenhancementNode.addSink(subChainSink);
-				subChainSink.addSource(contrastenhancementNode);
+                    // //
+                    //
+                    // BAND SELECTION
 
-				
-			}
-			return;
-		} 
+                    //
+                    // //
+                    final BandSelectionNode bandSelectionNode = new BandSelectionNode();
+                    bandSelectionNode.addSource(chainSource);
+                    bandSelectionNode.visit(channel);
+
+                    // //
+                    //
+                    // CONTRAST ENHANCEMENT
+                    //
+                    // //
+                    final ContrastEnhancementNode contrastenhancementNode = new ContrastEnhancementNode();
+                    contrastenhancementNode.addSource(bandSelectionNode);
+                    bandSelectionNode.addSink(contrastenhancementNode);
+                    contrastenhancementNode.visit(channel != null ? channel
+                            .getContrastEnhancement() : null);
+
+                    // //
+                    //
+                    // BAND MERGE
+                    //
+                    // //
+                    contrastenhancementNode.addSink(subChainSink);
+                    subChainSink.addSource(contrastenhancementNode);
+
+                }
+                return;
+            }
+        }
 		// no band selection, just forward this node
 		subChainSink.addSource(chainSource);
 

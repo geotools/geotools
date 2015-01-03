@@ -854,6 +854,8 @@ public class SLDParser {
                 ExpressionDOMParser parser = new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2(null));
                 Expression tx = parser.expression(getFirstNonTextChild(child));
                 ft.setTransformation(tx);
+            } else if (childName.equalsIgnoreCase(VendorOptionString)) {
+                parseVendorOption(ft.getOptions(), child);
             }
         }
 
@@ -1076,7 +1078,7 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase(strokeString)) {
                 symbol.setStroke(parseStroke(child));
             } else if (childName.equalsIgnoreCase(VendorOptionString)) {
-                parseVendorOption(symbol, child);
+                parseVendorOption(symbol.getOptions(), child);
             } else if (childName.equalsIgnoreCase(PerpendicularOffsetString)) {
                 final String offsetValue = getFirstChildValue(child);
                 symbol.setPerpendicularOffset((ff.literal(Double.parseDouble(offsetValue))));
@@ -1126,7 +1128,7 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase(fillSt)) {
                 symbol.setFill(parseFill(child));
             } else if (childName.equalsIgnoreCase(VendorOptionString)) {
-                parseVendorOption(symbol, child);
+                parseVendorOption(symbol.getOptions(), child);
             }
         }
 
@@ -1214,7 +1216,7 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("priority")) {
                 symbol.setPriority(parseCssParameter(child));
             } else if (childName.equalsIgnoreCase(VendorOptionString)) {
-                parseVendorOption(symbol, child);
+                parseVendorOption(symbol.getOptions(), child);
             }
 
         }
@@ -1239,17 +1241,16 @@ public class SLDParser {
     }
 
     /**
-     * adds the key/value pair from the node ("<VendorOption name="...">...</VendorOption>"). This
-     * can be generalized for other symbolizers in the future
+     * adds the key/value pair from the node ("<VendorOption name="...">...</VendorOption>")
      * 
      * @param symbol
      * @param child
      */
-    private void parseVendorOption(Symbolizer symbol, Node child) {
+    private void parseVendorOption(Map<String, String> options, Node child) {
         String key = child.getAttributes().getNamedItem("name").getNodeValue();
         String value = getFirstChildValue(child);
 
-        symbol.getOptions().put(key, value);
+        options.put(key, value);
     }
 
     /**
@@ -1633,7 +1634,7 @@ public class SLDParser {
                 symbol.setGraphic(parseGraphic(child));
             }
             else if (childName.equalsIgnoreCase(VendorOptionString)) {
-                parseVendorOption(symbol, child);
+                parseVendorOption(symbol.getOptions(), child);
             }
         }
 

@@ -1428,13 +1428,30 @@ public class SLDTransformerTest {
         
         SLDTransformer st = new SLDTransformer();     
         String xml = st.transform(graphic);
-        System.out.println(xml);
+        // System.out.println(xml);
         Document doc = buildTestDocument(xml);
         
         assertXpathEvaluatesTo("10.0", "//sld:Graphic/sld:Displacement/sld:DisplacementX", doc);
         assertXpathEvaluatesTo("10.0", "//sld:Graphic/sld:Displacement/sld:DisplacementY", doc);
         assertXpathEvaluatesTo("1.0", "//sld:Graphic/sld:AnchorPoint/sld:AnchorPointX", doc);
         assertXpathEvaluatesTo("0.3", "//sld:Graphic/sld:AnchorPoint/sld:AnchorPointY", doc);
+    }
+
+    @Test
+    public void testFeatureTypeStyleOptions() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        Style style = sb.createStyle(sb.createPolygonSymbolizer());
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        fts.getOptions().put("key", "value");
+
+        SLDTransformer st = new SLDTransformer();
+        String xml = st.transform(style);
+        System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+
+        assertXpathEvaluatesTo("1", "count(//sld:FeatureTypeStyle/sld:VendorOption)", doc);
+        assertXpathEvaluatesTo("value",
+ "//sld:FeatureTypeStyle/sld:VendorOption[@name='key']", doc);
     }
 
     private Style validateWellKnownNameWithExpressionStyle(String xmlStyle) {

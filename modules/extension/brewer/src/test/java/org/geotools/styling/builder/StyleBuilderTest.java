@@ -1,6 +1,8 @@
 package org.geotools.styling.builder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
 
@@ -20,6 +22,7 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Halo;
@@ -69,6 +72,26 @@ public class StyleBuilderTest {
         Style style = builder.build();
 
         assertNotNull(style);
+    }
+
+    @Test
+    public void ftsOptions() {
+        StyleBuilder builder = new StyleBuilder();
+
+        RuleBuilder rule = builder
+                .featureTypeStyle()
+                .featureTypeName("Feature")
+                .option(FeatureTypeStyle.KEY_EVALUATION_MODE,
+                        FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST).rule();
+        rule.point().graphic().mark().name("circle");
+
+        Style style = builder.build();
+        
+
+        assertNotNull(style);
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        assertEquals(1, fts.getOptions().size());
+        assertEquals(FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST, fts.getOptions().get(FeatureTypeStyle.KEY_EVALUATION_MODE));
     }
 
     @Test

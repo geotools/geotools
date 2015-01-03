@@ -17,6 +17,7 @@
 package org.geotools.styling;
 
 import java.util.List;
+import java.util.Map;
 
 import org.opengis.filter.expression.Expression;
 import org.opengis.metadata.citation.OnLineResource;
@@ -62,7 +63,23 @@ import org.opengis.metadata.citation.OnLineResource;
  * @version $Id$
  * @author James Macgill, CCG
  */
-public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle{
+public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
+    
+    /**
+     * This option influences how multiple rules matching the same feature are evaluated
+     */
+    public static String KEY_EVALUATION_MODE = "ruleEvaluation";
+
+    /**
+     * The standard behavior, all the matching rules are executed
+     */
+    public static String VALUE_EVALUATION_MODE_ALL = "all";
+
+    /**
+     * Only the first matching rule gets executed, all the others are skipped
+     */
+    public static String VALUE_EVALUATION_MODE_FIRST = "first";
+
 
     void setName(String name);
 
@@ -221,4 +238,18 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle{
      * @return
      */
     void setTransformation(Expression transformation);
+
+    /**
+     * Determines if a vendor option with the specific key has been set on this symbolizer.
+     */
+    boolean hasOption(String key);
+
+    /**
+     * Map of vendor options for the symbolizer.
+     * <p>
+     * Client code looking for the existence of a single option should use
+     * {@link #hasOption(String)}
+     * </p>
+     */
+    Map<String, String> getOptions();
 }

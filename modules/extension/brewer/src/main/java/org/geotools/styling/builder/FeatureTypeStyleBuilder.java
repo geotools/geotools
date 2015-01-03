@@ -17,8 +17,10 @@
 package org.geotools.styling.builder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.geotools.feature.NameImpl;
@@ -48,6 +50,8 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
             this);
 
     private Set<SemanticType> types = new LinkedHashSet<SemanticType>();
+    
+    Map<String, String> options = new HashMap<>();
 
     // TODO : add semantic type identifier, provided it makes any sense to have it
 
@@ -134,6 +138,11 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
     public Set<SemanticType> types() {
         return types;
     }
+    
+    public FeatureTypeStyleBuilder option(String name, String value) {
+        options.put(name, value);
+        return this;
+    }
 
     /**
      * Accumulates another feature type name in the list of the feature type names for this
@@ -158,6 +167,9 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         }
         FeatureTypeStyle fts = sf.featureTypeStyle(name, description.build(), definedFor.build(),
                 featureTypeNames, types, list);
+        if(!options.isEmpty()) {
+            fts.getOptions().putAll(options);
+        }
         if (parent == null) {
             reset();
         }
@@ -171,6 +183,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         this.definedFor.reset();
         this.featureTypeNames.clear();
         this.rules.clear();
+        this.options.clear();
 
         this.unset = false;
         return this;
@@ -193,6 +206,8 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
                 this.rules.add(new RuleBuilder(this).reset(rule));
             }
         }
+        this.options.clear();
+        this.options.putAll(fts.getOptions());
         this.unset = false;
         return this;
     }
@@ -214,6 +229,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         this.rules = other.rules;
         this.sf = other.sf;
         this.types = other.types;
+        this.options = other.options;
         this.unset = other.unset;
     }
 

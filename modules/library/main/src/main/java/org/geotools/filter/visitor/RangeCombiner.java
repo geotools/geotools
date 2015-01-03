@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.util.Range;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.BinaryComparisonOperator;
@@ -151,6 +152,8 @@ abstract class RangeCombiner {
 
     }
 
+    ExpressionTypeVisitor expressionTypeVisitor;
+
     Map<Expression, MultiRange<?>> rangeMap = new HashMap<>();
 
     FeatureType featureType;
@@ -165,12 +168,12 @@ abstract class RangeCombiner {
         this.ff = ff;
         this.filters = filters;
         this.featureType = featureType;
+        this.expressionTypeVisitor = new ExpressionTypeVisitor(featureType);
         // now organize by comparison filters to apply range based simplification
         for (Filter f : filters) {
             if (f instanceof PropertyIsBetween) {
                 PropertyIsBetween pb = (PropertyIsBetween) f;
-                String name = getPropertyName(pb.getExpression());
-                Class binding = getTypeIfComparable(name);
+                Class binding = getTypeIfComparable(pb.getExpression());
                 if (binding == null) {
                     otherFilters.add(pb);
                 } else {
@@ -187,22 +190,18 @@ abstract class RangeCombiner {
             } else if (f instanceof PropertyIsNotEqualTo) {
                 PropertyIsNotEqualTo ne = (PropertyIsNotEqualTo) f;
                 Comparable exclusion = null;
-                String name = getPropertyName(ne.getExpression1());
                 Expression expression = null;
-                Class<Comparable<?>> binding = getTypeIfComparable(name);
-                if (name != null) {
+                Class<Comparable<?>> binding = getTypeIfComparable(ne.getExpression1());
+                if (binding != null) {
                     expression = ne.getExpression1();
                     if (binding != null) {
                         exclusion = evaluate(ne.getExpression2(), binding);
                     }
                 } else {
-                    name = getPropertyName(ne.getExpression2());
-                    if (name != null) {
-                        expression = ne.getExpression2();
-                        binding = getTypeIfComparable(name);
-                        if (binding != null) {
-                            exclusion = evaluate(ne.getExpression1(), binding);
-                        }
+                    expression = ne.getExpression2();
+                    binding = getTypeIfComparable(ne.getExpression2());
+                    if (binding != null) {
+                        exclusion = evaluate(ne.getExpression1(), binding);
                     }
                 }
                 if (exclusion != null) {
@@ -252,10 +251,9 @@ abstract class RangeCombiner {
     private ExpressionRange getRange(BinaryComparisonOperator op) {
         Range range = null;
         Expression expression = null;
-        String name = getPropertyName(op.getExpression1());
-        if (name != null) {
+        if (!(isStatic(op.getExpression1()))) {
             expression = op.getExpression1();
-            Class binding = getTypeIfComparable(name);
+            Class binding = getTypeIfComparable(expression);
             if (binding != null) {
                 Object value = evaluate(op.getExpression2(), binding);
                 if (value != null) {
@@ -272,11 +270,9 @@ abstract class RangeCombiner {
                     }
                 }
             }
-        } else {
-            name = getPropertyName(op.getExpression2());
-            if (name != null) {
+        } else if (!isStatic(op.getExpression2())) {
                 expression = op.getExpression2();
-                Class binding = getTypeIfComparable(name);
+            Class binding = getTypeIfComparable(expression);
                 if (binding != null) {
                     Object value = evaluate(op.getExpression1(), binding);
                     if (value != null) {
@@ -294,22 +290,24 @@ abstract class RangeCombiner {
 
                     }
                 }
-            }
+
         }
 
         return new ExpressionRange(expression, range);
     }
 
-    private Class getTypeIfComparable(String propertyName) {
-        if (propertyName == null || featureType.getDescriptor(propertyName) == null) {
-            return null;
+    private boolean isStatic(Expression exp) {
+        FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
+        exp.accept(attributeExtractor, null);
+        return attributeExtractor.getAttributeNameSet().isEmpty();
+    }
+
+    private Class getTypeIfComparable(Expression ex) {
+        Class type = (Class) ex.accept(expressionTypeVisitor, null);
+        if (Comparable.class.isAssignableFrom(type)) {
+            return type;
         } else {
-            Class binding = featureType.getDescriptor(propertyName).getType().getBinding();
-            if (Comparable.class.isAssignableFrom(binding)) {
-                return binding;
-            } else {
-                return null;
-            }
+            return null;
         }
     }
 

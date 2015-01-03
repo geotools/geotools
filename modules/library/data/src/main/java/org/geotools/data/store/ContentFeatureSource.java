@@ -690,6 +690,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     public void accepts( Query query, org.opengis.feature.FeatureVisitor visitor,
             org.opengis.util.ProgressListener progress) throws IOException {
         
+        query = DataUtilities.simplifyFilter(query);
         if( progress == null ) {
             progress = new NullProgressListener();
         }

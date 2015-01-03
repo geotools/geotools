@@ -1,0 +1,11 @@
+* {
+  mark: symbol(triangle);
+  mark-size: 12;
+}
+
+:mark {
+  fill: #009900;
+  fill-opacity: 0.2;
+  stroke: black;
+  stroke-width: 2px;
+}

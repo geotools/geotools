@@ -1,0 +1,22 @@
+* {
+   fill: #0000CC;
+   stroke: black;
+ }
+
+ [@scale < 100000000] {
+    stroke-width: 7;
+    label: [name];
+    label-anchor: 0.5 0.5;
+    font-fill: white;
+    font-family: Arial;
+    font-size: 14;
+    font-weight: bold;
+ }
+
+ [@scale > 100000000] [@scale < 200000000] {
+    stroke-width: 4;
+ }
+
+ [@scale > 200000000] {
+    stroke-width: 1;
+ }

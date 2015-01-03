@@ -1,0 +1,9 @@
+* {
+  fill: #40FF40;
+  stroke: white;
+  stroke-width: 2;
+  label: [name];
+  font-fill: black;
+  halo-color: white;
+  halo-radius: 3;
+}

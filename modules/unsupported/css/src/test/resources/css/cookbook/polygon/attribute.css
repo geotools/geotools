@@ -1,0 +1,11 @@
+[parseLong(pop) < 200000] {
+   fill: #66FF66;
+ }
+
+ [parseLong(pop) >= 200000] [parseLong(pop) < 500000] {
+   fill: #33CC33;
+ }
+
+ [parseLong(pop) >= 500000] {
+   fill: #009900;
+ }

@@ -242,7 +242,7 @@ class DomainCoverage {
     /**
      * When true, the detailed (expensive) coverage computation will generate exclusive rules
      */
-    boolean detailedCoverageEnabled = true;
+    boolean exclusiveRulesEnabled = true;
 
     /**
      * Create a new domain coverage for the given feature type
@@ -271,6 +271,11 @@ class DomainCoverage {
             return Collections.emptyList();
         } else {
             generatedSelectors.add(ruleCoverage);
+        }
+
+        // if we are just checking for straight duplicates, let it go
+        if (!exclusiveRulesEnabled) {
+            return coverageToRules(rule, ruleCoverage);
         }
 
         // for each rule we have in the domain, get the differences, if any, with this rule,
@@ -424,8 +429,8 @@ class DomainCoverage {
         return sb.toString();
     }
 
-    void setDetailedCoverageEnabled(boolean detailedCoverageEnabled) {
-        this.detailedCoverageEnabled = detailedCoverageEnabled;
+    void setExclusiveRulesEnabled(boolean exclusiveRulesEnabled) {
+        this.exclusiveRulesEnabled = exclusiveRulesEnabled;
     }
 
 }

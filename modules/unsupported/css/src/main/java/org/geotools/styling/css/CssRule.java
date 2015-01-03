@@ -281,6 +281,9 @@ public class CssRule {
                             Property p = new Property(property.getName(), Arrays.asList(values
                                     .get(zIndexPosition)));
                             zIndexProperties.add(p);
+                        } else if (values.size() == 1) {
+                            // properties that does not have multiple values are bound to all levels
+                            zIndexProperties.add(property);
                         }
                     }
                     // if we collected any, add to the result
@@ -509,7 +512,7 @@ public class CssRule {
     private void addIndexedPseudoClasses(Set<PseudoClass> result, String propertyName) {
         Map<String, List<Value>> properties = getPropertyValues(PseudoClass.ROOT, propertyName);
         int maxRepeatCount = getMaxRepeatCount(properties);
-        if (maxRepeatCount > 1) {
+        if (maxRepeatCount >= 1) {
             for (int i = 1; i <= maxRepeatCount; i++) {
                 result.add(PseudoClass.newPseudoClass("symbol", i));
                 result.add(PseudoClass.newPseudoClass(propertyName, i));

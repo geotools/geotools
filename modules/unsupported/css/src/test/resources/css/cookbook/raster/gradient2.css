@@ -1,0 +1,6 @@
+* {
+  raster-channels: auto;
+  raster-color-map: 
+    color-map-entry(#008000, 70)
+    color-map-entry(#663333, 256);
+}

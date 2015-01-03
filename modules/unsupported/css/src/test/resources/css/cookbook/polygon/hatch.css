@@ -1,0 +1,9 @@
+* {
+  fill: symbol("shape://times");
+}
+
+:nth-fill(1) {
+  size: 16;
+  stroke: #990099;
+  stroke-width: 1px;
+}

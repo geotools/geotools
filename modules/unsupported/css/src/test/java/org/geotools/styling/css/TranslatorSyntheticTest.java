@@ -279,7 +279,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
 
     @Test
     public void strokeFillMark() throws IOException {
-        String css = "* { stroke: symbol('square'); stroke-width: 20; stroke-repeat: stipple;} :stroke { fill: red; }";
+        String css = "* { stroke: symbol('square'); stroke-size: 20; stroke-repeat: stipple;} :stroke { fill: red; }";
         Style style = translate(css);
         Rule rule = assertSingleRule(style);
         LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
@@ -289,7 +289,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         Mark mark = (Mark) graphic.graphicalSymbols().get(0);
         assertLiteral("square", mark.getWellKnownName());
         assertLiteral("#ff0000", mark.getFill().getColor());
-        assertLiteral("20", ls.getStroke().getWidth());
+        assertLiteral("20", graphic.getSize());
     }
 
     @Test
@@ -388,8 +388,8 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
         assertLiteral("test", ts.getLabel());
         PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
-        assertLiteral("5.0", pp.getDisplacement().getDisplacementX());
-        assertLiteral("5.0", pp.getDisplacement().getDisplacementY());
+        assertLiteral("5", pp.getDisplacement().getDisplacementX());
+        assertLiteral("5", pp.getDisplacement().getDisplacementY());
         assertLiteral("45", pp.getRotation());
         assertLiteral("0.1", pp.getAnchorPoint().getAnchorPointX());
         assertLiteral("0.9", pp.getAnchorPoint().getAnchorPointY());
@@ -403,7 +403,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
         assertLiteral("test", ts.getLabel());
         LinePlacement lp = (LinePlacement) ts.getLabelPlacement();
-        assertLiteral("5.0", lp.getPerpendicularOffset());
+        assertLiteral("5", lp.getPerpendicularOffset());
     }
 
     @Test

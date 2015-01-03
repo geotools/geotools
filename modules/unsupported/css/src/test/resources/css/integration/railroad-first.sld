@@ -21,17 +21,10 @@
                   </sld:ExternalGraphic>
                 </sld:Graphic>
               </sld:GraphicStroke>
-              <sld:CssParameter name="stroke-width">4</sld:CssParameter>
             </sld:Stroke>
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
-          <ogc:Filter>
-            <ogc:PropertyIsNotEqualTo>
-              <ogc:PropertyName>type</ogc:PropertyName>
-              <ogc:Literal>express</ogc:Literal>
-            </ogc:PropertyIsNotEqualTo>
-          </ogc:Filter>
           <sld:LineSymbolizer>
             <sld:Stroke>
               <sld:GraphicStroke>
@@ -43,12 +36,11 @@
                   </sld:Mark>
                 </sld:Graphic>
               </sld:GraphicStroke>
-              <sld:CssParameter name="stroke-width">4</sld:CssParameter>
             </sld:Stroke>
           </sld:LineSymbolizer>
         </sld:Rule>
+        <sld:VendorOption name="ruleEvaluation">first</sld:VendorOption>
       </sld:FeatureTypeStyle>
     </sld:UserStyle>
   </sld:NamedLayer>
 </sld:StyledLayerDescriptor>
-

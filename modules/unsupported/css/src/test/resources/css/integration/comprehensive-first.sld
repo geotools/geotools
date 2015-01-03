@@ -68,8 +68,8 @@
                   <sld:AnchorPointY>0.0</sld:AnchorPointY>
                 </sld:AnchorPoint>
                 <sld:Displacement>
-                  <sld:DisplacementX>1.0</sld:DisplacementX>
-                  <sld:DisplacementY>2.0</sld:DisplacementY>
+                  <sld:DisplacementX>1</sld:DisplacementX>
+                  <sld:DisplacementY>2</sld:DisplacementY>
                 </sld:Displacement>
                 <sld:Rotation>45</sld:Rotation>
               </sld:PointPlacement>
@@ -87,6 +87,7 @@
             </sld:Fill>
           </sld:TextSymbolizer>
         </sld:Rule>
+        <sld:VendorOption name="ruleEvaluation">first</sld:VendorOption>
       </sld:FeatureTypeStyle>
     </sld:UserStyle>
   </sld:NamedLayer>

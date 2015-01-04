@@ -12,6 +12,7 @@
             <sld:VendorOption name="labelObstacle">true</sld:VendorOption>
           </sld:LineSymbolizer>
         </sld:Rule>
+        <sld:VendorOption name="ruleEvaluation">first</sld:VendorOption>
       </sld:FeatureTypeStyle>
     </sld:UserStyle>
   </sld:NamedLayer>

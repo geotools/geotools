@@ -19,6 +19,7 @@
             <sld:VendorOption name="graphic-margin">10 20 40 30</sld:VendorOption>
           </sld:PolygonSymbolizer>
         </sld:Rule>
+        <sld:VendorOption name="ruleEvaluation">first</sld:VendorOption>
       </sld:FeatureTypeStyle>
     </sld:UserStyle>
   </sld:NamedLayer>

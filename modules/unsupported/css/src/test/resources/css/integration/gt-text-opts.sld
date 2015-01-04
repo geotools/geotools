@@ -29,6 +29,7 @@
             <sld:VendorOption name="forceLeftToRight">true</sld:VendorOption>
           </sld:TextSymbolizer>
         </sld:Rule>
+        <sld:VendorOption name="ruleEvaluation">first</sld:VendorOption>
       </sld:FeatureTypeStyle>
     </sld:UserStyle>
   </sld:NamedLayer>

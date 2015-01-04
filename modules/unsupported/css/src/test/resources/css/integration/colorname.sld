@@ -11,6 +11,7 @@
             </sld:Fill>
           </sld:PolygonSymbolizer>
         </sld:Rule>
+        <sld:VendorOption name="ruleEvaluation">first</sld:VendorOption>
       </sld:FeatureTypeStyle>
     </sld:UserStyle>
   </sld:NamedLayer>

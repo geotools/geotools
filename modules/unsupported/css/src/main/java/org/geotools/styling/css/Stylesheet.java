@@ -30,13 +30,11 @@ public class Stylesheet {
 
     private List<CssRule> rules;
 
-    public Stylesheet(List<CssRule> rules) {
-        this.setRules(rules);
-    }
+    private List<Directive> directives;
 
-    @Override
-    public String toString() {
-        return "Stylesheet [rules=" + getRules() + "]";
+    public Stylesheet(List<CssRule> rules, List<Directive> directives) {
+        this.rules = rules;
+        this.directives = directives;
     }
 
     /**
@@ -50,6 +48,65 @@ public class Stylesheet {
 
     void setRules(List<CssRule> rules) {
         this.rules = rules;
+    }
+
+    /**
+     * The list of directives parsed from the style
+     * 
+     * @return
+     */
+    public List<Directive> getDirectives() {
+        return directives;
+    }
+
+    public void setDirectives(List<Directive> directives) {
+        this.directives = directives;
+    }
+
+    public String getDirectiveValue(String name) {
+        for (Directive d : directives) {
+            if (name.equals(d.getName())) {
+                return d.getValue();
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Stylesheet [rules=" + rules + ", directives=" + directives + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((directives == null) ? 0 : directives.hashCode());
+        result = prime * result + ((rules == null) ? 0 : rules.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Stylesheet other = (Stylesheet) obj;
+        if (directives == null) {
+            if (other.directives != null)
+                return false;
+        } else if (!directives.equals(other.directives))
+            return false;
+        if (rules == null) {
+            if (other.rules != null)
+                return false;
+        } else if (!rules.equals(other.rules))
+            return false;
+        return true;
     }
 
 }

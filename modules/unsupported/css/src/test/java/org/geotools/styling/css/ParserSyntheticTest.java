@@ -656,4 +656,21 @@ public class ParserSyntheticTest extends CssBaseTest {
         }
     }
 
+    @Test
+    public void testDirectives() {
+        String css = "@first \"1\"; \n @second \"2\"; \n * { fill: blue;}";
+        Stylesheet ss = CssParser.parse(css);
+        List<Directive> directives = ss.getDirectives();
+        assertEquals(2, directives.size());
+        assertEquals("first", directives.get(0).getName());
+        assertEquals("1", directives.get(0).getValue());
+        assertEquals("second", directives.get(1).getName());
+        assertEquals("2", directives.get(1).getValue());
+
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertTrue(r.getSelector() instanceof Accept);
+        assertProperty(r, 0, "fill", new Value.Literal("#0000ff"));
+    }
+
 }

@@ -39,6 +39,7 @@
             <sld:VendorOption name="maxDisplacement">150</sld:VendorOption>
           </sld:TextSymbolizer>
         </sld:Rule>
+        <sld:VendorOption name="ruleEvaluation">first</sld:VendorOption>
       </sld:FeatureTypeStyle>
     </sld:UserStyle>
   </sld:NamedLayer>

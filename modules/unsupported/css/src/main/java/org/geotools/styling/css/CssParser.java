@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.styling.css.Value.Literal;
 import org.geotools.styling.css.selector.Data;
 import org.geotools.styling.css.selector.Id;
 import org.geotools.styling.css.selector.Or;
@@ -101,8 +102,15 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule StyleSheet() {
-        return Sequence(OneOrMore(CssRule()), WhiteSpaceOrIgnoredComment(), EOI,
-                push(new Stylesheet(popAll(CssRule.class))));
+        return Sequence(ZeroOrMore(Directive(), WhiteSpace()),
+                OneOrMore(CssRule()),
+                WhiteSpaceOrIgnoredComment(), EOI, push(new Stylesheet(popAll(CssRule.class),
+                        popAll((Directive.class)))));
+    }
+
+    Rule Directive() {
+        return Sequence("@", Identifier(), push(match()), WhiteSpace1(), String(), Ch(';'), swap(),
+                push(new Directive((String) pop(), ((Literal) pop()).toLiteral())));
     }
 
     Rule CssRule() {

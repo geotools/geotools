@@ -78,6 +78,7 @@ import org.geotools.styling.css.util.FeatureTypeGuesser;
 import org.geotools.styling.css.util.OgcFilterBuilder;
 import org.geotools.styling.css.util.ScaleRangeExtractor;
 import org.geotools.styling.css.util.TypeNameExtractor;
+import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.FeatureType;
@@ -94,14 +95,34 @@ import org.w3c.dom.css.CSSRule;
  * @author Andrea Aime - GeoSolutions
  */
 public class CssTranslator {
+    
+    /**
+     * The ways the CSS -> SLD transformation can be performed
+     * 
+     * @author Andrea Aime - GeoSolutions
+     *
+     */
+    static enum TranslationMode {
+        /**
+         * Generates fully exclusive rules, extra rules are removed
+         */
+        Exclusive,
+        /**
+         * Sets the "exclusive" evaluation mode in the FeatureTypeStyle and delegates finding the
+         * first matching rules to the renderer, will generate more rules, but work a lot less to do
+         * so by avoiding to compute the domain coverage
+         */
+        Simple
+    };
 
     static final Logger LOGGER = Logging.getLogger(CssTranslator.class);
 
-    static final int MAX_OUTPUT_RULES = Integer.valueOf(System.getProperty(
-            "org.geotools.css.maxOutputRules", "10000"));
+    static final String DIRECTIVE_MAX_OUTPUT_RULES = "maxOutputRules";
 
-    static final boolean EXCLUSIVE_RULES_ENABLED = Boolean.valueOf(System.getProperty(
-            "org.geotools.css.exclusiveRules", "false"));
+    static final String DIRECTIVE_TRANSLATION_MODE = "mode";
+
+    static final int MAX_OUTPUT_RULES_DEFAULT = Integer.valueOf(System.getProperty(
+            "org.geotools.css." + DIRECTIVE_MAX_OUTPUT_RULES, "10000"));
 
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
@@ -170,12 +191,7 @@ public class CssTranslator {
     /**
      * Limits how many output rules we are going to generate
      */
-    int maxCombinations = MAX_OUTPUT_RULES;
-
-    /**
-     * Enables the computation of a set of fully exclusive rules
-     */
-    boolean exclusiveRulesEnabled = EXCLUSIVE_RULES_ENABLED;
+    int maxCombinations = MAX_OUTPUT_RULES_DEFAULT;
 
     public int getMaxCombinations() {
         return maxCombinations;
@@ -183,23 +199,11 @@ public class CssTranslator {
 
     /**
      * Maximum number of rule combinations before bailing out of the power set generation
+     * 
      * @param maxCombinations
      */
     public void setMaxCombinations(int maxCombinations) {
         this.maxCombinations = maxCombinations;
-    }
-
-    public boolean isExclusiveRulesEnabled() {
-        return exclusiveRulesEnabled;
-    }
-
-    /**
-     * If enabled, makes the translator generate fully exclusive rules (comes at an extra cost,
-     * might generate, or not, a smaller SLD)
-     * @param exclusiveRulesEnabled
-     */
-    public void setExclusiveRulesEnabled(boolean exclusiveRulesEnabled) {
-        this.exclusiveRulesEnabled = exclusiveRulesEnabled;
     }
 
     /**
@@ -209,6 +213,11 @@ public class CssTranslator {
      * @return
      */
     public Style translate(Stylesheet stylesheet) {
+        // get the directives influencing translation
+        int maxCombinations = getMaxCombinations(stylesheet);
+        TranslationMode mode = getTranslationMode(stylesheet);
+        
+
         List<CssRule> allRules = stylesheet.getRules();
 
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -235,10 +244,11 @@ public class CssTranslator {
             for (Map.Entry<String, List<CssRule>> entry : typenameRules.entrySet()) {
                 // create the feature type style for this typename
                 FeatureTypeStyleBuilder ftsBuilder = styleBuilder.featureTypeStyle();
-                if (!exclusiveRulesEnabled) {
+                // regardless of the translation mode, the first rule matching is
+                // the only one that we want to be applied (in exclusive mode it will be
+                // the only one matching, the simple mode we want the evaluation to stop there)
                     ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
-                        FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
-                }
+                            FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
                 String featureTypeName = entry.getKey();
                 List<CssRule> localRules = entry.getValue();
                 if (featureTypeName != null) {
@@ -294,7 +304,7 @@ public class CssTranslator {
                 // create a SLD rule for each css one, making them exclusive, that is,
                 // remove from each rule the union of the zoom/data domain matched by previous rules
                 DomainCoverage coverage = new DomainCoverage(targetFeatureType, cachedSimplifier);
-                coverage.exclusiveRulesEnabled = exclusiveRulesEnabled;
+                coverage.exclusiveRulesEnabled = (mode == TranslationMode.Exclusive);
                 for (int i = 0; i < combinedRules.size(); i++) {
                     // skip eventual combinations that are not sporting any
                     // root pseudo class
@@ -320,6 +330,36 @@ public class CssTranslator {
         }
 
         return styleBuilder.build();
+    }
+
+    private TranslationMode getTranslationMode(Stylesheet stylesheet) {
+        String value = stylesheet.getDirectiveValue(DIRECTIVE_TRANSLATION_MODE);
+        if(value != null) {
+            try {
+                return TranslationMode.valueOf(value);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Invalid translation mode '" + value
+                        + "', supported values are: " + TranslationMode.values());
+            }
+        }
+
+        return TranslationMode.Exclusive;
+    }
+
+    private int getMaxCombinations(Stylesheet stylesheet) {
+        int maxCombinations = this.maxCombinations;
+        String maxOutputRulesDirective = stylesheet.getDirectiveValue(DIRECTIVE_MAX_OUTPUT_RULES);
+        if (maxOutputRulesDirective != null) {
+            Integer converted = Converters.convert(maxOutputRulesDirective, Integer.class);
+            if (converted == null) {
+                throw new IllegalArgumentException("Invalid value for "
+                        + DIRECTIVE_MAX_OUTPUT_RULES
+                        + ", it should be a positive integer value, it was "
+                        + maxOutputRulesDirective);
+            }
+            maxCombinations = converted;
+        }
+        return maxCombinations;
     }
 
     /**
@@ -1440,12 +1480,12 @@ public class CssTranslator {
                             + outputParent.getPath());
             System.exit(-2);
         }
-        
+
         long start = System.currentTimeMillis();
 
         String css = FileUtils.readFileToString(input);
         Stylesheet styleSheet = CssParser.parse(css);
-        
+
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         handler.setLevel(java.util.logging.Level.FINE);
 
@@ -1470,6 +1510,5 @@ public class CssTranslator {
 
         System.out.println("Translation performed in " + (end - start) / 1000d + " seconds");
     }
-
 
 }

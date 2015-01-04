@@ -72,13 +72,16 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
     @Test
     public void translateTest() throws Exception {
         String css = FileUtils.readFileToString(file);
+        if (!exclusiveRulesEnabled) {
+            css = "@mode \"Simple\";\n" + css;
+        }
+
         File sldFile = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())
                 + (exclusiveRulesEnabled ? "" : "-first")
                 + ".sld");
         if (!sldFile.exists()) {
             Stylesheet ss = CssParser.parse(css);
             CssTranslator tx = new CssTranslator();
-            tx.setExclusiveRulesEnabled(exclusiveRulesEnabled);
             Style style = tx.translate(ss);
             writeStyle(style, sldFile);
             // throw new IllegalStateException("Could not locate sample sld file " +
@@ -151,7 +154,6 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         assertNoErrors(result);
         Stylesheet ss = result.parseTreeRoot.getValue();
         CssTranslator translator = new CssTranslator();
-        translator.setExclusiveRulesEnabled(exclusiveRulesEnabled);
         return translator.translate(ss);
     }
 

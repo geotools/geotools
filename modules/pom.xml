@@ -90,6 +90,7 @@
           </excludePackageNames>
 
           <!-- Custom taglets implemented in Java. -->
+          <!-- Disabled to see if they are the cause of the javadoc memory build issues
           <taglets>
             <taglet>
               <tagletClass>org.geotools.maven.taglet.Tutorial</tagletClass>
@@ -108,10 +109,12 @@
               </tagletArtifact>
             </taglet>
           </taglets>
+          -->
 
           <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
           <!-- custom block tag tagname in doc comments. Note: <placement/> -->
           <!-- should be a combinaison of the letters Xaoptcmf.             -->
+          <!-- Disabled to see if they are the cause of the javadoc memory build issues
           <tags>
             <tag>
               <name>todo</name>
@@ -154,6 +157,7 @@
               <head>UML property:</head>
             </tag>
           </tags>
+          -->
 
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->

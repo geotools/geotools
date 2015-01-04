@@ -95,7 +95,7 @@ import org.w3c.dom.css.CSSRule;
  * @author Andrea Aime - GeoSolutions
  */
 public class CssTranslator {
-    
+
     /**
      * The ways the CSS -> SLD transformation can be performed
      * 
@@ -112,17 +112,27 @@ public class CssTranslator {
          * first matching rules to the renderer, will generate more rules, but work a lot less to do
          * so by avoiding to compute the domain coverage
          */
-        Simple
+        Simple,
+        /**
+         * The translator will pick Exclusive by default, but if the rules to be turned into SLD go
+         * beyond
+         */
+        Auto;
     };
 
     static final Logger LOGGER = Logging.getLogger(CssTranslator.class);
 
     static final String DIRECTIVE_MAX_OUTPUT_RULES = "maxOutputRules";
 
+    static final String DIRECTIVE_AUTO_THRESHOLD = "autoThreshold";
+
     static final String DIRECTIVE_TRANSLATION_MODE = "mode";
 
     static final int MAX_OUTPUT_RULES_DEFAULT = Integer.valueOf(System.getProperty(
             "org.geotools.css." + DIRECTIVE_MAX_OUTPUT_RULES, "10000"));
+
+    static final int AUTO_THRESHOLD_DEFAULT = Integer.valueOf(System.getProperty(
+            "org.geotools.css." + DIRECTIVE_AUTO_THRESHOLD, "100"));
 
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
@@ -216,7 +226,7 @@ public class CssTranslator {
         // get the directives influencing translation
         int maxCombinations = getMaxCombinations(stylesheet);
         TranslationMode mode = getTranslationMode(stylesheet);
-        
+        int autoThreshold = getAutoThreshold(stylesheet);
 
         List<CssRule> allRules = stylesheet.getRules();
 
@@ -247,8 +257,8 @@ public class CssTranslator {
                 // regardless of the translation mode, the first rule matching is
                 // the only one that we want to be applied (in exclusive mode it will be
                 // the only one matching, the simple mode we want the evaluation to stop there)
-                    ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
-                            FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
+                ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
+                        FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
                 String featureTypeName = entry.getKey();
                 List<CssRule> localRules = entry.getValue();
                 if (featureTypeName != null) {
@@ -296,16 +306,35 @@ public class CssTranslator {
 
                 Collections.sort(combinedRules, CssRuleComparator.DESCENDING);
 
+                int rulesCount = combinedRules.size();
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Generated " + combinedRules.size()
+                    LOGGER.fine("Generated " + rulesCount
                             + " combined rules after filtered power set expansion");
                 }
 
-                // create a SLD rule for each css one, making them exclusive, that is,
-                // remove from each rule the union of the zoom/data domain matched by previous rules
+                // setup the tool that will eliminate redundant rules (if necessary)
                 DomainCoverage coverage = new DomainCoverage(targetFeatureType, cachedSimplifier);
-                coverage.exclusiveRulesEnabled = (mode == TranslationMode.Exclusive);
-                for (int i = 0; i < combinedRules.size(); i++) {
+                if (mode == TranslationMode.Exclusive) {
+                    // create a SLD rule for each css one, making them exclusive, that is,
+                    // remove from each rule the union of the zoom/data domain matched by previous rules
+                    coverage.exclusiveRulesEnabled = true;
+                } else if (mode == TranslationMode.Auto) {
+                    if (rulesCount < autoThreshold) {
+                        LOGGER.fine("Sticking to Exclusive translation mode, rules number is "
+                                + rulesCount + " with a threshold of " + autoThreshold);
+                        coverage.exclusiveRulesEnabled = true;
+                    } else {
+                        LOGGER.info("Switching to Simple translation mode, rules number is "
+                                + rulesCount + " with a threshold of " + autoThreshold);
+                        coverage.exclusiveRulesEnabled = false;
+                    }
+
+                } else {
+                    // just skip rules with the same selector
+                    coverage.exclusiveRulesEnabled = false;
+                }
+                // generate the SLD rules
+                for (int i = 0; i < rulesCount; i++) {
                     // skip eventual combinations that are not sporting any
                     // root pseudo class
                     CssRule cssRule = combinedRules.get(i);
@@ -315,7 +344,7 @@ public class CssTranslator {
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("Current domain coverage: " + coverage);
                         LOGGER.fine("Adding rule to domain coverage: " + cssRule);
-                        LOGGER.fine("Rules left to process: " + (combinedRules.size() - i));
+                        LOGGER.fine("Rules left to process: " + (rulesCount - i));
                     }
                     List<CssRule> derivedRules = coverage.addRule(cssRule);
                     if (LOGGER.isLoggable(Level.FINE)) {
@@ -334,7 +363,7 @@ public class CssTranslator {
 
     private TranslationMode getTranslationMode(Stylesheet stylesheet) {
         String value = stylesheet.getDirectiveValue(DIRECTIVE_TRANSLATION_MODE);
-        if(value != null) {
+        if (value != null) {
             try {
                 return TranslationMode.valueOf(value);
             } catch (Exception e) {
@@ -343,7 +372,7 @@ public class CssTranslator {
             }
         }
 
-        return TranslationMode.Exclusive;
+        return TranslationMode.Auto;
     }
 
     private int getMaxCombinations(Stylesheet stylesheet) {
@@ -360,6 +389,20 @@ public class CssTranslator {
             maxCombinations = converted;
         }
         return maxCombinations;
+    }
+
+    private int getAutoThreshold(Stylesheet stylesheet) {
+        int result = AUTO_THRESHOLD_DEFAULT;
+        String autoThreshold = stylesheet.getDirectiveValue(DIRECTIVE_AUTO_THRESHOLD);
+        if (autoThreshold != null) {
+            Integer converted = Converters.convert(autoThreshold, Integer.class);
+            if (converted == null) {
+                throw new IllegalArgumentException("Invalid value for " + DIRECTIVE_AUTO_THRESHOLD
+                        + ", it should be a positive integer value, it was " + autoThreshold);
+            }
+            result = converted;
+        }
+        return result;
     }
 
     /**

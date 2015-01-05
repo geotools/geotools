@@ -1232,7 +1232,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         filter = resolvePropertyNames(filter);
         String typeName = getSchema().getTypeName(); 
         
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(filter);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(filter);
         try {
             while( reader.hasNext() ) {
                 SimpleFeature feature = reader.next();
@@ -1240,7 +1240,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 // Use native locking?
                 //
                 if(canLock()) {
-                    doLockInternal(typeName,feature);
+                    doUnlockInternal(typeName,feature);
                 } else {
                     getDataStore().getLockingManager()
                         .unLockFeatureID(typeName, feature.getID(), transaction, lock);

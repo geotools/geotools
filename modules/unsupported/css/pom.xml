@@ -75,12 +75,6 @@
       <artifactId>parboiled-java</artifactId>
       <version>1.1.6</version>
     </dependency>
-    <!-- todo: remove once we have all the samples needed -->
-    <dependency>
-      <groupId>org.geoscript</groupId>
-      <artifactId>geocss_2.10</artifactId>
-      <version>0.8.4-aa2</version>
-    </dependency>
     <dependency>
       <groupId>xmlunit</groupId>
       <artifactId>xmlunit</artifactId>

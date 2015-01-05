@@ -24,6 +24,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -642,8 +643,8 @@ public class ParserSyntheticTest extends CssBaseTest {
 
     @Test
     public void testExceptionMessage() {
-        // lets forget a semicolon in the third line
-        String css = "* \n { fill: blue; \n stroke: yellow }";
+        // lets forget a semicolon in the second line
+        String css = "* \n { fill: blue \n stroke: yellow }";
         try {
             CssParser.parse(css);
             fail("Should have failed with an exception");
@@ -651,9 +652,20 @@ public class ParserSyntheticTest extends CssBaseTest {
             List<ParseError> errors = e.getErrors();
             assertEquals(1, errors.size());
             assertEquals(
-                    "Invalid input '}', expected ' ', '\\r', '\\t', '\\f', '\\n', SimpleValue, ',', WhiteSpace or ';' (line 3, column 17)",
+                    "Invalid input ':', expected NameCharacter, '(', WhiteSpace, OptionalWhiteSpace, ',', IgnoredComment, ';', WhiteSpaceOrIgnoredComment or '}' (line 3, column 8)",
                     e.getMessage());
         }
+    }
+
+    @Test
+    public void testMissingLastSemicolon() {
+        // lets forget a semicolon in the last line, that's actually fine, the ; is a separator, not
+        // a terminator
+        String css = "* \n { fill: blue; \n stroke: yellow }";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        Map<PseudoClass, List<Property>> properties = ss.getRules().get(0).getProperties();
+        assertEquals(2, properties.get(PseudoClass.ROOT).size());
     }
 
     @Test

@@ -744,6 +744,9 @@ public class CssTranslator {
                     if (anchor.length == 2) {
                         ppb.anchor().x(anchor[0]);
                         ppb.anchor().y(anchor[1]);
+                    } else if (anchor.length == 1) {
+                        ppb.anchor().x(anchor[0]);
+                        ppb.anchor().y(anchor[0]);
                     } else {
                         throw new IllegalArgumentException(
                                 "Invalid anchor specification, should be two "
@@ -755,6 +758,9 @@ public class CssTranslator {
                     if (offsets.length == 2) {
                         ppb.displacement().x(offsets[0]);
                         ppb.displacement().y(offsets[1]);
+                    } else if (offsets.length == 1) {
+                        ppb.displacement().x(offsets[0]);
+                        ppb.displacement().y(offsets[0]);
                     } else {
                         throw new IllegalArgumentException(
                                 "Invalid anchor specification, should be two "
@@ -1024,6 +1030,9 @@ public class CssTranslator {
                     if (anchor.length == 2) {
                         gb.anchor().x(anchor[0]);
                         gb.anchor().y(anchor[1]);
+                    } else if (anchor.length == 1) {
+                        gb.anchor().x(anchor[0]);
+                        gb.anchor().y(anchor[0]);
                     } else {
                         throw new IllegalArgumentException(
                                 "Invalid anchor specification, should be two "
@@ -1035,6 +1044,9 @@ public class CssTranslator {
                     if (offsets.length == 2) {
                         gb.displacement().x(offsets[0]);
                         gb.displacement().y(offsets[1]);
+                    } else if (offsets.length == 1) {
+                        gb.displacement().x(offsets[0]);
+                        gb.displacement().y(offsets[0]);
                     } else {
                         throw new IllegalArgumentException(
                                 "Invalid anchor specification, should be two "

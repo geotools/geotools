@@ -355,6 +355,23 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void markAnchorDisplacementSingleValue() throws Exception {
+        String css = "* { mark: symbol(circle); mark-size: 10; mark-anchor: 0.5; mark-offset: 10;}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PointSymbolizer ps = assertSingleSymbolizer(rule, PointSymbolizer.class);
+        Graphic g = ps.getGraphic();
+        AnchorPoint ap = g.getAnchorPoint();
+        assertNotNull(ap);
+        assertEquals(0.5, ap.getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(0.5, ap.getAnchorPointY().evaluate(null, Double.class), 0d);
+        Displacement d = g.getDisplacement();
+        assertNotNull(d);
+        assertEquals(10, d.getDisplacementX().evaluate(null, Double.class), 0d);
+        assertEquals(10, d.getDisplacementY().evaluate(null, Double.class), 0d);
+    }
+
+    @Test
     public void externalGraphic() throws Exception {
         String css = "* { mark: url(test.svg); mark-size: 10; mark-rotation: 45; mark-mime: 'image/png';}";
         Style style = translate(css);

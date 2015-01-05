@@ -66,7 +66,7 @@ public class CSVFeatureSource extends ContentFeatureSource {
     }
 
     protected int getCountInternal(Query query) throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReader(query);
+        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
         int n = 0;
         try {
             for (n = 0; featureReader.hasNext(); n++) {

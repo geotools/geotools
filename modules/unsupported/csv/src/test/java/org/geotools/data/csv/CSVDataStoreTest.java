@@ -7,8 +7,10 @@ package org.geotools.data.csv;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,7 +19,11 @@ import java.util.List;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
 import org.geotools.data.csv.parse.CSVLatLonStrategy;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -93,4 +99,82 @@ public class CSVDataStoreTest {
                 .split(", "));
         assertEquals("Unexpected numbers", expectedNumbers, numbers);
     }
+    
+    /**
+     * Test query with a start index
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+     @Test
+     public void testOffset() throws FileNotFoundException, IOException {
+         Query query = new Query(Query.ALL);
+         query.setStartIndex(3);
+         SimpleFeatureSource rows = csvDataStore.getFeatureSource();
+         SimpleFeatureCollection matches = rows.getFeatures(query);
+         List<String> offsetCities = Arrays.asList("Ottawa", "Minneapolis", "Lausanne", "Victoria", "Cape Town", "Sydney");
+         int count = 0;
+         SimpleFeatureIterator iter = matches.features();
+         while(iter.hasNext()) {
+             SimpleFeature f = iter.next();
+             assertTrue(offsetCities.contains(f.getAttribute("CITY")));
+             count++;
+         }
+         iter.close();
+         assertEquals(6, count);
+         assertEquals(6, matches.size());
+         assertEquals(6, rows.getCount(query));
+    
+    
+     }
+    
+     /**
+     * Test query with maxFeatures
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+     @Test
+     public void testLimit() throws FileNotFoundException, IOException {
+         Query query = new Query(Query.ALL);
+         query.setMaxFeatures(3);
+         SimpleFeatureSource rows = csvDataStore.getFeatureSource();
+         SimpleFeatureCollection matches = rows.getFeatures(query);
+         List<String> limitCities = Arrays.asList("Trento", "St Paul", "Bangkok");
+         int count = 0;
+         SimpleFeatureIterator iter = matches.features();
+         while(iter.hasNext()) {
+             SimpleFeature f = iter.next();
+             assertTrue(limitCities.contains(f.getAttribute("CITY")));
+             count++;
+         }
+         iter.close();
+         assertEquals(3, count);
+         assertEquals(3, matches.size());
+         assertEquals(3, rows.getCount(query));
+     }
+    
+     /**
+     * Test query with maxFeatures and startIndex
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+     @Test
+     public void testLimitOffset() throws FileNotFoundException, IOException {
+         Query query = new Query(Query.ALL);
+         query.setMaxFeatures(3);
+         query.setStartIndex(3);
+         SimpleFeatureSource rows = csvDataStore.getFeatureSource();
+         SimpleFeatureCollection matches = rows.getFeatures(query);
+         List<String> limitCities = Arrays.asList("Ottawa", "Minneapolis", "Lausanne");
+         int count = 0;
+         SimpleFeatureIterator iter = matches.features();
+         while(iter.hasNext()) {
+             SimpleFeature f = iter.next();
+             assertTrue(limitCities.contains(f.getAttribute("CITY")));
+             count++;
+         }
+         iter.close();
+         assertEquals(3, count);
+         assertEquals(3, matches.size());
+         assertEquals(3, rows.getCount(query));
+     }
 }

@@ -28,8 +28,10 @@ import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.factory.Hints;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.WKTReader2;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -137,7 +139,14 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         File file = new File( store.dir, typeName+".properties");
-        return new PropertyFeatureReader(store.getNamespaceURI(), file);
+        PropertyFeatureReader reader = new PropertyFeatureReader(store.getNamespaceURI(), file);
+        
+        Double tolerance = (Double)query.getHints().get(Hints.LINEARIZATION_TOLERANCE);
+        if (tolerance != null) {
+            reader.setWKTReader(new WKTReader2(tolerance));
+        }
+        
+        return reader;
     }
     
     /**

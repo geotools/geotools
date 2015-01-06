@@ -1,0 +1,15 @@
+* {
+  mark: symbol(circle);
+}
+
+:mark {
+  fill: #0033CC;
+}
+
+[@scale < 160000000] {
+  mark-size: 12;
+}
+
+[@scale >= 160000000] [@scale < 320000000] {
+  mark-size: 12;
+}

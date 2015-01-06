@@ -205,7 +205,8 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule MaxScaleSelector() {
-        return Sequence("[", OptionalWhiteSpace(), "@scale", OptionalWhiteSpace(), "<", OptionalWhiteSpace(), Number(),
+        return Sequence("[", OptionalWhiteSpace(), "@scale", OptionalWhiteSpace(),
+                FirstOf("<=", "<"), OptionalWhiteSpace(), Number(),
                 push(new ScaleRange(0, true, Double.valueOf(match()), false)), //
                 OptionalWhiteSpace(), "]");
     }
@@ -216,7 +217,7 @@ public class CssParser extends BaseParser<Object> {
                 OptionalWhiteSpace(),
                 "@scale",
                 OptionalWhiteSpace(),
-                ">",
+                FirstOf(">=", ">"),
                 OptionalWhiteSpace(),
                 Number(),
                 push(new ScaleRange(Double.valueOf(match()), true, Double.POSITIVE_INFINITY, true)), //

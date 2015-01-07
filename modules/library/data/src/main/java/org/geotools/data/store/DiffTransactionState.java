@@ -133,8 +133,9 @@ public class DiffTransactionState implements Transaction.State {
         ContentDataStore dataStore = entry.getDataStore();
         ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(name);
         if (source instanceof ContentFeatureStore) {
+            // request a plain writer with no events, filtering or locking checks
             store = (ContentFeatureStore) dataStore.getFeatureSource(name);
-            writer = store.getWriter(Filter.INCLUDE);
+            writer = store.getWriter(Filter.INCLUDE, ContentDataStore.WRITER_COMMIT);
         } else {
             throw new UnsupportedOperationException("not writable");
         }

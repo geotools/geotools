@@ -6,7 +6,7 @@
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file. Use it well and enjoy!
  */
-package org.geotools.data.csv;
+package org.geotools.tutorial.csv2;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +35,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
-import org.geotools.test.TestData;
+import org.geotools.tutorial.csv.CSVTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,8 +76,7 @@ public class CSVWriteTest {
             System.exit(1);
         }
         file = new File(tmp, "locations.csv");
-
-        URL resource = TestData.getResource(CSVWriteTest.class, "locations.csv");
+        URL resource = CSVTest.class.getResource("locations.csv");
         Files.copy(resource.openStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
     

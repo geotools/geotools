@@ -7,7 +7,7 @@
  * free to do whatever they wish with this file. Use it well and enjoy!
  */
 // header start
-package org.geotools.data.csv;
+package org.geotools.tutorial.csv2;
 
 import java.awt.RenderingHints.Key;
 import java.io.File;

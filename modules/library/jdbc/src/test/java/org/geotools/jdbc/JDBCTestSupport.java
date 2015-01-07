@@ -61,14 +61,14 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     static {
         // uncomment to turn up logging
 
-        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
-        handler.setLevel(java.util.logging.Level.FINE);
+//        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
+//        handler.setLevel(java.util.logging.Level.FINE);
 
-        org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").setLevel(java.util.logging.Level.FINE);
-        org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
+//        org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").setLevel(java.util.logging.Level.FINE);
+//        org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
 
-        org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(java.util.logging.Level.FINE);
-        org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").addHandler(handler);
+//        org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(java.util.logging.Level.FINE);
+//        org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").addHandler(handler);
     }
 
     protected JDBCTestSetup setup;

@@ -155,12 +155,12 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
                     }
                 }
             } else {
-                DiffTransactionState state = (DiffTransactionState) getTransaction().getState(
-                        getEntry());
+                DiffTransactionState state = (DiffTransactionState) getTransaction()
+                        .getState(getEntry());
                 // reader will take care of filtering
                 // DiffContentWriter takes care of events
                 FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query);
-                writer = new DiffContentFeatureWriter(this, state.getDiff(), reader);
+                writer = state.diffWriter( this, reader );
             }
         } else {
             writer = getWriterInternal(query, flags);
@@ -177,9 +177,9 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         }
         // Use InProcessLockingManager to assert write locks?
         if (!canLock()) {
-            LockingManager lockingManager = getDataStore().getLockingManager();
-            writer = ((InProcessLockingManager) lockingManager).checkedWriter(writer,
-                    transaction);
+            InProcessLockingManager lockingManager = (InProcessLockingManager) getDataStore()
+                    .getLockingManager();
+            writer = lockingManager.checkedWriter(writer, transaction);
         }
         // Finished
         return writer;

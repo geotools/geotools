@@ -387,12 +387,12 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             Diff diff = state.getDiff();
             
             // don't compute the bounds of the features that are modified or removed in the diff
-            Iterator it = diff.getModified().values().iterator();
+            Iterator it = diff.getModified().keySet().iterator();
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
             Set<FeatureId> modifiedFids = new HashSet<FeatureId>();
             while(it.hasNext()){
-                SimpleFeature feature = (SimpleFeature) it.next();
-                modifiedFids.add(ff.featureId(feature.getID()));
+                String featureId = (String)it.next();
+                modifiedFids.add(ff.featureId(featureId));
             }
             Id idFilter = ff.id(modifiedFids);
             Query q = new Query(query);

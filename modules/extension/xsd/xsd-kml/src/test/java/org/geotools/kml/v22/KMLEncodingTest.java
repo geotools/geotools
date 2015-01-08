@@ -21,7 +21,7 @@ public class KMLEncodingTest extends KMLTestSupport {
     public void testEncodePoint() throws Exception {
         Point p = new GeometryBuilder().point(1,2);
         Document d = encode(p, KML.Point);
-        
+
         assertEquals("Point", d.getDocumentElement().getLocalName());
         Element e = getElementByQName(d, KML.coordinates);
         assertNotNull(e);
@@ -48,7 +48,7 @@ public class KMLEncodingTest extends KMLTestSupport {
         GeometryFactory geomFactory = new GeometryFactory();
         DefaultFeatureCollection collection = new DefaultFeatureCollection("internal", null);
         SimpleFeatureType type = DataUtilities.createType("location",
-                "geom:Point,attr1:String,attr2:Integer");
+                "geom:Point,name:String,attr2:Integer");
 
         Point point1 = geomFactory.createPoint(new Coordinate(40, 50));
         Point point2 = geomFactory.createPoint(new Coordinate(30, 45));
@@ -88,18 +88,23 @@ public class KMLEncodingTest extends KMLTestSupport {
         assertTrue(KML.Placemark.getLocalPart().equals(Placemark2.getLocalName()));
         assertTrue(KML.Placemark.getLocalPart().equals(Placemark3.getLocalName()));
 
-        // ExtendedData (first feature)
-        Node extData1 = Placemark1.getChildNodes().item(0);
+        // First XML child element should be the kml:name one
+        Node kmlName = Placemark1.getChildNodes().item(0);
+        assertTrue(KML.name.getLocalPart().equals(kmlName.getLocalName()));
+
+        // ExtendedData (second XML element)
+        Node extData1 = Placemark1.getChildNodes().item(1);
         assertTrue(KML.ExtendedData.getLocalPart().equals(extData1.getLocalName()));
 
-        Node data1 = extData1.getChildNodes().item(0), data2 = extData1.getChildNodes().item(1);
+        Node data1 = extData1.getChildNodes().item(0),
+                data2 = extData1.getChildNodes().item(1);
         assertTrue(KML.Data.getLocalPart().equals(data1.getLocalName()));
         assertTrue(KML.Data.getLocalPart().equals(data2.getLocalName()));
         // We cannot predict the features order, just check the name of the attribute columns.
         Attr attrName1 = (Attr) data1.getAttributes().getNamedItem(KML.name.getLocalPart());
         Attr attrName2 = (Attr) data2.getAttributes().getNamedItem(KML.name.getLocalPart());
 
-        assertTrue("attr1".equals(attrName1.getValue()));
+        assertTrue("name".equals(attrName1.getValue()));
         assertTrue("attr2".equals(attrName2.getValue()));
 
     }

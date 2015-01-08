@@ -127,12 +127,12 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         // get just one feature, it's only in the first store
         Filter eq1 = ff.equals(ff.property("ID"), ff.literal("two"));
         assertEquals(new ReferencedEnvelope(-2, 1, 3, 6, CRS.decode("EPSG:4326")), store
-                .getFeatureSource(BASIC_POLYGONS).getBounds(new Query(null, eq1)));
+                .getFeatureSource(BASIC_POLYGONS).getFeatures(new Query(null, eq1)).getBounds());
 
         // get just one feature, it's only in the second store
         Filter eq2 = ff.equals(ff.property("ID"), ff.literal("four"));
         assertEquals(new ReferencedEnvelope(2, 4, 2, 4, CRS.decode("EPSG:4326")), store
-                .getFeatureSource(BASIC_POLYGONS).getBounds(new Query(null, eq2)));
+                .getFeatureSource(BASIC_POLYGONS).getFeatures(new Query(null, eq2)).getBounds());
     }
     
     @Test

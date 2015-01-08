@@ -716,7 +716,16 @@ public class DataUtilitiesTest extends DataTestCase {
         assertTrue((Boolean) mixed.getHints().get(Hints.USE_PROVIDED_FID));
         assertTrue((Boolean) mixed.getHints().get(Hints.FEATURE_2D));
     }
-
+    
+    public void testSimplifyFilter() {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Filter filter = ff.and(Filter.INCLUDE, Filter.INCLUDE);
+        Query query = new Query(Query.ALL);
+        query.setFilter(filter);
+        DataUtilities.simplifyFilter(query);
+        assertEquals(Filter.INCLUDE, query.getFilter());
+    }
+    
     public void testSpecNoCRS() throws Exception {
         String spec = "id:String,polygonProperty:Polygon";
         SimpleFeatureType ft = DataUtilities.createType("testType", spec);

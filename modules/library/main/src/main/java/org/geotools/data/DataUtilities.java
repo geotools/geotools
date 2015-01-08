@@ -84,6 +84,7 @@ import org.geotools.feature.type.GeometryDescriptorImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.PropertyNameResolvingVisitor;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.metadata.iso.citation.Citations;
@@ -132,6 +133,7 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+
 import org.geotools.data.view.DefaultView;
 
 /**
@@ -2394,7 +2396,8 @@ public class DataUtilities {
      * it does not means that all the properties will be joined. You must create the query with the
      * names of the properties you want to load.</li>
      * <li>
-     * filter: the filtets of both queries are or'ed</li>
+     * filter: the filters of both queries are or'ed, then simplified using 
+     * SimplifiyingFilterVisitor</li>
      * <li>
      * <b>any other query property is ignored</b> and no guarantees are made of their return values,
      * so client code shall explicitly care of hints, startIndex, etc., if needed.</li>
@@ -2462,6 +2465,7 @@ public class DataUtilities {
         } else if ((filter2 != null) && !filter2.equals(Filter.INCLUDE)) {
             filter = ff.and(filter, filter2);
         }
+        filter = SimplifyingFilterVisitor.simplify(filter);
         Integer start = 0;
         if (firstQuery.getStartIndex() != null) {
             start = firstQuery.getStartIndex();
@@ -2488,6 +2492,18 @@ public class DataUtilities {
             mixed.setStartIndex(start);
         }
         return mixed;
+    }
+    
+    /**
+     * This method changes the query object by simplifying the filter using SimplifyingFilterVisitor
+     */
+    public static Query simplifyFilter(Query query) {
+        if (query == null) {
+            return query;
+        }
+        Filter filter = SimplifyingFilterVisitor.simplify(query.getFilter());
+        query.setFilter(filter);
+        return query;
     }
 
     /**

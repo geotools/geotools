@@ -102,12 +102,13 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  */
 public abstract class ContentDataStore implements DataStore {
 
-    /**
-     * writer flags
-     */
+    /** Flag writer for adding new content */
     protected final static int WRITER_ADD = 0x01<<0;
+    /** Flag writer for updating content in place */
     protected final static int WRITER_UPDATE = 0x01<<1;
-    
+    /** Flag writer for commit (AUTO_COMMIT with no events) */
+    protected final static int WRITER_COMMIT = 0x01<<2;
+
     /**
      * name, entry map
      */

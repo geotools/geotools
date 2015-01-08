@@ -6,7 +6,7 @@
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file. Use it well and enjoy!
  */
-package org.geotools.data.csv;
+package org.geotools.tutorial.csv2;
 
 import java.io.File;
 import java.io.FileReader;

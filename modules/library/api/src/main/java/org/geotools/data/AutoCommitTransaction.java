@@ -21,7 +21,7 @@ import java.util.Set;
 
 
 /**
- * This is used to represent the absense of a Transaction and the use of
+ * This is used to represent the absence of a Transaction and the use of
  * AutoCommit.
  *
  * <p>
@@ -162,7 +162,7 @@ class AutoCommitTransaction implements Transaction {
      * AutoCommit does not save State.
      *
      * <p>
-     * While symetry would be good, state should be commited not stored for
+     * While symmetry would be good, state should be committed not stored for
      * later.
      * </p>
      *

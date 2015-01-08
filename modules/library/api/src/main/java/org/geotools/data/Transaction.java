@@ -137,11 +137,6 @@ public interface Transaction {
      * This may be used to provide hints to DataStore implementations, it
      * operates as a blackboard for client, SimpleFeatureSource communication.
      * </p>
-     *
-     * <p>
-     * If this proves successful addAuthorization/getAuthorization will be
-     * replaced with this mechanism.
-     * </p>
      */
     Object getProperty(Object key);
 

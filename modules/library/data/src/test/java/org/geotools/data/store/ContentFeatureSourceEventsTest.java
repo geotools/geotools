@@ -139,10 +139,10 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
 
         store1.getTransaction().commit();
 
-        assertEquals(2, listener1.events.size());
-        assertEquals(2, listener2.events.size());
+        assertEquals(1, listener1.events.size());
+        assertEquals(1, listener2.events.size());
 
-        event = listener2.getEvent(1);
+        event = listener2.getEvent(0);
         assertEquals(feature.getBounds(), event.getBounds());
         assertEquals(FeatureEvent.Type.COMMIT, event.getType());
 

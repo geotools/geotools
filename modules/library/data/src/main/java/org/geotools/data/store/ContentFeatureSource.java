@@ -27,7 +27,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Diff;
 import org.geotools.data.DiffFeatureReader;
@@ -61,7 +60,6 @@ import org.geotools.filter.function.Collection_MinFunction;
 import org.geotools.filter.function.Collection_SumFunction;
 import org.geotools.filter.function.Collection_UniqueFunction;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
 import org.geotools.util.NullProgressListener;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
@@ -387,22 +385,23 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             Diff diff = state.getDiff();
             
             // don't compute the bounds of the features that are modified or removed in the diff
-            Iterator it = diff.getModified().keySet().iterator();
+            Iterator<String> i = diff.getModified().keySet().iterator();
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
             Set<FeatureId> modifiedFids = new HashSet<FeatureId>();
-            while(it.hasNext()){
-                String featureId = (String)it.next();
+            while(i.hasNext()){
+                String featureId = i.next();
                 modifiedFids.add(ff.featureId(featureId));
             }
-            Id idFilter = ff.id(modifiedFids);
+            Filter skipFilter = ff.not( ff.id(modifiedFids) );
+            
             Query q = new Query(query);
-            q.setFilter(ff.and(idFilter, query.getFilter()));
+            q.setFilter(ff.and(skipFilter, query.getFilter()));
             bounds = getBoundsInternal(q);
             
             // update with the diff contents, all added feature and all modified, not deleted ones
             if(bounds != null) {
                 // new ones
-                it = diff.getAdded().values().iterator();
+                Iterator<SimpleFeature> it = diff.getAdded().values().iterator();
                 while(it.hasNext()){
                     SimpleFeature feature = (SimpleFeature) it.next();
                     BoundingBox fb = feature.getBounds();
@@ -461,10 +460,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             Diff diff = state.getDiff();
             synchronized (diff) {
                 // consider newly added features that satisfy the filter
-                Iterator it = diff.getAdded().values().iterator();
+                Iterator<SimpleFeature> it = diff.getAdded().values().iterator();
                 Filter filter = query.getFilter();
                 while(it.hasNext()){
-                    Object feature = it.next();
+                    SimpleFeature feature = it.next();
                     if(filter.evaluate(feature)) {
                         count++;
                     }
@@ -929,10 +928,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         query = resolvePropertyNames(query);
         
         //reflectively create subclass
-        Class clazz = getClass();
+        Class<?> clazz = getClass();
         
         try {
-            Constructor c = clazz.getConstructor(ContentEntry.class,Query.class);
+            Constructor<?> c = clazz.getConstructor(ContentEntry.class,Query.class);
             ContentFeatureSource source = (ContentFeatureSource) c.newInstance(getEntry(),query);
             
             //set the transaction

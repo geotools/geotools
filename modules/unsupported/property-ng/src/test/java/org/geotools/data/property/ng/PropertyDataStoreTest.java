@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import junit.framework.TestCase;
 
 import org.geotools.data.DataUtilities;
@@ -43,6 +44,8 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.WKTReader2;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.IllegalAttributeException;
@@ -81,12 +84,12 @@ public class PropertyDataStoreTest extends TestCase {
             file.delete();
         }
         BufferedWriter writer = new BufferedWriter( new FileWriter( file ) );
-        writer.write("_=id:Integer,name:String"); writer.newLine();
-        writer.write("fid1=1|jody"); writer.newLine();
-        writer.write("fid2=2|brent"); writer.newLine();
-        writer.write("fid3=3|dave"); writer.newLine();
-        writer.write("fid4=4|justin"); writer.newLine();
-        writer.write("fid5=5|");
+        writer.write("_=id:Integer,name:String,geom:Point"); writer.newLine();
+        writer.write("fid1=1|jody|POINT(0 0)"); writer.newLine();
+        writer.write("fid2=2|brent|POINT(1 1)"); writer.newLine();
+        writer.write("fid3=3|dave|POINT(2 2)"); writer.newLine();
+        writer.write("fid4=4|justin|POINT(3 3)"); writer.newLine();
+        writer.write("fid5=5||");
         writer.close();
         
         file = new File( dir ,"dots.in.name.properties");
@@ -158,7 +161,7 @@ public class PropertyDataStoreTest extends TestCase {
         assertNotNull( type );
         assertEquals( "road", type.getTypeName() );
         assertEquals( "propertyTestData", type.getName().getNamespaceURI().toString() );
-        assertEquals( 2, type.getAttributeCount() );
+        assertEquals( 3, type.getAttributeCount() );
         
         AttributeDescriptor id = type.getDescriptor(0);
         AttributeDescriptor name = type.getDescriptor(1);
@@ -422,10 +425,10 @@ public class PropertyDataStoreTest extends TestCase {
         int count = road.getCount(Query.ALL);
         assertEquals( 5, count );
         
-        assertTrue( road.getBounds(Query.ALL).isNull() );
+        assertTrue( !road.getBounds(Query.ALL).isNull() );
         assertEquals( 5, features.size() );
         
-        assertTrue( features.getBounds().isNull() );
+        assertTrue( !features.getBounds().isNull() );
         assertEquals( 5, features.size() );
     }
 
@@ -481,7 +484,6 @@ public class PropertyDataStoreTest extends TestCase {
             public void visit(Feature f) {
                 SimpleFeature feature = (SimpleFeature) f;
                 String name = (String) feature.getAttribute("name");
-                System.out.println( name );
                 assertNull( "represent null", name );
             }
         },null);
@@ -509,9 +511,11 @@ public class PropertyDataStoreTest extends TestCase {
         },null);
     }
     public void testTransactionIndependence() throws Exception {
+        WKTReader2 wkt = new WKTReader2();
         SimpleFeatureType ROAD = store.getSchema( "road" );
         SimpleFeature chrisFeature =
-            SimpleFeatureBuilder.build(ROAD, new Object[]{ new Integer(5), "chris"}, "fid5" );
+            SimpleFeatureBuilder.build(ROAD,
+                    new Object[]{ new Integer(5), "chris", wkt.read("POINT(6 6)")},"fid5");
         
         SimpleFeatureStore roadAuto = (SimpleFeatureStore) store.getFeatureSource("road");
         
@@ -530,7 +534,13 @@ public class PropertyDataStoreTest extends TestCase {
         assertEquals( "auto before", 5, roadAuto.getFeatures().size() );
         assertEquals( "client 1 before", 5, roadFromClient1.getFeatures().size() );
         assertEquals( "client 2 before", 5, roadFromClient2.getFeatures().size() );
-
+        
+        ReferencedEnvelope bounds = roadAuto.getFeatures().getBounds();
+        ReferencedEnvelope client1Bounds = roadFromClient1.getFeatures().getBounds();
+        ReferencedEnvelope client2Bounds = roadFromClient2.getFeatures().getBounds();
+        assertTrue( "client 1 before", bounds.equals( client1Bounds ));
+        assertTrue( "client 2 before", bounds.equals( client2Bounds ));
+        
         // Remove Feature with Fid1
         roadFromClient1.removeFeatures( selectFid1 ); // road1 removes fid1 on t1
         
@@ -538,20 +548,44 @@ public class PropertyDataStoreTest extends TestCase {
         assertEquals( "client 1 after client 1 removes fid1", 4, roadFromClient1.getFeatures().size() );
         assertEquals( "client 2 after client 1 removes fid1", 5, roadFromClient2.getFeatures().size() );
         
+        bounds = roadAuto.getFeatures().getBounds();
+        client1Bounds = roadFromClient1.getFeatures().getBounds();
+        client2Bounds = roadFromClient2.getFeatures().getBounds();
+        assertFalse( "client 1 after client 1 removes fid1", bounds.equals( client1Bounds ));
+        assertTrue( "client 2 after client 1 removes fid1", bounds.equals( client2Bounds ));
+        
         roadFromClient2.addFeatures( DataUtilities.collection( chrisFeature )); // road2 adds fid5 on t2
         assertEquals( "auto after client 1 removes fid1 and client 2 adds fid5", 5, roadAuto.getFeatures().size() );
         assertEquals( "client 1 after client 1 removes fid1 and client 2 adds fid5", 4, roadFromClient1.getFeatures().size() );
-        assertEquals( "cleint 2 after client 1 removes fid1 and client 2 adds fid5", 6, roadFromClient2.getFeatures().size() );
+        assertEquals( "client 2 after client 1 removes fid1 and client 2 adds fid5", 6, roadFromClient2.getFeatures().size() );
+        
+        bounds = roadAuto.getFeatures().getBounds();
+        client1Bounds = roadFromClient1.getFeatures().getBounds();
+        client2Bounds = roadFromClient2.getFeatures().getBounds();
+        assertFalse( "client 1 after client 1 removes fid1 and client 2 adds fid5", bounds.equals( client1Bounds ));
+        assertFalse( "client 2 after client 1 removes fid1 and client 2 adds fid5", bounds.equals( client2Bounds ));
         
         transaction1.commit();
         assertEquals( "auto after client 1 commits removal of fid1 (client 2 has added fid5)", 4, roadAuto.getFeatures().size() );
         assertEquals( "client 1 after commiting removal of fid1 (client 2 has added fid5)", 4, roadFromClient1.getFeatures().size() );
         assertEquals( "client 2 after client 1 commits removal of fid1 (client 2 has added fid5)", 5, roadFromClient2.getFeatures().size() );
         
+        bounds = roadAuto.getFeatures().getBounds();
+        client1Bounds = roadFromClient1.getFeatures().getBounds();
+        client2Bounds = roadFromClient2.getFeatures().getBounds();
+        assertTrue( "client 1 after commiting removal of fid1 (client 2 has added fid5)", bounds.equals( client1Bounds ));
+        assertFalse( "client 2 after client 1 commits removal of fid1 (client 2 has added fid5)", bounds.equals( client2Bounds ));
+        
         transaction2.commit();
         assertEquals( "auto after client 2 commits addition of fid5 (fid1 previously removed)", 5, roadAuto.getFeatures().size() );
         assertEquals( "client 1 after client 2 commits addition of fid5 (fid1 previously removed)", 5, roadFromClient1.getFeatures().size() );
         assertEquals( "client 2 after commiting addition of fid5 (fid1 previously removed)", 5, roadFromClient2.getFeatures().size() );
+        
+        bounds = roadAuto.getFeatures().getBounds();
+        client1Bounds = roadFromClient1.getFeatures().getBounds();
+        client2Bounds = roadFromClient2.getFeatures().getBounds();
+        assertTrue( "client 1 after commiting addition of fid5 (fid1 previously removed)", bounds.equals( client1Bounds ));
+        assertTrue( "client 2 after commiting addition of fid5 (fid1 previously removed)", bounds.equals( client2Bounds ));
     }
     
     public void testUseExistingFid() throws Exception {

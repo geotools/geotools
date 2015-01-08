@@ -1,6 +1,8 @@
 package org.geotools.feature;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -83,4 +85,32 @@ public class FeatureTypesTest {
         Assert.assertEquals("Feature", types.get(0).getName().getLocalPart());
     }
     
+    @Test
+    public void testEquals() {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("SomeFeature");
+        builder.setCRS(null);
+        builder.add("name", String.class);
+        builder.add("geom1", Point.class);
+        builder.add("geom2", Point.class);
+        builder.setDefaultGeometry("geom1");
+        SimpleFeatureType ft1 = builder.buildFeatureType();
+        builder.setName("SomeFeature");
+        builder.setCRS(null);
+        builder.add("name", String.class);
+        builder.add("geom1", Point.class);
+        builder.add("geom2", Point.class);
+        builder.setDefaultGeometry("geom1");
+        SimpleFeatureType ft2 = builder.buildFeatureType();
+        assertTrue(FeatureTypes.equalsExact(ft1, ft2));
+        
+        builder.setName("SomeFeature");
+        builder.setCRS(null);
+        builder.add("name", String.class);
+        builder.add("geom1", Point.class);
+        builder.add("geom2", Point.class);
+        builder.setDefaultGeometry("geom2");
+        ft2 = builder.buildFeatureType();
+        assertFalse(FeatureTypes.equalsExact(ft1, ft2));
+    }
 }

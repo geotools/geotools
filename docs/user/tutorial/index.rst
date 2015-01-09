@@ -25,5 +25,4 @@ to GIS workshop making use of examples from GeoTools and other Java libraries.
    factory
    function
    process
-   abstractdatastore
    datastore/index

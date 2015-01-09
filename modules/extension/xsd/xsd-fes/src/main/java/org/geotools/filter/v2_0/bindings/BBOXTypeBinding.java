@@ -16,10 +16,24 @@
  */
 package org.geotools.filter.v2_0.bindings;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDFactory;
+import org.eclipse.xsd.XSDParticle;
 import org.geotools.filter.v1_0.OGCBBOXTypeBinding;
 import org.geotools.filter.v2_0.FES;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.gml3.v3_2.GML;
+import org.geotools.referencing.CRS;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 
 /**
@@ -51,5 +65,49 @@ public class BBOXTypeBinding extends OGCBBOXTypeBinding {
 
     public QName getTarget() {
         return FES.BBOXType;
+    }
+
+    public Class getType() {
+        return BBOX.class;
+    }
+
+    @Override
+    public Object getProperty(Object object, QName name) throws Exception {
+        BBOX box = (BBOX) object;
+        
+        if (FES.ValueReference.equals(name)) {
+            if (box.getExpression1() instanceof PropertyName) {
+                return box.getExpression1();
+            }
+        }
+        
+        return null;
+    }
+    
+    @Override
+    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+        BBOX box = (BBOX) object;
+        
+        List properties = new ArrayList();
+        
+        XSDParticle particle = XSDFactory.eINSTANCE.createXSDParticle();
+        particle.setContent(GML.getInstance().getSchema().resolveElementDeclaration(GML.Envelope.getLocalPart()));
+        particle.setMinOccurs(0);
+        particle.setMaxOccurs(-1);
+        
+        Envelope env;
+        try {
+            String srs = box.getSRS();
+            if(srs != null) {
+                CoordinateReferenceSystem crs = CRS.decode(srs);
+                env = new ReferencedEnvelope(box.getMinX(), box.getMaxX(), box.getMinY(), box.getMaxY(), crs);
+            }
+        } catch(Throwable t) {
+            // never mind
+        }
+        env = new Envelope(box.getMinX(), box.getMaxX(), box.getMinY(), box.getMaxY());
+        
+        properties.add( new Object[] {particle, env} );       
+        return properties;
     }
 }

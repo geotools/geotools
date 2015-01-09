@@ -48,6 +48,7 @@ import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.identity.Version;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
+import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
@@ -249,6 +250,10 @@ public class FilterMockData {
         propertyIsEqualTo(document, not);
 
         return not;
+    }
+
+    public static BBOX bbox() {
+        return f.bbox(f.property("the_geom"), 5,5,100,100, "epsg:4326");
     }
 
     public static Beyond beyond() {

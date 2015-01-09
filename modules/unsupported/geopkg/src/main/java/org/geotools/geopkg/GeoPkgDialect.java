@@ -254,6 +254,25 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
     }
 
+    @Override
+    public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {
+        super.postDropTable(schemaName, featureType, cx);
+        FeatureEntry fe = (FeatureEntry) featureType.getUserData().get(FeatureEntry.class);
+        if (fe == null) {
+            fe = new FeatureEntry();
+            fe.setIdentifier(featureType.getTypeName());
+            fe.setDescription(featureType.getTypeName());
+            fe.setTableName(featureType.getTypeName());
+        }
+        GeoPackage geopkg = geopkg();
+        try {
+            geopkg.deleteGeoPackageContentsEntry(fe);
+            geopkg.deleteGeometryColumnsEntry(fe);
+        } catch (IOException e) {
+            throw new SQLException(e);
+        }
+    }
+
     public Integer getGeometrySRID(String schemaName, String tableName, String columnName, Connection cx) throws SQLException {
         try {
             FeatureEntry fe = geopkg().feature(tableName);

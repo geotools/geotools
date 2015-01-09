@@ -32,6 +32,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.apache.commons.io.FileUtils;
 import org.geotools.TestData;
@@ -61,7 +62,9 @@ import org.geotools.geopkg.Tile;
 import org.geotools.geopkg.TileEntry;
 import org.geotools.geopkg.TileMatrix;
 import org.geotools.geopkg.TileReader;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.sql.SqlUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -142,6 +145,68 @@ public class GeoPackageTest {
         }
     }
 
+    boolean doesEntryExists(String table, Entry entry) throws Exception {
+        boolean exists = false;
+        Connection cx = geopkg.getDataSource().getConnection();
+        try {
+            String sql =  String.format("SELECT * FROM %s WHERE table_name = ?", table);
+            SqlUtil.PreparedStatementBuilder psb = SqlUtil.prepare(cx, sql).set(entry.getTableName());
+            PreparedStatement ps = psb.log(Level.FINE).statement();
+            try {
+                ResultSet rs = ps.executeQuery();
+                try {
+                    while(rs.next()) {
+                        exists = true;
+                    }
+                } finally {
+                    rs.close();
+                }
+            }
+            finally {
+                ps.close();
+            }
+        }
+        catch(Exception e) {
+            fail(e.getMessage());
+        }
+        finally {
+            cx.close();
+        }
+        return exists;
+    }
+
+    @Test
+    public void testDeleteGeoPackageContentsEntry() throws Exception {
+        Entry entry = new Entry();
+        entry.setTableName("points");
+        entry.setDataType(Entry.DataType.Feature);
+        entry.setIdentifier("points");
+        entry.setBounds(new ReferencedEnvelope(-180,180,-90,90, CRS.decode("EPSG:4326")));
+        entry.setSrid(4326);
+
+        geopkg.addGeoPackageContentsEntry(entry);
+        assertTrue(doesEntryExists(GeoPackage.GEOPACKAGE_CONTENTS, entry));
+        geopkg.deleteGeoPackageContentsEntry(entry);
+        assertFalse(doesEntryExists(GeoPackage.GEOPACKAGE_CONTENTS, entry));
+    }
+
+    @Test
+    public void testDeleteGeometryColumnsEntry() throws Exception {
+        FeatureEntry entry = new FeatureEntry();
+        entry.setTableName("points");
+        entry.setDataType(Entry.DataType.Feature);
+        entry.setIdentifier("points");
+        entry.setBounds(new ReferencedEnvelope(-180,180,-90,90, CRS.decode("EPSG:4326")));
+        entry.setSrid(4326);
+        entry.setGeometryColumn("geom");
+        entry.setGeometryType(Geometries.POINT);
+
+        geopkg.addGeometryColumnsEntry(entry);
+        assertTrue(doesEntryExists(GeoPackage.GEOMETRY_COLUMNS, entry));
+        geopkg.deleteGeometryColumnsEntry(entry);
+        assertFalse(doesEntryExists(GeoPackage.GEOMETRY_COLUMNS, entry));
+    }
+
     @Test
     public void testCreateFeatureEntry() throws Exception {
         ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
@@ -165,8 +230,8 @@ public class GeoPackageTest {
         re.close();
         ra.close();
     }
-    
-    @Test 
+
+    @Test
     public void testFunctions() throws Exception {
         ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
         SimpleFeatureReader re = Features.simple(shp.getFeatureReader());

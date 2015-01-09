@@ -15,7 +15,7 @@ understood names for common spatial ideas and constructs.
 The *gt-opengis* module provides:
 
 * interfaces implemented by :doc:`gt-main <../main/index>` such as Feature, FeatureType, Filter and Function
-* interfaces implemented by :doc:`gt-coverage <../referencing/index>` such as GridCoverage
+* interfaces implemented by :doc:`gt-coverage <../coverage/index>` such as GridCoverage
 * interfaces implemented by :doc:`gt-referencing <../referencing/index>` such as CoordinateReferenceSystem
 * interfaces implemented by :doc:`gt-metadata <../metadata/index>` such as Citation
 

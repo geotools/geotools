@@ -481,6 +481,15 @@ public class FootprintExtractionProcessTest {
     }
 
     @Test
+    public void valuesEqualityTest() throws Exception {
+        double p1 = 0.2;
+        double p2 = 2d / 10;
+        double p3 = 0.21;
+        assertTrue(MarchingSquaresVectorizer.areEqual(p1, p2));
+        assertFalse(MarchingSquaresVectorizer.areEqual(p1, p3));
+    }
+
+    @Test
     public void cloudExtractionWriteToDisk() throws Exception {
         GeoTiffReader reader = null;
         FeatureIterator<SimpleFeature> iter = null;

@@ -16,11 +16,14 @@
  */
 package org.geotools.coverage;
 
-import java.util.Random;
-import org.opengis.referencing.operation.TransformException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import java.util.Random;
+
+import org.junit.Test;
+import org.opengis.referencing.operation.MathTransform1D;
+import org.opengis.referencing.operation.TransformException;
 
 
 /**
@@ -68,40 +71,6 @@ public final class CategoryTest {
     }
 
     /**
-     * Make sure that qualitative category produce the expected result.
-     *
-     * @throws TransformException If an error occured while transforming a value.
-     */
-    @Test
-    public void testQualitativeCategory() throws TransformException {
-        for (int pass=0; pass<100; pass++) {
-            final int      sample    = random.nextInt(64);
-            final Category category1 = new Category("Auto", null, sample);
-            final Category category2 = new Category(category1.getName(),
-                                                    category1.getColors(),
-                                                    category1.getRange(),
-                                                    category1.getSampleToGeophysics());
-
-            assertEquals("<init>", category1, category2);
-            assertValueEquals("lower",  category1.geophysics(false).getRange().getMinValue().intValue(), sample);
-            assertValueEquals("upper",  category1.geophysics(false).getRange().getMaxValue().intValue(), sample);
-
-            assertNull("geophysics(false)", category1.geophysics(false).getSampleToGeophysics());
-            assertNull("geophysics(true)",  category1.geophysics(true ).getSampleToGeophysics());
-            for (int i=0; i<200; i++) {
-                final double x  = 100*random.nextDouble();
-                final double y1 = category1.transform.transform(x);
-                final double y2 = category2.transform.transform(x);
-                assertTrue("toGeophysics(1)", Double.isNaN(y1));
-                assertTrue("toGeophysics(2)", Double.isNaN(y2));
-                assertEquals("NaN", Double.doubleToRawLongBits(y1), Double.doubleToRawLongBits(y2));
-                assertEquals("toSample(1)", sample, category1.inverse.transform.transform(y1), 0);
-                assertEquals("toSample(2)", sample, category2.inverse.transform.transform(y2), 0);
-            }
-        }
-    }
-
-    /**
      * Make sure that linear category produce the expected result.
      * This test check also if the default {@link MathTransform1D}
      * for a linear relation is right.
@@ -110,25 +79,14 @@ public final class CategoryTest {
      */
     @Test
     public void testLinearCategory() throws TransformException {
-        final double EPS = 1E-9;
         for (int pass=0; pass<100; pass++) {
             final int     lower = random.nextInt(64);
             final int     upper = random.nextInt(128) + lower+1;
-            final double  scale = 10*random.nextDouble() + 0.1; // Must be positive for this test.
-            final double offset = 10*random.nextDouble() - 5.0;
-            final Category category = new Category("Auto", null, lower, upper, scale, offset);
+            final Category category = new Category("Auto", null, lower, upper);
 
-            assertValueEquals("lower",  category.geophysics(false).getRange().getMinValue().intValue(), lower);
-            assertValueEquals("upper",  category.geophysics(false).getRange().getMaxValue().intValue(), upper);
-            assertValueEquals("minimum", category.geophysics(true).getRange().getMinValue().doubleValue(), lower*scale+offset, EPS);
-            assertValueEquals("maximum", category.geophysics(true).getRange().getMaxValue().doubleValue(), upper*scale+offset, EPS);
+            assertValueEquals("lower",  category.getRange().getMinValue().intValue(), lower);
+            assertValueEquals("upper",  category.getRange().getMaxValue().intValue(), upper);
 
-            for (int i=0; i<200; i++) {
-                final double x = 100*random.nextDouble();
-                final double y = x*scale + offset;
-                assertEquals("toGeophysics", y,     category.transform.transform(x), EPS);
-                assertEquals("toSample", x, category.inverse.transform.transform(y), EPS);
-            }
         }
     }
 }

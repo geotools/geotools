@@ -504,13 +504,12 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 			if (Double.isNaN(inNoData)) {
 				nan = new Category(Vocabulary
 						.formatInternational(VocabularyKeys.NODATA), new Color(
-						0, 0, 0, 0), 0);
+						0, 0, 0, 0), Double.NaN);
 
 			} else {
 				nan = new Category(Vocabulary
 						.formatInternational(VocabularyKeys.NODATA),
 						new Color[] { new Color(0, 0, 0, 0) }, 
-						NumberRange.create(0, 0),
 						NumberRange.create(inNoData, inNoData));
 	
 
@@ -527,7 +526,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 	                       throw new IOException("Unrecognized sample dimension type");
 	                
 			final GridSampleDimension band = new GridSampleDimension(
-					coverageName, new Category[] { nan }, uom).geophysics(true);
+					coverageName, new Category[] { nan }, uom);
 			final Map<String, Double> properties = new HashMap<String, Double>();
 			properties.put("GC_NODATA", new Double(inNoData));
 
@@ -548,7 +547,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 			throw new DataSourceException(e);
 		}
 	}
-
 	/**
 	 * This method is responsible for building up an envelope according to the
 	 * definition of the crs. It assumes that X coordinate on the ascii grid

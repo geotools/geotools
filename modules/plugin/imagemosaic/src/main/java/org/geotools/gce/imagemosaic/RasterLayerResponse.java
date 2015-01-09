@@ -180,7 +180,6 @@ class RasterLayerResponse{
 		private Unit<?> unit;
 		private SampleDimensionType type;
 		private ColorInterpretation color;
-		private Category bkg;
 
 		public SimplifiedGridSampleDimension(
 				CharSequence description,
@@ -195,7 +194,6 @@ class RasterLayerResponse{
 			super(description,!Double.isNaN(nodata)?
 					new Category[]{new Category(Vocabulary
 		                    .formatInternational(VocabularyKeys.NODATA), new Color[]{new Color(0, 0, 0, 0)} , NumberRange
-		                    .create(nodata, nodata), NumberRange
 		                    .create(nodata, nodata))}:null,unit);
 			this.nodata=nodata;
 			this.minimum=minimum;
@@ -205,7 +203,6 @@ class RasterLayerResponse{
 			this.unit=unit;
 			this.type=type;
 			this.color=color;
-			this.bkg=new Category("Background", Utils.TRANSPARENT, 0);
 		}
 
 
@@ -241,11 +238,6 @@ class RasterLayerResponse{
 		}
 
 		@Override
-		public MathTransform1D getSampleToGeophysics() {
-			return super.getSampleToGeophysics();
-		}
-
-		@Override
 		public Unit<?> getUnits() {
 			return unit;
 		}
@@ -258,12 +250,6 @@ class RasterLayerResponse{
 		@Override
 		public ColorInterpretation getColorInterpretation() {
 			return color;
-		}
-
-
-		@Override
-		public Category getBackground() {
-			return bkg;
 		}
 
 		@Override
@@ -1841,7 +1827,7 @@ class RasterLayerResponse{
 	        		1,							//no scale 
 	        		0,							//no offset
 	        		null
-	        		).geophysics(true);
+	        		);
 		}
 		
         // creating the final coverage by keeping into account the fact that we

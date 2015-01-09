@@ -49,7 +49,6 @@ import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.processing.CannotReprojectException;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.factory.Hints;
@@ -161,26 +160,17 @@ final class Resampler2D extends GridCoverage2D {
     private static GridCoverage2D create(final GridCoverage2D source,
                                          final PlanarImage    image,
                                          final GridGeometry2D geometry,
-                                         final ViewType       finalView,
                                          final String         operation,
                                          final Warp           warp,
                                          final Hints          hints)
     {
-        GridSampleDimension[] sampleDimensions;
-        switch (finalView) {
-            case PHOTOGRAPHIC: {
-                sampleDimensions = null;
-                break;
-            }
-            default: {
-                sampleDimensions = source.getSampleDimensions();
-                break;
-            }
-        }
+        GridSampleDimension[] sampleDimensions = source.getSampleDimensions();
+
         // Ensure no SampleDimension is defined if the ColorModel must be expanded
         if (sampleDimensions != null && isColorModelExpanded(source.getRenderedImage(), hints)) {
             sampleDimensions = null;
         }
+
         /**
          * Build up transformation info properties: this can be used by the client to decide
          * whether it wants to actually do the resample (which might take hours with WarpAdapter on
@@ -203,7 +193,6 @@ final class Resampler2D extends GridCoverage2D {
          * Try to restore the original view.
          */
         GridCoverage2D coverage = new Resampler2D(source, image, geometry, sampleDimensions, properties, hints);
-        coverage = coverage.view(finalView);
         return coverage;
     }
     
@@ -395,10 +384,6 @@ final class Resampler2D extends GridCoverage2D {
          * is available as a source of the source coverage (i.e. the floating-point image
          * is derived from the integer image, not the converse).
          */
-        final ViewType processingView = CoverageUtilities.preferredViewForOperation(
-                                        sourceCoverage, interpolation, false, hints);
-        final ViewType finalView = CoverageUtilities.preferredViewAfterOperation(sourceCoverage);
-        sourceCoverage = sourceCoverage.view(processingView);
         PlanarImage sourceImage = PlanarImage.wrapRenderedImage(sourceCoverage.getRenderedImage());
         assert sourceCoverage.getCoordinateReferenceSystem() == sourceCRS : sourceCoverage;
         // From this point, consider 'sourceCoverage' as final.
@@ -532,7 +517,15 @@ final class Resampler2D extends GridCoverage2D {
         ////                                                                                ////
         ////////////////////////////////////////////////////////////////////////////////////////
 
-        final RenderingHints targetHints = processingView.getRenderingHints(sourceImage);
+        RenderingHints targetHints = ImageUtilities.getRenderingHints(sourceImage);
+        if (targetHints == null) {
+            targetHints = new RenderingHints(JAI.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        } else {
+            targetHints.put(JAI.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        }
+        targetHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
+        targetHints.put(JAI.KEY_TRANSFORM_ON_COLORMAP, false);
+        
         if (hints != null) {
             targetHints.add(hints);
         }
@@ -575,9 +568,7 @@ final class Resampler2D extends GridCoverage2D {
          * provide an ImageLayout built with the source image where the CM and the SM are valid.
          * those will be employed overriding a the possibility to expand the color model.
          */
-        if (ViewType.PHOTOGRAPHIC.equals(processingView)) {
-            layout.unsetValid(ImageLayout.COLOR_MODEL_MASK | ImageLayout.SAMPLE_MODEL_MASK);
-        }
+        
         targetHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
 
         ////////////////////////////////////////////////////////////////////////////////////////
@@ -604,7 +595,7 @@ final class Resampler2D extends GridCoverage2D {
              * Since there is no interpolation to perform, use the native view (which may be
              * packed or geophysics - it is just the view which is closest to original data).
              */
-            sourceCoverage = sourceCoverage.view(ViewType.NATIVE);
+            
             sourceImage = PlanarImage.wrapRenderedImage(sourceCoverage.getRenderedImage());
             paramBlk.removeSources();
             paramBlk.addSource(sourceImage);
@@ -616,9 +607,9 @@ final class Resampler2D extends GridCoverage2D {
                  * to create a new coverage) otherwise this condition would have been detected
                  * sooner in this method.
                  */
-                sourceCoverage = sourceCoverage.view(finalView);
+                
                 sourceImage = PlanarImage.wrapRenderedImage(sourceCoverage.getRenderedImage());
-                return create(sourceCoverage, sourceImage, targetGG, ViewType.SAME, null, null, hints);
+                return create(sourceCoverage, sourceImage, targetGG, null, null, hints);
             }
             if (sourceBB.contains(targetBB)) {
                 operation = "Crop";
@@ -662,7 +653,7 @@ final class Resampler2D extends GridCoverage2D {
                      * using heuristic rules. Only the constructor with a MathTransform argument
                      * is fully accurate.
                      */
-                    return create(sourceCoverage, sourceImage, targetGG, finalView, null, null, hints);
+                    return create(sourceCoverage, sourceImage, targetGG, null, null, hints);
                 }
                 // More general approach: apply the affine transform.
                 operation = "Affine";
@@ -755,7 +746,7 @@ final class Resampler2D extends GridCoverage2D {
          *     is "Warp" with "Nearest" interpolation on geophysics pixels values. Background
          *     value is 255.
          */
-        targetCoverage = create(sourceCoverage, targetImage, targetGG, finalView, operation, warp, hints);
+        targetCoverage = create(sourceCoverage, targetImage, targetGG, operation, warp, hints);
         assert CRS.equalsIgnoreMetadata(targetCoverage.getCoordinateReferenceSystem(), targetCRS) : targetGG;
         assert targetCoverage.getGridGeometry().getGridRange2D().equals(targetImage.getBounds())  : targetGG;
         if (CoverageProcessor.LOGGER.isLoggable(LOGGING_LEVEL)) {
@@ -769,7 +760,7 @@ final class Resampler2D extends GridCoverage2D {
                 /*  {5} */ targetImage.getWidth(),
                 /*  {6} */ targetImage.getHeight(),
                 /*  {7} */ targetImage.getOperationName(),
-                /*  {8} */ Integer.valueOf(sourceCoverage == sourceCoverage.view(ViewType.GEOPHYSICS) ? 1 : 0),
+                /*  {8} */ Integer.valueOf(1),
                 /*  {9} */ ImageUtilities.getInterpolationName(interpolation),
                 /* {10} */ (background != null) ? background.length == 1 ? (Double.isNaN(background[0]) ? (Object) "NaN"
                                  : (Object) Double.valueOf(background[0]))

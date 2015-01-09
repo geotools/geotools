@@ -41,7 +41,6 @@ import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
@@ -173,7 +172,7 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
     public void testRead_08bit_U_4Band() throws Exception {
         GridCoverage2D coverage = testReadFullLevel0(TYPE_8BIT_U, 4);
 
-        final RenderedImage image = coverage.view(ViewType.GEOPHYSICS).getRenderedImage();
+        final RenderedImage image = coverage.getRenderedImage();
         assertEquals(DataBuffer.TYPE_BYTE, image.getSampleModel().getTransferType());
 
         ColorModel colorModel = image.getColorModel();
@@ -187,7 +186,7 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
     public void testRead_08bit_U_3Band() throws Exception {
         GridCoverage2D coverage = testReadFullLevel0(TYPE_8BIT_U, 3);
 
-        final RenderedImage image = coverage.view(ViewType.GEOPHYSICS).getRenderedImage();
+        final RenderedImage image = coverage.getRenderedImage();
         assertEquals(DataBuffer.TYPE_BYTE, image.getSampleModel().getTransferType());
 
         ColorModel colorModel = image.getColorModel();
@@ -253,17 +252,12 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
     public void testRead_32bit_REAL_1Band() throws Exception {
         GridCoverage2D coverage = testReadFullLevel0(TYPE_32BIT_REAL, 1);
 
-        RenderedImage geophysics = coverage.geophysics(true).getRenderedImage();
-        RenderedImage rendered = coverage.geophysics(false).getRenderedImage();
+        RenderedImage geophysics = coverage.getRenderedImage();
 
         ColorModel gpCm = geophysics.getColorModel();
         SampleModel gpSm = geophysics.getSampleModel();
 
-        ColorModel rCm = rendered.getColorModel();
-        SampleModel rSm = geophysics.getSampleModel();
-
         System.out.println("Geophysics: \t" + gpCm + "\n\t" + gpSm);
-        System.out.println("Rendered  : \t" + rCm + "\n\t" + rSm);
 
         System.out.println(Float.NaN);
         Float valueOf = Float.valueOf("NaN");
@@ -429,7 +423,7 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
 
         // ////assertEquals(cellType.getDataBufferType(), image.getSampleModel().getDataType());
 
-        RenderedImage nativeImage = coverage.view(ViewType.NATIVE).getRenderedImage();
+        RenderedImage nativeImage = coverage.getRenderedImage();
         final int[] sampleSize = nativeImage.getSampleModel().getSampleSize();
         final ColorModel colorModel = nativeImage.getColorModel();
 
@@ -497,7 +491,7 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
 
         final String fileName = "tesReadOverlapsSampleRGBIamge";
 
-        final RenderedImage image = coverage.view(ViewType.GEOPHYSICS).getRenderedImage();
+        final RenderedImage image = coverage.getRenderedImage();
         assertNotNull(image);
         writeToDisk(coverage, fileName);
 
@@ -559,7 +553,7 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
 
         final String fileName = "tesReadOverlaps_Level0_8BitU_1-Band";
 
-        final RenderedImage image = coverage.view(ViewType.GEOPHYSICS).getRenderedImage();
+        final RenderedImage image = coverage.getRenderedImage();
         assertNotNull(image);
         writeToDisk(coverage, fileName);
 
@@ -645,12 +639,8 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
                 throw e;
             }
         }
-        RenderedImage rendered = coverage.view(ViewType.RENDERED).getRenderedImage();
+        RenderedImage rendered = coverage.getRenderedImage();
         writeToDisk(rendered, fileName + "_rendered");
-        RenderedImage geophysics = coverage.view(ViewType.GEOPHYSICS).getRenderedImage();
-        writeToDisk(geophysics, fileName + "_geophysics");
-        RenderedImage photographic = coverage.view(ViewType.PHOTOGRAPHIC).getRenderedImage();
-        writeToDisk(photographic, fileName + "_photographic");
     }
 
     private void writeToDisk(final RenderedImage image, String fileName) throws Exception {

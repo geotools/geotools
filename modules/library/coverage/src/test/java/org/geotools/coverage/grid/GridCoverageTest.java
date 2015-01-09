@@ -58,17 +58,6 @@ public final class GridCoverageTest extends GridCoverageTestBase {
         final GridCoverage2D coverage = getRandomCoverage(crs);
         assertRasterEquals(coverage, coverage); // Actually a test of assertEqualRasters(...).
         assertSame(coverage.getRenderedImage(), coverage.getRenderableImage(0,1).createDefaultRendering());
-        /*
-         * Tests the creation of a "geophysics" view. This test make sure that the
-         * 'geophysics' method do not creates more grid coverage than needed.
-         */
-        GridCoverage2D geophysics= coverage.view(ViewType.GEOPHYSICS);
-        assertSame(coverage,       coverage.view(ViewType.PACKED));
-        assertSame(coverage,     geophysics.view(ViewType.PACKED));
-        assertSame(geophysics,   geophysics.view(ViewType.GEOPHYSICS));
-        assertFalse( coverage.equals(geophysics));
-        assertFalse( coverage.getSampleDimension(0).getSampleToGeophysics().isIdentity());
-        assertTrue(geophysics.getSampleDimension(0).getSampleToGeophysics().isIdentity());
     }
 
     /**
@@ -84,10 +73,6 @@ public final class GridCoverageTest extends GridCoverageTestBase {
             GridCoverage2D serial = serialize(coverage);
             assertNotSame(coverage, serial);
             assertEquals(GridCoverage2D.class, serial.getClass());
-            // Compares the geophysics view for working around the
-            // conversions of NaN values which may be the expected ones.
-            coverage = coverage.view(ViewType.GEOPHYSICS);
-            serial = serial.view(ViewType.GEOPHYSICS);
             assertRasterEquals(coverage, serial);
         }
     }

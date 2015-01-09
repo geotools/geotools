@@ -29,7 +29,6 @@ import javax.media.jai.iterator.RectIterFactory;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -208,9 +207,6 @@ public class CoverageTestBase {
      * @param coverage The coverage to display.
      */
     protected static void show(Coverage coverage) {
-        if (coverage instanceof GridCoverage2D) {
-            coverage = ((GridCoverage2D) coverage).view(ViewType.PACKED);
-        }
         final RenderedImage image = coverage.getRenderableImage(0,1).createDefaultRendering();
         try {
             Class.forName("org.geotools.gui.swing.OperationTreeBrowser")

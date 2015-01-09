@@ -6,7 +6,6 @@ org.geotools.coverage.processing.operation.Crop
 org.geotools.coverage.processing.operation.DivideByConst
 org.geotools.coverage.processing.operation.Exp
 org.geotools.coverage.processing.operation.FilteredSubsample
-org.geotools.coverage.processing.operation.GradientMagnitude
 org.geotools.coverage.processing.operation.Interpolate
 org.geotools.coverage.processing.operation.Invert
 org.geotools.coverage.processing.operation.Log

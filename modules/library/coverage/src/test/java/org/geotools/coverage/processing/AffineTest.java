@@ -26,7 +26,6 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.geotools.factory.Hints;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.grid.GridCoverage2D;
-import static org.geotools.coverage.grid.ViewType.*;
 
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -52,8 +51,7 @@ public class AffineTest extends GridProcessingTestBase {
      */
     @Before
     public void setUp() {
-        Hints hints = new Hints(Hints.COVERAGE_PROCESSING_VIEW, PHOTOGRAPHIC);
-        processor = CoverageProcessor.getInstance(hints);
+        processor = CoverageProcessor.getInstance(null);
     }
 
     /**
@@ -74,56 +72,29 @@ public class AffineTest extends GridProcessingTestBase {
         //
         ///////////////////////////////////////////////////////////////////////
         Interpolation interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
-        affine(originallyIndexedCoverage      .view(PACKED), interp);
-        affine(indexedCoverage                .view(PACKED), interp);
-        affine(indexedCoverageWithTransparency.view(PACKED), interp);
+        affine(originallyIndexedCoverage      , interp);
+        affine(indexedCoverage                , interp);
+        affine(indexedCoverageWithTransparency, interp);
 
         ///////////////////////////////////////////////////////////////////////
         //
-        // Nearest neighbor interpolation and geophysics view.
-        //
-        ///////////////////////////////////////////////////////////////////////
-        affine(originallyIndexedCoverage      .view(GEOPHYSICS), interp);
-        affine(indexedCoverage                .view(GEOPHYSICS), interp);
-        affine(indexedCoverageWithTransparency.view(GEOPHYSICS), interp);
-
-        ///////////////////////////////////////////////////////////////////////
-        //
-        // Bilinear interpolation and non-geo view
+        // Bilinear interpolation 
         //
         ///////////////////////////////////////////////////////////////////////
         interp = Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
-        affine(indexedCoverage                .view(PACKED), interp);
-        affine(indexedCoverageWithTransparency.view(PACKED), interp);
+        affine(indexedCoverage                , interp);
+        affine(indexedCoverageWithTransparency, interp);
 
         ///////////////////////////////////////////////////////////////////////
         //
-        // Bilinear interpolation and geo view
+        // Nearest neighbor  interpolation  for a float coverage
         //
         ///////////////////////////////////////////////////////////////////////
-        affine(indexedCoverage                .view(GEOPHYSICS), interp);
-        affine(indexedCoverageWithTransparency.view(GEOPHYSICS), interp);
-
-        ///////////////////////////////////////////////////////////////////////
-        //
-        // Bilinear interpolation and non-geo view for a float coverage
-        //
-        ///////////////////////////////////////////////////////////////////////
-        // on this one the subsample average should NOT go back to the
-        // geophysiscs view before being applied
-
-        ///////////////////////////////////////////////////////////////////////
-        //
-        // Nearest neighbor  interpolation and non-geo view for a float coverage
-        //
-        ///////////////////////////////////////////////////////////////////////
-        // on this one the subsample average should NOT go back to the
-        // geophysiscs view before being applied
         interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
-        affine(floatCoverage.view(PACKED), interp);
+        affine(floatCoverage, interp);
 
         // Play with a rotated coverage
-        affine(rotate(floatCoverage.view(GEOPHYSICS), Math.PI/4), null);
+        affine(rotate(floatCoverage, Math.PI/4), null);
     }
 
     /**

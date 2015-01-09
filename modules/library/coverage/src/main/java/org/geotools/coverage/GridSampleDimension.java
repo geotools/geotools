@@ -26,9 +26,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import javax.measure.unit.Unit;
-import javax.media.jai.JAI;
 
 import org.geotools.referencing.operation.transform.LinearTransform1D;
 import org.geotools.resources.ClassChanger;
@@ -42,12 +42,12 @@ import org.geotools.resources.image.ColorUtilities;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
+import org.geotools.util.logging.Logging;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.PaletteInterpretation;
 import org.opengis.coverage.SampleDimension;
 import org.opengis.coverage.SampleDimensionType;
 import org.opengis.referencing.operation.MathTransform1D;
-import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
 
 
@@ -66,9 +66,7 @@ import org.opengis.util.InternationalString;
  * </pre></blockquote>
  *
  * In this example, sample values in range {@code [10..210]} defines a quantitative category,
- * while all others categories are qualitative. The difference between those two kinds of category
- * is that the {@link Category#getSampleToGeophysics} method returns a non-null transform if and
- * only if the category is quantitative.
+ * while all others categories are qualitative. 
  * <p>
  * While this class can be used with arbitrary {@linkplain org.opengis.coverage.Coverage coverage},
  * the primary target for this implementation is {@linkplain org.opengis.coverage.grid.GridCoverage
@@ -88,34 +86,18 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      */
     private static final long serialVersionUID = 6026936545776852758L;
 
+    private static final double DELTA = 1E-10;
+
     /**
-     * A sample dimension wrapping the list of categories {@code CategoryList.inverse}.
-     * This object is constructed and returned by {@link #geophysics}. Constructed when first
-     * needed, but serialized anyway because it may be a user-supplied object.
+     * The logger for grid sample dimensions.
      */
-    private GridSampleDimension inverse;
+    public static final Logger LOGGER = Logging.getLogger("org.geotools.coverage");
 
     /**
      * The category list for this sample dimension, or {@code null} if this sample
      * dimension has no category. This field is read by {@code SampleTranscoder} only.
      */
     final CategoryList categories;
-
-    /**
-     * {@code true} if all categories in this sample dimension have been already scaled
-     * to geophysics ranges. If {@code true}, then the {@link #getSampleToGeophysics()}
-     * method should returns an identity transform. Note that the opposite do not always hold:
-     * an identity transform doesn't means that all categories are geophysics. For example,
-     * some qualitative categories may map to some values differents than {@code NaN}.
-     * <p>
-     * Assertions:
-     *  <ul>
-     *    <li>{@code isGeophysics} == {@code categories.isGeophysics(true)}.</li>
-     *    <li>{@code isGeophysics} != {@code categories.isGeophysics(false)}, except
-     *        if {@code categories.geophysics(true) == categories.geophysics(false)}</li>
-     * </ul>
-     */
-    private final boolean isGeophysics;
 
     /**
      * {@code true} if this sample dimension has at least one qualitative category. An arbitrary
@@ -135,21 +117,9 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      */
     private final boolean hasQuantitative;
 
-    /**
-     * The {@link Category#getSampleToGeophysics sampleToGeophysics} transform used by every
-     * quantitative {@link Category}, or {@code null}. This field may be null for two reasons:
-     *
-     * <ul>
-     *   <li>There is no quantitative category in this sample dimension.</li>
-     *   <li>There is more than one quantitative category, and all of them don't use the same
-     *       {@link Category#getSampleToGeophysics sampleToGeophysics} transform.</li>
-     * </ul>
-     *
-     * This field is used by {@link #getOffset} and {@link #getScale}. The
-     * {@link #getSampleToGeophysics} method may also returns directly this
-     * value in some conditions.
-     */
-    private final MathTransform1D sampleToGeophysics;
+    private double scale = 1;
+
+    private double offset = 0;
 
     /**
      * Decription for this sample dimension. Typically used as a way to perform a band select by
@@ -168,7 +138,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @since 2.3
      */
     public GridSampleDimension(final CharSequence description) {
-        this(description, (CategoryList) null);
+        this(description, (CategoryList) null, 1, 0);
     }
 
     /**
@@ -193,7 +163,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     {
         // TODO: 'list(...)' should be inlined there if only Sun was to fix RFE #4093999
         // ("Relax constraint on placement of this()/super() call in constructors").
-        this(description, list(categoriesNames));
+        this(description, list(categoriesNames), 1, 0);
     }
 
     /** Constructs a list of categories. Used by constructors only. */
@@ -235,7 +205,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     {
         // TODO: 'list(...)' should be inlined there if only Sun was to fix RFE #4093999
         // ("Relax constraint on placement of this()/super() call in constructors").
-        this(description, list(names, colors));
+        this(description, list(names, colors), 1, 0);
     }
 
     /** Constructs a list of categories. Used by constructors only. */
@@ -329,7 +299,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         // TODO: 'list(...)' should be inlined there if only Sun was to fix RFE #4093999
         //       ("Relax constraint on placement of this()/super() call in constructors").
         this(description, list(description, type, color, palette, categories, nodata,
-                               minimum, maximum, scale, offset, unit));
+                               minimum, maximum, unit), scale, offset);
     }
 
     /** Constructs a list of categories. Used by constructors only. */
@@ -342,8 +312,6 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                                final double[]           nodata,
                                      double            minimum,
                                      double            maximum,
-                               final double              scale,
-                               final double             offset,
                                final Unit<?>              unit)
     {
         if (description == null) {
@@ -351,12 +319,6 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         }
         if (Double.isInfinite(minimum) || Double.isInfinite(maximum) || !(minimum < maximum)) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
-        }
-        if (Double.isNaN(scale) || Double.isInfinite(scale) || scale == 0) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.BAD_PARAMETER_$2, "scale", scale));
-        }
-        if (Double.isNaN(offset) || Double.isInfinite(offset)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.BAD_PARAMETER_$2, "offset", offset));
         }
         if (type == null) {
             type = TypeMap.getSampleDimensionType(minimum, maximum);
@@ -389,7 +351,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             }
             final NumberRange<?> range = new NumberRange(value.getClass(), value, value);
             final Color[] colors = ColorUtilities.subarray(palette, intValue, intValue + 1);
-            categoryList.add(new Category(name, colors, range, (MathTransform1D) null));
+            categoryList.add(new Category(name, colors, range, false));
         }
         /*
          * STEP 2 - Add a qualitative category for each category name.
@@ -426,7 +388,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                 }
                 final NumberRange<?> range = new NumberRange(classe, min, max);
                 final Color[] colors = ColorUtilities.subarray(palette, lower, upper);
-                categoryList.add(new Category(name, colors, range, (MathTransform1D) null));
+                categoryList.add(new Category(name, colors, range, false));
                 lower = upper;
             }
         }
@@ -446,7 +408,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
          *            category is useless. Consequently, it is probably a numeric raster instead.
          */
         boolean needQuantitative = false;
-        if (scale != 1 || offset != 0 || nodataCount != 0 || categoryList.size() <= 1) {
+        if (nodataCount != 0 || categoryList.size() <= 1) {
             needQuantitative = true;
             for (int i = categoryList.size(); --i >= 0;) {
                 Category category = categoryList.get(i);
@@ -462,7 +424,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                         if (!rangeContains(xmin, xmax, nodata)) {
                             final InternationalString name = category.getName();
                             final Color[] colors = category.getColors();
-                            category = new Category(name, colors, range, scale, offset);
+                            category = new Category(name, colors, range);
                             categoryList.set(i, category);
                             needQuantitative = false;
                         }
@@ -514,7 +476,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                                                                   max, maxIncluded);
                 final Color[] colors = ColorUtilities.subarray(palette,
                         (int) Math.ceil(minimum), (int) Math.floor(maximum));
-                categoryList.add(new Category(description, colors, range, scale, offset));
+                categoryList.add(new Category(description, colors, range));
                 needQuantitative = false;
             }
         }
@@ -560,7 +522,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     {
         // TODO: 'list(...)' should be inlined there if only Sun was to fix RFE #4093999
         // ("Relax constraint on placement of this()/super() call in constructors").
-        this(description, list(categories, units));
+        this(description, list(categories, units), 1, 0);
     }
 
     /** Constructs a list of categories. Used by constructors only. */
@@ -569,9 +531,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             return null;
         }
         final CategoryList list = new CategoryList(categories, units);
-        if (CategoryList.isGeophysics(categories, false)) return list;
-        if (CategoryList.isGeophysics(categories, true )) return list.inverse;
-        throw new IllegalArgumentException(Errors.format(ErrorKeys.MIXED_CATEGORIES));
+        return list;
     }
 
     /**
@@ -583,8 +543,10 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *            returned by {@link #getDescription}.
      * @param list
      *            The list of categories, or {@code null}.
+     * @param offset
+     * @param scale 
      */
-    private GridSampleDimension(final CharSequence description, final CategoryList list) {
+    private GridSampleDimension(final CharSequence description, final CategoryList list, double scale, double offset) {
         /*
          * Checks the supplied description to see if it is null. In such a case it builds up a new
          * description by using the list of categories supplied. This second description may be less
@@ -605,29 +567,24 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         /*
          * Now process to the category examination.
          */
-        MathTransform1D main = null;
-        boolean isMainValid = true;
         boolean qualitative = false;
+        int quantitative = 0;
+        this.scale = scale;
+        this.offset = offset;
         if (list != null) {
             for (int i=list.size(); --i >= 0;) {
-                final MathTransform1D candidate = list.get(i).getSampleToGeophysics();
-                if (candidate == null) {
+                Category category = list.get(i);
+                if (!category.isQuantitative()) {
                     qualitative = true;
                     continue;
+                } else {
+                    quantitative++;
                 }
-                if (main != null) {
-                    isMainValid &= main.equals(candidate);
-                }
-                main = candidate;
             }
-            this.isGeophysics = list.isGeophysics(true);
-        } else {
-            this.isGeophysics = false;
         }
         this.categories = list;
         this.hasQualitative = qualitative;
-        this.hasQuantitative = (main != null);
-        this.sampleToGeophysics = isMainValid ? main : null;
+        this.hasQuantitative = quantitative > 0;
     }
 
     /**
@@ -638,22 +595,22 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      */
     protected GridSampleDimension(final GridSampleDimension other) {
         if (other != null) {
-            inverse            = other.inverse;
             categories         = other.categories;
-            isGeophysics       = other.isGeophysics;
             hasQualitative     = other.hasQualitative;
             hasQuantitative    = other.hasQuantitative;
-            sampleToGeophysics = other.getSampleToGeophysics();
+            scale = other.scale;
+            offset = other.offset;
             description        = other.getDescription();
         } else {
-            // 'inverse' will be set when needed.
             categories         = null;
-            isGeophysics       = false;
             hasQualitative     = false;
             hasQuantitative    = false;
-            sampleToGeophysics = null;
             description        = Vocabulary.formatInternational(VocabularyKeys.UNTITLED);
         }
+    }
+
+    public GridSampleDimension(String description, Category[] categories, double scale, double offset) {
+        this(description, list(categories, null), scale, offset);
     }
 
     /**
@@ -795,55 +752,14 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         return (categories != null) ? categories.getCategory(sample) : null;
     }
 
-    /**
-     * Returns a default category to use for background. A background category is used
-     * when an image is <A HREF="../gp/package-summary.html#Resample">resampled</A> (for
-     * example reprojected in an other coordinate system) and the resampled image do not
-     * fit in a rectangular area. It can also be used in various situation where a raisonable
-     * "no data" category is needed. The default implementation try to returns one
-     * of the {@linkplain #getNoDataValues no data values}. If no suitable category is found,
-     * then a {@linkplain Category#NODATA default} one is returned.
-     *
-     * @return A category to use as background for the "Resample" operation. Never {@code null}.
-     * @deprecated check for no data values instead
-     */
-    public Category getBackground() {
-        return (categories != null) ? categories.nodata : Category.NODATA;
-    }    
 
     /**
-     * Returns the values to indicate "no data" for this sample dimension.  The default
-     * implementation deduces the "no data" values from the list of categories supplied
-     * at construction time. The rules are:
-     *
-     * <ul>
-     *   <li>If {@link #getSampleToGeophysics} returns {@code null}, then {@code getNoDataValues()}
-     *       returns {@code null} as well. This means that this sample dimension contains no category
-     *       or contains only qualitative categories (e.g. a band from a classified image).</li>
-     *
-     *   <li>If {@link #getSampleToGeophysics} returns an identity transform, then
-     *       {@code getNoDataValues()} returns {@code null}. This means that sample value in this
-     *       sample dimension are already expressed in geophysics values and that all "no data"
-     *       values (if any) have already been converted into {@code NaN} values.</li>
-     *
-     *   <li>Otherwise, if there is at least one quantitative category, returns the sample values
-     *       of all non-quantitative categories. For example if "Temperature" is a quantitative
-     *       category and "Land" and "Cloud" are two qualitative categories, then sample values
-     *       for "Land" and "Cloud" will be considered as "no data" values. "No data" values
-     *       that are already {@code NaN} will be ignored.</li>
-     * </ul>
-     *
-     * Together with {@link #getOffset()} and {@link #getScale()}, this method provides a limited
-     * way to transform sample values into geophysics values. However, the recommended way is to
-     * use the {@link #getSampleToGeophysics sampleToGeophysics} transform instead, which is more
-     * general and take care of converting automatically "no data" values into {@code NaN}.
-     *
-     * @return The values to indicate no data values for this sample dimension,
-     *         or {@code null} if not applicable.
-     * @throws IllegalStateException if some qualitative categories use a range of
-     *         non-integer values.
-     *
-     * @see #getSampleToGeophysics
+     * Returns the values to indicate "no data" for this sample dimension. The default implementation deduces the "no data" values from the list of
+     * categories supplied at construction time.
+     * 
+     * @return The values to indicate no data values for this sample dimension, or {@code null} if not applicable.
+     * @throws IllegalStateException if some qualitative categories use a range of non-integer values.
+     * 
      */
     public double[] getNoDataValues() throws IllegalStateException {
         if (!hasQuantitative) {
@@ -854,6 +770,17 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         final int size = categories.size();
         for (int i=0; i<size; i++) {
             final Category category = categories.get(i);
+            if (category.getName().equals(Category.NODATA.getName())) {
+                final double min = category.minimum;
+                final double max = category.maximum;
+                if (Double.isNaN(min) && Double.isNaN(max)) {
+                    return new double[]{min};
+                } else if (Math.abs(min - max) < DELTA) {
+                    return new double[]{min};
+                } else {
+                    return new double[]{min, max};
+                }
+            }
             if (!category.isQuantitative()) {
                 final double min = category.minimum;
                 final double max = category.maximum;
@@ -983,9 +910,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *       category name is returned as of {@link Category#getName}.</li>
      *
      *   <li>Otherwise, if {@code value} maps a quantitative category, then the value is
-     *       transformed into a geophysics value as with the {@link #getSampleToGeophysics()
-     *       sampleToGeophysics} transform, the result is formatted as a number and the unit
-     *       symbol is appened.</li>
+     * formatted as a number and the unit symbol is appened.</li>
      * </ul>
      *
      * @param  value  The sample value (can be one of {@code NaN} values).
@@ -999,26 +924,17 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      */
     public String getLabel(final double value, final Locale locale) {
         if (categories != null) {
-            if (isGeophysics) {
-                return categories.format(value, locale);
-            } else try {
-                return categories.inverse.format(categories.transform(value), locale);
-            } catch (TransformException exception) {
-                // Value probably don't match a category. Ignore...
-            }
+            return categories.format(value, locale);
         }
         return null;
     }
 
     /**
      * Returns the unit information for this sample dimension. May returns {@code null}
-     * if this dimension has no units. This unit apply to values obtained after the
-     * {@link #getSampleToGeophysics sampleToGeophysics} transformation.
-     *
-     * @see #getSampleToGeophysics
+     * if this dimension has no units.
      */
     public Unit<?> getUnits() {
-        return (categories != null) ? categories.geophysics(true).getUnits() : null;
+        return (categories != null) ? categories.getUnits() : null;
     }
 
     /**
@@ -1029,20 +945,13 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * <blockquote><pre>offset + scale*sample</pre></blockquote>
      *
      * Together with {@link #getScale()} and {@link #getNoDataValues()}, this method provides a
-     * limited way to transform sample values into geophysics values. However, the recommended
-     * way is to use the {@link #getSampleToGeophysics sampleToGeophysics} transform instead,
-     * which is more general and take care of converting automatically "no data" values
-     * into {@code NaN}.
+     * limited way to transform sample values into geophysics values. 
      *
      * @return The offset to add to grid values.
-     * @throws IllegalStateException if the transform from sample to geophysics values
-     *         is not a linear relation.
      *
-     * @see #getSampleToGeophysics
-     * @see #rescale
      */
-    public double getOffset() throws IllegalStateException {
-        return getCoefficient(0);
+    public double getOffset() {
+        return offset;
     }
 
     /**
@@ -1053,136 +962,14 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * <blockquote><pre>offset + scale*sample</pre></blockquote>
      *
      * Together with {@link #getOffset()} and {@link #getNoDataValues()}, this method provides a
-     * limited way to transform sample values into geophysics values. However, the recommended
-     * way is to use the {@link #getSampleToGeophysics sampleToGeophysics} transform instead,
-     * which is more general and take care of converting automatically "no data" values
-     * into {@code NaN}.
+     * limited way to transform sample values into geophysics values. 
      *
      * @return The scale to multiply to grid value.
-     * @throws IllegalStateException if the transform from sample to geophysics values
-     *         is not a linear relation.
-     *
-     * @see #getSampleToGeophysics
-     * @see #rescale
      */
     public double getScale() {
-        return getCoefficient(1);
+        return scale;
     }
 
-    /**
-     * Returns a coefficient of the linear transform from sample to geophysics values.
-     *
-     * @param  order The coefficient order (0 for the offset, or 1 for the scale factor,
-     *         2 if we were going to implement quadratic relation, 3 for cubic, etc.).
-     * @return The coefficient.
-     * @throws IllegalStateException if the transform from sample to geophysics values
-     *         is not a linear relation.
-     */
-    private double getCoefficient(final int order) throws IllegalStateException {
-        if (!hasQuantitative) {
-            // Default value for "offset" is 0; default value for "scale" is 1.
-            // This is equal to the order if 0 <= order <= 1.
-            return order;
-        }
-        Exception cause = null;
-        if (sampleToGeophysics != null) try {
-            final double value;
-            switch (order) {
-                case 0:  value = sampleToGeophysics.transform(0); break;
-                case 1:  value = sampleToGeophysics.derivative(Double.NaN); break;
-                default: throw new AssertionError(order); // Should not happen
-            }
-            if (!Double.isNaN(value)) {
-                return value;
-            }
-        } catch (TransformException exception) {
-            cause = exception;
-        }
-        throw new IllegalStateException(Errors.format(ErrorKeys.NON_LINEAR_RELATION), cause);
-    }
-
-    /**
-     * Returns a transform from sample values to geophysics values. If this sample dimension
-     * has no category, then this method returns {@code null}. If all sample values are
-     * already geophysics values (including {@code NaN} for "no data" values), then this
-     * method returns an identity transform. Otherwise, this method returns a transform expecting
-     * sample values as input and computing geophysics value as output. This transform will take
-     * care of converting all "{@linkplain #getNoDataValues() no data values}" into
-     * {@code NaN} values.
-     * <p>
-     * The <code>sampleToGeophysics.{@linkplain MathTransform1D#inverse() inverse()}</code>
-     * transform is capable to differenciate {@code NaN} values to get back the original
-     * sample value.
-     *
-     * @return The transform from sample to geophysics values, or {@code null} if this
-     *         sample dimension do not defines any transform (which is not the same that
-     *         defining an identity transform).
-     *
-     * @see #getScale
-     * @see #getOffset
-     * @see #getNoDataValues
-     * @see #rescale
-     */
-    public MathTransform1D getSampleToGeophysics() {
-        if (isGeophysics) {
-            return LinearTransform1D.IDENTITY;
-        }
-        if (!hasQualitative && sampleToGeophysics!=null) {
-            // If there is only quantitative categories and they all use the same transform,
-            // then we don't need the indirection level provided by CategoryList.
-            return sampleToGeophysics;
-        }
-        // CategoryList is a MathTransform1D.
-        return categories;
-    }
-
-    /**
-     * Returns the {@linkplain org.geotools.coverage.grid.ViewType#GEOPHYSICS geophysics} or
-     * {@linkplain org.geotools.coverage.grid.ViewType#PACKED packed} view of this sample dimension.
-     * By definition, a <cite>geophysics sample dimension</cite> is a sample dimension with a
-     * {@linkplain #getRange range of sample values} transformed in such a way that the
-     * {@linkplain #getSampleToGeophysics sample to geophysics} transform is always the
-     * {@linkplain MathTransform1D#isIdentity identity} transform, or {@code null} if no such
-     * transform existed in the first place. In other words, the range of sample values in all
-     * {@linkplain Category categories} maps directly the "<cite>real world</cite>" values
-     * without the need for any transformation.
-     * <p>
-     * {@code GridSampleDimension} objects live by pair: a
-     * {@linkplain org.geotools.coverage.grid.ViewType#GEOPHYSICS geophysics} one (used for
-     * computation) and a {@linkplain org.geotools.coverage.grid.ViewType#PACKED packed} one
-     * (used for storing data, usually as integers). The {@code geo} argument specifies which
-     * object from the pair is wanted, regardless if this method is invoked on the geophysics or
-     * packed instance of the pair.
-     *
-     * @param  geo {@code true} to get a sample dimension with an identity
-     *         {@linkplain #getSampleToGeophysics transform} and a {@linkplain #getRange range of
-     *         values} matching the {@linkplain org.geotools.coverage.grid.ViewType#GEOPHYSICS
-     *         geophysics} values, or {@code false} to get back the
-     *         {@linkplain org.geotools.coverage.grid.ViewType#PACKED packed} sample dimension.
-     * @return The sample dimension. Never {@code null}, but may be {@code this}.
-     *
-     * @see Category#geophysics
-     * @see org.geotools.coverage.grid.GridCoverage2D#view
-     */
-    public GridSampleDimension geophysics(final boolean geo) {
-        if (geo == isGeophysics) {
-            return this;
-        }
-        if (inverse == null) {
-            if (categories != null) {
-                inverse = new GridSampleDimension(description, categories.inverse);
-                inverse.inverse = this;
-            } else {
-                /*
-                 * If there is no categories, then there is no real difference between geophysics
-                 * and packed sample dimensions. Both kinds of sample dimensions would be identical
-                 * objects, so we are better to just returns 'this'.
-                 */
-                inverse = this;
-            }
-        }
-        return inverse;
-    }
 
     /**
      * Color palette associated with the sample dimension. A color palette can have any number of
@@ -1242,9 +1029,6 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     /**
      * Returns a color model for this sample dimension. The default implementation create a color
      * model with 1 band using each category's colors as returned by {@link Category#getColors}.
-     * The returned color model will typically use {@link DataBuffer#TYPE_FLOAT} if this sample
-     * dimension is {@linkplain org.geotools.coverage.grid.ViewType#GEOPHYSICS geophysics}, or
-     * an integer data type otherwise.
      * <p>
      * Note that {@link org.geotools.coverage.grid.GridCoverage2D#getSampleDimension} returns
      * special implementations of {@code GridSampleDimension}. In this particular case,
@@ -1265,10 +1049,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
 
     /**
      * Returns a color model for this sample dimension. The default implementation create the
-     * color model using each category's colors as returned by {@link Category#getColors}. The
-     * returned color model will typically use {@link DataBuffer#TYPE_FLOAT} if this sample
-     * dimension is {@linkplain org.geotools.coverage.grid.ViewType#GEOPHYSICS geophysics},
-     * or an integer data type otherwise.
+     * color model using each category's colors as returned by {@link Category#getColors}. 
      *
      * @param  visibleBand The band to be made visible (usually 0). All other bands, if any
      *         will be ignored.
@@ -1286,7 +1067,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      */
     public ColorModel getColorModel(final int visibleBand, final int numBands) {
         if (categories != null) {
-            if (isGeophysics && hasQualitative) {
+            if (hasQualitative) {
                 // Data likely to have NaN values, which require a floating point type.
                 return categories.getColorModel(visibleBand, numBands, DataBuffer.TYPE_FLOAT);
             }
@@ -1321,39 +1102,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         return null;
     }
 
-    /**
-     * Returns a sample dimension using new {@link #getScale scale} and {@link #getOffset offset}
-     * coefficients. Other properties like the {@linkplain #getRange sample value range},
-     * {@linkplain #getNoDataValues no data values} and {@linkplain #getColorModel colors}
-     * are unchanged.
-     *
-     * @param scale  The value which is multiplied to grid values for the new sample dimension.
-     * @param offset The value to add to grid values for the new sample dimension.
-     * @return The scaled sample dimension.
-     *
-     * @see #getScale
-     * @see #getOffset
-     * @see Category#rescale
-     */
-    public GridSampleDimension rescale(final double scale, final double offset) {
-        final MathTransform1D sampleToGeophysics = Category.createLinearTransform(scale, offset);
-        final Category[] categories = (Category[]) getCategories().toArray();
-        boolean changed = false;
-        for (int i=0; i<categories.length; i++) {
-            Category category = categories[i];
-            if (category.isQuantitative()) {
-                category = category.rescale(sampleToGeophysics);
-            }
-            category = category.geophysics(isGeophysics);
-            if (!categories[i].equals(category)) {
-                categories[i] = category;
-                changed = true;
-            }
-        }
-        return changed ? new GridSampleDimension(description, categories, getUnits()) : this;
-    }
-
-    /**
+     /**
      * Returns a hash value for this sample dimension.
      * This value need not remain consistent between
      * different implementations of the same class.
@@ -1398,40 +1147,5 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         } else {
             return Classes.getShortClassName(this) + "[\"" + description + "\"]";
         }
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////
-    ////////                                                                 ////////
-    ////////        REGISTRATION OF "SampleTranscode" IMAGE OPERATION        ////////
-    ////////                                                                 ////////
-    /////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Register the "SampleTranscode" image operation.
-     * Registration is done when the class is first loaded.
-     *
-     * @todo This static initializer will imply immediate class loading of a lot of
-     *       JAI dependencies.  This is a pretty high overhead if JAI is not wanted
-     *       right now. The correct approach is to declare the image operation into
-     *       the {@code META-INF/registryFile.jai} file, which is automatically
-     *       parsed during JAI initialization. Unfortunatly, it can't access private
-     *       classes and we don't want to make our registration classes public. We
-     *       can't move our registration classes into a hidden "resources" package
-     *       neither because we need package-private access to {@code CategoryList}.
-     *       For now, we assume that people using the GC package probably want to work
-     *       with {@link org.geotools.coverage.grid.GridCoverage2D}, which make extensive
-     *       use of JAI. Peoples just working with {@link org.geotools.coverage.Coverage} are
-     *       stuck with the overhead. Note that we register the image operation here because
-     *       the only operation's argument is of type {@code GridSampleDimension[]}.
-     *       Consequently, the image operation may be invoked at any time after class
-     *       loading of {@link GridSampleDimension}.
-     *       <p>
-     *       Additional note: moving the initialization into the
-     *       {@code META-INF/registryFile.jai} file may not be the best idea neithter,
-     *       since peoples using JAI without the GCS module may be stuck with the overhead
-     *       of loading GC classes.
-     */
-    static {
-        SampleTranscoder.register(JAI.getDefaultInstance());
     }
 }

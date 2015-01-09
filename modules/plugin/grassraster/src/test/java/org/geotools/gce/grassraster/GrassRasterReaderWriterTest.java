@@ -94,7 +94,6 @@ public class GrassRasterReaderWriterTest extends TestCase {
         GridCoverageReader reader = format.getReader(fileToRead);
         GridCoverage2D gc = ((GridCoverage2D) reader.read(null));
         assertTrue(gc != null);
-        assertTrue(CoverageUtilities.hasRenderingCategories(gc));
 
         checkMatrixEqual(gc.getRenderedImage(), mapData, 0);
 

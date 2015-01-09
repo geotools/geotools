@@ -35,7 +35,6 @@ import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
@@ -223,7 +222,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
 
         writeToDisk(coverage, "testRead_" + tableName);
 
-        RenderedImage image = coverage.view(ViewType.RENDERED).getRenderedImage();
+        RenderedImage image = coverage.getRenderedImage();
         writeToDisk(image, tableName);
     }
 
@@ -361,10 +360,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
                                     reqHeight, reqEnv);
                             assertNotNull("read coverage returned null", coverage);
 
-                            RenderedImage image = coverage.view(ViewType.PHOTOGRAPHIC)
-                                    .getRenderedImage();
-                            // RenderedImage image =
-                            // coverage.view(ViewType.NATIVE).getRenderedImage();
+                            RenderedImage image = coverage.getRenderedImage();
                             Stopwatch sw = new Stopwatch();
                             sw.start();
                             writeToDisk(image, "testRead_" + tableName);
@@ -438,7 +434,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         // RenderedImage image = coverage.getRenderedImage();
         // writeToDisk(coverage, "testRead_" + tableName);
 
-        RenderedImage image = coverage.view(ViewType.RENDERED).getRenderedImage();
+        RenderedImage image = coverage.getRenderedImage();
         writeToDisk(image, tableName);
 
         writeBand(image, new int[] { 0 }, "red");
@@ -735,7 +731,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         // RenderedImage image = coverage.getRenderedImage();
         // writeToDisk(coverage, "testRead_" + tableName);
 
-        RenderedImage image = coverage.view(ViewType.RENDERED).getRenderedImage();
+        RenderedImage image = coverage.getRenderedImage();
         writeToDisk(image, tableName);
 
         // writeBand(image, new int[] { 0 }, "band1");

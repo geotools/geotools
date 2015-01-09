@@ -50,7 +50,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
+
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
@@ -320,7 +320,6 @@ public final class GridCoverageRenderer {
         }
         // this prevents users from overriding lenient hint
         this.hints.put(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE);
-        this.hints.put(Hints.COVERAGE_PROCESSING_VIEW, ViewType.SAME);
         
         //SG add hints for the border extender
         this.hints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER,BorderExtender.createInstance(BorderExtender.BORDER_COPY)));
@@ -460,7 +459,7 @@ public final class GridCoverageRenderer {
             symbolizerGC = preSymbolizer;
         }
         if (DEBUG) {
-            writeRenderedImage( symbolizerGC.geophysics(false).getRenderedImage(),"postSymbolizer");
+            writeRenderedImage( symbolizerGC.getRenderedImage(),"postSymbolizer");
         }
         return symbolizerGC;
     }            	
@@ -492,9 +491,7 @@ public final class GridCoverageRenderer {
         }finally{
             if (DEBUG) {
                 if(afterReprojection!=null){
-                    writeRenderedImage(
-                            afterReprojection.geophysics(false).getRenderedImage(),
-                            "afterReprojection");
+                    writeRenderedImage(afterReprojection.getRenderedImage(), "afterReprojection");
                 }
             }
         }
@@ -559,9 +556,7 @@ public final class GridCoverageRenderer {
         }
 
         if (DEBUG) {
-            writeRenderedImage(
-                    outputCoverage.geophysics(false).getRenderedImage(),
-                    "crop");
+            writeRenderedImage(outputCoverage.getRenderedImage(), "crop");
         }
         return outputCoverage;
         

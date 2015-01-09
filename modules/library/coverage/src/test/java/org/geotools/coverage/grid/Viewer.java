@@ -161,11 +161,6 @@ public class Viewer extends JPanel {
         if (name != null) {
             buffer.append(name.toString(JComponent.getDefaultLocale()));
         }
-        if (coverage != coverage.view(ViewType.GEOPHYSICS)) {
-            buffer.append(" (packed)");
-        } else if (coverage != coverage.view(ViewType.RENDERED)) {
-            buffer.append(" (geophysics)");
-        }
         return show(new Viewer(coverage), buffer.toString());
     }
 
@@ -267,7 +262,6 @@ public class Viewer extends JPanel {
         final PrintWriter     out = arguments.out;
         final Locale       locale = arguments.locale;
         final String    operation = arguments.getOptionalString ("-operation");
-        final Boolean  geophysics = arguments.getOptionalBoolean("-geophysics");
         final boolean     palette = arguments.getFlag           ("-palette");
         args = arguments.getRemainingArguments(1);
         if (args.length == 0) {
@@ -281,16 +275,11 @@ public class Viewer extends JPanel {
             out.println("  -operation=[s]  An operation name to apply (e.g. \"GradientMagniture\").");
             out.println("                  For a list of available operations, run the following:");
             out.println("                  java org.geotools.coverage.processing.DefaultProcessor");
-            out.println("  -geophysics=[b] Set to 'true' or 'false' for requesting a \"geophysics\"");
-            out.println("                  version of data or an indexed version, respectively.");
             out.println("  -palette        Dumps RGB codes to standard output.");
             out.flush();
             return;
         }
         GridCoverage2D coverage = GridCoverageTestBase.EXAMPLES.get(Integer.parseInt(args[0]));
-        if (geophysics != null) {
-            coverage = coverage.view(geophysics.booleanValue() ? ViewType.GEOPHYSICS : ViewType.RENDERED);
-        }
         if (operation != null) {
             final CoverageProcessor processor = CoverageProcessor.getInstance();
             final ParameterValueGroup param = processor.getOperation(operation).getParameters();

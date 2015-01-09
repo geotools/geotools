@@ -658,12 +658,11 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader implements
 		
 		final Category nan =
 		    new Category(Vocabulary.format(VocabularyKeys.NODATA), new Color[] { new Color(0, 0, 0, 0) },
-				NumberRange.create(0, 0), NumberRange.create((short) -9999,
-						(short) -9999));
+				NumberRange.create(-9999, -9999));
 		final GridSampleDimension band = new GridSampleDimension(
 				"digital-elevation", new Category[] { nan }, uom);
 
-		return band.geophysics(true);
+		return band;
 	}
 
 }

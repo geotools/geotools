@@ -168,8 +168,7 @@ public final class RasterDatasetInfo {
 
             final boolean geophysics = isGeoPhysics();
 
-            Category valuesCat = new Category("values", colorRange, sampleValueRange,
-                    LinearTransform1D.IDENTITY).geophysics(geophysics);
+            Category valuesCat = new Category("values", colorRange, sampleValueRange);
 
             Category[] categories;
             if (geophysics) {
@@ -199,8 +198,7 @@ public final class RasterDatasetInfo {
             // .geophysics(false) because our sample model always corresponds to the packed view
             // (whether it matches the underlying sample depth or we're promoting in order to make
             // room for the nodata value).
-            GridSampleDimension sampleDim = new GridSampleDimension(bandName, categories, null)
-                    .geophysics(false);
+            GridSampleDimension sampleDim = new GridSampleDimension(bandName, categories, null);
 
             dimensions.add(sampleDim);
         }

@@ -711,7 +711,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
             final ColorInterpretation colorInterpretation = TypeMap.getColorInterpretation(cm, i);
             if (colorInterpretation == null)
                 throw new IOException("Unrecognized sample dimension type");
-            bands[i] = new GridSampleDimension(colorInterpretation.name()).geophysics(true);
+            bands[i] = new GridSampleDimension(colorInterpretation.name());
         }
         // creating coverage
         if (raster2Model != null) {

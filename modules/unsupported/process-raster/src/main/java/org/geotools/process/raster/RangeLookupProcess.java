@@ -154,7 +154,7 @@ public class RangeLookupProcess implements RasterProcess {
         
         // build the output sample dimensions, use the default value ( 0 ) as the no data
         final GridSampleDimension outSampleDimension = new GridSampleDimension("classification",
-                new Category[] { Category.NODATA }, null).geophysics(true);
+                new Category[] { Category.NODATA }, null);
         final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D output = factory.create("reclassified", indexedClassification, coverage
                 .getGridGeometry(), new GridSampleDimension[] { outSampleDimension },

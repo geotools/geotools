@@ -16,9 +16,6 @@
  */
 package org.geotools.coverage.processing;
 
-import static org.geotools.coverage.grid.ViewType.GEOPHYSICS;
-import static org.geotools.coverage.grid.ViewType.PACKED;
-import static org.geotools.coverage.grid.ViewType.PHOTOGRAPHIC;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -48,16 +45,14 @@ public final class SubsampleAverageTest extends GridProcessingTestBase {
     /**
      * The processors to be used for all tests.
      */
-    private CoverageProcessor defaultProcessor, photographicProcessor;
+    private CoverageProcessor defaultProcessor;
 
     /**
      * Set up common objects used for all tests.
      */
     @Before
     public void setUp() {
-        Hints hints = new Hints(Hints.COVERAGE_PROCESSING_VIEW, PHOTOGRAPHIC);
-        photographicProcessor = CoverageProcessor.getInstance(hints);
-        defaultProcessor      = CoverageProcessor.getInstance(null);
+        defaultProcessor = CoverageProcessor.getInstance(null);
     }
 
     /**
@@ -71,39 +66,21 @@ public final class SubsampleAverageTest extends GridProcessingTestBase {
         final GridCoverage2D floatCoverage                   = EXAMPLES.get(4);
 
         // On this one the Subsample average should do an RGB expansion.
-        subsampleAverage(indexedCoverage.view(GEOPHYSICS), false);
+        subsampleAverage(indexedCoverage);
 
         // On this one the Subsample average should do an RGB expansion preserving alpha.
-        subsampleAverage(indexedCoverageWithTransparency.view(GEOPHYSICS), false);
+        subsampleAverage(indexedCoverageWithTransparency);
 
         // On this one the subsample average should go back to the geophysics
         // view before being applied.
-        subsampleAverage(originallyIndexedCoverage.view(GEOPHYSICS), false);
-
-        // On this one the Subsample average should do an RGB expansion.
-        subsampleAverage(indexedCoverage.view(PACKED), false);
-
-        // On this one the Subsample average should do an RGB expansion preserving alpha.
-        subsampleAverage(indexedCoverageWithTransparency.view(PACKED), false);
-
-        // On this one the subsample average should go back to the geophysics
-        // view before being applied.
-        subsampleAverage(originallyIndexedCoverage.view(PACKED), false);
+        subsampleAverage(originallyIndexedCoverage);
 
         // On this one the subsample average should NOT go back to the
         // geophysics view before being applied.
-        subsampleAverage(floatCoverage.view(PACKED), true);
-
-        // On this one the subsample average should go back to the
-        // geophysiscs view before being applied.
-        subsampleAverage(floatCoverage.view(PACKED), true);
-
-        // On this one the subsample average should go back to the
-        // geophysiscs view before being applied.
-        subsampleAverage(floatCoverage.view(PACKED), true);
+        subsampleAverage(floatCoverage);
 
         // Play with a rotated coverage.
-        subsampleAverage(rotate(floatCoverage.view(GEOPHYSICS), Math.PI/4), false);
+        subsampleAverage(rotate(floatCoverage, Math.PI/4));
     }
 
     /**
@@ -112,7 +89,7 @@ public final class SubsampleAverageTest extends GridProcessingTestBase {
      * @param coverage The coverage on which to apply the operation.
      * @param photographic {@code true} if the operation should be applied on the photographic view.
      */
-    private void subsampleAverage(final GridCoverage2D coverage, final boolean photographic) {
+    private void subsampleAverage(final GridCoverage2D coverage) {
         /*
          * Caching initial properties.
          */
@@ -122,7 +99,7 @@ public final class SubsampleAverageTest extends GridProcessingTestBase {
         /*
          * Get the processor and prepare the first operation.
          */
-        final CoverageProcessor processor = photographic ? photographicProcessor : defaultProcessor;
+        final CoverageProcessor processor = defaultProcessor;
         final ParameterValueGroup param = processor.getOperation("SubsampleAverage").getParameters();
         param.parameter("Source").setValue(coverage);
         param.parameter("scaleX").setValue(Double.valueOf(0.5));

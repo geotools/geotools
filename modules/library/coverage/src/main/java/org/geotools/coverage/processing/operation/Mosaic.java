@@ -40,7 +40,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.processing.CoverageProcessingException;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.factory.GeoTools;
@@ -437,8 +436,8 @@ public class Mosaic extends OperationJAI {
          * Extracts the source grid coverages now as a List. The sources will be set in the ParameterBlockJAI (as RenderedImages) later.
          */
         final Collection<GridCoverage2D> sourceCollection = new ArrayList<GridCoverage2D>();
-        // The ViewType is used in post processing
-        ViewType primarySourceType = extractSources(parameters, sourceCollection);
+        extractSources(parameters, sourceCollection);
+        
         // Selection of the source number
         int numSources = sourceCollection.size();
         GridCoverage2D[] sources = new GridCoverage2D[numSources];
@@ -461,16 +460,11 @@ public class Mosaic extends OperationJAI {
         /*
          * Applies the operation. This delegates the work to the chain of 'deriveXXX' methods.
          */
-        GridCoverage2D coverage = deriveGridCoverage(sources, params);
-        if (primarySourceType != null) {
-            coverage = coverage.view(primarySourceType);
-        }
-        return coverage;
+        return deriveGridCoverage(sources, params);
     }
 
     /**
-     * Extraction of the sources from the parameter called SOURCES. The sources are stored inside a List. The output of the method is an ViewType to
-     * use in post processing.
+     * Extraction of the sources from the parameter called SOURCES. The sources are stored inside a List. 
      * 
      * @param parameters
      * @param sources
@@ -478,7 +472,7 @@ public class Mosaic extends OperationJAI {
      * @throws ParameterNotFoundException
      * @throws InvalidParameterValueException
      */
-    private ViewType extractSources(final ParameterValueGroup parameters,
+    private void extractSources(final ParameterValueGroup parameters,
             final Collection<GridCoverage2D> sources) throws ParameterNotFoundException,
             InvalidParameterValueException {
         Utilities.ensureNonNull("parameters", parameters);
@@ -494,30 +488,12 @@ public class Mosaic extends OperationJAI {
         }
         // Collection of the sources to use
         Collection<GridCoverage2D> sourceCoverages = (Collection<GridCoverage2D>) srcCoverages;
-        // ViewType object
-        ViewType type = null;
-        // Check if the operation must be computed on GeoPhysical values
-        final boolean computeOnGeophysicsValues = computeOnGeophysicsValues(parameters);
-        // Counter for the coverages
-        int i = 0;
         // Cycle on all the Sources
         for (GridCoverage2D source : sourceCoverages) {
             if (source != null) {
-                // Add the view type to the coverage
-                if (computeOnGeophysicsValues) {
-                    final GridCoverage2D old = source;
-                    source = source.view(ViewType.GEOPHYSICS);
-                    if (i == PRIMARY_SOURCE_INDEX) {
-                        type = (old == source) ? ViewType.GEOPHYSICS : ViewType.PACKED;
-                    }
-                }
-                // Store the i-th source
                 sources.add(source);
             }
-            // Counter update
-            i++;
         }
-        return type;
     }
 
     /**

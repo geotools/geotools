@@ -15,7 +15,7 @@
 
   <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>plugin</artifactId>
+    <artifactId>unsupported</artifactId>
     <version>13-SNAPSHOT</version>
   </parent>
 
@@ -24,22 +24,21 @@
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
-  <artifactId>gt-property</artifactId>
+  <artifactId>gt-property-old</artifactId>
   <packaging>jar</packaging>
-  <name>Property File DataStore</name>
+  <name>Property File DataStore (Old)</name>
   
 
   <scm>
     <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/property/
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/property-old/
     </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/property/</url>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/property-old/</url>
   </scm>
 
   <description>
-    DataStore using Java properties files, a useful reference implementation
-    for test cases. This implementation is based on ContentDataStore
-    and supports the use of ResourceId to support history.
+    DataStore based on standard Java properties files, origional created
+    as demo; now serves as a useful reference implementation. This implementaiton is based on AbstractDataStore.
   </description>
 
   <licenses>
@@ -74,7 +73,7 @@
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-data</artifactId>
+      <artifactId>gt-main</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

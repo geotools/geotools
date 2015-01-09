@@ -102,18 +102,6 @@ public class ZonalStats extends BaseStatisticsOperationJAI {
     }
 
     /**
-     * This operation MUST be performed on the geophysics data for this
-     * {@link GridCoverage2D}.
-     * 
-     * @param parameters
-     *            {@link ParameterValueGroup} that describes this operation
-     * @return always true.
-     */
-    protected boolean computeOnGeophysicsValues( ParameterValueGroup parameters ) {
-        return true;
-    }
-
-    /**
      * Prepare the properties for this ZonalStats operation.
      * 
      * @see OperationJAI#getProperties(RenderedImage, CoordinateReferenceSystem,

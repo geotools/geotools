@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,15 +16,19 @@
  */
 package org.geotools.coverage;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Arrays;
 import java.util.Random;
 
-import org.opengis.referencing.operation.TransformException;
 import org.geotools.resources.XArray;
 import org.geotools.util.Range;
-
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.opengis.referencing.operation.TransformException;
 
 
 /**
@@ -82,17 +86,17 @@ public final class CategoryListTest {
              */
             final Category[] categories = new Category[array.length];
             for (int i=0; i<categories.length; i++) {
-                categories[i] = new Category(String.valueOf(i), null, random.nextInt(100)).inverse;
+                categories[i] = new Category(String.valueOf(i), null, random.nextInt(100));
             }
             Arrays.sort(categories, new CategoryList(new Category[0], null));
             assertTrue("isSorted", CategoryList.isSorted(categories));
             for (int i=0; i<categories.length; i++) {
-                array[i] = categories[i].inverse.minimum;
+                array[i] = categories[i].minimum;
             }
             for (int i=0; i<categories.length; i++) {
-                final double expected = categories[i].inverse.minimum;
+                final double expected = categories[i].minimum;
                 final int    foundAt  = CategoryList.binarySearch(array, expected);
-                final double actual   = categories[foundAt].inverse.minimum;
+                final double actual   = categories[foundAt].minimum;
                 assertEquals("binarySearch", toHexString(expected), toHexString(actual));
             }
         }
@@ -118,11 +122,6 @@ public final class CategoryListTest {
                 System.out.println(exception.getLocalizedMessage());
                 // This is the expected exception.
             }
-        }
-        for (int i=0; i<categories.length; i++) {
-            final Category cat = categories[i];
-            assertSame(cat, cat.geophysics(true).geophysics(false));
-            categories[i] = cat.geophysics(true);
         }
         try {
             new CategoryList(categories, null);
@@ -150,17 +149,14 @@ public final class CategoryListTest {
             /*[0]*/ new Category("No data",     null, 0),
             /*[1]*/ new Category("Land",        null, 7),
             /*[2]*/ new Category("Clouds",      null, 3),
-            /*[3]*/ new Category("Temperature", null, 10, 100, 0.1, 5),
-            /*[4]*/ new Category("Foo",         null, 100, 120, -1, 3)
+            /*[3]*/ new Category("Temperature", null, 10, 100),
+            /*[4]*/ new Category("Foo",         null, 100, 120)
         };
         CategoryList list;
         boolean searchNearest = false;
         do {
-            list = new CategoryList(categories, null, searchNearest, null);
+            list = new CategoryList(categories, null, searchNearest);
             assertTrue("containsAll", list.containsAll(Arrays.asList(categories)));
-            assertSame(list.geophysics(true), list.inverse());
-            assertSame(list.geophysics(true).geophysics(false), list);
-            assertSame(list.geophysics(false), list);
 
             final Range range = list.getRange();
             assertEquals("min", 0,   ((Number)range.getMinValue()).doubleValue(), 0);
@@ -192,63 +188,7 @@ public final class CategoryListTest {
                 assertNull("120", list.getCategory(120));
                 assertNull("200", list.getCategory(200));
             }
-            /*
-             * Checks transformations.
-             */
-            assertTrue  (  "0", Double.isNaN(list.transform(0)));
-            assertTrue  (  "7", Double.isNaN(list.transform(7)));
-            assertTrue  (  "3", Double.isNaN(list.transform(3)));
-            assertEquals( "10",    6, list.transform( 10), EPS);
-            assertEquals( "50",   10, list.transform( 50), EPS);
-            assertEquals("100",  -97, list.transform(100), EPS);
-            assertEquals("110", -107, list.transform(110), EPS);
-            try {
-                assertEquals("9", searchNearest ? 6 : 5.9, list.transform(9), EPS);
-                if (!searchNearest) {
-                    fail();
-                }
-            } catch (TransformException exception) {
-                if (searchNearest) {
-                    throw exception;
-                }
-            }
         } while ((searchNearest = !searchNearest) == true);
-        /*
-         * Test transformation using methods working on arrays.
-         * We assume that the 'transform(double)' version can
-         * be used as a reference.
-         */
-        final double[] input   = new double[512];
-        final double[] output0 = new double[input.length];
-        final double[] output1 = new double[input.length];
-        for (int i=0; i<input.length; i++) {
-            input  [i] = random.nextInt(130)-5;
-            output0[i] = list.transform(input[i]);
-        }
-        list.transform(input, 0, output1, 0, input.length);
-        compare(output0, output1, EPS);
-        /*
-         * Test the transform using overlapping array.
-         */
-        System.arraycopy(input, 0, output1, 3, input.length-3);
-        list.transform (output1, 3, output1, 0, input.length-3);
-        System.arraycopy(output0, input.length-3, output1, input.length-3, 3);
-        compare(output0, output1, EPS);
-        // Implementation will do the following transform in reverse direction.
-        System.arraycopy(input, 3, output1, 0, input.length-3);
-        list.transform (output1, 0, output1, 3, input.length-3);
-        System.arraycopy(output0, 0, output1, 0, 3);
-        compare(output0, output1, EPS);
-        // Test inverse transform
-        list.inverse().transform(output0, 0, output0, 0, output0.length);
-        for (int i=0; i<output0.length; i++) {
-            final double expected = input[i];
-            if (expected >= 10 && expected < 120) {
-                // Values outside this range have been clamped.
-                // They would usually not be equal.
-                assertEquals("inverse", expected, output0[i], EPS);
-            }
-        }
     }
 
     /**

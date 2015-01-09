@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -658,12 +658,11 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader implements
 		
 		final Category nan =
 		    new Category(Vocabulary.format(VocabularyKeys.NODATA), new Color[] { new Color(0, 0, 0, 0) },
-				NumberRange.create(0, 0), NumberRange.create((short) -9999,
-						(short) -9999));
+				NumberRange.create(-9999, -9999));
 		final GridSampleDimension band = new GridSampleDimension(
 				"digital-elevation", new Category[] { nan }, uom);
 
-		return band.geophysics(true);
+		return band;
 	}
 
 }

@@ -25,7 +25,6 @@ import javax.media.jai.ImageLayout;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
 import org.opengis.coverage.grid.GridCoverageWriter;
 
@@ -90,7 +89,6 @@ public class GT30ReaderWriterTest extends GT30TestBase {
 
 			// get a grid coverage
 			gc = ((GridCoverage2D) reader.read(null));
-			assertTrue(CoverageUtilities.hasRenderingCategories(gc));
 			if(TestData.isInteractiveTest())
 				gc.show();
 
@@ -123,7 +121,7 @@ public class GT30ReaderWriterTest extends GT30TestBase {
 			 * 
 			 */
 			// packed view for this coverage
-			GridCoverage2D gc1 = gc.geophysics(false);
+			GridCoverage2D gc1 = gc;
 			if (TestData.isInteractiveTest()) {
 				gc1.show();
 				// logging some info

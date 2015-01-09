@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -88,7 +88,6 @@ public final class InterpolatorTest extends GridCoverageTestBase {
         // This constant must be identical to the one defined in 'getRandomCoverage()'
         GridCoverage2D coverage = getRandomCoverage();
         final double PIXEL_SIZE = XAffineTransform.getScale((AffineTransform) ((GridGeometry2D)coverage.getGridGeometry()).getGridToCRS());
-        coverage = coverage.view(ViewType.GEOPHYSICS);
         final Interpolation interpolation =  Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
         coverage = Interpolator2D.create(coverage, new Interpolation[] {interpolation});
         final int  band = 0; // Band to test.
@@ -134,10 +133,7 @@ public final class InterpolatorTest extends GridCoverageTestBase {
             GridCoverage2D serial = serialize(coverage);
             assertNotSame(coverage, serial);
             assertEquals(Interpolator2D.class, serial.getClass());
-            // Compares the geophysics view for working around the
             // conversions of NaN values which may be the expected ones.
-            coverage = coverage.view(ViewType.GEOPHYSICS);
-            serial = serial.view(ViewType.GEOPHYSICS);
             assertRasterEquals(coverage, serial);
         }
     }

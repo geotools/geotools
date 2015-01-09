@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2008-2011 TOPP - www.openplans.org.
  *
  *    This library is free software; you can redistribute it and/or
@@ -38,7 +38,6 @@ import org.jaitools.numeric.Range;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -150,9 +149,6 @@ public class ContourProcess implements RasterProcess {
             throw new ProcessException("One between interval and values must be valid");
 
         }
-
-        // switch to geophisics if necessary
-        gc2d = gc2d.view(ViewType.GEOPHYSICS);
 
         //
         // GRID TO WORLD preparation

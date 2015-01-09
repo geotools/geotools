@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2012, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import javax.media.jai.Histogram;
 
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.ViewType;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
@@ -43,7 +43,7 @@ public class HistogramTest extends GridProcessingTestBase {
 
     @Test
     public void testHistogram() throws Exception {
-        GridCoverage2D source = coverage.view(ViewType.NATIVE);
+        GridCoverage2D source = coverage;
         CoverageProcessor processor = CoverageProcessor.getInstance();
 
         ParameterValueGroup param = processor.getOperation("Histogram").getParameters();
@@ -59,7 +59,7 @@ public class HistogramTest extends GridProcessingTestBase {
 
     @Test
     public void testHistogramWithNumBins() throws Exception {
-        GridCoverage2D source = coverage.view(ViewType.NATIVE);
+        GridCoverage2D source = coverage;
         CoverageProcessor processor = CoverageProcessor.getInstance();
 
         ParameterValueGroup param = processor.getOperation("Histogram").getParameters();
@@ -76,7 +76,7 @@ public class HistogramTest extends GridProcessingTestBase {
 
     @Test
     public void testHistogramWithHighLow() throws Exception {
-        GridCoverage2D source = coverage.view(ViewType.NATIVE);
+        GridCoverage2D source = coverage;
         CoverageProcessor processor = CoverageProcessor.getInstance();
 
         ParameterValueGroup param = processor.getOperation("Histogram").getParameters();

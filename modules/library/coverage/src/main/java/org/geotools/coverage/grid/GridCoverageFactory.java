@@ -300,9 +300,7 @@ public class GridCoverageFactory extends AbstractFactory {
      *                    each arrays {@code colors[b]} may have any length; colors will be
      *                    interpolated as needed.
      * @param hints       An optional set of rendering hints, or {@code null} if none. Those hints
-     *                    will not affect the grid coverage to be created. However, they may affect
-     *                    the grid coverage to be returned by <code>{@link GridCoverage2D#geophysics
-     *                    geophysics}(false)</code>, i.e. the view to be used at rendering time. The
+     *                    will not affect the grid coverage to be created. The
      *                    optional {@link Hints#SAMPLE_DIMENSION_TYPE SAMPLE_DIMENSION_TYPE} hint
      *                    specifies the {@link SampleDimensionType} to be used at rendering time,
      *                    which can be one of {@link SampleDimensionType#UNSIGNED_8BITS UNSIGNED_8BITS}

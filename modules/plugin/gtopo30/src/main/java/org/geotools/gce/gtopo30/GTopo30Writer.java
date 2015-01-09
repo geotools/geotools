@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,8 +19,11 @@ package org.geotools.gce.gtopo30;
 
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
+import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -37,7 +40,6 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
@@ -45,6 +47,7 @@ import javax.media.jai.Histogram;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.InterpolationBilinear;
 import javax.media.jai.JAI;
+import javax.media.jai.LookupTableJAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
@@ -54,6 +57,7 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.LookupTableFactory;
 import org.geotools.coverage.grid.io.AbstractGridCoverageWriter;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
@@ -65,13 +69,18 @@ import org.geotools.factory.Hints;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.referencing.operation.transform.LinearTransform1D;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.resources.image.ColorUtilities;
+import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.operation.MathTransform1D;
+import org.opengis.referencing.operation.TransformException;
 
 import com.sun.media.jai.operator.ImageWriteDescriptor;
 
@@ -410,7 +419,7 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 		}
 
 		final GridSampleDimension visibleSD = ((GridSampleDimension) gc2D
-				.getSampleDimension(0)).geophysics(true);
+				.getSampleDimension(0));
 
 		// getting categories
 		final List oldCategories = visibleSD.getCategories();
@@ -674,7 +683,6 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 		// We need also to get the one visible band
 		//
 		// /////////////////////////////////////////////////////////////////////
-		gc = gc.geophysics(false);
 		ImageOutputStream out = null;
 
 		RenderedImage image = gc.getRenderedImage();
@@ -743,10 +751,38 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
         final GridCoverage2D gc1 = rescaleCoverage(gc);
 
         // get the non-geophysiscs view
-        final GridCoverage2D gc2 = gc1.geophysics(false);
+        final GridCoverage2D gc2 = gc1;
 
         // get the underlying image
-        final RenderedImage image = gc2.getRenderedImage();
+        RenderedImage image = gc2.getRenderedImage();
+        
+        ColorModel cm = image.getColorModel();
+        SampleModel sm = image.getSampleModel();
+
+        // Taking this code from previous rendering utilities on ViewsManager
+        if (!(cm instanceof IndexColorModel)) {
+            ImageLayout layout = ImageUtilities.getImageLayout(image);
+            cm = ColorUtilities.getIndexColorModel(new int[]{0});
+            int sourceType = sm.getDataType();
+            sm = cm.createCompatibleSampleModel(layout.getTileWidth(image), layout.getTileHeight(image));
+            int targetType = sm.getDataType();
+            MathTransform1D transform = LinearTransform1D.create(1, 9999);
+            layout.setColorModel(cm).setSampleModel(sm);
+            ParameterBlock param = new ParameterBlock().addSource(image);
+            RenderingHints hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+            hints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
+            hints.put(JAI.KEY_TRANSFORM_ON_COLORMAP,     Boolean.FALSE);
+            try {
+                LookupTableJAI table = LookupTableFactory.create(sourceType, targetType, new MathTransform1D[]{transform});
+                String operation = "Lookup";
+                param = param.add(table);
+                image = JAI.create(operation, param, hints);
+                
+            } catch (TransformException e) {
+                LOGGER.severe(e.getLocalizedMessage());
+            }
+            
+        }
 
         // get the image out stream
 		if (dest instanceof File) {

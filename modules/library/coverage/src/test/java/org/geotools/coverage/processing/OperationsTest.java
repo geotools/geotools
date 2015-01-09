@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,6 @@ import javax.media.jai.OperationNode;
 
 import org.opengis.coverage.grid.GridCoverage;
 import org.geotools.coverage.grid.GridCoverage2D;
-import static org.geotools.coverage.grid.ViewType.*;
 
 import org.geotools.test.TestData;
 
@@ -80,8 +79,8 @@ public final class OperationsTest extends GridProcessingTestBase {
      */
     @Test
     public void testSubtract() {
-        double[]      constants      = new double[] {18.75};
-        GridCoverage  sourceCoverage = SST.view(GEOPHYSICS);
+        double[]      constants      = new double[] {18};
+        GridCoverage  sourceCoverage = SST;
         GridCoverage  targetCoverage = (GridCoverage) processor.subtract(sourceCoverage, constants);
         RenderedImage sourceImage    = sourceCoverage.getRenderableImage(0,1).createDefaultRendering();
         RenderedImage targetImage    = targetCoverage.getRenderableImage(0,1).createDefaultRendering();
@@ -102,10 +101,13 @@ public final class OperationsTest extends GridProcessingTestBase {
         assertEquals ("SubtractConst", ((OperationNode) targetImage).getOperationName());
 
         final boolean medialib = TestData.isMediaLibAvailable();
+        float difference;
+        float s;
+        float t;
         for (int y=sourceRaster.getHeight(); --y>=0;) {
             for (int x=sourceRaster.getWidth(); --x>=0;) {
-                final float s = sourceRaster.getSampleFloat(x, y, 0);
-                final float t = targetRaster.getSampleFloat(x, y, 0);
+                s = sourceRaster.getSampleFloat(x, y, 0);
+                t = targetRaster.getSampleFloat(x, y, 0);
                 if (Float.isNaN(s)) {
                     /*
                      * For a mysterious reason (JAI bug?), the following test seems to fail when
@@ -117,47 +119,17 @@ public final class OperationsTest extends GridProcessingTestBase {
                         assertTrue(Float.isNaN(t));
                     }
                 } else {
-                    assertEquals(s - constants[0], t, 1E-3f);
+                    difference = s - (float)constants[0];
+                    if (difference < 0) {
+                        assertEquals(0, t, 1E-3f);
+                    } else if (difference > (255 - constants[0])) {
+                        assertEquals(255, t, 1E-3f);
+                    } else {
+                        assertEquals(difference, t, 1E-3f);
+                    }
                 }
             }
         }
-        if (SHOW) {
-            show(targetCoverage);
-        }
-    }
-
-    
-
-    /**
-     * Tests {@link Operations#gradientMagnitude}.
-     *
-     * @todo Investigate why the geophysics view is much more visible than the non-geophysics one.
-     */
-    @Test
-    public void testGradientMagnitude() {
-        GridCoverage  sourceCoverage = SST.view(GEOPHYSICS);
-        GridCoverage  targetCoverage = (GridCoverage) processor.gradientMagnitude(sourceCoverage);
-        RenderedImage sourceImage    = sourceCoverage.getRenderableImage(0,1).createDefaultRendering();
-        RenderedImage targetImage    = targetCoverage.getRenderableImage(0,1).createDefaultRendering();
-        Raster        sourceRaster   = sourceImage.getData();
-        Raster        targetRaster   = targetImage.getData();
-        assertNotSame(sourceCoverage,                                targetCoverage);
-        assertNotSame(sourceImage,                                   targetImage);
-        assertNotSame(sourceRaster,                                  targetRaster);
-        assertSame   (sourceCoverage.getCoordinateReferenceSystem(), targetCoverage.getCoordinateReferenceSystem());
-        assertEquals (sourceCoverage.getEnvelope(),                  targetCoverage.getEnvelope());
-        assertEquals (sourceCoverage.getGridGeometry(),              targetCoverage.getGridGeometry());
-        assertEquals (sourceRaster  .getMinX(),                      targetRaster  .getMinX());
-        assertEquals (sourceRaster  .getMinY(),                      targetRaster  .getMinY());
-        assertEquals (sourceRaster  .getWidth(),                     targetRaster  .getWidth());
-        assertEquals (sourceRaster  .getHeight(),                    targetRaster  .getHeight());
-        assertEquals (0, sourceRaster.getMinX());
-        assertEquals (0, sourceRaster.getMinY());
-        assertEquals ("GradientMagnitude", ((OperationNode) targetImage).getOperationName());
-
-        assertEquals(3.95f, targetRaster.getSampleFloat(304, 310, 0), 1E-2f);
-        assertEquals(1.88f, targetRaster.getSampleFloat(262, 357, 0), 1E-2f);
-
         if (SHOW) {
             show(targetCoverage);
         }

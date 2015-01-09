@@ -17,28 +17,19 @@
 package org.geotools.resources.coverage;
 
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
-import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.imageio.ImageReadParam;
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationBilinear;
-import javax.media.jai.InterpolationNearest;
 import javax.media.jai.PropertySource;
 
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
@@ -51,14 +42,12 @@ import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.Coverage;
-import org.opengis.coverage.SampleDimension;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform1D;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
 
@@ -246,7 +235,7 @@ public final class CoverageUtilities {
         	if(categories!=null&&categories.size()>0){
         		for(Category category:categories){
         			if(category.getName().equals(NODATA)){
-        				background[i]=category.geophysics(true).getRange().getMinimum();
+        				background[i]=category.getRange().getMinimum();
         				found=true;
         				break;
         			}
@@ -274,58 +263,6 @@ public final class CoverageUtilities {
         return background;
     }
 
-    /**
-     * Returns {@code true} if the provided {@link GridCoverage}
-     * has {@link Category} objects with a real transformation.
-     * <p>
-     * Common use case for this method is understanding if a {@link GridCoverage} has an
-     * accompanying Geophysics or non-Geophysics view, which means a dicotomy between the
-     * coverage with the "real" data and the coverage with the rendered version of the original
-     * data exists. An example is when you have raw data whose data type is float and you want
-     * to render them using a palette. You usually do this by specifying a set of {@link Category}
-     * object which will map some intervals of the raw data to some specific colors. The rendered
-     * version that we will create using the method {@link GridCoverage2D#geophysics(false)} will
-     * be backed by a RenderedImage with an IndexColorModel representing the colors provided in
-     * the Categories.
-     *
-     * @param gridCoverage
-     *            to check for the existence of categories with tranformations
-     *            between original data and their rendered counterpart.
-     * @return {@code false} if this coverage has only a single view associated with it,
-     *         {@code true} otherwise.
-     */
-    public static boolean hasRenderingCategories(final GridCoverage gridCoverage) {
-        // getting all the SampleDimensions of this coverage, if any exist
-        final int numSampleDimensions = gridCoverage.getNumSampleDimensions();
-        if (numSampleDimensions == 0) {
-            return false;
-        }
-        final SampleDimension[] sampleDimensions = new SampleDimension[numSampleDimensions];
-        for (int i=0; i<numSampleDimensions; i++) {
-            sampleDimensions[i] = gridCoverage.getSampleDimension(i);
-        }
-        // do they have any transformation that is not the identity?
-        return hasTransform(sampleDimensions);
-    }
-
-    /**
-     * Returns {@code true} if at least one of the specified sample dimensions has a
-     * {@linkplain SampleDimension#getSampleToGeophysics sample to geophysics} transform
-     * which is not the identity transform.
-     */
-    public static boolean hasTransform(final SampleDimension[] sampleDimensions) {
-        for (int i=sampleDimensions.length; --i>=0;) {
-            SampleDimension sd = sampleDimensions[i];
-            if (sd instanceof GridSampleDimension) {
-                sd = ((GridSampleDimension) sd).geophysics(false);
-            }
-            MathTransform1D tr = sd.getSampleToGeophysics();
-            if (tr!=null && !tr.isIdentity()) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * Returns {@code true} if the specified grid coverage or any of its source
@@ -369,175 +306,6 @@ public final class CoverageUtilities {
         return 0;
     }
 
-    /**
-     * General purpose method used in various operations for {@link GridCoverage2D} to help
-     * with taking decisions on how to treat coverages with respect to their {@link ColorModel}.
-     * <p>
-     * The need for this method arose in consideration of the fact that applying most operations
-     * on coverage whose {@link ColorModel} is an instance of {@link IndexColorModel} may lead to
-     * unpredictable results depending on the applied {@link Interpolation} (think about applying
-     * "Scale" with {@link InterpolationBilinear} on a non-geophysics {@link GridCoverage2D} with an
-     * {@link IndexColorModel}) or more simply on the operation itself ("SubsampleAverage" cannot
-     * be applied at all on a {@link GridCoverage2D} backed by an {@link IndexColorModel}).
-     * <p>
-     * This method suggests the actions to take depending on the structure of the provided
-     * {@link GridCoverage2D}, the provided {@link Interpolation} and if the operation uses
-     * a filter or not (this is useful for operations like SubsampleAverage or FilteredSubsample).
-     * <p>
-     * In general the idea is as follows: If the original coverage is backed by a
-     * {@link RenderedImage} with an {@link IndexColorModel}, we have the following cases:
-     * <p>
-     * <ul>
-     *  <li>if the interpolation is {@link InterpolationNearest} and there is no filter involved
-     *      we can apply the operation on the {@link IndexColorModel}-backed coverage with nor
-     *      problems.</li>
-     *  <li>If the interpolations in of higher order or there is a filter to apply we have to
-     *      options:
-     *      <ul>
-     *        <li>If the coverage has a twin geophysics view we need to go back to it and apply
-     *            the operation there.</li>
-     *        <li>If the coverage has no geophysics view (an orthophoto with an intrisic
-     *            {@link IndexColorModel} view) we need to perform an RGB(A) color expansion
-     *            before applying the operation.</li>
-     *      </ul>
-     *  </li>
-     * </ul>
-     * <p>
-     * A special case is when we want to apply an operation on the geophysics view of a coverage
-     * that does not involve high order interpolation or filters. In this case we suggest to apply
-     * the operation on the non-geophysics view, which is usually much faster. Users may ignore
-     * this advice.
-     *
-     * @param coverage The coverage to check for the action to take.
-     * @param interpolation The interpolation to use for the action to take, or {@code null} if none.
-     * @param hasFilter {@code true} if the operation we will apply is going to use a filter.
-     * @param hints The hints to use when applying a certain operation.
-     * @return {@link ViewType#SAME} if nothing has to be done on the provided coverage,
-     *         {@link ViewType.PHOTOGRAPHIC} if a color expansion has to be provided,
-     *         {@link ViewType#GEOPHYSICS} if we need to employ the geophysics view of
-     *         the provided coverage,
-     *         {@link ViewType#NATIVE} if we suggest to employ the native (usually packed) view
-     *         of the provided coverage.
-     *
-     * @since 2.5
-     *
-     * @todo Move this method in {@link org.geotools.coverage.processing.Operation2D}.
-     */
-    @SuppressWarnings("deprecation")
-	public static ViewType preferredViewForOperation(final GridCoverage2D coverage,
-            final Interpolation interpolation, final boolean hasFilter, final RenderingHints hints)
-    {
-        /*
-         * Checks if the user specified explicitly the view he wants to use for performing
-         * the calculations.
-         */
-        if (hints != null) {
-            final Object candidate = hints.get(Hints.COVERAGE_PROCESSING_VIEW);
-            if (candidate instanceof ViewType) {
-                return (ViewType) candidate;
-            }
-        }
-        /*
-         * Tries to infer automatically the view to use.  If there is no sample dimension with
-         * a "sample to geophysics" transform, then we assume that the image has no geophysics
-         * meaning and would better be handled as photographic.
-         */
-        final RenderedImage sourceImage = coverage.getRenderedImage();
-        if (sourceImage.getColorModel() instanceof IndexColorModel) {
-            if (!hasRenderingCategories(coverage)) {
-                return ViewType.PHOTOGRAPHIC;
-            }
-            // The old way to request explicitly a color expansion.
-            if (hints != null && Boolean.FALSE.equals(hints.get(Hints.REPLACE_NON_GEOPHYSICS_VIEW))) {
-                return ViewType.PHOTOGRAPHIC;
-            }
-            /*
-             * If there is no filter and no interpolation, then we don't need to operate on
-             * geophysics value. The packed view is usually faster. We could returns either
-             * NATIVE, PACKED or SAME, which are equivalent in many cases:
-             *
-             *  - SAME is likely equivalent to PACKED because we checked that the color model is indexed.
-             *  - NATIVE is likely equivalent to PACKED because data in NetCDF or HDF files are often packed.
-             *
-             * However those views differ in their behavior when the native data are geophysics
-             * rather than packed (e.g. a NetCDF file with floating point values). In this case,
-             * NATIVE is equivalent to GEOPHYSICS. The tradeoff of each views are:
-             *
-             *  - NATIVE is more accurate but slower when native data are geophysics
-             *    (but as fast as other views when native data are packed).
-             *
-             *  - SAME is "as the user said" on the assumption that if he asked an operation on
-             *    a packed view of a coverage rather than the geophysics view, he know what he
-             *    is doing.
-             */
-            if (!hasFilter && (interpolation == null || interpolation instanceof InterpolationNearest)) {
-                if (hints != null) {
-                    final Object rendering = hints.get(RenderingHints.KEY_RENDERING);
-                    if (RenderingHints.VALUE_RENDER_QUALITY.equals(rendering)) {
-                        return ViewType.NATIVE;
-                    }
-                    if (RenderingHints.VALUE_RENDER_SPEED.equals(rendering)) {
-                        return ViewType.SAME;
-                    }
-                }
-                return ViewType.SAME; // Default value.
-            }
-            // In this case we need to go back the geophysics view of the source coverage.
-            return ViewType.GEOPHYSICS;
-        }
-        /*
-         * The operations are usually applied on floating-point values, in order
-         * to gets maximal precision and to handle correctly the special case of
-         * NaN values. However, we can apply some operation on integer values if
-         * the interpolation type is "nearest neighbor", since this is not
-         * really an interpolation.
-         *
-         * If this condition is met, then we verify if an "integer version" of
-         * the image is available as a source of the source coverage (i.e. the
-         * floating-point image is derived from the integer image, not the
-         * converse).
-         */
-        if (!hasFilter && (interpolation == null || interpolation instanceof InterpolationNearest)) {
-            final GridCoverage2D candidate = coverage.view(ViewType.NATIVE);
-            if (candidate != coverage) {
-                final List<RenderedImage> sources = coverage.getRenderedImage().getSources();
-                if (sources != null && sources.contains(candidate.getRenderedImage())) {
-                    return ViewType.NATIVE;
-                }
-            }
-        }
-        return ViewType.SAME;
-    }
-
-    /**
-     * The preferred view in which to returns the coverage after the operation.
-     * This method returns a view that match the current state of the given coverage.
-     *
-     * @param  coverage The source coverage <strong>before</strong> the operation.
-     * @return The suggested view, or {@link ViewType#SAME} if this method doesn't
-     *         have any suggestion.
-     *
-     * @since 2.5
-     *
-     * @todo Move this method in {@link org.geotools.coverage.processing.Operation2D}.
-     */
-    public static ViewType preferredViewAfterOperation(final GridCoverage2D coverage) {
-        final Set<ViewType> views = coverage.getViewTypes();
-        // Most restrictive views first, less restrictive last.
-        if (views.contains(ViewType.GEOPHYSICS)) {
-            return ViewType.GEOPHYSICS;
-        }
-        if (views.contains(ViewType.RENDERED)) {
-            return ViewType.RENDERED;
-        }
-        if (views.contains(ViewType.PACKED)) {
-            return ViewType.PACKED;
-        }
-        if (views.contains(ViewType.PHOTOGRAPHIC)) {
-            return ViewType.PHOTOGRAPHIC;
-        }
-        return ViewType.SAME;
-    }
 
     /**
      * Checks if the transformation is a pure scale/translate instance (using the

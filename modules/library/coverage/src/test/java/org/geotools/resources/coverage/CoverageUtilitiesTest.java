@@ -136,7 +136,7 @@ public final class CoverageUtilitiesTest extends Assert {
     	assertEquals(Double.valueOf(-9999.0), bkg[0]);
     	
     	// test grid sampledimension no data property
-    	final Category noDataCategory= new Category(CoverageUtilities.NODATA,new Color[]{Color.black},NumberRange.create(Double.valueOf(-9999.0),Double.valueOf(-9999.0)),NumberRange.create(Double.valueOf(-9999.0),Double.valueOf(-9999.0)));
+    	final Category noDataCategory= new Category(CoverageUtilities.NODATA,new Color[]{Color.black},NumberRange.create(Double.valueOf(-9999.0),Double.valueOf(-9999.0)),false);
     	final GridSampleDimension gsd = new GridSampleDimension("test", new Category[]{noDataCategory},Unit.ONE);
     	gc= CoverageFactoryFinder.getGridCoverageFactory(null).
     	create(

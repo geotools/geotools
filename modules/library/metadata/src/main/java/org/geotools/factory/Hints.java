@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -734,40 +734,6 @@ public class Hints extends RenderingHints {
      * @since 2.7
      */
     public static final Key DECIMATION_POLICY = new Key("org.geotools.coverage.grid.io.DecimationPolicy");
-
-    /**
-     * Forces the {@linkplain org.opengis.coverage.processing.GridCoverageProcessor grid coverage
-     * processor} to perform operations on the specified view.
-     * <p>
-     * Some operation when called on a {@linkplain org.geotools.coverage.grid.GridCoverage2D grid
-     * coverage} tries to converts to {@linkplain org.geotools.coverage.grid.ViewType#GEOPHYSICS
-     * geophysics} view before to execute. The rationale behind this is that the other views are
-     * just the rendered version of a coverage data, and operations like interpolations have a
-     * physical meaning only when applied on the geophysics view (e.g. interpolate <cite>Sea
-     * Surface Temperature</cite> (SST) values, not the RGB values that colorize the temperature).
-     * <p>
-     * However, in some cases like when doing pure rendering of images, we might want to force
-     * operations to work on {@linkplain org.geotools.coverage.grid.ViewType#PHOTOGRAPHIC
-     * photographic} view directly, even performing color expansions as needed. This can be
-     * accomplished by setting this hint to the desired view. Be aware that interpolations
-     * after color expansions may produce colors that do not accuratly represent the geophysical
-     * value.
-     *
-     * @since 2.5
-     */
-    public static final Key COVERAGE_PROCESSING_VIEW = new Key("org.geotools.coverage.grid.ViewType");
-
-    /**
-     * @deprecated Replaced by {@link #COVERAGE_PROCESSING_VIEW} key with a
-     *             {@link org.geotools.coverage.grid.ViewType#PHOTOGRAPHIC} value.
-     *
-     * @since 2.4
-     *
-     * @todo We may need to find a more accurate name, especially when the enumeration in
-     *       {@link org.geotools.coverage.grid.ViewType} will be ready to work. Maybe
-     *       something like {@code PROCESS_ON_VISUAL_VIEW}.
-     */
-    public static final Key REPLACE_NON_GEOPHYSICS_VIEW = new Key(Boolean.class);
 
     /**
      * The {@linkplain javax.media.jai.tilecodec.TileEncoder tile encoder} name

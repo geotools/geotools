@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,45 +14,38 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.property;
+package org.geotools.data.property.old;
 
-import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.Collections;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 
 
 /**
- * DataStore factory that creates {@linkplain org.geotools.data.property.PropertyDataStore}s
+ * DataStore factory that creates {@linkplain org.geotools.data.property.old.PropertyDataStore}s
  *
- * @author Jody Garnett
- * @author Torben Barsballe (Boundless)
+ * @author Jody garnett
+ *
  *
  * @source $URL$
  * @version $Id$
  */
 public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     // private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(PropertyDataStoreFactory.class.getPackage().getName());
-    
+	
     public static final Param DIRECTORY = new Param("directory", File.class,
             "Directory containting property files", true);
-    
+
     public static final Param NAMESPACE = new Param("namespace", String.class,
             "namespace of datastore", false);
-    /**
-     * Public "no argument" constructor called by Factory Service Provider (SPI) entry listed in
-     * META-INF/services/org.geotools.data.DataStoreFactorySPI
-     */
-    public PropertyDataStoreFactory() {}
     
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
-        File dir = directoryLookup(params);
+    public DataStore createDataStore(Map params) throws IOException {
+    	File dir = directoryLookup(params);
         String namespaceURI = (String) NAMESPACE.lookUp( params );
         if (dir.exists() && dir.isDirectory()) {
             return new PropertyDataStore(dir,namespaceURI);
@@ -60,28 +53,36 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
             throw new IOException("Directory is required");
         }
     }
-    
+
     // createNewDataStore start
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
-        File dir = (File)DIRECTORY.lookUp(params);
-        
+    public DataStore createNewDataStore(Map params) throws IOException {
+    	File dir = (File)DIRECTORY.lookUp(params);
+
         if (dir.exists()) {
             throw new IOException(dir + " already exists");
         }
-        
+
+        boolean created;
+
+        created = dir.mkdir();
+
+        if (!created) {
+            throw new IOException("Could not create the directory" + dir);
+        }
+
         String namespaceURI = (String) NAMESPACE.lookUp(params);
         return new PropertyDataStore(dir,namespaceURI);
     }
     // createNewDataStore end
-    
+
     public String getDisplayName() {
-        return "Properties";
+        return "Properties Old";
     }
-    
+
     public String getDescription() {
         return "Allows access to Java Property files containing Feature information";
     }
-    
+
     /**
      * @see #DIRECTORY
      * @see PropertyDataStoreFactory#NAMESPACE
@@ -89,7 +90,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     public Param[] getParametersInfo() {
         return new Param[] { DIRECTORY, NAMESPACE };
     }
-    
+
     /**
      * Test to see if this datastore is available, if it has all the
      * appropriate libraries to construct a datastore.  This datastore just
@@ -97,14 +98,14 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
      * advertise data store capabilities they don't actually have.
      *
      * @return <tt>true</tt> if and only if this factory is available to create
-     * DataStores.
+     *         DataStores.
      *
      * @task <code>true</code> property datastore is always available
      */
     public boolean isAvailable() {
         return true;
     }
-    
+
     /**
      * Works for a file directory or property file
      *
@@ -112,9 +113,9 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
      *
      * @return true for connection parameters indicating a directory or property file
      */
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map params) {
         try {
-            directoryLookup(params);
+        	directoryLookup(params);
             return true;
         } catch (Exception erp) {
             //can't process, just return false
@@ -125,8 +126,8 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     /**
      * No implementation hints are provided at this time.
      */
-    public Map<Key, ?> getImplementationHints() {
-        return Collections.emptyMap();
+    public Map getImplementationHints(){
+        return java.util.Collections.EMPTY_MAP;
     }
     
     /**
@@ -143,7 +144,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
      * @throws IOException if {@linkplain #DIRECTORY} doesn't find parameter in <code>params</code>
      * file does not exists.
      */
-    private File directoryLookup(Map<String, Serializable> params) throws IOException, FileNotFoundException,
+    private File directoryLookup(Map params) throws IOException, FileNotFoundException,
             IllegalArgumentException {
         File directory = (File) DIRECTORY.lookUp(params);
         if (!directory.exists()) {

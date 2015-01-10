@@ -78,6 +78,7 @@ import org.geotools.styling.css.util.FeatureTypeGuesser;
 import org.geotools.styling.css.util.OgcFilterBuilder;
 import org.geotools.styling.css.util.ScaleRangeExtractor;
 import org.geotools.styling.css.util.TypeNameExtractor;
+import org.geotools.styling.css.util.TypeNameSimplifier;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
@@ -316,7 +317,8 @@ public class CssTranslator {
                 DomainCoverage coverage = new DomainCoverage(targetFeatureType, cachedSimplifier);
                 if (mode == TranslationMode.Exclusive) {
                     // create a SLD rule for each css one, making them exclusive, that is,
-                    // remove from each rule the union of the zoom/data domain matched by previous rules
+                    // remove from each rule the union of the zoom/data domain matched by previous
+                    // rules
                     coverage.exclusiveRulesEnabled = true;
                 } else if (mode == TranslationMode.Auto) {
                     if (rulesCount < autoThreshold) {
@@ -472,21 +474,16 @@ public class CssTranslator {
         if (typeNames.size() == 1 && typeNames.contains(TypeName.DEFAULT)) {
             // no layer specific stuff
             result.put(TypeName.DEFAULT.name, rules);
-        } else {
-            // remove the default from the type names, otherwise we
-            // are going to generate rules/symbolizers that are contained both in the
-            // layer specific feature type styles, and in a generic one at the
-            // end, which will make them draw multiple times and affecting z order perception
-            typeNames.remove(TypeName.DEFAULT);
         }
 
         for (TypeName tn : typeNames) {
             List<CssRule> typeNameRules = new ArrayList<>();
             for (CssRule rule : rules) {
-                Selector combined = Selector.and(tn, rule.getSelector(), null);
-                if (combined != Selector.REJECT) {
-                    typeNameRules
-                            .add(new CssRule(combined, rule.getProperties(), rule.getComment()));
+                TypeNameSimplifier simplifier = new TypeNameSimplifier(tn);
+                Selector simplified = (Selector) rule.getSelector().accept(simplifier);
+                if (simplified != Selector.REJECT) {
+                    typeNameRules.add(new CssRule(simplified, rule.getProperties(), rule
+                            .getComment()));
                 }
             }
             result.put(tn.name, typeNameRules);

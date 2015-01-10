@@ -27,7 +27,6 @@ import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.css.Value.Literal;
 import org.geotools.styling.css.selector.Data;
 import org.geotools.styling.css.selector.Id;
-import org.geotools.styling.css.selector.Or;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
@@ -158,7 +157,7 @@ public class CssParser extends BaseParser<Object> {
     Rule OrSelector() {
         return Sequence(FirstOf(AndSelector(), BasicSelector()), OptionalWhiteSpace(), ',',
                 OptionalWhiteSpace(), Selector(), //
-                swap() && push(new Or((Selector) pop(), (Selector) pop())));
+                swap() && push(Selector.or((Selector) pop(), (Selector) pop(), null)));
     }
 
     @SuppressSubnodes

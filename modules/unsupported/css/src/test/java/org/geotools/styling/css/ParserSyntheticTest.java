@@ -240,9 +240,12 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertNull(r.getComment());
         assertTrue(r.getSelector() instanceof Accept);
         assertEquals(1, r.getProperties().size());
-        assertProperty(r, 0, "mark",
-                new Value.Function("symbol",
-                        Collections.singletonList((Value) new Value.Literal("circle"))));
+        assertProperty(
+                r,
+                0,
+                "mark",
+                new Value.Function("symbol", Collections.singletonList((Value) new Value.Literal(
+                        "circle"))));
     }
 
     @Test
@@ -418,8 +421,9 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertNull(r.getComment());
         assertTrue(r.getSelector() instanceof And);
         And s = (And) r.getSelector();
-        assertEquals(new Data(ECQL.toFilter("att < 15")), s.getChildren().get(1));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(0));
+        assertEquals(new Data(ECQL.toFilter("att < 15")), s.getChildren().get(0));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
+                .get(1));
     }
 
     @Test
@@ -437,7 +441,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof And);
         And s = (And) r.getSelector();
         assertEquals(new TypeName("topp:states"), s.getChildren().get(0));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(1));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
+                .get(1));
     }
 
     @Test
@@ -455,7 +460,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof Or);
         Or s = (Or) r.getSelector();
         assertEquals(new Data(ECQL.toFilter("att < 15")), s.getChildren().get(0));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(1));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
+                .get(1));
     }
 
     @Test
@@ -473,7 +479,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof Or);
         Or s = (Or) r.getSelector();
         assertEquals(new TypeName("topp:states"), s.getChildren().get(0));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(1));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
+                .get(1));
     }
 
     @Test
@@ -509,10 +516,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertNull(r.getComment());
         Or s = (Or) r.getSelector();
         assertEquals(new Id("states.2"), s.getChildren().get(0));
-        assertTrue(s.getChildren().get(1) instanceof Or);
-        Or or = (Or) s.getChildren().get(1);
-        assertEquals(new Id("states.3"), or.getChildren().get(0));
-        assertEquals(new Data(ECQL.toFilter("myAtt > 10")), or.getChildren().get(1));
+        assertEquals(new Id("states.3"), s.getChildren().get(1));
+        assertEquals(new Data(ECQL.toFilter("myAtt > 10")), s.getChildren().get(2));
 
     }
 
@@ -530,8 +535,9 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof And);
         assertNull(r.getComment());
         And s = (And) r.getSelector();
-        assertEquals(new Id("states.2"), s.getChildren().get(1));
-        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(0));
+        assertEquals(new Id("states.2"), s.getChildren().get(0));
+        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
+                .get(1));
         assertEquals(new Data(ECQL.toFilter("myAtt > 10")), s.getChildren().get(2));
 
     }
@@ -553,9 +559,9 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertEquals(new Data(ECQL.toFilter("myAtt > 10")), s.getChildren().get(1));
         assertTrue(s.getChildren().get(0) instanceof And);
         And and = (And) s.getChildren().get(0);
-        assertEquals(new Id("states.2"), and.getChildren().get(1));
-        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true),
-                and.getChildren().get(0));
+        assertEquals(new Id("states.2"), and.getChildren().get(0));
+        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true), and.getChildren()
+                .get(1));
 
     }
 

@@ -16,6 +16,11 @@
  */
 package org.geotools.styling.css.selector;
 
+/**
+ * Base class for selector visitors
+ * 
+ * @author Andrea Aime - GeoSolutions
+ */
 public class AbstractSelectorVisitor implements SelectorVisitor {
 
 	@Override

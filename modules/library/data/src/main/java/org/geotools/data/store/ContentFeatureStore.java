@@ -31,6 +31,7 @@ import org.geotools.data.LockingManager;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
@@ -85,7 +86,7 @@ import org.opengis.filter.identity.FeatureId;
  */
 public abstract class ContentFeatureStore extends ContentFeatureSource implements
         SimpleFeatureStore,
-        FeatureLocking<SimpleFeatureType, SimpleFeature> {
+        SimpleFeatureLocking {
 
     /** Flag writer for adding new content */
     protected final int WRITER_ADD = ContentDataStore.WRITER_ADD;

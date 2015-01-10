@@ -652,7 +652,7 @@ public class ParserSyntheticTest extends CssBaseTest {
             List<ParseError> errors = e.getErrors();
             assertEquals(1, errors.size());
             assertEquals(
-                    "Invalid input ':', expected NameCharacter, '(', WhiteSpace, OptionalWhiteSpace, ',', IgnoredComment, ';', WhiteSpaceOrIgnoredComment or '}' (line 3, column 8)",
+                    "Invalid input ':', expected NameCharacter, '(', WhiteSpace, OptionalWhiteSpace, ',', WhitespaceOrIgnoredComment, ';', WhiteSpaceOrIgnoredComment or '}' (line 3, column 8)",
                     e.getMessage());
         }
     }
@@ -683,6 +683,34 @@ public class ParserSyntheticTest extends CssBaseTest {
         CssRule r = ss.getRules().get(0);
         assertTrue(r.getSelector() instanceof Accept);
         assertProperty(r, 0, "fill", new Value.Literal("#0000ff"));
+    }
+
+    @Test
+    public void testSameLinePrefixComment() {
+        String css = "* { /* prefix comment */ fill: blue }";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertProperty(r, 0, "fill", new Value.Literal("#0000ff"));
+    }
+
+    @Test
+    public void testSameLineSuffixComment() {
+        String css = "* { fill: blue; /* prefix comment */  }";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertProperty(r, 0, "fill", new Value.Literal("#0000ff"));
+    }
+
+    @Test
+    public void testSameCommentBetweenRules() {
+        String css = "* { fill: blue; \n /* prefix comment */ \n stroke: black  }";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertProperty(r, 0, "fill", new Value.Literal("#0000ff"));
+        assertProperty(r, 1, "stroke", new Value.Literal("#000000"));
     }
 
 }

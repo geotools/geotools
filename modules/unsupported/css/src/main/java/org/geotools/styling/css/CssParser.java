@@ -92,8 +92,7 @@ public class CssParser extends BaseParser<Object> {
      */
     public static Stylesheet parse(String css) throws CSSParseException {
         CssParser parser = getInstance();
-        ParseRunner<Stylesheet> runner = new ReportingParseRunner<Stylesheet>(
-                parser.StyleSheet());
+        ParseRunner<Stylesheet> runner = new ReportingParseRunner<Stylesheet>(parser.StyleSheet());
         ParsingResult<Stylesheet> result = runner.run(css);
         if (result.hasErrors()) {
             throw new CSSParseException(result.parseErrors);
@@ -103,8 +102,7 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule StyleSheet() {
-        return Sequence(ZeroOrMore(Directive(), OptionalWhiteSpace()),
-                OneOrMore(CssRule()),
+        return Sequence(ZeroOrMore(Directive(), OptionalWhiteSpace()), OneOrMore(CssRule()),
                 WhiteSpaceOrIgnoredComment(), EOI, push(new Stylesheet(popAll(CssRule.class),
                         popAll((Directive.class)))));
     }
@@ -152,13 +150,14 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule AndSelector() {
-        return Sequence(BasicSelector(), OptionalWhiteSpace(), FirstOf(AndSelector(), BasicSelector()), //
+        return Sequence(BasicSelector(), OptionalWhiteSpace(),
+                FirstOf(AndSelector(), BasicSelector()), //
                 swap() && push(Selector.and((Selector) pop(), (Selector) pop(), null)));
     }
 
     Rule OrSelector() {
-        return Sequence(FirstOf(AndSelector(), BasicSelector()), OptionalWhiteSpace(), ',', OptionalWhiteSpace(),
-                Selector(), //
+        return Sequence(FirstOf(AndSelector(), BasicSelector()), OptionalWhiteSpace(), ',',
+                OptionalWhiteSpace(), Selector(), //
                 swap() && push(new Or((Selector) pop(), (Selector) pop())));
     }
 
@@ -206,8 +205,8 @@ public class CssParser extends BaseParser<Object> {
 
     Rule MaxScaleSelector() {
         return Sequence("[", OptionalWhiteSpace(), "@scale", OptionalWhiteSpace(),
-                FirstOf("<=", "<"), OptionalWhiteSpace(), Number(),
-                push(new ScaleRange(0, true, Double.valueOf(match()), false)), //
+                FirstOf("<=", "<"), OptionalWhiteSpace(), Number(), push(new ScaleRange(0, true,
+                        Double.valueOf(match()), false)), //
                 OptionalWhiteSpace(), "]");
     }
 
@@ -227,15 +226,23 @@ public class CssParser extends BaseParser<Object> {
     Rule PropertyList() {
         return Sequence(
                 Property(),
-                ZeroOrMore(
-                        Sequence(ZeroOrMore(FirstOf(WhiteSpace(), IgnoredComment())), ';',
-                        ZeroOrMore(FirstOf(WhiteSpace(), IgnoredComment()), Property()))
-                        ), Optional(';'), push(popAll(Property.class)));
+                ZeroOrMore(Sequence(WhitespaceOrIgnoredComment(), ';',
+                        WhiteSpaceOrIgnoredComment(), Property())), Optional(';'),
+                push(popAll(Property.class)));
+    }
+
+    Rule WhitespaceOrIgnoredComment() {
+        return ZeroOrMore(FirstOf(WhiteSpace(), IgnoredComment()));
     }
 
     Rule Property() {
-        return Sequence(Identifier(), push(match()), OptionalWhiteSpace(), Colon(), OptionalWhiteSpace(), //
-                Sequence(Value(), OptionalWhiteSpace(), ZeroOrMore(',', OptionalWhiteSpace(), Value())), //
+        return Sequence(Identifier(),
+                push(match()),
+                OptionalWhiteSpace(),
+                Colon(),
+                OptionalWhiteSpace(), //
+                Sequence(Value(), OptionalWhiteSpace(),
+                        ZeroOrMore(',', OptionalWhiteSpace(), Value())), //
                 push(popAll(Value.class)) && swap()
                         && push(new Property(pop(String.class), pop(List.class))));
     }
@@ -302,8 +309,8 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule URLFunction() {
-        return Sequence("url", OptionalWhiteSpace(), "(", OptionalWhiteSpace(), URL(), OptionalWhiteSpace(), ")",
-                push(new Value.Function("url", (Value) pop())));
+        return Sequence("url", OptionalWhiteSpace(), "(", OptionalWhiteSpace(), URL(),
+                OptionalWhiteSpace(), ")", push(new Value.Function("url", (Value) pop())));
     }
 
     /**

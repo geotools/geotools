@@ -319,8 +319,20 @@ public class CssParser extends BaseParser<Object> {
      * @return
      */
     Rule URL() {
+        return FirstOf(QuotedURL(), SimpleURL());
+    }
+
+    Rule SimpleURL() {
         return Sequence(OneOrMore(FirstOf(Alphanumeric(), AnyOf("-._]:/?#[]@|$&'*+,;="))),
                 push(new Value.Literal(match())));
+    }
+
+    Rule QuotedURL() {
+        // same as simple url, but with ' surrounding it, and not within the url itlsef
+        return Sequence(
+                "'",
+                Sequence(OneOrMore(FirstOf(Alphanumeric(), AnyOf("-._]:/?#[]@|$&*+,;="))),
+                        push(new Value.Literal(match()))), "'");
     }
 
     Rule ValueIdentifier() {

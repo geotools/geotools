@@ -589,4 +589,15 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals(3, rules.size());
     }
 
+    @Test
+    public void testParseQuotedURL() throws Exception {
+        String css = "* { mark: url('file://BidirectionShield-High.svg');}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PointSymbolizer ps = (PointSymbolizer) rule.symbolizers().get(0);
+        ExternalGraphic eg = (ExternalGraphic) ps.getGraphic().graphicalSymbols().get(0);
+        String uri = eg.getURI();
+        assertEquals("file://BidirectionShield-High.svg", uri);
+    }
+
 }

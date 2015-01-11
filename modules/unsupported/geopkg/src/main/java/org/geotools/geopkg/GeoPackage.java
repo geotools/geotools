@@ -841,6 +841,31 @@ public class GeoPackage {
         }
     }
 
+    void deleteGeoPackageContentsEntry(Entry e) throws IOException {
+        String sql = format("DELETE FROM %s WHERE table_name = ?", GEOPACKAGE_CONTENTS);
+        try {
+            Connection cx = connPool.getConnection();
+            try {
+                PreparedStatement ps = prepare(cx, sql)
+                        .set(e.getTableName())
+                        .log(Level.FINE)
+                        .statement();
+                try {
+                    ps.execute();
+                }
+                finally {
+                    close(ps);
+                }
+            }
+            finally {
+                close(cx);
+            }
+        }
+        catch(SQLException ex) {
+            throw new IOException(ex);
+        }
+    }
+
     void addGeometryColumnsEntry(FeatureEntry e) throws IOException {
         String sql = format(
                 "INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?);", GEOMETRY_COLUMNS);
@@ -872,7 +897,32 @@ public class GeoPackage {
             throw new IOException(ex);
         }
     }
-    
+
+    void deleteGeometryColumnsEntry(FeatureEntry e) throws IOException {
+        String sql = format("DELETE FROM %s WHERE table_name = ?", GEOMETRY_COLUMNS);
+        try {
+            Connection cx = connPool.getConnection();
+            try {
+                PreparedStatement ps = prepare(cx, sql)
+                        .set(e.getTableName())
+                        .log(Level.FINE)
+                        .statement();
+                try {
+                    ps.execute();
+                }
+                finally {
+                    close(ps);
+                }
+            }
+            finally {
+                close(cx);
+            }
+        }
+        catch(SQLException ex) {
+            throw new IOException(ex);
+        }
+    }
+
     /**
      * Create a spatial index
      * 

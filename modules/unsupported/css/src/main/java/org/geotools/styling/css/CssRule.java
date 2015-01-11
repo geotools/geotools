@@ -265,8 +265,8 @@ public class CssRule {
                 int zIndexPosition = it.nextIndex();
                 Integer nextZIndex = it.next();
                 if (nextZIndex == NO_Z_INDEX) {
-                    // this set of properties is z-index indepenent
-                    zProperties.put(entry.getKey(), props);
+                    // this set of properties is z-index independent
+                    zProperties.put(entry.getKey(), new ArrayList<>(props));
                 } else if (!nextZIndex.equals(zIndex)) {
                     continue;
                 } else {
@@ -295,7 +295,20 @@ public class CssRule {
         }
 
         if (zProperties.size() > 0) {
-            return new CssRule(this.getSelector(), zProperties, this.getComment());
+            // if the properties had an original z-index, mark it, we'll need it
+            // to figure out if a combination of rules can be applied at a z-index > 0, or not
+            if (zIndex != null && zIndexes.contains(zIndex)) {
+                List<Property> rootProperties = zProperties.get(PseudoClass.ROOT);
+                if(rootProperties == null) {
+                    rootProperties = new ArrayList<>();
+                    zProperties.put(PseudoClass.ROOT, rootProperties);
+                }
+                rootProperties.add(new Property("z-index", 
+                        Arrays.asList((Value) new Value.Literal(String.valueOf(zIndex)))));
+            }
+            CssRule zRule = new CssRule(this.getSelector(), zProperties, this.getComment());
+            zRule.ancestry = Arrays.asList(this);
+            return zRule;
         } else {
             return null;
         }

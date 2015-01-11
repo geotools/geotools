@@ -241,31 +241,23 @@ public class CssTranslator {
 
         // split rules by index and typename, then build the power set for each group and
         // generate the rules and symbolizers
-        List<List<CssRule>> zIndexRules = organizeByZIndex(allRules);
+        Map<Integer, List<CssRule>> zIndexRules = organizeByZIndex(allRules);
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Split the rules into " + zIndexRules + "  sets after z-index separation");
         }
 
-        for (List<CssRule> rules : zIndexRules) {
+        for (Map.Entry<Integer, List<CssRule>> zEntry : zIndexRules.entrySet()) {
+            final Integer zIndex = zEntry.getKey();
+            List<CssRule> rules = zEntry.getValue();
             Collections.sort(rules, CssRuleComparator.DESCENDING);
             Map<String, List<CssRule>> typenameRules = organizeByTypeName(rules);
 
             // build the SLD
             for (Map.Entry<String, List<CssRule>> entry : typenameRules.entrySet()) {
-                // create the feature type style for this typename
-                FeatureTypeStyleBuilder ftsBuilder = styleBuilder.featureTypeStyle();
-                // regardless of the translation mode, the first rule matching is
-                // the only one that we want to be applied (in exclusive mode it will be
-                // the only one matching, the simple mode we want the evaluation to stop there)
-                ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
-                        FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
                 String featureTypeName = entry.getKey();
                 List<CssRule> localRules = entry.getValue();
-                if (featureTypeName != null) {
-                    ftsBuilder.setFeatureTypeNames(Arrays.asList((Name) new NameImpl(
-                            featureTypeName)));
-                }
+
                 final FeatureType targetFeatureType = getTargetFeatureType(featureTypeName,
                         localRules);
                 if (targetFeatureType != null) {
@@ -302,8 +294,34 @@ public class CssTranslator {
 
                 // expand the css rules power set
                 RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules,
-                        cachedSimplifier, maxCombinations);
+                        cachedSimplifier, maxCombinations) {
+                    protected java.util.List<CssRule> buildResult(java.util.List<CssRule> rules) {
+                        if (zIndex != null && zIndex > 0) {
+                            TreeSet<Integer> zIndexes = getZIndexesForRules(rules);
+                            if (!zIndexes.contains(zIndex)) {
+                                return null;
+                            }
+                        }
+                        return super.buildResult(rules);
+                    }
+                };
                 List<CssRule> combinedRules = builder.buildPowerSet();
+
+                if (combinedRules.isEmpty()) {
+                    continue;
+                }
+
+                // create the feature type style for this typename
+                FeatureTypeStyleBuilder ftsBuilder = styleBuilder.featureTypeStyle();
+                // regardless of the translation mode, the first rule matching is
+                // the only one that we want to be applied (in exclusive mode it will be
+                // the only one matching, the simple mode we want the evaluation to stop there)
+                ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
+                        FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
+                if (featureTypeName != null) {
+                    ftsBuilder.setFeatureTypeNames(Arrays.asList((Name) new NameImpl(
+                            featureTypeName)));
+                }
 
                 Collections.sort(combinedRules, CssRuleComparator.DESCENDING);
 
@@ -498,37 +516,49 @@ public class CssTranslator {
      * @param rules
      * @return
      */
-    private List<List<CssRule>> organizeByZIndex(List<CssRule> rules) {
-        // collect and sort all the indexes first
-        TreeSet<Integer> indexes = new TreeSet<>(new ZIndexComparator());
-        for (CssRule rule : rules) {
-            Set<Integer> ruleIndexes = rule.getZIndexes();
-            indexes.addAll(ruleIndexes);
-        }
-
-        // now for each level extract the sub-rules attached to that level,
-        // considering that properties not associated to a level, bind to all levels
-        List<List<CssRule>> result = new ArrayList<>();
-        int symbolizerPropertyCount = 0;
-        for (Integer index : indexes) {
-            List<CssRule> rulesByIndex = new ArrayList<>();
-            for (CssRule rule : rules) {
-                CssRule subRule = rule.getSubRuleByZIndex(index);
-                if (subRule != null) {
-                    if (subRule.hasSymbolizerProperty()) {
-                        symbolizerPropertyCount++;
+    private Map<Integer, List<CssRule>> organizeByZIndex(List<CssRule> rules) {
+        TreeSet<Integer> indexes = getZIndexesForRules(rules);
+        Map<Integer, List<CssRule>> result = new HashMap<>();
+        if (indexes.size() == 1) {
+            result.put(indexes.first(), rules);
+        } else {
+            // now for each level extract the sub-rules attached to that level,
+            // considering that properties not associated to a level, bind to all levels
+            int symbolizerPropertyCount = 0;
+            for (Integer index : indexes) {
+                List<CssRule> rulesByIndex = new ArrayList<>();
+                for (CssRule rule : rules) {
+                    CssRule subRule = rule.getSubRuleByZIndex(index);
+                    if (subRule != null) {
+                        if (subRule.hasSymbolizerProperty()) {
+                            symbolizerPropertyCount++;
+                        }
+                        rulesByIndex.add(subRule);
                     }
-                    rulesByIndex.add(subRule);
                 }
-            }
-            // do we have at least one property that will trigger the generation
-            // of a symbolizer in here?
-            if (symbolizerPropertyCount > 0) {
-                result.add(rulesByIndex);
+                // do we have at least one property that will trigger the generation
+                // of a symbolizer in here?
+                if (symbolizerPropertyCount > 0) {
+                    result.put(index, rulesByIndex);
+                }
             }
         }
 
         return result;
+    }
+
+    private TreeSet<Integer> getZIndexesForRules(List<CssRule> rules) {
+        // collect and sort all the indexes first
+        TreeSet<Integer> indexes = new TreeSet<>(new ZIndexComparator());
+        for (CssRule rule : rules) {
+            Set<Integer> ruleIndexes = rule.getZIndexes();
+            if (ruleIndexes.contains(null)) {
+                ruleIndexes.remove(null);
+                ruleIndexes.add(0);
+            }
+            indexes.addAll(ruleIndexes);
+        }
+        return indexes;
     }
 
     /**

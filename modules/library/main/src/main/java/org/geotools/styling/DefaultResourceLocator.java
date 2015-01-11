@@ -52,10 +52,9 @@ public class DefaultResourceLocator implements ResourceLocator {
                 if (!f.exists() && sourceUrl != null) {
                     URL relativeUrl = makeRelativeURL(f.getPath());
                     if (relativeUrl != null) {
-                        f = DataUtilities.urlToFile(relativeUrl);
-                        if (f.exists()) {
-                            //bingo!
-                            url = relativeUrl;
+                        URL validated = validateRelativeURL(relativeUrl);
+                        if (validated != null) {
+                            url = validated;
                         }
                     }
                 }
@@ -73,6 +72,16 @@ public class DefaultResourceLocator implements ResourceLocator {
             }
         }
         return url;
+    }
+
+    protected URL validateRelativeURL(URL relativeUrl) {
+        File f;
+        f = DataUtilities.urlToFile(relativeUrl);
+        if (f.exists()) {
+            // bingo!
+            return relativeUrl;
+        }
+        return null;
     }
 
     URL makeRelativeURL(String uri) {

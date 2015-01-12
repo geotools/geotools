@@ -16,6 +16,7 @@
  */
 package org.geotools.data.sqlserver;
 
+import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.INSTANCE;
 import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
 import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
 import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
@@ -32,7 +33,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 
 /**
- * 
+ *
  *
  * @source $URL$
  */
@@ -42,45 +43,50 @@ public class SQLServerDataStoreFactoryTest extends JDBCTestSupport {
     protected JDBCTestSetup createTestSetup() {
         return new SQLServerTestSetup();
     }
-    
+
     public void testCreateDataStore() throws Exception {
         checkConnection(false);
     }
-    
+
     public void testCreateDataStoreWithDatabase() throws Exception {
         checkConnection(true);
     }
 
     void checkConnection(boolean includedb) throws Exception {
         Properties db = fixture;
-        
+
         //db.load(getClass().getResourceAsStream("factory.properties"));
-        
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(HOST.key, db.getProperty(HOST.key));
         if (includedb) {
-            params.put(DATABASE.key, db.getProperty(DATABASE.key));  
+            params.put(DATABASE.key, db.getProperty(DATABASE.key));
         }
-        params.put(PORT.key, db.getProperty(PORT.key));
+        String instance = db.getProperty(INSTANCE.key);
+        if(instance==null||instance.isEmpty()) {
+            params.put(PORT.key, db.getProperty(PORT.key));
+        }else {
+            params.put(INSTANCE.key, instance);
+        }
         params.put(USER.key, db.getProperty(USER.key));
         String password=db.getProperty(PASSWD.key);
         if(password==null){
-        	password=db.getProperty("password");
+            password=db.getProperty("password");
         }
         params.put(PASSWD.key,password );
 
         SQLServerDataStoreFactory factory = new SQLServerDataStoreFactory();
         params.put(DBTYPE.key, factory.getDatabaseID());
         params.put(SQLServerDataStoreFactory.INTSEC.key, false);
-        
+
         assertTrue(factory.canProcess(params));
-        
+
         JDBCDataStore store = factory.createDataStore(params);
         assertNotNull(store);
         try {
             // check dialect
             assertTrue(store.getSQLDialect() instanceof SQLServerDialect);
-            
+
             // force connection usage
             assertNotNull(store.getSchema("ft1"));
         } finally {

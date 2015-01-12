@@ -266,7 +266,11 @@ public class DijkstraIterator extends SourceGraphIterator {
   }
   
   protected Iterator getRelated(Graphable current) {
-    return(current.getRelated());	
+    if ( current instanceof DirectedGraphable ) {
+      return ((DirectedGraphable)current).getOutRelated() ;
+    } else {
+      return (current.getRelated());
+    }
   }
   
   /**

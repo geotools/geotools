@@ -22,6 +22,7 @@ import org.geotools.util.KVP;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Version;
 
+import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Authenticator;
@@ -34,10 +35,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Parameter;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.SimpleHttpClient;
@@ -78,7 +79,7 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  * @see WFSClient
  */
 @SuppressWarnings({ "unchecked", "nls" })
-public class WFSDataStoreFactory extends AbstractDataStoreFactory {
+public class WFSDataStoreFactory implements DataStoreFactorySpi {
         
     /**
      * Values for the AXIS_ORDER and AXIS_ORDER_FILTER connection parameters.
@@ -532,7 +533,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         /*
          * check required params exist and are of the correct type
          */
-        boolean canProcess = super.canProcess(params);
+        boolean canProcess = DataUtilities.canProcess(params, getParametersInfo());
         if (!canProcess) {
             return false;
         }
@@ -644,6 +645,16 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             }
         }
         return createGetCapabilitiesRequest(host, requestVersion);
+    }
+
+    @Override
+    public boolean isAvailable() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.EMPTY_MAP;
     }
 
 }

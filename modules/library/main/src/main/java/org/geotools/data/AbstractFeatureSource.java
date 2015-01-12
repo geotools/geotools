@@ -40,8 +40,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
 
-
+@Deprecated
 /**
+ * DEPRECATED - Use org.geotools.data.store.ContentFeatureSource instead
+ * 
  * This is a starting point for providing your own SimpleFeatureSource implementation.
  *
  * <p>

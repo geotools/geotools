@@ -41,8 +41,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-
+@Deprecated
 /**
+ * AbsractDataStore is Deprecated.
+ * 
  * A Transaction.State that keeps a difference table for use with
  * AbstractDataStore.
  *

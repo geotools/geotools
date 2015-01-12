@@ -30,8 +30,10 @@ import org.geotools.parameter.Parameter;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterValue;
 
-
+@Deprecated
 /**
+ * DEPRECATED - Use org.geotools.data.store.ContentDataStore instead
+ * 
  * A best of toolkit for DataStoreFactory implementors.
  * <p>
  * Will also allow me to mess with the interface API without breaking every

@@ -58,7 +58,8 @@ public interface UserLayer extends StyledLayer {
     public DataStore getInlineFeatureDatastore();
 
     public SimpleFeatureType getInlineFeatureType();
-
+    
+    /** DataStore used to hold parsed feature collection content for use during rendering */
     public void setInlineFeatureDatastore(DataStore store);
 
     public void setInlineFeatureType(SimpleFeatureType ft);

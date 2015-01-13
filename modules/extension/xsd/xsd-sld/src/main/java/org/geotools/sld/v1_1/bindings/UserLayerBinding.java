@@ -17,18 +17,16 @@
 package org.geotools.sld.v1_1.bindings;
 
 import org.geotools.data.DataStore;
-import org.geotools.data.memory.MemoryDataStore;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.sld.bindings.SLDUserLayerBinding;
-import org.geotools.sld.v1_1.SLD;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.UserLayer;
-import org.geotools.xml.*;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
-
-import javax.xml.namespace.QName;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:UserLayer.
@@ -100,7 +98,8 @@ public class UserLayerBinding extends SLDUserLayerBinding {
     }
 
     DataStore toDataStore(FeatureCollection features) {
-        return new MemoryDataStore(features);
+        SimpleFeatureSource featureSource = DataUtilities.source(features);
+        return DataUtilities.store(featureSource);
     }
 
 }

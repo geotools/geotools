@@ -17,25 +17,70 @@
  */
 package org.geotools.data.csv.parse;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
 
-public class CSVAttributesOnlyStrategy extends AbstractCSVStrategy implements CSVStrategy {
+import com.csvreader.CsvWriter;
+
+public class CSVAttributesOnlyStrategy extends CSVStrategy {
 
     public CSVAttributesOnlyStrategy(CSVFileState csvFileState) {
         super(csvFileState);
     }
 
+    @Override
     protected SimpleFeatureType buildFeatureType() {
-        SimpleFeatureTypeBuilder builder = CSVStrategySupport.createBuilder(csvFileState);
+        SimpleFeatureTypeBuilder builder = CSVStrategy.createBuilder(csvFileState);
         return builder.buildFeatureType();
     }
-
+    
     @Override
-    public SimpleFeature createFeature(String recordId, String[] csvRecord) {
+    public void createSchema(SimpleFeatureType featureType) throws IOException {
+    	List<String> header = new ArrayList<String>();
+    	
+        for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
+            if (descriptor instanceof GeometryDescriptor)
+                continue;
+            header.add(descriptor.getLocalName());
+        }
+        // Write out header, producing an empty file of the correct type
+        CsvWriter writer = new CsvWriter(new FileWriter(this.csvFileState.getFile()),',');
+        try {
+            writer.writeRecord( header.toArray(new String[header.size()]));
+        }
+        finally {
+            writer.close();
+        }
+    }
+    
+    @Override
+    public String[] encode(SimpleFeature feature) {
+    	List<String> csvRecord = new ArrayList<String>();
+        for (Property property : feature.getProperties()) {
+            Object value = property.getValue();
+            if (value == null) {
+            	csvRecord.add("");
+            } else {
+                String txt = value.toString();
+                csvRecord.add(txt);
+            }
+        }
+        return csvRecord.toArray(new String[csvRecord.size()-1]);
+    }
+    
+    @Override
+    public SimpleFeature decode(String recordId, String[] csvRecord) {
         SimpleFeatureType featureType = getFeatureType();
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
         String[] headers;

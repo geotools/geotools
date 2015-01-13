@@ -1,4 +1,4 @@
-/* (c) 2014 Open Source Geospatial Foundation - all rights reserved
+/* (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
  * (c) 2001 - 2013 OpenPlans
  * This code is licensed under the GPL 2.0 license, available at the root
  * application directory.
@@ -53,8 +53,8 @@ public class CSVSpecifiedLatLngStrategyTest {
         SimpleFeatureType featureType = strategy.getFeatureType();
         assertEquals("Invalid attribute count", 2, featureType.getAttributeCount());
         List<AttributeDescriptor> attrs = featureType.getAttributeDescriptors();
-        CSVTestStrategySupport.verifyType(attrs.get(0), String.class);
-        CSVTestStrategySupport.verifyType(attrs.get(1), Point.class);
+        CSVTestStrategySupport.verifyType(attrs.get(0), Point.class);
+        CSVTestStrategySupport.verifyType(attrs.get(1), String.class);
 
         CSVIterator iterator = strategy.iterator();
 

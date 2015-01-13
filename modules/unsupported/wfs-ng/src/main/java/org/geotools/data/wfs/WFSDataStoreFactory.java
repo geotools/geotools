@@ -647,10 +647,13 @@ public class WFSDataStoreFactory implements DataStoreFactorySpi {
         return createGetCapabilitiesRequest(host, requestVersion);
     }
 
-    @Override
+    /**
+     * Defaults to true, only a few datastores need to check for drivers.
+     *
+     * @return <code>true</code>
+     */
     public boolean isAvailable() {
-        // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
     public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {

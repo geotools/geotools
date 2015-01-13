@@ -29,7 +29,7 @@ import org.opengis.filter.Filter;
 
 @Deprecated
 /**
- * DEPRECATED - Use org.geotools.data.store.ContentFeatureStore instead
+ * @deprecated Use org.geotools.data.store.ContentFeatureStore instead
  * 
  * A Starting point for your own FeatureLocking implementations.
  * 

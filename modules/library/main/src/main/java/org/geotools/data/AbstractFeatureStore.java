@@ -39,7 +39,7 @@ import org.opengis.filter.identity.FeatureId;
 
 @Deprecated
 /**
- * DEPRECATED - Use org.geotools.data.store.ContentFeatureStore instead
+ * @deprecated Use org.geotools.data.store.ContentFeatureStore instead
  * 
  * This is a starting point for providing your own FeatureStore implementation.
  *

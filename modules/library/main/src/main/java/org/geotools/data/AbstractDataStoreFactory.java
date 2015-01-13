@@ -32,7 +32,7 @@ import org.opengis.parameter.ParameterValue;
 
 @Deprecated
 /**
- * DEPRECATED - Use org.geotools.data.store.ContentDataStore instead
+ * @deprecated Use org.geotools.data.store.ContentDataStore instead
  * 
  * A best of toolkit for DataStoreFactory implementors.
  * <p>

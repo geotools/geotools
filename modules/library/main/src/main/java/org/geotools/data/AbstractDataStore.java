@@ -37,7 +37,7 @@ import org.opengis.filter.Filter;
 
 @Deprecated
 /**
- * DEPRECATED - Use org.geotools.data.store.ContentDataStore instead
+ * @deprecated Use org.geotools.data.store.ContentDataStore instead
  * 
  * Represents a stating point for implementing your own DataStore.
  *

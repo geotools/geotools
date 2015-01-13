@@ -18,8 +18,11 @@ package org.geotools.data.crs;
 
 import junit.framework.TestCase;
 
+import org.geotools.data.CollectionFeatureReader;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.memory.MemoryDataStore;
+import org.geotools.data.collection.ListFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -47,13 +50,13 @@ public class ForceCoordinateSystemFeatureReaderTest extends TestCase {
     }
 
     /**
-     * create a datastore with 1 feature in it.
-     * @param crs the CRS of the featuretype
+     * create a feature collection with 1 feature in it.
+     * @param crs the CRS of the FeatureType
      * @param p the point to add, should be same CRS as crs
      * @return
      * @throws Exception
      */
-    private MemoryDataStore createDatastore(CoordinateReferenceSystem crs, Point p) throws Exception{
+    private SimpleFeatureCollection createDatastore(CoordinateReferenceSystem crs, Point p) throws Exception{
         
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(FEATURE_TYPE_NAME);
@@ -65,11 +68,10 @@ public class ForceCoordinateSystemFeatureReaderTest extends TestCase {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(ft);
         b.add( p );
         
-        SimpleFeature[] features=new SimpleFeature[]{
-           b.buildFeature(null) 
-        };
+        ListFeatureCollection features = new ListFeatureCollection(ft);
+        features.add( b.buildFeature(null));
         
-        return new MemoryDataStore(features);
+        return features;
     }
     
     public void testSameCRS() throws Exception {
@@ -77,11 +79,12 @@ public class ForceCoordinateSystemFeatureReaderTest extends TestCase {
         GeometryFactory fac=new GeometryFactory();
         Point p = fac.createPoint(new Coordinate(10,10) );
         
-        MemoryDataStore ds = createDatastore(crs, p);
+        SimpleFeatureCollection features = createDatastore(crs, p);
+        FeatureReader<SimpleFeatureType, SimpleFeature> original = DataUtilities.reader( features );
+        //FeatureReader<SimpleFeatureType, SimpleFeature> original = new CollectionFeatureReader( features, features.getSchema() );
         
-         FeatureReader<SimpleFeatureType, SimpleFeature> original = ds.getFeatureReader(FEATURE_TYPE_NAME);
         
-        ForceCoordinateSystemFeatureReader modified = new ForceCoordinateSystemFeatureReader(ds.getFeatureReader(FEATURE_TYPE_NAME), crs);
+        ForceCoordinateSystemFeatureReader modified = new ForceCoordinateSystemFeatureReader(DataUtilities.reader( features ), crs);
         
         SimpleFeature f1=original.next();
         SimpleFeature f2=modified.next();
@@ -99,13 +102,12 @@ public class ForceCoordinateSystemFeatureReaderTest extends TestCase {
         GeometryFactory fac=new GeometryFactory();
         Point p = fac.createPoint(new Coordinate(10,10) );
         
-        MemoryDataStore ds = createDatastore(srcCRS, p);
-        
-         FeatureReader<SimpleFeatureType, SimpleFeature> original = ds.getFeatureReader(FEATURE_TYPE_NAME);
+        SimpleFeatureCollection features = createDatastore(srcCRS, p);
+        FeatureReader<SimpleFeatureType, SimpleFeature> original = DataUtilities.reader( features );
         
         CoordinateReferenceSystem destCRS=DefaultEngineeringCRS.CARTESIAN_2D;
         ForceCoordinateSystemFeatureReader modified = new ForceCoordinateSystemFeatureReader(
-                ds.getFeatureReader(FEATURE_TYPE_NAME), destCRS);
+                DataUtilities.reader( features ), destCRS);
         
         SimpleFeature f1=original.next();
         SimpleFeature f2=modified.next();
@@ -130,11 +132,11 @@ public class ForceCoordinateSystemFeatureReaderTest extends TestCase {
         GeometryFactory fac=new GeometryFactory();
         Point p = fac.createPoint(new Coordinate(10,10) );
         
-        MemoryDataStore ds = createDatastore(crs, p);
+        SimpleFeatureCollection features = createDatastore(crs, p);
         
         try{
             new ForceCoordinateSystemFeatureReader(
-                ds.getFeatureReader(FEATURE_TYPE_NAME), (CoordinateReferenceSystem)null);
+                    DataUtilities.reader( features ), (CoordinateReferenceSystem)null);
             fail(); // should throw a nullpointer exception.
         }catch(NullPointerException e){
             // good
@@ -147,13 +149,12 @@ public class ForceCoordinateSystemFeatureReaderTest extends TestCase {
         GeometryFactory fac=new GeometryFactory();
         Point p = fac.createPoint(new Coordinate(10,10) );
         
-        MemoryDataStore ds = createDatastore(srcCRS, p);
-        
-         FeatureReader<SimpleFeatureType, SimpleFeature> original = ds.getFeatureReader(FEATURE_TYPE_NAME);
+        SimpleFeatureCollection features = createDatastore(srcCRS, p);
+        FeatureReader<SimpleFeatureType, SimpleFeature> original = DataUtilities.reader( features );
         
         CoordinateReferenceSystem destCRS=DefaultEngineeringCRS.CARTESIAN_2D;
         ForceCoordinateSystemFeatureReader modified = new ForceCoordinateSystemFeatureReader(
-                ds.getFeatureReader(FEATURE_TYPE_NAME), destCRS);
+                DataUtilities.reader( features ), destCRS);
         
         SimpleFeature f1=original.next();
         SimpleFeature f2=modified.next();

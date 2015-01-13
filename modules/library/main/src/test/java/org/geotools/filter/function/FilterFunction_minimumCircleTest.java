@@ -1,12 +1,10 @@
 package org.geotools.filter.function;
 
-import com.vividsolutions.jts.algorithm.MinimumBoundingCircle;
-import static org.junit.Assert.*;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKTReader;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DataUtilities;
-import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
@@ -17,6 +15,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
+
+import com.vividsolutions.jts.algorithm.MinimumBoundingCircle;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * The FilterFunction_minimumCircle UnitTest
@@ -50,8 +53,6 @@ public class FilterFunction_minimumCircleTest {
 
         // Create SimpleFeatures
         SimpleFeatureType type = DataUtilities.createType("polygons", "id:int,geom:Polygon");
-        MemoryDataStore store = new MemoryDataStore();
-        store.createSchema(type);
         String[] polygons = {
             "POLYGON ((1235702.2034807256 707935.1879023351, 1229587.156498981 671715.2942412316, 1242287.6386918353 688649.2704983709, 1245109.9680680253 677359.9529936113, 1247932.297444215 711227.9055078899, 1239935.6975450104 705583.2467555101, 1235702.2034807256 707935.1879023351))",
             "POLYGON ((1237113.3681688206 622324.5301579087, 1224883.274205331 586575.0247261701, 1258280.8384902447 589397.3541023601, 1237113.3681688206 622324.5301579087))",
@@ -63,9 +64,8 @@ public class FilterFunction_minimumCircleTest {
             Geometry polygon = reader.read(polygons[i]);
             features[i] = SimpleFeatureBuilder.build(type, new Object[]{i, polygon}, String.valueOf(i));
         }
-        store.addFeatures(features);
-        SimpleFeatureCollection featureCollection = store.getFeatureSource("polygons").getFeatures();
-
+        SimpleFeatureCollection featureCollection = DataUtilities.collection(features);
+        
         // Test the Function
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
         Function exp = ff.function("mincircle", ff.property("geom"));

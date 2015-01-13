@@ -24,6 +24,7 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
+import org.geotools.graph.structure.DirectedGraphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.SourceGraphIterator;

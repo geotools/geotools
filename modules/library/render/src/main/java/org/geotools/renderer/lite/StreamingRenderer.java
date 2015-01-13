@@ -17,6 +17,7 @@
 package org.geotools.renderer.lite;
 
 import java.awt.AlphaComposite;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -1684,6 +1685,7 @@ public class StreamingRenderer implements GTRenderer {
         LiteFeatureTypeStyle lfts;
         BufferedImage image;
 
+        boolean foundComposite = false;
         for (FeatureTypeStyle fts : featureStyles) {
             if (typeDescription == null || typeDescription.toString().indexOf( fts.getFeatureTypeName() ) == -1) 
                 continue; 
@@ -1708,13 +1710,18 @@ public class StreamingRenderer implements GTRenderer {
             if ((ruleList.isEmpty()) && (elseRuleList.isEmpty()))
                 continue; 
 
+            // get the fts level composition, if any
+            Composite composite = SLDStyleFactory.getComposite(fts.getOptions());
+            foundComposite |= composite != null;
+
             // first fts, we can reuse the graphics directly
-            if (result.isEmpty() || !isOptimizedFTSRenderingEnabled()) {
+            if (!foundComposite && (result.isEmpty() || !isOptimizedFTSRenderingEnabled())) {
                 lfts = new LiteFeatureTypeStyle(graphics, ruleList, elseRuleList, fts.getTransformation());
             } else {
                 lfts = new LiteFeatureTypeStyle(new DelayedBackbufferGraphic(graphics, screenSize), 
                         ruleList, elseRuleList, fts.getTransformation());
             }
+            lfts.composite = composite;
             if (FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST.equals(fts.getOptions().get(
                     FeatureTypeStyle.KEY_EVALUATION_MODE))) {
                 lfts.matchFirst = true;
@@ -1744,6 +1751,7 @@ public class StreamingRenderer implements GTRenderer {
         ArrayList<LiteFeatureTypeStyle> result = new ArrayList<LiteFeatureTypeStyle>();
 
         LiteFeatureTypeStyle lfts;
+        boolean foundComposite = false;
         for (FeatureTypeStyle fts : featureStyles) {
             if (isFeatureTypeStyleActive(ftype, fts)) {
                 // DJB: this FTS is compatible with this FT.
@@ -1755,16 +1763,22 @@ public class StreamingRenderer implements GTRenderer {
 
                 // if none, skip it
                 if ((ruleList.isEmpty()) && (elseRuleList.isEmpty()))
-                    continue; 
+                    continue;
 
-                // we can optimize this one!
-                if (result.isEmpty() || !isOptimizedFTSRenderingEnabled()) {
+                // get the fts level composition, if any
+                Composite composite = styleFactory.getComposite(fts.getOptions());
+                foundComposite |= composite != null;
+
+                // we can optimize this one and draw directly on the graphics, assuming
+                // there is no composition
+                if (!foundComposite && (result.isEmpty() || !isOptimizedFTSRenderingEnabled())) {
                     lfts = new LiteFeatureTypeStyle(graphics, ruleList,
                             elseRuleList, fts.getTransformation());
                 } else {
                     lfts = new LiteFeatureTypeStyle(new DelayedBackbufferGraphic(graphics, screenSize), 
                             ruleList, elseRuleList, fts.getTransformation());
                 }
+                lfts.composite = composite;
                 if (FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST.equals(fts.getOptions().get(
                         FeatureTypeStyle.KEY_EVALUATION_MODE))) {
                     lfts.matchFirst = true;
@@ -2062,7 +2076,7 @@ public class StreamingRenderer implements GTRenderer {
                 }
 
                 // finally, perform rendering
-                if(isOptimizedFTSRenderingEnabled() && lfts.size() > 1) {
+                if (isOptimizedFTSRenderingEnabled() && lfts.size() > 1) {
                     drawOptimized(graphics, currLayer, at, destinationCrs, layerId, null, features,
                             scaleRange, uniform);
                 } else {
@@ -2096,6 +2110,7 @@ public class StreamingRenderer implements GTRenderer {
     
     /**
      * Classify a List of LiteFeatureTypeStyle objects by Transformation.
+     * 
      * @param lfts A List of LiteFeatureTypeStyles
      * @return A List of List of LiteFeatureTypeStyles
      */
@@ -2368,6 +2383,15 @@ public class StreamingRenderer implements GTRenderer {
                 }
             } finally {
                 DataUtilities.close( iterator );
+            }
+
+            if (liteFeatureTypeStyle.composite != null) {
+                try {
+                    requests.put(new MergeLayersRequest(graphics,
+                            new LiteFeatureTypeStyle[] { liteFeatureTypeStyle }));
+                } catch (InterruptedException e) {
+                    fireErrorEvent(e);
+                }
             }
         }
     }
@@ -3325,16 +3349,25 @@ public class StreamingRenderer implements GTRenderer {
 
         @Override
         void execute() {
-            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+            if (graphics instanceof DelayedBackbufferGraphic) {
+                ((DelayedBackbufferGraphic) graphics).init();
+            }
+
             for (int t = 0; t < fts_array.length; t++) {
+                LiteFeatureTypeStyle currentLayer = fts_array[t];
                 // first fts won't have an image, it's using the user provided graphics
                 // straight, so we don't need to compose it back in.
-                final Graphics2D ftsGraphics = fts_array[t].graphics;
+                final Graphics2D ftsGraphics = currentLayer.graphics;
                 if (ftsGraphics instanceof DelayedBackbufferGraphic) {
                     final BufferedImage image = ((DelayedBackbufferGraphic) ftsGraphics).image;
                     // we may have not found anything to paint, in that case the delegate
                     // has not been initialized
                     if(image != null) {
+                        if (currentLayer.composite == null) {
+                            graphics.setComposite(AlphaComposite.SrcOver);
+                        } else {
+                            graphics.setComposite(currentLayer.composite);
+                        }
                         graphics.drawImage(image, 0, 0, null);
                         ftsGraphics.dispose();
                     }
@@ -3372,6 +3405,10 @@ public class StreamingRenderer implements GTRenderer {
         void execute() {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Rendering Raster " + coverage);
+            }
+
+            if (graphics instanceof DelayedBackbufferGraphic) {
+                ((DelayedBackbufferGraphic) graphics).init();
             }
 
             try {
@@ -3447,6 +3484,10 @@ public class StreamingRenderer implements GTRenderer {
                 LOGGER.fine("Rendering reader " + reader);
             }
 
+            if (graphics instanceof DelayedBackbufferGraphic) {
+                ((DelayedBackbufferGraphic) graphics).init();
+            }
+
             try {
                 // /////////////////////////////////////////////////////////////////
                 //
@@ -3490,6 +3531,10 @@ public class StreamingRenderer implements GTRenderer {
         void execute() {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Rendering DirectLayer: " + layer);
+            }
+
+            if (graphics instanceof DelayedBackbufferGraphic) {
+                ((DelayedBackbufferGraphic) graphics).init();
             }
 
             try {

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>CSS Blend Modes sampler</title>
+	
+	<style type="text/css">
+	
+	html, body
+	{
+		margin:0;
+	}
+	
+	.map1
+	{
+		width:128px;
+		height:128px;
+                background-color: transparent;
+		background:url("bkg.png"), url("map.png");
+	}
+
+	.map2
+	{
+		width:128px;
+		height:128px;
+                background-color: transparent;
+		background:url("bkg2.png"), url("map2.png");
+	}
+    
+    .red2
+    {
+        width:128px;
+        height:128px;
+                background-color: transparent;
+        background:url("bkg2.png"), url("red.png");
+    }
+    
+
+	
+
+	</style>
+	
+</head>
+<body>
+
+<h1>CSS Blend Modes sampler</h1>
+This page shows the various blend mode combinations using the browser native blending ability.
+Can be used as a source of truth in case some of the image tests fail, to check what the
+expected result is.
+
+Unfortunately it seems that not even browsers are getting all the combinations right...
+
+
+<h3 style="clear:both">Multiply</h3>
+<div class="map1" style="background-blend-mode: multiply; float:left;"></div><div class="map2" style="background-blend-mode: multiply; float:left"></div>
+<div class="red2" style="background-blend-mode: multiply; float:left"></div>
+<br style="clear:both"/>
+
+<h3 >Screen</h3>
+<div class="map1" style="background-blend-mode: screen; float:left;"></div><div class="map2" style="background-blend-mode: screen; float:left"></div>
+<div class="red2" style="background-blend-mode: screen; float:left"></div>
+<br style="clear:both"/>
+
+<h3 >Overlay</h3>
+<div class="map1" style="background-blend-mode: overlay; float:left;"></div><div class="map2" style="background-blend-mode: overlay; float:left"></div>
+<div class="red2" style="background-blend-mode: overlay; float:left"></div>
+<br style="clear:both"/>
+
+<h3 >Darken</h3>
+<div class="map1" style="background-blend-mode: darken; float:left;"></div><div class="map2" style="background-blend-mode: darken; float:left"></div>
+<div class="red2" style="background-blend-mode: darken; float:left"></div>
+<br style="clear:both"/>
+
+<h3 >Lighten</h3>
+<div class="map1" style="background-blend-mode: lighten; float:left;"></div><div class="map2" style="background-blend-mode: lighten; float:left"></div>
+<div class="red2" style="background-blend-mode: lighten; float:left"></div>
+<br style="clear:both"/>
+
+<h3>Color-Dodge</h3>
+<div class="map1" style="background-blend-mode: color-dodge; float:left;"></div><div class="map2" style="background-blend-mode: color-dodge; float:left"></div>
+<div class="red2" style="background-blend-mode: color-dodge; float:left"></div>
+<br style="clear:both"/>
+
+<h3>Color-Burn</h3>
+<div class="map1" style="background-blend-mode: color-burn; float:left;"></div><div class="map2" style="background-blend-mode: color-burn; float:left"></div>
+<div class="red2" style="background-blend-mode: color-burn; float:left"></div>
+<br style="clear:both"/>
+
+<h3>Hard-light</h3>
+<div class="map1" style="background-blend-mode: hard-light; float:left;"></div><div class="map2" style="background-blend-mode: hard-light; float:left"></div>
+<div class="red2" style="background-blend-mode: hard-light; float:left"></div>
+<br style="clear:both"/>
+
+<h3>Soft-light</h3>
+<div class="map1" style="background-blend-mode: soft-light; float:left;"></div><div class="map2" style="background-blend-mode: soft-light; float:left"></div>
+<div class="red2" style="background-blend-mode: soft-light; float:left"></div>
+<br style="clear:both"/>
+
+<h3>Difference</h3>
+<div class="map1" style="background-blend-mode: difference; float:left;"></div><div class="map2" style="background-blend-mode: difference; float:left"></div>
+<div class="red2" style="background-blend-mode: difference; float:left"></div>
+<br style="clear:both"/>
+
+<h3>Exclusion</h3>
+<div class="map1" style="background-blend-mode: exclusion; float:left;"></div><div class="map2" style="background-blend-mode: exclusion; float:left"></div>
+<div class="red2" style="background-blend-mode: exclusion; float:left"></div>
+<br style="clear:both"/>
+
+<h3>Hue</h3>
+<div class="map1" style="background-blend-mode: hue; float:left;"></div><div class="map2" style="background-blend-mode: hue; float:left"></div>
+<div class="red2" style="background-blend-mode: hue; float:left"></div>
+<br style="clear:both"/>
+
+<h3>Saturation</h3>
+<div class="map1" style="background-blend-mode: saturation; float:left;"></div><div class="map2" style="background-blend-mode: saturation; float:left"></div>
+<div class="red2" style="background-blend-mode: saturation; float:left"></div>
+<br style="clear:both"/>
+
+<h3>Color</h3>
+<div class="map1" style="background-blend-mode: color; float:left;"></div><div class="map2" style="background-blend-mode: color; float:left"></div>
+<div class="red2" style="background-blend-mode: color; float:left"></div>
+<br style="clear:both"/>
+
+<h3>Luminosity</h3>
+<div class="map1" style="background-blend-mode: luminosity; float:left;"></div><div class="map2" style="background-blend-mode: luminosity; float:left"></div>
+<div class="red2" style="background-blend-mode: luminosity; float:left"></div>
+<br style="clear:both"/>
+
+
+</body>
+</html>

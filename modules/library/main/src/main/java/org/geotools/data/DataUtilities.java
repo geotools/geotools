@@ -91,6 +91,7 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.geotools.styling.UserLayer;
 import org.geotools.util.Converters;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.Utilities;
@@ -1073,16 +1074,14 @@ public class DataUtilities {
         } else {
             featureType = featureArray[0].getFeatureType();
         }
-
-        DataStore arrayStore = new ArrayDataStore(featureArray);
-
-        String typeName = featureType.getTypeName();
-        try {
-            return arrayStore.getFeatureSource(typeName);
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to find "+typeName+" ArrayDataStore in an inconsistent" +
-            		"state", e);
+        ListFeatureCollection collection =  new ListFeatureCollection( featureType, featureArray );
+        for( SimpleFeature feature : collection ){
+            if( feature.getFeatureType() != featureType ){
+                String typeName = featureType.getTypeName();
+                throw new IllegalStateException("Array inconsistent, expected each feature of type  "+typeName);
+            }
         }
+        return source( collection );
     }
 
     /**
@@ -1119,21 +1118,9 @@ public class DataUtilities {
 
             return source;
         }
-        // if( collection instanceof SimpleFeatureCollection ){
-        // SimpleFeatureCollection simpleFeatureCollection = simple( collection );
-        // CollectionFeatureSource source = new CollectionFeatureSource(simpleFeatureCollection);
-        //
-        // return source;
-        // }
-
-        CollectionDataStore store = new CollectionDataStore(collection);
-        String typeName = store.getTypeNames()[0];
-        try {
-            return store.getFeatureSource(typeName);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("CollectionDataStore inconsistent, "
-                    + " ensure type name "+typeName+" is the same for all features", e);
-        }
+        SimpleFeatureCollection simpleFeatureCollection = simple( collection );
+        CollectionFeatureSource source = new CollectionFeatureSource(simpleFeatureCollection);
+        return source;
     }
 
     /**
@@ -1153,9 +1140,153 @@ public class DataUtilities {
      */
     public static SimpleFeatureSource createView(final DataStore store, final Query query)
             throws IOException, SchemaException {
-        return new DefaultView(store.getFeatureSource(query.getTypeName()), query);
+        return createView(store.getFeatureSource(query.getTypeName()), query);
+    }
+    
+    /**
+     * Return a 'view' of the given {@code FeatureSource} constrained by a {@code Query}.
+     * 
+     * @param source
+     *            feature source
+     * @param query
+     *            the query
+     * 
+     * @return the constrained view
+     * 
+     * @throws IOException
+     *             if the data store cannot be accessed
+     * @throws SchemaException
+     *             if the query is incompatible with the store's contents
+     */
+    public static SimpleFeatureSource createView(final SimpleFeatureSource source, final Query query)
+            throws IOException, SchemaException {
+        return new DefaultView(source, query);
     }
 
+    /**
+     * Adapt a feature collection to a read-only data store.
+     * <p>
+     * See {@link UserLayer} for example use.
+     * @param features SimpleFeatureCollection
+     * @return read-only DataStore
+     */
+    public static DataStore store( final SimpleFeatureSource source ){
+        final SimpleFeatureType schema = source.getSchema();
+        final Name name = schema.getName();
+        final String typeName = name.getLocalPart();
+        return new DataStore() {
+            
+            @Override
+            public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
+                throw new UnsupportedOperationException("In-memory datastore does not support modification");
+            }
+            
+            @Override
+            public void removeSchema(Name typeName) throws IOException {
+                throw new UnsupportedOperationException("In-memory datastore does not support modification");
+            }
+            
+            @Override
+            public SimpleFeatureType getSchema(Name name) throws IOException {
+                if( schema.getName().equals(name)){
+                    return schema;
+                }
+                throw new IOException( "Not found: In-memory datastore contains "+typeName); 
+            }
+            
+            @Override
+            public List<Name> getNames() throws IOException {
+                return Collections.singletonList(name);
+            }
+            
+            @Override
+            public ServiceInfo getInfo() {
+                DefaultServiceInfo info = new DefaultServiceInfo();
+                info.setDescription("In-memory "+typeName);
+                info.setTitle(typeName);
+                return info;
+            }
+            
+            @Override
+            public void dispose() {
+            }
+            
+            @Override
+            public void createSchema(SimpleFeatureType featureType) throws IOException {
+                throw new UnsupportedOperationException("In-memory datastore does not support modification");
+            }
+            
+            @Override
+            public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
+                throw new UnsupportedOperationException("In-memory datastore does not support modification");
+            }
+            
+            @Override
+            public void removeSchema(String typeName) throws IOException {
+                throw new UnsupportedOperationException("In-memory datastore does not support modification");
+            }
+            
+            @Override
+            public String[] getTypeNames() throws IOException {
+                return new String[]{ typeName };
+            }
+            
+            @Override
+            public SimpleFeatureType getSchema(String name) throws IOException {
+                if( typeName.equals( name )){
+                    return schema;
+                }
+                throw new IOException( "Not found: In-memory datastore contains "+typeName); 
+            }
+            
+            @Override
+            public LockingManager getLockingManager() {
+                return null; // not applicable
+            }
+            
+            @Override
+            public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
+                    String typeName, Transaction transaction) throws IOException {
+                throw new UnsupportedOperationException("In-memory datastore does not support modification");
+            }
+            @Override
+            public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
+                    Transaction transaction) throws IOException {
+                throw new UnsupportedOperationException("In-memory datastore does not support modification");
+            }
+            
+            @Override
+            public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
+                    Filter filter, Transaction transaction) throws IOException {
+                throw new UnsupportedOperationException("In-memory datastore does not support modification");
+            }
+            
+            @Override
+            public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
+                if( name.equals( typeName )){
+                    return source;
+                }
+                throw new IOException( "Not found: In-memory datastore contains "+name.getLocalPart()); 
+            }
+            
+            @Override
+            public SimpleFeatureSource getFeatureSource(String name) throws IOException {
+                if( typeName.equals( name )){
+                    return source;
+                }
+                throw new IOException( "Not found: In-memory datastore contains "+typeName);
+            }
+            
+            @Override
+            public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query,
+                    Transaction transaction) throws IOException {
+                if( typeName.equals(query.getTypeName())){
+                    return DataUtilities.reader(source.getFeatures());
+                }
+                throw new IOException( "Not found: In-memory datastore contains "+typeName);
+            }
+        };
+    }
     /**
      * Adapt a collection to a reader for use with FeatureStore.setFeatures( reader ).
      * 

@@ -18,6 +18,7 @@ package org.geotools.data;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.vividsolutions.jts.geom.Point;
+
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -54,6 +56,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
@@ -70,7 +73,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import org.geotools.data.memory.MemoryDataStore;
 
 /**
  * Tests cases for DataUtilities.
@@ -110,7 +112,21 @@ public class DataUtilitiesTest extends DataTestCase {
         SimpleFeatureSource simple = DataUtilities.simple(source);
         assertSame( simple, source);  
     } 
-
+    
+    public void testSimpleStore() throws IOException{
+        SimpleFeatureSource features = DataUtilities.source(roadFeatures);
+        Name name = features.getName();
+        String typeName = name.getLocalPart();
+        
+        DataStore store = DataUtilities.store( features );
+        
+        assertSame( features.getSchema(), store.getSchema(name) );
+        assertSame( features.getSchema(), store.getSchema(typeName) );
+        assertSame( features, store.getFeatureSource(name));
+        assertSame( features, store.getFeatureSource(typeName));
+        assertEquals( name, store.getNames().get(0));
+        assertEquals( typeName, store.getTypeNames()[0]);
+    }
     public void testFirst() {
         SimpleFeatureCollection collection = DataUtilities.collection( roadFeatures );
          SimpleFeature first = DataUtilities.first( collection );
@@ -624,7 +640,7 @@ public class DataUtilitiesTest extends DataTestCase {
 
     public void testSource() throws Exception {
         SimpleFeatureSource s = DataUtilities.source(roadFeatures);
-        assertEquals(-1, s.getCount(Query.ALL));
+        assertEquals(3, s.getCount(Query.ALL));
         assertEquals(3, s.getFeatures().size());
         assertEquals(3, s.getFeatures(Query.ALL).size());
         assertEquals(3, s.getFeatures(Filter.INCLUDE).size());
@@ -763,8 +779,9 @@ public class DataUtilitiesTest extends DataTestCase {
     public void testCreateView() throws Exception {
         String[] propNames = {"id", "geom"};
         Query query = new Query(roadType.getTypeName(), Filter.INCLUDE, 100, propNames, null);
-        DataStore ds = new MemoryDataStore(roadFeatures);
-        SimpleFeatureSource view = DataUtilities.createView(ds, query);
+        SimpleFeatureSource source = DataUtilities.source( roadFeatures );
+        SimpleFeatureSource view = DataUtilities.createView(source, query);
+
         assertNotNull(view);
         List<AttributeDescriptor> desc = view.getSchema().getAttributeDescriptors();
         assertTrue(desc.size() == propNames.length);

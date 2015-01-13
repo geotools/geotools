@@ -44,10 +44,13 @@ import javax.swing.ImageIcon;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.VendorOptionParser;
+import org.geotools.renderer.composite.BlendComposite;
+import org.geotools.renderer.composite.BlendComposite.BlendingMode;
 import org.geotools.renderer.style.RandomFillBuilder.PositionRandomizer;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
@@ -134,13 +137,16 @@ public class SLDStyleFactory {
 	private static final int MAX_RASTERIZATION_SIZE = 512;
 
 	/** Holds a lookup bewteen SLD names and java constants. */
-	private static final java.util.Map joinLookup = new java.util.HashMap();
+	private static final java.util.Map JOIN_LOOKUP = new java.util.HashMap();
 
 	/** Holds a lookup bewteen SLD names and java constants. */
-	private static final java.util.Map capLookup = new java.util.HashMap();
+	private static final java.util.Map CAP_LOOKUP = new java.util.HashMap();
 
 	/** Holds a lookup bewteen SLD names and java constants. */
-	private static final java.util.Map fontStyleLookup = new java.util.HashMap();
+	private static final java.util.Map FONT_STYLE_LOOKUP = new java.util.HashMap();
+
+    /** Holds a lookup bewteen alpha composite names and AlphaComposite constants. */
+    private static final java.util.Map<String, Integer> ALPHA_COMPOSITE_LOOKUP = new java.util.LinkedHashMap<String, Integer>();
 
 	private static final FilterFactory ff = CommonFactoryFinder
 			.getFilterFactory(null);
@@ -155,18 +161,30 @@ public class SLDStyleFactory {
     public static final int DEFAULT_MARK_SIZE = 16;
 
 	static { // static block to populate the lookups
-		joinLookup.put("miter", new Integer(BasicStroke.JOIN_MITER));
-		joinLookup.put("bevel", new Integer(BasicStroke.JOIN_BEVEL));
-		joinLookup.put("round", new Integer(BasicStroke.JOIN_ROUND));
+		JOIN_LOOKUP.put("miter", new Integer(BasicStroke.JOIN_MITER));
+		JOIN_LOOKUP.put("bevel", new Integer(BasicStroke.JOIN_BEVEL));
+		JOIN_LOOKUP.put("round", new Integer(BasicStroke.JOIN_ROUND));
 
-		capLookup.put("butt", new Integer(BasicStroke.CAP_BUTT));
-		capLookup.put("round", new Integer(BasicStroke.CAP_ROUND));
-		capLookup.put("square", new Integer(BasicStroke.CAP_SQUARE));
+		CAP_LOOKUP.put("butt", new Integer(BasicStroke.CAP_BUTT));
+		CAP_LOOKUP.put("round", new Integer(BasicStroke.CAP_ROUND));
+		CAP_LOOKUP.put("square", new Integer(BasicStroke.CAP_SQUARE));
 
-		fontStyleLookup.put("normal", new Integer(java.awt.Font.PLAIN));
-		fontStyleLookup.put("italic", new Integer(java.awt.Font.ITALIC));
-		fontStyleLookup.put("oblique", new Integer(java.awt.Font.ITALIC));
-		fontStyleLookup.put("bold", new Integer(java.awt.Font.BOLD));
+		FONT_STYLE_LOOKUP.put("normal", new Integer(java.awt.Font.PLAIN));
+		FONT_STYLE_LOOKUP.put("italic", new Integer(java.awt.Font.ITALIC));
+		FONT_STYLE_LOOKUP.put("oblique", new Integer(java.awt.Font.ITALIC));
+		FONT_STYLE_LOOKUP.put("bold", new Integer(java.awt.Font.BOLD));
+		
+        ALPHA_COMPOSITE_LOOKUP.put("copy", AlphaComposite.SRC);
+        ALPHA_COMPOSITE_LOOKUP.put("destination", AlphaComposite.DST);
+        ALPHA_COMPOSITE_LOOKUP.put("source-over", AlphaComposite.SRC_OVER);
+        ALPHA_COMPOSITE_LOOKUP.put("destination-over", AlphaComposite.DST_OVER);
+        ALPHA_COMPOSITE_LOOKUP.put("source-in", AlphaComposite.SRC_IN);
+        ALPHA_COMPOSITE_LOOKUP.put("destination-in", AlphaComposite.DST_IN);
+        ALPHA_COMPOSITE_LOOKUP.put("source-out", AlphaComposite.SRC_OUT);
+        ALPHA_COMPOSITE_LOOKUP.put("destination-out", AlphaComposite.DST_OUT);
+        ALPHA_COMPOSITE_LOOKUP.put("source-atop", AlphaComposite.SRC_ATOP);
+        ALPHA_COMPOSITE_LOOKUP.put("destination-atop", AlphaComposite.DST_ATOP);
+        ALPHA_COMPOSITE_LOOKUP.put("xor", AlphaComposite.XOR);
 	}
 
 	/** Symbolizers that depend on attributes */
@@ -461,8 +479,16 @@ public class SLDStyleFactory {
 			}
 		}
 		// otherwise, sets regular fill using Java raster-based Paint objects
+        float opacity = 1f;
+        if (symbolizer.getFill() != null) {
+            opacity = evalOpacity(symbolizer.getFill().getOpacity(), feature);
+        }
+        Composite composite = getComposite(symbolizer.getOptions(), opacity);
+        if (composite == null) {
+            composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
+        }
 		style.setFill(getPaint(symbolizer.getFill(), feature, symbolizer));
-		style.setFillComposite(getComposite(symbolizer.getFill(), feature));
+        style.setFillComposite(composite);
 	}
 
 	Style2D createDynamicPolygonStyle(SimpleFeature feature,
@@ -478,14 +504,23 @@ public class SLDStyleFactory {
 
 	Style2D createLineStyle(Object feature, LineSymbolizer symbolizer,
 			Range scaleRange) {
+        // see if we have some information about the composite
+        float opacity = 1f;
+        if (symbolizer.getStroke() != null) {
+            opacity = evalOpacity(symbolizer.getStroke().getOpacity(), feature);
+        }
+        Composite composite = getComposite(symbolizer.getOptions(), opacity);
+        if (composite == null) {
+            composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
+        }
+
 		LineStyle2D style = new LineStyle2D();
 		setScaleRange(style, scaleRange);
 		style.setStroke(getStroke(symbolizer.getStroke(), feature));
 		style.setGraphicStroke(getGraphicStroke(symbolizer, symbolizer.getStroke(),
 				feature, scaleRange));
 		style.setContour(getStrokePaint(symbolizer.getStroke(), feature));
-		style.setContourComposite(getStrokeComposite(symbolizer.getStroke(),
-				feature));
+        style.setContourComposite(composite);
 
 		return style;
 	}
@@ -537,8 +572,13 @@ public class SLDStyleFactory {
 
 		// extract base properties
 		float opacity = evalOpacity(sldGraphic.getOpacity(), feature);
-		Composite composite = AlphaComposite.getInstance(
-				AlphaComposite.SRC_OVER, opacity);
+
+        // see if we have some information about the composite
+        Composite composite = getComposite(symbolizer.getOptions(), opacity);
+        if (composite == null) {
+            composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
+        }
+
 		float displacementX = 0;
 		float displacementY = 0;
         Displacement displacement = sldGraphic.getDisplacement();
@@ -619,7 +659,6 @@ public class SLDStyleFactory {
 	                        continue;
 	                    } else {
 	                        g2d.setRotation(rotation);
-	                        g2d.setOpacity(opacity);
 	                        retval = g2d;
 	                        break;
 	                    }
@@ -629,14 +668,13 @@ public class SLDStyleFactory {
 									/ icon.getIconHeight();
 							icon = new RescaledIcon(icon, scale);
 						}
-                        retval = new IconStyle2D(icon, feature, composite);
+                        retval = new IconStyle2D(icon, feature);
 						break;
 					}
 				} else {
 					GraphicStyle2D g2d = getGraphicStyle(eg, feature, size, 1);
 					if (g2d != null) {
 						g2d.setRotation(rotation);
-						g2d.setOpacity(opacity);
 						retval = g2d;
 						break;
 					}
@@ -652,29 +690,29 @@ public class SLDStyleFactory {
 			}
 		}
 
-		if (retval != null) {
-			setScaleRange(retval, scaleRange);
-            PointStyle2D ps = (PointStyle2D) retval;
-            ps.setDisplacementX(displacementX);
-            ps.setDisplacementY(displacementY);
-            ps.setAnchorPointX(anchorPointX);
-            ps.setAnchorPointY(anchorPointY);
-            ps.setRotation(rotation);
-		} else {
+        if (retval == null) {
             // from SLD spec:
-            // The default if neither an ExternalGraphic nor a Mark is specified is to use the default
-            // mark of a "square" with a 50%-gray fill and a black outline, with a size of 6 pixels,
+            // The default if neither an ExternalGraphic nor a Mark is specified is to use the
+            // default mark of a "square" with a 50%-gray fill and a black outline, with a size of 6
+            // pixels,
             // unless an explicit Size is specified
             StyleFactory sf = CommonFactoryFinder.getStyleFactory();
             Mark defaultMark = sf.mark(ff.literal("square"),
                     sf.fill(null, ff.literal("#808080"), null),
-                    sf.createStroke(ff.literal("#000000"), ff.literal(1))
-            );
+                    sf.createStroke(ff.literal("#000000"), ff.literal(1)));
             if (size <= 0) {
                 size = 6;
             }
             retval = createMarkStyle(defaultMark, feature, symbolizer, size);
         }
+        setScaleRange(retval, scaleRange);
+        PointStyle2D ps = (PointStyle2D) retval;
+        ps.setDisplacementX(displacementX);
+        ps.setDisplacementY(displacementY);
+        ps.setAnchorPointX(anchorPointX);
+        ps.setAnchorPointY(anchorPointY);
+        ps.setRotation(rotation);
+        ps.setComposite(composite);
 
 		return retval;
 	}
@@ -687,13 +725,16 @@ public class SLDStyleFactory {
                     + mark.getWellKnownName() + " was not found!");
         }
 
+        Composite composite = getComposite(symbolizer.getOptions());
+
         MarkStyle2D ms2d = new MarkStyle2D();
         ms2d.setShape(shape);
         ms2d.setFill(getPaint(mark.getFill(), feature, symbolizer));
-        ms2d.setFillComposite(getComposite(mark.getFill(), feature));
+        ms2d.setFillComposite(composite != null ? composite : getComposite(mark.getFill(), feature));
         ms2d.setStroke(getStroke(mark.getStroke(), feature));
         ms2d.setContour(getStrokePaint(mark.getStroke(), feature));
-        ms2d.setContourComposite(getStrokeComposite(mark.getStroke(),
+        ms2d.setContourComposite(composite != null ? composite : getStrokeComposite(
+                mark.getStroke(),
                 feature));
         // in case of Mark we don't have a natural size, so we default
         // to 16
@@ -910,8 +951,8 @@ public class SLDStyleFactory {
 
         int styleCode;
 
-        if (fontStyleLookup.containsKey(reqStyle)) {
-            styleCode = ((Integer) fontStyleLookup.get(reqStyle)).intValue();
+        if (FONT_STYLE_LOOKUP.containsKey(reqStyle)) {
+            styleCode = ((Integer) FONT_STYLE_LOOKUP.get(reqStyle)).intValue();
         } else {
             styleCode = java.awt.Font.PLAIN;
         }
@@ -957,8 +998,8 @@ public class SLDStyleFactory {
 
 		joinType = evalToString(stroke.getLineJoin(), feature, "miter");
 
-		if (joinLookup.containsKey(joinType)) {
-			joinCode = ((Integer) joinLookup.get(joinType)).intValue();
+		if (JOIN_LOOKUP.containsKey(joinType)) {
+			joinCode = ((Integer) JOIN_LOOKUP.get(joinType)).intValue();
 		} else {
 			joinCode = java.awt.BasicStroke.JOIN_MITER;
 		}
@@ -969,8 +1010,8 @@ public class SLDStyleFactory {
 
 		capType = evalToString(stroke.getLineCap(), feature, "square");
 
-		if (capLookup.containsKey(capType)) {
-			capCode = ((Integer) capLookup.get(capType)).intValue();
+		if (CAP_LOOKUP.containsKey(capType)) {
+			capCode = ((Integer) CAP_LOOKUP.get(capType)).intValue();
 		} else {
 			capCode = java.awt.BasicStroke.CAP_SQUARE;
 		}
@@ -1245,7 +1286,7 @@ public class SLDStyleFactory {
         icon.paintIcon(null, g, 1, 1);
         g.dispose();
 
-        return new GraphicStyle2D(result, 0, 0, border);
+        return new GraphicStyle2D(result, 0, border);
     }
 
     /**
@@ -1414,8 +1455,8 @@ public class SLDStyleFactory {
 	 * @return DOCUMENT ME!
 	 */
 	public static int lookUpJoin(String joinType) {
-		if (SLDStyleFactory.joinLookup.containsKey(joinType)) {
-			return ((Integer) joinLookup.get(joinType)).intValue();
+		if (SLDStyleFactory.JOIN_LOOKUP.containsKey(joinType)) {
+			return ((Integer) JOIN_LOOKUP.get(joinType)).intValue();
 		} else {
 			return java.awt.BasicStroke.JOIN_MITER;
 		}
@@ -1430,12 +1471,81 @@ public class SLDStyleFactory {
 	 * @return DOCUMENT ME!
 	 */
 	public static int lookUpCap(String capType) {
-		if (SLDStyleFactory.capLookup.containsKey(capType)) {
-			return ((Integer) capLookup.get(capType)).intValue();
+		if (SLDStyleFactory.CAP_LOOKUP.containsKey(capType)) {
+			return ((Integer) CAP_LOOKUP.get(capType)).intValue();
 		} else {
 			return java.awt.BasicStroke.CAP_SQUARE;
 		}
 	}
+
+    /**
+     * Looks up the composite from the vendor options, or returns null if no composite operation has
+     * been specified in the options
+     * 
+     * @param options
+     * @return
+     */
+    public static Composite getComposite(Map<String, String> options) {
+        return getComposite(options, 1f);
+    }
+
+    /**
+     * Looks up the composite from the vendor options, or returns null if no composite operation has
+     * been specified in the options
+     * 
+     * @param options
+     * @return
+     */
+    public static Composite getComposite(Map<String, String> options, float defaultOpacity) {
+        // get the spec, if no spec, no composite
+        String spec = options.get(FeatureTypeStyle.COMPOSITE);
+        if (spec == null) {
+            return null;
+        }
+
+        // parse name or name,opacity
+        String name;
+        float opacity = defaultOpacity;
+        if (spec.indexOf(',') != -1) {
+            String[] split = spec.split("\\s*,\\s*");
+            if (split.length != 2) {
+                throw new IllegalArgumentException("Invalid syntax for "
+                        + FeatureTypeStyle.COMPOSITE
+                        + " key, expecting 'name' or 'name,opacity' but got " + spec);
+            }
+            name = split[0].trim();
+            boolean invalidOpacity = false;
+            try {
+                opacity = Float.parseFloat(split[1]);
+            } catch (NumberFormatException e) {
+                invalidOpacity = true;
+            }
+            if (invalidOpacity || opacity < 0 || opacity > 1) {
+                throw new IllegalArgumentException(
+                        "Invalid value for composite opacity, expecting a number between 0 and 1, but got '"
+                                + split[1] + "' instead");
+            }
+        } else {
+            name = spec;
+        }
+
+        // lookup the composition operation, see if it's an alpha composite
+        if (ALPHA_COMPOSITE_LOOKUP.containsKey(name)) {
+            Integer rule = ALPHA_COMPOSITE_LOOKUP.get(name);
+            return AlphaComposite.getInstance(rule, opacity);
+        }
+
+        // see if it's a blending mode instead
+        BlendingMode blend = BlendingMode.lookupByName(name);
+        if (blend == null) {
+            // ok, this is unknown then
+            throw new IllegalArgumentException(
+                    "Invalid composite name, not part of the supported alpha composite ones "
+                            + ALPHA_COMPOSITE_LOOKUP.keySet() + ", nor the blending ones "
+                            + BlendingMode.getStandardNames());
+        }
+        return BlendComposite.getInstance(blend, opacity);
+    }
 
 	/**
 	 * Getter for property mapScaleDenominator.

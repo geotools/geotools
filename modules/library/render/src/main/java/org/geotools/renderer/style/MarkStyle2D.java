@@ -17,6 +17,7 @@
 package org.geotools.renderer.style;
 
 // J2SE dependencies
+import java.awt.Composite;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
@@ -50,6 +51,8 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
     float anchorPointX = 0.5f;
 
     float anchorPointY = 0.5f;
+
+    Composite composite;
 
     /**
      * Returns the shape rotation, in radians
@@ -211,6 +214,14 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
 
     public void setAnchorPointY(float anchorPointY) {
         this.anchorPointY = anchorPointY;
+    }
+
+    public Composite getComposite() {
+        return composite;
+    }
+
+    public void setComposite(Composite composite) {
+        this.composite = composite;
     }
 
 }

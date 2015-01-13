@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *    
- * 	  (c) 2014 Open Source Geospatial Foundation - all rights reserved
+ * 	  (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
  * 	  (c) 2012 - 2014 OpenPlans
  *
  *    This library is free software; you can redistribute it and/or
@@ -44,8 +44,8 @@ public class CSVIterator implements Iterator<SimpleFeature> {
     }
 
     private SimpleFeature buildFeature(String[] csvRecord) {
-        String id = "" + idx;
-        SimpleFeature feature = csvStrategy.createFeature(id, csvRecord);
+        String id = "fid" + idx;
+        SimpleFeature feature = csvStrategy.decode(id, csvRecord);
         idx++;
         return feature;
     }

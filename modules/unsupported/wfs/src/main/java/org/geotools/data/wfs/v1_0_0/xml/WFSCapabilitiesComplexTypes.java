@@ -1995,8 +1995,12 @@ public class WFSCapabilitiesComplexTypes {
 
                 if (elements[4].getName().equals(value[i].getElement().getName())) {
                     try {
-                        service.setOnlineResource(((URI) value[i].getValue())
-                            .toURL());
+                        URI uri = (URI) value[i].getValue();
+                        if (uri.isAbsolute()){
+                            service.setOnlineResource(uri.toURL());
+                        }else {//i.e. if uri is empty
+                            service.setOnlineResource(new java.net.URL("http://localhost/"));//create dummy url }
+                        }
                     } catch (MalformedURLException e1) {
                         throw new SAXException(e1);
                     }

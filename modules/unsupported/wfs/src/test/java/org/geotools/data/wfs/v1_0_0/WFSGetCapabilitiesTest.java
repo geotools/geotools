@@ -120,4 +120,25 @@ public class WFSGetCapabilitiesTest extends TestCase {
            fail(e.toString());
        }
    }
+
+    public void testEmptyOnlineResource() {
+        try {
+            String path = "wfs-getCapabilities-emptyOnlineResource.xml";
+
+            File f = TestData.file(this, path);
+            URI u = f.toURI();
+
+            Object doc = DocumentFactory.getInstance(u, null, Level.WARNING);
+
+            assertNotNull("Document missing", doc);
+            System.out.println(doc);
+
+        } catch (SAXException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        } catch (Throwable e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
+    }
 }

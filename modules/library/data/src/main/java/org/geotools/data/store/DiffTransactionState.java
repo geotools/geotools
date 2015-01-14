@@ -152,7 +152,7 @@ public class DiffTransactionState implements Transaction.State {
                 if (diff.getModified().containsKey(fid)) {
                     update = (SimpleFeature) diff.getModified().get(fid);
 
-                    if (update == TransactionStateDiff.NULL) {
+                    if (update == Diff.NULL) {
                         writer.remove();
 
                     } else {

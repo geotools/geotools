@@ -236,7 +236,7 @@ public class Diff{
 				addedFidList.remove(fid);
 			} else {
 				old = (SimpleFeature) modifiedFeatures.get(fid);
-				modifiedFeatures.put(fid, TransactionStateDiff.NULL);
+				modifiedFeatures.put(fid, Diff.NULL);
 			}
 			if( old != null ) {
 				spatialIndex.remove(ReferencedEnvelope.reference(old.getBounds()), old);

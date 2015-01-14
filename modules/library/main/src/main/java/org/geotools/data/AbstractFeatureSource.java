@@ -401,7 +401,7 @@ public abstract class AbstractFeatureSource implements SimpleFeatureSource {
         		while(it.hasNext()){
         			Object feature = it.next();
         			
-        			if(feature == TransactionStateDiff.NULL && query.getFilter().evaluate(feature)) {
+        			if(feature == Diff.NULL && query.getFilter().evaluate(feature)) {
         				delta--;
         			}
         		}

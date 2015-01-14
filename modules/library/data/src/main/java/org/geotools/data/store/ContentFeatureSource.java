@@ -414,7 +414,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 it = diff.getModified().values().iterator();
                 while(it.hasNext()){
                     SimpleFeature feature = (SimpleFeature) it.next();
-                    if(feature != TransactionStateDiff.NULL) {
+                    if(feature != Diff.NULL) {
                         BoundingBox fb = feature.getBounds();
                         if(fb != null) {
                             bounds.expandToInclude(ReferencedEnvelope.reference(fb));
@@ -478,7 +478,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 while(it.hasNext()){
                     SimpleFeature feature = (SimpleFeature) it.next();
                     
-                    if(feature == TransactionStateDiff.NULL) {
+                    if(feature == Diff.NULL) {
                         count--;
                     } else {
                         modifiedFids.add(ff.featureId(feature.getID()));

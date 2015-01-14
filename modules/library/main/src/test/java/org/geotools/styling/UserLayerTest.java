@@ -132,7 +132,7 @@ public class UserLayerTest extends TestCase {
         final Point g2 = jtsFactory.createPoint(new Coordinate(X_2, Y_2));
         fc.add(SimpleFeatureBuilder.build(schema, new Object[] { new Integer(2), g2, LABEL_2 }, ID_2));
         
-        final DataStore ds = DataUtilities.store(DataUtilities.source(fc));
+        final DataStore ds = DataUtilities.dataStore(fc);
 
         // create and populate the layer --------------------------------------
         final StyleFactory sf = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());

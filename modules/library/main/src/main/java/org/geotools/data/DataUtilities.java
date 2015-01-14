@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -1164,128 +1164,25 @@ public class DataUtilities {
     }
 
     /**
-     * Adapt a feature collection to a read-only data store.
+     * Adapt a feature collection as a read-only DataStore.
      * <p>
      * See {@link UserLayer} for example use.
-     * @param features SimpleFeatureCollection
+     * @param features feature collection to adap
      * @return read-only DataStore
      */
-    public static DataStore store( final SimpleFeatureSource source ){
-        final SimpleFeatureType schema = source.getSchema();
-        final Name name = schema.getName();
-        final String typeName = name.getLocalPart();
-        return new DataStore() {
-            
-            @Override
-            public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
-                throw new UnsupportedOperationException("In-memory datastore does not support modification");
-            }
-            
-            @Override
-            public void removeSchema(Name typeName) throws IOException {
-                throw new UnsupportedOperationException("In-memory datastore does not support modification");
-            }
-            
-            @Override
-            public SimpleFeatureType getSchema(Name name) throws IOException {
-                if( schema.getName().equals(name)){
-                    return schema;
-                }
-                throw new IOException( "Not found: In-memory datastore contains "+typeName); 
-            }
-            
-            @Override
-            public List<Name> getNames() throws IOException {
-                return Collections.singletonList(name);
-            }
-            
-            @Override
-            public ServiceInfo getInfo() {
-                DefaultServiceInfo info = new DefaultServiceInfo();
-                info.setDescription("In-memory "+typeName);
-                info.setTitle(typeName);
-                return info;
-            }
-            
-            @Override
-            public void dispose() {
-            }
-            
-            @Override
-            public void createSchema(SimpleFeatureType featureType) throws IOException {
-                throw new UnsupportedOperationException("In-memory datastore does not support modification");
-            }
-            
-            @Override
-            public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
-                throw new UnsupportedOperationException("In-memory datastore does not support modification");
-            }
-            
-            @Override
-            public void removeSchema(String typeName) throws IOException {
-                throw new UnsupportedOperationException("In-memory datastore does not support modification");
-            }
-            
-            @Override
-            public String[] getTypeNames() throws IOException {
-                return new String[]{ typeName };
-            }
-            
-            @Override
-            public SimpleFeatureType getSchema(String name) throws IOException {
-                if( typeName.equals( name )){
-                    return schema;
-                }
-                throw new IOException( "Not found: In-memory datastore contains "+typeName); 
-            }
-            
-            @Override
-            public LockingManager getLockingManager() {
-                return null; // not applicable
-            }
-            
-            @Override
-            public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
-                    String typeName, Transaction transaction) throws IOException {
-                throw new UnsupportedOperationException("In-memory datastore does not support modification");
-            }
-            @Override
-            public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
-                    Transaction transaction) throws IOException {
-                throw new UnsupportedOperationException("In-memory datastore does not support modification");
-            }
-            
-            @Override
-            public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
-                    Filter filter, Transaction transaction) throws IOException {
-                throw new UnsupportedOperationException("In-memory datastore does not support modification");
-            }
-            
-            @Override
-            public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
-                if( name.equals( typeName )){
-                    return source;
-                }
-                throw new IOException( "Not found: In-memory datastore contains "+name.getLocalPart()); 
-            }
-            
-            @Override
-            public SimpleFeatureSource getFeatureSource(String name) throws IOException {
-                if( typeName.equals( name )){
-                    return source;
-                }
-                throw new IOException( "Not found: In-memory datastore contains "+typeName);
-            }
-            
-            @Override
-            public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query,
-                    Transaction transaction) throws IOException {
-                if( typeName.equals(query.getTypeName())){
-                    return DataUtilities.reader(source.getFeatures());
-                }
-                throw new IOException( "Not found: In-memory datastore contains "+typeName);
-            }
-        };
+    public static DataStore dataStore( final SimpleFeatureCollection features ){
+        SimpleFeatureSource source = source( features );
+        return dataStore( source );
+    }
+    /**
+     * Adapt a single FeatureSource as a read-only DataStore.
+     * <p>
+     * See {@link UserLayer} for example use.
+     * @param source Feature source to adapt
+     * @return read-only DataStore
+     */
+    public static DataStore dataStore( SimpleFeatureSource source ){
+        return new DataStoreAdaptor(source);
     }
     /**
      * Adapt a collection to a reader for use with FeatureStore.setFeatures( reader ).

@@ -90,16 +90,11 @@ public class UserLayerBinding extends SLDUserLayerBinding {
             SimpleFeatureType type = features.getSchema();
             
             layer.setInlineFeatureType(type);
-            layer.setInlineFeatureDatastore(toDataStore(features));
+            layer.setInlineFeatureDatastore(DataUtilities.dataStore(features));
         }
 
         //TODO:LayerCoverageConstraints
         return layer;
-    }
-
-    DataStore toDataStore(FeatureCollection features) {
-        SimpleFeatureSource featureSource = DataUtilities.source(features);
-        return DataUtilities.store(featureSource);
     }
 
 }

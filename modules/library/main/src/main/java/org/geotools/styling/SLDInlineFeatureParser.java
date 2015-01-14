@@ -383,8 +383,7 @@ public class SLDInlineFeatureParser
 	private void buildStore() 
 	{
 	        SimpleFeatureCollection collection = DataUtilities.collection( features.toArray(new SimpleFeature[features.size()]));
-	        SimpleFeatureSource source = DataUtilities.source( collection );
-		dataStore = DataUtilities.store( source );
+	        dataStore = DataUtilities.dataStore( collection );
 	}
 
 	/**

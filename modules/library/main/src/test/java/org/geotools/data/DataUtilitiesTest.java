@@ -113,12 +113,12 @@ public class DataUtilitiesTest extends DataTestCase {
         assertSame( simple, source);  
     } 
     
-    public void testSimpleStore() throws IOException{
+    public void testDataStore() throws IOException{
         SimpleFeatureSource features = DataUtilities.source(roadFeatures);
         Name name = features.getName();
         String typeName = name.getLocalPart();
         
-        DataStore store = DataUtilities.store( features );
+        DataStore store = DataUtilities.dataStore( features );
         
         assertSame( features.getSchema(), store.getSchema(name) );
         assertSame( features.getSchema(), store.getSchema(typeName) );

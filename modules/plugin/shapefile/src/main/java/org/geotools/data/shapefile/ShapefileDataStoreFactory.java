@@ -229,7 +229,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
 
     @Override
     public boolean canProcess(Map params) {
-        if (DataUtilities.canProcess(params, getParametersInfo())) {
+        if (!DataUtilities.canProcess(params, getParametersInfo())) {
             return false; // fail basic param check
         }
         try {

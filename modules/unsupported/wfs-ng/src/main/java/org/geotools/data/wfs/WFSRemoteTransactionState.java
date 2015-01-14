@@ -32,6 +32,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.data.Diff;
 import org.geotools.data.Transaction;
 import org.geotools.data.Transaction.State;
 import org.geotools.data.TransactionStateDiff;

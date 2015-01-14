@@ -912,6 +912,18 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
         if (candidate != null) {
             return candidate;
         }
+
+        /*
+         * In latest version of the database north-east and north-west are now northeast and northwest respectively,
+         * and none of these heuristics pick that up, so we add a few special cases here.
+         */
+        if ("northeast".equalsIgnoreCase(direction)) {
+            return AxisDirection.NORTH_EAST;
+        }
+        if ("northwest".equalsIgnoreCase(direction)) {
+            return AxisDirection.NORTH_WEST;
+        }
+
         /*
          * Some EPSG direction names are of the form "South along 180 deg". We check that the
          * direction before "along" is valid and create a new axis direction if it is. We can

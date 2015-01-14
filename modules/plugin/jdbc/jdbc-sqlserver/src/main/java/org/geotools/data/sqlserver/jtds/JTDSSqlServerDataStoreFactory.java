@@ -1,7 +1,11 @@
-package org.geotools.data.sqlserver;
+package org.geotools.data.sqlserver.jtds;
 
 import java.io.IOException;
 import java.util.Map;
+
+import org.geotools.data.sqlserver.SQLServerDataStoreFactory;
+import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.SQLDialect;
 
 public class JTDSSqlServerDataStoreFactory extends SQLServerDataStoreFactory {
     /** parameter for database type */
@@ -12,6 +16,11 @@ public class JTDSSqlServerDataStoreFactory extends SQLServerDataStoreFactory {
     @Override
     public String getDescription() {
         return "Microsoft SQL Server (JTDS Driver)";
+    }
+
+    @Override
+    protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
+        return new JTDSSQLServerDialect(dataStore);
     }
 
     /* (non-Javadoc)

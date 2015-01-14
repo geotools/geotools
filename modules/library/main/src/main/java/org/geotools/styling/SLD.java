@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.geotools.data.AbstractDataStore;
+import org.geotools.data.DataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.Filters;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
@@ -1906,7 +1906,7 @@ public class SLD {
      *
      * @throws java.io.IOException if the data store cannot be accessed
      */
-    public static Style createSimpleStyle(AbstractDataStore store, String typeName, Color color) throws IOException {
+    public static Style createSimpleStyle(DataStore store, String typeName, Color color) throws IOException {
         SimpleFeatureType type = store.getSchema(typeName);
         return createSimpleStyle(type, color);
     }

@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
-import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FileDataStore;
@@ -46,7 +45,7 @@ import org.geotools.util.logging.Logging;
  * 
  * @source $URL$
  */
-public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implements FileDataStoreFactorySpi {
+public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
 
     static final Logger LOGGER = Logging.getLogger("org.geotools.data.shapefile");
 
@@ -230,7 +229,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
 
     @Override
     public boolean canProcess(Map params) {
-        if (!super.canProcess(params)) {
+        if (!DataUtilities.canProcess(params, getParametersInfo())) {
             return false; // fail basic param check
         }
         try {

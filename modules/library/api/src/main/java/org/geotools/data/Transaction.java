@@ -19,6 +19,8 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.Set;
 
+import org.opengis.feature.type.Name;
+
 
 /**
  * The controller for Transaction with FeatureStore.
@@ -74,10 +76,10 @@ import java.util.Set;
  * <li>Transaction is provided to two FeatureStores, this may result
  *     in Transaction.State instances being registered</li>
  *     <ul>
- *     <li>TransactionStateDiff (stored by DataStore):
- *         Used for in memory locking is used by many DataStore's
+ *     <li>DiffTransactionState (stored by DataStore):
+ *         Used for in memory locking by many DataStore's
  *         (like ShapefileDataStore).
- *         Lazy creation by AbstractDataStore.state(transaction).
+ *         Lazy creation as part of ContentDataStore.getFeatureSource(Name typeName, Transaction tx).
  *         </li>
  *     <li>JDBCTransactionState (stored by ConnectionPool):
  *         Used to manage connection rollback/commit.
@@ -99,7 +101,7 @@ import java.util.Set;
  *         without delegation.
  *         </li>
  *     <li>Most removeFeature(filter) implementations use the implementation
- *         provided by AbstractFeatureStore which delegates to FeatureWriter.
+ *         provided by ContentFeatureStore which delegates to FeatureWriter.
  *         </li>
  *     </ul>
  *     Any of these operations may make use of the

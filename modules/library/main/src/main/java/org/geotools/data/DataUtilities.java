@@ -50,6 +50,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.collection.CollectionDataStore;
 import org.geotools.data.collection.CollectionFeatureSource;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -3017,7 +3018,69 @@ public class DataUtilities {
         }
         return new File(directoryPath);
     }
-
+    
+    /**
+     * Verifies a Map of parameters against the Param information.
+     * Primarily used by classes implementing DataAcessFactory.
+     * <p>
+     * It will ensure that:
+     * <ul>
+     * <li>params is not null
+     * <li>Everything is of the correct type (or upcovertable
+     * to the correct type without Error)
+     * <li>Required Parameters are present
+     * </ul>
+     * </p>
+     * </code></pre>
+     * @param params
+     * @param arrayParameters Array of parameters returned by DataAccessFactory.getParametersInfo()
+     * @return true if params is in agreement with getParametersInfo, override for additional checks.
+     */
+    public static boolean canProcess( Map params, Param[] arrayParameters) {
+        if (params == null) {
+            return false;
+        }
+        for (int i = 0; i < arrayParameters.length; i++) {
+            Param param = arrayParameters[i];
+            Object value;
+            if( !params.containsKey( param.key ) ){
+                if( param.required ){
+                    return false; // missing required key!
+                } else {
+                    continue;
+                }
+            }
+            try {
+                value = param.lookUp( params );
+            } catch (IOException e) {
+                // could not upconvert/parse to expected type!
+                // even if this parameter is not required
+                // we are going to refuse to process
+                // these params
+                return false;
+            }
+            if( value == null ){
+                if (param.required) {
+                    return (false);
+                }
+            } else {
+                if ( !param.type.isInstance( value )){
+                    return false; // value was not of the required type
+                }
+                if( param.metadata != null ){
+                    // check metadata
+                    if( param.metadata.containsKey(Param.OPTIONS)){
+                        List<Object> options = (List<Object>) param.metadata.get(Param.OPTIONS);
+                        if( options != null && !options.contains(value) ){
+                            return false; // invalid option
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    
     /**
      * Returns a {@link IOFileFilter} obtained by excluding from the first input filter argument,
      * the additional filter arguments.

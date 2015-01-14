@@ -53,7 +53,10 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+@Deprecated
 /**
+ * AbstractFeatureSource is deprecated. Migrate to ContentFeatureSource.
+ * 
  * {@link FeatureSource} extension interface to provide WFS specific extra information.
  * 
  * @author dzwiers

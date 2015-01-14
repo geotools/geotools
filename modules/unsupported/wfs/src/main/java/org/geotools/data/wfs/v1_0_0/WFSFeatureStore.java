@@ -52,8 +52,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-
+@Deprecated
 /**
+ * AbstractFeatureSource is deprecated. Migrate to ContentFeatureSource.
+ * 
  * FeatureStore used to assemble a Transaction Request (issued during commit).
  * <p>
  * Please note this FeatureStore does not support working on Transaction.AUTO_COMMIT.

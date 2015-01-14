@@ -25,7 +25,10 @@ import org.geotools.feature.FeatureTypes;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+@Deprecated
 /**
+ * AbstractDataStore is deprecated. Migrate to ContentDataStore.
+ * 
  * Simple example of an AbstractDataStore built around the provided array of features.
  * <p>
  * Please note that this is a simple example and all the features must be of the same

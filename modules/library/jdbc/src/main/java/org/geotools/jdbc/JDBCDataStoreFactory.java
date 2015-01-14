@@ -27,8 +27,9 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFactorySpi;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Parameter;
 import org.geotools.data.jdbc.datasource.DBCPDataSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -50,7 +51,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  *
  * @source $URL$
  */
-public abstract class JDBCDataStoreFactory extends AbstractDataStoreFactory {
+public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
     
     /** parameter for database type */
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true);
@@ -147,11 +148,24 @@ public abstract class JDBCDataStoreFactory extends AbstractDataStoreFactory {
         return getDescription();
     }
     
-    public boolean canProcess(Map params) {
-        if (!super.canProcess(params)) {
-            return false; // was not in agreement with getParametersInfo
+    /**
+     * Default implementation verifies the Map against the Param information.
+     * <p>
+     * It will ensure that:
+     * <ul>
+     * <li>params is not null
+     * <li>Everything is of the correct type (or upcovertable
+     * to the correct type without Error)
+     * <li>Required Parameters are present
+     * </ul>
+     * </p>
+     * @param params
+     * @return true if params is in agreement with getParametersInfo and checkDBType
+     */
+    public boolean canProcess( Map params ) {
+        if (!DataUtilities.canProcess(params, getParametersInfo())) {
+            return false;
         }
-
         return checkDBType(params);
     }
     

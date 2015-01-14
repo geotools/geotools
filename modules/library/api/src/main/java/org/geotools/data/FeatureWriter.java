@@ -42,7 +42,7 @@ import org.opengis.feature.type.FeatureType;
  * </li>
  * <li>
  * This API allows modification, and Filter based modification to be written.
- * Please see AbstractDataStore for examples of implementing common
+ * Please see ContentDataStore for examples of implementing common
  * opperations using this API.
  * </li>
  * <li>

@@ -167,7 +167,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature> impleme
             Map<String, SimpleFeature> modified = diff.getModified();
             if (modified.containsKey(fid)) {
                 F changed = (F) modified.get(fid);
-                if (changed == TransactionStateDiff.NULL || !filter.evaluate(changed) ) {
+                if (changed == Diff.NULL || !filter.evaluate(changed) ) {
                     continue;
                 } else {
                     next = changed;
@@ -232,7 +232,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature> impleme
 	protected void queryModified() {
 		while( modifiedIterator.hasNext() && next == null ){
 			next = (F) modifiedIterator.next();
-			if( next==TransactionStateDiff.NULL || encounteredFids.contains(next.getIdentifier().getID()) || !filter.evaluate(next) ){
+			if( next==Diff.NULL || encounteredFids.contains(next.getIdentifier().getID()) || !filter.evaluate(next) ){
 				next = null;
 			}
 		}

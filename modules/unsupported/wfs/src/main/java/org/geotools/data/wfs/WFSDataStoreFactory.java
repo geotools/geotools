@@ -20,6 +20,7 @@ import static org.geotools.data.wfs.protocol.http.HttpUtil.*;
 import static org.geotools.data.wfs.protocol.http.HttpMethod.GET;
 import static org.geotools.data.wfs.protocol.http.HttpMethod.POST;
 
+import java.awt.RenderingHints.Key;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,7 +42,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
@@ -122,7 +122,7 @@ import org.xml.sax.SAXException;
  * @see WFSStrategy
  */
 @SuppressWarnings( { "unchecked", "nls" })
-public class WFSDataStoreFactory extends AbstractDataStoreFactory {
+public class WFSDataStoreFactory implements DataStoreFactorySpi {
 
     private static final Logger logger = Logging.getLogger("org.geotools.data.wfs");
     private HTTPClient http = new SimpleHttpClient();
@@ -884,5 +884,9 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             throw new DataSourceException("Error parsing capabilities document", e);
         }
         return document;
+    }
+
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.EMPTY_MAP;
     }
 }

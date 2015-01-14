@@ -23,8 +23,10 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
-
+@Deprecated
 /**
+ * AbstractDataStore is deprecated. Migrate to ContentDataStore.
+ * 
  * <p>
  * This class assumes the DataStore represents a single source,  represented by
  * a URL. In many cases the default functionality  is chained off to the

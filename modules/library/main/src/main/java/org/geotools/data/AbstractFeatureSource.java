@@ -40,8 +40,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
 
-
+@Deprecated
 /**
+ * @deprecated Use org.geotools.data.store.ContentFeatureSource instead
+ * 
  * This is a starting point for providing your own SimpleFeatureSource implementation.
  *
  * <p>
@@ -399,7 +401,7 @@ public abstract class AbstractFeatureSource implements SimpleFeatureSource {
         		while(it.hasNext()){
         			Object feature = it.next();
         			
-        			if(feature == TransactionStateDiff.NULL && query.getFilter().evaluate(feature)) {
+        			if(feature == Diff.NULL && query.getFilter().evaluate(feature)) {
         				delta--;
         			}
         		}

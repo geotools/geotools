@@ -44,7 +44,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiLineString;
 
-
+@Deprecated
 /**
  * An abstract super class for testing datastore implementations.  All datastore implementations should
  * has a test case that extends this class.

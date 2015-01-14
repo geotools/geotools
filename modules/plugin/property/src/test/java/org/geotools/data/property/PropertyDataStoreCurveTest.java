@@ -38,8 +38,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 
 /**
- * Test functioning of PropertyDataStore (used as conformance testing and
- * examples for the AbstractDataStore tutorial).
+ * Test functioning of PropertyDataStore (used as conformance testing).
  * 
  * @author Jody Garnett (LISAsoft)
  * 

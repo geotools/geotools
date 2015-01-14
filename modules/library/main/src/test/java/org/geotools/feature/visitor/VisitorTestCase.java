@@ -17,18 +17,18 @@
 package org.geotools.feature.visitor;
 
 
-import org.geotools.data.memory.MemoryDataStore;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+
+import java.util.List;
+
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import java.io.IOException;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Sebastian Graca, ISPiK S.A.
@@ -39,8 +39,8 @@ public abstract class VisitorTestCase<T, R> {
     private final R expectedValue;
     private SimpleFeatureType featureType;
     private SimpleFeatureBuilder featureBuilder;
-    private MemoryDataStore dataStore;
-
+    ListFeatureCollection featureCollection;
+    
     protected VisitorTestCase(Class<T> valueClass, List<T> values, R expectedValue) {
         this.valueClass = valueClass;
         this.values = values;
@@ -57,24 +57,24 @@ public abstract class VisitorTestCase<T, R> {
         ftb.add("intVal", Integer.class);
         featureType = ftb.buildFeatureType();
         featureBuilder = new SimpleFeatureBuilder(featureType);
-        dataStore = new MemoryDataStore(featureType);
+        featureCollection = new ListFeatureCollection(featureType);
     }
 
     @Test
     public void emptyCollection() throws Exception {
         FeatureCalc calc = createVisitor(0, featureType);
-        getFeatureCollection().accepts(calc, null);
+        featureCollection.accepts(calc, null);
         assertNull(calc.getResult().getValue());
     }
 
     @Test
     public void onlyNulls() throws Exception {
-        dataStore.addFeature(featureBuilder.buildFeature("f1", new Object[]{null, 1}));
-        dataStore.addFeature(featureBuilder.buildFeature("f2", new Object[]{null, 2}));
-        dataStore.addFeature(featureBuilder.buildFeature("f3", new Object[]{null, 3}));
+        featureCollection.add(featureBuilder.buildFeature("f1", new Object[]{null, 1}));
+        featureCollection.add(featureBuilder.buildFeature("f2", new Object[]{null, 2}));
+        featureCollection.add(featureBuilder.buildFeature("f3", new Object[]{null, 3}));
 
         FeatureCalc calc = createVisitor(0, featureType);
-        getFeatureCollection().accepts(calc, null);
+        featureCollection.accepts(calc, null);
         assertNull(calc.getResult().getValue());
     }
 
@@ -82,12 +82,12 @@ public abstract class VisitorTestCase<T, R> {
     public void onlyNotNulls() throws Exception {
         int idx = 1;
         for (T value : values) {
-            dataStore.addFeature(featureBuilder.buildFeature("f" + idx, new Object[]{value, idx}));
+            featureCollection.add(featureBuilder.buildFeature("f" + idx, new Object[]{value, idx}));
             ++idx;
         }
 
         FeatureCalc calc = createVisitor(0, featureType);
-        getFeatureCollection().accepts(calc, null);
+        featureCollection.accepts(calc, null);
         Object value = calc.getResult().getValue();
         assertEquals(expectedValue, value);
         assertSame(expectedValue.getClass(), value.getClass());
@@ -97,20 +97,17 @@ public abstract class VisitorTestCase<T, R> {
     public void mixed() throws Exception {
         int idx = 1;
         for (T value : values) {
-            dataStore.addFeature(featureBuilder.buildFeature("f" + idx, new Object[]{value, idx}));
+            featureCollection.add(featureBuilder.buildFeature("f" + idx, new Object[]{value, idx}));
             ++idx;
-            dataStore.addFeature(featureBuilder.buildFeature("f" + idx, new Object[]{null, idx}));
+            featureCollection.add(featureBuilder.buildFeature("f" + idx, new Object[]{null, idx}));
             ++idx;
         }
 
         FeatureCalc calc = createVisitor(0, featureType);
-        getFeatureCollection().accepts(calc, null);
+        featureCollection.accepts(calc, null);
         Object value = calc.getResult().getValue();
         assertEquals(expectedValue, value);
         assertSame(expectedValue.getClass(), value.getClass());
     }
 
-    private SimpleFeatureCollection getFeatureCollection() throws IOException {
-        return dataStore.getFeatureSource("test").getFeatures();
-    }
 }

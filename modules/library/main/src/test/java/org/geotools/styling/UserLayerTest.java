@@ -27,11 +27,11 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.geotools.data.DataStore;
-import org.geotools.data.memory.MemoryDataStore;
-import org.geotools.data.memory.MemoryFeatureCollection;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
@@ -118,7 +118,7 @@ public class UserLayerTest extends TestCase {
         final SimpleFeatureType schema = ftb.buildFeatureType();
 
         // create a feature collection ----------------------------------------
-        final MemoryFeatureCollection fc = new MemoryFeatureCollection(schema);
+        final DefaultFeatureCollection fc = new DefaultFeatureCollection();
 
         // populate the collection --------------------------------------------
         final PrecisionModel pm = new PrecisionModel(PrecisionModel.FLOATING);
@@ -131,8 +131,8 @@ public class UserLayerTest extends TestCase {
         // create 2nd point
         final Point g2 = jtsFactory.createPoint(new Coordinate(X_2, Y_2));
         fc.add(SimpleFeatureBuilder.build(schema, new Object[] { new Integer(2), g2, LABEL_2 }, ID_2));
-
-        final DataStore ds = new MemoryDataStore(fc);
+        
+        final DataStore ds = DataUtilities.dataStore(fc);
 
         // create and populate the layer --------------------------------------
         final StyleFactory sf = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());

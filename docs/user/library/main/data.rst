@@ -282,6 +282,10 @@ FeatureSource is a very capable class, in the worst case the wrappers provided h
   Creates a light weight "view" that focuses on combining the provided query with
   any requests made to the resulting featureSource.
 
+* dataStore( source )
+  
+  Adapt source as a singleton dataStore
+
 FeatureReader
 '''''''''''''
 

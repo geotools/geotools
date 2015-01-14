@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -91,6 +91,7 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.geotools.styling.UserLayer;
 import org.geotools.util.Converters;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.Utilities;
@@ -1073,16 +1074,14 @@ public class DataUtilities {
         } else {
             featureType = featureArray[0].getFeatureType();
         }
-
-        DataStore arrayStore = new ArrayDataStore(featureArray);
-
-        String typeName = featureType.getTypeName();
-        try {
-            return arrayStore.getFeatureSource(typeName);
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to find "+typeName+" ArrayDataStore in an inconsistent" +
-            		"state", e);
+        ListFeatureCollection collection =  new ListFeatureCollection( featureType, featureArray );
+        for( SimpleFeature feature : collection ){
+            if( feature.getFeatureType() != featureType ){
+                String typeName = featureType.getTypeName();
+                throw new IllegalStateException("Array inconsistent, expected each feature of type  "+typeName);
+            }
         }
+        return source( collection );
     }
 
     /**
@@ -1119,21 +1118,9 @@ public class DataUtilities {
 
             return source;
         }
-        // if( collection instanceof SimpleFeatureCollection ){
-        // SimpleFeatureCollection simpleFeatureCollection = simple( collection );
-        // CollectionFeatureSource source = new CollectionFeatureSource(simpleFeatureCollection);
-        //
-        // return source;
-        // }
-
-        CollectionDataStore store = new CollectionDataStore(collection);
-        String typeName = store.getTypeNames()[0];
-        try {
-            return store.getFeatureSource(typeName);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("CollectionDataStore inconsistent, "
-                    + " ensure type name "+typeName+" is the same for all features", e);
-        }
+        SimpleFeatureCollection simpleFeatureCollection = simple( collection );
+        CollectionFeatureSource source = new CollectionFeatureSource(simpleFeatureCollection);
+        return source;
     }
 
     /**
@@ -1153,9 +1140,50 @@ public class DataUtilities {
      */
     public static SimpleFeatureSource createView(final DataStore store, final Query query)
             throws IOException, SchemaException {
-        return new DefaultView(store.getFeatureSource(query.getTypeName()), query);
+        return createView(store.getFeatureSource(query.getTypeName()), query);
+    }
+    
+    /**
+     * Return a 'view' of the given {@code FeatureSource} constrained by a {@code Query}.
+     * 
+     * @param source
+     *            feature source
+     * @param query
+     *            the query
+     * 
+     * @return the constrained view
+     * 
+     * @throws IOException
+     *             if the data store cannot be accessed
+     * @throws SchemaException
+     *             if the query is incompatible with the store's contents
+     */
+    public static SimpleFeatureSource createView(final SimpleFeatureSource source, final Query query)
+            throws IOException, SchemaException {
+        return new DefaultView(source, query);
     }
 
+    /**
+     * Adapt a feature collection as a read-only DataStore.
+     * <p>
+     * See {@link UserLayer} for example use.
+     * @param features feature collection to adap
+     * @return read-only DataStore
+     */
+    public static DataStore dataStore( final SimpleFeatureCollection features ){
+        SimpleFeatureSource source = source( features );
+        return dataStore( source );
+    }
+    /**
+     * Adapt a single FeatureSource as a read-only DataStore.
+     * <p>
+     * See {@link UserLayer} for example use.
+     * @param source Feature source to adapt
+     * @return read-only DataStore
+     */
+    public static DataStore dataStore( SimpleFeatureSource source ){
+        return new DataStoreAdaptor(source);
+    }
     /**
      * Adapt a collection to a reader for use with FeatureStore.setFeatures( reader ).
      * 

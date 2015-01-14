@@ -17,8 +17,8 @@
 package org.geotools.filter.function;
 
 import org.geotools.data.DataUtilities;
-import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
@@ -138,10 +138,8 @@ public class JenksFunctionTest extends FunctionTestSupport {
             myfeatures[i] = SimpleFeatureBuilder.build(dataType, new Object[] { new Integer(i + 1),
                     new Integer(iVal[i]) }, "classification.test1" + (i + 1));
         }
-        MemoryDataStore store = new MemoryDataStore();
-        store.createSchema(dataType);
-        store.addFeatures(myfeatures);
-        SimpleFeatureCollection myFeatureCollection = store.getFeatureSource("test1").getFeatures();
+        SimpleFeatureSource source = DataUtilities.source( myfeatures);
+        SimpleFeatureCollection myFeatureCollection = source.getFeatures();
 
         // run the quantile function
         org.opengis.filter.expression.Expression function = ff.function("Jenks",
@@ -177,10 +175,8 @@ public class JenksFunctionTest extends FunctionTestSupport {
             myfeatures[i] = SimpleFeatureBuilder.build(dataType, new Object[] { new Integer(i + 1),
                     new Integer(iVal[i]) }, "classification.t" + (i + 1));
         }
-        MemoryDataStore store = new MemoryDataStore();
-        store.createSchema(dataType);
-        store.addFeatures(myfeatures);
-        SimpleFeatureCollection myFeatureCollection = store.getFeatureSource("test1").getFeatures();
+        SimpleFeatureSource source = DataUtilities.source( myfeatures);;
+        SimpleFeatureCollection myFeatureCollection = source.getFeatures();
 
         // run the quantile function
         org.opengis.filter.expression.Expression function = ff.function("Jenks",
@@ -206,10 +202,8 @@ public class JenksFunctionTest extends FunctionTestSupport {
             testFeatures[i] = SimpleFeatureBuilder.build(ft, new Object[] { new Integer(i + 1),
                     iVal[i], dVal[i], }, "nantest.t" + (i + 1));
         }
-        MemoryDataStore store = new MemoryDataStore();
-        store.createSchema(ft);
-        store.addFeatures(testFeatures);
-        SimpleFeatureCollection thisFC = store.getFeatureSource("nullnan").getFeatures();
+        SimpleFeatureSource source = DataUtilities.source(testFeatures);
+        SimpleFeatureCollection thisFC = source.getFeatures();
 
         // create the expression
         Divide divide = ff.divide(ff.property("foo"), ff.property("bar"));

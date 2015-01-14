@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -59,7 +60,6 @@ import org.opengis.geometry.BoundingBox;
  *
  * @source $URL$
  */
-@SuppressWarnings("unchecked")
 public class ListFeatureCollection extends AbstractFeatureCollection implements Collection<SimpleFeature> {
     /** wrapped list of features containing the contents */
      private List<SimpleFeature> list;
@@ -78,7 +78,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection implements 
      /**
       * Create a ListFeatureCollection around the provided list. The contents
       * of the list should all be of the provided schema for this to make sense.
-      * Please keep in mind the feature collection control, no two Features in the list
+      * Please keep in mind the feature collection constraints, no two Features in the list
       * should have the same feature id, and you should not insert the same feature more
       * then once.
       * <p>
@@ -93,6 +93,22 @@ public class ListFeatureCollection extends AbstractFeatureCollection implements 
      public ListFeatureCollection(SimpleFeatureType schema, List<SimpleFeature> list ){
          super(schema);
          this.list = list;
+     }
+     /**
+      * Create a ListFeatureCollection around the provided array. The contents
+      * of the array should all be of the provided schema for this to make sense.
+      * Please keep in mind the feature collection constraints, no two Features in the list
+      * should have the same feature id, and you should not insert the same feature more
+      * then once.
+      * <p>
+      * The provided array is directly used with a {@link CopyOnWriteArrayList} for storage.
+      * 
+      * @param schema
+      * @param list
+      */
+     public ListFeatureCollection(SimpleFeatureType schema, SimpleFeature array[] ){
+         super(schema);
+         this.list = new CopyOnWriteArrayList<SimpleFeature>( array );
      }
      /**
       * Create a ListFeatureCollection around the provided list. The contents

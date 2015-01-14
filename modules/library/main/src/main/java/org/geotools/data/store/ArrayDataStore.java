@@ -38,6 +38,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @source $URL$
  * @version 8.0
+ * 
+ * @deprecated Use {@link DataUtilities} source(SimpleFeature[]) with dataStore(SimpleFeatureCollection)
  */
 public final class ArrayDataStore extends AbstractDataStore {
     private final SimpleFeatureType featureType;

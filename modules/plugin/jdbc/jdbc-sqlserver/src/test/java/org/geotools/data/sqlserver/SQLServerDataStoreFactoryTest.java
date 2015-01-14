@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.geotools.data.sqlserver.jtds.JTDSSqlServerDataStoreFactory;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
@@ -55,7 +56,7 @@ public class SQLServerDataStoreFactoryTest extends JDBCTestSupport {
     void checkConnection(boolean includedb) throws Exception {
         Properties db = fixture;
 
-        //db.load(getClass().getResourceAsStream("factory.properties"));
+        // db.load(getClass().getResourceAsStream("factory.properties"));
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(HOST.key, db.getProperty(HOST.key));
@@ -63,19 +64,26 @@ public class SQLServerDataStoreFactoryTest extends JDBCTestSupport {
             params.put(DATABASE.key, db.getProperty(DATABASE.key));
         }
         String instance = db.getProperty(INSTANCE.key);
-        if(instance==null||instance.isEmpty()) {
+        if (instance == null || instance.isEmpty()) {
             params.put(PORT.key, db.getProperty(PORT.key));
-        }else {
+        } else {
             params.put(INSTANCE.key, instance);
         }
         params.put(USER.key, db.getProperty(USER.key));
-        String password=db.getProperty(PASSWD.key);
-        if(password==null){
-            password=db.getProperty("password");
+        String password = db.getProperty(PASSWD.key);
+        if (password == null) {
+            password = db.getProperty("password");
         }
-        params.put(PASSWD.key,password );
+        params.put(PASSWD.key, password);
+        // since we use the same test for SQLServer and JTDSSQLServer
+        SQLServerDataStoreFactory factory = null;
+        if (db.getProperty("driver").equalsIgnoreCase(
+                "com.microsoft.sqlserver.jdbc.SQLServerDriver")) {
+            factory = new SQLServerDataStoreFactory();
 
-        SQLServerDataStoreFactory factory = new SQLServerDataStoreFactory();
+        } else {
+            factory = new JTDSSqlServerDataStoreFactory();
+        }
         params.put(DBTYPE.key, factory.getDatabaseID());
         params.put(SQLServerDataStoreFactory.INTSEC.key, false);
 
@@ -93,6 +101,5 @@ public class SQLServerDataStoreFactoryTest extends JDBCTestSupport {
             store.dispose();
         }
     }
-
 
 }

@@ -25,7 +25,9 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureReader;
+import org.geotools.factory.FactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
@@ -133,9 +135,10 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         //create the dataStore
         //TODO: replace this with call to datastore factory
         HashMap params = createDataStoreFactoryParams();
-
-        JDBCDataStoreFactory factory = setup.createDataStoreFactory();
-        dataStore = factory.createDataStore( params );
+        params.putAll(fixture);
+        //JDBCDataStoreFactory factory = setup.createDataStoreFactory();
+        dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(params);
+        //dataStore = factory.createDataStore( params );
 
         setup.setUpDataStore(dataStore);
         dialect = dataStore.getSQLDialect();

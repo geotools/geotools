@@ -36,13 +36,13 @@ import org.geotools.jdbc.SQLDialect;
 public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "sqlserver");
-    
-    /** parameter for using integrated security, only works on windows, ignores the user and password parameters, the current windows user account is used for login*/
-    public static final Param INTSEC = new Param("Integrated Security", Boolean.class, "Login as current windows user account. Works only in windows. Ignores user and password settings.", false, new Boolean(false)); 
 
-	/** parameter for using Native Paging */
-	public static final Param NATIVE_PAGING = new Param("Use Native Paging", Boolean.class, "Use native paging for sql queries. For some sets of data, native paging can have a performance impact.", false, Boolean.TRUE);	
-		
+    /** parameter for using integrated security, only works on windows, ignores the user and password parameters, the current windows user account is used for login*/
+    public static final Param INTSEC = new Param("Integrated Security", Boolean.class, "Login as current windows user account. Works only in windows. Ignores user and password settings.", false, new Boolean(false));
+
+    /** parameter for using Native Paging */
+    public static final Param NATIVE_PAGING = new Param("Use Native Paging", Boolean.class, "Use native paging for sql queries. For some sets of data, native paging can have a performance impact.", false, Boolean.TRUE);
+
     /** Metadata table providing information about primary keys **/
     public static final Param GEOMETRY_METADATA_TABLE = new Param("Geometry metadata table", String.class,
             "The optional table containing geometry metadata (geometry type and srid). Can be expressed as 'schema.name' or just 'name'", false);
@@ -50,11 +50,11 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for using WKB or Sql server binary directly. Setting to true will use WKB */
     public static final Param NATIVE_SERIALIZATION = new Param("Use native geometry serialization", Boolean.class,
             "Use native SQL Server serialization, or WKB serialization.", false, Boolean.FALSE);
-    
+
     /** parameter for forcing the usage of spatial indexes in queries via sql hints */
     public static final Param FORCE_SPATIAL_INDEX = new Param("Force spatial index usage via hints", Boolean.class,
             "When enabled, spatial filters will be accompained by a WITH INDEX sql hint forcing the usage of the spatial index.", false, Boolean.FALSE);
-    
+
     /** parameter for forcing the usage of spatial indexes in queries via sql hints */
     public static final Param TABLE_HINTS = new Param("Table hints", String.class,
             "These table hints will be added to every select query.", false, "");
@@ -80,7 +80,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     public String getDescription() {
         return "Microsoft SQL Server";
     }
-    
+
     @Override
     protected String getDriverClassName() {
         return "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -90,7 +90,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     protected String getValidationQuery() {
         return "select 1";
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     protected void setupParameters(Map parameters) {
@@ -105,7 +105,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(TABLE_HINTS.key, TABLE_HINTS);
         parameters.put(INSTANCE.key, INSTANCE);
     }
-    
+
     /**
      *  Builds up the JDBC url in a jdbc:<database>://<host>:<port>;DatabaseName=<dbname>
      */
@@ -134,9 +134,9 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         }
 
         if (intsec != null && intsec.booleanValue()) {
-        	url = url + ";integratedSecurity=true";
+            url = url + ";integratedSecurity=true";
         }
-        
+
         return url;
     }
     @Override
@@ -161,12 +161,12 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
             throws IOException {
         SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
-    	
-    	// check the geometry metadata table
+
+        // check the geometry metadata table
         String metadataTable = (String) GEOMETRY_METADATA_TABLE.lookUp(params);
         dialect.setGeometryMetadataTable(metadataTable);
 
-    	// check native paging
+        // check native paging
         Boolean useNativePaging = (Boolean) NATIVE_PAGING.lookUp(params);
         dialect.setUseOffSetLimit(useNativePaging == null || Boolean.TRUE.equals(useNativePaging));
 
@@ -175,7 +175,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         if (useNativeSerialization != null) {
             dialect.setUseNativeSerialization(useNativeSerialization);
         }
-        
+
         // check spatial index hints usage
         Boolean forceSpatialIndexes = (Boolean) FORCE_SPATIAL_INDEX.lookUp(params);
         if (forceSpatialIndexes != null) {
@@ -189,5 +189,5 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
 
         return dataStore;
     }
-    
+
 }

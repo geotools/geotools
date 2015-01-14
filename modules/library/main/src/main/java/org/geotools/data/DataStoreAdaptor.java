@@ -80,8 +80,10 @@ final class DataStoreAdaptor implements DataStore {
         return info;
     }
 
-    private boolean ensureNotDisposed() throws IOException {
-        throw new IOException("DataStoreAdaptor is not available as it has been disposed");
+    private void ensureNotDisposed() throws IOException {
+        if( this.source == null ){
+            throw new IOException("DataStoreAdaptor is not available as it has been disposed");
+        }
     }
 
     @Override

@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.BasicFeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.opengis.filter.capability.Operator;
 
 /**
  * <!-- begin-user-doc -->
@@ -86,7 +87,7 @@ public class ComparisonOperatorsTypeImpl extends EObjectImpl implements Comparis
      * <!-- end-user-doc -->
      * @generated
      */
-    public EList<ComparisonOperatorType> getComparisonOperator() {
+    public EList<Operator> getOperators() {
         return getGroup().list(Fes20Package.Literals.COMPARISON_OPERATORS_TYPE__COMPARISON_OPERATOR);
     }
 
@@ -101,7 +102,7 @@ public class ComparisonOperatorsTypeImpl extends EObjectImpl implements Comparis
             case Fes20Package.COMPARISON_OPERATORS_TYPE__GROUP:
                 return ((InternalEList<?>)getGroup()).basicRemove(otherEnd, msgs);
             case Fes20Package.COMPARISON_OPERATORS_TYPE__COMPARISON_OPERATOR:
-                return ((InternalEList<?>)getComparisonOperator()).basicRemove(otherEnd, msgs);
+                return ((InternalEList<?>)getOperators()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -118,7 +119,7 @@ public class ComparisonOperatorsTypeImpl extends EObjectImpl implements Comparis
                 if (coreType) return getGroup();
                 return ((FeatureMap.Internal)getGroup()).getWrapper();
             case Fes20Package.COMPARISON_OPERATORS_TYPE__COMPARISON_OPERATOR:
-                return getComparisonOperator();
+                return getOperators();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -136,8 +137,8 @@ public class ComparisonOperatorsTypeImpl extends EObjectImpl implements Comparis
                 ((FeatureMap.Internal)getGroup()).set(newValue);
                 return;
             case Fes20Package.COMPARISON_OPERATORS_TYPE__COMPARISON_OPERATOR:
-                getComparisonOperator().clear();
-                getComparisonOperator().addAll((Collection<? extends ComparisonOperatorType>)newValue);
+                getOperators().clear();
+                getOperators().addAll((Collection<? extends ComparisonOperatorType>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -155,7 +156,7 @@ public class ComparisonOperatorsTypeImpl extends EObjectImpl implements Comparis
                 getGroup().clear();
                 return;
             case Fes20Package.COMPARISON_OPERATORS_TYPE__COMPARISON_OPERATOR:
-                getComparisonOperator().clear();
+                getOperators().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -172,7 +173,7 @@ public class ComparisonOperatorsTypeImpl extends EObjectImpl implements Comparis
             case Fes20Package.COMPARISON_OPERATORS_TYPE__GROUP:
                 return group != null && !group.isEmpty();
             case Fes20Package.COMPARISON_OPERATORS_TYPE__COMPARISON_OPERATOR:
-                return !getComparisonOperator().isEmpty();
+                return !getOperators().isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -192,5 +193,16 @@ public class ComparisonOperatorsTypeImpl extends EObjectImpl implements Comparis
         result.append(')');
         return result.toString();
     }
+
+    @Override
+    public Operator getOperator(String name) {
+        for (Operator op : getOperators()){
+            if (op.getName().equals(name)){
+                return op;
+            }
+        }
+        return null;
+    }
+
 
 } //ComparisonOperatorsTypeImpl

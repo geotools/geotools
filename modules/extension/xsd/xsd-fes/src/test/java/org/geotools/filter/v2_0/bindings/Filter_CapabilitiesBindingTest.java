@@ -20,7 +20,6 @@ package org.geotools.filter.v2_0.bindings;
 import java.util.List;
 
 import net.opengis.fes20.AvailableFunctionsType;
-import net.opengis.fes20.ComparisonOperatorType;
 import net.opengis.fes20.ComparisonOperatorsType;
 import net.opengis.fes20.FilterCapabilitiesType;
 import net.opengis.fes20.GeometryOperandType;
@@ -32,6 +31,7 @@ import net.opengis.fes20.SpatialOperatorType;
 
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
+import org.opengis.filter.capability.Operator;
 
 public class Filter_CapabilitiesBindingTest extends FESTestSupport {
     public void testParse() throws Exception {
@@ -118,9 +118,9 @@ public class Filter_CapabilitiesBindingTest extends FESTestSupport {
         assertNotNull(scalar.getLogicalOperators());
         ComparisonOperatorsType comparisonOperators = scalar.getComparisonOperators();
         assertNotNull(comparisonOperators);
-        assertEquals(2, comparisonOperators.getComparisonOperator().size());
-        ComparisonOperatorType type0 = comparisonOperators.getComparisonOperator().get(0);
-        ComparisonOperatorType type1 = comparisonOperators.getComparisonOperator().get(1);
+        assertEquals(2, comparisonOperators.getOperators().size());
+        Operator type0 = comparisonOperators.getOperators().get(0);
+        Operator type1 = comparisonOperators.getOperators().get(1);
         
         assertNotNull(type0);
         assertNotNull(type1);
@@ -134,24 +134,24 @@ public class Filter_CapabilitiesBindingTest extends FESTestSupport {
         assertNotNull(spatial);
         
         
-        assertEquals(11, spatial.getSpatialOperators().getSpatialOperator().size());
+        assertEquals(11, spatial.getSpatialOperators().getOperators().size());
         
-        assertEquals(8, spatial.getGeometryOperands().getGeometryOperand().size());
+        assertEquals(8, spatial.getGeometryOperands().size());
 
         // Functions
         AvailableFunctionsType functions = filterCapabilities.getFunctions();
         assertNotNull(functions);
         SpatialOperatorType bbox = null;
-        for (SpatialOperatorType op : spatial.getSpatialOperators().getSpatialOperator()) {
+        for (Operator op : spatial.getSpatialOperators().getOperators()) {
             if ("BBOX".equals(op.getName())) {
-                bbox = op;
+                bbox = (SpatialOperatorType) op;
                 break;
             }
         }
         assertNotNull(bbox);
-        assertEquals(1, bbox.getGeometryOperands().getGeometryOperand().size());
+        assertEquals(1, bbox.getGeometryOperands().size());
 
-        GeometryOperandType envelope = bbox.getGeometryOperands().getGeometryOperand().iterator().next();
+        GeometryOperandType envelope = bbox.getGeometryOperands2().getGeometryOperand().iterator().next();
 
         assertEquals("http://schemas.opengis.net/gml", envelope.getName().getNamespaceURI());
         assertEquals("Envelope", envelope.getName().getLocalPart());

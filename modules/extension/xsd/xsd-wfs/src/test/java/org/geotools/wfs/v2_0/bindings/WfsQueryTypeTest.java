@@ -39,7 +39,7 @@ public class WfsQueryTypeTest extends WFSTestSupport {
         String attr = root.getAttribute("typeNames");
         assertNotNull(attr);
         
-        String tmp = ":"+typeName.getLocalPart();
+        String tmp = typeName.getLocalPart();
         
         assertFalse(attr.startsWith("[{"));
         assertTrue(attr.indexOf(tmp) != -1);

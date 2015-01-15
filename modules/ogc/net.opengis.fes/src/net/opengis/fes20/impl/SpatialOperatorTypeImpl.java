@@ -6,7 +6,12 @@
  */
 package net.opengis.fes20.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import net.opengis.fes20.Fes20Package;
+import net.opengis.fes20.GeometryOperandType;
 import net.opengis.fes20.GeometryOperandsType;
 import net.opengis.fes20.SpatialOperatorType;
 
@@ -18,6 +23,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.opengis.filter.capability.GeometryOperand;
 
 /**
  * <!-- begin-user-doc -->
@@ -52,7 +58,7 @@ public class SpatialOperatorTypeImpl extends EObjectImpl implements SpatialOpera
      * @generated
      * @ordered
      */
-    protected static final Object NAME_EDEFAULT = null;
+    protected static final String NAME_EDEFAULT = null;
 
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -88,7 +94,7 @@ public class SpatialOperatorTypeImpl extends EObjectImpl implements SpatialOpera
      * <!-- end-user-doc -->
      * @generated
      */
-    public GeometryOperandsType getGeometryOperands() {
+    public GeometryOperandsType getGeometryOperands2() {
         return geometryOperands;
     }
 
@@ -131,8 +137,8 @@ public class SpatialOperatorTypeImpl extends EObjectImpl implements SpatialOpera
      * <!-- end-user-doc -->
      * @generated
      */
-    public Object getName() {
-        return name;
+    public String getName() {
+        return name == null ? null : name.toString();
     }
 
     /**
@@ -140,7 +146,7 @@ public class SpatialOperatorTypeImpl extends EObjectImpl implements SpatialOpera
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setName(Object newName) {
+    public void setName(String newName) {
         Object oldName = name;
         name = newName;
         if (eNotificationRequired())
@@ -170,7 +176,7 @@ public class SpatialOperatorTypeImpl extends EObjectImpl implements SpatialOpera
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Fes20Package.SPATIAL_OPERATOR_TYPE__GEOMETRY_OPERANDS:
-                return getGeometryOperands();
+                return getGeometryOperands2();
             case Fes20Package.SPATIAL_OPERATOR_TYPE__NAME:
                 return getName();
         }
@@ -189,7 +195,7 @@ public class SpatialOperatorTypeImpl extends EObjectImpl implements SpatialOpera
                 setGeometryOperands((GeometryOperandsType)newValue);
                 return;
             case Fes20Package.SPATIAL_OPERATOR_TYPE__NAME:
-                setName(newValue);
+                setName(newValue.toString());
                 return;
         }
         super.eSet(featureID, newValue);
@@ -244,5 +250,17 @@ public class SpatialOperatorTypeImpl extends EObjectImpl implements SpatialOpera
         result.append(')');
         return result.toString();
     }
+
+    @Override
+    public Collection<GeometryOperand> getGeometryOperands() {        
+        List<GeometryOperand> geometryOperands = new ArrayList<GeometryOperand>();
+        if (getGeometryOperands2() != null) {
+            for (GeometryOperandType go : getGeometryOperands2().getGeometryOperand()) {
+                geometryOperands.add(GeometryOperand.get(go.getName().getNamespaceURI(), go.getName().getLocalPart()));
+            }
+        }
+        return geometryOperands;
+    }
+
 
 } //SpatialOperatorTypeImpl

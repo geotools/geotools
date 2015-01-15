@@ -7,6 +7,7 @@
 package net.opengis.fes20;
 
 import org.eclipse.emf.ecore.EObject;
+import org.opengis.filter.capability.FilterCapabilities;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +31,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model extendedMetaData="name='Filter_Capabilities_._type' kind='elementOnly'"
  * @generated
  */
-public interface FilterCapabilitiesType extends EObject {
+public interface FilterCapabilitiesType extends EObject, FilterCapabilities {
     /**
      * Returns the value of the '<em><b>Conformance</b></em>' containment reference.
      * <!-- begin-user-doc -->

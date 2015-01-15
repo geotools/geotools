@@ -9,6 +9,8 @@ package net.opengis.fes20;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
+import org.opengis.filter.capability.TemporalOperator;
+import org.opengis.filter.capability.TemporalOperators;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +28,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model extendedMetaData="name='TemporalOperatorsType' kind='elementOnly'"
  * @generated
  */
-public interface TemporalOperatorsType extends EObject {
+public interface TemporalOperatorsType extends EObject, TemporalOperators {
     /**
      * Returns the value of the '<em><b>Temporal Operator</b></em>' containment reference list.
      * The list contents are of type {@link net.opengis.fes20.TemporalOperatorType}.
@@ -42,6 +44,6 @@ public interface TemporalOperatorsType extends EObject {
      *        extendedMetaData="kind='element' name='TemporalOperator' namespace='##targetNamespace'"
      * @generated
      */
-    EList<TemporalOperatorType> getTemporalOperator();
+    EList<TemporalOperator> getOperators();
 
 } // TemporalOperatorsType

@@ -7,6 +7,7 @@
 package net.opengis.fes20;
 
 import org.eclipse.emf.ecore.EObject;
+import org.opengis.filter.capability.ScalarCapabilities;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,7 +26,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model extendedMetaData="name='Scalar_CapabilitiesType' kind='elementOnly'"
  * @generated
  */
-public interface ScalarCapabilitiesType extends EObject {
+public interface ScalarCapabilitiesType extends EObject, ScalarCapabilities {
     /**
      * Returns the value of the '<em><b>Logical Operators</b></em>' containment reference.
      * <!-- begin-user-doc -->

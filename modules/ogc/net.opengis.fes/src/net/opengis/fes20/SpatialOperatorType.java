@@ -7,6 +7,7 @@
 package net.opengis.fes20;
 
 import org.eclipse.emf.ecore.EObject;
+import org.opengis.filter.capability.SpatialOperator;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,7 +26,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model extendedMetaData="name='SpatialOperatorType' kind='elementOnly'"
  * @generated
  */
-public interface SpatialOperatorType extends EObject {
+public interface SpatialOperatorType extends EObject, SpatialOperator {
     /**
      * Returns the value of the '<em><b>Geometry Operands</b></em>' containment reference.
      * <!-- begin-user-doc -->
@@ -41,7 +42,7 @@ public interface SpatialOperatorType extends EObject {
      *        extendedMetaData="kind='element' name='GeometryOperands' namespace='##targetNamespace'"
      * @generated
      */
-    GeometryOperandsType getGeometryOperands();
+    GeometryOperandsType getGeometryOperands2();
 
     /**
      * Sets the value of the '{@link net.opengis.fes20.SpatialOperatorType#getGeometryOperands <em>Geometry Operands</em>}' containment reference.
@@ -68,7 +69,7 @@ public interface SpatialOperatorType extends EObject {
      *        extendedMetaData="kind='attribute' name='name'"
      * @generated
      */
-    Object getName();
+    String getName();
 
     /**
      * Sets the value of the '{@link net.opengis.fes20.SpatialOperatorType#getName <em>Name</em>}' attribute.
@@ -78,6 +79,6 @@ public interface SpatialOperatorType extends EObject {
      * @see #getName()
      * @generated
      */
-    void setName(Object value);
+    void setName(String value);
 
 } // SpatialOperatorType

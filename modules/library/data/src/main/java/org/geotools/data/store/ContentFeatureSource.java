@@ -425,6 +425,25 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         } else {
             bounds = getBoundsInternal(query);
         }
+        // reprojection
+        if ( !canReproject() ) {
+            CoordinateReferenceSystem targetCRS = query.getCoordinateSystemReproject();
+            if (targetCRS != null) {
+                CoordinateReferenceSystem nativeCRS = getSchema().getCoordinateReferenceSystem();
+                if(nativeCRS == null) {
+                    throw new IOException("Cannot reproject data, the source CRS is not available");
+                } else if(!nativeCRS.equals(targetCRS)) {
+                    try {
+                        bounds = bounds.transform(targetCRS, true);
+                    } catch (Exception e) {
+                        if(e instanceof IOException)
+                            throw (IOException) e;
+                        else
+                            throw (IOException) new IOException("Error occurred trying to reproject data").initCause(e);
+                    }
+                }
+            }    
+        }
         
         return bounds;
     }
@@ -779,7 +798,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     protected abstract  FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal( Query query ) throws IOException;
     
     /**
-     * Determines if the datastore can natively perform reprojection..
+     * Determines if the datastore can natively perform reprojection.
      * <p>
      * If the subclass can handle reprojection natively then it should override
      * this method to return <code>true</code>. In this case it <b>must</b> do 
@@ -788,8 +807,17 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * <p>
      * Not overriding this method or returning <code>false</code> will case the
      * feature reader created by the subclass to be wrapped in a reprojecting 
-     * decorator when the query specifies a coordinate system reproject.
+     * decorator when the query specifies a coordinate system reproject (using crs and crsReproject)
      * </p>
+     * <p>
+     * To handle reprojection an implementation should:
+     * <ul>
+     * <li>{@link Query#getCoordinateSystem()} - optional override - if provided this is used instead of the 
+     * native CRS provided by the data format (as a workaround for clients).
+     * <li><@link {@link Query#getCoordinateSystemReproject()} - if this value is provided it is used
+     * to set up a transform from the origional CRS (native or from query).
+     * </ul>
+     * 
      * @see ReprojectFeatureReader
      */
     protected boolean canReproject() {

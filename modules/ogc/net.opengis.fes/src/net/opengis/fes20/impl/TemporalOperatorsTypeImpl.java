@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.opengis.filter.capability.TemporalOperator;
 
 /**
  * <!-- begin-user-doc -->
@@ -46,7 +47,7 @@ public class TemporalOperatorsTypeImpl extends EObjectImpl implements TemporalOp
      * @generated
      * @ordered
      */
-    protected EList<TemporalOperatorType> temporalOperator;
+    protected EList<TemporalOperator> temporalOperator;
 
     /**
      * <!-- begin-user-doc -->
@@ -72,9 +73,9 @@ public class TemporalOperatorsTypeImpl extends EObjectImpl implements TemporalOp
      * <!-- end-user-doc -->
      * @generated
      */
-    public EList<TemporalOperatorType> getTemporalOperator() {
+    public EList<TemporalOperator> getOperators() {
         if (temporalOperator == null) {
-            temporalOperator = new EObjectContainmentEList<TemporalOperatorType>(TemporalOperatorType.class, this, Fes20Package.TEMPORAL_OPERATORS_TYPE__TEMPORAL_OPERATOR);
+            temporalOperator = new EObjectContainmentEList<TemporalOperator>(TemporalOperatorType.class, this, Fes20Package.TEMPORAL_OPERATORS_TYPE__TEMPORAL_OPERATOR);
         }
         return temporalOperator;
     }
@@ -88,7 +89,7 @@ public class TemporalOperatorsTypeImpl extends EObjectImpl implements TemporalOp
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Fes20Package.TEMPORAL_OPERATORS_TYPE__TEMPORAL_OPERATOR:
-                return ((InternalEList<?>)getTemporalOperator()).basicRemove(otherEnd, msgs);
+                return ((InternalEList<?>)getOperators()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -102,7 +103,7 @@ public class TemporalOperatorsTypeImpl extends EObjectImpl implements TemporalOp
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Fes20Package.TEMPORAL_OPERATORS_TYPE__TEMPORAL_OPERATOR:
-                return getTemporalOperator();
+                return getOperators();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -117,8 +118,8 @@ public class TemporalOperatorsTypeImpl extends EObjectImpl implements TemporalOp
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Fes20Package.TEMPORAL_OPERATORS_TYPE__TEMPORAL_OPERATOR:
-                getTemporalOperator().clear();
-                getTemporalOperator().addAll((Collection<? extends TemporalOperatorType>)newValue);
+                getOperators().clear();
+                getOperators().addAll((Collection<? extends TemporalOperator>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -133,7 +134,7 @@ public class TemporalOperatorsTypeImpl extends EObjectImpl implements TemporalOp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Fes20Package.TEMPORAL_OPERATORS_TYPE__TEMPORAL_OPERATOR:
-                getTemporalOperator().clear();
+                getOperators().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -151,6 +152,16 @@ public class TemporalOperatorsTypeImpl extends EObjectImpl implements TemporalOp
                 return temporalOperator != null && !temporalOperator.isEmpty();
         }
         return super.eIsSet(featureID);
+    }
+
+    @Override
+    public TemporalOperator getOperator(String name) {
+        for (TemporalOperator op : getOperators()){
+            if (op.getName().equals(name)){
+                return op;
+            }
+        }
+        return null;
     }
 
 } //TemporalOperatorsTypeImpl

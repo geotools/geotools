@@ -9,6 +9,7 @@ package net.opengis.fes20;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
+import org.opengis.filter.capability.IdCapabilities;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +27,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model extendedMetaData="name='Id_CapabilitiesType' kind='elementOnly'"
  * @generated
  */
-public interface IdCapabilitiesType extends EObject {
+public interface IdCapabilitiesType extends EObject, IdCapabilities {
     /**
      * Returns the value of the '<em><b>Resource Identifier</b></em>' containment reference list.
      * The list contents are of type {@link net.opengis.fes20.ResourceIdentifierType}.

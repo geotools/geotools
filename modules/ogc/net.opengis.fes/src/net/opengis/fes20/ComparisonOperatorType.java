@@ -7,6 +7,7 @@
 package net.opengis.fes20;
 
 import org.eclipse.emf.ecore.EObject;
+import org.opengis.filter.capability.Operator;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,7 +25,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model extendedMetaData="name='ComparisonOperatorType' kind='empty'"
  * @generated
  */
-public interface ComparisonOperatorType extends EObject {
+public interface ComparisonOperatorType extends EObject, Operator {
     /**
      * Returns the value of the '<em><b>Name</b></em>' attribute.
      * <!-- begin-user-doc -->
@@ -40,7 +41,7 @@ public interface ComparisonOperatorType extends EObject {
      *        extendedMetaData="kind='attribute' name='name'"
      * @generated
      */
-    Object getName();
+    String getName();
 
     /**
      * Sets the value of the '{@link net.opengis.fes20.ComparisonOperatorType#getName <em>Name</em>}' attribute.
@@ -50,6 +51,6 @@ public interface ComparisonOperatorType extends EObject {
      * @see #getName()
      * @generated
      */
-    void setName(Object value);
+    void setName(String value);
 
 } // ComparisonOperatorType

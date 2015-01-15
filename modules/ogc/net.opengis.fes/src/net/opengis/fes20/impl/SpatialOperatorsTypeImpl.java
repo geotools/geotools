@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.opengis.filter.capability.SpatialOperator;
 
 /**
  * <!-- begin-user-doc -->
@@ -46,7 +47,7 @@ public class SpatialOperatorsTypeImpl extends EObjectImpl implements SpatialOper
      * @generated
      * @ordered
      */
-    protected EList<SpatialOperatorType> spatialOperator;
+    protected EList<SpatialOperator> spatialOperator;
 
     /**
      * <!-- begin-user-doc -->
@@ -72,9 +73,9 @@ public class SpatialOperatorsTypeImpl extends EObjectImpl implements SpatialOper
      * <!-- end-user-doc -->
      * @generated
      */
-    public EList<SpatialOperatorType> getSpatialOperator() {
+    public EList<SpatialOperator> getOperators() {
         if (spatialOperator == null) {
-            spatialOperator = new EObjectContainmentEList<SpatialOperatorType>(SpatialOperatorType.class, this, Fes20Package.SPATIAL_OPERATORS_TYPE__SPATIAL_OPERATOR);
+            spatialOperator = new EObjectContainmentEList<SpatialOperator>(SpatialOperatorType.class, this, Fes20Package.SPATIAL_OPERATORS_TYPE__SPATIAL_OPERATOR);
         }
         return spatialOperator;
     }
@@ -88,7 +89,7 @@ public class SpatialOperatorsTypeImpl extends EObjectImpl implements SpatialOper
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Fes20Package.SPATIAL_OPERATORS_TYPE__SPATIAL_OPERATOR:
-                return ((InternalEList<?>)getSpatialOperator()).basicRemove(otherEnd, msgs);
+                return ((InternalEList<?>)getOperators()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -102,7 +103,7 @@ public class SpatialOperatorsTypeImpl extends EObjectImpl implements SpatialOper
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Fes20Package.SPATIAL_OPERATORS_TYPE__SPATIAL_OPERATOR:
-                return getSpatialOperator();
+                return getOperators();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -117,8 +118,8 @@ public class SpatialOperatorsTypeImpl extends EObjectImpl implements SpatialOper
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Fes20Package.SPATIAL_OPERATORS_TYPE__SPATIAL_OPERATOR:
-                getSpatialOperator().clear();
-                getSpatialOperator().addAll((Collection<? extends SpatialOperatorType>)newValue);
+                getOperators().clear();
+                getOperators().addAll((Collection<? extends SpatialOperatorType>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -133,7 +134,7 @@ public class SpatialOperatorsTypeImpl extends EObjectImpl implements SpatialOper
     public void eUnset(int featureID) {
         switch (featureID) {
             case Fes20Package.SPATIAL_OPERATORS_TYPE__SPATIAL_OPERATOR:
-                getSpatialOperator().clear();
+                getOperators().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -151,6 +152,16 @@ public class SpatialOperatorsTypeImpl extends EObjectImpl implements SpatialOper
                 return spatialOperator != null && !spatialOperator.isEmpty();
         }
         return super.eIsSet(featureID);
+    }
+
+    @Override
+    public SpatialOperator getOperator(String name) {
+        for (SpatialOperator op : getOperators()){
+            if (op.getName().equals(name)){
+                return op;
+            }
+        }
+        return null;
     }
 
 } //SpatialOperatorsTypeImpl

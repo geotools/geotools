@@ -155,6 +155,11 @@ public class WFSConfiguration extends Configuration {
         bindings.put(WFS.Abstract, new SimpleContentComplexEMFBinding(Wfs20Factory.eINSTANCE, new QName(WFS.NAMESPACE, "AbstractType")));
         bindings.put(WFS.DropStoredQuery, new ComplexEMFBinding(Wfs20Factory.eINSTANCE, WFS.DropStoredQuery, DropStoredQueryType.class));
         bindings.put(WFS.Title, new SimpleContentComplexEMFBinding(Wfs20Factory.eINSTANCE, new QName(WFS.NAMESPACE, "TitleType")));
+        
+        bindings.put(WFS.WFS_CapabilitiesType, WFS_CapabilitiesTypeBinding.class);
+        bindings.put(WFS.FeatureTypeListType, FeatureTypeListTypeBinding.class);
+        bindings.put(WFS.FeatureTypeType, FeatureTypeTypeBinding.class);
+        
     }
     
     void binding(Map bindings, QName name) {

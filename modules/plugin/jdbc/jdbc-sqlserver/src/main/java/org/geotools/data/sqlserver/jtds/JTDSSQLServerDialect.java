@@ -37,12 +37,12 @@ public class JTDSSQLServerDialect extends SQLServerDialect {
      */
     public JTDSSQLServerDialect(JDBCDataStore dataStore) {
         super(dataStore);
-        // TODO Auto-generated constructor stub
+
     }
 
     @Override
     public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {
-        // TODO Auto-generated method stub
+
         super.registerClassToSqlMappings(mappings);
 
         // mappings.put(DateTime.class,Types.TIMESTAMP);
@@ -50,12 +50,14 @@ public class JTDSSQLServerDialect extends SQLServerDialect {
 
     @Override
     public void registerSqlTypeNameToClassMappings(Map<String, Class<?>> mappings) {
-        // TODO Auto-generated method stub
+
         super.registerSqlTypeNameToClassMappings(mappings);
         mappings.put("datetime", Timestamp.class);
         mappings.put("time", Time.class);
         mappings.put("date", Date.class);
         mappings.put( "image", Geometry.class );
+        mappings.put("smallmoney", Float.class);
+        mappings.put("money", Double.class);
     }
 
 }

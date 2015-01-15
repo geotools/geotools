@@ -18,8 +18,6 @@ package org.geotools.data.wfs.internal;
 
 import java.io.IOException;
 
-import org.geotools.data.wfs.internal.parsers.ExceptionReportParser;
-
 /**
  * A Java Exception that mirrors a WFS {@code ExceptionReport} and is meant to be produced by
  * {@link ExceptionReportParser}.

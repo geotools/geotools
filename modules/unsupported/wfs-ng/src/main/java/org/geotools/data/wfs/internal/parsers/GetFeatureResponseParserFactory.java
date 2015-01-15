@@ -17,30 +17,27 @@
 package org.geotools.data.wfs.internal.parsers;
 
 import java.io.IOException;
+import org.geotools.util.Version;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.Versions;
-import org.geotools.util.Version;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.xml.Configuration;
 import org.opengis.feature.type.FeatureType;
 
 /**
  * A WFS response parser factory for GetFeature requests in GML output formats.
+ * 
+ * Should eventually completely replace GmlGetFeatureResponseParserFactory as soon as it has been proven to work as well.
+ * For now only used for wfs 2.0 and gml 3.2.
  * <p>
- * Supports only GML 2 and GML 3.1
- * 
- * 
- * //@deprecated should be removed as long as {@link GetFeatureResponseParserFactory} works well
  */
 @SuppressWarnings("nls")
-public class GmlGetFeatureResponseParserFactory extends AbstractGetFeatureResponseParserFactory {
+public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseParserFactory {
 
     private static final List<String> SUPPORTED_FORMATS = Collections.unmodifiableList(Arrays
             .asList(//
@@ -61,35 +58,41 @@ public class GmlGetFeatureResponseParserFactory extends AbstractGetFeatureRespon
                     "text/xml; charset=UTF-8",
                     "text/gml; subtype=gml/3.1.1",// the incorrectly advertised GeoServer format
                     "GML2",//
-                    "text/xml; subtype=gml/2.1.2",//
-                    "application/xml" //
+                    "text/xml; subtype=gml/2.1.2", //
+                    "application/xml", //
+                    "text/xml; subtype=gml/3.2", //
+                    "application/gml+xml; version=3.2", //
+                    "gml32" //
             ));
     
     private static final List<String> SUPPORTED_VERSIONS = Collections.unmodifiableList(Arrays
             .asList(
-                    Versions.v1_0_0.toString(), Versions.v1_1_0.toString()
+                    Versions.v2_0_0.toString()
+                    //, Versions.v1_0_0.toString() --disabled for now, so the old factory is definitely picked
+                    //, Versions.v1_1_0.toString() --disabled for now, so the old factory is definitely picked
             ));
 
     @Override
     protected GetFeatureParser parser(GetFeatureRequest request, InputStream in) throws IOException {
-        
-        final QName remoteFeatureName = request.getTypeName();
 
         FeatureType queryType = request.getQueryType();
         if (queryType == null) {
             queryType = request.getFullType();
         }
-        if (!(queryType instanceof SimpleFeatureType)) {
-            throw new UnsupportedOperationException();
+
+        Configuration config = null;
+        if (request.getStrategy().getVersion().equals(Versions.v2_0_0.toString())) {
+            config = new org.geotools.wfs.v2_0.WFSConfiguration();
+        } else if (request.getStrategy().getVersion().equals(Versions.v1_1_0.toString())) {
+            config = new org.geotools.wfs.v1_1.WFSConfiguration();
+        } else if (request.getStrategy().getVersion().equals(Versions.v1_0_0.toString())) {
+            config = new org.geotools.wfs.v1_0.WFSConfiguration();
         }
-
-        SimpleFeatureType schema = (SimpleFeatureType) queryType;
-
-        GetFeatureParser featureReader = new XmlSimpleFeatureParser(in, schema, remoteFeatureName, 
-                request.getStrategy().getConfig().getAxisOrder());
-        return featureReader;
+        return new PullParserFeatureReader(config, in, queryType);
+        
+        //TODO: what about axis order issue solved in old parser?        
     }
-
+    
     @Override
     public List<String> getSupportedOutputFormats() {
         return SUPPORTED_FORMATS;

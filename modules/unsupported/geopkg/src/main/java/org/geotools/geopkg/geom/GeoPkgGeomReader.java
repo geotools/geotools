@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.geopkg.geom;
 
 import java.io.IOException;
@@ -12,24 +28,62 @@ import com.vividsolutions.jts.io.InputStreamInStream;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 
+/**
+ * Translates a GeoPackage geometry BLOB to a vividsolutions Geometry.
+ * 
+ * @author Justin Deoliveira
+ * @author Niels Charlier
+ */
 public class GeoPkgGeomReader {
-
-    public Geometry read(byte[] bytes) throws IOException {
-        return read(new ByteArrayInStream(bytes));
-    }
-
-    public Geometry read(InputStream in) throws IOException {
-        return read(new InputStreamInStream(in));
+    
+    protected InStream input;
+    
+    protected GeometryHeader header = null;
+    
+    protected Geometry geometry = null;
+    
+    public GeoPkgGeomReader(InStream input) {
+        this.input = input;
     }
     
-    Geometry read(InStream input) throws IOException {
-        // read the header
-        Header h = readHeader(input);
+    public GeoPkgGeomReader(InputStream input) throws IOException {
+        this.input = new InputStreamInStream(input);
+    }
+    
+    public GeoPkgGeomReader(byte[] bytes) {
+        this.input = new ByteArrayInStream(bytes);
+    }
         
+    public GeometryHeader getHeader() throws IOException {
+        if (header == null) {
+            header = readHeader();
+        }
+        return header;
+    }
+    
+    public Geometry get() throws IOException {
+        if (header == null) {
+            header = readHeader();
+        }
+        if (geometry == null) {
+            geometry = read();
+        }
+        return geometry;
+    }
+    
+    public Envelope getEnvelope() throws IOException {
+        if (getHeader().getFlags().getEnvelopeIndicator() == EnvelopeType.NONE) {
+            return get().getEnvelopeInternal();
+        } else {
+            return getHeader().getEnvelope();
+        }
+    }
+    
+    protected Geometry read() throws IOException { //header must be read!      
         // read the geometry
         try {
             Geometry g = new WKBReader().read(input);
-            g.setSRID(h.srid);
+            g.setSRID(header.getSrid());
             return g;
         } catch (ParseException e) {
             throw new IOException(e);
@@ -47,11 +101,11 @@ public class GeoPkgGeomReader {
      * 
      * flags layout:
      *   bit     7       6       5       4       3       2       1       0
-     *   use     V       V       V       V       E       E       E       B
+     *   use     -       -       X       Y       E       E       E       B
 
      *   use:
-     *   V: version number (4-bit unsigned integer)
-     *      0 = version 1
+     *   X: GeoPackageBinary type (0: StandardGeoPackageBinary, 1: ExtendedGeoPackageBinary)
+     *   Y: 0: non-empty geometry, 1: empty geometry
      *      
      *   E: envelope contents indicator code (3-bit unsigned integer)
      *     value |                    description                               | envelope length (bytes)
@@ -64,44 +118,44 @@ public class GeoPkgGeomReader {
      *       0 = Big Endian   (most significant bit first)
      *       1 = Little Endian (least significant bit first)
      */
-    Header readHeader(InStream in) throws IOException {
-        Header h = new Header();
+    protected GeometryHeader readHeader() throws IOException {
+        GeometryHeader h = new GeometryHeader();
 
         // read first 4 bytes  
         // TODO: something with the magic number
         byte[] buf = new byte[4];
-        in.read(buf);
+        input.read(buf);
 
         // next byte flags
-        h.flags = new Flags((byte)buf[3]);
+        h.setFlags(new GeometryHeaderFlags((byte)buf[3]));
 
         // set endianness
-        ByteOrderDataInStream din = new ByteOrderDataInStream(in);
-        din.setOrder(h.flags.getEndianess());
+        ByteOrderDataInStream din = new ByteOrderDataInStream(input);
+        din.setOrder(h.getFlags().getEndianess());
 
         // read the srid
-        h.srid = din.readInt();
+        h.setSrid(din.readInt());
 
         // read the envlope
-        if (h.flags.getEnvelopeIndicator() != EnvelopeType.NONE) {
+        if (h.getFlags().getEnvelopeIndicator() != EnvelopeType.NONE) {
             double x1 = din.readDouble();
             double x2 = din.readDouble();
             double y1 = din.readDouble();
             double y2 = din.readDouble();
     
-            if (h.flags.getEnvelopeIndicator().value > 1) {
+            if (h.getFlags().getEnvelopeIndicator().getValue() > 1) {
                 // 2 = minz,maxz; 3 = minm,maxm - we ignore these for now 
                 din.readDouble();
                 din.readDouble();
             }
     
-            if (h.flags.getEnvelopeIndicator().value > 3) {
+            if (h.getFlags().getEnvelopeIndicator().getValue() > 3) {
                 // 4 = minz,maxz,minm,maxm - we ignore these for now
                 din.readDouble();
                 din.readDouble();
             }
     
-            h.envelope = new Envelope(x1, x2, y1, y2);
+            h.setEnvelope (new Envelope(x1, x2, y1, y2));
         }
         return h;
     }

@@ -19,6 +19,10 @@ that allows you to describe the latyer in more detail
                 <graphic>
                     <size><PropertyName>size</PropertyName></size>
                     <rotation><PropertyName>rotation</PropertyName></rotation>
+                    <AnchorPoint>
+                      <AnchorPointX>0</AnchorPointX>
+                      <AnchorPointY>1</AnchorPointY>
+                    </AnchorPoint>
                     <Displacement>
                          <DisplacementX>11.0</DisplacementX>
                          <DisplacementY>8.0</DisplacementY>

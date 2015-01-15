@@ -1,9 +1,23 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.styling.builder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.measure.quantity.Length;
 import javax.measure.unit.Unit;
@@ -22,7 +36,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class TextSymbolizerBuilder extends AbstractStyleBuilder<TextSymbolizer> {
+public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
     FillBuilder fill = new FillBuilder(this).unset();
 
     List<FontBuilder> fonts = new ArrayList<FontBuilder>();
@@ -33,13 +47,15 @@ public class TextSymbolizerBuilder extends AbstractStyleBuilder<TextSymbolizer> 
 
     Expression label;
 
-    String geometry;
+    Expression geometry = null;
 
     Unit<Length> uom;
 
+    GraphicBuilder shield = new GraphicBuilder(this).unset();
+
     Builder<? extends LabelPlacement> placement = new PointPlacementBuilder(this).unset();
 
-    private Map<String, String> options = new HashMap<String, String>();
+    private Expression priority;
 
     public TextSymbolizerBuilder() {
         this(null);
@@ -50,9 +66,13 @@ public class TextSymbolizerBuilder extends AbstractStyleBuilder<TextSymbolizer> 
         reset();
     }
 
-    public TextSymbolizerBuilder geometry(String geometry) {
+    public TextSymbolizerBuilder geometry(Expression geometry) {
         this.geometry = geometry;
         return this;
+    }
+
+    public TextSymbolizerBuilder geometry(String cqlExpression) {
+        return geometry(cqlExpression(cqlExpression));
     }
 
     public HaloBuilder halo() {
@@ -94,22 +114,35 @@ public class TextSymbolizerBuilder extends AbstractStyleBuilder<TextSymbolizer> 
         return this;
     }
 
+    public GraphicBuilder shield() {
+        unset = false;
+        return shield;
+    }
+
     public TextSymbolizer build() {
         if (unset) {
             return null;
         }
-        Font[] array = new Font[fonts.size()];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = fonts.get(i).build();
+        Font[] array = null;
+        if (!fonts.isEmpty()) {
+            array = new Font[fonts.size()];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = fonts.get(i).build();
+            }
         }
         TextSymbolizer ts = sf.createTextSymbolizer(fill.build(), array, halo.build(), label,
-                placement.build(), geometry);
+                placement.build(), null);
+        ts.setGeometry(geometry);
         if (uom != null) {
             ts.setUnitOfMeasure(uom);
         }
-        if (ts instanceof TextSymbolizer2 && options != null) {
+        ts.getOptions().putAll(options);
+        ts.setPriority(priority);
+        if (ts instanceof TextSymbolizer2) {
             TextSymbolizer2 ts2 = (TextSymbolizer2) ts;
-            ts2.getOptions().putAll(options);
+            if (!shield.isUnset()) {
+                ts2.setGraphic(shield.build());
+            }
         }
         reset();
         return ts;
@@ -125,8 +158,10 @@ public class TextSymbolizerBuilder extends AbstractStyleBuilder<TextSymbolizer> 
         label = null;
         geometry = null;
         placement.reset();
+        placement.unset();
         options.clear();
         uom = null;
+        priority = null;
         unset = false;
         return this;
     }
@@ -135,7 +170,7 @@ public class TextSymbolizerBuilder extends AbstractStyleBuilder<TextSymbolizer> 
         fill.reset(symbolizer.getFill());
         halo.reset(symbolizer.getHalo());
         label = symbolizer.getLabel();
-        geometry = symbolizer.getGeometryPropertyName();
+        geometry = null;
         LabelPlacement otherPlacement = symbolizer.getLabelPlacement();
         if (symbolizer.getLabelPlacement() instanceof PointPlacement) {
             PointPlacementBuilder builder = new PointPlacementBuilder(this);
@@ -148,6 +183,7 @@ public class TextSymbolizerBuilder extends AbstractStyleBuilder<TextSymbolizer> 
         } else {
             throw new IllegalArgumentException("Unrecognized label placement: " + otherPlacement);
         }
+        priority = symbolizer.getPriority();
         unset = false;
         return this;
     }
@@ -174,6 +210,20 @@ public class TextSymbolizerBuilder extends AbstractStyleBuilder<TextSymbolizer> 
 
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().text().init(this);
+    }
+
+    public TextSymbolizerBuilder priority(Expression priority) {
+        unset = false;
+        this.priority = priority;
+        return this;
+    }
+
+    public TextSymbolizerBuilder priority(String cql) {
+        return priority(cqlExpression(cql));
+    }
+
+    public TextSymbolizerBuilder priority(int priority) {
+        return priority(literal(priority));
     }
 
 }

@@ -282,6 +282,10 @@ FeatureSource is a very capable class, in the worst case the wrappers provided h
   Creates a light weight "view" that focuses on combining the provided query with
   any requests made to the resulting featureSource.
 
+* dataStore( source )
+  
+  Adapt source as a singleton dataStore
+
 FeatureReader
 '''''''''''''
 
@@ -363,10 +367,18 @@ A common task with gt-main is preparing a Query against a FeatureSource. DataUti
 
 * DataUtilities.mixQueries(Query, Query, String)
   
-  Safely combines two queries in a sensible manner.
+  Safely combines two queries in a sensible manner. The provided string is used for the name of the new query.
+
+* DataUtilities.simplifyFilter(Query)
+
+  Simplifies the filter contained in a query, eliminating non-functional clauses.
 
 * DataUtilities.resolvePropertyNames(Query, SimpleFeatureType)
 * DataUtilities.resolvePropertyNames(Filter, SimpleFeatureType)
+
+  These two methods rewrite full property names to simple attribute names. 
+  For example, property names such as "gml:name" are rewritten as simply "name".
+
 * DataUtilities.addMandatoryProperties(SimpleFeatureType, List<PropertyName>)
 
 SortBy

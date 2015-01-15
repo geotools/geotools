@@ -16,11 +16,13 @@
  */
 package org.geotools.styling;
 
-import static org.junit.Assert.*;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
 import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -133,7 +135,7 @@ public class SLDTransformerTest {
         RasterSymbolizer rasterSymbolizer = styleFactory.createRasterSymbolizer();
 
         // set opacity
-        rasterSymbolizer.setOpacity((Expression) CommonFactoryFinder.getFilterFactory(
+        rasterSymbolizer.setOpacity(CommonFactoryFinder.getFilterFactory(
                 GeoTools.getDefaultHints()).literal(0.25));
 
         // set channel selection
@@ -275,6 +277,116 @@ public class SLDTransformerTest {
         Color value = color.evaluate(null, Color.class);
         assertNotNull("color", value);
         assertEquals("blue", Color.BLUE, value);
+    }
+
+    /**
+     * Tests whether LabelPlacement works with a completely empty
+     * PointPlacement as the spec allows.
+     *
+     * See also http://jira.codehaus.org/browse/GEOS-6748
+     */
+    @Test
+    public void testPointPlacementEmpty(){
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                   + "<StyledLayerDescriptor version=\"1.0.0\" xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
+                   + "  xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+                   + "  xsi:schemaLocation=\"http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd\">"
+                   + "  <NamedLayer>"
+                   + "    <Name>foo</Name>"
+                   + "    <UserStyle>"
+                   + "      <Name>pointplacement</Name>"
+                   + "      <FeatureTypeStyle>"
+                   + "        <Rule>"
+                   + "          <MaxScaleDenominator>32000</MaxScaleDenominator>"
+                   + "          <TextSymbolizer>"
+                   + "            <Label>"
+                   + "              <ogc:PropertyName>NAME</ogc:PropertyName>"
+                   + "            </Label>"
+                   + "            <Font>"
+                   + "              <CssParameter name=\"font-family\">Arial</CssParameter>"
+                   + "              <CssParameter name=\"font-weight\">Bold</CssParameter>"
+                   + "              <CssParameter name=\"font-size\">14</CssParameter>"
+                   + "            </Font>"
+                   + "            <LabelPlacement>" // completely empty PointPlacement
+                   + "              <PointPlacement />"
+                   + "            </LabelPlacement>"
+                   + "          </TextSymbolizer>"
+                   + "        </Rule>"
+                   + "      </FeatureTypeStyle>"
+                   + "    </UserStyle>"
+                   + "  </NamedLayer>"
+                   + "</StyledLayerDescriptor>";
+        StringReader reader = new StringReader(xml);
+        SLDParser sldParser = new SLDParser(sf, reader);
+
+        Style[] parsed = sldParser.readXML();
+        assertNotNull("parsed xml", parsed);
+        assertTrue("parsed xml into style", parsed.length > 0);
+
+        Style style = parsed[0];
+        assertNotNull(style);
+        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        TextSymbolizer textSymbolize = (TextSymbolizer) rule.symbolizers().get(0);
+        LabelPlacement labelPlacement = textSymbolize.getLabelPlacement();
+
+        assertNotNull(labelPlacement);
+    }
+
+    /**
+     * Tests whether LabelPlacement works with a  PointPlacement that has no
+     * explicit AnchorPoint as the spec allows.
+     *
+     * See also http://jira.codehaus.org/browse/GEOS-6748
+     */
+    @Test
+    public void testPointPlacementNoAnchorPoint(){
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                   + "<StyledLayerDescriptor version=\"1.0.0\" xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
+                   + "  xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+                   + "  xsi:schemaLocation=\"http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd\">"
+                   + "  <NamedLayer>"
+                   + "    <Name>foo</Name>"
+                   + "    <UserStyle>"
+                   + "      <Name>pointplacement</Name>"
+                   + "      <FeatureTypeStyle>"
+                   + "        <Rule>"
+                   + "          <TextSymbolizer>"
+                   + "            <Label>"
+                   + "              <ogc:PropertyName>NAME</ogc:PropertyName>"
+                   + "            </Label>"
+                   + "            <Font>"
+                   + "              <CssParameter name=\"font-family\">Arial</CssParameter>"
+                   + "              <CssParameter name=\"font-weight\">Bold</CssParameter>"
+                   + "              <CssParameter name=\"font-size\">14</CssParameter>"
+                   + "            </Font>"
+                   + "            <LabelPlacement>"
+                   + "              <PointPlacement>" // PointPlacement w/o AnchorPoint
+                   + "                <Rotation>"
+                   + "                  42"
+                   + "                </Rotation>"
+                   + "              </PointPlacement>"
+                   + "            </LabelPlacement>"
+                   + "          </TextSymbolizer>"
+                   + "        </Rule>"
+                   + "      </FeatureTypeStyle>"
+                   + "    </UserStyle>"
+                   + "  </NamedLayer>"
+                   + "</StyledLayerDescriptor>";
+        StringReader reader = new StringReader(xml);
+        SLDParser sldParser = new SLDParser(sf, reader);
+
+        Style[] parsed = sldParser.readXML();
+        assertNotNull("parsed xml", parsed);
+        assertTrue("parsed xml into style", parsed.length > 0);
+
+        Style style = parsed[0];
+        assertNotNull(style);
+        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        TextSymbolizer textSymbolize = (TextSymbolizer) rule.symbolizers().get(0);
+        PointPlacement pointPlacement = (PointPlacement) textSymbolize.getLabelPlacement();
+
+        assertNotNull(pointPlacement);
+        assertNotNull(pointPlacement.getRotation());
     }
 
     /**
@@ -1013,7 +1125,7 @@ public class SLDTransformerTest {
 
     	SLDParser sldParser = new SLDParser(sf);
     	sldParser.setInput(new StringReader(xml));
-    	Style importedStyle = (Style) sldParser.readXML()[0];
+    	Style importedStyle = sldParser.readXML()[0];
     	TextSymbolizer2 copy = (TextSymbolizer2)importedStyle.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
 
         // compare it
@@ -1055,7 +1167,7 @@ public class SLDTransformerTest {
 
         SLDParser sldParser = new SLDParser(sf);
         sldParser.setInput(new StringReader(xml));
-        Style importedStyle = (Style) sldParser.readXML()[0];
+        Style importedStyle = sldParser.readXML()[0];
         LineSymbolizer copy = (LineSymbolizer) importedStyle.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         
         // compare
@@ -1136,7 +1248,7 @@ public class SLDTransformerTest {
         
         SLDParser parser = new SLDParser(sf);
         parser.setInput(new StringReader(xml));
-        Style importedStyle = (Style) parser.readXML()[0];
+        Style importedStyle = parser.readXML()[0];
         PointSymbolizer psCopy = (PointSymbolizer) importedStyle.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         ExternalGraphic egCopy = (ExternalGraphic) psCopy.getGraphic().graphicalSymbols().get(0);
         assertEquals(chartURI, egCopy.getLocation().toExternalForm());
@@ -1301,6 +1413,45 @@ public class SLDTransformerTest {
         String transformedStyleXml = writerWriter.toString();
 
         validateWellKnownNameWithExpressionStyle(transformedStyleXml);
+    }
+
+    @Test
+    public void testAnchorPointInGraphic() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        
+        Graphic graphic;
+        graphic = sb.createGraphic();
+        Displacement disp = sb.createDisplacement(10, 10);
+        AnchorPoint ap = sb.createAnchorPoint(1, 0.3);
+        graphic.setDisplacement(disp);
+        graphic.setAnchorPoint(ap);
+        
+        SLDTransformer st = new SLDTransformer();     
+        String xml = st.transform(graphic);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+        
+        assertXpathEvaluatesTo("10.0", "//sld:Graphic/sld:Displacement/sld:DisplacementX", doc);
+        assertXpathEvaluatesTo("10.0", "//sld:Graphic/sld:Displacement/sld:DisplacementY", doc);
+        assertXpathEvaluatesTo("1.0", "//sld:Graphic/sld:AnchorPoint/sld:AnchorPointX", doc);
+        assertXpathEvaluatesTo("0.3", "//sld:Graphic/sld:AnchorPoint/sld:AnchorPointY", doc);
+    }
+
+    @Test
+    public void testFeatureTypeStyleOptions() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        Style style = sb.createStyle(sb.createPolygonSymbolizer());
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        fts.getOptions().put("key", "value");
+
+        SLDTransformer st = new SLDTransformer();
+        String xml = st.transform(style);
+        System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+
+        assertXpathEvaluatesTo("1", "count(//sld:FeatureTypeStyle/sld:VendorOption)", doc);
+        assertXpathEvaluatesTo("value",
+ "//sld:FeatureTypeStyle/sld:VendorOption[@name='key']", doc);
     }
 
     private Style validateWellKnownNameWithExpressionStyle(String xmlStyle) {

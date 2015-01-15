@@ -93,7 +93,10 @@ import org.xml.sax.SAXException;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+@Deprecated
 /**
+ * AbstractDataStore is deprecated. Migrate to ContentDataStore.
+ * 
  * DataStore used for connecting to 1.0.0 protocol.
  * <p>
  * Please note this datastore uses the first version of the GTXML parsing / encoding technology

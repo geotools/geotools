@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.geopkg;
 
 import static java.lang.String.format;
@@ -5,20 +21,16 @@ import static org.geotools.geopkg.GeoPackage.*;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
 import org.geotools.geometry.jts.Geometries;
-import org.geotools.geopkg.Entry;
 import org.geotools.geopkg.FeatureEntry;
 import org.geotools.geopkg.Entry.DataType;
 import org.geotools.geopkg.GeoPackage;
@@ -31,20 +43,31 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * The GeoPackage SQL Dialect.
+ * 
+ * @author Justin Deoliveira
+ * @author Niels Charlier
+ *
+ */
 public class GeoPkgDialect extends PreparedStatementSQLDialect {
-
-    //GeoPackage geopkg;
+   
+    protected GeoPkgGeomWriter geomWriter;
+    
+    public GeoPkgDialect(JDBCDataStore dataStore, GeoPkgGeomWriter.Configuration writerConfig) {
+        super(dataStore);
+        geomWriter = new GeoPkgGeomWriter(writerConfig);
+    }
 
     public GeoPkgDialect(JDBCDataStore dataStore) {
         super(dataStore);
-        //this.geopkg = new GeoPackage(dataStore);
+        geomWriter = new GeoPkgGeomWriter();
     }
 
     @Override
@@ -56,15 +79,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     public boolean includeTable(String schemaName, String tableName, Connection cx) throws SQLException {
         Statement st = cx.createStatement();
         
-        //PreparedStatement ps = cx.prepareStatement("SELECT * FROM geopackage_contents WHERE" +
-        //    " table_name = ? AND data_type = ?");
         try {
             ResultSet rs = st.executeQuery(String.format("SELECT * FROM gpkg_contents WHERE" +
                 " table_name = '%s' AND data_type = '%s'", tableName, DataType.Feature.value()));
-            //ps.setString(1, tableName);
-            //ps.setString(2, DataType.Feature.value());
-
-            //ResultSet rs = ps.executeQuery();
             try {
                 return rs.next();
             }
@@ -73,7 +90,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             }
         }
         finally {
-            //dataStore.closeSafe(ps);
             dataStore.closeSafe(st);
         }
     }
@@ -104,7 +120,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
         else {
             try {
-                ps.setBytes(column, new GeoPkgGeomWriter().write(g));
+                ps.setBytes(column, geomWriter.write(g));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -112,7 +128,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     }
 
     Geometry geometry(byte[] b) throws IOException {
-        return b != null ? new GeoPkgGeomReader().read(b) : null;
+        return b != null ? new GeoPkgGeomReader(b).get() : null;
     }
 
     @Override
@@ -233,6 +249,25 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                     }
                 }
             }
+        } catch (IOException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    @Override
+    public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {
+        super.postDropTable(schemaName, featureType, cx);
+        FeatureEntry fe = (FeatureEntry) featureType.getUserData().get(FeatureEntry.class);
+        if (fe == null) {
+            fe = new FeatureEntry();
+            fe.setIdentifier(featureType.getTypeName());
+            fe.setDescription(featureType.getTypeName());
+            fe.setTableName(featureType.getTypeName());
+        }
+        GeoPackage geopkg = geopkg();
+        try {
+            geopkg.deleteGeoPackageContentsEntry(fe);
+            geopkg.deleteGeometryColumnsEntry(fe);
         } catch (IOException e) {
             throw new SQLException(e);
         }

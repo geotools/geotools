@@ -27,7 +27,10 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
+@Deprecated
 /**
+ * @deprecated Use org.geotools.data.store.ContentFeatureStore instead
+ * 
  * A Starting point for your own FeatureLocking implementations.
  * 
  * <p>

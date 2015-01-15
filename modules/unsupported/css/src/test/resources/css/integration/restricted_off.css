@@ -1,0 +1,3 @@
+restricted [cat='2'], [cat='3'], [cat='4'] [ @scale <= 200000] [@scale > 100000] {
+  fill: #EE0000;
+}

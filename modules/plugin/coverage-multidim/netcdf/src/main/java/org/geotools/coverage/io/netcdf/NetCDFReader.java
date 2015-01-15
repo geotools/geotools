@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -164,7 +165,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
 
         // get the names
         names = access.getNames(null);
-        setNames = new HashSet<String>();
+        setNames = new TreeSet<String>();
         for (Name name: names) {
             String nameString = name.toString();
             if (defaultName == null) {
@@ -824,7 +825,13 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
             VariableAdapter.UnidataSpatialDomain spatialDomain = (UnidataSpatialDomain) source.getSpatialDomain();
             GridEnvelope2D gridRange = spatialDomain.getGridGeometry().getGridRange2D();
             RasterLayout rasterElement = spatialDomain.getRasterElements(false, null).iterator().next();
-            SampleModel sampleModel = new BandedSampleModel(DataBuffer.TYPE_DOUBLE, (int)gridRange.getWidth(), (int)gridRange.getHeight(), 1);
+            NetCDFImageReader reader = (NetCDFImageReader) ((NetCDFAccess)access).reader;
+            int dataType = DataBuffer.TYPE_DOUBLE;
+            VariableAdapter descriptor = reader.getCoverageDescriptor(new NameImpl(coverageName));
+            if (descriptor != null) {
+                dataType = descriptor.getSampleModel().getDataType();
+            }
+            SampleModel sampleModel = new BandedSampleModel(dataType, (int)gridRange.getWidth(), (int)gridRange.getHeight(), 1);
             ColorModel colorModel = ImageIOUtilities.createColorModel(sampleModel);
             Rectangle rect = rasterElement.toRectangle();
             ImageLayout layout = new ImageLayout(rect.x, rect.y, rect.width, rect.height);

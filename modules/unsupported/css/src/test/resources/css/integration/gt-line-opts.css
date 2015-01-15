@@ -1,0 +1,7 @@
+/**
+ * Example usage of GeoTools-specific extension properties
+ */
+* {
+  stroke: red;
+  -gt-stroke-label-obstacle: true;
+}

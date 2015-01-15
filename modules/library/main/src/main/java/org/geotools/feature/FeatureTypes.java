@@ -471,8 +471,12 @@ public class FeatureTypes {
     static boolean equals( SimpleFeatureType typeA, SimpleFeatureType typeB, boolean compareUserMaps) {
         if (typeA == typeB)
             return true;
-
+        
         if (typeA == null || typeB == null) {
+            return false;
+        }
+        
+        if (!typeA.equals(typeB)) {
             return false;
         }
         

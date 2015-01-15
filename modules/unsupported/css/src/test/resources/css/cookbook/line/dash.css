@@ -1,0 +1,5 @@
+* {
+  stroke: blue;
+  stroke-width: 3px;
+  stroke-dasharray: 5 2;
+}

@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.util.List;
 import java.util.logging.Logger;
@@ -27,7 +28,9 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
+import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.io.CoverageSource.AdditionalDomain;
 import org.geotools.coverage.io.CoverageSource.DomainType;
 import org.geotools.coverage.io.CoverageSourceDescriptor;
@@ -195,7 +198,7 @@ public final class NetCDFBasicTest extends Assert {
         boolean speedVariableIsPresent = false;
         String speedVariableName = "";
 
-        for (Variable variable: variables) {
+        for (Variable variable : variables) {
             if (variable.getShortName().equals("spd")) {
                 speedVariableIsPresent = true;
                 speedVariableName = variable.getFullName();
@@ -210,7 +213,7 @@ public final class NetCDFBasicTest extends Assert {
         NetCDFImageReader reader = null;
         try {
 
-            // sample dataset containing a water_speed variable having 
+            // sample dataset containing a water_speed variable having
             // only time, depth dimensions. No lon/lat dims are present
             // resulting into variable not usable.
             reader = (NetCDFImageReader) unidataImageReaderSpi.createReaderInstance();
@@ -218,13 +221,13 @@ public final class NetCDFBasicTest extends Assert {
             final List<Name> names = reader.getCoveragesNames();
 
             boolean isSpeedCoverageAvailable = false;
-            for (Name name: names) {
+            for (Name name : names) {
                 if (name.toString().equals(speedVariableName)) {
                     isSpeedCoverageAvailable = true;
                     break;
                 }
             }
-            // Checking that only "mask" variable is found  
+            // Checking that only "mask" variable is found
             assertFalse(isSpeedCoverageAvailable);
         } finally {
             if (dataset != null) {
@@ -680,6 +683,59 @@ public final class NetCDFBasicTest extends Assert {
             return;
         }
         assertFalse(readerSpi.canDecodeInput(file));
+    }
+
+    @Test
+    public void testNetCDFWithDifferentTimeDimensions() throws MalformedURLException, IOException {
+        // Selection of the input file
+        final File workDir = new File(TestData.file(this, "."), "times");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+
+        FileUtils.copyFile(TestData.file(this, "times.zip"), new File(workDir, "times.zip"));
+        TestData.unzipFile(this, "times/times.zip");
+
+        final File inputFile = TestData.file(this, "times/times.nc");
+        // Get format
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(
+                inputFile.toURI().toURL(), null);
+        final NetCDFReader reader = new NetCDFReader(inputFile, null);
+        Assert.assertNotNull(format);
+        Assert.assertNotNull(reader);
+        try {
+            // Selection of all the Coverage names
+            String[] names = reader.getGridCoverageNames();
+            assertNotNull(names);
+            assertEquals(2, names.length);
+
+            // Parsing metadata values
+            assertEquals("true", reader.getMetadataValue(names[0], "HAS_TIME_DOMAIN"));
+
+            List<DimensionDescriptor> descriptors = reader.getDimensionDescriptors(names[0]);
+            assertEquals(1, descriptors.size());
+            DimensionDescriptor descriptor = descriptors.get(0);
+            assertEquals("time", descriptor.getStartAttribute());
+            assertEquals("TIME", descriptor.getName());
+
+            descriptors = reader.getDimensionDescriptors(names[1]);
+            assertEquals(1, descriptors.size());
+            descriptor = descriptors.get(0);
+            assertEquals("time1", descriptor.getStartAttribute());
+            assertEquals("TIME", descriptor.getName());
+
+            assertEquals("true", reader.getMetadataValue(names[1], "HAS_TIME_DOMAIN"));
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+            FileUtils.deleteDirectory(TestData.file(this, "times"));
+        }
     }
 
 }

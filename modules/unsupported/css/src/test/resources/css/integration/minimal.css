@@ -1,0 +1,11 @@
+/*
+ * The minimal css properties to activate various styling features
+ */
+
+* {
+  label: "Label";
+  halo-radius: 2px;
+  mark: symbol(star);
+  stroke: red;
+  fill: red;
+}

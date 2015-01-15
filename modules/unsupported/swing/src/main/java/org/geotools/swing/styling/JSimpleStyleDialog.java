@@ -42,7 +42,7 @@ import javax.swing.event.ChangeListener;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.geotools.data.AbstractDataStore;
+import org.geotools.data.DataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.map.RasterLayer;
 import org.geotools.map.StyleLayer;
@@ -192,7 +192,7 @@ public class JSimpleStyleDialog extends JDialog {
      *
      * @return a new Style instance or null if the user cancels the dialog
      */
-    public static Style showDialog(Component parent, AbstractDataStore dataStore) {
+    public static Style showDialog(Component parent, DataStore dataStore) {
         return showDialog(parent, dataStore, (Style) null);
     }
     
@@ -208,7 +208,7 @@ public class JSimpleStyleDialog extends JDialog {
      *
      * @return a new Style instance or null if the user cancels the dialog
      */
-    public static Style showDialog(Component parent, AbstractDataStore dataStore, Style initialStyle) {
+    public static Style showDialog(Component parent, DataStore dataStore, Style initialStyle) {
         SimpleFeatureType type = null;
         try {
             String typeName = dataStore.getTypeNames()[0];

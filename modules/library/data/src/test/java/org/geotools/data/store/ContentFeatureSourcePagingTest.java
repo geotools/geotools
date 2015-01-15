@@ -25,6 +25,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
@@ -38,246 +39,259 @@ import org.opengis.filter.sort.SortBy;
  */
 public class ContentFeatureSourcePagingTest extends AbstractContentTest {
 
+    DataStore store = new MockContentDataStore();
 
     /**
      * Test that the default query returns all features unsorted.
+     * @throws IOException 
      */
     @Test
-    public void defaultFeatures() {
+    public void defaultFeatures() throws IOException {
         Query query = new Query();
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(3, features.size());
-        Assert.assertEquals("mock.3", features.get(0).getID());
-        Assert.assertEquals("mock.1", features.get(1).getID());
-        Assert.assertEquals("mock.2", features.get(2).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(3, fs.getCount(query));
+        Assert.assertEquals("mock.3", features[0].getID());
+        Assert.assertEquals("mock.1", features[1].getID());
+        Assert.assertEquals("mock.2", features[2].getID());
     }
 
     /**
      * Test natural sorting.
+     * @throws IOException 
      */
     @Test
-    public void naturalSortedFeatures() {
+    public void naturalSortedFeatures() throws IOException {
         Query query = new Query();
         query.setSortBy(new SortBy[] { SortBy.NATURAL_ORDER });
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(3, features.size());
-        Assert.assertEquals("mock.1", features.get(0).getID());
-        Assert.assertEquals("mock.2", features.get(1).getID());
-        Assert.assertEquals("mock.3", features.get(2).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(3, fs.getCount(query));
+        Assert.assertEquals("mock.1", features[0].getID());
+        Assert.assertEquals("mock.2", features[1].getID());
+        Assert.assertEquals("mock.3", features[2].getID());
     }
 
     /**
      * Test reverse sorting.
+     * @throws IOException 
      */
     @Test
-    public void reverseSortedFeatures() {
+    public void reverseSortedFeatures() throws IOException {
         Query query = new Query();
         query.setSortBy(new SortBy[] { SortBy.REVERSE_ORDER });
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(3, features.size());
-        Assert.assertEquals("mock.3", features.get(0).getID());
-        Assert.assertEquals("mock.2", features.get(1).getID());
-        Assert.assertEquals("mock.1", features.get(2).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(3, fs.getCount(query));
+        Assert.assertEquals("mock.3", features[0].getID());
+        Assert.assertEquals("mock.2", features[1].getID());
+        Assert.assertEquals("mock.1", features[2].getID());
     }
 
     /**
      * Test the first page of one feature per page.
+     * @throws IOException 
      */
     @Test
-    public void oneFeatureFirstPage() {
+    public void oneFeatureFirstPage() throws IOException {
         Query query = new Query();
         query.setMaxFeatures(1);
         query.setStartIndex(0);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(1, features.size());
-        Assert.assertEquals("mock.1", features.get(0).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals("mock.1", features[0].getID());
     }
 
     /**
      * Test the second page of one feature per page.
+     * @throws IOException 
      */
     @Test
-    public void oneFeatureSecondPage() {
+    public void oneFeatureSecondPage() throws IOException {
         Query query = new Query();
         query.setMaxFeatures(1);
         query.setStartIndex(1);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(1, features.size());
-        Assert.assertEquals("mock.2", features.get(0).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals("mock.2", features[0].getID());
     }
 
     /**
      * Test the third page of one feature per page.
+     * @throws IOException 
      */
     @Test
-    public void oneFeatureThirdPage() {
+    public void oneFeatureThirdPage() throws IOException {
         Query query = new Query();
         query.setMaxFeatures(1);
         query.setStartIndex(2);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(1, features.size());
-        Assert.assertEquals("mock.3", features.get(0).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals("mock.3", features[0].getID());
     }
 
     /**
      * Test the first page of one feature per page with natural sorting.
+     * @throws IOException 
      */
     @Test
-    public void naturalSortedOneFeatureFirstPage() {
+    public void naturalSortedOneFeatureFirstPage() throws IOException {
         Query query = new Query();
         query.setSortBy(new SortBy[] { SortBy.NATURAL_ORDER });
         query.setMaxFeatures(1);
         query.setStartIndex(0);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(1, features.size());
-        Assert.assertEquals("mock.1", features.get(0).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals("mock.1", features[0].getID());
     }
 
     /**
      * Test the second page of one feature per page with natural sorting.
+     * @throws IOException 
      */
     @Test
-    public void naturalSortedOneFeatureSecondPage() {
+    public void naturalSortedOneFeatureSecondPage() throws IOException {
         Query query = new Query();
         query.setSortBy(new SortBy[] { SortBy.NATURAL_ORDER });
         query.setMaxFeatures(1);
         query.setStartIndex(1);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(1, features.size());
-        Assert.assertEquals("mock.2", features.get(0).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals("mock.2", features[0].getID());
     }
 
     /**
      * Test the third page of one feature per page with natural sorting.
+     * @throws IOException 
      */
     @Test
-    public void naturalSortedOneFeatureThirdPage() {
+    public void naturalSortedOneFeatureThirdPage() throws IOException {
         Query query = new Query();
         query.setSortBy(new SortBy[] { SortBy.NATURAL_ORDER });
         query.setMaxFeatures(1);
         query.setStartIndex(2);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(1, features.size());
-        Assert.assertEquals("mock.3", features.get(0).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals("mock.3", features[0].getID());
     }
 
     /**
      * Test the first page of one feature per page with reverse sorting.
+     * @throws IOException 
      */
     @Test
-    public void reverseSortedOneFeatureFirstPage() {
+    public void reverseSortedOneFeatureFirstPage() throws IOException {
         Query query = new Query();
         query.setSortBy(new SortBy[] { SortBy.REVERSE_ORDER });
         query.setMaxFeatures(1);
         query.setStartIndex(0);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(1, features.size());
-        Assert.assertEquals("mock.3", features.get(0).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals("mock.3", features[0].getID());
     }
 
     /**
      * Test the second page of one feature per page with reverse sorting.
+     * @throws IOException 
      */
     @Test
-    public void reverseSortedOneFeatureSecondPage() {
+    public void reverseSortedOneFeatureSecondPage() throws IOException {
         Query query = new Query();
         query.setSortBy(new SortBy[] { SortBy.REVERSE_ORDER });
         query.setMaxFeatures(1);
         query.setStartIndex(1);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(1, features.size());
-        Assert.assertEquals("mock.2", features.get(0).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals("mock.2", features[0].getID());
     }
 
     /**
      * Test the third page of one feature per page with reverse sorting.
+     * @throws IOException 
      */
     @Test
-    public void reverseSortedOneFeatureThirdPage() {
+    public void reverseSortedOneFeatureThirdPage() throws IOException {
         Query query = new Query();
         query.setSortBy(new SortBy[] { SortBy.REVERSE_ORDER });
         query.setMaxFeatures(1);
         query.setStartIndex(2);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(1, features.size());
-        Assert.assertEquals("mock.1", features.get(0).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals("mock.1", features[0].getID());
     }
 
     /**
      * Test the first page of two features per page.
+     * @throws IOException 
      */
     @Test
-    public void twoFeaturesFirstPage() {
+    public void twoFeaturesFirstPage() throws IOException {
         Query query = new Query();
         query.setMaxFeatures(2);
         query.setStartIndex(0);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(2, features.size());
-        Assert.assertEquals("mock.1", features.get(0).getID());
-        Assert.assertEquals("mock.2", features.get(1).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(2, fs.getCount(query));
+        Assert.assertEquals("mock.1", features[0].getID());
+        Assert.assertEquals("mock.2", features[1].getID());
     }
 
     /**
      * Test the page of two features per page that should contain the last two features.
+     * @throws IOException 
      */
     @Test
-    public void twoFeaturesLastPage() {
+    public void twoFeaturesLastPage() throws IOException {
         Query query = new Query();
         query.setMaxFeatures(2);
         query.setStartIndex(1);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(2, features.size());
-        Assert.assertEquals("mock.2", features.get(0).getID());
-        Assert.assertEquals("mock.3", features.get(1).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(2, fs.getCount(query));
+        Assert.assertEquals("mock.2", features[0].getID());
+        Assert.assertEquals("mock.3", features[1].getID());
     }
 
     /**
      * Test a page of two features that only contains one because startindex is too close to the
      * end.
+     * @throws IOException 
      */
     @Test
-    public void twoFeaturesReturnOne() {
+    public void twoFeaturesReturnOne() throws IOException {
         Query query = new Query();
         query.setMaxFeatures(2);
         query.setStartIndex(2);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(1, features.size());
-        Assert.assertEquals("mock.3", features.get(0).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals("mock.3", features[0].getID());
     }
 
     /**
      * Test a single page with three features.
+     * @throws IOException 
      */
     @Test
-    public void threeFeatures() {
+    public void threeFeatures() throws IOException {
         Query query = new Query();
         query.setMaxFeatures(3);
         query.setStartIndex(0);
-        List<SimpleFeature> features = readFeatures(query);
-        Assert.assertEquals(3, features.size());
-        Assert.assertEquals("mock.1", features.get(0).getID());
-        Assert.assertEquals("mock.2", features.get(1).getID());
-        Assert.assertEquals("mock.3", features.get(2).getID());
+        SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
+        SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
+        Assert.assertEquals(3, fs.getCount(query));
+        Assert.assertEquals("mock.1", features[0].getID());
+        Assert.assertEquals("mock.2", features[1].getID());
+        Assert.assertEquals("mock.3", features[2].getID());
     }
-
-    /**
-     * Read all the test features into a list, using the specified query.
-     */
-    private List<SimpleFeature> readFeatures(Query query) {
-        List<SimpleFeature> features = new ArrayList<SimpleFeature>();
-        DataStore store = new MockContentDataStore();
-        SimpleFeatureCollection collection;
-        try {
-            collection = store.getFeatureSource(TYPENAME).getFeatures(query);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        for (SimpleFeatureIterator iterator = collection.features(); iterator.hasNext();) {
-            features.add(iterator.next());
-        }
-        return features;
-    }
-
-
 
 }

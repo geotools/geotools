@@ -20,7 +20,10 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-import org.geotools.data.memory.MemoryDataStore;
+import org.geotools.data.DataStore;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -49,7 +52,7 @@ public class SLDInlineFeatureParser
 	
 
 	public SimpleFeatureType  featureType=null;
-	public MemoryDataStore dataStore = null;
+	public DataStore dataStore = null;
 	Node  rootNode = null;
 	ArrayList<Feature> features= new ArrayList<Feature>();
 	CoordinateReferenceSystem  SRS = null; // default EPSG#.
@@ -379,7 +382,8 @@ public class SLDInlineFeatureParser
 	 */
 	private void buildStore() 
 	{
-		dataStore = new MemoryDataStore( (SimpleFeature[]) features.toArray(new SimpleFeature[features.size()]));		
+	        SimpleFeatureCollection collection = DataUtilities.collection( features.toArray(new SimpleFeature[features.size()]));
+	        dataStore = DataUtilities.dataStore( collection );
 	}
 
 	/**

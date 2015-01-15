@@ -161,8 +161,11 @@ public class ScreenMap {
      * Returns true if the pixel at location x,y is set or out of bounds.
      */
     public boolean get(int x, int y) {
+        // if it's outside of the screenmap we cannot say whether it's busy or not, and
+        // we cannot skip it because rendering or geometry transformation might put the geometry
+        // right in the map
         if ((x - minx) < 0 || (x - minx) > width - 1 || (y - miny) < 0 || (y - miny) > height - 1)
-            return true;
+            return false;
         int bit = bit(x - minx, y - miny);
         int index = bit / 32;
         int offset = bit % 32;

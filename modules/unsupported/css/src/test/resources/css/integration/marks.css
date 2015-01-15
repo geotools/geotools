@@ -1,0 +1,10 @@
+[type='hospital'] {
+  mark: symbol(circle), symbol(cross);
+  mark-size: 20px, 16px;
+}
+
+[type='hospital'] :mark {
+  fill: white, red;
+  stroke-width: 1px, 0px;
+  stroke: black;
+}

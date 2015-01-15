@@ -1,0 +1,11 @@
+* {
+  stroke: black;
+}
+
+states {
+  fill: blue;
+}
+
+cities {
+  mark: symbol(star);
+}

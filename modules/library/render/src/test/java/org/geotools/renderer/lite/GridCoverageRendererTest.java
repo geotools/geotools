@@ -16,10 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -548,7 +545,7 @@ public class GridCoverageRendererTest  {
     }
 
     @Test
-    public void testPolar() throws Exception {
+    public void testSouthPolar() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3031", true);
         // across the dateline, not including the pole
         ReferencedEnvelope mapExtent = new ReferencedEnvelope(-6000000, 6000000, -8000000,
@@ -566,7 +563,30 @@ public class GridCoverageRendererTest  {
                 Color.RED, 256, 256);
         assertNotNull(image);
         File reference = new File(
-                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/polar.png");
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/south_polar.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    @Test
+    public void testNorthPolar() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
+        // across the dateline, not including the pole
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-6000000, 6000000, 8000000, 1000000,
+                crs);
+
+        Rectangle screenSize = new Rectangle(400, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 400));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(
+                mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+
+        RenderedImage image = renderer.renderImage(worldReader, null, rasterSymbolizer,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.RED, 256, 256);
+        assertNotNull(image);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/north_polar.png");
         ImageAssert.assertEquals(reference, image, 0);
     }
 

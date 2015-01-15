@@ -1,0 +1,11 @@
+* {
+  fill: red;
+  stroke: red;
+  mark: symbol('circle');
+}
+
+[class='special'] {
+  fill: blue;
+  stroke: blue;
+  mark: symbol('triangle');
+}

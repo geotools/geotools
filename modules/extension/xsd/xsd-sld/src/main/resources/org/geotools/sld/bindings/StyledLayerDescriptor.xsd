@@ -264,6 +264,7 @@
                     maxOccurs="unbounded"/>
         <xsd:element ref="sld:Transformation" minOccurs="0"/>
         <xsd:element ref="sld:Rule" maxOccurs="unbounded"/>
+        <xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -358,6 +359,7 @@
           <xsd:sequence>
             <xsd:element ref="sld:Geometry" minOccurs="0"/>
             <xsd:element ref="sld:Stroke" minOccurs="0"/>
+            <xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>
@@ -479,6 +481,7 @@
             <xsd:element ref="sld:Geometry" minOccurs="0"/>
             <xsd:element ref="sld:Fill" minOccurs="0"/>
             <xsd:element ref="sld:Stroke" minOccurs="0"/>
+            <xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>
@@ -521,6 +524,7 @@
           <xsd:sequence>
             <xsd:element ref="sld:Geometry" minOccurs="0"/>
             <xsd:element ref="sld:Graphic" minOccurs="0"/>
+            <xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>
@@ -544,6 +548,8 @@
           <xsd:element ref="sld:Opacity" minOccurs="0"/>
           <xsd:element ref="sld:Size" minOccurs="0"/>
           <xsd:element ref="sld:Rotation" minOccurs="0"/>
+          <xsd:element ref="sld:AnchorPoint" minOccurs="0"/>
+          <xsd:element ref="sld:Displacement" minOccurs="0"/>
         </xsd:sequence>
       </xsd:sequence>
     </xsd:complexType>
@@ -793,6 +799,7 @@
             <xsd:element ref="sld:ContrastEnhancement" minOccurs="0"/>
             <xsd:element ref="sld:ShadedRelief" minOccurs="0"/>
             <xsd:element ref="sld:ImageOutline" minOccurs="0"/>
+            <xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>

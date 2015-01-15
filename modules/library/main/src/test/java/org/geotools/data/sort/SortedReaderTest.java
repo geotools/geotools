@@ -1,5 +1,6 @@
 package org.geotools.data.sort;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -44,6 +45,8 @@ public class SortedReaderTest {
     SortBy[] peopleDesc;
 
     SortBy[] fidAsc;
+
+    SortBy[] nullAsc;
 
     SimpleFeatureType schema;
 
@@ -119,6 +122,7 @@ public class SortedReaderTest {
         peopleDesc = new SortBy[] { ff.sort("PERSONS", SortOrder.DESCENDING) };
         dateAsc = new SortBy[] { ff.sort("date", SortOrder.ASCENDING) };
         fidAsc = new SortBy[] { SortBy.NATURAL_ORDER };
+        nullAsc = new SortBy[] { ff.sort("null", SortOrder.ASCENDING) };
     }
 
     @After
@@ -131,6 +135,7 @@ public class SortedReaderTest {
         assertTrue(SortedFeatureReader.canSort(schema, peopleAsc));
         assertTrue(SortedFeatureReader.canSort(schema, peopleDesc));
         assertTrue(SortedFeatureReader.canSort(schema, fidAsc));
+        assertFalse(SortedFeatureReader.canSort(schema, nullAsc));
     }
 
     @Test

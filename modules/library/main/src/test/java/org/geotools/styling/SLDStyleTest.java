@@ -16,8 +16,6 @@
  */
 package org.geotools.styling;
 
-import static junit.framework.Assert.assertTrue;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -28,7 +26,11 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -37,9 +39,7 @@ import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.filter.function.FilterFunction_buffer;
-import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.test.TestData;
-import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
@@ -49,16 +49,12 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.Disjoint;
+import org.opengis.style.GraphicalSymbol;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
-import org.opengis.style.GraphicalSymbol;
-
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
 
 /**
  * Try out our SLD parser and see how well it does.
@@ -127,7 +123,7 @@ public class SLDStyleTest extends TestCase {
         Rule rule = fts.getRules()[0];
         LineSymbolizer lineSym = (LineSymbolizer) rule.getSymbolizers()[0];
         assertEquals(4,
-            ((Number) lineSym.getStroke().getWidth().evaluate( null, Number.class )).intValue());
+            lineSym.getStroke().getWidth().evaluate( null, Number.class ).intValue());
     }
 
     /**
@@ -243,8 +239,8 @@ public class SLDStyleTest extends TestCase {
          Expression fill = polygon.getFill().getColor();
          Expression label = text.getLabel();
          
-         String fillValue = (String) fill.evaluate(null, String.class);
-         String labelValue = (String) label.evaluate(null, String.class);
+         String fillValue = fill.evaluate(null, String.class);
+         String labelValue = label.evaluate(null, String.class);
 
          assertEquals("#96C3F5", fillValue);
          assertEquals("this is a prefix; this is an expression; this is a postfix", labelValue);
@@ -275,7 +271,7 @@ public class SLDStyleTest extends TestCase {
          
          Expression label = text.getLabel();
          
-         String labelValue = (String) label.evaluate(null, String.class);
+         String labelValue = label.evaluate(null, String.class);
 
          assertEquals("literal_1\n cdata literal_2", labelValue);
     }
@@ -292,7 +288,7 @@ public class SLDStyleTest extends TestCase {
          
          Expression label = text.getLabel();
          
-         String labelValue = (String) label.evaluate(null, String.class);
+         String labelValue = label.evaluate(null, String.class);
 
          assertEquals("literal_1\nliteral_2", labelValue);
     }
@@ -309,7 +305,7 @@ public class SLDStyleTest extends TestCase {
          
          Expression label = text.getLabel();
          
-         String labelValue = (String) label.evaluate(null, String.class);
+         String labelValue = label.evaluate(null, String.class);
          
          // System.out.println(labelValue);
 
@@ -620,6 +616,33 @@ public class SLDStyleTest extends TestCase {
         assertTrue(ts.getOtherText().getText() instanceof Literal);
     }
     
+    public void testParseAnchorDisplacement() throws IOException {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        java.net.URL surl = TestData.getResource(this, "markDisplacementTest.sld");
+        SLDParser stylereader = new SLDParser(factory, surl);
+
+        // basic checks
+        Style[] styles = stylereader.readXML();
+        PointSymbolizer ps = (PointSymbolizer) styles[0].featureTypeStyles().get(0).rules().get(0)
+                .getSymbolizers()[0];
+        Graphic graphic = ps.getGraphic();
+        Displacement displacement = graphic.getDisplacement();
+        assertNotNull(displacement);
+        assertLiteral(11, displacement.getDisplacementX());
+        assertLiteral(8, displacement.getDisplacementY());
+
+        AnchorPoint anchorPoint = graphic.getAnchorPoint();
+        assertNotNull(displacement);
+        assertLiteral(0, anchorPoint.getAnchorPointX());
+        assertLiteral(1, anchorPoint.getAnchorPointY());
+    }
+
+    private void assertLiteral(double expected, Expression exp) {
+        assertTrue(exp instanceof Literal);
+        double value = exp.evaluate(null, Double.class);
+        assertEquals(expected, value, 0d);
+    }
+
     /**
      * Tests the parsing of a raster symbolizer sld
      * @throws IOException
@@ -697,7 +720,7 @@ public class SLDStyleTest extends TestCase {
          RasterSymbolizer rs = (RasterSymbolizer)r.getSymbolizers()[0];
          
          //opacity         
-         Double d = (Double)rs.getOpacity().evaluate(null, Double.class);
+         Double d = rs.getOpacity().evaluate(null, Double.class);
          assertEquals(1.0, d.doubleValue());
                 
          //overlap behaviour
@@ -714,7 +737,7 @@ public class SLDStyleTest extends TestCase {
          for (int i = 0; i < centeries.length; i++) {
 			ColorMapEntry entry = centeries[i];
 			String c = (String) entry.getColor().evaluate(null);
-			Integer q = (Integer) entry.getQuantity().evaluate(null, Integer.class);
+			Integer q = entry.getQuantity().evaluate(null, Integer.class);
 			assertEquals(colors[i], c);
 			assertEquals(values[i], q.intValue());
 		}
@@ -781,6 +804,22 @@ public class SLDStyleTest extends TestCase {
         assertNotNull(fts.getTransformation());
         Function tx = (Function) fts.getTransformation();
         assertEquals("union", tx.getName());
+    }
+
+    public void testRuleEvaluationMode() throws Exception {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        java.net.URL surl = TestData.getResource(this, "ruleEvaluationMode.xml");
+        SLDParser stylereader = new SLDParser(factory, surl);
+
+        // basic checks
+        Style[] styles = stylereader.readXML();
+        assertEquals(1, styles.length);
+        assertEquals(1, styles[0].featureTypeStyles().size());
+        final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
+        assertEquals(1, fts.rules().size());
+        Map<String, String> options = fts.getOptions();
+        assertEquals(1, options.size());
+        assertEquals(FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST, options.get(FeatureTypeStyle.KEY_EVALUATION_MODE));
     }
 
     public void testParseBase64EncodedContent() throws Exception {

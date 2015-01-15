@@ -443,6 +443,11 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 41.512517, null);
         q.setFilter(ff.bbox(ff.property(""), queryBounds));
         
+        //Read schema should contain the geometry property
+        assertEquals(3, ((ShapefileFeatureStore)fs).delegate.getReadSchema(q).getAttributeCount());
+        //Result schema should not contain the geometry property
+        assertEquals(2, ((ShapefileFeatureStore)fs).delegate.getResultSchema(q).getAttributeCount());
+        
         // grab the features
         SimpleFeatureCollection fc = fs.getFeatures(q);
         assertTrue(fc.size() > 0);
@@ -1294,10 +1299,34 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             // check SimpleFeatureCollection size
             assertEquals(count, features.size());
             assertFalse(features.isEmpty());
-
+         
+            // execute Query that uses offset
+            query = new Query(Query.ALL);
+            query.setStartIndex(2);
+            
+            features = featureSource.getFeatures(query);
+            assertEquals(count-2, features.size());
+            assertEquals(count-2, featureSource.getCount(query));
+            
+            // execute Query that uses limit
+            query = new Query(Query.ALL);
+            query.setMaxFeatures(count/2);
+            
+            features = featureSource.getFeatures(query);
+            assertEquals(count/2, features.size());
+            assertEquals(count/2, featureSource.getCount(query));
+            
+            // execute Query that uses both limit and offset
+            query = new Query(Query.ALL);
+            query.setMaxFeatures(count/2);
+            query.setStartIndex(2);
+            
+            features = featureSource.getFeatures(query);
+            assertEquals(Math.min(count-2, count/2), features.size());
+            assertEquals(Math.min(count-2, count/2), featureSource.getCount(query));
             
             // execute Query that doesn't return any feature
-            
+            query = new Query(Query.ALL);
             bounds = new ReferencedEnvelope(bounds.getMaxX() + 1, bounds.getMaxX() + 2, 
                     bounds.getMaxY() + 1, bounds.getMaxY() + 2, bounds.getCoordinateReferenceSystem());
             query.setFilter(ff.bbox(ff.property(geomName), bounds));            
@@ -1306,7 +1335,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             // check SimpleFeatureCollection size
             assertEquals(0, features.size());
             assertTrue(features.isEmpty());
-                        
+
         } finally {
             reader.close();
         }

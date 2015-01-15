@@ -30,6 +30,7 @@
 				<xsd:element ref="se:Rule"/>
 				<xsd:element ref="se:OnlineResource"/>
 			</xsd:choice>
+            <xsd:element ref="se:VendorOption" minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
 		<xsd:attribute name="version" type="se:VersionType"/>
 	</xsd:complexType>

@@ -31,6 +31,7 @@ quickly be distributed to to all GeoTools users.
    write
    optimisation
    qa
+   strategy
 
 .. note::
    

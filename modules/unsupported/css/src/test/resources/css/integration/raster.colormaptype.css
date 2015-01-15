@@ -1,0 +1,24 @@
+/*
+ * The raster-color-map-type property specifies how values that are not
+ * explicitly listed in a colormap should be rendered.  If no color-map is
+ * being used, then it has no effect.
+ *
+ * There are three meaningful values of this property; others will be ignored.
+ * The default value is "ramp." This specifies that colors should be linearly
+ * interpolated.
+ * raster-color-map-type: ramp;
+ *
+ * A value of "intervals" causes every value to be colored according to the
+ * highest-valued entry in the colormap that is not greater than the value.
+ * raster-color-map-type: intervals;
+ *
+ * A value of "values" causes the style to render only values that exactly
+ * match those specified in the color map.
+ * raster-color-map-type: values;
+ */
+* {
+  raster-channels: 1;
+  raster-color-map: color-map-entry(#ff0000, 0)
+                    color-map-entry(#00ff00, 100);
+  raster-color-map-type: intervals;
+}

@@ -137,7 +137,7 @@ public class ExpressionExtractor {
     }
 
     /**
-     * Given an expression list will catenate it using 
+     * Given an expression list will create an expression concatenating them.
      * @param expression
      * @return
      */
@@ -145,12 +145,11 @@ public class ExpressionExtractor {
         if(expressions == null || expressions.size() == 0)
             throw new IllegalArgumentException("You should provide at least one expression in the list");
         
-        Expression result = expressions.get(0);
-        for (int i = 1; i < expressions.size(); i++) {
-            result = ff.function("strConcat", result, expressions.get(i));
+        if(expressions.size()==1) {
+        	return expressions.get(0);
+        } else {
+        	return ff.function("Concatenate", expressions.toArray(new Expression[] {}));
         }
-        
-        return result;
     }
 
     /**

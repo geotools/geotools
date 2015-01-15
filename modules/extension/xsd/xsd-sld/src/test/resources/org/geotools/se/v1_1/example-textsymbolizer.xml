@@ -27,4 +27,6 @@
 	<Fill>
 		<SvgParameter name="fill">#000000</SvgParameter>
 	</Fill>
+    <Priority><ogc:PropertyName>people</ogc:PropertyName></Priority>
+    <VendorOption name="auto-wrap">100</VendorOption>
 </TextSymbolizer>

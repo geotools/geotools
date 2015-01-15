@@ -35,8 +35,10 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
-
+@Deprecated
 /**
+ * @deprecated Use org.geotools.data.store.ContentDataStore instead
+ * 
  * Represents a stating point for implementing your own DataStore.
  *
  * <p>

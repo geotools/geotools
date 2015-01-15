@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.util.Arrays;
@@ -614,4 +615,21 @@ public final class ColorUtilities {
 
 		}
 	}
+	
+    public static final ComponentColorModel GRAY_CM = new ComponentColorModel(
+            ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE,
+            DataBuffer.TYPE_BYTE);
+
+    public static final ComponentColorModel GRAY_ALPHA_CM = new ComponentColorModel(
+            ColorSpace.getInstance(ColorSpace.CS_GRAY), true, false, Transparency.TRANSLUCENT,
+            DataBuffer.TYPE_BYTE);
+
+    public static final ComponentColorModel RGB_CM = new ComponentColorModel(
+            ColorSpace.getInstance(ColorSpace.CS_sRGB), false, false, Transparency.OPAQUE,
+            DataBuffer.TYPE_BYTE);
+
+    public static final ComponentColorModel RGB_ALPHA_CM = new ComponentColorModel(
+            ColorSpace.getInstance(ColorSpace.CS_sRGB), true, false, Transparency.TRANSLUCENT,
+            DataBuffer.TYPE_BYTE);
+
 }

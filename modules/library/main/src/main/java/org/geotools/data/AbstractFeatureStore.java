@@ -37,8 +37,10 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
 
-
+@Deprecated
 /**
+ * @deprecated Use org.geotools.data.store.ContentFeatureStore instead
+ * 
  * This is a starting point for providing your own FeatureStore implementation.
  *
  * @author Jody Garnett, Refractions Research

@@ -459,6 +459,15 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
     private Double getRequestedDistance(Query query) {
         Double result =  (Double) query.getHints().get(Hints.GEOMETRY_DISTANCE);
         if (result == null) {
+            /*
+             * Check if hints GEOMETRY_SIMPLIFICATION is active, when both are supported (because the
+             * wrapper store supports simplification) only simplification is sent down, but we can use it to pick
+             * a starting geometry to simplify further.
+             */
+            result =  (Double) query.getHints().get(Hints.GEOMETRY_SIMPLIFICATION);
+            log.warning("Hint for geometry simplification in query, fallback to base feature" );
+        }
+        if (result == null) {
             log.warning("No hint for geometry distance in query, fallback to base feature" );
         }
         else {

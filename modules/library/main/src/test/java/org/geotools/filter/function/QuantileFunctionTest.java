@@ -17,9 +17,8 @@
 package org.geotools.filter.function;
 
 import org.geotools.data.DataUtilities;
-import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -53,12 +52,12 @@ public class QuantileFunctionTest extends FunctionTestSupport {
     }
     
     public void testInstance() {
-        Function equInt = ff.function("Quantile", ff.literal(FeatureCollections.newCollection()));
+        Function equInt = ff.function("Quantile", ff.literal(new DefaultFeatureCollection()));
         assertNotNull(equInt);
     }
     
     public void testGetName() {
-        Function qInt = ff.function("Quantile", ff.literal(FeatureCollections.newCollection()));
+        Function qInt = ff.function("Quantile", ff.literal(new DefaultFeatureCollection()));
         assertEquals("Quantile",qInt.getName());
     }
     
@@ -116,10 +115,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
 					new Integer(i + 1), new Integer(iVal[i]) },
 					"classification.test1" + (i + 1));
 		}
-		MemoryDataStore store = new MemoryDataStore();
-		store.createSchema(dataType);
-		store.addFeatures(myfeatures);
-		SimpleFeatureCollection myFeatureCollection = store.getFeatureSource("test1").getFeatures();
+		SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
 
 		//run the quantile function
 		org.opengis.filter.expression.Expression function = ff.function("Quantile", ff.property("value"), ff.literal(5));
@@ -153,15 +149,12 @@ public class QuantileFunctionTest extends FunctionTestSupport {
     				new Integer(i + 1), new Integer(iVal[i]) },
     				"classification.t" + (i + 1));
     	}
-    	MemoryDataStore store = new MemoryDataStore();
-    	store.createSchema(dataType);
-    	store.addFeatures(myfeatures);
-    	SimpleFeatureCollection myFeatureCollection = store.getFeatureSource("test1").getFeatures();
+    	SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
 
     	//run the quantile function
     	org.opengis.filter.expression.Expression function = ff.function("Quantile", ff.property("value"), ff.literal(5));
     	Classifier classifier = (Classifier) function.evaluate(myFeatureCollection);
-    	RangedClassifier range = (RangedClassifier) classifier;
+    	assertTrue( classifier instanceof RangedClassifier );
     }
     
     
@@ -211,10 +204,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
     				dVal[i],
     		},"nantest.t"+(i+1));
     	}
-    	MemoryDataStore store = new MemoryDataStore();
-    	store.createSchema(ft);
-    	store.addFeatures(testFeatures);
-    	SimpleFeatureCollection thisFC = store.getFeatureSource("nullnan").getFeatures();
+    	SimpleFeatureCollection thisFC = DataUtilities.collection(testFeatures);
 
     	//create the expression
         Divide divide = ff.divide(ff.property("foo"), ff.property("bar"));

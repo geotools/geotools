@@ -1,0 +1,9 @@
+* {
+  stroke: symbol(hatch);
+  stroke-width: 4px;
+}
+
+* [type='express'] {
+  stroke: url("file:/path/to/image.png");
+  stroke-mime: "image/png";
+}

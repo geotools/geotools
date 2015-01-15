@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.styling.builder;
 
 import org.geotools.styling.PointPlacement;
@@ -11,7 +27,7 @@ import org.opengis.filter.expression.Expression;
 public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> {
     private Expression rotation;
 
-    private AnchorPointBuilder anchor = new AnchorPointBuilder(this).unset();
+    private AnchorPointBuilder anchor = new AnchorPointBuilder(this, 0, 0).unset();
 
     private DisplacementBuilder displacement = new DisplacementBuilder(this).unset();
 
@@ -69,7 +85,7 @@ public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> 
 
     public PointPlacementBuilder reset(PointPlacement placement) {
         if (placement == null) {
-            return reset();
+            return unset();
         }
         rotation = placement.getRotation();
         anchor.reset(placement.getAnchorPoint());

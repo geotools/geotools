@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ows:Range xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengis.net/ows/1.1 exampleCapabilities.xsd"
+  ows:rangeClosure="closed">
+
+  <ows:MinimumValue>0.0</ows:MinimumValue>
+  <ows:MaximumValue>100.0</ows:MaximumValue>
+
+</ows:Range>

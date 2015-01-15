@@ -1,0 +1,9 @@
+/* @title 5213 - allman vag */
+[KKOD = 5213] [@scale<2000000] {
+  stroke: red;
+}
+
+/* @title allman vag-text */
+[KKOD = 5213] [@scale<500000] {
+ label: [VAGNR1];
+}

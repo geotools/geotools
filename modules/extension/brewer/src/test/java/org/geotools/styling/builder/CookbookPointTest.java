@@ -1,6 +1,9 @@
 package org.geotools.styling.builder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.List;
@@ -8,6 +11,8 @@ import java.util.List;
 import javax.measure.unit.SI;
 
 import org.geotools.filter.function.CategorizeFunction;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
@@ -46,6 +51,47 @@ public class CookbookPointTest extends AbstractStyleTest {
         PointSymbolizer ps = (PointSymbolizer) collector.symbolizers.get(0);
         Graphic graphic = ps.getGraphic();
         assertEquals(6, (int) graphic.getSize().evaluate(null, Integer.class));
+
+        // check anchor/displacement
+        assertNull(graphic.getAnchorPoint());
+        assertNull(graphic.getDisplacement());
+
+        // check the mark
+        List<GraphicalSymbol> symbols = graphic.graphicalSymbols();
+        assertEquals(1, symbols.size());
+        Mark mark = (Mark) symbols.get(0);
+        assertEquals("circle", mark.getWellKnownName().evaluate(null));
+        assertEquals(Color.RED, mark.getFill().getColor().evaluate(null, Color.class));
+    }
+
+    @Test
+    public void testAnchorDisplacement() {
+        GraphicBuilder gb = new GraphicBuilder().size(6);
+        gb.anchor().x(0).y(1);
+        gb.displacement().x(10).y(20);
+        Style style = gb.mark().name("circle").fill().color(Color.RED)
+                .buildStyle();
+        // print(style);
+
+        // round up the basic elements and check its simple
+        StyleCollector collector = new StyleCollector();
+        style.accept(collector);
+        assertSimpleStyle(collector);
+
+        // check the size
+        PointSymbolizer ps = (PointSymbolizer) collector.symbolizers.get(0);
+        Graphic graphic = ps.getGraphic();
+        assertEquals(6, (int) graphic.getSize().evaluate(null, Integer.class));
+
+        // check anchor/displacement
+        AnchorPoint ap = graphic.getAnchorPoint();
+        assertNotNull(ap);
+        assertEquals(0, ap.getAnchorPointX().evaluate(0, Double.class), 0d);
+        assertEquals(1, ap.getAnchorPointY().evaluate(0, Double.class), 0d);
+        Displacement ds = graphic.getDisplacement();
+        assertNotNull(ds);
+        assertEquals(10, ds.getDisplacementX().evaluate(0, Double.class), 0d);
+        assertEquals(20, ds.getDisplacementY().evaluate(0, Double.class), 0d);
 
         // check the mark
         List<GraphicalSymbol> symbols = graphic.graphicalSymbols();
@@ -134,7 +180,7 @@ public class CookbookPointTest extends AbstractStyleTest {
         assertEquals("triangle", mark.getWellKnownName().evaluate(null));
         Fill fill = mark.getFill();
         assertEquals(Color.RED, fill.getColor().evaluate(null, Color.class));
-        assertEquals(0.2, (double) fill.getOpacity().evaluate(null, Double.class), 0);
+        assertEquals(0.2, fill.getOpacity().evaluate(null, Double.class), 0);
         Stroke stroke = mark.getStroke();
         assertEquals(Color.BLUE, stroke.getColor().evaluate(null, Color.class));
         assertEquals(2, (int) stroke.getWidth().evaluate(null, Integer.class));
@@ -187,7 +233,7 @@ public class CookbookPointTest extends AbstractStyleTest {
         rb.point().graphic().size(6).mark().name("circle").fill().color(Color.RED);
         TextSymbolizerBuilder tb = rb.text().label("name");
         tb.fill().color(Color.BLACK);
-        tb.newFont().familyName("Arial").size(12).styleName(Font.Style.NORMAL)
+        tb.newFont().familyName("Arial").size(12)
                 .weightName(Font.Weight.BOLD);
         tb.pointPlacement().displacement().x(0).y(5);
         tb.pointPlacement().anchor().x(0.5);
@@ -223,7 +269,7 @@ public class CookbookPointTest extends AbstractStyleTest {
         rb.point().graphic().size(6).mark().name("circle").fill().color(Color.RED);
         TextSymbolizerBuilder tb = rb.text().label("name");
         tb.fill().color(Color.BLACK);
-        tb.newFont().familyName("Arial").size(12).styleName(Font.Style.NORMAL)
+        tb.newFont().familyName("Arial").size(12)
                 .weightName(Font.Weight.BOLD);
         tb.pointPlacement().displacement().x(0).y(5);
         tb.pointPlacement().anchor().x(0.5);

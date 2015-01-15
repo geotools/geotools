@@ -32,6 +32,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.data.Diff;
 import org.geotools.data.Transaction;
 import org.geotools.data.Transaction.State;
 import org.geotools.data.TransactionStateDiff;
@@ -188,7 +189,7 @@ class WFSRemoteTransactionState implements State {
         // Create a single delete element with all the deletes for this type
         Set<Identifier> ids = new LinkedHashSet<Identifier>();
         for (Map.Entry<String, SimpleFeature> entry : modified.entrySet()) {
-            if (!(TransactionStateDiff.NULL == entry.getValue())) {
+            if (!(Diff.NULL == entry.getValue())) {
                 continue;// not a delete
             }
             String rid = entry.getKey();
@@ -210,7 +211,7 @@ class WFSRemoteTransactionState implements State {
             String fid = entry.getKey();
             SimpleFeature feature = entry.getValue();
 
-            if (TransactionStateDiff.NULL == feature) {
+            if (Diff.NULL == feature) {
                 continue;// not an update
             }
             if (ignored.contains(fid)) {

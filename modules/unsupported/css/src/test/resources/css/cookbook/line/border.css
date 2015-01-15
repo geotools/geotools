@@ -1,0 +1,6 @@
+* {
+  stroke: #333333, #6699FF;
+  stroke-width: 5px, 3px;
+  stroke-linecap: round;
+  z-index: 0, 1;
+}

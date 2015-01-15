@@ -53,7 +53,7 @@ You may check the result of getFeatureSource( typeName ) with the instanceof ope
 
 Example of FeatureStore use:
 
-.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/CSVWriteTest.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVWriteTest.java
    :language: java
    :start-after: // featureStoreExample start
    :end-before: // featureStoreExample end
@@ -71,7 +71,7 @@ Once again, many DataStores are able to provide optimized implementations of the
 
 Transaction Example:
 
-.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/CSVWriteTest.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVWriteTest.java
    :language: java
    :start-after: // transactionExample start
    :end-before: // transactionExample end
@@ -143,7 +143,7 @@ creates a FeatureWriter used to modify features indicated by a constraint.
 
 Example - removing all features:
 
-.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/CSVWriteTest.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVWriteTest.java
    :language: java
    :start-after: // removeAllExample start
    :end-before: // removeAllExample end
@@ -172,7 +172,7 @@ provided content.
 
 Example - completely replace all features:
 
-.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/CSVWriteTest.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVWriteTest.java
    :language: java
    :start-after: // replaceAll start
    :end-before: // replaceAll end
@@ -189,7 +189,7 @@ for adding content.
 
 Example - making a copy:
 
-.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/CSVWriteTest.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVWriteTest.java
    :language: java
    :start-after: // appendContent start
    :end-before: // appendContent end

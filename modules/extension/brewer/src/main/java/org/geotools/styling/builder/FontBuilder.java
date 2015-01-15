@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.styling.builder;
 
 import java.util.ArrayList;
@@ -12,6 +28,8 @@ import org.opengis.filter.expression.Expression;
  * @source $URL$
  */
 public class FontBuilder extends AbstractStyleBuilder<Font> {
+    boolean familiesSet = false;
+
     private List<Expression> families = new ArrayList<Expression>();
 
     private Expression style;
@@ -32,6 +50,9 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
     public Font build() {
         if (unset) {
             return null;
+        }
+        if (families.isEmpty()) {
+            families.add(FF.literal("Serif"));
         }
         Font font = sf.font(families, style, weight, size);
         if (parent == null) {
@@ -93,7 +114,11 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
     }
 
     public FontBuilder reset() {
-        unset = false;
+        Font df = sf.getDefaultFont();
+        this.families = new ArrayList<Expression>();
+        this.size = df.getSize();
+        this.style = df.getStyle();
+        this.weight = df.getWeight();
         return this;
     }
 

@@ -20,7 +20,9 @@ import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -36,6 +38,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
 import javax.swing.JFrame;
 
@@ -280,6 +283,10 @@ public class NetCDFMosaicReaderTest extends Assert {
             assertEquals(1, f.getAttribute("imageindex"));
             assertEquals("2013-03-02T01:00:00.000Z", ConvertersHack.convert(f.getAttribute("time"), String.class));
             it.close();
+
+            ImageLayout layout = reader.getImageLayout();
+            SampleModel sampleModel = layout.getSampleModel(null);
+            assertEquals(DataBuffer.TYPE_FLOAT, sampleModel.getDataType());
         } finally {
             if(it != null) {
                 it.close();

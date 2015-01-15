@@ -2,6 +2,7 @@ package org.geotools.data.aggregate;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,9 +14,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
 
+import org.geotools.data.DataStore;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
@@ -124,12 +127,12 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         // get just one feature, it's only in the first store
         Filter eq1 = ff.equals(ff.property("ID"), ff.literal("two"));
         assertEquals(new ReferencedEnvelope(-2, 1, 3, 6, CRS.decode("EPSG:4326")), store
-                .getFeatureSource(BASIC_POLYGONS).getBounds(new Query(null, eq1)));
+                .getFeatureSource(BASIC_POLYGONS).getFeatures(new Query(null, eq1)).getBounds());
 
         // get just one feature, it's only in the second store
         Filter eq2 = ff.equals(ff.property("ID"), ff.literal("four"));
         assertEquals(new ReferencedEnvelope(2, 4, 2, 4, CRS.decode("EPSG:4326")), store
-                .getFeatureSource(BASIC_POLYGONS).getBounds(new Query(null, eq2)));
+                .getFeatureSource(BASIC_POLYGONS).getFeatures(new Query(null, eq2)).getBounds());
     }
     
     @Test
@@ -208,6 +211,65 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         for (SimpleFeature sf : features) {
             assertEquals(schema, sf.getFeatureType());
         }
+    }
+    
+    /**
+     * Test query with a start index
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    @Test
+    public void testOffset() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setStartIndex(2);
+        
+        // just the first store
+        store.autoConfigureStores(Arrays.asList("store1"));
+        assertEquals(1, store.getFeatureSource(BASIC_POLYGONS).getCount(query));
+
+        // add all stores
+        store.resetConfiguration();
+        store.autoConfigureStores(Arrays.asList("store1", "store2", "gt:store3"));
+        assertEquals(2, store.getFeatureSource(BASIC_POLYGONS).getCount(query));
+    }
+    
+    /**
+     * Test query with maxFeatures
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    @Test
+    public void testLimit() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setMaxFeatures(2);
+        // just the first store
+        store.autoConfigureStores(Arrays.asList("store1"));
+        assertEquals(2, store.getFeatureSource(BASIC_POLYGONS).getCount(query));
+
+        // add all stores
+        store.resetConfiguration();
+        store.autoConfigureStores(Arrays.asList("store1", "store2", "gt:store3"));
+        assertEquals(2, store.getFeatureSource(BASIC_POLYGONS).getCount(query));
+    }
+    
+    /**
+     * Test query with maxFeatures and startIndex
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    @Test
+    public void testLimitOffset() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setMaxFeatures(2);
+        query.setStartIndex(2);
+        // just the first store
+        store.autoConfigureStores(Arrays.asList("store1"));
+        assertEquals(1, store.getFeatureSource(BASIC_POLYGONS).getCount(query));
+
+        // add all stores
+        store.resetConfiguration();
+        store.autoConfigureStores(Arrays.asList("store1", "store2", "gt:store3"));
+        assertEquals(2, store.getFeatureSource(BASIC_POLYGONS).getCount(query));
     }
 
     @Test

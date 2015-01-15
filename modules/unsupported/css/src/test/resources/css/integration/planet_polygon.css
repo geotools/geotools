@@ -1,0 +1,11 @@
+[natural='water'] {
+    fill: #F00;
+}
+
+[natural='wetland'] {
+    fill: #0F0;
+}
+
+[waterway='riverbank'] {
+    fill: #00F;
+}

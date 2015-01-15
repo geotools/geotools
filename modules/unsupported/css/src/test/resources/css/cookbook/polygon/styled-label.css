@@ -1,0 +1,14 @@
+* {
+  fill: #40FF40;
+  stroke: white;
+  stroke-width: 2;
+  label: [name];
+  font-family: Arial;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: bold;
+  font-fill: black;
+  label-anchor: 0.5 0.5;
+  -gt-label-auto-wrap: 60;
+  -gt-label-max-displacement: 150;
+}

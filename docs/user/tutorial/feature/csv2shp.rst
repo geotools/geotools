@@ -143,7 +143,7 @@ Things to note:
 
 * We check that we have read-write access by confirming our FeatureSource object
   implements the FeatureStore methods
-* Taking a moment to check how closely shapefile was able to match our
+* Take a moment to check how closely the shapefile was able to match our
   template (the SimpleFeatureType TYPE). Compare this output to see how they are different.
 * The SimpleFeatureStore that we use to do this expects a FeatureCollection object,
   so we wrap our list of features in a ListFeatureCollection.
@@ -214,7 +214,7 @@ Other things to try
   
      LAT, LON, CITY, NUMBER
   
-  You should be able to use the SimpleFeatureTypeBuilder
+  You should be able to use the SimpleFeatureTypeBuilder.
   
   .. instructor note: this is the real key to the exercise and why simple feature type builder
      exists ... allowing you to generate your own shapefile dynamically

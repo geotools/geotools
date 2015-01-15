@@ -55,7 +55,7 @@ transforms directly via the *getWorldToScreen()* and *getScreenToWorld()* method
 draw on top of the map pane or calculate the current map scale::
 
   // Find the current map scale (map unit to screen pixel)
-  AffineTransform tr = mapPane.getWorldToScreen();
+  AffineTransform tr = mapPane.getWorldToScreenTransform();
   double scale = tr.getScaleX();  
   // Note: tr.getScaleY() would return the same value
 
@@ -77,8 +77,8 @@ exits the map pane.
    :end-before: // mouselistener end
 
 
-Linking to Action clsses for interactive use
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Linking to Action classes for interactive use
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The swing module includes a small selection of Action classes that make it easy to create toobar buttons or other controls for zooming, panning and resetting the map display.
 
@@ -130,13 +130,13 @@ Example
         });
         buttons.add(zoomOutButton);
 
-        JButton pamButton = new JButton("Move");
-        pamButton.addActionListener(new ActionListener() {
+        JButton panButton = new JButton("Move");
+        panButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mapPane.setState(JMapPane.Pan);
             }
         });
-        buttons.add(pamButton);
+        buttons.add(panButton);
 
         frame.add(buttons, BorderLayout.NORTH);
 
@@ -171,12 +171,12 @@ You will find ready to go actions that also change the map state::
        // -ve means wheel moved up, +ve means down
        int sign = (clicks < 0 ? -1 : 1);
 
-       Envelope env = mapPane.getMapArea();
+       Envelope env = mapPane.getDisplayArea();
        double width = env.getWidth();
        double delta = width * clickToZoom * sign;
 
        env.expandBy(delta);
-       mapPane.setMapArea(env);
+       mapPane.setDisplayArea(env);
        mapPane.repaint();
     }
   

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -50,6 +50,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.collection.CollectionDataStore;
 import org.geotools.data.collection.CollectionFeatureSource;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -84,12 +85,14 @@ import org.geotools.feature.type.GeometryDescriptorImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.PropertyNameResolvingVisitor;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.geotools.styling.UserLayer;
 import org.geotools.util.Converters;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.Utilities;
@@ -132,6 +135,7 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+
 import org.geotools.data.view.DefaultView;
 
 /**
@@ -1071,16 +1075,14 @@ public class DataUtilities {
         } else {
             featureType = featureArray[0].getFeatureType();
         }
-
-        DataStore arrayStore = new ArrayDataStore(featureArray);
-
-        String typeName = featureType.getTypeName();
-        try {
-            return arrayStore.getFeatureSource(typeName);
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to find "+typeName+" ArrayDataStore in an inconsistent" +
-            		"state", e);
+        ListFeatureCollection collection =  new ListFeatureCollection( featureType, featureArray );
+        for( SimpleFeature feature : collection ){
+            if( feature.getFeatureType() != featureType ){
+                String typeName = featureType.getTypeName();
+                throw new IllegalStateException("Array inconsistent, expected each feature of type  "+typeName);
+            }
         }
+        return source( collection );
     }
 
     /**
@@ -1117,21 +1119,9 @@ public class DataUtilities {
 
             return source;
         }
-        // if( collection instanceof SimpleFeatureCollection ){
-        // SimpleFeatureCollection simpleFeatureCollection = simple( collection );
-        // CollectionFeatureSource source = new CollectionFeatureSource(simpleFeatureCollection);
-        //
-        // return source;
-        // }
-
-        CollectionDataStore store = new CollectionDataStore(collection);
-        String typeName = store.getTypeNames()[0];
-        try {
-            return store.getFeatureSource(typeName);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("CollectionDataStore inconsistent, "
-                    + " ensure type name "+typeName+" is the same for all features", e);
-        }
+        SimpleFeatureCollection simpleFeatureCollection = simple( collection );
+        CollectionFeatureSource source = new CollectionFeatureSource(simpleFeatureCollection);
+        return source;
     }
 
     /**
@@ -1151,9 +1141,50 @@ public class DataUtilities {
      */
     public static SimpleFeatureSource createView(final DataStore store, final Query query)
             throws IOException, SchemaException {
-        return new DefaultView(store.getFeatureSource(query.getTypeName()), query);
+        return createView(store.getFeatureSource(query.getTypeName()), query);
+    }
+    
+    /**
+     * Return a 'view' of the given {@code FeatureSource} constrained by a {@code Query}.
+     * 
+     * @param source
+     *            feature source
+     * @param query
+     *            the query
+     * 
+     * @return the constrained view
+     * 
+     * @throws IOException
+     *             if the data store cannot be accessed
+     * @throws SchemaException
+     *             if the query is incompatible with the store's contents
+     */
+    public static SimpleFeatureSource createView(final SimpleFeatureSource source, final Query query)
+            throws IOException, SchemaException {
+        return new DefaultView(source, query);
     }
 
+    /**
+     * Adapt a feature collection as a read-only DataStore.
+     * <p>
+     * See {@link UserLayer} for example use.
+     * @param features feature collection to adap
+     * @return read-only DataStore
+     */
+    public static DataStore dataStore( final SimpleFeatureCollection features ){
+        SimpleFeatureSource source = source( features );
+        return dataStore( source );
+    }
+    /**
+     * Adapt a single FeatureSource as a read-only DataStore.
+     * <p>
+     * See {@link UserLayer} for example use.
+     * @param source Feature source to adapt
+     * @return read-only DataStore
+     */
+    public static DataStore dataStore( SimpleFeatureSource source ){
+        return new DataStoreAdaptor(source);
+    }
     /**
      * Adapt a collection to a reader for use with FeatureStore.setFeatures( reader ).
      * 
@@ -2394,7 +2425,8 @@ public class DataUtilities {
      * it does not means that all the properties will be joined. You must create the query with the
      * names of the properties you want to load.</li>
      * <li>
-     * filter: the filtets of both queries are or'ed</li>
+     * filter: the filters of both queries are or'ed, then simplified using 
+     * SimplifiyingFilterVisitor</li>
      * <li>
      * <b>any other query property is ignored</b> and no guarantees are made of their return values,
      * so client code shall explicitly care of hints, startIndex, etc., if needed.</li>
@@ -2462,6 +2494,7 @@ public class DataUtilities {
         } else if ((filter2 != null) && !filter2.equals(Filter.INCLUDE)) {
             filter = ff.and(filter, filter2);
         }
+        filter = SimplifyingFilterVisitor.simplify(filter);
         Integer start = 0;
         if (firstQuery.getStartIndex() != null) {
             start = firstQuery.getStartIndex();
@@ -2489,6 +2522,18 @@ public class DataUtilities {
         }
         return mixed;
     }
+    
+    /**
+     * This method changes the query object by simplifying the filter using SimplifyingFilterVisitor
+     */
+    public static Query simplifyFilter(Query query) {
+        if (query == null) {
+            return query;
+        }
+        Filter filter = SimplifyingFilterVisitor.simplify(query.getFilter());
+        query.setFilter(filter);
+        return query;
+    }
 
     /**
      * This method changes the query object so that all propertyName references are resolved to
@@ -2497,6 +2542,7 @@ public class DataUtilities {
      * For example, this method ensures that propertyName's such as "gml:name" are rewritten as
      * simply "name".
      * </p>
+     * This method will not rewrite empty PropertyNames.
      */
     public static Query resolvePropertyNames(Query query, SimpleFeatureType schema) {
         Filter resolved = resolvePropertyNames(query.getFilter(), schema);
@@ -2972,7 +3018,69 @@ public class DataUtilities {
         }
         return new File(directoryPath);
     }
-
+    
+    /**
+     * Verifies a Map of parameters against the Param information.
+     * Primarily used by classes implementing DataAcessFactory.
+     * <p>
+     * It will ensure that:
+     * <ul>
+     * <li>params is not null
+     * <li>Everything is of the correct type (or upcovertable
+     * to the correct type without Error)
+     * <li>Required Parameters are present
+     * </ul>
+     * </p>
+     * </code></pre>
+     * @param params
+     * @param arrayParameters Array of parameters returned by DataAccessFactory.getParametersInfo()
+     * @return true if params is in agreement with getParametersInfo, override for additional checks.
+     */
+    public static boolean canProcess( Map params, Param[] arrayParameters) {
+        if (params == null) {
+            return false;
+        }
+        for (int i = 0; i < arrayParameters.length; i++) {
+            Param param = arrayParameters[i];
+            Object value;
+            if( !params.containsKey( param.key ) ){
+                if( param.required ){
+                    return false; // missing required key!
+                } else {
+                    continue;
+                }
+            }
+            try {
+                value = param.lookUp( params );
+            } catch (IOException e) {
+                // could not upconvert/parse to expected type!
+                // even if this parameter is not required
+                // we are going to refuse to process
+                // these params
+                return false;
+            }
+            if( value == null ){
+                if (param.required) {
+                    return (false);
+                }
+            } else {
+                if ( !param.type.isInstance( value )){
+                    return false; // value was not of the required type
+                }
+                if( param.metadata != null ){
+                    // check metadata
+                    if( param.metadata.containsKey(Param.OPTIONS)){
+                        List<Object> options = (List<Object>) param.metadata.get(Param.OPTIONS);
+                        if( options != null && !options.contains(value) ){
+                            return false; // invalid option
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    
     /**
      * Returns a {@link IOFileFilter} obtained by excluding from the first input filter argument,
      * the additional filter arguments.

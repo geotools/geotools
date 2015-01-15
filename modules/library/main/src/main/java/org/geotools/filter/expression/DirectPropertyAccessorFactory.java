@@ -60,7 +60,7 @@ public class DirectPropertyAccessorFactory implements PropertyAccessorFactory {
                     return name.getLocalPart().equals( xpath );
                 } else {
                     // A property with no name? this is probably a place holder
-                    // or Null Object (such as TransactionStateDiff.NULL).
+                    // or Null Object (such as Diff.NULL).
                     return false;
                 }
             }

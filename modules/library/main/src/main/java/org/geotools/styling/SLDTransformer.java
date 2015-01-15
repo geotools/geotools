@@ -37,7 +37,6 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterTransformer;
-import org.geotools.filter.function.math.FilterFunction_abs;
 import org.geotools.gml.producer.FeatureTransformer;
 import org.geotools.referencing.CRS;
 import org.geotools.util.GrowableInternationalString;
@@ -307,7 +306,8 @@ public class SLDTransformer extends TransformerBase {
                 }
             } else if(expr instanceof Function && 
                     ("strConcat".equals(((Function) expr).getName()) 
-                            || "concat".equals(((Function) expr).getName()))) {
+                            || "concat".equals(((Function) expr).getName())
+                            || "Concatenate".equals(((Function) expr).getName()))) {
                 List<Expression> parameters = ((Function) expr).getParameters();
                 for (Expression parameter : parameters) {
                     labelContent(parameter);
@@ -341,8 +341,11 @@ public class SLDTransformer extends TransformerBase {
         public void visit(PointPlacement pp) {
             start("LabelPlacement");
             start("PointPlacement");
-            pp.getAnchorPoint().accept(this);
-            
+
+            if (pp.getAnchorPoint() != null) {
+                pp.getAnchorPoint().accept(this);
+            }
+
             visit( pp.getDisplacement() );
 
             encodeValue("Rotation", null, pp.getRotation(), Double.valueOf(0.0));
@@ -650,13 +653,9 @@ public class SLDTransformer extends TransformerBase {
             start("ExternalGraphic");
 
             AttributesImpl atts = new AttributesImpl();
-            try {
-            	atts.addAttribute(XMLNS_NAMESPACE, "xlink", "xmlns:xlink", "", XLINK_NAMESPACE);
-                atts.addAttribute(XLINK_NAMESPACE, "type", "xlink:type", "", "simple");
-                atts.addAttribute(XLINK_NAMESPACE, "xlink", "xlink:href","", exgr.getLocation().toString());
-            } catch (java.net.MalformedURLException e) {
-                throw new Error("Failed to encode the xlink location", e);
-            }
+            atts.addAttribute(XMLNS_NAMESPACE, "xlink", "xmlns:xlink", "", XLINK_NAMESPACE);
+            atts.addAttribute(XLINK_NAMESPACE, "type", "xlink:type", "", "simple");
+            atts.addAttribute(XLINK_NAMESPACE, "xlink", "xlink:href", "", exgr.getURI());
             element("OnlineResource", (String) null, atts);
 
             element("Format", exgr.getFormat());
@@ -811,7 +810,12 @@ public class SLDTransformer extends TransformerBase {
             element("Opacity", gr.getOpacity(), 1.0);
             element("Size", gr.getSize());
             element("Rotation", gr.getRotation(), 0.0);
-            visit(gr.getDisplacement());
+            if (gr.getAnchorPoint() != null) {
+                visit(gr.getAnchorPoint());
+            }
+            if (gr.getDisplacement() != null) {
+                visit(gr.getDisplacement());
+            }
 
             end("Graphic");
         }
@@ -1084,6 +1088,8 @@ public class SLDTransformer extends TransformerBase {
             for (int i = 0; i < rules.length; i++) {
                 rules[i].accept(this);
             }
+            
+            encodeVendorOptions(fts.getOptions());
 
             end("FeatureTypeStyle");
         }
@@ -1260,7 +1266,7 @@ public class SLDTransformer extends TransformerBase {
 			}
 			
 			//gamma
-			Expression exp = (Literal)ce.getGammaValue();
+			Expression exp = ce.getGammaValue();
 			if (exp != null) {
 				//gamma is a double so the actual value needs to be printed here
 				element("GammaValue",  ((Literal)exp).getValue().toString());

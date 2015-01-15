@@ -139,6 +139,15 @@
 	  </modules>
      </profile>
      <profile>
+       <id>css</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
+       <modules>
+         <module>css</module>
+       </modules>
+     </profile>
+     <profile>
        <id>unsupported</id>
        <activation>
          <property><name>all</name></property>
@@ -152,8 +161,9 @@
          <module>sfs</module>
          <module>feature-aggregate</module>
          <module>mongodb</module>
-         <module>property-ng</module>
+         <module>property-old</module>
          <module>solr</module>
+         <module>css</module>
        </modules>
      </profile>
   </profiles>

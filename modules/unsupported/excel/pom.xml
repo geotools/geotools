@@ -52,8 +52,8 @@
       <name>Ian Turton</name>
       <id>ianturton</id>
       <email>ijturton@gmail.com</email>
-      <organization>PSU</organization>
-      <organizationUrl>http://psu.edu</organizationUrl>
+      <organization>Envitia</organization>
+      <organizationUrl>http://www.envitia.com</organizationUrl>
       <roles>  
         <role>Module Maintainer</role>
         <role>Java Developer</role>
@@ -71,8 +71,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <encoding>UTF-8</encoding>
-          <target>1.5</target>
-          <source>1.5</source>
+          <target>1.7</target>
+          <source>1.7</source>
         </configuration>
       </plugin>
 

@@ -1715,6 +1715,10 @@ public class StreamingRenderer implements GTRenderer {
                 lfts = new LiteFeatureTypeStyle(new DelayedBackbufferGraphic(graphics, screenSize), 
                         ruleList, elseRuleList, fts.getTransformation());
             }
+            if (FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST.equals(fts.getOptions().get(
+                    FeatureTypeStyle.KEY_EVALUATION_MODE))) {
+                lfts.matchFirst = true;
+            }
             result.add(lfts);
         }
 
@@ -1760,6 +1764,10 @@ public class StreamingRenderer implements GTRenderer {
                 } else {
                     lfts = new LiteFeatureTypeStyle(new DelayedBackbufferGraphic(graphics, screenSize), 
                             ruleList, elseRuleList, fts.getTransformation());
+                }
+                if (FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST.equals(fts.getOptions().get(
+                        FeatureTypeStyle.KEY_EVALUATION_MODE))) {
+                    lfts.matchFirst = true;
                 }
                 if (screenMapEnabled(lfts)) {
                     int renderingBuffer = getRenderingBuffer();
@@ -2521,6 +2529,11 @@ public class StreamingRenderer implements GTRenderer {
             if (filter == null || filter.evaluate(rf.content)) {
                 doElse = false;
                 processSymbolizers(graphics, rf, r.symbolizers(), scaleRange, at, destinationCrs, layerId);
+                
+                // bail out if we are in match first mode
+                if(fts.matchFirst) {
+                    break;
+                }
             }
         }
 

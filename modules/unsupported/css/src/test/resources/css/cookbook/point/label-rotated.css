@@ -1,0 +1,16 @@
+* {
+   mark: symbol(circle);
+   mark-size: 6px;
+   label: [name];
+   font-fill: #990099;
+   font-family: Arial;
+   font-size: 12;
+   font-weight: bold;
+   label-anchor: 0.5 0;
+   label-offset: 0 25;
+   label-rotation: -45;
+ }
+
+ :mark {
+   fill: red;
+ }

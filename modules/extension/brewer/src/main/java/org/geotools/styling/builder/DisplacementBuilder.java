@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.styling.builder;
 
 import org.geotools.styling.Displacement;
@@ -31,6 +47,7 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
     }
 
     public DisplacementBuilder x(Expression x) {
+        unset = false;
         this.x = x;
         return this;
     }
@@ -44,6 +61,7 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
     }
 
     public DisplacementBuilder y(Expression y) {
+        unset = false;
         this.y = y;
         return this;
     }
@@ -79,7 +97,7 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
 
     public DisplacementBuilder reset(org.opengis.style.Displacement displacement) {
         if (displacement == null) {
-            return reset();
+            return unset();
         }
         x = displacement.getDisplacementX();
         y = displacement.getDisplacementY();

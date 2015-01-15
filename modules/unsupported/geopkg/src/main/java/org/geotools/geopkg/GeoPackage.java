@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.geopkg;
 
 import static java.lang.String.format;
@@ -17,8 +33,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +44,7 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp.DelegatingConnection;
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -41,10 +60,16 @@ import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureWriter;
 import org.geotools.factory.Hints;
+import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geopkg.geom.GeoPkgGeomReader;
+import org.geotools.geopkg.geom.GeoPkgGeomWriter;
+import org.geotools.geopkg.geom.GeometryFunction;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.JDBCFeatureStore;
+import org.geotools.jdbc.PrimaryKey;
 import org.geotools.referencing.CRS;
 import org.geotools.sql.SqlUtil;
 import org.geotools.util.logging.Logging;
@@ -55,14 +80,18 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.identity.Identifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.sqlite.Function;
 
 import com.vividsolutions.jts.geom.Geometry;
+
 
 /**
  * Provides access to a GeoPackage database.
  * 
  * @author Justin Deoliveira, OpenGeo
+ * @author Niels Charlier
  */
 public class GeoPackage {
 
@@ -97,6 +126,9 @@ public class GeoPackage {
     
     public static final String EXTENSIONS = "gpkg_extensions";
     
+
+    public static final String SPATIAL_INDEX = "gpkg_spatial_index";
+    
     public static enum DataType {
         Feature("features"), Raster("rasters"), Tile("tiles"), 
         FeatureWithRaster("featuresWithRasters");
@@ -130,6 +162,13 @@ public class GeoPackage {
      * datastore for vector access, lazily created
      */
     volatile JDBCDataStore dataStore;
+    
+
+    protected GeoPkgGeomWriter.Configuration writerConfig = new GeoPkgGeomWriter.Configuration();
+    
+    public GeoPkgGeomWriter.Configuration getWriterConfiguration() {
+        return writerConfig;
+    }
 
     /**
      * Creates a new empty GeoPackage, generating a new file.
@@ -165,7 +204,7 @@ public class GeoPackage {
         params.put(GeoPkgDataStoreFactory.DATABASE.key, file.getPath());
         params.put(GeoPkgDataStoreFactory.DBTYPE.key, GeoPkgDataStoreFactory.DBTYPE.sample);
 
-        this.connPool = new GeoPkgDataStoreFactory().createDataSource(params);
+        this.connPool = new GeoPkgDataStoreFactory(writerConfig).createDataSource(params);
     }
 
     GeoPackage(DataSource dataSource) {
@@ -223,6 +262,9 @@ public class GeoPackage {
      */
     void init(Connection cx) throws SQLException {
         
+        createFunctions(cx);
+        
+        runSQL("PRAGMA application_id = 0x47503130;", cx);
         //runSQL("SELECT InitSpatialMetaData();");
         runScript(SPATIAL_REF_SYS + ".sql", cx);
         runScript(GEOMETRY_COLUMNS + ".sql", cx);
@@ -234,6 +276,52 @@ public class GeoPackage {
         runScript(METADATA_REFERENCE + ".sql", cx);
         runScript(DATA_COLUMN_CONSTRAINTS + ".sql", cx);
         runScript(EXTENSIONS + ".sql", cx);
+    }
+    
+    void createFunctions(Connection cx) throws SQLException {
+        while (cx instanceof DelegatingConnection) {
+            cx = ((DelegatingConnection) cx).getDelegate();
+        }
+        
+        //minx
+        Function.create(cx, "ST_MinX", new GeometryFunction() {
+            @Override
+            public Object execute(GeoPkgGeomReader reader) throws IOException {
+                return reader.getEnvelope().getMinX();
+            }
+        });
+        
+        //maxx
+        Function.create(cx, "ST_MaxX", new GeometryFunction() {
+            @Override
+            public Object execute(GeoPkgGeomReader reader) throws IOException {
+                return reader.getEnvelope().getMaxX();
+            }            
+        });
+        
+        //miny
+        Function.create(cx, "ST_MinY", new GeometryFunction() {
+            @Override
+            public Object execute(GeoPkgGeomReader reader) throws IOException {
+                return reader.getEnvelope().getMinY();
+            }            
+        });
+        
+        //maxy
+        Function.create(cx, "ST_MaxY", new GeometryFunction() {
+            @Override
+            public Object execute(GeoPkgGeomReader reader) throws IOException {
+                return reader.getEnvelope().getMaxY();
+            }            
+        });
+        
+        //empty
+        Function.create(cx, "ST_IsEmpty", new GeometryFunction() {
+            @Override
+            public Object execute(GeoPkgGeomReader reader) throws IOException {
+                return reader.getHeader().getFlags().isEmpty();
+            }
+        });
     }
 
     /**
@@ -753,6 +841,31 @@ public class GeoPackage {
         }
     }
 
+    void deleteGeoPackageContentsEntry(Entry e) throws IOException {
+        String sql = format("DELETE FROM %s WHERE table_name = ?", GEOPACKAGE_CONTENTS);
+        try {
+            Connection cx = connPool.getConnection();
+            try {
+                PreparedStatement ps = prepare(cx, sql)
+                        .set(e.getTableName())
+                        .log(Level.FINE)
+                        .statement();
+                try {
+                    ps.execute();
+                }
+                finally {
+                    close(ps);
+                }
+            }
+            finally {
+                close(cx);
+            }
+        }
+        catch(SQLException ex) {
+            throw new IOException(ex);
+        }
+    }
+
     void addGeometryColumnsEntry(FeatureEntry e) throws IOException {
         String sql = format(
                 "INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?);", GEOMETRY_COLUMNS);
@@ -782,6 +895,62 @@ public class GeoPackage {
         }
         catch(SQLException ex) {
             throw new IOException(ex);
+        }
+    }
+
+    void deleteGeometryColumnsEntry(FeatureEntry e) throws IOException {
+        String sql = format("DELETE FROM %s WHERE table_name = ?", GEOMETRY_COLUMNS);
+        try {
+            Connection cx = connPool.getConnection();
+            try {
+                PreparedStatement ps = prepare(cx, sql)
+                        .set(e.getTableName())
+                        .log(Level.FINE)
+                        .statement();
+                try {
+                    ps.execute();
+                }
+                finally {
+                    close(ps);
+                }
+            }
+            finally {
+                close(cx);
+            }
+        }
+        catch(SQLException ex) {
+            throw new IOException(ex);
+        }
+    }
+
+    /**
+     * Create a spatial index
+     * 
+     * @param e feature entry to create spatial index for
+     */
+    public void createSpatialIndex(FeatureEntry e) throws IOException {
+        Map<String, String> properties = new HashMap<String, String>();
+        
+        PrimaryKey pk = ((JDBCFeatureStore) (dataStore.getFeatureSource(e.getTableName()))).getPrimaryKey();
+        if (pk.getColumns().size() != 1) {
+            throw new IOException("Spatial index only supported for primary key of single column.");
+        }
+        
+        properties.put("t", e.getTableName());
+        properties.put("c", e.getGeometryColumn());
+        properties.put("i", pk.getColumns().get(0).getName());
+        
+        Connection cx;        
+        try {
+            cx = connPool.getConnection();            
+            try {
+                runScript(SPATIAL_INDEX + ".sql", cx, properties);            
+            } finally {
+                cx.close();
+            }
+            
+        } catch (SQLException ex) {            
+            throw new IOException(ex);            
         }
     }
 
@@ -1269,6 +1438,17 @@ public class GeoPackage {
                 finally {
                     close(st);
                 }
+                
+                //create an index on the tile
+                st = cx.prepareStatement(format(
+                        "create index %s_zyx_idx on %s(zoom_level, tile_column, tile_row);", 
+                        e.getTableName(),  e.getTableName()));
+                try {
+                    st.execute();
+                }
+                finally {
+                    close(st);
+                }
             }
             finally {
                 close(cx);
@@ -1373,6 +1553,112 @@ public class GeoPackage {
             throw new IOException(e);
         }
         
+    }
+    
+    protected String getSpatialIndexName(FeatureEntry entry) {
+        return "rtree_" + entry.getTableName() + "_" + entry.getGeometryColumn();        
+    }
+    
+    /**
+     * Verifies if a spatial index is present
+     * 
+     * @param entry The feature entry.
+     * @return whether this feature entry has a spatial index available.
+     * @throws IOException
+     */
+    public boolean hasSpatialIndex(FeatureEntry entry) throws IOException {
+        try {
+            Connection cx = connPool.getConnection();
+
+            try {
+                PreparedStatement ps = prepare(cx, "SELECT name FROM sqlite_master WHERE type='table' AND name=? ")
+                        .set(getSpatialIndexName(entry))
+                        .log(Level.FINE).statement();
+                
+                try {   
+                    ResultSet rs = ps.executeQuery();
+                    
+                    try {
+                        return rs.next();
+                    } finally {
+                        close(rs);
+                    }
+                } finally {
+                    close(ps);
+                }
+            } finally {
+                close (cx);
+            }
+        }
+        catch(SQLException e) {
+            throw new IOException(e);
+        }
+    }
+    
+    /**
+     * Searches a spatial index.
+     * 
+     * @param entry The feature entry.
+     * @param minX Optional minimum x boundary.
+     * @param minY Optional minimum y boundary.
+     * @param maxX Optional maximum x boundary.
+     * @param maxY Optional maximum y boundary.
+     */
+    public Set<Identifier> searchSpatialIndex(FeatureEntry entry, Double minX, Double minY, Double maxX, Double maxY) throws IOException {
+        List<String> q = new ArrayList();
+        
+        if (minX != null) {
+            q.add("minx >= " + minX);
+        }
+        if (minY != null) {
+            q.add("miny >= " + minY);
+        }
+        if (maxX != null) {
+            q.add("maxx <= " + maxX);
+        }
+        if (maxY != null) {
+            q.add("maxy <= " + maxY);
+        }
+
+        StringBuffer sql = new StringBuffer("SELECT id FROM ").append(getSpatialIndexName(entry));
+        if (!q.isEmpty()) {
+            sql.append(" WHERE ");
+            for (String s : q) {
+                sql.append(s).append(" AND ");
+            }
+            sql.setLength(sql.length()-5);
+        }
+        
+        try {
+
+            Connection cx = connPool.getConnection();
+
+            try {
+                Statement st = cx.createStatement();
+                try {
+                    ResultSet rs = st.executeQuery(sql.toString());
+                    
+                    try {
+                        HashSet<Identifier> ids = new HashSet<Identifier>();
+                        
+                        while (rs.next()) {
+                            ids.add(new FeatureIdImpl(rs.getString(1)));
+                        }
+                        
+                        return ids;        
+                    } finally {
+                        close(rs);
+                    }
+                } finally {
+                    close(st);
+                }
+            } finally {
+                close(cx);
+            }
+        }
+        catch(SQLException e) {
+            throw new IOException(e);
+        }
     }
         
     /**
@@ -1514,6 +1800,10 @@ public class GeoPackage {
         SqlUtil.runScript(getClass().getResourceAsStream(filename), cx);        
     }
     
+    void runScript(String filename, Connection cx, Map<String, String> properties) throws SQLException{        
+        SqlUtil.runScript(getClass().getResourceAsStream(filename), cx, properties);        
+    }
+    
     private static void close(Connection cx) {
         if (cx != null) {
             try {
@@ -1558,6 +1848,6 @@ public class GeoPackage {
     JDBCDataStore createDataStore() throws IOException {
         Map params = new HashMap();
         params.put(GeoPkgDataStoreFactory.DATASOURCE.key, connPool);
-        return new GeoPkgDataStoreFactory().createDataStore(params);
+        return new GeoPkgDataStoreFactory(writerConfig).createDataStore(params);
     }
 }

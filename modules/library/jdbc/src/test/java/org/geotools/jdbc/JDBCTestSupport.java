@@ -139,7 +139,10 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         //JDBCDataStoreFactory factory = setup.createDataStoreFactory();
         dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(params);
         //dataStore = factory.createDataStore( params );
-
+        if(dataStore == null) {
+            JDBCDataStoreFactory factory = setup.createDataStoreFactory();
+            dataStore = factory.createDataStore( params );
+        }
         setup.setUpDataStore(dataStore);
         dialect = dataStore.getSQLDialect();
     }

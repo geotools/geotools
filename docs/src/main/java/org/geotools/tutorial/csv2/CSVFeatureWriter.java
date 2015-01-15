@@ -80,7 +80,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     @Override
     public boolean hasNext() throws IOException {
         if( csvWriter == null ){
-            throw new IOException("Writer has been closed");
+            return false;
         }
         if (this.appending) {
             return false; // reader has no more contents
@@ -94,7 +94,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     public SimpleFeature next() throws IOException, IllegalArgumentException,
             NoSuchElementException {
         if( csvWriter == null ){
-            throw new IOException("Writer has been closed");
+            throw new IOException("FeatureWriter has been closed");
         }
         if (this.currentFeature != null) {
             this.write(); // the previous one was not written, so do it now.

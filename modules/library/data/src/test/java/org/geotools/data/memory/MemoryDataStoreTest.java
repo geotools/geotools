@@ -601,13 +601,9 @@ public class MemoryDataStoreTest extends DataTestCase {
             IllegalAttributeException {
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = data.getFeatureWriter("road", Transaction.AUTO_COMMIT);
         assertEquals(roadFeatures.length, count(writer));
-
-        try {
-            writer.hasNext();
-            fail("Should not be able to use a closed writer");
-        } catch (IOException expected) {
-        }
-
+        
+        assertFalse(writer.hasNext());
+        
         try {
             writer.next();
             fail("Should not be able to use a closed writer");

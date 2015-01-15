@@ -281,7 +281,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
     public boolean hasNext() throws IOException {
         if (featureReader == null) {
-            throw new IOException("Writer closed");
+            return false; //writer has been closed
         }
 
         return featureReader.hasNext();

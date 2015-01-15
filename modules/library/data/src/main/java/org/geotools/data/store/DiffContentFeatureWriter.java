@@ -118,6 +118,9 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
 
             return current;
         } else {
+            if (diff == null) {
+                throw new IOException("FeatureWriter has been closed");
+            }
             // Create new content
             // created with an empty ID
             // (The real writer will supply a FID later)
@@ -200,6 +203,9 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
         live = null;
         current = null;
 
+        if (reader == null) {
+            return false;
+        }
         if (reader.hasNext()) {
             try {
                 next = reader.next();

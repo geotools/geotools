@@ -183,7 +183,7 @@ public class EFeatureWriter implements SimpleFeatureWriter {
     @Override
     public boolean hasNext() throws IOException {
         if (eReader == null) {
-            throw new IOException("Writer has been closed");
+            return false; //writer has been closed
         }
         if (isModified()) {
             write();

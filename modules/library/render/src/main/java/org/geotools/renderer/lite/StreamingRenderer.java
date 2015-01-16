@@ -174,6 +174,7 @@ import com.vividsolutions.jts.geom.Point;
  * @version $Id$
  */
 public class StreamingRenderer implements GTRenderer {
+
     private static final int REPROJECTION_RASTER_GUTTER = 10;
 
     private final static int defaultMaxFiltersToSendToDatastore = 5; // default
@@ -778,54 +779,78 @@ public class StreamingRenderer implements GTRenderer {
                 throw new IllegalStateException("Cannot call paint, you did not set a MapContent in this renderer");
             }
             
-            // ////////////////////////////////////////////////////////////////////
-            //
-            // Processing all the map layers in the context using the accompaining
-            // styles
-            //
-            // ////////////////////////////////////////////////////////////////////
-            labelCache.start();
-            if(labelCache instanceof LabelCacheImpl) {
-                ((LabelCacheImpl) labelCache).setLabelRenderingMode(LabelRenderingMode.valueOf(getTextRenderingMethod()));
-            }
-            final int layersNumber = mapContent.layers().size();
-            for (int i = 0; i < layersNumber; i++) // DJB: for each layer (ie. one
-            {
-                Layer layer = mapContent.layers().get(i);
-    
-                if (!layer.isVisible()) {
-                    // Only render layer when layer is visible
-                    continue;
-                }
-    
-                if (renderingStopRequested) {
-                    return;
-                }
-                labelCache.startLayer(i+"");
+            // split over multiple map contents, one per composition base
+            List<CompositingGroup> compositingGroups = CompositingGroup.splitOnCompositingBase(
+                    graphics, paintArea, mapContent);
+            
+            int layerId = 0;
+            for (CompositingGroup compositingGroup : compositingGroups) {
+                MapContent currentMapContent = compositingGroup.mapContent;
+                Graphics2D compositingGraphic = compositingGroup.graphics;
                 
-                if (layer instanceof DirectLayer) {
-                    RenderingRequest request = new RenderDirectLayerRequest(
-                            graphics, (DirectLayer) layer);
+                // ////////////////////////////////////////////////////////////////////
+                //
+                // Processing all the map layers in the context using the accompaining
+                // styles
+                //
+                // ////////////////////////////////////////////////////////////////////
+                labelCache.start();
+                if(labelCache instanceof LabelCacheImpl) {
+                    ((LabelCacheImpl) labelCache).setLabelRenderingMode(LabelRenderingMode.valueOf(getTextRenderingMethod()));
+                }
+                
+                for (Layer layer : currentMapContent.layers()) {
+                    layerId++;
+                    if (!layer.isVisible()) {
+                        // Only render layer when layer is visible
+                        continue;
+                    }
+        
+                    if (renderingStopRequested) {
+                        return;
+                    }
+                    labelCache.startLayer(String.valueOf(layerId));
+                    
+                    if (layer instanceof DirectLayer) {
+                        RenderingRequest request = new RenderDirectLayerRequest(compositingGraphic,
+                                (DirectLayer) layer);
+                        try {
+                            requests.put(request);
+                        } catch (InterruptedException e) {
+                            fireErrorEvent(e);
+                        }
+                        
+                    } else {
+                        MapLayer currLayer = new MapLayer(layer);
+                        try {
+
+                            // extract the feature type stylers from the style object
+                            // and process them
+                            processStylers(compositingGraphic, currLayer, worldToScreenTransform,
+                                    destinationCrs, mapExtent, screenSize, layerId + "");
+                        } catch (Throwable t) {
+                            fireErrorEvent(t);
+                        }
+                    }
+        
+                    labelCache.endLayer(String.valueOf(layerId), graphics, screenSize);
+                }
+                
+                // have we been painting on a back buffer? If so, merge on the main graphic
+                if (compositingGraphic instanceof DelayedBackbufferGraphic) {
+                    DelayedBackbufferGraphic delayedGraphic = (DelayedBackbufferGraphic) compositingGraphic;
+                    RenderingRequest request = new MargeCompositingGroupRequest(graphics,
+                            compositingGroup);
                     try {
                         requests.put(request);
                     } catch (InterruptedException e) {
                         fireErrorEvent(e);
                     }
-                    
-                } else {
-                    MapLayer currLayer = new MapLayer(layer);
-                    try {
-
-                        // extract the feature type stylers from the style object
-                        // and process them
-                        processStylers(graphics, currLayer, worldToScreenTransform,
-                                destinationCrs, mapExtent, screenSize, i + "");
-                    } catch (Throwable t) {
-                        fireErrorEvent(t);
-                    }
                 }
-    
-                labelCache.endLayer(i+"", graphics, screenSize);
+                // the compositing group has its own map content, clones of the original one,
+                // they need to be disposed to avoid nagging messages (not that disposing here
+                // does any good...)
+                compositingGroup.mapContent.dispose();
             }
         } finally {
             try {
@@ -3358,7 +3383,7 @@ public class StreamingRenderer implements GTRenderer {
                 // first fts won't have an image, it's using the user provided graphics
                 // straight, so we don't need to compose it back in.
                 final Graphics2D ftsGraphics = currentLayer.graphics;
-                if (ftsGraphics instanceof DelayedBackbufferGraphic) {
+                if (ftsGraphics instanceof DelayedBackbufferGraphic && !(ftsGraphics == graphics)) {
                     final BufferedImage image = ((DelayedBackbufferGraphic) ftsGraphics).image;
                     // we may have not found anything to paint, in that case the delegate
                     // has not been initialized
@@ -3377,6 +3402,39 @@ public class StreamingRenderer implements GTRenderer {
         }
     }
     
+    class MargeCompositingGroupRequest extends RenderingRequest {
+        Graphics2D graphics;
+
+        CompositingGroup compositingGroup;
+
+        public MargeCompositingGroupRequest(Graphics2D graphics, CompositingGroup compositingGroup) {
+            this.graphics = graphics;
+            this.compositingGroup = compositingGroup;
+        }
+
+        @Override
+        void execute() {
+            if (graphics instanceof DelayedBackbufferGraphic) {
+                ((DelayedBackbufferGraphic) graphics).init();
+            }
+            final BufferedImage image = ((DelayedBackbufferGraphic) compositingGroup.graphics).image;
+            // we may have not found anything to paint, in that case the delegate
+            // has not been initialized
+            if (image != null) {
+                compositingGroup.graphics.dispose();
+                Composite composite = compositingGroup.composite;
+                if (composite == null) {
+                    graphics.setComposite(AlphaComposite.SrcOver);
+                } else {
+                    graphics.setComposite(composite);
+                }
+                graphics.drawImage(image, 0, 0, null);
+            }
+
+        }
+
+    }
+
     /**
      * A request to render a raster
      * @author aaime

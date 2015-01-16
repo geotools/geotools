@@ -117,6 +117,15 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
      */
     public static String COMPOSITE = "composite";
 
+    /**
+     * Boolean value, if true the current feature type style will be treated as a base for the
+     * subsequent feature type styles in the rendering stack (including other layer ones) as opposed
+     * to use the merged backdrop rendered so far. When the top of the stack is reached, or another
+     * base is found, this FTS will be merged into the backdrop, eventually using the indicated
+     * composite operator
+     */
+    public static String COMPOSITE_BASE = "composite-base";
+
 
     void setName(String name);
 

@@ -470,6 +470,9 @@ public class MemoryDataStore extends AbstractDataStore {
                 }
 
                 public SimpleFeature next() throws IOException, NoSuchElementException {
+                    if (contents == null) {
+                        throw new IOException("FeatureWriter has been closed");
+                    }
                     if (hasNext()) {
                         // existing content
                         live = iterator.next();
@@ -562,7 +565,7 @@ public class MemoryDataStore extends AbstractDataStore {
 
                 public boolean hasNext() throws IOException {
                     if (contents == null) {
-                        throw new IOException("FeatureWriter has been closed");
+                        return false; //writer has been closed
                     }
 
                     return (iterator != null) && iterator.hasNext();

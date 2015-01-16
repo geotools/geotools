@@ -107,6 +107,9 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
                 throw (IOException) new IOException("Could not modify content").initCause( e );
             }
         } else {
+            if (diff == null) {
+                throw new IOException("FeatureWriter has been closed");
+            }
             // Create new content
             // created with an empty ID
             // (The real writer will supply a FID later) 
@@ -197,6 +200,10 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
 	
 	    live = null;
 	    current = null;
+	    
+	    if (reader == null) {
+	            throw new IOException("FeatureWriter has been closed");
+	    }
 	
 	    if (reader.hasNext()) {
 	        try {

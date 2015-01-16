@@ -88,17 +88,17 @@ public class CompositeTest {
         result.add(new Object[] { "xor", AlphaComposite.getInstance(AlphaComposite.XOR) });
 
         // blending modes
-        result.add(new Object[] { "multiply", BlendComposite.MULTIPLY });
-        result.add(new Object[] { "screen", BlendComposite.SCREEN });
-        result.add(new Object[] { "overlay", BlendComposite.OVERLAY });
-        result.add(new Object[] { "darken", BlendComposite.DARKEN });
-        result.add(new Object[] { "lighten", BlendComposite.LIGHTEN });
-        result.add(new Object[] { "color-dodge", BlendComposite.COLOR_DODGE });
-        result.add(new Object[] { "color-burn", BlendComposite.COLOR_BURN });
-        result.add(new Object[] { "hard-light", BlendComposite.HARD_LIGHT });
-        result.add(new Object[] { "soft-light", BlendComposite.SOFT_LIGHT });
-        result.add(new Object[] { "difference", BlendComposite.DIFFERENCE });
-        result.add(new Object[] { "exclusion", BlendComposite.EXCLUSION });
+        result.add(new Object[] { "multiply", BlendComposite.MULTIPLY_COMPOSITE });
+        result.add(new Object[] { "screen", BlendComposite.SCREEN_COMPOSITE });
+        result.add(new Object[] { "overlay", BlendComposite.OVERLAY_COMPOSITE });
+        result.add(new Object[] { "darken", BlendComposite.DARKEN_COMPOSITE });
+        result.add(new Object[] { "lighten", BlendComposite.LIGHTEN_COMPOSITE });
+        result.add(new Object[] { "color-dodge", BlendComposite.COLOR_DODGE_COMPOSITE });
+        result.add(new Object[] { "color-burn", BlendComposite.COLOR_BURN_COMPOSITE });
+        result.add(new Object[] { "hard-light", BlendComposite.HARD_LIGHT_COMPOSITE });
+        result.add(new Object[] { "soft-light", BlendComposite.SOFT_LIGHT_COMPOSITE });
+        result.add(new Object[] { "difference", BlendComposite.DIFFERENCE_COMPOSITE });
+        result.add(new Object[] { "exclusion", BlendComposite.EXCLUSION_COMPOSITE });
 
         return result;
     }

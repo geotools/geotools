@@ -45,12 +45,14 @@ import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.TransactionStateDiff;
+import org.geotools.data.crs.ForceCoordinateSystemFeatureReader;
 import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.function.Collection_AverageFunction;
 import org.geotools.filter.function.Collection_BoundsFunction;
@@ -427,12 +429,21 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         }
         // reprojection
         if ( !canReproject() ) {
+            CoordinateReferenceSystem sourceCRS = query.getCoordinateSystem();
             CoordinateReferenceSystem targetCRS = query.getCoordinateSystemReproject();
+            CoordinateReferenceSystem nativeCRS = getSchema().getCoordinateReferenceSystem();
+            if (sourceCRS != null && !sourceCRS.equals(nativeCRS)) {
+                //override native crs
+                bounds = new ReferencedEnvelope(bounds, sourceCRS);
+            } else {
+                //no override
+                sourceCRS = nativeCRS;
+            }
             if (targetCRS != null) {
-                CoordinateReferenceSystem nativeCRS = getSchema().getCoordinateReferenceSystem();
-                if(nativeCRS == null) {
+                
+                if(sourceCRS == null) {
                     throw new IOException("Cannot reproject data, the source CRS is not available");
-                } else if(!nativeCRS.equals(targetCRS)) {
+                } else if(!sourceCRS.equals(targetCRS)) {
                     try {
                         bounds = bounds.transform(targetCRS, true);
                     } catch (Exception e) {
@@ -656,12 +667,26 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         
         // reprojection
         if ( !canReproject() ) {
+            CoordinateReferenceSystem sourceCRS = query.getCoordinateSystem();
             CoordinateReferenceSystem targetCRS = query.getCoordinateSystemReproject();
+            CoordinateReferenceSystem nativeCRS = reader.getFeatureType().getCoordinateReferenceSystem();
+
+            
+            if (sourceCRS != null && !sourceCRS.equals(nativeCRS)) {
+                //override the nativeCRS
+                try {
+                    reader = new ForceCoordinateSystemFeatureReader(reader, sourceCRS);
+                } catch (SchemaException e) {
+                    throw (IOException) new IOException("Error occurred trying to force CRS").initCause(e);
+                }
+            } else {
+                //no override
+                sourceCRS = nativeCRS;
+            }
             if (targetCRS != null) {
-                CoordinateReferenceSystem nativeCRS = reader.getFeatureType().getCoordinateReferenceSystem();
-                if(nativeCRS == null) {
+                if(sourceCRS == null) {
                     throw new IOException("Cannot reproject data, the source CRS is not available");
-                } else if(!nativeCRS.equals(targetCRS)) {
+                } else if(!sourceCRS.equals(targetCRS)) {
                     try {
                         reader = new ReprojectFeatureReader(reader, targetCRS);
                     } catch (Exception e) {

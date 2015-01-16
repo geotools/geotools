@@ -171,7 +171,7 @@ public class StreamingRendererCompositeTest {
                         + composite + ".png");
         ImageIO.write(blended, "PNG", new File(reference.getParent(), "blend1-" + composite
                 + "-point.png"));
-        // allow some tolerance, the JDK does not do exactly the same thing as blending tow images
+        // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
         if ("copy".equals(composite)) {
@@ -189,7 +189,7 @@ public class StreamingRendererCompositeTest {
         File reference = new File(
                 "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
                         + composite + ".png");
-        // allow some tolerance, the JDK does not do exactly the same thing as blending tow images
+        // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
         if ("copy".equals(composite)) {
@@ -208,7 +208,7 @@ public class StreamingRendererCompositeTest {
         File reference = new File(
                 "./src/test/resources/org/geotools/renderer/composite/test-data/bkg2-red-"
                         + composite + ".png");
-        // allow some tolerance, the JDK does not do exactly the same thing as blending tow images
+        // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
         if ("copy".equals(composite)) {
@@ -226,7 +226,7 @@ public class StreamingRendererCompositeTest {
         File reference = new File(
                 "./src/test/resources/org/geotools/renderer/composite/test-data/bkg2-red-"
                         + composite + ".png");
-        // allow some tolerance, the JDK does not do exactly the same thing as blending tow images
+        // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
         if ("copy".equals(composite)) {
@@ -244,7 +244,7 @@ public class StreamingRendererCompositeTest {
         File reference = new File(
                 "./src/test/resources/org/geotools/renderer/composite/test-data/bkg2-red-"
                         + composite + ".png");
-        // allow some tolerance, the JDK does not do exactly the same thing as blending tow images
+        // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
         if ("copy".equals(composite)) {
@@ -262,7 +262,7 @@ public class StreamingRendererCompositeTest {
         File reference = new File(
                 "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
                         + composite + ".png");
-        // allow some tolerance, the JDK does not do exactly the same thing as blending tow images
+        // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
         if ("copy".equals(composite)) {
@@ -280,7 +280,7 @@ public class StreamingRendererCompositeTest {
         File reference = new File(
                 "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
                         + composite + ".png");
-        // allow some tolerance, the JDK does not do exactly the same thing as blending tow images
+        // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
         if ("copy".equals(composite)) {
@@ -298,7 +298,7 @@ public class StreamingRendererCompositeTest {
         File reference = new File(
                 "./src/test/resources/org/geotools/renderer/composite/test-data/bkg2-red-"
                         + composite + ".png");
-        // allow some tolerance, the JDK does not do exactly the same thing as blending tow images
+        // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
         if ("copy".equals(composite)) {
@@ -316,7 +316,7 @@ public class StreamingRendererCompositeTest {
         File reference = new File(
                 "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
                         + composite + ".png");
-        // allow some tolerance, the JDK does not do exactly the same thing as blending tow images
+        // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
         if ("copy".equals(composite)) {
@@ -334,7 +334,7 @@ public class StreamingRendererCompositeTest {
         File reference = new File(
                 "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
                         + composite + ".png");
-        // allow some tolerance, the JDK does not do exactly the same thing as blending tow images
+        // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
         if ("copy".equals(composite)) {

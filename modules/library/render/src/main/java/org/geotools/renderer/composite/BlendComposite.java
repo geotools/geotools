@@ -88,7 +88,7 @@ public class BlendComposite implements Composite {
          */
          // @formatter: on
 
-        Multiply("multiply") {
+        MULTIPLY("multiply") {
             @Override
             public void perform(int sr, int sg, int sb, int sa, int dr, int dg, int db, int da,
                     int[] result) {
@@ -108,7 +108,7 @@ public class BlendComposite implements Composite {
             }
         },
 
-        Screen("screen") {
+        SCREEN("screen") {
 
             @Override
             public void perform(int sr, int sg, int sb, int sa, int dr, int dg, int db, int da,
@@ -123,7 +123,7 @@ public class BlendComposite implements Composite {
 
         },
 
-        Overlay("overlay") {
+        OVERLAY("overlay") {
 
             @Override
             public void perform(int sr, int sg, int sb, int sa, int dr, int dg, int db, int da,
@@ -148,7 +148,7 @@ public class BlendComposite implements Composite {
             }
 
         },
-        Darken("darken") {
+        DARKEN("darken") {
 
             @Override
             public void perform(int sr, int sg, int sb, int sa, int dr, int dg, int db, int da,
@@ -163,7 +163,7 @@ public class BlendComposite implements Composite {
                 result[ALPHA] = (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8));
             }
         },
-        Lighten("lighten") {
+        LIGHTEN("lighten") {
 
             @Override
             public void perform(int sr, int sg, int sb, int sa, int dr, int dg, int db, int da,
@@ -178,7 +178,7 @@ public class BlendComposite implements Composite {
                 result[ALPHA] = (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8));
             }
         },
-        ColorDodge("color-dodge") {
+        COLOR_DODGE("color-dodge") {
 
             @Override
             public void perform(int sr, int sg, int sb, int sa, int dr, int dg, int db, int da,
@@ -212,7 +212,7 @@ public class BlendComposite implements Composite {
                 result[ALPHA] = (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8));
             }
         },
-        ColorBurn("color-burn") {
+        COLOR_BURN("color-burn") {
 
             @Override
             public void perform(int sr, int sg, int sb, int sa, int dr, int dg, int db, int da,
@@ -258,7 +258,7 @@ public class BlendComposite implements Composite {
             }
 
         },
-        HardLight("hard-light") {
+        HARD_LIGHT("hard-light") {
 
             @Override
             public void perform(int sr, int sg, int sb, int sa, int dr, int dg, int db, int da,
@@ -285,7 +285,7 @@ public class BlendComposite implements Composite {
             }
 
         },
-        SoftLight("soft-light") {
+        SOFT_LIGHT("soft-light") {
 
             @Override
             public void perform(int sr, int sg, int sb, int sa, int dr, int dg, int db, int da,
@@ -344,7 +344,7 @@ public class BlendComposite implements Composite {
             }
 
         },
-        Difference("difference") {
+        DIFFERENCE("difference") {
 
             @Override
             public void perform(int sr, int sg, int sb, int sa, int dr, int dg, int db, int da,
@@ -361,7 +361,7 @@ public class BlendComposite implements Composite {
             }
 
         },
-        Exclusion("exclusion") {
+        EXCLUSION("exclusion") {
 
             @Override
             public void perform(int sr, int sg, int sb, int sa, int dr, int dg, int db, int da,
@@ -542,27 +542,93 @@ public class BlendComposite implements Composite {
         }
     }
 
-    public static final BlendComposite MULTIPLY = new BlendComposite(BlendingMode.Multiply);
+    /**
+     * <code>BlendComposite</code> object that implements the opaque MULTIPLY rule with an alpha of
+     * 1.0f.
+     * 
+     * @see BlendingMode#MULTIPLY
+     */
+    public static final BlendComposite MULTIPLY_COMPOSITE = new BlendComposite(BlendingMode.MULTIPLY);
 
-    public static final BlendComposite SCREEN = new BlendComposite(BlendingMode.Screen);
+    /**
+     * <code>BlendComposite</code> object that implements the opaque SCREEN rule with an alpha of
+     * 1.0f.
+     * 
+     * @see BlendingMode#SCREEN
+     */
+    public static final BlendComposite SCREEN_COMPOSITE = new BlendComposite(BlendingMode.SCREEN);
 
-    public static final BlendComposite OVERLAY = new BlendComposite(BlendingMode.Overlay);
+    /**
+     * <code>BlendComposite</code> object that implements the opaque OVERLAY rule with an alpha of
+     * 1.0f.
+     * 
+     * @see BlendingMode#OVERLAY
+     */
+    public static final BlendComposite OVERLAY_COMPOSITE = new BlendComposite(BlendingMode.OVERLAY);
 
-    public static final BlendComposite DARKEN = new BlendComposite(BlendingMode.Darken);
+    /**
+     * <code>BlendComposite</code> object that implements the opaque DARKEN rule with an alpha of
+     * 1.0f.
+     * 
+     * @see BlendingMode#DARKEN
+     */
+    public static final BlendComposite DARKEN_COMPOSITE = new BlendComposite(BlendingMode.DARKEN);
 
-    public static final BlendComposite LIGHTEN = new BlendComposite(BlendingMode.Lighten);
+    /**
+     * <code>BlendComposite</code> object that implements the opaque LIGHTEN rule with an alpha of
+     * 1.0f.
+     * 
+     * @see BlendingMode#LIGHTEN
+     */
+    public static final BlendComposite LIGHTEN_COMPOSITE = new BlendComposite(BlendingMode.LIGHTEN);
 
-    public static final BlendComposite COLOR_DODGE = new BlendComposite(BlendingMode.ColorDodge);
+    /**
+     * <code>BlendComposite</code> object that implements the opaque COLOR_DODGE rule with an alpha
+     * of 1.0f.
+     * 
+     * @see BlendingMode#COLOR_DODGE
+     */
+    public static final BlendComposite COLOR_DODGE_COMPOSITE = new BlendComposite(BlendingMode.COLOR_DODGE);
 
-    public static final BlendComposite COLOR_BURN = new BlendComposite(BlendingMode.ColorBurn);
+    /**
+     * <code>BlendComposite</code> object that implements the opaque COLOR_BURN rule with an alpha
+     * of 1.0f.
+     * 
+     * @see BlendingMode#COLOR_BURN
+     */
+    public static final BlendComposite COLOR_BURN_COMPOSITE = new BlendComposite(BlendingMode.COLOR_BURN);
 
-    public static final BlendComposite HARD_LIGHT = new BlendComposite(BlendingMode.HardLight);
+    /**
+     * <code>BlendComposite</code> object that implements the opaque HARD_LIGHT rule with an alpha
+     * of 1.0f.
+     * 
+     * @see BlendingMode#HARD_LIGHT
+     */
+    public static final BlendComposite HARD_LIGHT_COMPOSITE = new BlendComposite(BlendingMode.HARD_LIGHT);
 
-    public static final BlendComposite SOFT_LIGHT = new BlendComposite(BlendingMode.SoftLight);
+    /**
+     * <code>BlendComposite</code> object that implements the opaque SOFT_LIGHT rule with an alpha
+     * of 1.0f.
+     * 
+     * @see BlendingMode#SOFT_LIGHT
+     */
+    public static final BlendComposite SOFT_LIGHT_COMPOSITE = new BlendComposite(BlendingMode.SOFT_LIGHT);
 
-    public static final BlendComposite DIFFERENCE = new BlendComposite(BlendingMode.Difference);
+    /**
+     * <code>BlendComposite</code> object that implements the opaque DIFFERENCE rule with an alpha
+     * of 1.0f.
+     * 
+     * @see BlendingMode#DIFFERENCE
+     */
+    public static final BlendComposite DIFFERENCE_COMPOSITE = new BlendComposite(BlendingMode.DIFFERENCE);
 
-    public static final BlendComposite EXCLUSION = new BlendComposite(BlendingMode.Exclusion);
+    /**
+     * <code>BlendComposite</code> object that implements the opaque EXCLUSION rule with an alpha of
+     * 1.0f.
+     * 
+     * @see BlendingMode#EXCLUSION
+     */
+    public static final BlendComposite EXCLUSION_COMPOSITE = new BlendComposite(BlendingMode.EXCLUSION);
 
     private final float alpha;
 
@@ -622,28 +688,28 @@ public class BlendComposite implements Composite {
         // use common constants when opacity is 1.0 (like AlphaComposite.getInstance() does)
         if (opacity == 1f) {
             switch (mode) {
-            case Multiply:
-                return MULTIPLY;
-            case Screen:
-                return SCREEN;
-            case Overlay:
-                return OVERLAY;
-            case Darken:
-                return DARKEN;
-            case Lighten:
-                return LIGHTEN;
-            case ColorDodge:
-                return COLOR_DODGE;
-            case ColorBurn:
-                return COLOR_BURN;
-            case HardLight:
-                return HARD_LIGHT;
-            case SoftLight:
-                return SOFT_LIGHT;
-            case Difference:
-                return DIFFERENCE;
-            case Exclusion:
-                return EXCLUSION;
+            case MULTIPLY:
+                return MULTIPLY_COMPOSITE;
+            case SCREEN:
+                return SCREEN_COMPOSITE;
+            case OVERLAY:
+                return OVERLAY_COMPOSITE;
+            case DARKEN:
+                return DARKEN_COMPOSITE;
+            case LIGHTEN:
+                return LIGHTEN_COMPOSITE;
+            case COLOR_DODGE:
+                return COLOR_DODGE_COMPOSITE;
+            case COLOR_BURN:
+                return COLOR_BURN_COMPOSITE;
+            case HARD_LIGHT:
+                return HARD_LIGHT_COMPOSITE;
+            case SOFT_LIGHT:
+                return SOFT_LIGHT_COMPOSITE;
+            case DIFFERENCE:
+                return DIFFERENCE_COMPOSITE;
+            case EXCLUSION:
+                return EXCLUSION_COMPOSITE;
             }
         }
 

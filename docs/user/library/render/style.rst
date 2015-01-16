@@ -276,6 +276,14 @@ Notes on handling of features:
   
 * For an in depth discussion of the rendering process please refer to * :doc:`style </tutorial/map/style>` (tutorial)
 
+FeatureTypeStyle includes vendorExtensions specific to the GeoTools rendering engine:
+
+* composite (source-over): allows control of color blending (using copy destination, source-over, destination-over, source-in, destination-in, source-out, destination-out source-atop, destination-atop, xor, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion).
+
+* composite-base (false): definition of composition groups
+
+* firstMatch: stops rule evaluation after the first match (making it easier to work with datasets where content is classified by distinct attribute values)
+
 Rule
 ''''
 A FeatureTypeStyle contains one or more rules, these rules are considered in order with the possibility of an "else" Rule being
@@ -316,7 +324,6 @@ As you can see, there are many kind of symbolizers, for points, lines, polygons,
 
 You don't need to match the symbolizer with the specific geometry contained in the feature, the renderer will try to do the most appropriate thing on a case by case basis. For example, TextSymbolizer applies to all kinds of geometries, and will generate labels on the map. If you apply a PolygonSymbolizer to a line, the line will be closed to form a polygon, and then the polygon symbolizer will be applied.
 
-
 .. image:: /images/symbolizer2.PNG
 
 The GeoTools Symbolizer interface offers a couple of advantages over the base standard:
@@ -354,12 +361,19 @@ Notes on the use of symbolizers:
     falls into.
   * By directly linking a symbolizer property to an attribute value;
 
+Vendor options suitable for use with any symbolizer:
 
+* composite (source-over): allows control of color blending (using copy destination, source-over, destination-over, source-in, destination-in, source-out, destination-out source-atop, destination-atop, xor, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion).
+  
 Point Symbolizer
 ''''''''''''''''
 
 Used to draw a point location, the actual graphic drawn is referred to as a Mark with the option to use
 some well known marks (circle, square etc..) or your own external graphics such as PNG icons.
+
+Point symbolizers supported vendorOptions:
+
+* labelObstacle(true/false): No labels should overlap this feature, used to ensure point graphics are clearly visible and not obscured by text.
 
 Examples: 
 
@@ -391,7 +405,7 @@ Examples:
                     </mark>
                 </graphic>
             </PointSymbolizer>
-
+  
 LineSymbolizer
 ''''''''''''''
 
@@ -430,13 +444,50 @@ to priorities you have defined and decides on a final label placement.
 
 This mays TextSymbolizer a little bit odd in that it does not get the final say on how labels are rendered on a pixel by pixel basis.
 
+Considerable vendor options are provided for working with TextSymbolizers:
+
+* allowOverruns (false): When false does not allow labels on lines to get beyond the beginning/end of the line.  By default a partial overrun is tolerated, set to false to disallow it.
+  
+* autoWrap(400): Number of pixels are which a long label should be split into multiple lines. Works on all geometries, on lines it is mutually exclusive with the followLine option
+  
+* conflictResolution(true) Enables conflict resolution (default, true) meaning no two labels will be allowed to overlap. Symbolizers with conflict resolution off are considered outside of the conflict resolution game, they don't reserve area and can overlap with other labels.
+  
+* followLine(true): When true activates curved labels on linear geometries. The label will follow the shape of the current line, as opposed to being drawn a tangent straight line
+  
+* forceLeftToRight(true): When true forces labels to a readable orientation, when false they make follow the line orientation even if that means the label will look upside down (useful when using TTF symbol fonts to add direction markers along a line)
+
+*goodnessOfFit(90): Sets the percentage of the label that must sit inside the geometry to allow drawing the label. Works only on polygons.
+
+* graphic-margin (10) Pixels between the stretched graphic and the text, applies when graphic stretching is in use
+  
+* graphic-resize(true): Stretches the graphic below a label to fit the label size. Possible values are 'stretch', 'proportional'.
+  
+* group (false) If true, geometries with the same labels are grouped and considered a single entity to be labeled. This allows to avoid or control repeated labels
+  
+* labelAllGroup(false) When false,  only the biggest geometry in a group is labelled (the biggest is obtained by merging, when possible, the original geometries). When true, also the smaller items in the group are labeled. Works only on lines at the moment.
+  
+* repeat (0) When positive it's the desired distance between two subsequent labels on a "big" geometry. Works only on lines at the moment. If zero only one label is drawn no matter how big the geometry is
+  
+* maxAngleDelta (90) When drawing curved labels, max allowed angle between two subsequent characters. Higher angles may cause disconnected words or overlapping characters
+  
+* maxDisplacement (400) The distance, in pixel, a label can be displaced from its natural position in an attempt to find a position that does not conflict with already drawn labels.
+
+* minGroupDistance (3) Minimum distance between two labels in the same label group. To be used when both displacement and repeat are used to avoid having two labels too close to each other
+  
+* partials(true): Option to truncate labels placed on the border of the displayArea (display partial labels)
+
+* polygonAlign(true): Option overriding manual rotation to align label rotation automatically for polygons.
+  
+* spaceAround(50) The minimum distance between two labels, in pixels
+    
+
 Examples:
 
 * GeoServer SLD cookbook
   
-  * `Point Labels <http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/points.html#point-with-default-label>`_
-  * `Line Labels <http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/lines.html#line-with-default-label>`_
-  * `Polygon Labels <http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/polygons.html#polygon-with-default-label>`_
+  * :geoserver:`Point Labels <styling/sld-cookbook/points>`
+  * :geoserver:`Line Labels <styling/sld-cookbook/lines>`
+  * :geoserver:`Polygon Labels <styling/sld-cookbook/polygons>`_
 
 * Here is a quick example of creating a TextSymbolizer with StyleBuilder:
   

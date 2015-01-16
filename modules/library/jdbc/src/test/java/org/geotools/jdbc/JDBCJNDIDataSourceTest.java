@@ -52,9 +52,8 @@ public abstract class JDBCJNDIDataSourceTest extends JDBCTestSupport {
         params.put(JDBCJNDIDataStoreFactory.JNDI_REFNAME.key, "ds");
 
         JDBCDataStore dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(params);
-        assertNotNull("failed to find DataStore",dataStore);
         Connection con = dataStore.getDataSource().getConnection();
-        assertNotNull("No Connection returned",con );
+        assertTrue(con != null);
         assertFalse(con.isClosed());
 
         dataStore.closeSafe(con);

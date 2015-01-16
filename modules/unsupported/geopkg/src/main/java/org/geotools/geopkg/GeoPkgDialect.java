@@ -133,7 +133,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     @Override
     public String getGeometryTypeName(Integer type) {
-        return "BLOB";
+        return Geometries.getForSQLType(type).getName();
     }
 
     @Override
@@ -145,11 +145,10 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     @Override
     public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {
         super.registerClassToSqlMappings(mappings);
-
+        // add geometry mappings
         for (Geometries g : Geometries.values()) {
-            mappings.put(g.getBinding(), Types.BLOB);
+            mappings.put(g.getBinding(), g.getSQLType());
         }
-
         //override some internal defaults
         mappings.put(Long.class, Types.INTEGER);
         mappings.put(Double.class, Types.REAL);
@@ -157,45 +156,40 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     @Override
     public Class<?> getMapping(ResultSet columns, Connection cx) throws SQLException {
-        int type = columns.getInt("DATA_TYPE");
+        String tbl = columns.getString("TABLE_NAME");
+        String col = columns.getString("COLUMN_NAME");
 
-        //sqlite seems to map blobs to varchar 
-        if (type == Types.VARCHAR) {
-            String tbl = columns.getString("TABLE_NAME");
-            String col = columns.getString("COLUMN_NAME"); 
+        String sql = format(
+            "SELECT b.geometry_type_name" +
+             " FROM %s a, %s b" +
+            " WHERE a.table_name = b.table_name" +
+              " AND b.table_name = ?" +
+              " AND b.column_name = ?", GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS);
 
-            String sql = format(
-                "SELECT b.geometry_type_name" +
-                 " FROM %s a, %s b" + 
-                " WHERE a.table_name = b.table_name" +
-                  " AND b.table_name = ?" + 
-                  " AND b.column_name = ?", GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS);
-
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(String.format("%s; 1=%s, 2=%s", sql, tbl, col));
-            }
-
-            PreparedStatement ps = cx.prepareStatement(sql);
-            try {
-                ps.setString(1, tbl);
-                ps.setString(2, col);
-
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    String t = rs.getString(1);
-                    Geometries g = Geometries.getForName(t);
-                    if (g != null) {
-                        return g.getBinding();
-                    }
-                }
-                
-                rs.close();
-            }
-            finally {
-                dataStore.closeSafe(ps);
-            }
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine(String.format("%s; 1=%s, 2=%s", sql, tbl, col));
         }
-        
+
+        PreparedStatement ps = cx.prepareStatement(sql);
+        try {
+            ps.setString(1, tbl);
+            ps.setString(2, col);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String t = rs.getString(1);
+                Geometries g = Geometries.getForName(t);
+                if (g != null) {
+                    return g.getBinding();
+                }
+            }
+
+            rs.close();
+        }
+        finally {
+            dataStore.closeSafe(ps);
+        }
+
         return null;
     }
 

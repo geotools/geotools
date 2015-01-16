@@ -16,7 +16,10 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -41,6 +44,9 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.GeoTools;
@@ -71,6 +77,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverage;
+import org.opengis.coverage.grid.GridEnvelope;
+import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchIdentifierException;
@@ -478,6 +487,28 @@ public class GridCoverageRendererTest  {
                 Color.RED, 256, 256);
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/wrapDatelineNearest.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    @Test
+    public void testNoProjectionHandlerSet() throws Exception {
+        // Request crossing dateline should not contain wrapped data
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(10, 500, -90, 90,
+                DefaultGeographicCRS.WGS84);
+        Rectangle screenSize = new Rectangle(500, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 500));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84,
+                mapExtent, screenSize, w2s);
+        // Setting No projectionHandler
+        renderer.setAdvancedProjectionHandlingEnabled(false);
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+
+        RenderedImage image = renderer.renderImage(worldReader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                Color.RED, 256, 256);
+
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/noProjectionHandlerSet.png");
         ImageAssert.assertEquals(reference, image, 0);
     }
 

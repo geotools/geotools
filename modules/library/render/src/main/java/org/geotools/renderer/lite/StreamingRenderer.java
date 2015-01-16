@@ -3446,6 +3446,10 @@ public class StreamingRenderer implements GTRenderer {
                         originalMapExtent, screenSize, worldToScreen, java2dHints);
 
                 Interpolation interpolation = getRenderingInterpolation();
+
+                // Checks on the Reprojection parameters
+                gcr.setAdvancedProjectionHandlingEnabled(isAdvancedProjectionHandlingEnabled());
+                gcr.setWrapEnabled(isMapWrappingEnabled());
                 gcr.paint(graphics, reader, readParams, symbolizer, interpolation, null);
 
                 if (LOGGER.isLoggable(Level.FINE)) {

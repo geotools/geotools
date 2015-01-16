@@ -53,13 +53,21 @@ import org.geotools.data.store.DiffTransactionState;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -77,7 +85,9 @@ import com.vividsolutions.jts.geom.MultiLineString;
  */
 public class MemoryDataStoreTest extends DataTestCase {
     MemoryDataStore data;
-
+    SimpleFeatureType riverType;
+    SimpleFeature[] riverFeatures;
+    ReferencedEnvelope riverBounds;
     /**
      * Constructor for MemoryDataStoreTest.
      * 
@@ -94,6 +104,16 @@ public class MemoryDataStoreTest extends DataTestCase {
         super.setUp();
         data = new MemoryDataStore();
         data.addFeatures(roadFeatures);
+        
+        //Override river to use CRS
+        riverType = SimpleFeatureTypeBuilder.retype(super.riverType, CRS.decode("EPSG:4326"));
+        riverBounds = new ReferencedEnvelope(super.riverBounds, CRS.decode("EPSG:4326"));
+        riverFeatures = new SimpleFeature[super.riverFeatures.length];
+        for (int i = 0; i < riverFeatures.length; i++) {
+            
+            riverFeatures[i] = SimpleFeatureBuilder.retype(super.riverFeatures[i], riverType);
+        }
+        
         data.addFeatures(riverFeatures);
     }
 
@@ -944,6 +964,116 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeatureCollection expected = DataUtilities.collection(riverFeatures);
         assertCovers("all", expected, all);
         assertEquals(riverBounds, all.getBounds());
+    }
+    
+    /*
+     * Utility method used to verify that a collection of features was correctly transformed
+     */
+    private void testTransformedFeatures(
+            SimpleFeatureCollection sourceFeatures, 
+            SimpleFeatureCollection transformedFeatures,
+            CoordinateReferenceSystem nativeCRS, 
+            CoordinateReferenceSystem forcedCRS, 
+            CoordinateReferenceSystem reprojectCRS) throws TransformException, FactoryException {
+        
+        //The expected CRS of the transformed features
+        CoordinateReferenceSystem targetCRS = nativeCRS;
+        GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
+        
+        if (reprojectCRS != null) {
+            targetCRS = reprojectCRS;
+            //Set up geometry transform
+            if (forcedCRS == null) {
+                transformer.setMathTransform(CRS.findMathTransform(nativeCRS, reprojectCRS, true));
+            } else {
+                transformer.setMathTransform(CRS.findMathTransform(forcedCRS, reprojectCRS, true));
+            }
+        } else if (forcedCRS != null) {
+            targetCRS = forcedCRS;
+        }
+        
+        SimpleFeatureIterator i = sourceFeatures.features();
+        SimpleFeatureIterator j = transformedFeatures.features();
+        
+        //Go through all the features
+        while (i.hasNext() && j.hasNext()) {
+            SimpleFeature sourceFeature = i.next();
+            SimpleFeature transformedFeature = j.next();
+            assertEquals(targetCRS, transformedFeature.getFeatureType().getCoordinateReferenceSystem());
+            
+            for (int k = 0; k < sourceFeature.getAttributes().size(); k++) {
+                Object o = sourceFeature.getAttributes().get(k);
+                
+                //Check that the geometry was transformed correctly
+                if (o instanceof Geometry) {
+                    Geometry sourceGeometry = (Geometry) o;
+                    Geometry transformedGeometry = (Geometry) transformedFeature.getAttributes().get(k);
+                    
+                    Geometry expectedGeometry = (Geometry) sourceGeometry.clone();
+                    if (reprojectCRS != null) {
+                        expectedGeometry = transformer.transform(expectedGeometry);
+                    }
+                    assertEquals(expectedGeometry, transformedGeometry);
+                }
+            }
+        }
+    }
+    
+    public void testSetsEnvelopeCrsFromQuery() throws Exception {
+        Query query = new Query(Query.ALL);
+        query.setCoordinateSystem(DefaultEngineeringCRS.CARTESIAN_2D);
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
+        
+        SimpleFeatureSource river = data.getFeatureSource("river");
+        SimpleFeatureCollection features = river.getFeatures(query);
+        SimpleFeatureCollection expectedFeatures = DataUtilities.collection(riverFeatures);
+        testTransformedFeatures(expectedFeatures, features, 
+                sourceCRS, 
+                DefaultEngineeringCRS.CARTESIAN_2D, 
+                null);
+    }
+    
+    public void testReprojectFeaturesCrsFromQuery() throws Exception {
+        Query query = new Query(Query.ALL);
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
+        CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:3005");
+        query.setCoordinateSystemReproject(targetCRS);
+        
+        SimpleFeatureSource river = data.getFeatureSource("river");
+        SimpleFeatureCollection features = river.getFeatures(query);
+        SimpleFeatureCollection expectedFeatures = DataUtilities.collection(riverFeatures);
+        testTransformedFeatures(expectedFeatures, features, 
+                sourceCRS, 
+                null, 
+                targetCRS);
+    }
+    
+    public void testSetReprojectFeaturesCrsFromQuery() throws Exception {
+        Query query = new Query(Query.ALL);
+        query.setCoordinateSystem(DefaultEngineeringCRS.GENERIC_2D);
+        query.setCoordinateSystemReproject(DefaultEngineeringCRS.CARTESIAN_2D);
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
+        
+        SimpleFeatureSource river = data.getFeatureSource("river");
+        SimpleFeatureCollection features = river.getFeatures(query);
+        SimpleFeatureCollection expectedFeatures = DataUtilities.collection(riverFeatures);
+        testTransformedFeatures(expectedFeatures, features, 
+                sourceCRS, 
+                DefaultEngineeringCRS.GENERIC_2D, 
+                DefaultEngineeringCRS.CARTESIAN_2D);
+    }
+
+    public void testSetsFeaturesCrsFromFeatureType() throws Exception {
+        Query query = new Query(Query.ALL);
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
+        
+        SimpleFeatureSource river = data.getFeatureSource("river");
+        SimpleFeatureCollection features = river.getFeatures(query);
+        SimpleFeatureCollection expectedFeatures = DataUtilities.collection(riverFeatures);
+        testTransformedFeatures(expectedFeatures, features, 
+                sourceCRS, 
+                null, 
+                null);
     }
 
     //

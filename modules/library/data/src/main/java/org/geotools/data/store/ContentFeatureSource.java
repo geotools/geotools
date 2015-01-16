@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -432,6 +432,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             CoordinateReferenceSystem sourceCRS = query.getCoordinateSystem();
             CoordinateReferenceSystem targetCRS = query.getCoordinateSystemReproject();
             CoordinateReferenceSystem nativeCRS = getSchema().getCoordinateReferenceSystem();
+            
             if (sourceCRS != null && !sourceCRS.equals(nativeCRS)) {
                 //override native crs
                 bounds = new ReferencedEnvelope(bounds, sourceCRS);
@@ -670,7 +671,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             CoordinateReferenceSystem sourceCRS = query.getCoordinateSystem();
             CoordinateReferenceSystem targetCRS = query.getCoordinateSystemReproject();
             CoordinateReferenceSystem nativeCRS = reader.getFeatureType().getCoordinateReferenceSystem();
-
             
             if (sourceCRS != null && !sourceCRS.equals(nativeCRS)) {
                 //override the nativeCRS

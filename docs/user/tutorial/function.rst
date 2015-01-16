@@ -37,7 +37,7 @@ SnapFunction
    new new FunctionNameImpl("snap", "point", "line") as part of the getFunctionNames() method.
    This has the advantage of avoiding loading SnapFunction until a user requests it by name.
 
-7. We can now register our factory by adding a file to our jar under :fie:`META-INF/services/`.
+7. We can now register our factory by adding a file to our jar under :file:`META-INF/services/`.
    
    Create the following file for inclusion in your jar::
    

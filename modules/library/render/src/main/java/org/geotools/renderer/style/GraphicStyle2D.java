@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.style;
 
+import java.awt.Composite;
 import java.awt.image.BufferedImage;
 
 /**
@@ -32,7 +33,6 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
 	BufferedImage image;
 	int border = 0;
 	float rotation;
-	float opacity;
 
     float displacementX;
 
@@ -41,6 +41,8 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
     float anchorPointX = 0.5f;
 
     float anchorPointY = 0.5f;
+
+    Composite composite;
 
 	/**
 	 * Creates a new GraphicStyle2D object.
@@ -52,23 +54,20 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
 	 * @param opacity
 	 *            The image opacity
 	 */
-	public GraphicStyle2D(BufferedImage image, float rotation, float opacity) {
+    public GraphicStyle2D(BufferedImage image, float rotation) {
 		this.image = image;
 		this.rotation = rotation;
-		this.opacity = opacity;
 	}
 	
 
-	public GraphicStyle2D(BufferedImage image, float rotation, float opacity, int border) {
+    public GraphicStyle2D(BufferedImage image, float rotation, int border) {
 		this.image = image;
 		this.rotation = rotation;
-		this.opacity = opacity;
 		this.border = border;
 	}
 
-    public GraphicStyle2D(BufferedImage image, float opacity, int border) {
+    public GraphicStyle2D(BufferedImage image, int border) {
         this.image = image;
-        this.opacity = opacity;
         this.border = border;
     }
 
@@ -77,12 +76,6 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
      */
 	public BufferedImage getImage() {
 		return image;
-	}
-
-	/**
-     */
-	public float getOpacity() {
-		return opacity;
 	}
 
 	/**
@@ -99,13 +92,6 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
 	 */
 	public void setImage(BufferedImage image) {
 		this.image = image;
-	}
-
-	/**
-	 * @param f
-	 */
-	public void setOpacity(float f) {
-		opacity = f;
 	}
 
 	/**
@@ -160,6 +146,14 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
 
     public void setAnchorPointY(float anchorPointY) {
         this.anchorPointY = anchorPointY;
+    }
+
+    public Composite getComposite() {
+        return composite;
+    }
+
+    public void setComposite(Composite composite) {
+        this.composite = composite;
     }
 
 }

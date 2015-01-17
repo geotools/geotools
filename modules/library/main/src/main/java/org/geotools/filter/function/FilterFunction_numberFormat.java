@@ -20,6 +20,8 @@ package org.geotools.filter.function;
 import static org.geotools.filter.capability.FunctionNameImpl.*;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
@@ -41,6 +43,8 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
             parameter("format", String.class),
             parameter("number", Number.class));
     
+    public static DecimalFormatSymbols decimalFormatSymbols = DecimalFormatSymbols.getInstance(Locale.ENGLISH);
+
     public FilterFunction_numberFormat() {
         super(NAME);
     }
@@ -70,7 +74,7 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
             return null;
         }
 
-        DecimalFormat numberFormat = new DecimalFormat(format);
+        DecimalFormat numberFormat = new DecimalFormat(format, decimalFormatSymbols);
         return numberFormat.format(number);
     }
 

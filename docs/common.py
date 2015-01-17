@@ -23,7 +23,17 @@ import re
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.todo']
+extensions = ['sphinx.ext.todo','sphinx.ext.extlinks']
+
+extlinks = { 
+    'wiki': ('http://docs.codehaus.org/display/GEOTOOLS/%s',''),
+    'website': ('http://geotools.org/%s',''),
+    'geoserver': ('http://docs.geoserver.org/latest/en/user/%s',''),
+    'developer': ('http://docs.geotools.org/latest/developer/%s',''),
+    'user': ('http://docs.geotools.org/latest/userguide/%s',''),
+    'geot': ('https://jira.codehaus.org/browse/GEOT-%s','GEOT-')
+}
+
 
 # Add any paths that contain templates here, relative to this directory.
 #templates_path = ['_templates']
@@ -42,7 +52,7 @@ exclude_patterns = ['**/.svn']
 
 # General information about the project.
 project = u'GeoTools'
-copyright = u'2014, GeoTools'
+copyright = u'2015, GeoTools'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

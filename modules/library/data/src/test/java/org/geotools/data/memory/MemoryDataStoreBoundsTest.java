@@ -21,6 +21,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -28,6 +29,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @author Frank Gasdorf, fgdrf@users.sourceforge.net
@@ -40,6 +42,7 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public class MemoryDataStoreBoundsTest extends DataTestCase {
     MemoryDataStore data;
+    ReferencedEnvelope riverBounds;
     
 	public MemoryDataStoreBoundsTest(String name) {
 		super(name);
@@ -53,8 +56,9 @@ public class MemoryDataStoreBoundsTest extends DataTestCase {
         data = new MemoryDataStore();
         data.addFeatures(roadFeatures);
         
-        SimpleFeatureType riverTypeWithCrs = SimpleFeatureTypeBuilder.retype(riverType, DefaultGeographicCRS.WGS84);
+        SimpleFeatureType riverTypeWithCrs = SimpleFeatureTypeBuilder.retype(riverType, CRS.decode("EPSG:4326"));
         data.addFeature(SimpleFeatureBuilder.retype(riverFeatures[0], riverTypeWithCrs));
+        riverBounds = new ReferencedEnvelope(riverFeatures[0].getBounds());
     }
 
     /*
@@ -82,21 +86,41 @@ public class MemoryDataStoreBoundsTest extends DataTestCase {
         ReferencedEnvelope envelope = data.getFeatureSource("road").getBounds(query);
         assertNull(envelope.getCoordinateReferenceSystem());
     }
-    /*
-     * TODO: Fix ContentDataStore to conform to Query reproject API
-     * This test case has been temporarily removed until this is fixed
-     * 
+
     public void testSetsEnvelopeCrsFromQuery() throws Exception {
         Query query = new Query(Query.ALL);
         query.setCoordinateSystem(DefaultEngineeringCRS.CARTESIAN_2D);
         ReferencedEnvelope envelope = data.getFeatureSource("river").getBounds(query);
         assertEquals(DefaultEngineeringCRS.CARTESIAN_2D, envelope.getCoordinateReferenceSystem());
+        assertEquals(new ReferencedEnvelope(riverBounds, DefaultEngineeringCRS.CARTESIAN_2D), envelope);
     }
-     */
+    
+    public void testReprojectEnvelopeCrsFromQuery() throws Exception {
+        Query query = new Query(Query.ALL);
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
+        CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:3005");
+        query.setCoordinateSystemReproject(targetCRS);
+        ReferencedEnvelope envelope = data.getFeatureSource("river").getBounds(query);
+        assertEquals(targetCRS, envelope.getCoordinateReferenceSystem());
+        assertEquals(new ReferencedEnvelope(riverBounds, sourceCRS).
+                transform(targetCRS, true), envelope);
+    }
+    
+    public void testSetReprojectEnvelopeCrsFromQuery() throws Exception {
+        Query query = new Query(Query.ALL);
+        query.setCoordinateSystem(DefaultEngineeringCRS.GENERIC_2D);
+        query.setCoordinateSystemReproject(DefaultEngineeringCRS.CARTESIAN_2D);
+        ReferencedEnvelope envelope = data.getFeatureSource("river").getBounds(query);
+        assertEquals(DefaultEngineeringCRS.CARTESIAN_2D, envelope.getCoordinateReferenceSystem());
+        assertEquals(new ReferencedEnvelope(riverBounds, DefaultEngineeringCRS.GENERIC_2D).
+                transform(DefaultEngineeringCRS.CARTESIAN_2D, true), envelope);
+    }
+
     public void testSetsEnvelopeCrsFromFeatureType() throws Exception {
         Query query = new Query(Query.ALL);
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
         ReferencedEnvelope envelope = data.getFeatureSource("river").getBounds(query);
-        assertEquals(DefaultGeographicCRS.WGS84, envelope.getCoordinateReferenceSystem());
+        assertEquals(sourceCRS, envelope.getCoordinateReferenceSystem());
     }
 
     public void testGetBoundsSupportsFeaturesWithoutGeometry() throws Exception {

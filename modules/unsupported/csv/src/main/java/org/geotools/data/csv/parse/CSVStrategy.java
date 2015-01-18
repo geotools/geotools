@@ -29,17 +29,30 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.csvreader.CsvReader;
-
+    // class definition start
 public abstract class CSVStrategy {
 	
     protected final CSVFileState csvFileState;
 
-    protected volatile SimpleFeatureType featureType;
-
     public CSVStrategy(CSVFileState csvFileState) {
         this.csvFileState = csvFileState;
-        featureType = null;
     }
+    
+    public CSVIterator iterator() throws IOException {
+        return new CSVIterator(csvFileState, this);
+    }
+
+    protected abstract SimpleFeatureType buildFeatureType();
+    
+    public abstract void createSchema(SimpleFeatureType featureType) throws IOException;
+
+    public abstract SimpleFeature decode(String recordId, String[] csvRecord);
+    
+    public abstract String[] encode(SimpleFeature feature);
+    // class definition end
+    
+    // featureType end
+    protected volatile SimpleFeatureType featureType = null;
 
     public SimpleFeatureType getFeatureType() {
         if (featureType == null) {
@@ -51,23 +64,12 @@ public abstract class CSVStrategy {
         }
         return featureType;
     }
-
-    public CSVIterator iterator() throws IOException {
-        return new CSVIterator(csvFileState, this);
-    }
-    
-    protected abstract SimpleFeatureType buildFeatureType();
-    
-    public abstract void createSchema(SimpleFeatureType featureType) throws IOException;
-
-    public abstract SimpleFeature decode(String recordId, String[] csvRecord);
-    
-    public abstract String[] encode(SimpleFeature feature);
-    
+    // featureType start
     /** 
      * Originally in a strategy support class - giving a chance to override them to
      * improve efficiency and utilize the different strategies
      */
+    // builder start
     public static SimpleFeatureTypeBuilder createBuilder(CSVFileState csvFileState) {
         CsvReader csvReader = null;
         Map<String, Class<?>> typesFromData = null;
@@ -100,7 +102,9 @@ public abstract class CSVStrategy {
         }
         return builder;
     }
-
+    // builder end
+    
+    // types start
     /** Performs a full file scan attempting to guess the type of each column */
     protected static Map<String, Class<?>> findMostSpecificTypesFromData(CsvReader csvReader,
             String[] headers) throws IOException {
@@ -149,4 +153,5 @@ public abstract class CSVStrategy {
     protected static boolean isNumeric(Class<?> clazz) {
         return clazz != null && (clazz == Double.class || clazz == Integer.class);
     }
+    // types end
 }

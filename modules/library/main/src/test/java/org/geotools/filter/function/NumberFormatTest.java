@@ -1,6 +1,7 @@
 package org.geotools.filter.function;
 
 import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import junit.framework.TestCase;
 
@@ -23,7 +24,7 @@ public class NumberFormatTest extends TestCase {
         Literal number = ff.literal("10.56789");
         
         Function f = ff.function("numberFormat", new Expression[]{pattern, number});
-        char ds = new DecimalFormatSymbols().getDecimalSeparator();
+        char ds = DecimalFormatSymbols.getInstance(Locale.ENGLISH).getDecimalSeparator();
         assertEquals("10" + ds + "57", f.evaluate(null , String.class));
     }
     
@@ -33,7 +34,7 @@ public class NumberFormatTest extends TestCase {
         Literal number = ff.literal("123456");
         
         Function f = ff.function("numberFormat", new Expression[]{pattern, number});
-        char gs = new DecimalFormatSymbols().getGroupingSeparator();
+        char gs = DecimalFormatSymbols.getInstance(Locale.ENGLISH).getGroupingSeparator();
         assertEquals("123" + gs + "456", f.evaluate(null , String.class));
     }
     

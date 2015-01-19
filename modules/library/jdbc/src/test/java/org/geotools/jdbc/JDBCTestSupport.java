@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,9 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureReader;
+import org.geotools.factory.FactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
@@ -60,13 +62,13 @@ import com.vividsolutions.jts.geom.Geometry;
 public abstract class JDBCTestSupport extends OnlineTestCase {
     static {
         // uncomment to turn up logging
-//                
+
 //        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
 //        handler.setLevel(java.util.logging.Level.FINE);
-//        
+
 //        org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").setLevel(java.util.logging.Level.FINE);
 //        org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
-//        
+
 //        org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(java.util.logging.Level.FINE);
 //        org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").addHandler(handler);
     }
@@ -74,12 +76,12 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     protected JDBCTestSetup setup;
     protected JDBCDataStore dataStore;
     protected SQLDialect dialect;
-    
+
     @Override
     protected Properties createOfflineFixture() {
         return createTestSetup().createOfflineFixture();
     }
-    
+
     @Override
     protected Properties createExampleFixture() {
         return createTestSetup().createExampleFixture();
@@ -94,26 +96,26 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     protected boolean isOnline() throws Exception {
         JDBCTestSetup setup = createTestSetup();
         setup.setFixture(fixture);
-        
+
         try {
             DataSource dataSource = setup.getDataSource();
             Connection cx = dataSource.getConnection();
             cx.close();
             return true;
-        } 
+        }
         catch (Throwable t) {
             throw new RuntimeException(t);
-        } 
+        }
         finally {
             try {
-                setup.tearDown();    
-            } 
+                setup.tearDown();
+            }
             catch(Exception e) {
                 System.out.println("Error occurred tearing down the test setup");
             }
         }
     }
-    
+
     @Override
     protected void connect() throws Exception {
         //create the test harness
@@ -133,10 +135,14 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         //create the dataStore
         //TODO: replace this with call to datastore factory
         HashMap params = createDataStoreFactoryParams();
-        
-        JDBCDataStoreFactory factory = setup.createDataStoreFactory();
-        dataStore = factory.createDataStore( params );
-        
+        params.putAll(fixture);
+        //JDBCDataStoreFactory factory = setup.createDataStoreFactory();
+        dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(params);
+        //dataStore = factory.createDataStore( params );
+        if(dataStore == null) {
+            JDBCDataStoreFactory factory = setup.createDataStoreFactory();
+            dataStore = factory.createDataStore( params );
+        }
         setup.setUpDataStore(dataStore);
         dialect = dataStore.getSQLDialect();
     }
@@ -144,18 +150,19 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     protected abstract JDBCTestSetup createTestSetup();
 
     protected HashMap createDataStoreFactoryParams() throws Exception{
-	HashMap params = new HashMap();
+        HashMap params = new HashMap();
         params.put( JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test" );
         params.put( JDBCDataStoreFactory.SCHEMA.key, "geotools" );
         params.put( JDBCDataStoreFactory.DATASOURCE.key, setup.getDataSource() );
         return params;
     }
 
+    @Override
     protected void disconnect() throws Exception {
         setup.tearDown();
         dataStore.dispose();
     }
-    
+
     /**
      * Returns the table name as the datastore understands it (some datastore are incapable of supporting
      * mixed case names for example)
@@ -163,7 +170,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     protected String tname( String raw ) {
         return setup.typeName( raw );
     }
-    
+
     /**
      * Returns the attribute name as the datastore understands it (some datastore are incapable of supporting
      * mixed case names for example)
@@ -171,7 +178,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     protected String aname( String raw ) {
         return setup.attributeName( raw );
     }
-    
+
     /**
      * Returns the attribute name as the datastore understands it (some datastore are incapable of supporting
      * mixed case names for example)
@@ -179,7 +186,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     protected Name aname( Name raw ) {
         return new NameImpl( raw.getNamespaceURI(), aname( raw.getLocalPart() ) );
     }
-    
+
     /**
      * Checkes the two feature types are equal, taking into consideration the eventual modification
      * the datastore had to perform in order to actually manage the type (change in names case, for example)
@@ -221,10 +228,10 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
             assertTrue( Geometry.class.isAssignableFrom( tactual.getBinding()));
         }
         else {
-            assertTrue(texpected.getBinding().isAssignableFrom(tactual.getBinding()));    
+            assertTrue(texpected.getBinding().isAssignableFrom(tactual.getBinding()));
         }
     }
-    
+
     protected void assertAttributeValuesEqual(Object expected, Object actual) {
         if (expected == null) {
             assertNull(actual);
@@ -238,31 +245,40 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
 
         assertEquals(expected, actual);
     }
-    
-    protected boolean areCRSEqual(CoordinateReferenceSystem crs1, CoordinateReferenceSystem crs2) {
-    	
-    	if (crs1==null && crs2==null)
-    		return true;
-    	
-    	if (crs1==null ) return false;
-    		
-    	return crs1.equals(crs2); 
-   	}
 
-	protected boolean areReferencedEnvelopesEuqal(ReferencedEnvelope e1, ReferencedEnvelope e2) {
-		
-		if (e1==null && e2 ==null) return true;
-		if (e1==null || e2 == null) return false;
-		
-		boolean equal = 
-			Math.round(e1.getMinX())==Math.round(e2.getMinX()) &&
-			Math.round(e1.getMinY())==Math.round(e2.getMinY()) &&
-			Math.round(e1.getMaxX())==Math.round(e2.getMaxX()) &&
-			Math.round(e1.getMaxY())==Math.round(e2.getMaxY());
-		
-		if (!equal) return false;
-		return areCRSEqual(e1.getCoordinateReferenceSystem(), e2.getCoordinateReferenceSystem());
-	}
+    protected boolean areCRSEqual(CoordinateReferenceSystem crs1, CoordinateReferenceSystem crs2) {
+
+        if (crs1==null && crs2==null) {
+            return true;
+        }
+
+        if (crs1==null ) {
+            return false;
+        }
+
+        return crs1.equals(crs2);
+    }
+
+    protected boolean areReferencedEnvelopesEuqal(ReferencedEnvelope e1, ReferencedEnvelope e2) {
+
+        if (e1==null && e2 ==null) {
+            return true;
+        }
+        if (e1==null || e2 == null) {
+            return false;
+        }
+
+        boolean equal =
+                Math.round(e1.getMinX())==Math.round(e2.getMinX()) &&
+                Math.round(e1.getMinY())==Math.round(e2.getMinY()) &&
+                Math.round(e1.getMaxX())==Math.round(e2.getMaxX()) &&
+                Math.round(e1.getMaxY())==Math.round(e2.getMaxY());
+
+        if (!equal) {
+            return false;
+        }
+        return areCRSEqual(e1.getCoordinateReferenceSystem(), e2.getCoordinateReferenceSystem());
+    }
 
     public static interface FeatureAssertion<F extends Feature> {
         int toIndex(F feature);
@@ -271,17 +287,17 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     public static interface SimpleFeatureAssertion extends FeatureAssertion<SimpleFeature>{}
 
     protected <FT extends FeatureType,F extends Feature>
-        void assertFeatureCollection(int startIndex,
-                                 int numberExpected,
-                                 FeatureCollection<FT,F> collection,
-                                 FeatureAssertion assertion) {
+    void assertFeatureCollection(int startIndex,
+            int numberExpected,
+            FeatureCollection<FT,F> collection,
+            FeatureAssertion assertion) {
         assertFeatureIterator(startIndex,numberExpected,collection.features(),assertion);
     }
     protected <F extends Feature>
-        void assertFeatureIterator(int startIndex,
-                                 int numberExpected,
-                                 FeatureIterator<F> iter,
-                                 FeatureAssertion assertion) {
+    void assertFeatureIterator(int startIndex,
+            int numberExpected,
+            FeatureIterator<F> iter,
+            FeatureAssertion assertion) {
         try {
             boolean[] loadedFeatures = new boolean[numberExpected];
             for (int j = startIndex; j < numberExpected+startIndex; j++) {
@@ -310,28 +326,32 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
 
     }
     protected <F extends Feature>
-        void assertFeatureIterator(int startIndex,
-                                 int numberExpected,
-                                 final Iterator<F> iterator,
-                                 FeatureAssertion assertion) {
+    void assertFeatureIterator(int startIndex,
+            int numberExpected,
+            final Iterator<F> iterator,
+            FeatureAssertion assertion) {
         FeatureIterator<F> adapter = new FeatureIterator<F>() {
+            @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
+            @Override
             public F next() {
                 return iterator.next();
             }
+            @Override
             public void close() {}
         };
         assertFeatureIterator(startIndex,numberExpected,adapter,assertion);
     }
     protected <FT extends FeatureType,F extends Feature>
-        void assertFeatureReader(int startIndex,
-                                 int numberExpected,
-                                 final FeatureReader<FT,F> reader,
-                                 FeatureAssertion assertion) throws IOException {
+    void assertFeatureReader(int startIndex,
+            int numberExpected,
+            final FeatureReader<FT,F> reader,
+            FeatureAssertion assertion) throws IOException {
         FeatureIterator<F> iter = new FeatureIterator<F>(){
 
+            @Override
             public boolean hasNext() {
                 try {
                     return reader.hasNext();
@@ -340,6 +360,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                 }
             }
 
+            @Override
             public F next() throws NoSuchElementException {
                 try {
                     return reader.next();
@@ -348,6 +369,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                 }
             }
 
+            @Override
             public void close() {
                 try {
                     reader.close();

@@ -52,24 +52,21 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
 
     @Override
     protected SimpleFeatureType buildFeatureType() {
-    	// sets up a builder with a good guess at attribtues and values
-    	// (based on trying to parse the first line of content to detect numbers, dates, etc...)
-        SimpleFeatureTypeBuilder builder = CSVStrategy.createBuilder(csvFileState);
-        String[] csvHeaders = csvFileState.getCSVHeaders();
-        List<String> headers = Arrays.asList(csvHeaders);
-        int index = headers.indexOf(wktField);
-        if(index != -1) {
-        	builder.remove(wktField);
-        	
-        	AttributeTypeBuilder builder2 = new AttributeTypeBuilder();
-        	builder2.setCRS(DefaultGeographicCRS.WGS84);
-        	builder2.binding(Geometry.class);       	
-        	AttributeDescriptor descriptior = builder2.buildDescriptor(wktField);
-			builder.add(index, descriptior);
+        // sets up a builder with a good guess at attribtues and values
+        // (based on trying to parse the first line of content to detect numbers, dates, etc...)
+        SimpleFeatureTypeBuilder featureBuilder = CSVStrategy.createBuilder(csvFileState);
+        AttributeDescriptor descriptor = featureBuilder.get(wktField);
+        if( descriptor != null ){
+            AttributeTypeBuilder attributeBuilder = new AttributeTypeBuilder();
+            attributeBuilder.init(descriptor);
+            attributeBuilder.setCRS(DefaultGeographicCRS.WGS84);
+            attributeBuilder.binding(Geometry.class);
+            
+            AttributeDescriptor modified = attributeBuilder.buildDescriptor(wktField);
+            featureBuilder.set(wktField,modified );
         }
-        return builder.buildFeatureType();
+        return featureBuilder.buildFeatureType();
     }
-    
     
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {

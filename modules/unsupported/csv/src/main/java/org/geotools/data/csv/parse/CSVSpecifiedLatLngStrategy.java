@@ -109,7 +109,7 @@ public class CSVSpecifiedLatLngStrategy extends CSVStrategy {
             header.add(this.latField);
             header.add(this.lngField);
         } else {
-            throw new IOException("Unable use LAT/LON to represent " + geometryDescrptor);
+            throw new IOException("Unable use '"+this.latField+"' / '"+this.lngField+"' to represent " + geometryDescrptor);
         }
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor)

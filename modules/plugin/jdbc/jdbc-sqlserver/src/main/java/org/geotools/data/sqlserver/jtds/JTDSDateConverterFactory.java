@@ -2,11 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
-<<<<<<< HEAD
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
-=======
  *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
->>>>>>> Squashed sqlserver-jtds commits and fixed headers
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public

@@ -47,6 +47,7 @@ import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
+import org.geotools.referencing.operation.projection.LambertAzimuthalEqualArea;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.PolarStereographic;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
@@ -1462,12 +1463,12 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
         }
         GeneralEnvelope generalEnvelope = toGeneralEnvelope(envelope);
         MapProjection sourceProjection = CRS.getMapProjection(sourceCRS);
-        if (sourceProjection instanceof PolarStereographic) {
-            PolarStereographic ps = (PolarStereographic) sourceProjection;
-            ParameterValue<?> fe = ps.getParameterValues().parameter(
+        if (sourceProjection instanceof PolarStereographic
+                || sourceProjection instanceof LambertAzimuthalEqualArea) {
+            ParameterValue<?> fe = sourceProjection.getParameterValues().parameter(
                     MapProjection.AbstractProvider.FALSE_EASTING.getName().getCode());
             double originX = fe.doubleValue();
-            ParameterValue<?> fn = ps.getParameterValues().parameter(
+            ParameterValue<?> fn = sourceProjection.getParameterValues().parameter(
                     MapProjection.AbstractProvider.FALSE_NORTHING.getName().getCode());
             double originY = fn.doubleValue();
             DirectPosition2D origin = new DirectPosition2D(originX, originY);

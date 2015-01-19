@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>app-schema-unsupported</artifactId>
-        <version>12-SNAPSHOT</version>
+        <version>12.2</version>
     </parent>
 
     <groupId>org.geotools</groupId>

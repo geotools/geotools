@@ -81,6 +81,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.Identifier;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.sqlite.Function;
 
@@ -401,7 +402,7 @@ public class GeoPackage {
                 try {
                     prepare(ps)
                         .set(srid)
-                        .set(crs.getName().toString())
+                        .set(auth + ":" + srid)
                         .set(auth)
                         .set(srid)
                         .set(crs.toWKT())
@@ -418,6 +419,41 @@ public class GeoPackage {
         catch(SQLException e) {
             throw new IOException(e);
         }
+    }
+
+    private CoordinateReferenceSystem getCRS(int srid) {
+        try {
+            Connection cx = connPool.getConnection();
+            try {
+                PreparedStatement ps = cx.prepareStatement(String.format(
+                        "SELECT definition FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS));
+                try {
+                    ResultSet rs = prepare(ps).set(srid).log(Level.FINE)
+                            .statement().executeQuery();
+                    try {
+                        if (rs.next()) {
+                            try {
+                                return CRS.parseWKT(rs.getString("definition"));
+                            } catch (FactoryException e) {
+                                LOGGER.log(Level.FINE, "Error parsing CRS definitions!", e);
+                            }
+                        }
+                    } finally {
+                        close(rs);
+                    }
+                }
+                finally {
+                    close(ps);
+                }
+            }
+            finally {
+                close(cx);
+            }
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     /**
@@ -788,11 +824,10 @@ public class GeoPackage {
             sb.append(", last_change");
             vals.append(",?");
         }
-        if (e.getBounds() != null) {
-            sb.append(", min_x, min_y, max_x, max_y");
-            vals.append(",?,?,?,?");
-        }
-        
+
+        sb.append(", min_x, min_y, max_x, max_y");
+        vals.append(",?,?,?,?");
+
         if (e.getSrid() != null) {
             sb.append(", srs_id");
             vals.append(",?");
@@ -819,6 +854,24 @@ public class GeoPackage {
                         .set(e.getBounds().getMinY())
                         .set(e.getBounds().getMaxX())
                         .set(e.getBounds().getMaxY());
+                } else {
+                    double minx = 0;
+                    double miny = 0;
+                    double maxx = 0;
+                    double maxy = 0;
+                    if (e.getSrid() != null) {
+                        CoordinateReferenceSystem crs = getCRS(e.getSrid());
+                        if (crs != null) {
+                            org.opengis.geometry.Envelope env = CRS.getEnvelope(crs);
+                            if (env != null) {
+                                minx = env.getMinimum(0);
+                                miny = env.getMinimum(1);
+                                maxx = env.getMaximum(0);
+                                maxy = env.getMaximum(1);
+                            }
+                        }
+                    }
+                    psb.set(minx).set(miny).set(maxx).set(maxy);
                 }
                 if (e.getSrid() != null) {
                     psb.set(e.getSrid());

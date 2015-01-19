@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -575,7 +575,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
             PreGeneralizedDataStore ds = getDataStore(configName);
 
             SimpleFeatureSource fs = ds.getFeatureSource("GenStreams");
-            assertEquals(pureShapefile, fs.getQueryCapabilities().isOffsetSupported());
+            assertTrue(fs.getQueryCapabilities().isOffsetSupported());
             assertTrue(fs.getQueryCapabilities().isReliableFIDSupported());
 
             PropertyName propertyName = new PropertyName() {
@@ -602,7 +602,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
             };
 
             SortOrder so = SortOrder.valueOf("CAT_ID");
-            assertEquals(pureShapefile, fs.getQueryCapabilities().supportsSorting(
+            assertTrue(fs.getQueryCapabilities().supportsSorting(
                     new SortBy[] { new SortByImpl(propertyName, so) }));
 
             ds.dispose();

@@ -38,7 +38,7 @@ public class ComparisonOperatorTypeImpl extends EObjectImpl implements Compariso
      * @generated
      * @ordered
      */
-    protected static final Object NAME_EDEFAULT = null;
+    protected static final String NAME_EDEFAULT = null;
 
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -74,8 +74,8 @@ public class ComparisonOperatorTypeImpl extends EObjectImpl implements Compariso
      * <!-- end-user-doc -->
      * @generated
      */
-    public Object getName() {
-        return name;
+    public String getName() {
+        return name == null ? null : name.toString();
     }
 
     /**
@@ -83,7 +83,7 @@ public class ComparisonOperatorTypeImpl extends EObjectImpl implements Compariso
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setName(Object newName) {
+    public void setName(String newName) {
         Object oldName = name;
         name = newName;
         if (eNotificationRequired())
@@ -113,7 +113,7 @@ public class ComparisonOperatorTypeImpl extends EObjectImpl implements Compariso
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Fes20Package.COMPARISON_OPERATOR_TYPE__NAME:
-                setName(newValue);
+                setName(newValue.toString());
                 return;
         }
         super.eSet(featureID, newValue);

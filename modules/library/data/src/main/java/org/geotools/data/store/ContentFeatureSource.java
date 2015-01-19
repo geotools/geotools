@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -45,12 +45,14 @@ import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.TransactionStateDiff;
+import org.geotools.data.crs.ForceCoordinateSystemFeatureReader;
 import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.function.Collection_AverageFunction;
 import org.geotools.filter.function.Collection_BoundsFunction;
@@ -425,6 +427,35 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         } else {
             bounds = getBoundsInternal(query);
         }
+        // reprojection
+        if ( !canReproject() ) {
+            CoordinateReferenceSystem sourceCRS = query.getCoordinateSystem();
+            CoordinateReferenceSystem targetCRS = query.getCoordinateSystemReproject();
+            CoordinateReferenceSystem nativeCRS = getSchema().getCoordinateReferenceSystem();
+            
+            if (sourceCRS != null && !sourceCRS.equals(nativeCRS)) {
+                //override native crs
+                bounds = new ReferencedEnvelope(bounds, sourceCRS);
+            } else {
+                //no override
+                sourceCRS = nativeCRS;
+            }
+            if (targetCRS != null) {
+                
+                if(sourceCRS == null) {
+                    throw new IOException("Cannot reproject data, the source CRS is not available");
+                } else if(!sourceCRS.equals(targetCRS)) {
+                    try {
+                        bounds = bounds.transform(targetCRS, true);
+                    } catch (Exception e) {
+                        if(e instanceof IOException)
+                            throw (IOException) e;
+                        else
+                            throw (IOException) new IOException("Error occurred trying to reproject data").initCause(e);
+                    }
+                }
+            }    
+        }
         
         return bounds;
     }
@@ -637,12 +668,25 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         
         // reprojection
         if ( !canReproject() ) {
+            CoordinateReferenceSystem sourceCRS = query.getCoordinateSystem();
             CoordinateReferenceSystem targetCRS = query.getCoordinateSystemReproject();
+            CoordinateReferenceSystem nativeCRS = reader.getFeatureType().getCoordinateReferenceSystem();
+            
+            if (sourceCRS != null && !sourceCRS.equals(nativeCRS)) {
+                //override the nativeCRS
+                try {
+                    reader = new ForceCoordinateSystemFeatureReader(reader, sourceCRS);
+                } catch (SchemaException e) {
+                    throw (IOException) new IOException("Error occurred trying to force CRS").initCause(e);
+                }
+            } else {
+                //no override
+                sourceCRS = nativeCRS;
+            }
             if (targetCRS != null) {
-                CoordinateReferenceSystem nativeCRS = reader.getFeatureType().getCoordinateReferenceSystem();
-                if(nativeCRS == null) {
+                if(sourceCRS == null) {
                     throw new IOException("Cannot reproject data, the source CRS is not available");
-                } else if(!nativeCRS.equals(targetCRS)) {
+                } else if(!sourceCRS.equals(targetCRS)) {
                     try {
                         reader = new ReprojectFeatureReader(reader, targetCRS);
                     } catch (Exception e) {
@@ -779,7 +823,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     protected abstract  FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal( Query query ) throws IOException;
     
     /**
-     * Determines if the datastore can natively perform reprojection..
+     * Determines if the datastore can natively perform reprojection.
      * <p>
      * If the subclass can handle reprojection natively then it should override
      * this method to return <code>true</code>. In this case it <b>must</b> do 
@@ -788,8 +832,17 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * <p>
      * Not overriding this method or returning <code>false</code> will case the
      * feature reader created by the subclass to be wrapped in a reprojecting 
-     * decorator when the query specifies a coordinate system reproject.
+     * decorator when the query specifies a coordinate system reproject (using crs and crsReproject)
      * </p>
+     * <p>
+     * To handle reprojection an implementation should:
+     * <ul>
+     * <li>{@link Query#getCoordinateSystem()} - optional override - if provided this is used instead of the 
+     * native CRS provided by the data format (as a workaround for clients).
+     * <li><@link {@link Query#getCoordinateSystemReproject()} - if this value is provided it is used
+     * to set up a transform from the origional CRS (native or from query).
+     * </ul>
+     * 
      * @see ReprojectFeatureReader
      */
     protected boolean canReproject() {

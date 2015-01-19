@@ -65,6 +65,9 @@ public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, 
 
             return current;
         }
+        if (writer == null) {
+            throw new IOException("FeatureWriter has been closed");
+        }
             // FilteringFeatureWriter Does not support the creation
             // of new content
             throw new NoSuchElementException(

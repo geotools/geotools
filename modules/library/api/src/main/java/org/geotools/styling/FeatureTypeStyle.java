@@ -80,6 +80,52 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
      */
     public static String VALUE_EVALUATION_MODE_FIRST = "first";
 
+    /**
+     * Applies a color composition/blending operation at the feature type style level (that is,
+     * blending the current FTS level against the map below it).
+     * <p>
+     * The syntax for this key is {code}<VendorOption
+     * name="composite">name[,opacity]</VendorOption>{code} where:
+     * <ul>
+     * <li>{code}name is one of the <a href="http://www.w3.org/TR/compositing-1/">SVG composition
+     * operations</a>, in particular, copy, destination, source-over, destination-over, source-in,
+     * destination-in, source-out, destination-out, source-atop, destination-atop, xor, multiply,
+     * screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light,
+     * difference, exclusion</li>
+     * <li>{opacity} indicates the opacity level to be used during the operation, defauls to 1</li>
+     * </ul>
+     * For example:
+     * <ul>
+     * <li>{code}<VendorOption name="composite">source-atop, 0.5</VendorOption>{code} composes the
+     * current FTS exclusively where the previous map has already been drawn, using a 0.5 opacity
+     * level</li>
+     * <li>{code}<VendorOption name="composite">multiply</VendorOption>{code} blends the current FTS
+     * with the underlying map using color multiplication</li>
+     * </ul>
+     * 
+     * <p>
+     * The same vendor option can also be applied at the symbolizer level to achieve different
+     * effects (feature by feature composition as oppose to layer by layer one).
+     * </p>
+     * 
+     * <p>
+     * Important note: for most compositing operation to work properly, the graphics used for the
+     * rendering should be derived from an image that has an alpha channel and transparent
+     * background (as most of the operations consider the transparency of the target surface in
+     * their math)
+     * </p>
+     */
+    public static String COMPOSITE = "composite";
+
+    /**
+     * Boolean value, if true the current feature type style will be treated as a base for the
+     * subsequent feature type styles in the rendering stack (including other layer ones) as opposed
+     * to use the merged backdrop rendered so far. When the top of the stack is reached, or another
+     * base is found, this FTS will be merged into the backdrop, eventually using the indicated
+     * composite operator
+     */
+    public static String COMPOSITE_BASE = "composite-base";
+
 
     void setName(String name);
 

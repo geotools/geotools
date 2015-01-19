@@ -28,6 +28,7 @@ Core Features
 * A stateless, low memory renderer, particularly useful in server-side environments.
   
   * compose and display maps with complex styling
+  * vendor extensions for fine control of text labels and color blending
 
 * Powerful *schema asisted* parsing technology using XML Schema to bind to GML content
   

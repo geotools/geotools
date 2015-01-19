@@ -410,7 +410,9 @@ public class AbstractStyleVisitor implements StyleVisitor {
             cs.getGrayChannel().accept(this);
         }
         for (SelectedChannelType ch : cs.getRGBChannels()) {
-            ch.accept(this);
+            if (ch != null) {
+                ch.accept(this);
+            }
         }
     }
 

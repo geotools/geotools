@@ -73,7 +73,7 @@ public class PropertyFeatureWriter implements
     // hasNext start
     public boolean hasNext() throws IOException {
         if (writer == null) {
-            throw new IOException("Writer has been closed");
+            return false; //writer has been closed
         }
         if (live != null && origional != null) {
             // we have returned something to the user,

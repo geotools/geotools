@@ -19,6 +19,7 @@ package org.geotools.renderer.lite;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.RenderingHints;
@@ -46,6 +47,7 @@ import org.geotools.renderer.style.GraphicStyle2D;
 import org.geotools.renderer.style.IconStyle2D;
 import org.geotools.renderer.style.LineStyle2D;
 import org.geotools.renderer.style.MarkStyle2D;
+import org.geotools.renderer.style.PointStyle2D;
 import org.geotools.renderer.style.PolygonStyle2D;
 import org.geotools.renderer.style.Style2D;
 import org.opengis.filter.expression.Literal;
@@ -223,7 +225,7 @@ public final class StyledShapePainter {
             while (!(iter.isDone())) {
                 if (iter.currentSegment(coords) != PathIterator.SEG_MOVETO) {
                     renderImage(graphics, coords[0], coords[1], dx, dy, image, gs2d.getRotation(),
-                            gs2d.getOpacity(), isLabelObstacle);
+                            gs2d.getComposite(), isLabelObstacle);
                 }
                 iter.next();
             }
@@ -351,6 +353,8 @@ public final class StyledShapePainter {
                 // Note: Converting to Radians here due to direct use of SLD Expressions which uses degrees
                 double rotation = Math.toRadians( ((Literal)legend.getRotation()).evaluate(null,  Double.class));
                 float opacity = ((Literal)legend.getOpacity()).evaluate(null,  Float.class);
+                AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                        opacity);
 
                 ExternalGraphic graphic = (ExternalGraphic) symbol;
 
@@ -369,12 +373,13 @@ public final class StyledShapePainter {
                             g.dispose();
                             image = rescaled;
                         }
+
                         renderImage(graphics, coords[0], coords[1], -image.getWidth() / 2.0,
                                 -image.getHeight() / 2.0,
                                 // Doesn't seem to work with SVGs
                                 // Looking at the SLDStyleFactory, they get the icon from an
                                 // ExternalGraphicFactory. 
-                                image, rotation, opacity, isLabelObstacle);
+                                image, rotation, composite, isLabelObstacle);
                     } catch (IOException ex) {
                             Logger.getLogger(StyledShapePainter.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -449,6 +454,10 @@ public final class StyledShapePainter {
             GraphicStyle2D gs = (GraphicStyle2D) graphicStroke;
             imageSize = gs.getImage().getWidth() - gs.getBorder();
             graphicRotation = ((GraphicStyle2D) graphicStroke).getRotation();
+        }
+        Composite composite = ((PointStyle2D) graphicStroke).getComposite();
+        if (composite == null) {
+            composite = AlphaComposite.SrcOver;
         }
 
         double[] first = new double[2];
@@ -536,7 +545,7 @@ public final class StyledShapePainter {
     
                     for (dist = remainder; dist < len; dist += imageSize) {
                         renderGraphicsStroke(graphics, x, y, graphicStroke, rotation,
-                                graphicRotation, 1, isLabelObstacle);
+                                graphicRotation, composite, isLabelObstacle);
                         
                         x += dx;
                         y += dy;
@@ -572,10 +581,10 @@ public final class StyledShapePainter {
      * @param dy TODO
      * @param image image to draw
      * @param rotation the image rotation in radians
-     * @param opacity opacity between 0.0 and 1.0
+     * @param composite the alpha blending/composition operator
      */
     private void renderImage(Graphics2D graphics, double x, double y, double dx, double dy,
-            BufferedImage image, double rotation, float opacity, boolean isLabelObstacle) {
+            BufferedImage image, double rotation, Composite composite, boolean isLabelObstacle) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("drawing Image @" + x + "," + y);
         }
@@ -598,8 +607,7 @@ public final class StyledShapePainter {
             labelCache.put(new Rectangle2D.Double(x + dx, y + dy, w, h));
         }
         
-        graphics.setComposite(AlphaComposite.getInstance(
-                AlphaComposite.SRC_OVER, opacity));
+        graphics.setComposite(composite);
 
         Object interpolation = graphics
                 .getRenderingHint(RenderingHints.KEY_INTERPOLATION);
@@ -617,19 +625,19 @@ public final class StyledShapePainter {
     }
     
     private void renderGraphicsStroke(Graphics2D graphics, double x, double y, Style2D style,
-            double rotation, double graphicRotation, float opacity, boolean isLabelObstacle) {
+            double rotation, double graphicRotation, Composite composite, boolean isLabelObstacle) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("drawing GraphicsStroke@" + x + "," + y);
         }
         
-        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+        graphics.setComposite(composite);
         
         if(style instanceof GraphicStyle2D) {
             GraphicStyle2D gstyle = (GraphicStyle2D) style;
             BufferedImage image = gstyle.getImage();
             double dx = -image.getWidth() * gstyle.getAnchorPointX() + gstyle.getDisplacementX();
             double dy = -image.getHeight() * gstyle.getAnchorPointY() + gstyle.getDisplacementY();
-            renderImage(graphics, x, y, dx, dy, image, rotation, opacity, isLabelObstacle);
+            renderImage(graphics, x, y, dx, dy, image, rotation, composite, isLabelObstacle);
         } else if(style instanceof MarkStyle2D) {
             // almost like the code in the main paint method, but 
             // here we don't use the mark composite

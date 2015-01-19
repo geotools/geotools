@@ -37,11 +37,13 @@ SnapFunction
    new new FunctionNameImpl("snap", "point", "line") as part of the getFunctionNames() method.
    This has the advantage of avoiding loading SnapFunction until a user requests it by name.
 
-7. We can now register our factory.
-
-   Create the file:
+7. We can now register our factory by adding a file to our jar under :file:`META-INF/services/`.
    
-   * META_INF/services/org.geotools.filter.FunctionFactory
+   Create the following file for inclusion in your jar::
+   
+   * src/main/resources/META-INF/services/org.geotools.filter.FunctionFactory
+   
+   Maven collections the contents of :file:`src/main/resources` into our jar,
 
 8. Fill in the following contents (one implementation class per line)::
    

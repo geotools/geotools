@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.style;
 
+import java.awt.Composite;
 
 /**
  * A point style can be used to depict a point, or can be repeated along a line or inside a fill.
@@ -25,7 +26,7 @@ package org.geotools.renderer.style;
  * @author Andrea Aime - GeoSolutions
  *
  */
-interface PointStyle2D {
+public interface PointStyle2D {
 
     /**
      * The point symbol rotation, in radians.
@@ -76,5 +77,17 @@ interface PointStyle2D {
      * Sets the point symbol y anchor, between 0 and 1
      */
     public void setAnchorPointY(float anchorPointY);
+
+    /**
+     * Returns the composite for this point symbol
+     * 
+     * @return
+     */
+    public Composite getComposite();
+
+    /**
+     * Sets the composite for this point symbol
+     */
+    public void setComposite(Composite composite);
 
 }

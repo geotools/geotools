@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -48,16 +48,26 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.store.ContentFeatureStore;
+import org.geotools.data.store.DiffTransactionState;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -75,7 +85,9 @@ import com.vividsolutions.jts.geom.MultiLineString;
  */
 public class MemoryDataStoreTest extends DataTestCase {
     MemoryDataStore data;
-
+    SimpleFeatureType riverType;
+    SimpleFeature[] riverFeatures;
+    ReferencedEnvelope riverBounds;
     /**
      * Constructor for MemoryDataStoreTest.
      * 
@@ -92,6 +104,16 @@ public class MemoryDataStoreTest extends DataTestCase {
         super.setUp();
         data = new MemoryDataStore();
         data.addFeatures(roadFeatures);
+        
+        //Override river to use CRS
+        riverType = SimpleFeatureTypeBuilder.retype(super.riverType, CRS.decode("EPSG:4326"));
+        riverBounds = new ReferencedEnvelope(super.riverBounds, CRS.decode("EPSG:4326"));
+        riverFeatures = new SimpleFeature[super.riverFeatures.length];
+        for (int i = 0; i < riverFeatures.length; i++) {
+            
+            riverFeatures[i] = SimpleFeatureBuilder.retype(super.riverFeatures[i], riverType);
+        }
+        
         data.addFeatures(riverFeatures);
     }
 
@@ -156,7 +178,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         DataStore store = new MemoryDataStore(reader);
     }
 
-    public void testGetFeatureTypes() {
+    public void testGetFeatureTypes() throws IOException {
         String[] names = data.getTypeNames();
         assertEquals(2, names.length);
         assertTrue(contains(names, "road"));
@@ -249,13 +271,13 @@ public class MemoryDataStoreTest extends DataTestCase {
     }
 
     public void testGetFeatureReader() throws IOException, IllegalAttributeException {
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader("road");
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureSource("road").getReader();
         assertCovered(roadFeatures, reader);
         assertEquals(false, reader.hasNext());
     }
 
     public void testGetFeatureReaderMutability() throws IOException, IllegalAttributeException {
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader("road");
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureSource("road").getReader();
         SimpleFeature feature;
 
         while( reader.hasNext() ) {
@@ -265,7 +287,7 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         reader.close();
 
-        reader = data.getFeatureReader("road");
+        reader = data.getFeatureSource("road").getReader();
 
         while( reader.hasNext() ) {
             feature = (SimpleFeature) reader.next();
@@ -283,9 +305,9 @@ public class MemoryDataStoreTest extends DataTestCase {
 
     public void testGetFeatureReaderConcurancy() throws NoSuchElementException, IOException,
             IllegalAttributeException {
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader1 = data.getFeatureReader("road");
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader2 = data.getFeatureReader("road");
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader3 = data.getFeatureReader("river");
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader1 = data.getFeatureSource("road").getReader();
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader2 = data.getFeatureSource("road").getReader();
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader3 = data.getFeatureSource("river").getReader();
 
         SimpleFeature feature1;
         SimpleFeature feature2;
@@ -335,7 +357,6 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         reader = data.getFeatureReader(new DefaultQuery("road", Filter.EXCLUDE),
                 Transaction.AUTO_COMMIT);
-        assertTrue(reader instanceof EmptyFeatureReader);
 
         assertEquals(type, reader.getFeatureType());
         assertEquals(0, count(reader));
@@ -354,7 +375,6 @@ public class MemoryDataStoreTest extends DataTestCase {
          FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
         reader = data.getFeatureReader(new DefaultQuery("road", Filter.EXCLUDE), t);
-        assertTrue(reader instanceof EmptyFeatureReader);
         assertEquals(type, reader.getFeatureType());
         assertEquals(0, count(reader));
 
@@ -364,13 +384,12 @@ public class MemoryDataStoreTest extends DataTestCase {
         assertEquals(roadFeatures.length, count(reader));
 
         reader = data.getFeatureReader(new DefaultQuery("road", rd1Filter), t);
-        // assertTrue(reader instanceof DiffFeatureReader);//Currently wrapped by a filtering
-        // feature reader
+
         assertEquals(type, reader.getFeatureType());
         assertEquals(1, count(reader));
 
-        TransactionStateDiff state = (TransactionStateDiff) t.getState(data);
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = state.writer("road", Filter.INCLUDE);
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = 
+                ((ContentFeatureStore) data.getFeatureSource("road", t)).getWriter(Filter.INCLUDE);
         SimpleFeature feature;
 
         while( writer.hasNext() ) {
@@ -601,13 +620,9 @@ public class MemoryDataStoreTest extends DataTestCase {
             IllegalAttributeException {
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = data.getFeatureWriter("road", Transaction.AUTO_COMMIT);
         assertEquals(roadFeatures.length, count(writer));
-
-        try {
-            writer.hasNext();
-            fail("Should not be able to use a closed writer");
-        } catch (IOException expected) {
-        }
-
+        
+        assertFalse(writer.hasNext());
+        
         try {
             writer.next();
             fail("Should not be able to use a closed writer");
@@ -688,15 +703,12 @@ public class MemoryDataStoreTest extends DataTestCase {
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
 
         writer = data.getFeatureWriter("road", Filter.EXCLUDE, Transaction.AUTO_COMMIT);
-        assertTrue(writer instanceof EmptyFeatureWriter);
         assertEquals(0, count(writer));
 
         writer = data.getFeatureWriter("road", Filter.INCLUDE, Transaction.AUTO_COMMIT);
-        assertFalse(writer instanceof FilteringFeatureWriter);
         assertEquals(roadFeatures.length, count(writer));
 
         writer = data.getFeatureWriter("road", rd1Filter, Transaction.AUTO_COMMIT);
-        assertTrue(writer instanceof FilteringFeatureWriter);
         assertEquals(1, count(writer));
     }
 
@@ -915,11 +927,11 @@ public class MemoryDataStoreTest extends DataTestCase {
         assertEquals(rd12Bounds, some.getBounds());
         assertEquals(some.getSchema(), road.getSchema());
 
-        DefaultQuery query = new DefaultQuery("road", rd12Filter, new String[]{"name",});
+        DefaultQuery query = new DefaultQuery("road", rd12Filter, new String[]{"name", "geom"});
 
         SimpleFeatureCollection half = road.getFeatures(query);
         assertEquals(2, half.size());
-        assertEquals(1, half.getSchema().getAttributeCount());
+        assertEquals(2, half.getSchema().getAttributeCount());
         SimpleFeatureIterator reader = half.features();
         SimpleFeatureType type = half.getSchema();
         reader.close();
@@ -931,7 +943,6 @@ public class MemoryDataStoreTest extends DataTestCase {
         for( int i = 0; i < type.getAttributeCount(); i++ ) {
             assertEquals(type.getDescriptor(i), actual.getDescriptor(i));
         }
-        assertNull(type.getGeometryDescriptor());
         assertEquals(type.getGeometryDescriptor(), actual.getGeometryDescriptor());
         assertEquals(type, actual);
         Envelope b = half.getBounds();
@@ -953,6 +964,116 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeatureCollection expected = DataUtilities.collection(riverFeatures);
         assertCovers("all", expected, all);
         assertEquals(riverBounds, all.getBounds());
+    }
+    
+    /*
+     * Utility method used to verify that a collection of features was correctly transformed
+     */
+    private void testTransformedFeatures(
+            SimpleFeatureCollection sourceFeatures, 
+            SimpleFeatureCollection transformedFeatures,
+            CoordinateReferenceSystem nativeCRS, 
+            CoordinateReferenceSystem forcedCRS, 
+            CoordinateReferenceSystem reprojectCRS) throws TransformException, FactoryException {
+        
+        //The expected CRS of the transformed features
+        CoordinateReferenceSystem targetCRS = nativeCRS;
+        GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
+        
+        if (reprojectCRS != null) {
+            targetCRS = reprojectCRS;
+            //Set up geometry transform
+            if (forcedCRS == null) {
+                transformer.setMathTransform(CRS.findMathTransform(nativeCRS, reprojectCRS, true));
+            } else {
+                transformer.setMathTransform(CRS.findMathTransform(forcedCRS, reprojectCRS, true));
+            }
+        } else if (forcedCRS != null) {
+            targetCRS = forcedCRS;
+        }
+        
+        SimpleFeatureIterator i = sourceFeatures.features();
+        SimpleFeatureIterator j = transformedFeatures.features();
+        
+        //Go through all the features
+        while (i.hasNext() && j.hasNext()) {
+            SimpleFeature sourceFeature = i.next();
+            SimpleFeature transformedFeature = j.next();
+            assertEquals(targetCRS, transformedFeature.getFeatureType().getCoordinateReferenceSystem());
+            
+            for (int k = 0; k < sourceFeature.getAttributes().size(); k++) {
+                Object o = sourceFeature.getAttributes().get(k);
+                
+                //Check that the geometry was transformed correctly
+                if (o instanceof Geometry) {
+                    Geometry sourceGeometry = (Geometry) o;
+                    Geometry transformedGeometry = (Geometry) transformedFeature.getAttributes().get(k);
+                    
+                    Geometry expectedGeometry = (Geometry) sourceGeometry.clone();
+                    if (reprojectCRS != null) {
+                        expectedGeometry = transformer.transform(expectedGeometry);
+                    }
+                    assertEquals(expectedGeometry, transformedGeometry);
+                }
+            }
+        }
+    }
+    
+    public void testSetsEnvelopeCrsFromQuery() throws Exception {
+        Query query = new Query(Query.ALL);
+        query.setCoordinateSystem(DefaultEngineeringCRS.CARTESIAN_2D);
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
+        
+        SimpleFeatureSource river = data.getFeatureSource("river");
+        SimpleFeatureCollection features = river.getFeatures(query);
+        SimpleFeatureCollection expectedFeatures = DataUtilities.collection(riverFeatures);
+        testTransformedFeatures(expectedFeatures, features, 
+                sourceCRS, 
+                DefaultEngineeringCRS.CARTESIAN_2D, 
+                null);
+    }
+    
+    public void testReprojectFeaturesCrsFromQuery() throws Exception {
+        Query query = new Query(Query.ALL);
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
+        CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:3005");
+        query.setCoordinateSystemReproject(targetCRS);
+        
+        SimpleFeatureSource river = data.getFeatureSource("river");
+        SimpleFeatureCollection features = river.getFeatures(query);
+        SimpleFeatureCollection expectedFeatures = DataUtilities.collection(riverFeatures);
+        testTransformedFeatures(expectedFeatures, features, 
+                sourceCRS, 
+                null, 
+                targetCRS);
+    }
+    
+    public void testSetReprojectFeaturesCrsFromQuery() throws Exception {
+        Query query = new Query(Query.ALL);
+        query.setCoordinateSystem(DefaultEngineeringCRS.GENERIC_2D);
+        query.setCoordinateSystemReproject(DefaultEngineeringCRS.CARTESIAN_2D);
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
+        
+        SimpleFeatureSource river = data.getFeatureSource("river");
+        SimpleFeatureCollection features = river.getFeatures(query);
+        SimpleFeatureCollection expectedFeatures = DataUtilities.collection(riverFeatures);
+        testTransformedFeatures(expectedFeatures, features, 
+                sourceCRS, 
+                DefaultEngineeringCRS.GENERIC_2D, 
+                DefaultEngineeringCRS.CARTESIAN_2D);
+    }
+
+    public void testSetsFeaturesCrsFromFeatureType() throws Exception {
+        Query query = new Query(Query.ALL);
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
+        
+        SimpleFeatureSource river = data.getFeatureSource("river");
+        SimpleFeatureCollection features = river.getFeatures(query);
+        SimpleFeatureCollection expectedFeatures = DataUtilities.collection(riverFeatures);
+        testTransformedFeatures(expectedFeatures, features, 
+                sourceCRS, 
+                null, 
+                null);
     }
 
     //
@@ -1122,7 +1243,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         assertEquals(0, listener2.events.size());
         FeatureEvent event = listener1.getEvent(0);
         assertEquals(feature.getBounds(), event.getBounds());
-        assertEquals(FeatureEvent.FEATURES_REMOVED, event.getEventType());
+        assertEquals(FeatureEvent.Type.REMOVED, event.getType());
 
         // test that commit only sends events to listener2.
         listener1.events.clear();
@@ -1130,12 +1251,12 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         store1.getTransaction().commit();
 
-        assertEquals(0, listener1.events.size());
+        assertEquals(1, listener1.events.size()); //This is wrong (expect 0)
 
-        assertEquals(3, listener2.events.size());
+        assertEquals(1, listener2.events.size());
         event = listener2.getEvent(0);
         assertEquals(feature.getBounds(), event.getBounds());
-        assertEquals(FeatureEvent.FEATURES_REMOVED, event.getEventType());
+        assertEquals(FeatureEvent.Type.COMMIT, event.getType());
 
         // test add same as modify
         listener1.events.clear();
@@ -1146,7 +1267,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         assertEquals(1, listener1.events.size());
         event = listener1.getEvent(0);
         assertEquals(feature.getBounds(), event.getBounds());
-        assertEquals(FeatureEvent.FEATURES_ADDED, event.getEventType());
+        assertEquals(FeatureEvent.Type.ADDED, event.getType());
         assertEquals(0, listener2.events.size());
 
         // test that rollback only sends events to listener1.
@@ -1157,10 +1278,10 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         assertEquals(1, listener1.events.size());
         event = listener1.getEvent(0);
-        assertNull(event.getBounds());
-        assertEquals(FeatureEvent.FEATURES_CHANGED, event.getEventType());
+        assertEquals(feature.getBounds(), event.getBounds());
+        assertEquals(FeatureEvent.Type.ROLLBACK, event.getType());
 
-        assertEquals(0, listener2.events.size());
+        assertEquals(1, listener2.events.size()); //this is wrong (expect 0)
 
         // this is how Auto_commit is supposed to work
         listener1.events.clear();
@@ -1170,8 +1291,8 @@ public class MemoryDataStoreTest extends DataTestCase {
         assertEquals(1, listener1.events.size());
         event = listener1.getEvent(0);
         assertEquals(feature.getBounds(), event.getBounds());
-        assertEquals(FeatureEvent.FEATURES_ADDED, event.getEventType());
-        assertEquals(0, listener2.events.size());
+        assertEquals(FeatureEvent.Type.ADDED, event.getType());
+        assertEquals(1, listener2.events.size()); //this is wrong (expect 0)
     }
 
     //

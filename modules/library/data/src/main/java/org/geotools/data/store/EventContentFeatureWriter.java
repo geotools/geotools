@@ -93,6 +93,9 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
      * @see org.geotools.data.FeatureWriter#next()
      */
     public SimpleFeature next() throws IOException {
+        if (writer == null) {
+            throw new IOException("FeatureWriter has been closed");
+        }
         feature = writer.next();
         return feature;
     }
@@ -101,6 +104,9 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
      * @see org.geotools.data.FeatureWriter#remove()
      */
     public void remove() throws IOException {
+        if (writer == null) {
+            throw new IOException("FeatureWriter has been closed");
+        }
         state.fireFeatureRemoved(store, feature);
         writer.remove();
     }
@@ -113,6 +119,9 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
      * @see org.geotools.data.FeatureWriter#write()
      */
     public void write() throws IOException {
+        if (writer == null) {
+            throw new IOException("FeatureWriter has been closed");
+        }
         writer.write();
         if (feature == null) {
             throw new IOException("No feature available to write");
@@ -134,6 +143,9 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
      * @see org.geotools.data.FeatureWriter#hasNext()
      */
     public boolean hasNext() throws IOException {
+        if (writer == null) {
+            return false;
+        }
         return writer.hasNext();
     }
 

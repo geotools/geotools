@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -749,9 +749,7 @@ public class Query {
     }
     
     /**
-     * Get the coordinate system that applies to features retrieved by this Query.
-     * By default this is the coordinate system of the features in the data source
-     * but this can be overriden via {@linkplain #setCoordinateSystem( CoordinateReferenceSystem )}.
+     * Get the coordinate system to use as an override for features retrieved by this Query.
      *
      * @return The coordinate system to be returned for Features from this
      *         Query (override the set coordinate system).
@@ -761,7 +759,7 @@ public class Query {
     }
 
     /**
-     * Set the coordinate system to apply to features retrieved by this Query.
+     * Provide an override coordinate system to apply to features retrieved by this Query.
      * <p>
      * This denotes a request to <b>temporarily</b> override the coordinate system
      * contained in the feature data source being queried. The same coordinate
@@ -769,7 +767,7 @@ public class Query {
      * Coordinate System.
      *
      * <p>
-     * This change is not persistant and only applies to the features
+     * This change is not persistent and only applies to the features
      * returned by this Query. If used in conjunction with {@link #getCoordinateSystemReproject()}
      * the reprojection will occur from {@link #getCoordinateSystem()} to
      * {@link #getCoordinateSystemReproject()}.

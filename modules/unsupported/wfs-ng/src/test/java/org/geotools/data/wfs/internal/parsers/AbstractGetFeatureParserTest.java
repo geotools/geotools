@@ -148,7 +148,7 @@ public abstract class AbstractGetFeatureParserTest {
     }
 
     /**
-     * Uses a {@link StreamingParserFeatureReader} to parse the features while traversing the
+     * Uses a {@link PullParserFeatureReader} to parse the features while traversing the
      * feature collection in a test {@code wfs:FeatureCollection} document; {@code assertor} is a
      * visitor provided by the actual unit test calling this method, every feature fetched is passed
      * to the visitor who contains the specific assertions.
@@ -209,7 +209,7 @@ public abstract class AbstractGetFeatureParserTest {
     /**
      * Verifies correctness on parsing a normal geoserver WFS 1.1.0 GetFeature response.
      * 
-     * Test method for {@link StreamingParserFeatureReader#parse()}.
+     * Test method for {@link PullParserFeatureReader#parse()}.
      * 
      * @throws Exception
      */
@@ -257,7 +257,7 @@ public abstract class AbstractGetFeatureParserTest {
      * Verifies correctness on parsing a normal geoserver WFS 1.1.0 GetFeature response for the
      * usual topp:states feature type (multipolygon).
      * 
-     * Test method for {@link StreamingParserFeatureReader#parse()}.
+     * Test method for {@link PullParserFeatureReader#parse()}.
      * 
      * @throws Exception
      */

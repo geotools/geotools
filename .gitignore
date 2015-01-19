@@ -8,3 +8,5 @@ target
 nb-configuration.xml
 *.*~
 .DS_Store
+null*.db
+.metadata

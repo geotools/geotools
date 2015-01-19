@@ -6,9 +6,11 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
+import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.junit.Test;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -142,5 +144,41 @@ public class DecimatorTest {
         d.decimateTransformGeneralize(ls, identity);
         assertEquals(4, ls.getNumPoints());
         assertEquals(2, ls.getCoordinateSequence().getDimension());
+    }
+
+    @Test
+    public void testDecimationSpansInfinite() throws Exception {
+        MathTransform mt = new AbstractMathTransform() {
+            
+            @Override
+            public void transform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts)
+                    throws TransformException {
+                if (srcPts[0] == -0.5 || srcPts[1] == 0.5) {
+                    dstPts[0] = Double.NaN;
+                    dstPts[1] = Double.NaN;
+                    dstPts[2] = Double.NaN;
+                    dstPts[3] = Double.NaN;
+                } else {
+                    dstPts[0] = srcPts[0] * 10;
+                    dstPts[1] = srcPts[1] * 10;
+                    dstPts[2] = srcPts[2] * 10;
+                    dstPts[3] = srcPts[3] * 10;
+                }
+                
+            }
+            
+            @Override
+            public int getTargetDimensions() {
+                return 2;
+            }
+            
+            @Override
+            public int getSourceDimensions() {
+                return 2;
+            }
+        };
+        double[] dx = Decimator.computeGeneralizationDistances(mt, new Rectangle(10, 10), 1);
+        assertEquals(10, dx[0], 0d);
+        assertEquals(10, dx[1], 0d);
     }
 }

@@ -157,11 +157,19 @@ public final class Decimator {
                 for(int j = 0; j < 2; j++) {
                     double[] ns = getGeneralizationSpans(paintArea.x + paintArea.width * i / 2.0, 
                             paintArea.y + paintArea.height / 2.0, screenToWorld);
-                    if(ns[0] < spans[0])
+                    if (isFinite(ns[0]) && (ns[0] < spans[0] || !isFinite(spans[0]))) {
                         spans[0] = ns[0];
-                    if(ns[1] < spans[1])
+                    }
+                    if (isFinite(ns[1]) && (ns[1] < spans[1] || !isFinite(spans[1]))) {
                         spans[1] = ns[1];
+                    }
                 }
+            }
+            if (!isFinite(spans[0])) {
+                spans[0] = 0;
+            }
+            if (!isFinite(spans[1])) {
+                spans[1] = 0;
             }
             spans[0] *= pixelDistance;
             spans[1] *= pixelDistance ;
@@ -173,7 +181,18 @@ public final class Decimator {
     }
     
     /**
+     * Checks the specified number is not infinite nor Nan
+     * 
+     * @param d
+     * @return
+     */
+    private static boolean isFinite(double d) {
+        return !Double.isNaN(d) && !Double.isInfinite(d);
+    }
+
+    /**
      * Computes the real world distance of a one pixel segment centered in the specified point
+     * 
      * @param x
      * @param y
      * @param transform

@@ -1251,7 +1251,7 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         store1.getTransaction().commit();
 
-        assertEquals(1, listener1.events.size()); //This is wrong (expect 0)
+        assertEquals(0, listener1.events.size());
 
         assertEquals(1, listener2.events.size());
         event = listener2.getEvent(0);
@@ -1281,7 +1281,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         assertEquals(feature.getBounds(), event.getBounds());
         assertEquals(FeatureEvent.Type.ROLLBACK, event.getType());
 
-        assertEquals(1, listener2.events.size()); //this is wrong (expect 0)
+        assertEquals(0, listener2.events.size());
 
         // this is how Auto_commit is supposed to work
         listener1.events.clear();
@@ -1292,7 +1292,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         event = listener1.getEvent(0);
         assertEquals(feature.getBounds(), event.getBounds());
         assertEquals(FeatureEvent.Type.ADDED, event.getType());
-        assertEquals(1, listener2.events.size()); //this is wrong (expect 0)
+        assertEquals(1, listener2.events.size());
     }
 
     //

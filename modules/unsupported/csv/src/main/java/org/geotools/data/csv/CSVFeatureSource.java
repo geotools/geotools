@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
+import org.geotools.data.QueryCapabilities;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -86,5 +87,18 @@ public class CSVFeatureSource extends ContentFeatureSource {
 
     protected SimpleFeatureType buildFeatureType() throws IOException {
         return getDataStore().getSchema();
+    }
+    
+    // Allows us to provide our own FID when writing features
+    public QueryCapabilities getQueryCapabilities() {
+        // We're being naughty here and setting our query capabilities...
+        // We should probably do this somewhere else and not here
+        super.queryCapabilities = new QueryCapabilities() {
+            @Override
+            public boolean isUseProvidedFIDSupported() {
+                return true;
+            }
+        };
+        return super.getQueryCapabilities();
     }
 }

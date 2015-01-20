@@ -90,8 +90,8 @@ public class CSVWriteStrategyTest {
     
     @Test
     public void SpecifiedLatLon() throws Exception {
-    	CSVFileState fileState = new CSVFileState("LAT, LON, CITY, NUMBER, YEAR", "TEST");
-    	CSVStrategy strategy = new CSVSpecifiedLatLngStrategy(fileState, "LAT", "LON");
+    	CSVFileState fileState = new CSVFileState("TAL, NOL, CITY, NUMBER, YEAR", "TEST");
+    	CSVStrategy strategy = new CSVLatLonStrategy(fileState, "TAL", "NOL");
     	
     	SimpleFeatureType featureType = strategy.buildFeatureType();
     	assertEquals("TEST", featureType.getName().getLocalPart());

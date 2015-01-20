@@ -8,10 +8,15 @@
  */
 package org.geotools.data.csv;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Collections;
@@ -31,6 +36,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -80,10 +86,11 @@ public class CSVWriteTest {
         Files.copy(resource.openStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
     
-    private void fileContents( String test, File modified) throws IOException {
-        System.out.println(test +" contents start");
-        Files.copy( modified.toPath(), System.out );
-        System.out.println(test +" contents end");
+    private String checkFileContents(File modified) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Files.copy(modified.toPath(), baos);
+        String contents = new String(baos.toByteArray(), StandardCharsets.UTF_8);
+        return contents;
     }
     
     @After
@@ -97,26 +104,17 @@ public class CSVWriteTest {
 
     @Test
     public void featureStoreExample() throws Exception {
-        System.out.println("featureStoreExample start\n");
-        // featureStoreExample start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         SimpleFeatureSource featureSource = store.getFeatureSource("locations");
-        if (!(featureSource instanceof SimpleFeatureStore)) {
-            throw new IllegalStateException("Modification not supported");
-        }
-        SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
-
-        // featureStoreExample end
-        System.out.println("\nfeatureStoreExample end\n");
+        
+        assertTrue("Modification not supported", (featureSource instanceof SimpleFeatureStore));
     }
 
     @Test
     public void transactionExample() throws Exception {
-        System.out.println("transactionExample start\n");
-        // transactionExample start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -125,95 +123,63 @@ public class CSVWriteTest {
         Transaction t2 = new DefaultTransaction("transactoin 2");
 
         SimpleFeatureType type = store.getSchema("locations");
-        SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
+        SimpleFeatureStore auto = (SimpleFeatureStore) store.getFeatureSource("locations");
         SimpleFeatureStore featureStore1 = (SimpleFeatureStore) store.getFeatureSource("locations");
         SimpleFeatureStore featureStore2 = (SimpleFeatureStore) store.getFeatureSource("locations");
 
         featureStore1.setTransaction(t1);
         featureStore2.setTransaction(t2);
-
-        System.out.println("Step 1");
-        System.out.println("------");
-        System.out.println("start     auto-commit: "
-                + DataUtilities.fidSet(featureStore.getFeatures()));
-        System.out.println("start              t1: "
-                + DataUtilities.fidSet(featureStore1.getFeatures()));
-        System.out.println("start              t2: "
-                + DataUtilities.fidSet(featureStore2.getFeatures()));
+        
+        // Before we edit everything should be the same
+        assertEquals( "featureStore1 before", 9, featureStore1.getFeatures().size() );
+        assertEquals( "featureStore2 before", 9, featureStore2.getFeatures().size() );
 
         // select feature to remove
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        Filter filter1 = ff.id(Collections.singleton(ff.featureId("fid1")));
+        Filter filter1 = ff.id(Collections.singleton(ff.featureId("locations-fid1")));
         featureStore1.removeFeatures(filter1); // road1 removes fid1 on t1
 
-        System.out.println();
-        System.out.println("Step 2 transaction 1 removes feature 'fid1'");
-        System.out.println("------");
-        System.out.println("t1 remove auto-commit: "
-                + DataUtilities.fidSet(featureStore.getFeatures()));
-        System.out.println("t1 remove          t1: "
-                + DataUtilities.fidSet(featureStore1.getFeatures()));
-        System.out.println("t1 remove          t2: "
-                + DataUtilities.fidSet(featureStore2.getFeatures()));
+        // Tests after removal
+        assertEquals( "auto after featureStore1 removes fid1", 9, auto.getFeatures().size() );
+        assertEquals( "featureStore1 after featureStore1 removes fid1", 8, featureStore1.getFeatures().size() );
+        assertEquals( "featureStore2 after featureStore1 removes fid1", 9, featureStore2.getFeatures().size() );
 
         // new feature to add!
         // 45.52, -122.681944, Portland, 800, 2014
-        GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        Point portland = gf.createPoint(new Coordinate( 45.52, -122.681944));
-        SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] { portland, "Portland", 800, 2014 }, "locations.1");
+        SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] { 45.52, -122.681944, "Portland", 800, 2014 }, "locations-fid10");
+        // Use the FID we specified in creating this feature
+        feature.getUserData().put( Hints.USE_PROVIDED_FID, true );
         SimpleFeatureCollection collection = DataUtilities.collection(feature);
-        featureStore2.addFeatures(collection);
 
-        System.out.println();
-        System.out.println("Step 3 transaction 2 adds a new feature '" + feature.getID() + "'");
-        System.out.println("------");
-        System.out.println("t2 add    auto-commit: "
-                + DataUtilities.fidSet(featureStore.getFeatures()));
-        System.out.println("t2 add             t1: "
-                + DataUtilities.fidSet(featureStore1.getFeatures()));
-        System.out.println("t1 add             t2: "
-                + DataUtilities.fidSet(featureStore2.getFeatures()));
+        featureStore2.addFeatures(collection);
+        // Tests after adding the feature
+        assertEquals( "auto after featureStore1 removes fid1 and featureStore2 adds fid5", 9, auto.getFeatures().size() );
+        assertEquals( "featureStore1 after featureStore1 removes fid1 and featureStore2 adds fid5", 8, featureStore1.getFeatures().size() );
+        assertEquals( "featureStore2 after featureStore1 removes fid1 and featureStore2 adds fid5", 10, featureStore2.getFeatures().size() );
 
         // commit transaction one
         t1.commit();
 
-        System.out.println();
-        System.out.println("Step 4 transaction 1 commits the removal of feature 'fid1'");
-        System.out.println("------");
-        System.out.println("t1 commit auto-commit: "
-                + DataUtilities.fidSet(featureStore.getFeatures()));
-        System.out.println("t1 commit          t1: "
-                + DataUtilities.fidSet(featureStore1.getFeatures()));
-        System.out.println("t1 commit          t2: "
-                + DataUtilities.fidSet(featureStore2.getFeatures()));
+        // Tests after first commit
+        assertEquals( "auto after featureStore1 commits removal of fid1 (featureStore2 has added fid5)", 8, auto.getFeatures().size() );
+        assertEquals( "featureStore1 after commiting removal of fid1 (featureStore2 has added fid5)", 8, featureStore1.getFeatures().size() );
+        assertEquals( "featureStore2 after featureStore1 commits removal of fid1 (featureStore2 has added fid5)", 9, featureStore2.getFeatures().size() );
 
         // commit transaction two
         t2.commit();
-
-        System.out.println();
-        System.out
-                .println("Step 5 transaction 2 commits the addition of '" + feature.getID() + "'");
-        System.out.println("------");
-        System.out.println("t2 commit auto-commit: "
-                + DataUtilities.fidSet(featureStore.getFeatures()));
-        System.out.println("t2 commit          t1: "
-                + DataUtilities.fidSet(featureStore1.getFeatures()));
-        System.out.println("t2 commit          t2: "
-                + DataUtilities.fidSet(featureStore2.getFeatures()));
-
+        
+        // Tests after 2nd commit
+        assertEquals( "auto after featureStore2 commits addition of fid5 (fid1 previously removed)", 9, auto.getFeatures().size() );
+        assertEquals( "featureStore1 after featureStore2 commits addition of fid5 (fid1 previously removed)", 9, featureStore1.getFeatures().size() );
+        assertEquals( "featureStore2 after commiting addition of fid5 (fid1 previously removed)", 9, featureStore2.getFeatures().size() );
+        
         t1.close();
         t2.close();
         store.dispose(); // clear out any listeners
-        // transactionExample end
-        System.out.println("\ntransactionExample end\n");
-
-        fileContents("transactionExample",file);
     }
 
     @Test
     public void removeAllExample() throws Exception {
-        System.out.println("removeAllExample start\n");
-        // removeAllExample start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -223,17 +189,20 @@ public class CSVWriteTest {
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer = store.getFeatureWriter(
                     "locations", Filter.INCLUDE, t);
 
-            SimpleFeature feature;
             try {
                 while (writer.hasNext()) {
-                    feature = writer.next();
-                    System.out.println("remove " + feature.getID());
+                    writer.next();
                     writer.remove(); // marking contents for removal
                 }
             } finally {
                 writer.close();
             }
-            System.out.println("commit " + t); // now the contents are removed
+
+            // Test the contents have been removed
+            SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
+            assertEquals("featureStore should be empty", 0, featureStore.getFeatures().size());
+            // Make sure the file is empty
+            assertEquals("file should have no content", "", checkFileContents(file));
             t.commit();
         } catch (Throwable eek) {
             t.rollback();
@@ -241,16 +210,10 @@ public class CSVWriteTest {
             t.close();
             store.dispose();
         }
-        // removeAllExample end
-        System.out.println("\nremoveAllExample end\n");
-        
-        fileContents("removeAllExample",file);
     }
 
     @Test
     public void replaceAll() throws Exception {
-        System.out.println("replaceAll start\n");
-        // replaceAll start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -284,17 +247,19 @@ public class CSVWriteTest {
         } finally {
             writer.close();
         }
-        // replaceAll end
-        System.out.println("\nreplaceAll end\n");
-        
-        fileContents("replaceAll",file);
+
+        // Test everything was replaced by the one feature we added
+        SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
+        assertEquals("featureStore should only have the one feature we created", 
+                1, featureStore.getFeatures().size());
+        String contents = "LAT,LON,CITY,NUMBER,YEAR\nPOINT (45.52 -122.681944),Portland,800,2014,";
+        assertEquals("Ensure the file has only the one feature we created", 
+                contents.trim(), checkFileContents(file).trim());
     }
 
     @Test
     public void appendContent() throws Exception {
-        System.out.println("appendContent start\n");
         File directory = tmp;
-        // appendContent start
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -316,7 +281,6 @@ public class CSVWriteTest {
         reader = store.getFeatureReader(query, Transaction.AUTO_COMMIT);
         
         writer = duplicate.getFeatureWriterAppend("duplicate", Transaction.AUTO_COMMIT);
-        // writer = duplicate.getFeatureWriter("duplicate", Transaction.AUTO_COMMIT);
         try {
             while (reader.hasNext()) {
                 feature = reader.next();
@@ -329,11 +293,23 @@ public class CSVWriteTest {
             reader.close();
             writer.close();
         }
-
-        // appendContent end
-        System.out.println("\nappendContent end\n");
         
-        fileContents("appendContent",file2);
+        // Test that content was appended
+        SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
+        assertEquals(9, featureStore.getFeatures().size());
 
+        // Compare the new file written to with the old one
+        ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+        Files.copy(file.toPath(), baos1);
+        Files.copy(file2.toPath(), baos2);
+        String contents1 = new String(baos1.toByteArray(), StandardCharsets.UTF_8);
+        String contents2 = new String(baos2.toByteArray(), StandardCharsets.UTF_8);
+
+        // Making sure whitespace doesn't cause problems
+        contents1 = contents1.replace(" ", "").trim();
+        contents2 = contents2.replace(" ", "").trim();
+
+        assertEquals("Contents of both files should be the same", contents1, contents2);
     }
 }

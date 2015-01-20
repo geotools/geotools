@@ -60,11 +60,11 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
 
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-    	if (csvFileState.getFile().canWrite()) {
-    		return new CSVFeatureStore(csvStrategy, csvFileState, entry, Query.ALL);
-    	} else {
-    		return new CSVFeatureSource(entry, Query.ALL);
-    	}
+        if (csvFileState.getFile().canWrite()) {
+            return new CSVFeatureStore(csvStrategy, csvFileState, entry, Query.ALL);
+        } else {
+            return new CSVFeatureSource(entry, Query.ALL);
+        }
     }
 
     @Override
@@ -96,7 +96,7 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
     @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Transaction transaction)
             throws IOException {
-    	return super.getFeatureWriter(this.csvFileState.getTypeName(), transaction);
+        return super.getFeatureWriter(this.csvFileState.getTypeName(), transaction);
     }
 
     @Override

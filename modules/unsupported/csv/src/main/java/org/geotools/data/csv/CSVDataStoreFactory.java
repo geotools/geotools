@@ -33,7 +33,6 @@ import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.data.csv.parse.CSVAttributesOnlyStrategy;
 import org.geotools.data.csv.parse.CSVLatLonStrategy;
-import org.geotools.data.csv.parse.CSVSpecifiedLatLngStrategy;
 import org.geotools.data.csv.parse.CSVSpecifiedWKTStrategy;
 import org.geotools.data.csv.parse.CSVStrategy;
 import org.geotools.util.KVP;
@@ -164,7 +163,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
                     throw new IllegalArgumentException(
                             "'specify' csv strategy selected, but lat/lng params both not specified");
                 }
-                csvStrategy = new CSVSpecifiedLatLngStrategy(csvFileState, latParam.toString(),
+                csvStrategy = new CSVLatLonStrategy(csvFileState, latParam.toString(),
                         lngParam.toString());
             } else if (strategyString.equalsIgnoreCase("wkt")) {
                 Object wktParam = WKTP.lookUp(params);

@@ -1,0 +1,2 @@
+org.geotools.data.sqlserver.jtds.JTDSClobConverterFactory
+org.geotools.data.sqlserver.jtds.JTDSDateConverterFactory

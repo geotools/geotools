@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.crs;
 
-import static org.geotools.referencing.crs.DefaultGeographicCRS.*;
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +39,11 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
 
@@ -429,8 +434,41 @@ public class ProjectionHandler {
     private Geometry intersect(Geometry geometry, Geometry mask) {
         // this seems to cause issues to JTS, reduce to
         // single geometry when possible (http://jira.codehaus.org/browse/GEOS-6570)
-        if (geometry instanceof GeometryCollection && geometry.getNumGeometries() == 1) {
-            geometry = geometry.getGeometryN(0);
+        if (geometry instanceof GeometryCollection) {
+            if (geometry.getNumGeometries() == 1) {
+                geometry = geometry.getGeometryN(0);
+            } else {
+                // go piecewise, the JTS intersection can be pretty fragile in these cases
+                // and take a lot of time
+                List<Geometry> elements = new ArrayList<>();
+                for (int i = 0; i < geometry.getNumGeometries(); i++) {
+                    Geometry g = geometry.getGeometryN(i);
+                    if (g.getEnvelopeInternal().intersects(mask.getEnvelopeInternal())) {
+                        Geometry intersected = intersect(g, mask);
+                        if (intersected != null) {
+                            elements.add(intersected);
+                        }
+                    }
+                }
+                
+                if (elements.size() == 0) {
+                    return null;
+                }
+
+                if(geometry instanceof MultiPoint) {
+                    Point[] array = elements.toArray(new Point[elements.size()]);
+                    return geometry.getFactory().createMultiPoint(array);
+                } else if (geometry instanceof MultiLineString) {
+                    LineString[] array = elements.toArray(new LineString[elements.size()]);
+                    return geometry.getFactory().createMultiLineString(array);
+                } else if (geometry instanceof MultiPolygon) {
+                    Polygon[] array = elements.toArray(new Polygon[elements.size()]);
+                    return geometry.getFactory().createMultiPolygon(array);
+                } else {
+                    Geometry[] array = elements.toArray(new Geometry[elements.size()]);
+                    return geometry.getFactory().createGeometryCollection(array);
+                }
+            }
         }
         Geometry result;
         try {
@@ -438,7 +476,7 @@ public class ProjectionHandler {
         } catch(Exception e1) {
             try {
                 result = EnhancedPrecisionOp.intersection(geometry, mask);
-            } catch(Exception e2) {
+            } catch (Exception e2) {
                 result = geometry;
             }
         }

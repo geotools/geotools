@@ -76,9 +76,7 @@ public class BBOXTypeBinding extends OGCBBOXTypeBinding {
         BBOX box = (BBOX) object;
         
         if (FES.ValueReference.equals(name)) {
-            if (box.getExpression1() instanceof PropertyName) {
-                return box.getExpression1();
-            }
+            return box.getExpression1();
         }
         
         return null;

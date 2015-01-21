@@ -69,20 +69,15 @@
 			</roles>
 		</developer>
 	</developers>
-
+	<dependencies>
+		<dependency>
+			<groupId>net.sourceforge.jtds</groupId>
+			<artifactId>jtds</artifactId>
+			<version>${jtdsDriverVersion}</version>
+		</dependency>
+	</dependencies>
 	<profiles>
-    	<profile>
-            <id>jtdsDriver</id>
-            <dependencies>
-                <dependency>
-                    <groupId>net.sourceforge.jtds</groupId>
-                    <artifactId>jtds</artifactId>
-                    <version>${jtdsDriverVersion}</version>
-                </dependency>
-                
-            </dependencies>
-        </profile>
-		<profile>
+	<profile>
 			<id>sqlServerDriver</id>
 			<dependencies>
 				<dependency>

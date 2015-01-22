@@ -51,12 +51,7 @@ public class Ysld {
             return new YsldInput(new BufferedReader(new InputStreamReader((InputStream)input)));
         }
         else if (input instanceof File) {
-            return new YsldInput(new BufferedReader(new FileReader((File)input))) {
-                @Override
-                public void close() throws IOException {
-                    reader.close();
-                }
-            };
+            return new YsldInput(new BufferedReader(new FileReader((File)input)));
         }
         else if (input instanceof String) {
             return new YsldInput(new StringReader((String)input));
@@ -233,6 +228,7 @@ public class Ysld {
         }
 
         public void close() throws IOException {
+            reader.close();
         }
     }
 }

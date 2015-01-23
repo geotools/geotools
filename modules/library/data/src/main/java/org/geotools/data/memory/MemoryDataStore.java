@@ -55,10 +55,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
-@Deprecated
 /**
- * AbstractDataStore is deprecated. Migrate to ContentDataStore.
- * 
  * This is an example implementation of a DataStore used for testing.
  * 
  * <p>

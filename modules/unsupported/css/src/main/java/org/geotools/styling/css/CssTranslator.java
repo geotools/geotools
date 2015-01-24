@@ -247,6 +247,7 @@ public class CssTranslator {
             LOGGER.fine("Split the rules into " + zIndexRules + "  sets after z-index separation");
         }
 
+        int translatedRuleCount = 0;
         for (Map.Entry<Integer, List<CssRule>> zEntry : zIndexRules.entrySet()) {
             final Integer zIndex = zEntry.getKey();
             List<CssRule> rules = zEntry.getValue();
@@ -373,9 +374,17 @@ public class CssTranslator {
                     }
                     for (CssRule derived : derivedRules) {
                         buildSldRule(derived, ftsBuilder, targetFeatureType);
+                        translatedRuleCount++;
                     }
                 }
             }
+        }
+
+        // check that we have generated at least one rule in output
+        if (translatedRuleCount == 0) {
+            throw new IllegalArgumentException("Invalid CSS style, no rule seems to activate "
+                    + "any symbolization. The properties activating the symbolizers are fill, "
+                            + "stroke, mark, label, raster-channels, has any been used in a rule matching any feature?");
         }
 
         return styleBuilder.build();

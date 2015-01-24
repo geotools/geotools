@@ -16,10 +16,7 @@
  */
 package org.geotools.styling.css;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -598,6 +595,17 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         ExternalGraphic eg = (ExternalGraphic) ps.getGraphic().graphicalSymbols().get(0);
         String uri = eg.getURI();
         assertEquals("file://BidirectionShield-High.svg", uri);
+    }
+
+    @Test
+    public void testEmptyStyle() throws Exception {
+        String css = "* { line: gray }";
+        try {
+            translate(css);
+            fail("Generating an empty style, should have thrown an exception");
+        } catch (IllegalArgumentException e) {
+            // fine
+        }
     }
 
 }

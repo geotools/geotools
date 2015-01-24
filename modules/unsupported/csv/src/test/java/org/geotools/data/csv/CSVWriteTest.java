@@ -147,8 +147,6 @@ public class CSVWriteTest {
         // new feature to add!
         // 45.52, -122.681944, Portland, 800, 2014
         SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] { 45.52, -122.681944, "Portland", 800, 2014 }, "locations-fid10");
-        // Use the FID we specified in creating this feature
-        feature.getUserData().put( Hints.USE_PROVIDED_FID, true );
         SimpleFeatureCollection collection = DataUtilities.collection(feature);
 
         featureStore2.addFeatures(collection);

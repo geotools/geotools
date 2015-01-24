@@ -55,7 +55,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
     }
     
     public CSVLatLonStrategy(CSVFileState csvFileState, String latField, String lngField) {
-    	this(csvFileState, latField, lngField, "locations");
+    	this(csvFileState, latField, lngField, "location");
     }
     
     public CSVLatLonStrategy(CSVFileState csvFileState, String latField, String lngField,

@@ -495,11 +495,11 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule IgnoredComment() {
-        return Sequence("/*", OneOrMore(TestNot("*/"), ANY), "*/");
+        return Sequence("/*", ZeroOrMore(TestNot("*/"), ANY), "*/");
     }
 
     Rule RuleComment() {
-        return Sequence("/*", OneOrMore(TestNot("*/"), ANY), push(match()), "*/");
+        return Sequence("/*", ZeroOrMore(TestNot("*/"), ANY), push(match()), "*/");
     }
 
     @SuppressNode

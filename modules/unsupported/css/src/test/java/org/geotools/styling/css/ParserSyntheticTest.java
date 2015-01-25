@@ -719,4 +719,11 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertProperty(r, 1, "stroke", new Value.Literal("#000000"));
     }
 
+    @Test
+    public void testEmptyComment() {
+        String css = "* { fill: blue; /**/ stroke: yellow}";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+    }
+
 }

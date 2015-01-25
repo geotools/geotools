@@ -18,8 +18,10 @@ package org.geotools.styling.css;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
@@ -76,6 +78,34 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
     }
 
     protected List<Filter> extraAndSimplification(Object extraData, List<Filter> filters) {
+        if (filters.size() > 1) {
+            // if there are nested ors and top level filters, try factoring out common expression,
+            // e.g., (A | B) & A -> A
+            Set<Filter> topLevel = new HashSet<>();
+            for (Filter filter : filters) {
+                if (!(filter instanceof Or)) {
+                    topLevel.add(filter);
+                }
+            }
+            for (int i = 0; i < filters.size();) {
+                Filter f = filters.get(i);
+                boolean skip = false;
+                if (f instanceof Or) {
+                    Or or = ((Or) f);
+                    for (Filter child : or.getChildren()) {
+                        if (topLevel.contains(child)) {
+                            skip = true;
+                            break;
+                        }
+                    }
+                }
+                if (skip) {
+                    filters.remove(i);
+                } else {
+                    i++;
+                }
+            }
+        }
         // if there are nested Ors, try distribution, see if this helps reduce the
         // overall expression
         if (filters.size() > 1) {
@@ -124,9 +154,37 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
     }
 
     protected List<Filter> extraOrSimplification(Object extraData, List<Filter> filters) {
-        // if there are nested Ands, try distribution, see if this helps reduce the
-        // overall expression
         if (filters.size() > 1) {
+            // if there are nested ands and top level filters, try factoring out common expression,
+            // e.g., (A & B) | A -> A
+            Set<Filter> topLevel = new HashSet<>();
+            for (Filter filter : filters) {
+                if (!(filter instanceof And)) {
+                    topLevel.add(filter);
+                }
+            }
+            for (int i = 0; i < filters.size();) {
+                Filter f = filters.get(i);
+                boolean skip = false;
+                if (f instanceof And) {
+                    And and = ((And) f);
+                    for (Filter child : and.getChildren()) {
+                        if (topLevel.contains(child)) {
+                            skip = true;
+                            break;
+                        }
+                    }
+                }
+                if (skip) {
+                    filters.remove(i);
+                } else {
+                    i++;
+                }
+            }
+        }
+        if (filters.size() > 1) {
+            // if there are nested Ands, try distribution, see if this helps reduce the
+            // overall expression
             for (int i = 0; i < filters.size(); i++) {
                 Filter f = filters.get(i);
                 if (f instanceof And) {

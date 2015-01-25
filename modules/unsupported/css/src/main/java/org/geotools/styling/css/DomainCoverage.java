@@ -32,6 +32,7 @@ import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.util.OgcFilterBuilder;
 import org.geotools.styling.css.util.ScaleRangeExtractor;
+import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.opengis.feature.type.FeatureType;
@@ -231,7 +232,7 @@ class DomainCoverage {
      * A simplifier visitor that will cache results that have been simplified already, since this
      * class unites/intersects filters a lot in order to compute the coverage
      */
-    private SimplifyingFilterVisitor simplifier;
+    private UnboundSimplifyingFilterVisitor simplifier;
 
     /**
      * The set of selectors generated so far. We can get several repeated selectors due to
@@ -249,7 +250,7 @@ class DomainCoverage {
      * 
      * @param targetFeatureType
      */
-    public DomainCoverage(FeatureType targetFeatureType, SimplifyingFilterVisitor simplifier) {
+    public DomainCoverage(FeatureType targetFeatureType, UnboundSimplifyingFilterVisitor simplifier) {
         this.elements = new ArrayList<>();
         this.targetFeatureType = targetFeatureType;
         this.simplifier = simplifier;

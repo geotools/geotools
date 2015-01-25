@@ -608,4 +608,12 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         }
     }
 
+    @Test
+    public void testEnvFunction() throws Exception {
+        String css = "[env('foo', 'default') = 'bar'] { fill: blue; }";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals(ECQL.toFilter("env('foo', 'default') = 'bar'"), rule.getFilter());
+    }
+
 }

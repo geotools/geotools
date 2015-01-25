@@ -27,11 +27,11 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.util.FilteredPowerSetBuilder;
 import org.geotools.styling.css.util.PseudoClassRemover;
+import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -53,7 +53,7 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
 
     int count = 0;
     
-    SimplifyingFilterVisitor simplifier;
+    UnboundSimplifyingFilterVisitor simplifier;
 
     /**
      * These are pseudo class bits that mix in the main rule set, or not, depending on whether their
@@ -81,16 +81,16 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
     }
 
 
-    public RulePowerSetBuilder(List<CssRule> domain, SimplifyingFilterVisitor simplifier) {
+    public RulePowerSetBuilder(List<CssRule> domain, UnboundSimplifyingFilterVisitor simplifier) {
         this(classifyRules(domain), simplifier, -1);
     }
 
-    RulePowerSetBuilder(List<CssRule> domain, SimplifyingFilterVisitor simplifier,
+    RulePowerSetBuilder(List<CssRule> domain, UnboundSimplifyingFilterVisitor simplifier,
             int maxCombinations) {
         this(classifyRules(domain), simplifier, maxCombinations);
     }
 
-    protected RulePowerSetBuilder(List[] domainMixins, SimplifyingFilterVisitor simplifier,
+    protected RulePowerSetBuilder(List[] domainMixins, UnboundSimplifyingFilterVisitor simplifier,
             int maxCombinations) {
         super(domainMixins[0]);
         this.mixins = domainMixins[1];

@@ -16,11 +16,8 @@
  */
 package org.geotools.util;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,64 +34,67 @@ import org.geotools.measure.Measure;
  * @since 12.0
  */
 public class MeasureConverterFactory implements ConverterFactory {
-	
-	static final Pattern MEASURE_PATTERN = Pattern.compile("\\s*([-\\+]?[0-9]*\\.?[0-9]*(?:[eE][-\\+]?[0-9]+)?)(.*)?");
-	
-	public static final Converter CONVERTER = new Converter() {
-		@Override
-		public <T> T convert(Object source, Class<T> target) throws Exception {
-			if(source == null) {
-				return null;
-			} else if(String.class.equals(target)) {
-				Measure m = (Measure) source;
-				DecimalFormat format = (DecimalFormat) NumberFormat.getNumberInstance(Locale.ENGLISH);
-				if(m.doubleValue() < 1e-5) {
-					format.applyPattern("0.###E0");
-				} else {
-					format.applyPattern("#0.##");
-				}
-				String v = format.format(m.doubleValue());
-				if(m.getUnit() != null) {
-					return (T) (v + m.getUnit());
-				} else {
-					return (T) v;
-				}
-			}
 
-			if(!Measure.class.isAssignableFrom(target) || source == null) {
-				return null;
-			}
-			
-			String str = (String) source;
-			if(str.trim().isEmpty()) {
-				return null;
-			}
-			Matcher matcher = MEASURE_PATTERN.matcher(str);
-			if(matcher.matches()) {
-				double value = Double.parseDouble(matcher.group(1));
-				Unit unit = null;
-				if(matcher.groupCount() == 2) {
-					// this will throw an exception in case of failure
-					unit = Unit.valueOf(matcher.group(2));
-				}
-				return (T) new Measure(value, unit);
-			} else {
-				throw new IllegalArgumentException("Invalid measure " + str);
-			}
+    static final Pattern MEASURE_PATTERN = Pattern
+            .compile("\\s*([-\\+]?[0-9]*\\.?[0-9]*(?:[eE][-\\+]?[0-9]+)?)(.*)?");
 
-			
-		}
-	};
+    public static final Converter CONVERTER = new Converter() {
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            if (source == null) {
+                return null;
+            } else if (String.class.equals(target)) {
+                Measure m = (Measure) source;
+                DecimalFormat format = (DecimalFormat) NumberFormat
+                        .getNumberInstance(Locale.ENGLISH);
+                if (m.doubleValue() < 1e-5) {
+                    format.applyPattern("0.###E0");
+                } else {
+                    format.applyPattern("#0.##");
+                }
+                String v = format.format(m.doubleValue());
+                if (m.getUnit() != null) {
+                    return (T) (v + m.getUnit());
+                } else {
+                    return (T) v;
+                }
+            }
 
+            if (!Measure.class.isAssignableFrom(target) || source == null) {
+                return null;
+            }
 
-	public Converter createConverter(Class source, Class target, Hints hints) {
-		if(CharSequence.class.isAssignableFrom(source) && Measure.class.isAssignableFrom(target)) {
-			return CONVERTER;
-		} else if(String.class.isAssignableFrom(target) && Measure.class.isAssignableFrom(source)) {
-			return CONVERTER;
-		}
-		
-		// not a case we can handle
-		return null;
-	}
+            String str = (String) source;
+            if (str.trim().isEmpty()) {
+                return null;
+            }
+            Matcher matcher = MEASURE_PATTERN.matcher(str);
+            if (matcher.matches()) {
+                double value = Double.parseDouble(matcher.group(1));
+                Unit unit = null;
+                if (matcher.groupCount() == 2) {
+                    // this will throw an exception in case of failure
+                    String group = matcher.group(2).trim();
+                    if (!group.isEmpty()) {
+                        unit = Unit.valueOf(group);
+                    }
+                }
+                return (T) new Measure(value, unit);
+            } else {
+                throw new IllegalArgumentException("Invalid measure " + str);
+            }
+
+        }
+    };
+
+    public Converter createConverter(Class source, Class target, Hints hints) {
+        if (CharSequence.class.isAssignableFrom(source) && Measure.class.isAssignableFrom(target)) {
+            return CONVERTER;
+        } else if (String.class.isAssignableFrom(target) && Measure.class.isAssignableFrom(source)) {
+            return CONVERTER;
+        }
+
+        // not a case we can handle
+        return null;
+    }
 }

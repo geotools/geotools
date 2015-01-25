@@ -119,9 +119,30 @@ public class GeoPackageTest {
         assertTableExists("gpkg_contents");
         assertTableExists("gpkg_geometry_columns");
         assertTableExists("gpkg_spatial_ref_sys");
+        assertDefaultSpatialReferencesExist();
         assertApplicationId();
     }
-    
+
+    void assertDefaultSpatialReferencesExist() throws Exception {
+        Connection cx = geopkg.getDataSource().getConnection();
+        Statement st = cx.createStatement();
+        try {
+            ResultSet rs = st.executeQuery("SELECT srs_id FROM gpkg_spatial_ref_sys WHERE srs_id = -1");
+            assertEquals(rs.getInt(1), -1);
+            rs = st.executeQuery("SELECT srs_id FROM gpkg_spatial_ref_sys WHERE srs_id = 0");
+            assertEquals(rs.getInt(1), 0);
+            rs = st.executeQuery("SELECT srs_id FROM gpkg_spatial_ref_sys WHERE srs_id = 4326");
+            assertEquals(rs.getInt(1), 4326);
+        }
+        catch(Exception e) {
+            fail(e.getMessage());
+        }
+        finally {
+            st.close();
+            cx.close();
+        }
+    }
+
     void assertApplicationId() throws Exception {
         Connection cx = geopkg.getDataSource().getConnection();
         Statement st = cx.createStatement();

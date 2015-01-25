@@ -277,6 +277,7 @@ public class GeoPackage {
         runScript(METADATA_REFERENCE + ".sql", cx);
         runScript(DATA_COLUMN_CONSTRAINTS + ".sql", cx);
         runScript(EXTENSIONS + ".sql", cx);
+        addDefaultSpatialReferences();
     }
     
     void createFunctions(Connection cx) throws SQLException {
@@ -367,23 +368,30 @@ public class GeoPackage {
         }
     }
 
-    /**
-     * Adds a crs to the geopackage, registring it in the spatial_ref_sys table.
-     *  
-     * @param crs The crs to add.
-     * @param auth The authority code, example: epsg
-     * @param srid The spatial reference system id.
-     * 
-     */
-    public void addCRS(CoordinateReferenceSystem crs, String auth, int srid) throws IOException {
+    protected void addDefaultSpatialReferences() throws SQLException {
+        try {
+            addCRS(-1, "Undefined cartesian SRS", "NONE", -1, "undefined", "undefined cartesian coordinate reference system");
+            addCRS(0, "Undefined geographic SRS", "NONE", 0, "undefined", "undefined geographic coordinate reference system");
+            addCRS(4326, "WGS 84 geodetic", "EPSG", 4326, "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\"," +
+                            "6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]]," +
+                            "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433," +
+                            "AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]",
+                    "longitude/latitude coordinates in decimal degrees on the WGS 84 spheroid");
+        }catch(IOException ex) {
+            throw new SQLException("Unable to add default spatial references.", ex);
+        }
+    }
+
+    public void addCRS(int srid, String srsName, String organization, int organizationCoordSysId, String definition, String description)
+            throws IOException {
         try {
             Connection cx = connPool.getConnection();
             try {
                 PreparedStatement ps = cx.prepareStatement(String.format(
-                    "SELECT srs_id FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS));
+                        "SELECT srs_id FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS));
                 try {
                     ResultSet rs = prepare(ps).set(srid).log(Level.FINE)
-                        .statement().executeQuery();
+                            .statement().executeQuery();
                     try {
                         if (rs.next()) {
                             return;
@@ -395,18 +403,20 @@ public class GeoPackage {
                 finally {
                     close(ps);
                 }
-                
+
                 ps = cx.prepareStatement(String.format(
-                    "INSERT INTO %s (srs_id, srs_name, organization, organization_coordsys_id, definition) VALUES (?,?,?,?,?)", 
-                    SPATIAL_REF_SYS)); 
+                        "INSERT INTO %s (srs_id, srs_name, organization, organization_coordsys_id, definition, description) " +
+                                "VALUES (?,?,?,?,?,?)",
+                        SPATIAL_REF_SYS));
                 try {
                     prepare(ps)
-                        .set(srid)
-                        .set(auth + ":" + srid)
-                        .set(auth)
-                        .set(srid)
-                        .set(crs.toWKT())
-                        .log(Level.FINE).statement().execute();
+                            .set(srid)
+                            .set(srsName)
+                            .set(organization)
+                            .set(organizationCoordSysId)
+                            .set(definition)
+                            .set(description)
+                            .log(Level.FINE).statement().execute();
                 }
                 finally {
                     close(ps);
@@ -419,6 +429,18 @@ public class GeoPackage {
         catch(SQLException e) {
             throw new IOException(e);
         }
+    }
+
+    /**
+     * Adds a crs to the geopackage, registring it in the spatial_ref_sys table.
+     *  
+     * @param crs The crs to add.
+     * @param auth The authority code, example: epsg
+     * @param srid The spatial reference system id.
+     * 
+     */
+    public void addCRS(CoordinateReferenceSystem crs, String auth, int srid) throws IOException {
+        this.addCRS(srid, auth + ":" + srid, auth, srid, crs.toWKT(), auth + ":" + srid);
     }
 
     private CoordinateReferenceSystem getCRS(int srid) {

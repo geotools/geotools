@@ -154,7 +154,14 @@ public abstract class Selector implements Comparable<Selector> {
         if (newChildren.size() == 0) {
             return REJECT;
         }
-        return new Or(newChildren);
+
+        // flatten the nested or-s if necessary
+        List<Selector> selectors = new ArrayList<>();
+        for (Selector child : newChildren) {
+            flatten(selectors, child, Or.class);
+        }
+        return new Or(selectors);
+
     }
     
     /**

@@ -362,7 +362,8 @@ class DomainCoverage {
                 if (s instanceof Or) {
                     throw new IllegalArgumentException(
                             "Unexpected or selector nested inside another one, "
-                                    + "at this point they should have been all flattened");
+                                    + "at this point they should have been all flattened: "
+                                    + selector);
                 }
                 toIndependentSLDSelectors(s, targetFeatureType, result);
             }

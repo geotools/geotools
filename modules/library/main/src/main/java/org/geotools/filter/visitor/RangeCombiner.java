@@ -206,6 +206,8 @@ abstract class RangeCombiner {
                 }
                 if (exclusion != null) {
                     addRange(rangeMap, expression, new MultiRange(binding, exclusion));
+                } else {
+                    otherFilters.add(f);
                 }
             } else if (f instanceof BinaryComparisonOperator) {
                 BinaryComparisonOperator op = (BinaryComparisonOperator) f;

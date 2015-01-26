@@ -41,14 +41,14 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
 
     @Override
     protected SimpleFeatureType buildFeatureType() {
-        SimpleFeatureTypeBuilder builder = CSVStrategy.createBuilder(csvFileState);
+        SimpleFeatureTypeBuilder builder = createBuilder(csvFileState);
         return builder.buildFeatureType();
     }
-    
+
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
-    	List<String> header = new ArrayList<String>();
-    	
+        List<String> header = new ArrayList<String>();
+        
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor)
                 continue;
@@ -66,11 +66,11 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
     
     @Override
     public String[] encode(SimpleFeature feature) {
-    	List<String> csvRecord = new ArrayList<String>();
+        List<String> csvRecord = new ArrayList<String>();
         for (Property property : feature.getProperties()) {
             Object value = property.getValue();
             if (value == null) {
-            	csvRecord.add("");
+                csvRecord.add("");
             } else {
                 String txt = value.toString();
                 csvRecord.add(txt);

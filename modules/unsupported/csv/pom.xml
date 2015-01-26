@@ -17,10 +17,10 @@
   <groupId>org.geotools</groupId>
   <artifactId>gt-csv</artifactId>
   <packaging>jar</packaging>
-  <name>Example</name>
+  <name>CSVDataStore</name>
   <description>
-    DataStore for CSV files; mostly used as a tutorial in how to write
-    a datastore.
+    DataStore for CSV files. This plugin allows for read/write
+    functionality with CSV files with geoserver's importer.
   </description>
   
   <!-- =========================================================== -->
@@ -99,5 +99,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
 </project>

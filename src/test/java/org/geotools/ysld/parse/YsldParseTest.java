@@ -1515,6 +1515,45 @@ public class YsldParseTest {
         assertTrue(p.getPriority() instanceof PropertyName);
         assertEquals("pop", ((PropertyName) p.getPriority()).getPropertyName());
     }
+    
+    @Test
+    public void testStrokeLinejoinDefault() throws Exception {
+        String yaml =
+            "line:\n"+
+            "    stroke-color: \"#ff0000\"\n"+
+            "";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        assertThat(p, hasProperty("stroke", hasProperty("lineJoin", literal("miter"))));
+    }
+    
+    @Test
+    public void testStrokeLinejoinBevel() throws Exception {
+        String yaml =
+            "line:\n"+
+            "    stroke-linejoin: bevel\n"+
+            "";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        assertThat(p, hasProperty("stroke", hasProperty("lineJoin", literal("bevel"))));
+    }
+    
+    @Test
+    public void testStrokeLinejoinMitre() throws Exception {
+        String yaml =
+            "line:\n"+
+            "    stroke-linejoin: mitre\n"+
+            "";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        assertThat(p, hasProperty("stroke", hasProperty("lineJoin", literal("mitre"))));
+    }
 
     @Test
     public void testSuite54() throws IOException{

@@ -357,7 +357,7 @@ public class SLDTransformer extends TransformerBase {
             start("Stroke");
 
             if (stroke.getGraphicFill() != null) {
-            	start("GraphicFill");
+                start("GraphicFill");
                 stroke.getGraphicFill().accept(this);
                 end("GraphicFill");
             }

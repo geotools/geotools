@@ -20,9 +20,7 @@ import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
 import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -337,9 +335,10 @@ public class SLDTransformerTest {
      * explicit AnchorPoint as the spec allows.
      *
      * See also http://jira.codehaus.org/browse/GEOS-6748
+     * @throws TransformerException 
      */
     @Test
-    public void testPointPlacementNoAnchorPoint(){
+    public void testPointPlacementNoAnchorPoint() throws TransformerException{
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                    + "<StyledLayerDescriptor version=\"1.0.0\" xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
                    + "  xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
@@ -387,6 +386,12 @@ public class SLDTransformerTest {
 
         assertNotNull(pointPlacement);
         assertNotNull(pointPlacement.getRotation());
+        assertNull( pointPlacement.getAnchorPoint());
+        
+        SLDTransformer transform = new SLDTransformer();
+        
+        String output = transform.transform(style);
+        assertFalse( output.contains("AnchorPoint"));
     }
 
     /**

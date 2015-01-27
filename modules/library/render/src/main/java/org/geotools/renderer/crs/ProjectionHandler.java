@@ -402,7 +402,7 @@ public class ProjectionHandler {
             } else {
                 // go piecewise, the JTS intersection can be pretty fragile in these cases
                 // and take a lot of time
-                List<Geometry> elements = new ArrayList<>();
+                List<Geometry> elements = new ArrayList<Geometry>();
                 for (int i = 0; i < geometry.getNumGeometries(); i++) {
                     Geometry g = geometry.getGeometryN(i);
                     if (g.getEnvelopeInternal().intersects(mask.getEnvelopeInternal())) {

@@ -1,0 +1,18 @@
+name: Default Styler
+feature-styles:
+- name: name
+  rules:
+  - symbolizers:
+    - polygon:
+        fill-color: '#d0c8a5'
+    - text:
+        label: ${name}
+        fill-color: '#000000'
+        halo:
+          fill-color: '#FFFFFF'
+          radius: 2.0
+        font-family: DejaVuSans
+        font-size: 10.0
+        font-style: normal
+        font-weight: normal
+        placement: point

@@ -1,22 +1,27 @@
 package org.geotools.ysld.parse;
 
 import org.easymock.classextension.EasyMock;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.process.function.ProcessFunction;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
+import org.geotools.styling.SLDParser;
+import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.Ysld;
+import org.geotools.ysld.YsldTests;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -41,6 +46,7 @@ import org.opengis.style.SelectedChannelType;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
@@ -1510,4 +1516,15 @@ public class YsldParseTest {
         assertEquals("pop", ((PropertyName) p.getPriority()).getPropertyName());
     }
 
+    @Test
+    public void testSuite54() throws IOException{
+        try (InputStream input = YsldTests.ysld("poly", "suite-54.ysld")){
+            StyledLayerDescriptor sld = Ysld.parse(input);
+            Style style = SLD.styles(sld)[0];
+            TextSymbolizer text = SLD.textSymbolizer(style);
+            LabelPlacement placement = text.getLabelPlacement();
+            
+            assertNotNull( placement );
+        }        
+    }
 }

@@ -137,6 +137,11 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
             if (map.has("rotation")) {
                 point.setRotation(Util.expression(map.str("rotation"), factory));
             }
+            // anchor point is manditory for SLD encoding
+            if( point.getAnchorPoint() == null ){
+            	AnchorPoint defaultAnchor = factory.style.getDefaultPointPlacement().getAnchorPoint();            	
+            	point.setAnchorPoint( defaultAnchor );
+            }
         }
     }
 }

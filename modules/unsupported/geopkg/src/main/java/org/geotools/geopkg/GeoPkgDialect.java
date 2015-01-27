@@ -95,6 +95,12 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
+    public void encodePrimaryKey(String column, StringBuffer sql) {
+        super.encodePrimaryKey(column, sql);
+        sql.append(" AUTOINCREMENT");
+    }
+
+    @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
         encodeColumnName(null, geometryColumn, sql);
     }

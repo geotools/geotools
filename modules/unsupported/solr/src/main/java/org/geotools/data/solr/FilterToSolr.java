@@ -28,6 +28,10 @@ import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
@@ -109,6 +113,13 @@ public class FilterToSolr implements FilterVisitor {
 
     /* Store SOLR attribute used as layer name filter */
     private String featureTypeName;
+
+    /** the feature type */
+    private SimpleFeatureType featureType;
+
+    public FilterToSolr(SimpleFeatureType featureType) {
+        this.featureType = featureType;
+    }
 
     /**
      * A single call method to encode filter to SOLR query
@@ -703,8 +714,20 @@ public class FilterToSolr implements FilterVisitor {
         checkExpressionIsProperty(e1);
         Expression e2 = filter.getExpression2();
         checkExpressionIsLiteral(e2);
+
         ExpressionToSolr visitor = new ExpressionToSolr();
+
+        // initialize spatial strategy
+        AttributeDescriptor spatialAtt = (AttributeDescriptor) e1.evaluate(featureType);
+        if (spatialAtt != null && spatialAtt instanceof GeometryDescriptor) {
+            visitor.setSpatialStrategy(SolrSpatialStrategy.createStrategy((GeometryDescriptor) spatialAtt));
+        }
+        else {
+            LOGGER.warning("Spatial field: " + e1.toString() + " resolved to null or non-spatial");
+        }
+
         e1.accept(visitor, extraData);
+
         if (filter instanceof BBOX) {
             output.append(":\"Intersects(");
             e2.accept(visitor, extraData);

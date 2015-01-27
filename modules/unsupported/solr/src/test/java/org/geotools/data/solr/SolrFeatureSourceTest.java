@@ -19,13 +19,17 @@ package org.geotools.data.solr;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.And;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.Not;
@@ -45,6 +49,17 @@ import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
 
 public class SolrFeatureSourceTest extends SolrTestSupport {
+
+    public void testSchema() throws Exception {
+        init();
+        SimpleFeatureType schema = featureSource.getSchema();
+        assertNotNull(schema);
+
+        assertNotNull(schema.getGeometryDescriptor());
+        assertTrue(schema.getDescriptor("geo") instanceof GeometryDescriptor);
+        assertTrue(schema.getDescriptor("geo2") instanceof GeometryDescriptor);
+        assertTrue(schema.getDescriptor("geo3") instanceof GeometryDescriptor);
+    }
 
     public void testCount() throws Exception {
         init();
@@ -363,6 +378,26 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         PropertyIsNull f = ff.isNull(ff.property("security_ss"));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
+    }
+
+    public void testBBOXFilterWithBBOXType() throws Exception {
+        init();
+        FilterFactory ff = dataStore.getFilterFactory();
+        Filter f = ff.bbox("geo3", 12.5, 7.5, 14, 19, "epsg:4326");
+
+        SimpleFeatureCollection features = featureSource.getFeatures(f);
+        assertCovered(features, 2, 5, 6);
+    }
+
+    void assertCovered(SimpleFeatureCollection features, Integer... ids) {
+        assertEquals(ids.length, features.size());
+
+        Set<Integer> s = new HashSet<>(Arrays.asList(ids));
+        for (SimpleFeatureIterator it = features.features(); it.hasNext();) {
+            SimpleFeature f = it.next();
+            s.remove(Integer.parseInt(f.getAttribute("id").toString()));
+        }
+        assertTrue(s.isEmpty());
     }
 
 }

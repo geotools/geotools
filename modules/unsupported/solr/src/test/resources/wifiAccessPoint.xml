@@ -13,6 +13,7 @@
 		<field name="geo">POINT (0 0)</field>
         <field name="geo2">LINESTRING (0 0, 0 1)</field>
 		<field name="installed_tdt">2011-05-20T17:33:18Z</field>
+		<field name="geo3">0 0 1 1</field>
 	</doc>
 	<doc>
 		<field name="id">2</field>
@@ -26,6 +27,7 @@
 		<field name="geo">POINT (10 15)</field>
         <field name="geo2">LINESTRING (10 15, 10 16)</field>
 		<field name="installed_tdt">2012-01-10T07:43:58Z</field>
+		<field name="geo3">10 10 16 16</field>
 	</doc>
 	<doc>
 		<field name="id">3</field>
@@ -38,6 +40,7 @@
 		<field name="geo">POINT (5 7)</field>
         <field name="geo2">LINESTRING (5 7, 5 8)</field>
 		<field name="installed_tdt">2013-10-01T00:13:11Z</field>
+		<field name="geo3">5 5 8 8</field>
 	</doc>
 	<doc>
 		<field name="id">4</field>
@@ -52,6 +55,7 @@
 		<field name="geo">POINT (24 2)</field>
         <field name="geo2">LINESTRING (24 2, 24 3)</field>
 		<field name="installed_tdt">2013-12-01T00:16:21Z</field>
+		<field name="geo3">22 2 24 3</field>
 	</doc>
 	<doc>
 		<field name="id">5</field>
@@ -64,6 +68,7 @@
 		<field name="geo">POINT (12 17)</field>
         <field name="geo2">LINESTRING (12 17, 12 18)</field>
 		<field name="installed_tdt">2000-11-11T11:16:21Z</field>
+		<field name="geo3">12 17 13 18</field>
 	</doc>
 	<doc>
 		<field name="id">6</field>
@@ -77,6 +82,7 @@
 		<field name="geo">POINT (13 9)</field>
         <field name="geo2">LINESTRING (13 9, 13 10)</field>
 		<field name="installed_tdt">2001-04-28T23:23:21Z</field>
+		<field name="geo3">13 9 14 10</field>
 	</doc>
 	<doc>
 		<field name="id">7</field>
@@ -89,6 +95,7 @@
 		<field name="geo">POINT (22 27)</field>
         <field name="geo2">LINESTRING (22 27, 22 28)</field>
 		<field name="installed_tdt">2004-06-20T03:44:56Z</field>
+		<field name="geo3">22 27 23 28</field>
 	</doc>
 	<doc>
 		<field name="id">8</field>
@@ -101,6 +108,7 @@
 		<field name="geo">POINT (2 3)</field>
         <field name="geo2">LINESTRING (2 3, 2 4)</field>
 		<field name="installed_tdt">2014-02-12T06:37:48Z</field>
+		<field name="geo3">2 3 3 4</field>
 	</doc>
 	<doc>
 		<field name="id">9</field>
@@ -114,6 +122,7 @@
 		<field name="geo">POINT (7 23)</field>
         <field name="geo2">LINESTRING (7 23, 7 24)</field>
 		<field name="installed_tdt">2008-09-23T16:43:23Z</field>
+		<field name="geo3">7 23 8 24</field>
 	</doc>
 	<doc>
 		<field name="id">10</field>
@@ -127,6 +136,7 @@
 		<field name="security_ss">WPA</field>
 		<field name="geo">POINT (0 0)</field>
         <field name="geo2">LINESTRING (0 0, 0 1)</field>
+		<field name="geo3">0 0 1 1</field>
 	</doc>
 	<doc>
 		<field name="id">11</field>
@@ -137,6 +147,7 @@
 		<field name="modem_b">true</field>
 		<field name="geo">POINT (1 43)</field>
         <field name="geo2">LINESTRING (1 43, 1 44)</field>
+		<field name="geo3">1 43 2 44</field>
 	</doc>
 	<doc>
 		<field name="id">12</field>
@@ -149,6 +160,7 @@
 		<field name="security_ss">WPA</field>
 		<field name="geo">POLYGON((1 1,5 1,5 5,1 5,1 1))</field>
         <field name="geo2">LINESTRING (1 1, 1 2)</field>
+		<field name="geo3">1 5 2 6</field>
 	</doc>
 		<doc>
 		<field name="id">13</field>
@@ -160,6 +172,7 @@
 		<field name="modem_b">true</field>
 		<field name="geo">POLYGON((3 2,6 2,6 7,3 7,3 2))</field>
         <field name="geo2">LINESTRING (3 2, 3 3)</field>
+		<field name="geo3">2 3 4 6</field>
 	</doc>
 </add>
 

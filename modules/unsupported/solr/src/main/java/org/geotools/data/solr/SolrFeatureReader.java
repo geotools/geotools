@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -32,6 +33,8 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.params.CursorMarkParams;
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -40,6 +43,8 @@ import org.opengis.feature.type.GeometryDescriptor;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
+
+import static java.lang.Double.parseDouble;
 
 /**
  * Reader for SOLR datastore
@@ -58,8 +63,6 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     private SolrAttribute pkey;
 
     private HttpSolrServer server;
-
-    private WKTReader wktReader;
 
     private SolrDataStore solrDataStore;
 
@@ -86,7 +89,6 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             SolrQuery solrQuery, SolrDataStore solrDataStore) throws SolrServerException {
         this.featureType = featureType;
         this.solrQuery = solrQuery;
-        this.wktReader = new WKTReader();
         this.solrDataStore = solrDataStore;
         this.pkey = solrDataStore.getPrimaryKey(featureType.getTypeName());
 
@@ -168,7 +170,9 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                 if (type instanceof GeometryDescriptor) {
                     GeometryDescriptor gatt = (GeometryDescriptor) type;
                     if (value != null) {
-                        Geometry geometry = wktReader.read(value.toString());
+                        SolrSpatialStrategy spatialStrategy = SolrSpatialStrategy.createStrategy(gatt);
+                        Geometry geometry = spatialStrategy.decode(value.toString());
+
                         if (geometry != null && geometry.getUserData() == null) {
                             geometry.setUserData(gatt.getCoordinateReferenceSystem());
                         }

@@ -54,6 +54,11 @@ import com.vividsolutions.jts.geom.Geometry;
 public class SolrFeatureSource extends ContentFeatureSource {
 
     /**
+     * Used to store native solr type for geometry attributes
+     */
+    static final String KEY_SOLR_TYPE = "solr_type";
+
+    /**
      * Creates the new SOLR feature store.
      * 
      * @param entry the datastore entry.
@@ -238,7 +243,12 @@ public class SolrFeatureSource extends ContentFeatureSource {
                         ab.setBinding(attribute.getType());
                         att = ab.buildDescriptor(attribute.getName(), ab.buildType());
                     }
-                    tb.add(att);
+
+                    if (att != null) {
+                        // store the native solr type
+                        att.getUserData().put(KEY_SOLR_TYPE, attribute.getSolrType());
+                        tb.add(att);
+                    }
                 }
             }
             if (defaultGeometryName != null) {

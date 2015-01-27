@@ -151,11 +151,13 @@ public class SolrDataStore extends ContentDataStore {
 
                     FieldTypeInfo fty = processSchema.getFieldTypeInfo(type);
                     if (fty != null) {
-                        Class<?> objType = SolrUtils.decodeSolrFieldType(fty.getClassName());
+                        String solrTypeName = fty.getClassName();
+                        Class<?> objType = SolrUtils.decodeSolrFieldType(solrTypeName);
                         if (objType != null) {
                             ExtendedFieldSchemaInfo extendedFieldSchemaInfo = new SolrUtils.ExtendedFieldSchemaInfo(
                                     processSchema, processField, name);
                             SolrAttribute at = new SolrAttribute(name, objType);
+                            at.setSolrType(solrTypeName);
                             if (extendedFieldSchemaInfo.getUniqueKey()) {
                                 at.setPk(true);
                                 at.setUse(true);
@@ -233,7 +235,7 @@ public class SolrDataStore extends ContentDataStore {
      * @return The filter capabilities, never <code>null</code>.
      */
     public FilterCapabilities getFilterCapabilities() {
-        FilterToSolr f2s = new FilterToSolr();
+        FilterToSolr f2s = new FilterToSolr(null);
         return f2s.getCapabilities();
     }
 
@@ -402,9 +404,10 @@ public class SolrDataStore extends ContentDataStore {
      * Set parameters for OGC filter encoder
      */
     private FilterToSolr initializeFilterToSolr(SimpleFeatureType featureType) {
-        FilterToSolr f2s = new FilterToSolr();
+        FilterToSolr f2s = new FilterToSolr(featureType);
         f2s.setPrimaryKey(this.getPrimaryKey(featureType.getName().getLocalPart()));
         f2s.setFeatureTypeName(featureType.getName().getLocalPart());
+
         return f2s;
     }
 

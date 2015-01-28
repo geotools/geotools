@@ -56,6 +56,9 @@ public class SolrUtils {
         if (className.equals("org.apache.solr.schema.FloatField")
                 || className.equals("org.apache.solr.schema.TrieFloatField"))
             return Float.class;
+        if (className.equals("org.apache.solr.schema.DoubleField")
+                || className.equals("org.apache.solr.schema.TrieDoubleField"))
+            return Double.class;
 
         return null;
     }

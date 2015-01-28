@@ -125,6 +125,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             ps.setNull(1, Types.BLOB);
         }
         else {
+            g.setSRID(srid);
             try {
                 ps.setBytes(column, new GeoPkgGeomWriter(dimension, geomWriterConfig).write(g));
             } catch (IOException e) {

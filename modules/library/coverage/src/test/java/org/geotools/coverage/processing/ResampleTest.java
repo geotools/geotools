@@ -48,9 +48,11 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.processing.operation.Extrema;
+import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
@@ -266,6 +268,53 @@ public final class ResampleTest extends GridProcessingTestBase {
         }
         
         
+    }
+
+    /**
+     * Tests the "Resample" operation with a stereographic coordinate system on a paletted image
+     * 
+     * @throws FactoryException
+     * @throws NoSuchAuthorityCodeException
+     */
+    @Test
+    public void testReprojectPalette() throws NoSuchAuthorityCodeException, FactoryException {
+
+        // do it again, make sure the image does not turn black since
+        GridCoverage2D input = ushortCoverage;
+        // Create a Palette image from the input coverage
+        RenderedImage src = input.getRenderedImage();
+        ImageWorker iw = new ImageWorker(src).rescaleToBytes().forceIndexColorModel(false);
+        src = iw.getRenderedOperation();
+
+        // Setting Force ReplaceIndexColorModel and CoverageProcessingView as SAME
+        Hints hints = GeoTools.getDefaultHints().clone();
+        hints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, true);
+        hints.put(Hints.COVERAGE_PROCESSING_VIEW, ViewType.SAME);
+
+        // Create a new GridCoverage
+        GridCoverageFactory factory = new GridCoverageFactory(hints);
+        GridCoverage2D palette = factory.create("test", src, input.getEnvelope());
+
+        CoordinateReferenceSystem targetCRS = CRS.parseWKT(GOOGLE_MERCATOR_WKT);
+        GridCoverage2D coverage_ = project(palette, targetCRS, null, "bilinear", hints, true);
+
+        // reproject the ushort and check that things did not go bad, that is it turned black
+        coverage_ = (GridCoverage2D) Operations.DEFAULT.extrema(coverage_);
+        Object minimums = coverage_.getProperty(Extrema.GT_SYNTHETIC_PROPERTY_MINIMUM);
+        Assert.assertTrue(minimums instanceof double[]);
+        final double[] mins = (double[]) minimums;
+        Object maximums = coverage_.getProperty(Extrema.GT_SYNTHETIC_PROPERTY_MAXIMUM);
+        Assert.assertTrue(maximums instanceof double[]);
+        final double[] max = (double[]) maximums;
+        boolean fail = true;
+        for (int i = 0; i < mins.length; i++)
+            if (mins[i] != max[i] && max[i] > 0)
+                fail = false;
+        Assert.assertFalse("Reprojection failed", fail);
+
+        // Ensure the CRS is correct
+        CoordinateReferenceSystem targetCoverageCRS = coverage_.getCoordinateReferenceSystem();
+        Assert.assertTrue(CRS.equalsIgnoreMetadata(targetCRS, targetCoverageCRS));
     }
 
     /**

@@ -21,6 +21,8 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
+import java.awt.image.IndexColorModel;
+import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -164,7 +166,7 @@ final class Resampler2D extends GridCoverage2D {
                                          final Warp           warp,
                                          final Hints          hints)
     {
-        final GridSampleDimension[] sampleDimensions;
+        GridSampleDimension[] sampleDimensions;
         switch (finalView) {
             case PHOTOGRAPHIC: {
                 sampleDimensions = null;
@@ -174,6 +176,10 @@ final class Resampler2D extends GridCoverage2D {
                 sampleDimensions = source.getSampleDimensions();
                 break;
             }
+        }
+        // Ensure no SampleDimension is defined if the ColorModel must be expanded
+        if (sampleDimensions != null && isColorModelExpanded(source.getRenderedImage(), hints)) {
+            sampleDimensions = null;
         }
         /**
          * Build up transformation info properties: this can be used by the client to decide
@@ -825,6 +831,25 @@ final class Resampler2D extends GridCoverage2D {
                    ImageLayout.MIN_Y_MASK | ImageLayout.HEIGHT_MASK;
         }
         return (layout.getValidMask() & mask) == 0;
+    }
+
+    /**
+     * Returns {@code true} if the image colormodel must be expanded for the operation.
+     * 
+     * @param image The image to reproject.
+     * @param hints The {@link Hints} used during the reprojection.
+     */
+    private static boolean isColorModelExpanded(final RenderedImage image, final Hints hints) {
+
+        if (image.getColorModel() instanceof IndexColorModel) {
+            if (hints != null && hints.containsKey(JAI.KEY_REPLACE_INDEX_COLOR_MODEL)) {
+                Boolean replace = (Boolean) hints.get(JAI.KEY_REPLACE_INDEX_COLOR_MODEL);
+                if (replace != null) {
+                    return replace;
+                }
+            }
+        }
+        return false;
     }
 
     /**

@@ -20,8 +20,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateFilter;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.WKTReader;
 
 /**
@@ -526,6 +529,41 @@ public class ProjectionHandlerTest {
         assertNotNull(handler);
         assertEquals(envelope, handler.getRenderingEnvelope());
         assertTrue(CRS.getMapProjection(envelope.getCoordinateReferenceSystem()) instanceof PolarStereographic);
+    }
+
+    @Test
+    public void testSkipInvalidGeometries() throws Exception {
+        ReferencedEnvelope world = new ReferencedEnvelope(160, 180, -40, 40, WGS84);
+        ReferencedEnvelope mercatorEnvelope = world.transform(MERCATOR, true);
+        // move it so that it crosses the dateline (measures are still accurate for something
+        // crossing the dateline
+        mercatorEnvelope.translate(mercatorEnvelope.getWidth() / 2, 0);
+
+        // a geometry that will cross the dateline and sitting in the same area as the
+        // rendering envelope
+        Geometry g1 = new WKTReader()
+                .read("POLYGON((150 40, 150 -90, 190 -90, 190 40, 175 40, 175 -87, 165 -87, 165 40, 150 40))");
+        Geometry g2 = new WKTReader()
+                .read("POLYGON((-178 -90, -178 90, 178 90, 178 -90, -178 -90))");
+        // MultiPolygon containing both geometries
+        Geometry collection = new MultiPolygon(new Polygon[] { (Polygon) g1, (Polygon) g2 },
+                g1.getFactory());
+
+        // make sure the geometry is not wrapped
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(mercatorEnvelope, WGS84,
+                true);
+        assertTrue(handler.requiresProcessing(collection));
+        Geometry preProcessed = handler.preProcess(collection);
+        // Ensure something has changed
+        assertNotEquals(collection, preProcessed);
+        // Ensure the result is a Geometry collection which does not accept Geometries of the same type of the Projection Handler one.
+        assertNotNull(preProcessed);
+        assertTrue(preProcessed instanceof GeometryCollection);
+        int numGeometries = preProcessed.getNumGeometries();
+        assertEquals(numGeometries, 3);
+        for (int i = 0; i < numGeometries; i++) {
+            assertTrue(preProcessed.getGeometryN(i) instanceof Polygon);
+        }
     }
 
 }

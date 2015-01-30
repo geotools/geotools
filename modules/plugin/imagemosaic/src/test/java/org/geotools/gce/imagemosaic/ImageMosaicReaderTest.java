@@ -28,9 +28,11 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
+import java.awt.image.IndexColorModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -63,6 +65,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -3150,7 +3153,73 @@ public class ImageMosaicReaderTest extends Assert{
         // No reader should have been created.
         assertNull(reader);
     }
-    
+
+    /**
+     * Tests {@link ImageMosaicReader} asking to crop the lower left quarter of the input coverage.
+     * 
+     * @param title to use when showing image.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testExpandToRGB() throws Exception {
+
+        // Get the resources as needed.
+        URL testURL = TestData.url(this, "index_palette/");
+        Assert.assertNotNull(testURL);
+
+        File currentDir = DataUtilities.urlToFile(testURL);
+
+        // Get the reader
+        final AbstractGridFormat format = TestUtils.getFormat(testURL);
+
+        // Read the Directory
+        ImageMosaicReader reader = TestUtils.getReader(testURL, format);
+
+        // test the coverage
+        GridCoverage2D coverage = reader.read(null);
+
+        // Check that the coverage has an IndexColormodel
+        assertTrue(coverage.getRenderedImage().getColorModel() instanceof IndexColorModel);
+
+        // Ensure the properties file has been generated
+        File props = new File(currentDir, "index_palette.properties");
+        assertTrue(props.exists() && props.canRead() && props.canWrite());
+
+        // Getting the written properties
+        String properties = FileUtils.readFileToString(props);
+
+        // Ensure the ExpandToRGB property is set
+        assertTrue(properties.contains("ExpandToRGB"));
+
+        // Replace the ExpandToRGB property if set to false
+        properties = properties.replace("ExpandToRGB=false", "ExpandToRGB=true");
+
+        // Write it on the file
+        FileUtils.write(props, properties, false);
+
+        // Read the Directory again
+        reader = TestUtils.getReader(testURL, format);
+
+        // test the coverage
+        coverage = reader.read(null);
+
+        // Check that the coverage has a component Colormodel
+        assertTrue(coverage.getRenderedImage().getColorModel() instanceof ComponentColorModel);
+
+        // Remove all the auxiliary files if present
+        IOFileFilter prefixFileFilter = FileFilterUtils.prefixFileFilter("index_palette");
+        IOFileFilter nameFileFilter = FileFilterUtils.nameFileFilter("sample_image");
+        FileFilter ff = FileFilterUtils.or(prefixFileFilter, nameFileFilter);
+
+        File[] listFiles = currentDir.listFiles(ff);
+        if (listFiles != null && listFiles.length > 0) {
+            for (File f : listFiles) {
+                FileUtils.deleteQuietly(f);
+            }
+        }
+    }
+
     @AfterClass
 	public static void close(){
 		System.clearProperty("org.geotools.referencing.forceXY");

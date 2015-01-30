@@ -18,12 +18,13 @@
 package org.geotools.data.solr;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -33,8 +34,7 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.params.CursorMarkParams;
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -42,9 +42,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
-
-import static java.lang.Double.parseDouble;
+import org.opengis.feature.type.Name;
 
 /**
  * Reader for SOLR datastore
@@ -73,6 +71,8 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     private SolrQuery solrQuery;
 
     private long counter;
+
+    private Map<Name,SolrSpatialStrategy> geometryReaders;
 
     /**
      * Creates the feature reader for SOLR store <br>
@@ -116,6 +116,15 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         this.solrDocIterator = rsp.getResults().iterator();
         nextCursorMark = rsp.getNextCursorMark();
         counter = 0;
+
+        // create readers for different geometry types
+        geometryReaders = new HashMap<>();
+        for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
+            if (att instanceof GeometryAttribute) {
+                SolrSpatialStrategy spatialStrategy = SolrSpatialStrategy.createStrategy((GeometryDescriptor)att);
+                geometryReaders.put(att.getName(), spatialStrategy);
+            }
+        }
     }
 
     /*
@@ -170,7 +179,12 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                 if (type instanceof GeometryDescriptor) {
                     GeometryDescriptor gatt = (GeometryDescriptor) type;
                     if (value != null) {
-                        SolrSpatialStrategy spatialStrategy = SolrSpatialStrategy.createStrategy(gatt);
+                        SolrSpatialStrategy spatialStrategy = geometryReaders.get(gatt.getName());
+                        if (spatialStrategy == null) {
+                            // should ever happen but being defensive here
+                            spatialStrategy = SolrSpatialStrategy.DEFAULT;
+                        }
+
                         Geometry geometry = spatialStrategy.decode(value.toString());
 
                         if (geometry != null && geometry.getUserData() == null) {

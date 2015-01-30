@@ -30,15 +30,21 @@ import static java.lang.Double.parseDouble;
 
 /**
  * Strategy interface for interacting with solr spatial types.
+ * <p>
+ *  Instances of this interface must be thread safe.
+ * </p>
  */
 public abstract class SolrSpatialStrategy {
+
+    static final SolrSpatialStrategy DEFAULT = new DefaultStrategy();
+    static final SolrSpatialStrategy BBOX = new DefaultStrategy();
 
     static SolrSpatialStrategy createStrategy(GeometryDescriptor att) {
         String solrType = (String) att.getUserData().get(SolrFeatureSource.KEY_SOLR_TYPE);
         if (solrType != null && solrType.endsWith("BBoxField")) {
-            return new BBoxStrategy();
+            return BBOX;
         }
-        return new DefaultStrategy();
+        return DEFAULT;
     }
 
     public abstract String encode(Geometry geometry);

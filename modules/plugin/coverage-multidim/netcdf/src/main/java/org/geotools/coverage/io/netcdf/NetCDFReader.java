@@ -17,7 +17,7 @@
 package org.geotools.coverage.io.netcdf;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.imageio.utilities.SoftValueHashMap;
+import org.geotools.util.SoftValueHashMap;;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;

@@ -1,6 +1,6 @@
 package org.geotools.gce.imagemosaic.catalog;
 
-import it.geosolutions.imageio.utilities.SoftValueHashMap;
+import org.geotools.util.SoftValueHashMap;;
 
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;

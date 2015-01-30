@@ -212,7 +212,7 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
             private boolean polygonOverlap(Geometry g1, Geometry g2) {
                 // TODO: try to use relate instead
                 Geometry intersection = g1.intersection(g2);
-                return intersection != null && intersection.getDimension() == 2;
+                return intersection != null && intersection.getDimension() == 2 && !intersection.isEmpty();
             }
         }, listener);
         

@@ -52,6 +52,8 @@ public class SolrAttribute implements Serializable {
 
     private Boolean defaultGeometry = false;
 
+    private String solrType;
+
     public SolrAttribute(String name, Class<?> type) {
         super();
         this.name = name;
@@ -129,6 +131,14 @@ public class SolrAttribute implements Serializable {
         return multivalued;
     }
 
+    public String getSolrType() {
+        return solrType;
+    }
+
+    public void setSolrType(String solrType) {
+        this.solrType = solrType;
+    }
+
     @Override
     public String toString() {
         return "SolrAttribute [name=" + name + ", type=" + type + ", pk=" + pk + ", use=" + use
@@ -148,6 +158,7 @@ public class SolrAttribute implements Serializable {
         result = prime * result + ((srid == null) ? 0 : srid.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result + ((use == null) ? 0 : use.hashCode());
+        result = prime * result + ((solrType == null) ? 0 : solrType.hashCode());
         return result;
     }
 
@@ -199,6 +210,11 @@ public class SolrAttribute implements Serializable {
             if (other.use != null)
                 return false;
         } else if (!use.equals(other.use))
+            return false;
+        if (solrType == null) {
+            if (other.solrType != null)
+                return false;
+        } else if (!solrType.equals(other.solrType))
             return false;
         return true;
     }

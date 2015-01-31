@@ -48,7 +48,6 @@ import org.opengis.temporal.Period;
 import com.vividsolutions.jts.densify.Densifier;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTWriter;
 
 /**
  * Encodes a OGC expression into a SOLR query syntax
@@ -71,6 +70,11 @@ public class ExpressionToSolr implements ExpressionVisitor {
      */
     private Filter filter;
 
+    /*
+     * strategy for specific solr type
+     */
+    private SolrSpatialStrategy spatialStrategy;
+
     public ExpressionToSolr() {
         dateFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
@@ -81,6 +85,10 @@ public class ExpressionToSolr implements ExpressionVisitor {
     public ExpressionToSolr(Filter filter) {
         this();
         this.filter = filter;
+    }
+
+    public void setSpatialStrategy(SolrSpatialStrategy spatialStrategy) {
+        this.spatialStrategy = spatialStrategy;
     }
 
     @Override
@@ -120,6 +128,10 @@ public class ExpressionToSolr implements ExpressionVisitor {
 
         Object literal = expression.getValue();
         if (literal instanceof Geometry) {
+            if (spatialStrategy == null) {
+                throw new IllegalStateException("Attempt to encode geometry literal but spatialStrategy is null");
+            }
+
             Geometry geometry = (Geometry) literal;
             if (!WORLD.contains(geometry.getEnvelopeInternal()) && !WORLD.equals(geometry.getEnvelopeInternal())) {
                 if(LOGGER.isLoggable(Level.FINE)){
@@ -144,9 +156,8 @@ public class ExpressionToSolr implements ExpressionVisitor {
                     LOGGER.fine("Densified geometry: " + geometry.toText());
                 }               
             }
-            WKTWriter writer = new WKTWriter();
-            String wkt = writer.write(geometry);
-            temp.append(wkt);
+
+            temp.append(spatialStrategy.encode(geometry));
         } else if (literal instanceof Number) {
             // don't convert to string
             temp.append(literal.toString());

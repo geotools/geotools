@@ -237,7 +237,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         assertEquals("geo2", gd.getLocalName());
 
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
-        BBOX bbox = ff.bbox("", 6.5, 23.5, 7.5, 24.5, "EPSG:4326");
+        BBOX bbox = ff.bbox("geo2", 6.5, 23.5, 7.5, 24.5, "EPSG:4326");
         SimpleFeatureCollection features = featureSource.getFeatures(bbox);
         assertEquals(1, features.size());
         SimpleFeatureIterator fsi = features.features();

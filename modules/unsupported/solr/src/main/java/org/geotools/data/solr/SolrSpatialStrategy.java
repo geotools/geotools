@@ -37,7 +37,7 @@ import static java.lang.Double.parseDouble;
 public abstract class SolrSpatialStrategy {
 
     static final SolrSpatialStrategy DEFAULT = new DefaultStrategy();
-    static final SolrSpatialStrategy BBOX = new DefaultStrategy();
+    static final SolrSpatialStrategy BBOX = new BBoxStrategy();
 
     static SolrSpatialStrategy createStrategy(GeometryDescriptor att) {
         String solrType = (String) att.getUserData().get(SolrFeatureSource.KEY_SOLR_TYPE);

@@ -34,7 +34,6 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.params.CursorMarkParams;
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -120,7 +119,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         // create readers for different geometry types
         geometryReaders = new HashMap<>();
         for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-            if (att instanceof GeometryAttribute) {
+            if (att instanceof GeometryDescriptor) {
                 SolrSpatialStrategy spatialStrategy = SolrSpatialStrategy.createStrategy((GeometryDescriptor)att);
                 geometryReaders.put(att.getName(), spatialStrategy);
             }

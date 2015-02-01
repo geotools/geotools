@@ -13,20 +13,20 @@
             <sld:Priority>
               <ogc:PropertyName>priority</ogc:PropertyName>
             </sld:Priority>
-            <sld:VendorOption name="allGroup">false</sld:VendorOption>
-            <sld:VendorOption name="maxAngleDelta">22.5</sld:VendorOption>
-            <sld:VendorOption name="followLine">false</sld:VendorOption>
-            <sld:VendorOption name="autoWrap">0</sld:VendorOption>
-            <sld:VendorOption name="repeat">0</sld:VendorOption>
-            <sld:VendorOption name="allowOverrun">true</sld:VendorOption>
-            <sld:VendorOption name="conflictResolution">true</sld:VendorOption>
-            <sld:VendorOption name="goodnessOfFit">0.50</sld:VendorOption>
-            <sld:VendorOption name="removeOverlaps">false</sld:VendorOption>
-            <sld:VendorOption name="minGroupDistance">-1</sld:VendorOption>
             <sld:VendorOption name="spaceAround">0</sld:VendorOption>
             <sld:VendorOption name="group">false</sld:VendorOption>
             <sld:VendorOption name="maxDisplacement">0</sld:VendorOption>
+            <sld:VendorOption name="minGroupDistance">-1</sld:VendorOption>
+            <sld:VendorOption name="repeat">0</sld:VendorOption>
+            <sld:VendorOption name="allGroup">false</sld:VendorOption>
+            <sld:VendorOption name="removeOverlaps">false</sld:VendorOption>
+            <sld:VendorOption name="allowOverrun">true</sld:VendorOption>
+            <sld:VendorOption name="followLine">false</sld:VendorOption>
+            <sld:VendorOption name="maxAngleDelta">22.5</sld:VendorOption>
+            <sld:VendorOption name="autoWrap">0</sld:VendorOption>
             <sld:VendorOption name="forceLeftToRight">true</sld:VendorOption>
+            <sld:VendorOption name="conflictResolution">true</sld:VendorOption>
+            <sld:VendorOption name="goodnessOfFit">0.50</sld:VendorOption>
           </sld:TextSymbolizer>
         </sld:Rule>
         <sld:VendorOption name="ruleEvaluation">first</sld:VendorOption>

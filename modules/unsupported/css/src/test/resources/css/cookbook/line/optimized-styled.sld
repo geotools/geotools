@@ -29,10 +29,10 @@
             <sld:Fill>
               <sld:CssParameter name="fill">#000000</sld:CssParameter>
             </sld:Fill>
-            <sld:VendorOption name="maxAngleDelta">90</sld:VendorOption>
             <sld:VendorOption name="followLine">true</sld:VendorOption>
-            <sld:VendorOption name="repeat">150</sld:VendorOption>
+            <sld:VendorOption name="maxAngleDelta">90</sld:VendorOption>
             <sld:VendorOption name="maxDisplacement">400</sld:VendorOption>
+            <sld:VendorOption name="repeat">150</sld:VendorOption>
           </sld:TextSymbolizer>
         </sld:Rule>
         <sld:VendorOption name="ruleEvaluation">first</sld:VendorOption>

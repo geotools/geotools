@@ -16,7 +16,7 @@
  */
 package org.geotools.styling.builder;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.geotools.styling.Symbolizer;
@@ -30,7 +30,7 @@ public abstract class SymbolizerBuilder<T extends Symbolizer> extends AbstractSt
         super(parent);
     }
 
-    protected Map<String, String> options = new HashMap<>();
+    protected Map<String, String> options = new LinkedHashMap<>();
 
     public SymbolizerBuilder option(String name, String value) {
         options.put(name, value);

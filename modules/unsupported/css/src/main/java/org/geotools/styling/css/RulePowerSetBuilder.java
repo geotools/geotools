@@ -19,7 +19,6 @@ package org.geotools.styling.css;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -191,7 +190,7 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
                 PseudoClass ps = entry.getKey();
                 Map<String, Property> psProperties = properties.get(ps);
                 if (psProperties == null) {
-                    psProperties = new HashMap<String, Property>();
+                    psProperties = new LinkedHashMap<String, Property>();
                     properties.put(ps, psProperties);
                 }
                 for (Property p : entry.getValue()) {

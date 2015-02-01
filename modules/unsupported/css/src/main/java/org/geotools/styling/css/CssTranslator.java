@@ -1231,15 +1231,23 @@ public class CssTranslator {
      */
     private void addVendorOptions(SymbolizerBuilder<?> sb, Map<String, String> vendorOptions,
             Map<String, List<Value>> values, int idx) {
-        for (Map.Entry<String, String> entry : vendorOptions.entrySet()) {
-            String cssKey = entry.getKey();
-            String sldKey = entry.getValue();
-            String value = getLiteral(values, cssKey, idx, null);
-            if (value != null) {
-                sb.option(sldKey, value);
+        // for (Map.Entry<String, String> entry : vendorOptions.entrySet()) {
+        // String cssKey = entry.getKey();
+        // String sldKey = entry.getValue();
+        // String value = getLiteral(values, cssKey, idx, null);
+        // if (value != null) {
+        // sb.option(sldKey, value);
+        // }
+        // }
+        for (String cssKey : values.keySet()) {
+            String sldKey = vendorOptions.get(cssKey);
+            if (sldKey != null) {
+                String value = getLiteral(values, cssKey, idx, null);
+                if (value != null) {
+                    sb.option(sldKey, value);
+                }
             }
         }
-
     }
 
     /**

@@ -18,8 +18,8 @@ package org.geotools.styling;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -427,7 +427,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
 
     public Map<String, String> getOptions() {
         if (options == null) {
-            options = new HashMap<String, String>();
+            options = new LinkedHashMap<String, String>();
         }
         return options;
     }

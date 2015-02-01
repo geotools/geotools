@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -154,10 +155,10 @@ public class CssRule {
         if (psProperties == null) {
             return Collections.emptyMap();
         }
-        Map<String, List<Value>> result = new HashMap<>();
+        Map<String, List<Value>> result = new LinkedHashMap<>();
         if (symbolizerPrefixes != null && symbolizerPrefixes.length > 0) {
-            for (String symbolizerPrefix : symbolizerPrefixes) {
-                for (Property property : psProperties) {
+            for (Property property : psProperties) {
+                for (String symbolizerPrefix : symbolizerPrefixes) {
                     if (symbolizerPrefix == null || property.getName().startsWith(symbolizerPrefix)
                             || property.getName().startsWith("-gt-" + symbolizerPrefix)) {
                         result.put(property.getName(), property.getValues());

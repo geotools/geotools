@@ -31,11 +31,10 @@ import javax.xml.transform.TransformerException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.sld.SLDConfiguration;
 import org.geotools.styling.NamedLayer;
+import org.geotools.styling.SLDParser;
 import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
@@ -46,7 +45,6 @@ import org.junit.runners.Parameterized;
 import org.opengis.style.Style;
 import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -113,15 +111,27 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         }
 
         String expectedSld = FileUtils.readFileToString(sldFile);
-        Document expectedDom = XMLUnit.buildControlDocument(expectedSld);
-        Document actualDom = XMLUnit.buildControlDocument(actualSld);
-        Diff diff = new Diff(expectedDom, actualDom);
-        if (!diff.identical()) {
-            System.err.println("Comparison failed, the two files are: " + sldFile.getAbsolutePath()
-                    + " " + sldFile2.getAbsolutePath());
-            fail(diff.toString());
+        StyledLayerDescriptor expectedSLD = parseToSld(expectedSld);
+        StyledLayerDescriptor actualSLD = parseToSld(actualSld);
+//        Document expectedDom = XMLUnit.buildControlDocument(expectedSld);
+//        Document actualDom = XMLUnit.buildControlDocument(actualSld);
+//        Diff diff = new Diff(expectedDom, actualDom);
+//        if (!diff.identical()) {
+        if (!expectedSLD.equals(actualSLD)) {
+            String message = "Comparison failed, the two files are: " + sldFile.getAbsolutePath()
+                    + " " + sldFile2.getAbsolutePath();
+            System.err.println(message);
+            fail(message);
         }
+//        }
     }
+
+    StyledLayerDescriptor parseToSld(String sld) {
+        SLDParser parser = new SLDParser(CommonFactoryFinder.getStyleFactory());
+        parser.setInput(new StringReader(sld));
+        return parser.parseSLD();
+    }
+
 
     private List validateSLD(String sld) throws IOException, SAXException,
             ParserConfigurationException {

@@ -16,6 +16,7 @@
 	      <test:count>0</test:count>
 	      <test:date>2001-01-01</test:date>
           <test:data>abc</test:data>
+          <test:decimal>0.1</test:decimal>
 	  </test:TestFeature>		
 	</gml:featureMember>
 	
@@ -32,6 +33,7 @@
 	      <test:count>1</test:count>
 	      <test:date>2002-02-02</test:date>
           <test:data>def</test:data>
+          <test:decimal>0.2</test:decimal>
 	  </test:TestFeature>
   	</gml:featureMember>
   	
@@ -48,6 +50,7 @@
 	      <test:count>2</test:count>
 	      <test:date>2003-03-03</test:date>
           <test:data>ghi</test:data>
+          <test:decimal>0.3</test:decimal>
 	  </test:TestFeature>
 	  
 	</gml:featureMember>

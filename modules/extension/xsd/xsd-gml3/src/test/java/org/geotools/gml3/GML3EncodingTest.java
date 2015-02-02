@@ -294,7 +294,7 @@ public class GML3EncodingTest extends TestCase {
         encoder.setIndentSize(2);
         String xml = encoder.encodeAsString(feature, TEST.TestFeature);
 
-        System.out.println(xml);
+        // System.out.println(xml);
         Document dom = XMLUnit.buildControlDocument(xml);
         assertXpathEvaluatesTo("0.000000015", "//test:decimal", dom);
     }

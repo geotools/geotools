@@ -20,6 +20,7 @@ import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
@@ -69,6 +70,16 @@ import com.vividsolutions.jts.io.WKTReader;
  * @source $URL$
  */
 public class GML3EncodingTest extends TestCase {
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+
+        Map<String, String> namespaces = new HashMap<String, String>();
+        namespaces.put("test", TEST.TestFeature.getNamespaceURI());
+        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
+    }
+
     boolean isOffline() throws Exception {
         // this test will only run if network is available
         URL url = new URL("http://schemas.opengis.net");
@@ -212,20 +223,7 @@ public class GML3EncodingTest extends TestCase {
     }
 
     public void testEncodeFeatureWithNullValues() throws Exception {
-        SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
-        typeBuilder.setName(TEST.TestFeature.getLocalPart());
-        typeBuilder.setNamespaceURI(TEST.TestFeature.getNamespaceURI());
-
-        typeBuilder.add("name", String.class);
-        typeBuilder.add("description", String.class);
-        typeBuilder.add("geom", Point.class);
-        typeBuilder.nillable(true);
-        typeBuilder.add("count", Integer.class);
-        typeBuilder.nillable(true);
-        typeBuilder.add("date", Date.class);
-        typeBuilder.add("data", String.class);
-
-        SimpleFeatureType type = typeBuilder.buildFeatureType();
+        SimpleFeatureType type = buildTestFeatureType();
 
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         builder.add("theName");
@@ -258,6 +256,49 @@ public class GML3EncodingTest extends TestCase {
         assertEquals("true", date.getAttributes().getNamedItem("xsd:nil").getTextContent());
     }
 
+    private SimpleFeatureType buildTestFeatureType() {
+        SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
+        typeBuilder.setName(TEST.TestFeature.getLocalPart());
+        typeBuilder.setNamespaceURI(TEST.TestFeature.getNamespaceURI());
+
+        typeBuilder.add("name", String.class);
+        typeBuilder.add("description", String.class);
+        typeBuilder.add("geom", Point.class);
+        typeBuilder.nillable(true);
+        typeBuilder.add("count", Integer.class);
+        typeBuilder.nillable(true);
+        typeBuilder.add("date", Date.class);
+        typeBuilder.add("data", String.class);
+        typeBuilder.add("decimal", BigDecimal.class);
+
+        SimpleFeatureType type = typeBuilder.buildFeatureType();
+        return type;
+    }
+
+    public void testEncodeBigDecimal() throws Exception {
+        SimpleFeatureType type = buildTestFeatureType();
+
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        builder.add("theName");
+        builder.add("theDescription");
+        builder.add(GML3MockData.point());
+        builder.add(null);
+        builder.add(null);
+        builder.add(null);
+        builder.add(new BigDecimal("0.000000015"));
+
+        SimpleFeature feature = builder.buildFeature("fid.1");
+
+        TestConfiguration configuration = new TestConfiguration();
+        Encoder encoder = new Encoder(configuration);
+        encoder.setIndentSize(2);
+        String xml = encoder.encodeAsString(feature, TEST.TestFeature);
+
+        System.out.println(xml);
+        Document dom = XMLUnit.buildControlDocument(xml);
+        assertXpathEvaluatesTo("0.000000015", "//test:decimal", dom);
+    }
+
     @Test
     public void testRemoveInvalidXMLChars() throws Exception {
         SimpleFeatureType ft = DataUtilities.createType(TEST.TestFeature.getNamespaceURI(),
@@ -273,9 +314,6 @@ public class GML3EncodingTest extends TestCase {
 
         // System.out.println(result);
 
-        Map<String, String> namespaces = new HashMap<String, String>();
-        namespaces.put("test", TEST.TestFeature.getNamespaceURI());
-        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
         Document dom = XMLUnit.buildControlDocument(result);
         assertXpathEvaluatesTo("One  test", "//test:data", dom);
     }

@@ -441,12 +441,18 @@ public class ProjectionHandler {
                 // go piecewise, the JTS intersection can be pretty fragile in these cases
                 // and take a lot of time
                 List<Geometry> elements = new ArrayList<>();
+                String geometryType = geometry.getGeometryN(0).getGeometryType();
                 for (int i = 0; i < geometry.getNumGeometries(); i++) {
                     Geometry g = geometry.getGeometryN(i);
                     if (g.getEnvelopeInternal().intersects(mask.getEnvelopeInternal())) {
                         Geometry intersected = intersect(g, mask);
                         if (intersected != null) {
-                            elements.add(intersected);
+                            if (intersected.getGeometryType().equals(geometryType)) {
+                                elements.add(intersected);
+                            } else if (intersected instanceof GeometryCollection) {
+                                addGeometries(elements, (GeometryCollection) intersected,
+                                        geometryType);
+                            }
                         }
                     }
                 }
@@ -619,5 +625,42 @@ public class ProjectionHandler {
         }
 
     }
-    
+
+    /**
+     * Private method for adding to the input List only the {@link Geometry} objects of the input {@link GeometryCollection} which belongs to the
+     * defined geometryType
+     * 
+     * @param geoms
+     * @param geometryType
+     */
+    private void addGeometries(List<Geometry> geoms, GeometryCollection collection,
+            String geometryType) {
+        // Check if the list exists
+        if (geoms == null) {
+            return;
+        }
+        // Check the Geometry type
+        if (geometryType == null || geometryType.isEmpty()) {
+            return;
+        }
+        // Check the collection
+        if (collection == null || collection.getNumGeometries() <= 0) {
+            return;
+        }
+        // Get the number of Geometries
+        int numGeometries = collection.getNumGeometries();
+        // Cycle on the Geometries
+        for (int i = 0; i < numGeometries; i++) {
+            // get the Geometry
+            Geometry geo = collection.getGeometryN(i);
+            // If it belongs to the correct Geometry type, it is added to the Liats
+            if (geo.getGeometryType().equals(geometryType)) {
+                geoms.add(geo);
+                // Otherwise if it is a collection we try to iterate on it (recursion)
+            } else if (geo instanceof GeometryCollection) {
+                addGeometries(geoms, (GeometryCollection) geo, geometryType);
+            }
+        }
+    }
+
 }

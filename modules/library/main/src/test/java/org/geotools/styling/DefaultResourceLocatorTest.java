@@ -15,6 +15,8 @@ public class DefaultResourceLocatorTest extends TestCase {
 
         checkURL(locator.locateResource("blob.gif"));
         checkURL(locator.locateResource("file:blob.gif"));
+        checkURL(locator.locateResource("file://blob.gif"));
+        checkURL(locator.locateResource("file://./blob.gif"));
     }
 
     void checkURL(URL url) {

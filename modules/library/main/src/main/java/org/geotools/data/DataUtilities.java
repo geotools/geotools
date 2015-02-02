@@ -356,8 +356,13 @@ public class DataUtilities {
         String standardPrefix = "file://";
 
         if (IS_WINDOWS_OS && string.startsWith(standardPrefix)) {
-            // win32: host/share reference
+            // win32: host/share reference. Keep the host slashes.
             path3 = string.substring(standardPrefix.length() - 2);
+            File f = new File(path3);
+            if (!f.exists()) {
+            	// Make path relative to be backwards compatible.
+            	path3 = path3.substring(2, path3.length());
+            }
         } else if (string.startsWith(standardPrefix)) {
             path3 = string.substring(standardPrefix.length());
         } else if (string.startsWith(simplePrefix)) {

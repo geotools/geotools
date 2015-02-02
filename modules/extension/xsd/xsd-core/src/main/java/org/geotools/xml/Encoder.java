@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -1199,17 +1199,18 @@ O:
 
         //write out any text
         for (int i = 0; i < element.getChildNodes().getLength(); i++) {
-            Node node = (Node) element.getChildNodes().item(i);
+            Node node = element.getChildNodes().item(i);
 
             if (node instanceof Text) {
-                char[] ch = ((Text) node).getData().toCharArray();
+                String data = XMLUtils.removeXMLInvalidChars(((Text) node).getData());
+                char[] ch = data.toCharArray();
                 serializer.characters(ch, 0, ch.length);
             }
         }
 
         //write out any child elements
         for (int i = 0; i < element.getChildNodes().getLength(); i++) {
-            Node node = (Node) element.getChildNodes().item(i);
+            Node node = element.getChildNodes().item(i);
 
             if (node instanceof Element) {
                 Element child = (Element) node;
@@ -1240,7 +1241,7 @@ O:
             NodeList children = element.getChildNodes();
 
             for (int i = 0; i < children.getLength(); i++) {
-                Node text = (Node) children.item(i);
+                Node text = children.item(i);
                 String str = text.getNodeValue();
                 ((LexicalHandler) serializer).comment(str.toCharArray(), 0, str.length());
             }
@@ -1389,7 +1390,7 @@ O:
             }
 
             for (int i = 0; i < atts.getLength(); i++) {
-                Node att = (Node) atts.item(i);
+                Node att = atts.item(i);
 
                 if (att.getLocalName().equals(local)) {
                     String apre = att.getPrefix();

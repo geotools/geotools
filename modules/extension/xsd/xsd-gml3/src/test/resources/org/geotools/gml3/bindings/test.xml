@@ -15,6 +15,7 @@
 	      </test:geom>
 	      <test:count>0</test:count>
 	      <test:date>2001-01-01</test:date>
+          <test:data>abc</test:data>
 	  </test:TestFeature>		
 	</gml:featureMember>
 	
@@ -30,6 +31,7 @@
 	      </test:geom>
 	      <test:count>1</test:count>
 	      <test:date>2002-02-02</test:date>
+          <test:data>def</test:data>
 	  </test:TestFeature>
   	</gml:featureMember>
   	
@@ -45,6 +47,7 @@
 	      </test:geom>
 	      <test:count>2</test:count>
 	      <test:date>2003-03-03</test:date>
+          <test:data>ghi</test:data>
 	  </test:TestFeature>
 	  
 	</gml:featureMember>

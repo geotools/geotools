@@ -1,6 +1,6 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import it.geosolutions.imageio.utilities.SoftValueHashMap;
+import org.geotools.util.SoftValueHashMap;;
 
 import java.awt.Color;
 import java.io.File;

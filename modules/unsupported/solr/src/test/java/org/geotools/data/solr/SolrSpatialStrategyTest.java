@@ -28,6 +28,8 @@ import org.opengis.feature.type.FeatureTypeFactory;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
 
+import java.text.NumberFormat;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -66,10 +68,11 @@ public class SolrSpatialStrategyTest {
         assertTrue(g instanceof Polygon);
 
         String[] bbox = ss.encode(g).split("\\s+");
-        assertEquals(1.0, Double.parseDouble(bbox[0]), 0.1);
-        assertEquals(2.0, Double.parseDouble(bbox[1]), 0.1);
-        assertEquals(3.0, Double.parseDouble(bbox[2]), 0.1);
-        assertEquals(4.0, Double.parseDouble(bbox[3]), 0.1);
+        NumberFormat format = NumberFormat.getInstance();
+        assertEquals(1.0, format.parse(bbox[0]).doubleValue(), 0.1);
+        assertEquals(2.0, format.parse(bbox[1]).doubleValue(), 0.1);
+        assertEquals(3.0, format.parse(bbox[2]).doubleValue(), 0.1);
+        assertEquals(4.0, format.parse(bbox[3]).doubleValue(), 0.1);
     }
 
     GeometryDescriptor newDescriptor(String solrTypeValue) {

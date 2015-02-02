@@ -900,7 +900,7 @@ public class RasterManager {
         Utilities.ensureNonNull("ImageMosaicReader", parentReader);
 
         this.parentReader = parentReader;
-        this.expandMe = parentReader.expandMe;
+        this.expandMe = configuration.isExpandToRGB();
         boolean checkAuxiliaryMetadata = configuration.isCheckAuxiliaryMetadata();
         this.heterogeneousGranules = configuration.getCatalogConfigurationBean().isHeterogeneous();
         this.configuration = configuration;

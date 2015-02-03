@@ -209,6 +209,15 @@ public class DataUtilitiesTest extends DataTestCase {
             handleFile("C:\\one\\two");
             handleFile("C:\\one\\two\\and three");
             handleFile("D:\\");
+            
+            // Single slash keeps rooted path
+            assertURL("\\one", "file:/one");
+            assertURL("\\.\\one", "file:/./one");
+            
+            // Double slash makes it relative if non existent.
+            assertURL("one", "file://one");
+            assertURL("./one", "file://./one");
+            
             if (TestData.isExtensiveTest()){
                 handleFile("\\\\host\\share\\file");
                 // from GEOT-3300 DataUtilities.urlToFile doesn't handle network paths correctly

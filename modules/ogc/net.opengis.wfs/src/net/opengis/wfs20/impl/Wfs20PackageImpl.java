@@ -4609,7 +4609,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentRoot_AbstractTransactionAction(),
                 this.getAbstractTransactionActionType(), null, "abstractTransactionAction", null,
-                0, -2, null, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE,
+                0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentRoot_AdditionalObjects(), this.getAdditionalObjectsType(), null,
                 "additionalObjects", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE,
@@ -5404,7 +5404,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
                 !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEReference(getTransactionType_AbstractTransactionAction(),
                 this.getAbstractTransactionActionType(), null, "abstractTransactionAction", null,
-                0, -1, TransactionType.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,
+                0, -1, TransactionType.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED,
                 IS_ORDERED);
         initEAttribute(getTransactionType_LockId(), theXMLTypePackage.getString(), "lockId", null,

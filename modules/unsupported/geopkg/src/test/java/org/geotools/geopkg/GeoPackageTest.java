@@ -210,21 +210,21 @@ public class GeoPackageTest {
         entry.setTableName("points");
         entry.setDataType(Entry.DataType.Feature);
         entry.setIdentifier("points");
-        entry.setBounds(new ReferencedEnvelope(-180,180,-90,90, CRS.decode("EPSG:4326")));
-        entry.setSrid(4326);
+        entry.setBounds(new ReferencedEnvelope(-180,180,-90,90, CRS.decode("EPSG:2000")));
+        entry.setSrid(2000);
 
         geopkg.addGeoPackageContentsEntry(entry);
         
         Connection cx = geopkg.getDataSource().getConnection();
         try {
             String sql =  String.format("SELECT srs_name FROM %s WHERE srs_id = ?", GeoPackage.SPATIAL_REF_SYS);
-            SqlUtil.PreparedStatementBuilder psb = SqlUtil.prepare(cx, sql).set(4326);
+            SqlUtil.PreparedStatementBuilder psb = SqlUtil.prepare(cx, sql).set(2000);
             PreparedStatement ps = psb.log(Level.FINE).statement();
             try {
                 ResultSet rs = ps.executeQuery();
                 try {
                     assertTrue(rs.next());
-                    assertEquals("epsg:4326", rs.getString(1));
+                    assertEquals("epsg:2000", rs.getString(1));
                 } finally {
                     rs.close();
                 }

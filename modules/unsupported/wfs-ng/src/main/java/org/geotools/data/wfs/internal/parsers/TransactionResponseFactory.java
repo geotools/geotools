@@ -23,19 +23,20 @@ import java.util.List;
 
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.internal.TransactionRequest;
-import org.geotools.data.wfs.internal.TransactionResponse;
+import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.data.wfs.internal.WFSResponse;
 import org.geotools.data.wfs.internal.WFSResponseFactory;
 import org.geotools.ows.ServiceException;
 
-public class WFS_1_1_TransactionResponseFactory implements WFSResponseFactory {
+public class TransactionResponseFactory implements WFSResponseFactory {
 
     private static final List<String> SUPPORTED_OUTPUT_FORMATS = Collections
             .unmodifiableList(Arrays.asList(//
                     "text/xml; subtype=gml/3.1.1",//
                     "text/xml;subtype=gml/3.1.1",//
+                    "text/xml; subtype=gml/3.1.1; charset=UTF-8",
                     "text/xml; subtype=gml/3.1.1/profiles/gmlsf/0",//
                     "text/xml;subtype=gml/3.1.1/profiles/gmlsf/0",//
                     "application/gml+xml; subtype=gml/3.1.1",//
@@ -44,7 +45,17 @@ public class WFS_1_1_TransactionResponseFactory implements WFSResponseFactory {
                     "application/gml+xml;subtype=gml/3.1.1/profiles/gmlsf/0",//
                     "GML3", //
                     "GML3L0", //
-                    "text/gml; subtype=gml/3.1.1"// the incorrectly advertised GeoServer format
+                    "text/gml; subtype=gml/3.1.1",// the incorrectly advertised GeoServer format
+                    "text/xml", // oddly, GeoServer returns plain 'text/xml' instead of the propper
+                                // subtype when resultType=hits. Guess we should make this something
+                                // the specific strategy can hanlde?
+                    "text/xml; charset=UTF-8",
+                    "GML2",//
+                    "text/xml; subtype=gml/2.1.2", //
+                    "application/xml", //
+                    "text/xml; subtype=gml/3.2", //
+                    "application/gml+xml; version=3.2", //
+                    "gml32" //
             ));
 
     @Override
@@ -74,7 +85,13 @@ public class WFS_1_1_TransactionResponseFactory implements WFSResponseFactory {
     @Override
     public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws IOException {
         try {
-            return new TransactionResponse(request, response);
+            if (Versions.v2_0_0.toString().equals(request.getStrategy().getVersion())) {
+                return new org.geotools.data.wfs.internal.v2_0.TransactionResponseImpl(request, response);
+            } else if (Versions.v1_0_0.toString().equals(request.getStrategy().getVersion())
+                    || Versions.v1_1_0.toString().equals(request.getStrategy().getVersion())) {
+                return new org.geotools.data.wfs.internal.v1_x.TransactionResponseImpl(request, response);
+            }
+            return null;            
         } catch (ServiceException e) {
             throw new IOException(e);
         }

@@ -108,7 +108,8 @@ import org.opengis.filter.capability.FilterCapabilities;
 public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     private static final List<String> PREFERRED_FORMATS = Collections.unmodifiableList(Arrays
-            .asList("text/xml; subtype=gml/3.2", "application/gml+xml; version=3.2", "gml32",
+            .asList("application/gml+xml; version=3.2", // As per Table 12 in 09-25r1 OGC Web Feature Service WFS 2.0 
+                    "text/xml; subtype=gml/3.2", "gml32",
                     "text/xml; subtype=gml/3.1.1", "gml3", "text/xml; subtype=gml/2.1.2", "GML2"));
 
     private net.opengis.wfs20.WFSCapabilitiesType capabilities;
@@ -183,24 +184,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     @Override
     public Version getServiceVersion() {
         return Versions.v2_0_0;
-    }
-
-    @Override
-    public String getDefaultOutputFormat(WFSOperationType operation) {
-        switch (operation) {
-        case GET_FEATURE:
-            // As per Table 12 in 09-25r1 OGC Web Feature Service WFS 2.0
-            return "application/gml+xml; version=3.2";
-
-        case DESCRIBE_FEATURETYPE:
-        case DESCRIBE_STORED_QUERIES:
-        case LIST_STORED_QUERIES:
-            // Format makes no sense for DescribeFeatureType, DescribeStoredQueries or ListStoredQueries
-            return null;
-
-        default:
-            throw new UnsupportedOperationException("No outputFormat set up for "+operation);
-        }
     }
 
     /**
@@ -514,27 +497,14 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     public Set<String> getServerSupportedOutputFormats(WFSOperationType operation) {
          String parameterName;
 
-        final Version serviceVersion = getServiceVersion();
-        final boolean wfs1_0 = Versions.v1_0_0.equals(serviceVersion);
         switch (operation) {
         case GET_FEATURE:
-            parameterName = wfs1_0 ? "ResultFormat" : "outputFormat";
-            break;
         case DESCRIBE_FEATURETYPE:
-            parameterName = wfs1_0 ? "SchemaDescriptionLanguage" : "outputFormat";
-            break;
         case GET_FEATURE_WITH_LOCK:
-            parameterName = wfs1_0 ? "ResultFormat" : "outputFormat";
+            parameterName = "outputFormat";
             break;
         case TRANSACTION:
-            if (wfs1_0) {
-                //TODO: not sure what to do here.
-                //this is a hack, there appears to be no format info in the 1.0 capabilities for transaction
-                operation = GET_FEATURE;
-                parameterName = "ResultFormat";
-            } else {
-                parameterName = "inputFormat";
-            }
+            parameterName = "inputFormat";
             break;
         default:
             throw new UnsupportedOperationException("not yet implemented for " + operation);
@@ -599,20 +569,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             return false;
         }
 
-        /*OperationsType operations = this.capabilities.getFeatureTypeList().getOperations();
-        @SuppressWarnings("unchecked")
-        List<net.opengis.wfs.OperationType> operation = operations.getOperation();
-        for (net.opengis.wfs.OperationType required : Arrays.asList(
-                net.opengis.wfs.OperationType.INSERT_LITERAL,
-                net.opengis.wfs.OperationType.UPDATE_LITERAL,
-                net.opengis.wfs.OperationType.DELETE_LITERAL)) {
-
-            if (!operation.contains(required)) {
-                info("Transactions not supported since WFS didn't declare support for "
-                        + required.getName());
-                return false;
-            }
-        }*/
         return true;
     }
 

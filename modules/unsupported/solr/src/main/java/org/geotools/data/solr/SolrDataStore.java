@@ -38,7 +38,6 @@ import org.apache.solr.client.solrj.request.LukeRequest;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldInfo;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldTypeInfo;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.geotools.data.Query;
 import org.geotools.data.solr.SolrUtils.ExtendedFieldSchemaInfo;
 import org.geotools.data.store.ContentDataStore;
@@ -146,22 +145,6 @@ public class SolrDataStore extends ContentDataStore {
                     String name = fieldInfo.getName();
                     String type = fieldInfo.getType();
 
-                    SolrQuery query = new SolrQuery();
-                    query.setQuery("*:*");
-                    query.setRows(0);
-                    String fq = layerMapper.prepareFilterQueryForSchema();
-                    if (fq != null) {
-                        query.addFilterQuery(fq);
-                    }
-
-                    if (layerName != null && layerName.isEmpty()) {
-                        query.addFilterQuery(name + ":" + layerName);
-                    } else {
-                        query.addFilterQuery(name + ":*");
-                    }
-                    QueryResponse rsp = solrServer.query(query);
-                    long founds = rsp.getResults().getNumFound();
-
                     FieldTypeInfo fty = processSchema.getFieldTypeInfo(type);
                     if (fty != null) {
                         String solrTypeName = fty.getClassName();
@@ -179,7 +162,7 @@ public class SolrDataStore extends ContentDataStore {
                                     && !Geometry.class.isAssignableFrom(at.getType())) {
                                 at.setType(String.class);
                             }
-                            at.setEmpty(founds == 0);
+                            at.setEmpty(fieldInfo.getDocs() == 0);
                             solrAttributes.add(at);
                         } else {
                             if (LOGGER.isLoggable(Level.FINE)) {

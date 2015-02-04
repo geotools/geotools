@@ -35,12 +35,10 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.LukeRequest;
-import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldInfo;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldTypeInfo;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.params.FacetParams;
 import org.geotools.data.Query;
 import org.geotools.data.solr.SolrUtils.ExtendedFieldSchemaInfo;
 import org.geotools.data.store.ContentDataStore;
@@ -70,10 +68,11 @@ public class SolrDataStore extends ContentDataStore {
     // Url of SOLR server
     private URL url;
 
-    // Field to filter to obtain the types that the datastore provides.
-    private String field;
+    // Controlls how documents are mapped to layers
+    private SolrLayerMapper layerMapper;
 
-    // Types that the datastore provides obtained by differents values of field "field"
+    // Types that the datastore provides obtained
+    // Dependent on doc loader being used
     private List<Name> typeNames;
 
     // Attributes present in SOLR schema
@@ -88,14 +87,24 @@ public class SolrDataStore extends ContentDataStore {
     HttpSolrServer solrServer;
 
     /**
-     * Create the data store
+     * Create the data store, using the {@link FieldLayerMapper}.
      * 
      * @param url the URL of SOLR server
      * @param field SOLR field to query to obtain the store types
      */
     public SolrDataStore(URL url, String field) {
+        this(url, new FieldLayerMapper(field));
+    }
+
+    /**
+     * Creates the datastore.
+     *
+     * @param url The URL of SOLR server
+     * @param layerMapper The document loader.
+     */
+    public SolrDataStore(URL url, SolrLayerMapper layerMapper) {
         this.url = url;
-        this.field = field;
+        this.layerMapper = layerMapper;
         this.solrServer = new HttpSolrServer(url.toString());
         this.solrServer.setAllowCompression(true);
         this.solrServer.setConnectionTimeout(10000);
@@ -140,7 +149,11 @@ public class SolrDataStore extends ContentDataStore {
                     SolrQuery query = new SolrQuery();
                     query.setQuery("*:*");
                     query.setRows(0);
-                    query.addFilterQuery(this.field + ":*");
+                    String fq = layerMapper.prepareFilterQueryForSchema();
+                    if (fq != null) {
+                        query.addFilterQuery(fq);
+                    }
+
                     if (layerName != null && layerName.isEmpty()) {
                         query.addFilterQuery(name + ":" + layerName);
                     } else {
@@ -193,23 +206,11 @@ public class SolrDataStore extends ContentDataStore {
     protected List<Name> createTypeNames() throws IOException {
         try {
             if (typeNames == null || typeNames.isEmpty()) {
-                typeNames = new ArrayList<Name>();
-                SolrQuery query = new SolrQuery();
-                query.setQuery("*:*");
-                query.addFacetField(field);
-                query.setFacet(true);
-                query.setFacetMinCount(1);
-                query.setFacetSort(FacetParams.FACET_SORT_INDEX);
-                query.setRows(0);
-                query.setParam("omitHeader", true);
-                QueryResponse rsp = solrServer.query(query);
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, "SOLR query done: " + query.toString());
+                List<Name> names = new ArrayList<>();
+                for (String name : layerMapper.createTypeNames(solrServer)) {
+                    names.add(new NameImpl(namespaceURI, name));
                 }
-                List<Count> uniqueFacetFields = rsp.getFacetFields().get(0).getValues();
-                for (Count field : uniqueFacetFields) {
-                    typeNames.add(new NameImpl(namespaceURI, field.getName()));
-                }
+                typeNames = names;
             }
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
@@ -263,9 +264,22 @@ public class SolrDataStore extends ContentDataStore {
 
     /**
      * Get the field used to filter the types that the datastore provides.
+     *
+     * @deprecated
      */
     public String getField() {
-        return field;
+        if (layerMapper instanceof FieldLayerMapper) {
+            return ((FieldLayerMapper) layerMapper).getField();
+        }
+
+        throw new IllegalStateException("Layer mapper not instance of " + FieldLayerMapper.class.getName());
+    }
+
+    /**
+     * Gets the document loader controlling how documents are mapped to layers from the solr index.
+     */
+    public SolrLayerMapper getLayerMapper() {
+        return layerMapper;
     }
 
     /**
@@ -340,11 +354,11 @@ public class SolrDataStore extends ContentDataStore {
 
             // Encode OGC filer
             FilterToSolr f2s = initializeFilterToSolr(featureType);
-            String fq = this.field + ":" + featureType.getTypeName();
+            String fq = layerMapper.prepareFilterQuery(featureType);
             Filter simplified = SimplifyingFilterVisitor.simplify(q.getFilter());
             String ffq = f2s.encodeToString(simplified);
             if (ffq != null && !ffq.isEmpty()) {
-                fq = fq + " AND " + ffq;
+                fq = fq != null ? fq + " AND " + ffq : ffq;
             }
             query.setFilterQueries(fq);
 
@@ -384,10 +398,10 @@ public class SolrDataStore extends ContentDataStore {
 
             // Encode OGC filer
             FilterToSolr f2s = initializeFilterToSolr(featureType);
-            String fq = this.field + ":" + featureType.getTypeName();
+            String fq = layerMapper.prepareFilterQuery(featureType);
             String ffq = f2s.encodeToString(q.getFilter());
             if (ffq != null && !ffq.isEmpty()) {
-                fq = fq + " AND " + ffq;
+                fq = fq != null ? fq + " AND " + ffq : ffq;
             }
             query.setFilterQueries(fq);
 

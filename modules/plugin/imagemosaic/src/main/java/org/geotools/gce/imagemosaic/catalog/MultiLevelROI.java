@@ -1,7 +1,5 @@
 package org.geotools.gce.imagemosaic.catalog;
 
-import org.geotools.util.SoftValueHashMap;;
-
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
@@ -9,6 +7,7 @@ import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 
 import org.geotools.geometry.jts.GeometryClipper;
+import org.geotools.util.SoftValueHashMap;
 import org.jaitools.imageutils.ROIGeometry;
 
 import com.vividsolutions.jts.awt.ShapeReader;

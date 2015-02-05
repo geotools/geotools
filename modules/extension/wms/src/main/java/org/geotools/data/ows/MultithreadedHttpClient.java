@@ -303,4 +303,12 @@ public class MultithreadedHttpClient implements HTTPClient {
     public boolean isTryGzip() {
         return tryGzip;
     }
+
+
+    /**
+     * Disposes the client, releasing the pooled HTTP connections
+     */
+    public void close() throws IOException {
+        connectionManager.shutdown();
+    }
 }

@@ -45,7 +45,8 @@ public class SolrUtils {
             return Boolean.class;
         if (className.equals("org.apache.solr.schema.SpatialRecursivePrefixTreeFieldType")
                 || className.equals("org.apache.solr.schema.LatLonType")
-                || className.equals("org.apache.solr.schema.BBoxField"))
+                || className.equals("org.apache.solr.schema.BBoxField")
+                || className.equals("org.apache.solr.spatial.pending.BBoxFieldType"))
             return Geometry.class;
         if (className.equals("org.apache.solr.schema.DateField")
                 || className.equals("org.apache.solr.schema.TrieDateField"))

@@ -41,7 +41,7 @@ public abstract class SolrSpatialStrategy {
 
     static SolrSpatialStrategy createStrategy(GeometryDescriptor att) {
         String solrType = (String) att.getUserData().get(SolrFeatureSource.KEY_SOLR_TYPE);
-        if (solrType != null && solrType.endsWith("BBoxField")) {
+        if (solrType != null && solrType.contains("BBoxField")) {
             return BBOX;
         }
         return DEFAULT;

@@ -46,6 +46,8 @@ public class SolrSpatialStrategyTest {
             "org.apache.solr.schema.LatLonType")) instanceof DefaultStrategy);
         assertTrue(SolrSpatialStrategy.createStrategy(newDescriptor(
             "org.apache.solr.schema.BBoxField")) instanceof BBoxStrategy);
+        assertTrue(SolrSpatialStrategy.createStrategy(newDescriptor(
+            "org.apache.solr.spatial.pending.BBoxFieldType")) instanceof BBoxStrategy);
     }
 
     @Test

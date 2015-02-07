@@ -35,6 +35,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -187,35 +188,38 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         
         assertEquals(expected, result);
     }
-    
+
     public void testNegateEquals() {
-    	Filter f = ff.not(ff.equals(ff.property("prop"), ff.literal(10)));
-    	Filter result = (Filter) f.accept(visitor, null);
-        assertEquals(ff.notEqual(ff.property("prop"), ff.literal(10)), result);
+        Filter f = ff.not(ff.equals(ff.property("prop"), ff.literal(10)));
+        Filter result = (Filter) f.accept(visitor, null);
+        assertEquals(ff.notEqual(ff.property("prop"), ff.literal(10), true, MatchAction.ALL),
+                result);
     }
-    
+
     public void testNegateGreater() {
         Filter f = ff.not(ff.greater(ff.property("prop"), ff.literal(10)));
         Filter result = (Filter) f.accept(visitor, null);
-        assertEquals(ff.lessOrEqual(ff.property("prop"), ff.literal(10)), result);
+        assertEquals(ff.lessOrEqual(ff.property("prop"), ff.literal(10), true, MatchAction.ALL),
+                result);
     }
 
     public void testNegateGreaterOrEqual() {
         Filter f = ff.not(ff.greaterOrEqual(ff.property("prop"), ff.literal(10)));
         Filter result = (Filter) f.accept(visitor, null);
-        assertEquals(ff.less(ff.property("prop"), ff.literal(10)), result);
+        assertEquals(ff.less(ff.property("prop"), ff.literal(10), true, MatchAction.ALL), result);
     }
 
     public void testNegateLess() {
         Filter f = ff.not(ff.less(ff.property("prop"), ff.literal(10)));
         Filter result = (Filter) f.accept(visitor, null);
-        assertEquals(ff.greaterOrEqual(ff.property("prop"), ff.literal(10)), result);
+        assertEquals(ff.greaterOrEqual(ff.property("prop"), ff.literal(10), true, MatchAction.ALL),
+                result);
     }
 
     public void testNegateLessOrEqual() {
         Filter f = ff.not(ff.lessOrEqual(ff.property("prop"), ff.literal(10)));
         Filter result = (Filter) f.accept(visitor, null);
-        assertEquals(ff.greater(ff.property("prop"), ff.literal(10)), result);
+        assertEquals(ff.greater(ff.property("prop"), ff.literal(10), true, MatchAction.ALL), result);
     }
 
     public void testNegateBetween() {
@@ -224,8 +228,8 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Literal l20 = ff.literal(20);
         Filter f = ff.not(ff.between(prop, l10, l20));
         Filter result = (Filter) f.accept(visitor, null);
-        assertEquals(ff.or(Arrays.asList((Filter) ff.less(prop, l10), ff.greater(prop, l20))),
-                result);
+        // *not* simplified
+        assertEquals(f, result);
     }
 
     public void testDoubleNegation() {

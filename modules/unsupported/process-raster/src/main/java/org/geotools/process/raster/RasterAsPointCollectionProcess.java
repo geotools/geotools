@@ -2,7 +2,7 @@
  * GeoTools - The Open Source Java GIS Toolkit
  * http://geotools.org
  *
- * (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ * (C) 2014-2015, Open Source Geospatial Foundation (OSGeo)
  * (C) 2001-2014 TOPP - www.openplans.org.
  *
  * This library is free software; you can redistribute it and/or
@@ -31,7 +31,6 @@ import javax.media.jai.iterator.RectIterFactory;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
-import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.GeoTools;
@@ -52,7 +51,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.util.Utilities;
-import org.opengis.coverage.processing.Operation;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -86,8 +84,6 @@ import com.vividsolutions.jts.geom.Point;
  */
 @DescribeProcess(title = "Raster As Point Collection", description = "Returns a collection of point features for the pixels of a raster.  The band values are provided as attributes.")
 public class RasterAsPointCollectionProcess implements RasterProcess {
-
-    protected static final Operation AFFINE = CoverageProcessor.getInstance().getOperation("Affine");
     
     @DescribeResult(name = "result", description = "Point features")
     public SimpleFeatureCollection execute(

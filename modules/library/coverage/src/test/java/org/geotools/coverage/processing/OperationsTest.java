@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.processing;
 
+import it.geosolutions.jaiext.JAIExt;
+
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import javax.media.jai.OperationNode;
@@ -98,7 +100,7 @@ public final class OperationsTest extends GridProcessingTestBase {
         assertEquals (sourceRaster  .getHeight(),                    targetRaster  .getHeight());
         assertEquals (0, sourceRaster.getMinX());
         assertEquals (0, sourceRaster.getMinY());
-        assertEquals ("SubtractConst", ((OperationNode) targetImage).getOperationName());
+        assertEquals (JAIExt.getOperationName("SubtractConst"), ((OperationNode) targetImage).getOperationName());
 
         final boolean medialib = TestData.isMediaLibAvailable();
         float difference;

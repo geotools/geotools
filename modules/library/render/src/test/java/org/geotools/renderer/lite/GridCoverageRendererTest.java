@@ -460,7 +460,7 @@ public class GridCoverageRendererTest  {
                 Color.RED, 256, 256);
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorBlackLine.png");
-        ImageAssert.assertEquals(reference, image, 0);
+        ImageAssert.assertEquals(reference, image, 5);
     }
 
     @Test
@@ -478,7 +478,7 @@ public class GridCoverageRendererTest  {
                 Color.RED, 256, 256);
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorTouchDateline.png");
-        ImageAssert.assertEquals(reference, image, 0);
+        ImageAssert.assertEquals(reference, image, 10);
     }
 
     @Test
@@ -497,7 +497,7 @@ public class GridCoverageRendererTest  {
                 Color.RED, 256, 256);
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/wrapDatelineNearest.png");
-        ImageAssert.assertEquals(reference, image, 0);
+        ImageAssert.assertEquals(reference, image, 20);
     }
 
     @Test
@@ -628,7 +628,7 @@ public class GridCoverageRendererTest  {
         assertNotNull(image);
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/north_polar.png");
-        ImageAssert.assertEquals(reference, image, 0);
+        ImageAssert.assertEquals(reference, image, 40);
     }
 
     @Test

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,18 +16,23 @@
  */
 package org.geotools.coverage.grid;
 
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.media.jai.BorderExtender;
 import javax.media.jai.BorderExtenderCopy;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
+import javax.media.jai.ROI;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
 
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.opengis.coverage.CannotEvaluateException;
 import org.opengis.coverage.PointOutsideCoverageException;
 import org.opengis.metadata.spatial.PixelOrientation;
@@ -131,7 +136,25 @@ public final class Interpolator2D extends GridCoverage2D {
     private transient int[][] ints;
 
     /** The {@link BorderExtender} for this {@link Interpolator2D} instance .*/
-	private final BorderExtender borderExtender;
+    private final BorderExtender borderExtender;
+
+    /** Inner Coverage ROI used in interpolation */
+    private ROI roi;
+
+    /** Inner Coverage NoData used in interpolation */
+    private Range nodata;
+
+    /** Value to set as background */
+    private double background;
+
+    /** Boolean for checking if ROI is present */
+    private boolean hasROI;
+
+    /** Boolean for checking if NoData are present */
+    private boolean hasNoData;
+
+    /** ROIBounds used for a quicker check on the pixel points */
+    private Rectangle roiBounds;
 
 	/**
 	 * Default {@link BorderExtender} is {@link BorderExtenderCopy}.
@@ -191,7 +214,11 @@ public final class Interpolator2D extends GridCoverage2D {
         while (coverage instanceof Interpolator2D) {
             coverage = ((Interpolator2D) coverage).source;
         }
-        if (interpolations.length==0 || (interpolations[0] instanceof InterpolationNearest)) {
+        ROI roiProp = CoverageUtilities.getROIProperty(coverage);
+        boolean hasROI = roiProp != null;
+        Object noDataProp = CoverageUtilities.getNoDataProperty(coverage);
+        boolean hasNoData = noDataProp != null;
+        if (interpolations.length==0 || (interpolations[0] instanceof InterpolationNearest && !hasROI && !hasNoData) ) {
             return coverage;
         }
         return new Interpolator2D(coverage, interpolations, 0,be);
@@ -262,7 +289,25 @@ public final class Interpolator2D extends GridCoverage2D {
 	    this.ymax = y + image.getHeight();
 	
 	    bounds = new Rectangle(0, 0, interpolation.getWidth(), interpolation.getHeight());
-	}
+	    
+        // Check ROI and NoData
+        ROI roiProp = CoverageUtilities.getROIProperty(coverage);
+        hasROI = roiProp != null;
+        NoDataContainer noDataProp = CoverageUtilities.getNoDataProperty(coverage);
+        hasNoData = noDataProp != null;
+        if (hasROI) {
+            roi = roiProp;
+            roiBounds = roi.getBounds();
+        }
+        nodata = hasNoData ? noDataProp.getAsRange() : null;
+
+        // Create a value to set as background
+        if (nodata != null) {
+            background = nodata.getMin(true).doubleValue();
+        } else {
+            background = 0.0d;
+        }
+    }
 
     /**
      * Returns interpolations. The first array's element is the interpolation for
@@ -405,7 +450,6 @@ public final class Interpolator2D extends GridCoverage2D {
 	    final int    iy = (int)y0;
 	    if (!(ix>=xmin && ix<=xmax && iy>=ymin && iy<=ymax)) 
 	        return null;
-	    
 	    /*
 	     * Creates buffers, if not already created.
 	     */
@@ -421,6 +465,12 @@ public final class Interpolator2D extends GridCoverage2D {
 	    if (dest == null) {
 	        dest = new double[bandUp];
 	    }
+	    // ROI Check
+            if (hasROI && !roiBounds.contains(ix, iy) && !roi.contains(ix, iy)) {
+                // Outside the ROI. fill it with background values
+                Arrays.fill(dest, background);
+                return dest;
+            }
 	    /*
 	     * Builds up a RectIter and use it for interpolating all bands.
 	     * There is very few points, so the cost of creating a RectIter
@@ -430,19 +480,33 @@ public final class Interpolator2D extends GridCoverage2D {
 	    bounds.x = ix - left;
 	    bounds.y = iy - top;
 	    final RectIter iter = RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
+	    boolean[][] gaps = hasNoData ? new boolean[samples.length][samples[0].length] : null;
 	    for (; band<bandUp; band++) {
 	        iter.startLines();
 	        int j=0; do {
 	            iter.startPixels();
+	            final boolean[] nodLine=hasNoData ? gaps[j] : null;
 	            final double[] row=samples[j++];
 	            int i=0; do {
-	                row[i++] = iter.getSampleDouble(band);
+	                double sampleDouble = iter.getSampleDouble(band);
+                        // NoData Check
+                        if(hasNoData && !nodata.contains(sampleDouble)){
+                            nodLine[i] = true;
+                        }
+                        row[i++] = sampleDouble;
 	            }
 	            while (!iter.nextPixelDone());
 	            assert i == row.length;
 	        }
 	        while (!iter.nextLineDone());
 	        assert j == samples.length;
+	        // If has NoData the gas must be filled
+                boolean result = fixNoData(samples, gaps);
+                if (!result) {
+                    // Totally nodata. fill it with background values
+                    Arrays.fill(dest, background);
+                    return dest;
+                }
 	        float dx = (float)(x-x0); if (dx==1) dx=ONE_EPSILON;
 	        float dy = (float)(y-y0); if (dy==1) dy=ONE_EPSILON;
 	        final double value = interpolation.interpolate(samples, dx, dy);
@@ -461,7 +525,7 @@ public final class Interpolator2D extends GridCoverage2D {
 	    return dest;
 	}
 
-	/**
+    /**
 	 * Interpolates at the specified position. If {@code fallback!=null},
 	 * then {@code dest} <strong>must</strong> have been initialized with
 	 * {@code super.evaluate(...)} prior to invoking this method.
@@ -482,6 +546,9 @@ public final class Interpolator2D extends GridCoverage2D {
 	    final int    iy = (int)y0;
 	    if (!(ix>=xmin && ix<xmax && iy>=ymin && iy<ymax))
 	    	return null;
+	    
+	    
+	    
 	    /*
 	     * Create buffers, if not already created.
 	     */
@@ -497,6 +564,12 @@ public final class Interpolator2D extends GridCoverage2D {
 	    if (dest == null) {
 	        dest = new float[bandUp];
 	    }
+	       // ROI Check
+            if (hasROI && !roiBounds.contains(ix, iy) && !roi.contains(ix, iy)) {
+                // Outside the ROI. fill it with background values
+                Arrays.fill(dest, (float)background);
+                return dest;
+            }
 	    /*
 	     * Builds up a RectIter and use it for interpolating all bands.
 	     * There is very few points, so the cost of creating a RectIter
@@ -506,19 +579,33 @@ public final class Interpolator2D extends GridCoverage2D {
 	    bounds.x = ix - left;
 	    bounds.y = iy - top;
 	    final RectIter iter = RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
+	    boolean[][] gaps = hasNoData ? new boolean[samples.length][samples[0].length] : null;
 	    for (; band<bandUp; band++) {
 	        iter.startLines();
 	        int j=0; do {
 	            iter.startPixels();
+	            final boolean[] nodLine=hasNoData ? gaps[j] : null;
 	            final float[] row=samples[j++];
 	            int i=0; do {
-	                row[i++] = iter.getSampleFloat(band);
+	                float sampleFloat = iter.getSampleFloat(band);
+	                    // NoData Check
+                        if(hasNoData && !nodata.contains(sampleFloat)){
+                            nodLine[i] = true;
+                        }
+                        row[i++] = sampleFloat;
 	            }
 	            while (!iter.nextPixelDone());
 	            assert i == row.length;
 	        }
 	        while (!iter.nextLineDone());
 	        assert j == samples.length;
+	        // If has NoData the gas must be filled
+                boolean result = fixNoData(samples, gaps);
+                if (!result) {
+                    // Totally nodata. fill it with background values
+                    Arrays.fill(dest, (float)background);
+                    return dest;
+                }
 	        float dx = (float)(x-x0); if (dx==1) dx=ONE_EPSILON;
 	        float dy = (float)(y-y0); if (dy==1) dy=ONE_EPSILON;
 	        final float value = interpolation.interpolate(samples, dx, dy);
@@ -573,6 +660,12 @@ public final class Interpolator2D extends GridCoverage2D {
 	    if (dest == null) {
 	        dest = new int[bandUp];
 	    }
+	       // ROI Check
+            if (hasROI && !roiBounds.contains(ix, iy) && !roi.contains(ix, iy)) {
+                // Outside the ROI. fill it with background values
+                Arrays.fill(dest, (int)background);
+                return dest;
+            }
 	    /*
 	     * Builds up a RectIter and use it for interpolating all bands.
 	     * There is very few points, so the cost of creating a RectIter
@@ -582,23 +675,337 @@ public final class Interpolator2D extends GridCoverage2D {
 	    bounds.x = ix - left;
 	    bounds.y = iy - top;
 	    final RectIter iter = RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
+	    boolean[][] gaps = hasNoData ? new boolean[samples.length][samples[0].length] : null;
 	    for (; band<bandUp; band++) {
 	        iter.startLines();
 	        int j=0; do {
 	            iter.startPixels();
+	            final boolean[] nodLine=hasNoData ? gaps[j] : null;
 	            final int[] row=samples[j++];
 	            int i=0; do {
-	                row[i++] = iter.getSample(band);
+	                int sample = iter.getSample(band);
+                        // NoData Check
+                        if(hasNoData && !nodata.contains(sample)){
+                            nodLine[i] = true;
+                        }
+                        row[i++] = sample;
 	            }
 	            while (!iter.nextPixelDone());
 	            assert i==row.length;
 	        }
 	        while (!iter.nextLineDone());
 	        assert j == samples.length;
+	               // If has NoData the gas must be filled
+                boolean result = fixNoData(samples, gaps);
+                if (!result) {
+                    // Totally nodata. fill it with background values
+                    Arrays.fill(dest, (int)background);
+                    return dest;
+                }
 	        final int xfrac = (int) ((x-x0) * (1 << interpolation.getSubsampleBitsH()));
 	        final int yfrac = (int) ((y-y0) * (1 << interpolation.getSubsampleBitsV()));
 	        dest[band] = interpolation.interpolate(samples, xfrac, yfrac);
 	    }
 	    return dest;
 	}
+	
+	
+	/**
+         * @param samples
+         * @param gaps
+         * @return a boolean value indicating if the samples are valid
+         */
+        private boolean fixNoData(int[][] samples, boolean[][] gaps) {
+            // First check if NoData check must be done
+            if(!hasNoData){
+                return true;
+            }
+            // Then check if all the data are valid
+            boolean totalValid = true;
+            boolean totalInvalid = false;
+            // Boolean indicating which line is valid
+            boolean[] validLines = new boolean[gaps.length];
+            for(int i = 0; i < gaps.length; i++){
+                for(int j = 0; j < gaps[0].length; j++){
+                    totalValid &= gaps[i][j];
+                    totalInvalid |= gaps[i][j];
+                    validLines[i] |= gaps[i][j];
+                }
+            }
+            if(totalValid){
+                return true;
+            }
+            if(!totalInvalid){
+                return false;
+            }
+            // We must do nodata handling
+            
+            // First fix on the Horizontal side
+            for (int i = 0; i < gaps.length; i++) {
+                if(validLines[i]){
+                    for (int j = 0; j < gaps[0].length; j++) {
+                        if(j == 0){
+                            samples[i][j] = samples[i][searchFirstValid(gaps[i], j, true)];
+                        } else if(j == (gaps[0].length -1)){
+                            samples[i][j] = samples[i][searchFirstValid(gaps[i], j, false)];
+                        }else {
+                            int before = searchFirstValid(gaps[i], j, true);
+                            int after = searchFirstValid(gaps[i], j, false);
+                            if(before == -1){
+                                samples[i][j] = samples[i][after];
+                            } else if(after == -1){
+                                samples[i][j] = samples[i][before];
+                            } else {
+                                // Mean value
+                                samples[i][j] = (samples[i][after] + samples[i][before])/2;
+                            }
+                        }
+                        gaps[i][j] = true;
+                    }
+                }
+            }
+            
+            // Then work on the Vertical side
+            // Check if we have any vertical line without valid data
+            boolean allValid = true;
+            for(int i = 0; allValid && i < gaps.length; i++){
+                allValid &= validLines[i];
+            }
+            if(allValid){
+                // Work already done on the lines
+                return true;
+            }
+            // Fix wrong lines
+            for(int i = 0; i < gaps.length; i++){
+                if(!validLines[i]){
+                    if(i == 0){
+                        int index = searchFirstValid(validLines, i, true);
+                        samples[i] = samples[index];
+                    }else if(i == (gaps.length -1)){
+                        int index = searchFirstValid(validLines, i, false);
+                        samples[i] = samples[index];
+                    }else{
+                        int indexAfter = searchFirstValid(validLines, i, true);
+                        int indexBefore = searchFirstValid(validLines, i, false);
+                        if(indexAfter == -1){
+                            samples[i] = samples[indexBefore];
+                        } else if(indexBefore == -1){
+                            samples[i] = samples[indexAfter];
+                        } else {
+                            for(int j = 0; j < samples[0].length; j++){
+                                samples[i][j] = (samples[indexBefore][j] + samples[indexAfter][j])/2;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+        
+        /**
+         * @param samples
+         * @param gaps
+         * @return a boolean value indicating if the samples are valid
+         */
+        private boolean fixNoData(float[][] samples, boolean[][] gaps) {
+            // First check if NoData check must be done
+            if(!hasNoData){
+                return true;
+            }
+            // Then check if all the data are valid
+            boolean totalValid = true;
+            boolean totalInvalid = false;
+            // Boolean indicating which line is valid
+            boolean[] validLines = new boolean[gaps.length];
+            for(int i = 0; i < gaps.length; i++){
+                for(int j = 0; j < gaps[0].length; j++){
+                    totalValid &= gaps[i][j];
+                    totalInvalid |= gaps[i][j];
+                    validLines[i] |= gaps[i][j];
+                }
+            }
+            if(totalValid){
+                return true;
+            }
+            if(!totalInvalid){
+                return false;
+            }
+            // We must do nodata handling
+            
+            // First fix on the Horizontal side
+            for (int i = 0; i < gaps.length; i++) {
+                if(validLines[i]){
+                    for (int j = 0; j < gaps[0].length; j++) {
+                        if(j == 0){
+                            samples[i][j] = samples[i][searchFirstValid(gaps[i], j, true)];
+                        } else if(j == (gaps[0].length -1)){
+                            samples[i][j] = samples[i][searchFirstValid(gaps[i], j, false)];
+                        }else {
+                            int before = searchFirstValid(gaps[i], j, true);
+                            int after = searchFirstValid(gaps[i], j, false);
+                            if(before == -1){
+                                samples[i][j] = samples[i][after];
+                            } else if(after == -1){
+                                samples[i][j] = samples[i][before];
+                            } else {
+                                // Mean value
+                                samples[i][j] = (samples[i][after] + samples[i][before])/2;
+                            }
+                        }
+                        gaps[i][j] = true;
+                    }
+                }
+            }
+            
+            // Then work on the Vertical side
+            // Check if we have any vertical line without valid data
+            boolean allValid = true;
+            for(int i = 0; allValid && i < gaps.length; i++){
+                allValid &= validLines[i];
+            }
+            if(allValid){
+                // Work already done on the lines
+                return true;
+            }
+            // Fix wrong lines
+            for(int i = 0; i < gaps.length; i++){
+                if(!validLines[i]){
+                    if(i == 0){
+                        int index = searchFirstValid(validLines, i, true);
+                        samples[i] = samples[index];
+                    }else if(i == (gaps.length -1)){
+                        int index = searchFirstValid(validLines, i, false);
+                        samples[i] = samples[index];
+                    }else{
+                        int indexAfter = searchFirstValid(validLines, i, true);
+                        int indexBefore = searchFirstValid(validLines, i, false);
+                        if(indexAfter == -1){
+                            samples[i] = samples[indexBefore];
+                        } else if(indexBefore == -1){
+                            samples[i] = samples[indexAfter];
+                        } else {
+                            for(int j = 0; j < samples[0].length; j++){
+                                samples[i][j] = (samples[indexBefore][j] + samples[indexAfter][j])/2;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+        
+        /**
+         * @param samples
+         * @param gaps
+         * @return a boolean value indicating if the samples are valid
+         */
+        private boolean fixNoData(double[][] samples, boolean[][] gaps) {
+            // First check if NoData check must be done
+            if(!hasNoData){
+                return true;
+            }
+            // Then check if all the data are valid
+            boolean totalValid = true;
+            boolean totalInvalid = false;
+            // Boolean indicating which line is valid
+            boolean[] validLines = new boolean[gaps.length];
+            for(int i = 0; i < gaps.length; i++){
+                for(int j = 0; j < gaps[0].length; j++){
+                    totalValid &= gaps[i][j];
+                    totalInvalid |= gaps[i][j];
+                    validLines[i] |= gaps[i][j];
+                }
+            }
+            if(totalValid){
+                return true;
+            }
+            if(!totalInvalid){
+                return false;
+            }
+            // We must do nodata handling
+            
+            // First fix on the Horizontal side
+            for (int i = 0; i < gaps.length; i++) {
+                if(validLines[i]){
+                    for (int j = 0; j < gaps[0].length; j++) {
+                        if(j == 0){
+                            samples[i][j] = samples[i][searchFirstValid(gaps[i], j, true)];
+                        } else if(j == (gaps[0].length -1)){
+                            samples[i][j] = samples[i][searchFirstValid(gaps[i], j, false)];
+                        }else {
+                            int before = searchFirstValid(gaps[i], j, true);
+                            int after = searchFirstValid(gaps[i], j, false);
+                            if(before == -1){
+                                samples[i][j] = samples[i][after];
+                            } else if(after == -1){
+                                samples[i][j] = samples[i][before];
+                            } else {
+                                // Mean value
+                                samples[i][j] = (samples[i][after] + samples[i][before])/2;
+                            }
+                        }
+                        gaps[i][j] = true;
+                    }
+                }
+            }
+            
+            // Then work on the Vertical side
+            // Check if we have any vertical line without valid data
+            boolean allValid = true;
+            for(int i = 0; allValid && i < gaps.length; i++){
+                allValid &= validLines[i];
+            }
+            if(allValid){
+                // Work already done on the lines
+                return true;
+            }
+            // Fix wrong lines
+            for(int i = 0; i < gaps.length; i++){
+                if(!validLines[i]){
+                    if(i == 0){
+                        int index = searchFirstValid(validLines, i, true);
+                        samples[i] = samples[index];
+                    }else if(i == (gaps.length -1)){
+                        int index = searchFirstValid(validLines, i, false);
+                        samples[i] = samples[index];
+                    }else{
+                        int indexAfter = searchFirstValid(validLines, i, true);
+                        int indexBefore = searchFirstValid(validLines, i, false);
+                        if(indexAfter == -1){
+                            samples[i] = samples[indexBefore];
+                        } else if(indexBefore == -1){
+                            samples[i] = samples[indexAfter];
+                        } else {
+                            for(int j = 0; j < samples[0].length; j++){
+                                samples[i][j] = (samples[indexBefore][j] + samples[indexAfter][j])/2;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+        
+        private int searchFirstValid(boolean[] gaps, int j, boolean after) {
+            int result = -1;
+            if(after){
+                for(int k = j+1; k < gaps.length; k++){
+                    if(gaps[k]){
+                        result = k;
+                        break;
+                    }
+                }
+            }else{
+                for(int k = gaps.length - 1; k > j; k--){
+                    if(gaps[k]){
+                        result = k;
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
 }

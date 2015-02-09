@@ -16,6 +16,8 @@
  */
 package org.geotools.image.jai;
 
+import it.geosolutions.jaiext.JAIExt;
+
 import java.awt.image.renderable.ContextualRenderedImageFactory;
 import java.awt.image.renderable.RenderedImageFactory;
 import java.util.List;
@@ -121,6 +123,7 @@ public final class Registry {
                     }
                 }
             }
+            JAIExt.setJAIAcceleration(operation, allowed);
             if (currentState!=null && currentState.booleanValue()!=allowed) {
                 RIFRegistry.unsetPreference(registry, operation, product,
                                             allowed ? javaFactory : nativeFactory,

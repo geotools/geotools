@@ -16,12 +16,21 @@
  */
 package org.geotools.image;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+import it.geosolutions.jaiext.lookup.LookupTable;
+import it.geosolutions.jaiext.lookup.LookupTableFactory;
+import it.geosolutions.jaiext.range.RangeFactory;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
@@ -34,12 +43,14 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
+import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.zip.GZIPInputStream;
 
@@ -49,9 +60,10 @@ import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
+import javax.media.jai.ROI;
+import javax.media.jai.ROIShape;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.BandMergeDescriptor;
 import javax.media.jai.operator.ConstantDescriptor;
 
 import org.geotools.TestData;
@@ -702,11 +714,13 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     	Assert.assertEquals(minimums4a[0],minimums4b[0],1E-10);
     	
     	// now test multibands case
-    	final RenderedImage multiband=BandMergeDescriptor.create(test2, test3, null);
+    	ParameterBlock pb = new ParameterBlock();
+    	pb.addSource(test2).addSource(test3);
+    	final RenderedImage multiband=JAI.create("BandMerge", pb, null);//BandMergeDescriptor.create(test2, test3, null);
     	ImageWorker testmultibandI=new ImageWorker(multiband);
     	final double[] maximums5a = testmultibandI.getMaximums();
     	final double[] minimums5a = testmultibandI.getMinimums();    
-    	testmultibandI.rescaleToBytes();
+    	testmultibandI.rescaleToBytes().setNoData(null);
     	final double[] maximums5b = testmultibandI.getMaximums();
     	final double[] minimums5b = testmultibandI.getMinimums();
     	Assert.assertEquals(maximums5a[0],maximums5b[0],1E-10);
@@ -1009,7 +1023,35 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         int sample = image.getTile(0, 0).getSample(0, 0, 1);
         assertEquals(128, sample);
     }
+
+    @Test
+    public void testOpacityGrayROI() {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        ImageWorker worker = new ImageWorker(gray);
+        worker.setROI(new ROIShape(new Rectangle(1, 1 , 1, 1)));
+        worker.applyOpacity(0.5f);
+        
+        RenderedImage image = worker.getRenderedImage();
+        assertTrue(image.getColorModel() instanceof ComponentColorModel);
+        assertTrue(image.getColorModel().hasAlpha());
+        int sample = image.getTile(0, 0).getSample(0, 0, 1);
+        assertEquals(0, sample);
+    }
     
+    @Test
+    public void testOpacityGrayNoData() {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        ImageWorker worker = new ImageWorker(gray);
+        worker.setNoData(RangeFactory.convert(RangeFactory.create(255, 255), gray.getSampleModel().getDataType()));
+        worker.applyOpacity(0.5f);
+        
+        RenderedImage image = worker.getRenderedImage();
+        assertTrue(image.getColorModel() instanceof ComponentColorModel);
+        assertTrue(image.getColorModel().hasAlpha());
+        int sample = image.getTile(0, 0).getSample(0, 0, 1);
+        assertEquals(0, sample);
+    }
+
     @Test
     public void testOpacityGrayAlpha() {
         assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
@@ -1128,5 +1170,55 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertEquals(ushortCoverage.getRenderedImage().getTileWidth(), reduced.getTileWidth());
         assertEquals(ushortCoverage.getRenderedImage().getTileHeight(), reduced.getTileHeight());
     }
-    
+
+    @Test
+    public void testRescaleNoData() {
+        // Getting input gray scale image
+        ImageWorker w = new ImageWorker(gray);
+        // Removing optional Alpha band
+        w.retainFirstBand();
+        // Formatting to int (avoid to convert values greater to 127 into negative values during rescaling)
+        w.format(DataBuffer.TYPE_INT);
+        // Setting NoData
+        w.setNoData(RangeFactory.create(0, 0));
+        // Setting background to 10
+        w.setBackground(new double[] { 10d });
+        // Rescaling data
+        w.rescale(new double[] { 2 }, new double[] { 2 });
+
+        // Getting Minimum value, It cannot be equal or lower than the offset value (2)
+        double minimum = w.getMinimums()[0];
+        assertTrue(minimum > 2);
+    }
+
+    @Test
+    public void testLookupROI() {
+        // Getting input Palette image
+        ImageWorker w = new ImageWorker(chlImage);
+        // Forcing component colormodel
+        w.forceComponentColorModel();
+        // Applying a lookup table
+        byte[] data = new byte[256];
+        // Setting all the values to 50
+        Arrays.fill(data, (byte) 50);
+        LookupTable table = LookupTableFactory.create(data);
+        // Add a ROI
+        ROI roi = new ROIShape(new Rectangle(chlImage.getMinX(), chlImage.getMinY(),
+                chlImage.getWidth() / 2, chlImage.getHeight() / 2));
+        w.setROI(roi);
+        // Setting Background to 0
+        w.setBackground(new double[] { 0 });
+        // Appliyng lookup
+        w.looukp(table);
+        // Removing NoData and ROI and calculate the statistics on the whole image
+        w.setNoData(null);
+        w.setROI(null);
+        // Calculating the minimum and maximum
+        double min = w.getMinimums()[0];
+        double max = w.getMaximums()[0];
+
+        // Ensuring minimum is 0 and maximum 50
+        assertEquals(min, 0, 1E-7);
+        assertEquals(max, 50, 1E-7);
+    }
 }

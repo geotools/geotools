@@ -17,6 +17,8 @@
  */
 package org.geotools.gce.image;
 
+import it.geosolutions.jaiext.range.NoDataContainer;
+
 import java.awt.geom.AffineTransform;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
@@ -46,6 +48,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -332,6 +335,10 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
 
 		RenderedImage image = (sourceCoverage).getRenderedImage();
 		final ImageWorker worker = new ImageWorker(image);
+		// Setting NoData and ROI if present
+		worker.setROI(CoverageUtilities.getROIProperty(sourceCoverage));
+		NoDataContainer noDataProperty = CoverageUtilities.getNoDataProperty(sourceCoverage);
+                worker.setNoData(noDataProperty != null ? noDataProperty.getAsRange() : null);
 
 		// /////////////////////////////////////////////////////////////////////
 		//

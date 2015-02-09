@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -54,10 +54,10 @@ import javax.media.jai.PropertySourceImpl;
 import javax.media.jai.TiledImage;
 import javax.media.jai.iterator.RectIterFactory;
 import javax.media.jai.iterator.WritableRectIter;
-import javax.media.jai.operator.ImageFunctionDescriptor;
 
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.io.LineWriter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
@@ -717,20 +717,31 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             if ((area == null || area instanceof Rectangle2D) &&
                     crsToGrid.getShearX() == 0 && crsToGrid.getShearY() == 0)
             {
-                image = ImageFunctionDescriptor.create(this, // The functional description
-                        gridBounds.width,                    // The image width
-                        gridBounds.height,                   // The image height
-                        (float) (1/crsToGrid.getScaleX()),   // The X scale factor
-                        (float) (1/crsToGrid.getScaleY()),   // The Y scale factor
-                        (float) crsToGrid.getTranslateX(),   // The X translation
-                        (float) crsToGrid.getTranslateY(),   // The Y translation
-                        new RenderingHints(JAI.KEY_IMAGE_LAYOUT, new ImageLayout()
-                                .setMinX       (gridBounds.x)
-                                .setMinY       (gridBounds.y)
-                                .setTileWidth  (tileSize.width)
-                                .setTileHeight (tileSize.height)
-                                .setSampleModel(sampleModel)
-                                .setColorModel (colorModel)));
+                RenderingHints hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, new ImageLayout()
+              .setMinX       (gridBounds.x)
+              .setMinY       (gridBounds.y)
+              .setTileWidth  (tileSize.width)
+              .setTileHeight (tileSize.height)
+              .setSampleModel(sampleModel)
+              .setColorModel (colorModel));
+                image = new ImageWorker().setRenderingHints(hints).function(this, gridBounds.width,
+                        gridBounds.height, (float) (1 / crsToGrid.getScaleX()),
+                        (float) (1 / crsToGrid.getScaleY()), (float) crsToGrid.getTranslateX(),
+                        (float) crsToGrid.getTranslateY()).getPlanarImage();
+//                        ImageFunctionDescriptor.create(this, // The functional description
+//                        gridBounds.width,                    // The image width
+//                        gridBounds.height,                   // The image height
+//                        (float) (1/crsToGrid.getScaleX()),   // The X scale factor
+//                        (float) (1/crsToGrid.getScaleY()),   // The Y scale factor
+//                        (float) crsToGrid.getTranslateX(),   // The X translation
+//                        (float) crsToGrid.getTranslateY(),   // The Y translation
+//                        new RenderingHints(JAI.KEY_IMAGE_LAYOUT, new ImageLayout()
+//                                .setMinX       (gridBounds.x)
+//                                .setMinY       (gridBounds.y)
+//                                .setTileWidth  (tileSize.width)
+//                                .setTileHeight (tileSize.height)
+//                                .setSampleModel(sampleModel)
+//                                .setColorModel (colorModel)));
             } else {
                 /*
                  * Creates immediately a rendered image using a given render context. This block

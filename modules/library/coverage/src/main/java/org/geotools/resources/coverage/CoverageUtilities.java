@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2001-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,15 +16,20 @@
  */
 package org.geotools.resources.coverage;
 
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
+
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageReadParam;
 import javax.media.jai.PropertySource;
+import javax.media.jai.ROI;
 
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
@@ -198,6 +203,81 @@ public final class CoverageUtilities {
     }
 
     /**
+     * Utility method for extracting NoData property from input {@link GridCoverage2D}.
+     * 
+     * @param coverage
+     * @return A {@link NoDataContainer} object containing input NoData definition
+     */
+    public static NoDataContainer getNoDataProperty(GridCoverage2D coverage) {
+        // Searching for NoData property
+        final Object noData = coverage.getProperty(NoDataContainer.GC_NODATA);
+        if (noData != null) {
+            // Returning a new instance of NoDataContainer
+            if (noData instanceof NoDataContainer) {
+                return (NoDataContainer) noData;
+            } else if (noData instanceof Double) {
+                return new NoDataContainer((Double) noData);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Utility method for extracting ROI property from input {@link GridCoverage2D}.
+     * 
+     * @param coverage
+     * @return A {@link ROI} object
+     */
+    public static ROI getROIProperty(GridCoverage2D coverage) {
+        // Searching for the ROI
+        final Object roi = coverage.getProperty("GC_ROI");
+        // Returning it if present
+        if (roi != null && roi instanceof ROI) {
+            return (ROI) roi;
+        }
+        return null;
+    }
+
+    /**
+     * Utility method for setting NoData to the input {@link Map}
+     * 
+     * @param properties {@link Map} where the nodata will be set
+     * @param noData May be a {@link Range}, double[], double or {@link NoDataContainer}
+     */
+    public static void setNoDataProperty(Map<String, Object> properties, Object noData) {
+        // If no nodata or no properties are defined, nothing is done
+        if (noData == null || properties == null) {
+            return;
+        }
+        // Creation of a new NoDataContainer instance and setting it inside the properties
+        if (noData instanceof Range) {
+            properties.put(NoDataContainer.GC_NODATA, new NoDataContainer((Range) noData));
+        } else if (noData instanceof Double) {
+            properties.put(NoDataContainer.GC_NODATA, new NoDataContainer((Double) noData));
+        } else if (noData instanceof double[]) {
+            properties.put(NoDataContainer.GC_NODATA, new NoDataContainer((double[]) noData));
+        } else if (noData instanceof NoDataContainer) {
+            properties
+                    .put(NoDataContainer.GC_NODATA, new NoDataContainer((NoDataContainer) noData));
+        }
+    }
+
+    /**
+     * Utility method for setting ROI to the input {@link Map}
+     * 
+     * @param properties {@link Map} where the ROI will be set
+     * @param roi {@link ROI} instance to set
+     */
+    public static void setROIProperty(Map<String, Object> properties, ROI roi) {
+        // If no ROI or no properties are defined, nothing is done
+        if (roi == null || properties == null) {
+            return;
+        }
+        // Otherwise ROI is set
+        properties.put("GC_ROI", roi);
+    }
+
+    /**
      * Retrieves a best guess for the sample value to use for background,
      * inspecting the categories of the provided {@link GridCoverage2D}.
      *
@@ -212,9 +292,10 @@ public final class CoverageUtilities {
 		}
 		
 		// try to get the GC_NODATA double value from the coverage property
-		final Object noData=coverage.getProperty("GC_NODATA");
-		if(noData!=null&& noData instanceof Number){
-			return new double[]{((Double)noData).doubleValue()};
+		final Object noData=coverage.getProperty(NoDataContainer.GC_NODATA);
+		if(noData!=null&& noData instanceof NoDataContainer){
+			return ((NoDataContainer)noData).getAsArray();
+			        //new double[]{((Double)noData).doubleValue()};
 		}
 		
         ////

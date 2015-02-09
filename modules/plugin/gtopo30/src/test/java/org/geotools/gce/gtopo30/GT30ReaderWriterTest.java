@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -112,7 +112,7 @@ public class GT30ReaderWriterTest extends GT30TestBase {
 
 			// read it again
 			reader = format.getReader(statURL);
-			gc = ((GridCoverage2D) reader.read(null));
+			GridCoverage2D gc1 = ((GridCoverage2D) reader.read(null));
 
 			/**
 			 * 
@@ -120,8 +120,6 @@ public class GT30ReaderWriterTest extends GT30TestBase {
 			 * everything is fine.
 			 * 
 			 */
-			// packed view for this coverage
-			GridCoverage2D gc1 = gc;
 			if (TestData.isInteractiveTest()) {
 				gc1.show();
 				// logging some info

@@ -16,14 +16,22 @@
  */
 package org.geotools.coverage.processing;
 
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.range.RangeFactory;
+
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
+import java.util.Map;
+
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.ROI;
+import javax.media.jai.ROIShape;
 
 import org.opengis.parameter.ParameterValueGroup;
 
-import org.geotools.factory.Hints;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.grid.GridCoverage2D;
 
@@ -51,6 +59,7 @@ public class AffineTest extends GridProcessingTestBase {
      */
     @Before
     public void setUp() {
+        JAIExt.initJAIEXT();
         processor = CoverageProcessor.getInstance(null);
     }
 
@@ -72,9 +81,20 @@ public class AffineTest extends GridProcessingTestBase {
         //
         ///////////////////////////////////////////////////////////////////////
         Interpolation interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
-        affine(originallyIndexedCoverage      , interp);
-        affine(indexedCoverage                , interp);
-        affine(indexedCoverageWithTransparency, interp);
+        affine(originallyIndexedCoverage      , interp, null, null);
+        affine(indexedCoverage                , interp, null, null);
+        affine(indexedCoverageWithTransparency, interp, null, null);
+
+        ///////////////////////////////////////////////////////////////////////
+        //
+        // Nearest neighbor interpolation and ROI / NoData.
+        //
+        ///////////////////////////////////////////////////////////////////////
+        RenderedImage src = originallyIndexedCoverage.getRenderedImage();
+        ROI roi = new ROIShape(new Rectangle(src.getMinX() + 1, src.getMinY() + 1, src.getWidth()/2, src.getHeight()/2));
+        Range nodata = RangeFactory.create(12, 12);
+        affine(originallyIndexedCoverage      , interp, roi, null);
+        affine(originallyIndexedCoverage      , interp, null, nodata);
 
         ///////////////////////////////////////////////////////////////////////
         //
@@ -82,8 +102,8 @@ public class AffineTest extends GridProcessingTestBase {
         //
         ///////////////////////////////////////////////////////////////////////
         interp = Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
-        affine(indexedCoverage                , interp);
-        affine(indexedCoverageWithTransparency, interp);
+        affine(indexedCoverage                , interp, null, null);
+        affine(indexedCoverageWithTransparency, interp, null, null);
 
         ///////////////////////////////////////////////////////////////////////
         //
@@ -91,10 +111,10 @@ public class AffineTest extends GridProcessingTestBase {
         //
         ///////////////////////////////////////////////////////////////////////
         interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
-        affine(floatCoverage, interp);
+        affine(floatCoverage, interp, null, null);
 
         // Play with a rotated coverage
-        affine(rotate(floatCoverage, Math.PI/4), null);
+        affine(rotate(floatCoverage, Math.PI/4), null, null, null);
     }
 
     /**
@@ -103,7 +123,7 @@ public class AffineTest extends GridProcessingTestBase {
      * @param coverage The coverage to transfor.
      * @param interp The interpolation to use.
      */
-    private void affine(final GridCoverage2D coverage, final Interpolation interp) {
+    private void affine(final GridCoverage2D coverage, final Interpolation interp, final ROI roi, final Range nodata) {
         // Caching initial properties.
         final RenderedImage originalImage = coverage.getRenderedImage();
         final int w = originalImage.getWidth();
@@ -114,6 +134,10 @@ public class AffineTest extends GridProcessingTestBase {
         param.parameter("Source").setValue(coverage);
         param.parameter("transform").setValue(new AffineTransform(0.5,0.0,0.0,0.5,0.0,0.0));
         param.parameter("Interpolation").setValue(interp);
+        boolean jaiextAffine = JAIExt.isJAIExtOperation("Affine");
+        if(roi != null && jaiextAffine){
+            param.parameter("roi").setValue(roi);
+        }
 
         // Doing a first scale.
         GridCoverage2D scaled = (GridCoverage2D) processor.doOperation(param);
@@ -128,6 +152,13 @@ public class AffineTest extends GridProcessingTestBase {
             // Force computation
             assertNotNull(PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles());
             assertNotNull(PlanarImage.wrapRenderedImage(scaledImage).getTiles());
+        }
+        // Ensure a new ROI property has been created
+        Map<String, Object> properties = scaled.getProperties();
+        if(jaiextAffine && roi != null){
+            assertNotNull(properties);
+            assertTrue(properties.containsKey("GC_ROI"));
+            assertTrue(properties.get("GC_ROI") instanceof ROI);
         }
 
         // Doing another scale using the default processor.

@@ -16,23 +16,34 @@
  */
 package org.geotools.coverage.grid;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
+
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.media.jai.BorderExtender;
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.ROIShape;
 
+import org.geotools.coverage.CoverageFactoryFinder;
+import org.geotools.factory.Hints;
+import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.resources.coverage.CoverageUtilities;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.Envelope;
-
-import org.geotools.referencing.operation.matrix.XAffineTransform;
-import org.junit.*;
-import static org.junit.Assert.*;
 
 
 /**
@@ -115,6 +126,67 @@ public final class InterpolatorTest extends GridCoverageTestBase {
                 double s11 = data.getSampleDouble(i+1, j+1, band);
                 double s = interpolation.interpolate(s00, s01, s10, s11, 0, 0);
                 assertEquals(s, t, EPS);
+            }
+        }
+    }
+    
+    /**
+     * Tests bilinear intersection at pixel edges. It should be equals
+     * to the average of the four pixels around.
+     */
+    @Test
+    public void testInterpolationROINoData() {
+        // Following constant is pixel size (in degrees).
+        // This constant must be identical to the one defined in 'getRandomCoverage()'
+        GridCoverage2D coverage = getRandomCoverage();
+        final Hints hints = new Hints(Hints.TILE_ENCODING, "raw");
+        final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(hints);
+        Map<String, Object> properties = new HashMap<>();
+        RenderedImage src = coverage.getRenderedImage();
+        // Setting ROI and NoData
+        ROIShape roi = new ROIShape(new Rectangle(src.getMinX(), src.getMinY(), src.getWidth()/2, src.getHeight()/2));
+        CoverageUtilities.setROIProperty(properties, roi);
+        NoDataContainer noDataContainer = new NoDataContainer(15);
+        properties.put("GC_NODATA", noDataContainer);
+        
+        coverage = factory.create("Test2", src, coverage.getEnvelope(), coverage.getSampleDimensions(), null, properties );
+        final double PIXEL_SIZE = XAffineTransform.getScale((AffineTransform) ((GridGeometry2D)coverage.getGridGeometry()).getGridToCRS());
+        final Interpolation interpolation =  Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        coverage = Interpolator2D.create(coverage, new Interpolation[] {interpolation});
+        final int  band = 0; // Band to test.
+        double[] buffer = null;
+        final BorderExtender be =  BorderExtender.createInstance(BorderExtender.BORDER_COPY);
+        Rectangle  rectangle = PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getBounds();
+        rectangle                        = new Rectangle(rectangle.x,rectangle.y,rectangle.width+interpolation.getWidth(), rectangle.height+interpolation.getHeight());
+        final Raster          data = PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getExtendedData(rectangle,be);
+        final Envelope    envelope = coverage.getEnvelope();
+        final GridEnvelope   range = coverage.getGridGeometry().getGridRange();
+        final double          left = envelope.getMinimum(0);
+        final double         upper = envelope.getMaximum(1);
+        final Point2D.Double point = new Point2D.Double(); // Will maps to pixel upper-left corner
+        
+        // ROI and NOdata
+        Range nodata = noDataContainer.getAsRange(); 
+        double bkg = nodata.getMin(true).doubleValue();
+        
+        for (int j=range.getSpan(1); j>=0;--j) {
+            for (int i=range.getSpan(0); i>=0;--i) {
+                point.x = left + PIXEL_SIZE * i;
+                point.y = upper - PIXEL_SIZE * j;
+                buffer = coverage.evaluate(point, buffer);
+                double t = buffer[band];
+                if (!roi.contains(i, j)) {
+                    assertEquals(bkg, t, EPS);
+                } else {
+                    // Computes the expected value:
+                    double s00 = data.getSampleDouble(i, j, band);
+                    if (nodata.contains(s00)) {
+                        assertEquals(bkg, t, EPS);
+                    } else {
+                        double s = interpolation.interpolate(new double[][]{{s00}}, 0, 0);
+                        assertEquals(s, t, EPS);
+                    }
+                }
             }
         }
     }

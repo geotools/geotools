@@ -1,8 +1,8 @@
-﻿/*
+/*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -13,27 +13,32 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- */
+ */ 
 package org.geotools.coverage.processing;
 
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
 import java.awt.RenderingHints;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.measure.unit.Unit;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.OperationRegistry;
 import javax.media.jai.ParameterBlockJAI;
+import javax.media.jai.ROI;
 import javax.media.jai.registry.RenderedRegistryMode;
-
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -56,7 +61,9 @@ import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.processing.OperationNotFoundException;
+import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterDescriptorGroup;
+import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
@@ -66,7 +73,6 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
-
 
 /**
  * Wraps a JAI's {@link OperationDescriptor} for interoperability with
@@ -144,6 +150,17 @@ public class OperationJAI extends Operation2D {
      */
     public OperationJAI(final OperationDescriptor operation) {
         this(operation, new ImagingParameterDescriptors(operation));
+    }
+    
+    /**
+     * Constructs a grid coverage operation backed by a JAI operation. The operation descriptor
+     * must supports the {@code "rendered"} mode (which is the case for most JAI operations).
+     *
+     * @param operationName JAI operation name
+     * @param operation The JAI operation descriptor.
+     */
+    public OperationJAI(final String operationName, final OperationDescriptor operation) {
+        this(operation, new ExtendedImagingParameterDescriptors(operationName, operation));
     }
 
     /**
@@ -225,6 +242,7 @@ public class OperationJAI extends Operation2D {
         final ImagingParameters copy = (ImagingParameters) descriptor.createValue();
         final ParameterBlockJAI block = (ParameterBlockJAI) copy.parameters;
         org.geotools.parameter.Parameters.copy(parameters, copy);
+        handleJAIEXTParams(block, parameters);
         return block;
     }
 
@@ -264,8 +282,10 @@ public class OperationJAI extends Operation2D {
          * next block.
          */
         final String[]     sourceNames = operation.getSourceNames();
-        final GridCoverage2D[] sources = new GridCoverage2D[sourceNames.length];
-        extractSources(parameters, sourceNames, sources);
+        final Collection<GridCoverage2D> sourceCollection = new ArrayList<GridCoverage2D>();
+        extractSources(parameters, sourceCollection, sourceNames);
+        int numSources = sourceCollection.size();
+        final GridCoverage2D[] sources = sourceCollection.toArray(new GridCoverage2D[numSources]);
         /*
          * Ensures that all coverages use the same CRS and has the same 'gridToCRS' relationship.
          * After the reprojection, the method still checks all CRS in case the user overridden the
@@ -286,7 +306,7 @@ public class OperationJAI extends Operation2D {
             {
                 throw new IllegalArgumentException(Errors.format(ErrorKeys.INCOMPATIBLE_GRID_GEOMETRY));
             }
-            block.setSource(sourceNames[i], source.getRenderedImage());
+            block.setSource(source.getRenderedImage(), i);
         }
         /*
          * Applies the operation. This delegates the work to the chain of 'deriveXXX' methods.
@@ -1065,5 +1085,129 @@ public class OperationJAI extends Operation2D {
             }
             return null;
         }
+    }
+
+    /**
+     * Extension point for adding to the JAI {@link ParameterBlockJAI} object the parameters defined
+     * in the {@link ParameterValueGroup}, which can be read by the JAI-EXT operations. 
+     * 
+     * Notice that if you are using JAI, the new parameters will not be accepted by the {@link ParameterBlockJAI} instance.
+     * 
+     * @param parameters {@link ParameterBlockJAI} instance used by the current JAI-EXT/JAI operation
+     * @param parameters2 {@link ParameterValueGroup} instance containing input operation parameters
+     * 
+     */
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        return;
+    }
+
+    /**
+     * This method can be used for creating a property Map to set to the new coverage generated by the current operation.
+     * Internally the method will search for ROI and NoData parameters set for the operation and will report them as 
+     * coverage properties
+     * 
+     * @param properties
+     * @param parameters
+     * @param sourceCoverage
+     * @param operationName
+     * @param roiIndex
+     * @param noDataIndex
+     * @param backgroundIndex
+     * 
+     * @return A {@link Map} containing all the coverage properties and also {@link ROI} and NoData if present
+     */
+    protected static Map<String, Object> handleROINoDataProperties(Map<String, Object> properties,
+            ParameterBlockJAI parameters, GridCoverage2D sourceCoverage, String operationName,
+            int roiIndex, int noDataIndex, int backgroundIndex) {
+        // Creation of the property map
+        Map<String, Object> prop = new HashMap<>();
+        if (properties != null) {
+            prop.putAll(properties);
+        }
+        // Check if the operation has been executed as JAI-EXT
+        if (JAIExt.isJAIExtOperation(operationName)) {
+            // Selection of the ROI from the input ParameterBlock
+            ROI roiParam = (ROI) parameters.getObjectParameter(roiIndex);
+            // Setting of the ROI property
+            CoverageUtilities.setROIProperty(properties, roiParam);
+            // Searching for the nodata Range
+            Range noDataParam = (Range) parameters.getObjectParameter(noDataIndex);
+            // Setting of the NoData parameter only if Background is defined
+            if (noDataParam != null || roiParam != null) {
+                // NoData must be set
+                // Background has been set?
+                Object background = parameters.getObjectParameter(backgroundIndex);
+                if (background != null) {
+                    if (background instanceof double[] || background instanceof Number) {
+                        CoverageUtilities.setNoDataProperty(properties, background);
+                    }
+                }
+            }
+        }
+        return prop;
+    }
+
+    /**
+     * This method can be used for merging input coverage properties (ROI and NoData) with the ones provided as input in the ParameterBlock instance.
+     * If a ROI instance is already present as a coverage property, it will be intersected with an eventual ROI object defined as a parameter inside
+     * the ParameterBlock. If no NoData Range is defined in the parameters but is defined as coverage property, it will be set in the input
+     * ParameterBlock
+     * 
+     * @param parameters
+     * @param sourceCoverage
+     * @param operationName
+     * @param roiIndex
+     * @param noDataIndex
+     */
+    protected static void handleROINoDataInternal(ParameterBlockJAI parameters,
+            GridCoverage2D sourceCoverage, String operationName, int roiIndex, int noDataIndex) {
+        // Getting the internal ROI property
+        ROI innerROI = CoverageUtilities.getROIProperty(sourceCoverage);
+        // Checking if it canbe set as parameter
+        if (JAIExt.isJAIExtOperation(operationName) && roiIndex >= 0) {
+            // Definition of the nwe ROI
+            ROI roiParam = (ROI) parameters.getObjectParameter(roiIndex);
+            ROI newROI = null;
+            if (innerROI == null) {
+                newROI = roiParam;
+            } else {
+                newROI = roiParam != null ? innerROI.intersect(roiParam) : innerROI;
+            }
+            // Setting of the new ROI
+            parameters.set(newROI, roiIndex);
+        }
+
+        // Getting NoData propery
+        NoDataContainer nodataProp = CoverageUtilities.getNoDataProperty(sourceCoverage);
+        Range innerNodata = (Range) ((nodataProp != null) ? nodataProp.getAsRange() : null);
+        // Setting the NoData Range parameter if not present
+        if (JAIExt.isJAIExtOperation(operationName) && noDataIndex >= 0) {
+            Range noDataParam = (Range) parameters.getObjectParameter(noDataIndex);
+            if (noDataParam == null) {
+                parameters.set(innerNodata, noDataIndex);
+            }
+        }
+    }
+
+    /**
+     * Extraction of the sources from the parameter called SOURCES. The sources are stored inside a List.
+     * 
+     * @param parameters
+     * @param sources
+     * @return
+     * @throws ParameterNotFoundException
+     * @throws InvalidParameterValueException
+     */
+    protected void extractSources(final ParameterValueGroup parameters,
+            final Collection<GridCoverage2D> sources,
+            final String[] sourceNames) throws ParameterNotFoundException,
+            InvalidParameterValueException {
+        Utilities.ensureNonNull("parameters", parameters);
+        Utilities.ensureNonNull("sources", sources);
+        Utilities.ensureNonNull("sourceNames", sourceNames);
+
+        GridCoverage2D[] sourceArray = new GridCoverage2D[sourceNames.length];
+        extractSources(parameters, sourceNames, sourceArray);
+        sources.addAll(Arrays.asList(sourceArray));
     }
 }

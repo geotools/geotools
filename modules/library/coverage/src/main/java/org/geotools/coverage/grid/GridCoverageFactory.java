@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,12 +24,10 @@ import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
-import java.awt.image.renderable.ParameterBlock;
 import java.util.Map;
 
 import javax.measure.unit.Unit;
 import javax.media.jai.ImageFunction;
-import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.util.CaselessStringKey;
@@ -38,6 +36,7 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.factory.AbstractFactory;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -201,14 +200,8 @@ public class GridCoverageFactory extends AbstractFactory {
         final double xTrans = -at.getTranslateX()/xScale;
         final double yTrans = -at.getTranslateY()/yScale;
         final GridEnvelope      range = gridGeometry.getGridRange();
-        final ParameterBlock param = new ParameterBlock().add(function)
-                                                         .add(range.getSpan(0)) // width
-                                                         .add(range.getSpan(1)) // height
-                                                         .add((float) xScale)
-                                                         .add((float) yScale)
-                                                         .add((float) xTrans)
-                                                         .add((float) yTrans);
-        final PlanarImage image = JAI.create("ImageFunction", param);
+        final PlanarImage image = new ImageWorker().function(function, range.getSpan(0),
+                range.getSpan(1), (float) xScale, (float) yScale, (float) xTrans, (float) yTrans).getPlanarImage();
         return create(name, image, gridGeometry, bands, null, properties);
     }
 

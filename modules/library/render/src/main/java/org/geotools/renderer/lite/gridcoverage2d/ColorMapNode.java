@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,31 +16,34 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import it.geosolutions.jaiext.classifier.ColorMapTransform;
+import it.geosolutions.jaiext.classifier.LinearColorMap;
+import it.geosolutions.jaiext.classifier.LinearColorMapElement;
+import it.geosolutions.jaiext.piecewise.Domain1D;
+import it.geosolutions.jaiext.range.NoDataContainer;
+
 import java.awt.Color;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
-import java.awt.image.renderable.ParameterBlock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.media.jai.JAI;
-import javax.media.jai.OperationDescriptor;
 import javax.media.jai.RenderedOp;
 
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.factory.Hints;
-import org.geotools.referencing.piecewise.Domain1D;
+import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
-import org.geotools.util.logging.Logging;
 import org.opengis.coverage.SampleDimensionType;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.InternationalString;
@@ -61,17 +64,6 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
 		return Vocabulary.formatInternational(VocabularyKeys.COLOR_MAP);
 	}
 
-	/** {@link Logger} for this class. */
-	private final static Logger LOGGER = Logging.getLogger(ColorMapNode.class.getName());
-	static {
-		try {
-			if (JAI.getDefaultInstance().getOperationRegistry().getDescriptor(
-					OperationDescriptor.class, RasterClassifier.OPERATION_NAME) == null)
-				RasterClassifier.register(JAI.getDefaultInstance());
-		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
-	}
 
 	/**
 	 * Stores the type of {@link ColorMapTransform} we want to use for this node.
@@ -285,9 +277,12 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
 	        final RenderedImage sourceImage = sourceCoverage.getRenderedImage();
 	        GridCoverageRendererUtilities.ensureSourceNotNull(sourceImage, this.getName().toString());
 	        //prepare the colorMapTransform operation
-	        final ParameterBlock pbj = new ParameterBlock();
-	        pbj.addSource(sourceImage).add(colorMapTransform);
-	        final RenderedOp classified = JAI.create(RasterClassifier.OPERATION_NAME,pbj);
+	        ImageWorker w = new ImageWorker(sourceImage);
+	        w.setROI(CoverageUtilities.getROIProperty(sourceCoverage));
+	        NoDataContainer noDataProperty = CoverageUtilities.getNoDataProperty(sourceCoverage);
+                w.setNoData(noDataProperty != null ? noDataProperty.getAsRange() : null);
+	        w.classify(colorMapTransform, null);
+	        final RenderedOp classified = w.getRenderedOperation();//JAI.create(RasterClassifierOpImage.OPERATION_NAME,pbj);
 
 	        ////
 	        //
@@ -306,14 +301,21 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
                 // Create the the output coverage by preserving its gridgeometry and its bands
                 //
                 ////
-		return getCoverageFactory().create(
-		        "color_mapped_"+sourceCoverage.getName().toString(), 
-		        classified,
-		        sourceCoverage.getGridGeometry(),
-		        sd,
-		        new GridCoverage[]{sourceCoverage},
-		        sourceCoverage.getProperties()
-		        );
+		Map properties = sourceCoverage.getProperties();
+		if(properties == null){
+		    properties = new HashMap<>();
+		}
+		CoverageUtilities.setROIProperty(properties, w.getROI());
+                CoverageUtilities.setNoDataProperty(properties, w.getNoData());
+
+                return getCoverageFactory().create(
+        		        "color_mapped_"+sourceCoverage.getName().toString(), 
+        		        classified,
+        		        sourceCoverage.getGridGeometry(),
+        		        sd,
+        		        new GridCoverage[]{sourceCoverage},
+        		        properties
+        		        );
 	    }
 	    return sourceCoverage;	
 

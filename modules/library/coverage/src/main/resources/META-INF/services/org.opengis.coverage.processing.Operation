@@ -1,6 +1,7 @@
 org.geotools.coverage.processing.operation.Absolute
 org.geotools.coverage.processing.operation.AddConst
 org.geotools.coverage.processing.operation.Add
+org.geotools.coverage.processing.operation.BandMerge
 org.geotools.coverage.processing.operation.Convolve
 org.geotools.coverage.processing.operation.Crop
 org.geotools.coverage.processing.operation.DivideByConst
@@ -25,5 +26,6 @@ org.geotools.coverage.processing.operation.SubtractFromConst
 org.geotools.coverage.processing.operation.Extrema
 org.geotools.coverage.processing.operation.Histogram
 org.geotools.coverage.processing.operation.ZonalStats
+org.geotools.coverage.processing.operation.ZonalStatistics
 org.geotools.coverage.processing.operation.Warp
 org.geotools.coverage.processing.operation.Affine

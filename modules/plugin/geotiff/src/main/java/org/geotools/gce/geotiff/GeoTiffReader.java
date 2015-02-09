@@ -700,13 +700,12 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         // setting bands names.
         
         Category noDataCategory = null;
-        final Map<String, Double> properties = new HashMap<String, Double>();        
+        final Map<String, Object> properties = new HashMap<String, Object>();        
         if (!Double.isNaN(noData)){
             noDataCategory = new Category(Vocabulary
                     .formatInternational(VocabularyKeys.NODATA), new Color[] { new Color(0, 0, 0, 0) }, NumberRange
                     .create(noData, noData));
-
-            properties.put("GC_NODATA", new Double(noData));
+            CoverageUtilities.setNoDataProperty(properties, new Double(noData));
         }
         
         Set<String> bandNames = new HashSet<String>();

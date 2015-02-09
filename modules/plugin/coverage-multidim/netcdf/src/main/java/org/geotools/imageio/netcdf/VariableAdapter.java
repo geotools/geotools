@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  */
 package org.geotools.imageio.netcdf;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BandedSampleModel;
@@ -70,6 +71,8 @@ import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.resources.i18n.Vocabulary;
+import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
@@ -730,13 +733,19 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         
         final int bufferType = NetCDFUtilities.getRawDataType(variableDS);
         sampleModel = new BandedSampleModel(bufferType, width, height, 1);
-        
-        
+        final Number noData = NetCDFUtilities.getNodata(variableDS);
+        Category[] categories = null;
+        if (noData != null) {
+            NumberRange noDataRange = NumberRange.create(noData.doubleValue(), true, noData.doubleValue(), true);
+            categories = new Category[]{ new Category(Vocabulary.formatInternational(VocabularyKeys.NODATA),
+                    new Color[] { new Color(0, 0, 0, 0) }, noDataRange)};
+        }
+
         // range type
         String description = variableDS.getDescription();
         final StringBuilder sb = new StringBuilder();
         final Set<SampleDimension> sampleDims = new HashSet<SampleDimension>();
-        sampleDims.add(new GridSampleDimension(description + ":sd", (Category[]) null, null));
+        sampleDims.add(new GridSampleDimension(description + ":sd", categories, null));
 
         InternationalString desc = null;
         if (description != null && !description.isEmpty()) {

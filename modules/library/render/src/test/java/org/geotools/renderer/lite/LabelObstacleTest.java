@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2003-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@ package org.geotools.renderer.lite;
 import static java.awt.RenderingHints.*;
 import static org.junit.Assert.*;
 
+
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -28,11 +29,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.jai.operator.BandCombineDescriptor;
-import javax.media.jai.operator.BinarizeDescriptor;
-import javax.media.jai.operator.ExtremaDescriptor;
-import javax.media.jai.operator.OrDescriptor;
-
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
@@ -40,6 +36,7 @@ import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.referencing.CRS;
@@ -188,10 +185,10 @@ public class LabelObstacleTest {
         BufferedImage labels = render(sources("roads", "points"), styles("label", "grinNoObstacle"));
         BufferedImage points = render(sources("roads", "points"), styles(null, "grinNoObstacle"));
         
-        RenderedImage extrema = intersectionExtrema(labels, points);
+        ImageWorker extrema = intersectionExtrema(labels, points);
         
         // we should have intersections, thus min should be 1
-        double[] minimum = (double[]) extrema.getProperty("minimum");
+        double[] minimum = extrema.getMinimums();//(double[]) extrema.getProperty("minimum");
         assertEquals(0.0, minimum[0], 1.0);
     }
 
@@ -240,9 +237,9 @@ public class LabelObstacleTest {
      * @param obstacle
      */
     private void checkNoIntersection(BufferedImage labels, BufferedImage obstacle) {
-        RenderedImage extrema = intersectionExtrema(labels, obstacle);
+        ImageWorker extrema = intersectionExtrema(labels, obstacle);
         // if we have any intersection the result will be 0
-        double[] minimum = (double[]) extrema.getProperty("minimum");
+        double[] minimum = extrema.getMinimums();//(double[]) extrema.getProperty("minimum");
         assertEquals(1.0, minimum[0], 0.0);
     }
     
@@ -253,20 +250,34 @@ public class LabelObstacleTest {
      * @param obstacles
      * @return
      */
-    RenderedImage intersectionExtrema(BufferedImage labels, BufferedImage obstacles) {
+    ImageWorker intersectionExtrema(BufferedImage labels, BufferedImage obstacles) {
         // from 4 bands to 1 band averaging the pixel values
-        RenderedImage labelsCombine = BandCombineDescriptor.create(labels, new double[][] { {
-                1 / 3.0, 1 / 3.0, 1 / 3.0, 0, 0 } }, null);
-        RenderedImage pointsCombine = BandCombineDescriptor.create(obstacles, new double[][] { {
-                1 / 3.0, 1 / 3.0, 1 / 3.0, 0, 0 } }, null);
+        ImageWorker w = new ImageWorker(labels);
+        ImageWorker w1 = new ImageWorker(obstacles);
+        //RenderedImage labelsCombine = w.bandCombine(new double[][] { {
+                //1 / 3.0, 1 / 3.0, 1 / 3.0, 0, 0 } }).getRenderedImage();
+        w.bandCombine(new double[][] { {
+            1 / 3.0, 1 / 3.0, 1 / 3.0, 0, 0 } });
+        w1.bandCombine(new double[][] { {
+            1 / 3.0, 1 / 3.0, 1 / 3.0, 0, 0 } });
+        //RenderedImage pointsCombine = w1.bandCombine(new double[][] { {
+        //    1 / 3.0, 1 / 3.0, 1 / 3.0, 0, 0 } }).getRenderedImage();
+        //RenderedImage labelsCombine = BandCombineDescriptor.create(labels, new double[][] { {
+                //1 / 3.0, 1 / 3.0, 1 / 3.0, 0, 0 } }, null);
+        //RenderedImage pointsCombine = BandCombineDescriptor.create(obstacles, new double[][] { {
+                //1 / 3.0, 1 / 3.0, 1 / 3.0, 0, 0 } }, null);
         // get only pitch black
-        RenderedImage binaryLabel = BinarizeDescriptor.create(labelsCombine, 1.0, null);
+        w.binarize(1).getRenderedImage();
+        //RenderedImage binaryLabel = w.binarize(1).getRenderedImage();//BinarizeDescriptor.create(labelsCombine, 1.0, null);
         // get anything that is not fully white
-        RenderedImage binaryObstacles = BinarizeDescriptor.create(pointsCombine, 250.0, null);
+        RenderedImage binaryObstacles = w1.binarize(250).getRenderedImage();//BinarizeDescriptor.create(pointsCombine, 250.0, null);
+        
         // combine the two, only pixels that are both black in both images will be black (0)
-        RenderedImage and = OrDescriptor.create(binaryObstacles, binaryLabel, null);
+        w.or(binaryObstacles);
+        //RenderedImage or = w.or(binaryObstacles).getRenderedImage();//OrDescriptor.create(binaryObstacles, binaryLabel, null);
         // get the extrema
-        RenderedImage extrema = ExtremaDescriptor.create(and, null, 1, 1, false, 1, null);
-        return extrema;
+        //RenderedImage extrema = ExtremaDescriptor.create(or, null, 1, 1, false, 1, null);
+        w.getMinimums();
+        return w;
     }
 }

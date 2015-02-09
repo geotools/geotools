@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.opengis.coverage.processing.Operation;
 import org.opengis.parameter.ParameterValueGroup;
 
 /**
@@ -39,8 +38,6 @@ import org.opengis.parameter.ParameterValueGroup;
 public class AffineProcess implements RasterProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
-
-    private static final Operation AFFINE = PROCESSOR.getOperation("Affine");
 
     @DescribeResult(name = "result", description = "Raster transformed by an Affine transformation")
     public GridCoverage2D execute(
@@ -74,7 +71,7 @@ public class AffineProcess implements RasterProcess {
         // Selection of the Operation parameters
         //
         // //
-        final ParameterValueGroup params = AFFINE.getParameters();
+        final ParameterValueGroup params = PROCESSOR.getOperation("Affine").getParameters();
         // Setting of the Source Coverage
         params.parameter("Source").setValue(coverage);
         // Setting of the Transformation parameter

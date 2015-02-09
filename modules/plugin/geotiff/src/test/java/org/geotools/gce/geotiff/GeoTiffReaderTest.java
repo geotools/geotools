@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,9 @@
  *
  */
 package org.geotools.gce.geotiff;
+
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -44,6 +47,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
 import org.junit.After;
 import org.junit.Before;
@@ -359,6 +363,27 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         String band2Name = coverage.getSampleDimension(1).getDescription().toString();
         assertEquals("Band1", band1Name);
         assertEquals("Band2", band2Name);
+    }
+    
+    /**
+     * Test that the reader is able to read NoData 
+     */
+    @Test
+    public void testNoData() throws Exception {
+        final File file = TestData.file(GeoTiffReaderTest.class, "nodata.tiff");
+        assertNotNull(file);
+        final AbstractGridFormat format = new GeoTiffFormat();
+        GridCoverage2D coverage = format.getReader(file).read(null);
+        // Ensure proper NoData is set
+        NoDataContainer noDataProperty = CoverageUtilities.getNoDataProperty(coverage);
+        assertNotNull(noDataProperty);
+
+        Range nd = noDataProperty.getAsRange();
+        assertNotNull(nd);
+
+        assertTrue(nd.isPoint());
+        assertEquals(nd.getMin().doubleValue(), -9999, 0.001);
+        assertEquals(nd.getMax().doubleValue(), -9999, 0.001);
     }
     
     /**

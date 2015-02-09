@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic;
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import it.geosolutions.jaiext.range.NoDataContainer;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -926,14 +927,20 @@ public class GranuleDescriptor {
                 ImageWorker iw = new ImageWorker(raster);
                 iw.setRenderingHints(localHints);
                 iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());
-                
-                		Object roi = iw.getRenderedImage().getProperty("ROI");
+                        RenderedImage renderedImage = iw.getRenderedImage();
+                        Object roi = renderedImage.getProperty("ROI");
 				if( useFootprint && roi instanceof ROIGeometry && ((ROIGeometry) roi).getAsGeometry().isEmpty()){
 				    //JAI not only transforms the ROI, but may also apply clipping to the image boundary
 				    //this results in an empty geometry in some edge cases
                 		    return null;
                 		}
-				return new GranuleLoadingResult(iw.getRenderedImage(), null, granuleUrl, doFiltering, pamDataset);
+				// Propagate NoData
+				if(iw.getNoData() != null){
+				    PlanarImage t = PlanarImage.wrapRenderedImage(renderedImage);
+				    t.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(iw.getNoData()));
+				    renderedImage = t;
+				}
+				return new GranuleLoadingResult(renderedImage, null, granuleUrl, doFiltering, pamDataset);
 			}
 		
 		} catch (IllegalStateException e) {

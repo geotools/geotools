@@ -67,6 +67,7 @@ import org.geotools.data.PrjFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
@@ -527,8 +528,8 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 	                
 			final GridSampleDimension band = new GridSampleDimension(
 					coverageName, new Category[] { nan }, uom);
-			final Map<String, Double> properties = new HashMap<String, Double>();
-			properties.put("GC_NODATA", new Double(inNoData));
+			final Map<String, Object> properties = new HashMap<String, Object>();
+			CoverageUtilities.setNoDataProperty(properties, new Double(inNoData));
 
 			//
 			// Coverage

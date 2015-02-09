@@ -383,13 +383,13 @@ public final class ResampleTest extends GridProcessingTestBase {
     }
 
     /**
-     * Tests the "Resample" operation with an "Affine" transform.
+     * Tests the "Resample" operation with an "Scale" transform.
      */
     @Test
-    public void testAffine() {
-        showTranslated(coverage,                        null,   null, "Affine");
-        showTranslated(indexedCoverage,                 null,   null, "Affine");
-        showTranslated(indexedCoverageWithTransparency, null,  null, "Affine");
+    public void testScale() {
+        showTranslated(coverage,                        null,   null, "Scale");
+        showTranslated(indexedCoverage,                 null,   null, "Scale");
+        showTranslated(indexedCoverageWithTransparency, null,  null, "Scale");
     }
 
     /**

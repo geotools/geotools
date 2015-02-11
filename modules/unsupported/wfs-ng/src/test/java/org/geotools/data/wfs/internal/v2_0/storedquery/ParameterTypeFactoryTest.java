@@ -307,7 +307,7 @@ public class ParameterTypeFactoryTest {
         ParameterMappingExpressionValue paramMapping = new ParameterMappingExpressionValue();
         paramMapping.setParameterName("foo");
         paramMapping.setExpressionLanguage("CQL");
-        paramMapping.setExpression("numberFormat('0.0', 1+1*2) + ',10'");
+        paramMapping.setExpression("concatenate(numberFormat('0.0', 1+1*2), ',10')");
 
         config.getStoredQueryParameterMappings().add(paramMapping);
 

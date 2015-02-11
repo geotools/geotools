@@ -17,6 +17,11 @@
 
 package org.geotools.data.wfs.internal.v2_0.storedquery;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.Filters;
 import org.geotools.filter.expression.AddImpl;
@@ -46,46 +51,55 @@ import org.opengis.filter.expression.PropertyName;
  */
 public class ParameterCQLExpressionFilterFactoryImpl extends FilterFactoryImpl {
 
+    private Map<String, PropertyName> properties;
+
+    public ParameterCQLExpressionFilterFactoryImpl() {
+        List<ParameterCQLExpressionPropertyName> tmp = new ArrayList<ParameterCQLExpressionPropertyName>();
+
+        tmp.add(new ParameterCQLExpressionPropertyName("bboxMinX") {
+            @Override
+            protected Object get(ParameterMappingContext context) {
+                return context.getBBOX().getMinX();
+            }
+        });
+        tmp.add(new ParameterCQLExpressionPropertyName("bboxMaxX") {
+            @Override
+            protected Object get(ParameterMappingContext context) {
+                return context.getBBOX().getMaxX();
+            }
+        });
+        tmp.add(new ParameterCQLExpressionPropertyName("bboxMinY") {
+            @Override
+            protected Object get(ParameterMappingContext context) {
+                return context.getBBOX().getMinY();
+            }
+        });
+        tmp.add(new ParameterCQLExpressionPropertyName("bboxMaxY") {
+            @Override
+            protected Object get(ParameterMappingContext context) {
+                return context.getBBOX().getMaxY();
+            }
+        });
+        tmp.add(new ParameterCQLExpressionPropertyName("defaultSRS") {
+            @Override
+            protected Object get(ParameterMappingContext context) {
+                return context.getFeatureTypeInfo().getDefaultSRS();
+            }
+        });
+
+        properties = new HashMap<String, PropertyName>();
+        for (ParameterCQLExpressionPropertyName p : tmp) {
+            properties.put(p.getPropertyName(), p);
+        }
+    }
+
     @Override
     public PropertyName property(String name) {
-        if (name.equals("bboxMinX")) {
-            return new ParameterCQLExpressionPropertyName(name) {
-                @Override
-                protected Object get(ParameterMappingContext context) {
-                    return context.getBBOX().getMinX();
-                }
-            };
-        } else if (name.equals("bboxMaxX")) {
-            return new ParameterCQLExpressionPropertyName(name) {
-                @Override
-                protected Object get(ParameterMappingContext context) {
-                    return context.getBBOX().getMaxX();
-                }
-            };
-        } else if (name.equals("bboxMinY")) {
-            return new ParameterCQLExpressionPropertyName(name) {
-                @Override
-                protected Object get(ParameterMappingContext context) {
-                    return context.getBBOX().getMinY();
-                }
-            };
-        } else if (name.equals("bboxMaxY")) {
-            return new ParameterCQLExpressionPropertyName(name) {
-                @Override
-                protected Object get(ParameterMappingContext context) {
-                    return context.getBBOX().getMaxY();
-                }
-            };
-        } else if (name.equals("defaultSRS")) {
-            return new ParameterCQLExpressionPropertyName(name) {
-                @Override
-                protected Object get(ParameterMappingContext context) {
-                    return context.getFeatureTypeInfo().getDefaultSRS();
-                }
-            };
-        } else if (name.startsWith("viewparam:")) {
+        PropertyName ret = properties.get(name);
+
+        if (ret == null && name.startsWith("viewparam:")) {
             final String paramName = name.substring(10);
-            return new ParameterCQLExpressionPropertyName(name) {
+            ret = new ParameterCQLExpressionPropertyName(name) {
                 @Override
                 protected Object get(ParameterMappingContext context) {
                     return context.getViewParams().get(paramName);
@@ -93,38 +107,10 @@ public class ParameterCQLExpressionFilterFactoryImpl extends FilterFactoryImpl {
             };
         }
 
-        return super.property(name);
-    }
-
-    @Override
-    public Add add(Expression expr1, Expression expr2) {
-        return new StringConcatenatingAddImpl(expr1,expr2);
-    }
-
-    private static class StringConcatenatingAddImpl extends AddImpl
-    {
-        public StringConcatenatingAddImpl(Expression expr1, Expression expr2) {
-            super(expr1, expr2);
+        if (ret == null) {
+            ret = super.property(name);
         }
-
-        @Override
-        public Object evaluate(Object feature) throws IllegalArgumentException {
-            ensureOperandsSet();
-
-            Object leftValue = getExpression1().evaluate(feature);
-            Object rightValue = getExpression2().evaluate(feature);
-
-            if (leftValue instanceof Number && rightValue instanceof Number) {
-                double leftDouble = Filters.number( leftValue );
-                double rightDouble = Filters.number( rightValue );
-                return number(leftDouble + rightDouble);
-
-            } else {
-                return leftValue.toString() + rightValue.toString();
-            }
-
-        }
-
+        return ret;
     }
 
 }

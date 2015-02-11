@@ -125,6 +125,19 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     }
     
     /**
+     * Test count with query startIndex and maxFeatures
+     */
+    public void testCountWithOffsetLimit() throws Exception {
+        OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);
+        String typeName = s.getTypeNames()[0];
+        SimpleFeatureSource featureSource = s.getFeatureSource(typeName);
+        Query query = new Query();
+        query.setStartIndex(1);
+        query.setMaxFeatures(1);
+        assertEquals(1, featureSource.getCount(query));
+    }
+
+    /**
      * Test count versus old DataSource
      */
     public void testOptimizedCount() throws Exception {

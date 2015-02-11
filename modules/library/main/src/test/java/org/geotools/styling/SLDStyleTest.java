@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -803,6 +804,22 @@ public class SLDStyleTest extends TestCase {
         assertNotNull(fts.getTransformation());
         Function tx = (Function) fts.getTransformation();
         assertEquals("union", tx.getName());
+    }
+
+    public void testRuleEvaluationMode() throws Exception {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        java.net.URL surl = TestData.getResource(this, "ruleEvaluationMode.xml");
+        SLDParser stylereader = new SLDParser(factory, surl);
+
+        // basic checks
+        Style[] styles = stylereader.readXML();
+        assertEquals(1, styles.length);
+        assertEquals(1, styles[0].featureTypeStyles().size());
+        final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
+        assertEquals(1, fts.rules().size());
+        Map<String, String> options = fts.getOptions();
+        assertEquals(1, options.size());
+        assertEquals(FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST, options.get(FeatureTypeStyle.KEY_EVALUATION_MODE));
     }
 
     public void testParseBase64EncodedContent() throws Exception {

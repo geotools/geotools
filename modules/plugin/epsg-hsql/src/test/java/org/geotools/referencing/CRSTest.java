@@ -512,20 +512,20 @@ public class CRSTest extends TestCase {
             System.setProperty("org.geotools.referencing.forceXY", "true");
             
             assertEquals( "CRS:84", CRS.toSRS( DefaultGeographicCRS.WGS84 ));
-            CoordinateReferenceSystem WORLD = (CoordinateReferenceSystem) CRS.decode("EPSG:4326",false);
+            CoordinateReferenceSystem WORLD = CRS.decode("EPSG:4326",false);
             assertEquals( "4326", CRS.toSRS( WORLD, true ) );
             String srs = CRS.toSRS( WORLD, false );
             assertTrue( "EPSG:4326", srs.contains("EPSG") && srs.contains("4326") );
             
-            CoordinateReferenceSystem WORLD2 = (CoordinateReferenceSystem) CRS.decode("EPSG:4326",true);
+            CoordinateReferenceSystem WORLD2 = CRS.decode("EPSG:4326",true);
             srs = CRS.toSRS( WORLD2, false );
             assertTrue( "EPSG:4326", srs.contains("EPSG") && srs.contains("4326") );
             
-            CoordinateReferenceSystem WORLD3 = (CoordinateReferenceSystem) CRS.decode("urn:x-ogc:def:crs:EPSG::4326",false);
+            CoordinateReferenceSystem WORLD3 = CRS.decode("urn:x-ogc:def:crs:EPSG::4326",false);
             srs = CRS.toSRS( WORLD3, false );
             assertTrue( "EPSG:4326", srs.contains("EPSG") && srs.contains("4326") );
             
-            CoordinateReferenceSystem WORLD4 = (CoordinateReferenceSystem) CRS.decode("urn:x-ogc:def:crs:EPSG::4326",true);
+            CoordinateReferenceSystem WORLD4 = CRS.decode("urn:x-ogc:def:crs:EPSG::4326",true);
             srs = CRS.toSRS( WORLD4, false );
             assertTrue( "EPSG:4326", srs.contains("EPSG") && srs.contains("4326") );
         } finally {
@@ -616,6 +616,18 @@ public class CRSTest extends TestCase {
         envelope.add(12228504.561708, -344209.75803081);
         transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
         assertEquals(-90, transformed.getMinimum(1), 0.1d);
+    }
+
+    public void testTransformLambertAzimuthalEqualAreaWgs84() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3574", true);
+        Envelope2D envelope = new Envelope2D(crs);
+        // random bbox that does include the pole
+        envelope.add(-3142000, -3142000);
+        envelope.add(3142000, 3142000);
+        Envelope transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
+        // check we got the whole range of longitudes, since the original bbox contains the pole
+        assertEquals(-180d, transformed.getMinimum(0), 0d);
+        assertEquals(180d, transformed.getMaximum(0), 0d);
     }
 
     public void testTransformPolarStereographicWgs84FalseOrigin() throws Exception {

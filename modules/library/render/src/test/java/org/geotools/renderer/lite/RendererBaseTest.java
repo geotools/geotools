@@ -256,7 +256,7 @@ public abstract class RendererBaseTest {
      * @return
      * @throws IOException
      */
-    protected static Style loadStyle(Object loader, String sldFilename) throws IOException {
+    public static Style loadStyle(Object loader, String sldFilename) throws IOException {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
 
         java.net.URL surl = TestData.getResource(loader, sldFilename);

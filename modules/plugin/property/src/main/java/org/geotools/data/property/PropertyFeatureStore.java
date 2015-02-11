@@ -16,156 +16,142 @@
  */
 package org.geotools.data.property;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 
-import org.geotools.data.AbstractFeatureLocking;
-import org.geotools.data.FeatureEvent;
-import org.geotools.data.FeatureListener;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
+import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.factory.Hints;
+import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureStore;
+import org.geotools.data.store.ContentState;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.FeatureVisitor;
+import org.opengis.feature.type.Name;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.geometry.BoundingBox;
 
 /**
  * Implementation used for writeable property files.
  * Supports limited caching of number of features and bounds.
  *
+ * @author Jody Garnett
+ * @author Torben Barsballe (Boundless)
  *
  * @source $URL$
  */
-public class PropertyFeatureStore extends AbstractFeatureLocking {
-
+public class PropertyFeatureStore extends ContentFeatureStore {
+    
     String typeName;
     SimpleFeatureType featureType;
     PropertyDataStore store;
     
-    long cacheTimestamp = 0;
-    ReferencedEnvelope cacheBounds = null;
-    int cacheCount = -1;
+    PropertyFeatureStore( ContentEntry entry, Query query ) throws IOException{
+        super( entry, query );
+        this.store = (PropertyDataStore) entry.getDataStore();
+        this.typeName = entry.getTypeName();
+    }
+    /** We handle events internally */
+    protected boolean canEvent() {
+        return false;
+    }
     
-    FeatureListener watcher = new FeatureListener() {
-        public void changed(FeatureEvent featureEvent) {
-            if (cacheBounds != null) {
-                if (featureEvent.getType() == FeatureEvent.Type.ADDED) {
-                    cacheBounds.expandToInclude(featureEvent.getBounds());
-                } else {
-                    cacheBounds = null;
-                }
-            }
-            cacheCount = -1;
-        }
-    };
-    
-    PropertyFeatureStore( PropertyDataStore propertyDataStore, String typeName ) throws IOException{
-        super(Collections.singleton(Hints.FEATURE_DETACHED));
-        this.store = propertyDataStore;
-        this.typeName = typeName;
-        this.featureType = store.getSchema( typeName );
-        store.listenerManager.addFeatureListener( this, watcher);
-        this.queryCapabilities = new QueryCapabilities() {
+    protected QueryCapabilities buildQueryCapabilities() {
+        return new QueryCapabilities(){
             public boolean isUseProvidedFIDSupported() {
                 return true;
             }
         };
     }
-    // constructor end
-
-    // implementation start
-    public PropertyDataStore getDataStore() {
-        return store;
-    }
-
-    public void addFeatureListener(FeatureListener listener) {
-        store.listenerManager.addFeatureListener(this, listener);
-    }
-
-    public void removeFeatureListener(
-        FeatureListener listener) {
-        store.listenerManager.removeFeatureListener(this, listener);
-    }
-
-    public SimpleFeatureType getSchema() {
-        return featureType;
-    }
-    // implementation end
-    
-    // getCount start
-    public int getCount(Query query) throws IOException {
-        if( Filter.INCLUDE == query.getFilter() && getTransaction() == Transaction.AUTO_COMMIT ){
-            File file = new File( store.directory, typeName+".properties" );
-            if(!(cacheCount != -1 && file.lastModified() == cacheTimestamp)) {
-                cacheCount = PropertyDataStore.countFile(file);
-                cacheTimestamp = file.lastModified();
-            }
-            
-            if(query.getMaxFeatures() >= 0) {
-                return Math.min(cacheCount, query.getMaxFeatures());
-            } else {
-                return cacheCount;
-            }
-        }
-        return -1;
-        // return super.getCount(query); // super class checks transaction state diff
-    }
-    // getCount end
     
     @Override
-    public ReferencedEnvelope getBounds(Query query) throws IOException {
-        if(query.getFilter() == Filter.INCLUDE) {
-            return getBounds();
-        }
-        ReferencedEnvelope result = getBoundsInternal(query);
-        
-        return result; 
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query,
+            int flags) throws IOException {
+        return new PropertyFeatureWriter(this,getState(), query, (flags | WRITER_ADD) == WRITER_ADD);
     }
     
-    ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        SimpleFeatureCollection fc = getFeatures(query);
-        SimpleFeatureIterator fi = null;
-        ReferencedEnvelope result = ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
-        try {
-            fi = fc.features();
-            while(fi.hasNext()) {
-                SimpleFeature f = fi.next();
-                BoundingBox featureBoundingBox = f.getBounds();
-                if(f != null && featureBoundingBox != null) {
-                    ReferencedEnvelope featureBounds = ReferencedEnvelope.reference(featureBoundingBox);
-                    result.expandToInclude(featureBounds);
-                }
-            }
-        } catch(Exception e) {
-            if(fi != null) {
-                fi.close();
-            }
+    /**
+     * Delegate used for FeatureSource methods (We do this because Java cannot inherit from both 
+     * ContentFeatureStore and CSVFeatureSource at the same time
+     */
+    PropertyFeatureSource delegate = new PropertyFeatureSource(entry, query) {
+        @Override
+        public void setTransaction(Transaction transaction) {
+            super.setTransaction(transaction);
+            PropertyFeatureStore.this.setTransaction(transaction); // Keep these two implementations on the same transaction
         }
-        return result;
+    };
+    
+    //
+    // Internal Delegate Methods
+    // Implement FeatureSource methods using CSVFeatureSource implementation
+    //
+    @Override
+    public void setTransaction(Transaction transaction) {
+        super.setTransaction(transaction);
+        if( delegate.getTransaction() != transaction ){
+            delegate.setTransaction( transaction );
+        }
     }
-
-    // getBounds start
-    public ReferencedEnvelope getBounds() {
-        File file = new File( store.directory, typeName+".properties" );                
-        if( cacheBounds != null && file.lastModified() == cacheTimestamp ){            
-            // we have the cache
-            return cacheBounds;
-        }
-        try {
-            // calculate and store in cache                    
-            cacheBounds = getBoundsInternal(Query.ALL);
-            cacheTimestamp = file.lastModified();            
-            return cacheBounds;
-        } catch (IOException e) {            
-        }
-        // bounds are unavailable!
-        return null;
+    
+    @Override
+    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
+        return delegate.getBoundsInternal(query);
     }
-    // getBounds end
+    
+    @Override
+    protected int getCountInternal(Query query) throws IOException {
+        return delegate.getCountInternal(query);
+    }
+    
+    @Override
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
+            throws IOException {
+        return delegate.getReaderInternal(query);
+    }
+    
+    @Override
+    protected SimpleFeatureType buildFeatureType() throws IOException {
+        return delegate.buildFeatureType();
+    }
+    
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        return delegate.handleVisitor(query, visitor);
+    }
+    //
+    // Public Delegate Methods
+    // Implement FeatureSource methods using CSVFeatureSource implementation
+    //
+    @Override
+    public PropertyDataStore getDataStore() {
+        return delegate.getDataStore();
+    }
+    
+    @Override
+    public ContentEntry getEntry() {
+        return delegate.getEntry();
+    }
+    
+    public Transaction getTransaction() {
+        return delegate.getTransaction();
+    }
+    
+    public ContentState getState() {
+        return delegate.getState();
+    }
+    
+    public ResourceInfo getInfo() {
+        return delegate.getInfo();
+    }
+    
+    public Name getName() {
+        return delegate.getName();
+    }
+    
+    public QueryCapabilities getQueryCapabilities() {
+        return delegate.getQueryCapabilities();
+    }
 }

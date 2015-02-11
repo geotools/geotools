@@ -16,8 +16,6 @@
  */
 package org.geotools.renderer;
 
-import org.geotools.renderer.ScreenMap;
-
 import junit.framework.TestCase;
 
 /**
@@ -142,9 +140,21 @@ public class ScreenMapTest extends TestCase {
         assertFalse(map.checkAndSet(20, 10));
         assertFalse(map.checkAndSet(20, -10));
         assertFalse(map.checkAndSet(20, -10));
+        
+        // also control "get"
+        assertFalse(map.get(-10, -10));
+        assertFalse(map.get(-10, -10));
+        assertFalse(map.get(-10, 10));
+        assertFalse(map.get(-10, 10));
+        assertFalse(map.get(20, 10));
+        assertFalse(map.get(20, 10));
+        assertFalse(map.get(20, -10));
+        assertFalse(map.get(20, -10));
+
 
         // compare with one inside
         assertFalse(map.checkAndSet(0, 0));
         assertTrue(map.checkAndSet(0, 0));
+        assertTrue(map.get(0, 0));
     }
 }

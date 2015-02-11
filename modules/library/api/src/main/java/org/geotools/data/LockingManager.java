@@ -23,7 +23,7 @@ import java.io.IOException;
  * This class describes a featureID based locking service.
  *
  * <p>
- * AbstractFeatureLocking, and others, may use this API to request locks on the
+ * ContentFeatureSource, and others, may use this API to request locks on the
  * basis of FeatureID.
  * </p>
  *

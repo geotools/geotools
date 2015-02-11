@@ -24,9 +24,9 @@ import java.util.List;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.styling.css.Value.Literal;
 import org.geotools.styling.css.selector.Data;
 import org.geotools.styling.css.selector.Id;
-import org.geotools.styling.css.selector.Or;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
@@ -41,6 +41,7 @@ import org.parboiled.Rule;
 import org.parboiled.annotations.BuildParseTree;
 import org.parboiled.annotations.SuppressNode;
 import org.parboiled.annotations.SuppressSubnodes;
+import org.parboiled.parserunners.ParseRunner;
 import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
 import org.parboiled.support.ValueStack;
@@ -90,8 +91,7 @@ public class CssParser extends BaseParser<Object> {
      */
     public static Stylesheet parse(String css) throws CSSParseException {
         CssParser parser = getInstance();
-        ReportingParseRunner<Stylesheet> runner = new ReportingParseRunner<Stylesheet>(
-                parser.StyleSheet());
+        ParseRunner<Stylesheet> runner = new ReportingParseRunner<Stylesheet>(parser.StyleSheet());
         ParsingResult<Stylesheet> result = runner.run(css);
         if (result.hasErrors()) {
             throw new CSSParseException(result.parseErrors);
@@ -101,12 +101,18 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule StyleSheet() {
-        return Sequence(OneOrMore(CssRule()), WhiteSpaceOrIgnoredComment(), EOI,
-                push(new Stylesheet(popAll(CssRule.class))));
+        return Sequence(ZeroOrMore(Directive(), OptionalWhiteSpace()), OneOrMore(CssRule()),
+                WhiteSpaceOrIgnoredComment(), EOI, push(new Stylesheet(popAll(CssRule.class),
+                        popAll((Directive.class)))));
+    }
+
+    Rule Directive() {
+        return Sequence("@", Identifier(), push(match()), WhiteSpace(), String(), Ch(';'), swap(),
+                push(new Directive((String) pop(), ((Literal) pop()).toLiteral())));
     }
 
     Rule CssRule() {
-        return Sequence(WhiteSpaceOrComment(), Selector(), WhiteSpace(),//
+        return Sequence(WhiteSpaceOrComment(), Selector(), OptionalWhiteSpace(),//
                 '{', WhiteSpaceOrIgnoredComment(), //
                 PropertyList(), WhiteSpaceOrIgnoredComment(), '}', new Action() {
 
@@ -143,14 +149,15 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule AndSelector() {
-        return Sequence(BasicSelector(), WhiteSpace(), FirstOf(AndSelector(), BasicSelector()), //
+        return Sequence(BasicSelector(), OptionalWhiteSpace(),
+                FirstOf(AndSelector(), BasicSelector()), //
                 swap() && push(Selector.and((Selector) pop(), (Selector) pop(), null)));
     }
 
     Rule OrSelector() {
-        return Sequence(FirstOf(AndSelector(), BasicSelector()), WhiteSpace(), ',', WhiteSpace(),
-                Selector(), //
-                swap() && push(new Or((Selector) pop(), (Selector) pop())));
+        return Sequence(FirstOf(AndSelector(), BasicSelector()), OptionalWhiteSpace(), ',',
+                OptionalWhiteSpace(), Selector(), //
+                swap() && push(Selector.or((Selector) pop(), (Selector) pop(), null)));
     }
 
     @SuppressSubnodes
@@ -196,33 +203,45 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule MaxScaleSelector() {
-        return Sequence("[", WhiteSpace(), "@scale", WhiteSpace(), "<", WhiteSpace(), Number(),
-                push(new ScaleRange(0, true, Double.valueOf(match()), false)), //
-                WhiteSpace(), "]");
+        return Sequence("[", OptionalWhiteSpace(), "@scale", OptionalWhiteSpace(),
+                FirstOf("<=", "<"), OptionalWhiteSpace(), Number(), push(new ScaleRange(0, true,
+                        Double.valueOf(match()), false)), //
+                OptionalWhiteSpace(), "]");
     }
 
     Rule MinScaleSelector() {
         return Sequence(
                 "[",
-                WhiteSpace(),
+                OptionalWhiteSpace(),
                 "@scale",
-                WhiteSpace(),
-                ">",
-                WhiteSpace(),
+                OptionalWhiteSpace(),
+                FirstOf(">=", ">"),
+                OptionalWhiteSpace(),
                 Number(),
                 push(new ScaleRange(Double.valueOf(match()), true, Double.POSITIVE_INFINITY, true)), //
-                WhiteSpace(), "]");
+                OptionalWhiteSpace(), "]");
     }
 
     Rule PropertyList() {
         return Sequence(
-                OneOrMore(Sequence(Property(), WhiteSpace(), ';', WhiteSpaceOrIgnoredComment())),
+                Property(),
+                ZeroOrMore(Sequence(WhitespaceOrIgnoredComment(), ';',
+                        WhiteSpaceOrIgnoredComment(), Property())), Optional(';'),
                 push(popAll(Property.class)));
     }
 
+    Rule WhitespaceOrIgnoredComment() {
+        return ZeroOrMore(FirstOf(WhiteSpace(), IgnoredComment()));
+    }
+
     Rule Property() {
-        return Sequence(Identifier(), push(match()), WhiteSpace(), Colon(), WhiteSpace(), //
-                Sequence(Value(), WhiteSpace(), ZeroOrMore(',', WhiteSpace(), Value())), //
+        return Sequence(Identifier(),
+                push(match()),
+                OptionalWhiteSpace(),
+                Colon(),
+                OptionalWhiteSpace(), //
+                Sequence(Value(), OptionalWhiteSpace(),
+                        ZeroOrMore(',', OptionalWhiteSpace(), Value())), //
                 push(popAll(Value.class)) && swap()
                         && push(new Property(pop(String.class), pop(List.class))));
     }
@@ -274,13 +293,13 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule MultiValue() {
-        return Sequence(push(MARKER), SimpleValue(), OneOrMore(WhiteSpace1(), SimpleValue()),
+        return Sequence(push(MARKER), SimpleValue(), OneOrMore(WhiteSpace(), SimpleValue()),
                 push(new Value.MultiValue(popAll(Value.class))));
     }
 
     Rule Function() {
         return Sequence(Identifier(), push(match()), '(', Value(),
-                ZeroOrMore(WhiteSpace(), ',', WhiteSpace(), Value()), ')',
+                ZeroOrMore(OptionalWhiteSpace(), ',', OptionalWhiteSpace(), Value()), ')',
                 push(buildFunction(popAll(Value.class), (String) pop())));
     }
 
@@ -289,8 +308,8 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule URLFunction() {
-        return Sequence("url", WhiteSpace(), "(", WhiteSpace(), URL(), WhiteSpace(), ")",
-                push(new Value.Function("url", (Value) pop())));
+        return Sequence("url", OptionalWhiteSpace(), "(", OptionalWhiteSpace(), URL(),
+                OptionalWhiteSpace(), ")", push(new Value.Function("url", (Value) pop())));
     }
 
     /**
@@ -299,8 +318,20 @@ public class CssParser extends BaseParser<Object> {
      * @return
      */
     Rule URL() {
+        return FirstOf(QuotedURL(), SimpleURL());
+    }
+
+    Rule SimpleURL() {
         return Sequence(OneOrMore(FirstOf(Alphanumeric(), AnyOf("-._]:/?#[]@|$&'*+,;="))),
                 push(new Value.Literal(match())));
+    }
+
+    Rule QuotedURL() {
+        // same as simple url, but with ' surrounding it, and not within the url itlsef
+        return Sequence(
+                "'",
+                Sequence(OneOrMore(FirstOf(Alphanumeric(), AnyOf("-._]:/?#[]@|$&*+,;="))),
+                        push(new Value.Literal(match()))), "'");
     }
 
     Rule ValueIdentifier() {
@@ -464,30 +495,30 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule IgnoredComment() {
-        return Sequence("/*", OneOrMore(TestNot("*/"), ANY), "*/");
+        return Sequence("/*", ZeroOrMore(TestNot("*/"), ANY), "*/");
     }
 
     Rule RuleComment() {
-        return Sequence("/*", OneOrMore(TestNot("*/"), ANY), push(match()), "*/");
+        return Sequence("/*", ZeroOrMore(TestNot("*/"), ANY), push(match()), "*/");
     }
 
     @SuppressNode
     Rule WhiteSpaceOrIgnoredComment() {
-        return ZeroOrMore(FirstOf(IgnoredComment(), WhiteSpace1()));
+        return ZeroOrMore(FirstOf(IgnoredComment(), WhiteSpace()));
     }
 
     @SuppressNode
     Rule WhiteSpaceOrComment() {
-        return ZeroOrMore(FirstOf(RuleComment(), WhiteSpace1()));
+        return ZeroOrMore(FirstOf(RuleComment(), WhiteSpace()));
     }
 
     @SuppressNode
-    Rule WhiteSpace() {
+    Rule OptionalWhiteSpace() {
         return ZeroOrMore(AnyOf(" \r\t\f\n"));
     }
 
     @SuppressNode
-    Rule WhiteSpace1() {
+    Rule WhiteSpace() {
         return OneOrMore(AnyOf(" \r\t\f\n"));
     }
 
@@ -499,7 +530,7 @@ public class CssParser extends BaseParser<Object> {
     @Override
     protected Rule fromStringLiteral(String string) {
         return string.matches("\\s+$") ? Sequence(String(string.substring(0, string.length() - 1)),
-                WhiteSpace()) : String(string);
+                OptionalWhiteSpace()) : String(string);
     }
 
     <T> T pop(Class<T> clazz) {

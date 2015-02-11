@@ -1,6 +1,6 @@
 package org.geotools.styling;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.measure.quantity.Length;
@@ -100,7 +100,7 @@ public abstract class AbstractSymbolizer implements Symbolizer {
     
     public Map<String, String> getOptions() {
         if (options == null) {
-            options = new HashMap<String,String>();
+            options = new LinkedHashMap<String, String>();
         }
         return options;
     }

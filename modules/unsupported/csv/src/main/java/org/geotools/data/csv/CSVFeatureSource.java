@@ -1,10 +1,19 @@
-/* GeoTools - The Open Source Java GIS Toolkit
- * http://geotools.org
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *    
+ * 	  (c) 2014 Open Source Geospatial Foundation - all rights reserved
+ * 	  (c) 2012 - 2014 OpenPlans
  *
- * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
  *
- * This file is hereby placed into the Public Domain. This means anyone is
- * free to do whatever they wish with this file. Use it well and enjoy!
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
  */
 package org.geotools.data.csv;
 
@@ -14,122 +23,68 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
 
-import com.csvreader.CsvReader;
-import com.vividsolutions.jts.geom.Point;
-/**
- * Read-only access to CSV File.
- * 
- * @author Jody Garnett (Boundless)
- */
+@SuppressWarnings("unchecked")
 public class CSVFeatureSource extends ContentFeatureSource {
+
+    public CSVFeatureSource(CSVDataStore datastore) {
+        this(datastore, Query.ALL);
+    }
+
+    public CSVFeatureSource(CSVDataStore datastore, Query query) {
+        this(new ContentEntry(datastore, datastore.getTypeName()), query);
+    }
+
+    public CSVFeatureSource(ContentEntry entry) {
+        this(entry, Query.ALL);
+    }
 
     public CSVFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
     }
 
-    // getDataStore start
-    /**
-     * Access parent CSVDataStore.
-     */
     public CSVDataStore getDataStore() {
         return (CSVDataStore) super.getDataStore();
     }
-    // getDataStore end
 
-    // reader start
+    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
+        ReferencedEnvelope bounds = new ReferencedEnvelope(getSchema()
+                .getCoordinateReferenceSystem());
+        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReader(query);
+        try {
+            while (featureReader.hasNext()) {
+                SimpleFeature feature = featureReader.next();
+                bounds.include(feature.getBounds());
+            }
+        } finally {
+            featureReader.close();
+        }
+        return bounds;
+    }
+
+    protected int getCountInternal(Query query) throws IOException {
+        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
+        int n = 0;
+        try {
+            for (n = 0; featureReader.hasNext(); n++) {
+                featureReader.next();
+            }
+        } finally {
+            featureReader.close();
+        }
+        return n;
+    }
+
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-        return new CSVFeatureReader(getState(), query);
+        CSVDataStore dataStore = getDataStore();
+        return new CSVFeatureReader(dataStore.getCSVStrategy(), query);
     }
 
-    // reader end
-
-    // count start
-    protected int getCountInternal(Query query) throws IOException {
-        if (query.getFilter() == Filter.INCLUDE) {
-            CsvReader reader = getDataStore().read();
-            try {
-                boolean connect = reader.readHeaders();
-                if (connect == false) {
-                    throw new IOException("Unable to connect");
-                }
-                int count = 0;
-                while (reader.readRecord()) {
-                    count += 1;
-                }
-                return count;
-            } finally {
-                reader.close();
-            }
-        }
-        return -1; // feature by feature scan required to count records
-    }
-    // count end
-
-    // bounds start
-    /**
-     * Implementation that generates the total bounds (many file formats record this information in the header)
-     */
-    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        return null; // feature by feature scan required to establish bounds
-    }
-    // bounds end
-
-    // schema start
     protected SimpleFeatureType buildFeatureType() throws IOException {
-
-        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-        builder.setName(entry.getName());
-
-        // read headers
-        CsvReader reader = getDataStore().read();
-        try {
-            boolean success = reader.readHeaders();
-            if (success == false) {
-                throw new IOException("Header of CSV file not available");
-            }
-
-            // we are going to hard code a point location
-            // columns like lat and lon will be gathered into a
-            // Point called Location
-            builder.setCRS(DefaultGeographicCRS.WGS84); // <- Coordinate reference system
-            builder.add("Location", Point.class);
-
-            for (String column : reader.getHeaders()) {
-                if ("lat".equalsIgnoreCase(column)) {
-                    continue; // skip as it is part of Location
-                }
-                if ("lon".equalsIgnoreCase(column)) {
-                    continue; // skip as it is part of Location
-                }
-                builder.add(column, String.class);
-            }
-
-            // build the type (it is immutable and cannot be modified)
-            final SimpleFeatureType SCHEMA = builder.buildFeatureType();
-            return SCHEMA;
-        } finally {
-            reader.close();
-        }
+        return getDataStore().getSchema();
     }
-    // schema end
-    
-    // visitor start
-    /**
-     * Make handleVisitor package visible allowing CSVFeatureStore to delegate to
-     * this implementation.
-     */
-    @Override
-    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
-        return super.handleVisitor(query, visitor);
-    }
-    // visitor start
 }

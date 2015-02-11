@@ -23,9 +23,12 @@ import net.opengis.wfs20.ValueReferenceType;
 import net.opengis.wfs20.Wfs20Factory;
 
 import org.eclipse.emf.ecore.EObject;
+import org.geotools.util.Converters;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xs.bindings.XSQNameBinding;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class ValueReferenceTypeBinding extends AbstractComplexEMFBinding {
 
@@ -56,5 +59,11 @@ public class ValueReferenceTypeBinding extends AbstractComplexEMFBinding {
             super.setProperty(eObject, property, value, lax);
         }
     }
+    
+    @Override
+    public Element encode(Object object, Document document, Element value) throws Exception {
+        value.setTextContent(Converters.convert(((ValueReferenceType) object).getValue(), String.class));
+        return value;
+    }    
 
 }

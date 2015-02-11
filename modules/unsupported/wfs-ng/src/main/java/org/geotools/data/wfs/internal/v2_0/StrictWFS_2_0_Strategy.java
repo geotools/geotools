@@ -17,36 +17,39 @@
 package org.geotools.data.wfs.internal.v2_0;
 
 import static org.geotools.data.wfs.internal.HttpMethod.GET;
+import static org.geotools.data.wfs.internal.HttpMethod.POST;
 import static org.geotools.data.wfs.internal.Loggers.debug;
+import static org.geotools.data.wfs.internal.Loggers.requestInfo;
 import static org.geotools.data.wfs.internal.Loggers.trace;
+import static org.geotools.data.wfs.internal.WFSOperationType.GET_FEATURE;
+import static org.geotools.data.wfs.internal.WFSOperationType.TRANSACTION;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
 import net.opengis.fes20.AbstractQueryExpressionType;
-import net.opengis.fes20.FilterCapabilitiesType;
-import net.opengis.fes20.GeometryOperandType;
-import net.opengis.fes20.ResourceIdentifierType;
-import net.opengis.fes20.SpatialCapabilitiesType;
-import net.opengis.fes20.SpatialOperatorType;
 import net.opengis.ows11.DCPType;
+import net.opengis.ows11.DomainType;
 import net.opengis.ows11.OperationType;
 import net.opengis.ows11.OperationsMetadataType;
 import net.opengis.ows11.RequestMethodType;
+import net.opengis.ows11.ValueType;
+import net.opengis.wfs20.AbstractTransactionActionType;
+import net.opengis.wfs20.DeleteType;
 import net.opengis.wfs20.DescribeFeatureTypeType;
 import net.opengis.wfs20.DescribeStoredQueriesType;
 import net.opengis.wfs20.FeatureTypeListType;
@@ -54,10 +57,15 @@ import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.GetFeatureType;
 import net.opengis.wfs20.ListStoredQueriesType;
 import net.opengis.wfs20.ParameterType;
+import net.opengis.wfs20.InsertType;
+import net.opengis.wfs20.PropertyType;
 import net.opengis.wfs20.QueryType;
 import net.opengis.wfs20.ResultTypeType;
 import net.opengis.wfs20.StoredQueryDescriptionType;
 import net.opengis.wfs20.StoredQueryType;
+import net.opengis.wfs20.TransactionType;
+import net.opengis.wfs20.UpdateType;
+import net.opengis.wfs20.ValueReferenceType;
 import net.opengis.wfs20.WFSCapabilitiesType;
 import net.opengis.wfs20.Wfs20Factory;
 
@@ -75,28 +83,24 @@ import org.geotools.data.wfs.internal.DescribeStoredQueriesRequest;
 import org.geotools.data.wfs.internal.HttpMethod;
 import org.geotools.data.wfs.internal.ListStoredQueriesRequest;
 import org.geotools.data.wfs.internal.TransactionRequest;
+import org.geotools.data.wfs.internal.TransactionRequest.Delete;
+import org.geotools.data.wfs.internal.TransactionRequest.Insert;
+import org.geotools.data.wfs.internal.TransactionRequest.TransactionElement;
+import org.geotools.data.wfs.internal.TransactionRequest.Update;
 import org.geotools.data.wfs.internal.Versions;
+import org.geotools.data.wfs.internal.WFSExtensions;
 import org.geotools.data.wfs.internal.WFSGetCapabilities;
 import org.geotools.data.wfs.internal.WFSOperationType;
+import org.geotools.data.wfs.internal.WFSResponseFactory;
 import org.geotools.data.wfs.internal.WFSStrategy;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.ConfigurationMetadataKey;
-import org.geotools.filter.capability.FilterCapabilitiesImpl;
-import org.geotools.filter.capability.IdCapabilitiesImpl;
-import org.geotools.filter.capability.SpatialCapabiltiesImpl;
-import org.geotools.filter.capability.SpatialOperatorImpl;
-import org.geotools.filter.capability.SpatialOperatorsImpl;
-import org.geotools.filter.v2_0.FES;
 import org.geotools.util.Version;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.Configuration;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FilterCapabilities;
-import org.opengis.filter.capability.GeometryOperand;
-import org.opengis.filter.capability.IdCapabilities;
-import org.opengis.filter.capability.SpatialCapabilities;
-import org.opengis.filter.capability.SpatialOperator;
-
 
 /**
  * 
@@ -104,7 +108,8 @@ import org.opengis.filter.capability.SpatialOperator;
 public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     private static final List<String> PREFERRED_FORMATS = Collections.unmodifiableList(Arrays
-            .asList("text/xml; subtype=gml/3.2", "application/gml+xml; version=3.2", "gml32",
+            .asList("application/gml+xml; version=3.2", // As per Table 12 in 09-25r1 OGC Web Feature Service WFS 2.0 
+                    "text/xml; subtype=gml/3.2", "gml32",
                     "text/xml; subtype=gml/3.1.1", "gml3", "text/xml; subtype=gml/2.1.2", "GML2"));
 
     private net.opengis.wfs20.WFSCapabilitiesType capabilities;
@@ -181,49 +186,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         return Versions.v2_0_0;
     }
 
-    @Override
-    public String getDefaultOutputFormat(WFSOperationType operation) {
-        switch (operation) {
-        case GET_FEATURE:
-            // As per Table 12 in 09-25r1 OGC Web Feature Service WFS 2.0
-            return "application/gml+xml; version=3.2";
-
-        case DESCRIBE_FEATURETYPE:
-        case DESCRIBE_STORED_QUERIES:
-        case LIST_STORED_QUERIES:
-            // Format makes no sense for DescribeFeatureType, DescribeStoredQueries or ListStoredQueries
-            return null;
-
-        default:
-            throw new UnsupportedOperationException("No outputFormat set up for "+operation);
-        }
-    }
-
-    private String findExact(List<String> preferredFormats, Set<String> serverFormats) {
-        for (String preferred : preferredFormats) {
-            for (String serverFormat : serverFormats) {
-                if (serverFormat.equalsIgnoreCase(preferred)) {
-                    return preferred;
-                }
-            }
-        }
-        return null;
-    }
-
-    private String findFuzzy(List<String> preferredFormats, Set<String> serverFormats) {
-        for (String preferred : preferredFormats) {
-
-            preferred = preferred.toLowerCase();
-
-            for (String serverFormat : serverFormats) {
-                if (serverFormat.toLowerCase().startsWith(preferred)) {
-                    return preferred;
-                }
-            }
-        }
-        return null;
-    }
-
     /**
      * @see WFSStrategy#getFeatureTypeNames()
      */
@@ -246,101 +208,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     public FilterCapabilities getFilterCapabilities() {
-        FilterCapabilitiesType filterCapabilities = capabilities.getFilterCapabilities();
-
-        FilterCapabilitiesImpl ret = new FilterCapabilitiesImpl();
-        ret.setId(createIdCapabilities(filterCapabilities));
-        ret.setSpatial(createSpatialCapabilities(filterCapabilities));
-
-        // TODO: scalar, arithmetic
-
-        return ret;
-    }
-
-    private SpatialCapabilities createSpatialCapabilities(FilterCapabilitiesType filterCapabilities) {
-        SpatialCapabilitiesType sct = filterCapabilities.getSpatialCapabilities();
-
-        SpatialCapabiltiesImpl spatialCapabilities = new SpatialCapabiltiesImpl();
-
-        // Geometry operands
-
-
-        List<GeometryOperandType> geometryOperandTypes = null;
-
-        if (sct != null && sct.getGeometryOperands() != null) {
-            geometryOperandTypes = sct.getGeometryOperands().getGeometryOperand();
-        }
-
-        if (geometryOperandTypes == null) {
-            geometryOperandTypes = Collections.emptyList();
-        }
-
-        List<GeometryOperand> geometryOperands = convertGeometryOperands(geometryOperandTypes);
-
-        spatialCapabilities.setGeometryOperands(geometryOperands);
-
-
-        // Spatial operators
-        SpatialOperatorsImpl spatialOperators = new SpatialOperatorsImpl();
-        spatialCapabilities.setSpatialOperators(spatialOperators);
-
-        Collection<SpatialOperator> ops = new ArrayList<SpatialOperator>();
-
-        List<SpatialOperatorType> spatialOperatorTypes = null;
-        if (sct != null && sct.getSpatialOperators() != null) {
-            spatialOperatorTypes = sct.getSpatialOperators().getSpatialOperator();
-        }
-
-        if (spatialOperatorTypes == null) {
-            spatialOperatorTypes = Collections.emptyList();
-        }
-
-        for (SpatialOperatorType sot : spatialOperatorTypes) {
-            SpatialOperator op;
-
-            String name = (String)sot.getName();
-
-            if (sot.getGeometryOperands() != null && sot.getGeometryOperands().getGeometryOperand() != null) {
-                op = new SpatialOperatorImpl(name, convertGeometryOperands(sot.getGeometryOperands().getGeometryOperand()));
-            } else {
-                op = new SpatialOperatorImpl(name);
-            }
-
-            ops.add(op);
-        }
-
-        spatialOperators.setOperators(ops);
-
-
-        return spatialCapabilities;
-    }
-
-    private List<GeometryOperand> convertGeometryOperands(
-            List<GeometryOperandType> geometryOperandTypes) {
-        List<GeometryOperand> geometryOperands = new ArrayList<GeometryOperand>();
-        for (GeometryOperandType got : geometryOperandTypes) {
-            GeometryOperand op = GeometryOperand.get(got.getName().getNamespaceURI(), got.getName().getLocalPart());
-            geometryOperands.add(op);
-        }
-        return geometryOperands;
-    }
-
-    private IdCapabilities createIdCapabilities(FilterCapabilitiesType filterCapabilities) {
-        IdCapabilitiesImpl idCapabilities = new IdCapabilitiesImpl();
-
-        if (filterCapabilities.getIdCapabilities() != null) {
-            for (ResourceIdentifierType rit : filterCapabilities.getIdCapabilities().getResourceIdentifier()) {
-                QName name = rit.getName();
-                if (FES.ResourceId.equals(name)) {
-                    idCapabilities.setFID(true);
-                } else if (name.getNamespaceURI().startsWith("http://www.opengis.net/cat/csw/") &&
-                        name.getLocalPart().equals("RecordId")) {
-                    // FES 2.0 is very unclear about this. See 09-026r1 FES 2.0 7.14.3
-                    idCapabilities.setEid(true);
-                }
-            }
-        }
-        return idCapabilities;
+        return capabilities.getFilterCapabilities();
     }
 
     @Override
@@ -402,6 +270,10 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         dft.setService("WFS");
         dft.setVersion(version.toString());
         dft.setHandle(request.getHandle());
+
+        if (Versions.v1_0_0.equals(version)) {
+            dft.setOutputFormat(null);
+        }
 
         QName typeName = request.getTypeName();
         @SuppressWarnings("unchecked")
@@ -545,8 +417,43 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     protected EObject createTransactionRequest(TransactionRequest request) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
+
+        TransactionType tx = factory.createTransactionType();
+        tx.setService("WFS");
+        tx.setHandle(request.getHandle());
+        tx.setVersion(getVersion());
+
+        List<TransactionElement> transactionElements = request.getTransactionElements();
+        if (transactionElements.isEmpty()) {
+            requestInfo("Asked to perform transaction with no transaction elements");
+            return tx;
+        }
+        
+        @SuppressWarnings("unchecked")
+        List<AbstractTransactionActionType> actions = tx.getAbstractTransactionAction();
+
+        try {
+            for (TransactionElement elem : transactionElements) {
+                AbstractTransactionActionType action = null;
+                if (elem instanceof TransactionRequest.Insert) {
+                    action = createInsert(factory, (Insert) elem);
+                } else if (elem instanceof TransactionRequest.Update) {
+                    action = createUpdate(factory, (Update) elem);
+                } else if (elem instanceof TransactionRequest.Delete) {
+                    action = createDelete(factory, (Delete) elem);
+                }
+                actions.add(action);
+            }
+        } catch (IOException e) {
+            throw e;
+        } catch (RuntimeException re) {
+            throw re;
+        } catch (Exception other) {
+            throw new RuntimeException(other);
+        }
+
+        return tx;
     }
 
     @Override
@@ -588,55 +495,203 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     public Set<String> getServerSupportedOutputFormats(WFSOperationType operation) {
-        OperationsMetadataType omt = this.capabilities.getOperationsMetadata();
-        omt.getOperation();
+         String parameterName;
 
-        trace("Looking suppoerted output formats for ", operation);
-
-        List<OperationType> operations = capabilities.getOperationsMetadata().getOperation();
-        for (OperationType op : operations) {
-            if (!operation.getName().equals(op.getName())) {
-                continue;
-            }
-
-            for (Object o : op.getParameter()) {
-                System.out.println(o);
-            }
-
+        switch (operation) {
+        case GET_FEATURE:
+        case DESCRIBE_FEATURETYPE:
+        case GET_FEATURE_WITH_LOCK:
+            parameterName = "outputFormat";
+            break;
+        case TRANSACTION:
+            parameterName = "inputFormat";
+            break;
+        default:
+            throw new UnsupportedOperationException("not yet implemented for " + operation);
         }
-        // TODO Auto-generated method stub
-        return null;
+        
+        final OperationType operationMetadata = getOperationMetadata(operation);
+
+        Set<String> serverSupportedFormats;
+        serverSupportedFormats = findParameters(operationMetadata, parameterName);
+        return serverSupportedFormats;
     }
 
     @Override
     public Set<String> getServerSupportedOutputFormats(QName typeName, WFSOperationType operation) {
-        // TODO Auto-generated method stub
-        return null;
+        Set<String> ftypeFormats = new HashSet<String>();
+
+        final Set<String> serviceOutputFormats = getServerSupportedOutputFormats(operation);
+        ftypeFormats.addAll(serviceOutputFormats);
+
+        if (GET_FEATURE.equals(operation)) {
+            final FeatureTypeInfo typeInfo = getFeatureTypeInfo(typeName);
+
+            final Set<String> typeAdvertisedFormats = typeInfo.getOutputFormats();
+
+            ftypeFormats.addAll(typeAdvertisedFormats);
+        }
+        return ftypeFormats;
     }
 
     @Override
     public List<String> getClientSupportedOutputFormats(WFSOperationType operation) {
-        // TODO Auto-generated method stub
-        return null;
+        List<WFSResponseFactory> operationResponseFactories;
+        operationResponseFactories = WFSExtensions.findResponseFactories(operation);
+
+        List<String> outputFormats = new LinkedList<String>();
+        for (WFSResponseFactory factory : operationResponseFactories) {
+            List<String> factoryFormats = factory.getSupportedOutputFormats();
+            outputFormats.addAll(factoryFormats);
+        }
+
+        if (GET_FEATURE.equals(operation)) {
+            for (String preferred : PREFERRED_FORMATS) {
+                boolean hasFormat = outputFormats.remove(preferred);
+                if (hasFormat) {
+                    outputFormats.add(0, preferred);
+                    break;
+                }
+            }
+        }
+
+        return outputFormats;
     }
 
     @Override
     public boolean supportsTransaction(QName typeName) {
-        // TODO Auto-generated method stub
-        return false;
+        try {
+            getFeatureTypeInfo(typeName);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
+        if (!supportsOperation(TRANSACTION, POST)) {
+            return false;
+        }
+
+        return true;
+    }
+
+ /**
+     * @return the operation metadata advertised in the capabilities for the given operation
+     * @see #getServerSupportedOutputFormats(WFSOperationType)
+     */
+    protected OperationType getOperationMetadata(final WFSOperationType operation) {
+        final OperationsMetadataType operationsMetadata = capabilities.getOperationsMetadata();
+        @SuppressWarnings("unchecked")
+        final List<OperationType> operations = operationsMetadata.getOperation();
+        final String expectedOperationName = operation.getName();
+        for (OperationType operationType : operations) {
+            String operationName = operationType.getName();
+            if (expectedOperationName.equalsIgnoreCase(operationName)) {
+                return operationType;
+            }
+        }
+        throw new NoSuchElementException("Operation metadata not found for "
+                + expectedOperationName + " in the capabilities document");
     }
 
     @Override
     public Set<String> getSupportedCRSIdentifiers(QName typeName) {
-        FeatureTypeType type = typeInfos.get(typeName);
+        FeatureTypeInfo featureTypeInfo = getFeatureTypeInfo(typeName);
 
-        Set<String> ret = new HashSet<String>();
-        if (type.getDefaultCRS() != null) {
-            ret.add(type.getDefaultCRS());
+        String defaultSRS = featureTypeInfo.getDefaultSRS();
+
+        List<String> otherSRS = featureTypeInfo.getOtherSRS();
+
+        Set<String> ftypeCrss = new HashSet<String>();
+        ftypeCrss.add(defaultSRS);
+        ftypeCrss.addAll(otherSRS);
+
+        final boolean wfs2_0 = Versions.v2_0_0.equals(getServiceVersion());
+        if (wfs2_0) {
+            OperationType operationMetadata = getOperationMetadata(GET_FEATURE);
+            final String operationParameter = "SrsName";
+            Set<String> globalSrsNames = findParameters(operationMetadata, operationParameter);
+            ftypeCrss.addAll(globalSrsNames);
+        }
+        return ftypeCrss;
+    }
+
+
+    @SuppressWarnings("unchecked")
+    protected Set<String> findParameters(final OperationType operationMetadata,
+            final String parameterName) {
+        Set<String> outputFormats = new HashSet<String>();
+
+        List<DomainType> parameters = operationMetadata.getParameter();
+        for (DomainType param : parameters) {
+
+            String paramName = param.getName();
+
+            if (parameterName.equals(paramName)) {
+
+                for (ValueType value : (List<ValueType>) param.getAllowedValues().getValue()) {
+                    outputFormats.add(value.getValue());
+                }
+            }
+        }
+        return outputFormats;
+    }
+    
+    protected AbstractTransactionActionType createInsert(Wfs20Factory factory, Insert elem) throws Exception {
+        InsertType insert = factory.createInsertType();
+
+        String srsName = getFeatureTypeInfo(elem.getTypeName()).getDefaultSRS();
+        insert.setSrsName(srsName);
+
+        List<SimpleFeature> features = elem.getFeatures();
+
+        insert.getAny().addAll(features);
+        
+        return insert;
+    }
+
+    protected AbstractTransactionActionType createUpdate(Wfs20Factory factory, Update elem) throws Exception {
+
+        List<QName> propertyNames = elem.getPropertyNames();
+        List<Object> newValues = elem.getNewValues();
+        if (propertyNames.size() != newValues.size()) {
+            throw new IllegalArgumentException("Got " + propertyNames.size()
+                    + " property names and " + newValues.size() + " values");
         }
 
-        ret.addAll(type.getOtherCRS());
+        UpdateType update = factory.createUpdateType();
 
-        return ret;
+        QName typeName = elem.getTypeName();
+        update.setTypeName(typeName);
+        String srsName = getFeatureTypeInfo(typeName).getDefaultSRS();
+        update.setSrsName(srsName);
+
+        Filter filter = elem.getFilter();
+        update.setFilter(filter);
+
+        @SuppressWarnings("unchecked")
+        List<PropertyType> properties = update.getProperty();
+
+        for (int i = 0; i < propertyNames.size(); i++) {
+            QName propName = propertyNames.get(i);
+            Object value = newValues.get(i);
+            PropertyType property = factory.createPropertyType();
+            ValueReferenceType ref = factory.createValueReferenceType();
+            ref.setValue(propName);
+            property.setValueReference(ref);
+            property.setValue(value);
+
+            properties.add(property);
+        }
+
+        return update;
+    }
+
+    protected AbstractTransactionActionType createDelete(Wfs20Factory factory, Delete elem) throws Exception {
+        DeleteType delete = factory.createDeleteType();
+
+        QName typeName = elem.getTypeName();
+        delete.setTypeName(typeName);
+        Filter filter = elem.getFilter();
+        delete.setFilter(filter);
+
+        return delete;
     }
 }

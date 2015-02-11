@@ -70,7 +70,7 @@ public class FileSystemIndexStore implements IndexStore {
     }
 
     /**
-     * @see org.geotools.index.quadtree.IndexStore#store(org.geotools.index.quadtree.QuadTree)
+     * @see org.geotools.index.quadtree.IndexStore#dataStore(org.geotools.index.quadtree.QuadTree)
      */
     public void store(QuadTree tree) throws StoreException {
         // For efficiency, trim the tree

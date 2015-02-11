@@ -41,8 +41,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-
+@Deprecated
 /**
+ * AbsractDataStore is Deprecated.
+ * 
  * A Transaction.State that keeps a difference table for use with
  * AbstractDataStore.
  *
@@ -204,7 +206,7 @@ public class TransactionStateDiff implements State {
                 if (diff.getModified().containsKey(fid)) {
                     update = (SimpleFeature) diff.getModified().get(fid);
 
-                    if (update == NULL) {
+                    if (update == Diff.NULL) {
                         writer.remove();
 
                         // notify

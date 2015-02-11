@@ -1,0 +1,12 @@
+* {
+  stroke: blue, symbol(circle);
+  stroke-width: 1px;
+  stroke-dasharray: 10 10, 5 15;
+  stroke-dashoffset: 0, 7.5;
+}
+
+:nth-stroke(2) {
+  stroke: #000033;
+  stroke-width: 1px;
+  size: 5px;
+}

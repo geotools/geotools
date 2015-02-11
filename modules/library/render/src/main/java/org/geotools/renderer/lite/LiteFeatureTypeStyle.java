@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -63,6 +63,13 @@ public final class LiteFeatureTypeStyle {
     public Graphics2D graphics;
     
     public Expression transformation;
+
+    public Composite composite;
+
+    /**
+     * When true, the first maching rule will be applied, skipping the others
+     */
+    boolean matchFirst = false;
 
     /**
      * The bit map used to decide whether to skip geometries that have been already drawn

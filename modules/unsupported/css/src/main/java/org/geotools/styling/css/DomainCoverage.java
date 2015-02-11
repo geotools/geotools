@@ -32,6 +32,7 @@ import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.util.OgcFilterBuilder;
 import org.geotools.styling.css.util.ScaleRangeExtractor;
+import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.opengis.feature.type.FeatureType;
@@ -231,7 +232,7 @@ class DomainCoverage {
      * A simplifier visitor that will cache results that have been simplified already, since this
      * class unites/intersects filters a lot in order to compute the coverage
      */
-    private SimplifyingFilterVisitor simplifier;
+    private UnboundSimplifyingFilterVisitor simplifier;
 
     /**
      * The set of selectors generated so far. We can get several repeated selectors due to
@@ -242,14 +243,14 @@ class DomainCoverage {
     /**
      * When true, the detailed (expensive) coverage computation will generate exclusive rules
      */
-    boolean detailedCoverageEnabled = true;
+    boolean exclusiveRulesEnabled = true;
 
     /**
      * Create a new domain coverage for the given feature type
      * 
      * @param targetFeatureType
      */
-    public DomainCoverage(FeatureType targetFeatureType, SimplifyingFilterVisitor simplifier) {
+    public DomainCoverage(FeatureType targetFeatureType, UnboundSimplifyingFilterVisitor simplifier) {
         this.elements = new ArrayList<>();
         this.targetFeatureType = targetFeatureType;
         this.simplifier = simplifier;
@@ -271,6 +272,11 @@ class DomainCoverage {
             return Collections.emptyList();
         } else {
             generatedSelectors.add(ruleCoverage);
+        }
+
+        // if we are just checking for straight duplicates, let it go
+        if (!exclusiveRulesEnabled) {
+            return coverageToRules(rule, ruleCoverage);
         }
 
         // for each rule we have in the domain, get the differences, if any, with this rule,
@@ -356,7 +362,8 @@ class DomainCoverage {
                 if (s instanceof Or) {
                     throw new IllegalArgumentException(
                             "Unexpected or selector nested inside another one, "
-                                    + "at this point they should have been all flattened");
+                                    + "at this point they should have been all flattened: "
+                                    + selector);
                 }
                 toIndependentSLDSelectors(s, targetFeatureType, result);
             }
@@ -424,8 +431,8 @@ class DomainCoverage {
         return sb.toString();
     }
 
-    void setDetailedCoverageEnabled(boolean detailedCoverageEnabled) {
-        this.detailedCoverageEnabled = detailedCoverageEnabled;
+    void setExclusiveRulesEnabled(boolean exclusiveRulesEnabled) {
+        this.exclusiveRulesEnabled = exclusiveRulesEnabled;
     }
 
 }

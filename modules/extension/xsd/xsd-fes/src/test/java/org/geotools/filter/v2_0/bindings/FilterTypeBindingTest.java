@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,6 +22,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v1_1.FilterMockData;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
+import org.geotools.gml3.v3_2.GML;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -207,6 +208,15 @@ public class FilterTypeBindingTest extends FESTestSupport {
 
         assertNotNull(getElementByQName(e, FES.ValueReference));
         assertNotNull(getElementByQName(e, FES.Literal));
+    }
+        
+    public void testEncodeBoundingBox() throws Exception {
+        Document doc = encode(FilterMockData.bbox(), FES.Filter);
+
+        assertEquals("fes:Filter", doc.getDocumentElement().getNodeName());
+        assertEquals(1, doc.getElementsByTagNameNS(FES.NAMESPACE, "BBOX").getLength());
+        assertEquals(1, doc.getElementsByTagNameNS(GML.NAMESPACE, "Envelope").getLength());
+        assertEquals(1, doc.getElementsByTagNameNS(GML.NAMESPACE, "lowerCorner").getLength());
     }
     
     public void testEncodeComparison() throws Exception {

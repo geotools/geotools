@@ -59,7 +59,7 @@ public interface WFSResponseFactory {
      * @return a {@link WFSResponseParser} that can deal with the given WFS response
      * @throws IOException
      */
-    public WFSResponse createResponse(WFSRequest request, HTTPResponse response, String axisOrder) throws IOException;
+    public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws IOException;
 
     public boolean canProcess(WFSOperationType operation);
 

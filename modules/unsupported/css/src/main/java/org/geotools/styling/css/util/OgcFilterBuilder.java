@@ -138,7 +138,7 @@ public class OgcFilterBuilder implements SelectorVisitor {
 
     public static Filter buildFilter(Selector selector, FeatureType targetFeatureType) {
         Filter filter = (Filter) selector.accept(INSTANCE);
-        SimplifyingFilterVisitor simplifier = new SimplifyingFilterVisitor();
+        SimplifyingFilterVisitor simplifier = new UnboundSimplifyingFilterVisitor();
         simplifier.setFeatureType(targetFeatureType);
         return (Filter) filter.accept(simplifier, null);
     }

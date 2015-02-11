@@ -22,9 +22,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.geotools.data.memory.MemoryDataStore;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
@@ -79,7 +79,6 @@ public class TextSymbolTest extends TestCase {
 
         // Request extent
         GeometryFactory geomFac = new GeometryFactory();
-        MemoryDataStore data = new MemoryDataStore();
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
         ftb.setCRS(null);
 		ftb.add("centre", com.vividsolutions.jts.geom.Point.class);
@@ -87,7 +86,8 @@ public class TextSymbolTest extends TestCase {
 		ftb.add("rotation", Double.class);
 		ftb.add("symbol", String.class);
 		ftb.setName("test");
-        SimpleFeatureType pointType = ftb.buildFeatureType();
+	SimpleFeatureType pointType = ftb.buildFeatureType();
+	ListFeatureCollection data = new ListFeatureCollection( pointType );
 
         //FlatFeatureFactory pointFac = feaTypeFactory.(pointType);
         Point point;
@@ -110,15 +110,12 @@ public class TextSymbolTest extends TestCase {
                             point, new Double(size), new Double(rotation),
                             symbol[i]
                         }, null);
-                data.addFeature(pointFeature);
+                data.add(pointFeature);
             }
 
             size += 2;
             rotation += 45;
         }
-
-        String typeName = data.getTypeNames()[0];
-        SimpleFeatureCollection ft = data.getFeatureSource(typeName).getFeatures();
 
         //REVISIT: Removed since it is deprecated, not sure what this test is
         //is doing, what should replace it.  If someone with more knowledge of
@@ -131,18 +128,18 @@ public class TextSymbolTest extends TestCase {
         Mark textMark = new MarkImpl("square");
 
         GraphicImpl graphic = new GraphicImpl();
-        graphic.addSymbol(textMark);
+        graphic.graphicalSymbols().add(textMark);
 
         PointSymbolizerImpl pointsym = new PointSymbolizerImpl();
         pointsym.setGeometryPropertyName("centre");
         pointsym.setGraphic(graphic);
 
         RuleImpl rule = new RuleImpl();
-        rule.setSymbolizers(new Symbolizer[] { pointsym });
+        rule.symbolizers().add( pointsym );
 
         FeatureTypeStyleImpl fts = new FeatureTypeStyleImpl();
-        fts.addRule(rule);
-        fts.setFeatureTypeName("testPoint");
+        fts.rules().add(rule);
+        fts.featureTypeNames().add( new NameImpl("testPoint"));
 
         StyleImpl style = new StyleImpl();
         style.addFeatureTypeStyle(fts);

@@ -16,6 +16,7 @@
  */
 package org.geotools.data.ows;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -52,7 +53,7 @@ import org.geotools.util.logging.Logging;
  * @author groldan
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
-public class MultithreadedHttpClient implements HTTPClient {
+public class MultithreadedHttpClient implements HTTPClient, Closeable {
 
     private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
     
@@ -302,5 +303,13 @@ public class MultithreadedHttpClient implements HTTPClient {
     @Override
     public boolean isTryGzip() {
         return tryGzip;
+    }
+
+    /**
+     * Disposes the client, releasing the pooled HTTP connections
+     */
+    @Override
+    public void close() {
+        connectionManager.shutdown();
     }
 }

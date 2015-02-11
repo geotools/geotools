@@ -1,7 +1,7 @@
 /* GeoTools - The Open Source Java GIS Toolkit
  * http://geotools.org
  *
- * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
+ * (C) 2010-2015, Open Source Geospatial Foundation (OSGeo)
  *
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file. Use it well and enjoy!
@@ -16,11 +16,11 @@ import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
+import org.geotools.data.csv.parse.CSVStrategy;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
@@ -32,8 +32,14 @@ import org.opengis.feature.type.Name;
  * @author Ian Turton (Envitia)
  */
 public class CSVFeatureStore extends ContentFeatureStore {
-    public CSVFeatureStore(ContentEntry entry, Query query) {
+	private CSVStrategy csvStrategy;
+	private CSVFileState csvFileState;
+	
+    public CSVFeatureStore(CSVStrategy csvStrategy, CSVFileState csvFileState, 
+    		ContentEntry entry, Query query) {
         super(entry, query);
+        this.csvStrategy = csvStrategy;
+        this.csvFileState = csvFileState;
     }
     // header end
     // getWriter start
@@ -43,7 +49,7 @@ public class CSVFeatureStore extends ContentFeatureStore {
     @Override
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query,
             int flags) throws IOException {
-        return new CSVFeatureWriter(getState(), query);
+        return new CSVFeatureWriter(this.csvFileState, this.csvStrategy, query);
     }
     // getWriter end
     
@@ -93,10 +99,6 @@ public class CSVFeatureStore extends ContentFeatureStore {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         return delegate.getReaderInternal(query);
-    }
-    @Override
-    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
-        return delegate.handleVisitor(query, visitor);
     }
     // internal end
     

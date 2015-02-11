@@ -63,8 +63,11 @@ class MergeSortDumper {
             if (sb != SortBy.NATURAL_ORDER && sb != SortBy.REVERSE_ORDER) {
                 AttributeDescriptor ad = schema.getDescriptor(sb.getPropertyName()
                         .getPropertyName());
+                if (ad == null) {
+                    return false;
+                }
                 Class<?> binding = ad.getType().getBinding();
-                if (ad == null || !Comparable.class.isAssignableFrom(binding) 
+                if (!Comparable.class.isAssignableFrom(binding) 
                         || Geometry.class.isAssignableFrom(binding)) {
                     return false;
                 }

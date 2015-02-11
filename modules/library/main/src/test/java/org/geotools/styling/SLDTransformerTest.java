@@ -20,9 +20,7 @@ import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
 import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -337,9 +335,10 @@ public class SLDTransformerTest {
      * explicit AnchorPoint as the spec allows.
      *
      * See also http://jira.codehaus.org/browse/GEOS-6748
+     * @throws TransformerException 
      */
     @Test
-    public void testPointPlacementNoAnchorPoint(){
+    public void testPointPlacementNoAnchorPoint() throws TransformerException{
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                    + "<StyledLayerDescriptor version=\"1.0.0\" xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
                    + "  xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
@@ -387,6 +386,12 @@ public class SLDTransformerTest {
 
         assertNotNull(pointPlacement);
         assertNotNull(pointPlacement.getRotation());
+        assertNull( pointPlacement.getAnchorPoint());
+        
+        SLDTransformer transform = new SLDTransformer();
+        
+        String output = transform.transform(style);
+        assertFalse( output.contains("AnchorPoint"));
     }
 
     /**
@@ -1428,13 +1433,30 @@ public class SLDTransformerTest {
         
         SLDTransformer st = new SLDTransformer();     
         String xml = st.transform(graphic);
-        System.out.println(xml);
+        // System.out.println(xml);
         Document doc = buildTestDocument(xml);
         
         assertXpathEvaluatesTo("10.0", "//sld:Graphic/sld:Displacement/sld:DisplacementX", doc);
         assertXpathEvaluatesTo("10.0", "//sld:Graphic/sld:Displacement/sld:DisplacementY", doc);
         assertXpathEvaluatesTo("1.0", "//sld:Graphic/sld:AnchorPoint/sld:AnchorPointX", doc);
         assertXpathEvaluatesTo("0.3", "//sld:Graphic/sld:AnchorPoint/sld:AnchorPointY", doc);
+    }
+
+    @Test
+    public void testFeatureTypeStyleOptions() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        Style style = sb.createStyle(sb.createPolygonSymbolizer());
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        fts.getOptions().put("key", "value");
+
+        SLDTransformer st = new SLDTransformer();
+        String xml = st.transform(style);
+        System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+
+        assertXpathEvaluatesTo("1", "count(//sld:FeatureTypeStyle/sld:VendorOption)", doc);
+        assertXpathEvaluatesTo("value",
+ "//sld:FeatureTypeStyle/sld:VendorOption[@name='key']", doc);
     }
 
     private Style validateWellKnownNameWithExpressionStyle(String xmlStyle) {

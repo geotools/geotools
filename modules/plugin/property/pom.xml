@@ -37,8 +37,9 @@
   </scm>
 
   <description>
-    DataStore based on standard Java properties files, origional created
-    as demo; now serves as a useful reference implementation.
+    DataStore using Java properties files, a useful reference implementation
+    for test cases. This implementation is based on ContentDataStore
+    and supports the use of ResourceId to support history.
   </description>
 
   <licenses>
@@ -73,7 +74,7 @@
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-main</artifactId>
+      <artifactId>gt-data</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

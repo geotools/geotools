@@ -1,0 +1,7 @@
+* {
+  raster-channels: auto;
+  raster-contrast-enhancement: normalize;
+  raster-gamma: 0.5;
+  raster-color-map: color-map-entry(#008000, 70)
+    color-map-entry(#663333, 256);
+}

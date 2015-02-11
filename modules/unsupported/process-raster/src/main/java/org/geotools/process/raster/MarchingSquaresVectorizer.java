@@ -1256,8 +1256,8 @@ public final class MarchingSquaresVectorizer {
      * @param pValue
      * @return
      */
-    private final static boolean areEqual(double value, double pValue) {
-        return Math.abs(value - D_VALUE) < DELTA;
+    public final static boolean areEqual(double value, double pValue) {
+        return Math.abs(value - pValue) < DELTA;
     }
 
     public void dispose() {

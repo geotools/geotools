@@ -1,0 +1,14 @@
+* {
+  stroke: red;
+  label: [name];
+  font-family: Arial;
+  font-weight: bold;
+  font-fill: black;
+  font-size: 10;
+  halo-color: white;
+  halo-radius: 1;
+  -gt-label-follow-line: true;
+  -gt-label-max-angle-delta: 90;
+  -gt-label-max-displacement: 400;
+  -gt-label-repeat: 150;
+}

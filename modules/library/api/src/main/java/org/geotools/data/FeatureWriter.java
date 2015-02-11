@@ -42,7 +42,7 @@ import org.opengis.feature.type.FeatureType;
  * </li>
  * <li>
  * This API allows modification, and Filter based modification to be written.
- * Please see AbstractDataStore for examples of implementing common
+ * Please see ContentDataStore for examples of implementing common
  * opperations using this API.
  * </li>
  * <li>
@@ -83,7 +83,8 @@ public interface FeatureWriter<T extends FeatureType, F extends Feature> extends
      *
      * @return Feature from Query, or newly appended Feature
      *
-     * @throws IOException DOCUMENT ME!
+     * @throws IOException if the writer has been closed or an I/O error occurs reading the next 
+     * <code>Feature</code>.
      */
     F next() throws IOException;
 
@@ -159,14 +160,14 @@ public interface FeatureWriter<T extends FeatureType, F extends Feature> extends
      * </p>
      *
      * <p>
-     * FeatureWriters that support append opperations will allow calls to next,
-     * even when haveNext() returns <code>false</code>.
+     * FeatureWriters that support append operations will allow calls to next,
+     * even when hasNext() returns <code>false</code>.
      * </p>
      *
      * @return <code>true</code> if an additional <code>Feature</code> is
-     *         available.
+     *         available, <code>false</code> if not.
      *
-     * @throws IOException DOCUMENT ME!
+     * @throws IOException if an I/O error occurs.
      */
     boolean hasNext() throws IOException;
 

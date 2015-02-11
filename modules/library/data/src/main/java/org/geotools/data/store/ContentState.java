@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -401,25 +401,25 @@ public class ContentState {
         if (batchFeatureEvent == null) {
             return;
         }
-        if (listeners.isEmpty()) {
-            return;
-        }
         if (isCommit) {
             batchFeatureEvent.setType(Type.COMMIT);
+            
+            // This state already knows about the changes, let others know a modifications was made
+            this.entry.notifiyFeatureEvent(this, batchFeatureEvent);
         } else {
             batchFeatureEvent.setType(Type.ROLLBACK);
-        }
-        for (FeatureListener listener : listeners) {
-            try {
-                listener.changed(batchFeatureEvent);
-            } catch (Throwable t) {
-                this.entry.dataStore.LOGGER.log(Level.WARNING,
-                        "Problem issuing batch feature event " + batchFeatureEvent, t);
+            
+            // Notify this state about the rollback, other transactions see no change
+            for (FeatureListener listener : listeners) {
+                try {
+                    listener.changed(batchFeatureEvent);
+                } catch (Throwable t) {
+                    this.entry.dataStore.LOGGER.log(Level.WARNING,
+                            "Problem issuing batch feature event " + batchFeatureEvent, t);
+                }
             }
         }
-        // Let others know a modifications was made
-        this.entry.notifiyFeatureEvent(this, batchFeatureEvent);
-
+        
         batchFeatureEvent = null;
     }
 

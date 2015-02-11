@@ -58,7 +58,7 @@ the geometry of the features.
         :start-after: </properties>
         :end-before: <repositories>
     
-2. Create the **CRSLab.java** file and copy and paste the following code.
+2. Create the **CRSLab.java** file and copy and paste the following code:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
@@ -74,7 +74,7 @@ the geometry of the features.
       :start-after: // docs start display
       :end-before: // docs end display
 
-4. Here is how we have configured JMapFrame
+4. Here is how we have configured JMapFrame:
 
    * We have enabled a status line; this contains a button allowing the map
      coordinate reference system to be changed.
@@ -119,7 +119,7 @@ MathTransform between two CoordinateReferenceSystems. You can use the
 MathTransform to transform points one at a time; or use the JTS utility class
 to create a copy of a Geometry with the points modified.
 
-We use similar steps to export a shapefile as used by the csv 2 shp example.
+We use similar steps to export a shapefile as used by the Csv2Shape example.
 In this case we are reading the contents from an existing shapefile using
 a **FeatureIterator**; and writing out the contents one at a time
 using a **FeatureWriter**. Please close these objects after use.
@@ -132,21 +132,21 @@ using a **FeatureWriter**. Please close these objects after use.
     :start-after: // docs start export action
     :end-before: // docs end export action
 
-2. Exporting reprojected data to a shapefile
+2. Exporting reprojected data to a shapefile:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // docs start export
    :end-before: // set up the math transform used to process the data
       
-3. Set up a math transform used to process the data
+3. Set up a math transform used to process the data:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // set up the math transform used to process the data
    :end-before: // grab all features
 
-4. Grab all features
+4. Grab all features:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
@@ -177,8 +177,7 @@ To switch between map projections:
 
 1. When you start the application you will be prompted for a shapefile to display.
    In the screenshots below we are using the *bc_border* map which can be
-   downloaded as part of the uDig sample data file:
-   `data-v1_2.zip <http://udig.refractions.net/docs/data-v1_2.zip>`
+   downloaded as part of the `uDig sample dataset <http://udig.refractions.net/docs/data-v1_2.zip>`_
 
 .. image:: images/CRSLab_start.png
    :width: 60%
@@ -435,7 +434,7 @@ EPSG:4326
    .. image:: images/epsg4326.png
       :scale: 30
    
-   This is the big one: nformation measured by lat/lon using decimal degrees.
+   This is the big one: information measured by lat/lon using decimal degrees.
         
    ``CRS.decode("EPSG:4326");``
 
@@ -493,7 +492,7 @@ supposed to be this way – and have been fighting with map makers ever since.
 So if you see some data in "EPSG:4326" you have no idea if it is in x/y order or
 in y/x order.
 
-We have finally sorted out an alternative; rather then EPSG:4326 we are supposed
+We have finally sorted out an alternative; rather than EPSG:4326 we are supposed
 to use "urn:ogc:def:crs:EPSG:6.6:4326". If you ever see that you can be sure
 that a) someone really knows what they are doing and b) the data is recorded in
 exactly the order defined by the EPSG database.

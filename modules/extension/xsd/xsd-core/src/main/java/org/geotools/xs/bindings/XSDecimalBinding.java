@@ -18,7 +18,9 @@ package org.geotools.xs.bindings;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+
 import javax.xml.namespace.QName;
+
 import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xs.XS;
@@ -155,6 +157,6 @@ public class XSDecimalBinding implements SimpleBinding {
     public String encode(Object object, String value) {
         BigDecimal decimal = (BigDecimal) object;
 
-        return decimal.toString();
+        return decimal.toPlainString();
     }
 }

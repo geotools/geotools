@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.crs;
 
-import static org.geotools.referencing.crs.DefaultGeographicCRS.*;
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +39,11 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
 
@@ -429,8 +434,47 @@ public class ProjectionHandler {
     private Geometry intersect(Geometry geometry, Geometry mask) {
         // this seems to cause issues to JTS, reduce to
         // single geometry when possible (http://jira.codehaus.org/browse/GEOS-6570)
-        if (geometry instanceof GeometryCollection && geometry.getNumGeometries() == 1) {
-            geometry = geometry.getGeometryN(0);
+        if (geometry instanceof GeometryCollection) {
+            if (geometry.getNumGeometries() == 1) {
+                geometry = geometry.getGeometryN(0);
+            } else {
+                // go piecewise, the JTS intersection can be pretty fragile in these cases
+                // and take a lot of time
+                List<Geometry> elements = new ArrayList<>();
+                String geometryType = geometry.getGeometryN(0).getGeometryType();
+                for (int i = 0; i < geometry.getNumGeometries(); i++) {
+                    Geometry g = geometry.getGeometryN(i);
+                    if (g.getEnvelopeInternal().intersects(mask.getEnvelopeInternal())) {
+                        Geometry intersected = intersect(g, mask);
+                        if (intersected != null) {
+                            if (intersected.getGeometryType().equals(geometryType)) {
+                                elements.add(intersected);
+                            } else if (intersected instanceof GeometryCollection) {
+                                addGeometries(elements, (GeometryCollection) intersected,
+                                        geometryType);
+                            }
+                        }
+                    }
+                }
+                
+                if (elements.size() == 0) {
+                    return null;
+                }
+
+                if(geometry instanceof MultiPoint) {
+                    Point[] array = elements.toArray(new Point[elements.size()]);
+                    return geometry.getFactory().createMultiPoint(array);
+                } else if (geometry instanceof MultiLineString) {
+                    LineString[] array = elements.toArray(new LineString[elements.size()]);
+                    return geometry.getFactory().createMultiLineString(array);
+                } else if (geometry instanceof MultiPolygon) {
+                    Polygon[] array = elements.toArray(new Polygon[elements.size()]);
+                    return geometry.getFactory().createMultiPolygon(array);
+                } else {
+                    Geometry[] array = elements.toArray(new Geometry[elements.size()]);
+                    return geometry.getFactory().createGeometryCollection(array);
+                }
+            }
         }
         Geometry result;
         try {
@@ -438,7 +482,7 @@ public class ProjectionHandler {
         } catch(Exception e1) {
             try {
                 result = EnhancedPrecisionOp.intersection(geometry, mask);
-            } catch(Exception e2) {
+            } catch (Exception e2) {
                 result = geometry;
             }
         }
@@ -581,5 +625,42 @@ public class ProjectionHandler {
         }
 
     }
-    
+
+    /**
+     * Private method for adding to the input List only the {@link Geometry} objects of the input {@link GeometryCollection} which belongs to the
+     * defined geometryType
+     * 
+     * @param geoms
+     * @param geometryType
+     */
+    private void addGeometries(List<Geometry> geoms, GeometryCollection collection,
+            String geometryType) {
+        // Check if the list exists
+        if (geoms == null) {
+            return;
+        }
+        // Check the Geometry type
+        if (geometryType == null || geometryType.isEmpty()) {
+            return;
+        }
+        // Check the collection
+        if (collection == null || collection.getNumGeometries() <= 0) {
+            return;
+        }
+        // Get the number of Geometries
+        int numGeometries = collection.getNumGeometries();
+        // Cycle on the Geometries
+        for (int i = 0; i < numGeometries; i++) {
+            // get the Geometry
+            Geometry geo = collection.getGeometryN(i);
+            // If it belongs to the correct Geometry type, it is added to the Liats
+            if (geo.getGeometryType().equals(geometryType)) {
+                geoms.add(geo);
+                // Otherwise if it is a collection we try to iterate on it (recursion)
+            } else if (geo instanceof GeometryCollection) {
+                addGeometries(geoms, (GeometryCollection) geo, geometryType);
+            }
+        }
+    }
+
 }

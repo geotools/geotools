@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Diff;
+import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
 import org.geotools.data.TransactionStateDiff;
@@ -133,8 +134,9 @@ public class DiffTransactionState implements Transaction.State {
         ContentDataStore dataStore = entry.getDataStore();
         ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(name);
         if (source instanceof ContentFeatureStore) {
-            store = (ContentFeatureStore) dataStore.getFeatureSource(name);
-            writer = store.getWriter(Filter.INCLUDE);
+            // request a plain writer with no events, filtering or locking checks
+            store = (ContentFeatureStore) dataStore.getFeatureSource(name, transaction);
+            writer = store.getWriter(Filter.INCLUDE, ContentDataStore.WRITER_COMMIT);
         } else {
             throw new UnsupportedOperationException("not writable");
         }
@@ -150,7 +152,7 @@ public class DiffTransactionState implements Transaction.State {
                 if (diff.getModified().containsKey(fid)) {
                     update = (SimpleFeature) diff.getModified().get(fid);
 
-                    if (update == TransactionStateDiff.NULL) {
+                    if (update == Diff.NULL) {
                         writer.remove();
 
                     } else {
@@ -240,5 +242,20 @@ public class DiffTransactionState implements Transaction.State {
      */
     public synchronized void addAuthorization(String AuthID) throws IOException {
         // not required for TransactionStateDiff
+    }
+    
+    /**
+     * Provides a wrapper on the provided reader which gives a diff writer.
+     *
+     * @param contentFeatureStore ContentFeatureStore 
+     * @param reader FeatureReader requiring diff support
+     *
+     * @return FeatureWriter with diff support
+     */
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> diffWriter(
+            ContentFeatureStore contentFeatureStore,
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
+        
+        return new DiffContentFeatureWriter( contentFeatureStore, diff, reader);
     }
 }

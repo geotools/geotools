@@ -28,7 +28,7 @@ And a couple that are no longer used:
 AbstractDataStore
 ^^^^^^^^^^^^^^^^^
 
-The **AbstractDataStore** is an old base class for DataStore implementations, currently used only by MemoryDataStore and PropertyDataStore. All new stores use **ContentDataStore** instead.
+The **AbstractDataStore** is an old base class for DataStore implementations, currently used only by MemoryDataStore and PropertyDataStore (Old). All new stores use **ContentDataStore** instead.
 
 .. image:: /images/AbstractDataStore.PNG
 
@@ -43,10 +43,6 @@ The following classes are related:
 * AbstractFeatureStore
 * AbstractFeatureLocking
 * DefaultFeatureResults - the original name of FeatureCollection was FeatureResults!Simpl
-
-References:
-
-* :doc:`/tutorial/abstractdatastore` (tutorial)
   
 DataStore
 ^^^^^^^^^

@@ -50,13 +50,23 @@ public class GeoPkgGeomWriter {
     }
     
     protected Configuration config;
+    protected int dim;
         
     public GeoPkgGeomWriter() {
-        config = new Configuration();
+        this(2, new Configuration());
+    }
+    
+    public GeoPkgGeomWriter(int dim) {
+        this(dim, new Configuration());
+    }
+    
+    public GeoPkgGeomWriter(Configuration config) {
+        this(2, config);
     }
 
-    public GeoPkgGeomWriter(Configuration config) {
+    public GeoPkgGeomWriter(int dim, Configuration config) {
         this.config = config;
+        this.dim = dim;
     }
 
     public byte[] write(Geometry g) throws IOException {
@@ -117,6 +127,6 @@ public class GeoPkgGeomWriter {
             out.write(buf, 8);
         }
         
-        new WKBWriter(2, order).write(g, out);
+        new WKBWriter(dim, order).write(g, out);
     }
 }

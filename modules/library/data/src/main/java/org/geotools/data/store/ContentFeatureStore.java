@@ -31,6 +31,7 @@ import org.geotools.data.LockingManager;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
@@ -85,13 +86,14 @@ import org.opengis.filter.identity.FeatureId;
  */
 public abstract class ContentFeatureStore extends ContentFeatureSource implements
         SimpleFeatureStore,
-        FeatureLocking<SimpleFeatureType, SimpleFeature> {
+        SimpleFeatureLocking {
 
-    /**
-     * writer flags
-     */
+    /** Flag writer for adding new content */
     protected final int WRITER_ADD = ContentDataStore.WRITER_ADD;
+    /** Flag writer for updating content in place */
     protected final int WRITER_UPDATE = ContentDataStore.WRITER_UPDATE;
+    /** Flag writer for commit (AUTO_COMMIT with no events) */
+    protected final int WRITER_COMMIT = ContentDataStore.WRITER_COMMIT;
     
     /**
      * Creates the content feature store.
@@ -144,12 +146,25 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
 
         if (!canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
-            DiffTransactionState state = (DiffTransactionState) getTransaction().getState(getEntry());
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query);
-            writer = new DiffContentFeatureWriter(this, state.getDiff(), reader);
+            if ((flags | WRITER_COMMIT) == WRITER_COMMIT) {
+                // Simple simple writer with no events or locking
+                writer = getWriterInternal(query, flags);
+                // filtering may not be needed
+                if (!canFilter()) {
+                    if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE) {
+                        writer = new FilteringFeatureWriter(writer, query.getFilter());
+                    }
+                }
+            } else {
+                DiffTransactionState state = (DiffTransactionState) getTransaction()
+                        .getState(getEntry());
+                // reader will take care of filtering
+                // DiffContentWriter takes care of events
+                FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query);
+                writer = state.diffWriter( this, reader );
+            }
         } else {
             writer = getWriterInternal(query, flags);
-
             // events
             if (!canEvent()){
                 writer = new EventContentFeatureWriter(this, writer );
@@ -160,15 +175,13 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
                     writer = new FilteringFeatureWriter(writer, query.getFilter());
                 }
             }
-
-            // Use InProcessLockingManager to assert write locks?
-            if (!canLock()) {
-                LockingManager lockingManager = getDataStore().getLockingManager();
-                writer = ((InProcessLockingManager) lockingManager).checkedWriter(writer,
-                        transaction);
-            }
         }
-        
+        // Use InProcessLockingManager to assert write locks?
+        if (!canLock()) {
+            InProcessLockingManager lockingManager = (InProcessLockingManager) getDataStore()
+                    .getLockingManager();
+            writer = lockingManager.checkedWriter(writer, transaction);
+        }
         // Finished
         return writer;
     }
@@ -182,6 +195,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
      * <ul>
      *   <li>reprojection</li>
      *   <li>filtering</li>
+     *   <li>events</li>
      *   <li>max feature limiting</li>
      *   <li>sorting</li>
      *   <li>locking</li>
@@ -190,6 +204,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
      * <ul>
      *   <li>{@link #canReproject()}</li>
      *   <li>{@link #canFilter()}</li>
+     *   <li>{@link #canEvent()}</li>
      *   <li>{@link #canLimit()}</li>
      *   <li>{@link #canSort()}</li>
      *   <li>{@link #canLock()}</li>

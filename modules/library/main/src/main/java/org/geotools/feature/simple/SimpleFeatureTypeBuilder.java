@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.BasicFeatureTypes;
@@ -815,6 +816,80 @@ public class SimpleFeatureTypeBuilder {
 	    add( name, binding, decode( "EPSG:" + srid ) );
 	}
 	
+        /**
+         * Gets an AttributeBuilder configured using the descriptor at the provided index.
+         * 
+         * @param index attribute index
+         * @return attribute builder configured with descriptor
+         */
+        public AttributeDescriptor get(int index) {
+            return this.attributes().get(index);
+        }
+        public AttributeDescriptor get(String attributeName){
+            for (Iterator<AttributeDescriptor> iterator = attributes.iterator(); iterator.hasNext();) {
+                AttributeDescriptor descriptor = iterator.next();
+                if( descriptor.getLocalName().equals(attributeName) ){
+                    return descriptor;
+                }
+            }
+            return null;
+        }
+        
+        /** 
+         * Replace the descriptor at the provided index.
+         * @param index
+         * @param descriptor
+         */
+        public void set(int index, AttributeDescriptor descriptor){
+            attributes().set(index,descriptor);
+        }
+        /** 
+         * Replace the descriptor at the provided index.
+         * @param index
+         * @param descriptor
+         */
+        public void set(AttributeDescriptor descriptor){
+            int index = indexOf(descriptor.getLocalName());
+            if( index == -1 ){
+                throw new IllegalArgumentException(descriptor.getLocalName()+" is not an existing attribute descriptor in this builder");
+            }
+            set(index,descriptor);
+        }
+        /** 
+         * Replace the descriptor at the provided index.
+         * @param index
+         * @param descriptor
+         */
+        public void set(String attributeName, AttributeDescriptor descriptor){
+            int index = indexOf(attributeName);
+            if( index == -1 ){
+                throw new IllegalArgumentException(attributeName+" is not an existing attribute descriptor in this builder");
+            }
+            set(index,descriptor);
+        }
+        
+        /** Index of attrbute by name */
+        private int indexOf(String attributeName) {
+            int i=0;
+            for (Iterator<AttributeDescriptor> iterator = attributes.iterator(); iterator.hasNext();) {
+                AttributeDescriptor d = iterator.next();
+                if( d.getLocalName().equals(attributeName) ){
+                    return i;
+                }
+                i++;
+            }
+            return -1;
+        }
+        /** 
+         * Replace the descriptor at the provided index.
+         * @param index
+         * @param descriptor
+         */
+        public void set(String attributeName, AttributeTypeBuilder attributeBuilder){
+            AttributeDescriptor descriptor = attributeBuilder.buildDescriptor(attributeName);
+            set(attributeName,descriptor);
+        }
+        
 	/**
 	 * Directly sets the list of attributes. 
 	 * @param attributes the new list of attributes, or null to reset the list

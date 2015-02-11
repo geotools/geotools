@@ -1,0 +1,14 @@
+/* @title r1 */
+tasmania_roads [TYPE='road'] [@scale>4000000] [@scale<=10000000]  {
+   stroke: #6699FF;
+   stroke-width: 8px;
+   stroke-linecap: round;
+}
+
+/* @title r2 */
+tasmania_roads [TYPE='road'] [@scale>1000] [@scale<=4000000]  {
+   stroke: #aaaaaa, #FF99aa;
+   stroke-width: 5px, 3px;
+   stroke-linecap: round;
+   z-index: 0, 1;
+}

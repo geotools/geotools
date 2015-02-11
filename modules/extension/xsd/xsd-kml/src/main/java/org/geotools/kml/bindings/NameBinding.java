@@ -9,6 +9,8 @@ import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.Binding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class NameBinding extends AbstractComplexBinding {
 
@@ -49,5 +51,10 @@ public class NameBinding extends AbstractComplexBinding {
             }
         }
         return super.parse(instance, node, value);
+    }
+
+    public Element encode(Object object, Document document, Element value) throws Exception {
+        value.setTextContent(object.toString());
+        return value;
     }
 }

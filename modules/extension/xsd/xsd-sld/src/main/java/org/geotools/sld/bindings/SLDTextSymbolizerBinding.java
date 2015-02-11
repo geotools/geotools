@@ -165,6 +165,10 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
             ts.setFill((Fill) node.getChildValue("Fill"));
         }
 
+        if (node.hasChild("Priority")) {
+            ts.setPriority((Expression) node.getChildValue("Priority"));
+        }
+
         //&lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
         for (CssParameter param : (List<CssParameter>) node.getChildValues(CssParameter.class)) {
             ts.getOptions().put(param.getName(), param.getExpression().evaluate(null, String.class));

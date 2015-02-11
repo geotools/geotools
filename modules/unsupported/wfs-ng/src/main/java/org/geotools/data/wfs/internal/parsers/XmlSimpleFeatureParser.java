@@ -71,10 +71,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * 
  * 
- * @source $URL$
- *         http://svn.geotools.org/trunk/modules/plugin/wfs/src/main/java/org/geotools/wfs/v_1_1_0
- *         /data/XmlSimpleFeatureParser.java $ //@deprecated should be removed as long as
- *         {@link StreamingParserFeatureReader} works well
+ * //@deprecated should be removed as long as {@link PullParserFeatureReader} works well
  */
 @SuppressWarnings("nls")
 public class XmlSimpleFeatureParser implements GetFeatureParser {

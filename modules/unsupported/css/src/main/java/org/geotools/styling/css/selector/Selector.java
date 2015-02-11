@@ -39,6 +39,9 @@ import org.geotools.util.logging.Logging;
  */
 public abstract class Selector implements Comparable<Selector> {
     
+    private static final List<Class<? extends Selector>> BASE_CLASSES = Arrays.asList(TypeName.class, ScaleRange.class,
+            Id.class, Data.class, PseudoClass.class);
+
     static final Logger LOGGER = Logging.getLogger(Selector.class);
 
     public static final Selector ACCEPT = new Accept();
@@ -95,9 +98,7 @@ public abstract class Selector implements Comparable<Selector> {
         classifieds.remove(Accept.class);
 
         // perform combinations for selected types
-        List<Class<? extends Selector>> classes = Arrays.asList(TypeName.class, ScaleRange.class,
-                Id.class, Data.class, PseudoClass.class);
-        for (Class<? extends Selector> clazz : classes) {
+        for (Class<? extends Selector> clazz : BASE_CLASSES) {
             List<Selector> classSelectors = classifieds.get(clazz);
             if (classSelectors == null) {
                 continue;
@@ -124,7 +125,7 @@ public abstract class Selector implements Comparable<Selector> {
 
         // build the result
         List<Selector> finalList = new ArrayList<>();
-        for (Class c : classes) {
+        for (Class c : classifieds.keySet()) {
             List<Selector> list = classifieds.get(c);
             if (list != null) {
                 finalList.addAll(list);
@@ -153,7 +154,68 @@ public abstract class Selector implements Comparable<Selector> {
         if (newChildren.size() == 0) {
             return REJECT;
         }
-        return new Or(newChildren);
+
+        // flatten the nested or-s if necessary
+        List<Selector> selectors = new ArrayList<>();
+        for (Selector child : newChildren) {
+            flatten(selectors, child, Or.class);
+        }
+        return new Or(selectors);
+
+    }
+    
+    /**
+     * Combines in or and simplifies the two given selectors
+     * 
+     * @param s1
+     * @param s2
+     * @param context
+     * @return
+     */
+    public static Selector or(Selector s1, Selector s2, Object context) {
+        // merge with Reject
+        if (s1 instanceof Reject) {
+            return s2;
+        } else if (s2 instanceof Reject) {
+            return s1;
+        }
+
+        // merge with Accept
+        if (s1 instanceof Accept || s2 instanceof Accept) {
+            return ACCEPT;
+        }
+
+        // ok, we can flatten all the concatenated and nested ors in a single list
+        List<Selector> selectors = new ArrayList<>();
+        flatten(selectors, s1, Or.class);
+        flatten(selectors, s2, Or.class);
+
+        // map by class, same class selectors can be merged
+        Map<Class, List<Selector>> classifieds = mapByClass(selectors);
+
+        // simplest scenario, there is an Accept
+        if (classifieds.get(Accept.class) != null) {
+            return ACCEPT;
+        }
+
+        // get rid of Reject, they are irrelevant
+        classifieds.remove(Reject.class);
+        
+        // build the result
+        List<Selector> finalList = new ArrayList<>();
+        for (Class c : classifieds.keySet()) {
+            List<Selector> list = classifieds.get(c);
+            if (list != null) {
+                finalList.addAll(list);
+            }
+        }
+        if (finalList.size() == 0) {
+            return REJECT;
+        } else if (finalList.size() == 1) {
+            return finalList.get(0);
+        } else {
+            return new Or(finalList);
+        }
     }
 
     private static void flatten(List<Selector> selectors, Selector s, Class<? extends Composite> clazz) {

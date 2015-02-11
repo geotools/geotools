@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
+import org.geotools.data.solr.SolrLayerMapper.Type;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.KVP;
 
@@ -42,10 +43,17 @@ public class SolrDataStoreFactory extends AbstractDataStoreFactory {
             true, "http://localhost:8080/solr/collection1", new KVP(Param.LEVEL, "user"));
 
     /**
-     * SOLR field that holds the layers names
+     * Document loading strategy
+     */
+    public static final Param LAYER_MAPPER = new Param("layer_mapper", String.class,
+            "Controls how documents in the solr index are mapped to layers" + SolrLayerMapper.Type.values(),
+            false, Type.FIELD.name(), new KVP(Param.LEVEL, "user"));
+
+    /**
+     * SOLR field that holds the layers names, used by {@link SolrLayerMapper.Type#FIELD}.
      */
     public static final Param FIELD = new Param("layer_name_field", String.class,
-            "Field used in SOLR that holds the layer names", true, "layer_type", new KVP(
+            "Field used in SOLR that holds the layer names", false, "layer_type", new KVP(
                     Param.LEVEL, "user"));
 
     /**
@@ -58,8 +66,17 @@ public class SolrDataStoreFactory extends AbstractDataStoreFactory {
     public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
         URL url = (URL) URL.lookUp(params);
         String namespace = (String) NAMESPACE.lookUp(params);
-        String field = (String) FIELD.lookUp(params);
-        SolrDataStore store = new SolrDataStore(url, field);
+        String mapperName = (String) LAYER_MAPPER.lookUp(params);
+
+        // create the layer mapper (FIELD is the default)
+        SolrLayerMapper.Type mapperType = SolrLayerMapper.Type.FIELD;
+        if (mapperName != null) {
+            mapperType = SolrLayerMapper.Type.valueOf(mapperName.toUpperCase());
+        }
+
+        SolrLayerMapper mapper = mapperType.createMapper(params);
+
+        SolrDataStore store = new SolrDataStore(url, mapper);
         store.setNamespaceURI(namespace);
         store.setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
         return store;
@@ -87,7 +104,7 @@ public class SolrDataStoreFactory extends AbstractDataStoreFactory {
 
     @Override
     public Param[] getParametersInfo() {
-        return new Param[] { URL, FIELD, NAMESPACE };
+        return new Param[] { URL, LAYER_MAPPER, FIELD, NAMESPACE };
     }
 
     @Override

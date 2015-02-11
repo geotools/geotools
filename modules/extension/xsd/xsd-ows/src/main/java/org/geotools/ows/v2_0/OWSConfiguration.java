@@ -10,6 +10,7 @@ import net.opengis.ows20.Ows20Factory;
 
 import org.geotools.ows.bindings.BoundingBoxTypeBinding;
 import org.geotools.ows.bindings.UnitBinding;
+import org.geotools.ows.bindings.WGS84BoundingBoxTypeBinding;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
@@ -127,7 +128,7 @@ public class OWSConfiguration extends Configuration {
                 OWS.UnNamedDomainType));
         bindings.put(OWS.UpdateSequenceType, new ComplexEMFBinding(Ows20Factory.eINSTANCE,
                 OWS.UpdateSequenceType));
-        bindings.put(OWS.WGS84BoundingBoxType, new ComplexEMFBinding(Ows20Factory.eINSTANCE,
+        bindings.put(OWS.WGS84BoundingBoxType, new WGS84BoundingBoxTypeBinding(Ows20Factory.eINSTANCE,
                 OWS.WGS84BoundingBoxType));
         bindings.put(OWS._AdditionalParameter, new ComplexEMFBinding(Ows20Factory.eINSTANCE,
                 OWS._AdditionalParameter));

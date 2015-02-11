@@ -19,6 +19,7 @@ package org.geotools.data.excel;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.Serializable;
@@ -27,9 +28,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import org.geotools.data.DataTestCase;
 
-import junit.framework.TestCase;
+import org.geotools.data.DataTestCase;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
@@ -216,6 +216,60 @@ public class ExcelDatastoreTest extends DataTestCase {
             fts = source.getFeatures(query);
             System.out.println(fts.size());
             System.out.println(fts.features().next());
+        }
+    }
+    
+    /**
+     * Test query with a start index
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    
+    public void testOffset() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setStartIndex(1);
+        
+        for (ExcelDataStore ed : eds) {
+            System.out.println(ed.getName());
+
+            List<Name> names = ed.getNames();
+            ExcelFeatureSource source = (ExcelFeatureSource) ed.getFeatureSource(names.get(0));
+            assertEquals(source.getCount(Query.ALL)-1, source.getCount(query));
+        }
+    }
+    
+    /**
+     * Test query with maxFeatures
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    public void testLimit() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setMaxFeatures(2);
+        for (ExcelDataStore ed : eds) {
+            System.out.println(ed.getName());
+
+            List<Name> names = ed.getNames();
+            ExcelFeatureSource source = (ExcelFeatureSource) ed.getFeatureSource(names.get(0));
+            assertTrue(2 >= source.getCount(query));
+        }
+    }
+    
+    /**
+     * Test query with maxFeatures and startIndex
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    public void testLimitOffset() throws FileNotFoundException, IOException {
+        Query query = new Query(Query.ALL);
+        query.setMaxFeatures(2);
+        query.setStartIndex(1);
+        for (ExcelDataStore ed : eds) {
+            System.out.println(ed.getName());
+
+            List<Name> names = ed.getNames();
+            ExcelFeatureSource source = (ExcelFeatureSource) ed.getFeatureSource(names.get(0));
+            assertEquals(Math.min(2, source.getCount(Query.ALL)-1), source.getCount(query));
         }
     }
 }

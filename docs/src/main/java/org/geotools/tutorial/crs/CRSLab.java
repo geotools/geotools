@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This file is hereby placed into the Public Domain. This means anyone is
  *    free to do whatever they wish with this file. Use it well and enjoy!
@@ -150,10 +150,13 @@ public class CRSLab {
         SimpleFeatureType featureType = SimpleFeatureTypeBuilder.retype(schema, worldCRS);
         dataStore.createSchema(featureType);
 
+        //Get the name of the new Shapefile, which will be used to open the FeatureWriter
+        String createdName = dataStore.getTypeNames()[0];
+
         // carefully open an iterator and writer to process the results
         Transaction transaction = new DefaultTransaction("Reproject");
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                        dataStore.getFeatureWriterAppend(featureType.getTypeName(), transaction);
+                        dataStore.getFeatureWriterAppend(createdName, transaction);
         SimpleFeatureIterator iterator = featureCollection.features();
         try {
             while (iterator.hasNext()) {

@@ -702,7 +702,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         URL finalURL = URIs.buildURL(baseUrl, requestParams);
         requestDebug("Built GET request for ", operation, ": ", finalURL);
-        System.err.println(finalURL.toExternalForm());
+        //System.err.println(finalURL.toExternalForm());
         return finalURL;
     }
 
@@ -765,7 +765,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         requestTrace("Encoded ", request.getOperation(), " request: ", out);
 
-        System.err.println(out.toString());
+        //System.err.println(out.toString());
 
         return new ByteArrayInputStream(out.toByteArray());
 

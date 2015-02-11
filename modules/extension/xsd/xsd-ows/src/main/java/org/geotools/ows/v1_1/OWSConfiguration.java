@@ -24,6 +24,8 @@ import net.opengis.ows11.NoValuesType;
 import net.opengis.ows11.Ows11Factory;
 
 import org.geotools.ows.bindings.BoundingBoxTypeBinding;
+import org.geotools.ows.bindings.RangeBinding;
+import org.geotools.ows.bindings.RangeClosureBinding;
 import org.geotools.ows.bindings.UnitBinding;
 import org.geotools.ows.bindings.WGS84BoundingBoxTypeBinding;
 import org.geotools.xlink.XLINKConfiguration;
@@ -105,6 +107,8 @@ public class OWSConfiguration extends Configuration {
 
         bindings.put(OWS.UOM, new UnitBinding());
         bindings.put(OWS.ValueType, new SimpleContentComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.ValueType));
+        bindings.put(OWS.rangeClosure, new RangeClosureBinding());
+        bindings.put(OWS.RangeType, new RangeBinding(Ows11Factory.eINSTANCE, OWS.RangeType));
     }
     
     protected void configureContext(MutablePicoContainer container) {

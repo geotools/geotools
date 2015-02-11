@@ -357,7 +357,7 @@ public class SLDTransformer extends TransformerBase {
             start("Stroke");
 
             if (stroke.getGraphicFill() != null) {
-            	start("GraphicFill");
+                start("GraphicFill");
                 stroke.getGraphicFill().accept(this);
                 end("GraphicFill");
             }
@@ -1088,6 +1088,8 @@ public class SLDTransformer extends TransformerBase {
             for (int i = 0; i < rules.length; i++) {
                 rules[i].accept(this);
             }
+            
+            encodeVendorOptions(fts.getOptions());
 
             end("FeatureTypeStyle");
         }

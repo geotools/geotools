@@ -11,6 +11,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.emf.ecore.util.FeatureMap;
+import org.opengis.filter.capability.ComparisonOperators;
+import org.opengis.filter.capability.Operator;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +31,7 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  * @model extendedMetaData="name='ComparisonOperatorsType' kind='elementOnly'"
  * @generated
  */
-public interface ComparisonOperatorsType extends EObject {
+public interface ComparisonOperatorsType extends EObject, ComparisonOperators {
     /**
      * Returns the value of the '<em><b>Group</b></em>' attribute list.
      * The list contents are of type {@link org.eclipse.emf.ecore.util.FeatureMap.Entry}.
@@ -62,6 +64,6 @@ public interface ComparisonOperatorsType extends EObject {
      *        extendedMetaData="kind='element' name='ComparisonOperator' namespace='##targetNamespace' group='#group:0'"
      * @generated
      */
-    EList<ComparisonOperatorType> getComparisonOperator();
+    EList<Operator> getOperators();
 
 } // ComparisonOperatorsType

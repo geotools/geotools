@@ -16,10 +16,7 @@
  */
 package org.geotools.styling.css;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -279,7 +276,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
 
     @Test
     public void strokeFillMark() throws IOException {
-        String css = "* { stroke: symbol('square'); stroke-width: 20; stroke-repeat: stipple;} :stroke { fill: red; }";
+        String css = "* { stroke: symbol('square'); stroke-size: 20; stroke-repeat: stipple;} :stroke { fill: red; }";
         Style style = translate(css);
         Rule rule = assertSingleRule(style);
         LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
@@ -289,7 +286,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         Mark mark = (Mark) graphic.graphicalSymbols().get(0);
         assertLiteral("square", mark.getWellKnownName());
         assertLiteral("#ff0000", mark.getFill().getColor());
-        assertLiteral("20", ls.getStroke().getWidth());
+        assertLiteral("20", graphic.getSize());
     }
 
     @Test
@@ -355,6 +352,23 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void markAnchorDisplacementSingleValue() throws Exception {
+        String css = "* { mark: symbol(circle); mark-size: 10; mark-anchor: 0.5; mark-offset: 10;}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PointSymbolizer ps = assertSingleSymbolizer(rule, PointSymbolizer.class);
+        Graphic g = ps.getGraphic();
+        AnchorPoint ap = g.getAnchorPoint();
+        assertNotNull(ap);
+        assertEquals(0.5, ap.getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(0.5, ap.getAnchorPointY().evaluate(null, Double.class), 0d);
+        Displacement d = g.getDisplacement();
+        assertNotNull(d);
+        assertEquals(10, d.getDisplacementX().evaluate(null, Double.class), 0d);
+        assertEquals(10, d.getDisplacementY().evaluate(null, Double.class), 0d);
+    }
+
+    @Test
     public void externalGraphic() throws Exception {
         String css = "* { mark: url(test.svg); mark-size: 10; mark-rotation: 45; mark-mime: 'image/png';}";
         Style style = translate(css);
@@ -388,8 +402,8 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
         assertLiteral("test", ts.getLabel());
         PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
-        assertLiteral("5.0", pp.getDisplacement().getDisplacementX());
-        assertLiteral("5.0", pp.getDisplacement().getDisplacementY());
+        assertLiteral("5", pp.getDisplacement().getDisplacementX());
+        assertLiteral("5", pp.getDisplacement().getDisplacementY());
         assertLiteral("45", pp.getRotation());
         assertLiteral("0.1", pp.getAnchorPoint().getAnchorPointX());
         assertLiteral("0.9", pp.getAnchorPoint().getAnchorPointY());
@@ -403,7 +417,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
         assertLiteral("test", ts.getLabel());
         LinePlacement lp = (LinePlacement) ts.getLabelPlacement();
-        assertLiteral("5.0", lp.getPerpendicularOffset());
+        assertLiteral("5", lp.getPerpendicularOffset());
     }
 
     @Test
@@ -570,6 +584,36 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         List<? extends Rule> rules = fts.rules();
         assertEquals(3, rules.size());
+    }
+
+    @Test
+    public void testParseQuotedURL() throws Exception {
+        String css = "* { mark: url('file://BidirectionShield-High.svg');}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PointSymbolizer ps = (PointSymbolizer) rule.symbolizers().get(0);
+        ExternalGraphic eg = (ExternalGraphic) ps.getGraphic().graphicalSymbols().get(0);
+        String uri = eg.getURI();
+        assertEquals("file://BidirectionShield-High.svg", uri);
+    }
+
+    @Test
+    public void testEmptyStyle() throws Exception {
+        String css = "* { line: gray }";
+        try {
+            translate(css);
+            fail("Generating an empty style, should have thrown an exception");
+        } catch (IllegalArgumentException e) {
+            // fine
+        }
+    }
+
+    @Test
+    public void testEnvFunction() throws Exception {
+        String css = "[env('foo', 'default') = 'bar'] { fill: blue; }";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals(ECQL.toFilter("env('foo', 'default') = 'bar'"), rule.getFilter());
     }
 
 }

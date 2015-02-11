@@ -37,8 +37,10 @@ import org.opengis.filter.Filter;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-
+@Deprecated
 /**
+ * AbstractDataStore is deprecated. Migrate to ContentDataStore.
+ * 
  * Simple data store wrapper for feature collections. Allows to use feature collections in the user
  * interface layer and everything else where a data store or a feature source is needed.
  *

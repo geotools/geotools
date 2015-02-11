@@ -81,6 +81,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.Identifier;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.sqlite.Function;
 
@@ -276,6 +277,7 @@ public class GeoPackage {
         runScript(METADATA_REFERENCE + ".sql", cx);
         runScript(DATA_COLUMN_CONSTRAINTS + ".sql", cx);
         runScript(EXTENSIONS + ".sql", cx);
+        addDefaultSpatialReferences();
     }
     
     void createFunctions(Connection cx) throws SQLException {
@@ -366,23 +368,30 @@ public class GeoPackage {
         }
     }
 
-    /**
-     * Adds a crs to the geopackage, registring it in the spatial_ref_sys table.
-     *  
-     * @param crs The crs to add.
-     * @param auth The authority code, example: epsg
-     * @param srid The spatial reference system id.
-     * 
-     */
-    public void addCRS(CoordinateReferenceSystem crs, String auth, int srid) throws IOException {
+    protected void addDefaultSpatialReferences() throws SQLException {
+        try {
+            addCRS(-1, "Undefined cartesian SRS", "NONE", -1, "undefined", "undefined cartesian coordinate reference system");
+            addCRS(0, "Undefined geographic SRS", "NONE", 0, "undefined", "undefined geographic coordinate reference system");
+            addCRS(4326, "WGS 84 geodetic", "EPSG", 4326, "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\"," +
+                            "6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]]," +
+                            "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433," +
+                            "AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]",
+                    "longitude/latitude coordinates in decimal degrees on the WGS 84 spheroid");
+        }catch(IOException ex) {
+            throw new SQLException("Unable to add default spatial references.", ex);
+        }
+    }
+
+    public void addCRS(int srid, String srsName, String organization, int organizationCoordSysId, String definition, String description)
+            throws IOException {
         try {
             Connection cx = connPool.getConnection();
             try {
                 PreparedStatement ps = cx.prepareStatement(String.format(
-                    "SELECT srs_id FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS));
+                        "SELECT srs_id FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS));
                 try {
                     ResultSet rs = prepare(ps).set(srid).log(Level.FINE)
-                        .statement().executeQuery();
+                            .statement().executeQuery();
                     try {
                         if (rs.next()) {
                             return;
@@ -394,18 +403,20 @@ public class GeoPackage {
                 finally {
                     close(ps);
                 }
-                
+
                 ps = cx.prepareStatement(String.format(
-                    "INSERT INTO %s (srs_id, srs_name, organization, organization_coordsys_id, definition) VALUES (?,?,?,?,?)", 
-                    SPATIAL_REF_SYS)); 
+                        "INSERT INTO %s (srs_id, srs_name, organization, organization_coordsys_id, definition, description) " +
+                                "VALUES (?,?,?,?,?,?)",
+                        SPATIAL_REF_SYS));
                 try {
                     prepare(ps)
-                        .set(srid)
-                        .set(crs.getName().toString())
-                        .set(auth)
-                        .set(srid)
-                        .set(crs.toWKT())
-                        .log(Level.FINE).statement().execute();
+                            .set(srid)
+                            .set(srsName)
+                            .set(organization)
+                            .set(organizationCoordSysId)
+                            .set(definition)
+                            .set(description)
+                            .log(Level.FINE).statement().execute();
                 }
                 finally {
                     close(ps);
@@ -418,6 +429,53 @@ public class GeoPackage {
         catch(SQLException e) {
             throw new IOException(e);
         }
+    }
+
+    /**
+     * Adds a crs to the geopackage, registring it in the spatial_ref_sys table.
+     *  
+     * @param crs The crs to add.
+     * @param auth The authority code, example: epsg
+     * @param srid The spatial reference system id.
+     * 
+     */
+    public void addCRS(CoordinateReferenceSystem crs, String auth, int srid) throws IOException {
+        this.addCRS(srid, auth + ":" + srid, auth, srid, crs.toWKT(), auth + ":" + srid);
+    }
+
+    private CoordinateReferenceSystem getCRS(int srid) {
+        try {
+            Connection cx = connPool.getConnection();
+            try {
+                PreparedStatement ps = cx.prepareStatement(String.format(
+                        "SELECT definition FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS));
+                try {
+                    ResultSet rs = prepare(ps).set(srid).log(Level.FINE)
+                            .statement().executeQuery();
+                    try {
+                        if (rs.next()) {
+                            try {
+                                return CRS.parseWKT(rs.getString("definition"));
+                            } catch (FactoryException e) {
+                                LOGGER.log(Level.FINE, "Error parsing CRS definitions!", e);
+                            }
+                        }
+                    } finally {
+                        close(rs);
+                    }
+                }
+                finally {
+                    close(ps);
+                }
+            }
+            finally {
+                close(cx);
+            }
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     /**
@@ -788,11 +846,10 @@ public class GeoPackage {
             sb.append(", last_change");
             vals.append(",?");
         }
-        if (e.getBounds() != null) {
-            sb.append(", min_x, min_y, max_x, max_y");
-            vals.append(",?,?,?,?");
-        }
-        
+
+        sb.append(", min_x, min_y, max_x, max_y");
+        vals.append(",?,?,?,?");
+
         if (e.getSrid() != null) {
             sb.append(", srs_id");
             vals.append(",?");
@@ -819,6 +876,24 @@ public class GeoPackage {
                         .set(e.getBounds().getMinY())
                         .set(e.getBounds().getMaxX())
                         .set(e.getBounds().getMaxY());
+                } else {
+                    double minx = 0;
+                    double miny = 0;
+                    double maxx = 0;
+                    double maxy = 0;
+                    if (e.getSrid() != null) {
+                        CoordinateReferenceSystem crs = getCRS(e.getSrid());
+                        if (crs != null) {
+                            org.opengis.geometry.Envelope env = CRS.getEnvelope(crs);
+                            if (env != null) {
+                                minx = env.getMinimum(0);
+                                miny = env.getMinimum(1);
+                                maxx = env.getMaximum(0);
+                                maxy = env.getMaximum(1);
+                            }
+                        }
+                    }
+                    psb.set(minx).set(miny).set(maxx).set(maxy);
                 }
                 if (e.getSrid() != null) {
                     psb.set(e.getSrid());
@@ -828,6 +903,31 @@ public class GeoPackage {
                 try {
                     ps.execute();
                 } 
+                finally {
+                    close(ps);
+                }
+            }
+            finally {
+                close(cx);
+            }
+        }
+        catch(SQLException ex) {
+            throw new IOException(ex);
+        }
+    }
+
+    void deleteGeoPackageContentsEntry(Entry e) throws IOException {
+        String sql = format("DELETE FROM %s WHERE table_name = ?", GEOPACKAGE_CONTENTS);
+        try {
+            Connection cx = connPool.getConnection();
+            try {
+                PreparedStatement ps = prepare(cx, sql)
+                        .set(e.getTableName())
+                        .log(Level.FINE)
+                        .statement();
+                try {
+                    ps.execute();
+                }
                 finally {
                     close(ps);
                 }
@@ -872,7 +972,32 @@ public class GeoPackage {
             throw new IOException(ex);
         }
     }
-    
+
+    void deleteGeometryColumnsEntry(FeatureEntry e) throws IOException {
+        String sql = format("DELETE FROM %s WHERE table_name = ?", GEOMETRY_COLUMNS);
+        try {
+            Connection cx = connPool.getConnection();
+            try {
+                PreparedStatement ps = prepare(cx, sql)
+                        .set(e.getTableName())
+                        .log(Level.FINE)
+                        .statement();
+                try {
+                    ps.execute();
+                }
+                finally {
+                    close(ps);
+                }
+            }
+            finally {
+                close(cx);
+            }
+        }
+        catch(SQLException ex) {
+            throw new IOException(ex);
+        }
+    }
+
     /**
      * Create a spatial index
      * 

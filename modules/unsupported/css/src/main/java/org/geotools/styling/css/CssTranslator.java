@@ -39,6 +39,7 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.styling.ColorMap;
+import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLDTransformer;
@@ -77,6 +78,8 @@ import org.geotools.styling.css.util.FeatureTypeGuesser;
 import org.geotools.styling.css.util.OgcFilterBuilder;
 import org.geotools.styling.css.util.ScaleRangeExtractor;
 import org.geotools.styling.css.util.TypeNameExtractor;
+import org.geotools.styling.css.util.TypeNameSimplifier;
+import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.FeatureType;
@@ -94,10 +97,43 @@ import org.w3c.dom.css.CSSRule;
  */
 public class CssTranslator {
 
+    /**
+     * The ways the CSS -> SLD transformation can be performed
+     * 
+     * @author Andrea Aime - GeoSolutions
+     *
+     */
+    static enum TranslationMode {
+        /**
+         * Generates fully exclusive rules, extra rules are removed
+         */
+        Exclusive,
+        /**
+         * Sets the "exclusive" evaluation mode in the FeatureTypeStyle and delegates finding the
+         * first matching rules to the renderer, will generate more rules, but work a lot less to do
+         * so by avoiding to compute the domain coverage
+         */
+        Simple,
+        /**
+         * The translator will pick Exclusive by default, but if the rules to be turned into SLD go
+         * beyond
+         */
+        Auto;
+    };
+
     static final Logger LOGGER = Logging.getLogger(CssTranslator.class);
 
-    static final int MAX_OUTPUT_RULES = Integer.valueOf(System.getProperty(
-            "org.geotools.css.maxOutputRules", "10000"));
+    static final String DIRECTIVE_MAX_OUTPUT_RULES = "maxOutputRules";
+
+    static final String DIRECTIVE_AUTO_THRESHOLD = "autoThreshold";
+
+    static final String DIRECTIVE_TRANSLATION_MODE = "mode";
+
+    static final int MAX_OUTPUT_RULES_DEFAULT = Integer.valueOf(System.getProperty(
+            "org.geotools.css." + DIRECTIVE_MAX_OUTPUT_RULES, "10000"));
+
+    static final int AUTO_THRESHOLD_DEFAULT = Integer.valueOf(System.getProperty(
+            "org.geotools.css." + DIRECTIVE_AUTO_THRESHOLD, "100"));
 
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
@@ -164,13 +200,21 @@ public class CssTranslator {
     };
 
     /**
-     * Translates a CSS stylesheet into an equivalent GeoTools {@link Style} object
-     * 
-     * @param stylesheet
-     * @return
+     * Limits how many output rules we are going to generate
      */
-    public Style translate(Stylesheet stylesheet) {
-        return translate(stylesheet, MAX_OUTPUT_RULES);
+    int maxCombinations = MAX_OUTPUT_RULES_DEFAULT;
+
+    public int getMaxCombinations() {
+        return maxCombinations;
+    }
+
+    /**
+     * Maximum number of rule combinations before bailing out of the power set generation
+     * 
+     * @param maxCombinations
+     */
+    public void setMaxCombinations(int maxCombinations) {
+        this.maxCombinations = maxCombinations;
     }
 
     /**
@@ -179,7 +223,12 @@ public class CssTranslator {
      * @param stylesheet
      * @return
      */
-    public Style translate(Stylesheet stylesheet, int maxCombinations) {
+    public Style translate(Stylesheet stylesheet) {
+        // get the directives influencing translation
+        int maxCombinations = getMaxCombinations(stylesheet);
+        TranslationMode mode = getTranslationMode(stylesheet);
+        int autoThreshold = getAutoThreshold(stylesheet);
+
         List<CssRule> allRules = stylesheet.getRules();
 
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -192,26 +241,24 @@ public class CssTranslator {
 
         // split rules by index and typename, then build the power set for each group and
         // generate the rules and symbolizers
-        List<List<CssRule>> zIndexRules = organizeByZIndex(allRules);
+        Map<Integer, List<CssRule>> zIndexRules = organizeByZIndex(allRules);
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Split the rules into " + zIndexRules + "  sets after z-index separation");
         }
 
-        for (List<CssRule> rules : zIndexRules) {
+        int translatedRuleCount = 0;
+        for (Map.Entry<Integer, List<CssRule>> zEntry : zIndexRules.entrySet()) {
+            final Integer zIndex = zEntry.getKey();
+            List<CssRule> rules = zEntry.getValue();
             Collections.sort(rules, CssRuleComparator.DESCENDING);
             Map<String, List<CssRule>> typenameRules = organizeByTypeName(rules);
 
             // build the SLD
             for (Map.Entry<String, List<CssRule>> entry : typenameRules.entrySet()) {
-                // create the feature type style for this typename
-                FeatureTypeStyleBuilder ftsBuilder = styleBuilder.featureTypeStyle();
                 String featureTypeName = entry.getKey();
                 List<CssRule> localRules = entry.getValue();
-                if (featureTypeName != null) {
-                    ftsBuilder.setFeatureTypeNames(Arrays.asList((Name) new NameImpl(
-                            featureTypeName)));
-                }
+
                 final FeatureType targetFeatureType = getTargetFeatureType(featureTypeName,
                         localRules);
                 if (targetFeatureType != null) {
@@ -248,20 +295,67 @@ public class CssTranslator {
 
                 // expand the css rules power set
                 RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules,
-                        cachedSimplifier, maxCombinations);
+                        cachedSimplifier, maxCombinations) {
+                    protected java.util.List<CssRule> buildResult(java.util.List<CssRule> rules) {
+                        if (zIndex != null && zIndex > 0) {
+                            TreeSet<Integer> zIndexes = getZIndexesForRules(rules);
+                            if (!zIndexes.contains(zIndex)) {
+                                return null;
+                            }
+                        }
+                        return super.buildResult(rules);
+                    }
+                };
                 List<CssRule> combinedRules = builder.buildPowerSet();
+
+                if (combinedRules.isEmpty()) {
+                    continue;
+                }
+
+                // create the feature type style for this typename
+                FeatureTypeStyleBuilder ftsBuilder = styleBuilder.featureTypeStyle();
+                // regardless of the translation mode, the first rule matching is
+                // the only one that we want to be applied (in exclusive mode it will be
+                // the only one matching, the simple mode we want the evaluation to stop there)
+                ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
+                        FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
+                if (featureTypeName != null) {
+                    ftsBuilder.setFeatureTypeNames(Arrays.asList((Name) new NameImpl(
+                            featureTypeName)));
+                }
 
                 Collections.sort(combinedRules, CssRuleComparator.DESCENDING);
 
+                int rulesCount = combinedRules.size();
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Generated " + combinedRules.size()
+                    LOGGER.fine("Generated " + rulesCount
                             + " combined rules after filtered power set expansion");
                 }
 
-                // create a SLD rule for each css one, making them exclusive, that is,
-                // remove from each rule the union of the zoom/data domain matched by previous rules
+                // setup the tool that will eliminate redundant rules (if necessary)
                 DomainCoverage coverage = new DomainCoverage(targetFeatureType, cachedSimplifier);
-                for (int i = 0; i < combinedRules.size(); i++) {
+                if (mode == TranslationMode.Exclusive) {
+                    // create a SLD rule for each css one, making them exclusive, that is,
+                    // remove from each rule the union of the zoom/data domain matched by previous
+                    // rules
+                    coverage.exclusiveRulesEnabled = true;
+                } else if (mode == TranslationMode.Auto) {
+                    if (rulesCount < autoThreshold) {
+                        LOGGER.fine("Sticking to Exclusive translation mode, rules number is "
+                                + rulesCount + " with a threshold of " + autoThreshold);
+                        coverage.exclusiveRulesEnabled = true;
+                    } else {
+                        LOGGER.info("Switching to Simple translation mode, rules number is "
+                                + rulesCount + " with a threshold of " + autoThreshold);
+                        coverage.exclusiveRulesEnabled = false;
+                    }
+
+                } else {
+                    // just skip rules with the same selector
+                    coverage.exclusiveRulesEnabled = false;
+                }
+                // generate the SLD rules
+                for (int i = 0; i < rulesCount; i++) {
                     // skip eventual combinations that are not sporting any
                     // root pseudo class
                     CssRule cssRule = combinedRules.get(i);
@@ -271,7 +365,7 @@ public class CssTranslator {
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("Current domain coverage: " + coverage);
                         LOGGER.fine("Adding rule to domain coverage: " + cssRule);
-                        LOGGER.fine("Rules left to process: " + (combinedRules.size() - i));
+                        LOGGER.fine("Rules left to process: " + (rulesCount - i));
                     }
                     List<CssRule> derivedRules = coverage.addRule(cssRule);
                     if (LOGGER.isLoggable(Level.FINE)) {
@@ -280,12 +374,64 @@ public class CssTranslator {
                     }
                     for (CssRule derived : derivedRules) {
                         buildSldRule(derived, ftsBuilder, targetFeatureType);
+                        translatedRuleCount++;
                     }
                 }
             }
         }
 
+        // check that we have generated at least one rule in output
+        if (translatedRuleCount == 0) {
+            throw new IllegalArgumentException("Invalid CSS style, no rule seems to activate "
+                    + "any symbolization. The properties activating the symbolizers are fill, "
+                            + "stroke, mark, label, raster-channels, has any been used in a rule matching any feature?");
+        }
+
         return styleBuilder.build();
+    }
+
+    private TranslationMode getTranslationMode(Stylesheet stylesheet) {
+        String value = stylesheet.getDirectiveValue(DIRECTIVE_TRANSLATION_MODE);
+        if (value != null) {
+            try {
+                return TranslationMode.valueOf(value);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Invalid translation mode '" + value
+                        + "', supported values are: " + TranslationMode.values());
+            }
+        }
+
+        return TranslationMode.Auto;
+    }
+
+    private int getMaxCombinations(Stylesheet stylesheet) {
+        int maxCombinations = this.maxCombinations;
+        String maxOutputRulesDirective = stylesheet.getDirectiveValue(DIRECTIVE_MAX_OUTPUT_RULES);
+        if (maxOutputRulesDirective != null) {
+            Integer converted = Converters.convert(maxOutputRulesDirective, Integer.class);
+            if (converted == null) {
+                throw new IllegalArgumentException("Invalid value for "
+                        + DIRECTIVE_MAX_OUTPUT_RULES
+                        + ", it should be a positive integer value, it was "
+                        + maxOutputRulesDirective);
+            }
+            maxCombinations = converted;
+        }
+        return maxCombinations;
+    }
+
+    private int getAutoThreshold(Stylesheet stylesheet) {
+        int result = AUTO_THRESHOLD_DEFAULT;
+        String autoThreshold = stylesheet.getDirectiveValue(DIRECTIVE_AUTO_THRESHOLD);
+        if (autoThreshold != null) {
+            Integer converted = Converters.convert(autoThreshold, Integer.class);
+            if (converted == null) {
+                throw new IllegalArgumentException("Invalid value for " + DIRECTIVE_AUTO_THRESHOLD
+                        + ", it should be a positive integer value, it was " + autoThreshold);
+            }
+            result = converted;
+        }
+        return result;
     }
 
     /**
@@ -355,21 +501,16 @@ public class CssTranslator {
         if (typeNames.size() == 1 && typeNames.contains(TypeName.DEFAULT)) {
             // no layer specific stuff
             result.put(TypeName.DEFAULT.name, rules);
-        } else {
-            // remove the default from the type names, otherwise we
-            // are going to generate rules/symbolizers that are contained both in the
-            // layer specific feature type styles, and in a generic one at the
-            // end, which will make them draw multiple times and affecting z order perception
-            typeNames.remove(TypeName.DEFAULT);
         }
 
         for (TypeName tn : typeNames) {
             List<CssRule> typeNameRules = new ArrayList<>();
             for (CssRule rule : rules) {
-                Selector combined = Selector.and(tn, rule.getSelector(), null);
-                if (combined != Selector.REJECT) {
-                    typeNameRules
-                            .add(new CssRule(combined, rule.getProperties(), rule.getComment()));
+                TypeNameSimplifier simplifier = new TypeNameSimplifier(tn);
+                Selector simplified = (Selector) rule.getSelector().accept(simplifier);
+                if (simplified != Selector.REJECT) {
+                    typeNameRules.add(new CssRule(simplified, rule.getProperties(), rule
+                            .getComment()));
                 }
             }
             result.put(tn.name, typeNameRules);
@@ -384,37 +525,49 @@ public class CssTranslator {
      * @param rules
      * @return
      */
-    private List<List<CssRule>> organizeByZIndex(List<CssRule> rules) {
-        // collect and sort all the indexes first
-        TreeSet<Integer> indexes = new TreeSet<>(new ZIndexComparator());
-        for (CssRule rule : rules) {
-            Set<Integer> ruleIndexes = rule.getZIndexes();
-            indexes.addAll(ruleIndexes);
-        }
-
-        // now for each level extract the sub-rules attached to that level,
-        // considering that properties not associated to a level, bind to all levels
-        List<List<CssRule>> result = new ArrayList<>();
-        int symbolizerPropertyCount = 0;
-        for (Integer index : indexes) {
-            List<CssRule> rulesByIndex = new ArrayList<>();
-            for (CssRule rule : rules) {
-                CssRule subRule = rule.getSubRuleByZIndex(index);
-                if (subRule != null) {
-                    if (subRule.hasSymbolizerProperty()) {
-                        symbolizerPropertyCount++;
+    private Map<Integer, List<CssRule>> organizeByZIndex(List<CssRule> rules) {
+        TreeSet<Integer> indexes = getZIndexesForRules(rules);
+        Map<Integer, List<CssRule>> result = new HashMap<>();
+        if (indexes.size() == 1) {
+            result.put(indexes.first(), rules);
+        } else {
+            // now for each level extract the sub-rules attached to that level,
+            // considering that properties not associated to a level, bind to all levels
+            int symbolizerPropertyCount = 0;
+            for (Integer index : indexes) {
+                List<CssRule> rulesByIndex = new ArrayList<>();
+                for (CssRule rule : rules) {
+                    CssRule subRule = rule.getSubRuleByZIndex(index);
+                    if (subRule != null) {
+                        if (subRule.hasSymbolizerProperty()) {
+                            symbolizerPropertyCount++;
+                        }
+                        rulesByIndex.add(subRule);
                     }
-                    rulesByIndex.add(subRule);
                 }
-            }
-            // do we have at least one property that will trigger the generation
-            // of a symbolizer in here?
-            if (symbolizerPropertyCount > 0) {
-                result.add(rulesByIndex);
+                // do we have at least one property that will trigger the generation
+                // of a symbolizer in here?
+                if (symbolizerPropertyCount > 0) {
+                    result.put(index, rulesByIndex);
+                }
             }
         }
 
         return result;
+    }
+
+    private TreeSet<Integer> getZIndexesForRules(List<CssRule> rules) {
+        // collect and sort all the indexes first
+        TreeSet<Integer> indexes = new TreeSet<>(new ZIndexComparator());
+        for (CssRule rule : rules) {
+            Set<Integer> ruleIndexes = rule.getZIndexes();
+            if (ruleIndexes.contains(null)) {
+                ruleIndexes.remove(null);
+                ruleIndexes.add(0);
+            }
+            indexes.addAll(ruleIndexes);
+        }
+        return indexes;
     }
 
     /**
@@ -617,16 +770,19 @@ public class CssTranslator {
             }
             tb.label(labelExpression);
 
-            double[] anchor = getDoubleArray(values, "label-anchor", i);
-            double[] offsets = getDoubleArray(values, "label-offset", i);
+            Expression[] anchor = getExpressionArray(values, "label-anchor", i);
+            Expression[] offsets = getExpressionArray(values, "label-offset", i);
             if (offsets != null && offsets.length == 1) {
-                tb.linePlacement().offset((float) offsets[0]);
+                tb.linePlacement().offset(offsets[0]);
             } else if (offsets != null || anchor != null) {
                 PointPlacementBuilder ppb = tb.pointPlacement();
                 if (anchor != null) {
                     if (anchor.length == 2) {
                         ppb.anchor().x(anchor[0]);
                         ppb.anchor().y(anchor[1]);
+                    } else if (anchor.length == 1) {
+                        ppb.anchor().x(anchor[0]);
+                        ppb.anchor().y(anchor[0]);
                     } else {
                         throw new IllegalArgumentException(
                                 "Invalid anchor specification, should be two "
@@ -638,6 +794,9 @@ public class CssTranslator {
                     if (offsets.length == 2) {
                         ppb.displacement().x(offsets[0]);
                         ppb.displacement().y(offsets[1]);
+                    } else if (offsets.length == 1) {
+                        ppb.displacement().x(offsets[0]);
+                        ppb.displacement().y(offsets[0]);
                     } else {
                         throw new IllegalArgumentException(
                                 "Invalid anchor specification, should be two "
@@ -907,6 +1066,9 @@ public class CssTranslator {
                     if (anchor.length == 2) {
                         gb.anchor().x(anchor[0]);
                         gb.anchor().y(anchor[1]);
+                    } else if (anchor.length == 1) {
+                        gb.anchor().x(anchor[0]);
+                        gb.anchor().y(anchor[0]);
                     } else {
                         throw new IllegalArgumentException(
                                 "Invalid anchor specification, should be two "
@@ -918,6 +1080,9 @@ public class CssTranslator {
                     if (offsets.length == 2) {
                         gb.displacement().x(offsets[0]);
                         gb.displacement().y(offsets[1]);
+                    } else if (offsets.length == 1) {
+                        gb.displacement().x(offsets[0]);
+                        gb.displacement().y(offsets[0]);
                     } else {
                         throw new IllegalArgumentException(
                                 "Invalid anchor specification, should be two "
@@ -1007,6 +1172,7 @@ public class CssTranslator {
     private void buildStroke(CssRule cssRule, final StrokeBuilder strokeBuilder,
             final Map<String, List<Value>> values, final int i) {
 
+        boolean simpleStroke = false;
         for (Value strokeValue : getMultiValue(values, "stroke", i)) {
             if (strokeValue instanceof Function) {
                 new SubgraphicBuilder("stroke", strokeValue, values, cssRule, i) {
@@ -1022,24 +1188,27 @@ public class CssTranslator {
                     }
                 };
             } else if (strokeValue != null) {
+                simpleStroke = true;
                 strokeBuilder.color(strokeValue.toExpression());
             }
         }
-        Expression opacity = getExpression(values, "stroke-opacity", i);
-        if (opacity != null) {
-            strokeBuilder.opacity(opacity);
-        }
-        Expression width = getMeasureExpression(values, "stroke-width", i, "px");
-        if (width != null) {
-            strokeBuilder.width(width);
-        }
-        Expression lineCap = getExpression(values, "stroke-linecap", i);
-        if (lineCap != null) {
-            strokeBuilder.lineCap(lineCap);
-        }
-        Expression lineJoin = getExpression(values, "stroke-linejoin", i);
-        if (lineJoin != null) {
-            strokeBuilder.lineJoin(lineJoin);
+        if (simpleStroke) {
+            Expression opacity = getExpression(values, "stroke-opacity", i);
+            if (opacity != null) {
+                strokeBuilder.opacity(opacity);
+            }
+            Expression width = getMeasureExpression(values, "stroke-width", i, "px");
+            if (width != null) {
+                strokeBuilder.width(width);
+            }
+            Expression lineCap = getExpression(values, "stroke-linecap", i);
+            if (lineCap != null) {
+                strokeBuilder.lineCap(lineCap);
+            }
+            Expression lineJoin = getExpression(values, "stroke-linejoin", i);
+            if (lineJoin != null) {
+                strokeBuilder.lineJoin(lineJoin);
+            }
         }
         float[] dasharray = getFloatArray(values, "stroke-dasharray", i);
         if (dasharray != null) {
@@ -1062,15 +1231,23 @@ public class CssTranslator {
      */
     private void addVendorOptions(SymbolizerBuilder<?> sb, Map<String, String> vendorOptions,
             Map<String, List<Value>> values, int idx) {
-        for (Map.Entry<String, String> entry : vendorOptions.entrySet()) {
-            String cssKey = entry.getKey();
-            String sldKey = entry.getValue();
-            String value = getLiteral(values, cssKey, idx, null);
-            if (value != null) {
-                sb.option(sldKey, value);
+        // for (Map.Entry<String, String> entry : vendorOptions.entrySet()) {
+        // String cssKey = entry.getKey();
+        // String sldKey = entry.getValue();
+        // String value = getLiteral(values, cssKey, idx, null);
+        // if (value != null) {
+        // sb.option(sldKey, value);
+        // }
+        // }
+        for (String cssKey : values.keySet()) {
+            String sldKey = vendorOptions.get(cssKey);
+            if (sldKey != null) {
+                String value = getLiteral(values, cssKey, idx, null);
+                if (value != null) {
+                    sb.option(sldKey, value);
+                }
             }
         }
-
     }
 
     /**
@@ -1340,6 +1517,35 @@ public class CssTranslator {
     }
 
     /**
+     * Returns the i-th value of the specified property, as a array of expressions
+     * 
+     * @param valueMap
+     * @param name
+     * @param i
+     * @return
+     */
+    private Expression[] getExpressionArray(Map<String, List<Value>> valueMap, String name, int i) {
+        Value v = getValue(valueMap, name, i);
+        if (v == null) {
+            return null;
+        }
+        if (v instanceof MultiValue) {
+            MultiValue m = (MultiValue) v;
+            if (m.values.size() == 0) {
+                return null;
+            }
+            Expression[] result = new Expression[m.values.size()];
+            for (int j = 0; j < m.values.size(); j++) {
+                result[j] = m.values.get(j).toExpression();
+            }
+            return result;
+
+        } else {
+            return new Expression[] { v.toExpression() };
+        }
+    }
+
+    /**
      * Returns the max number of property values in the provided property set (for repeated
      * symbolizers)
      * 
@@ -1373,12 +1579,12 @@ public class CssTranslator {
                             + outputParent.getPath());
             System.exit(-2);
         }
-        
+
         long start = System.currentTimeMillis();
 
         String css = FileUtils.readFileToString(input);
         Stylesheet styleSheet = CssParser.parse(css);
-        
+
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         handler.setLevel(java.util.logging.Level.FINE);
 

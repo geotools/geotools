@@ -6,7 +6,10 @@
  */
 package net.opengis.fes20;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.opengis.filter.capability.GeometryOperand;
+import org.opengis.filter.capability.SpatialCapabilities;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,7 +28,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model extendedMetaData="name='Spatial_CapabilitiesType' kind='elementOnly'"
  * @generated
  */
-public interface SpatialCapabilitiesType extends EObject {
+public interface SpatialCapabilitiesType extends EObject, SpatialCapabilities {
     /**
      * Returns the value of the '<em><b>Geometry Operands</b></em>' containment reference.
      * <!-- begin-user-doc -->
@@ -41,7 +44,7 @@ public interface SpatialCapabilitiesType extends EObject {
      *        extendedMetaData="kind='element' name='GeometryOperands' namespace='##targetNamespace'"
      * @generated
      */
-    GeometryOperandsType getGeometryOperands();
+    GeometryOperandsType getGeometryOperands2();
 
     /**
      * Sets the value of the '{@link net.opengis.fes20.SpatialCapabilitiesType#getGeometryOperands <em>Geometry Operands</em>}' containment reference.

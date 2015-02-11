@@ -19,7 +19,7 @@ package org.geotools.util;
 import org.opengis.util.InternationalString;
 
 /**
- * 
+ * Base class for progress listeners that delegate to other progress listeners
  *
  * @source $URL$
  */
@@ -84,6 +84,10 @@ public class DelegateProgressListener implements org.opengis.util.ProgressListen
 
     public void warningOccurred( String source, String location, String warning ){
         delegate.warningOccurred( source, location, warning );
+    }
+
+    public org.opengis.util.ProgressListener getDelegate() {
+        return delegate;
     }
     
 }

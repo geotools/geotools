@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -34,6 +34,7 @@ import org.geotools.feature.type.DateUtil;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml.producer.GeometryTransformer.GeometryTranslator;
 import org.geotools.referencing.CRS;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xml.transform.TransformerBase;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -560,7 +561,7 @@ public class FeatureTransformer extends TransformerBase {
             throws IOException {
             try {
                 while (iterator.hasNext() && running) {
-                    SimpleFeature f = (SimpleFeature) iterator.next();
+                    SimpleFeature f = iterator.next();
                     handleFeature(f);
     
                     SimpleFeatureType t = f.getFeatureType();
@@ -587,7 +588,7 @@ public class FeatureTransformer extends TransformerBase {
             throws IOException {
             try {
                 while (reader.hasNext() && running) {
-                    SimpleFeature f = (SimpleFeature) reader.next();
+                    SimpleFeature f = reader.next();
                     handleFeature(f);
 
                     SimpleFeatureType t = f.getFeatureType();
@@ -802,7 +803,8 @@ public class FeatureTransformer extends TransformerBase {
                             contentHandler.characters(text.toCharArray(), 0,
                                     text.length());
                         } else {
-                            String text = value.toString();
+                            String text = XMLUtils.removeXMLInvalidChars(value.toString());
+
                             contentHandler.characters(text.toCharArray(), 0,
                                 text.length());
                         }

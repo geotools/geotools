@@ -1,0 +1,10 @@
+/* This file used to geranted an error about unexpected nested or-s during translation */
+ 
+[type='pseudo'], [isNull (level_data)='false'] {
+  mark: symbol('circle');
+  mark-size: 3;
+}
+
+[type='pseudo'] :mark, [isNull (level_data)='false'] :mark {
+  fill: black;
+}

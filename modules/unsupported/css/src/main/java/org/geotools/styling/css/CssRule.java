@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -154,10 +155,10 @@ public class CssRule {
         if (psProperties == null) {
             return Collections.emptyMap();
         }
-        Map<String, List<Value>> result = new HashMap<>();
+        Map<String, List<Value>> result = new LinkedHashMap<>();
         if (symbolizerPrefixes != null && symbolizerPrefixes.length > 0) {
-            for (String symbolizerPrefix : symbolizerPrefixes) {
-                for (Property property : psProperties) {
+            for (Property property : psProperties) {
+                for (String symbolizerPrefix : symbolizerPrefixes) {
                     if (symbolizerPrefix == null || property.getName().startsWith(symbolizerPrefix)
                             || property.getName().startsWith("-gt-" + symbolizerPrefix)) {
                         result.put(property.getName(), property.getValues());
@@ -265,8 +266,8 @@ public class CssRule {
                 int zIndexPosition = it.nextIndex();
                 Integer nextZIndex = it.next();
                 if (nextZIndex == NO_Z_INDEX) {
-                    // this set of properties is z-index indepenent
-                    zProperties.put(entry.getKey(), props);
+                    // this set of properties is z-index independent
+                    zProperties.put(entry.getKey(), new ArrayList<>(props));
                 } else if (!nextZIndex.equals(zIndex)) {
                     continue;
                 } else {
@@ -281,6 +282,9 @@ public class CssRule {
                             Property p = new Property(property.getName(), Arrays.asList(values
                                     .get(zIndexPosition)));
                             zIndexProperties.add(p);
+                        } else if (values.size() == 1) {
+                            // properties that does not have multiple values are bound to all levels
+                            zIndexProperties.add(property);
                         }
                     }
                     // if we collected any, add to the result
@@ -292,7 +296,20 @@ public class CssRule {
         }
 
         if (zProperties.size() > 0) {
-            return new CssRule(this.getSelector(), zProperties, this.getComment());
+            // if the properties had an original z-index, mark it, we'll need it
+            // to figure out if a combination of rules can be applied at a z-index > 0, or not
+            if (zIndex != null && zIndexes.contains(zIndex)) {
+                List<Property> rootProperties = zProperties.get(PseudoClass.ROOT);
+                if(rootProperties == null) {
+                    rootProperties = new ArrayList<>();
+                    zProperties.put(PseudoClass.ROOT, rootProperties);
+                }
+                rootProperties.add(new Property("z-index", 
+                        Arrays.asList((Value) new Value.Literal(String.valueOf(zIndex)))));
+            }
+            CssRule zRule = new CssRule(this.getSelector(), zProperties, this.getComment());
+            zRule.ancestry = Arrays.asList(this);
+            return zRule;
         } else {
             return null;
         }
@@ -509,7 +526,7 @@ public class CssRule {
     private void addIndexedPseudoClasses(Set<PseudoClass> result, String propertyName) {
         Map<String, List<Value>> properties = getPropertyValues(PseudoClass.ROOT, propertyName);
         int maxRepeatCount = getMaxRepeatCount(properties);
-        if (maxRepeatCount > 1) {
+        if (maxRepeatCount >= 1) {
             for (int i = 1; i <= maxRepeatCount; i++) {
                 result.add(PseudoClass.newPseudoClass("symbol", i));
                 result.add(PseudoClass.newPseudoClass(propertyName, i));

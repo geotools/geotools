@@ -1,0 +1,11 @@
+* {
+  stroke: symbol(circle);
+  stroke-dasharray: 4 6;
+}
+
+:stroke {
+  size: 4;
+  fill: #666666;
+  stroke: #333333;
+  stroke-width: 1px;
+}

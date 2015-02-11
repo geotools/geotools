@@ -44,15 +44,14 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
     private float anchorPointY = 0.5f;
 
     public IconStyle2D(Icon icon, Object feature, float displacementX, float displacementY,
-            float rotation, Composite composite) {
+            float rotation) {
         this.icon = icon;
         this.rotation = rotation;
-        this.composite = composite;
         this.displacementX = displacementX;
         this.displacementY = displacementY;
     }
 
-    public IconStyle2D(Icon icon, Object feature, Composite composite) {
+    public IconStyle2D(Icon icon, Object feature) {
         this.icon = icon;
         this.composite = composite;
     }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Diff;
 import org.geotools.data.DiffFeatureReader;
@@ -46,12 +45,14 @@ import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.TransactionStateDiff;
+import org.geotools.data.crs.ForceCoordinateSystemFeatureReader;
 import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.function.Collection_AverageFunction;
 import org.geotools.filter.function.Collection_BoundsFunction;
@@ -61,7 +62,6 @@ import org.geotools.filter.function.Collection_MinFunction;
 import org.geotools.filter.function.Collection_SumFunction;
 import org.geotools.filter.function.Collection_UniqueFunction;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
 import org.geotools.util.NullProgressListener;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
@@ -387,22 +387,23 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             Diff diff = state.getDiff();
             
             // don't compute the bounds of the features that are modified or removed in the diff
-            Iterator it = diff.getModified().values().iterator();
+            Iterator<String> i = diff.getModified().keySet().iterator();
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
             Set<FeatureId> modifiedFids = new HashSet<FeatureId>();
-            while(it.hasNext()){
-                SimpleFeature feature = (SimpleFeature) it.next();
-                modifiedFids.add(ff.featureId(feature.getID()));
+            while(i.hasNext()){
+                String featureId = i.next();
+                modifiedFids.add(ff.featureId(featureId));
             }
-            Id idFilter = ff.id(modifiedFids);
+            Filter skipFilter = ff.not( ff.id(modifiedFids) );
+            
             Query q = new Query(query);
-            q.setFilter(ff.and(idFilter, query.getFilter()));
+            q.setFilter(ff.and(skipFilter, query.getFilter()));
             bounds = getBoundsInternal(q);
             
             // update with the diff contents, all added feature and all modified, not deleted ones
             if(bounds != null) {
                 // new ones
-                it = diff.getAdded().values().iterator();
+                Iterator<SimpleFeature> it = diff.getAdded().values().iterator();
                 while(it.hasNext()){
                     SimpleFeature feature = (SimpleFeature) it.next();
                     BoundingBox fb = feature.getBounds();
@@ -415,7 +416,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 it = diff.getModified().values().iterator();
                 while(it.hasNext()){
                     SimpleFeature feature = (SimpleFeature) it.next();
-                    if(feature != TransactionStateDiff.NULL) {
+                    if(feature != Diff.NULL) {
                         BoundingBox fb = feature.getBounds();
                         if(fb != null) {
                             bounds.expandToInclude(ReferencedEnvelope.reference(fb));
@@ -425,6 +426,35 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             }
         } else {
             bounds = getBoundsInternal(query);
+        }
+        // reprojection
+        if ( !canReproject() ) {
+            CoordinateReferenceSystem sourceCRS = query.getCoordinateSystem();
+            CoordinateReferenceSystem targetCRS = query.getCoordinateSystemReproject();
+            CoordinateReferenceSystem nativeCRS = getSchema().getCoordinateReferenceSystem();
+            
+            if (sourceCRS != null && !sourceCRS.equals(nativeCRS)) {
+                //override native crs
+                bounds = new ReferencedEnvelope(bounds, sourceCRS);
+            } else {
+                //no override
+                sourceCRS = nativeCRS;
+            }
+            if (targetCRS != null) {
+                
+                if(sourceCRS == null) {
+                    throw new IOException("Cannot reproject data, the source CRS is not available");
+                } else if(!sourceCRS.equals(targetCRS)) {
+                    try {
+                        bounds = bounds.transform(targetCRS, true);
+                    } catch (Exception e) {
+                        if(e instanceof IOException)
+                            throw (IOException) e;
+                        else
+                            throw (IOException) new IOException("Error occurred trying to reproject data").initCause(e);
+                    }
+                }
+            }    
         }
         
         return bounds;
@@ -448,19 +478,23 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         query = joinQuery( query );
         query = resolvePropertyNames( query );
         
-        //calculate the count
+        // calculate the count
         int count = getCountInternal( query );
-
+        
+        // if internal is not counted, return
+        if (count < 0) {
+            return count;
+        }
         // if the internal actually counted, consider transactions
-        if(count >= 0 && !canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
+        if(!canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
             DiffTransactionState state = (DiffTransactionState) getTransaction().getState(getEntry());
             Diff diff = state.getDiff();
             synchronized (diff) {
                 // consider newly added features that satisfy the filter
-                Iterator it = diff.getAdded().values().iterator();
+                Iterator<SimpleFeature> it = diff.getAdded().values().iterator();
                 Filter filter = query.getFilter();
                 while(it.hasNext()){
-                    Object feature = it.next();
+                    SimpleFeature feature = it.next();
                     if(filter.evaluate(feature)) {
                         count++;
                     }
@@ -475,7 +509,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 while(it.hasNext()){
                     SimpleFeature feature = (SimpleFeature) it.next();
                     
-                    if(feature == TransactionStateDiff.NULL) {
+                    if(feature == Diff.NULL) {
                         count--;
                     } else {
                         modifiedFids.add(ff.featureId(feature.getID()));
@@ -499,6 +533,21 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                     }
                 }
             }
+        }
+        
+        // offset
+        int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
+        if( !canOffset() && offset > 0 ) {
+            // skip the first n records
+            count = Math.max(0, count - offset);
+            
+        }
+        
+        // max feature limit
+        if ( !canLimit() ) {
+            if (query.getMaxFeatures() != -1 && query.getMaxFeatures() < Integer.MAX_VALUE ) {
+                count = Math.min(query.getMaxFeatures(), count);
+            }    
         }
         
         return count;
@@ -583,7 +632,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             if ( query.getPropertyNames() != Query.ALL_NAMES ) {
                 //rebuild the type and wrap the reader
                 SimpleFeatureType target = 
-                    SimpleFeatureTypeBuilder.retype(getSchema(), query.getPropertyNames());
+                    SimpleFeatureTypeBuilder.retype(reader.getFeatureType(), query.getPropertyNames());
                 
                 // do an equals check because we may have needlessly retyped (that is,
                 // the subclass might be able to only partially retype)
@@ -619,12 +668,25 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         
         // reprojection
         if ( !canReproject() ) {
+            CoordinateReferenceSystem sourceCRS = query.getCoordinateSystem();
             CoordinateReferenceSystem targetCRS = query.getCoordinateSystemReproject();
+            CoordinateReferenceSystem nativeCRS = reader.getFeatureType().getCoordinateReferenceSystem();
+            
+            if (sourceCRS != null && !sourceCRS.equals(nativeCRS)) {
+                //override the nativeCRS
+                try {
+                    reader = new ForceCoordinateSystemFeatureReader(reader, sourceCRS);
+                } catch (SchemaException e) {
+                    throw (IOException) new IOException("Error occurred trying to force CRS").initCause(e);
+                }
+            } else {
+                //no override
+                sourceCRS = nativeCRS;
+            }
             if (targetCRS != null) {
-                CoordinateReferenceSystem nativeCRS = reader.getFeatureType().getCoordinateReferenceSystem();
-                if(nativeCRS == null) {
+                if(sourceCRS == null) {
                     throw new IOException("Cannot reproject data, the source CRS is not available");
-                } else if(!nativeCRS.equals(targetCRS)) {
+                } else if(!sourceCRS.equals(targetCRS)) {
                     try {
                         reader = new ReprojectFeatureReader(reader, targetCRS);
                     } catch (Exception e) {
@@ -672,6 +734,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     public void accepts( Query query, org.opengis.feature.FeatureVisitor visitor,
             org.opengis.util.ProgressListener progress) throws IOException {
         
+        query = DataUtilities.simplifyFilter(query);
         if( progress == null ) {
             progress = new NullProgressListener();
         }
@@ -760,7 +823,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     protected abstract  FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal( Query query ) throws IOException;
     
     /**
-     * Determines if the datastore can natively perform reprojection..
+     * Determines if the datastore can natively perform reprojection.
      * <p>
      * If the subclass can handle reprojection natively then it should override
      * this method to return <code>true</code>. In this case it <b>must</b> do 
@@ -769,8 +832,17 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * <p>
      * Not overriding this method or returning <code>false</code> will case the
      * feature reader created by the subclass to be wrapped in a reprojecting 
-     * decorator when the query specifies a coordinate system reproject.
+     * decorator when the query specifies a coordinate system reproject (using crs and crsReproject)
      * </p>
+     * <p>
+     * To handle reprojection an implementation should:
+     * <ul>
+     * <li>{@link Query#getCoordinateSystem()} - optional override - if provided this is used instead of the 
+     * native CRS provided by the data format (as a workaround for clients).
+     * <li><@link {@link Query#getCoordinateSystemReproject()} - if this value is provided it is used
+     * to set up a transform from the origional CRS (native or from query).
+     * </ul>
+     * 
      * @see ReprojectFeatureReader
      */
     protected boolean canReproject() {
@@ -910,10 +982,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         query = resolvePropertyNames(query);
         
         //reflectively create subclass
-        Class clazz = getClass();
+        Class<?> clazz = getClass();
         
         try {
-            Constructor c = clazz.getConstructor(ContentEntry.class,Query.class);
+            Constructor<?> c = clazz.getConstructor(ContentEntry.class,Query.class);
             ContentFeatureSource source = (ContentFeatureSource) c.newInstance(getEntry(),query);
             
             //set the transaction
@@ -1213,7 +1285,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         filter = resolvePropertyNames(filter);
         String typeName = getSchema().getTypeName(); 
         
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(filter);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(filter);
         try {
             while( reader.hasNext() ) {
                 SimpleFeature feature = reader.next();
@@ -1221,7 +1293,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 // Use native locking?
                 //
                 if(canLock()) {
-                    doLockInternal(typeName,feature);
+                    doUnlockInternal(typeName,feature);
                 } else {
                     getDataStore().getLockingManager()
                         .unLockFeatureID(typeName, feature.getID(), transaction, lock);

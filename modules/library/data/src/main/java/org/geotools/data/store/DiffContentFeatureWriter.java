@@ -38,11 +38,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * </p>
  * 
  * <p>
- * The api has been implemented in terms of FeatureReader<SimpleFeatureType, SimpleFeature> to make
- * explicit that no Features are writen out by this Class.
+ * The API has been implemented in terms of FeatureReader<SimpleFeatureType, SimpleFeature> to make
+ * explicit that no Features are written out by this Class.
  * </p>
  * 
- * @author Jody Garnett, Refractions Research
+ * @author Jody Garnett (Refractions Research)
  * 
  * @see DiffContentState
  * 
@@ -55,7 +55,7 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
 
     protected Diff diff;
 
-    SimpleFeature next; // next value aquired by hasNext()
+    SimpleFeature next; // next value acquired by hasNext()
 
     SimpleFeature live; // live value supplied by FeatureReader
 
@@ -118,6 +118,9 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
 
             return current;
         } else {
+            if (diff == null) {
+                throw new IOException("FeatureWriter has been closed");
+            }
             // Create new content
             // created with an empty ID
             // (The real writer will supply a FID later)
@@ -200,6 +203,9 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
         live = null;
         current = null;
 
+        if (reader == null) {
+            return false;
+        }
         if (reader.hasNext()) {
             try {
                 next = reader.next();

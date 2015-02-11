@@ -168,6 +168,10 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
                 return 0;
             }
         }
+        // Check if we need to handle a startIndex
+        if (fnQuery.getStartIndex() != null && fnQuery.getStartIndex() > 0) {
+            count = Math.max(0, count - fnQuery.getStartIndex());
+        }
         /* Check if the count greater than maxFeature Limit*/
         if (fnQuery.getMaxFeatures() > 0 && count > fnQuery.getMaxFeatures()) {
             count = fnQuery.getMaxFeatures();

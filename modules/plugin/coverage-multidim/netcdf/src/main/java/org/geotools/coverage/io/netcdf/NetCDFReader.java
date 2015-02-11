@@ -17,7 +17,6 @@
 package org.geotools.coverage.io.netcdf;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.imageio.utilities.SoftValueHashMap;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -88,6 +87,7 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
+import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.Format;

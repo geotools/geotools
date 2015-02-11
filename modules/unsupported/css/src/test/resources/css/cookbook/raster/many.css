@@ -1,0 +1,7 @@
+* {
+  raster-channels: auto;
+  raster-color-map: color-map-entry(black, 95) color-map-entry(blue, 110)
+    color-map-entry(green, 135) color-map-entry(red, 160)
+    color-map-entry(purple, 185) color-map-entry(yellow, 210)
+    color-map-entry(cyan, 235) color-map-entry(white, 256);
+}

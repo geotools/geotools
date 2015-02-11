@@ -1,0 +1,19 @@
+* {
+   mark: symbol(circle);
+}
+
+:mark {
+  fill: #0033CC;
+}
+
+[pop < 50000] {
+  mark-size: 8;
+}
+
+[pop >= 50000] [pop < 100000] {
+  mark-size: 12;
+}
+
+[pop >= 100000] {
+  mark-size: 16;
+}

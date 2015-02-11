@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,116 +16,113 @@
  */
 package org.geotools.data.property;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.LineNumberReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geotools.data.AbstractDataStore;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultServiceInfo;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.ServiceInfo;
-import org.geotools.data.Transaction;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.Hints;
+import org.geotools.data.store.ContentDataStore;
+import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.SchemaException;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.geometry.jts.WKTReader2;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
+
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Sample DataStore implementation, please see formal tutorial included with
  * users docs.
  * 
  * @author Jody Garnett, Refractions Research Inc.
- *
+ * @author Torben Barsballe (Boundless)
  *
  * @source $URL$
  */
-public class PropertyDataStore extends AbstractDataStore {
-    protected File directory;
-
-    protected String namespaceURI;
-
+public class PropertyDataStore extends ContentDataStore {
+    protected File dir;
+    
     public PropertyDataStore(File dir) {
         this(dir, null);
     }
-
+    
     // constructor start
     public PropertyDataStore(File dir, String namespaceURI) {
-        super(true); // true indicates we implement getFeatureWriter
         if (!dir.isDirectory()) {
             throw new IllegalArgumentException(dir + " is not a directory");
         }
         if (namespaceURI == null) {
             namespaceURI = dir.getName();
         }
-        directory = dir;
-        this.namespaceURI = namespaceURI;
+        this.dir = dir;
+        setNamespaceURI(namespaceURI);
+        
+        // factories
+        setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
+        setGeometryFactory(new GeometryFactory());
+        setFeatureTypeFactory(new FeatureTypeFactoryImpl());
+        setFeatureFactory(CommonFactoryFinder.getFeatureFactory(null));
     }
-
     // constructor end
-
+    
     // createSchema start
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         String typeName = featureType.getTypeName();
-        File file = new File(directory, typeName + ".properties");
+        File file = new File(dir, typeName + ".properties");
+        if( file.exists() ){
+            throw new FileNotFoundException("Unable to create a new property file: file exists "+file);
+        }
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write("_=");
-        writer.write(DataUtilities.spec(featureType));
+        writer.write(DataUtilities.encodeType(featureType));
         writer.flush();
         writer.close();
     }
-
     // createSchema end
-
+    
     // info start
     public ServiceInfo getInfo() {
         DefaultServiceInfo info = new DefaultServiceInfo();
-        info.setDescription("Features from Directory " + directory);
+        info.setDescription("Features from Directory " + dir);
         info.setSchema(FeatureTypes.DEFAULT_NAMESPACE);
-        info.setSource(directory.toURI());
+        info.setSource(dir.toURI());
         try {
             info.setPublisher(new URI(System.getProperty("user.name")));
         } catch (URISyntaxException e) {
         }
         return info;
     }
-
     // info end
-
+    
     public void setNamespaceURI(String namespaceURI) {
         this.namespaceURI = namespaceURI;
     }
-
-    public String[] getTypeNames() {
-        String list[] = directory.list(new FilenameFilter() {
+    
+    protected java.util.List<Name> createTypeNames() throws IOException {
+        String list[] = dir.list(new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.endsWith(".properties");
             }
         });
+        List<Name> typeNames = new ArrayList<Name>();
         for (int i = 0; i < list.length; i++) {
-            list[i] = list[i].substring(0, list[i].lastIndexOf('.'));
+            String typeName = list[i].substring(0, list[i].lastIndexOf('.'));
+            typeNames.add( new NameImpl(namespaceURI, typeName));
         }
-        return list;
+        return typeNames;
     }
     
     public List<Name> getNames() throws IOException {
@@ -136,135 +133,18 @@ public class PropertyDataStore extends AbstractDataStore {
         }
         return names;
     }
-
-    // START SNIPPET: getSchema
-    public SimpleFeatureType getSchema(String typeName) throws IOException {
-        // look for type name
-        String typeSpec = property(typeName, "_");
-        try {
-            return DataUtilities.createType(namespaceURI, typeName, typeSpec);
-        } catch (SchemaException e) {
-            e.printStackTrace();
-            throw new DataSourceException(typeName + " schema not available", e);
-        }
-    }
-
-    // END SNIPPET: getSchema
-
-    private String property(String typeName, String key) throws IOException {
-        File file = new File(directory, typeName + ".properties");
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        try {
-            for (String line = reader.readLine(); line != null; line = reader
-                    .readLine()) {
-                if (line.startsWith(key + "=")) {
-                    return line.substring(key.length() + 1);
-                }
-            }
-        } finally {
-            reader.close();
-        }
-        return null;
-    }
     
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-    		String typeName, Query query) throws IOException {
-    	PropertyFeatureReader reader = new PropertyFeatureReader(directory, typeName);
-    	Object toleranceHint = query.getHints().get(Hints.LINEARIZATION_TOLERANCE);
-		if(toleranceHint instanceof Double) {
-			double tolerance = (double) toleranceHint;
-			reader.setWKTReader(new WKTReader2(tolerance));
-		}
-		
-		return reader;
-    }
-
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-            String typeName) throws IOException {
-        return new PropertyFeatureReader(directory, typeName);
-    }
-    // getFeatureWriter start
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> createFeatureWriter(String typeName,
-            Transaction transaction) throws IOException {
-        return new PropertyFeatureWriter(this, typeName);
-    }
-    // getFeatureWriter end
-//  protected FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-//  String typeName) throws IOException {
-//return new PropertyFeatureWriter(this, typeName);
-//}
-
-    
-    // getCount start
-    int cacheCount;
-    long cacheTimestamp;
-    protected int getCount(Query query) throws IOException {
-        if (query.getFilter() == Filter.INCLUDE) {
-            String typeName = query.getTypeName();
-            File file = new File(directory, typeName + ".properties");
-            if (cacheCount != -1 && file.lastModified() == cacheTimestamp) {
-                return cacheCount;
-            }
-            cacheCount = PropertyDataStore.countFile(file);
-            cacheTimestamp = file.lastModified();
-            return cacheCount;
-        }
-        else {
-            return -1; // too expensive count the features
-        }
-    }
-    /** Used to carefully count the lines in the provided properties file */
-    static int countFile(File file) {
-        LineNumberReader reader = null;
-        try {
-            int skip=1; // header
-            reader = new LineNumberReader(new FileReader(file));
-            String line;
-            while ((line = reader.readLine()) != null){
-                if( line.startsWith("#")||line.startsWith("!")){
-                    skip++; // comment
-                }
-                if( line.endsWith("\\") ){
-                    skip++; // multiline
-                }
-            }
-            return reader.getLineNumber() - skip;
-        } catch (IOException e) {
-            return -1; // could not quickly determine length
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    // we tried
-                }
-            }
-        }
-    }
-    // getCount end
-    
-    // getBounds start
-    protected ReferencedEnvelope getBounds(Query query) throws IOException {
-        return null; // to expensive - calculate by visiting all the features
-    }
-    // getBounds end
-    
-    // getFeatureSource start
-    public SimpleFeatureSource getFeatureSource(final String typeName)
-            throws IOException {
-        File file = new File( this.directory, typeName+".properties");
+    protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
+        File file = new File( this.dir, entry.getTypeName()+".properties");
         if( !file.exists()){
             throw new FileNotFoundException( file.getAbsolutePath() );
-        }        
+        }
+        
         if( file.canWrite() ){
-            return new PropertyFeatureStore(this, typeName);
-            //return new PropertyFeatureLocking(this, typeName);
+            return new PropertyFeatureStore( entry, Query.ALL );
+        } else {
+            return new PropertyFeatureSource( entry, Query.ALL );
         }
-        else {
-            return new PropertyFeatureSource(this, typeName);
-        }
-        //return super.getFeatureSource(typeName);
     }
-    // getFeatureSource stop
 }

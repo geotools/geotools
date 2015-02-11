@@ -1,0 +1,15 @@
+* {
+  stroke: #009933;
+}
+
+[ @scale < 180000000] {
+  stroke-width: 6;
+}
+
+[ @scale > 180000000] [ @scale < 360000000] {
+  stroke-width: 4;
+}
+
+[ @scale > 360000000] {
+  stroke-width: 2;
+}

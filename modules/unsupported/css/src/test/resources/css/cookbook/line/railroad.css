@@ -1,0 +1,10 @@
+* {
+  stroke: #333333, symbol("shape://vertline");
+  stroke-width: 3px;
+}
+
+:nth-stroke(2) {
+  size: 12;
+  stroke: #333333;
+  stroke-width: 1px;
+}

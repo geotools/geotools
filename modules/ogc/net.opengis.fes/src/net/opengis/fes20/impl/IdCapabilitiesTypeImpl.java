@@ -153,4 +153,26 @@ public class IdCapabilitiesTypeImpl extends EObjectImpl implements IdCapabilitie
         return super.eIsSet(featureID);
     }
 
+    @Override
+    public boolean hasEID() {
+        for (ResourceIdentifierType rit : getResourceIdentifier()) {
+            if (rit.getName().getNamespaceURI().startsWith("http://www.opengis.net/fes/")
+                    && rit.getName().getLocalPart().equals("ResourceId")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hasFID() {
+        for (ResourceIdentifierType rit : getResourceIdentifier()) {
+            if (rit.getName().getNamespaceURI().startsWith("http://www.opengis.net/cat/csw/")
+                    && rit.getName().getLocalPart().equals("RecordId")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 } //IdCapabilitiesTypeImpl

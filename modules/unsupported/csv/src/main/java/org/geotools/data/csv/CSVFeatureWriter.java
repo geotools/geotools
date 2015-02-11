@@ -1,7 +1,7 @@
 /* GeoTools - The Open Source Java GIS Toolkit
  * http://geotools.org
  *
- * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
+ * (C) 2010-2015, Open Source Geospatial Foundation (OSGeo)
  *
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file. Use it well and enjoy!
@@ -18,15 +18,13 @@ import java.util.NoSuchElementException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
-import org.geotools.data.store.ContentState;
+import org.geotools.data.csv.parse.CSVIterator;
+import org.geotools.data.csv.parse.CSVStrategy;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-import com.vividsolutions.jts.geom.Point;
 
 /**
  * Iterator supporting writing of feature content.
@@ -35,44 +33,51 @@ import com.vividsolutions.jts.geom.Point;
  * @author Lee Breisacher
  */
 public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
-    /** State of current transaction */
-    private ContentState state;
-
-    /** Delegate handing reading of original file */
-    private CSVFeatureReader delegate;
+    private SimpleFeatureType featureType;
+    private CSVStrategy csvStrategy;
+    private CSVFileState csvFileState;
     
     /** Temporary file used to stage output */
     private File temp;
-
+    
+    /** iterator handling reading of original file(?) */
+    private CSVIterator iterator;
+    
     /** CsvWriter used for temp file output */
     private CsvWriter csvWriter;
-
-    /** Current feature available for modification, may be null if feature removed */
-    private SimpleFeature currentFeature;
     
     /** Flag indicating we have reached the end of the file */
     private boolean appending = false;
     
     /** Row count used to generate FeatureId when appending */
     int nextRow = 0;
-    // header end
-    // constructor start
-    public CSVFeatureWriter(ContentState state, Query query) throws IOException {
-        this.state = state;
-        String typeName = query.getTypeName();
-        File file = ((CSVDataStore) state.getEntry().getDataStore()).file;
-        File directory = file.getParentFile();
-        this.temp = File.createTempFile(typeName + System.currentTimeMillis(), "csv", directory);
-        this.csvWriter = new CsvWriter(new FileWriter(this.temp), ',');
-        this.delegate = new CSVFeatureReader(state,query);
-        this.csvWriter.writeRecord(delegate.reader.getHeaders());
+    
+    /** Current feature available for modification. May be null if feature removed */
+    private SimpleFeature currentFeature;
+
+    public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy)
+    		throws IOException {
+        this(csvFileState, csvStrategy, Query.ALL);
     }
-    // constructor end
+    
+    public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy, Query query)
+    		throws IOException {
+    	this.csvFileState = csvFileState;
+    	File file = csvFileState.getFile();
+    	File directory = file.getParentFile();
+    	String typeName = query.getTypeName();
+    	this.temp = File.createTempFile(typeName + System.currentTimeMillis(), "csv", directory);
+    	this.featureType = csvStrategy.getFeatureType();
+    	this.iterator = csvStrategy.iterator();
+    	this.csvStrategy = csvStrategy;
+    	this.csvWriter = new CsvWriter(new FileWriter(this.temp), ',');
+    	this.csvWriter.writeRecord(this.csvFileState.getCSVHeaders());
+    }
     
     // featureType start
     @Override
     public SimpleFeatureType getFeatureType() {
-        return state.getFeatureType();
+        return this.featureType;
     }
     // featureType end
 
@@ -80,12 +85,12 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     @Override
     public boolean hasNext() throws IOException {
         if( csvWriter == null ){
-            throw new IOException("Writer has been closed");
+            return false;
         }
         if (this.appending) {
             return false; // reader has no more contents
         }
-        return delegate.hasNext();
+        return iterator.hasNext();
     }
     // hasNext end
     
@@ -93,23 +98,22 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     @Override
     public SimpleFeature next() throws IOException, IllegalArgumentException,
             NoSuchElementException {
-        if( csvWriter == null ){
+        if(csvWriter == null){
             throw new IOException("Writer has been closed");
         }
         if (this.currentFeature != null) {
             this.write(); // the previous one was not written, so do it now.
         }
         try {
-            if( !appending ){
-                if( delegate.reader != null && delegate.hasNext() ){
-                    this.currentFeature = delegate.next();
+            if(!appending){
+                if(iterator.hasNext()){
+                    this.currentFeature = iterator.next();
                     return this.currentFeature;
                 }
                 else {
                     this.appending = true;
                 }
             }
-            SimpleFeatureType featureType = state.getFeatureType();
             String fid = featureType.getTypeName()+"."+nextRow;
             Object values[] = DataUtilities.defaultValues( featureType );
             
@@ -136,20 +140,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         if (this.currentFeature == null) {
             return; // current feature has been deleted
         }
-        for (Property property : currentFeature.getProperties()) {
-            Object value = property.getValue();
-            if (value == null) {
-                this.csvWriter.write("");
-            } else if (value instanceof Point) {
-                Point point = (Point) value;
-                this.csvWriter.write(Double.toString(point.getX()));
-                this.csvWriter.write(Double.toString(point.getY()));
-            } else {
-                String txt = value.toString();
-                this.csvWriter.write(txt);
-            }
-        }
-        this.csvWriter.endRecord();
+        this.csvWriter.writeRecord(this.csvStrategy.encode(this.currentFeature));
         nextRow++;
         this.currentFeature = null; // indicate that it has been written
     }
@@ -171,15 +162,13 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         }
         csvWriter.close();
         csvWriter = null;
-        if( delegate != null ){
-            this.delegate.close();
-            this.delegate = null;
+        if( this.iterator != null ){
+            this.iterator.close();
+            this.iterator = null;
         }
         // Step 2: Replace file contents
-        File file = ((CSVDataStore) state.getEntry().getDataStore()).file;
+        File file = this.csvFileState.getFile();
         
-        Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING );
+        Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING );   
     }
-    // close end
-
 }

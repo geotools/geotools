@@ -29,9 +29,7 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
-import org.opengis.parameter.Parameter;
 
 /**
  * Abstract class for a function expression implementation
@@ -216,18 +214,47 @@ public abstract class FunctionExpressionImpl
         throw new UnsupportedOperationException( "Function "+name+" not implemented");
     }
 
-    public boolean equals(Object obj) {
-    	if( obj == null || !(obj instanceof Function)){
-    		return false;
-    	}
-    	Function other = (Function) obj;
-    	if( ( getName() == null && other.getName() != null ) ||
-    	    (getName() != null && !getName().equalsIgnoreCase( other.getName() ))){
-    		return false;
-    	}
-    	if( getParameters() == null && other.getClass() != null ){
-    		return false;
-    	}
-    	return getParameters() != null && getParameters().equals( other.getParameters() );
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((fallback == null) ? 0 : fallback.hashCode());
+        result = prime * result + ((functionName == null) ? 0 : functionName.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((params == null) ? 0 : params.hashCode());
+        return result;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        FunctionExpressionImpl other = (FunctionExpressionImpl) obj;
+        if (fallback == null) {
+            if (other.fallback != null)
+                return false;
+        } else if (!fallback.equals(other.fallback))
+            return false;
+        if (functionName == null) {
+            if (other.functionName != null)
+                return false;
+        } else if (!functionName.equals(other.functionName))
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (params == null) {
+            if (other.params != null)
+                return false;
+        } else if (!params.equals(other.params))
+            return false;
+        return true;
+    }
+
 }

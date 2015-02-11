@@ -1,6 +1,7 @@
 package org.geotools.styling.css;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -31,12 +32,11 @@ public class CssRuleTest extends CssBaseTest {
         Set<Integer> zeds = rule.getZIndexes();
         assertEquals(1, zeds.size());
         assertEquals(new Integer(10), zeds.iterator().next());
-        // the subrule is the not rule, it does not have the z-index property anymore
         CssRule subRule = rule.getSubRuleByZIndex(10);
-        assertNotEquals(subRule, rule);
         assertEquals(1, subRule.getProperties().size());
-        assertEquals(1, subRule.getProperties().get(PseudoClass.ROOT).size());
+        assertEquals(2, subRule.getProperties().get(PseudoClass.ROOT).size());
         assertProperty(subRule, 0, "fill", new Value.Literal("#000000"));
+        assertProperty(subRule, 1, "z-index", new Value.Literal("10"));
         // nothing at the base level
         assertNull(rule.getSubRuleByZIndex(0));
     }
@@ -55,15 +55,17 @@ public class CssRuleTest extends CssBaseTest {
         // first subrule
         CssRule subRule1 = rule.getSubRuleByZIndex(1);
         assertEquals(1, subRule1.getProperties().size());
-        assertEquals(1, subRule1.getProperties().get(PseudoClass.ROOT).size());
+        assertEquals(2, subRule1.getProperties().get(PseudoClass.ROOT).size());
         assertProperty(subRule1, 0, "fill", new Value.Literal("#000000"));
+        assertProperty(subRule1, 1, "z-index", new Value.Literal("1"));
         // nothing at level 2
         assertNull(rule.getSubRuleByZIndex(2));
         // second subrule
         CssRule subRule3 = rule.getSubRuleByZIndex(3);
         assertEquals(1, subRule3.getProperties().size());
-        assertEquals(1, subRule3.getProperties().get(PseudoClass.ROOT).size());
+        assertEquals(2, subRule3.getProperties().get(PseudoClass.ROOT).size());
         assertProperty(subRule3, 0, "fill", new Value.Literal("#ff0000"));
+        assertProperty(subRule3, 1, "z-index", new Value.Literal("3"));
 
     }
 
@@ -81,15 +83,17 @@ public class CssRuleTest extends CssBaseTest {
         // first subrule
         CssRule subRule1 = rule.getSubRuleByZIndex(1);
         assertEquals(1, subRule1.getProperties().size());
-        assertEquals(1, subRule1.getProperties().get(PseudoClass.ROOT).size());
+        assertEquals(2, subRule1.getProperties().get(PseudoClass.ROOT).size());
         assertProperty(subRule1, 0, "fill", new Value.Literal("#ff0000"));
+        assertProperty(subRule1, 1, "z-index", new Value.Literal("1"));
         // nothing at level 2
         assertNull(rule.getSubRuleByZIndex(2));
         // second subrule
         CssRule subRule3 = rule.getSubRuleByZIndex(3);
         assertEquals(1, subRule3.getProperties().size());
-        assertEquals(1, subRule3.getProperties().get(PseudoClass.ROOT).size());
+        assertEquals(2, subRule3.getProperties().get(PseudoClass.ROOT).size());
         assertProperty(subRule3, 0, "fill", new Value.Literal("#000000"));
+        assertProperty(subRule3, 1, "z-index", new Value.Literal("3"));
     }
 
 

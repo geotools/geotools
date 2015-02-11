@@ -28,10 +28,10 @@ import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.RenderingHints.Key;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.Transparency;
-import java.awt.RenderingHints.Key;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
@@ -68,6 +68,9 @@ final class DelayedBackbufferGraphic extends Graphics2D {
      */
     public void init() {
         if (delegate == null) {
+            if (master instanceof DelayedBackbufferGraphic) {
+                ((DelayedBackbufferGraphic) master).init();
+            }
             image = master.getDeviceConfiguration().createCompatibleImage(screenSize.width,
                     screenSize.height, Transparency.TRANSLUCENT);
             delegate = image.createGraphics();

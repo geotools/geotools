@@ -1,7 +1,5 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import it.geosolutions.imageio.utilities.SoftValueHashMap;
-
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +13,7 @@ import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ColorMapEntryImpl;
 import org.geotools.styling.ColorMapImpl;
+import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
 import org.opengis.filter.FilterFactory;
 import org.w3c.dom.Document;

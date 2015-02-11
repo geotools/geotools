@@ -1,0 +1,6 @@
+* {
+  stroke: red;
+  label: [name];
+  label-offset: 7px;
+  font-fill: black;
+}

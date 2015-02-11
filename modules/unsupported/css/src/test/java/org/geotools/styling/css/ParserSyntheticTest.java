@@ -24,6 +24,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -239,9 +240,12 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertNull(r.getComment());
         assertTrue(r.getSelector() instanceof Accept);
         assertEquals(1, r.getProperties().size());
-        assertProperty(r, 0, "mark",
-                new Value.Function("symbol",
-                        Collections.singletonList((Value) new Value.Literal("circle"))));
+        assertProperty(
+                r,
+                0,
+                "mark",
+                new Value.Function("symbol", Collections.singletonList((Value) new Value.Literal(
+                        "circle"))));
     }
 
     @Test
@@ -417,8 +421,9 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertNull(r.getComment());
         assertTrue(r.getSelector() instanceof And);
         And s = (And) r.getSelector();
-        assertEquals(new Data(ECQL.toFilter("att < 15")), s.getChildren().get(1));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(0));
+        assertEquals(new Data(ECQL.toFilter("att < 15")), s.getChildren().get(0));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
+                .get(1));
     }
 
     @Test
@@ -436,7 +441,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof And);
         And s = (And) r.getSelector();
         assertEquals(new TypeName("topp:states"), s.getChildren().get(0));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(1));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
+                .get(1));
     }
 
     @Test
@@ -454,7 +460,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof Or);
         Or s = (Or) r.getSelector();
         assertEquals(new Data(ECQL.toFilter("att < 15")), s.getChildren().get(0));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(1));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
+                .get(1));
     }
 
     @Test
@@ -472,7 +479,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof Or);
         Or s = (Or) r.getSelector();
         assertEquals(new TypeName("topp:states"), s.getChildren().get(0));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(1));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
+                .get(1));
     }
 
     @Test
@@ -508,10 +516,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertNull(r.getComment());
         Or s = (Or) r.getSelector();
         assertEquals(new Id("states.2"), s.getChildren().get(0));
-        assertTrue(s.getChildren().get(1) instanceof Or);
-        Or or = (Or) s.getChildren().get(1);
-        assertEquals(new Id("states.3"), or.getChildren().get(0));
-        assertEquals(new Data(ECQL.toFilter("myAtt > 10")), or.getChildren().get(1));
+        assertEquals(new Id("states.3"), s.getChildren().get(1));
+        assertEquals(new Data(ECQL.toFilter("myAtt > 10")), s.getChildren().get(2));
 
     }
 
@@ -529,8 +535,9 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof And);
         assertNull(r.getComment());
         And s = (And) r.getSelector();
-        assertEquals(new Id("states.2"), s.getChildren().get(1));
-        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(0));
+        assertEquals(new Id("states.2"), s.getChildren().get(0));
+        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
+                .get(1));
         assertEquals(new Data(ECQL.toFilter("myAtt > 10")), s.getChildren().get(2));
 
     }
@@ -552,9 +559,9 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertEquals(new Data(ECQL.toFilter("myAtt > 10")), s.getChildren().get(1));
         assertTrue(s.getChildren().get(0) instanceof And);
         And and = (And) s.getChildren().get(0);
-        assertEquals(new Id("states.2"), and.getChildren().get(1));
-        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true),
-                and.getChildren().get(0));
+        assertEquals(new Id("states.2"), and.getChildren().get(0));
+        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true), and.getChildren()
+                .get(1));
 
     }
 
@@ -642,8 +649,8 @@ public class ParserSyntheticTest extends CssBaseTest {
 
     @Test
     public void testExceptionMessage() {
-        // lets forget a semicolon in the third line
-        String css = "* \n { fill: blue; \n stroke: yellow }";
+        // lets forget a semicolon in the second line
+        String css = "* \n { fill: blue \n stroke: yellow }";
         try {
             CssParser.parse(css);
             fail("Should have failed with an exception");
@@ -651,9 +658,72 @@ public class ParserSyntheticTest extends CssBaseTest {
             List<ParseError> errors = e.getErrors();
             assertEquals(1, errors.size());
             assertEquals(
-                    "Invalid input '}', expected ' ', '\\r', '\\t', '\\f', '\\n', SimpleValue, ',', WhiteSpace or ';' (line 3, column 17)",
+                    "Invalid input ':', expected NameCharacter, '(', WhiteSpace, OptionalWhiteSpace, ',', WhitespaceOrIgnoredComment, ';', WhiteSpaceOrIgnoredComment or '}' (line 3, column 8)",
                     e.getMessage());
         }
+    }
+
+    @Test
+    public void testMissingLastSemicolon() {
+        // lets forget a semicolon in the last line, that's actually fine, the ; is a separator, not
+        // a terminator
+        String css = "* \n { fill: blue; \n stroke: yellow }";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        Map<PseudoClass, List<Property>> properties = ss.getRules().get(0).getProperties();
+        assertEquals(2, properties.get(PseudoClass.ROOT).size());
+    }
+
+    @Test
+    public void testDirectives() {
+        String css = "@first \"1\"; \n @second \"2\"; \n * { fill: blue;}";
+        Stylesheet ss = CssParser.parse(css);
+        List<Directive> directives = ss.getDirectives();
+        assertEquals(2, directives.size());
+        assertEquals("first", directives.get(0).getName());
+        assertEquals("1", directives.get(0).getValue());
+        assertEquals("second", directives.get(1).getName());
+        assertEquals("2", directives.get(1).getValue());
+
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertTrue(r.getSelector() instanceof Accept);
+        assertProperty(r, 0, "fill", new Value.Literal("#0000ff"));
+    }
+
+    @Test
+    public void testSameLinePrefixComment() {
+        String css = "* { /* prefix comment */ fill: blue }";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertProperty(r, 0, "fill", new Value.Literal("#0000ff"));
+    }
+
+    @Test
+    public void testSameLineSuffixComment() {
+        String css = "* { fill: blue; /* prefix comment */  }";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertProperty(r, 0, "fill", new Value.Literal("#0000ff"));
+    }
+
+    @Test
+    public void testSameCommentBetweenRules() {
+        String css = "* { fill: blue; \n /* prefix comment */ \n stroke: black  }";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertProperty(r, 0, "fill", new Value.Literal("#0000ff"));
+        assertProperty(r, 1, "stroke", new Value.Literal("#000000"));
+    }
+
+    @Test
+    public void testEmptyComment() {
+        String css = "* { fill: blue; /**/ stroke: yellow}";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
     }
 
 }

@@ -20,9 +20,11 @@ import org.geotools.ows.v1_1.OWSConfiguration;
 import org.geotools.wfs.v2_0.bindings.EnvelopePropertyTypeBinding;
 import org.geotools.wfs.v2_0.bindings.FeatureTypeListTypeBinding;
 import org.geotools.wfs.v2_0.bindings.FeatureTypeTypeBinding;
+import org.geotools.wfs.v2_0.bindings.InsertTypeBinding;
 import org.geotools.wfs.v2_0.bindings.MetadataURLTypeBinding;
 import org.geotools.wfs.v2_0.bindings.ParameterParserDelegate;
 import org.geotools.wfs.v2_0.bindings.ParameterTypeBinding;
+import org.geotools.wfs.v2_0.bindings.PropertyTypeBinding;
 import org.geotools.wfs.v2_0.bindings.QueryExpressionTextDelegate;
 import org.geotools.wfs.v2_0.bindings.QueryExpressionTextTypeBinding;
 import org.geotools.wfs.v2_0.bindings.QueryTypeBinding;
@@ -103,7 +105,7 @@ public class WFSConfiguration extends Configuration {
         binding(bindings, WFS.GetFeatureType);
         binding(bindings, WFS.GetFeatureWithLockType);
         binding(bindings, WFS.GetPropertyValueType);
-        binding(bindings, WFS.InsertType);
+        bindings.put(WFS.InsertType,InsertTypeBinding.class);
         binding(bindings, WFS.ListStoredQueriesResponseType);
         binding(bindings, WFS.ListStoredQueriesType);
         binding(bindings, WFS.LockFeatureResponseType);
@@ -116,7 +118,7 @@ public class WFSConfiguration extends Configuration {
         binding(bindings, WFS.ParameterExpressionType);
         binding(bindings, WFS.ParameterType);
 //        container.registerComponentImplementation(WFS.positiveIntegerWithStar,PositiveIntegerWithStarBinding.class);
-        binding(bindings, WFS.PropertyType);
+        bindings.put(WFS.PropertyType,PropertyTypeBinding.class);
         bindings.put(WFS.QueryExpressionTextType,QueryExpressionTextTypeBinding.class);
         bindings.put(WFS.QueryType, QueryTypeBinding.class);
         binding(bindings, WFS.ReplaceType);
@@ -155,6 +157,11 @@ public class WFSConfiguration extends Configuration {
         bindings.put(WFS.Abstract, new SimpleContentComplexEMFBinding(Wfs20Factory.eINSTANCE, new QName(WFS.NAMESPACE, "AbstractType")));
         bindings.put(WFS.DropStoredQuery, new ComplexEMFBinding(Wfs20Factory.eINSTANCE, WFS.DropStoredQuery, DropStoredQueryType.class));
         bindings.put(WFS.Title, new SimpleContentComplexEMFBinding(Wfs20Factory.eINSTANCE, new QName(WFS.NAMESPACE, "TitleType")));
+        
+        bindings.put(WFS.WFS_CapabilitiesType, WFS_CapabilitiesTypeBinding.class);
+        bindings.put(WFS.FeatureTypeListType, FeatureTypeListTypeBinding.class);
+        bindings.put(WFS.FeatureTypeType, FeatureTypeTypeBinding.class);
+        
     }
     
     void binding(Map bindings, QName name) {

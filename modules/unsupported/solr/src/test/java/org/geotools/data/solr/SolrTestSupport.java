@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -109,13 +110,9 @@ public abstract class SolrTestSupport extends OnlineTestCase {
     @Override
     protected void connect() throws Exception {
         String url = fixture.getProperty(SolrDataStoreFactory.URL.key);
-        String field = fixture.getProperty(SolrDataStoreFactory.FIELD.key);
         setUpSolrFile(url);
 
-        Map params = new HashMap();
-        params.put(SolrDataStoreFactory.URL.key, url);
-        params.put(SolrDataStoreFactory.FIELD.key, field);
-        params.put(SolrDataStoreFactory.NAMESPACE.key, SolrDataStoreFactory.NAMESPACE.sample);
+        Map params = createConnectionParams(url, fixture);
 
         SolrDataStoreFactory factory = new SolrDataStoreFactory();
         dataStore = (SolrDataStore) factory.createDataStore(params);
@@ -131,6 +128,17 @@ public abstract class SolrTestSupport extends OnlineTestCase {
             at.setUse(true);
         }
 
+    }
+
+    protected Map createConnectionParams(String url, Properties fixture) {
+        String field = fixture.getProperty(SolrDataStoreFactory.FIELD.key);
+
+        Map params = new HashMap();
+        params.put(SolrDataStoreFactory.URL.key, url);
+        params.put(SolrDataStoreFactory.FIELD.key, field);
+        params.put(SolrDataStoreFactory.NAMESPACE.key, SolrDataStoreFactory.NAMESPACE.sample);
+
+        return params;
     }
 
     protected void init() throws Exception {

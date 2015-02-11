@@ -19,7 +19,9 @@ package org.geotools.se.v1_1;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Map;
 
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.styling.AnchorPoint;
@@ -41,6 +43,7 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.UomOgcMapping;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.Displacement;
@@ -281,36 +284,6 @@ public class SEExampleTest extends SETestSupport {
     }
     
     public void testParseTextSymbolizer() throws Exception {
-        /*<TextSymbolizer version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se/1.1.0/Symbolizer.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="http://www.opengeospatial.org/se/units/pixel">
-        <Name>MyTextSymbolizer</Name>
-        <Description>
-            <Title>Example TextSymbolizer</Title>
-            <Abstract>This is just an example of a text symbolizer using the FormatNumber function.</Abstract>
-        </Description>
-        <Geometry>
-            <ogc:PropertyName>locatedAt</ogc:PropertyName>
-        </Geometry>
-        <Label>
-            <ogc:PropertyName>hospitalName</ogc:PropertyName> (
-            <FormatNumber fallbackValue="">
-                <NumericValue>
-                    <ogc:PropertyName>numberOfBeds</ogc:PropertyName>
-                </NumericValue>
-                <Pattern>#####</Pattern>
-            </FormatNumber>)
-        </Label>
-        <Font>
-            <SvgParameter name="font-family">Arial</SvgParameter>
-            <SvgParameter name="font-family">Sans-Serif</SvgParameter>
-            <SvgParameter name="font-style">italic</SvgParameter>
-            <SvgParameter name="font-size">10</SvgParameter>
-        </Font>
-        <Halo/>
-        <Fill>
-            <SvgParameter name="fill">#000000</SvgParameter>
-        </Fill>
-    </TextSymbolizer>*/
-        
         TextSymbolizer sym = (TextSymbolizer) parse("example-textsymbolizer.xml");
         assertEquals("MyTextSymbolizer", sym.getName());
         assertEquals("Example TextSymbolizer", sym.getDescription().getTitle().toString());
@@ -332,6 +305,14 @@ public class SEExampleTest extends SETestSupport {
         
         Fill fill = sym.getFill();
         assertEquals(Color.BLACK, fill.getColor().evaluate(null, Color.class));
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        System.out.println(sym.getPriority());
+        assertEquals(ff.property("people"), sym.getPriority());
+
+        Map<String, String> options = sym.getOptions();
+        assertEquals(1, options.size());
+        assertEquals("100", options.get("auto-wrap"));
     }
     
     public void testParseRasterSymbolizer1() throws Exception {
@@ -506,6 +487,16 @@ public class SEExampleTest extends SETestSupport {
         
     }
     
+    public void testParseFeatureStyleVendor() throws Exception {
+        FeatureTypeStyle fts = (FeatureTypeStyle) parse("example-featurestyle-vendor.xml");
+        assertEquals("oceansea:Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
+        assertEquals(1, fts.rules().size());
+        Map<String, String> options = fts.getOptions();
+        assertEquals(1, options.size());
+        assertEquals("value", options.get("key"));
+
+    }
+
     public void testParseCoverageStyle() throws Exception {
         /*
         <CoverageStyle version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se http://www.opengis.net/se/1.1.0/FeatureStyle.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

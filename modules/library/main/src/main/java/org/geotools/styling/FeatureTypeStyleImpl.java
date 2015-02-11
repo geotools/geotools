@@ -19,8 +19,10 @@ package org.geotools.styling;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -30,7 +32,6 @@ import org.geotools.util.Utilities;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.FeatureTypeStyle;
 import org.opengis.style.SemanticType;
@@ -50,6 +51,21 @@ import org.opengis.util.Cloneable;
  */
 public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeStyle, Cloneable {
     
+    /**
+     * This option influences how multiple rules matching the same feature are evaluated
+     */
+    public static String KEY_EVALUATION_MODE = "ruleEvaluation";
+
+    /**
+     * The standard behavior, all the matching rules are executed
+     */
+    public static String VALUE_EVALUATION_MODE_ALL = "all";
+
+    /**
+     * Only the first matching rule gets executed, all the others are skipped
+     */
+    public static String VALUE_EVALUATION_MODE_FIRST = "first";
+
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
     
     private List<Rule> rules = new ArrayList<Rule>();
@@ -61,6 +77,8 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
     private String name = "name";
     private OnLineResource online = null;
     private Expression transformation;
+
+    protected Map<String, String> options;
 
     /**
      * Creates a new instance of FeatureTypeStyleImpl
@@ -107,7 +125,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
 
         ret = new org.geotools.styling.Rule[rules.size()];
         for(int i=0, n=rules.size(); i<n; i++){
-            ret[i] = (org.geotools.styling.Rule) rules.get(i);
+            ret[i] = rules.get(i);
         }
         
         return ret;
@@ -302,6 +320,10 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         if (description != null) {
             result = (PRIME * result) + description.hashCode();
         }
+        
+        if(options != null) {
+            result = PRIME * result + options.hashCode();
+        }
 
         return result;
     }
@@ -331,38 +353,41 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
             && Utilities.equals(description, other.description)
             && Utilities.equals(rules, other.rules)
             && Utilities.equals(featureTypeNames, other.featureTypeNames)
-            && Utilities.equals(semantics, other.semantics);
+                    && Utilities.equals(semantics, other.semantics)
+                    && Utilities.equals(getOptions(), other.getOptions());
         }
 
         return false;
     }
     
     public String toString() {
-    	StringBuffer buf = new StringBuffer();
-    	buf.append( "FeatureTypeStyleImpl");
-        buf.append( "[");
-    	if( name != null ) {
-    		buf.append(" name=");
-    		buf.append( name );
-    	}
-    	else {
-    		buf.append( " UNNAMED");
-    	}
-    	buf.append( ", ");
-    	buf.append( featureTypeNames );
-    	buf.append( ", rules=<");
-    	buf.append( rules.size() );
-    	buf.append( ">" );
-    	if( rules.size() > 0 ){
-    		buf.append( "(" );
-    		buf.append( rules.get(0));
-    		if( rules.size() > 1 ){
-    			buf.append(",...");
-    		}
-    		buf.append( ")");
-    	}    	
-    	buf.append("]");
-    	return buf.toString();
+        StringBuffer buf = new StringBuffer();
+        buf.append("FeatureTypeStyleImpl");
+        buf.append("[");
+        if (name != null) {
+            buf.append(" name=");
+            buf.append(name);
+        } else {
+            buf.append(" UNNAMED");
+        }
+        buf.append(", ");
+        buf.append(featureTypeNames);
+        buf.append(", rules=<");
+        buf.append(rules.size());
+        buf.append(">");
+        if (rules.size() > 0) {
+            buf.append("(");
+            buf.append(rules.get(0));
+            if (rules.size() > 1) {
+                buf.append(",...");
+            }
+            buf.append(")");
+        }
+        if (options != null) {
+            buf.append(", options=" + options);
+        }
+        buf.append("]");
+        return buf.toString();
     }
 
     public void setOnlineResource(OnLineResource online) {
@@ -394,5 +419,16 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
 
     public void setTransformation(Expression transformation) {
         this.transformation = transformation;
+    }
+
+    public boolean hasOption(String key) {
+        return options != null && options.containsKey(key);
+    }
+
+    public Map<String, String> getOptions() {
+        if (options == null) {
+            options = new LinkedHashMap<String, String>();
+        }
+        return options;
     }
 }

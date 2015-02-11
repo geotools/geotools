@@ -579,4 +579,9 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
         return super.eIsSet(featureID);
     }
 
+    @Override
+    public String getVersion() {
+        return VERSION_200;
+    }
+
 } //FilterCapabilitiesTypeImpl

@@ -16,15 +16,39 @@
  */
 package org.geotools.wfs.v2_0.bindings;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
+
 import net.opengis.wfs20.DeleteType;
 import net.opengis.wfs20.InsertType;
 import net.opengis.wfs20.PropertyType;
 import net.opengis.wfs20.TransactionType;
 import net.opengis.wfs20.UpdateType;
+import net.opengis.wfs20.ValueReferenceType;
+import net.opengis.wfs20.Wfs20Factory;
 
+import org.custommonkey.xmlunit.SimpleNamespaceContext;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.filter.v2_0.FES;
+import org.geotools.gml3.v3_2.GML;
+import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.xlink.XLINK;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
+import org.opengis.filter.identity.Identifier;
+import org.w3c.dom.Document;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
 public class TransactionTypeBindingTest extends WFSTestSupport {
 
@@ -132,6 +156,76 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         Id id = (Id) u.getFilter();
         assertNotNull(id);
         assertTrue(id.getIDs().contains("BuiltUpA_1M.10131"));
+    }
+    
+    public void testEncode() throws Exception {
+        Wfs20Factory factory = Wfs20Factory.eINSTANCE;
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        
+        TransactionType t = factory.createTransactionType();
+        
+        UpdateType update = factory.createUpdateType();
+        update.setTypeName(new QName("http://blabla", "MyFeature", "bla"));
+        PropertyType property = factory.createPropertyType();
+        ValueReferenceType ref = factory.createValueReferenceType();
+        ref.setValue(new QName("http://blabla", "MyProperty", "bla"));
+        property.setValueReference(ref);
+        property.setValue("myvalue");
+        update.getProperty().add(property);
+        Set<Identifier> ids = new HashSet<Identifier>();
+        ids.add(ff.featureId("myid"));
+        update.setFilter(ff.id(ids));        
+        t.getAbstractTransactionAction().add(update);
+        
+        DeleteType delete = factory.createDeleteType();
+        delete.setTypeName(new QName("http://blabla", "MyFeature", "bla"));
+        Set<Identifier> ids2 = new HashSet<Identifier>();
+        ids2.add(ff.featureId("myid2"));
+        delete.setFilter(ff.id(ids2));        
+        t.getAbstractTransactionAction().add(delete);
+        
+        InsertType insert = factory.createInsertType();
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName( "MyFeature" );
+        tb.setNamespaceURI( "http://blabla");
+        tb.add( "geometry", Point.class );
+        tb.add( "integer", Integer.class );        
+        SimpleFeatureBuilder b = new SimpleFeatureBuilder( tb.buildFeatureType() );
+        b.add( new GeometryFactory().createPoint( new Coordinate( 0, 0 ) ) );
+        b.add( 0 );
+        insert.getAny().add( b.buildFeature( "zero" ) );
+        
+        t.getAbstractTransactionAction().add(insert);
+                
+        registerNamespaceMapping("bla", "http://blabla");
+        Document doc = encode(t, WFS.Transaction);
+        print(doc);
+        
+        HashMap<String, String> m = new HashMap<String, String>();
+        m.put("bla", "http://blabla");
+        m.put("wfs", WFS.NAMESPACE);
+        m.put("gml", GML.NAMESPACE);
+        m.put("fes", FES.NAMESPACE);
+        m.put("xlink", XLINK.NAMESPACE);
+        m.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        m.put("xsd", "http://www.w3.org/2001/XMLSchema");
+        m.put("xs", "http://www.w3.org/2001/XMLSchema");
+        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(m));
+        
+        
+        XMLAssert.assertXpathExists("//wfs:Transaction/wfs:Update", doc);
+        XMLAssert.assertXpathExists("//wfs:Transaction/wfs:Insert", doc);
+        XMLAssert.assertXpathExists("//wfs:Transaction/wfs:Delete", doc);
+        XMLAssert.assertXpathEvaluatesTo("bla:MyProperty", "//wfs:Update//wfs:ValueReference", doc);
+        XMLAssert.assertXpathEvaluatesTo("myvalue", "//wfs:Update//wfs:Value", doc);
+        XMLAssert.assertXpathExists( "//wfs:Update//fes:Filter/fes:ResourceId", doc);
+        XMLAssert.assertXpathEvaluatesTo("myid", "//wfs:Update//fes:Filter/fes:ResourceId/@rid", doc);
+        XMLAssert.assertXpathExists( "//wfs:Delete//fes:Filter/fes:ResourceId", doc);
+        XMLAssert.assertXpathEvaluatesTo("myid2", "//wfs:Delete//fes:Filter/fes:ResourceId/@rid", doc);
+        XMLAssert.assertXpathExists( "//wfs:Insert//bla:MyFeature", doc);
+        XMLAssert.assertXpathEvaluatesTo("zero", "//wfs:Insert//bla:MyFeature/@gml:id", doc);
+        XMLAssert.assertXpathExists( "//wfs:Insert//bla:MyFeature/bla:geometry", doc);
+        XMLAssert.assertXpathEvaluatesTo("0", "//wfs:Insert//bla:MyFeature/bla:integer", doc);
     }
     
     public void testParseDelete() throws Exception {

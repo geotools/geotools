@@ -506,6 +506,10 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         case TRANSACTION:
             parameterName = "inputFormat";
             break;
+        case LIST_STORED_QUERIES:
+        case DESCRIBE_STORED_QUERIES:
+            // These return XML as specified in WFS 2.0.0
+            return Collections.singleton("text/xml");
         default:
             throw new UnsupportedOperationException("not yet implemented for " + operation);
         }

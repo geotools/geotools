@@ -129,32 +129,26 @@ public final class Logging {
     private static boolean sameLoggerFactory = true;
     
     // Check default JAI instance
-    private static boolean jaiMessageRedirect = false;
-    private static void checkJaiMessageRedirect() {
-        if( jaiMessageRedirect ) {
-            return; // checked already
-        }
-        JAI jai = null;
+    static {
         try {
-            jai = JAI.getDefaultInstance();
+            Class<?> jai = Class.forName("javax.media.jai.JAI");
+            Method getDefaultInstance = jai.getMethod("getDefaultInstance", new Class[0]);
+            Object defaultInstance = getDefaultInstance.invoke(null, new Object[0]);
+            if (defaultInstance != null) {
+                Object imagingListener = ((JAI) defaultInstance).getImagingListener();
+                if (imagingListener == null
+                        || imagingListener.getClass().getName().contains("ImagingListenerImpl")) {
+                    // Client code has not provided an ImagingListener so we can use our own
+                    // Custom GeoTools ImagingListener used to ignore common warnings
+                    ((JAI) defaultInstance).setImagingListener(new LoggingImagingListener());
+                    // System.out.println("Logging JAI messages: javax.media.jai logger redirected");
+                } else {
+                    // System.out.println("Logging JAI messages: ImagingListener already in use: "+ imagingListener);
+                }
+            }
+        } catch (Throwable ignore) {
+            // JAI not available so no need to redirect logging messages
         }
-        catch (Throwable t){
-            // JAI is not ready yet
-        }
-        if( jai == null){
-            return; // JAI not ready yet we cannot check
-        }
-        ImagingListener imagingListener = jai.getImagingListener();
-        if( imagingListener == null || imagingListener.getClass().getName().contains("ImagingListenerImpl")){
-            // Client code has not provided an ImagingListener so we can use our own
-            // Custom GeoTools ImagingListener used to ignore common warnings 
-            jai.setImagingListener(new LoggingImagingListener());
-            System.out.println("Logging JAI messages: redirected to javax.media.jai logger");
-        }
-        else {
-            System.out.println("Logging JAI messages: ImagingListener already in use: "+imagingListener);
-        }
-        jaiMessageRedirect = true;
     }
     /**
      * Creates an instance for the root logger. This constructor should not be used

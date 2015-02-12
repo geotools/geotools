@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.SQLXML;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -154,6 +155,10 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
             case Types.CLOB:
                 String string = convert(value, String.class);
                 ps.setCharacterStream(column, new StringReader(string), string.length());
+                break;
+            case Types.SQLXML:
+                SQLXML sqlxml = convert(value, SQLXML.class);
+                ps.setSQLXML(column, sqlxml);
                 break;
             default:
                 ps.setObject( column, value, Types.OTHER );

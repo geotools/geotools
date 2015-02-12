@@ -1,0 +1,3 @@
+This document represents an xml fragment, containing multiple head-level tags.
+<foo>foo</foo>
+<bar>bar</bar>

@@ -122,14 +122,14 @@ public final class Logging {
                     Class<?> imagingListenerClass = Class.forName("javax.media.jai.util.ImagingListener");
                     Method setImagingListener = jaiClass.getMethod("setImagingListener", new Class[]{ imagingListenerClass } );
                     setImagingListener.invoke(defaultInstance, new Object[]{ new LoggingImagingListener()} );
-                    System.out.println("Logging JAI messages: javax.media.jai logger redirected");
+                    // System.out.println("Logging JAI messages: javax.media.jai logger redirected");
                 } else {
-                    System.out.println("Logging JAI messages: ImagingListener already in use: "+ imagingListener);
+                    // System.out.println("Logging JAI messages: ImagingListener already in use: "+ imagingListener);
                 }
             }
         } catch (Throwable ignore) {
             // JAI not available so no need to redirect logging messages
-            System.out.println("Logging JAI messages: Unable to redirect to javax.media.jai");
+            // System.out.println("Logging JAI messages: Unable to redirect to javax.media.jai");
         }
     }
     /**

@@ -24,9 +24,6 @@ import java.util.logging.LogRecord;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
-import javax.media.jai.JAI;
-import javax.media.jai.util.ImagingListener;
-
 import org.geotools.resources.XArray;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.Errors;
@@ -55,25 +52,6 @@ import org.geotools.resources.i18n.ErrorKeys;
  * @author Martin Desruisseaux
  */
 public final class Logging {
-    private static final class LoggingImagingListener implements ImagingListener {
-        @Override
-        public boolean errorOccurred(String message, Throwable thrown, Object where,
-                boolean isRetryable) throws RuntimeException {
-            Logger log = Logging.getLogger("javax.media.jai");
-            if (message.contains("Continuing in pure Java mode")) {
-                log.log(Level.FINER, message, thrown);
-            } else {
-                log.log(Level.INFO, message, thrown);
-            }
-            return false; // we are not trying to recover
-        }
-
-        @Override
-        public String toString() {
-            return "LoggingImagingListener";
-        }
-    }
-
     /**
      * Compares {@link Logging} or {@link String} objects for alphabetical order.
      */
@@ -131,23 +109,27 @@ public final class Logging {
     // Check default JAI instance
     static {
         try {
-            Class<?> jai = Class.forName("javax.media.jai.JAI");
-            Method getDefaultInstance = jai.getMethod("getDefaultInstance", new Class[0]);
+            Class<?> jaiClass = Class.forName("javax.media.jai.JAI");
+            Method getDefaultInstance = jaiClass.getMethod("getDefaultInstance", new Class[0]);
             Object defaultInstance = getDefaultInstance.invoke(null, new Object[0]);
             if (defaultInstance != null) {
-                Object imagingListener = ((JAI) defaultInstance).getImagingListener();
+                Method getImagingListener = jaiClass.getMethod("getImagingListener", new Class[0]);
+                Object imagingListener = getImagingListener.invoke(defaultInstance, new Object[0]);
                 if (imagingListener == null
                         || imagingListener.getClass().getName().contains("ImagingListenerImpl")) {
                     // Client code has not provided an ImagingListener so we can use our own
                     // Custom GeoTools ImagingListener used to ignore common warnings
-                    ((JAI) defaultInstance).setImagingListener(new LoggingImagingListener());
-                    // System.out.println("Logging JAI messages: javax.media.jai logger redirected");
+                    Class<?> imagingListenerClass = Class.forName("javax.media.jai.util.ImagingListener");
+                    Method setImagingListener = jaiClass.getMethod("setImagingListener", new Class[]{ imagingListenerClass } );
+                    setImagingListener.invoke(defaultInstance, new Object[]{ new LoggingImagingListener()} );
+                    System.out.println("Logging JAI messages: javax.media.jai logger redirected");
                 } else {
-                    // System.out.println("Logging JAI messages: ImagingListener already in use: "+ imagingListener);
+                    System.out.println("Logging JAI messages: ImagingListener already in use: "+ imagingListener);
                 }
             }
         } catch (Throwable ignore) {
             // JAI not available so no need to redirect logging messages
+            System.out.println("Logging JAI messages: Unable to redirect to javax.media.jai");
         }
     }
     /**

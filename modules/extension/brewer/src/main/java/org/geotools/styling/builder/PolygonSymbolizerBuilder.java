@@ -93,6 +93,7 @@ public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolize
     public PolygonSymbolizerBuilder reset() {
         stroke.unset();
         fill.unset();
+        options.clear();
         unset = false;
         return this;
     }

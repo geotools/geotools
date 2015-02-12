@@ -148,6 +148,16 @@ public class CssTranslator {
     static final Pattern ABSTRACT_PATTERN = Pattern
             .compile("^.*@abstract\\s*(?:\\:\\s*)?(.+)\\s*$");
 
+    /**
+     * The global composite property
+     */
+    static final String COMPOSITE = "composite";
+
+    /**
+     * The global composite-base property
+     */
+    static final String COMPOSITE_BASE = "composite-base";
+
     @SuppressWarnings("serial")
     static final Map<String, String> POLYGON_VENDOR_OPTIONS = new HashMap<String, String>() {
         {
@@ -159,6 +169,7 @@ public class CssTranslator {
             put("-gt-fill-random-symbol-count", "random-symbol-count");
             put("-gt-fill-random-space-around", "random-space-around");
             put("-gt-fill-random-rotation", "random-rotation");
+            put("fill-composite", "composite");
 
         }
     };
@@ -189,6 +200,7 @@ public class CssTranslator {
     static final Map<String, String> LINE_VENDOR_OPTIONS = new HashMap<String, String>() {
         {
             put("-gt-stroke-label-obstacle", "labelObstacle");
+            put("stroke-composite", "composite");
         }
     };
 
@@ -196,6 +208,14 @@ public class CssTranslator {
     static final Map<String, String> POINT_VENDOR_OPTIONS = new HashMap<String, String>() {
         {
             put("-gt-mark-label-obstacle", "labelObstacle");
+            put("mark-composite", "composite");
+        }
+    };
+
+    @SuppressWarnings("serial")
+    static final Map<String, String> RASTER_VENDOR_OPTIONS = new HashMap<String, String>() {
+        {
+            put("raster-composite", "composite");
         }
     };
 
@@ -332,6 +352,9 @@ public class CssTranslator {
                             + " combined rules after filtered power set expansion");
                 }
 
+                String composite = null;
+                Boolean compositeBase = null;
+
                 // setup the tool that will eliminate redundant rules (if necessary)
                 DomainCoverage coverage = new DomainCoverage(targetFeatureType, cachedSimplifier);
                 if (mode == TranslationMode.Exclusive) {
@@ -375,6 +398,31 @@ public class CssTranslator {
                     for (CssRule derived : derivedRules) {
                         buildSldRule(derived, ftsBuilder, targetFeatureType);
                         translatedRuleCount++;
+
+                        // check if we have global composition going, and use the value of
+                        // the first rule providing the information (the one with the highest
+                        // priority)
+                        if (composite == null) {
+                            List<Value> values = derived.getPropertyValues(PseudoClass.ROOT,
+                                    COMPOSITE).get(COMPOSITE);
+                            if (values != null && !values.isEmpty()) {
+                                composite = values.get(0).toLiteral();
+                            }
+                        }
+                        if (compositeBase == null) {
+                            List<Value> values = derived.getPropertyValues(PseudoClass.ROOT,
+                                    COMPOSITE_BASE).get(COMPOSITE_BASE);
+                            if (values != null && !values.isEmpty()) {
+                                compositeBase = Boolean.valueOf(values.get(0).toLiteral());
+                            }
+                        }
+                    }
+                    
+                    if(composite != null) {
+                        ftsBuilder.option(COMPOSITE, composite);
+                    }
+                    if(Boolean.TRUE.equals(compositeBase)) {
+                        ftsBuilder.option(COMPOSITE_BASE, "true");
                     }
                 }
             }
@@ -634,7 +682,7 @@ public class CssTranslator {
             addTextSymbolizer(cssRule, ruleBuilder);
         }
         if (cssRule.hasProperty(PseudoClass.ROOT, "raster-channels")) {
-            rasterSymbolizer(cssRule, ruleBuilder);
+            addRasterSymbolizer(cssRule, ruleBuilder);
         }
     }
 
@@ -882,7 +930,7 @@ public class CssTranslator {
      * @param cssRule
      * @param ruleBuilder
      */
-    private void rasterSymbolizer(CssRule cssRule, RuleBuilder ruleBuilder) {
+    private void addRasterSymbolizer(CssRule cssRule, RuleBuilder ruleBuilder) {
         Map<String, List<Value>> values = cssRule.getPropertyValues(PseudoClass.ROOT, "raster");
         if (values == null || values.isEmpty()) {
             return;
@@ -974,6 +1022,8 @@ public class CssTranslator {
                     }
                 }
             }
+            
+            addVendorOptions(rb, RASTER_VENDOR_OPTIONS, values, i);
         }
     }
 

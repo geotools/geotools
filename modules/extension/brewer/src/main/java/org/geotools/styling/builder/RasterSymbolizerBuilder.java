@@ -32,7 +32,7 @@ import org.opengis.style.Symbolizer;
  *
  * @source $URL$
  */
-public class RasterSymbolizerBuilder extends AbstractStyleBuilder<RasterSymbolizer> {
+public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer> {
     private String name;
 
     private Expression geometry;
@@ -138,6 +138,7 @@ public class RasterSymbolizerBuilder extends AbstractStyleBuilder<RasterSymboliz
         RasterSymbolizer symbolizer = sf.rasterSymbolizer(name, geometry, description.build(), uom,
                 opacity, channelSelection.build(), overlapsBehaviour, colorMap.build(),
                 contrast.build(), shadedRelief.build(), outline != null ? outline.build() : null);
+        symbolizer.getOptions().putAll(options);
         return symbolizer;
     }
 

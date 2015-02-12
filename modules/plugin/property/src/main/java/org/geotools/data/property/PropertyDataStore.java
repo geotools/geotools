@@ -111,6 +111,7 @@ public class PropertyDataStore extends ContentDataStore {
         this.namespaceURI = namespaceURI;
     }
     
+    long watch = 0;
     protected java.util.List<Name> createTypeNames() throws IOException {
         String list[] = dir.list(new FilenameFilter() {
             public boolean accept(File dir, String name) {
@@ -122,9 +123,14 @@ public class PropertyDataStore extends ContentDataStore {
             String typeName = list[i].substring(0, list[i].lastIndexOf('.'));
             typeNames.add( new NameImpl(namespaceURI, typeName));
         }
+        watch = dir.lastModified();
         return typeNames;
     }
     
+    protected boolean checkTypeNames(){
+        return watch != dir.lastModified();
+    }
+
     public List<Name> getNames() throws IOException {
         String[] typeNames = getTypeNames();
         List<Name> names = new ArrayList<Name>(typeNames.length);

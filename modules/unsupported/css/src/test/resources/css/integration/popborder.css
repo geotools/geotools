@@ -1,0 +1,42 @@
+/* @title Population < 2M */
+[PERSONS <= 2000000] {
+  fill: #4DFF4D;
+  fill-opacity: 0.7;
+  z-index: 0;
+}
+
+/* @title 2M < Population < 4M */
+[PERSONS > 2000000] [PERSONS <= 4000000] {
+  fill: #FF4D4D;
+  fill-opacity: 0.7;
+  z-index: 0;
+}
+
+/* @title Population > 4M */
+[PERSONS > 4000000] {
+  fill: #4D4DFF;
+  fill-opacity: 0.7;
+  z-index: 0;
+}
+
+/* @title Boundaries */
+* {
+  stroke-width: 0.2;
+  label: [STATE_ABBR];
+  label-anchor: 0.5 0.5;
+  font-family: "Times New Roman";
+  font-style: normal;
+  font-size: 14;
+  /* blending control */
+  z-index: 0;
+  composite: multiply;
+  composite-base: true;
+  
+}
+
+* {
+  z-index: 1;
+  stroke: black;
+  stroke-width: 10;
+  composite: destination-in;
+}

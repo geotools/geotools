@@ -16,7 +16,11 @@
  */
 package org.geotools.styling.css;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -42,6 +46,7 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.junit.Test;
+import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
@@ -615,5 +620,103 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         Rule rule = assertSingleRule(style);
         assertEquals(ECQL.toFilter("env('foo', 'default') = 'bar'"), rule.getFilter());
     }
+    
+    @Test
+    public void testBlendPoint() throws Exception {
+        String css = "* { mark: symbol(circle); mark-composite: multiply;}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        PointSymbolizer ps = assertSingleSymbolizer(rule, PointSymbolizer.class);
+        assertEquals(1, ps.getOptions().size());
+        assertEquals("multiply", ps.getOptions().get("composite"));
+    }
+    
+    @Test
+    public void testBlendLine() throws Exception {
+        String css = "* { stroke: red; stroke-composite: multiply;}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        assertEquals(1, ls.getOptions().size());
+        assertEquals("multiply", ls.getOptions().get("composite"));
+    }
+    
+    @Test
+    public void testBlendPolygon() throws Exception {
+        String css = "* { fill: red; fill-composite: multiply;}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        PolygonSymbolizer ps = assertSingleSymbolizer(rule, PolygonSymbolizer.class);
+        assertEquals(1, ps.getOptions().size());
+        assertEquals("multiply", ps.getOptions().get("composite"));
+    }
+
+    @Test
+    public void testBlendRaster() throws Exception {
+        String css = "* { raster-channels: auto; raster-composite : multiply; }";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        RasterSymbolizer rs = assertSingleSymbolizer(rule, RasterSymbolizer.class);
+        assertEquals(1, rs.getOptions().size());
+        assertEquals("multiply", rs.getOptions().get("composite"));
+    }
+
+    @Test
+    public void testBlendFTS() throws Exception {
+        String css = "* { stroke: red; composite : multiply; }";
+        Style style = translate(css);
+        // should not be in the symbolizer this time
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        assertEquals(0, ls.getOptions().size());
+        // but in the feature type style
+        org.geotools.styling.FeatureTypeStyle fts = (org.geotools.styling.FeatureTypeStyle) style
+                .featureTypeStyles().get(0);
+        assertEquals(2, fts.getOptions().size());
+        assertEquals("multiply", fts.getOptions().get("composite"));
+        assertNull(fts.getOptions().get("composite-base"));
+    }
+
+    @Test
+    public void testCompositeBaseFTS() throws Exception {
+        String css = "* { stroke: red; composite-base : true; }";
+        Style style = translate(css);
+        // should not be in the symbolizer this time
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        assertEquals(0, ls.getOptions().size());
+        // but in the feature type style
+        org.geotools.styling.FeatureTypeStyle fts = (org.geotools.styling.FeatureTypeStyle) style
+                .featureTypeStyles().get(0);
+        assertEquals("true", fts.getOptions().get("composite-base"));
+        assertNull(fts.getOptions().get("composite"));
+    }
+
+    @Test
+    public void testCompositeAndBaseFTS() throws Exception {
+        String css = "* { stroke: red; composite: multiply; composite-base : true; }";
+        Style style = translate(css);
+        // should not be in the symbolizer this time
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        assertEquals(0, ls.getOptions().size());
+        // but in the feature type style
+        org.geotools.styling.FeatureTypeStyle fts = (org.geotools.styling.FeatureTypeStyle) style
+                .featureTypeStyles().get(0);
+        assertEquals("true", fts.getOptions().get("composite-base"));
+        assertEquals("multiply", fts.getOptions().get("composite"));
+
+    }
+
+
+    
+    
 
 }

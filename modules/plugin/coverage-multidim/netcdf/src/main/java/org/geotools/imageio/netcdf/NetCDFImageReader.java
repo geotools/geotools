@@ -337,7 +337,10 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                             final int features = collection.size();
                             if (features > 0) {
                                 // adding granules to the catalog and updating the number of written features
-                                getCatalog().addGranules(indexSchema.getTypeName(), collection, transaction);
+                                CoverageSlicesCatalog catalog = getCatalog();
+                                if (catalog != null) {
+                                    catalog.addGranules(indexSchema.getTypeName(), collection, transaction);
+                                }
                                 collection.clear();
                                 startPagingIndex += features;
                             }
@@ -935,7 +938,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     private void forceSchemaCreation(SimpleFeatureType indexSchema) throws IOException {
         final String typeName = indexSchema.getTypeName();
         final CoverageSlicesCatalog catalog = getCatalog();
-        if (typeName != null) {
+        if (typeName != null && catalog != null) {
             // Check if already existing
             String[] typeNames = catalog.getTypeNames();
             if (typeNames != null) {

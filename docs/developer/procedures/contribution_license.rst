@@ -5,8 +5,8 @@ GeoTools has adopted a formal policy as part of the process of joining the Open 
 
 All new :doc:`contributors </roles/contributor>` will be required to grant copyright to the foundation using a `Contributor Licenses <http://www.osgeo.org/content/foundation/legal/licenses.html>`_:
 
-* :download:`individual_contributor.txt </artifacts/individual_contributor.txt>`
-* :download:`corporate_contributor.txt </artifacts/corporate_contributor.txt>`
+* individual_contributor (:download:`txt </artifacts/individual_contributor.txt>` | :download:`pdf </artifacts/individual_contributor.pdf>`)
+* corporate_contributor (:download:`txt </artifacts/corporate_contributor.txt>` | :download:`pdf </artifacts/corporate_contributor.pdf>`)
 
 These licenses are directly derived from the Apache code contribution licenses (CLA V2.0 and CCLA v r190612).
 

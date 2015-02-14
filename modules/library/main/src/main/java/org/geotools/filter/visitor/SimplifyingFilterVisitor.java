@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.geotools.filter.FilterAttributeExtractor;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
@@ -143,7 +144,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
 
-    FeatureType featureType;
+    protected FeatureType featureType;
 
     private FIDValidator fidValidator = ANY_FID_VALID;
 
@@ -180,7 +181,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     protected List<Filter> basicAndSimplification(List<Filter> filters) {
         // perform range simplifications (by intersection), if possible
-        if (featureType != null) {
+        if (featureType != null && isSimpleFeature()) {
             RangeCombiner combiner = new RangeCombiner.And(ff, featureType, filters);
             filters = combiner.getReducedFilters();
         }
@@ -269,10 +270,15 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 e = (PropertyIsEqualTo) f1;
                 ne = (PropertyIsNotEqualTo) f2;
             }
-            return (e.getExpression1().equals(ne.getExpression1()) && e.getExpression2().equals(
-                    ne.getExpression2()))
-                    || (e.getExpression2().equals(ne.getExpression1()) && e.getExpression1()
-                            .equals(ne.getExpression2()));
+            // the dual filter logic is correctly implemented only for single value attributes
+            if (!isSimpleFeature()) {
+                return false;
+            } else {
+                return (e.getExpression1().equals(ne.getExpression1()) && e.getExpression2()
+                        .equals(ne.getExpression2()))
+                        || (e.getExpression2().equals(ne.getExpression1()) && e.getExpression1()
+                                .equals(ne.getExpression2()));
+            }
         }
 
         return false;
@@ -303,7 +309,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     protected List<Filter> basicOrSimplification(List<Filter> filters) {
         // perform range simplifications (by intersection), if possible
-        if (featureType != null) {
+        if (featureType != null && isSimpleFeature()) {
             RangeCombiner combiner = new RangeCombiner.Or(ff, featureType, filters);
             filters = combiner.getReducedFilters();
         }
@@ -399,28 +405,28 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         	return Filter.EXCLUDE;
         } else if(inner == Filter.EXCLUDE) {
         	return Filter.INCLUDE;
-        } else if (inner instanceof PropertyIsBetween) {
+        } else if (inner instanceof PropertyIsBetween && isSimpleFeature()) {
             PropertyIsBetween pb = (PropertyIsBetween) inner.accept(this, extraData);
             Filter lt = ff.less(pb.getExpression(), pb.getLowerBoundary());
             Filter gt = ff.greater(pb.getExpression(), pb.getUpperBoundary());
             return ff.or(lt, gt);
-        } else if (inner instanceof PropertyIsEqualTo) {
+        } else if (inner instanceof PropertyIsEqualTo && isSimpleFeature()) {
             PropertyIsEqualTo pe = (PropertyIsEqualTo) inner.accept(this, extraData);
             return ff.notEqual(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
-        } else if (inner instanceof PropertyIsNotEqualTo) {
+        } else if (inner instanceof PropertyIsNotEqualTo && isSimpleFeature()) {
             PropertyIsNotEqualTo pe = (PropertyIsNotEqualTo) inner.accept(this, extraData);
             return ff.equal(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
-        } else if (inner instanceof PropertyIsGreaterThan) {
+        } else if (inner instanceof PropertyIsGreaterThan && isSimpleFeature()) {
             PropertyIsGreaterThan pg = (PropertyIsGreaterThan) inner.accept(this, extraData);
             return ff.lessOrEqual(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
-        } else if (inner instanceof PropertyIsGreaterThanOrEqualTo) {
+        } else if (inner instanceof PropertyIsGreaterThanOrEqualTo && isSimpleFeature()) {
             PropertyIsGreaterThanOrEqualTo pg = (PropertyIsGreaterThanOrEqualTo) inner.accept(this,
                     extraData);
             return ff.less(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
-        } else if (inner instanceof PropertyIsLessThan) {
+        } else if (inner instanceof PropertyIsLessThan && isSimpleFeature()) {
             PropertyIsLessThan pl = (PropertyIsLessThan) inner.accept(this, extraData);
             return ff.greaterOrEqual(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
-        } else if (inner instanceof PropertyIsLessThanOrEqualTo) {
+        } else if (inner instanceof PropertyIsLessThanOrEqualTo && isSimpleFeature()) {
             PropertyIsLessThanOrEqualTo pl = (PropertyIsLessThanOrEqualTo) inner.accept(this,
                     extraData);
             return ff.greater(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
@@ -445,6 +451,15 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         } else {
             return super.visit(filter, extraData);
         }
+    }
+
+    /**
+     * Returns true if the target feature type is a simple feature one
+     * 
+     * @return
+     */
+    protected boolean isSimpleFeature() {
+        return featureType instanceof SimpleFeatureType;
     }
 
     public Object visit(org.opengis.filter.expression.Function function, Object extraData) {
@@ -482,18 +497,28 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     }
 
     /**
-     * Tries to simplify the filter if it's not already a simple one
+     * Tries to simplify the filter if it's not already a simple one.
      * 
      * @param filter
      * @return
      */
     public static Filter simplify(Filter filter) {
+        return simplify(filter, null);
+    }
+
+    /**
+     * Tries to simplify the filter if it's not already a simple one
+     * 
+     * @param filter
+     * @return
+     */
+    public static Filter simplify(Filter filter, FeatureType featureType) {
         // if already as simple as possible, or cannot be simplified anyways
         if (filter == Filter.INCLUDE || filter == Filter.EXCLUDE || filter == null) {
             return filter;
         }
-        // other filters might involve non volatile functions, so we need to look into them
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setFeatureType(featureType);
         return (Filter) filter.accept(visitor, null);
     }
 

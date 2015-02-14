@@ -1172,6 +1172,7 @@ public class StreamingRenderer implements GTRenderer {
 
         // simplify the filter
         SimplifyingFilterVisitor simplifier = new SimplifyingFilterVisitor();
+        simplifier.setFeatureType(source.getSchema());
         Filter simplifiedFilter = (Filter) query.getFilter().accept(simplifier, null);
         query.setFilter(simplifiedFilter);
         

@@ -128,6 +128,49 @@ public class SDOCreateTest {
     }
 
     @Test
+    public void testXY_Polygon_With_Unclosed_Ring() throws Exception {
+        SDO_GEOMETRY oraGeom = MDSYS.SDO_GEOMETRY(2003, NULL, NULL,
+                MDSYS.SDO_ELEM_INFO_ARRAY(1, 1003, 1),
+                MDSYS.SDO_ORDINATE_ARRAY(0, 0, 50, 0, 50, 50, 0, 50));
+        // geometry will be automatically fixed by appending one copy
+        // of the start point
+        checkValue(oraGeom, "POLYGON ((0 0, 50 0, 50 50, 0 50, 0 0))");
+    }
+
+    @Test
+    public void testXY_Polygon_With_Single_Point_Ring() throws Exception {
+        // geometries will be automatically fixed by appending three copies
+        // of the start point
+        SDO_GEOMETRY onePointOraGeom = MDSYS.SDO_GEOMETRY(2003, NULL, NULL,
+                MDSYS.SDO_ELEM_INFO_ARRAY(1, 1003, 1),
+                MDSYS.SDO_ORDINATE_ARRAY(0, 0));
+
+        checkValue(onePointOraGeom, "POLYGON ((0 0, 0 0, 0 0, 0 0))");
+    }
+
+    @Test
+    public void testXY_Polygon_With_Closed_Two_Points_Ring() throws Exception {
+        // geometries will be automatically fixed by appending two copies
+        // of the start point
+        SDO_GEOMETRY twoPointsOraGeom = MDSYS.SDO_GEOMETRY(2003, NULL, NULL,
+                MDSYS.SDO_ELEM_INFO_ARRAY(1, 1003, 1),
+                MDSYS.SDO_ORDINATE_ARRAY(0, 0, 0, 0));
+
+        checkValue(twoPointsOraGeom, "POLYGON ((0 0, 0 0, 0 0, 0 0))");
+    }
+
+    @Test
+    public void testXY_Polygon_With_Closed_Three_Points_Ring() throws Exception {
+        // geometries will be automatically fixed by appending one copy
+        // of the start point
+        SDO_GEOMETRY threePointsOraGeom = MDSYS.SDO_GEOMETRY(2003, NULL, NULL,
+                MDSYS.SDO_ELEM_INFO_ARRAY(1, 1003, 1),
+                MDSYS.SDO_ORDINATE_ARRAY(0, 0, 50, 0, 0, 0));
+
+        checkValue(threePointsOraGeom, "POLYGON ((0 0, 50 0, 0 0, 0 0))");
+    }
+
+    @Test
     public void testXYZ_Polygon() throws Exception {
         SDO_GEOMETRY oraGeom = MDSYS.SDO_GEOMETRY(3003, NULL, NULL,
                 MDSYS.SDO_ELEM_INFO_ARRAY(1, 1003, 1),

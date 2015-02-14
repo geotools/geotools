@@ -338,7 +338,7 @@ public class SolrDataStore extends ContentDataStore {
             // Encode OGC filer
             FilterToSolr f2s = initializeFilterToSolr(featureType);
             String fq = layerMapper.prepareFilterQuery(featureType);
-            Filter simplified = SimplifyingFilterVisitor.simplify(q.getFilter());
+            Filter simplified = SimplifyingFilterVisitor.simplify(q.getFilter(), featureType);
             String ffq = f2s.encodeToString(simplified);
             if (ffq != null && !ffq.isEmpty()) {
                 fq = fq != null ? fq + " AND " + ffq : ffq;

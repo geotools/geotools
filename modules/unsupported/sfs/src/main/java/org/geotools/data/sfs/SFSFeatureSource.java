@@ -192,6 +192,7 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
         // simplify the filter
         Filter filter = fnQuery.getFilter();
         SimplifyingFilterVisitor simplifier = new SimplifyingFilterVisitor();
+        simplifier.setFeatureType(getSchema());
         filter = (Filter) filter.accept(simplifier, null);
         
         // Split the filter into two parts, pre and post 
@@ -227,7 +228,7 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
                         allAttributes.add(extraAttribute);
                     }
                 }
-                String[] allAttributeArray = (String[]) allAttributes.toArray(new String[allAttributes.size()]);
+                String[] allAttributeArray = allAttributes.toArray(new String[allAttributes.size()]);
                 preQuery.setPropertyNames(allAttributeArray);
                 querySchema = SimpleFeatureTypeBuilder.retype(getSchema(), allAttributeArray);
             }
@@ -353,6 +354,7 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
         }
         /* Getting simplest possible filter*/
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setFeatureType(getSchema());
 
         split[0] = (Filter) split[0].accept(visitor, null);
 

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -40,7 +40,9 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
 /**
- * Utility class used by {@link SimplifyingFilterVisitor} to combine range based filters
+ * Utility class used by {@link SimplifyingFilterVisitor} to combine range based filters. This class
+ * works correctly only if all the range based filters have the same MatchAction, but does not check
+ * it internally, so it is suitable for usage only in a simple feature context
  * 
  * @author Andrea Aime - GeoSolutions
  * 
@@ -213,7 +215,11 @@ abstract class RangeCombiner {
                 BinaryComparisonOperator op = (BinaryComparisonOperator) f;
                 ExpressionRange er = getRange(op);
 
-                if (er.range != null) {
+                // Right now, only PropertyIsEqualTo actually considers matchcase, all others
+                // behave as if they were case sensitive regardgless of the setting.
+                // TODO: change the logic to consider matchcase when
+                if (er.range != null
+                        && (!(op instanceof PropertyIsEqualTo) || (op.isMatchingCase()))) {
                     addRange(rangeMap, er.expression, new MultiRange(er.range));
                 } else {
                     otherFilters.add(f);

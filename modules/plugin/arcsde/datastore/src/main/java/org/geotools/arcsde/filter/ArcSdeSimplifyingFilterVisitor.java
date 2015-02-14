@@ -66,10 +66,8 @@ public class ArcSdeSimplifyingFilterVisitor extends SimplifyingFilterVisitor {
         // SPATIAL_OPERATIONS.add(Touches.class);
     }
 
-    private SimpleFeatureType schema;
-    
     public ArcSdeSimplifyingFilterVisitor(SimpleFeatureType schema) {
-        this.schema = schema;
+        super.setFeatureType(schema);
     }
 
     @Override
@@ -99,8 +97,8 @@ public class ArcSdeSimplifyingFilterVisitor extends SimplifyingFilterVisitor {
                     
                     if(name != null && so != null) {
                         // handle the default geometry case
-                        if("".equals(name) && schema.getGeometryDescriptor() != null) {
-                            name = schema.getGeometryDescriptor().getLocalName();
+                        if("".equals(name) && featureType.getGeometryDescriptor() != null) {
+                            name = featureType.getGeometryDescriptor().getLocalName();
                         }
                         
                         // collect into the specific geometry list

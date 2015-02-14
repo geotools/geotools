@@ -31,6 +31,7 @@ import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -388,42 +389,68 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         return validIdFilter;
     }
 
+    /**
+     * Return true iff there is a MatchAction for the negation of a multivalued binary comparison operation.
+     */
+    private boolean isNegatableMatchAction(MatchAction matchAction) {
+        return matchAction == MatchAction.ANY || matchAction == MatchAction.ALL;
+    }
+
+    /**
+     * Return the MatchAction for the negation of a multivalued binary comparison operation.
+     */
+    private MatchAction negateMatchAction(MatchAction matchAction) {
+        if (matchAction == MatchAction.ANY) {
+            return MatchAction.ALL;
+        } else if (matchAction == MatchAction.ALL) {
+            return MatchAction.ANY;
+        } else {
+            throw new RuntimeException("MatchAction cannot be negated");
+        }
+    }
+
     public Object visit(Not filter, Object extraData) {
         FilterFactory2 ff = getFactory(extraData);
         Filter inner = filter.getFilter();
-		if (inner instanceof Not) {
+        if (inner instanceof Not) {
             // simplify out double negation
             Not innerNot = (Not) inner;
             return innerNot.getFilter().accept(this, extraData);
-        } else if(inner == Filter.INCLUDE) {
-        	return Filter.EXCLUDE;
-        } else if(inner == Filter.EXCLUDE) {
-        	return Filter.INCLUDE;
-        } else if (inner instanceof PropertyIsBetween) {
-            PropertyIsBetween pb = (PropertyIsBetween) inner.accept(this, extraData);
-            Filter lt = ff.less(pb.getExpression(), pb.getLowerBoundary());
-            Filter gt = ff.greater(pb.getExpression(), pb.getUpperBoundary());
-            return ff.or(lt, gt);
-        } else if (inner instanceof PropertyIsEqualTo) {
+        } else if (inner == Filter.INCLUDE) {
+            return Filter.EXCLUDE;
+        } else if (inner == Filter.EXCLUDE) {
+            return Filter.INCLUDE;
+        } else if (inner instanceof PropertyIsEqualTo
+                && isNegatableMatchAction(((PropertyIsEqualTo) inner).getMatchAction())) {
             PropertyIsEqualTo pe = (PropertyIsEqualTo) inner.accept(this, extraData);
-            return ff.notEqual(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
-        } else if (inner instanceof PropertyIsNotEqualTo) {
+            return ff.notEqual(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase(),
+                    negateMatchAction(pe.getMatchAction()));
+        } else if (inner instanceof PropertyIsNotEqualTo
+                && isNegatableMatchAction(((PropertyIsNotEqualTo) inner).getMatchAction())) {
             PropertyIsNotEqualTo pe = (PropertyIsNotEqualTo) inner.accept(this, extraData);
-            return ff.equal(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
-        } else if (inner instanceof PropertyIsGreaterThan) {
+            return ff.equal(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase(),
+                    negateMatchAction(pe.getMatchAction()));
+        } else if (inner instanceof PropertyIsGreaterThan
+                && isNegatableMatchAction(((PropertyIsGreaterThan) inner).getMatchAction())) {
             PropertyIsGreaterThan pg = (PropertyIsGreaterThan) inner.accept(this, extraData);
-            return ff.lessOrEqual(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
-        } else if (inner instanceof PropertyIsGreaterThanOrEqualTo) {
+            return ff.lessOrEqual(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase(),
+                    negateMatchAction(pg.getMatchAction()));
+        } else if (inner instanceof PropertyIsGreaterThanOrEqualTo
+                && isNegatableMatchAction(((PropertyIsGreaterThanOrEqualTo) inner).getMatchAction())) {
             PropertyIsGreaterThanOrEqualTo pg = (PropertyIsGreaterThanOrEqualTo) inner.accept(this,
                     extraData);
-            return ff.less(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
-        } else if (inner instanceof PropertyIsLessThan) {
+            return ff.less(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase(),
+                    negateMatchAction(pg.getMatchAction()));
+        } else if (inner instanceof PropertyIsLessThan
+                && isNegatableMatchAction(((PropertyIsLessThan) inner).getMatchAction())) {
             PropertyIsLessThan pl = (PropertyIsLessThan) inner.accept(this, extraData);
-            return ff.greaterOrEqual(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
+            return ff.greaterOrEqual(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase(),
+                    negateMatchAction(pl.getMatchAction()));
         } else if (inner instanceof PropertyIsLessThanOrEqualTo) {
             PropertyIsLessThanOrEqualTo pl = (PropertyIsLessThanOrEqualTo) inner.accept(this,
                     extraData);
-            return ff.greater(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
+            return ff.greater(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase(),
+                    negateMatchAction(pl.getMatchAction()));
         } else if (inner instanceof And) {
             // De Morgan
             And and = (And) inner;

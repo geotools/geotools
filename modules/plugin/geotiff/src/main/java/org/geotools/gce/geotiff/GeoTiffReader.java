@@ -184,6 +184,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 			}
 
 			closeMe = true;
+
 			// /////////////////////////////////////////////////////////////////////
 			//
 			// Get a stream in order to read from it for getting the basic
@@ -193,15 +194,30 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 			if ((source instanceof InputStream)|| (source instanceof ImageInputStream))
 				closeMe = false;
 			if(source instanceof ImageInputStream )
-				inStream=(ImageInputStream) source;
+				inStream = (ImageInputStream) source;
 			else{
+
 			    inStreamSPI = ImageIOExt.getImageInputStreamSPI(source);
 			    if (inStreamSPI == null)
                                 throw new IllegalArgumentException("No input stream for the provided source");
 			    inStream = inStreamSPI.createInputStreamInstance(source, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
 			}
-			if (inStream == null)
-				throw new IllegalArgumentException("No input stream for the provided source");
+			if (inStream == null) {
+                            // Try to figure out what went wrong and provide some info to the user.
+                            if(source instanceof File) {
+                                File f = (File) source;
+                                if (!f.exists()) {
+                                    throw new FileNotFoundException("File " + f.getAbsolutePath() + " does not exist.");
+                                } else if (f.isDirectory()) {
+                                    throw new IOException("File " + f.getAbsolutePath() + " is a directory.");
+                                } else if(!f.canRead()) {
+                                    throw new IOException("File " + f.getAbsolutePath() + " can not be read.");
+                                }
+                            }
+
+                            // If we can't give anything more specific, throw the generic error.
+                            throw new IllegalArgumentException("No input stream for the provided source");
+                        }
 
                         checkForExternalOverviews();
 			// /////////////////////////////////////////////////////////////////////

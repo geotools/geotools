@@ -24,6 +24,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -36,6 +37,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
+import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
@@ -543,4 +545,52 @@ public class GeoTiffReaderTest extends org.junit.Assert {
 		assertTrue(file.delete());
 
 	}
+
+    /**
+     * The GeoTiff reader should provide a useful error message when the user does
+     * not have permissions to read the file.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testPermissionDeniedExceptionFix() throws Exception {
+        final File file = TestData.file(GeoTiffReaderTest.class, "t.tiff");
+
+        file.setReadable(false);
+
+        try {
+            GeoTiffReader reader = new GeoTiffReader(file);
+        } catch (DataSourceException e) {
+            if(e.getCause() instanceof IOException) {
+                IOException ioException = (IOException) e.getCause();
+                assertTrue(ioException.getMessage().contains("can not be read"));
+            } else {
+                assertFalse(true);
+            }
+        } finally {
+            file.setReadable(true);
+        }
+    }
+
+    /**
+     * The GeoTiff reader should provide a useful error message when the
+     * input file path does not exist.
+     *
+     * @throws Exception
+     */
+    @Test(expected = FileNotFoundException.class)
+    public void testFileDoesNotExist() throws Throwable {
+        final File file = new File("/does/not/exist");
+
+        file.setReadable(false);
+
+        try {
+            GeoTiffReader reader = new GeoTiffReader(file);
+        } catch (DataSourceException e) {
+            // Throw the inner exception
+            throw e.getCause();
+        } finally {
+            file.setReadable(true);
+        }
+    }
 }

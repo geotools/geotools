@@ -23,7 +23,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
@@ -88,7 +87,6 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
@@ -686,7 +684,7 @@ class RasterLayerResponse{
                 // TileCache
                 TileCache tc = Utils.getTileCacheHint(hints);
                 if (tc != null) {
-                        localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, (TileCache) tc));
+                        localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, tc));
                 }
                 
                 // BorderExtender
@@ -865,7 +863,7 @@ class RasterLayerResponse{
                 for (ROI roi : rois) {
                     images[i++] = roi.getAsImage();
                 }
-                ROI[] roisArray = (ROI[]) rois.toArray(new ROI[rois.size()]);
+                ROI[] roisArray = rois.toArray(new ROI[rois.size()]);
                 RenderedOp overallROI = MosaicDescriptor.create(images,
                         MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, roisArray,
                         new double[][] { { 1.0 } }, new double[] { 0.0 }, hints);
@@ -952,7 +950,7 @@ class RasterLayerResponse{
                         final String domainName = multipleSelectionEntry.getKey() + DomainDescriptor.DOMAIN_SUFFIX;
 
                         // Need to loop over the multiple values of a custom domains
-                        final List values = (List) multipleSelectionEntry.getValue();
+                        final List values = multipleSelectionEntry.getValue();
                         for (Object o : values) {
 
                             // create a filter for this value
@@ -1238,71 +1236,19 @@ class RasterLayerResponse{
 
     }
 
-	private MosaicOutput postProcessRaster(MosaicOutput mosaickedImage) {
-		// alpha on the final mosaic
-		if (finalTransparentColor != null) {
-			if (LOGGER.isLoggable(Level.FINE)){
-			    LOGGER.fine("Support for alpha on final mosaic");
-			}
-			return new MosaicOutput(new ImageWorker(mosaickedImage.image).makeColorTransparent(finalTransparentColor).getRenderedImage()
-			        ,mosaickedImage.pamDataset);
-
-		}
-		if (!needsReprojection){
-		    try {
-		        
-		        // creating source grid to world corrected to the pixel corner
-                        final AffineTransform sourceGridToWorld = new AffineTransform((AffineTransform) finalGridToWorldCorner);
-		        
-		        // target world to grid at the corner
-                        final AffineTransform targetGridToWorld = new AffineTransform(
-                        		request.spatialRequestHelper.isNeedsReprojection()?
-                        				request.spatialRequestHelper.getComputedGridToWorld():
-                        		request.spatialRequestHelper.getComputedGridToWorld());
-                        targetGridToWorld.concatenate(CoverageUtilities.CENTER_TO_CORNER);
-                        
-                        // target world to grid at the corner
-                        final AffineTransform targetWorldToGrid=targetGridToWorld.createInverse();
-                        // final complete transformation
-                        targetWorldToGrid.concatenate(sourceGridToWorld);
-                        
-                        //update final grid to world
-                        finalGridToWorldCorner=new AffineTransform2D(targetGridToWorld);
-                        //
-                        // Check and see if the affine transform is doing a copy.
-                        // If so call the copy operation.
-                        //
-                        // we are in raster space here, so 1E-3 is safe
-                        if(XAffineTransform.isIdentity(targetWorldToGrid, Utils.AFFINE_IDENTITY_EPS))
-                            return mosaickedImage;
-		        
-		        // create final image
-		        //
-                        // In case we are asked to use certain tile dimensions we tile
-                        // also at this stage in case the read type is Direct since
-                        // buffered images comes up untiled and this can affect the
-                        // performances of the subsequent affine operation.
-                        //
-                        final Hints localHints= new Hints(hints);
-                        if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
-                            final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
-                            if (!(extender != null && extender instanceof BorderExtender)) {
-                                localHints.add(ImageUtilities.EXTEND_BORDER_BY_COPYING);
-                            }
-                        }
-                        
-                        ImageWorker iw = new ImageWorker(mosaickedImage.image);
-                        iw.setRenderingHints(localHints);
-                        iw.affine(targetWorldToGrid, interpolation, backgroundValues);
-                        mosaickedImage.image = iw.getRenderedImage();
-                    } catch (NoninvertibleTransformException e) {
-                        if (LOGGER.isLoggable(Level.SEVERE)){
-                            LOGGER.log(Level.SEVERE, "Unable to create the requested mosaic ", e );
-                        }
-                }
+    private MosaicOutput postProcessRaster(MosaicOutput mosaickedImage) {
+        // alpha on the final mosaic
+        if (finalTransparentColor != null) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Support for alpha on final mosaic");
             }
-            return mosaickedImage;
+            return new MosaicOutput(new ImageWorker(mosaickedImage.image).makeColorTransparent(
+                    finalTransparentColor).getRenderedImage(), mosaickedImage.pamDataset);
+
         }
+
+        return mosaickedImage;
+    }
 
     /**
      * This method loads the granules which overlap the requested {@link GeneralEnvelope} using the provided values for alpha and input ROI.
@@ -1584,7 +1530,7 @@ class RasterLayerResponse{
 
                 // build a filter for each dimension
                 final String domainName = entry.getKey()+DomainDescriptor.DOMAIN_SUFFIX;
-                additionalFilter.add(rasterManager.domainsManager.createFilter(domainName, (List) entry.getValue()));
+                additionalFilter.add(rasterManager.domainsManager.createFilter(domainName, entry.getValue()));
 
             }
             // merge with existing ones

@@ -1338,7 +1338,7 @@ public class ImageWorker {
              * Get the default hints, which usually contains only informations about tiling. If the user override the rendering hints with an explicit
              * color model, keep the user's choice.
              */
-            final RenderingHints hints = (RenderingHints) getRenderingHints();
+            final RenderingHints hints = getRenderingHints();
             final ImageLayout layout;
             final Object candidate = hints.get(JAI.KEY_IMAGE_LAYOUT);
             if (candidate instanceof ImageLayout) {
@@ -1524,7 +1524,7 @@ public class ImageWorker {
             pb.removeSources();
         }
 
-        image = (RenderedImage) sourceImage;
+        image = sourceImage;
         invalidateStatistics();
 
         // All post conditions for this method contract.
@@ -2959,7 +2959,7 @@ public class ImageWorker {
                                 || !(property instanceof ROI)) {
                             paramBlk.add(warp).add(interpolation).add(bgValues);
                         } else {
-                            paramBlk.add(warp).add(interpolation).add(bgValues).add((ROI) property);
+                            paramBlk.add(warp).add(interpolation).add(bgValues).add(property);
                         }
 
                         // force in the image layout, this way we get exactly the same
@@ -2971,6 +2971,11 @@ public class ImageWorker {
                         il.setMinY(targetBB.y);
                         il.setWidth(targetBB.width);
                         il.setHeight(targetBB.height);
+                        
+                        il.setTileHeight(op.getTileHeight());
+                        il.setTileWidth(op.getTileWidth());
+                        il.setTileGridXOffset(0);
+                        il.setTileGridYOffset(0);
                         localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
 
                         RenderedOp result = JAI.create("Warp", paramBlk, localHints);
@@ -3086,10 +3091,10 @@ public class ImageWorker {
                 ParameterBlock paramBlock = op.getParameterBlock();
                 source = paramBlock.getRenderedSource(0);
 
-                float sx = (float) paramBlock.getFloatParameter(0);
-                float sy = (float) paramBlock.getFloatParameter(1);
-                float sWidth = (float) paramBlock.getFloatParameter(2);
-                float sHeight = (float) paramBlock.getFloatParameter(3);
+                float sx = paramBlock.getFloatParameter(0);
+                float sy = paramBlock.getFloatParameter(1);
+                float sWidth = paramBlock.getFloatParameter(2);
+                float sHeight = paramBlock.getFloatParameter(3);
 
                 // merge the two (just need to sum the two origins)
                 if (sx > 0) {

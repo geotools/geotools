@@ -16,12 +16,7 @@
  */
 package org.geotools.image;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
@@ -1096,32 +1091,42 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
     
     
-    
     @Test
     public void testOptimizedWarp() throws Exception {
-        // do it again, make sure the image does not turn black since 
+        // do it again, make sure the image does not turn black since
         GridCoverage2D ushortCoverage = EXAMPLES.get(5);
-       GridCoverage2D coverage = project(ushortCoverage,CRS.parseWKT(GOOGLE_MERCATOR_WKT), null,"nearest", null, true);
-       RenderedImage ri = coverage.getRenderedImage();
-       
-       
-       ImageWorker.WARP_REDUCTION_ENABLED = false;
-       AffineTransform at = new AffineTransform(0.4, 0, 0, 0.5, -200, -200);
-       RenderedOp fullChain = (RenderedOp) new ImageWorker(ri).affine(at, Interpolation.getInstance(Interpolation.INTERP_NEAREST), new double[] {0}).getRenderedImage();
-       assertEquals("Scale", fullChain.getOperationName());
-       fullChain.getTiles();
-       
-       ImageWorker.WARP_REDUCTION_ENABLED = true;
-       RenderedOp reduced = (RenderedOp) new ImageWorker(ri).affine(at, Interpolation.getInstance(Interpolation.INTERP_NEAREST), new double[] {0}).getRenderedImage();
-       // force computation, to make sure it does not throw exceptions
-       reduced.getTiles();
-       // check the chain has been reduced
-       assertEquals("Warp", reduced.getOperationName());
-       assertEquals(1, reduced.getSources().size());
-       assertSame(ushortCoverage.getRenderedImage(), reduced.getSourceImage(0));
-    
-       // check the bounds of the output image has not changed
-       assertEquals(fullChain.getBounds(), reduced.getBounds());
+        GridCoverage2D coverage = project(ushortCoverage, CRS.parseWKT(GOOGLE_MERCATOR_WKT), null,
+                "nearest", null, true);
+        RenderedImage ri = coverage.getRenderedImage();
+
+        ImageWorker.WARP_REDUCTION_ENABLED = false;
+        AffineTransform at = new AffineTransform(0.4, 0, 0, 0.5, -200, -200);
+        RenderedOp fullChain = (RenderedOp) new ImageWorker(ri).affine(at,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), new double[] { 0 })
+                .getRenderedImage();
+        assertEquals("Scale", fullChain.getOperationName());
+        fullChain.getTiles();
+
+        ImageWorker.WARP_REDUCTION_ENABLED = true;
+        RenderedOp reduced = (RenderedOp) new ImageWorker(ri).affine(at,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), new double[] { 0 })
+                .getRenderedImage();
+        // force computation, to make sure it does not throw exceptions
+        reduced.getTiles();
+        // check the chain has been reduced
+        assertEquals("Warp", reduced.getOperationName());
+        assertEquals(1, reduced.getSources().size());
+        assertSame(ushortCoverage.getRenderedImage(), reduced.getSourceImage(0));
+
+        // check the bounds of the output image has not changed
+        assertEquals(fullChain.getBounds(), reduced.getBounds());
+
+        // check we are getting a reasonable tile size and origin (JAI warp_affine will generate
+        // odd results otherwise
+        assertEquals(0, reduced.getTileGridXOffset());
+        assertEquals(0, reduced.getTileGridYOffset());
+        assertEquals(ushortCoverage.getRenderedImage().getTileWidth(), reduced.getTileWidth());
+        assertEquals(ushortCoverage.getRenderedImage().getTileHeight(), reduced.getTileHeight());
     }
     
 }

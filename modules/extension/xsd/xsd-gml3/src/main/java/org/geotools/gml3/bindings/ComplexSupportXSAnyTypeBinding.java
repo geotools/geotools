@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -48,6 +48,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.identity.Identifier;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.xml.sax.Attributes;
 
 /**
@@ -405,6 +406,9 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
             }
             GML3EncodingUtils.encodeClientProperties(complex, value);
             GML3EncodingUtils.encodeSimpleContent(complex, document, value);
+        } else if (Node.class.isAssignableFrom(object.getClass())) {
+            Node node = document.importNode((Node)object, true);
+            value.appendChild(node);
         }
         return value;
     }

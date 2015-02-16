@@ -37,7 +37,7 @@ Developing GeoTools
 See the `Get Involved <http://geotools.org/getinvolved.html>`_ page for the Developer's Guide,
 issue tracking and how to join the GeoTools community.
 
-**For the impatient**, please read at least the `contributor guidelines <http://docs.geotools.org/latest/developer/roles/contribute.html>`_ before start working
+**For the impatient**, please read at least the `contributor guidelines <http://docs.geotools.org/latest/developer/roles/contributor.html>`_ before start working
 on your code contributions to the project.
 
 Welcome Developers

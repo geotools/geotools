@@ -433,12 +433,18 @@ public final class GridCoverageRenderer {
         // /////////////////////////////////////////////////////////////////////
         final GridCoverage2D afterReprojection=reproject(preReprojection, doReprojection,bkgValues);
         
+        // symbolizer
+        return symbolize(afterReprojection, symbolizer, bkgValues);
+    }
+
+    private GridCoverage2D symbolize(final GridCoverage2D coverage,
+            final RasterSymbolizer symbolizer, final double[] bkgValues) {
         // ///////////////////////////////////////////////////////////////////
         //
         // FINAL AFFINE
         //
         // ///////////////////////////////////////////////////////////////////
-        final GridCoverage2D preSymbolizer= affine(afterReprojection,bkgValues);
+        final GridCoverage2D preSymbolizer = affine(coverage, bkgValues);
         if (preSymbolizer == null) {
             return null;
         }
@@ -827,15 +833,24 @@ public final class GridCoverageRenderer {
         } else {
             displacedCoverages.addAll(reprojectedCoverages);
         }
+        
+        // symbolize each bit (done here to make sure we can perform the warp/affine reduction)
+        List<GridCoverage2D> symbolizedCoverages = new ArrayList<>();
+        for (GridCoverage2D displaced : displacedCoverages) {
+            GridCoverage2D symbolized = symbolize(displaced, symbolizer,
+                    GridCoverageRendererUtilities.colorToArray(background));
+            symbolizedCoverages.add(symbolized);
+        }
+
 
         // if more than one coverage, mosaic
         GridCoverage2D mosaicked = null;
-        if (displacedCoverages.size() == 0) {
+        if (symbolizedCoverages.size() == 0) {
             return null;
-        } else if (displacedCoverages.size() == 1) {
-            mosaicked = displacedCoverages.get(0);
+        } else if (symbolizedCoverages.size() == 1) {
+            mosaicked = symbolizedCoverages.get(0);
         } else {
-            mosaicked = GridCoverageRendererUtilities.mosaic(displacedCoverages,
+            mosaicked = GridCoverageRendererUtilities.mosaic(symbolizedCoverages,
                     destinationEnvelope, hints);
         }
 
@@ -845,16 +860,15 @@ public final class GridCoverageRenderer {
             return null;
         }
 
-        // render it
-        GridCoverage2D result = renderCoverage(mosaicked, symbolizer,
-                GridCoverageRendererUtilities.colorToArray(background));
-
-        if (result == null) {
+        // at this point, we might have a coverage that's still slightly larger
+        // than the one requested, crop as needed
+        GridCoverage2D cropped = crop(mosaicked, destinationEnvelope, false);
+        if (cropped == null) {
             return null;
-        } else {
-            // RenderedImageBrowser.showChain(result.getRenderedImage());
-            return result.getRenderedImage();
         }
+
+        return cropped.getRenderedImage();
+
     }
 
     private GridCoverage2D displaceCoverage(GridCoverage2D coverage, double tx, double ty) {

@@ -37,6 +37,7 @@ import com.vividsolutions.jts.algorithm.RobustCGAlgorithms;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.CoordinateSequences;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -2767,8 +2768,12 @@ public final class SDO {
             }
             ring = (LinearRing) gf.createCurvedGeometry(components);
         } else if (INTERPRETATION == 1) {
-            ring = gf.createLinearRing(subList(gf.getCoordinateSequenceFactory(), coords, GTYPE,
-                    elemInfo, triplet, false));
+            CoordinateSequence coordSeq = subList(
+                    gf.getCoordinateSequenceFactory(), coords, GTYPE, elemInfo,
+                    triplet, false);
+            coordSeq = CoordinateSequences.ensureValidRing(
+                    gf.getCoordinateSequenceFactory(), coordSeq);
+            ring = gf.createLinearRing(coordSeq);
         } else if (INTERPRETATION == 3) {
             // rectangle does not maintain measures
             //

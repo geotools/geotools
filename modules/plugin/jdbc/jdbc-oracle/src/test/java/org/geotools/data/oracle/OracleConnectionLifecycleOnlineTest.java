@@ -16,28 +16,14 @@
  */
 package org.geotools.data.oracle;
 
-import org.geotools.jdbc.JDBC3DOnlineTest;
-import org.geotools.jdbc.JDBC3DTestSetup;
+import org.geotools.jdbc.JDBCConnectionLifecycleOnlineTest;
+import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
-public class Oracle3DTest extends JDBC3DOnlineTest {
+public class OracleConnectionLifecycleOnlineTest extends JDBCConnectionLifecycleOnlineTest {
 
     @Override
-    protected JDBC3DTestSetup createTestSetup() {
-        return new Oracle3DTestSetup();
+    protected JDBCTestSetup createTestSetup() {
+        return new OracleTestSetup();
     }
 
-    /**
-     * This test is overriden to disable it, since it is a known issue.
-     * The issue is that the Oracle driver writes Rectangles as Oracle SDO Rectangle structures, which don't preserve 3D
-     * See GEOT-4133
-     */
-    @Override
-    public void testCreateSchemaAndInsertPolyRectangle() throws Exception {
-    }
-    
 }

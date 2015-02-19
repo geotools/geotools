@@ -8,7 +8,7 @@ import org.geotools.jdbc.JDBCEmptyTestSetup;
  *
  * @source $URL$
  */
-public class OracleEmptyTest extends JDBCEmptyOnlineTest {
+public class OracleEmptyOnlineTest extends JDBCEmptyOnlineTest {
 
     @Override
     protected JDBCEmptyTestSetup createTestSetup() {

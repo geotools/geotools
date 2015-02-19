@@ -16,10 +16,15 @@
  */
 package org.geotools.data.oracle;
 
-import org.geotools.jdbc.JDBCConnectionLifecycleOnlineTest;
+import org.geotools.jdbc.JDBCFeatureSourceExposePkOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-public class OracleConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineTest {
+/**
+ * 
+ *
+ * @source $URL$
+ */
+public class OracleFeatureSourceExposePkOnlineTest extends JDBCFeatureSourceExposePkOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {

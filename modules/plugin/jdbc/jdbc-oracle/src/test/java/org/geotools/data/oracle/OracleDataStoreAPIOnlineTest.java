@@ -16,19 +16,24 @@
  */
 package org.geotools.data.oracle;
 
-import org.geotools.jdbc.JDBCFeatureStoreOnlineTest;
-import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
+import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
 /**
  * 
  *
  * @source $URL$
  */
-public class OracleFeatureStoreTest extends JDBCFeatureStoreOnlineTest {
+public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
     @Override
-    protected JDBCTestSetup createTestSetup() {
-        return new OracleTestSetup();
+    protected JDBCDataStoreAPITestSetup createTestSetup() {
+        return new OracleDataStoreAPITestSetup(new OracleTestSetup());
     }
 
+    
+    @Override
+    public void testGetFeatureWriterConcurrency() throws Exception {
+        // skip, does not work with Oracle
+    }
 }

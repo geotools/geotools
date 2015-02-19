@@ -33,7 +33,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @source $URL$
  */
-public class OracleDataStoreTest extends JDBCDataStoreOnlineTest {
+public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {

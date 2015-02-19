@@ -8,7 +8,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  *
  * @source $URL$
  */
-public class OracleAggregateFunctionTest extends JDBCAggregateFunctionOnlineTest {
+public class OracleAggregateFunctionOnlineTest extends JDBCAggregateFunctionOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {

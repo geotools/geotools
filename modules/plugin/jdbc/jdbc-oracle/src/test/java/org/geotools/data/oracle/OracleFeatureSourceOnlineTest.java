@@ -30,7 +30,7 @@ import org.opengis.filter.PropertyIsEqualTo;
  *
  * @source $URL$
  */
-public class OracleFeatureSourceTest extends JDBCFeatureSourceOnlineTest {
+public class OracleFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {

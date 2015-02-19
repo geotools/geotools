@@ -12,7 +12,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @source $URL$
  */
-public class OracleDateTest extends JDBCDateOnlineTest {
+public class OracleDateOnlineTest extends JDBCDateOnlineTest {
 
     @Override
     protected JDBCDateTestSetup createTestSetup() {

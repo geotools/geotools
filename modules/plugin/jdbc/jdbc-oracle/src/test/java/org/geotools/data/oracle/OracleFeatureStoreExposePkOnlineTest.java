@@ -24,7 +24,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  *
  * @source $URL$
  */
-public class OracleFeatureStoreExposePkTest extends JDBCFeatureStoreExposePkOnlineTest {
+public class OracleFeatureStoreExposePkOnlineTest extends JDBCFeatureStoreExposePkOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {

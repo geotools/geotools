@@ -113,7 +113,7 @@
           </dependency>        
         </dependencies>                  
         <properties>
-           <maven.test.skip>true</maven.test.skip>
+           <skipTests>true</skipTests>
         </properties>
     </profile>
   </profiles>

@@ -15,10 +15,6 @@
       <version>14-SNAPSHOT</version>
   </parent>
   
-  <properties>
-    <netcdf.version>4.3.16</netcdf.version>
-  </properties>
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->

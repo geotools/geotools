@@ -733,6 +733,94 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         String json = fjson.toString(features);
 
     }
+    
+    public void testFeatureCollectionWithNullGeometrySchemaRead() throws Exception {
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'geometry': null," +
+          "      'properties': {" +
+          "      }," +
+          "      'id': 'xyz.1'" +
+          "    }" +
+          "  ]" +
+          "}");
+
+      SimpleFeatureType type = fjson.readFeatureCollectionSchema(json, true);
+      assertNull(type.getGeometryDescriptor());
+    }
+
+    public void testFeatureCollectionWithoutGeometrySchemaRead() throws Exception {
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "      }," +
+          "      'id': 'xyz.1'" +
+          "    }" +
+          "  ]" +
+          "}");
+
+      SimpleFeatureType type = fjson.readFeatureCollectionSchema(json, true);
+      assertNull(type.getGeometryDescriptor());
+    }
+    
+    public void testFeatureCollectionConflictingTypesSchemaRead() throws Exception {
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "         'prop': 1" +
+          "      }" +
+          "    }," +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "        'prop': 'xyz'" +
+          "      }" +
+          "    }" +
+          "  ]" +
+          "}");
+
+      try {
+        fjson.readFeatureCollectionSchema(json, false);
+        fail("Should have thrown IllegalStateException");
+      } catch (IllegalStateException e) {
+      }
+    }
+    
+    public void testFeatureCollectionConflictingButInterchangeableTypesSchemaRead() throws Exception {
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "         'prop': 1" +
+          "      }" +
+          "    }," +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "        'prop': 1.0" +
+          "      }" +
+          "    }" +
+          "  ]" +
+          "}");
+
+        SimpleFeatureType type = fjson.readFeatureCollectionSchema(json, false);
+        assertEquals(Double.class, type.getDescriptor("prop").getType().getBinding());
+    }
 
     String crsText() {
         return 

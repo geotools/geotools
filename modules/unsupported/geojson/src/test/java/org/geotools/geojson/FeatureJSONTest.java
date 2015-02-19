@@ -733,6 +733,43 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         String json = fjson.toString(features);
 
     }
+    
+    public void testFeatureCollectionWithNullGeometrySchemaRead() throws Exception {
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'geometry': null," +
+          "      'properties': {" +
+          "      }," +
+          "      'id': 'xyz.1'" +
+          "    }" +
+          "  ]" +
+          "}");
+
+      SimpleFeatureType type = fjson.readFeatureCollectionSchema(json, true);
+      assertNull(type.getGeometryDescriptor());
+    }
+
+    public void testFeatureCollectionWithoutGeometrySchemaRead() throws Exception {
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "      }," +
+          "      'id': 'xyz.1'" +
+          "    }" +
+          "  ]" +
+          "}");
+
+      SimpleFeatureType type = fjson.readFeatureCollectionSchema(json, true);
+      assertNull(type.getGeometryDescriptor());
+    }
 
     String crsText() {
         return 

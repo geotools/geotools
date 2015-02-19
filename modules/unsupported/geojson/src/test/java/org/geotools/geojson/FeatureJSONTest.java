@@ -30,6 +30,7 @@ import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -760,6 +761,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
           "  'features': [" +
           "    {" +
           "      'type': 'Feature'," +
+          "      'geometry': null," +
           "      'properties': {" +
           "      }," +
           "      'id': 'xyz.1'" +
@@ -769,6 +771,34 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
 
       SimpleFeatureType type = fjson.readFeatureCollectionSchema(json, true);
       assertNull(type.getGeometryDescriptor());
+    }
+    
+    public void testFeatureCollectionWithIdPropertyReadWrite() throws Exception {
+     
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "         'id': 'one'" +
+          "      }," +
+          "      'id': 'xyz.1'" +
+          "    }" +
+          "  ]" +
+          "}");
+      
+      FeatureCollection fc = fjson.readFeatureCollection(json);
+      assertNotNull(fc.getSchema().getDescriptor("id"));
+      Feature feat = fc.features().next();
+      assertEquals("one", feat.getProperty("id").getValue());
+      assertEquals("xyz.1", feat.getIdentifier().getID());
+      
+      ByteArrayOutputStream os = new ByteArrayOutputStream();
+      fjson.writeFeatureCollection(fc, os);
+
+      assertEquals(json, os.toString());
     }
 
     String crsText() {

@@ -3,7 +3,7 @@ package org.geotools.data.oracle;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-import org.geotools.jdbc.JDBCDateTest;
+import org.geotools.jdbc.JDBCDateOnlineTest;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -12,7 +12,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @source $URL$
  */
-public class OracleDateTest extends JDBCDateTest {
+public class OracleDateTest extends JDBCDateOnlineTest {
 
     @Override
     protected JDBCDateTestSetup createTestSetup() {

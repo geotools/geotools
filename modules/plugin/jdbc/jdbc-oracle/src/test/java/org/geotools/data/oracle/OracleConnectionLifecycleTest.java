@@ -16,10 +16,10 @@
  */
 package org.geotools.data.oracle;
 
-import org.geotools.jdbc.JDBCConnectionLifecycleTest;
+import org.geotools.jdbc.JDBCConnectionLifecycleOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-public class OracleConnectionLifecycleTest extends JDBCConnectionLifecycleTest {
+public class OracleConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {

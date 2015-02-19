@@ -16,14 +16,10 @@
  */
 package org.geotools.data.oracle;
 
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.jdbc.JDBCDataStoreTest;
+import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -37,7 +33,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @source $URL$
  */
-public class OracleDataStoreTest extends JDBCDataStoreTest {
+public class OracleDataStoreTest extends JDBCDataStoreOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {

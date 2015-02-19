@@ -19,7 +19,7 @@ package org.geotools.data.oracle;
 import org.geotools.data.DefaultQuery;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
-import org.geotools.jdbc.JDBCFeatureSourceTest;
+import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.CRS;
 import org.opengis.filter.FilterFactory;
@@ -30,7 +30,7 @@ import org.opengis.filter.PropertyIsEqualTo;
  *
  * @source $URL$
  */
-public class OracleFeatureSourceTest extends JDBCFeatureSourceTest {
+public class OracleFeatureSourceTest extends JDBCFeatureSourceOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {

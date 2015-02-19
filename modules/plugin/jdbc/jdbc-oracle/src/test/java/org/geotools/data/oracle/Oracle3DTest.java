@@ -16,7 +16,7 @@
  */
 package org.geotools.data.oracle;
 
-import org.geotools.jdbc.JDBC3DTest;
+import org.geotools.jdbc.JDBC3DOnlineTest;
 import org.geotools.jdbc.JDBC3DTestSetup;
 
 /**
@@ -24,7 +24,7 @@ import org.geotools.jdbc.JDBC3DTestSetup;
  *
  * @source $URL$
  */
-public class Oracle3DTest extends JDBC3DTest {
+public class Oracle3DTest extends JDBC3DOnlineTest {
 
     @Override
     protected JDBC3DTestSetup createTestSetup() {

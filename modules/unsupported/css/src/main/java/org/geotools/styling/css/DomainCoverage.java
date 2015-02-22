@@ -53,37 +53,10 @@ class DomainCoverage {
     /**
      * The full range of scales possible. Once this is covered, the whole domain is
      */
-    static final DoubleRange FULL_SCALE_RANGE = new DoubleRange(0, Double.POSITIVE_INFINITY);
+    static final NumberRange<Double> FULL_SCALE_RANGE = new NumberRange<Double>(Double.class, 0d,
+            Double.POSITIVE_INFINITY);
 
-    /**
-     * Convenience to avoid having to repeat the Double generic over and over
-     * 
-     * @author Andrea Aime - GeoSolutions
-     *
-     */
-    private static final class DoubleRange extends NumberRange<Double> {
 
-        private static final long serialVersionUID = -6299927149733005488L;
-
-        public DoubleRange(double minimum, boolean isMinIncluded, double maximum,
-                boolean isMaxIncluded) {
-            super(Double.class, minimum, isMinIncluded, maximum, isMaxIncluded);
-        }
-
-        public DoubleRange(double minimum, double maximum) {
-            super(Double.class, minimum, maximum);
-        }
-
-        public DoubleRange(Range<Double> range) {
-            super(range);
-        }
-
-        public DoubleRange(NumberRange<?> range) {
-            super(Double.class, range.getMinimum(), range.isMinIncluded(), range.getMaximum(),
-                    range.isMaxIncluded());
-        }
-
-    }
 
     /**
      * A simplified representation of a Selector that takes apart the three main components, scale
@@ -95,12 +68,13 @@ class DomainCoverage {
      */
     class SLDSelector {
 
-        DoubleRange scaleRange;
+        NumberRange<Double> scaleRange;
 
         Filter filter;
 
         public SLDSelector(NumberRange<?> scaleRange, Filter filter) {
-            this.scaleRange = new DoubleRange(scaleRange.getMinimum(), scaleRange.isMinIncluded(),
+            this.scaleRange = new NumberRange(Double.class, scaleRange.getMinimum(),
+                    scaleRange.isMinIncluded(),
                     scaleRange.getMaximum(), scaleRange.isMaxIncluded());
             this.filter = filter;
         }
@@ -335,16 +309,14 @@ class DomainCoverage {
     }
 
     private List<CssRule> coverageToRules(CssRule rule, List<SLDSelector> ruleCoverage) {
-        if (ruleCoverage.size() == 1) {
-            return Collections.singletonList(rule);
-        } else {
+
             List<CssRule> result = new ArrayList<>();
             for (SLDSelector ss : ruleCoverage) {
-                new CssRule(ss.toSelector(simplifier), rule.getProperties(), rule.getComment());
+                result.add(new CssRule(ss.toSelector(simplifier), rule.getProperties(), rule
+                        .getComment()));
             }
 
             return result;
-        }
     }
 
     /**

@@ -147,6 +147,8 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     protected FeatureType featureType;
 
     private FIDValidator fidValidator = ANY_FID_VALID;
+    
+    private boolean rangeSimplicationEnabled = false;
 
     public void setFIDValidator(FIDValidator validator) {
         this.fidValidator = validator == null ? ANY_FID_VALID : validator;
@@ -181,7 +183,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     protected List<Filter> basicAndSimplification(List<Filter> filters) {
         // perform range simplifications (by intersection), if possible
-        if (featureType != null && isSimpleFeature()) {
+        if (rangeSimplicationEnabled && featureType != null && isSimpleFeature()) {
             RangeCombiner combiner = new RangeCombiner.And(ff, featureType, filters);
             filters = combiner.getReducedFilters();
         }
@@ -309,7 +311,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     protected List<Filter> basicOrSimplification(List<Filter> filters) {
         // perform range simplifications (by intersection), if possible
-        if (featureType != null && isSimpleFeature()) {
+        if (rangeSimplicationEnabled && featureType != null && isSimpleFeature()) {
             RangeCombiner combiner = new RangeCombiner.Or(ff, featureType, filters);
             filters = combiner.getReducedFilters();
         }
@@ -621,6 +623,21 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         } else {
             return clone;
         }
+    }
+
+    public boolean isRangeSimplicationEnabled() {
+        return rangeSimplicationEnabled;
+    }
+
+    /**
+     * Enables/disable range simplification. Range simplification can figure out that the logic
+     * combination of multiple ranges against the same property can be turned into a single range, a
+     * INCLUDE, or a EXCLUDE, but it requires the range boundaries to be of the same type as the
+     * 
+     * @param rangeSimplicationEnabled
+     */
+    public void setRangeSimplicationEnabled(boolean rangeSimplicationEnabled) {
+        this.rangeSimplicationEnabled = rangeSimplicationEnabled;
     }
 
 }

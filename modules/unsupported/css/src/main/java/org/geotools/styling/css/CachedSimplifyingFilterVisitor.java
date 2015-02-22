@@ -43,6 +43,7 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
 
     public CachedSimplifyingFilterVisitor(FeatureType ft) {
         setFeatureType(ft);
+        setRangeSimplicationEnabled(true);
     }
 
     @Override

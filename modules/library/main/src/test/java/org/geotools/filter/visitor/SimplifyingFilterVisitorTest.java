@@ -64,6 +64,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
                 return true;
             };
         };
+        simpleVisitor.setRangeSimplicationEnabled(true);
         // one that does not know, and thus assumes complex ones
         complexVisitor = new SimplifyingFilterVisitor();
     }
@@ -420,6 +421,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     private <T> void testAndDisjointRanges(Class<T> type, T max, T min) throws Exception {
         SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setRangeSimplicationEnabled(true);
 
         Filter original = ff.and(ff.greater(ff.property("a"), ff.literal(max)),
                 ff.less(ff.property("a"), ff.literal(min)));
@@ -463,6 +465,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     private <T> void testAndTouchingRanges(Class<T> type, T value) throws Exception {
         SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
 
         Filter original = ff.and(ff.greaterOrEqual(ff.property("a"), ff.literal(value)),
@@ -483,6 +486,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     private <T> void testOrTouchingRanges(Class<T> type, T value) throws Exception {
         SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
 
         Filter original = ff.or(ff.greaterOrEqual(ff.property("a"), ff.literal(value)),
@@ -503,6 +507,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     private <T> void testAndOverlappingRanges(Class<T> type, T min, T mid, T max) throws Exception {
         SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
 
         // excluding extrema, not possible to turn it into a between filter
@@ -529,6 +534,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     private <T> void testOrOverlappingRanges(Class<T> type, T min, T max) throws Exception {
         SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
 
         // excluding extrema, not possible to turn it into a between filter
@@ -553,6 +559,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
             throws Exception {
         SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
 
         // excluding extrema, not possible to turn it into a between filter
@@ -577,6 +584,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     private <T> void testOrPseudoBetween(Class<T> type, T min, T max) throws Exception {
         SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
 
         // (a > min && a <= max) or (a <= min)
@@ -592,6 +600,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     public void testRangeExpression() throws Exception {
         SimpleFeatureType schema = DataUtilities.createType("test", "pop:String");
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
         Function func = ff.function("parseLong", ff.property("pop"));
         Filter f1 = ff.less(func, ff.literal(20000));

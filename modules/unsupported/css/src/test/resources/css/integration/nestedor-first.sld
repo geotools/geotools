@@ -7,18 +7,6 @@
         <sld:Rule>
           <ogc:Filter>
             <ogc:Or>
-              <ogc:And>
-                <ogc:PropertyIsEqualTo>
-                  <ogc:PropertyName>type</ogc:PropertyName>
-                  <ogc:Literal>pseudo</ogc:Literal>
-                </ogc:PropertyIsEqualTo>
-                <ogc:PropertyIsEqualTo>
-                  <ogc:Function name="isNull">
-                    <ogc:PropertyName>level_data</ogc:PropertyName>
-                  </ogc:Function>
-                  <ogc:Literal>false</ogc:Literal>
-                </ogc:PropertyIsEqualTo>
-              </ogc:And>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>type</ogc:PropertyName>
                 <ogc:Literal>pseudo</ogc:Literal>
@@ -48,4 +36,3 @@
     </sld:UserStyle>
   </sld:NamedLayer>
 </sld:StyledLayerDescriptor>
-

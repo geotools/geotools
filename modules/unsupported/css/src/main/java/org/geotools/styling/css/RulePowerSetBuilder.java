@@ -172,7 +172,7 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
             LOGGER.severe("Bailing out, the CSS rule combinations have already generated more than "
                     + "maxCombinations SLD rules, giving up. Please simplify your CSS style");
         } else if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("New rule: " + combined);
+            LOGGER.fine("New rule (" + count + "):" + combined);
         }
 
         return results;

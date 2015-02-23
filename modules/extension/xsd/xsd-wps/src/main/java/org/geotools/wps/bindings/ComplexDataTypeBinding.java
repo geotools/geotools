@@ -17,19 +17,28 @@
 
 package org.geotools.wps.bindings;
 
-import java.util.ArrayList;
+import java.io.StringWriter;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.xml.namespace.QName;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
 
 import net.opengis.wps10.ComplexDataType;
 import net.opengis.wps10.Wps10Factory;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.geotools.wps.WPS;
 import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xml.EMFUtils;
 import org.geotools.xml.ElementInstance;
+import org.geotools.xml.EncoderDelegate;
 import org.geotools.xml.Node;
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  *&lt;complexType name="ComplexDataType" mixed="true">
@@ -93,7 +102,7 @@ public class ComplexDataTypeBinding extends AbstractComplexBinding
     }
     
     /*
-    	NodeImpl -> JTS.Polygon
+        NodeImpl -> JTS.Polygon
     */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception
     {
@@ -116,4 +125,28 @@ public class ComplexDataTypeBinding extends AbstractComplexBinding
         
         return data;
     }
+    
+    @Override
+    public Element encode(Object object, Document document, Element value)
+                    throws Exception {
+            EObject eobject = (EObject) object;
+            if (EMFUtils.has(eobject, "data")) {
+                    Object v = EMFUtils.get(((EObject) object), "data");
+                    if (v != null && v instanceof EList) {
+                            EList data = (EList) v;
+                            if (!data.isEmpty() && data.get(0) instanceof EncoderDelegate) {
+                                    EncoderDelegate encoder = (EncoderDelegate) data.get(0);
+                                    StringWriter output = new StringWriter();
+                                    TransformerHandler serializer = ((SAXTransformerFactory)SAXTransformerFactory.newInstance()).newTransformerHandler();
+                                    serializer.setResult(new StreamResult(output));
+                                    encoder.encode(serializer);
+                                    CDATASection cData = document.createCDATASection(WPS.cleanUpHeader(output.toString()));
+                                    cData.normalize();
+                                    value.appendChild(cData);
+                            }
+                    }
+            }
+            return value;
+    }
+
 }

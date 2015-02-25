@@ -110,7 +110,7 @@ public class NetCDFTimeUtilities {
      * 
      */
     public static int getTimeSubUnitsValue(String units, Double vd) {
-        if ("days".equalsIgnoreCase(units)) {
+        if ("days".equalsIgnoreCase(units) || "day".equalsIgnoreCase(units)) {
             int subUnit = getTimeUnits(units, vd);
             if (subUnit == Calendar.HOUR) {
                 double hours = vd * 24;
@@ -155,7 +155,7 @@ public class NetCDFTimeUtilities {
             return 0;
         }
 
-        if ("minutes".equalsIgnoreCase(units)) {
+        if ("minutes".equalsIgnoreCase(units) || "minute".equalsIgnoreCase(units)) {
             int subUnit = getTimeUnits(units, vd);
             if (subUnit == Calendar.SECOND) {
                 double hours = vd * 24 * 60 * 60;
@@ -170,7 +170,7 @@ public class NetCDFTimeUtilities {
             return 0;
         }
 
-        if ("seconds".equalsIgnoreCase(units)) {
+        if ("seconds".equalsIgnoreCase(units) || "second".equalsIgnoreCase(units)) {
             int subUnit = getTimeUnits(units, vd);
             if (subUnit == Calendar.MILLISECOND) {
                 double hours = vd * 24 * 60 * 60 * 1000;
@@ -191,14 +191,14 @@ public class NetCDFTimeUtilities {
      * @return int
      */
     public static int getTimeUnits(String units, Double vd) {
-        if ("months".equalsIgnoreCase(units)) {
+        if ("months".equalsIgnoreCase(units) || "month".equalsIgnoreCase(units)) {
             if (vd == null || vd == 0.0)
                 // if no day, it is the first day
-                return 1;
+                return Calendar.MONTH; 
             else {
                 // TODO: FIXME
             }
-        } else if ("days".equalsIgnoreCase(units)) {
+        } else if ("days".equalsIgnoreCase(units) || "day".equalsIgnoreCase(units)) {
             if (vd == null || vd == 0.0)
                 return Calendar.DATE;
             else {
@@ -232,7 +232,7 @@ public class NetCDFTimeUtilities {
                 return Calendar.MILLISECOND;
             }
         }
-        if ("minutes".equalsIgnoreCase(units)) {
+        if ("minutes".equalsIgnoreCase(units) || "minute".equalsIgnoreCase(units)) {
             if (vd == null || vd == 0.0)
                 return Calendar.MINUTE;
             else {
@@ -243,7 +243,7 @@ public class NetCDFTimeUtilities {
                 return Calendar.MILLISECOND;
             }
         }
-        if ("seconds".equalsIgnoreCase(units)) {
+        if ("seconds".equalsIgnoreCase(units) || "second".equalsIgnoreCase(units)) {
             if (vd == null || vd == 0.0)
                 return Calendar.SECOND;
             else {

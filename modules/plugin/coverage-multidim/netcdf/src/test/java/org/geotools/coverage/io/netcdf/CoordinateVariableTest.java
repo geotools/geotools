@@ -16,14 +16,18 @@
  */
 package org.geotools.coverage.io.netcdf;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.geotools.imageio.netcdf.cv.CoordinateVariable;
 import org.geotools.imageio.netcdf.utilities.NetCDFTimeUtilities;
+import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -40,6 +44,138 @@ import ucar.nc2.dataset.NetcdfDataset;
  *
  */
 public class CoordinateVariableTest extends Assert {
+
+    @BeforeClass
+    public static void init() {
+        System.setProperty("user.timezone", "GMT");
+    }
+
+    @AfterClass
+    public static void close() {
+        System.clearProperty("user.timezone");
+    }
+    
+    /** Simple CoordinateAxis1D wrapper to override Units */
+    class CoordinateAxis1DUnitWrapper extends CoordinateAxis1D {
+
+        String units; 
+        @Override
+        public String getUnitsString() {
+            return units;
+        }
+
+        CoordinateAxis1DUnitWrapper(NetcdfDataset ncd, CoordinateAxis1D axis, String units) {
+            super(ncd, axis);
+            this.units = units;
+        }
+    }
+
+    @Test
+    public void timeUnitsTest() throws Exception {
+
+        final NetcdfDataset dataset = NetcdfDataset.openDataset(TestData.url(this, "O3-NO2.nc")
+                .toExternalForm());
+        Dimension dim = dataset.findDimension("time");
+
+        // check type
+        CoordinateAxis coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
+
+        final int year = 2012;
+        final int month = 4;
+        final int day = 1;
+        final int hour = 0;
+        final int minute = 0;
+        final int second = 0;
+        final String refTime = year + "-" + (month < 10 ? ("0" + month) : month) + "-"
+                + (day < 10 ? ("0" + day) : day) + " " + (hour < 10 ? ("0" + hour) : hour) + ":"
+                + (minute < 10 ? ("0" + minute) : minute) + ":"
+                + (second < 10 ? ("0" + second) : second);
+        // // 
+        // Plural form units check
+        // //
+        checkTimes(dataset, coordinateAxis, refTime, year, month, day, hour, minute, second, false);
+
+        // // 
+        // Singular form units check
+        // //
+        checkTimes(dataset, coordinateAxis, refTime, year, month, day, hour, minute, second, true);
+
+        dataset.close();
+
+    }
+
+    private void checkTimes(NetcdfDataset dataset, CoordinateAxis coordinateAxis, String refTime,
+            int year, int month, int day, int hour, int minute, int second, boolean singularForm) throws IOException {
+
+        String units = "";
+        CoordinateVariable<?> cv = null;
+        GregorianCalendar cal = null;
+
+        String unitsOriginSuffix = (singularForm ? "" : "s")  // day vs days, hour vs hours, and so on
+                + " since " + refTime;
+
+        // MONTHS
+        units = "month" + unitsOriginSuffix;
+        cv = getCoordinateVariable(dataset, coordinateAxis, units);
+        cal = getCalendar(year, month, day, hour, minute, second, GregorianCalendar.MONTH);
+        assertEquals(cal.getTime(), cv.getMaximum());
+
+        // DAYS
+        units = "day" + unitsOriginSuffix;
+        cv = getCoordinateVariable(dataset, coordinateAxis, units);
+        cal = getCalendar(year, month, day, hour, minute, second, GregorianCalendar.DAY_OF_MONTH);
+        assertEquals(cal.getTime(), cv.getMaximum());
+
+        // HOURS
+        units = "hour" + unitsOriginSuffix;
+        cv = getCoordinateVariable(dataset, coordinateAxis, units);
+        cal = getCalendar(year, month, day, hour, minute, second, GregorianCalendar.HOUR_OF_DAY);
+        assertEquals(cal.getTime(), cv.getMaximum());
+
+        // MINUTES
+        units = "minute" + unitsOriginSuffix;
+        cv = getCoordinateVariable(dataset, coordinateAxis, units);
+        cal = getCalendar(year, month, day, hour, minute, second, GregorianCalendar.MINUTE);
+        assertEquals(cal.getTime(), cv.getMaximum());
+
+        // SECONDS
+        units = "second" + unitsOriginSuffix;
+        cv = getCoordinateVariable(dataset, coordinateAxis, units);
+        cal = getCalendar(year, month, day, hour, minute, second, GregorianCalendar.SECOND);
+        assertEquals(cal.getTime(), cv.getMaximum());
+
+    }
+
+    private GregorianCalendar getCalendar(int year, int month, int day, int hour, int minute,
+            int second, int unit) {
+        GregorianCalendar cal = new GregorianCalendar(NetCDFTimeUtilities.UTC_TIMEZONE);
+
+        // Months are zero based
+        if (unit == GregorianCalendar.YEAR) {
+            year++;
+        } else if (unit == GregorianCalendar.MONTH) {
+            month++;
+        } else if (unit == GregorianCalendar.DAY_OF_MONTH) {
+            day++;
+        } else if (unit == GregorianCalendar.HOUR_OF_DAY) {
+            hour++;
+        } else if (unit == GregorianCalendar.MINUTE) {
+            minute++;
+        } else if (unit == GregorianCalendar.SECOND) {
+            second++;
+        }
+        month--;
+        
+        cal.set(year, month, day, hour, minute, second);
+        cal.set(GregorianCalendar.MILLISECOND, 0);
+        return cal;
+    }
+
+    private CoordinateVariable<?> getCoordinateVariable(NetcdfDataset dataset,
+            CoordinateAxis coordinateAxis, String units) {
+        CoordinateAxis1DUnitWrapper wrapper = new CoordinateAxis1DUnitWrapper(dataset, (CoordinateAxis1D) coordinateAxis, units);
+        return CoordinateVariable.create((CoordinateAxis1D) wrapper);
+    }
 
     @Test
     public void polyphemus() throws Exception {

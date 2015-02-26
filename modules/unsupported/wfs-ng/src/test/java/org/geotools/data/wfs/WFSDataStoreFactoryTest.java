@@ -17,9 +17,6 @@
 package org.geotools.data.wfs;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -115,7 +112,7 @@ public class WFSDataStoreFactoryTest {
         params.put("TESTING", Boolean.TRUE);
 
         final URL capabilitiesUrl = getClass().getResource(
-                "/org/geotools/data/wfs/impl/test-data/" + capabilitiesFile);
+                "test-data/" + capabilitiesFile);
         if (capabilitiesUrl == null) {
             throw new IllegalArgumentException(capabilitiesFile + " not found");
         }

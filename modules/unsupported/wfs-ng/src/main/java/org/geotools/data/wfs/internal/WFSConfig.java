@@ -29,12 +29,15 @@ import static org.geotools.data.wfs.WFSDataStoreFactory.TRY_GZIP;
 import static org.geotools.data.wfs.WFSDataStoreFactory.USERNAME;
 import static org.geotools.data.wfs.WFSDataStoreFactory.WFS_STRATEGY;
 import static org.geotools.data.wfs.WFSDataStoreFactory.OUTPUTFORMAT;
+import static org.geotools.data.wfs.WFSDataStoreFactory.AXIS_ORDER;
+import static org.geotools.data.wfs.WFSDataStoreFactory.AXIS_ORDER_FILTER;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Map;
 
 import org.geotools.data.wfs.WFSDataStoreFactory;
+import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -43,37 +46,37 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class WFSConfig {
 
-    private String user;
+    protected String user;
 
-    private String pass;
+    protected String pass;
 
-    private int timeoutMillis;
+    protected int timeoutMillis;
 
-    private PreferredHttpMethod preferredMethod;
+    protected PreferredHttpMethod preferredMethod;
 
-    private int buffer;
+    protected int buffer;
 
-    private boolean tryGZIP;
+    protected boolean tryGZIP;
 
-    private boolean lenient;
+    protected boolean lenient;
 
-    private Integer maxFeatures;
+    protected Integer maxFeatures;
 
-    private Charset defaultEncoding;
+    protected Charset defaultEncoding;
 
-    private String wfsStrategy;
+    protected String wfsStrategy;
 
-    private Integer filterCompliance;
+    protected Integer filterCompliance;
 
-    private String namespaceOverride;
+    protected String namespaceOverride;
     
-    private String outputformatOverride;
+    protected String outputformatOverride;
     
-    private boolean useDefaultSrs;
+    protected boolean useDefaultSrs;
     
-    private String axisOrder;
+    protected String axisOrder;
     
-    private String axisOrderFilter;
+    protected String axisOrderFilter;
     
     
 
@@ -124,7 +127,10 @@ public class WFSConfig {
         config.wfsStrategy = (String) WFS_STRATEGY.lookUp(params);
         config.filterCompliance = (Integer) FILTER_COMPLIANCE.lookUp(params);
         config.namespaceOverride = (String) NAMESPACE.lookUp(params);
-        config.outputformatOverride = (String) OUTPUTFORMAT.lookUp(params);        
+        config.outputformatOverride = (String) OUTPUTFORMAT.lookUp(params);
+        config.axisOrder = (String) AXIS_ORDER.lookUp(params);
+        config.axisOrderFilter = (String) AXIS_ORDER_FILTER.lookUp(params) == null ? (String) AXIS_ORDER
+                .lookUp(params) : (String) AXIS_ORDER_FILTER.lookUp(params);
 
         return config;
     }
@@ -251,15 +257,23 @@ public class WFSConfig {
      */
     public static boolean invertAxisNeeded(String axisOrder,
             CoordinateReferenceSystem crs) {
-        boolean invertXY;
-    
-        if (WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH.equals(axisOrder)) {
-            invertXY = false;
-        } else if (WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST.equals(axisOrder)) {
-            invertXY = true;
-        } else {
-            invertXY = CRS.getAxisOrder(crs).equals(CRS.AxisOrder.NORTH_EAST);
+        CRS.AxisOrder requestedAxis = CRS.getAxisOrder(crs);            
+        if (requestedAxis == CRS.AxisOrder.INAPPLICABLE) {
+            boolean forcedLonLat = Boolean.getBoolean("org.geotools.referencing.forceXY") || 
+                    Boolean.TRUE.equals(Hints.getSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
+            if (forcedLonLat) {
+                requestedAxis = CRS.AxisOrder.EAST_NORTH;
+            } else {
+                requestedAxis = CRS.AxisOrder.NORTH_EAST;
+            }
         }
-        return invertXY;
+        
+        if (WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST.equals(axisOrder)) {
+            return requestedAxis.equals(CRS.AxisOrder.EAST_NORTH);
+        } else if (WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH.equals(axisOrder)) {
+            return requestedAxis.equals(CRS.AxisOrder.NORTH_EAST);
+        } else {
+            return false; //compliant, don't do anything
+        }
     }
 }

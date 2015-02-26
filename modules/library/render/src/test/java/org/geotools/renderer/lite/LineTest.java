@@ -130,6 +130,15 @@ public class LineTest {
     }
 
     @Test
+    public void testLineAnchorSymbol() throws Exception {
+        StreamingRenderer renderer = setupLineMap("lineAnchorSymbol.sld");
+
+        BufferedImage image = RendererBaseTest.showRender("Anchor point at 1:1", renderer, TIME,
+                bounds);
+        ImageAssert.assertEquals(file("lineAnchorSymbol"), image, 10);
+    }
+
+    @Test
     public void testLineDisplacedGraphic() throws Exception {
         StreamingRenderer renderer = setupLineMap("lineDisplacedGraphic.sld");
 

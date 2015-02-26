@@ -35,6 +35,8 @@ public class MarkTest {
     SimpleFeatureSource lineFS;
     ReferencedEnvelope bounds;
 
+    SimpleFeatureSource pointRotationFS;
+
     @BeforeClass
     public static void setupClass() {
         System.clearProperty("org.geotools.referencing.forceXY");
@@ -48,6 +50,7 @@ public class MarkTest {
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         pointFS = ds.getFeatureSource("point");
         lineFS = ds.getFeatureSource("line");
+        pointRotationFS = ds.getFeatureSource("pointRotation");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
         
         // load font
@@ -96,6 +99,42 @@ public class MarkTest {
         BufferedImage image = RendererBaseTest.showRender("Decorative marks", renderer, TIME,
                 bounds);
         ImageAssert.assertEquals(file("markAnchor"), image, 50);
+    }
+
+    @Test
+    public void testRotatePenIcon() throws Exception {
+        Style pStyle = RendererBaseTest.loadStyle(this, "rotatePenIcon.sld");
+        Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(lineFS, lStyle));
+        mc.addLayer(new FeatureLayer(pointRotationFS, pStyle));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+
+        BufferedImage image = RendererBaseTest.showRender("Rotate north arrow", renderer, TIME,
+                bounds);
+        ImageAssert.assertEquals(file("rotatePenIcon"), image, 100);
+    }
+
+    @Test
+    public void testRotateNorthArrow() throws Exception {
+        Style pStyle = RendererBaseTest.loadStyle(this, "rotateArrow.sld");
+        Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(lineFS, lStyle));
+        mc.addLayer(new FeatureLayer(pointRotationFS, pStyle));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+
+        BufferedImage image = RendererBaseTest.showRender("Rotate north arrow", renderer, TIME,
+                bounds);
+        ImageAssert.assertEquals(file("rotateArrow"), image, 50);
     }
 
     @Test

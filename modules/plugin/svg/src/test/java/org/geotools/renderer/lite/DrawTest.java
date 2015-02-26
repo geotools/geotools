@@ -36,6 +36,8 @@ public class DrawTest {
 
     SimpleFeatureSource pointFS;
 
+    SimpleFeatureSource pointRotateFS;
+
     ReferencedEnvelope bounds;
 
     @BeforeClass
@@ -51,6 +53,7 @@ public class DrawTest {
         squareFS = ds.getFeatureSource("square");
         lineFS = ds.getFeatureSource("line");
         pointFS = ds.getFeatureSource("point");
+        pointRotateFS = ds.getFeatureSource("pointRotation");
         bounds = squareFS.getBounds();
         bounds.expandBy(0.2, 0.2);
 
@@ -127,6 +130,53 @@ public class DrawTest {
                 "./src/test/resources/org/geotools/renderer/lite/test-data/pointHouseAnchor.png"),
                 image, 1000);
     }
+
+    @Test
+    public void testAnchorPointRotateBase() throws Exception {
+        Style pStyle = RendererBaseTest.loadStyle(this, "rotateSVGHouseBase.sld");
+        Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(lineFS, lStyle));
+        mc.addLayer(new FeatureLayer(pointRotateFS, pStyle));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.VECTOR_RENDERING_KEY,
+                true));
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+
+        BufferedImage image = RendererBaseTest.showRender("PointHouseRotate", renderer, TIME,
+                bounds);
+        ImageAssert
+                .assertEquals(
+                        new File(
+                                "./src/test/resources/org/geotools/renderer/lite/test-data/pointHouseAnchorRotateBase.png"),
+                        image, 1000);
+    }
+
+    @Test
+    public void testAnchorPointRotateSide() throws Exception {
+        Style pStyle = RendererBaseTest.loadStyle(this, "rotateSVGHouseSide.sld");
+        Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(lineFS, lStyle));
+        mc.addLayer(new FeatureLayer(pointRotateFS, pStyle));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.VECTOR_RENDERING_KEY,
+                true));
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+
+        BufferedImage image = RendererBaseTest.showRender("PointHouseRotate", renderer, TIME,
+                bounds);
+        ImageAssert.assertEquals(new File(
+                                "./src/test/resources/org/geotools/renderer/lite/test-data/pointHouseAnchorRotateSide.png"),
+                image, 1000);
+    }
+
 
     private StreamingRenderer setupPointRenderer(String pointStyle) throws IOException {
         Style pStyle = RendererBaseTest.loadStyle(this, pointStyle);

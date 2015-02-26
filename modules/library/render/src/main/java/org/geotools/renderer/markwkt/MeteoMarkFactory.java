@@ -16,9 +16,6 @@
  */
 package org.geotools.renderer.markwkt;
 
-import org.geotools.renderer.style.MarkFactory;
-import org.geotools.renderer.style.shape.ExplicitBoundsShape;
-
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -29,6 +26,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.renderer.style.MarkFactory;
+import org.geotools.renderer.style.shape.ExplicitBoundsShape;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 
@@ -81,32 +80,41 @@ public class MeteoMarkFactory implements MarkFactory {
         WELLKNOWN_SHAPES.put("triangleemicircle", bnd);     
         
         gp = new GeneralPath();
-        gp.moveTo(0f, 0.5f);
-        gp.lineTo(0.5, -0.5f);
-        gp.lineTo(0.1f, -0.5f);
-        gp.lineTo(0.1f, -2.0f);
-        gp.lineTo(-0.1f, -2.0f);
-        gp.lineTo(-0.1f, -0.5f);
-        gp.lineTo(-0.5f, -0.5f);
+        gp.moveTo(0f, 1f);
+        gp.lineTo(0.5, 0f);
+        gp.lineTo(0.1f, 0f);
+        gp.lineTo(0.1f, -1f);
+        gp.lineTo(-0.1f, -1f);
+        gp.lineTo(-0.1f, 0f);
+        gp.lineTo(-0.5f, 0f);
         gp.closePath();
-        ExplicitBoundsShape narrow = new ExplicitBoundsShape(gp);
-        narrow.setBounds(new Rectangle2D.Double(-1.2, -0.3, 1, 0.6));
-        WELLKNOWN_SHAPES.put("narrow", narrow);   
+        WELLKNOWN_SHAPES.put("narrow", gp);
 
         // South Arrow
         AffineTransform at = AffineTransform.getQuadrantRotateInstance(2);
         gp = new GeneralPath();
-        gp.moveTo(0f, 0.5f);
-        gp.lineTo(0.5, -0.5f);
-        gp.lineTo(0.1f, -0.5f);
-        gp.lineTo(0.1f, -2.0f);
-        gp.lineTo(-0.1f, -2.0f);
-        gp.lineTo(-0.1f, -0.5f);
-        gp.lineTo(-0.5f, -0.5f);
+        gp.moveTo(0f, 1f);
+        gp.lineTo(0.5, 0f);
+        gp.lineTo(0.1f, 0f);
+        gp.lineTo(0.1f, -1.0f);
+        gp.lineTo(-0.1f, -1.0f);
+        gp.lineTo(-0.1f, 0f);
+        gp.lineTo(-0.5f, 0f);
         gp.closePath();
         gp.transform(at);
-        ExplicitBoundsShape sarrow = new ExplicitBoundsShape(gp);
-        WELLKNOWN_SHAPES.put("sarrow", sarrow);
+        WELLKNOWN_SHAPES.put("sarrow", gp);
+
+        // a sane arrow, centered in its middle, with its actual size
+        gp = new GeneralPath();
+        gp.moveTo(0f, 1f);
+        gp.lineTo(0.5, 0f);
+        gp.lineTo(0.1f, 0f);
+        gp.lineTo(0.1f, -1f);
+        gp.lineTo(-0.1f, -1f);
+        gp.lineTo(-0.1f, 0f);
+        gp.lineTo(-0.5f, 0f);
+        gp.closePath();
+        WELLKNOWN_SHAPES.put("arrow", gp);
      }
 
     /*

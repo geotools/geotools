@@ -29,7 +29,9 @@ import net.opengis.wps10.Wps10Factory;
 import org.geotools.wps.WPS;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
+import org.geotools.xml.EncoderDelegate;
 import org.geotools.xml.Node;
+import org.geotools.xs.XS;
 
 /**
  *&lt;complexType name="ComplexDataType" mixed="true">
@@ -115,5 +117,19 @@ public class ComplexDataTypeBinding extends AbstractComplexBinding
         }
         
         return data;
+    }
+
+    @Override
+    public List getProperties(Object object) throws Exception {
+        ComplexDataType complex = (ComplexDataType) object;
+        if (!complex.getData().isEmpty() && complex.getData().get(0) instanceof EncoderDelegate) {
+            EncoderDelegate delegate = (EncoderDelegate) complex.getData().get(0);
+            List properties = new ArrayList();
+            properties.add(new Object[] { XS.ANYTYPE, delegate });
+
+            return properties;
+        }
+
+        return null;
     }
 }

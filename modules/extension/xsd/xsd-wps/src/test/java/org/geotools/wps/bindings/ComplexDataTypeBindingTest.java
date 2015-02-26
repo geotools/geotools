@@ -16,12 +16,25 @@
  */
 package org.geotools.wps.bindings;
 
+import java.io.Reader;
+import java.io.StringReader;
+
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wps10.ComplexDataType;
+import net.opengis.wps10.Wps10Factory;
 
 import org.geotools.feature.FeatureCollection;
 import org.geotools.wps.WPS;
+import org.geotools.wps.WPSConfiguration;
 import org.geotools.wps.WPSTestSupport;
+import org.geotools.xml.Encoder;
+import org.geotools.xml.EncoderDelegate;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.ext.LexicalHandler;
 
 import com.vividsolutions.jts.geom.Polygon;
 
@@ -93,5 +106,86 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
         FeatureCollection features = (FeatureCollection) fc.getFeature().get( 0 );
         assertEquals( 1, features.size() );
     
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testEncodeCData() throws Exception {
+        Wps10Factory factory = Wps10Factory.eINSTANCE;
+        ComplexDataType complexData = factory.createComplexDataType();
+        complexData.setMimeType("text/plain");
+        complexData.getData().add(0, new EncoderDelegate() {
+
+            @Override
+            public void encode(ContentHandler output) throws Exception {
+                ((LexicalHandler) output).startCDATA();
+                Reader r = new StringReader("test data");
+                char[] buffer = new char[1024];
+                int read;
+                while ((read = r.read(buffer)) > 0) {
+                    output.characters(buffer, 0, read);
+                }
+                r.close();
+                ((LexicalHandler) output).endCDATA();
+            }
+        });
+
+        Encoder encoder = new Encoder(new WPSConfiguration());
+        encoder.setIndenting(true);
+        encoder.setIndentSize(2);
+        encoder.setRootElementType(WPS.ComplexDataType);
+        String xml = encoder.encodeAsString(complexData, WPS.ComplexDataType);
+        // System.out.println(xml);
+
+        buildDocument(xml);
+        Element element = document.getDocumentElement();
+        assertEquals("ComplexDataType", element.getLocalName());
+        assertEquals("text/plain", element.getAttribute("mimeType"));
+        Node node = element.getChildNodes().item(0);
+        assertEquals("test data", node.getTextContent());
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testEncodeXML() throws Exception {
+        Wps10Factory factory = Wps10Factory.eINSTANCE;
+        ComplexDataType complexData = factory.createComplexDataType();
+        complexData.setMimeType("text/xml");
+        complexData.getData().add(0, new EncoderDelegate() {
+
+            @Override
+            public void encode(ContentHandler output) throws Exception {
+                String ns = "http://www.geotools.org";
+                String local = "myElement";
+                String qualified = "gt:myElement";
+                output.startElement(ns, local, qualified, new org.xml.sax.helpers.AttributesImpl());
+                String txt = "hello world";
+                output.characters(txt.toCharArray(), 0, txt.length());
+                output.endElement(ns, local, qualified);
+            }
+        });
+
+        Encoder encoder = new Encoder(new WPSConfiguration());
+        encoder.setIndenting(true);
+        encoder.setIndentSize(2);
+        encoder.setRootElementType(WPS.ComplexDataType);
+        String xml = encoder.encodeAsString(complexData, WPS.ComplexDataType);
+        // System.out.println(xml);
+
+        buildDocument(xml);
+        Element element = document.getDocumentElement();
+        assertEquals("ComplexDataType", element.getLocalName());
+        assertEquals("text/xml", element.getAttribute("mimeType"));
+        NodeList children = element.getChildNodes();
+        boolean myElementFound = false;
+        for (int i = 0; i < children.getLength(); i++) {
+            Node node = children.item(i);
+            if (node instanceof Text) {
+                continue;
+            } else {
+                myElementFound |= node.getLocalName().equals("myElement");
+                assertEquals("hello world", node.getTextContent());
+            }
+        }
+        assertTrue(myElementFound);
+
     }
 }

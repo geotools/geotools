@@ -100,8 +100,8 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
             TransformedShape ts = new TransformedShape();
             ts.shape = shape;
             // shapes are already centered, we need to displace them only if the anchor is not 0.5 0.5
-            float dx = (float) (bounds.getWidth() * scale * (0.5 - anchorPointX) + displacementX);
-            float dy = (float) (bounds.getHeight() * scale * (0.5 - anchorPointY) + displacementY);
+            float dx = displacementX;
+            float dy = displacementY;
             if (baseRotation != 0) {
                 ts.translate(x, y);
                 ts.rotate(baseRotation);
@@ -111,6 +111,9 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
             }
 
             ts.rotate(rotation);
+            dx = (float) (bounds.getWidth() * scale * (0.5 - anchorPointX));
+            dy = (float) (bounds.getHeight() * scale * (anchorPointY - 0.5));
+            ts.translate(dx, dy);
             // flip the symbol to take into account the screen orientation
             // where the y grows from top to bottom
             ts.scale(scale, -scale);

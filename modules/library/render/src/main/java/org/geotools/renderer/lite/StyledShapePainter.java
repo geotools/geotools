@@ -146,10 +146,8 @@ public final class StyledShapePainter {
 
                 // the displacement to be applied to all points, centers the icon and applies the 
                 // Graphic displacement as well
-                float dx = -(icon.getIconWidth() * icoStyle.getAnchorPointX())
-                        + icoStyle.getDisplacementX();
-                float dy = -(icon.getIconHeight() * icoStyle.getAnchorPointY())
-                        + icoStyle.getDisplacementY();
+                float dx = icoStyle.getDisplacementX();
+                float dy = icoStyle.getDisplacementY();
                 
                 // iterate over all points
                 float[] coords = new float[2];
@@ -163,6 +161,8 @@ public final class StyledShapePainter {
                         double y = coords[1] + dy;
                         at.translate(x, y);
                         at.rotate(icoStyle.getRotation());
+                        at.translate(-(icon.getIconWidth() * icoStyle.getAnchorPointX()),
+                                (icon.getIconHeight() * (icoStyle.getAnchorPointY() - 1)));
                         graphics.setTransform(at);
 
                         icon.paintIcon(null, graphics, 0, 0);
@@ -219,7 +219,7 @@ public final class StyledShapePainter {
 
             BufferedImage image = gs2d.getImage();
             double dx = gs2d.getDisplacementX() - gs2d.getAnchorPointX() * image.getWidth();
-            double dy = gs2d.getDisplacementY() - gs2d.getAnchorPointY() * image.getHeight();
+            double dy = gs2d.getDisplacementY() - ((1 - gs2d.getAnchorPointY()) * image.getHeight());
             while (!(iter.isDone())) {
                 if (iter.currentSegment(coords) != PathIterator.SEG_MOVETO) {
                     renderImage(graphics, coords[0], coords[1], dx, dy, image, gs2d.getRotation(),

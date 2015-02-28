@@ -187,4 +187,14 @@ public class WKTReader2Test {
         assertTrue(ml.getGeometryN(0).getClass() == LineString.class);
         assertTrue(ml.getGeometryN(1) instanceof CompoundRing);
     }
+
+    @Test
+    public void testCaseInsensitive() throws Exception {
+        WKTReader reader = new WKTReader2();
+        assertNotNull( reader.read("POINT(1 2)") );
+        assertNotNull( reader.read("Point(1 2)") );
+
+        assertNotNull( reader.read("LINESTRING(0 2, 2 0, 8 6)") );
+        assertNotNull( reader.read("LineString(0 2, 2 0, 8 6)") );
+    }
 }

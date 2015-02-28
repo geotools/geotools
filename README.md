@@ -33,7 +33,7 @@ GeoTools uses [JIRA](https://jira.codehaus.org/browse/GEOT), hosted by
 The [user list](mailto:geotools-gt2-users@lists.sourceforge.net) is for all questions 
 related to GeoTools usage. 
 
-The [dev list](mailto:geotools-devel@lists.sourceforge.net) is for questions relateded 
+The [dev list](mailto:geotools-devel@lists.sourceforge.net) is for questions related 
 to hacking on the GeoTools library itself.
 
 ## More Information

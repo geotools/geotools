@@ -397,7 +397,7 @@ public class WKTReader2 extends WKTReader {
             return null;
         }
 
-        if (type.equals("POINT")) {
+        if (type.equalsIgnoreCase("POINT")) {
             return readPointText();
         } else if (type.equalsIgnoreCase("LINESTRING")) {
             return readLineStringText();

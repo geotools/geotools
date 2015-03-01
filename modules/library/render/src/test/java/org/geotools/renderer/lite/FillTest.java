@@ -5,6 +5,8 @@ import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -88,6 +90,25 @@ public class FillTest {
     @Test
     public void testCrossFill() throws Exception {
         runSingleLayerTest("fillCross.sld");
+    }
+
+    @Test
+    public void testCrossFillZoomedOut() throws Exception {
+        String styleName = "fillCrossUom.sld";
+        Style style = RendererBaseTest.loadStyle(this, styleName);
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+
+        // this used to blow up while building the repeatable tile used to perform the fill
+        BufferedImage bi = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D graphics = bi.createGraphics();
+        renderer.paint(graphics, new Rectangle(0, 0, 10, 10), bounds);
+        graphics.dispose();
     }
 
     @Test

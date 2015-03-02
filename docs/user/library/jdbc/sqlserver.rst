@@ -6,6 +6,7 @@ Supports direct access to an SQL Server database.
 References:
 
 * http://www.microsoft.com/sqlserver/
+* http://jtds.sourceforge.net/
 
 **Maven**
 
@@ -25,9 +26,10 @@ Connection Parameters
 ============== ============================================
 Parameter      Description
 ============== ============================================
-"dbtype"       Must be the string "sqlserver"
+"dbtype"       Must be the string "sqlserver" if using the MicroSoft Driver, otherwise use "jtds-sqlserver"
 "host"         Machine name or IP address to connect to
 "port"         Port number to connect to
+"instance"     Instance of Database to use (instead of port when multiple DB services are running)
 "schema"       The database schema to access
 "database"     The databse to connect to
 "user"         User name
@@ -52,7 +54,10 @@ Setup
 ^^^^^
 
 * JDBC Driver
-  
+  Since GeoTools version 14 this module is compiled using the JTDS driver which is an improved open source driver
+  It can be freely distributed and is built by default now. If you require the use of the MicroSoft driver follow 
+  the instructions below.
+ 
   GeoTools is unable to ship the SQL Server JDBC driver with the standard
   distribution. It must be downloaded from Mircrosoft separately.
   

@@ -100,7 +100,7 @@ public class AffineProcessTest {
         m10 = 0d;
         m11 = 2d;
         m02 = 10d;
-        m12 = 10d;
+        m12 = 20d;
     }
 
     @Test

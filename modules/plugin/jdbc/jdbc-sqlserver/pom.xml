@@ -41,7 +41,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-<<<<<<< HEAD
 
 
 	<!-- =========================================================== -->
@@ -89,55 +88,6 @@
 		</profile>
 	</profiles>
 
-=======
-
-
-	<!-- =========================================================== -->
-	<!-- Developers and Contributors -->
-	<!-- =========================================================== -->
-	<developers>
-		<developer>
-			<name>Justin Deoliveira</name>
-			<id>jdeolive</id>
-			<email>jdeolive@users.sourceforge.net</email>
-			<organization>TOPP</organization>
-			<roles>
-				<role>Module Maintainer</role>
-				<role>Java Developer</role>
-			</roles>
-		</developer>
-		<developer>
-			<name>Andrea Aime</name>
-			<id>aaime</id>
-			<email>andrea.aime@geo-solutions.it</email>
-			<organization>GeoSolutions</organization>
-			<roles>
-				<role>Module Maintainer</role>
-				<role>Java Developer</role>
-			</roles>
-		</developer>
-	</developers>
-	<dependencies>
-		<dependency>
-			<groupId>net.sourceforge.jtds</groupId>
-			<artifactId>jtds</artifactId>
-			<version>${jtdsDriverVersion}</version>
-		</dependency>
-	</dependencies>
-	<profiles>
-	<profile>
-			<id>sqlServerDriver</id>
-			<dependencies>
-				<dependency>
-					<groupId>com.microsoft.sqlserver</groupId>
-					<artifactId>sqljdbc4</artifactId>
-					<version>${sqlServerDriverVersion}</version>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
-
->>>>>>> 9702ebfa8114ed55d794ace36691da7140330be6
 	<properties>
 		<sqlServerDriverVersion>4.0</sqlServerDriverVersion>
 		<jtdsDriverVersion>1.3.1</jtdsDriverVersion>

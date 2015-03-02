@@ -65,7 +65,7 @@ public class AffineProcess implements RasterProcess {
         double xShear = shearX != null ? shearX : 0;
         double yShear = shearY != null ? shearY : 0;
         double xTrans = translateX != null ? translateX : 0;
-        double yTrans = translateX != null ? translateX : 0;
+        double yTrans = translateY != null ? translateY : 0;
         AffineTransform transform = new AffineTransform(xScale, yShear, xShear, yScale, xTrans,
                 yTrans);
 

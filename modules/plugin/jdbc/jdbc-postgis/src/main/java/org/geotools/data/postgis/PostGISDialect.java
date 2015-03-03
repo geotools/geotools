@@ -708,7 +708,15 @@ public class PostGISDialect extends BasicSQLDialect {
         
         Statement st = cx.createStatement();
         try {
-            String sql = "SELECT lastval()";
+        
+            //Retrieve the sequence of the column
+            String sequenceName = getSequenceForColumn(schemaName,tableName,columnName, cx);
+            if(sequenceName == null){
+                // There is no sequence to get the value from
+                return null;
+            }
+            
+            String sql = "SELECT currval('"+sequenceName+"')";
             dataStore.getLogger().fine( sql);
             
             ResultSet rs = st.executeQuery( sql);

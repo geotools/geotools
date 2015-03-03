@@ -131,16 +131,19 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         //initialize the data
         setup.setUpData();
 
-        //create the dataStore
-        //TODO: replace this with call to datastore factory
+        // create the dataStore
         HashMap params = createDataStoreFactoryParams();
-        HashMap temp = (HashMap) params.clone();
-        temp.putAll(fixture);
-        dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(temp);
-        if(dataStore==null) {
+        try {
+            HashMap temp = (HashMap) params.clone();
+            temp.putAll(fixture);
+            dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(temp);
+        } catch (Exception e) {
+            // ignore
+        }
+        if (dataStore == null) {
             JDBCDataStoreFactory factory = setup.createDataStoreFactory();
-            dataStore = factory.createDataStore( params );
-        } 
+            dataStore = factory.createDataStore(params);
+        }
         setup.setUpDataStore(dataStore);
         dialect = dataStore.getSQLDialect();
     }

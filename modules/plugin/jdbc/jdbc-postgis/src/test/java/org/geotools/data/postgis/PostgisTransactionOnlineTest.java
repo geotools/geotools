@@ -28,7 +28,7 @@ public class PostgisTransactionOnlineTest extends JDBCTransactionOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
-        return new PostGISTestSetup();
+        return new PostGISFeatureStoreTestSetup();
     }
 
 }

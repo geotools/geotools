@@ -28,7 +28,7 @@ public class PostgisFeatureLockingTest extends JDBCFeatureLockingTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
-        return new PostGISTestSetup();
+        return new PostGISFeatureStoreTestSetup();
     }
 
 }

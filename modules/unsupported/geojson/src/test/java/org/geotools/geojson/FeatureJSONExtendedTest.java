@@ -1,6 +1,6 @@
 package org.geotools.geojson;
 
-import static org.geotools.geojson.GeoJSONUtil.DATE_FORMAT;
+import static org.geotools.geojson.GeoJSONUtil.dateFormatter;
 
 import java.io.StringWriter;
 import java.text.ParseException;
@@ -145,7 +145,7 @@ public class FeatureJSONExtendedTest extends GeoJSONTestSupport {
     
     Date toDate(int val) {
         try {
-            return DATE_FORMAT.parse(toDateString(val));
+            return dateFormatter.get().parse(toDateString(val));
         } 
         catch (ParseException e) {
             throw new RuntimeException(e);

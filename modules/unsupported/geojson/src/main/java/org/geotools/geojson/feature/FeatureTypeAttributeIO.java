@@ -42,12 +42,12 @@ public class FeatureTypeAttributeIO implements AttributeIO {
     static class DateAttributeIO implements AttributeIO {
 
         public String encode(String att, Object value) {
-            return GeoJSONUtil.DATE_FORMAT.format((Date)value);
+            return GeoJSONUtil.dateFormatter.get().format((Date)value);
         }
 
         public Object parse(String att, String value) {
             try {
-                return GeoJSONUtil.DATE_FORMAT.parse(value);
+                return GeoJSONUtil.dateFormatter.get().parse(value);
             } 
             catch (ParseException e) {
                 throw new RuntimeException(e);

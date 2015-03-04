@@ -19,6 +19,7 @@ package org.geotools.geojson;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.StringBuilder;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -59,7 +60,7 @@ public class GEOT5036RegressionTest extends TestCase {
     }
 
     public void setUp() throws java.lang.Exception {
-        SimpleDateFormat sdf = GeoJSONUtil.DATE_FORMAT;
+        DateFormat sdf = GeoJSONUtil.dateFormatter.get();
         // perform 50 conversions
         for (int i = 0; i < 50; i++) {
             Date date = new Date(System.currentTimeMillis() - rand.nextInt(100) * 1000 * 3600 * 24);
@@ -68,7 +69,7 @@ public class GEOT5036RegressionTest extends TestCase {
     }
     
     public void testDateFormatterResults() throws Exception {
-        SimpleDateFormat sdf = GeoJSONUtil.DATE_FORMAT;
+        DateFormat sdf = GeoJSONUtil.dateFormatter.get();
 
         // pool with 8 threads
         ExecutorService exec = Executors.newFixedThreadPool(8);

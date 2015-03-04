@@ -368,6 +368,10 @@ public class GML3EncodingUtils {
     public static void encodeSimpleContent(ComplexAttribute complex, Document document,
             Element element) {
         Object value = getSimpleContent(complex);
+        encodeAsText(document, element, value);
+    }
+
+    public static void encodeAsText(Document document, Element element, Object value) {
         if (value != null) {
             Text text = document.createTextNode(Converters.convert(value, String.class));
             element.appendChild(text);

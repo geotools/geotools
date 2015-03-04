@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.geotools.org/anytypetest" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:test="http://www.geotools.org/anytypetest" 
+    xmlns:gml="http://www.opengis.net/gml"
+    elementFormDefault="qualified">
+
+	
+	<xsd:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+	
+	
+	<xsd:element name="Observation" type="test:ObservationType" substitutionGroup="gml:AbstractObject">
+	</xsd:element>
+	<xsd:complexType name="ObservationType">
+		<xsd:sequence>
+			<xsd:element name="class">
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

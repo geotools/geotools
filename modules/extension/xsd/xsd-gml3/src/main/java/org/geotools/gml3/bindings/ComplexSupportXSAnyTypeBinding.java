@@ -48,6 +48,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.identity.Identifier;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 import org.xml.sax.Attributes;
 
 /**
@@ -405,8 +406,22 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
             }
             GML3EncodingUtils.encodeClientProperties(complex, value);
             GML3EncodingUtils.encodeSimpleContent(complex, document, value);
+        } else if(!isPlaceholderObject(object)) {
+            GML3EncodingUtils.encodeAsText(document, value, object);
         }
         return value;
+    }
+
+    /**
+     * We need to skip placeholder objects (new Object())
+     * used in many places to represent objects that 
+     * should not be encoded.
+     * 
+     * @param object
+     * @return
+     */
+    private boolean isPlaceholderObject(Object object) {
+        return object != null && object.getClass().isAssignableFrom(Object.class);
     }
 
 }

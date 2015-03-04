@@ -22,6 +22,7 @@ import java.sql.SQLXML;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -82,7 +83,7 @@ public class XMLDocumentConverterFactory implements ConverterFactory {
         return null;
     }
     
-    class StringToDocumentConverter implements Converter {
+    public static class StringToDocumentConverter implements Converter {
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             String string = (String)source;
@@ -94,7 +95,7 @@ public class XMLDocumentConverterFactory implements ConverterFactory {
         }
     }
     
-    class StringToDocumentFragmentConverter implements Converter {
+    public static class StringToDocumentFragmentConverter implements Converter {
         StringToDocumentConverter delegate = new StringToDocumentConverter();
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
@@ -106,7 +107,7 @@ public class XMLDocumentConverterFactory implements ConverterFactory {
         }
     }
     
-    class NodeToStringConverter implements Converter {
+    public static class NodeToStringConverter implements Converter {
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             Node node = (Node)source;
@@ -116,12 +117,15 @@ public class XMLDocumentConverterFactory implements ConverterFactory {
             StreamResult result = new StreamResult(writer);
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer transformer = tf.newTransformer();
+            if (source instanceof DocumentFragment) {
+                transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            }
             transformer.transform(domSource, result);
             return (T)writer.toString();
         }
     }
     
-    DocumentFragment stripRootNode(Document d) {
+    public static DocumentFragment stripRootNode(Document d) {
         Node node = d.getDocumentElement();
         
         node = d.importNode(node, true);

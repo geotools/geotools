@@ -122,6 +122,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.ProgressListener;
+import org.w3c.dom.Node;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -260,6 +261,9 @@ public class DataUtilities {
 
         typeEncode.put(Date.class, "Date");
         typeMap.put("Date", Date.class);
+        
+        typeEncode.put(Node.class, "Node");
+        typeMap.put("Node", Node.class);
         
         // check if we are running on windows
         String os = System.getProperty("os.name");

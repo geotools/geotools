@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,13 +16,21 @@
  */
 package org.geotools.xs.bindings;
 
+import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.Property;
 import org.picocontainer.MutablePicoContainer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.namespace.QName;
+
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -149,6 +157,26 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
         }
 
         return map;
+    }
+    
+    /**
+     * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
+     *      org.w3c.dom.Element)
+     */
+    @Override
+    public Element encode(Object object, Document document, Element value) throws Exception {
+        if (org.w3c.dom.Node.class.isAssignableFrom(object.getClass())) {
+            org.w3c.dom.Node node = document.importNode((org.w3c.dom.Node)object, true);
+            NodeList nodes = node.getChildNodes();
+            for (int i = 0; i < nodes.getLength(); i++) {
+                if (nodes.item(i) instanceof Element) {
+                    Element element = (Element)nodes.item(i);
+                    element.setPrefix(null);
+                }
+            }
+            value.appendChild(node);
+        }
+        return value;
     }
 
     private void mapBinding(Map map, List attributes) {

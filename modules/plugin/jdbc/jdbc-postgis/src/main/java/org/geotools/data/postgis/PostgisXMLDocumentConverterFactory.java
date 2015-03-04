@@ -18,16 +18,34 @@ package org.geotools.data.postgis;
 
 import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
+import org.geotools.util.ConverterFactory;
 import org.geotools.util.XMLDocumentConverterFactory;
+import org.geotools.util.XMLDocumentConverterFactory.StringToDocumentConverter;
+import org.geotools.util.XMLDocumentConverterFactory.StringToDocumentFragmentConverter;
 import org.postgresql.util.PGobject;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
 
-public class PostgisXMLDocumentConverterFactory extends
-        XMLDocumentConverterFactory {
+public class PostgisXMLDocumentConverterFactory implements ConverterFactory {
 
     @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
         if (source.equals(PGobject.class)) {
-            return super.createConverter(String.class, target, hints);
+            if (target.equals(Document.class)) {
+                return new StringToDocumentConverter() {
+                    @Override
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
+                        return super.convert(source.toString(), target);
+                    }
+                };
+            } else if (target.equals(DocumentFragment.class)) {
+                return new StringToDocumentFragmentConverter(){
+                    @Override
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
+                        return super.convert(source.toString(), target);
+                    }
+                };
+            }
         }
         return null;
     }

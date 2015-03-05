@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<standard_name_table xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cf-standard-name-table-1.1.xsd">
+   <version_number>28</version_number>
+   <last_modified>2015-01-07T10:24:11Z</last_modified>
+   <institution>Program for Climate Model Diagnosis and Intercomparison</institution>
+   <contact>webmaster@pcmdi.llnl.gov</contact>
+   <!-- Reduced version of the standard name table for testing purposes -->
+   
+   <entry id="air_density">
+      <canonical_units>kg m-3</canonical_units>
+      <grib/>
+      <amip/>
+      <description/>
+   </entry>
+  
+   <entry id="air_potential_temperature">
+      <canonical_units>K</canonical_units>
+      <grib>13</grib>
+      <amip>theta</amip>
+      <description>Potential temperature is the temperature a parcel of air or sea water would have if moved adiabatically to sea level pressure.</description>
+   </entry>
+  
+   <entry id="air_pressure">
+      <canonical_units>Pa</canonical_units>
+      <grib>1</grib>
+      <amip>plev</amip>
+      <description/>
+   </entry>
+  
+   <entry id="air_pressure_at_cloud_top">
+      <canonical_units>Pa</canonical_units>
+      <grib/>
+      <amip/>
+      <description>cloud_top refers to the top of the highest cloud.</description>
+   </entry>
+  
+  <entry id="atmosphere_mass_content_of_sulfate">
+      <canonical_units>kg m-2</canonical_units>
+      <grib/>
+      <amip/>
+      <description>"Content" indicates a quantity per unit area. The "atmosphere content" of a quantity refers to the vertical integral from the surface to the top of the atmosphere. For the content between specified levels in the atmosphere, standard names including content_of_atmosphere_layer are used.</description>
+   </entry>
+  
+  <entry id="magnitude_of_sea_ice_displacement">
+      <canonical_units>m</canonical_units>
+      <grib/>
+      <amip/>
+      <description>"magnitude_of_X" means magnitude of a vector X.   'Displacement' means the change in geospatial position of an object that has moved over time. If possible, the time interval over which the motion took place should be specified using a bounds variable for the time coordinate variable.  A displacement can be represented as a vector. Such a vector should however not be interpreted as describing a rectilinear, constant speed motion but merely as an indication that the start point of the vector is found at the tip of the vector after the time interval associated with the displacement variable.  A displacement does not prescribe a trajectory. Sea ice displacement can be defined as a two-dimensional vector, with no vertical component.</description>
+   </entry>
+ 
+  <alias id="sea_ice_displacement">
+    <entry_id>magnitude_of_sea_ice_displacement</entry_id>
+  </alias>
+  
+  <alias id="atmosphere_sulfate_content">
+    <entry_id>atmosphere_mass_content_of_sulfate</entry_id>
+  </alias>
+
+</standard_name_table>

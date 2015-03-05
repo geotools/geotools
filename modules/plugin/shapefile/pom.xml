@@ -143,6 +143,11 @@
       <artifactId>gt-data</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-jdbc</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>org.jdom</groupId>

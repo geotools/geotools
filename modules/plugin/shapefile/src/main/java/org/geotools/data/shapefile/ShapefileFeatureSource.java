@@ -223,6 +223,9 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         if (q.getFilter() != null) {
             bbox = (Envelope) q.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
         }
+        
+        boolean usingBoundingBox = false;
+        boolean usingFidIndex = false;
 
         // see if we can use indexing to speedup the data access
         Filter filter = q != null ? q.getFilter() : null;
@@ -233,12 +236,14 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             List<Data> records = indexManager.queryFidIndex(fidFilter);
             if (records != null) {
                 goodRecs = new CloseableIteratorWrapper<Data>(records.iterator());
+                usingFidIndex = true;
             }
         } else if (getDataStore().isIndexed() && !bbox.isNull()
                 && !Double.isInfinite(bbox.getWidth()) && !Double.isInfinite(bbox.getHeight())) {
             try {
                 if(indexManager.isSpatialIndexAvailable() || getDataStore().isIndexCreationEnabled()) {
                     goodRecs = indexManager.querySpatialIndex(bbox);
+                    usingBoundingBox = true;
                 }
             } catch (TreeException e) {
                 throw new IOException("Error querying index: " + e.getMessage());
@@ -250,6 +255,22 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                     + ", skipping read");
             goodRecs.close();
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(resultSchema);
+        }
+        
+        // uses the optional Recno field to quickly lookup the shp offset and the record number.
+        if (!usingBoundingBox && !usingFidIndex && getDataStore().isOdbcFilteringEnabled()) {
+            try {
+                goodRecs = RecnoIndexManager.queryRecnoIndex(getDataStore(), filter, q.getMaxFeatures(), goodRecs);
+                
+                // do we have anything to read at all? If not don't bother opening all the files
+                if (goodRecs!=null && !goodRecs.hasNext()) {                    
+                    LOGGER.log(Level.FINE, "Empty results for " + resultSchema.getName().getLocalPart() + ", skipping read");
+                    goodRecs.close();
+                    return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(resultSchema);
+                }
+            } catch (Exception error) {
+                LOGGER.log(Level.WARNING, "Error querying optional renco field: " + error.getMessage());
+            }
         }
         
         // get the .fix file reader, if we have a .fix file

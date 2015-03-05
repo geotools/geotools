@@ -1,12 +1,9 @@
 package org.geotools.geojson;
 
-import static org.geotools.geojson.GeoJSONUtil.dateFormatter;
-
 import java.io.StringWriter;
 import java.text.ParseException;
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -145,7 +142,8 @@ public class FeatureJSONExtendedTest extends GeoJSONTestSupport {
     
     Date toDate(int val) {
         try {
-            return dateFormatter.get().parse(toDateString(val));
+            final SimpleDateFormat sdf = new SimpleDateFormat(GeoJSONUtil.DATE_FORMAT);
+            return sdf.parse(toDateString(val));
         } 
         catch (ParseException e) {
             throw new RuntimeException(e);

@@ -30,13 +30,12 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.lang.reflect.Proxy;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.apache.commons.lang.time.FastDateFormat;
 import org.geotools.util.Converters;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -55,16 +54,9 @@ public class GeoJSONUtil {
      * Date format (ISO 8601)
      */
     public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-    
-    public static final ThreadLocal<DateFormat> dateFormatter = new ThreadLocal<DateFormat>() {
-        @Override
-        protected DateFormat initialValue() {
-            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-            return sdf;
-        }
-    };
+    public static final TimeZone TIME_ZONE = TimeZone.getTimeZone("GMT");
 
+    public static final FastDateFormat dateFormatter = FastDateFormat.getInstance(DATE_FORMAT, TIME_ZONE);
 
     //
     // io
@@ -183,7 +175,7 @@ public class GeoJSONUtil {
     static StringBuilder literal(Object value, StringBuilder sb) {
         //handle date as special case special case
         if (value instanceof Date) {
-            return string(dateFormatter.get().format((Date)value), sb);
+            return string(dateFormatter.format((Date)value), sb);
         }
         
         return sb.append(value);

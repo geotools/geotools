@@ -1,6 +1,7 @@
 package org.geotools.geojson.feature;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -42,12 +43,13 @@ public class FeatureTypeAttributeIO implements AttributeIO {
     static class DateAttributeIO implements AttributeIO {
 
         public String encode(String att, Object value) {
-            return GeoJSONUtil.dateFormatter.get().format((Date)value);
+            return GeoJSONUtil.dateFormatter.format((Date) value);
         }
 
         public Object parse(String att, String value) {
             try {
-                return GeoJSONUtil.dateFormatter.get().parse(value);
+                final SimpleDateFormat sdf = new SimpleDateFormat(GeoJSONUtil.DATE_FORMAT);
+                return sdf.parse(value);
             } 
             catch (ParseException e) {
                 throw new RuntimeException(e);

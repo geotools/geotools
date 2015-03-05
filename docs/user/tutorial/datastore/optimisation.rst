@@ -8,6 +8,71 @@ Optimization
 
 In this part we will explore several Optimization techniques for CSVDataStore.
 
+Query Hints
+^^^^^^^^^^^
+
+The GeoTools Hints system can be used to configure a DataStore for use by an application. This is often done by providing up the Factories that the DataStore will use during the course of its operation.
+
+As an example a CurvedGeoemtryFactory with a specific tolerance can be passed in to aid in parsing WKT containing arcs:
+
+.. code-block:: java
+   
+   Query query = new Query( typeName );
+   Hints hints = new Hints();
+   hints.put( Hints.JTS_GEOMETRY_FACTORY, new CurvedGeometryFactory( 0.005 ) );
+   
+   SimpleFeatureCollection features = featureSource.getFeatures( query );
+
+To interactively discover what hints are supported clients call FeatureSource.getSupportedHints().
+
+At the time of writing the following hints are supported:
+
+* Hints.FEATURE_DETACHED: indicates returned features are a copy (can can be modified without side-effect)
+* Hints.JTS_GEOMETRY_FACTORY: control of geometry representation
+* Hints.JTS_COORDINATE_SEQUENCE_FACTORY: control of coordinate storage (you may be able to optimise read performance by directly using the binary data provided by your dataformat, or you may wish to optimise for memory use).
+* Hints.JTS_PRECISION_MODEL: configure to match precision maintained by coordinate sequence factory
+* Hints.JTS_SRID: for compatibility with systems using a spatial reference system identifier (such as PostGIS)
+* Hints.GEOMETRY_DISTANCE: used to select a geometry of appropriate generalization. Your datastore may wish to simplify "on the fly" while reading the geometry
+* Hints.FEATURE_2D: used to indicate that only two dimensions are required (ignoring the 3rd dimension for 2.5D data)
+
+Many of these values are filled in when rendering, by taking advantage of these query hints you can offer vastly improved performance.  
+
+QueryCapabilities
+^^^^^^^^^^^^^^^^^
+
+Your implementation can also advertise additional functionality using the FeatureSource.getQueryCapabilities() data structure.
+
+Formats that allows user supplied FeatureIds when adding new features fill in QueryCapabilities.isUseProvidedFIDSupported() to return true.
+
+To use this approach CSVDataStore would need to be extended with an FID_COLUMN parameter (to be used as a FeatureId). This works when reading (or modifying) existing features, but we run into a glitch in the API when inserting new features ... the feature id cannot be changed!
+
+The workaround is to ask clients to store the proposed FeatureId in the user data map:
+
+.. code-block:: java
+
+   public String[] encode(SimpleFeature feature) {
+        List<String> csvRecord = new ArrayList<String>();
+        
+        String fid = feature.getId();
+        if( Boolean.TRUE.equals( feature.getUserData().get(Hints.USE_PROVIDED_FID) ) ){
+            if( feature.getUserData().containsKey(Hints.PROVIDED_FID)){
+                fid = (String) feature.getUserData().get(Hints.PROVIDED_FID);
+            }
+        }   
+        csvRecord.add(fid);
+        
+        for (Property property : feature.getProperties()) {
+            Object value = property.getValue();
+            if (value == null) {
+               csvRecord.add("");
+            } else {
+                String txt = value.toString();
+                csvRecord.add(txt);
+            }
+        }
+        return csvRecord.toArray(new String[csvRecord.size()-1]);
+    }
+
 Low-Level Optimization
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -77,7 +142,7 @@ ContentDataStore provides a lot of functionality based on the methods we impleme
 Tutorials. We also know there are a number of wrappers used to fill in the gaps in our
 functionality.
 
-It is worth reviewing *ContentFeatureSource.getReader(Query query)**  to see what wrappers may be
+It is worth reviewing **ContentFeatureSource.getReader(Query query)**  to see what wrappers may be
 in play.
 
 .. note:: 
@@ -165,7 +230,7 @@ in play.
 
 
 
-. note:: Challenge
+.. note:: Challenge
 
   The canRetype() operations is easy to support, check the query and only provide values for the
   requested attributes. This is an especially valuable Optimization to perform at a low-level as

@@ -4357,20 +4357,34 @@ public final class JDBCDataStore extends ContentDataStore
     /**
      * Helper method to encode table name which checks if a schema is set and
      * prefixes the table name with it.
-     * @param hints TODO
      */
     protected void encodeTableName(String tableName, StringBuffer sql, Hints hints) throws SQLException {
+        encodeAliasedTableName(tableName, sql, hints, null);
+    }
+
+    /**
+     * Helper method to encode table name which checks if a schema is set and prefixes the table
+     * name with it, with the addition of an alias to the name
+     */
+    protected void encodeAliasedTableName(String tableName, StringBuffer sql, Hints hints,
+            String alias) throws SQLException {
         VirtualTable vtDefinition = virtualTables.get(tableName);
-        if(vtDefinition != null) {
+        if (vtDefinition != null) {
             sql.append("(").append(vtDefinition.expandParameters(hints)).append(")");
-            dialect.encodeTableAlias("vtable", sql);
+            if (alias == null) {
+                alias = "vtable";
+            }
+            dialect.encodeTableAlias(alias, sql);
         } else {
             if (databaseSchema != null) {
                 dialect.encodeSchemaName(databaseSchema, sql);
                 sql.append(".");
             }
-    
+
             dialect.encodeTableName(tableName, sql);
+            if (alias != null) {
+                dialect.encodeTableAlias(alias, sql);
+            }
         }
     }
 
@@ -4379,15 +4393,15 @@ public final class JDBCDataStore extends ContentDataStore
      */
     protected void encodeTableJoin(SimpleFeatureType featureType, JoinInfo join, Query query, StringBuffer sql) 
         throws SQLException {
-        encodeTableName(featureType.getTypeName(), sql, query.getHints());
-        dialect.encodeTableAlias(join.getPrimaryAlias(), sql);
+        encodeAliasedTableName(featureType.getTypeName(), sql, query.getHints(),
+                join.getPrimaryAlias());
 
         for (JoinPart part : join.getParts()) {
             sql.append(" ");
             dialect.encodeJoin(part.getJoin().getType(), sql);
             sql.append(" ");
-            encodeTableName(part.getQueryFeatureType().getTypeName(), sql, null);
-            dialect.encodeTableAlias(part.getAlias(), sql);
+            encodeAliasedTableName(part.getQueryFeatureType().getTypeName(), sql, null,
+                    part.getAlias());
             sql.append(" ON ");
 
             Filter j = part.getJoinFilter();

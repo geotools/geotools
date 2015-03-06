@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
+import org.geotools.data.Join;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
@@ -354,5 +355,24 @@ public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
             logger.setLevel(oldLevel);
             logger.removeHandler(handler);
         }
+    }
+
+    public void testJoinViews() throws Exception {
+        Query joinQuery = new Query("riverFull");
+        FilterFactory ff = dataStore.getFilterFactory();
+        Join join = new Join("riverReduced", ff.equal(ff.property("a." + aname("river")),
+                ff.property(aname("river")), false));
+        join.setAlias("a");
+        joinQuery.getJoins().add(join);
+
+        // get the two feature sources
+        ContentFeatureSource fsFull = dataStore.getFeatureSource("riverFull");
+        ContentFeatureSource fsReduced = dataStore.getFeatureSource("riverReduced");
+
+        // check count
+        int expectedCount = fsReduced.getCount(Query.ALL);
+        int count = fsFull.getCount(joinQuery);
+
+        assertEquals(expectedCount, count);
     }
 }

@@ -435,14 +435,16 @@ public class ProjectionHandler {
         // this seems to cause issues to JTS, reduce to
         // single geometry when possible (http://jira.codehaus.org/browse/GEOS-6570)
         if (geometry instanceof GeometryCollection) {
-            if (geometry.getNumGeometries() == 1) {
+            int numGeometries = geometry.getNumGeometries();
+            if (numGeometries == 1) {
                 geometry = geometry.getGeometryN(0);
             } else {
                 // go piecewise, the JTS intersection can be pretty fragile in these cases
                 // and take a lot of time
                 List<Geometry> elements = new ArrayList<>();
-                String geometryType = geometry.getGeometryN(0).getGeometryType();
-                for (int i = 0; i < geometry.getNumGeometries(); i++) {
+                String geometryType = numGeometries > 0 ? geometry.getGeometryN(0)
+                        .getGeometryType() : null;
+                for (int i = 0; i < numGeometries; i++) {
                     Geometry g = geometry.getGeometryN(i);
                     if (g.getEnvelopeInternal().intersects(mask.getEnvelopeInternal())) {
                         Geometry intersected = intersect(g, mask);
@@ -456,7 +458,7 @@ public class ProjectionHandler {
                         }
                     }
                 }
-                
+
                 if (elements.size() == 0) {
                     return null;
                 }

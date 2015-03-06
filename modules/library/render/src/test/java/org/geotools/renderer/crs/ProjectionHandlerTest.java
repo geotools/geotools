@@ -21,7 +21,6 @@ import com.vividsolutions.jts.geom.CoordinateFilter;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
@@ -603,4 +602,29 @@ public class ProjectionHandlerTest {
         }
     }
 
+    @Test
+    public void testSkipEmptyGeometryCollections() throws Exception {
+        ReferencedEnvelope world = new ReferencedEnvelope(160, 180, -40, 40, WGS84);
+        ReferencedEnvelope mercatorEnvelope = world.transform(MERCATOR, true);
+        // move it so that it crosses the dateline (measures are still accurate for something
+        // crossing the dateline
+        mercatorEnvelope.translate(mercatorEnvelope.getWidth() / 2, 0);
+
+        // a geometry that will cross the dateline and sitting in the same area as the
+        // rendering envelope
+        Geometry g1 = new WKTReader()
+                .read("POLYGON((150 40, 150 -90, 190 -90, 190 40, 175 40, 175 -87, 165 -87, 165 40, 150 40))");
+        // Empty geometry collection
+        Geometry collection = new GeometryCollection(null, g1.getFactory());
+
+        // make sure the geometry is not wrapped
+        ProjectionHandler handler = new ProjectionHandler(WGS84, new Envelope(-0.5d, 2.0d, -0.5d,
+                2.0d), mercatorEnvelope);
+        assertTrue(handler.requiresProcessing(collection));
+        Geometry preProcessed = handler.preProcess(collection);
+        // Ensure something has changed
+        assertNotEquals(collection, preProcessed);
+        // Ensure the result is null
+        assertNull(preProcessed);
+    }
 }

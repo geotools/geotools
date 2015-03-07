@@ -109,6 +109,8 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     
     boolean indexCreationEnabled = true;
 
+    boolean odbcFilteringEnabled = true;
+
     boolean fidIndexed = true;
 
     IndexManager indexManager;
@@ -440,7 +442,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     public String toString() {
         return "ShapefileDataStore [file=" + shpFiles.get(SHP) + ", charset=" + charset + ", timeZone=" + timeZone
                 + ", memoryMapped=" + memoryMapped + ", bufferCachingEnabled="
-                + bufferCachingEnabled + ", indexed=" + indexed + ", fidIndexed=" + fidIndexed
+                + bufferCachingEnabled + ", indexed=" + indexed + ", fidIndexed=" + fidIndexed + ", odbcFilteringEnabled=" + odbcFilteringEnabled
                 + "]";
     }
 
@@ -479,6 +481,16 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         this.indexCreationEnabled = indexCreationEnabled;
     }
     
+    public boolean isOdbcFilteringEnabled() {
+        return odbcFilteringEnabled;
+    }
+
+    /**
+     * If true (default) the store uses an available JDBC provider to execute the Dbase filters
+     */
+    public void setOdbcFilteringEnabled(boolean odbcFilteringEnabled) {
+        this.odbcFilteringEnabled = odbcFilteringEnabled;        
+    }
     
 
 }

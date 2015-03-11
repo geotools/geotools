@@ -17,10 +17,10 @@
   <groupId>org.geotools</groupId>
   <artifactId>gt-csv</artifactId>
   <packaging>jar</packaging>
-  <name>Example</name>
+  <name>CSVDataStore</name>
   <description>
-    DataStore for CSV files; mostly used as a tutorial in how to write
-    a datastore.
+    DataStore for CSV files. This plugin allows for read/write
+    functionality with CSV files with geoserver's importer.
   </description>
   
   <!-- =========================================================== -->
@@ -42,6 +42,16 @@
       <name>Lee Breisacher</name>
       <email>leebreisacher@verizon.net</email>
       <organization>n/a</organization>
+      <roles>
+        <role>Contributor</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>travisb</id>
+      <name>Travis Brundage</name>
+      <email>tbrundage@boundlessgeo.com</email>
+      <organization>Boundless</organization>
       <roles>
         <role>Contributor</role>
         <role>Java Developer</role>
@@ -99,5 +109,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
 </project>

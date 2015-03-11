@@ -86,7 +86,7 @@ class WFSFeatureCollection extends DataFeatureCollection {
      * Calculates and returns the aggregated bounds of the collection contents, potentially doing a
      * full scan.
      * <p>
-     * As a bonuns, if a full scan needs to be done updates the cached collection size so a future
+     * As a bonus, if a full scan needs to be done updates the cached collection size so a future
      * call to {@link #getCount()} does not require an extra server call.
      * </p>
      */
@@ -126,6 +126,11 @@ class WFSFeatureCollection extends DataFeatureCollection {
                     // System.err.println("Done making FC full scan at getBounds() for "
                     // + this.schema.getName() + ", cachedSize=" + cachedSize + ", bounds="
                     // + bounds);
+
+                    // now let's cache the bounds as well...
+                    if (cachedBounds != null) {
+                        cachedBounds = bounds;
+                    }
                 } finally {
                     reader.close();
                 }
@@ -155,8 +160,8 @@ class WFSFeatureCollection extends DataFeatureCollection {
         }
         cachedSize = dataStore.getCount(query);
         if (cachedSize == -1) {
-            // no luck, cache both bounds and count with a full scan
-            getBounds();
+            // no luck, cache count with a full scan
+            doForceFeatureCount();
         }
         return cachedSize;
     }
@@ -167,4 +172,28 @@ class WFSFeatureCollection extends DataFeatureCollection {
         reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
         return reader;
     }
+
+    /**
+     * A less expensive way of counting the features if numberOfFeatures attribute is not
+     * set in the FeatureCollection element without having to calculate the FC bounds
+     * {@link #getBounds()} if it's not really necessary.
+     *
+     * @throws IOException
+     */
+    private void doForceFeatureCount() throws IOException {
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+        reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        try {
+            // collect size to alleviate #getCount if needed
+            int collectionSize = 0;
+            while (reader.hasNext()) {
+                reader.next();
+                collectionSize++;
+            }
+            this.cachedSize = collectionSize;
+        } finally {
+            reader.close();
+        }
+    }
+
 }

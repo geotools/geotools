@@ -645,10 +645,11 @@ public abstract class ContentDataStore implements DataStore {
     /**
      * Check if {@link #createTypeNames()} needs to be called.
      * <p>
-     * If typeNames have been added or removed 
+     * If typeNames have been added or removed
+     * 
      * @return true if createTypeNames needs to be called.
      */
-    protected boolean checkTypeNames(){
+    protected boolean checkTypeNames() {
         return true;
     }
     /**
@@ -704,14 +705,13 @@ public abstract class ContentDataStore implements DataStore {
     }
 
     /**
-     * Returns the same list of names than {@link #getTypeNames()} meaning the
-     * returned Names have no namespace set.
+     * Returns the same list of names than {@link #getTypeNames()} meaning the returned Names have no namespace set.
      * 
      * @since 2.5
      * @see DataAccess#getNames()
      */
     public List<Name> getNames() throws IOException {
-        if( typeNames == null || checkTypeNames() ){
+        if (typeNames == null || checkTypeNames()) {
             typeNames = createTypeNames();
         }
         return new ArrayList<Name>(typeNames);

@@ -127,7 +127,7 @@ public class PropertyDataStore extends ContentDataStore {
         return typeNames;
     }
     
-    protected boolean checkTypeNames(){
+    protected boolean checkTypeNames() {
         return watch != dir.lastModified();
     }
 

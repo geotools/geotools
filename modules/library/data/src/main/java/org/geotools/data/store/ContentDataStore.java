@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataAccess;
@@ -110,7 +111,12 @@ public abstract class ContentDataStore implements DataStore {
     protected final static int WRITER_COMMIT = 0x01<<2;
 
     /**
-     * name, entry map
+     * Known typeNames from {@link #createTypeNames()}.
+     */
+    List<Name> typeNames;
+
+    /**
+     * Name, entry map populated as needed using {@link #getEntry(Name)}.
      */
     final protected Map<Name,ContentEntry> entries;
 
@@ -118,7 +124,7 @@ public abstract class ContentDataStore implements DataStore {
      * logger
      */
     final protected Logger LOGGER; 
-    
+
     /**
      * Factory used to create feature types
      */
@@ -158,6 +164,7 @@ public abstract class ContentDataStore implements DataStore {
         // get a concurrent map so that we can do reads in parallel with writes (writes vs writes
         // are actually synchronized to prevent double work, see getEntry()).
         this.entries = new ConcurrentHashMap<Name,ContentEntry>();
+        this.typeNames = new CopyOnWriteArrayList<Name>();
         // grabbing the logger here makes the logger name polymorphic (the name of the actual
         // subclass will be used
         this.LOGGER = org.geotools.util.logging.Logging.getLogger(
@@ -299,14 +306,14 @@ public abstract class ContentDataStore implements DataStore {
      * @see DataStore#getTypeNames()
      */
     public final String[] getTypeNames() throws IOException {
-        List<Name> typeNames = createTypeNames();
+        if( typeNames == null || checkTypeNames() ){
+            typeNames = createTypeNames();
+        }
         String[] names = new String[typeNames.size()];
-
         for (int i = 0; i < typeNames.size(); i++) {
             Name typeName = typeNames.get(i);
             names[i] = typeName.getLocalPart();
         }
-
         return names;
     }
 
@@ -560,8 +567,7 @@ public abstract class ContentDataStore implements DataStore {
         ContentEntry entry = null;
 
         boolean found = entries.containsKey(name);
-        if (!found && name.getNamespaceURI() == null
-                && this.namespaceURI != null) {
+        if (!found && name.getNamespaceURI() == null && this.namespaceURI != null) {
             Name defaultNsName = new NameImpl(namespaceURI, name.getLocalPart());
             if (entries.containsKey(defaultNsName)) {
                 name = defaultNsName;
@@ -569,8 +575,7 @@ public abstract class ContentDataStore implements DataStore {
             }
         }
 
-        // try a namespace-less match (createTypeNames() can be expensive, we leave it as last
-        // resort)
+        // try a namespace-less match next (as createTypeNames() can be expensive)
         if (!found) {
             List<Name> typeNames = createTypeNames();
             found = typeNames.contains(name);
@@ -632,8 +637,21 @@ public abstract class ContentDataStore implements DataStore {
         if (entries.containsKey(name)) {
             entries.remove(name);
         }
+        if( typeNames.contains(name) ){
+            typeNames.remove(name);
+        }
     }
 
+    /**
+     * Check if {@link #createTypeNames()} needs to be called.
+     * <p>
+     * If typeNames have been added or removed
+     * 
+     * @return true if createTypeNames needs to be called.
+     */
+    protected boolean checkTypeNames() {
+        return true;
+    }
     /**
      * Creates a set of qualified names corresponding to the types that the
      * datastore provides.
@@ -687,19 +705,16 @@ public abstract class ContentDataStore implements DataStore {
     }
 
     /**
-     * Returns the same list of names than {@link #getTypeNames()} meaning the
-     * returned Names have no namespace set.
+     * Returns the same list of names than {@link #getTypeNames()} meaning the returned Names have no namespace set.
      * 
      * @since 2.5
      * @see DataAccess#getNames()
      */
     public List<Name> getNames() throws IOException {
-        String[] typeNames = getTypeNames();
-        List<Name> names = new ArrayList<Name>(typeNames.length);
-        for (String typeName : typeNames) {
-            names.add(new NameImpl(typeName));
+        if (typeNames == null || checkTypeNames()) {
+            typeNames = createTypeNames();
         }
-        return names;
+        return new ArrayList<Name>(typeNames);
     }
 
     /**

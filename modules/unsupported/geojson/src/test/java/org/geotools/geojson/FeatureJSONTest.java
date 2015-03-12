@@ -20,7 +20,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.util.List;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -771,7 +773,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
       SimpleFeatureType type = fjson.readFeatureCollectionSchema(json, true);
       assertNull(type.getGeometryDescriptor());
     }
-    
+
     public void testFeatureCollectionConflictingTypesSchemaRead() throws Exception {
       String json = strip(
           "{" +
@@ -797,6 +799,24 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         fail("Should have thrown IllegalStateException");
       } catch (IllegalStateException e) {
       }
+    }
+    
+    public void testFeatureCollectionWithoutGeometryReadWriteFromFeatureSource() throws Exception {
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "      }," +
+          "      'id': 'xyz.1'" +
+          "    }" +
+          "  ]" +
+          "}");
+
+      SimpleFeatureSource fs = DataUtilities.source(fjson.readFeatureCollection(json));
+      fjson.toString(fs.getFeatures());
     }
     
     public void testFeatureCollectionConflictingButInterchangeableTypesSchemaRead() throws Exception {
@@ -850,7 +870,6 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
 
       assertEquals(json, os.toString());
     }
-
 
     String crsText() {
         return 

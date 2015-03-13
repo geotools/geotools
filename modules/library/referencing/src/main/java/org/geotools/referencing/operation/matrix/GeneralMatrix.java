@@ -789,4 +789,40 @@ public class GeneralMatrix implements XMatrix {
             mat = ret;
         }
     }
+    /**
+     * Update in place to the provided matrix (row-order).
+     * @param matrix
+     */
+    public void set(double[] matrix) {
+        mat.setData(matrix);
+    }
+
+    /**
+     * Resize the matrix to the specified number of rows and columns. If the total number of elements
+     * is <= number of elements it had before the data is saved.  Otherwise a new internal array is
+     * declared and the old data lost.
+     * </p>
+     *
+     * <p>
+     * This is equivalent to calling A.getMatrix().reshape(numRows,numCols,false).
+     * </p>
+     *
+     * @see org.ejml.data.ReshapeMatrix64F#reshape(int,int,boolean)
+     *
+     * @param numRows The new number of rows in the matrix.
+     * @param numCols The new number of columns in the matrix.
+     */
+    public void setSize(int numRows, int numCols) {
+        mat.reshape(numRows,numCols, true);
+    }
+
+    public void sub(GeneralMatrix matrix) {
+        CommonOps.subtract(mat, matrix.mat, mat);
+    }
+
+    public void sub(GeneralMatrix matrix1, GeneralMatrix matrix2) {
+        mat.reshape( matrix1.mat.numCols, matrix1.mat.numCols, false );
+        CommonOps.subtract(matrix1.mat, matrix2.mat, mat);
+    }
+
 }

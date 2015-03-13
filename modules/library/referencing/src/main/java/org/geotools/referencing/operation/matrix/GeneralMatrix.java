@@ -465,6 +465,22 @@ public class GeneralMatrix implements XMatrix {
     }
 
     /**
+     * Sets the value of the row using an array of values.
+     * @param row
+     * @param values
+     */
+    public void setRow(int row, double [] values) {
+        if ( values.length != mat.getNumCols() ) {
+            throw new IllegalArgumentException("Call setRow received an array of length " +  values.length + ".  " +
+              "The dimensions of the matrix is " + mat.getNumRows() + " by " + mat.getNumCols() + ".");
+        }
+
+        for( int i = 0; i < values.length; i++) {
+            mat.set(row, i, values[i]);
+        }
+    }
+
+    /**
      * Sets the value of the row, column position in the matrix.
      * @param row
      * @param column

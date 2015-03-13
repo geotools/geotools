@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Handler;
@@ -59,6 +60,9 @@ public class FilterToSQLTest extends TestCase {
     
     private SimpleFeatureType integerFType;
     private SimpleFeatureType stringFType;
+    private SimpleFeatureType sqlDateFType;
+    private SimpleFeatureType timestampFType;
+    private SimpleFeatureType dateFType;
     private FilterToSQL encoder;
     private StringWriter output;
 
@@ -78,6 +82,22 @@ public class FilterToSQLTest extends TestCase {
 		ftb.setName("testFeatureType");
 		ftb.add("testAttr", Integer.class);
         integerFType = ftb.buildFeatureType();
+        
+        ftb = new SimpleFeatureTypeBuilder();
+        ftb.setName("testFeatureType");
+        ftb.add("testAttr", java.sql.Date.class);
+        sqlDateFType = ftb.buildFeatureType();
+
+        ftb = new SimpleFeatureTypeBuilder();
+        ftb.setName("testFeatureType");
+        ftb.add("testAttr", java.sql.Timestamp.class);
+        timestampFType = ftb.buildFeatureType();
+
+        ftb = new SimpleFeatureTypeBuilder();
+        ftb.setName("testFeatureType");
+        ftb.add("testAttr", Date.class);
+        dateFType = ftb.buildFeatureType();
+
         
         ftb.setName("testFeatureType");
         ftb.add("testAttr", String.class);
@@ -186,6 +206,47 @@ public class FilterToSQLTest extends TestCase {
         LOGGER.fine("testAttr is an Integer " + filter + " -> " + output.getBuffer().toString());
         assertEquals(output.getBuffer().toString(), "WHERE testAttr = 5");
     }
+    
+    public void testSqlDateContext() throws Exception {
+        Expression literal = filterFac.literal("2002-12-03");
+        Expression prop = filterFac.property(sqlDateFType.getAttributeDescriptors().get(0)
+                .getLocalName());
+        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+
+        encoder.setFeatureType(sqlDateFType);
+        encoder.encode(filter);
+
+        LOGGER.fine("testAttr is a java.sql.Date " + filter + " -> " + output.getBuffer().toString());
+        assertEquals(output.getBuffer().toString(), "WHERE testAttr = '2002-12-03'");
+    }
+    
+    public void testTimestampContext() throws Exception {
+        Expression literal = filterFac.literal("2002-12-03 10:00");
+        Expression prop = filterFac.property(timestampFType.getAttributeDescriptors().get(0)
+                .getLocalName());
+        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+
+        encoder.setFeatureType(timestampFType);
+        encoder.encode(filter);
+
+        LOGGER.fine("testAttr is a Timestampa " + filter + " -> " + output.getBuffer().toString());
+        assertEquals(output.getBuffer().toString(), "WHERE testAttr = '2002-12-03 10:00'");
+    }
+
+    public void testDateContext() throws Exception {
+        Expression literal = filterFac.literal("2002-12-03 10:00");
+        Expression prop = filterFac.property(dateFType.getAttributeDescriptors().get(0)
+                .getLocalName());
+        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+
+        encoder.setFeatureType(dateFType);
+        encoder.encode(filter);
+
+        LOGGER.fine("testAttr is a java.util.Date " + filter + " -> " + output.getBuffer().toString());
+        assertEquals(output.getBuffer().toString(), "WHERE testAttr = '2002-12-03 10:00'");
+    }
+
+
 
     public void testStringContext() throws Exception {
         Expression literal = filterFac.literal(5);

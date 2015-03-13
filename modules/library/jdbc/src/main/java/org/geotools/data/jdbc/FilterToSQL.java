@@ -21,7 +21,9 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -1410,6 +1412,14 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
           out.write("NULL");
         } else if(literal instanceof Number || literal instanceof Boolean) {
             out.write(String.valueOf(literal));
+        } else if(literal instanceof java.sql.Date || literal instanceof java.sql.Timestamp) {
+            // java.sql.date toString declares to always format to yyyy-mm-dd 
+            // (and TimeStamp uses a similar approach)
+            out.write("'" + literal + "'");
+        } else if(literal instanceof java.util.Date) {
+            // get back to the previous case
+            Timestamp ts = new java.sql.Timestamp(((Date) literal).getTime());
+            out.write("'" + ts + "'");
         } else {
             // we don't know the type...just convert back to a string
             String encoding = (String) Converters.convert(literal,

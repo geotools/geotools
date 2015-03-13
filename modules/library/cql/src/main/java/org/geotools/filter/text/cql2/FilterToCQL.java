@@ -144,7 +144,7 @@ class FilterToCQL implements FilterVisitor {
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
 
     	checkLeftExpressionIsProperty(filter.getExpression1());
-    	return FilterToTextUtil.buildComparison(filter, extraData, "!=");
+    	return FilterToTextUtil.buildComparison(filter, extraData, "<>");
     }
 
     

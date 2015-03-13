@@ -83,6 +83,26 @@ public class FilterToCQLTest{
     }
 
     @Test
+    public void testNotEqualTo() throws Exception{
+        String cql = "ATTR1 <> 'foo'";
+        Filter filter = CQL.toFilter(cql);
+        Assert.assertNotNull( filter );
+
+        String cql2 = "NOT (ATTR1 = 'foo')";
+        String output2 = CQL.toFilter(cql2).accept(new FilterToCQL(), null).toString();
+        
+        FilterToCQL toCQL = new FilterToCQL();
+        String output = filter.accept( toCQL, null ).toString();
+        Assert.assertEquals( output2, output );        
+    }
+    
+    @Test (expected=CQLException.class)
+    public void testFailNotEqualTo() throws Exception{
+    	
+    	cqlTest( "ATTR1 != 'foo'" );
+    }
+    
+    @Test
     public void testBbox() throws Exception {
     	cqlTest( "BBOX(the_geom, 10.0,20.0,30.0,40.0)" );
 	}

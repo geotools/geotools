@@ -469,9 +469,9 @@ public class GeneralMatrix implements XMatrix {
      * {@inheritDoc}
      */
     public final void multiply(final Matrix matrix) {
-        final GMatrix m;
-        if (matrix instanceof GMatrix) {
-            m = (GMatrix) matrix;
+        final GeneralMatrix m;
+        if (matrix instanceof GeneralMatrix) {
+            m = (GeneralMatrix) matrix;
         } else {
             m = new GeneralMatrix(matrix);
         }
@@ -648,22 +648,41 @@ public class GeneralMatrix implements XMatrix {
         return new GeneralMatrix(this);
     }
 
-//    public void copySubMatrix(int rowSource, int colSource,
-//                              int numRows, int numCol,
-//                              int rowDest, int colDest, GeneralMatrix target) {
-//        if( rowSource == Integer.MAX_VALUE ) y0 = mat.numRows;
-//        if( colSource == Integer.MAX_VALUE ) y1 = mat.numRows;
-//        if( x0 == Integer.MAX_VALUE ) x0 = mat.numCols;
-//        if( x1 == Integer.MAX_VALUE) x1 = mat.numCols;
-//
-//            T ret = createMatrix(y1-y0,x1-x0);
-//
-//            CommonOps.extract(mat,y0,y1,x0,x1,ret.getMatrix(),0,0);
-//
-//            return ret;
-//        }
-//    }
+    /** Extract a subMatrix to the provided target */
+    public void copySubMatrix(int rowSource, int colSource,
+                              int numRows, int numCol,
+                              int rowDest, int colDest, GeneralMatrix target) {
+        int rowLimit = rowSource + numRows;
+        int colLimit = colSource + numCol;
+        CommonOps.extract(mat,rowSource,rowLimit,colSource,colLimit, target.mat, 0,0 );
+    }
 
+    /**
+     * Extract col to provided array.
+     * 
+     * @param col
+     * @param array
+     */
+    public void getColumn(int col, double[] array) {
+        for (int j = 0; j < array.length; j++) {
+            array[j] = mat.get(j, col);
+        }
+    }
+    /**
+     * Extract row to provided array
+     * @param row
+     * @param array
+     */
+    private void getRow(int row, double[] array) {
+        for (int i = 0; i < array.length; i++) {
+            array[i] = mat.get(row, i);
+        }
+    }
+
+    
+    //
+    // In-place operations
+    //
     /**
      * In-place multiply with provided matrix.
      * @param matrix
@@ -674,5 +693,19 @@ public class GeneralMatrix implements XMatrix {
         CommonOps.mult(mat,matrix.mat,ret);
         mat = ret;
     }
-
+    
+    /**
+     * In-place update from matrix1 * matrix2.
+     * @param matrix1
+     * @param matrix2
+     */
+    public void mul(GeneralMatrix matrix1, GeneralMatrix matrix2) {
+        if (mat.numRows == matrix1.mat.numRows && mat.numCols == matrix2.mat.numCols) {
+            CommonOps.mult(matrix1.mat, matrix2.mat, mat);
+        } else {
+            DenseMatrix64F ret = new DenseMatrix64F(matrix1.mat.numRows, matrix2.mat.numCols);
+            CommonOps.mult(matrix1.mat, matrix2.mat, ret);
+            mat = ret;
+        }
+    }
 }

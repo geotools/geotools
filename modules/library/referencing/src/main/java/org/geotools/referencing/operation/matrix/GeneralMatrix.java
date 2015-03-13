@@ -33,6 +33,8 @@ import org.opengis.referencing.operation.Matrix;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.ejml.data.DenseMatrix64F;
+import org.ejml.ops.CommonOps;
+import org.ejml.simple.SimpleMatrix;
 import org.geotools.io.LineFormat;
 import org.geotools.io.ContentFormatException;
 import org.geotools.util.Utilities;
@@ -409,6 +411,87 @@ public class GeneralMatrix implements XMatrix {
     }
 
     /**
+     *  Changes the sign of each element in the matrix.
+     */
+    @Override
+    public void negate() {
+        // JNH: This seems the most aggressive approach.
+        CommonOps.changeSign(mat);
+    }
+
+    /**
+     * Transposes the matrix.
+     */
+    @Override
+    public void transpose() {
+        CommonOps.transpose(mat);
+    }
+
+    /**
+     * Inverts the matrix if possible
+     */
+    @Override
+    public void invert() {
+        CommonOps.invert(mat);
+    }
+
+    /**
+     * Gets the number of rows in the matrix.
+     * @return The number of rows in the matrix.
+     */
+    @Override
+    public int getNumRow() {
+        return mat.getNumRows();
+    }
+
+    /**
+     * Gets the number of columns in the matrix.
+     * @return The number of columns in the matrix.
+     */
+    @Override
+    public int getNumCol() {
+        return mat.getNumCols();
+    }
+
+    /**
+     * Returns the value at the row, column position in the matrix.
+     * @param row
+     * @param column
+     * @return Matrix value at the given row and column.
+     */
+    @Override
+    public double getElement(int row, int column) {
+        return mat.get(row, column);
+    }
+
+    /**
+     * Sets the value of the row, column position in the matrix.
+     * @param row
+     * @param column
+     * @param value
+     */
+    @Override
+    public void setElement(int row, int column, double value) {
+        mat.set(row, column, value);
+    }
+
+    /**
+     * Sets each value of the matrix to 0.0.
+     */
+    @Override
+    public void setZero() {
+      mat.zero();
+    }
+
+    /**
+     * Sets the main diagonal of this matrix to be 1.0.
+     */
+    @Override
+    public void setIdentity() {
+        CommonOps.setIdentity(mat);
+    }
+
+    /**
      * Returns {@code true} if this matrix is an identity matrix.
      */
     public final boolean isIdentity() {
@@ -636,7 +719,8 @@ public class GeneralMatrix implements XMatrix {
         }
         return buffer.toString();
     }
-
+    
+    // Method Compatibility
     /**
      * Returns a clone of this matrix.
      */
@@ -644,4 +728,32 @@ public class GeneralMatrix implements XMatrix {
     public GeneralMatrix clone() {
         return new GeneralMatrix(this);
     }
+
+//    public void copySubMatrix(int rowSource, int colSource,
+//                              int numRows, int numCol,
+//                              int rowDest, int colDest, GeneralMatrix target) {
+//        if( rowSource == Integer.MAX_VALUE ) y0 = mat.numRows;
+//        if( colSource == Integer.MAX_VALUE ) y1 = mat.numRows;
+//        if( x0 == Integer.MAX_VALUE ) x0 = mat.numCols;
+//        if( x1 == Integer.MAX_VALUE) x1 = mat.numCols;
+//
+//            T ret = createMatrix(y1-y0,x1-x0);
+//
+//            CommonOps.extract(mat,y0,y1,x0,x1,ret.getMatrix(),0,0);
+//
+//            return ret;
+//        }
+//    }
+
+    /**
+     * In-place multiply with provided matrix.
+     * @param matrix
+     * 
+     */
+    public final void mul(GeneralMatrix matrix){
+        DenseMatrix64F ret = new DenseMatrix64F(mat.numRows,matrix.mat.numCols);
+        CommonOps.mult(mat,matrix.mat,ret);
+        mat = ret;
+    }
+
 }

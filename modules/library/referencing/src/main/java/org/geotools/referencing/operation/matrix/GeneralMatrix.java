@@ -411,6 +411,87 @@ public class GeneralMatrix implements XMatrix {
     }
 
     /**
+     *  Changes the sign of each element in the matrix.
+     */
+    @Override
+    public void negate() {
+        // JNH: This seems the most aggressive approach.
+        CommonOps.changeSign(mat);
+    }
+
+    /**
+     * Transposes the matrix.
+     */
+    @Override
+    public void transpose() {
+        CommonOps.transpose(mat);
+    }
+
+    /**
+     * Inverts the matrix if possible
+     */
+    @Override
+    public void invert() {
+        CommonOps.invert(mat);
+    }
+
+    /**
+     * Gets the number of rows in the matrix.
+     * @return The number of rows in the matrix.
+     */
+    @Override
+    public int getNumRow() {
+        return mat.getNumRows();
+    }
+
+    /**
+     * Gets the number of columns in the matrix.
+     * @return The number of columns in the matrix.
+     */
+    @Override
+    public int getNumCol() {
+        return mat.getNumCols();
+    }
+
+    /**
+     * Returns the value at the row, column position in the matrix.
+     * @param row
+     * @param column
+     * @return Matrix value at the given row and column.
+     */
+    @Override
+    public double getElement(int row, int column) {
+        return mat.get(row, column);
+    }
+
+    /**
+     * Sets the value of the row, column position in the matrix.
+     * @param row
+     * @param column
+     * @param value
+     */
+    @Override
+    public void setElement(int row, int column, double value) {
+        mat.set(row, column, value);
+    }
+
+    /**
+     * Sets each value of the matrix to 0.0.
+     */
+    @Override
+    public void setZero() {
+      mat.zero();
+    }
+
+    /**
+     * Sets the main diagonal of this matrix to be 1.0.
+     */
+    @Override
+    public void setIdentity() {
+        CommonOps.setIdentity(mat);
+    }
+
+    /**
      * Returns {@code true} if this matrix is an identity matrix.
      */
     public final boolean isIdentity() {

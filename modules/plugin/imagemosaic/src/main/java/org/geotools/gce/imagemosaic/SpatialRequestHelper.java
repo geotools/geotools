@@ -296,7 +296,11 @@ public class SpatialRequestHelper {
         if (destinationToSourceTransform != null ){
             if (destinationToSourceTransform.isIdentity()) {
 
-                destinationToSourceTransform = null;// the CRS is basically the same
+                // the CRS is basically the same
+                destinationToSourceTransform = null;
+
+                // we need to use the coverage one for the requested bbox to avoid problems later on
+                this.requestedBBox = new ReferencedEnvelope(requestedBBox, coverageProperties.crs2D);
             } else {
                 // we do need to reproject
                 needsReprojection = true;

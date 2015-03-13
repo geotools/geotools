@@ -320,7 +320,7 @@ final class FilterToECQL implements FilterVisitor {
     
     @Override
 	public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
-    	return FilterToTextUtil.buildComparison(filter, extraData, "!=");
+    	return FilterToTextUtil.buildComparison(filter, extraData, "<>");
 	}
 
 	@Override

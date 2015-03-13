@@ -575,9 +575,34 @@ public class GeneralMatrix implements XMatrix {
         mul(m);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        
+        if( mat == null ){
+            return prime * result;
+        }
+        result = prime * result + mat.numRows;
+        result = prime * result + mat.numCols;
+        result = prime * result + (int) mat.data[0];
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        GeneralMatrix other = (GeneralMatrix) obj;
+        return equals(other,0);
+    }
+
     public boolean equals(final Matrix matrix, final double tolerance) {
         return epsilonEquals(this, matrix, tolerance);
     }
@@ -814,22 +839,21 @@ public class GeneralMatrix implements XMatrix {
     }
 
     /**
-     * Resize the matrix to the specified number of rows and columns. If the total number of elements
-     * is <= number of elements it had before the data is saved.  Otherwise a new internal array is
-     * declared and the old data lost.
-     * </p>
-     *
-     * <p>
-     * This is equivalent to calling A.getMatrix().reshape(numRows,numCols,false).
-     * </p>
-     *
-     * @see org.ejml.data.ReshapeMatrix64F#reshape(int,int,boolean)
+     * Resize the matrix to the specified number of rows and columns (preserving remaining elements).
      *
      * @param numRows The new number of rows in the matrix.
      * @param numCols The new number of columns in the matrix.
      */
     public void setSize(int numRows, int numCols) {
-        mat.reshape(numRows,numCols, true);
+        if( numRows == mat.numCols && numCols == mat.numCols ){
+            // do nothing
+        }
+        else {
+            // grow or shrink
+            DenseMatrix64F ret = new DenseMatrix64F(numRows,numCols);
+            CommonOps.extract(mat,0,numRows,0,numCols,ret,0,0);
+            mat = ret;
+        }
     }
 
     public void sub(GeneralMatrix matrix) {

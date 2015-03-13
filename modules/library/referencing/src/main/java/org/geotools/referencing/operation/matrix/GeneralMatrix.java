@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,13 +25,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+
 import javax.vecmath.GMatrix;
 
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.operation.Matrix;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
-
+import org.ejml.data.DenseMatrix64F;
 import org.geotools.io.LineFormat;
 import org.geotools.io.ContentFormatException;
 import org.geotools.util.Utilities;
@@ -44,25 +45,22 @@ import org.geotools.resources.i18n.ErrorKeys;
  * A two dimensional array of numbers. Row and column numbering begins with zero.
  *
  * @since 2.2
- *
+ * @version 14.0
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini
  *
- * @see javax.vecmath.GMatrix
  * @see java.awt.geom.AffineTransform
- * @see javax.media.jai.PerspectiveTransform
- * @see javax.media.j3d.Transform3D
- * @see <A HREF="http://math.nist.gov/javanumerics/jama/">Jama matrix</A>
- * @see <A HREF="http://jcp.org/jsr/detail/83.jsp">JSR-83 Multiarray package</A>
  */
-public class GeneralMatrix extends GMatrix implements XMatrix {
+public class GeneralMatrix implements XMatrix {
     /**
      * Serial number for interoperability with different versions.
      */
-    private static final long serialVersionUID = 8447482612423035360L;
+    private static final long serialVersionUID = 8447482612423035361L;
+
+    DenseMatrix64F mat;
 
     /**
      * Constructs a square identity matrix of size {@code size}&nbsp;&times;&nbsp;{@code size}.
@@ -70,7 +68,7 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
      * @param size The number of rows and columns.
      */
     public GeneralMatrix(final int size) {
-        super(size, size);
+        mat = new DenseMatrix64F(size, size);
     }
 
     /**
@@ -81,7 +79,7 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
      * @param numCol Number of columns.
      */
     public GeneralMatrix(final int numRow, final int numCol) {
-        super(numRow, numCol);
+        mat = new DenseMatrix64F(numRow, numCol);
     }
 
     /**
@@ -94,11 +92,11 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
      *
      * @param numRow Number of rows.
      * @param numCol Number of columns.
-     * @param matrix Initial values.
+     * @param matrix Initial values in row order
      */
     public GeneralMatrix(final int numRow, final int numCol, final double[] matrix) {
-        super(numRow, numCol, matrix);
-        if (numRow*numCol != matrix.length) {
+        mat = new DenseMatrix64F(numRow, numCol, true, matrix);
+        if (numRow * numCol != matrix.length) {
             throw new IllegalArgumentException(String.valueOf(matrix.length));
         }
     }
@@ -111,14 +109,16 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
      *         (i.e. if all rows doesn't have the same length).
      */
     public GeneralMatrix(final double[][] matrix) throws IllegalArgumentException {
-        super(matrix.length, (matrix.length!=0) ? matrix[0].length : 0);
+        mat = new DenseMatrix64F(matrix);
         final int numRow = getNumRow();
         final int numCol = getNumCol();
-        for (int j=0; j<numRow; j++) {
-            if (matrix[j].length!=numCol) {
+        for (int j = 0; j < numRow; j++) {
+            if (matrix[j].length != numCol) {
                 throw new IllegalArgumentException(Errors.format(ErrorKeys.MATRIX_NOT_REGULAR));
             }
-            setRow(j, matrix[j]);
+            for (int i = 0; i < numCol; i++) {
+                mat.set(j, i, matrix[j][i]);
+            }
         }
     }
 
@@ -128,12 +128,17 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
      * @param matrix The matrix to copy.
      */
     public GeneralMatrix(final Matrix matrix) {
-        this(matrix.getNumRow(), matrix.getNumCol());
-        final int height = getNumRow();
-        final int width  = getNumCol();
-        for (int j=0; j<height; j++) {
-            for (int i=0; i<width; i++) {
-                setElement(j, i, matrix.getElement(j, i));
+        if (matrix instanceof GeneralMatrix) {
+            mat = new DenseMatrix64F(((GeneralMatrix) matrix).mat);
+        } else {
+            mat = new DenseMatrix64F(matrix.getNumRow(), matrix.getNumCol());
+
+            final int height = getNumRow();
+            final int width = getNumCol();
+            for (int j = 0; j < height; j++) {
+                for (int i = 0; i < width; i++) {
+                    mat.set(j, i, matrix.getElement(j, i));
+                }
             }
         }
     }
@@ -143,8 +148,8 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
      *
      * @param matrix The matrix to copy.
      */
-    public GeneralMatrix(final GMatrix matrix) {
-        super(matrix);
+    public GeneralMatrix(final GeneralMatrix matrix) {
+        mat = new DenseMatrix64F(matrix.mat);
     }
 
     /**
@@ -153,7 +158,8 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
      * @param transform The matrix to copy.
      */
     public GeneralMatrix(final AffineTransform transform) {
-        super(3,3, new double[] {
+        mat = new DenseMatrix64F(
+            3,3, true, new double[] {
             transform.getScaleX(), transform.getShearX(), transform.getTranslateX(),
             transform.getShearY(), transform.getScaleY(), transform.getTranslateY(),
             0,                     0,                     1
@@ -179,10 +185,9 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
      * @param srcRegion The source region.
      * @param dstRegion The destination region.
      */
-    public GeneralMatrix(final Envelope srcRegion,
-                         final Envelope dstRegion)
-    {
-        super(dstRegion.getDimension()+1, srcRegion.getDimension()+1);
+    public GeneralMatrix(final Envelope srcRegion, final Envelope dstRegion) {
+        mat = new DenseMatrix64F(dstRegion.getDimension()+1, srcRegion.getDimension()+1);
+        
         // Next lines should be first if only Sun could fix RFE #4093999 (sigh...)
         final int srcDim = srcRegion.getDimension();
         final int dstDim = dstRegion.getDimension();
@@ -266,7 +271,7 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
                           final Envelope dstRegion, final AxisDirection[] dstAxis,
                           final boolean validRegions)
     {
-        super(dstAxis.length+1, srcAxis.length+1);
+        this(dstAxis.length+1, srcAxis.length+1);
         if (validRegions) {
             ensureDimensionMatch("srcRegion", srcRegion, srcAxis.length);
             ensureDimensionMatch("dstRegion", dstRegion, dstAxis.length);
@@ -637,6 +642,6 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
      */
     @Override
     public GeneralMatrix clone() {
-        return (GeneralMatrix) super.clone();
+        return new GeneralMatrix(this);
     }
 }

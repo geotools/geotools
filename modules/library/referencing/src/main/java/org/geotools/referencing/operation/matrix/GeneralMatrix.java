@@ -26,15 +26,12 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import javax.vecmath.GMatrix;
-
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.operation.Matrix;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.ejml.data.DenseMatrix64F;
 import org.ejml.ops.CommonOps;
-import org.ejml.simple.SimpleMatrix;
 import org.geotools.io.LineFormat;
 import org.geotools.io.ContentFormatException;
 import org.geotools.util.Utilities;
@@ -82,6 +79,7 @@ public class GeneralMatrix implements XMatrix {
      */
     public GeneralMatrix(final int numRow, final int numCol) {
         mat = new DenseMatrix64F(numRow, numCol);
+        setIdentity();
     }
 
     /**
@@ -774,9 +772,9 @@ public class GeneralMatrix implements XMatrix {
     public void copySubMatrix(int rowSource, int colSource,
                               int numRows, int numCol,
                               int rowDest, int colDest, GeneralMatrix target) {
-        int rowLimit = rowSource + numRows;
-        int colLimit = colSource + numCol;
-        CommonOps.extract(mat,rowSource,rowLimit,colSource,colLimit, target.mat, 0,0 );
+        int rowLimit = rowSource + numRows - 1;
+        int colLimit = colSource + numCol - 1;
+        CommonOps.extract(mat, rowSource, rowLimit, colSource, colLimit, target.mat, rowDest, colDest);
     }
 
     /**
@@ -823,7 +821,9 @@ public class GeneralMatrix implements XMatrix {
      */
     public void mul(GeneralMatrix matrix1, GeneralMatrix matrix2) {
         if (mat.numRows == matrix1.mat.numRows && mat.numCols == matrix2.mat.numCols) {
-            CommonOps.mult(matrix1.mat, matrix2.mat, mat);
+            DenseMatrix64F ret = new DenseMatrix64F(mat.getNumRows(), mat.getNumCols());
+            CommonOps.mult(matrix1.mat, matrix2.mat, ret);
+            mat = ret;
         } else {
             DenseMatrix64F ret = new DenseMatrix64F(matrix1.mat.numRows, matrix2.mat.numCols);
             CommonOps.mult(matrix1.mat, matrix2.mat, ret);

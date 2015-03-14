@@ -148,17 +148,12 @@ public class PropertyDataStoreTest extends TestCase {
 
     public void testGetNames() throws IOException {
         String names[] = store.getTypeNames();
-        assert( store.watch != 0 );
         Arrays.sort(names);
         assertEquals( 4, names.length );
         assertEquals( "dots.in.name", names[0] );
         assertEquals( "multiline", names[1] );
         assertEquals( "road", names[2] );
         assertEquals( "table", names[3] );
-        
-        assertEquals( 4, store.getTypeNames().length );
-        store.watch = 0;
-        assertEquals( 4, store.getTypeNames().length );
     }
 
     public void testGetSchema() throws IOException {

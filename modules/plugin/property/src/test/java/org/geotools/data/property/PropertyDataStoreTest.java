@@ -156,9 +156,9 @@ public class PropertyDataStoreTest extends TestCase {
         assertEquals( "road", names[2] );
         assertEquals( "table", names[3] );
         
-        assertEquals(4, store.getTypeNames().length);
+        assertEquals( 4, store.getTypeNames().length );
         store.watch = 0;
-        assertEquals(4, store.getTypeNames().length);
+        assertEquals( 4, store.getTypeNames().length );
     }
 
     public void testGetSchema() throws IOException {

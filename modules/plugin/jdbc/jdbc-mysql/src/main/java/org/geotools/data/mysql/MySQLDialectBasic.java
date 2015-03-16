@@ -234,4 +234,10 @@ public class MySQLDialectBasic extends BasicSQLDialect {
     public FilterToSQL createFilterToSQL() {
         return new MySQLFilterToSQL();
     }
+    
+    @Override
+    public void dropIndex(Connection cx, SimpleFeatureType schema, String databaseSchema,
+            String indexName) throws SQLException {
+        delegate.dropIndex(cx, schema, databaseSchema, indexName);
+    }
 }

@@ -44,9 +44,6 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.coverage.grid.GridEnvelope2D;
-import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.GeoTools;
@@ -77,9 +74,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchIdentifierException;
@@ -99,7 +93,23 @@ import com.vividsolutions.jts.geom.Envelope;
 public class GridCoverageRendererTest  {
 
 
-	String FILENAME = "TestGridCoverage.jpg";
+	private static final String AFRICA_EQUIDISTANT_CONIC_WKT = "PROJCS[\"Africa_Equidistant_Conic\"," +
+                    "GEOGCS[\"GCS_WGS_1984\"," +
+                    "DATUM[\"WGS_1984\"," +
+                    "SPHEROID[\"WGS_1984\",6378137,298.257223563]]," +
+                    "PRIMEM[\"Greenwich\",0]," +
+                    "UNIT[\"Degree\",0.017453292519943295]]," +
+                    "PROJECTION[\"Equidistant_Conic\"]," +
+                    "PARAMETER[\"False_Easting\",0]," +
+                    "PARAMETER[\"False_Northing\",0]," +
+                    "PARAMETER[\"Central_Meridian\",25]," +
+                    "PARAMETER[\"Standard_Parallel_1\",20]," +
+                    "PARAMETER[\"Standard_Parallel_2\",-23]," +
+                    "PARAMETER[\"Latitude_Of_Origin\",0]," +
+                    "UNIT[\"Meter\",1]," +
+                    "AUTHORITY[\"EPSG\",\"102023\"]]";
+
+    String FILENAME = "TestGridCoverage.jpg";
 
     private GridCoverage2DReader worldReader;
 
@@ -695,6 +705,66 @@ public class GridCoverageRendererTest  {
         assertNotNull(image);
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/polar_touchdateline.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+    
+    @Test
+    public void testAfricaEquidistantConic() throws Exception {
+        CoordinateReferenceSystem crs = CRS.parseWKT(AFRICA_EQUIDISTANT_CONIC_WKT);
+        // across the dateline
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-15814047.554122284,
+                24919762.252195686,
+                -14112074.925190449,
+                11688610.748676982,
+                crs);
+        // Setting Screen size
+        Rectangle screenSize = new Rectangle(400, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 400));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(
+                mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+        // Apply the symbolizer
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        // Render the image
+        RenderedImage image = renderer.renderImage(worldReader, null, rasterSymbolizer,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.RED, 256, 256);
+
+        assertNotNull(image);
+        // Check the image
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/africa-conic.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+    
+    @Test
+    public void testAfricaEquidistantConicIndexed() throws Exception {
+        CoordinateReferenceSystem crs = CRS.parseWKT(AFRICA_EQUIDISTANT_CONIC_WKT);
+        // across the dateline
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-15814047.554122284,
+                24919762.252195686,
+                -14112074.925190449,
+                11688610.748676982,
+                crs);
+        // Setting Screen size
+        Rectangle screenSize = new Rectangle(400, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 400));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(
+                mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+        // Apply the symbolizer
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        
+        // Get the reader
+        File coverageFile = TestData.copy(this, "geotiff/worldPalette.tiff");
+        assertTrue(coverageFile.exists());
+        GridCoverage2DReader reader = new GeoTiffReader(coverageFile);
+        // Render the image
+        RenderedImage image = renderer.renderImage(reader, null, rasterSymbolizer,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.RED, 256, 256);
+        assertNotNull(image);
+        // Check the image
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/africa-conic-palette.png");
         ImageAssert.assertEquals(reference, image, 0);
     }
 

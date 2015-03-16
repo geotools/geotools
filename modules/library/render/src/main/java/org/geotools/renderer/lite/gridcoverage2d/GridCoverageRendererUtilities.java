@@ -361,38 +361,42 @@ final class GridCoverageRendererUtilities {
 
     /**
      * Mosaicking the provided coverages to the requested geographic area.
+     * @param alphas 
+     * @param background 
      * 
      * @param gc
      * @param envelope
      * @param crs
      * @return
      */
-    static GridCoverage2D mosaic(List<GridCoverage2D> coverages, GeneralEnvelope renderingEnvelope,
-            final Hints hints) {
+    static GridCoverage2D mosaic(List<GridCoverage2D> coverages, List<GridCoverage2D> alphas, GeneralEnvelope renderingEnvelope,
+            final Hints hints, double[] background) {
 
-        Collections.sort(coverages, new Comparator<GridCoverage2D>() {
+        Comparator<GridCoverage2D> c = new Comparator<GridCoverage2D>() {
 
-            @Override
-            public int compare(GridCoverage2D o1, GridCoverage2D o2) {
-                double minx1 = o1.getEnvelope().getMinimum(0);
-                double minx2 = o2.getEnvelope().getMinimum(0);
-                if (minx1 == minx2) {
-                    double maxy1 = o1.getEnvelope().getMaximum(1);
-                    double maxy2 = o2.getEnvelope().getMaximum(1);
-                    return compareDoubles(maxy1, maxy2);
-                } else {
-                    return compareDoubles(minx1, minx2);
-                }
-            }
+                    @Override
+                    public int compare(GridCoverage2D o1, GridCoverage2D o2) {
+                        double minx1 = o1.getEnvelope().getMinimum(0);
+                        double minx2 = o2.getEnvelope().getMinimum(0);
+                        if (minx1 == minx2) {
+                            double maxy1 = o1.getEnvelope().getMaximum(1);
+                            double maxy2 = o2.getEnvelope().getMaximum(1);
+                            return compareDoubles(maxy1, maxy2);
+                        } else {
+                            return compareDoubles(minx1, minx2);
+                        }
+                    }
 
-            private int compareDoubles(double maxy1, double maxy2) {
-                if (maxy1 == maxy2) {
-                    return 0;
-                } else {
-                    return (int) Math.signum(maxy1 - maxy2);
-                }
-            }
-        });
+                    private int compareDoubles(double maxy1, double maxy2) {
+                        if (maxy1 == maxy2) {
+                            return 0;
+                        } else {
+                            return (int) Math.signum(maxy1 - maxy2);
+                        }
+                    }
+                };
+        Collections.sort(coverages, c);
+        Collections.sort(alphas, c);
 
         // setup the grid geometry
         try {
@@ -423,6 +427,13 @@ final class GridCoverageRendererUtilities {
             final ParameterValueGroup param = MOSAIC_PARAMS.clone();
             param.parameter("sources").setValue(coverages);
             param.parameter("geometry").setValue(gridGeometry);
+            if(background != null){
+                param.parameter(Mosaic.OUTNODATA_NAME).setValue(background);
+                
+            }
+            if(!alphas.isEmpty()){
+                param.parameter(Mosaic.ALPHA_NAME).setValue(alphas);
+            }
             return (GridCoverage2D) MOSAIC_FACTORY.doOperation(param, hints);
         } catch (Exception e) {
             throw new RuntimeException("Failed to mosaic the input coverages", e);

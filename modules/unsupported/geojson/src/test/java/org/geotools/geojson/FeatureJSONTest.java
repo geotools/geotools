@@ -20,7 +20,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.util.List;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -30,6 +32,7 @@ import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -732,6 +735,140 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
 
         String json = fjson.toString(features);
 
+    }
+    
+    public void testFeatureCollectionWithNullGeometrySchemaRead() throws Exception {
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'geometry': null," +
+          "      'properties': {" +
+          "      }," +
+          "      'id': 'xyz.1'" +
+          "    }" +
+          "  ]" +
+          "}");
+
+      SimpleFeatureType type = fjson.readFeatureCollectionSchema(json, true);
+      assertNull(type.getGeometryDescriptor());
+    }
+
+    public void testFeatureCollectionWithoutGeometrySchemaRead() throws Exception {
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "      }," +
+          "      'id': 'xyz.1'" +
+          "    }" +
+          "  ]" +
+          "}");
+
+      SimpleFeatureType type = fjson.readFeatureCollectionSchema(json, true);
+      assertNull(type.getGeometryDescriptor());
+    }
+
+    public void testFeatureCollectionConflictingTypesSchemaRead() throws Exception {
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "         'prop': 1" +
+          "      }" +
+          "    }," +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "        'prop': 'xyz'" +
+          "      }" +
+          "    }" +
+          "  ]" +
+          "}");
+
+      try {
+        fjson.readFeatureCollectionSchema(json, false);
+        fail("Should have thrown IllegalStateException");
+      } catch (IllegalStateException e) {
+      }
+    }
+    
+    public void testFeatureCollectionWithoutGeometryReadWriteFromFeatureSource() throws Exception {
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "      }," +
+          "      'id': 'xyz.1'" +
+          "    }" +
+          "  ]" +
+          "}");
+
+      SimpleFeatureSource fs = DataUtilities.source(fjson.readFeatureCollection(json));
+      fjson.toString(fs.getFeatures());
+    }
+    
+    public void testFeatureCollectionConflictingButInterchangeableTypesSchemaRead() throws Exception {
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "         'prop': 1" +
+          "      }" +
+          "    }," +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "        'prop': 1.0" +
+          "      }" +
+          "    }" +
+          "  ]" +
+          "}");
+
+        SimpleFeatureType type = fjson.readFeatureCollectionSchema(json, false);
+        assertEquals(Double.class, type.getDescriptor("prop").getType().getBinding());
+    }
+
+    public void testFeatureCollectionWithIdPropertyReadWrite() throws Exception {
+     
+      String json = strip(
+          "{" +
+          "  'type': 'FeatureCollection'," +
+          "  'features': [" +
+          "    {" +
+          "      'type': 'Feature'," +
+          "      'properties': {" +
+          "         'id': 'one'" +
+          "      }," +
+          "      'id': 'xyz.1'" +
+          "    }" +
+          "  ]" +
+          "}");
+      
+      FeatureCollection fc = fjson.readFeatureCollection(json);
+      assertNotNull(fc.getSchema().getDescriptor("id"));
+      Feature feat = fc.features().next();
+      assertEquals("one", feat.getProperty("id").getValue());
+      assertEquals("xyz.1", feat.getIdentifier().getID());
+      
+      ByteArrayOutputStream os = new ByteArrayOutputStream();
+      fjson.writeFeatureCollection(fc, os);
+
+      assertEquals(json, os.toString());
     }
 
     String crsText() {

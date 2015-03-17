@@ -848,6 +848,8 @@ public class GridCoverage2D extends AbstractGridCoverage {
      * @see javax.media.jai.operator.PiecewiseDescriptor
      *
      * @since 2.5
+     *
+     * @deprecated
      */
     public GridCoverage2D view(final ViewType type) {
         if (ViewType.SAME.equals(type)) {
@@ -932,6 +934,8 @@ public class GridCoverage2D extends AbstractGridCoverage {
      * @return The set of views that this coverage represents.
      *
      * @since 2.5
+     *
+     * @deprecated
      */
     public synchronized Set<ViewType> getViewTypes() {
         if (viewTypes == null) {

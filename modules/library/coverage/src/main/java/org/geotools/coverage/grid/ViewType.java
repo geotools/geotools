@@ -50,6 +50,8 @@ import org.geotools.resources.image.ImageUtilities;
  * @author Martin Desruisseaux
  *
  * @see GridCoverage2D#view
+ *
+ * @deprecated
  */
 public enum ViewType {
     /**

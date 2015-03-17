@@ -293,6 +293,8 @@ public final class CoverageUtilities {
      *            between original data and their rendered counterpart.
      * @return {@code false} if this coverage has only a single view associated with it,
      *         {@code true} otherwise.
+     *
+     * @deprecated
      */
     public static boolean hasRenderingCategories(final GridCoverage gridCoverage) {
         // getting all the SampleDimensions of this coverage, if any exist
@@ -312,6 +314,8 @@ public final class CoverageUtilities {
      * Returns {@code true} if at least one of the specified sample dimensions has a
      * {@linkplain SampleDimension#getSampleToGeophysics sample to geophysics} transform
      * which is not the identity transform.
+     *
+     * @deprecated
      */
     public static boolean hasTransform(final SampleDimension[] sampleDimensions) {
         for (int i=sampleDimensions.length; --i>=0;) {
@@ -422,9 +426,10 @@ public final class CoverageUtilities {
      * @since 2.5
      *
      * @todo Move this method in {@link org.geotools.coverage.processing.Operation2D}.
+     *
+     * @deprecated
      */
-    @SuppressWarnings("deprecation")
-	public static ViewType preferredViewForOperation(final GridCoverage2D coverage,
+    public static ViewType preferredViewForOperation(final GridCoverage2D coverage,
             final Interpolation interpolation, final boolean hasFilter, final RenderingHints hints)
     {
         /*
@@ -520,6 +525,8 @@ public final class CoverageUtilities {
      * @since 2.5
      *
      * @todo Move this method in {@link org.geotools.coverage.processing.Operation2D}.
+     *
+     * @deprecated
      */
     public static ViewType preferredViewAfterOperation(final GridCoverage2D coverage) {
         final Set<ViewType> views = coverage.getViewTypes();

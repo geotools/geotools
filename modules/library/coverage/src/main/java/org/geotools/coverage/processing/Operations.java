@@ -728,6 +728,8 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      *
      * @see org.geotools.coverage.processing.operation.GradientMagnitude
+     *
+     * @deprecated
      */
     public Coverage gradientMagnitude(final Coverage source)
             throws CoverageProcessingException
@@ -745,6 +747,8 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      *
      * @see org.geotools.coverage.processing.operation.GradientMagnitude
+     *
+     * @deprecated
      */
     public Coverage gradientMagnitude(final Coverage source,
                                       final KernelJAI mask1, final KernelJAI mask2)

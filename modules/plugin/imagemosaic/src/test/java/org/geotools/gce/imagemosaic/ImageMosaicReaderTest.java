@@ -75,6 +75,7 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
+import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -3150,7 +3151,69 @@ public class ImageMosaicReaderTest extends Assert{
         // No reader should have been created.
         assertNull(reader);
     }
+
     
+    /**
+     * Tests {@link ImageMosaicReader} when the native CRS differs from the requested CRS only because of metadata.
+     * Test case uses 3857 data bt request with 900913
+     *  
+     * @throws Exception
+     */
+    @Test
+    public void testSameCRS() throws Exception {
+        final String strangeWGS84 = "PROJCS[\"Google Mercator\", " + 
+                "  GEOGCS[\"WGS 84\", " + 
+                "    DATUM[\"World Geodetic System 1984\", " + 
+                "      SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], " + 
+                "      AUTHORITY[\"EPSG\",\"6326\"]], " + 
+                "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], " + 
+                "    UNIT[\"degree\", 0.017453292519943295], " + 
+                "    AXIS[\"Geodetic latitude\", NORTH], " + 
+                "    AXIS[\"Geodetic longitude\", EAST], " + 
+                "    AUTHORITY[\"EPSG\",\"4326\"]], " + 
+                "  PROJECTION[\"Mercator (1SP)\", AUTHORITY[\"EPSG\",\"9804\"]], " + 
+                "  PARAMETER[\"semi_major\", 6378137.0], " + 
+                "  PARAMETER[\"semi_minor\", 6378137.0], " + 
+                "  PARAMETER[\"latitude_of_origin\", 0.0], " + 
+                "  PARAMETER[\"central_meridian\", 0.0], " + 
+                "  PARAMETER[\"scale_factor\", 1.0], " + 
+                "  PARAMETER[\"false_easting\", 0.0], " + 
+                "  PARAMETER[\"false_northing\", 0.0], " + 
+                "  UNIT[\"m\", 1.0], " + 
+                "  AXIS[\"Easting\", EAST], " + 
+                "  AXIS[\"Northing\", NORTH], " + 
+                "  AUTHORITY[\"EPSG\",\"900913\"]]";
+        
+        
+        // Get the resources as needed.
+        URL testURL = TestData.url(this, "same_crs/");
+        Assert.assertNotNull(testURL);
+
+        // Get the reader
+        final AbstractGridFormat format = TestUtils.getFormat(testURL, null);
+        Assert.assertNotNull(format);
+        Assert.assertFalse(format instanceof UnknownFormat);
+
+        // Read the Directory
+        ImageMosaicReader reader = TestUtils.getReader(testURL, format);
+
+        // create the same BBOX with strange CRS
+        final GeneralEnvelope targetBBOX = new GeneralEnvelope(reader.getOriginalEnvelope());
+        targetBBOX.setCoordinateReferenceSystem(CRS.parseWKT(strangeWGS84));
+
+        // create the GridGeometry
+        final ParameterValue<GridGeometry2D> readGG = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        readGG.setValue(new GridGeometry2D(reader.getOriginalGridRange(), targetBBOX));
+
+        // Test the output coverage
+        TestUtils.checkCoverage(reader, new GeneralParameterValue[] { readGG }, "Test Same CRS");
+
+        // test the coverage
+        reader.dispose();
+
+    }
+
     @AfterClass
 	public static void close(){
 		System.clearProperty("org.geotools.referencing.forceXY");

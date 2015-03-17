@@ -290,43 +290,48 @@ public class SpatialRequestHelper {
             }
         // now transform the requested envelope to source crs
         if (destinationToSourceTransform != null ){
-        	if(destinationToSourceTransform.isIdentity()) {
+            if (destinationToSourceTransform.isIdentity()) {
 
-        		destinationToSourceTransform = null;// the CRS is basically the same
-	        } else{
-	        	// we do need to reproject
-	        	needsReprojection=true;
-	        	
-	            //
-	            // k, the transformation between the various CRS is not null or the
-	            // Identity, let's see if it is an affine transform, which case we
-	            // can incorporate it into the requested grid to world
-	        	if (destinationToSourceTransform instanceof AffineTransform) {
-	
-		            //
-		            // we should not have any problems with regards to BBOX reprojection
-		            // update the requested grid to world transformation by pre concatenating the destination to source transform
-		            AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld.clone();
-		            mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
-		
-		            // update the requested envelope
-		            try {
-		                final MathTransform tempTransform = PixelTranslation.translate(
-		                        ProjectiveTransform.create(mutableTransform), PixelInCell.CELL_CENTER,
-		                        PixelInCell.CELL_CORNER);
-		                requestedBBox = new ReferencedEnvelope(CRS.transform(tempTransform,
-		                        new GeneralEnvelope(requestedRasterArea)));
-		
-		            } catch (Exception e) {
-		                throw new DataSourceException("Unable to inspect request CRS", e);
-		            }
-		
-		            // now clean up all the traces of the transformations
-		            destinationToSourceTransform = null;
-		            needsReprojection=false;
-	
-	            }	            
-	        }
+                // the CRS is basically the same
+                destinationToSourceTransform = null;
+
+                // we need to use the coverage one for the requested bbox to avoid problems later on
+                this.requestedBBox = new ReferencedEnvelope(requestedBBox, coverageProperties.crs2D);
+            } else {
+                // we do need to reproject
+                needsReprojection = true;
+
+                //
+                // k, the transformation between the various CRS is not null or the
+                // Identity, let's see if it is an affine transform, which case we
+                // can incorporate it into the requested grid to world
+                if (destinationToSourceTransform instanceof AffineTransform) {
+
+                    //
+                    // we should not have any problems with regards to BBOX reprojection
+                    // update the requested grid to world transformation by pre concatenating the
+                    // destination to source transform
+                    AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld.clone();
+                    mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
+
+                    // update the requested envelope
+                    try {
+                        final MathTransform tempTransform = PixelTranslation.translate(
+                                ProjectiveTransform.create(mutableTransform),
+                                PixelInCell.CELL_CENTER, PixelInCell.CELL_CORNER);
+                        requestedBBox = new ReferencedEnvelope(CRS.transform(tempTransform,
+                                new GeneralEnvelope(requestedRasterArea)));
+
+                    } catch (Exception e) {
+                        throw new DataSourceException("Unable to inspect request CRS", e);
+                    }
+
+                    // now clean up all the traces of the transformations
+                    destinationToSourceTransform = null;
+                    needsReprojection = false;
+
+                }
+            }
         }
     }
     

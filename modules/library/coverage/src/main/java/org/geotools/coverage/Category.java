@@ -305,6 +305,8 @@ public class Category implements Serializable {
      *
      * @throws IllegalArgumentException if {@code lower} is not smaller than {@code upper},
      *         or if {@code scale} or {@code offset} are not real numbers.
+     *
+     * @deprecated
      */
     public Category(final CharSequence name,
                     final Color[]      colors,
@@ -341,6 +343,8 @@ public class Category implements Serializable {
      *
      * @throws IllegalArgumentException if {@code lower} is not smaller than {@code upper},
      *         or if {@code scale} or {@code offset} are not real numbers.
+     *
+     * @deprecated
      */
     public Category(final CharSequence name,
                     final Color[]     colors,
@@ -389,6 +393,8 @@ public class Category implements Serializable {
      *
      * @throws ClassCastException if the range element class is not a {@link Number} subclass.
      * @throws IllegalArgumentException if the range is invalid.
+     *
+     * @deprecated
      */
     public Category(final CharSequence name,
                     final Color[]     colors,
@@ -420,6 +426,8 @@ public class Category implements Serializable {
      *
      * @throws ClassCastException if the range element class is not a {@link Number} subclass.
      * @throws IllegalArgumentException if the range is invalid.
+     *
+     * @deprecated
      */
     public Category(final CharSequence name,
                     final Color[]     colors,
@@ -719,6 +727,8 @@ public class Category implements Serializable {
      * is not a quantitative one, then this method returns {@code null}.
      *
      * @return The transform from sample values to geophysics values.
+     *
+     * @deprecated
      */
     public MathTransform1D getSampleToGeophysics() {
         return isQuantitative() ? transform : null;
@@ -784,6 +794,8 @@ public class Category implements Serializable {
      *
      * @see #getSampleToGeophysics
      * @see GridSampleDimension#rescale
+     *
+     * @deprecated
      */
     public Category rescale(final MathTransform1D sampleToGeophysics) {
         if (Utilities.equals(sampleToGeophysics, transform)) {
@@ -825,6 +837,8 @@ public class Category implements Serializable {
      *
      * @see GridSampleDimension#geophysics
      * @see org.geotools.coverage.grid.GridCoverage2D#view
+     *
+     * @deprecated
      */
     public Category geophysics(final boolean geo) {
         return geo ? inverse : this;

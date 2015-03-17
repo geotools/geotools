@@ -40,6 +40,8 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
 
 /**
  * 
@@ -55,7 +57,7 @@ final class TestUtils extends Assert {
 	@SuppressWarnings("unchecked")
 	static GridCoverage2D testCoverage(final ImageMosaicReader reader,
 			GeneralParameterValue[] values, String title,
-			final GridCoverage2D coverage, final Rectangle rect) {
+			final GridCoverage2D coverage, final Rectangle rect) throws FactoryException {
 	    final RenderedImage image = coverage.getRenderedImage(); 
 		if (ImageMosaicReaderTest.INTERACTIVE)
 			show(image, title);
@@ -68,9 +70,15 @@ final class TestUtils extends Assert {
 					
 					Parameter<GridGeometry2D> param= (Parameter<GridGeometry2D>) pv;
 					// check envelope if it has been requested
-					assertTrue(CRS.equalsIgnoreMetadata(
-							param.getValue().getEnvelope().getCoordinateReferenceSystem(), 
-							coverage.getCoordinateReferenceSystem()));
+					
+					CoordinateReferenceSystem envCRS = param.getValue().getEnvelope().getCoordinateReferenceSystem();
+					CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem();
+					boolean equalsIgnoreMetadata = CRS.equalsIgnoreMetadata(envCRS, coverageCRS);
+					if (!equalsIgnoreMetadata) {
+					    MathTransform destinationToSourceTransform = CRS.findMathTransform(envCRS, coverageCRS, true);
+					    equalsIgnoreMetadata = destinationToSourceTransform != null && destinationToSourceTransform.isIdentity();
+					}
+					assertTrue(equalsIgnoreMetadata);
 	
 				}
 			}
@@ -106,12 +114,16 @@ final class TestUtils extends Assert {
 	    return checkCoverage(reader, values, title, null);
 	}
 
-	static GridCoverage2D checkCoverage(final ImageMosaicReader reader,
-			GeneralParameterValue[] values, String title, Rectangle rect) throws IOException {
-		// Test the coverage
-		final GridCoverage2D coverage = getCoverage(reader, values, true);
-		return testCoverage(reader, values, title, coverage, rect);
-	}
+    static GridCoverage2D checkCoverage(final ImageMosaicReader reader,
+            GeneralParameterValue[] values, String title, Rectangle rect) throws IOException {
+        // Test the coverage
+        final GridCoverage2D coverage = getCoverage(reader, values, true);
+        try {
+            return testCoverage(reader, values, title, coverage, rect);
+        } catch (FactoryException e) {
+            throw new IOException(e);
+        }
+    }
 
 	static GridCoverage2D getCoverage(final ImageMosaicReader reader,
 			GeneralParameterValue[] values, final boolean checkForNull) throws IOException {
@@ -122,26 +134,39 @@ final class TestUtils extends Assert {
 		return coverage;
 	}
 
-	/**
-	 * Tries to get an {@link AbstractGridFormat} for the provided URL.
-	 * 
-	 * @param testURL
-	 *            points to a shapefile that is the index of a certain mosaic.
-	 * @return a suitable {@link AbstractGridFormat}.
-	 * @throws FactoryException 
-	 * @throws NoSuchAuthorityCodeException 
-	 */
-	static AbstractGridFormat getFormat(URL testURL) throws NoSuchAuthorityCodeException, FactoryException {
-	
-		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
-		// Get format
-		final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(testURL,hints);
-		Assert.assertNotNull(format);
-		Assert.assertFalse("UknownFormat", format instanceof UnknownFormat);
-		return format;
-	}
+    /**
+     * Tries to get an {@link AbstractGridFormat} for the provided URL.
+     * 
+     * @param testURL points to a shapefile that is the index of a certain mosaic.
+     * @return a suitable {@link AbstractGridFormat}.
+     * @throws FactoryException
+     * @throws NoSuchAuthorityCodeException
+     */
+    static AbstractGridFormat getFormat(URL testURL) throws NoSuchAuthorityCodeException,
+            FactoryException {
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        return getFormat(testURL, hints);
+    }
 
-	/**
+    /**
+     * Tries to get an {@link AbstractGridFormat} for the provided URL.
+     * 
+     * @param testURL points to a shapefile that is the index of a certain mosaic.
+     * @param hints hints to be used while looking for a format.
+     * @return a suitable {@link AbstractGridFormat}.
+     * @throws FactoryException
+     * @throws NoSuchAuthorityCodeException
+     */
+    static AbstractGridFormat getFormat(URL testURL, Hints hints)
+            throws NoSuchAuthorityCodeException, FactoryException {
+        // Get format
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(testURL, hints);
+        Assert.assertNotNull(format);
+        Assert.assertFalse("UknownFormat", format instanceof UnknownFormat);
+        return format;
+    }
+
+    /**
 		 * returns an {@link AbstractGridCoverage2DReader} for the provided
 		 * {@link URL} and for the providede {@link AbstractGridFormat}.
 		 * 

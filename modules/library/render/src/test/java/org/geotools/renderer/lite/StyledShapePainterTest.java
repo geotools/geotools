@@ -100,6 +100,42 @@ public class StyledShapePainterTest extends TestCase {
         // Ensure painted legend matches image from file
         Assert.assertTrue(imagesIdentical(paintedImage, testImage));
     }
+
+    @Test
+    public void testGraphicLegendNegativeScale() throws Exception {
+
+        // Load image directly from file, for comparison with painter output
+        final URL imageURL = TestData.getResource(this, "icon64.png");
+        final BufferedImage testImage = ImageIO.read(imageURL);
+        final int width = testImage.getWidth();
+        final int height = testImage.getHeight();
+
+        // Get graphic legend from style
+        final Style style = RendererBaseTest.loadStyle(
+                this, "testGraphicLegend.sld");
+        final Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        final GraphicLegend legend = (GraphicLegend) rule.getLegend();
+
+        // Paint legend using StyledShapePainter
+        final Point point = new GeometryFactory().createPoint(
+                new Coordinate(width / 2, height / 2));
+        final LiteShape2 shape = new LiteShape2(point, null, null, false);
+
+        int imageType = testImage.getType();
+        if(imageType == BufferedImage.TYPE_CUSTOM) {
+            imageType = BufferedImage.TYPE_INT_RGB;
+        }
+        final BufferedImage paintedImage =
+                new BufferedImage(width, height, imageType);
+        final Graphics2D graphics = paintedImage.createGraphics();
+        final StyledShapePainter painter = new StyledShapePainter();
+        painter.paint(graphics, shape, legend, -1, false);
+        graphics.dispose();
+
+        // Ensure painted legend matches image from file
+        Assert.assertTrue(imagesIdentical(paintedImage, testImage));
+    }
+
     public void testGraphicLegendRotation() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();

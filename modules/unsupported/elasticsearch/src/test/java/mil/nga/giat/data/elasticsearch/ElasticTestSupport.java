@@ -1,0 +1,255 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+
+package mil.nga.giat.data.elasticsearch;
+
+import java.io.File;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Scanner;
+import java.util.TimeZone;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.elasticsearch.node.NodeBuilder.*;
+import mil.nga.giat.data.elasticsearch.ElasticAttribute;
+import mil.nga.giat.data.elasticsearch.ElasticDataStore;
+import mil.nga.giat.data.elasticsearch.ElasticDataStoreFactory;
+import mil.nga.giat.data.elasticsearch.ElasticFeatureSource;
+import mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration;
+
+import org.elasticsearch.action.admin.cluster.state.ClusterStateResponse;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.cluster.node.DiscoveryNode;
+import org.elasticsearch.common.collect.ImmutableOpenMap;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.TransportAddress;
+import org.geotools.temporal.object.DefaultInstant;
+import org.geotools.temporal.object.DefaultPeriod;
+import org.geotools.temporal.object.DefaultPosition;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import static org.junit.Assert.assertTrue;
+import org.opengis.temporal.Instant;
+import org.opengis.temporal.Period;
+
+public abstract class ElasticTestSupport {
+
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger(ElasticTestSupport.class);
+
+    private static final String PROPERTIES_FILE = "elasticsearch.properties";
+
+    private static final String TEST_FILE = "wifiAccessPoint.json";
+
+    private static final String ACTIVE_MAPPINGS_FILE = "active_mappings.json";
+
+    private static final String INACTIVE_MAPPINGS_FILE = "inactive_mappings.json";
+
+    private static final Pattern STATUS_PATTERN = Pattern.compile(".*\"status_s\"\\s*:\\s*\"(.*?)\".*");
+
+    private static final Pattern ID_PATTERN = Pattern.compile(".*\"id\"\\s*:\\s*\"(\\d+)\".*");
+
+    protected static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
+
+    protected String layerName = "active";
+
+    protected int SOURCE_SRID = 4326;
+
+    protected static String host;
+
+    protected static Integer port;
+
+    protected static String indexName;
+
+    protected static String clusterName;
+
+    protected ElasticFeatureSource featureSource;
+
+    protected static ElasticDataStore dataStore;
+
+    private List<ElasticAttribute> attributes;
+
+    private static org.elasticsearch.node.Node node;
+    
+    @BeforeClass
+    public static void suiteSetup() throws Exception {
+        Properties properties = new Properties();
+        InputStream inputStream = ClassLoader.getSystemResourceAsStream(PROPERTIES_FILE);
+        properties.load(inputStream);
+        host = properties.getProperty("elasticsearch_host");
+        indexName = properties.getProperty("index_name");
+        clusterName = properties.getProperty("cluster_name");
+
+        if (node == null) {
+            connect();
+        }
+
+        if (port != null) {
+            Map<String,Serializable> params = createConnectionParams();
+            ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
+            dataStore = (ElasticDataStore) factory.createDataStore(params);
+        }
+    }
+
+    @AfterClass
+    public static void suiteTearDown() {
+        if (dataStore != null) {
+            dataStore.dispose();
+        }
+        //TODO: Need to close only after all tests in all suites have run
+        //        node.close();
+    }
+
+    private static void connect() throws Exception {
+        Path path = Files.createTempDirectory("gt_es_test");
+
+        LOGGER.info("Creating local test Elasticsearch cluster (path.home=" + path + ")");
+        Settings build = ImmutableSettings.builder()
+                .put("path.home", path)
+                .put("path.data", path + File.separator + "data")
+                .build();
+        node = nodeBuilder().settings(build).node();
+        Client client = node.client();
+        
+        // get transport port
+        ClusterStateResponse state;
+        state = client.admin().cluster().prepareState().setNodes(true).execute().actionGet();
+        ImmutableOpenMap<String, DiscoveryNode> dataNodes = state.getState().getNodes().dataNodes();
+        String key = dataNodes.keys().iterator().next().value;
+        TransportAddress address = dataNodes.get(key).getAddress();
+        Matcher matcher = Pattern.compile(".*?:(93..).*").matcher(address.toString());
+        if (matcher.matches()) {
+            port = Integer.valueOf(matcher.group(1));
+        } else {
+            String m;
+            m = "Elasticsearch initialization failed "
+                    + "(unable to parse port from local node transport_address)";
+            throw new RuntimeException(m);
+        }
+        
+        // create index and add mappings
+        CreateIndexRequestBuilder builder = client.admin().indices().prepareCreate(indexName);
+        try (Scanner s = new Scanner(ClassLoader.getSystemResourceAsStream(ACTIVE_MAPPINGS_FILE))) {
+            s.useDelimiter("\\A");
+            builder.addMapping("active", s.next());
+        }
+        try (Scanner s = new Scanner(ClassLoader.getSystemResourceAsStream(INACTIVE_MAPPINGS_FILE))) {
+            s.useDelimiter("\\A");
+            builder.addMapping("not-active", s.next());
+        }
+        builder.execute().actionGet();
+
+        // index documents
+        InputStream inputStream = ClassLoader.getSystemResourceAsStream(TEST_FILE);
+        try (Scanner scanner = new Scanner(inputStream)) {
+            scanner.useDelimiter("\\n");
+            while (scanner.hasNext()) {
+                final String line = scanner.next();
+                if (!line.startsWith("#")) {
+                    final Matcher idMatcher = ID_PATTERN.matcher(line);
+                    final String id;
+                    if (idMatcher.matches()) {
+                        id = idMatcher.group(1);
+                    } else {
+                        id = null;
+                    }
+                    final String layerName;
+                    final Matcher statusMatcher = STATUS_PATTERN.matcher(line);
+                    if (statusMatcher.matches()) {
+                        layerName = statusMatcher.group(1);
+                    } else {
+                        layerName = null;
+                    }
+
+                    client.prepareIndex(indexName, layerName)
+                    .setSource(line)
+                    .setId(id)
+                    .execute().actionGet();
+                }
+            }
+        }
+        LOGGER.info("Done setting up Elasticsearch");
+    }
+
+    protected static Map<String,Serializable> createConnectionParams() {
+        Map<String,Serializable> params = new HashMap<>();
+        params.put(ElasticDataStoreFactory.HOSTNAME.key, host);
+        params.put(ElasticDataStoreFactory.HOSTPORT.key, port);
+        params.put(ElasticDataStoreFactory.INDEX_NAME.key, indexName);
+        params.put(ElasticDataStoreFactory.CLUSTERNAME.key, clusterName);
+        return params;
+    }
+
+    protected void init() throws Exception {
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+        init(this.layerName);
+    }
+
+    protected void init(String layerName) throws Exception {
+        init(layerName, "geo");
+    }
+
+    protected void init(String layerName, String geometryField) throws Exception {
+        assertTrue("Elasticsearch test cluster is not initialized", port != null);
+        this.layerName = layerName;
+        attributes = dataStore.getElasticAttributes(this.layerName);
+        ElasticLayerConfiguration config = new ElasticLayerConfiguration(
+                new ArrayList<ElasticAttribute>());
+        config.setLayerName(this.layerName);
+        List<ElasticAttribute> layerAttributes = new ArrayList<>();
+        for (ElasticAttribute attribute : attributes) {
+            attribute.setUse(true);
+            if (geometryField.equals(attribute.getName())) {
+                ElasticAttribute copy = new ElasticAttribute(attribute);
+                copy.setDefaultGeometry(true);
+                layerAttributes.add(copy);
+            } else {
+                layerAttributes.add(attribute);
+            }
+        }
+        config.getAttributes().addAll(layerAttributes);
+        dataStore.setElasticConfigurations(config);
+        featureSource = (ElasticFeatureSource) dataStore.getFeatureSource(this.layerName);
+    }
+
+    protected Date date(String date) throws ParseException {
+        return DATE_FORMAT.parse(date);
+    }
+
+    protected Instant instant(String d) throws ParseException {
+        return new DefaultInstant(new DefaultPosition(date(d)));
+    }
+
+    protected Period period(String d1, String d2) throws ParseException {
+        return new DefaultPeriod(instant(d1), instant(d2));
+    }
+}

@@ -1,0 +1,31 @@
+#
+#    GeoTools - The Open Source Java GIS Toolkit
+#    http://geotools.org
+# 
+#    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+#
+#    This library is free software; you can redistribute it and/or
+#    modify it under the terms of the GNU Lesser General Public
+#    License as published by the Free Software Foundation;
+#    version 2.1 of the License.
+#
+#    This library is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#    Lesser General Public License for more details.
+#
+#    From src/test/resources/wifiAccessPoint.xml in the GeoTools SOLR module
+#
+{"status_s":"active","id":"01","security_ss":["WEP","WPA"],"geo":"0,0","speed_is":150,"standard_ss":["IEEE 802.11b","IEEE 802.11n"],"geo3":{"type":"envelope","coordinates":[[0,1], [1,0]]},"modem_b":true,"geo2":{"type":"linestring","coordinates":[[0,0], [0,1]]},"installed_tdt":"2011-05-20T17:33:18Z","vendor_s":"D-Link"}
+{"status_s":"active","id":"02","security_ss":"WEP","geo":"15,10","speed_is":[150,300],"standard_ss":"IEEE 802.11b","geo3":{"type":"envelope","coordinates":[[10,16], [16,11]]},"modem_b":true,"geo2":{"type":"linestring","coordinates":[[10,15], [10,16]]},"installed_tdt":"2012-01-10T07:43:58Z","vendor_s":"Linksys"}
+{"status_s":"active","id":"03","security_ss":"WEP","geo":"7,5","speed_is":150,"standard_ss":"IEEE 802.11n","geo3":{"type":"envelope","coordinates":[[5,8], [8,5]]},"modem_b":true,"geo2":{"type":"linestring","coordinates":[[5,7], [5,8]]},"installed_tdt":"2013-10-01T00:13:11Z","vendor_s":"D-Link"}
+{"status_s":"active","id":"04","security_ss":["WEP","WPA"],"geo":"2,24","speed_is":300,"standard_ss":["IEEE 802.11b","IEEE 802.11n"],"geo3":{"type":"envelope","coordinates":[[22,3], [24,2]]},"modem_b":false,"geo2":{"type":"linestring","coordinates":[[24,2], [24,3]]},"installed_tdt":"2013-12-01T00:16:21Z","vendor_s":"Cisco"}
+{"status_s":"active","id":"05","security_ss":"WPA","geo":"17,12","speed_is":150,"standard_ss":"IEEE 802.11n","geo3":{"type":"envelope","coordinates":[[12,18], [13,17]]},"modem_b":true,"geo2":{"type":"linestring","coordinates":[[12,17], [12,18]]},"installed_tdt":"2000-11-11T11:16:21Z","vendor_s":"Cisco"}
+{"status_s":"active","id":"06","security_ss":"WPA","geo":"9,13","speed_is":300,"standard_ss":["IEEE 802.11b","IEEE 802.11n"],"geo3":{"type":"envelope","coordinates":[[13,10], [14,9]]},"modem_b":false,"geo2":{"type":"linestring","coordinates":[[13,9], [13,10]]},"installed_tdt":"2001-04-28T23:23:21Z","vendor_s":"D-Link"}
+{"status_s":"active","id":"07","security_ss":"WPA","geo":"27,22","speed_is":150,"standard_ss":"IEEE 802.11n","geo3":{"type":"envelope","coordinates":[[22,28], [23,27]]},"modem_b":false,"geo2":{"type":"linestring","coordinates":[[22,27], [22,28]]},"installed_tdt":"2004-06-20T03:44:56Z","vendor_s":"TP-Link"}
+{"status_s":"active","id":"08","security_ss":"WEP","geo":"3,2","speed_is":150,"standard_ss":"IEEE 802.11b","geo3":{"type":"envelope","coordinates":[[2,4], [3,3]]},"modem_b":true,"geo2":{"type":"linestring","coordinates":[[2,3], [2,4]]},"installed_tdt":"2014-02-12T06:37:48Z","vendor_s":"Linksys"}
+{"status_s":"active","id":"09","security_ss":"WEP","geo":"23,7","speed_is":[150,300],"standard_ss":"IEEE 802.11n","geo3":{"type":"envelope","coordinates":[[7,24], [8,23]]},"modem_b":true,"geo2":{"type":"linestring","coordinates":[[7,23], [7,24]]},"installed_tdt":"2008-09-23T16:43:23Z","vendor_s":"D-Link"}
+{"status_s":"active","id":"10","security_ss":"WPA","geo":"0,0","speed_is":[150,300],"standard_ss":["IEEE 802.11b","IEEE 802.11n"],"geo3":{"type":"envelope","coordinates":[[0,1], [1,0]]},"modem_b":true,"geo2":{"type":"linestring","coordinates":[[0,0], [0,1]]},"vendor_s":"HP"}
+{"status_s":"active","id":"11","geo":"43,1","speed_is":150,"standard_ss":"IEEE 802.11b","geo3":{"type":"envelope","coordinates":[[1,44], [2,43]]},"modem_b":true,"geo2":{"type":"linestring","coordinates":[[1,43], [1,44]]},"vendor_s":"Asus"}
+{"status_s":"not-active","id":"12","security_ss":"WPA","speed_is":300,"standard_ss":["IEEE 802.11b","IEEE 802.11n"],"geo2":{"type":"linestring","coordinates":[[1,1], [1,2]]},"modem_b":true,"geo3":{"type":"polygon","coordinates":[[[1,1], [5,1], [5,5], [1,5], [1,1]]]},"vendor_s":"Asus"}
+{"status_s":"not-active","id":"13","speed_is":300,"standard_ss":["IEEE 802.11b","IEEE 802.11n"],"geo2":{"type":"linestring","coordinates":[[3,2], [3,3]]},"modem_b":true,"geo3":{"type":"polygon","coordinates":[[[3,2], [6,2], [6,7], [3,7], [3,2]]]},"vendor_s":"Asus"}

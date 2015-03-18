@@ -1,0 +1,52 @@
+{  
+    "not-active" : {
+        "properties" : {
+          "geo" : {
+            "type" : "geo_shape",
+            "tree" : "quadtree",
+            "tree_levels" : 26
+          },
+          "geo2" : {
+            "type" : "geo_shape",
+            "tree" : "quadtree",
+            "tree_levels" : 26
+          },
+          "geo3" : {
+            "type" : "geo_shape",
+            "tree" : "quadtree",
+            "tree_levels" : 26
+          },
+          "id" : {
+            "type" : "string",
+            "index":    "not_analyzed"
+          },
+          "installed_tdt" : {
+            "type" : "date",
+            "format" : "dateOptionalTime"
+          },
+          "modem_b" : {
+            "type" : "boolean"
+          },
+          "security_ss" : {
+            "type" : "string",
+            "index":    "not_analyzed"
+          },
+          "speed_is" : {
+            "type" : "integer"
+          },
+          "standard_ss" : {
+            "type" : "string",
+            "index":    "not_analyzed"
+          },
+          "status_s" : {
+            "type" : "string",
+            "index":    "not_analyzed"
+          },
+          "vendor_s" : {
+            "type" : "string",
+            "index":    "not_analyzed"
+          }
+        }
+      }
+    }
+}

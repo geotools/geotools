@@ -362,7 +362,7 @@ public final class StyledShapePainter {
                     iter.currentSegment(coords);
                     try {
                         BufferedImage image = ImageIO.read(graphic.getOnlineResource().getLinkage().toURL());
-                        if (symbolScale != 1.0){
+                        if ((symbolScale > 0.0) && (symbolScale != 1.0)) {
                             int w = (int) (image.getWidth() / symbolScale);
                             int h = (int) (image.getHeight() / symbolScale);
                             int imageType = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType();

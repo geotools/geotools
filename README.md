@@ -1,11 +1,11 @@
 # GeoTools
 
 [GeoTools](http://geotools.org) is an open source Java library that provides
- tools for geospatial data. Our Users guide provides an [overview](http://docs.geotools.org/latest/userguide/geotools.html) of the core features, supported formats and standards support.
+ tools for geospatial data. Our Users guide provides an [overview](http://docs.geotools.org/stable/userguide/geotools.html) of the core features, supported formats and standards support.
 
 ## License
 
-GeoTools licensed under the [LGPL](http://www.gnu.org/licenses/lgpl.html). The user guide [license](http://docs.geotools.org/latest/userguide/welcome/license.html) page describes the less restrictive license for documentation and source code examples.
+GeoTools licensed under the [LGPL](http://www.gnu.org/licenses/lgpl.html). The user guide [license](http://docs.geotools.org/stable/userguide/welcome/license.html) page describes the less restrictive license for documentation and source code examples.
 
 ## Contributing
 
@@ -20,7 +20,7 @@ build the library run maven from the root of the repository.
 
     % mvn clean install
 
-See the [user guide](http://docs.geotools.org/latest/userguide/build/index.html) 
+See the [user guide](http://docs.geotools.org/stable/userguide/build/index.html) 
 for more details.
 
 ## Bugs

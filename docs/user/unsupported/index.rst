@@ -17,6 +17,7 @@ Research and Development:
    :maxdepth: 1
    :hidden:
 
+   css
    csv
    efeature/index
    geojson
@@ -30,6 +31,7 @@ Research and Development:
 
 Modules under active development:
 
+* :doc:`css` - Cartographic CSS implementation used to generate Style objects
 * :doc:`process/index` - API for working with GeoSpatial processes and annotations to make defining additional processes easy
 * :doc:`swing/index` - collection of GUI components and utilities based on the Swing framework
 * :doc:`swt/index` - collection of GUI components and utilities based on the SWT framework

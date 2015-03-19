@@ -40,7 +40,23 @@ and :doc:`extension </extension/index>`.
    :maxdepth: 2
 
    build/index
+
+.. toctree::
+   :maxdepth: 2
+
    tutorial/index
+
+.. toctree::
+   :maxdepth: 3
+
    library/index
+
+.. toctree::
+   :maxdepth: 3
+
    extension/index
+   
+.. toctree::
+   :maxdepth: 2
+
    unsupported/index

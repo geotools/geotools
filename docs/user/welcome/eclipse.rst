@@ -1,5 +1,5 @@
-Welcome Eclipse Developers
-==========================
+Eclipse IDE Tips
+================
 
 Eclipse is a popular integrated development environment for Java development. Since GeoTools is a Java library we would really like it to work out of the box for you.
 

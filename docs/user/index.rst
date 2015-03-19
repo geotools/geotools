@@ -26,10 +26,14 @@ and :doc:`extension </extension/index>`.
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    geotools
    welcome/index
+
+.. toctree::
+   :maxdepth: 1
+
    faq
    
 .. toctree::

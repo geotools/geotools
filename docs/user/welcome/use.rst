@@ -33,20 +33,6 @@ Download:
    are provided at the end of the document as an alternative.
 
 
-Module Matrix
--------------
-
-The GeoTools library is live and online! So you can check up on modules, plugins and
-extensions you are about to use:
-
-* http://docs.codehaus.org/display/GEOTOOLS/Module+Matrix
-
-This page includes a description of how good each module is (more stars is better). If there
-are any serious problems (ie a red star) you may want to click on the module name to find out
-more information.
-
-The Module Matrix also lists unsupported modules allowing you to check on current status.
-
 Public API
 ----------
 

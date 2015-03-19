@@ -1,5 +1,5 @@
-Java EE
--------
+Welcome Java EE Developers
+--------------------------
 
 When writing a GeoTools Java Enterprise Edition Application you will mostly be concerned the configuration of GeoTools to use global services provided by your application container.
 

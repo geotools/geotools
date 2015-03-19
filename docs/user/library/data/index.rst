@@ -70,8 +70,9 @@ Unsupported plugins:
    edigeo
    excel
    georest
+   kml
    sfs
+   solr
    wfs
    wfs-ng
    vpf
-   kml

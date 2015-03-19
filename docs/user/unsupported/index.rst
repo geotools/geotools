@@ -17,7 +17,6 @@ Research and Development:
    :maxdepth: 1
 
    css
-   csv
    efeature/index
    geojson
    geometry/index

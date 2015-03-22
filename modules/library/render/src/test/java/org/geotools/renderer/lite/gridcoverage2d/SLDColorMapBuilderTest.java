@@ -66,16 +66,19 @@ public class SLDColorMapBuilderTest {
     
     @Test
     public void testDynamicQuantityEnv() {
-        envValues.put("quantity", 10.0);
-        EnvFunction.setLocalValues(envValues);
-        entry.setQuantity(ff.literal("${env('quantity')}"));
-        
-        builder.addColorMapEntry(entry);
-        LinearColorMap colorMap = builder.buildLinearColorMap();
-        LinearColorMapElement[] domainElements = colorMap.getDomainElements();
-        assertEquals(1, domainElements.length);
-        assertEquals(10.0, domainElements[0].getInputMinimum(), 0.0);
-        assertEquals(10.0, domainElements[0].getInputMaximum(), 0.0);
+        EnvFunction.setLocalValue("quantity", 10.0);
+        try {
+            entry.setQuantity(ff.literal("${env('quantity')}"));
+            
+            builder.addColorMapEntry(entry);
+            LinearColorMap colorMap = builder.buildLinearColorMap();
+            LinearColorMapElement[] domainElements = colorMap.getDomainElements();
+            assertEquals(1, domainElements.length);
+            assertEquals(10.0, domainElements[0].getInputMinimum(), 0.0);
+            assertEquals(10.0, domainElements[0].getInputMaximum(), 0.0);
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
     }
     
     @Test
@@ -94,32 +97,38 @@ public class SLDColorMapBuilderTest {
     
     @Test
     public void testDynamicColorEnv() {
-        envValues.put("color", "#FF0000");
-        EnvFunction.setLocalValues(envValues);
-        entry.setColor(ff.literal("${env('color')}"));
-       
-        builder.addColorMapEntry(entry);
-        LinearColorMap colorMap = builder.buildLinearColorMap();
-        LinearColorMapElement[] domainElements = colorMap.getDomainElements();
-        assertEquals(1, domainElements.length);
-        assertEquals(1, domainElements[0].getColors().length);
-        assertEquals(255, domainElements[0].getColors()[0].getRed());
-        assertEquals(0, domainElements[0].getColors()[0].getGreen());
-        assertEquals(0, domainElements[0].getColors()[0].getBlue());
+        EnvFunction.setLocalValue("color", "#FF0000");
+        try {
+            entry.setColor(ff.literal("${env('color')}"));
+           
+            builder.addColorMapEntry(entry);
+            LinearColorMap colorMap = builder.buildLinearColorMap();
+            LinearColorMapElement[] domainElements = colorMap.getDomainElements();
+            assertEquals(1, domainElements.length);
+            assertEquals(1, domainElements[0].getColors().length);
+            assertEquals(255, domainElements[0].getColors()[0].getRed());
+            assertEquals(0, domainElements[0].getColors()[0].getGreen());
+            assertEquals(0, domainElements[0].getColors()[0].getBlue());
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
     }
     
     @Test
     public void testDynamicOpacityEnv() {
-        envValues.put("opacity", 0.5);
-        EnvFunction.setLocalValues(envValues);
-        entry.setOpacity(ff.literal("${env('opacity')}"));
-       
-        builder.addColorMapEntry(entry);
-        LinearColorMap colorMap = builder.buildLinearColorMap();
-        LinearColorMapElement[] domainElements = colorMap.getDomainElements();
-        assertEquals(1, domainElements.length);
-        assertEquals(1, domainElements[0].getColors().length);
-        assertEquals(128, domainElements[0].getColors()[0].getAlpha());
+        EnvFunction.setLocalValue("opacity", 0.5);
+        try {
+            entry.setOpacity(ff.literal("${env('opacity')}"));
+           
+            builder.addColorMapEntry(entry);
+            LinearColorMap colorMap = builder.buildLinearColorMap();
+            LinearColorMapElement[] domainElements = colorMap.getDomainElements();
+            assertEquals(1, domainElements.length);
+            assertEquals(1, domainElements[0].getColors().length);
+            assertEquals(128, domainElements[0].getColors()[0].getAlpha());
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
     }
     
     @Test

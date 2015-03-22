@@ -71,6 +71,9 @@ public class MySQLTestSetup extends JDBCTestSetup {
           .append("geometry POINT, intProperty int, ")
           .append("doubleProperty double, stringProperty varchar(255) COLLATE latin1_general_cs) ENGINE=InnoDB;");
         run(sb.toString());
+        
+        // setup so that we can start counting from 0, otherwise 0 is treated as a special value
+        run("SET sql_mode='NO_AUTO_VALUE_ON_ZERO';");
 
         sb = new StringBuffer();
         sb.append("INSERT INTO ft1 VALUES (")
@@ -79,12 +82,12 @@ public class MySQLTestSetup extends JDBCTestSetup {
 
         sb = new StringBuffer();
         sb.append("INSERT INTO ft1 VALUES (")
-          .append("0,GeometryFromText('POINT(1 1)',4326), 1, 1.1,'one');");
+          .append("1,GeometryFromText('POINT(1 1)',4326), 1, 1.1,'one');");
         run(sb.toString());
 
         sb = new StringBuffer();
         sb.append("INSERT INTO ft1 VALUES (")
-          .append("0,GeometryFromText('POINT(2 2)',4326), 2, 2.2,'two');");
+          .append("2,GeometryFromText('POINT(2 2)',4326), 2, 2.2,'two');");
         run(sb.toString());
     }
     

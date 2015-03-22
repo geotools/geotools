@@ -58,11 +58,7 @@ Our initial implementation will result in a read-only datastore for accessing CS
 
 #. Listing TypeNames
 
-   A DataStore may provide access to several different data products. The method **createTypeNames** provides a list of the information being published. This is called once; the result cached; and then the same list is returned by ContentDataStore.getTypeNames() each time.
-
-   This answer is cached as a DataStore may have to do some heavy lifting to obtain this answer. WFS clients need to connect to a web service, download and parse a large XML document to obtain this list. JDBCDataStore needs to review the metadata published by the Database and determine which tables have spatial content. 
-
-   By caching this answer we prevent developers having to this work many times.
+   A DataStore may provide access to several different data products. The method **createTypeNames** provides a list of the information being published. 
 
    After all that lead-in you will be disappointed to note that our list will be a single value - the name of the CSV file.
 

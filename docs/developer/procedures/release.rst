@@ -70,24 +70,38 @@ This job will perform the tasks in JIRA to release ``VERSION``. Navigate to `JIR
 If you are cutting the first RC of a series, create the stable branch
 ---------------------------------------------------------------------
 
-When creating the first release candidate of a series some extra steps need to be taken care of:
+When creating the first release candidate of a series, there are some extra steps to create the new stable branch and update the version on master.
 
-* check out locally the master branch, make sure it's up to date
-* create the new stable branch and push it to GitHub (e.g., let's assume trunk as ``10-SNAPSHOT`` and that the remote for the official GeoTools is called ``geotools``)::
+* Checkout the master branch and make sure it is up to date and that there are no changes in your local workspace::
 
-      git checkout -b 10.x
-      git push geotools 10.x
+    git checkout master
+    git pull
+    git status
 
+* Create the new stable branch and push it to GitHub; for example, if master is ``13-SNAPSHOT`` and the remote for the official GeoTools is called ``geotools``::
 
-* checkout the master branch, update the version in all the pom.xml files (e.g., let's assume we need to switch from ``10-SNAPSHOT`` to ``11-SNAPSHOT``)::
-    
-      git checkout master
-      find . -name pom.xml -exec sed -i 's/10-SNAPSHOT/11-SNAPSHOT/g' {} \;
-      git commit . -m "Updating version numbers to 11-SNAPSHOT"
+    git checkout -b 13.x
+    git push geotools 13.x
+
+* Checkout the master branch and update the version in all pom.xml files and a few miscellaneous files; for example, if changing master from ``13-SNAPSHOT`` to ``14-SNAPSHOT``::
+
+    git checkout master
+    find . -name pom.xml -exec sed -i 's/13-SNAPSHOT/14-SNAPSHOT/g' {} \;
+    sed -i 's/13-SNAPSHOT/14-SNAPSHOT/g' \
+        build/rename.xml \
+        docs/build.xml \
+        docs/common.py \
+        docs/user/tutorial/quickstart/artifacts/pom2.xml \
+        modules/library/metadata/src/main/java/org/geotools/factory/GeoTools.java
+
+* Commit the changes and push to the master branch on GitHub::
+
+      git commit -am "Updated version to 14-SNAPSHOT"
       git push geotools master
+      
+* Create the new beta version in `JIRA <http://jira.codehaus.org/browse/GEOT>`_ for issues on master; for example, if master is now ``14-SNAPSHOT``, create a Jira version ``14-beta`` for the first release of the ``14.x`` series
 
-
-* Announce on the mailing list that the new stable branch has been created and that the feature freeze on master is over
+* Announce on the developer mailing list that the new stable branch has been created and that the feature freeze on master is over
 
 Build the Release
 -----------------
@@ -143,7 +157,7 @@ Run the `geotools-release-publish <http://ares.boundlessgeo.com/jenkins/job/geot
 
 **VERSION** 
 
-  The version being released. The same value s specified for ``VERSION`` when running the ``geoserver-release`` job.
+  The version being released. The same value specified for ``VERSION`` when running the ``geoserver-release`` job.
   
 **BRANCH** 
 

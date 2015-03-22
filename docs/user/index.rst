@@ -26,17 +26,37 @@ and :doc:`extension </extension/index>`.
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    geotools
    welcome/index
+
+.. toctree::
+   :maxdepth: 1
+
    faq
    
 .. toctree::
    :maxdepth: 2
 
    build/index
+
+.. toctree::
+   :maxdepth: 2
+
    tutorial/index
+
+.. toctree::
+   :maxdepth: 3
+
    library/index
+
+.. toctree::
+   :maxdepth: 3
+
    extension/index
+   
+.. toctree::
+   :maxdepth: 2
+
    unsupported/index

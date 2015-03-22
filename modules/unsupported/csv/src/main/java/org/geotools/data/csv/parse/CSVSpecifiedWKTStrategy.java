@@ -20,7 +20,6 @@ package org.geotools.data.csv.parse;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.geotools.data.csv.CSVFileState;
@@ -52,9 +51,8 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
 
     @Override
     protected SimpleFeatureType buildFeatureType() {
-        // sets up a builder with a good guess at attribtues and values
-        // (based on trying to parse the first line of content to detect numbers, dates, etc...)
-        SimpleFeatureTypeBuilder featureBuilder = CSVStrategy.createBuilder(csvFileState);
+        SimpleFeatureTypeBuilder featureBuilder = createBuilder(csvFileState);
+        // For WKT strategy, we need to make sure the wktField is recognized as a Geometry
         AttributeDescriptor descriptor = featureBuilder.get(wktField);
         if( descriptor != null ){
             AttributeTypeBuilder attributeBuilder = new AttributeTypeBuilder();
@@ -63,7 +61,7 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
             attributeBuilder.binding(Geometry.class);
             
             AttributeDescriptor modified = attributeBuilder.buildDescriptor(wktField);
-            featureBuilder.set(wktField,modified );
+            featureBuilder.set(modified);
         }
         return featureBuilder.buildFeatureType();
     }
@@ -74,9 +72,9 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
       
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor) {
-            	header.add(wktField);
+                header.add(wktField);
             } else {
-            	header.add(descriptor.getLocalName());
+                header.add(descriptor.getLocalName());
             }
         }
         // Write out header, producing an empty file of the correct type
@@ -91,24 +89,24 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
     
     @Override
     public String[] encode(SimpleFeature feature) {
-    	List<String> csvRecord = new ArrayList<String>();
+        List<String> csvRecord = new ArrayList<String>();
         for (Property property : feature.getProperties()) {
-        	String name = property.getName().getLocalPart();
+            String name = property.getName().getLocalPart();
             Object value = property.getValue();
             if (value == null) {
-            	csvRecord.add("");
+                csvRecord.add("");
             } else if (name.compareTo(wktField) == 0) {
-            	WKTWriter wkt = new WKTWriter();            	
-            	String txt = wkt.write((Geometry)value);
-            	csvRecord.add(txt);
-            } else {            	
-            	String txt = Converters.convert(value, String.class);
+                WKTWriter wkt = new WKTWriter();
+                String txt = wkt.write((Geometry)value);
+                csvRecord.add(txt);
+            } else {
+                String txt = Converters.convert(value, String.class);
                 csvRecord.add(txt);
             }
         }
         return csvRecord.toArray(new String[csvRecord.size()-1]);
     }
-    
+
     @Override
     public SimpleFeature decode(String recordId, String[] csvRecord) {
         SimpleFeatureType featureType = getFeatureType();
@@ -138,5 +136,5 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
         }
         return builder.buildFeature(csvFileState.getTypeName() + "-" + recordId);
     }
-    
+
 }

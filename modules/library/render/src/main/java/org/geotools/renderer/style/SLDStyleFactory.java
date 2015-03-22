@@ -1238,7 +1238,7 @@ public class SLDStyleFactory {
         int iSizeX = (int) Math.floor(sizeX);
         int iSizeY = (int) Math.floor(sizeY);
         // updated to use the new sizes
-        image = image.getSubimage(iSizeX, iSizeY, iSizeX, iSizeY);
+        image = image.getSubimage(iSizeX, iSizeY, Math.max(iSizeX, 1), Math.max(iSizeY, 1));
         return image;
     }
 

@@ -19,6 +19,7 @@ package org.geotools.xml.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.logging.Level;
@@ -49,13 +50,13 @@ public class HTTPURIHandler extends URIHandlerImpl {
     
     static final Logger LOGGER = Logging.getLogger(HTTPURIHandler.class);
 
-    int connectionTimeout;
+    int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
 
-    int readTimeout;
+    int readTimeout = DEFAULT_READ_TIMEOUT;
 
     @Override
     public boolean canHandle(URI uri) {
-        return "http".equals(uri.scheme()) || "https".equals(uri.scheme());
+    return "http".equals(uri.scheme()) || "https".equals(uri.scheme());
     }
 
     /**
@@ -68,10 +69,7 @@ public class HTTPURIHandler extends URIHandlerImpl {
     public InputStream createInputStream(URI uri, Map<?, ?> options) throws IOException {
         try {
             
-            String s = uri.toString();
-            LOGGER.log(Level.INFO, s);
-            URL url = new URL(s);
-            final HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            final HttpURLConnection httpConnection = getConnection(uri);
             httpConnection.setConnectTimeout(connectionTimeout);
             httpConnection.setReadTimeout(readTimeout);
 
@@ -85,6 +83,13 @@ public class HTTPURIHandler extends URIHandlerImpl {
         } catch (RuntimeException exception) {
             throw new Resource.IOWrappedException(exception);
         }
+    }
+
+    protected HttpURLConnection getConnection(URI uri) throws IOException {
+        String s = uri.toString();
+        LOGGER.log(Level.INFO, s);
+        URL url = new URL(s);
+        return (HttpURLConnection) url.openConnection();
     }
 
     /**

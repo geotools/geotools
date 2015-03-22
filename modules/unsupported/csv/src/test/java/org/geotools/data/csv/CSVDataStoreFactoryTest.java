@@ -25,7 +25,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.csv.parse.CSVAttributesOnlyStrategy;
 import org.geotools.data.csv.parse.CSVLatLonStrategy;
-import org.geotools.data.csv.parse.CSVSpecifiedLatLngStrategy;
 import org.geotools.data.csv.parse.CSVSpecifiedWKTStrategy;
 import org.geotools.data.csv.parse.CSVStrategy;
 import org.junit.Before;
@@ -166,7 +165,7 @@ public class CSVDataStoreFactoryTest {
         params.put("lngField", "bar");
         CSVDataStore datastore = (CSVDataStore) csvDataStoreFactory.createDataStore(params);
         CSVStrategy csvStrategy = datastore.getCSVStrategy();
-        assertEquals("Unexpected strategy", CSVSpecifiedLatLngStrategy.class,
+        assertEquals("Unexpected strategy", CSVLatLonStrategy.class,
                 csvStrategy.getClass());
     }
 

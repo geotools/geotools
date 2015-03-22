@@ -99,5 +99,15 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
         
         return ds;
     }
+    
+    @Override
+    public void tearDown() throws Exception {
+        try {
+            super.tearDown();
+        } finally {
+            Context ctx = GeoTools.getInitialContext(GeoTools.getDefaultHints());
+            ctx.close();
+        }
+    }
 
 }

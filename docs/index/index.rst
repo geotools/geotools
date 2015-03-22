@@ -18,24 +18,24 @@ User Guide
 
 The GeoTools user guide is available online:
 
-`User Guide <http://docs.geotools.org/latest/userguide/>`_ ( `stable <http://docs.geotools.org/stable/userguide/>`_ )
+`User Guide <http://docs.geotools.org/latest/userguide/>`_ ( `stable <http://docs.geotools.org/stable/userguide/>`_ | `maintenance <http://docs.geotools.org/maintenance/userguide/>`_ )
     Tutorials, module reference and examples illustrating the uses of GeoTools. Updated with
     build instructions and advanced tutorials and integration instructions.
     
     The user guide is available for `download <http://sourceforge.net/projects/geotools/files/>`_
     as a zip file.
        
-`Tutorials <http://docs.geotools.org/latest/userguide/tutorial/>`_ ( `stable <http://docs.geotools.org/stable/tutorials/>`_ )
+`Tutorials <http://docs.geotools.org/latest/userguide/tutorial/>`_ ( `stable <http://docs.geotools.org/stable/tutorials/>`_ | `maintenance <http://docs.geotools.org/maintenance/tutorials/>`_ )
     Step by step tutorials intorducing both GeoTools and geospatial concepts for Java developers.
 
-`FAQ <http://docs.geotools.org/latest/userguide/faq.html>`_ ( `stable <http://docs.geotools.org/stable/userguide/faq.html>`_ )  
+`FAQ <http://docs.geotools.org/latest/userguide/faq.html>`_ ( `stable <http://docs.geotools.org/stable/userguide/faq.html>`_ | `maintenance <http://docs.geotools.org/maintenance/userguide/faq.html>`_ )
     Convey wisdom gleaned from the GeoTools user list.
 
 Developing GeoTools
 -------------------
 
-See the `Get Involved <http://geotools.org/getinvolved.html>`_ page for the Developer's Guide,
-issue tracking and how to join the GeoTools community.
+See the `Get Involved <http://geotools.org/getinvolved.html>`_ page for the `Developer's Guide <http://docs.geotools.org/latest/developer/index.html>`_ ,
+issue tracker and information on joining the GeoTools community.
 
 **For the impatient**, please read at least the `contributor guidelines <http://docs.geotools.org/latest/developer/roles/contributor.html>`_ before start working
 on your code contributions to the project.

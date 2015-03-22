@@ -154,9 +154,12 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
             return false;
           }
         } else if (knownType != newType) {
-          throw new IllegalStateException("Found conflicting types "
-              + knownType.getSimpleName() + " and " + newType.getSimpleName()
-              + " for property " + currentProp);
+          if (Number.class.isAssignableFrom(knownType) && newType == Double.class) {
+            propertyTypes.put(currentProp, Double.class);
+          } else {
+            throw new IllegalStateException("Found conflicting types " + knownType.getSimpleName() + " and "
+                + newType.getSimpleName() + " for property " + currentProp);
+          }
         }
       }
     }
@@ -212,7 +215,9 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
     typeBuilder.setName("feature");
     typeBuilder.setNamespaceURI("http://geotools.org");
 
-    typeBuilder.add(geom.getLocalName(), geom.getType().getBinding(), crs);
+    if (geom != null) {
+      typeBuilder.add(geom.getLocalName(), geom.getType().getBinding(), crs);
+    }
 
     if (propertyTypes != null) {
       Set<Entry<String, Class<?>>> entrySet = propertyTypes.entrySet();

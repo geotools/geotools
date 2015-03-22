@@ -40,7 +40,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     /** Temporary file used to stage output */
     private File temp;
     
-    /** iterator handling reading of original file(?) */
+    /** iterator handling reading of original file */
     private CSVIterator iterator;
     
     /** CsvWriter used for temp file output */
@@ -114,7 +114,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
                     this.appending = true;
                 }
             }
-            String fid = featureType.getTypeName()+"."+nextRow;
+            String fid = featureType.getTypeName()+"-fid"+nextRow;
             Object values[] = DataUtilities.defaultValues( featureType );
             
             this.currentFeature = SimpleFeatureBuilder.build( featureType, values, fid );

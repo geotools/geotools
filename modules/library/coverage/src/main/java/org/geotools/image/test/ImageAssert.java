@@ -133,6 +133,8 @@ public class ImageAssert {
                 if (INTERACTIVE) {
                     overwrite = CompareImageDialog.show(realignImage(expectedImage),
                             realignImage(actualImage), actualReferenceFile);
+                } else {
+                    LOGGER.info("Images are different, add -Dorg.geotools.image.test.interactive=true to show a dialog comparing them (requires GUI support)");
                 }
 
                 if (overwrite) {

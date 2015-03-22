@@ -15,3 +15,4 @@ notifications:
 branches:
   only:
     - master
+env: GDAL_LIBRARY_NAME=disabled_see_geot-4733

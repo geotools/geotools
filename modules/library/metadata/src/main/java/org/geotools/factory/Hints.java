@@ -584,7 +584,7 @@ public class Hints extends RenderingHints {
      * Indicates the features returned by the feature collections should be considered detached from
      * the datastore. If true the features can be udpated without altering the backing store.
      * <p>
-     * Examples of fetures that are "attached" are features are kept in memory or features managed
+     * Examples of features that are "attached" are features are kept in memory or features managed
      * by a transparent persistence mechanism like Hibernate.
      *
      * @since 2.4
@@ -612,7 +612,7 @@ public class Hints extends RenderingHints {
     /**
      * Asks a datastore having a vector pyramid (pre-generalized geometries)
      * to return the geometry version whose points have been generalized
-     * less than the spefiedi distance (further generalization might be
+     * less than the specified distance (further generalization might be
      * performed by the client in memory).<p>
      * The geometries returned are supposed to be topologically valid.
      */

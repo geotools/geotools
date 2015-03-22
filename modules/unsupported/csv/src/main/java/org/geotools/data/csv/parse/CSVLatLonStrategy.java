@@ -44,21 +44,37 @@ import com.vividsolutions.jts.geom.Point;
 
 public class CSVLatLonStrategy extends CSVStrategy {
 
-    private static final String GEOMETRY_COLUMN = "location";
+    private String latField;
+
+    private String lngField;
+
+    private String pointField;
 
     public CSVLatLonStrategy(CSVFileState csvFileState) {
-        super(csvFileState);
+        this(csvFileState, null, null);
     }
     
+    public CSVLatLonStrategy(CSVFileState csvFileState, String latField, String lngField) {
+    	this(csvFileState, latField, lngField, "location");
+    }
+    
+    public CSVLatLonStrategy(CSVFileState csvFileState, String latField, String lngField,
+                String pointField) {
+        super(csvFileState);
+        this.latField = latField;
+        this.lngField = lngField;
+        this.pointField = pointField;
+    }
+
     @Override
     protected SimpleFeatureType buildFeatureType() {
-    	String[] headers;
+        String[] headers;
         Map<String, Class<?>> typesFromData;
         CsvReader csvReader = null;
         try {
             csvReader = csvFileState.openCSVReader();
             headers = csvReader.getHeaders();
-            typesFromData = CSVStrategy.findMostSpecificTypesFromData(csvReader, headers);
+            typesFromData = findMostSpecificTypesFromData(csvReader, headers);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
@@ -66,41 +82,40 @@ public class CSVLatLonStrategy extends CSVStrategy {
                 csvReader.close();
             }
         }
-        SimpleFeatureTypeBuilder builder = CSVStrategy.createBuilder(csvFileState, headers,
+        SimpleFeatureTypeBuilder builder = createBuilder(csvFileState, headers,
                 typesFromData);
-        boolean validLat = false;
-        boolean validLon = false;
-        String latSpelling = null;
-        String lonSpelling = null;
-        for (String col : headers) {
-            Class<?> type = typesFromData.get(col);
-            if (isLatitude(col)) {
-                latSpelling = col;
-                if (CSVStrategy.isNumeric(type)) {
-                    validLat = true;
-                }
-            } else if (isLongitude(col)) {
-                lonSpelling = col;
-                if (CSVStrategy.isNumeric(type)) {
-                    validLon = true;
+        
+        // If the lat/lon fields were not specified, figure out their spelling now
+        if (latField == null || lngField == null) {
+            for (String col : headers) {
+                if (isLatitude(col)) {
+                    latField = col;
+                } else if (isLongitude(col)) {
+                    lngField = col;
                 }
             }
         }
-        if (validLat && validLon) {
-        	List<String> csvHeaders = Arrays.asList(headers);
-        	int index = csvHeaders.indexOf(latSpelling);
-        	AttributeTypeBuilder builder2 = new AttributeTypeBuilder();
-        	builder2.setCRS(DefaultGeographicCRS.WGS84);
-        	builder2.binding(Point.class);       	
-        	AttributeDescriptor descriptor = builder2.buildDescriptor(GEOMETRY_COLUMN);
-        	builder.add(index, descriptor);
-			
-            builder.remove(latSpelling);
-            builder.remove(lonSpelling);
+        
+        // For LatLon strategy, we need to change the Lat and Lon columns
+        // to be recognized as a Point rather than two numbers, if the
+        // values in the respective columns are all accurate (numeric)
+        Class<?> latClass = typesFromData.get(latField);
+        Class<?> lngClass = typesFromData.get(lngField);
+        if (isNumeric(latClass) && isNumeric(lngClass)) {
+            List<String> csvHeaders = Arrays.asList(headers);
+            int index = csvHeaders.indexOf(latField);
+            AttributeTypeBuilder builder2 = new AttributeTypeBuilder();
+            builder2.setCRS(DefaultGeographicCRS.WGS84);
+            builder2.binding(Point.class);
+            AttributeDescriptor descriptor = builder2.buildDescriptor(pointField);
+            builder.add(index, descriptor);
+
+            builder.remove(latField);
+            builder.remove(lngField);
         }
         return builder.buildFeatureType();
     }
-
+    
     private boolean isLatitude(String s) {
         return "latitude".equalsIgnoreCase(s) || "lat".equalsIgnoreCase(s);
     }
@@ -110,6 +125,10 @@ public class CSVLatLonStrategy extends CSVStrategy {
                 || "longitude".equalsIgnoreCase(s);
     }
     
+    protected static boolean isNumeric(Class<?> clazz) {
+        return clazz != null && (clazz == Double.class || clazz == Integer.class);
+    }
+
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         List<String> header = new ArrayList<String>();
@@ -119,10 +138,11 @@ public class CSVLatLonStrategy extends CSVStrategy {
                 && CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84,
                         geometryDescrptor.getCoordinateReferenceSystem())
                 && geometryDescrptor.getType().getBinding().isAssignableFrom(Point.class)) {
-            header.add("LAT");
-            header.add("LON");
+            header.add(this.latField);
+            header.add(this.lngField);
         } else {
-            throw new IOException("Unable use LAT/LON to represent " + geometryDescrptor);
+            throw new IOException("Unable use " + this.latField + "/" + this.lngField +
+                        " to represent " + geometryDescrptor);
         }
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor)
@@ -134,20 +154,49 @@ public class CSVLatLonStrategy extends CSVStrategy {
         try {
             writer.writeRecord( header.toArray(new String[header.size()]));
         }
-        
         finally {
             writer.close();
         }
     }
-    
+
+    @Override
+    public SimpleFeature decode(String recordId, String[] csvRecord) {
+        SimpleFeatureType featureType = getFeatureType();
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
+        GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Double lat = null, lng = null;
+        String[] headers = csvFileState.getCSVHeaders();
+        for (int i = 0; i < headers.length; i++) {
+            String header = headers[i];
+            if (i < csvRecord.length) {
+                String value = csvRecord[i].trim();
+                if (geometryDescriptor != null && header.equals(latField)) {
+                    lat = Double.valueOf(value);
+                } else if (geometryDescriptor != null && header.equals(lngField)) {
+                    lng = Double.valueOf(value);
+                } else {
+                    builder.set(header, value);
+                }
+            } else {
+                builder.set(header, null);
+            }
+        }
+        if (geometryDescriptor != null && lat != null && lng != null) {
+            Coordinate coordinate = new Coordinate(lng, lat);
+            Point point = geometryFactory.createPoint(coordinate);
+            builder.set(geometryDescriptor.getLocalName(), point);
+        }
+        return builder.buildFeature(csvFileState.getTypeName() + "-" + recordId);
+    }
 
     @Override
     public String[] encode(SimpleFeature feature) {
-    	List<String> csvRecord = new ArrayList<String>();
+        List<String> csvRecord = new ArrayList<String>();
         for (Property property : feature.getProperties()) {
             Object value = property.getValue();
             if (value == null) {
-            	csvRecord.add("");
+                csvRecord.add("");
             } else if (value instanceof Point) {
                 Point point = (Point) value;
                 csvRecord.add(Double.toString(point.getY()));
@@ -159,36 +208,5 @@ public class CSVLatLonStrategy extends CSVStrategy {
             }
         }
         return csvRecord.toArray(new String[csvRecord.size()-1]);
-    }
-    
-    @Override
-    public SimpleFeature decode(String recordId, String[] csvRecord) {
-        SimpleFeatureType featureType = getFeatureType();
-        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
-        GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
-        GeometryFactory geometryFactory = new GeometryFactory();
-        Double x = null, y = null;
-        String[] headers = csvFileState.getCSVHeaders();
-        for (int i = 0; i < headers.length; i++) {
-            String header = headers[i];
-            if (i < csvRecord.length) {
-                String value = csvRecord[i].trim();
-                if (geometryDescriptor != null && isLatitude(header)) {
-                    y = Double.valueOf(value);
-                } else if (geometryDescriptor != null && isLongitude(header)) {
-                    x = Double.valueOf(value);
-                } else {
-                    builder.set(header, value);
-                }
-            } else {
-                builder.set(header, null);
-            }
-        }
-        if (x != null && y != null && geometryDescriptor != null) {
-            Coordinate coordinate = new Coordinate(x, y);
-            Point point = geometryFactory.createPoint(coordinate);
-            builder.set(geometryDescriptor.getLocalName(), point);
-        }
-        return builder.buildFeature(csvFileState.getTypeName() + "-" + recordId);
     }
 }

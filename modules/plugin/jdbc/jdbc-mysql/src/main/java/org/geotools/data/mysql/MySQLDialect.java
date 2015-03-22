@@ -474,4 +474,35 @@ public class MySQLDialect extends SQLDialect {
         }
     }
 
+    
+    @Override
+    public void dropIndex(Connection cx, SimpleFeatureType schema, String databaseSchema,
+            String indexName) throws SQLException {
+        StringBuffer sql = new StringBuffer();
+        String escape = getNameEscape();
+        sql.append("DROP INDEX ");
+        if (databaseSchema != null) {
+            encodeSchemaName(databaseSchema, sql);
+            sql.append(".");
+        }
+        // weirdness, index naems are treated as strings...
+        sql.append(escape).append(indexName).append(escape);
+        sql.append(" on ");
+        if (databaseSchema != null) {
+            encodeSchemaName(databaseSchema, sql);
+            sql.append(".");
+        }
+        encodeTableName(schema.getTypeName(), sql);
+
+        Statement st = null;
+        try {
+            st = cx.createStatement();
+            st.execute(sql.toString());
+            if(!cx.getAutoCommit()) {
+                cx.commit();
+            }
+        } finally {
+            dataStore.closeSafe(cx);
+        }
+    }
 }

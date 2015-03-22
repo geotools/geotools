@@ -15,8 +15,9 @@ Research and Development:
 
 .. toctree::
    :maxdepth: 1
-   :hidden:
 
+   css
+   csv
    efeature/index
    geojson
    geometry/index
@@ -27,26 +28,9 @@ Research and Development:
    wps
    sample
 
-Modules under active development:
+Unsupported rendering plugins:
 
-* :doc:`process/index` - API for working with GeoSpatial processes and annotations to make defining additional processes easy
-* :doc:`swing/index` - collection of GUI components and utilities based on the Swing framework
-* :doc:`swt/index` - collection of GUI components and utilities based on the SWT framework
-* :doc:`/library/coverage/multidim` - New plugins supporting NetCDF and Grib formats
-
-Modules for which volunteers are needed:
-
-* :doc:`geojson` - Demonstrates how to encode and decode GeoJSON files into GeoTools Feature Collections
-* :doc:`wps` - Provides a web processing service client API so programmers can easily build Web Process Service requests and parse the responses
-
-Modules scheduled to be removed:
-
-* :doc:`/library/render/shapefile` (replaced by gt-render)
-  A custom renderer for shapefiles. About to be dropped since most of the optimizations have already been generalized and moved to gt-renderer, does not have anymore a maintainer interested in it
-
-**Unsupported Plugin**
-
-The following is an index of unsupported plugins:
+* :doc:`/library/render/shapefile` - replaced by gt-render improvements
 
 Unsupported DataStore implementations:
 
@@ -54,7 +38,6 @@ Unsupported DataStore implementations:
 * :doc:`/library/data/csv` (Active) support for the comma-separated values (CSV) file format used for tutorial
 * :doc:`/library/data/dxf` (Inactive) Support for DXF format files
 * :doc:`/library/data/edigeo` (Inactive) Support for EDIGEO file format
-* :doc:`efeature/index` (Active) Adds spatial support to (any) EMF model
 * :doc:`/library/data/excel` (Unknown) Support for Microsoft Excel files
 * :doc:`/library/data/georest` (Unknown) Support for a REST service using GeoJSON
 * :doc:`/library/data/wfs` (Stable but not active) Supports communcation with a Web Feature Server using the standard GeoTools DataStore API
@@ -62,17 +45,14 @@ Unsupported DataStore implementations:
 * :doc:`/library/data/sfs` (Unknown) Support for the experimental GeoServer Simple Feature Service
 * :doc:`/library/data/vpf` (Inactive) Support for VPF (Vector Product Format) files
 
-Unsuppported ISO 19107 Geometry implementations:
-
-* :doc:`geometry/index` - alternative geometry implementation with support for curves and surfaces. Not currently used by any GeoTools modules
-* :doc:`jts-wrapper` - ISO Geometry interfaces implemented as wrappers around the Java Topology Suite SFSQL implementations
-
 Unsupported Raster modules:
+
 
 * :doc:`/library/coverage/coverageio`
 * :doc:`/library/coverage/image-collection` - publishes a large collection of non georeferenced images as a coverage reader
 * :doc:`/library/coverage/geotiff_new`
 * :doc:`/library/coverage/matlab`
+* :doc:`/library/coverage/multidim` - New plugins supporting NetCDF and Grib formats
 * :doc:`/library/coverage/tools`
 
 Unsupported Referencing implementations:

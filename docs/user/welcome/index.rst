@@ -16,13 +16,6 @@ Welcome to the Geotools Users Guide. This space serves as a reference to the Geo
    upgrade
    integration
 
-Frequently Asked Questions:
-
-.. toctree::
-   :maxdepth: 1
-
-   faq
-
 Development Environment:
 
 .. toctree::
@@ -31,14 +24,10 @@ Development Environment:
    eclipse
    netbeans
 
-Welcome Developers:
+Frequently Asked Questions:
 
 .. toctree::
    :maxdepth: 1
 
-   jump
-   geoserver
-   geomajas
-   udig
-   javaEE
+   faq
 

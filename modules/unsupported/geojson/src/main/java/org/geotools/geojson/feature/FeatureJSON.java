@@ -286,27 +286,29 @@ public class FeatureJSON {
     public void writeFeatureCollection(FeatureCollection features, Object output) throws IOException {
         LinkedHashMap obj = new LinkedHashMap();
         obj.put("type", "FeatureCollection");
+        
+        if (features.getSchema().getGeometryDescriptor() != null) {
+            final ReferencedEnvelope bounds = features.getBounds();
+            final CoordinateReferenceSystem crs = bounds != null ? bounds.getCoordinateReferenceSystem() : null;
 
-        final ReferencedEnvelope bounds = features.getBounds();
-        final CoordinateReferenceSystem crs = bounds != null ? bounds.getCoordinateReferenceSystem() : null;
-
-        if (bounds != null) {
-            if (encodeFeatureCollectionBounds) {
-                obj.put("bbox", new JSONStreamAware() {
-                    public void writeJSONString(Writer out) throws IOException {
-                        JSONArray.writeJSONString(Arrays.asList(bounds.getMinX(),
-                                bounds.getMinY(), bounds.getMaxX(), bounds.getMaxY()), out);
-                    }
-                });
+            if (bounds != null) {
+                if (encodeFeatureCollectionBounds) {
+                    obj.put("bbox", new JSONStreamAware() {
+                        public void writeJSONString(Writer out) throws IOException {
+                            JSONArray.writeJSONString(Arrays.asList(bounds.getMinX(),
+                                    bounds.getMinY(), bounds.getMaxX(), bounds.getMaxY()), out);
+                        }
+                    });
+                }
+            }
+            
+            if( crs != null ){
+                if (encodeFeatureCollectionCRS || !isStandardCRS( crs)) {
+                    obj.put("crs", createCRS(crs));
+                }
             }
         }
         
-        if( crs != null ){
-            if (encodeFeatureCollectionCRS || !isStandardCRS( crs)) {
-                obj.put("crs", createCRS(crs));
-            }
-        }
-
         obj.put("features", new FeatureCollectionEncoder(features, gjson));
         GeoJSONUtil.encode(obj, output);
     }

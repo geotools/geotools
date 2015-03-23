@@ -45,6 +45,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.opengis.metadata.spatial.PixelOrientation;
@@ -105,8 +106,27 @@ public class GridCoverage2DRIA extends GeometricOpImage {
      *            bands will share the same nodata value.
      * @return an instance of Coverage2RenderedImageAdapter
      */
-    public static GridCoverage2DRIA create(final GridCoverage2D src, final GridGeometry2D dst, final double nodata) {
+    public static GridCoverage2DRIA create(final GridCoverage2D src, final GridGeometry2D dst, final double[] nodata) {
+        return create(src, dst, nodata, null);
+    }
 
+    /**
+     * Wrap the src coverage in the dst layout. <BR>
+     * The resulting RenderedImage will contain the data in src, and will be accessible via the grid
+     * specs of dst,
+     * 
+     * @param src
+     *            the data coverage to be remapped on dst grid
+     * @param dst
+     *            the provider of the final grid
+     * @param nodata
+     *            the nodata values to set for cells not covered by src but included in dst. All
+     *            bands will use the related nodata value.
+     * @param hints hints to use for the Rendering, Actually only ImageLayout is considered
+     * @return an instance of Coverage2RenderedImageAdapter
+     */
+    public static GridCoverage2DRIA create(GridCoverage2D src, GridGeometry2D dst,
+            double nodata[], Hints hints) {
         Utilities.ensureNonNull("dst", dst);
         
      // === Create destination Layout, retaining source tiling to minimize quirks
@@ -129,11 +149,11 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         // to check for region overlapping and return a nodata value by hand,
         // so to avoid problems with interpolation at source raster borders.
         //
-        BorderExtender extender = new BorderExtenderConstant(new double[] { nodata });
+        BorderExtender extender = new BorderExtenderConstant(new double[] {nodata[0]});
         
         return new GridCoverage2DRIA(src, dst, vectorize(src.getRenderedImage()), imageLayout,
                 null, false, extender, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
-                new double[] { nodata });
+                nodata);
     }
     
     // need it
@@ -148,8 +168,8 @@ public class GridCoverage2DRIA extends GeometricOpImage {
      * @param dst
      *            the provider of the final grid
      * @param nodata
-     *            the nodata value to set for cells not covered by src but included in dst. All
-     *            bands will share the same nodata value.
+     *            the nodata values to set for cells not covered by src but included in dst. All
+     *            bands will use the related nodata value.
      * @return an instance of Coverage2RenderedImageAdapter
      */
     public static GridCoverage2DRIA create(final GridCoverage2D src, final GridCoverage2D dst,

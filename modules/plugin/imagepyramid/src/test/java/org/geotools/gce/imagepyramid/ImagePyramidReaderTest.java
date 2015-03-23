@@ -435,7 +435,7 @@ public class ImagePyramidReaderTest extends Assert {
 						+ oldEnvelop.getSpan(1) / 2 });
 		cropEnvelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
 		gg.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0,
-				250, 250)), cropEnvelope));
+				125, 125)), cropEnvelope));
 
 		//
 		// Show the coverage
@@ -443,10 +443,12 @@ public class ImagePyramidReaderTest extends Assert {
 		GridCoverage2D coverage = ((GridCoverage2D) reader
 				.read(new GeneralParameterValue[] { gg }));
 		assertNotNull("Null value returned instead of a coverage", coverage);
+		
+		//
 		assertTrue("coverage dimensions different from what we expected",
-				coverage.getGridGeometry().getGridRange().getSpan(0) == 254
+				coverage.getGridGeometry().getGridRange().getSpan(0) == 127
 						&& coverage.getGridGeometry().getGridRange().getSpan(
-								1) == 254);
+								1) == 127);
 		if (TestData.isInteractiveTest())
 			coverage.show("testCropHighestLevel");
 		else
@@ -456,10 +458,10 @@ public class ImagePyramidReaderTest extends Assert {
 
 	/**
 	 * Testing {@link ImagePyramidReader} by cropping requesting a the second
-	 * better avialble resolution.
+	 * better available resolution.
 	 * 
 	 * <p>
-	 * The underlying pyramid i made by 4 levels on the same area, more or less
+	 * The underlying pyramid is made by 4 levels on the same area, more or less
 	 * italy, with resolution decreasing as a power of 2.
 	 * 
 	 * <p>

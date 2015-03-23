@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -34,16 +35,13 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.renderer.lite.RendererUtilities;
-import org.geotools.util.Version;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS;
 
 /**
  * A grid coverage readers backing onto a WMS server by issuing GetMap
@@ -162,7 +160,7 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
                     srsName = "EPSG:4326";
                 } else {
                     // if not even that works we just take the first...
-                    srsName = (String) layer.getSrs().iterator().next();
+                    srsName = layer.getSrs().iterator().next();
                 }
             }
             validSRS = layer.getSrs();
@@ -180,7 +178,7 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
                     srsName = "EPSG:4326";
                 } else {
                     // if not even that works we just take the first...
-                    srsName = (String) intersection.iterator().next();
+                    srsName = intersection.iterator().next();
                 }
                 this.validSRS = intersection;
             }
@@ -288,21 +286,21 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         ReferencedEnvelope gridEnvelope = initMapRequest(requestedEnvelope, width, height, backgroundColor);
 
         // issue the request and wrap response in a grid coverage
-        InputStream is = null;
         try {
             if(LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Issuing request: " + mapRequest.getFinalURL());
             }
+            InputStream is = null;
             GetMapResponse response = wms.issueRequest(mapRequest);
             try {
                 is = response.getInputStream();
                 BufferedImage image = ImageIO.read(is);
                 if (image == null) {
-                    throw (IOException) new IOException("GetMap failed: "
-                            + mapRequest.getFinalURL());
+                    throw new IOException("GetMap failed: " + mapRequest.getFinalURL());
                 }
                 return gcf.create(layers.get(0).getTitle(), image, gridEnvelope);
             } finally {
+                IOUtils.closeQuietly(is);
                 response.dispose();
             }
         } catch (ServiceException e) {

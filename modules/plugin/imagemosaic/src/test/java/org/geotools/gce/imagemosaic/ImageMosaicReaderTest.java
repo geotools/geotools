@@ -1665,8 +1665,8 @@ public class ImageMosaicReaderTest extends Assert{
         // and that the color is the expected one given the background values provided
         RenderedImage ri = coverage.getRenderedImage();
         int[] pixel = new int[4];
-        Raster tile = ri.getTile(ri.getMinTileX() + 1, ri.getMinTileY() + 1);
-        tile.getPixel(tile.getMinX(), tile.getMinY(), pixel);
+        Raster tile = ri.getTile(ri.getMinTileX(), ri.getMinTileY());
+        tile.getPixel(411, 87, pixel);
         assertEquals(255, pixel[0]);
         assertEquals(0, pixel[1]);
         assertEquals(0, pixel[2]);
@@ -1676,7 +1676,7 @@ public class ImageMosaicReaderTest extends Assert{
     @Test
     //@Ignore
     public void testRequestInOut() throws Exception {
-        final AbstractGridFormat format = TestUtils.getFormat(rgbAURL);
+        final AbstractGridFormat format = TestUtils.getFormat(rgbAURL, null);
         final ImageMosaicReader reader = TestUtils.getReader(rgbAURL, format);
 
         assertNotNull(reader);
@@ -1684,7 +1684,7 @@ public class ImageMosaicReaderTest extends Assert{
         // ask to extract an area that is inside the coverage bbox, so that the area is partly
         // inside the raster, and partly outside
         final ParameterValue<GridGeometry2D> ggp =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 64887, 2499342, 646897 - 64887 , 3155705 - 2499342);
+        Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 44887, 2299342, 646897 - 44887 , 3155705 - 2299342);
         GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Envelope) env);
         ggp.setValue(gg);
 
@@ -1702,7 +1702,7 @@ public class ImageMosaicReaderTest extends Assert{
         int[] pixel = new int[4];
         Raster tile = ri.getTile(ri.getMinTileX() + ri.getNumXTiles()  - 1, 
                 ri.getMinTileY() + ri.getNumYTiles() - 1);
-        tile.getPixel(tile.getWidth() / 2, tile.getHeight() / 2, pixel);
+        tile.getPixel(410, 120, pixel);
         assertEquals(255, pixel[0]);
         assertEquals(0, pixel[1]);
         assertEquals(0, pixel[2]);

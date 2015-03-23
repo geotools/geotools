@@ -68,6 +68,7 @@ import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.describedAs;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.instanceOf;
@@ -1565,5 +1566,22 @@ public class YsldParseTest {
             
             assertNotNull( placement );
         }        
+    }
+    
+    @Test
+    public void testMultiplyCompositeOnFeatureTypeStyle() throws Exception {
+        String yaml =
+                "feature-styles:\n"+
+                "- name: name\n"+
+                "  x-composite: multiply\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml, Collections.<ZoomContextFinder> emptyList(), null);
+        
+        FeatureTypeStyle fts = SLD.featureTypeStyles(sld)[0];
+        
+        fts.getOptions();
+        
+        assertThat(fts, hasProperty("options", hasEntry("composite", "multiply")));
     }
 }

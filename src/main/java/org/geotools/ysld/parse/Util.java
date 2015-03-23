@@ -7,13 +7,17 @@ import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
 import org.geotools.ysld.Colors;
 import org.geotools.ysld.Tuple;
+import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.Ysld;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -276,5 +280,21 @@ public class Util {
             str = str.substring(0, str.length()-1);
         }
         return str;
+    }
+    
+    /**
+     * Parse all vendor options (keys starting with 'x-') 
+     * @param sourceMap YamlMap to parse
+     * @return A map of the vendor options
+     */
+    static public Map<String, String> vendorOptions(YamlMap sourceMap) {
+        Map<String, String> optionMap = new HashMap<>();
+        for(String key : sourceMap){
+            if( key.startsWith(Ysld.OPTION_PREFIX)){
+                String option = key.substring(Ysld.OPTION_PREFIX.length());
+                optionMap.put(option, sourceMap.str(key));
+            }
+        }
+        return optionMap;
     }
 }

@@ -18,7 +18,7 @@ public class FeatureStyleParser extends YsldParseHandler {
     @Override
     public void handle(YamlObject<?> obj, YamlParseContext context) {
         YamlSeq seq = obj.seq();
-        for (YamlObject o : seq) {
+        for (YamlObject<?> o : seq) {
             YamlMap fs = o.map();
 
             FeatureTypeStyle featureStyle = factory.style.createFeatureTypeStyle();
@@ -26,11 +26,13 @@ public class FeatureStyleParser extends YsldParseHandler {
 
             featureStyle.setName(fs.str("name"));
             if (fs.has("title")) {
-                featureStyle.setTitle(fs.str("title"));
+                featureStyle.getDescription().setTitle(fs.str("title"));
             }
             if (fs.has("abstract")) {
-                featureStyle.setAbstract(fs.str("abstract"));
+                featureStyle.getDescription().setAbstract(fs.str("abstract"));
             }
+            
+            featureStyle.getOptions().putAll(Util.vendorOptions(fs));
 
             context.push(fs, "transform", new TransformHandler(featureStyle, factory));
             context.push(fs, "rules", new RuleParser(featureStyle, factory));

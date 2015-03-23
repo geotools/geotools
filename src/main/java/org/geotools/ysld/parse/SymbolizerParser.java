@@ -5,7 +5,6 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.geotools.ysld.Ysld;
 
 public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
 
@@ -26,12 +25,6 @@ public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
         if (map.has("uom")) {
             sym.setUnitOfMeasure(UomOgcMapping.get(map.str("uom")).getUnit());
         }
-        for(String key : map){
-            if( key.startsWith(Ysld.OPTION_PREFIX)){
-                String option = key.substring(Ysld.OPTION_PREFIX.length());
-                sym.getOptions().put(option, map.str(key));
-            }
-        }
+        sym.getOptions().putAll(Util.vendorOptions(map));
     }
-    
 }

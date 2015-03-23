@@ -334,6 +334,13 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setRules(rulesCopy);
 //        copy.setSemanticTypeIdentifiers((String[]) fts.getSemanticTypeIdentifiers().clone());
         
+        if(fts.getTransformation() != null) {
+            copy.setTransformation(copy(fts.getTransformation()));
+        }
+        if(fts.getOnlineResource() != null) {
+            copy.setOnlineResource(fts.getOnlineResource());
+        }
+        
         if( STRICT && !copy.equals( fts )){
             throw new IllegalStateException("Was unable to duplicate provided FeatureTypeStyle:"+fts );
         }

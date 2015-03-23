@@ -1576,12 +1576,56 @@ public class YsldParseTest {
                 "  x-composite: multiply\n"+
                 "";
         
-        StyledLayerDescriptor sld = Ysld.parse(yaml, Collections.<ZoomContextFinder> emptyList(), null);
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
         
         FeatureTypeStyle fts = SLD.featureTypeStyles(sld)[0];
         
-        fts.getOptions();
-        
         assertThat(fts, hasProperty("options", hasEntry("composite", "multiply")));
     }
+    
+    @Test
+    public void testMultiplyCompositeOnSymbolizer() throws Exception {
+        
+        String yaml =
+                "line:\n"+
+                "  x-composite: multiply\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        
+        assertThat(p, hasProperty("options", hasEntry("composite", "multiply")));
+    }
+    
+    @Test
+    public void testMultiplyCompositeBaseOnFeatureTypeStyle() throws Exception {
+        String yaml =
+                "feature-styles:\n"+
+                "- name: name\n"+
+                "  x-composite-base: true\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        
+        FeatureTypeStyle fts = SLD.featureTypeStyles(sld)[0];
+        
+        assertThat(fts, hasProperty("options", hasEntry("composite-base", "true")));
+    }
+    
+    @Test
+    public void testMultiplyCompositeBaseOnSymbolizer() throws Exception {
+        
+        String yaml =
+                "line:\n"+
+                "  x-composite-base: true\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        
+        assertThat(p, hasProperty("options", hasEntry("composite-base", "true")));
+    }
+    
 }

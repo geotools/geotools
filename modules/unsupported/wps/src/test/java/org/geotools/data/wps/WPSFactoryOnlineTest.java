@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 import net.opengis.wps10.OutputDefinitionType;
 import net.opengis.wps10.ProcessBriefType;
@@ -36,7 +37,6 @@ import net.opengis.wps10.ResponseFormType;
 import net.opengis.wps10.WPSCapabilitiesType;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.wps.request.DescribeProcessRequest;
 import org.geotools.data.wps.request.ExecuteProcessRequest;
 import org.geotools.data.wps.response.DescribeProcessResponse;
@@ -44,20 +44,13 @@ import org.geotools.ows.ServiceException;
 import org.geotools.process.Process;
 import org.geotools.process.ProcessException;
 import org.geotools.test.OnlineTestCase;
+import org.junit.Assume;
+import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
-import java.util.logging.Logger;
-import org.junit.Assume;
-import org.junit.Test;
 
 
 /**
@@ -73,11 +66,9 @@ import org.junit.Test;
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/src/test/java/org/geotools
  *         /data/wps/OnlineWPSFactoryTest.java $
  */
-public class OnlineWPSFactoryTest extends OnlineTestCase
+public class WPSFactoryOnlineTest extends OnlineTestCase
 {
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.wps");
-
-    private static final boolean DISABLE = "true".equalsIgnoreCase(System.getProperty("disableTest", "true"));
 
     private WebProcessingService wps;
 
@@ -108,11 +99,6 @@ public class OnlineWPSFactoryTest extends OnlineTestCase
     public void connect() throws ServiceException, IOException
     {
         if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
         {
             return;
         }
@@ -168,19 +154,14 @@ public class OnlineWPSFactoryTest extends OnlineTestCase
             return;
         }
 
-        if (DISABLE)
-        {
-            return;
-        }
-
         // create the geometries to use for input
         WKTReader reader = new WKTReader(new GeometryFactory());
-        Geometry geom1 = (Polygon) reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
-        Geometry geom2 = (Point) reader.read("POINT (160 200)");
-        Geometry geom3 = (LineString) reader.read("LINESTRING (100 240, 220 140, 380 240, 480 220)");
-        Geometry geom4 = (MultiLineString) reader.read("MULTILINESTRING ((140 280, 180 180, 400 260), (340 120, 160 100, 80 200))");
-        Geometry geom5 = (MultiPoint) reader.read("MULTIPOINT (180 180, 260 280, 340 200)");
-        Geometry geom6 = (MultiPolygon) reader.read("MULTIPOLYGON (((160 320, 120 140, 360 140, 320 340, 160 320), (440 260, 580 140, 580 240, 440 260)))");
+        Geometry geom1 = reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
+        Geometry geom2 = reader.read("POINT (160 200)");
+        Geometry geom3 = reader.read("LINESTRING (100 240, 220 140, 380 240, 480 220)");
+        Geometry geom4 = reader.read("MULTILINESTRING ((140 280, 180 180, 400 260), (340 120, 160 100, 80 200))");
+        Geometry geom5 = reader.read("MULTIPOINT (180 180, 260 280, 340 200)");
+        Geometry geom6 = reader.read("MULTIPOLYGON (((160 320, 120 140, 360 140, 320 340, 160 320), (440 260, 580 140, 580 240, 440 260)))");
 
         // run the local buffer execute test for each geom input
         runExecuteProcessBufferLocal(geom1);
@@ -195,11 +176,6 @@ public class OnlineWPSFactoryTest extends OnlineTestCase
         ProcessException
     {
         if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
         {
             return;
         }
@@ -297,11 +273,6 @@ public class OnlineWPSFactoryTest extends OnlineTestCase
             return;
         }
 
-        if (DISABLE)
-        {
-            return;
-        }
-
         String processIdenLocal = "Union";
 
         WPSCapabilitiesType capabilities = wps.getCapabilities();
@@ -347,10 +318,10 @@ public class OnlineWPSFactoryTest extends OnlineTestCase
         Map<String, Object> map = new TreeMap<String, Object>();
         WKTReader reader = new WKTReader(new GeometryFactory());
         List<Geometry> list = new ArrayList<Geometry>();
-        Geometry geom1 = (Polygon) reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
-        Geometry geom2 = (Polygon) reader.read("POLYGON((20 30, 30 0, 20 20, 80 20, 20 30))");
-        Geometry geom3 = (Polygon) reader.read("POLYGON((177 10, 30 88, 40 70, 46 20, 177 10))");
-        Geometry geom4 = (Polygon) reader.read("POLYGON((5 10, 5 0, 13 10, 5 20, 5 10))");
+        Geometry geom1 = reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
+        Geometry geom2 = reader.read("POLYGON((20 30, 30 0, 20 20, 80 20, 20 30))");
+        Geometry geom3 = reader.read("POLYGON((177 10, 30 88, 40 70, 46 20, 177 10))");
+        Geometry geom4 = reader.read("POLYGON((5 10, 5 0, 13 10, 5 20, 5 10))");
         list.add(geom1);
         list.add(geom2);
         list.add(geom3);
@@ -384,11 +355,6 @@ public class OnlineWPSFactoryTest extends OnlineTestCase
     public void testBADExecuteLocalUnion() throws ServiceException, IOException, ParseException, ProcessException
     {
         if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
         {
             return;
         }
@@ -456,11 +422,6 @@ public class OnlineWPSFactoryTest extends OnlineTestCase
     public void testExecuteLocalAdd() throws ServiceException, IOException, ParseException, ProcessException
     {
         if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
         {
             return;
         }
@@ -542,17 +503,12 @@ public class OnlineWPSFactoryTest extends OnlineTestCase
             return;
         }
 
-        if (DISABLE)
-        {
-            return;
-        }
-
         String requestedProcess = "JTS:geometryType";
 
         WPSCapabilitiesType capabilities = wps.getCapabilities();
         
         ProcessOfferingsType processOfferings = capabilities.getProcessOfferings();
-        List<ProcessBriefType> processes = (List<ProcessBriefType>)processOfferings.getProcess();
+        List<ProcessBriefType> processes = processOfferings.getProcess();
 
         // does the server contain the specific process I want
         boolean found = false;
@@ -592,18 +548,12 @@ public class OnlineWPSFactoryTest extends OnlineTestCase
             return;
         }
 
-        if (DISABLE)
-        {
-            LOGGER.info("Skipping " + getName()+": test disabled");
-            return;
-        }
-
         String requestedProcess = "JTS:area";
 
         WPSCapabilitiesType capabilities = wps.getCapabilities();
 
         ProcessOfferingsType processOfferings = capabilities.getProcessOfferings();
-        List<ProcessBriefType> processes = (List<ProcessBriefType>)processOfferings.getProcess();
+        List<ProcessBriefType> processes = processOfferings.getProcess();
 
         // does the server contain the specific process I want
         boolean found = false;

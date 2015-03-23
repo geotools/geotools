@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
-import org.geotools.data.ows.HTTPResponse;
+import org.junit.Assert;
 
 /**
  * Helper class to mock HTTP responses
@@ -22,6 +22,8 @@ public class MockHttpResponse implements HTTPResponse {
     Map<String, String> headers;
 
     byte[] response;
+
+    boolean disposed;
 
     public MockHttpResponse(String response, String contentType, String... headers) {
         this(response.getBytes(), contentType, headers);
@@ -53,7 +55,9 @@ public class MockHttpResponse implements HTTPResponse {
 
     
     public void dispose() {
-        // nothing to do
+        if (!disposed) {
+            Assert.fail("The response input stream got grabbed, but not closed");
+        }
     }
 
     
@@ -68,7 +72,13 @@ public class MockHttpResponse implements HTTPResponse {
 
     
     public InputStream getResponseStream() throws IOException {
-        return new ByteArrayInputStream(response);
+        return new ByteArrayInputStream(response) {
+            @Override
+            public void close() throws IOException {
+                disposed = true;
+                super.close();
+            }
+        };
     }
 
     /**

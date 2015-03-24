@@ -41,6 +41,11 @@ public abstract class Response {
         }
     	if( httpResponse.getContentType() == null ){
     		// should missing content type be fatal? Or could we make an assumption?
+
+            // in case of exception, we have to dipose the response, as it might
+            // be using a deflate input stream, which holds onto native resources
+            httpResponse.getResponseStream().close();
+            httpResponse.dispose();
         	throw new NullPointerException("Content type is required for "+getClass().getName());
         }    	
         this.httpResponse = httpResponse;

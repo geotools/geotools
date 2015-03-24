@@ -405,32 +405,39 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     protected Response internalIssueRequest( Request request ) throws IOException, ServiceException {
         final URL finalURL = request.getFinalURL();
 
-        final HTTPResponse httpResponse;
-        
-        if (request.requiresPost()) {
+        boolean success = false;
+        try {
+            final HTTPResponse httpResponse;
 
-            final String postContentType = request.getPostContentType();
+            if (request.requiresPost()) {
 
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            request.performPostOutput(out);
-            InputStream in = new ByteArrayInputStream(out.toByteArray());
+                final String postContentType = request.getPostContentType();
 
-            try {
-                httpResponse = httpClient.post(finalURL, in, postContentType);
-            } finally {
-                in.close();
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                request.performPostOutput(out);
+                InputStream in = new ByteArrayInputStream(out.toByteArray());
+
+                try {
+                    httpResponse = httpClient.post(finalURL, in, postContentType);
+                } finally {
+                    in.close();
+                }
+            } else {
+                httpResponse = httpClient.get(finalURL);
             }
-        } else {
-            httpResponse = httpClient.get(finalURL);
+
+            final Response response = request.createResponse(httpResponse);
+            success = true;
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Executed request to URL: " + finalURL.toExternalForm());
+            }
+
+            return response;
+        } finally {
+            if (!success) {
+                LOGGER.log(Level.SEVERE, "Failed to execute request " + finalURL);
+            }
         }
-
-        final Response response = request.createResponse(httpResponse);
-
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Executed request to URL: " + finalURL.toExternalForm());
-        }        
-        
-        return response;
     }
     
     public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request) throws IOException, ServiceException {

@@ -22,19 +22,29 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
+import net.opengis.ows11.CodeType;
 import net.opengis.ows11.ExceptionReportType;
 import net.opengis.ows11.ExceptionType;
+import net.opengis.ows11.Ows11Factory;
+import net.opengis.wps10.ComplexDataType;
+import net.opengis.wps10.DataInputsType1;
 import net.opengis.wps10.DataType;
 import net.opengis.wps10.DocumentOutputDefinitionType;
 import net.opengis.wps10.ExecuteResponseType;
+import net.opengis.wps10.ExecuteType;
 import net.opengis.wps10.InputDescriptionType;
 import net.opengis.wps10.InputReferenceType;
+import net.opengis.wps10.InputType;
 import net.opengis.wps10.LiteralDataType;
 import net.opengis.wps10.MethodType;
 import net.opengis.wps10.OutputDataType;
@@ -56,36 +66,30 @@ import org.geotools.data.wps.response.DescribeProcessResponse;
 import org.geotools.data.wps.response.ExecuteProcessResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.test.OnlineTestCase;
+import org.geotools.wps.WPS;
+import org.geotools.wps.WPSConfiguration;
+import org.geotools.xml.Encoder;
+import org.geotools.xml.EncoderDelegate;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.ext.LexicalHandler;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
-
 /**
  * Test making requests by manually building up requests using the utility methods.
- *
+ * 
  * @author GDavis
- *
- *
- *
- *
- *
- * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/src/test/java/org/geotools
- *         /data/wps/OnlineWPSManualRequestTest.java $
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @source $URL$ http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/src/test/java/org/geotools /data/wps/OnlineWPSManualRequestTest.java $
  */
-public class OnlineWPSManualRequestTest extends OnlineTestCase
-{
-
-    private static final boolean DISABLE = "true".equalsIgnoreCase(System.getProperty("disableTest", "true"));
+public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
     private WebProcessingService wps;
 
@@ -93,35 +97,25 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
 
     private String processIden;
 
-    private ResponseFormType response ;
+    private ResponseFormType response;
 
     /**
      * The wps.geoserver fixture consisting of service and processId.
      */
     @Override
-    protected String getFixtureId()
-    {
+    protected String getFixtureId() {
         return "wps";
     }
 
-    public void connect() throws ServiceException, IOException
-    {
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+    public void connect() throws ServiceException, IOException {
+        if (fixture == null) {
             return;
         }
 
         // local server
         String serviceProperty = fixture.getProperty("service");
-        if (serviceProperty == null)
-        {
-            throw new ServiceException(
-                "Service URL not provided by test fixture");
+        if (serviceProperty == null) {
+            throw new ServiceException("Service URL not provided by test fixture");
         }
         url = new URL(serviceProperty);
         processIden = fixture.getProperty("processId");
@@ -129,17 +123,10 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         wps = new WebProcessingService(url);
     }
 
-    public void testGetCaps() throws ServiceException, IOException
-    {
+    public void testGetCaps() throws ServiceException, IOException {
 
         // don't run the test if the server is not up
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+        if (fixture == null) {
             return;
         }
 
@@ -150,27 +137,18 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         assertNotNull("process offerings shouldn't be null", processOfferings);
 
         EList processes = processOfferings.getProcess();
-        for (int i = 0; i < processes.size(); i++)
-        {
+        for (int i = 0; i < processes.size(); i++) {
             ProcessBriefType process = (ProcessBriefType) processes.get(i);
             // System.out.println(process.getTitle());
-            assertNotNull("process [" + process + " shouldn't be null",
-                process.getTitle());
+            assertNotNull("process [" + process + " shouldn't be null", process.getTitle());
         }
 
     }
 
-    public void testDescribeProcess() throws ServiceException, IOException
-    {
+    public void testDescribeProcess() throws ServiceException, IOException {
 
         // don't run the test if the server is not up
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+        if (fixture == null) {
             return;
         }
 
@@ -191,35 +169,27 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         assertNotNull(response.getProcessDesc());
     }
 
-    public void testAddReferenceTypeInput() throws ServiceException, IOException
-    {
+    public void testAddReferenceTypeInput() throws ServiceException, IOException {
 
         // don't run the test if the server is not up
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+        if (fixture == null) {
             return;
         }
 
         ExecuteProcessRequest request = wps.createExecuteProcessRequest();
-        
+
         // reference to the File
         EObject kmzFileReference = Wps10Factory.eINSTANCE.createInputReferenceType();
-        ((InputReferenceType)kmzFileReference).setMimeType("application/vnd.google-earth.kmz");
-        ((InputReferenceType)kmzFileReference).setMethod(MethodType.GET_LITERAL);
-        ((InputReferenceType)kmzFileReference).setHref("file:///testref");
-        
+        ((InputReferenceType) kmzFileReference).setMimeType("application/vnd.google-earth.kmz");
+        ((InputReferenceType) kmzFileReference).setMethod(MethodType.GET_LITERAL);
+        ((InputReferenceType) kmzFileReference).setHref("file:///testref");
+
         request.addInput("input Gliders KMZ file", Arrays.asList(kmzFileReference));
-        
+
         ByteArrayOutputStream out = null;
         InputStream in = null;
         BufferedReader reader = null;
-        try
-        {
+        try {
             out = new ByteArrayOutputStream();
             request.performPostOutput(out);
 
@@ -230,65 +200,54 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
 
             char[] cbuf = new char[1024];
             int charsRead;
-            while ((charsRead = reader.read(cbuf)) != -1)
-            {
+            while ((charsRead = reader.read(cbuf)) != -1) {
                 postText = postText.append(cbuf, 0, charsRead);
             }
 
             assertTrue(postText.toString().contains("wps:Reference"));
-        }
-        catch (Exception e)
-        {
-        	assertFalse(true);
-        }
-        finally
-        {
-            if (reader != null)
-            {
+        } catch (Exception e) {
+            assertFalse(true);
+        } finally {
+            if (reader != null) {
                 reader.close();
             }
 
-            if (out != null)
-            {
+            if (out != null) {
                 out.close();
             }
 
-            if (in != null)
-            {
+            if (in != null) {
                 in.close();
             }
         }
     }
-    
+
     /**
      * run multiple buffer tests with various geometry types
-     *
+     * 
      * @throws ParseException
      * @throws IOException
      * @throws ServiceException
      */
-    public void testExecuteProcessBufferLocal() throws ParseException, ServiceException, IOException
-    {
+    public void testExecuteProcessBufferLocal() throws ParseException, ServiceException,
+            IOException {
 
         // don't run the test if the server is not up or we aren't doing local tests
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+        if (fixture == null) {
             return;
         }
 
         // create the geometries to use for input
         WKTReader reader = new WKTReader(new GeometryFactory());
-        Geometry geom1 = (Polygon) reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
-        Geometry geom2 = (Point) reader.read("POINT (160 200)");
-        Geometry geom3 = (LineString) reader.read("LINESTRING (100 240, 220 140, 380 240, 480 220)");
-        Geometry geom4 = (MultiLineString) reader.read("MULTILINESTRING ((140 280, 180 180, 400 260), (340 120, 160 100, 80 200))");
-        Geometry geom5 = (MultiPoint) reader.read("MULTIPOINT (180 180, 260 280, 340 200)");
-        Geometry geom6 = (MultiPolygon) reader.read("MULTIPOLYGON (((160 320, 120 140, 360 140, 320 340, 160 320), (440 260, 580 140, 580 240, 440 260)))");
+        Geometry geom1 = reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
+        Geometry geom2 = reader.read("POINT (160 200)");
+        Geometry geom3 = reader
+                .read("LINESTRING (100 240, 220 140, 380 240, 480 220)");
+        Geometry geom4 = reader
+                .read("MULTILINESTRING ((140 280, 180 180, 400 260), (340 120, 160 100, 80 200))");
+        Geometry geom5 = reader.read("MULTIPOINT (180 180, 260 280, 340 200)");
+        Geometry geom6 = reader
+                .read("MULTIPOLYGON (((160 320, 120 140, 360 140, 320 340, 160 320), (440 260, 580 140, 580 240, 440 260)))");
 
         // run the local buffer execute test for each geom input
         runExecuteProcessBufferLocal(geom1);
@@ -299,8 +258,8 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         runExecuteProcessBufferLocal(geom6);
     }
 
-    private void runExecuteProcessBufferLocal(Geometry geom1) throws ServiceException, IOException, ParseException
-    {
+    private void runExecuteProcessBufferLocal(Geometry geom1) throws ServiceException, IOException,
+            ParseException {
 
         WPSCapabilitiesType capabilities = wps.getCapabilities();
 
@@ -312,11 +271,9 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         // does the server contain the specific process I want
         boolean found = false;
         Iterator iterator = processes.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             ProcessBriefType process = (ProcessBriefType) iterator.next();
-            if (process.getIdentifier().getValue().equalsIgnoreCase(processIden))
-            {
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIden)) {
                 found = true;
 
                 break;
@@ -324,8 +281,7 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         }
 
         // exit test if my process doesn't exist on server
-        if (!found)
-        {
+        if (!found) {
             return;
         }
 
@@ -368,19 +324,18 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
     }
 
     private void setLocalInputDataBufferPoly(ExecuteProcessRequest exeRequest,
-        ProcessDescriptionsType processDesc, Geometry geom1) throws ParseException
-    {
+            ProcessDescriptionsType processDesc, Geometry geom1) throws ParseException {
 
         // this process takes 2 input, a geometry and a buffer amount.
-        ProcessDescriptionType pdt = (ProcessDescriptionType) processDesc.getProcessDescription().get(0);
+        ProcessDescriptionType pdt = (ProcessDescriptionType) processDesc.getProcessDescription()
+                .get(0);
         InputDescriptionType idt = (InputDescriptionType) pdt.getDataInputs().getInput().get(0);
 
         // create input buffer
         int bufferAmnt = 350;
 
         // create and set the input on the exe request
-        if (idt.getIdentifier().getValue().equalsIgnoreCase("buffer"))
-        {
+        if (idt.getIdentifier().getValue().equalsIgnoreCase("buffer")) {
             // set buffer input
             DataType input = WPSUtils.createInputDataType(bufferAmnt, idt);
             List<EObject> list = new ArrayList<EObject>();
@@ -393,9 +348,7 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
             List<EObject> list2 = new ArrayList<EObject>();
             list2.add(input2);
             exeRequest.addInput(idt.getIdentifier().getValue(), list2);
-        }
-        else
-        {
+        } else {
             // set geom input
             DataType input2 = WPSUtils.createInputDataType(geom1, idt);
             List<EObject> list2 = new ArrayList<EObject>();
@@ -411,17 +364,10 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         }
     }
 
-    public void testExecuteProcessBuffer52N() throws ServiceException, IOException, ParseException
-    {
+    public void testExecuteProcessBuffer52N() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up or if we are doing local tests
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+        if (fixture == null) {
             return;
         }
 
@@ -435,11 +381,9 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         // does the server contain the specific process I want
         boolean found = false;
         Iterator iterator = processes.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             ProcessBriefType process = (ProcessBriefType) iterator.next();
-            if (process.getIdentifier().getValue().equalsIgnoreCase(processIden))
-            {
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIden)) {
                 found = true;
 
                 break;
@@ -447,8 +391,7 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         }
 
         // exit test if my process doesn't exist on server
-        if (!found)
-        {
+        if (!found) {
             return;
         }
 
@@ -480,16 +423,16 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
     }
 
     private void set52NInputData(ExecuteProcessRequest exeRequest,
-        ProcessDescriptionsType processDesc) throws ParseException
-    {
+            ProcessDescriptionsType processDesc) throws ParseException {
 
         // this process takes 1 input, a building polygon to collapse.
-        ProcessDescriptionType pdt = (ProcessDescriptionType) processDesc.getProcessDescription().get(0);
+        ProcessDescriptionType pdt = (ProcessDescriptionType) processDesc.getProcessDescription()
+                .get(0);
         InputDescriptionType idt = (InputDescriptionType) pdt.getDataInputs().getInput().get(0);
 
         // create a polygon for the input
         WKTReader reader = new WKTReader(new GeometryFactory());
-        Geometry geom1 = (Polygon) reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
+        Geometry geom1 = reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
 
         // create and set the input on the exe request
         DataType input = WPSUtils.createInputDataType(geom1, idt);
@@ -500,22 +443,15 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
 
     /**
      * Do some more local process tests, such as union
-     *
+     * 
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
      */
-    public void testExecuteLocalUnion() throws ServiceException, IOException, ParseException
-    {
+    public void testExecuteLocalUnion() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+        if (fixture == null) {
             return;
         }
 
@@ -531,11 +467,9 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         // does the server contain the specific process I want
         boolean found = false;
         Iterator iterator = processes.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             ProcessBriefType process = (ProcessBriefType) iterator.next();
-            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal))
-            {
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal)) {
                 found = true;
 
                 break;
@@ -543,8 +477,7 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         }
 
         // exit test if my process doesn't exist on server
-        if (!found)
-        {
+        if (!found) {
             return;
         }
 
@@ -560,7 +493,7 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         exeRequest.setIdentifier(processIdenLocal);
 
         setLocalInputDataUnion(exeRequest, processDesc);
-        
+
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         exeRequest.performPostOutput(bos);
         System.out.println(bos.toString());
@@ -578,32 +511,34 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
     }
 
     private void setLocalInputDataUnion(ExecuteProcessRequest exeRequest,
-        ProcessDescriptionsType processDesc) throws ParseException
-    {
+            ProcessDescriptionsType processDesc) throws ParseException {
 
         // this process takes 2+ inputs, all geometries to union together.
-        ProcessDescriptionType pdt = (ProcessDescriptionType) processDesc.getProcessDescription().get(0);
+        ProcessDescriptionType pdt = (ProcessDescriptionType) processDesc.getProcessDescription()
+                .get(0);
         InputDescriptionType idt = (InputDescriptionType) pdt.getDataInputs().getInput().get(0);
 
         // create polygons for the input
         String geom1 = "POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))";
-        String geom2 = "POLYGON((20 30, 30 0, 20 20, 80 20, 20 30))";
-        String geom3 = "POLYGON((177 10, 30 88, 40 70, 46 20, 177 10))";
-        String geom4 = "POLYGON((5 10, 5 0, 13 10, 5 20, 5 10))";
+        String geom2 = "POLYGON((177 10, 30 88, 40 70, 46 20, 177 10))";
+        String geom3 = "POLYGON((5 10, 5 0, 13 10, 5 20, 5 10))";
 
         // create and set the input on the exe request
-        if (idt.getIdentifier().getValue().equalsIgnoreCase("geom"))
-        {
+        if (idt.getIdentifier().getValue().equalsIgnoreCase("geom")) {
             // set geom inputs
             List<EObject> list = new ArrayList<EObject>();
-            DataType input = WPSUtils.createInputDataType(geom1, WPSUtils.INPUTTYPE_COMPLEXDATA, "application/wkt");
-            DataType input2 = WPSUtils.createInputDataType(geom2, WPSUtils.INPUTTYPE_COMPLEXDATA, "application/wkt");
-            DataType input3 = WPSUtils.createInputDataType(geom3, WPSUtils.INPUTTYPE_COMPLEXDATA, "application/wkt");
-            DataType input4 = WPSUtils.createInputDataType(geom4, WPSUtils.INPUTTYPE_COMPLEXDATA, "application/wkt");
+            DataType input = WPSUtils.createInputDataType(new CDATAEncoder(geom1),
+                    WPSUtils.INPUTTYPE_COMPLEXDATA, null,
+                    "application/wkt");
+            DataType input2 = WPSUtils.createInputDataType(new CDATAEncoder(geom2),
+                    WPSUtils.INPUTTYPE_COMPLEXDATA, null,
+                    "application/wkt");
+            DataType input3 = WPSUtils.createInputDataType(new CDATAEncoder(geom3),
+                    WPSUtils.INPUTTYPE_COMPLEXDATA, null,
+                    "application/wkt");
             list.add(input);
             list.add(input2);
             list.add(input3);
-            list.add(input4);
             exeRequest.addInput(idt.getIdentifier().getValue(), list);
         }
 
@@ -611,22 +546,15 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
 
     /**
      * Do some more local process tests, such as double addtion
-     *
+     * 
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
      */
-    public void testExecuteLocalAdd() throws ServiceException, IOException, ParseException
-    {
+    public void testExecuteLocalAdd() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+        if (fixture == null) {
             return;
         }
 
@@ -642,11 +570,9 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         // does the server contain the specific process I want
         boolean found = false;
         Iterator iterator = processes.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             ProcessBriefType process = (ProcessBriefType) iterator.next();
-            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal))
-            {
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal)) {
                 found = true;
 
                 break;
@@ -654,8 +580,7 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         }
 
         // exit test if my process doesn't exist on server
-        if (!found)
-        {
+        if (!found) {
             return;
         }
 
@@ -698,11 +623,11 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
     }
 
     private void setLocalInputDataAdd(ExecuteProcessRequest exeRequest,
-        ProcessDescriptionsType processDesc) throws ParseException
-    {
+            ProcessDescriptionsType processDesc) throws ParseException {
 
         // this process takes 2 inputs, two double to add together.
-        ProcessDescriptionType pdt = (ProcessDescriptionType) processDesc.getProcessDescription().get(0);
+        ProcessDescriptionType pdt = (ProcessDescriptionType) processDesc.getProcessDescription()
+                .get(0);
         InputDescriptionType idt = (InputDescriptionType) pdt.getDataInputs().getInput().get(0);
 
         // create doubles for the input
@@ -722,25 +647,18 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         exeRequest.addInput(idt2.getIdentifier().getValue(), list2);
 
     }
-    
+
     /**
      * Try to get an area grid in arcgrid format, raw
-     *
+     * 
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
      */
-    public void testExecuteLocalAreaGrid() throws ServiceException, IOException, ParseException
-    {
+    public void testExecuteLocalAreaGrid() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+        if (fixture == null) {
             return;
         }
 
@@ -756,11 +674,9 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         // does the server contain the specific process I want
         boolean found = false;
         Iterator iterator = processes.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             ProcessBriefType process = (ProcessBriefType) iterator.next();
-            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal))
-            {
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal)) {
                 found = true;
 
                 break;
@@ -768,8 +684,7 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         }
 
         // exit test if my process doesn't exist on server
-        if (!found)
-        {
+        if (!found) {
             System.out.println("Skipping, gs:AreaGrid not found!");
             return;
         }
@@ -784,7 +699,10 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         ProcessDescriptionsType processDesc = descResponse.getProcessDesc();
         ExecuteProcessRequest exeRequest = wps.createExecuteProcessRequest();
         exeRequest.setIdentifier(processIdenLocal);
-        exeRequest.addInput("envelope", Arrays.asList(wps.createBoundingBoxInputValue("EPSG:4326", 2, Arrays.asList(-180d, -90d), Arrays.asList(180d, 90d))));
+        exeRequest.addInput(
+                "envelope",
+                Arrays.asList(wps.createBoundingBoxInputValue("EPSG:4326", 2,
+                        Arrays.asList(-180d, -90d), Arrays.asList(180d, 90d))));
         exeRequest.addInput("width", Arrays.asList(wps.createLiteralInputValue("2")));
         exeRequest.addInput("height", Arrays.asList(wps.createLiteralInputValue("1")));
         OutputDefinitionType rawOutput = wps.createOutputDefinitionType("result");
@@ -806,41 +724,32 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
 
         // check result correctness
         assertEquals("application/arcgrid", response.getRawContentType());
-        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getRawResponseStream()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                response.getRawResponseStream()));
         StringBuilder sb = new StringBuilder();
         String line = null;
-        while((line = reader.readLine()) != null) {
+        while ((line = reader.readLine()) != null) {
             sb.append(line).append("\n");
         }
         reader.close();
         String arcgrid = sb.toString();
-        String expectedHeader = "NCOLS 2\n" + 
-        		"NROWS 1\n" + 
-        		"XLLCORNER -180.0\n" + 
-        		"YLLCORNER -90.0\n" + 
-        		"CELLSIZE 180.0\n" + 
-        		"NODATA_VALUE -9999";
+        String expectedHeader = "NCOLS 2\n" + "NROWS 1\n" + "XLLCORNER -180.0\n"
+                + "YLLCORNER -90.0\n" + "CELLSIZE 180.0\n" + "NODATA_VALUE -9999";
         assertTrue(arcgrid.startsWith(expectedHeader));
     }
-    
+
     /**
      * Request for area grid with raw output but wrong parameters, check the response is an exception
-     *
+     * 
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
      */
-    public void testExecuteLocalAreaGridException() throws ServiceException, IOException, ParseException
-    {
+    public void testExecuteLocalAreaGridException() throws ServiceException, IOException,
+            ParseException {
 
         // don't run the test if the server is not up
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+        if (fixture == null) {
             return;
         }
 
@@ -856,11 +765,9 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         // does the server contain the specific process I want
         boolean found = false;
         Iterator iterator = processes.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             ProcessBriefType process = (ProcessBriefType) iterator.next();
-            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal))
-            {
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal)) {
                 found = true;
 
                 break;
@@ -868,8 +775,7 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         }
 
         // exit test if my process doesn't exist on server
-        if (!found)
-        {
+        if (!found) {
             System.out.println("Skipping, gs:AreaGrid not found!");
             return;
         }
@@ -877,10 +783,13 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         // build the request
         ExecuteProcessRequest exeRequest = wps.createExecuteProcessRequest();
         exeRequest.setIdentifier(processIdenLocal);
-        exeRequest.addInput("envelope", Arrays.asList(wps.createBoundingBoxInputValue("EPSG:4326", 2, Arrays.asList(-180d, -90d), Arrays.asList(180d, 90d))));
+        exeRequest.addInput(
+                "envelope",
+                Arrays.asList(wps.createBoundingBoxInputValue("EPSG:4326", 2,
+                        Arrays.asList(-180d, -90d), Arrays.asList(180d, 90d))));
         // don't set the width, height required params
-        //        exeRequest.addInput("width", Arrays.asList(wps.createLiteralInputValue("abc")));
-        //        exeRequest.addInput("height", Arrays.asList(wps.createLiteralInputValue("def")));
+        // exeRequest.addInput("width", Arrays.asList(wps.createLiteralInputValue("abc")));
+        // exeRequest.addInput("height", Arrays.asList(wps.createLiteralInputValue("def")));
         OutputDefinitionType rawOutput = wps.createOutputDefinitionType("result");
         rawOutput.setMimeType("application/arcgrid");
         ResponseFormType responseForm = wps.createResponseForm(null, rawOutput);
@@ -896,27 +805,20 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         ExecuteResponseType executeResponse = response.getExecuteResponse();
         assertNotNull(executeResponse);
         assertNotNull(executeResponse.getStatus().getProcessFailed());
-        assertNotNull( executeResponse.getStatus().getProcessFailed().getExceptionReport());
+        assertNotNull(executeResponse.getStatus().getProcessFailed().getExceptionReport());
     }
-    
+
     /**
      * Try to get an area grid with output in asynchronous mode
-     *
+     * 
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
      */
-    public void testExecuteAsynchAreaGrid() throws ServiceException, IOException, ParseException
-    {
+    public void testExecuteAsynchAreaGrid() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+        if (fixture == null) {
             return;
         }
 
@@ -932,11 +834,9 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         // does the server contain the specific process I want
         boolean found = false;
         Iterator iterator = processes.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             ProcessBriefType process = (ProcessBriefType) iterator.next();
-            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal))
-            {
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal)) {
                 found = true;
 
                 break;
@@ -944,8 +844,7 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         }
 
         // exit test if my process doesn't exist on server
-        if (!found)
-        {
+        if (!found) {
             System.out.println("Skipping, gs:AreaGrid not found!");
             return;
         }
@@ -953,7 +852,10 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         // based on the describeprocess, setup the execute
         ExecuteProcessRequest exeRequest = wps.createExecuteProcessRequest();
         exeRequest.setIdentifier(processIdenLocal);
-        exeRequest.addInput("envelope", Arrays.asList(wps.createBoundingBoxInputValue("EPSG:4326", 2, Arrays.asList(-180d, -90d), Arrays.asList(180d, 90d))));
+        exeRequest.addInput(
+                "envelope",
+                Arrays.asList(wps.createBoundingBoxInputValue("EPSG:4326", 2,
+                        Arrays.asList(-180d, -90d), Arrays.asList(180d, 90d))));
         exeRequest.addInput("width", Arrays.asList(wps.createLiteralInputValue("100")));
         exeRequest.addInput("height", Arrays.asList(wps.createLiteralInputValue("50")));
         ResponseDocumentType doc = wps.createResponseDocumentType(false, true, true, "result");
@@ -974,64 +876,54 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         assertNotNull(executeResponse);
 
         // loop and wait for the process to be complete
-        while(executeResponse.getStatus().getProcessFailed() == null 
+        while (executeResponse.getStatus().getProcessFailed() == null
                 && executeResponse.getStatus().getProcessSucceeded() == null) {
-            
+
             String location = executeResponse.getStatusLocation();
             URL url = new URL(location);
             response = wps.issueStatusRequest(url);
-            
+
             executeResponse = response.getExecuteResponse();
             assertNotNull(executeResponse);
         }
 
         // check result correctness
         assertEquals(1, executeResponse.getProcessOutputs().getOutput().size());
-        OutputDataType output = (OutputDataType) executeResponse.getProcessOutputs().getOutput().get(0);
-        
+        OutputDataType output = (OutputDataType) executeResponse.getProcessOutputs().getOutput()
+                .get(0);
+
         assertEquals("result", output.getIdentifier().getValue());
         assertEquals("application/arcgrid", output.getReference().getMimeType());
         assertNotNull(output.getReference().getHref());
-        
+
         URL dataURL = new URL(output.getReference().getHref());
         BufferedReader reader = new BufferedReader(new InputStreamReader(dataURL.openStream()));
         StringBuilder sb = new StringBuilder();
         String line = null;
         int count = 0;
-        while((line = reader.readLine()) != null && count <= 5) {
+        while ((line = reader.readLine()) != null && count <= 5) {
             sb.append(line).append("\n");
             count++;
         }
         reader.close();
         String arcgrid = sb.toString();
-        String expectedHeader = "NCOLS 100\n" + 
-                "NROWS 50\n" + 
-                "XLLCORNER -180.0\n" + 
-                "YLLCORNER -90.0\n" + 
-                "CELLSIZE 3.6\n" + 
-                "NODATA_VALUE -9999";
+        String expectedHeader = "NCOLS 100\n" + "NROWS 50\n" + "XLLCORNER -180.0\n"
+                + "YLLCORNER -90.0\n" + "CELLSIZE 3.6\n" + "NODATA_VALUE -9999";
         System.out.println(arcgrid);
         assertTrue(arcgrid.startsWith(expectedHeader));
     }
-    
+
     /**
      * Test exception parsing on invalid process request
-     *
+     * 
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
      */
-    public void testInvalidProcess() throws ServiceException, IOException, ParseException
-    {
+    public void testInvalidProcess() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+        if (fixture == null) {
             return;
         }
 
@@ -1047,11 +939,9 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         // does the server contain the specific process I want
         boolean found = false;
         Iterator iterator = processes.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             ProcessBriefType process = (ProcessBriefType) iterator.next();
-            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal))
-            {
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal)) {
                 found = true;
 
                 break;
@@ -1059,8 +949,7 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         }
 
         // exit test if my process doesn't exist on server
-        if (found)
-        {
+        if (found) {
             System.out.println("Skipping, gs:InvalidProcessName has been found!");
             return;
         }
@@ -1088,25 +977,18 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         String errorMessage = exception.getExceptionText().get(0).toString();
         assertTrue(errorMessage.contains(processIdenLocal));
     }
-    
+
     /**
      * Make sure we get the proper exception report
-     *
+     * 
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
      */
-    public void testInvalidParamsRawOutput() throws ServiceException, IOException, ParseException
-    {
+    public void testInvalidParamsRawOutput() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up
-        if (fixture == null)
-        {
-            return;
-        }
-
-        if (DISABLE)
-        {
+        if (fixture == null) {
             return;
         }
 
@@ -1122,11 +1004,9 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         // does the server contain the specific process I want
         boolean found = false;
         Iterator iterator = processes.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             ProcessBriefType process = (ProcessBriefType) iterator.next();
-            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal))
-            {
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal)) {
                 found = true;
 
                 break;
@@ -1134,8 +1014,7 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         }
 
         // exit test if my process doesn't exist on server
-        if (!found)
-        {
+        if (!found) {
             System.out.println("Skipping, gs:AreaGrid not found!");
             return;
         }
@@ -1159,6 +1038,140 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         ExceptionReportType report = response.getExceptionResponse();
         assertNotNull(report);
     }
+
+    @SuppressWarnings("unchecked")
+    public void testChainingCall() throws ServiceException, IOException, ParseException {
+
+        // don't run the test if the server is not up
+        if (fixture == null) {
+            return;
+        }
+
+        //----
+
+        // reference to the Cascaded Process
+        EObject processUnionCascadeReference = Wps10Factory.eINSTANCE.createInputReferenceType();
+        ((InputReferenceType) processUnionCascadeReference).setMimeType("application/xml");
+        ((InputReferenceType) processUnionCascadeReference).setMethod(MethodType.POST_LITERAL);
+        ((InputReferenceType) processUnionCascadeReference).setHref("http://geoserver/wps");
+
+        ExecuteType processUnionExecType = Wps10Factory.eINSTANCE.createExecuteType();
+        processUnionExecType.setVersion("1.0.0");
+        processUnionExecType.setService("WPS");
+
+        // based on the DescribeProcess, setup the execute
+
+        //----
+        String processIden = "JTS:union";
+
+        CodeType resultsCodeType = Ows11Factory.eINSTANCE.createCodeType();
+        resultsCodeType.setValue("result");
+
+        CodeType codeType = Ows11Factory.eINSTANCE.createCodeType();
+        codeType.setValue(processIden);
+
+        processUnionExecType.setIdentifier(codeType);
+
+        DataInputsType1 inputtypes = Wps10Factory.eINSTANCE.createDataInputsType1();
+        processUnionExecType.setDataInputs(inputtypes);
+
+        ResponseFormType processUnionResponseForm = Wps10Factory.eINSTANCE.createResponseFormType();
+        OutputDefinitionType processUnionRawDataOutput = Wps10Factory.eINSTANCE.createOutputDefinitionType();
+        processUnionRawDataOutput.setIdentifier(resultsCodeType);
+        processUnionResponseForm.setRawDataOutput(processUnionRawDataOutput);
+
+        processUnionExecType.setResponseForm(processUnionResponseForm);
+
+        // set inputs
+
+        // POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))
+        ComplexDataType cdt1 = Wps10Factory.eINSTANCE.createComplexDataType();
+        cdt1.getData().add(0, new CDATAEncoder("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))"));
+        cdt1.setMimeType("application/wkt");
+        net.opengis.wps10.DataType data1 = Wps10Factory.eINSTANCE.createDataType();
+        data1.setComplexData(cdt1);
+        
+        InputType input1 = Wps10Factory.eINSTANCE.createInputType();
+        CodeType inputIdent = Ows11Factory.eINSTANCE.createCodeType();
+        inputIdent.setValue("geom");
+        input1.setIdentifier(inputIdent);
+        input1.setData(data1);
+
+        processUnionExecType.getDataInputs().getInput().add(input1);
+        
+        // POLYGON((2 1, 3 0, 4 1, 3 2, 2 1))
+        ComplexDataType cdt2 = Wps10Factory.eINSTANCE.createComplexDataType();
+        cdt2.getData().add(0, new CDATAEncoder("POLYGON((2 1, 3 0, 4 1, 3 2, 2 1))"));
+        cdt2.setMimeType("application/wkt");
+        net.opengis.wps10.DataType data2 = Wps10Factory.eINSTANCE.createDataType();
+        data2.setComplexData(cdt2);
+        
+        InputType input2 = Wps10Factory.eINSTANCE.createInputType();
+        CodeType inputIdent2 = Ows11Factory.eINSTANCE.createCodeType();
+        inputIdent2.setValue("geom");
+        input2.setIdentifier(inputIdent2);
+        input2.setData(data2);
+
+        processUnionExecType.getDataInputs().getInput().add(input2);
+        
+
+        // set the Cascade WPS process Body
+        ((InputReferenceType) processUnionCascadeReference).setBody(new WPSEncodeDelegate(
+                processUnionExecType, WPS.Execute));
+
+        //----
+        String areaProcessIdent = "JTS:area";
+        
+        ExecuteProcessRequest exeRequest = wps.createExecuteProcessRequest();
+        exeRequest.setIdentifier(areaProcessIdent);
+        exeRequest.addInput("geom", Arrays.asList(processUnionCascadeReference));
+
+        
+        // send the request
+        ExecuteProcessResponse response = wps.issueRequest(exeRequest);
+        Object result = response.getExecuteResponse().getProcessOutputs().getOutput().get(0);
+        System.out.println(result);
+    }
     
-    
+}
+
+class CDATAEncoder implements EncoderDelegate {
+    String cData;
+
+    public CDATAEncoder(String cData) {
+        this.cData = cData;
+    }
+
+    @Override
+    public void encode(ContentHandler output) throws Exception {
+        ((LexicalHandler) output).startCDATA();
+        Reader r = new StringReader(cData);
+        char[] buffer = new char[1024];
+        int read;
+        while ((read = r.read(buffer)) > 0) {
+            output.characters(buffer, 0, read);
+        }
+        r.close();
+        ((LexicalHandler) output).endCDATA();
+    }
+}
+
+class WPSEncodeDelegate implements EncoderDelegate {
+
+    private Object value;
+
+    private QName qname;
+
+    public WPSEncodeDelegate(Object value, QName qname) {
+        this.value = value;
+        this.qname = qname;
+    }
+
+    @Override
+    public void encode(ContentHandler output) throws Exception {
+        WPSConfiguration config = new WPSConfiguration();
+        Encoder encoder = new Encoder(config);
+        encoder.encode(value, qname, output);
+    }
+
 }

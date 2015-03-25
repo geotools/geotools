@@ -59,3 +59,5 @@ Unsupported:
    :maxdepth: 1
    
    shapefile
+
+* :doc:`/unsupported/css`

@@ -1,5 +1,5 @@
-Welcome to NetBeans Developers
-==============================
+NetBeans IDE Tips
+=================
 
 NetBeans is an Integrated Development Environment (IDE), a software package which can be used to develop programs. Several developers use NetBeans to develop GeoTools itself or GeoTools based software. NetBeans is available from Oracle as a free software download. There are also derivatives such as Sun ONE Studio (previously Forte for J).
 

@@ -26,6 +26,20 @@ But first to upgrade - change your dependency to |release| (or an appropriate st
         ....
     </dependencies>
 
+GeoTools 13.0
+-------------
+As of GeoTools 13.0, the CoverageViewType classes have been removed. The AbstractDataStore class is also now deprecated. Extensive work has been done to bring in ContentDataStore as its replacement. There is a `ContentDataStore Tutorial <http://docs.geotools.org/latest/userguide/tutorial/datastore/index.html>`_ to help with migration from AbstractDataStore.
+
+GeoTools 12.0
+-------------
+GeoTools now requires `Java 7 <http://docs.geotools.org/latest/userguide/build/install/jdk.html>`_ and this is the first release tested with OpenJDK! Please ensure you are using JDK 1.7 or newer for GeoTools 12. Both Oracle Java 7 and OpenJDK 7 are supported, tested, release targets.
+
+Filter interfaces have been simplified. The GeoTools interfaces have been deprecated since GeoTools 2.3, and finally they have been removed. All filter interfaces now use the GeoAPI Filter.
+
+GeoTools 11.0
+-------------
+Only new features were added in GeoTools 11.0.
+
 GeoTools 10.0
 -------------
 

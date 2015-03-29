@@ -28,15 +28,23 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 
 import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
+import javax.media.jai.operator.ConstantDescriptor;
 
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.grid.Viewer;
+import org.geotools.factory.GeoTools;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.jai.Registry;
 import org.geotools.referencing.crs.DefaultDerivedCRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.junit.Before;
 import org.junit.Test;
@@ -638,4 +646,73 @@ public final class CropTest extends GridProcessingTestBase {
 
     }
 
+    /**
+     * Tests the "Crop" operation with a ROI set, clipping at half pixel.
+     */
+    @Test
+    public void testCropWithROIHalfPixel() throws TransformException, InterruptedException,
+            FactoryException {
+        // Disable MediaLib for this test
+        // Getting initial value
+        String disableMediaLibKey = "com.sun.media.jai.disableMediaLib";
+        String oldDisableMediaLib = System.getProperty(disableMediaLibKey, "false");
+        Registry.setNativeAccelerationAllowed("Mosaic", false);
+        // getting CoverageProcessor
+        final CoverageProcessor processor = CoverageProcessor.getInstance();
+
+        /*
+         * Create a simple Red image
+         */
+        Byte[] red = new Byte[] { (byte) 255, 0, 0 };
+        RenderedOp image = ConstantDescriptor.create(Float.valueOf(40), Float.valueOf(37), red,
+                null);
+        final Envelope envelope = new ReferencedEnvelope(-1d, 1d, -1d, 1d,
+                DefaultGeographicCRS.WGS84);
+        /*
+         * Get the source coverage and build the cropped envelope.
+         */
+        final GridCoverageFactory factory = new GridCoverageFactory(GeoTools.getDefaultHints());
+        final GridCoverage2D source = factory.create("test", image, envelope);
+
+        // Creating ROI for cropping
+        final ReferencedEnvelope cropBounds = new ReferencedEnvelope(0d, 1d, 0d, 1d,
+                DefaultGeographicCRS.WGS84);
+        com.vividsolutions.jts.geom.Polygon polygon = JTS.toGeometry(cropBounds);
+        Geometry roi = polygon.getFactory().createMultiPolygon(
+                new com.vividsolutions.jts.geom.Polygon[] { polygon });
+
+        ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
+        param.parameter("Source").setValue(source);
+        param.parameter("Envelope").setValue(cropBounds);
+        param.parameter("ROI").setValue(roi);
+
+        GridCoverage2D cropped = (GridCoverage2D) processor.doOperation(param);
+        if (SHOW) {
+            Viewer.show(source, "Original");
+            Viewer.show(cropped, "Cropped");
+            Thread.sleep(10000);
+        } else {
+            // Force computation
+            assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
+        }
+        RenderedImage raster = cropped.getRenderedImage();
+
+        assertEquals(20, raster.getMinX());
+        assertEquals(0, raster.getMinY());
+        assertEquals(20, raster.getWidth());
+        assertEquals(19, raster.getHeight());
+        assertEquals(source.getGridGeometry().getGridToCRS2D(), cropped.getGridGeometry()
+                .getGridToCRS2D());
+
+        // Ensure the pixels are RED
+        byte[] result = new byte[3];
+        // Upper Left
+        cropped.evaluate(new DirectPosition2D(0d, 0d), result);
+        assertEquals((byte) red[0], result[0]);
+        assertEquals((byte) red[1], result[1]);
+        assertEquals((byte) red[2], result[2]);
+
+        // Setting old acceleration value for Mosaic
+        Registry.setNativeAccelerationAllowed("Mosaic", Boolean.valueOf(oldDisableMediaLib));
+    }
 }

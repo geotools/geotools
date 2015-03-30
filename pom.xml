@@ -24,7 +24,7 @@
   <!--                        modules or example code used by the  -->
   <!--                        build box.                           -->
   <!--                                                             -->
-  <!--    -Djdbc.oracle=true  Indicate that the real oracle driver -->
+  <!--    -Doracle=true       Indicate that the real oracle driver -->
   <!--                        has been installed into the local    -->
   <!--                        repository and should be used.       -->
   <!--                                                             -->
@@ -66,7 +66,7 @@
   <!--       mvn -P extensive.tests install                        -->
   <!--       mvn -P online,stress install                          -->
   <!--       mvn -P site.build site                                -->
-  <!--       mvn eclipse:eclipse -Djdbc.oracle=true -P pending     -->
+  <!--       mvn eclipse:eclipse -Doracle=true -P pending          -->
   <!--                                                             -->
   <!--     While you can specify properties one at a time on the   -->
   <!--     command line, for properties describing your            -->
@@ -937,9 +937,9 @@
       <!-- ORACLE -->
       <!-- Download and install into your own repo -->
       <dependency>
-        <artifactId>ojdbc14</artifactId>
+        <artifactId>ojdbc7</artifactId>
         <groupId>com.oracle</groupId>
-        <version>10.2.0.3.0</version>
+        <version>12.1.0.2</version>
       </dependency>
       <dependency>
         <artifactId>sdoapi</artifactId>

@@ -86,11 +86,11 @@
 
     <!--                                                           -->
     <!-- To use for real:                                          -->
-    <!--   Download the ojdbc14.jar driver from oracle and install -->
+    <!--   Download the ojdbc7.jar driver from oracle and install -->
     <!--   into maven:                                             -->
-    <!--       mvn install:install-file -Dfile=ojdbc14.jar         -->
-    <!--           -DgroupId=com.oracle -DartifactId=ojdbc14       -->
-    <!--           -Dversion=10.2.0 -Dpackaging=jar                -->
+    <!--       mvn install:install-file -Dfile=ojdbc7.jar         -->
+    <!--           -DgroupId=com.oracle -DartifactId=ojdbc7       -->
+    <!--           -Dversion=12.1.0.2 -Dpackaging=jar                -->
     <!--                                                           -->
     <!--   You can then supply -Doracle=true on the command line   -->
     <!--                                                           -->
@@ -106,7 +106,7 @@
         </activation>
         <dependencies>
           <dependency>
-            <artifactId>ojdbc14</artifactId>
+            <artifactId>ojdbc7</artifactId>
             <groupId>com.oracle</groupId>
             <!-- version specified in root pom -->
           </dependency>

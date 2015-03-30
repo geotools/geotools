@@ -39,10 +39,10 @@ public class SQLServerTestSetup extends JDBCTestSetup {
     protected Properties createExampleFixture() {
         Properties fixture = new Properties();
         fixture.put("driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        fixture.put("url", "jdbc:sqlserver://192.168.150.138:4866");
+        fixture.put("url", "jdbc:sqlserver://192.168.150.138:1433");
         fixture.put("host", "192.168.150.138");
         fixture.put("database", "geotools");
-        fixture.put("port", "4866");
+        fixture.put("port", "1433");
         fixture.put("user", "geotools");
         fixture.put("password", "geotools");
         return fixture;

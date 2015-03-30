@@ -941,6 +941,12 @@
         <groupId>com.oracle</groupId>
         <version>12.1.0.2</version>
       </dependency>
+      <!-- Older version required by imagemosaic -->
+      <dependency>
+        <artifactId>ojdbc14</artifactId>
+        <groupId>com.oracle</groupId>
+        <version>10.2.0.3.0</version>
+      </dependency>
       <dependency>
         <artifactId>sdoapi</artifactId>
         <groupId>com.oracle</groupId>

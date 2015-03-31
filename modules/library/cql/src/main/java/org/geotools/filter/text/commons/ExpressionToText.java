@@ -18,13 +18,19 @@ package org.geotools.filter.text.commons;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
@@ -214,11 +220,45 @@ public class ExpressionToText implements ExpressionVisitor {
 	@Override
 	public Object visit(PropertyName expression, Object extraData) {
 
-        StringBuilder output = asStringBuilder(extraData);        
-        output.append( expression.getPropertyName() );
+        StringBuilder output = asStringBuilder(extraData);
+        if(propertyNeedsDelimiters(expression)) {
+            output.append('"');
+            output.append( expression.getPropertyName().replace("\"", "\"\"") );
+            output.append('"');
+        } else {
+            output.append( expression.getPropertyName() );
+        }
         
         return output;
 	}
+    
+    // Pattern for an identifier which does not require delimiting unless it's 
+    // a reserved word
+    private static final Pattern SIMPLE_IDENTIFIER = 
+            Pattern.compile("[a-zA-Z][_a-zA-Z0-9]*");
+    // Words reserved by the language which can not be used as identifiers
+    // unless delimited
+    private static final Set<String> RESERVED_WORDS;
+    static {
+        Set<String> reservedWords = 
+                new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        reservedWords.addAll(Arrays.asList("NOT", "AND", "OR", "LIKE", "IS", 
+                "NULL", "EXISTS", "DOES-NOT-EXIST", "DURING", "AFTER", "BEFORE",
+                "IN", "INCLUDE", "EXCLUDE", "TRUE", "FALSE", "EQUALS", 
+                "DISJOINT", "INTERSECTS", "TOUCHES", "CROSSES", "WITHIN", 
+                "CONTAINS", "OVERLAPS", "RELATE", "DWITHIN", "BEYOND", "POINT", 
+                "LINESTRING", "POLYGON", "MULTIPOINT", "MULTILINESTRING", 
+                "MULTIPOLYGON", "GEOMETRYCOLLECTION"));
+        RESERVED_WORDS = Collections.unmodifiableSet(reservedWords);
+    }
+    
+    protected boolean propertyNeedsDelimiters(PropertyName name) {
+        if(!SIMPLE_IDENTIFIER.matcher(name.getPropertyName()).matches()) { 
+            return true;
+        }
+        return RESERVED_WORDS.contains(name.getPropertyName());
+    }
+
 
 	/* (non-Javadoc)
 	 * @see org.opengis.filter.expression.ExpressionVisitor#visit(org.opengis.filter.expression.Subtract, java.lang.Object)

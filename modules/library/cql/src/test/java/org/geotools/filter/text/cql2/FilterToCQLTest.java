@@ -24,10 +24,13 @@ import java.util.Date;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.temporal.AnyInteracts;
 import org.opengis.filter.temporal.Begins;
 import org.opengis.filter.temporal.BegunBy;
@@ -283,6 +286,49 @@ public class FilterToCQLTest{
 	public void testTouches() throws Exception {
 		cqlTest("TOUCHES(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
 	}
+	
+    
+    @Ignore // Parser doesn't implement this
+    @Test
+    public void testAttributeContainsQuote() throws Exception {
+        String cql = "INTERSECTS(\"the\"\"geom\", POINT (1 2))";
+        Filter filter = CQL.toFilter(cql);
+        Assert.assertNotNull( filter );
+        
+        // double quote escaped by repeating should be unescaped to just one
+        Assert.assertEquals("the\"geom",((PropertyName)(((Intersects) filter).getExpression1())).getPropertyName());
+        
+        FilterToCQL toCQL = new FilterToCQL();
+        String output = filter.accept( toCQL, null ).toString();
+        // Should be escaped again
+        Assert.assertEquals( cql,output );
+    }
+    
+    @Ignore // Parser doesn't implement this
+    @Test
+    public void testAttributeContainsSpace() throws Exception {
+        cqlTest("INTERSECTS(\"the geom\", POINT (1 2))");
+    }
+    
+    @Test
+    public void testAttributeContainsOperator() throws Exception {
+        cqlTest("INTERSECTS(\"the-geom\", POINT (1 2))");
+    }
+    
+    @Test
+    public void testAttributeContainsComma() throws Exception {
+        cqlTest("INTERSECTS(\"the,geom\", POINT (1 2))");
+    }
+    
+    @Test
+    public void testAttributeIsReservedUpperCase() throws Exception {
+        cqlTest("INTERSECTS(\"POINT\", POINT (1 2))");
+    }
+    
+    @Test
+    public void testAttributeIsReservedLowerCase() throws Exception {
+        cqlTest("INTERSECTS(\"point\", POINT (1 2))");
+    }
 
     protected void cqlTest( String cql ) throws Exception {
         Filter filter = CQL.toFilter(cql);

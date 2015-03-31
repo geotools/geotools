@@ -250,7 +250,9 @@ public class CSVWriteTest {
         SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
         assertEquals("featureStore should only have the one feature we created", 
                 1, featureStore.getFeatures().size());
-        String contents = "LAT,LON,CITY,NUMBER,YEAR\nPOINT (45.52 -122.681944),Portland,800,2014,";
+        final String newline = System.lineSeparator();
+        String contents = "LAT,LON,CITY,NUMBER,YEAR" + newline + 
+        		"POINT (45.52 -122.681944),Portland,800,2014,";
         assertEquals("Ensure the file has only the one feature we created", 
                 contents.trim(), checkFileContents(file).trim());
     }

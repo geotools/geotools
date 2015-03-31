@@ -39,7 +39,6 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.factory.Hints;
 import org.geotools.parameter.ImagingParameterDescriptors;
 import org.geotools.parameter.ImagingParameters;
@@ -130,7 +129,7 @@ public class OperationJAI extends Operation2D {
      * constructor fetch the {@link OperationDescriptor} from the specified operation
      * name using the default {@link JAI} instance.
      *
-     * @param operation JAI operation name (e.g. {@code "GradientMagnitude"}).
+     * @param operation JAI operation name 
      * @throws OperationNotFoundException if no JAI descriptor was found for the given name.
      */
     public OperationJAI(final String operation) throws OperationNotFoundException {
@@ -215,7 +214,7 @@ public class OperationJAI extends Operation2D {
      * <p>
      * <b>Note:</b> it would be possible to use {@link ImagingParameters#parameters}
      * directly in some occasions. However, we perform an unconditional copy instead
-     * because some operations (e.g. "GradientMagnitude") may change the values.
+     * because some operations may change the values.
      *
      * @param parameters The {@link ParameterValueGroup} to be copied.
      * @return A copy of the provided {@link ParameterValueGroup} as a JAI block.
@@ -273,7 +272,7 @@ public class OperationJAI extends Operation2D {
          */
         final String[]     sourceNames = operation.getSourceNames();
         final GridCoverage2D[] sources = new GridCoverage2D[sourceNames.length];
-        ViewType     primarySourceType = extractSources(parameters, sourceNames, sources);
+        extractSources(parameters, sourceNames, sources);
         /*
          * Ensures that all coverages use the same CRS and has the same 'gridToCRS' relationship.
          * After the reprojection, the method still checks all CRS in case the user overridden the
@@ -300,7 +299,7 @@ public class OperationJAI extends Operation2D {
          * Applies the operation. This delegates the work to the chain of 'deriveXXX' methods.
          */
         coverage = deriveGridCoverage(sources, new Parameters(crs, gridToCRS, block, hints));
-        return postProcessResult(coverage, primarySourceType);
+        return postProcessResult(coverage);
     }
 
     /**
@@ -313,12 +312,8 @@ public class OperationJAI extends Operation2D {
      *
      * @return the prepared {@link GridCoverage2D}.
      */
-    private static GridCoverage2D postProcessResult(GridCoverage2D coverage,
-            final ViewType primarySourceType)
+    private static GridCoverage2D postProcessResult(GridCoverage2D coverage)
     {
-        if (primarySourceType != null) {
-            coverage = coverage.view(primarySourceType);
-        }
         return coverage;
     }
 
@@ -822,7 +817,7 @@ public class OperationJAI extends Operation2D {
      * of values returned by {@link #deriveRange deriveRange}.
      *
      * @param  categories The quantitative categories from every sources. For unary operations
-     *         like {@code "GradientMagnitude"}, this array has a length of 1. For binary
+     *         like, this array has a length of 1. For binary
      *         operations like {@code "add"} and {@code "multiply"}, this array has a length of 2.
      * @param  parameters Parameters, rendering hints and coordinate reference system to use.
      * @return The quantitative category to use in the destination image, or {@code null} if unknown.
@@ -838,8 +833,7 @@ public class OperationJAI extends Operation2D {
         final NumberRange range = deriveRange(ranges, parameters);
         if (range != null) {
             final Category category = categories[PRIMARY_SOURCE_INDEX];
-            return new Category(category.getName(), category.getColors(),
-                                category.geophysics(false).getRange(), range).geophysics(true);
+            return new Category(category.getName(), category.getColors(),  range, true);
         }
         return null;
     }
@@ -857,8 +851,8 @@ public class OperationJAI extends Operation2D {
      * return new NumberRange(min, max);
      * </pre></blockquote>
      *
-     * @param  ranges The range of values from every sources. For unary operations like
-     *         {@code "GradientMagnitude"}, this array has a length of 1. For binary operations
+     * @param  ranges The range of values from every sources. For unary operations 
+     *         this array has a length of 1. For binary operations
      *         like {@code "add"} and {@code "multiply"}, this array has a length of 2.
      * @param  parameters Parameters, rendering hints and coordinate reference system to use.
      * @return The range of values to use in the destination image, or {@code null} if unknow.
@@ -882,8 +876,8 @@ public class OperationJAI extends Operation2D {
      * }
      * </pre></blockquote>
      *
-     * @param  units The units from every sources. For unary operations like
-     *         {@code "GradientMagnitude"}, this array has a length of 1. For binary operations
+     * @param  units The units from every sources. For unary operations 
+     *         this array has a length of 1. For binary operations
      *         like {@code "add"} and {@code "multiply"}, this array has a length of 2.
      * @param  parameters Parameters, rendering hints and coordinate reference system to use.
      * @return The unit of data in the destination image, or {@code null} if unknow.
@@ -896,7 +890,7 @@ public class OperationJAI extends Operation2D {
      * Returns a name for the target {@linkplain GridCoverage2D grid coverage} based on the given
      * sources. This method is invoked once by the {@link #deriveGridCoverage deriveGridCoverage}
      * method. The default implementation returns the operation name followed by the source name
-     * between parenthesis, for example "<cite>GradientMagnitude(Sea Surface Temperature)</cite>".
+     * between parenthesis, for example "<cite>Add(Sea Surface Temperature)</cite>".
      *
      * @param  sources The sources grid coverage.
      * @param  primarySourceIndex The index of what seems to be the primary source, or {@code -1}

@@ -16,21 +16,22 @@
  */
 package org.geotools.coverage.processing;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
+
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
 
-import org.opengis.parameter.ParameterValueGroup;
-
-import org.geotools.factory.Hints;
-import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.resources.coverage.CoverageUtilities;
-import static org.geotools.coverage.grid.ViewType.*;
-
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.geotools.coverage.grid.Viewer;
+import org.geotools.factory.Hints;
+import org.junit.Before;
+import org.junit.Test;
+import org.opengis.parameter.ParameterValueGroup;
 
 
 /**
@@ -72,59 +73,58 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
         // On this one the Subsample average should do an RGB expansion
         float[] filter = new float[] {1};
         Interpolation interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
-        filteredSubsample(indexedCoverage.view(GEOPHYSICS), interp, filter);
+        filteredSubsample(indexedCoverage, interp, filter);
 
         // On this one the Subsample average should do an RGB expansion preserving alpha.
-        filteredSubsample(indexedCoverageWithTransparency.view(GEOPHYSICS), interp, filter);
+        filteredSubsample(indexedCoverageWithTransparency, interp, filter);
 
         // On this one the subsample average should go back to the geophysic
         // view before being applied.
-        filteredSubsample(originallyIndexedCoverage.view(PACKED), interp, filter);
+        filteredSubsample(originallyIndexedCoverage, interp, filter);
 
         // On this one the Subsample average should do an RGB expansion.
         interp = Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
-        filteredSubsample(indexedCoverage.view(GEOPHYSICS), interp, filter);
+        filteredSubsample(indexedCoverage, interp, filter);
 
         // On this one the Subsample average should do an RGB expansion preserving alpha.
-        filteredSubsample(indexedCoverageWithTransparency.view(GEOPHYSICS), interp, filter);
+        filteredSubsample(indexedCoverageWithTransparency, interp, filter);
 
         // On this one the subsample average should go back to the geophysics
         // view before being applied.
-        filteredSubsample(originallyIndexedCoverage.view(PACKED), interp, filter);
+        filteredSubsample(originallyIndexedCoverage, interp, filter);
 
         // On this one the Subsample average should do an RGB expansion.
         filter = new float[] { 0.5F,  1.0F /  3.0F,
                                0.0F, -1.0F / 12.0F };
         interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
-        filteredSubsample(indexedCoverage.view(GEOPHYSICS), interp, filter);
+        filteredSubsample(indexedCoverage, interp, filter);
 
         // On this one the Subsample average should do an RGB expansion
         // preserving alpha.
-        filteredSubsample(indexedCoverageWithTransparency.view(GEOPHYSICS), interp, filter);
+        filteredSubsample(indexedCoverageWithTransparency, interp, filter);
 
         // On this one the subsample average should go back to the geophysiscs
         // view before being applied.
-        filteredSubsample(originallyIndexedCoverage.view(PACKED), interp, filter);
+        filteredSubsample(originallyIndexedCoverage, interp, filter);
 
         // On this one the Subsample average should do an RGB expansion.
         interp = Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
-        filteredSubsample(indexedCoverage.view(GEOPHYSICS), interp, filter);
+        filteredSubsample(indexedCoverage, interp, filter);
 
         // On this one the Subsample average should do an RGB expansion
         // preserving alpha.
-        filteredSubsample(indexedCoverageWithTransparency.view(GEOPHYSICS), interp, filter);
+        filteredSubsample(indexedCoverageWithTransparency, interp, filter);
 
         // On this one the subsample average should go back to the geophysiscs
         // view before being applied.
-        filteredSubsample(originallyIndexedCoverage.view(PACKED), interp, filter);
+        filteredSubsample(originallyIndexedCoverage, interp, filter);
 
         // On this one the subsample average should go back to the
         // geophysics view before being applied.
-        filteredSubsample(floatCoverage.view(PACKED), interp, new float[]{1},
-                new Hints(Hints.COVERAGE_PROCESSING_VIEW, PHOTOGRAPHIC));
+        filteredSubsample(floatCoverage, interp, new float[]{1});
 
         // Play with a rotated coverage.
-        filteredSubsample(rotate(floatCoverage.view(GEOPHYSICS), Math.PI/4), interp, filter);
+        filteredSubsample(rotate(floatCoverage, Math.PI/4), interp, filter);
     }
 
     /**
@@ -173,10 +173,8 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
         RenderedImage scaledImage = scaled.getRenderedImage();
         assertEquals(w / 2.0, scaledImage.getWidth(),  EPS);
         assertEquals(h / 2.0, scaledImage.getHeight(), EPS);
-        assertTrue(!isIndexed
-                || (interp instanceof InterpolationNearest)
-                || !(scaledImage.getColorModel() instanceof IndexColorModel)
-                || CoverageUtilities.preferredViewForOperation(coverage, interp, false, null) == GEOPHYSICS);
+        assertTrue((interp instanceof InterpolationNearest)
+                || !(scaledImage.getColorModel() instanceof IndexColorModel));
 
         isIndexed = scaledImage.getColorModel() instanceof IndexColorModel;
         w = scaledImage.getWidth();
@@ -198,8 +196,7 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
         assertEquals(h / 3.0, scaledImage.getHeight(), 1.0/3 + EPS);
         assertTrue(!isIndexed
                 || (interp instanceof InterpolationNearest)
-                || !(scaledImage.getColorModel() instanceof IndexColorModel)
-                ||CoverageUtilities.preferredViewForOperation(coverage, interp, false, null) == GEOPHYSICS);
+                || !(scaledImage.getColorModel() instanceof IndexColorModel));
         assertEnvelopeEquals(coverage, scaled);
         if (SHOW) {
             Viewer.show(scaled);

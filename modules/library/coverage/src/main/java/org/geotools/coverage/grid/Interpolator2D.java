@@ -49,7 +49,19 @@ import org.opengis.referencing.operation.TransformException;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public final class Interpolator2D extends Calculator2D {
+public final class Interpolator2D extends GridCoverage2D {
+
+    /**
+     * The source grid coverage which was specified at construction time (never {@code null}).
+     *
+     * @serial This field duplicate the value obtained by <code>{@linkplain #getSources()}(0)</code>
+     *         except if this coverage has been deserialized. The source is required in order to get
+     *         the {@link #view} method to work. Because the {@linkplain GridCoverage2D#image image}
+     *         contained in the source is the same one than in this {@link Calculator2D}, there is
+     *         few cost in keeping it.
+     */
+    protected final GridCoverage2D source;
+
     /**
      * For cross-version compatibility.
      */
@@ -176,8 +188,8 @@ public final class Interpolator2D extends Calculator2D {
      * @param  interpolations The interpolation to use and its fallback (if any).
      */
     public static GridCoverage2D create(GridCoverage2D coverage, final Interpolation[] interpolations, final BorderExtender be) {
-        while (coverage instanceof Calculator2D) {
-            coverage = ((Calculator2D) coverage).source;
+        while (coverage instanceof Interpolator2D) {
+            coverage = ((Interpolator2D) coverage).source;
         }
         if (interpolations.length==0 || (interpolations[0] instanceof InterpolationNearest)) {
             return coverage;
@@ -201,6 +213,7 @@ public final class Interpolator2D extends Calculator2D {
 	                             BorderExtender  be)
 	{
 	    super(null, coverage);
+	    this.source = coverage;
 	    this.interpolation = interpolations[index];
 	    //border extender
 	    if(be== null){
@@ -250,31 +263,6 @@ public final class Interpolator2D extends Calculator2D {
 	
 	    bounds = new Rectangle(0, 0, interpolation.getWidth(), interpolation.getHeight());
 	}
-
-	/**
-     * Invoked by <code>{@linkplain #view view}(type)</code> when the {@linkplain ViewType#PACKED
-     * packed}, {@linkplain ViewType#GEOPHYSICS geophysics} or {@linkplain ViewType#PHOTOGRAPHIC
-     * photographic} view of this grid coverage needs to be created. This method applies to the
-     * new grid coverage the same {@linkplain #getInterpolations interpolations} than this grid
-     * coverage.
-     *
-     * @param  view A view derived from the {@linkplain #source source} coverage.
-     * @return The grid coverage to be returned by {@link #view view}.
-     *
-     * @since 2.5
-     */
-    @Override
-    protected GridCoverage2D specialize(final GridCoverage2D view) {
-        return create(view, getInterpolations());
-    }
-
-    /**
-     * Returns the class of the view returned by {@link #specialize}.
-     */
-    @Override
-    Class<Interpolator2D> getViewClass() {
-        return Interpolator2D.class;
-    }
 
     /**
      * Returns interpolations. The first array's element is the interpolation for

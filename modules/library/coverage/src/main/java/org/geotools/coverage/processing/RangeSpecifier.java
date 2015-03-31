@@ -32,11 +32,7 @@ import org.geotools.resources.Classes;
 /**
  * Argument type for {@link DefaultProcessor} operations for specifying the range,
  * colors and units of a computation result. {@code RangeSpecifier} are used for tuning the
- * {@link org.geotools.coverage.Category} object to be constructed. For example the
- * {@code "GradientMagnitude"} operation will produces new
- * {@link org.geotools.coverage.grid.GridCoverage2D} with sample values
- * ranging from 0 to some maximal value which may be very different from the source
- * {@link org.geotools.coverage.grid.GridCoverage2D} range. By default, most
+ * {@link org.geotools.coverage.Category} object to be constructed. By default, most
  * {@linkplain OperationJAI operations} try to guess a raisonable range for output
  * values. This default behavior can be overridden with an explicit {@code RangeSpecifier}
  * argument.

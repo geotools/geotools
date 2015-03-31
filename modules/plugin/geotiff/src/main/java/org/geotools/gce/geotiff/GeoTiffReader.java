@@ -704,7 +704,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         if (!Double.isNaN(noData)){
             noDataCategory = new Category(Vocabulary
                     .formatInternational(VocabularyKeys.NODATA), new Color[] { new Color(0, 0, 0, 0) }, NumberRange
-                    .create(noData, noData), NumberRange
                     .create(noData, noData));
 
             properties.put("GC_NODATA", new Double(noData));
@@ -724,7 +723,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 if(colorInterpretation == ColorInterpretation.UNDEFINED || bandNames.contains(bandName)) {
                     bandName = "Band" + (i + 1);
                 } 
-                bands[i] = new GridSampleDimension(bandName,categories,null).geophysics(true);
+                bands[i] = new GridSampleDimension(bandName,categories,null);
         }
         // creating coverage
         if (raster2Model != null) {

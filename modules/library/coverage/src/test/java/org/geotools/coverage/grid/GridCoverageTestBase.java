@@ -119,7 +119,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
             new Category("No data",     null, 0),
             new Category("Land",        null, 1),
             new Category("Cloud",       null, 2),
-            new Category("Temperature", null, BEGIN_VALID, 256, SCALE, OFFSET)
+            new Category("Temperature", null, BEGIN_VALID, 256)
         }, CELSIUS);
         image  = new BufferedImage(120, 80, BufferedImage.TYPE_BYTE_INDEXED);
         raster = image.getRaster();
@@ -148,19 +148,11 @@ public class GridCoverageTestBase extends CoverageTestBase {
          */
         assertSame(coverage.getRenderedImage(), coverage.getRenderableImage(0,1).createDefaultRendering());
         assertSame(image.getTile(0,0), coverage.getRenderedImage().getTile(0,0));
-        GridCoverage2D geophysics = coverage.view(ViewType.GEOPHYSICS);
-        assertSame(coverage,        coverage.view(ViewType.PACKED));
-        assertSame(coverage,      geophysics.view(ViewType.PACKED));
-        assertSame(geophysics,    geophysics.view(ViewType.GEOPHYSICS));
-        assertFalse( coverage.equals(geophysics));
-        assertFalse( coverage.getSampleDimension(0).getSampleToGeophysics().isIdentity());
-        assertTrue(geophysics.getSampleDimension(0).getSampleToGeophysics().isIdentity());
         /*
          * Compares data.
          */
         final int bandN = 0; // Band to test.
         double[] bufferCov = null;
-        double[] bufferGeo = null;
         final double left  = bounds.getMinX() + (0.5*PIXEL_SIZE); // Includes translation to center
         final double upper = bounds.getMaxY() - (0.5*PIXEL_SIZE); // Includes translation to center
         final Point2D.Double point = new Point2D.Double();        // Will maps to pixel center.
@@ -170,15 +162,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
                 point.y = upper - PIXEL_SIZE*j;
                 double r = raster.getSampleDouble(i,j,bandN);
                 bufferCov =   coverage.evaluate(point, bufferCov);
-                bufferGeo = geophysics.evaluate(point, bufferGeo);
                 assertEquals(r, bufferCov[bandN], EPS);
-
-                // Compares transcoded samples.
-                if (r < BEGIN_VALID) {
-                    assertTrue(Double.isNaN(bufferGeo[bandN]));
-                } else {
-                    assertEquals(OFFSET + SCALE*r, bufferGeo[bandN], EPS);
-                }
             }
         }
         return coverage;
@@ -250,7 +234,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
                         new Category("Coast line", decode("#000000"), create(  0,   0)),
                         new Category("Cloud",      decode("#C3C3C3"), create(  1,   9)),
                         new Category("Unused",     decode("#822382"), create( 10,  29)),
-                        new Category("Sea Surface Temperature", null, create( 30, 219), 0.1, 10.0),
+                        new Category("Sea Surface Temperature", (Color)null, create( 30, 219)),
                         new Category("Unused",     decode("#A0505C"), create(220, 239)),
                         new Category("Land",       decode("#D2C8A0"), create(240, 254)),
                         new Category("No data",    decode("#FFFFFF"), create(255, 255)),
@@ -276,13 +260,10 @@ public class GridCoverageTestBase extends CoverageTestBase {
                 case 1: {
                     path = "CHL01195.png";
                     crs  = DefaultGeographicCRS.WGS84;
-                    final MathTransform1D sampleToGeophysics = (MathTransform1D)
-                            ConcatenatedTransform.create(LinearTransform1D.create(0.015, -1.985),
-                                                         ExponentialTransform1D.create(10, 1));
                     categories = new Category[] {
                         new Category("Land",    decode("#000000"), create(255, 255)),
                         new Category("No data", decode("#FFFFFF"), create(  0,   0)),
-                        new Category("Chl-a",   null,              create(  1, 254), sampleToGeophysics)
+                        new Category("Chl-a",   null,              create(  1, 254), true)
                     };
                     bounds = new Rectangle2D.Double(-7, 34, 19, 11);
                     bands = new GridSampleDimension[] {
@@ -390,21 +371,19 @@ public class GridCoverageTestBase extends CoverageTestBase {
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         final ObjectOutputStream out = new ObjectOutputStream(buffer);
         try {
-            out.writeObject(coverage.view(ViewType.PACKED));
-            out.writeObject(coverage.view(ViewType.GEOPHYSICS));
+            out.writeObject(coverage);
         } finally {
             out.close();
         }
         final ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));
         GridCoverage2D read;
         try {
-            read = (GridCoverage2D) in.readObject(); assertSame(read, read.view(ViewType.PACKED));
-            read = (GridCoverage2D) in.readObject(); assertSame(read, read.view(ViewType.GEOPHYSICS));
+            read = (GridCoverage2D) in.readObject(); 
         } finally {
             in.close();
         }
-        coverage = read.view(ViewType.PACKED);
         assertNotSame(read, coverage);
+        coverage = read;
         return coverage;
     }
 }

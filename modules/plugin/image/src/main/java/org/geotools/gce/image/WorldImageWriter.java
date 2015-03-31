@@ -330,14 +330,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
 					"A coverage must be provided in order for write to succeed!");
 		}
 
-		/**
-		 * Getting the non geophysics view of this grid coverage. the
-		 * geophysiscs view usually comes with an index color model for 3 bands,
-		 * since sometimes I get some problems with JAI encoders I select only
-		 * the first band, which by the way is the only band we use.
-		 */
-		RenderedImage image = (sourceCoverage).geophysics(false)
-				.getRenderedImage();
+		RenderedImage image = (sourceCoverage).getRenderedImage();
 		final ImageWorker worker = new ImageWorker(image);
 
 		// /////////////////////////////////////////////////////////////////////

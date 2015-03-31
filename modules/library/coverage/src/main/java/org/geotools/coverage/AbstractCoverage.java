@@ -922,6 +922,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             title = String.valueOf(getName());
         }
         // In the following line, the constructor display immediately the viewer.
+        // Consider adding preprocessing for float based sample models
         new Viewer(title, getRenderableImage(xAxis, yAxis).createDefaultRendering());
     }
 

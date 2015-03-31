@@ -20,7 +20,6 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 
 import javax.media.jai.Interpolation;
-import javax.media.jai.KernelJAI;
 import javax.media.jai.Warp;
 
 import org.geotools.coverage.processing.operation.Resample;
@@ -719,42 +718,6 @@ public class Operations {
                 "qsFilterArray",     qsFilter,
                 "Interpolation",     interpolation);
     }
-
-    /**
-     * Edge detector which computes the magnitude of the image gradient vector in two orthogonal
-     * directions. The default masks are the Sobel ones.
-     *
-     * @param source The source coverage.
-     * @throws CoverageProcessingException if the operation can't be applied.
-     *
-     * @see org.geotools.coverage.processing.operation.GradientMagnitude
-     */
-    public Coverage gradientMagnitude(final Coverage source)
-            throws CoverageProcessingException
-    {
-        return doOperation("GradientMagnitude", source);
-    }
-
-    /**
-     * Edge detector which computes the magnitude of the image gradient vector in two orthogonal
-     * directions.
-     *
-     * @param source The source coverage.
-     * @param mask1  The first mask.
-     * @param mask2  The second mask, orthogonal to the first one.
-     * @throws CoverageProcessingException if the operation can't be applied.
-     *
-     * @see org.geotools.coverage.processing.operation.GradientMagnitude
-     */
-    public Coverage gradientMagnitude(final Coverage source,
-                                      final KernelJAI mask1, final KernelJAI mask2)
-            throws CoverageProcessingException
-    {
-        return doOperation("GradientMagnitude", source, "mask1", mask1, "mask2", mask2);
-    }
-
-
-
 
     /////////////////////////////////////////////////////////////////////////////////
     ////////                                                                 ////////

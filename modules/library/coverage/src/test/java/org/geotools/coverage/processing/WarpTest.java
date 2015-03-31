@@ -16,9 +16,6 @@
  */
 package org.geotools.coverage.processing;
 
-import static org.geotools.coverage.grid.ViewType.GEOPHYSICS;
-import static org.geotools.coverage.grid.ViewType.PACKED;
-import static org.geotools.coverage.grid.ViewType.PHOTOGRAPHIC;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -59,8 +56,7 @@ public class WarpTest extends GridProcessingTestBase {
      */
     @Before
     public void setUp() {
-        Hints hints = new Hints(Hints.COVERAGE_PROCESSING_VIEW, PHOTOGRAPHIC);
-        processor = CoverageProcessor.getInstance(hints);
+        processor = CoverageProcessor.getInstance(null);
     }
 
     /**
@@ -81,59 +77,41 @@ public class WarpTest extends GridProcessingTestBase {
         //
         ///////////////////////////////////////////////////////////////////////
         Interpolation interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
-        warp(originallyIndexedCoverage      .view(PACKED), interp);
-        warp(indexedCoverage                .view(PACKED), interp);
-        warp(indexedCoverageWithTransparency.view(PACKED), interp);
+        warp(originallyIndexedCoverage      , interp);
+        warp(indexedCoverage                , interp);
+        warp(indexedCoverageWithTransparency, interp);
+
 
         ///////////////////////////////////////////////////////////////////////
         //
-        // Nearest neighbor interpolation and geophysics view.
-        //
-        ///////////////////////////////////////////////////////////////////////
-        warp(originallyIndexedCoverage      .view(GEOPHYSICS), interp);
-        warp(indexedCoverage                .view(GEOPHYSICS), interp);
-        warp(indexedCoverageWithTransparency.view(GEOPHYSICS), interp);
-
-        ///////////////////////////////////////////////////////////////////////
-        //
-        // Bilinear interpolation and non-geo view
+        // Bilinear interpolation 
         //
         ///////////////////////////////////////////////////////////////////////
         interp = Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
-        warp(originallyIndexedCoverage      .view(PACKED), interp);
-        warp(indexedCoverage                .view(PACKED), interp);
-//        warp(indexedCoverageWithTransparency.view(PACKED), interp);
+        warp(originallyIndexedCoverage      , interp);
+        warp(indexedCoverage                , interp);
 
         ///////////////////////////////////////////////////////////////////////
         //
-        // Bilinear interpolation and geo view
-        //
-        ///////////////////////////////////////////////////////////////////////
-        warp(originallyIndexedCoverage      .view(GEOPHYSICS), interp);
-        warp(indexedCoverage                .view(GEOPHYSICS), interp);
-//        warp(indexedCoverageWithTransparency.view(GEOPHYSICS), interp);
-
-        ///////////////////////////////////////////////////////////////////////
-        //
-        // Bilinear interpolation and non-geo view for a float coverage
+        // Bilinear interpolation  for a float coverage
         //
         ///////////////////////////////////////////////////////////////////////
         // on this one the subsample average should NOT go back to the
         // geophysiscs view before being applied
-        warp(floatCoverage.view(PACKED), interp);
+        warp(floatCoverage, interp);
 
         ///////////////////////////////////////////////////////////////////////
         //
-        // Nearest neighbor  interpolation and non-geo view for a float coverage
+        // Nearest neighbor  interpolation  for a float coverage
         //
         ///////////////////////////////////////////////////////////////////////
         // on this one the subsample average should NOT go back to the
         // geophysiscs view before being applied
         interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
-        warp(floatCoverage.view(PACKED), interp);
+        warp(floatCoverage, interp);
 
         // Play with a rotated coverage
-        warp(rotate(floatCoverage.view(GEOPHYSICS), Math.PI/4), null);
+        warp(rotate(floatCoverage, Math.PI/4), null);
     }
 
     /**

@@ -9,14 +9,13 @@
  */
 package org.opengis.coverage;
 
-import javax.measure.unit.Unit;
-import org.opengis.util.InternationalString;
-import org.opengis.referencing.operation.MathTransform1D;
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.UML;
+import static org.opengis.annotation.Obligation.MANDATORY;
+import static org.opengis.annotation.Specification.OGC_01004;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import javax.measure.unit.Unit;
+
+import org.opengis.annotation.UML;
+import org.opengis.util.InternationalString;
 
 
 /**
@@ -191,22 +190,4 @@ public interface SampleDimension {
     @UML(identifier="scale", obligation=MANDATORY, specification=OGC_01004)
     double getScale();
 
-    /**
-     * The transform which is applied to grid values for this sample dimension.
-     * This transform is often defined as
-     * <var>y</var> = {@linkplain #getOffset offset} + {@link #getScale scale}&times;<var>x</var> where
-     * <var>x</var> is the grid value and <var>y</var> is the geophysics value.
-     * However, this transform may also defines more complex relationship, for
-     * example a logarithmic one. In order words, this transform is a generalization of
-     * {@link #getScale}, {@link #getOffset} and {@link #getNoDataValues} methods.
-     *
-     * @return The transform from sample to geophysics values, or {@code null} if
-     *         it doesn't apply.
-     *
-     * @see #getScale
-     * @see #getOffset
-     * @see #getNoDataValues
-     */
-    @Extension
-    MathTransform1D getSampleToGeophysics();
 }

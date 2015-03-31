@@ -269,7 +269,7 @@ class RasterLayerResponse {
             }  else {
                 bandName = colorInterpretation.name();
             }
-            bands[i] = new GridSampleDimension(bandName).geophysics(true);
+            bands[i] = new GridSampleDimension(bandName);
         }
 
         // creating coverage

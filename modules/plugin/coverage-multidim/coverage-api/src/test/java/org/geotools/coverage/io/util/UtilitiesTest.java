@@ -266,15 +266,12 @@ public class UtilitiesTest extends Assert {
         
         GeneralEnvelope coverageEnvelope2D = new GeneralEnvelope(gg2D.getEnvelope());
         GridSampleDimension[] sampleDimensions = new GridSampleDimension[]{new GridSampleDimension("testDim")};
-        boolean getGeophysics = false;
         // Creation of the Coverage
         GridCoverage2D coverage1 = (GridCoverage2D) Utilities.createCoverageFromImage(coverageFactory , coverageName , imageIndex, image ,
-                raster2Model , spatialReferenceSystem2D, null, sampleDimensions,
-                getGeophysics);
+                raster2Model , spatialReferenceSystem2D, null, sampleDimensions);
         
         GridCoverage2D coverage2 = (GridCoverage2D) Utilities.createCoverageFromImage(coverageFactory , coverageName , imageIndex, image ,
-                null , null, coverageEnvelope2D, sampleDimensions,
-                getGeophysics);
+                null , null, coverageEnvelope2D, sampleDimensions);
         
         // Ensure the two coverages have the same envelope and raster dimensions
         assertTrue(coverage1.getEnvelope2D().boundsEquals(coverage2.getEnvelope2D(), 0, 1, 0.01d));

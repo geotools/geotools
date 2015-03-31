@@ -30,7 +30,7 @@ import java.awt.image.RenderedImage;
 import javax.media.jai.PlanarImage;
 
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.ViewType;
+
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -92,7 +92,7 @@ public final class CropTest extends GridProcessingTestBase {
         /*
          * Get the source coverage and build the cropped envelope.
          */
-        final GridCoverage2D source = coverage.view(ViewType.NATIVE);
+        final GridCoverage2D source = coverage;
         final Envelope oldEnvelope = source.getEnvelope();
         final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
                 oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
@@ -140,7 +140,7 @@ public final class CropTest extends GridProcessingTestBase {
         /*
          * Get the source coverage and build the cropped envelope.
          */
-        final GridCoverage2D source = coverage.view(ViewType.NATIVE);
+        final GridCoverage2D source = coverage;
         final Envelope oldEnvelope = source.getEnvelope();
         final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
                 oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
@@ -218,7 +218,7 @@ public final class CropTest extends GridProcessingTestBase {
         final MathTransform tr = ProjectiveTransform.create(gridToCRS);
         CoordinateReferenceSystem crs = source.getCoordinateReferenceSystem();
         crs = new DefaultDerivedCRS("Rotated CRS", crs, tr, crs.getCoordinateSystem());
-        final GridCoverage2D rotated = project(source, crs, null, null, true);
+        final GridCoverage2D rotated = project(source, crs, null, null);
         /*
          * Preparing the crop. We want to get a rectangle that is locate at the
          * center of this coverage envelope that is large 1/4 f the original
@@ -278,7 +278,7 @@ public final class CropTest extends GridProcessingTestBase {
         /*
          * Get the source coverage and build the cropped envelope.
          */
-        final GridCoverage2D source = coverage.view(ViewType.NATIVE);
+        final GridCoverage2D source = coverage;
         final Envelope oldEnvelope = source.getEnvelope();
         final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
                 oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
@@ -407,7 +407,7 @@ public final class CropTest extends GridProcessingTestBase {
         /*
          * Get the source coverage and build the cropped envelope.
          */
-        final GridCoverage2D source = coverage.view(ViewType.NATIVE);
+        final GridCoverage2D source = coverage;
         final Envelope oldEnvelope = source.getEnvelope();
         final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
                 oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
@@ -509,7 +509,7 @@ public final class CropTest extends GridProcessingTestBase {
         /*
          * Get the source coverage and build the cropped envelope.
          */
-        final GridCoverage2D source = coverage.view(ViewType.NATIVE);
+        final GridCoverage2D source = coverage;
         final Envelope oldEnvelope = source.getEnvelope();
         final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
                 oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
@@ -574,7 +574,7 @@ public final class CropTest extends GridProcessingTestBase {
         /*
          * Get the source coverage and build the cropped envelope.
          */
-        final GridCoverage2D source = coverage.view(ViewType.NATIVE);
+        final GridCoverage2D source = coverage;
         final Envelope oldEnvelope = source.getEnvelope();
         final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
                 oldEnvelope.getMinimum(0),
@@ -625,7 +625,7 @@ public final class CropTest extends GridProcessingTestBase {
         /*
          * Get the source coverage and build the cropped envelope.
          */
-        final GridCoverage2D source = coverage.view(ViewType.NATIVE);
+        final GridCoverage2D source = coverage;
 
         ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
         param.parameter("Source").setValue(source);

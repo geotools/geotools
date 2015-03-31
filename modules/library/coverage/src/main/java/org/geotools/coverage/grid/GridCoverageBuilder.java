@@ -566,8 +566,7 @@ public class GridCoverageBuilder {
                     categories[i++] = new Category(entry.getValue(), null, sample);
                 }
                 range = NumberRange.create(lower, true, upper, false);
-                categories[i] = new Category(name, null, range, (transform != null) ?
-                                             transform : LinearTransform1D.IDENTITY);
+                categories[i] = new Category(name, null, range, true);
                 sampleDimension = new GridSampleDimension(name, categories, units);
             }
             return sampleDimension;

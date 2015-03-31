@@ -333,7 +333,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
                 if (colorInterpretation == null) {
                     throw new IOException("Unrecognized sample dimension type");
                 }
-                bands[i] = new GridSampleDimension(colorInterpretation.name()).geophysics(true);
+                bands[i] = new GridSampleDimension(colorInterpretation.name());
             }
         }
 

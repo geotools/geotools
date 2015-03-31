@@ -24,7 +24,6 @@ import java.io.IOException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.grid.io.AbstractGridCoverageWriter;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.gce.grassraster.core.GrassBinaryRasterWriteHandler;
@@ -98,8 +97,7 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
 
             GrassBinaryImageWriterSpi writerSpi = new GrassBinaryImageWriterSpi();
             GrassBinaryImageWriter writer = new GrassBinaryImageWriter(writerSpi, monitor);
-            RenderedImage renderedImage = gridCoverage2D.view(ViewType.GEOPHYSICS)
-                    .getRenderedImage();
+            RenderedImage renderedImage = gridCoverage2D.getRenderedImage();
             writer.setOutput(output, region);
             writer.write(renderedImage);
             writer.dispose();
@@ -141,7 +139,7 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
 
         GrassBinaryImageWriterSpi writerSpi = new GrassBinaryImageWriterSpi();
         GrassBinaryImageWriter writer = new GrassBinaryImageWriter(writerSpi, monitor);
-        RenderedImage renderedImage = gridCoverage2D.view(ViewType.GEOPHYSICS).getRenderedImage();
+        RenderedImage renderedImage = gridCoverage2D.getRenderedImage();
         writer.setOutput(output, writeRegion);
         writer.write(renderedImage);
         writer.dispose();

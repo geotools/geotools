@@ -83,7 +83,7 @@ public final class FloatRasterTest extends GridCoverageTestBase {
         gc = factory.create("My colored coverage", raster, envelope,
                             null, null, null, new Color[][] {colors}, null);
         if (SHOW) {
-            ((GridCoverage2D) gc).view(ViewType.RENDERED).show();
+            ((GridCoverage2D) gc).show();
         }
     }
 

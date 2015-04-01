@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -999,7 +999,7 @@ public final class GridCoverageRenderer {
         if (cropped == null) {
             return null;
         }
-
+        
         return cropped.getRenderedImage();
 
     }
@@ -1172,6 +1172,8 @@ public final class GridCoverageRenderer {
             LOGGER.fine(new StringBuilder("Drawing reader ").append(gridCoverageReader.toString())
                     .toString());
 
+        setupInterpolationHints(interpolation);
+        
         // Build the final image and the transformation
         RenderedImage finalImage = renderImage(gridCoverageReader, readParams, symbolizer,
                 interpolation, background);

@@ -1251,21 +1251,26 @@ public class Utils {
     }
 
     private static String getDefaultIndexName(final String locationPath) {
-        if(locationPath == null) {
+        if (locationPath == null) {
             return null;
         }
         File file = new File(locationPath);
-        if(file.isDirectory()) {
-            File indexer = new File(file, "indexer.properties");
-            if(indexer.exists()) {
+        if (file.isDirectory()) {
+            File indexer = new File(file, INDEXER_PROPERTIES);
+            if (indexer.exists()) {
                 URL indexerUrl = DataUtilities.fileToURL(indexer);
                 Properties config = Utils.loadPropertiesFromURL(indexerUrl);
-                if(config != null && config.get(Utils.Prop.NAME) != null) {
+                if (config != null && config.get(Utils.Prop.NAME) != null) {
                     return (String) config.get(Utils.Prop.NAME);
-                } 
+                }
+            }
+            indexer = new File(file, INDEXER_XML);
+            String name = IndexerUtils.getParameter(Utils.Prop.NAME, indexer);
+            if (name != null) {
+                return name;
             }
         }
-        
+
         return FilenameUtils.getName(locationPath);
     }
     
@@ -1320,7 +1325,30 @@ public class Utils {
         if (Utils.checkFileReadable(mosaicFile)) {
             return true;
         }
-        
+
+        // Fallback on empty mosaic check on default indexers
+        File indexFile = new File(locationPath, INDEXER_XML);
+        if (Utils.checkFileReadable(indexFile)) {
+            String canBeEmpty = IndexerUtils.getParameter(Prop.CAN_BE_EMPTY, indexFile);
+            if (canBeEmpty != null) {
+                if (Boolean.parseBoolean(canBeEmpty)) {
+                    return true;
+                }
+            }
+        }
+        indexFile = new File(locationPath, INDEXER_PROPERTIES);
+        if (Utils.checkFileReadable(indexFile)) {
+            URL url = DataUtilities.fileToURL(indexFile);
+            final Properties properties = loadPropertiesFromURL(url);
+            if (properties != null) {
+                String canBeEmpty = properties.getProperty(Prop.CAN_BE_EMPTY, null);
+                if (canBeEmpty != null) {
+                    if (Boolean.parseBoolean(canBeEmpty)) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 

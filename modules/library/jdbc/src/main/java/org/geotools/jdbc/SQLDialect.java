@@ -1355,4 +1355,11 @@ public abstract class SQLDialect {
     public void handleSelectHints(StringBuffer sql, SimpleFeatureType featureType, Query query) {
         // nothing to do
     }
+    
+    /**
+     * @return Table types filtered from jdbc {@link DatabaseMetaData}
+     */
+    public String[] getDesiredTablesType() {
+        return new String[]{"TABLE", "VIEW", "MATERIALIZED VIEW", "SYNONYM"};
+    }
 }

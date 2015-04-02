@@ -6,9 +6,10 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.bind.JAXBException;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.Utils;
-import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors.Collector;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages;
@@ -275,6 +276,31 @@ public class IndexerUtils {
         return getParam(params, parameterName);
     }
 
+    /**
+     * Return the parameter string value of the specified parameter name from the indexer
+     * defined in the specified file (if exists).
+     * @param parameterName
+     * @param indexerFile
+     * @return
+     */
+    public static String getParameter(String parameterName, File indexerFile) {
+        if (indexerFile != null && indexerFile.exists()) {
+            try {
+                Indexer indexerInstance = (Indexer) Utils.unmarshal(indexerFile);
+                if (indexerInstance != null) {
+                    String value = IndexerUtils.getParameter(parameterName, indexerInstance);
+                    if (value != null) {
+                        return value;
+                    }
+                }
+            } catch (JAXBException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return null;
+    }
+    
+    
     /**
      * Parse additional domains 
      * @param attributes

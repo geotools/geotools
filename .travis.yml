@@ -8,7 +8,7 @@ jdk:
   - oraclejdk7
   - openjdk7
 script:
-  - mvn clean test -Dall -T2 -Djava.awt.headless=true -fae -B
+  - mvn -B -T2 -fae -Djava.awt.headless=true -Dall clean install
 notifications:
   email: false
   on_failure: never

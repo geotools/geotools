@@ -29,6 +29,7 @@ import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
@@ -218,6 +219,7 @@ public class DuplicatorStyleVisitorTest extends TestCase {
         fts.addRule(rule1);
         fts.addRule(rule2);
 
+        
         fts.accept( visitor );
         FeatureTypeStyle clone = (FeatureTypeStyle) visitor.getCopy();
         //assertClone(fts, clone);
@@ -231,6 +233,13 @@ public class DuplicatorStyleVisitorTest extends TestCase {
         notEq.setName("fts-not-equal");
         notEq.addRule(rule1);
         assertEqualsContract(clone, notEq, fts);
+
+        fts.setTransformation(ff.literal("transformation"));
+        fts.setOnlineResource(new OnLineResourceImpl());
+        
+        fts.accept( visitor );
+        clone = (FeatureTypeStyle) visitor.getCopy();
+        assertEqualsContract( fts, clone );
     }
 
     public void testRule() throws Exception {

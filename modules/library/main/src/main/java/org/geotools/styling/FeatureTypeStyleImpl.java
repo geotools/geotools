@@ -267,6 +267,13 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         clone.semanticTypeIdentifiers().clear();
         clone.semanticTypeIdentifiers().addAll(semantics);
         
+        // copy FeatureTypeStyleImpl specific properties
+        if(clone instanceof FeatureTypeStyleImpl) {
+            FeatureTypeStyleImpl ftsi = (FeatureTypeStyleImpl)clone;
+            ftsi.setTransformation(transformation);
+            ftsi.setOnlineResource(online);
+        }
+        
         return clone;
     }
 
@@ -302,6 +309,15 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         if (description != null) {
             result = (PRIME * result) + description.hashCode();
         }
+        
+        if(transformation != null) {
+            result = PRIME * result + transformation.hashCode();
+        }
+        
+        if(online != null) {
+            result = PRIME * result + online.hashCode();
+        }
+
 
         return result;
     }
@@ -331,7 +347,9 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
             && Utilities.equals(description, other.description)
             && Utilities.equals(rules, other.rules)
             && Utilities.equals(featureTypeNames, other.featureTypeNames)
-            && Utilities.equals(semantics, other.semantics);
+                    && Utilities.equals(semantics, other.semantics)
+                    && Utilities.equals(getTransformation(), other.getTransformation())
+                    && Utilities.equals(getOnlineResource(), other.getOnlineResource());
         }
 
         return false;

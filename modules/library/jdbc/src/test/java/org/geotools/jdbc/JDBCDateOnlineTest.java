@@ -35,44 +35,57 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
         FeatureSource fs = dataStore.getFeatureSource( tname("dates") );
         
         FilterFactory ff = dataStore.getFilterFactory();
-        
-        DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
-        df.setTimeZone( TimeZone.getTimeZone("PST"));
-        
-        //less than
-        Filter f = ff.lessOrEqual( ff.property( aname("d") ), ff.literal( df.parse("2009-28-06")
-         ) );
-        assertEquals( 2, fs.getCount( new DefaultQuery(tname("dates"),f ) ) );
-        
-        f = ff.lessOrEqual( ff.property( aname("d") ),ff.literal( df.parse("2009-28-06") ) );
-        assertEquals( 2, fs.getCount( new DefaultQuery(tname("dates"),f ) ) );
-    }
     
+        DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
+    
+        TimeZone[] zones = { TimeZone.getTimeZone("Etc/GMT+12"),
+                TimeZone.getTimeZone("PST"), TimeZone.getTimeZone("EST"),
+                TimeZone.getTimeZone("GMT"), TimeZone.getTimeZone("CET"),
+                TimeZone.getTimeZone("Etc/GMT-12"),
+                TimeZone.getTimeZone("Etc/GMT-14") };
+        for (TimeZone zone : zones) {
+            System.out.println(zone.getDisplayName());
+            df.setTimeZone(zone);
+            TimeZone.setDefault(zone);
+            // less than
+            Filter f = ff.lessOrEqual(ff.property(aname("d")),
+                    ff.literal(df.parse("2009-28-06")));
+            System.out.println(f);
+            assertEquals(2, fs.getCount(new DefaultQuery(tname("dates"), f)));
+    
+            f = ff.lessOrEqual(ff.property(aname("d")),
+                    ff.literal(df.parse("2009-28-06")));
+            assertEquals(2, fs.getCount(new DefaultQuery(tname("dates"), f)));
+        }
+    }
+
     public void testFilterByTimeStamp() throws Exception {
-        FeatureSource fs = dataStore.getFeatureSource( tname("dates") );
-        
+        FeatureSource fs = dataStore.getFeatureSource(tname("dates"));
+    
         FilterFactory ff = dataStore.getFilterFactory();
-        
-        //equal to
-        Filter f = ff.equals( ff.property( aname("dt") ), ff.literal( "2009-06-28 15:12:41" ) );
-        assertEquals( 1, fs.getCount( new DefaultQuery(tname("dates"),f ) ) );
-        
-        f = ff.equals( ff.property( aname("dt") ), 
-                ff.literal( new SimpleDateFormat("HH:mm:ss,dd-yyyy-MM").parse("15:12:41,28-2009-06") ) );
-        assertEquals( 1, fs.getCount( new DefaultQuery(tname("dates"),f ) ) );
+    
+        // equal to
+        Filter f = ff.equals(ff.property(aname("dt")),
+                ff.literal("2009-06-28 15:12:41"));
+        assertEquals(1, fs.getCount(new DefaultQuery(tname("dates"), f)));
+    
+        f = ff.equals(ff.property(aname("dt")), ff.literal(new SimpleDateFormat(
+                "HH:mm:ss,dd-yyyy-MM").parse("15:12:41,28-2009-06")));
+        assertEquals(1, fs.getCount(new DefaultQuery(tname("dates"), f)));
     }
     
     public void testFilterByTime() throws Exception {
-        FeatureSource fs = dataStore.getFeatureSource( tname("dates") );
-        
+        FeatureSource fs = dataStore.getFeatureSource(tname("dates"));
+    
         FilterFactory ff = dataStore.getFilterFactory();
-        
+    
         // greather than or equal to
-        Filter f = ff.greaterOrEqual( ff.property( aname("t") ), ff.literal( "13:10:12" ) );
-        assertEquals( 3, fs.getCount( new DefaultQuery(tname("dates"),f ) ) );
-        
-        f = ff.greaterOrEqual( ff.property( aname("t") ), 
-                ff.literal( new SimpleDateFormat("ss:HH:mm").parse("12:13:10") ) );
-        assertEquals( 3, fs.getCount( new DefaultQuery(tname("dates"),f ) ) );
+        Filter f = ff.greaterOrEqual(ff.property(aname("t")),
+                ff.literal("13:10:12"));
+        assertEquals(3, fs.getCount(new DefaultQuery(tname("dates"), f)));
+    
+        f = ff.greaterOrEqual(ff.property(aname("t")),
+                ff.literal(new SimpleDateFormat("ss:HH:mm").parse("12:13:10")));
+        assertEquals(3, fs.getCount(new DefaultQuery(tname("dates"), f)));
     }
 }

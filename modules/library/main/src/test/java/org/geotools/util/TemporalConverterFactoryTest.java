@@ -18,11 +18,12 @@ package org.geotools.util;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-
 import java.util.TimeZone;
+
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -291,5 +292,29 @@ public class TemporalConverterFactoryTest extends TestCase {
 
         assertEquals(TimeZone.getDefault().getID(), converter.convert(TimeZone.getDefault(), String.class));
         assertNull(converter.convert(null,String.class));
+    }
+    
+    public void testDatetoSQLDate() throws Exception {
+        Converter converter = factory.createConverter(Date.class,
+                java.sql.Date.class, null);
+        assertNotNull(converter);
+        TimeZone[] zones = { TimeZone.getTimeZone("Etc/GMT+12"),
+                TimeZone.getTimeZone("PST"), TimeZone.getTimeZone("EST"),
+                TimeZone.getTimeZone("GMT"), TimeZone.getTimeZone("CET"),
+                TimeZone.getTimeZone("Etc/GMT-12"),
+                TimeZone.getTimeZone("Etc/GMT-14") };
+    
+        for (TimeZone zone : zones) {
+            System.out.println(zone.getDisplayName());
+            TimeZone.setDefault(zone);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-dd-MM");
+            simpleDateFormat.setTimeZone(zone);
+            Date date = simpleDateFormat.parse("2009-28-06");
+    
+            java.sql.Date output = (java.sql.Date) converter.convert(date,
+                    java.sql.Date.class);
+            System.out.println(output.toGMTString());
+            assertEquals("28 Jun 2009 00:00:00 GMT", output.toGMTString());
+        }
     }
 }

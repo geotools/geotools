@@ -23,6 +23,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -66,9 +67,17 @@ public class InvertAxisFilterVisitor extends DuplicatingFilterVisitor {
             } else if (bboxLiteral.getValue() instanceof Geometry) {
                 Geometry geom = (Geometry) bboxLiteral.getValue();
                 Envelope geomEnvelope = geom.getEnvelopeInternal();
+                CoordinateReferenceSystem crs = null;
+                if (geom.getUserData() instanceof CoordinateReferenceSystem) {
+                    crs = (CoordinateReferenceSystem) geom.getUserData();
+                } else if (filter.getSRS() != null) {
+                    try {
+                        crs = CRS.decode(filter.getSRS());
+                    } catch (FactoryException e) {}
+                }
                 return ff.bbox(filter.getExpression1(), new ReferencedEnvelope(
                         geomEnvelope.getMinY(), geomEnvelope.getMaxY(),
-                        geomEnvelope.getMinX(), geomEnvelope.getMaxX(), null));
+                        geomEnvelope.getMinX(), geomEnvelope.getMaxX(), crs));
             }
         }
         return filter;

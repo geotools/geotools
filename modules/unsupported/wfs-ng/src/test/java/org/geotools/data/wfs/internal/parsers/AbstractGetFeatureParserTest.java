@@ -76,6 +76,12 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 @SuppressWarnings("nls")
 public abstract class AbstractGetFeatureParserTest {
+    
+    private boolean supportsCount = true;
+    
+    protected void setSupportsCount(boolean supportsCount) {
+        this.supportsCount = supportsCount;
+    }
 
     /**
      * Configuration object used to parse the sample schemas
@@ -228,8 +234,11 @@ public abstract class AbstractGetFeatureParserTest {
 
         GetFeatureParser parser = getParser(featureName, schemaLocation, featureType, data);
 
-        int nof = parser.getNumberOfFeatures();
-        assertEquals(expectedCount, nof);
+        if (supportsCount) {
+            int nof = parser.getNumberOfFeatures();
+            assertEquals(expectedCount, nof);
+        }
+        
         testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);
     }
 
@@ -306,8 +315,10 @@ public abstract class AbstractGetFeatureParserTest {
         GetFeatureParser parser = getParser(featureName, schemaLocation, featureType,
                 GEOS_STATES_11.DATA);
 
-        int nof = parser.getNumberOfFeatures();
-        assertEquals(expectedCount, nof);
+        if (supportsCount) {
+            int nof = parser.getNumberOfFeatures();
+            assertEquals(expectedCount, nof);
+        }
 
         testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);
     }
@@ -381,8 +392,10 @@ public abstract class AbstractGetFeatureParserTest {
         GetFeatureParser parser = getParser(featureName, schemaLocation, featureType,
                 GEOS_ROADS_11.DATA);
 
-        int nof = parser.getNumberOfFeatures();
-        assertEquals(expectedCount, nof);
+        if (supportsCount) {
+            int nof = parser.getNumberOfFeatures();
+            assertEquals(expectedCount, nof);
+        }
 
         testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);
     }
@@ -424,8 +437,10 @@ public abstract class AbstractGetFeatureParserTest {
         GetFeatureParser parser = getParser(featureName, schemaLocation, featureType,
                 GEOS_TASMANIA_CITIES_11.DATA);
 
-        int nof = parser.getNumberOfFeatures();
-        assertEquals(expectedCount, nof);
+        if (supportsCount) {
+            int nof = parser.getNumberOfFeatures();
+            assertEquals(expectedCount, nof);
+        }
 
         testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);
     }

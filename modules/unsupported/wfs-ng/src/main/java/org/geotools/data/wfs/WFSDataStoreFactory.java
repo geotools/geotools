@@ -376,7 +376,7 @@ public class WFSDataStoreFactory implements DataStoreFactorySpi {
     static {
         String key = "WFSDataStoreFactory:AXIS_ORDER";
         String title = "Axis Order";
-        String description = "Indicates axis order used by the remote WFS server in result coordinates. It applies only to WFS 1.1.0 servers. "
+        String description = "Indicates axis order used by the remote WFS server in result coordinates. It applies only to WFS 1.x.0 servers. "
                 + "Default is " + AXIS_ORDER_COMPLIANT;
         List<String> options = Arrays.asList(new String[] {
                 AXIS_ORDER_COMPLIANT,
@@ -391,7 +391,7 @@ public class WFSDataStoreFactory implements DataStoreFactorySpi {
     static {
         String key = "WFSDataStoreFactory:AXIS_ORDER_FILTER";
         String title = "Axis Order Filter";
-        String description = "Indicates axis order used by the remote WFS server for filters. It applies only to WFS 1.1.0 servers. "
+        String description = "Indicates axis order used by the remote WFS server for filters. It applies only to WFS 1.x.0 servers. "
                 + "Default is the same as AXIS_ORDER";
         List<String> options = Arrays.asList(new String[] {
                 AXIS_ORDER_COMPLIANT,

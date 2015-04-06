@@ -77,7 +77,7 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
     @Override
     public String getName() {
-        return eType.getName().getLocalPart();
+        return eType.getName().getPrefix() + "_" + eType.getName().getLocalPart();
     }
 
     @Override

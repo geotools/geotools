@@ -76,23 +76,23 @@ public class CubewerksOnlineTest {
             Loggers.info("Creating 1.0.0 datastore from ", url_100);
             try {
                 wfs100 = getDataStore(url_100, null);
+                assertEquals("1.0.0", wfs100.getInfo().getVersion());
             } catch (Throwable t) {
                 url_100 = null;
                 Loggers.info("Can't obtain 1.0.0 DataStore, 1.0.0 tests disabled: "
                         + t.getMessage());
-            }
-            assertEquals("1.0.0", wfs100.getInfo().getVersion());
+            }            
         }
         if (url_110 != null) {
             Loggers.info("Creating 1.1.0 datastore from ", url_110);
             try {
                 wfs110 = getDataStore(url_110, null);
+                assertEquals("1.1.0", wfs110.getInfo().getVersion());
             } catch (Exception t) {
                 url_110 = null;
                 Loggers.info("Can't obtain 1.1.0 DataStore, 1.1.0 tests disabled: "
                         + t.getMessage());
-            }
-            assertEquals("1.1.0", wfs110.getInfo().getVersion());
+            }            
         }
     }
 

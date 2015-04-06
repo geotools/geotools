@@ -16,6 +16,8 @@
  */
 package org.geotools.data.wfs.integration;
 
+import static org.geotools.data.wfs.WFSTestData.url;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
@@ -88,18 +90,6 @@ public class IntegrationTestWFSClient extends WFSClient {
         this.baseDirectory = url(baseDirectory);
     }
 
-    private static URL url(String resource) {
-
-        String absoluteResouce = "/org/geotools/data/wfs/impl/test-data/" + resource;
-
-        URL url = IntegrationTestWFSClient.class.getResource(absoluteResouce);
-
-        if(null == url){
-            throw new IllegalArgumentException("Resource not found: " + absoluteResouce);
-        }
-        return url;
-    }
-
     @Override
     protected Response internalIssueRequest(Request request) throws IOException {
         try {
@@ -133,7 +123,7 @@ public class IntegrationTestWFSClient extends WFSClient {
             IOException {
 
         QName typeName = request.getTypeName();
-
+        
         String resource = "DescribeFeatureType_" + typeName.getLocalPart() + ".xsd";
         URL contentUrl = new URL(baseDirectory, resource);
 
@@ -149,7 +139,7 @@ public class IntegrationTestWFSClient extends WFSClient {
     private Response mockGetFeature(GetFeatureRequest request) throws IOException {
 
         final QName typeName = request.getTypeName();
-        
+
         String resource = "GetFeature_" + typeName.getLocalPart() + ".xml";
         URL contentUrl = new URL(baseDirectory, resource);
 
@@ -188,14 +178,13 @@ public class IntegrationTestWFSClient extends WFSClient {
         }
 
         FeatureReader<SimpleFeatureType, SimpleFeature> allFeaturesReader = null;
-        if (originalFeatures.size() > 0) { 
+        if (originalFeatures.size() > 0) {
             allFeaturesReader = DataUtilities.reader(originalFeatures);
         }
 
         final DiffFeatureReader<SimpleFeatureType, SimpleFeature> serverFilteredReader;
         serverFilteredReader = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(
                 allFeaturesReader, diff, serverFiler);
-
         final GetFeatureParser filteredParser = new GetFeatureParser() {
 
             @Override
@@ -219,19 +208,22 @@ public class IntegrationTestWFSClient extends WFSClient {
 
                     FeatureReader<SimpleFeatureType, SimpleFeature> all = null;
                     try {
-                        if (originalFeatures.size() > 0) { 
+                        if (originalFeatures.size() > 0) {
                             all = DataUtilities.reader(originalFeatures);
                         }
                         final DiffFeatureReader<SimpleFeatureType, SimpleFeature> serverFiltered;
                         serverFiltered = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(
                                 all, diff);
-
-                        int count = 0;
-                        while (serverFiltered.hasNext()) {
-                            serverFiltered.next();
-                            count++;
+                        try {
+                            int count = 0;
+                            while (serverFiltered.hasNext()) {
+                                serverFiltered.next();
+                                count++;
+                            }
+                            return count;
+                        } finally {
+                            serverFiltered.close();
                         }
-                        return count;
                     } catch (Exception e) {
                         e.printStackTrace();
                         throw new RuntimeException(e);
@@ -247,7 +239,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
             @Override
             public void close() throws IOException {
-                //
+                serverFilteredReader.close();
             }
         };
 
@@ -257,8 +249,6 @@ public class IntegrationTestWFSClient extends WFSClient {
             throw new IOException(e);
         }
     }
-
-    //private AtomicInteger idseq = new AtomicInteger();
 
     private Response mockTransaction(TransactionRequest request) throws Exception {
 

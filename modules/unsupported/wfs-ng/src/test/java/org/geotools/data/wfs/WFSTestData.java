@@ -19,6 +19,7 @@ package org.geotools.data.wfs;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -28,11 +29,13 @@ import javax.xml.namespace.QName;
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.ows.SimpleHttpClient;
-import org.geotools.data.wfs.internal.GetCapabilitiesResponse;
+import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
+import org.geotools.data.wfs.internal.DescribeFeatureTypeResponse;
+import org.geotools.data.wfs.internal.GetFeatureRequest;
+import org.geotools.data.wfs.internal.GetFeatureResponse;
+import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
-import org.geotools.data.wfs.internal.WFSGetCapabilities;
-import org.geotools.data.wfs.internal.WFSStrategy;
+import org.geotools.ows.ServiceException;
 import org.geotools.test.TestData;
 
 /**
@@ -98,26 +101,26 @@ public class WFSTestData {
     }
 
     public static final TestDataType GEOS_ARCHSITES_11 = new TestDataType("GeoServer_2.0/1.1.0",
-            new QName("http://www.openplans.org/spearfish", "archsites"), "sf:archsites",
+            new QName("http://www.openplans.org/spearfish", "archsites"), "sf_archsites",
             "EPSG:26713");
 
     public static final TestDataType GEOS_POI_11 = new TestDataType("GeoServer_2.0/1.1.0",
-            new QName("http://www.census.gov", "poi"), "tiger:poi", "EPSG:4326");
+            new QName("http://www.census.gov", "poi"), "tiger_poi", "EPSG:4326");
 
     public static final TestDataType GEOS_POI_10 = new TestDataType("GeoServer_1.7.x/1.0.0",
-            new QName("http://www.census.gov", "poi"), "tiger:poi", "EPSG:4326");
+            new QName("http://www.census.gov", "poi"), "tiger_poi", "EPSG:4326");
 
     public static final TestDataType GEOS_ROADS_11 = new TestDataType("GeoServer_2.0/1.1.0",
-            new QName("http://www.openplans.org/spearfish", "roads"), "sf:roads", "EPSG:26713");
+            new QName("http://www.openplans.org/spearfish", "roads"), "sf_roads", "EPSG:26713");
 
     public static final TestDataType GEOS_ROADS_10 = new TestDataType("GeoServer_1.7.x/1.0.0",
-            new QName("http://www.openplans.org/spearfish", "roads"), "sf:roads", "EPSG:26713");
+            new QName("http://www.openplans.org/spearfish", "roads"), "sf_roads", "EPSG:26713");
 
     public static final TestDataType GEOS_STATES_11 = new TestDataType("GeoServer_2.0/1.1.0",
-            new QName("http://www.openplans.org/topp", "states"), "topp:states", "EPSG:4326");
+            new QName("http://www.openplans.org/topp", "states"), "topp_states", "EPSG:4326");
 
     public static final TestDataType GEOS_STATES_10 = new TestDataType("GeoServer_1.7.x/1.0.0",
-            new QName("http://www.openplans.org/topp", "states"), "topp:states", "EPSG:4326");
+            new QName("http://www.openplans.org/topp", "states"), "topp_states", "EPSG:4326");
 
     public static final TestDataType GEOS_TASMANIA_CITIES_11 = new TestDataType(
             "GeoServer_2.0/1.1.0", new QName("http://www.openplans.org/topp", "tasmania_cities"),
@@ -128,15 +131,16 @@ public class WFSTestData {
 
     public static final TestDataType CUBEWERX_GOVUNITCE = new TestDataType("CubeWerx_nsdi/1.1.0",
             new QName("http://www.fgdc.gov/framework/073004/gubs", "GovernmentalUnitCE"),
-            "gubs:GovernmentalUnitCE", "EPSG:4269");
+            "gubs_GovernmentalUnitCE", "EPSG:4269");
 
     public static final TestDataType CUBEWERX_ROADSEG = new TestDataType("CubeWerx_nsdi/1.1.0",
             new QName("http://www.fgdc.gov/framework/073004/transportation", "RoadSeg"),
-            "trans:RoadSeg", "EPSG:4269");
+            "trans_RoadSeg", "EPSG:4269");
 
     public static final TestDataType IONIC_STATISTICAL_UNIT = new TestDataType(
             "Ionic_unknown/1.1.0", new QName("http://www.fgdc.gov/fgdc/gubs", "StatisticalUnit"),
-            "gubs:StatisticalUnit", "EPSG:4269");
+            "gubs_StatisticalUnit", "EPSG:4269");
+   
 
     /**
      * Creates the test {@link #wfs} with a default connection factory that parses the capabilities
@@ -148,11 +152,28 @@ public class WFSTestData {
      * @param capabilitiesFileName
      *            the relative path under {@code test-data} for the file containing the
      *            WFS_Capabilities document.
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     * @throws ServiceException 
      */
-    public static <T extends WFSStrategy> T createTestProtocol(String capabilitiesFileName, T real)
-            throws Exception {
-        HTTPClient http = new SimpleHttpClient();
-        return createTestProtocol(capabilitiesFileName, http, real);
+    public static TestWFSClient createTestProtocol(String capabilitiesFileName) 
+            throws ServiceException, FileNotFoundException, IOException {
+        return createTestProtocol(capabilitiesFileName, new MockHTTPClient(null));
+    }
+
+    /**
+     * Creates the test {@link #wfs} with the provided connection factory that parses the
+     * capabilities object from the test xml file pointed out by {@code capabilitiesURL}
+     * <p>
+     * Tests methods call this one to set up a protocolHandler to test
+     * </p>
+     * 
+     * @param capabilitiesURL
+     * @throws IOException 
+     * @throws ServiceException 
+     */
+    public static TestWFSClient createTestProtocol(URL capabilitiesURL) throws ServiceException, IOException {
+        return new TestWFSClient(capabilitiesURL, new MockHTTPClient(null));
     }
 
     /**
@@ -165,23 +186,30 @@ public class WFSTestData {
      * @param capabilitiesFileName
      *            the relative path under {@code test-data} for the file containing the
      *            WFS_Capabilities document.
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     * @throws ServiceException 
      */
-    public static <T extends WFSStrategy> T createTestProtocol(String capabilitiesFileName,
-            HTTPClient http, T real) throws Exception {
-
-        InputStream stream = TestData.openStream(WFSTestData.class, capabilitiesFileName);
-        GetCapabilitiesResponse response = new GetCapabilitiesResponse(response(stream));
-        WFSGetCapabilities capabilities = response.getCapabilities();
-        real.setCapabilities(capabilities);
-        real.setConfig(new WFSConfig());
-        return real;
+    public static TestWFSClient createTestProtocol(String capabilitiesFileName, HTTPClient http) throws ServiceException, FileNotFoundException, IOException {
+        return createTestProtocol(TestData.url(WFSTestData.class, capabilitiesFileName), http);
+    }
+    
+    /**
+     * Creates the test {@link #wfs} with the provided connection factory that parses the
+     * capabilities object from the test xml file pointed out by {@code capabilitiesURL}
+     * <p>
+     * Tests methods call this one to set up a protocolHandler to test
+     * </p>
+     * 
+     * @param capabilitiesURL
+     * @throws IOException 
+     * @throws ServiceException 
+     */
+    public static TestWFSClient createTestProtocol(URL capabilitiesURL, HTTPClient http) throws ServiceException, IOException {
+        return new TestWFSClient(capabilitiesURL, http);
     }
 
-    private static HTTPResponse response(InputStream stream) throws IOException {
-        return new TestHttpResponse(null, null, stream);
-    }
-
-    public static class TestHTTPClient extends SimpleHttpClient {
+    public static class MockHTTPClient extends AbstractTestHTTPClient {
 
         private HTTPResponse mockResponse;
 
@@ -193,12 +221,15 @@ public class WFSTestData {
 
         public ByteArrayOutputStream postCallbackEncodedRequestBody;
 
-        public TestHTTPClient(HTTPResponse mockResponse) {
+        public MockHTTPClient(HTTPResponse mockResponse) {
             this.mockResponse = mockResponse;
         }
 
         @Override
         public HTTPResponse get(final URL baseUrl) throws IOException {
+            if (baseUrl.getProtocol().equals("file")) {
+                return new TestHttpResponse(baseUrl, "text/xml");
+            }
             this.targetUrl = baseUrl;
             return mockResponse;
         }
@@ -217,13 +248,120 @@ public class WFSTestData {
     }
 
     public static URL url(String resource) {
-
-        String absoluteResouce = "/org/geotools/data/wfs/impl/test-data/" + resource;
-
-        URL url = WFSTestData.class.getResource(absoluteResouce);
-
-        assertNotNull("resource not found: " + absoluteResouce, url);
+        URL url = WFSTestData.class.getResource("test-data/" + resource);
+        assertNotNull("resource not found: " + resource, url);
         return url;
+    }
+    
+    public static InputStream stream(String resource) {
+        InputStream stream = WFSTestData.class.getResourceAsStream("test-data/" + resource);
+        assertNotNull("resource not found: " + resource, stream);
+        return stream;
+    }
+    
+    protected static class MutableWFSConfig extends WFSConfig {
+        
+        String axisOrder = super.getAxisOrder();
+        String axisOrderFilter = super.getAxisOrder();
+        boolean useDefaultSrs = super.isUseDefaultSrs();
+        String outputFormatOverride = super.getOutputformatOverride();
+        
+        public void setAxisOrder(String axisOrder){
+            this.axisOrder = axisOrder;
+        }
+        
+        public void setAxisOrderFilter(String axisOrderFilter){
+            this.axisOrderFilter = axisOrderFilter;
+        }
+        
+        @Override
+        public String getAxisOrder() {
+            return axisOrder;
+        }
+
+        @Override
+        public String getAxisOrderFilter() {
+            return axisOrderFilter;
+        }
+
+        @Override
+        public boolean isUseDefaultSrs() {
+            return useDefaultSrs;
+        }
+
+        public void setUseDefaultSrs(boolean useDefaultSrs) {
+            this.useDefaultSrs = useDefaultSrs;
+        }
+
+        @Override
+        public String getOutputformatOverride() {
+            return outputFormatOverride;
+        }
+
+        public void setOutputformatOverride(String outputFormatOverride) {
+            this.outputFormatOverride = outputFormatOverride;
+        }   
+    }
+    
+    public static class TestWFSClient extends WFSClient {
+
+        private URL describeFeatureTypeUrlOverride;
+
+        private GetFeatureRequest request;
+        
+        public TestWFSClient(URL capabilitiesURL, HTTPClient http) throws IOException, ServiceException {
+            super(capabilitiesURL, http, new MutableWFSConfig());
+        }
+
+        /**
+         * Allows to set an overriding url for the {@link #getDescribeFeatureTypeURLGet(String)} operation, for test purposes so it is not actually
+         * needed to download the schema from the internet but from a resource file
+         * 
+         * @param url
+         */
+        public void setDescribeFeatureTypeURLOverride(URL url) {
+            this.describeFeatureTypeUrlOverride = url;
+        }
+        
+        public void setAxisOrderOverride(String axisOrder, String axisOrderFilter) {
+            ((MutableWFSConfig) config).setAxisOrder(axisOrder);
+            ((MutableWFSConfig) config).setAxisOrderFilter(axisOrderFilter);
+        }
+
+        public void setOutputformatOverride(String outputformatOverride) {
+            ((MutableWFSConfig) config).setOutputformatOverride(outputformatOverride);
+        }
+
+        public void setUseDefaultSrs(boolean useDefaultSrs) {
+            ((MutableWFSConfig) config).setUseDefaultSrs(useDefaultSrs);
+        }
+
+        @Override
+        public DescribeFeatureTypeResponse issueRequest(DescribeFeatureTypeRequest request) throws IOException {
+            if (describeFeatureTypeUrlOverride == null) {
+                return super.issueRequest(request);
+            }            
+            HTTPResponse response = new TestHttpResponse(request.getOutputFormat(), "UTF-8", describeFeatureTypeUrlOverride);
+            try {
+                return new DescribeFeatureTypeResponse(request, response);
+            } catch (ServiceException e) {
+                throw new IOException(e);
+            }
+        }
+
+        @Override
+        public GetFeatureResponse issueRequest(GetFeatureRequest request) throws IOException {
+            this.request = request;
+            return super.issueRequest(request);
+        }
+
+        /**
+         * @return the request
+         */
+        public GetFeatureRequest getRequest() {
+            return request;
+        }
+
     }
 
 }

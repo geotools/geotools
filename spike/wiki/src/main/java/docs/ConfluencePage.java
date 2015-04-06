@@ -102,15 +102,15 @@ public class ConfluencePage {
                 && !this.historicalVersions && !this.originalVersion) || (this.historicalVersions)));
     }
 
-    public void writeTextile(File location) {
-        String header = "h1. " + this.title + "\n\n";
+    public void writeHTML(File location) {
+        String header = "<h1>" + this.title + "</h1>\n\n";
 
         try {
-            String targetName = this.title.replaceAll("\\?", "")+ ".textile";
-            File targetFile = new File( location, targetName);
-            
+            String targetName = this.title.replaceAll("\\?", "")+ ".html";
+            File targetFile = new File(location, targetName);
             BufferedWriter f = new BufferedWriter(new FileWriter(targetFile));
-            f.write(header + this.bodyText);
+            f.write(header);
+            f.write(this.bodyText);
             f.close();
         } catch (IOException e) {
             System.out.println("Unable to write out '"+this.title+"': "+ e );
@@ -119,11 +119,22 @@ public class ConfluencePage {
 
     }
 
-    public void fixTextile() {
-
-        this.replaceNewLine("h[1-9]\\..*\\n\\S", "\n\n");
-        this.replaceNewLine("\\S\\nh[1-9]\\..*", "\n\n");
-        this.fixHtmlLinks();
+    public void fixHTML() {
+//        try {
+//            this.replaceNewLine("h[1-9]\\..*\\n\\S", "\n\n");
+//        } catch ( Throwable t){
+//            System.err.println( getTitle()+" head fix:"+ t);
+//        }
+//        try {
+//            this.replaceNewLine("\\S\\nh[1-9]\\..*", "\n\n");
+//        } catch ( Throwable t){
+//            System.err.println( getTitle()+" line fix:"+ t);
+//        }
+        try {
+            this.fixHtmlLinks();
+        } catch ( Throwable t){
+            System.err.println( getTitle()+" link fix:"+ t);
+        }
 
     }
 
@@ -140,9 +151,6 @@ public class ConfluencePage {
             while (matcher.find()) {
                 matcher.appendReplacement(replacedText,
                         matcher.group().replaceAll("\\n", replaceExp));
-                // System.out.println(headerMatcher.group() + "\n" + headerMatcher.start() + ":" +
-                // headerMatcher.end());
-                // found = true;
             }
             matcher.appendTail(replacedText);
             /*
@@ -157,12 +165,12 @@ public class ConfluencePage {
     }
 
     private void fixHtmlLinks() {
+        // boolean found = false;
+        /*
         Pattern pattern;
         Matcher matcher;
-        // boolean found = false;
-
         try {
-            pattern = Pattern.compile("\\[.*\\|http://.*\\]");
+            pattern = Pattern.compile("href=\"http://.*\\\"");
             matcher = pattern.matcher(this.bodyText);
 
             StringBuffer replacedText = new StringBuffer();
@@ -176,14 +184,15 @@ public class ConfluencePage {
                 // found = true;
             }
             matcher.appendTail(replacedText);
-            /*
-             * if(!found){ System.out.println("No match found."); } else {
-             * //System.out.println(replacedText.toString()); }
-             */
+            
+//          if(!found){ System.out.println("No match found."); } else {
+//          System.out.println(replacedText.toString()); }
+            
             this.bodyText = replacedText.toString();
         } catch (PatternSyntaxException e) {
             System.out.println(e);
         }
+        */
 
     }
 

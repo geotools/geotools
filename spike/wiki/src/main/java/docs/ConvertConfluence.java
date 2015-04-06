@@ -80,7 +80,7 @@ public class ConvertConfluence {
         }        
         ConfluenceDom myConfluenceDom = new ConfluenceDom( entitiesFile );
         
-        myConfluenceDom.writeCurrentPagesTextile( targetDirectory );
+        myConfluenceDom.writeCurrentPages( targetDirectory );
     }
 
 }

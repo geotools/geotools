@@ -59,13 +59,13 @@ public class ConfluenceDom {
         }
     }
 
-    public void writeCurrentPagesTextile(File location) {
+    public void writeCurrentPages(File location) {
         processXML();
         fixAllHeaders();
 
         for (ConfluencePage tempPage : pageList.values()) {
             if (tempPage.isCurrent()) {
-                tempPage.writeTextile(location);
+                tempPage.writeHTML(location);
 
                 // test for duplicate titles
                 /*
@@ -81,7 +81,7 @@ public class ConfluenceDom {
          * "--> " + pageTitle); }
          */
 
-        writeToc(location);
+        // writeToc(location);
     }
 
     private void processXML() {
@@ -91,7 +91,7 @@ public class ConfluenceDom {
 
     private void fixAllHeaders() {
         for (ConfluencePage tempPage : pageList.values()) {
-            tempPage.fixTextile();
+            tempPage.fixHTML();
         }
     }
 
@@ -199,50 +199,5 @@ public class ConfluenceDom {
         }
     }
 
-    private String getChildrenToc(String parent) {
-        String children = new String();
 
-        for (ConfluencePage tempPage : pageList.values()) {
-            if (tempPage.getParent().equalsIgnoreCase(parent) && tempPage.isCurrent()) {
-                children += "<topic label=\"" + tempPage.getTitle() + "\"  href=\""
-                        + this.htmlLocation + tempPage.getId() + ".html\">\n";
-                children += getChildrenToc(tempPage.getId());
-                children += "</topic>\n";
-            }
-        }
-
-        return children;
-    }
-
-    private String buildToc() {
-        String toc = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                + "<?NLS TYPE=\"org.eclipse.help.toc\"?>\n"
-                + "<toc label=\"Sample Table of Contents\">\n";
-
-        // loop through page list
-        for (ConfluencePage tempPage : pageList.values()) {
-            if (tempPage.getParent().isEmpty() && tempPage.isCurrent()
-                    && !tempPage.getTitle().startsWith(".")) {
-                toc += "<topic label=\"" + tempPage.getTitle() + "\"  href=\"" + this.htmlLocation
-                        + tempPage.getId() + ".html\">\n";
-                toc += getChildrenToc(tempPage.getId());
-                toc += "</topic>\n";
-            }
-        }
-
-        toc += "</toc>";
-
-        return toc;
-    }
-
-    private void writeToc(File location) {
-        try {
-            BufferedWriter f = new BufferedWriter(new FileWriter(location + "toc.xml"));
-            f.write(this.buildToc());
-            f.close();
-        } catch (IOException e) {
-            System.out.println("Unable to generate toc.xml:"+e);
-            e.printStackTrace();
-        }
-    }
 }

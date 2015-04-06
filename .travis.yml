@@ -12,7 +12,4 @@ script:
 notifications:
   email: false
   on_failure: never
-branches:
-  only:
-    - master
 env: GDAL_LIBRARY_NAME=disabled_see_geot-4733

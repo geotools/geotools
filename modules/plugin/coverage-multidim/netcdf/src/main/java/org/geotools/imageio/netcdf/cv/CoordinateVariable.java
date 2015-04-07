@@ -29,6 +29,7 @@ import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis1D;
+import ucar.nc2.dataset.CoordinateSystem;
 
 /**
  * @author Simone Giannecchini GeoSolutions SAS
@@ -36,6 +37,8 @@ import ucar.nc2.dataset.CoordinateAxis1D;
  * 
  */
 public abstract class CoordinateVariable<T> {
+
+    private static final double KM_TO_M = 1000d;
 
     private final static Logger LOGGER = Logging.getLogger(CoordinateVariable.class);
 
@@ -126,6 +129,9 @@ public abstract class CoordinateVariable<T> {
 
     protected final CoordinateAxis1D coordinateAxis;
 
+    private double conversionFactor = Double.NaN;
+
+    private boolean convertAxis = false;
     /**
      * @param binding
      * @param coordinateAxis
@@ -135,6 +141,14 @@ public abstract class CoordinateVariable<T> {
         Utilities.ensureNonNull("binding", binding);
         this.binding = binding;
         this.coordinateAxis = coordinateAxis;
+        this.conversionFactor = 1d;
+        AxisType axisType = coordinateAxis.getAxisType();
+        // Special management for projected coordinates with unit = km
+        if ((axisType == AxisType.GeoX || axisType == AxisType.GeoY) && 
+                coordinateAxis.getUnitsString().equalsIgnoreCase("km")) {
+            conversionFactor = KM_TO_M;
+            convertAxis = true;
+        }
     }
 
     public Class<T> getType() {
@@ -166,11 +180,11 @@ public abstract class CoordinateVariable<T> {
     }
 
     public double getIncrement() {
-        return coordinateAxis.getIncrement();
+        return convertAxis ? coordinateAxis.getIncrement() * conversionFactor : coordinateAxis.getIncrement();
     }
 
     public double getStart() {
-        return coordinateAxis.getStart();
+        return convertAxis ? coordinateAxis.getStart() * conversionFactor : coordinateAxis.getStart();
     }
 
     abstract public boolean isNumeric();

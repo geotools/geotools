@@ -28,6 +28,8 @@ package org.geotools.coverage.grid;
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
+ *
+ * @deprecated
  */
 public abstract class Calculator2D extends GridCoverage2D {
     /**

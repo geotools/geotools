@@ -1122,6 +1122,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @see #getOffset
      * @see #getNoDataValues
      * @see #rescale
+     *
+     * @deprecated
      */
     public MathTransform1D getSampleToGeophysics() {
         if (isGeophysics) {
@@ -1163,6 +1165,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *
      * @see Category#geophysics
      * @see org.geotools.coverage.grid.GridCoverage2D#view
+     *
+     * @deprecated
      */
     public GridSampleDimension geophysics(final boolean geo) {
         if (geo == isGeophysics) {
@@ -1334,6 +1338,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @see #getScale
      * @see #getOffset
      * @see Category#rescale
+     *
+     * @deprecated
      */
     public GridSampleDimension rescale(final double scale, final double offset) {
         final MathTransform1D sampleToGeophysics = Category.createLinearTransform(scale, offset);

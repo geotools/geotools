@@ -887,21 +887,21 @@ public final class MarchingSquaresVectorizer {
 
             switch (dataType) {
             case DataBuffer.TYPE_USHORT:
-                inputRI = worker.looukp(createLookupTableUShort(exclusionLuminanceRanges, dataType)).getRenderedImage();
+                inputRI = worker.lookup(createLookupTableUShort(exclusionLuminanceRanges, dataType)).getRenderedImage();
                 break;
             case DataBuffer.TYPE_SHORT:
                 scale = MAX_8BIT_VALUE / Short.MAX_VALUE;
                 offset = MAX_8BIT_VALUE * Short.MIN_VALUE / (Short.MIN_VALUE - Short.MAX_VALUE);
                 worker.rescale(new double[] { scale }, new double[] { offset });
                 imagesStack.push(worker.getRenderedImage());
-                inputRI = worker.looukp(createLookupTableByte(exclusionLuminanceRanges, dataType)).getRenderedImage();
+                inputRI = worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType)).getRenderedImage();
                 break;
             case DataBuffer.TYPE_INT:
                 scale = MAX_8BIT_VALUE / Integer.MAX_VALUE;
                 offset = MAX_8BIT_VALUE * Integer.MIN_VALUE / (Integer.MIN_VALUE - Integer.MAX_VALUE);
                 worker.rescale(new double[] { scale }, new double[] { offset });
                 imagesStack.push(worker.getRenderedImage());
-                inputRI = worker.looukp(createLookupTableByte(exclusionLuminanceRanges, dataType)).getRenderedImage();
+                inputRI = worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType)).getRenderedImage();
                 break;
             default:
                 throw new UnsupportedOperationException("Wrong data type:" + dataType);
@@ -910,7 +910,7 @@ public final class MarchingSquaresVectorizer {
 
             assert inputRI.getSampleModel().getDataType() == DataBuffer.TYPE_BYTE;
         } else {
-            inputRI = worker.looukp(createLookupTableByte(exclusionLuminanceRanges, dataType)).getRenderedImage();
+            inputRI = worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType)).getRenderedImage();
         }
         return inputRI;
     }

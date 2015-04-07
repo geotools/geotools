@@ -1209,7 +1209,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // Setting Background to 0
         w.setBackground(new double[] { 0 });
         // Appliyng lookup
-        w.looukp(table);
+        w.lookup(table);
         // Removing NoData and ROI and calculate the statistics on the whole image
         w.setNoData(null);
         w.setROI(null);

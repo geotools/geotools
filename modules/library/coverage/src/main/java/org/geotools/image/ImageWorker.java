@@ -4408,7 +4408,7 @@ public class ImageWorker {
     /**
      * Warps the underlying raster using the provided Warp object.
      */
-    public ImageWorker looukp(LookupTable table) {
+    public ImageWorker lookup(LookupTable table) {
         // ParameterBlock definition
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);

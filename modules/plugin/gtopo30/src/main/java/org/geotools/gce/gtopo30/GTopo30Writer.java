@@ -772,7 +772,7 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
                 LookupTable lut = it.geosolutions.jaiext.lookup.LookupTableFactory.create(table);
                 ImageWorker worker = new ImageWorker(image);
                 worker.setRenderingHints(hints);
-                worker.looukp(lut);
+                worker.lookup(lut);
                 image = worker.getRenderedImage();
             } catch (TransformException e) {
                 LOGGER.severe(e.getLocalizedMessage());

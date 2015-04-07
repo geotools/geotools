@@ -532,7 +532,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 					//do the actual lookup
 					LookupTable table = LookupTableFactory.create(lut, dataType);
 					inputWorker.setRenderingHints(hints);
-					inputWorker.looukp(table);
+					inputWorker.lookup(table);
 					return inputWorker.getRenderedImage();
 				}
 				
@@ -581,7 +581,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 					
 	                                //do the actual lookup
                                         LookupTable table = LookupTableFactory.create(lut, dataType);
-                                        inputWorker.looukp(table);
+                                        inputWorker.lookup(table);
                                         return inputWorker.getRenderedImage();
 				}
 				////
@@ -660,7 +660,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 						lut[i] = (byte) (0.5f + normalizationFactor * Math.log((i * correctionFactor / normalizationFactor+ 1.0)));
 	                                //do the actual lookup
                                         LookupTable table = LookupTableFactory.create(lut, dataType);
-                                        inputWorker.looukp(table);
+                                        inputWorker.lookup(table);
                                         return inputWorker.getRenderedImage();				
 				}
 				////
@@ -757,7 +757,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                                 //do the actual lookup
                                 LookupTable table = LookupTableFactory.create(cumulative, DataBuffer.TYPE_BYTE);
                                 inputWorker.setRenderingHints(hints);
-                                inputWorker.looukp(table);
+                                inputWorker.lookup(table);
                                 return inputWorker.getRenderedImage();
 			}
 		}
@@ -796,7 +796,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 
 				// apply the operation now
 				LookupTable table = LookupTableFactory.create(lut, dataType);
-                                worker.looukp(table);
+                                worker.lookup(table);
 			}
 			else
 			{

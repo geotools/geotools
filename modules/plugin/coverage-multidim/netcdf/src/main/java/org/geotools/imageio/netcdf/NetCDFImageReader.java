@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -37,6 +37,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,6 +56,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
+import org.geotools.coverage.io.range.FieldType;
+import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -68,9 +71,11 @@ import org.geotools.imageio.netcdf.cv.CoordinateVariable;
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities.CheckType;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
+import org.opengis.coverage.SampleDimension;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
@@ -688,8 +693,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         final Slice2DIndex slice2DIndex = getSlice2DIndex(imageIndex);
         final String variableName=slice2DIndex.getVariableName();
         final VariableAdapter wrapper=getCoverageDescriptor(new NameImpl(variableName));
-        
-    
+
         /*
          * Fetches the parameters that are not already processed by utility
          * methods like 'getDestination' or 'computeRegions' (invoked below).
@@ -777,9 +781,10 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
          */
         final SampleModel sampleModel = wrapper.getSampleModel().createCompatibleSampleModel(destWidth, destHeight);
         final ColorModel colorModel = ImageIOUtilities.createColorModel(sampleModel);
-    
+
         final WritableRaster raster = Raster.createWritableRaster(sampleModel, new Point(0, 0));
-        final BufferedImage image = new BufferedImage(colorModel, raster, colorModel.isAlphaPremultiplied(), null);
+        Hashtable<String, Object> properties = getNoDataProperties(wrapper);
+        final BufferedImage image = new BufferedImage(colorModel, raster, colorModel.isAlphaPremultiplied(), properties);
 
         CoordinateAxis axis = wrapper.variableDS.getCoordinateSystems().get(0).getLatAxis();
         boolean flipYAxis = false;
@@ -904,7 +909,30 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         processImageComplete();
         return image;
     }
-    
+
+    private Hashtable<String, Object> getNoDataProperties(VariableAdapter wrapper) {
+        RangeType range = wrapper.getRangeType();
+        if (range != null) {
+            Set<FieldType> fields = range.getFieldTypes();
+            if (fields != null && !fields.isEmpty()) {
+                FieldType field = fields.iterator().next();
+                if (field != null) {
+                    Set<SampleDimension> sampleDims = field.getSampleDimensions();
+                    if (sampleDims != null && !sampleDims.isEmpty()) {
+                        SampleDimension sampleDimension = sampleDims.iterator().next();
+                        double[] noData = sampleDimension.getNoDataValues();
+                        if (noData != null && noData.length > 0) {
+                            Hashtable<String, Object> table = new Hashtable<String, Object>();
+                            CoverageUtilities.setNoDataProperty(table, noData[0]);
+                            return table;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     protected static void flipVertically(final ImageReadParam param, final int srcHeight,
             final Rectangle srcRegion) {
         final int spaceLeft = srcRegion.y;

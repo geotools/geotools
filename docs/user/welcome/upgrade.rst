@@ -26,6 +26,21 @@ But first to upgrade - change your dependency to |release| (or an appropriate st
         ....
     </dependencies>
 
+GeoTools 14.x
+-------------
+From 14.x version, the `JAI-EXT Project <https://github.com/geosolutions-it/jai-ext>`_ has been integrated in GeoTools. This project provides a high scalable Java API for image processing with support for NoData and ROI. 
+This integration provides also the removal of the following classes, since they are now inside JAI-EXT:
+
+* **ColorIndexer** from *gt-coverage* module;
+* **GTCrop** from *gt-coverage* module;
+* **GenericPiecewise** from *gt-render* module;
+* **RasterClassifier** from *gt-render* module;
+* **ArtifactsFilter** from *gt-imagemosaic* module.
+
+Users may now decide to choose between JAI and JAI-EXT operations by simply using the **JAIExt** class containing utility methods for handling JAI/JAI-EXT registration.
+
+A more detailed tutorial on how to use JAI-EXT may be found at the following :ref:`JAI-EXT Tutorial Page<jaiext>`.
+
 GeoTools 13.0
 -------------
 As of GeoTools 13.0, the CoverageViewType classes have been removed. The AbstractDataStore class is also now deprecated. Extensive work has been done to bring in ContentDataStore as its replacement. There is a `ContentDataStore Tutorial <http://docs.geotools.org/latest/userguide/tutorial/datastore/index.html>`_ to help with migration from AbstractDataStore.

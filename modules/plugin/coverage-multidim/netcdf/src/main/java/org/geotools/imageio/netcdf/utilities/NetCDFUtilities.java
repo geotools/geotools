@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -43,8 +43,8 @@ import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-
 import ucar.ma2.DataType;
+import ucar.nc2.Attribute;
 import ucar.nc2.Dimension;
 import ucar.nc2.Group;
 import ucar.nc2.Variable;
@@ -79,6 +79,10 @@ public class NetCDFUtilities {
     public static final String EXTERNAL_DATA_DIR;
 
     private static final String NETCDF_DATA_DIR = "NETCDF_DATA_DIR";
+
+    private static final String FILL_VALUE = "_FillValue";
+
+    private static final String MISSING_VALUE = "missing_value";
 
     /** The LOGGER for this class. */
     private static final Logger LOGGER = Logger.getLogger(NetCDFUtilities.class.toString());
@@ -682,5 +686,28 @@ public class NetCDFUtilities {
      */
     public static Set<String> getUnsupportedDimensions() {
         return Collections.unmodifiableSet(UNSUPPORTED_DIMENSIONS);
+    }
+
+    /**
+     * Utility method for getting NoData from an input {@link Variable}
+     * 
+     * @param var Variable instance
+     * @return a Number representing NoData
+     */
+    public static Number getNodata(Variable var) {
+        if (var != null) {
+            // Getting all the Variable attributes
+            List<Attribute> attributes = var.getAttributes();
+            String fullName;
+            // Searching for FILL_VALUE or MISSING_VALUE attributes
+            for (Attribute attribute : attributes) {
+                fullName = attribute.getFullName();
+                if (fullName.equalsIgnoreCase(FILL_VALUE)
+                        || fullName.equalsIgnoreCase(MISSING_VALUE)) {
+                    return attribute.getNumericValue();
+                }
+            }
+        }
+        return null;
     }
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,13 +17,15 @@
  */
 package org.geotools.process.raster;
 
+import it.geosolutions.jaiext.lookup.LookupTable;
+import it.geosolutions.jaiext.lookup.LookupTableFactory;
+
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
-import java.awt.image.renderable.ParameterBlock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,14 +36,9 @@ import java.util.logging.Level;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
-import javax.media.jai.LookupTableJAI;
 import javax.media.jai.ROIShape;
-import javax.media.jai.RenderedOp;
 import javax.media.jai.iterator.RandomIter;
 import javax.media.jai.iterator.RandomIterFactory;
-import javax.media.jai.operator.BandCombineDescriptor;
-import javax.media.jai.operator.LookupDescriptor;
-import javax.media.jai.operator.RescaleDescriptor;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -49,6 +46,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.image.DisposeStopper;
 import org.geotools.image.DrawableBitSet;
+import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
@@ -241,15 +239,9 @@ public final class MarchingSquaresVectorizer {
                 RenderingHints localHints) throws Exception {
             if (geometriesList.size() == 0) {
                 // Must be a fully "invalid-Pixels" image, or an error occurred
-                ParameterBlock pb = new ParameterBlock();
-                pb.addSource(inputRI); // The source image
-                pb.add(null); // The region of the image to scan (null means all of it)
-                pb.add(null); // The horizontal sampling rate (null means 1)
-                pb.add(null); // The vertical sampling rate (null means 1)
+                ImageWorker w = new ImageWorker(inputRI);
 
-                RenderedOp op = JAI.create("extrema", pb, localHints);
-
-                final double[] extrema = (double[]) op.getProperty("minimum");
+                final double[] extrema = w.getMinimums();
 
                 if (!areEqual(extrema[0], INVALID_PIXEL_D)) {
                     Exception ex = new Exception("Unknown MarchingSquares processing error");
@@ -577,9 +569,9 @@ public final class MarchingSquaresVectorizer {
         final int tr = inputRI.getColorModel().getTransparency();
 
         if (numBands != 1) {
+            ImageWorker worker = new ImageWorker(inputRI).setRenderingHints(localHints);
             if (numBands == 3) {
-                inputRI = BandCombineDescriptor.create(inputRI,
-                        ImageUtilities.RGB_TO_GRAY_MATRIX, localHints);
+                worker.bandCombine(ImageUtilities.RGB_TO_GRAY_MATRIX);
             } else {
                 // do we have transparency combination matrix
 
@@ -589,10 +581,10 @@ public final class MarchingSquaresVectorizer {
                 for (int i = 0; i < numBands; i++) {
                     matrix[0][i] = fillValue;
                 }
-
-                inputRI = BandCombineDescriptor.create(inputRI, matrix, localHints);
+                worker.bandCombine(matrix);
             }
-            imagesStack.push(inputRI);
+            inputRI = worker.getRenderedImage();
+            imagesStack.push(worker.getRenderedImage());
             numBands = inputRI.getSampleModel().getNumBands();
             assert numBands == 1;
         }
@@ -885,6 +877,8 @@ public final class MarchingSquaresVectorizer {
         final int dataType = inputRI.getSampleModel().getDataType();
         double scale = 1;
         double offset = 0;
+        ImageWorker worker = new ImageWorker(inputRI);
+        worker.setRenderingHints(localHints);
         if (dataType != DataBuffer.TYPE_BYTE) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Rescaling dynamic to fit BYTE datatype from "
@@ -893,24 +887,21 @@ public final class MarchingSquaresVectorizer {
 
             switch (dataType) {
             case DataBuffer.TYPE_USHORT:
-                inputRI = LookupDescriptor.create(inputRI, createLookupTableUShort(exclusionLuminanceRanges),
-                        localHints);
+                inputRI = worker.looukp(createLookupTableUShort(exclusionLuminanceRanges, dataType)).getRenderedImage();
                 break;
             case DataBuffer.TYPE_SHORT:
                 scale = MAX_8BIT_VALUE / Short.MAX_VALUE;
                 offset = MAX_8BIT_VALUE * Short.MIN_VALUE / (Short.MIN_VALUE - Short.MAX_VALUE);
-                inputRI = RescaleDescriptor.create(inputRI, new double[] { scale },
-                        new double[] { offset }, localHints);
-                imagesStack.push(inputRI);
-                inputRI = LookupDescriptor.create(inputRI, createLookupTableByte(exclusionLuminanceRanges), localHints);
+                worker.rescale(new double[] { scale }, new double[] { offset });
+                imagesStack.push(worker.getRenderedImage());
+                inputRI = worker.looukp(createLookupTableByte(exclusionLuminanceRanges, dataType)).getRenderedImage();
                 break;
             case DataBuffer.TYPE_INT:
                 scale = MAX_8BIT_VALUE / Integer.MAX_VALUE;
                 offset = MAX_8BIT_VALUE * Integer.MIN_VALUE / (Integer.MIN_VALUE - Integer.MAX_VALUE);
-                inputRI = RescaleDescriptor.create(inputRI, new double[] { scale },
-                        new double[] { offset }, localHints);
-                imagesStack.push(inputRI);
-                inputRI = LookupDescriptor.create(inputRI, createLookupTableByte(exclusionLuminanceRanges), localHints);
+                worker.rescale(new double[] { scale }, new double[] { offset });
+                imagesStack.push(worker.getRenderedImage());
+                inputRI = worker.looukp(createLookupTableByte(exclusionLuminanceRanges, dataType)).getRenderedImage();
                 break;
             default:
                 throw new UnsupportedOperationException("Wrong data type:" + dataType);
@@ -919,7 +910,7 @@ public final class MarchingSquaresVectorizer {
 
             assert inputRI.getSampleModel().getDataType() == DataBuffer.TYPE_BYTE;
         } else {
-            inputRI = LookupDescriptor.create(inputRI, createLookupTableByte(exclusionLuminanceRanges), localHints);
+            inputRI = worker.looukp(createLookupTableByte(exclusionLuminanceRanges, dataType)).getRenderedImage();
         }
         return inputRI;
     }
@@ -1159,10 +1150,6 @@ public final class MarchingSquaresVectorizer {
         }
 
         coordinateList.add(startCoordinate);
-        // double polygonArea = GeometryUtilities.getPolygonArea(coordinateList);
-        // if (polygonArea < thresholdArea) {
-        // return null;
-        // }
 
         Coordinate[] coordinateArray = (Coordinate[]) coordinateList
                 .toArray(new Coordinate[coordinateList.size()]);
@@ -1356,7 +1343,7 @@ public final class MarchingSquaresVectorizer {
         return gf.createPolygon(gf.createLinearRing(coords), null);
     }
 
-    private LookupTableJAI createLookupTableByte(List<Range<Integer>> exclusionValues) {
+    private LookupTable createLookupTableByte(List<Range<Integer>> exclusionValues, int dataType) {
         final byte[] b = new byte[256];
         Arrays.fill(b, (byte) 0);
         for (Range<Integer> exclusionValue : exclusionValues) {
@@ -1367,10 +1354,10 @@ public final class MarchingSquaresVectorizer {
             }
         }
 
-        return new LookupTableJAI(b);
+        return LookupTableFactory.create(b, dataType);
     }
 
-    private LookupTableJAI createLookupTableUShort(List<Range<Integer>> exclusionValues) {
+    private LookupTable createLookupTableUShort(List<Range<Integer>> exclusionValues, int dataType) {
         final byte[] bUShort = new byte[65536];
         Arrays.fill(bUShort, (byte) 0);
         for (Range<Integer> exclusionValue : exclusionValues) {
@@ -1380,7 +1367,7 @@ public final class MarchingSquaresVectorizer {
                 bUShort[i] = (byte) INVALID_PIXEL_I;
             }
         }
-        return new LookupTableJAI(bUShort);
+        return LookupTableFactory.create(bUShort, dataType);
     }
 
 }

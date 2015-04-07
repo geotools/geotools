@@ -1,5 +1,19 @@
-/**
- * 
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2009-2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
  */
 package org.geotools.arcsde.raster.gce;
 
@@ -11,7 +25,6 @@ import java.awt.Rectangle;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
-import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -35,7 +48,6 @@ import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
@@ -45,6 +57,7 @@ import org.geotools.gce.geotiff.GeoTiffWriteParams;
 import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.image.jai.Registry;
 import org.geotools.parameter.Parameter;
 import org.geotools.util.logging.Logging;
@@ -223,7 +236,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
 
         writeToDisk(coverage, "testRead_" + tableName);
 
-        RenderedImage image = coverage.view(ViewType.RENDERED).getRenderedImage();
+        RenderedImage image = coverage.getRenderedImage();
         writeToDisk(image, tableName);
     }
 
@@ -361,10 +374,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
                                     reqHeight, reqEnv);
                             assertNotNull("read coverage returned null", coverage);
 
-                            RenderedImage image = coverage.view(ViewType.PHOTOGRAPHIC)
-                                    .getRenderedImage();
-                            // RenderedImage image =
-                            // coverage.view(ViewType.NATIVE).getRenderedImage();
+                            RenderedImage image = coverage.getRenderedImage();
                             Stopwatch sw = new Stopwatch();
                             sw.start();
                             writeToDisk(image, "testRead_" + tableName);
@@ -438,7 +448,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         // RenderedImage image = coverage.getRenderedImage();
         // writeToDisk(coverage, "testRead_" + tableName);
 
-        RenderedImage image = coverage.view(ViewType.RENDERED).getRenderedImage();
+        RenderedImage image = coverage.getRenderedImage();
         writeToDisk(image, tableName);
 
         writeBand(image, new int[] { 0 }, "red");
@@ -543,10 +553,12 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
     }
 
     private void writeBand(RenderedImage image, int[] bands, String channel) throws Exception {
-        ParameterBlock pb = new ParameterBlock();
-        pb.addSource(image);
-        pb.add(bands);
-        PlanarImage alpha = JAI.create("bandSelect", pb);
+        //ParameterBlock pb = new ParameterBlock();
+        //pb.addSource(image);
+        //pb.add(bands);
+        //PlanarImage alpha = JAI.create("bandSelect", pb);
+        ImageWorker w = new ImageWorker(image);
+        PlanarImage alpha = w.retainBands(bands).getPlanarImage();
         writeToDisk(alpha, tableName + "_" + channel);
     }
 
@@ -735,7 +747,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         // RenderedImage image = coverage.getRenderedImage();
         // writeToDisk(coverage, "testRead_" + tableName);
 
-        RenderedImage image = coverage.view(ViewType.RENDERED).getRenderedImage();
+        RenderedImage image = coverage.getRenderedImage();
         writeToDisk(image, tableName);
 
         // writeBand(image, new int[] { 0 }, "band1");

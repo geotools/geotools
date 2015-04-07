@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -67,6 +67,7 @@ import org.geotools.data.PrjFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
@@ -504,13 +505,12 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 			if (Double.isNaN(inNoData)) {
 				nan = new Category(Vocabulary
 						.formatInternational(VocabularyKeys.NODATA), new Color(
-						0, 0, 0, 0), 0);
+						0, 0, 0, 0), Double.NaN);
 
 			} else {
 				nan = new Category(Vocabulary
 						.formatInternational(VocabularyKeys.NODATA),
 						new Color[] { new Color(0, 0, 0, 0) }, 
-						NumberRange.create(0, 0),
 						NumberRange.create(inNoData, inNoData));
 	
 
@@ -527,9 +527,9 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 	                       throw new IOException("Unrecognized sample dimension type");
 	                
 			final GridSampleDimension band = new GridSampleDimension(
-					coverageName, new Category[] { nan }, uom).geophysics(true);
-			final Map<String, Double> properties = new HashMap<String, Double>();
-			properties.put("GC_NODATA", new Double(inNoData));
+					coverageName, new Category[] { nan }, uom);
+			final Map<String, Object> properties = new HashMap<String, Object>();
+			CoverageUtilities.setNoDataProperty(properties, new Double(inNoData));
 
 			//
 			// Coverage
@@ -548,7 +548,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 			throw new DataSourceException(e);
 		}
 	}
-
 	/**
 	 * This method is responsible for building up an envelope according to the
 	 * definition of the crs. It assumes that X coordinate on the ascii grid

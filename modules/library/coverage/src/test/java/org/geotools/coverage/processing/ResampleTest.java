@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -30,7 +30,6 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
-import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
@@ -46,7 +45,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.processing.operation.Extrema;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
@@ -191,7 +189,7 @@ public final class ResampleTest extends GridProcessingTestBase {
      * @return The operation name which was applied on the image, or {@code null} if none.
      */
     private static String showProjected(final GridCoverage2D coverage) {
-        return showProjected(coverage, coverage.getCoordinateReferenceSystem(), null, null, true);
+        return showProjected(coverage, coverage.getCoordinateReferenceSystem(), null, null);
     }
 
     /**
@@ -201,7 +199,7 @@ public final class ResampleTest extends GridProcessingTestBase {
      */
     @Test
     public void testIdentity() {
-        assertEquals("Lookup", showProjected(coverage));
+        assertNull(showProjected(coverage));
         assertNull(showProjected(indexedCoverage));
         assertNull(showProjected(indexedCoverageWithTransparency));
         assertNull(showProjected(floatCoverage));
@@ -216,12 +214,9 @@ public final class ResampleTest extends GridProcessingTestBase {
         final MathTransform gridToCRS = null;
         g1 = new GridGeometry2D(new GeneralGridEnvelope(new Rectangle(50,50,100,100), 2), gridToCRS, null);
         g2 = new GridGeometry2D(new GeneralGridEnvelope(new Rectangle(50,50,200,200), 2), gridToCRS, null);
-        assertEquals("Crop",   showProjected(coverage,        null, g2, null, false));
-        assertEquals("Lookup", showProjected(coverage,        null, g2, null, true ));
-        assertEquals("Crop",   showProjected(indexedCoverage, null, g1, null, false));
-        assertEquals("Crop",   showProjected(indexedCoverageWithTransparency, null, g1, null, false));
-        assertEquals("Crop",   showProjected(floatCoverage, null, g1,
-                new Hints(Hints.COVERAGE_PROCESSING_VIEW, ViewType.PHOTOGRAPHIC), true));
+        assertEquals("Crop",   showProjected(coverage,        null, g2, null));
+        assertEquals("Crop",   showProjected(indexedCoverage, null, g1, null));
+        assertEquals("Crop",   showProjected(indexedCoverageWithTransparency, null, g1, null));
     }
 
     /**
@@ -229,7 +224,7 @@ public final class ResampleTest extends GridProcessingTestBase {
      */
     @Test
     public void testStereographic() {
-        assertEquals("Warp", showProjected(coverage,getProjectedCRS(coverage), null, null, true));
+        assertEquals("Warp", showProjected(coverage,getProjectedCRS(coverage), null, null));
     }
     
     
@@ -242,7 +237,7 @@ public final class ResampleTest extends GridProcessingTestBase {
     public void testReproject() throws NoSuchAuthorityCodeException, FactoryException {
         
         // do it again, make sure the image does not turn black since 
-        GridCoverage2D coverage_ = project(ushortCoverage,CRS.parseWKT(GOOGLE_MERCATOR_WKT), null,"nearest", null, true);
+        GridCoverage2D coverage_ = project(ushortCoverage,CRS.parseWKT(GOOGLE_MERCATOR_WKT), null,"nearest", null);
         
         // reproject the ushort and check that things did not go bad, that is it turned black
         coverage_=(GridCoverage2D) Operations.DEFAULT.extrema(coverage_);
@@ -261,7 +256,7 @@ public final class ResampleTest extends GridProcessingTestBase {
         //exception in case the target crs does not comply with the target gg crs
         try{
             // we supplied both crs and target gg in different crs, we get an exception backS
-            assertEquals("Warp", showProjected(coverage,CRS.parseWKT(GOOGLE_MERCATOR_WKT), coverage.getGridGeometry(), null, true));
+            assertEquals("Warp", showProjected(coverage,CRS.parseWKT(GOOGLE_MERCATOR_WKT), coverage.getGridGeometry(), null));
             Assert.assertTrue("We should not be allowed to set different crs for target crs and target gg", false);
         }catch (Exception e) {
             // ok!
@@ -289,14 +284,13 @@ public final class ResampleTest extends GridProcessingTestBase {
         // Setting Force ReplaceIndexColorModel and CoverageProcessingView as SAME
         Hints hints = GeoTools.getDefaultHints().clone();
         hints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, true);
-        hints.put(Hints.COVERAGE_PROCESSING_VIEW, ViewType.SAME);
 
         // Create a new GridCoverage
         GridCoverageFactory factory = new GridCoverageFactory(hints);
         GridCoverage2D palette = factory.create("test", src, input.getEnvelope());
 
         CoordinateReferenceSystem targetCRS = CRS.parseWKT(GOOGLE_MERCATOR_WKT);
-        GridCoverage2D coverage_ = project(palette, targetCRS, null, "bilinear", hints, true);
+        GridCoverage2D coverage_ = project(palette, targetCRS, null, "bilinear", hints);
 
         // reproject the ushort and check that things did not go bad, that is it turned black
         coverage_ = (GridCoverage2D) Operations.DEFAULT.extrema(coverage_);
@@ -325,7 +319,6 @@ public final class ResampleTest extends GridProcessingTestBase {
     @Test
     public void testsNad83() throws FactoryException {
         Hints.putSystemDefault(Hints.RESAMPLE_TOLERANCE, 0.0);
-        final Hints photo = new Hints(Hints.COVERAGE_PROCESSING_VIEW, ViewType.PHOTOGRAPHIC);
         final CoordinateReferenceSystem crs = CRS.parseWKT(
                 "GEOGCS[\"NAD83\"," +
                   "DATUM[\"North_American_Datum_1983\"," +
@@ -336,9 +329,8 @@ public final class ResampleTest extends GridProcessingTestBase {
                   "AXIS[\"Lat\",NORTH]," +
                   "AXIS[\"Long\",EAST]," +
                   "AUTHORITY[\"EPSG\",\"4269\"]]");
-        assertEquals("Warp", showProjected(indexedCoverage, crs, null, null, false));
-        assertEquals("Warp", showProjected(indexedCoverageWithTransparency, crs, null, null, false));
-        assertEquals("Warp", showProjected(floatCoverage, crs, null, photo, true));
+        assertEquals("Warp", showProjected(indexedCoverage, crs, null, null));
+        assertEquals("Warp", showProjected(indexedCoverageWithTransparency, crs, null, null));
     }
     
     @Test
@@ -391,16 +383,13 @@ public final class ResampleTest extends GridProcessingTestBase {
     }
 
     /**
-     * Tests the "Resample" operation with an "Affine" transform.
+     * Tests the "Resample" operation with an "Scale" transform.
      */
     @Test
-    public void testAffine() {
-        final Hints photo = new Hints(Hints.COVERAGE_PROCESSING_VIEW, ViewType.PHOTOGRAPHIC);
-        showTranslated(coverage,                        null, true,  "Lookup", "Affine");
-        showTranslated(indexedCoverage,                 null, true,  "Lookup", "Affine");
-        showTranslated(indexedCoverageWithTransparency, null, false, "Lookup", "Affine");
-        showTranslated(floatCoverage,
-                photo, false, "org.geotools.SampleTranscode", "org.geotools.SampleTranscode");
+    public void testScale() {
+        showTranslated(coverage,                        null,   null, "Scale");
+        showTranslated(indexedCoverage,                 null,   null, "Scale");
+        showTranslated(indexedCoverageWithTransparency, null,  null, "Scale");
     }
 
     /**

@@ -18,12 +18,17 @@ package org.geotools.coverage.processing;
 
 import static org.junit.Assert.assertEquals;
 
+import it.geosolutions.jaiext.JAIExt;
+
 import java.awt.image.RenderedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.jai.operator.ExtremaDescriptor;
 
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.image.ImageWorker;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
@@ -63,10 +68,11 @@ public class BinaryOpTest extends GridProcessingTestBase {
         final GridCoverage2D floatCoverage = EXAMPLES.get(4);
         final GridCoverage2D result = doOp("Add", shortCoverage, floatCoverage);
         final RenderedImage image = result.getRenderedImage();
-        final RenderedImage extrema = ExtremaDescriptor.create(image, null, 1, 1, false, 1, null);
-        double[][] minMax = (double[][]) extrema.getProperty("Extrema");
-        assertEquals(minMax[0][0], 1.0, DELTA);
-        assertEquals(minMax[1][0], 66401.0, DELTA);
+        ImageWorker w = new ImageWorker(image);
+        double[] min = (double[]) w.getMinimums();
+        double[] max = (double[]) w.getMaximums();
+        assertEquals(min[0], 1.0, DELTA);
+        assertEquals(max[0], 66401.0, DELTA);
     }
     
     /**
@@ -99,8 +105,16 @@ public class BinaryOpTest extends GridProcessingTestBase {
 
         // Getting parameters for doing a scale.
         final ParameterValueGroup param = processor.getOperation(operationName).getParameters();
-        param.parameter("Source0").setValue(coverage0);
-        param.parameter("Source1").setValue(coverage1);
+        if(JAIExt.isJAIExtOperation(JAIExt.getOperationName(operationName))){
+            List<GridCoverage2D> sources = new ArrayList<>();
+            sources.add(coverage0);
+            sources.add(coverage1);
+            param.parameter("Sources").setValue(sources);
+        }else{
+            param.parameter("Source0").setValue(coverage0);
+            param.parameter("Source1").setValue(coverage1);
+        }
+
 
         // Doing a first scale.
         GridCoverage2D result = (GridCoverage2D) processor.doOperation(param);

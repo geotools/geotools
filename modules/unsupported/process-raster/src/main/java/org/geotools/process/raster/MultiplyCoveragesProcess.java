@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2008-2011 TOPP - www.openplans.org.
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,13 +17,15 @@
  */
 package org.geotools.process.raster;
 
-import org.geotools.process.factory.DescribeParameter;
-import org.geotools.process.factory.DescribeProcess;
-import org.geotools.process.factory.DescribeResult;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.process.ProcessException;
-import org.opengis.coverage.processing.Operation;
+import org.geotools.process.factory.DescribeParameter;
+import org.geotools.process.factory.DescribeProcess;
+import org.geotools.process.factory.DescribeResult;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.util.ProgressListener;
 
@@ -39,7 +41,6 @@ import org.opengis.util.ProgressListener;
 public class MultiplyCoveragesProcess implements RasterProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
-    private static final Operation MULTIPLY = PROCESSOR.getOperation("Multiply");
 
     @DescribeResult(name = "result", description = "Computed raster")
     public GridCoverage2D execute(
@@ -59,9 +60,11 @@ public class MultiplyCoveragesProcess implements RasterProcess {
         // Doing the Operation
         //
         // //
-        final ParameterValueGroup param = MULTIPLY.getParameters();
-        param.parameter("Source0").setValue(coverageA);
-        param.parameter("Source1").setValue(coverageB);
+        final ParameterValueGroup param = PROCESSOR.getOperation("Multiply").getParameters();
+        List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>();
+        sources.add(coverageA);
+        sources.add(coverageB);
+        param.parameter("Sources").setValue(sources);
         return (GridCoverage2D) PROCESSOR.doOperation(param);
     }
 

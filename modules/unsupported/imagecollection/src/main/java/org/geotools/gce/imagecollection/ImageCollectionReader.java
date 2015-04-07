@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -470,7 +470,7 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
             if (colorInterpretation == null)
                 throw new IOException("Unrecognized sample dimension type");
             Category[] categories = null;
-            bands[i] = new GridSampleDimension(colorInterpretation.name(), categories, null).geophysics(true);
+            bands[i] = new GridSampleDimension(colorInterpretation.name(), categories, null);
         }
         // creating coverage
         if (raster2Model != null) {

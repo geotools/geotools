@@ -123,7 +123,7 @@ public class MosaicTest extends GridProcessingTestBase {
     private static final CoverageProcessor processor = CoverageProcessor.getInstance(GeoTools
             .getDefaultHints());
 
-    private static final Mosaic MOSAIC = (Mosaic) processor.getOperation("Mosaic");
+    //private static final Mosaic MOSAIC = (Mosaic) processor.getOperation("Mosaic");
 
     // Static method used for preparing the input data.
     @BeforeClass
@@ -168,7 +168,7 @@ public class MosaicTest extends GridProcessingTestBase {
         /*
          * Do the crop without conserving the envelope.
          */
-        ParameterValueGroup param = MOSAIC.getParameters();
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
 
         // Creation of a List of the input Sources
         List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>(2);
@@ -243,7 +243,7 @@ public class MosaicTest extends GridProcessingTestBase {
         /*
          * Do the crop without conserving the envelope.
          */
-        ParameterValueGroup param = MOSAIC.getParameters();
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
 
         // Creation of a List of the input Sources
         List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>(2);
@@ -295,7 +295,7 @@ public class MosaicTest extends GridProcessingTestBase {
         /*
          * Do the crop without conserving the envelope.
          */
-        ParameterValueGroup param = MOSAIC.getParameters();
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
 
         // Creation of a List of the input Sources
         List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>(2);
@@ -348,7 +348,7 @@ public class MosaicTest extends GridProcessingTestBase {
         /*
          * Do the crop without conserving the envelope.
          */
-        ParameterValueGroup param = MOSAIC.getParameters();
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
 
         // Creation of a List of the input Sources
         List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>(2);
@@ -409,7 +409,7 @@ public class MosaicTest extends GridProcessingTestBase {
         /*
          * Do the crop without conserving the envelope.
          */
-        ParameterValueGroup param = MOSAIC.getParameters();
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
 
         // Creation of a List of the input Sources
         List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>(2);
@@ -428,7 +428,7 @@ public class MosaicTest extends GridProcessingTestBase {
         /*
          * Do the crop without conserving the envelope.
          */
-        ParameterValueGroup param = MOSAIC.getParameters();
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
 
         // Creation of a List of the input Sources
         List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>(2);
@@ -491,7 +491,7 @@ public class MosaicTest extends GridProcessingTestBase {
         /*
          * Do the crop without conserving the envelope.
          */
-        ParameterValueGroup param = MOSAIC.getParameters();
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
 
         // Creation of a List of the input Sources
         List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>(2);
@@ -555,7 +555,7 @@ public class MosaicTest extends GridProcessingTestBase {
         /*
          * Do the crop without conserving the envelope.
          */
-        ParameterValueGroup param = MOSAIC.getParameters();
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
 
         // Creation of a List of the input Sources
         List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>(2);
@@ -811,10 +811,10 @@ public class MosaicTest extends GridProcessingTestBase {
             GridGeometry2D gridGeometry = new GridGeometry2D(gridRange, targetEnvelope);
 
             // mosaic
-            final ParameterValueGroup param = MOSAIC.getParameters().clone();
+            final ParameterValueGroup param = processor.getOperation("Mosaic").getParameters().clone();
             param.parameter("sources").setValue(coverages);
             param.parameter("geometry").setValue(gridGeometry);
-            return (GridCoverage2D) MOSAIC.doOperation(param, hints);
+            return (GridCoverage2D) ((Mosaic)processor.getOperation("Mosaic")).doOperation(param, hints);
         } catch (Exception e) {
             throw new RuntimeException("Failed to mosaic the input coverages", e);
         }

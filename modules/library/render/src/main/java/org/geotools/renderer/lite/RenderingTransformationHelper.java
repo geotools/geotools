@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,14 +16,14 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.geotools.resources.coverage.FeatureUtilities.*;
+import static org.geotools.resources.coverage.FeatureUtilities.GRID_PROPERTY_NAME;
+import static org.geotools.resources.coverage.FeatureUtilities.PARAMS_PROPERTY_NAME;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.media.jai.Interpolation;
@@ -37,8 +37,6 @@ import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
-import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
@@ -50,7 +48,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.FeatureUtilities;
-import org.opengis.coverage.processing.Operation;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
@@ -81,11 +78,6 @@ public abstract class RenderingTransformationHelper {
     
     
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
-    
-    // the crop and scale operations
-    private static final Operation CROP = PROCESSOR.getOperation("CoverageCrop");
-    private static final Operation SCALE = PROCESSOR.getOperation("Scale");
-
     
     public Object applyRenderingTransformation(Expression transformation,
             FeatureSource featureSource, Query layerQuery, Query renderingQuery, 
@@ -154,7 +146,7 @@ public abstract class RenderingTransformationHelper {
                         }
                         if(coverage.getEnvelope2D().intersects(renderingEnvelope)) {
                             // the resulting coverage might be larger than the readGG envelope, shall we crop it?
-                            final ParameterValueGroup param = CROP.getParameters();
+                            final ParameterValueGroup param = PROCESSOR.getOperation("CoverageCrop").getParameters();
                             param.parameter("Source").setValue(coverage);
                             param.parameter("Envelope").setValue(renderingEnvelope);
                             coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
@@ -173,7 +165,7 @@ public abstract class RenderingTransformationHelper {
                                 final double ratioY = coverageAt.getScaleY() / renderingAt.getScaleY();
                                 if(ratioX < 0.7 && ratioY < 0.7) {
                                     // resolution is too different
-                                    final ParameterValueGroup param = SCALE.getParameters();
+                                    final ParameterValueGroup param = PROCESSOR.getOperation("Scale").getParameters();
                                     param.parameter("Source").setValue(coverage);
                                     param.parameter("xScale").setValue(ratioX);
                                     param.parameter("yScale").setValue(ratioY);
@@ -237,7 +229,5 @@ public abstract class RenderingTransformationHelper {
      */
     protected abstract GridCoverage2D readCoverage(GridCoverage2DReader reader, Object params,
             GridGeometry2D readGG) throws IOException;
-
-    
 
 }

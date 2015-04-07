@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014 TOPP - www.openplans.org.
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,9 +17,14 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.range.RangeFactory;
+
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.image.DataBuffer;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +34,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
@@ -39,27 +46,22 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.processing.CoverageProcessingException;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
-import org.geotools.image.jai.Registry;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.ImagingParameterDescriptors;
 import org.geotools.parameter.ImagingParameters;
-import org.geotools.processing.jai.BandMergeCRIF;
-import org.geotools.processing.jai.BandMergeDescriptor;
-import org.geotools.processing.jai.nodata.Range;
-import org.geotools.processing.jai.nodata.RangeFactory;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.Utilities;
+import org.geotools.util.logging.Logging;
 import org.jaitools.imageutils.ImageLayout2;
 import org.jaitools.imageutils.ROIGeometry;
 import org.opengis.coverage.Coverage;
@@ -76,7 +78,6 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
 
-import com.sun.media.jai.util.ImageUtil;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -152,6 +153,8 @@ public class BandMerge extends OperationJAI {
             null, // Unit of measure
             false);
 
+    private static final Logger LOGGER = Logging.getLogger(BandMerge.class);
+
     private static Set<ParameterDescriptor> REPLACED_DESCRIPTORS;
 
     // Replace the old parameter descriptor group with a new one with the old parameters and the new
@@ -163,9 +166,6 @@ public class BandMerge extends OperationJAI {
         replacedDescriptors.add(TRANSFORM_CHOICE_PARAM);
         replacedDescriptors.add(GEOMETRY_PARAM);
         REPLACED_DESCRIPTORS = Collections.unmodifiableSet(replacedDescriptors);
-    
-        // Static registration of the BandMerge operation
-        Registry.registerRIF(JAI.getDefaultInstance(), new BandMergeDescriptor(), new BandMergeCRIF(), "org.geotools");
     }
 
     /**
@@ -320,8 +320,8 @@ public class BandMerge extends OperationJAI {
     }
 
     public BandMerge() {
-        super(new BandMergeDescriptor(), new ImagingParameterDescriptors(
-                getOperationDescriptor("BandMergeOp"), REPLACED_DESCRIPTORS));
+        super(getOperationDescriptor("BandMerge"), new ImagingParameterDescriptors(
+                getOperationDescriptor("BandMerge"), REPLACED_DESCRIPTORS));
     }
 
     @Override
@@ -331,8 +331,7 @@ public class BandMerge extends OperationJAI {
          * Extracts the source grid coverages now as a List. The sources will be set in the ParameterBlockJAI (as RenderedImages) later.
          */
         final Collection<GridCoverage2D> sourceCollection = new ArrayList<GridCoverage2D>();
-        // The ViewType is used in post processing
-        ViewType primarySourceType = extractSources(parameters, sourceCollection);
+        extractSources(parameters, sourceCollection);
         // Selection of the first coverage
         GridCoverage2D coverage = sourceCollection.iterator().next();
         // CRS to use. The first CRS is used
@@ -391,14 +390,8 @@ public class BandMerge extends OperationJAI {
         /*
          * Applies the operation.
          */
-        coverage = deriveGridCoverage(sources, new BandMergeParams(crs, gridToCRS, globalBbox,
+        return deriveGridCoverage(sources, new BandMergeParams(crs, gridToCRS, globalBbox,
                 block, hints));
-        // Addition of a view of the specific type if present
-        if (primarySourceType != null) {
-            coverage = coverage.view(primarySourceType);
-        }
-
-        return coverage;
     }
 
     /**
@@ -419,8 +412,7 @@ public class BandMerge extends OperationJAI {
     }
 
     /**
-     * Extraction of the sources from the parameter called SOURCES. The sources are stored inside a List. The output of the method is an ViewType to
-     * use in post processing.
+     * Extraction of the sources from the parameter called SOURCES. The sources are stored inside a List. 
      * 
      * @param parameters
      * @param sources
@@ -428,7 +420,7 @@ public class BandMerge extends OperationJAI {
      * @throws ParameterNotFoundException
      * @throws InvalidParameterValueException
      */
-    private ViewType extractSources(final ParameterValueGroup parameters,
+    protected void extractSources(final ParameterValueGroup parameters,
             final Collection<GridCoverage2D> sources) throws ParameterNotFoundException,
             InvalidParameterValueException {
         Utilities.ensureNonNull("parameters", parameters);
@@ -444,28 +436,11 @@ public class BandMerge extends OperationJAI {
         }
         // Collection of the sources to use
         Collection<GridCoverage2D> sourceCoverages = (Collection<GridCoverage2D>) srcCoverages;
-        // ViewType object
-        ViewType type = null;
-        // Check if the operation must be computed on GeoPhysical values
-        final boolean computeOnGeophysicsValues = computeOnGeophysicsValues(parameters);
-        // Counter for the coverages
-        int i = 0;
         // Cycle on all the Sources
         for (GridCoverage2D source : sourceCoverages) {
-            // Add the view type to the coverage
-            if (computeOnGeophysicsValues) {
-                final GridCoverage2D old = source;
-                source = source.view(ViewType.GEOPHYSICS);
-                if (i == PRIMARY_SOURCE_INDEX) {
-                    type = (old == source) ? ViewType.GEOPHYSICS : ViewType.PACKED;
-                }
-            }
             // Store the i-th source
             sources.add(source);
-            // Counter update
-            i++;
         }
-        return type;
     }
 
     /**
@@ -554,7 +529,7 @@ public class BandMerge extends OperationJAI {
         final CoordinateReferenceSystem crs = primarySource.getCoordinateReferenceSystem();
         final MathTransform toCRS = parameters.gridToCRS;
         final RenderedImage data = createRenderedImage(parameters.parameters, hints);
-        final Map properties = getProperties(data, crs, name, toCRS, sources, null);
+        final Map properties = getProperties(data, crs, name, toCRS, sources, parameters);
         return getFactory(parameters.hints).create(name, // The grid coverage name
                 data, // The underlying data
                 crs, // The coordinate system (may not be 2D).
@@ -586,22 +561,24 @@ public class BandMerge extends OperationJAI {
 
     protected Map getProperties(RenderedImage data, CoordinateReferenceSystem crs,
             InternationalString name, MathTransform toCRS, GridCoverage2D[] sources,
-            Parameters parameters) {
-        // Check the property names of the created image
-        String[] propNames = data.getPropertyNames();
-        // If no property is present then the null is returned
-        if (propNames == null || propNames.length == 0) {
-            return null;
-        } else {
-            // Else a property map is returned
-            Map properties = new HashMap();
-            // All the image properties are stored inside a map
-            for (String key : propNames) {
-                properties.put(key, data.getProperty(key));
-            }
+            BandMergeParams parameters) {
+        // Merge the coverage properties
+        Map properties = new HashMap();
 
-            return properties;
+        for (GridCoverage2D cov : sources) {
+            if (cov != null) {
+                properties.putAll(cov.getProperties());
+            }
         }
+
+        // Setting ROI and NoData if present
+        if (JAIExt.isJAIExtOperation("BandMerge")) {
+            ParameterBlockJAI pb = parameters.parameters;
+            CoverageUtilities.setROIProperty(properties, (ROI) pb.getObjectParameter(3));
+            CoverageUtilities.setNoDataProperty(properties, pb.getObjectParameter(1));
+        }
+
+        return properties;
     }
 
     protected GridSampleDimension[] deriveSampleDimension(GridSampleDimension[][] list,
@@ -663,29 +640,59 @@ public class BandMerge extends OperationJAI {
                 throw new IllegalArgumentException("Input Coverages must have the same data type");
             }
 
-            // No Data extraction
-            double nodataValue = CoverageUtilities.getBackgroundValues(cov)[0];
             // Creation of the NoData range associated
-            nodata[i] = createNoDataRange(cov, nodataValue, dataType);
+            nodata[i] = createNoDataRange(cov, dataType);
         }
 
-        // Setting NoData
-        block.setParameter("noData", nodata);
+        if (JAIExt.isJAIExtOperation("BandMerge")) {
+            // Setting NoData
+            block.setParameter("noData", nodata);
 
-        // Setting ROI
-        if (parameters.parameter(GEOMETRY).getValue() != null) {
-            // Creation of a ROI geometry object from the Geometry
-            ROI roi = new ROIGeometry(JTS.transform((Geometry) parameters.parameter(GEOMETRY)
-                    .getValue(), crsToGRID));
+            // Setting Transformations
+            block.setParameter("transformations", tr);
+
+            // Setting ROI
+            ROI roi = null;
+            if (parameters.parameter(GEOMETRY).getValue() != null) {
+                // Creation of a ROI geometry object from the Geometry
+                roi = new ROIGeometry(JTS.transform((Geometry) parameters.parameter(GEOMETRY)
+                        .getValue(), crsToGRID));
+            }
+            // Check if the coverages contains a ROI property
+            for (int i = 0; i < sources.length; i++) {
+                GridCoverage2D cov = sources[i];
+                ROI covROI = CoverageUtilities.getROIProperty(cov);
+                if (covROI != null) {
+                    ROI newROI = null;
+                    // Check if it must be transformed
+                    if (tr != null) {
+                        try {
+                            AffineTransform trans = tr.get(i).createInverse();
+                            newROI = covROI.transform(trans);
+                        } catch (NoninvertibleTransformException e) {
+                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                        }
+                    } else {
+                        newROI = covROI;
+                    }
+
+                    if (roi == null) {
+                        roi = newROI;
+                    } else {
+                        roi = roi.intersect(newROI);
+                    }
+                }
+            }
+
             // Addition of the ROI to the ParameterBlock
-            block.setParameter("roi", roi);
+            if (roi != null) {
+                block.setParameter("roi", roi);
+            }
+
+            // Setting the destination No Data Value as the NoData of the principal coverage selected
+            block.setParameter("destinationNoData", nodata[getIndex(parameters)].getMin()
+                    .doubleValue());
         }
-
-        // Setting Transformations
-        block.setParameter("transformations", tr);
-
-        // Setting the destination No Data Value as the NoData of the principal coverage selected
-        block.setParameter("destinationNoData", nodata[getIndex(parameters)].getMin().doubleValue());
 
         return block;
     }
@@ -694,41 +701,24 @@ public class BandMerge extends OperationJAI {
      * Method for creating the nodata range associated to each coverage
      * 
      * @param cov
-     * @param nodataValue
      * @param dataType
      * @return
      */
-    private Range createNoDataRange(GridCoverage2D cov, double nodataValue, int dataType) {
-        Range noData = null;
-        // Creation of the NoDataRange associated to the image
-        switch (dataType) {
-        case DataBuffer.TYPE_BYTE:
-            byte valueB = ImageUtil.clampRoundByte(nodataValue);
-            noData = RangeFactory.create(valueB, true, valueB, true);
-            break;
-        case DataBuffer.TYPE_USHORT:
-            short valueU = ImageUtil.clampRoundUShort(nodataValue);
-            noData = RangeFactory.createU(valueU, true, valueU, true);
-            break;
-        case DataBuffer.TYPE_SHORT:
-            short valueS = ImageUtil.clampRoundShort(nodataValue);
-            noData = RangeFactory.create(valueS, true, valueS, true);
-            break;
-        case DataBuffer.TYPE_INT:
-            int valueI = ImageUtil.clampRoundInt(nodataValue);
-            noData = RangeFactory.create(valueI, true, valueI, true);
-            break;
-        case DataBuffer.TYPE_FLOAT:
-            float valueF = ImageUtil.clampFloat(nodataValue);
-            noData = RangeFactory.create(valueF, true, valueF, true, true);
-            break;
-        case DataBuffer.TYPE_DOUBLE:
-            noData = RangeFactory.create(nodataValue, true, nodataValue, true, true);
-            break;
-        default:
-            throw new IllegalArgumentException("Wrong image data type");
+    private Range createNoDataRange(GridCoverage2D cov, int dataType) {
+        // Extract NoData property from gridCoverage
+        NoDataContainer container = CoverageUtilities.getNoDataProperty(cov);
+        if(container != null){
+            return container.getAsRange();
         }
-        return noData;
+        // No property set, use the input NoData Range
+        double[] nodatas = CoverageUtilities.getBackgroundValues(cov);
+        if(nodatas != null && nodatas.length > 0){
+            Range noData = RangeFactory
+                    .convert(RangeFactory.create(nodatas[0], nodatas[0]), dataType);
+            return noData;
+        }
+        return null;
+       
     }
 
     /**

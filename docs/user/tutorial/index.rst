@@ -20,6 +20,7 @@ to GIS workshop making use of examples from GeoTools and other Java libraries.
    geometry/geometrycrs
    filter/query
    raster/image
+   raster/jaiext
    map/style
    affinetransform
    factory

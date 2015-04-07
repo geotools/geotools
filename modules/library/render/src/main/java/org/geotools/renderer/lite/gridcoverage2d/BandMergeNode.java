@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,32 +16,37 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import it.geosolutions.jaiext.range.NoDataContainer;
+
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.BandMergeDescriptor;
-import javax.media.jai.operator.FormatDescriptor;
 
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.factory.Hints;
+import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.InternationalString;
@@ -150,6 +155,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements
 			ImageLayout layout = null;
 			final Hints hints = getHints();
 			final List<GridCoverage2D> sourceGridCoverages= new ArrayList<GridCoverage2D>();
+			ImageWorker w = new ImageWorker();
 			do {
 				// //
 				//
@@ -182,15 +188,36 @@ class BandMergeNode extends BaseCoverageProcessingNode implements
 				// merges
 				//
 				// //
-				if (op == null)
+				if (op == null){
 					op = currentSourceCoverage.getRenderedImage();
+					w.setImage(op);
+					w.setROI(CoverageUtilities.getROIProperty(currentSourceCoverage));
+					NoDataContainer container = CoverageUtilities.getNoDataProperty(currentSourceCoverage);
+					w.setNoData(container != null ? container.getAsRange() : null);
+				}
 				else {
-					op = BandMergeDescriptor.create(op, currentSourceCoverage.getRenderedImage(), hints);
+					w.setRenderingHints(hints);
+					// ROI handling
+					ROI roi = w.getROI();
+					ROI roiProperty = CoverageUtilities.getROIProperty(currentSourceCoverage);
+                                        if(roi != null){
+					    if(roiProperty != null){
+					        roi = roi.intersect(roiProperty);
+					    }
+					    
+					}else if(roiProperty != null){
+					    roi = roiProperty;
+					}
+                                        
+                                        w.setROI(roi);
+                                        NoDataContainer container = CoverageUtilities.getNoDataProperty(currentSourceCoverage);
+				        w.addBand(currentSourceCoverage.getRenderedImage(), false, false, container != null ? container.getAsRange() : null);
 					// //
 					//
 					// Save the intermediate image
 					//
 					// //
+				        op = w.getRenderedImage();
 					intermediateOps.add(op);
 				}
 
@@ -203,18 +230,22 @@ class BandMergeNode extends BaseCoverageProcessingNode implements
 			// /////////////////////////////////////////////////////////////////////
 			if (layout != null)
 				hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-			op = FormatDescriptor.create(op, Integer.valueOf(op.getSampleModel().getDataType()), hints);
+			op = w.format(op.getSampleModel().getDataType()).getRenderedImage();
 			final GridSampleDimension [] sd= new GridSampleDimension[op.getSampleModel().getNumBands()];
 			for(int i=0;i<sd.length;i++)
 			    sd[i]= new GridSampleDimension(TypeMap.getColorInterpretation(op.getColorModel(), i).name());
 		                
+			// Defining NoData and ROI properties
+			Map<String, Object> properties = new HashMap<>();
+			CoverageUtilities.setNoDataProperty(properties, w.getNoData());
+			CoverageUtilities.setROIProperty(properties, w.getROI());
 			return getCoverageFactory().create(
 			        "BandMerge",
 			        op,
 			        gridGeometry,
 			        null, 
 			        sourceGridCoverages.toArray(new GridCoverage[sourceGridCoverages.size()]),
-			        null);
+			        properties);
 
 		}
 		throw new IllegalStateException(Errors.format(

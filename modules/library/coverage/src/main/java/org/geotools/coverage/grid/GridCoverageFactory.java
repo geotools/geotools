@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,12 +24,10 @@ import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
-import java.awt.image.renderable.ParameterBlock;
 import java.util.Map;
 
 import javax.measure.unit.Unit;
 import javax.media.jai.ImageFunction;
-import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.util.CaselessStringKey;
@@ -38,6 +36,7 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.factory.AbstractFactory;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -201,14 +200,8 @@ public class GridCoverageFactory extends AbstractFactory {
         final double xTrans = -at.getTranslateX()/xScale;
         final double yTrans = -at.getTranslateY()/yScale;
         final GridEnvelope      range = gridGeometry.getGridRange();
-        final ParameterBlock param = new ParameterBlock().add(function)
-                                                         .add(range.getSpan(0)) // width
-                                                         .add(range.getSpan(1)) // height
-                                                         .add((float) xScale)
-                                                         .add((float) yScale)
-                                                         .add((float) xTrans)
-                                                         .add((float) yTrans);
-        final PlanarImage image = JAI.create("ImageFunction", param);
+        final PlanarImage image = new ImageWorker().function(function, range.getSpan(0),
+                range.getSpan(1), (float) xScale, (float) yScale, (float) xTrans, (float) yTrans).getPlanarImage();
         return create(name, image, gridGeometry, bands, null, properties);
     }
 
@@ -300,9 +293,7 @@ public class GridCoverageFactory extends AbstractFactory {
      *                    each arrays {@code colors[b]} may have any length; colors will be
      *                    interpolated as needed.
      * @param hints       An optional set of rendering hints, or {@code null} if none. Those hints
-     *                    will not affect the grid coverage to be created. However, they may affect
-     *                    the grid coverage to be returned by <code>{@link GridCoverage2D#geophysics
-     *                    geophysics}(false)</code>, i.e. the view to be used at rendering time. The
+     *                    will not affect the grid coverage to be created. The
      *                    optional {@link Hints#SAMPLE_DIMENSION_TYPE SAMPLE_DIMENSION_TYPE} hint
      *                    specifies the {@link SampleDimensionType} to be used at rendering time,
      *                    which can be one of {@link SampleDimensionType#UNSIGNED_8BITS UNSIGNED_8BITS}

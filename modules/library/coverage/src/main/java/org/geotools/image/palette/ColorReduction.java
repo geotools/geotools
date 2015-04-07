@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -29,14 +29,16 @@ import java.awt.image.WritableRaster;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.PointOpImage;
-import javax.media.jai.operator.BandMergeDescriptor;
 import javax.media.jai.operator.BandSelectDescriptor;
 import javax.media.jai.operator.MultiplyConstDescriptor;
+
+import org.geotools.image.ImageWorker;
 
 /**
  * {@link PointOpImage} to perform color reduction on an image using the palette builder.
  * 
  * @author Simone Giannecchini, GeoSolutions
+ * @author Nicola Lagomarsini, GeoSolutions SAS
  *
  *
  *
@@ -73,9 +75,10 @@ public class ColorReduction extends PointOpImage {
 			layout.setColorModel(new ComponentColorModel(ColorSpace
 					.getInstance(ColorSpace.CS_sRGB), true, false,
 					Transparency.BITMASK, DataBuffer.TYPE_BYTE));
-			image = BandMergeDescriptor.create(image, alpha,
-					new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout))
-					.getNewRendering();
+                        ImageWorker w = new ImageWorker(image).setRenderingHints(new RenderingHints(
+                                JAI.KEY_IMAGE_LAYOUT, layout));
+			w.addBand(alpha, false);
+			image = w.getRenderedImage();
 			this.setSource(image, 0);
 		}
 

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2001-2007 TOPP - www.openplans.org.
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import javax.media.jai.JAI;
 import javax.media.jai.ROI;
 
 import org.geotools.coverage.Category;
@@ -42,7 +41,6 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.image.jai.Registry;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
@@ -54,10 +52,8 @@ import org.jaitools.imageutils.ROIGeometry;
 import org.jaitools.media.jai.zonalstats.ZonalStats;
 import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
 import org.jaitools.media.jai.zonalstats.ZonalStatsOpImage;
-import org.jaitools.media.jai.zonalstats.ZonalStatsRIF;
 import org.jaitools.numeric.Range;
 import org.jaitools.numeric.Statistic;
-import org.opengis.coverage.processing.Operation;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -87,8 +83,6 @@ public class RasterZonalStatistics implements RasterProcess {
 
     private final static CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
 
-    private final static Operation CROPOPERATION = PROCESSOR.getOperation("CoverageCrop");
-    
     @DescribeResult(name = "statistics", description = "A feature collection with the attributes of the zone layer (prefixed by 'z_') and the statistics fields count,min,max,sum,avg,stddev")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "data", description = "Input raster to compute statistics for") GridCoverage2D coverage,
@@ -191,7 +185,7 @@ public class RasterZonalStatistics implements RasterProcess {
                 // find nodata values
                 GridSampleDimension sampleDimension = classification.getSampleDimension(0);
                 double[] nodataarr = sampleDimension.getNoDataValues();
-                double nodata = nodataarr != null? nodataarr[0] : Double.NaN;
+                double[] nodata = nodataarr != null ? nodataarr : new double[] { Double.NaN };
     
                 // this will adapt the classification image to the projection and image layout
                 // of the data coverage
@@ -326,7 +320,7 @@ public class RasterZonalStatistics implements RasterProcess {
                 /*
                  * crop on region of interest
                  */
-                ParameterValueGroup param = CROPOPERATION.getParameters();
+                ParameterValueGroup param = PROCESSOR.getOperation("CoverageCrop").getParameters();
                 param.parameter("Source").setValue(dataCoverage);
                 param.parameter("Envelope").setValue(new GeneralEnvelope(geometryEnvelope));
                 cropped = (GridCoverage2D) PROCESSOR.doOperation(param);

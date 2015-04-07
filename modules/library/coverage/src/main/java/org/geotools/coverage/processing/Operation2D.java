@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,6 @@ import java.util.Map;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -93,32 +92,9 @@ public abstract class Operation2D extends AbstractOperation {
     }
 
     /**
-     * Returns {@code true} if grid coverage content should be converted from sample values
-     * to geophysics value before to apply an operation. This method is invoked automatically
-     * by {@link OperationJAI#doOperation doOperation}. If this method returns {@code true},
-     * then the computation will be performed on the <cite>geophysics</cite> view as returned
-     * by <code>{@linkplain GridCoverage2D#geophysics GridCoverage2D.geophysics}(true)</code>.
-     * If this method returns {@code false}, then the view will <strong>not</strong> be changed
-     * before the operation is applied (i.e. the {@code geophysics} method is not invoked at all).
-     * The default implementation always returns {@code true}.
-     *
-     * @param  parameters The parameters supplied by the user to the {@code doOperation} method.
-     * @return {@code true} if this operation should be applied on geophysics values.
-     *
-     * @see GridCoverage2D#geophysics
-     *
-     * @since 2.4
-     */
-    protected boolean computeOnGeophysicsValues(final ParameterValueGroup parameters) {
-        return true;
-    }
-
-    /**
-     * Extracts and prepares the sources for this {@code Operation2D}, taking into account the
-     * need for going to the geophysics view of the data in case this operation requires so.
+     * Extracts and prepares the sources for this {@code Operation2D} 
      * <p>
-     * This method fills the {@code sources} array with needed sources, changing to their
-     * geophysics view if needed.
+     * This method fills the {@code sources} array with needed sources
      *
      * @param parameters  Parameters that will control this operation.
      * @param sourceNames Names of the sources to extract from {@link ParameterValueGroup}.
@@ -138,7 +114,7 @@ public abstract class Operation2D extends AbstractOperation {
      *
      * @since 2.4
      */
-    protected ViewType extractSources(final ParameterValueGroup parameters,
+    protected void extractSources(final ParameterValueGroup parameters,
                                       final String[]            sourceNames,
                                       final GridCoverage2D[]    sources)
             throws ParameterNotFoundException, InvalidParameterValueException
@@ -149,8 +125,6 @@ public abstract class Operation2D extends AbstractOperation {
         if (sources.length != sourceNames.length) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
         }
-        ViewType type = null;
-        final boolean computeOnGeophysicsValues = computeOnGeophysicsValues(parameters);
         for (int i=0; i<sourceNames.length; i++) {
             Object candidate = parameters.parameter(sourceNames[i]).getValue();
             if (candidate == null) {
@@ -162,16 +136,8 @@ public abstract class Operation2D extends AbstractOperation {
                         Classes.getClass(candidate), GridCoverage2D.class), sourceNames[i], candidate);
             }
             GridCoverage2D source = (GridCoverage2D) candidate;
-            if (computeOnGeophysicsValues) {
-                final GridCoverage2D old = source;
-                source = source.view(ViewType.GEOPHYSICS);
-                if (i == PRIMARY_SOURCE_INDEX) {
-                    type = (old == source) ? ViewType.GEOPHYSICS : ViewType.PACKED;
-                }
-            }
             sources[i] = source;
         }
-        return type;
     }
 
     /**

@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2010-2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.renderer.lite;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
@@ -8,8 +24,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
-
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -19,14 +33,16 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
+import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * 
  *
  * @source $URL$
  */
-public class ExternalGraphicTest extends TestCase {
+public class ExternalGraphicTest {
     private static final long TIME = 3000;
     SimpleFeatureSource pointFS;
     SimpleFeatureSource lineFS;
@@ -38,8 +54,8 @@ public class ExternalGraphicTest extends TestCase {
         CRS.reset("all");
     }
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         // setup data
         File property = new File(TestData.getResource(this, "point.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
@@ -47,7 +63,7 @@ public class ExternalGraphicTest extends TestCase {
         lineFS = ds.getFeatureSource("line");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
         
-        // System.setProperty("org.geotools.test.interactive", "true");
+         //System.setProperty("org.geotools.test.interactive", "true");
     }
     
     private StreamingRenderer setupMap(String styleFile) throws IOException {
@@ -70,6 +86,7 @@ public class ExternalGraphicTest extends TestCase {
     }
 
 
+    @Test
     public void testExternalGraphic() throws Exception {
         StreamingRenderer renderer = setupMap("externalGraphic.sld");
         
@@ -78,6 +95,7 @@ public class ExternalGraphicTest extends TestCase {
         ImageAssert.assertEquals(file("externalGraphic"), image, 50);
     }
 
+    @Test
     public void testExternalGraphicAnchor() throws Exception {
         StreamingRenderer renderer = setupMap("externalGraphicAnchor.sld");
 
@@ -86,6 +104,7 @@ public class ExternalGraphicTest extends TestCase {
         ImageAssert.assertEquals(file("externalGraphicAnchor"), image, 50);
     }
 
+    @Test
     public void testExternalGraphicDisplacement() throws Exception {
         StreamingRenderer renderer = setupMap("externalGraphicDisplacement.sld");
 

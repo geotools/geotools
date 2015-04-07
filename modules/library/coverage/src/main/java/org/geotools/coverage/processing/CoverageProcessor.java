@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.processing;
 
+import it.geosolutions.jaiext.JAIExt;
+
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.Writer;
@@ -28,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -35,6 +38,7 @@ import java.util.logging.Logger;
 
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
+import javax.media.jai.OperationDescriptor;
 import javax.media.jai.TileCache;
 
 import org.geotools.coverage.AbstractCoverage;
@@ -173,6 +177,7 @@ public class CoverageProcessor {
             record.setLoggerName(LOGGER.getName());
             LOGGER.log(record);
         }
+        JAIExt.initJAIEXT();
     }
     
 	/**
@@ -248,6 +253,7 @@ public class CoverageProcessor {
     	if(hints==null||hints.isEmpty()){
 	        if (DEFAULT == null) {
 	            DEFAULT = new CacheableCoverageProcessor();
+	            processorsPool.put(new Hints(), DEFAULT);
 	        }
 	        return DEFAULT;
     	}
@@ -258,7 +264,42 @@ public class CoverageProcessor {
     	return processor;
     }
 
-
+    /**
+     * This method is called when the user has registered another {@link OperationDescriptor} for an operation
+     * and requires to update the various CoverageProcessors.
+     */
+    public static synchronized void updateProcessors(){
+        Set<Hints> keySet = processorsPool.keySet();
+        for(Hints key : keySet){
+            CoverageProcessor processor = processorsPool.get(key);
+            processor.scanForPlugins();
+        }
+    }
+    
+    /**
+     * This method is called when the user has registered another {@link OperationDescriptor} and must remove the old operation
+     * instance from the processors.
+     * 
+     * @param operationName Name of the operation to remove
+     */
+    public static synchronized void removeOperationFromProcessors(String operationName){
+        List<String> operations = JAIExt.getJAINames(operationName); 
+        Set<Hints> keySet = processorsPool.keySet();
+        for (Hints key : keySet) {
+            for (String opName : operations) {
+                CoverageProcessor processor = processorsPool.get(key);
+                try{
+                    Operation op = processor.getOperation(opName);
+                    if (op != null) {
+                        processor.removeOperation(op);
+                    }
+                }catch(OperationNotFoundException e){
+                    LOGGER.warning("Operation: " + opName + " not found in CoverageProcessor");
+                }
+                
+            }
+        }
+    }
 
     /**
      * The locale for logging message or reporting errors. The default implementations
@@ -409,6 +450,24 @@ public class CoverageProcessor {
 				    addOperation0(operation);
 				}
 			}
+
+    /**
+     * Removes the specified operation to this processor. 
+     * This method is usually invoked at construction time before this processor is made
+     * accessible.
+     * 
+     * @param operation The operation to remove.
+     */
+    protected void removeOperation(final Operation operation) {
+        Utilities.ensureNonNull("operation", operation);
+        synchronized (operations) {
+
+            if (operations.isEmpty()) {
+                return;
+            }
+            operations.remove(operation.getName().trim());
+        }
+    }
 
 	/**
 	 * Implementation of {@link #addOperation} method. Also used by {@link #scanForPlugins}

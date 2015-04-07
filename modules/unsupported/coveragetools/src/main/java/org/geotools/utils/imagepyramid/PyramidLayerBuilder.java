@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -40,6 +40,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.processing.CoverageProcessor;
+import org.geotools.coverage.processing.operation.Scale;
 import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
@@ -682,7 +683,7 @@ public class PyramidLayerBuilder extends BaseArgumentsManager implements
 					param.parameter("xTrans").setValue(new Float(0));
 					param.parameter("yTrans").setValue(new Float(0));
 					param.parameter("Interpolation").setValue(Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
-					gc = (GridCoverage2D) CoverageToolsConstants.SCALE_FACTORY.doOperation(param, new Hints());
+					gc = (GridCoverage2D) ((Scale)processor.getOperation("Scale")).doOperation(param, new Hints());
 				} else if (scaleAlgorithm.equalsIgnoreCase("filt")) {
 					// scaling
 					param =  CoverageToolsConstants.FILTERED_SUBSAMPLE_FACTORY.getParameters();
@@ -702,7 +703,7 @@ public class PyramidLayerBuilder extends BaseArgumentsManager implements
 					param.parameter("xTrans").setValue(new Float(0));
 					param.parameter("yTrans").setValue(new Float(0));
 					param.parameter("Interpolation").setValue(Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
-					gc = (GridCoverage2D) CoverageToolsConstants.SCALE_FACTORY.doOperation(param, new Hints());
+					gc = (GridCoverage2D) ((Scale)processor.getOperation("Scale")).doOperation(param, new Hints());
 				} else if (scaleAlgorithm.equalsIgnoreCase("avg")) {
 					param = processor.getOperation("SubsampleAverage").getParameters();
 					param.parameter("Source").setValue(gc);

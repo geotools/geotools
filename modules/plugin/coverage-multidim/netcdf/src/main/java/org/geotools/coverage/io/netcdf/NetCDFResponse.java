@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -523,13 +524,15 @@ class NetCDFResponse extends CoverageResponse{
      */
     private GridCoverage2D prepareCoverage(RenderedImage image, GridSampleDimension[] sampleDimensions) throws IOException {
 
-        // creating the final coverage by keeping into account the fact that we
-        Map<String, String> properties = null;
-//        if (granulesPaths != null) {
-//            properties = new HashMap<String, String>();
-//            properties.put(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY, granulesPaths);
-//        }
-//        image = TransposeDescriptor.create(image, TransposeDescriptor.FLIP_VERTICAL, hints); 
+        Map<String, Object> properties = null;
+        if (sampleDimensions != null && sampleDimensions.length > 0) {
+            GridSampleDimension sampleDimension = sampleDimensions[0];
+            double[] noData = sampleDimension.getNoDataValues();
+            if (noData != null && noData.length > 0) {
+                properties = new HashMap<String, Object>();  
+                CoverageUtilities.setNoDataProperty(properties, noData[0]);
+            }
+        }
         return COVERAGE_FACTORY.create(request.name, image, new GridGeometry2D(new GridEnvelope2D(PlanarImage.wrapRenderedImage(image)
                         .getBounds()), PixelInCell.CELL_CORNER, finalGridToWorldCorner,
                         this.targetBBox.getCoordinateReferenceSystem(), hints), sampleDimensions, null,

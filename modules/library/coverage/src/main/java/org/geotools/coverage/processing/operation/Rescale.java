@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,8 +16,18 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import org.geotools.util.NumberRange;
+import java.awt.image.RenderedImage;
+import java.util.Map;
+
+import javax.media.jai.ParameterBlockJAI;
+
+import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.OperationJAI;
+import org.geotools.util.NumberRange;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.util.InternationalString;
 
 
 /**
@@ -98,5 +108,16 @@ public class Rescale extends OperationJAI {
     @Override
     protected NumberRange deriveRange(final NumberRange[] ranges, final Parameters parameters) {
         return super.deriveRange(ranges, parameters);
+    }
+    
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+        handleROINoDataInternal(parameters, source, "Rescale", 2, 3);
+    }
+    
+    protected Map<String, ?> getProperties(RenderedImage data, CoordinateReferenceSystem crs,
+            InternationalString name, MathTransform gridToCRS, GridCoverage2D[] sources,
+            Parameters parameters) {
+        return handleROINoDataProperties(null, parameters.parameters, sources[0], "Rescale", 2, 3, 5);
     }
 }

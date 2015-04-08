@@ -173,6 +173,10 @@
 		<artifactId>jt-bandselect</artifactId>
 	</dependency>
 	<dependency>
+		<groupId>it.geosolutions.jaiext.bandcombine</groupId>
+		<artifactId>jt-bandcombine</artifactId>
+	</dependency>
+	<dependency>
 		<groupId>it.geosolutions.jaiext.border</groupId>
 		<artifactId>jt-border</artifactId>
 	</dependency>

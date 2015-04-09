@@ -117,11 +117,11 @@ Installing Maven
 
 Creating a new project
 ----------------------
-   
-#. We can now create our project with::
+
+#. We can now generate our project from maven-archetype-quickstart with::
 
       C:>cd C:\java
-      C:java> mvn archetype:create -DgroupId=org.geotools -DartifactId=tutorial
+      C:java>  mvn archetype:generate -DgroupId=org.geotools -DartifactId=tutorial -Dversion=1.0-SNAPSHOT -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-quickstart
 
 #. The above command creates the following files and directories::
    

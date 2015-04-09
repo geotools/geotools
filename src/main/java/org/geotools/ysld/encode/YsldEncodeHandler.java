@@ -2,6 +2,7 @@ package org.geotools.ysld.encode;
 
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.ysld.Tuple;
+import org.geotools.ysld.Ysld;
 import org.geotools.ysld.parse.Util;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
@@ -242,5 +243,16 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     boolean isNull(Expression expr) {
         return expr == null || expr == Expression.NIL;
+    }
+
+    protected void vendorOptions(Map<String, String> options) {
+        if (!options.isEmpty()) {
+            for (Map.Entry<String,String> kv : options.entrySet()) {
+                String option = Ysld.OPTION_PREFIX + kv.getKey();
+                String text = kv.getValue();
+    
+                put(option, toObjOrNull(text));
+            }
+        }
     }
 }

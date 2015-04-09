@@ -36,6 +36,7 @@ public class FeatureStyleEncoder extends YsldEncodeHandler<FeatureTypeStyle> {
             pop();
         }
         put("rules", new RuleEncoder(featureStyle));
+        vendorOptions(featureStyle.getOptions());
     }
 
 

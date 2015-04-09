@@ -736,22 +736,32 @@ public class YsldEncodeTest {
     }
     
     StyledLayerDescriptor sld(Symbolizer sym) {
+        return sld(fts(sym));
+    }
+
+    private FeatureTypeStyle fts(Symbolizer sym) {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        
+        Rule rule = styleFactory.createRule();
+        
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle();
+        fts.rules().add(rule);
+        
+        rule.symbolizers().add((Symbolizer)sym);
+        return fts;
+    }
 
+    private StyledLayerDescriptor sld(FeatureTypeStyle fts) {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
-
+        
         UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
-
+        
         Style style = styleFactory.createStyle();
         layer.userStyles().add(style);
-
-        Rule rule = styleFactory.createRule();
-
-        style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
-        style.featureTypeStyles().get(0).rules().add(rule);
-
-        rule.symbolizers().add((Symbolizer)sym);
+        style.featureTypeStyles().add(fts);
         return sld;
     }
 
@@ -844,5 +854,37 @@ public class YsldEncodeTest {
         YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point").seq("symbols").map(0).map("mark");
         
         assertThat(kvpLine(out.toString(),"fill-color"), equalTo("'#ABCDEF'"));
+    }
+    @Test
+    public void testFTSVendorOption() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyle fts = fts(p);
+        fts.getOptions().put("foo", "bar");
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(fts), out);
+        
+        System.out.append(out.toString());
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap result = obj.seq("feature-styles").map(0);
+        
+        assertThat(result.str("x-foo"), equalTo("bar"));
+    }
+    @Test
+    public void testSymbolizerVendorOption() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyle fts = fts(p);
+        p.getOptions().put("foo", "bar");
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(fts), out);
+        
+        System.out.append(out.toString());
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point");
+        
+        assertThat(result.str("x-foo"), equalTo("bar"));
     }
 }

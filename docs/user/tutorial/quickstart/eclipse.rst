@@ -447,10 +447,10 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
    .. image:: images/maven-version.png
       :scale: 60
    
-7. We can now create our project with::
+7. We can now generate our project from maven-archetype-quickstart with::
 
       C:>cd C:\java
-      C:java> mvn archetype:create -DgroupId=org.geotools -DartifactId=tutorial
+      C:java>  mvn archetype:generate -DgroupId=org.geotools -DartifactId=tutorial -Dversion=1.0-SNAPSHOT -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-quickstart
 
 8. And ask for our project to be set up for eclipse::
 

@@ -16,14 +16,14 @@
  */
 package org.geotools.filter.text.ecql;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.filter.IsEqualsToImpl;
 import org.geotools.filter.IsNullImpl;
 import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.function.PropertyExistsFunction;
@@ -436,4 +436,12 @@ public final class ECQLTest  {
         Assert.assertEquals("population/2<pop2000/2", ECQL.toCQL(javaFilter).replace(" ", ""));
     }
     
+    @Test
+    public void testQuotedComparison() throws Exception {
+        Filter filter = ECQL.toFilter("\"a\"=\"b\"");
+        final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        final Filter expected = ff.equal(ff.property("a"), ff.property("b"), false);
+        assertEquals(expected, filter);
+    }
+
 }

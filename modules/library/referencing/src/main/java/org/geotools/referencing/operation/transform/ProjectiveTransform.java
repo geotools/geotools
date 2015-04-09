@@ -503,11 +503,7 @@ public class ProjectiveTransform extends AbstractMathTransform implements Linear
                 final XMatrix matrix = getGeneralMatrix();
                 try {
                     matrix.invert();
-                } catch (SingularMatrixException exception) {
-                    throw new NoninvertibleTransformException(Errors.format(
-                              ErrorKeys.NONINVERTIBLE_TRANSFORM), exception);
-                } catch (MismatchedSizeException exception) {
-                    // This exception is thrown if the matrix is not square.
+                } catch (SingularMatrixException|IllegalArgumentException exception) {
                     throw new NoninvertibleTransformException(Errors.format(
                               ErrorKeys.NONINVERTIBLE_TRANSFORM), exception);
                 }

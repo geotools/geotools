@@ -68,6 +68,7 @@ public class GeneralMatrix implements XMatrix {
      */
     public GeneralMatrix(final int size) {
         mat = new DenseMatrix64F(size, size);
+        setIdentity();
     }
 
     /**
@@ -772,8 +773,8 @@ public class GeneralMatrix implements XMatrix {
     public void copySubMatrix(int rowSource, int colSource,
                               int numRows, int numCol,
                               int rowDest, int colDest, GeneralMatrix target) {
-        int rowLimit = rowSource + numRows - 1;
-        int colLimit = colSource + numCol - 1;
+        int rowLimit = rowSource + numRows;
+        int colLimit = colSource + numCol;
         CommonOps.extract(mat, rowSource, rowLimit, colSource, colLimit, target.mat, rowDest, colDest);
     }
 
@@ -861,8 +862,7 @@ public class GeneralMatrix implements XMatrix {
     }
 
     public void sub(GeneralMatrix matrix1, GeneralMatrix matrix2) {
-        mat.reshape( matrix1.mat.numCols, matrix1.mat.numCols, false );
+        mat.reshape( matrix1.mat.numRows, matrix1.mat.numCols, false );
         CommonOps.subtract(matrix1.mat, matrix2.mat, mat);
     }
-
 }

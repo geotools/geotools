@@ -969,8 +969,25 @@ public final class JDBCDataStore extends ContentDataStore
 
         try {
             DatabaseMetaData metaData = cx.getMetaData();
+            Set<String> availableTableTypes = new HashSet<String>();
+            
+            ResultSet tableTypes = null;
+            try{
+                tableTypes = metaData.getTableTypes();
+                while(tableTypes.next()){
+                    availableTableTypes.add(tableTypes.getString("TABLE_TYPE"));
+                }
+            }finally{
+                closeSafe(tableTypes);
+            }
+            Set<String> queryTypes = new HashSet<String>();
+            for (String desiredTableType : dialect.getDesiredTablesType()) {
+                if(availableTableTypes.contains(desiredTableType)){
+                    queryTypes.add(desiredTableType);
+                }
+            }
             ResultSet tables = metaData.getTables(null, escapeNamePattern(metaData, databaseSchema),
-                    "%", dialect.getDesiredTablesType());
+                    "%", queryTypes.toArray(new String[0]));
             if(fetchSize > 1) {
                 tables.setFetchSize(fetchSize);
             }

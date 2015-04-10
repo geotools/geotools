@@ -10,5 +10,6 @@ org.geotools.process.raster.PolygonExtractionProcess
 org.geotools.process.raster.RangeLookupProcess
 org.geotools.process.raster.RasterAsPointCollectionProcess
 org.geotools.process.raster.RasterZonalStatistics
+org.geotools.process.raster.RasterZonalStatistics2
 org.geotools.process.raster.ScaleCoverage 
 org.geotools.process.raster.StyleCoverage

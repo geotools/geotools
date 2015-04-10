@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -43,6 +43,7 @@ import org.geotools.imageio.netcdf.AncillaryFileManager;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.Slice2DIndex;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.test.TestData;
 import org.junit.After;
 import org.junit.Assert;
@@ -645,10 +646,11 @@ public final class NetCDFBasicTest extends Assert {
     public void testReadRegularNetCDF() throws IOException {
         NetCDFImageReaderSpi readerSpi = new NetCDFImageReaderSpi();
         File file = null;
+        String name = "2DLatLonCoverageHDF5.nc";
         try {
-            file = TestData.file(this, "2DLatLonCoverageHDF5.nc");
+            file = TestData.file(this, name);
         } catch (IOException e) {
-            LOGGER.warning("Unable to find file 2DLatLonCoverageHDF5.nc");
+            warnNoFile(name);
             return;
         }
         assertTrue(readerSpi.canDecodeInput(file));
@@ -658,10 +660,32 @@ public final class NetCDFBasicTest extends Assert {
     public void testReadNcML() throws IOException {
         NetCDFImageReaderSpi readerSpi = new NetCDFImageReaderSpi();
         File file = null;
+        String name = "2DLatLonCoverage.ncml";
         try {
-            file = TestData.file(this, "2DLatLonCoverage.ncml");
+            file = TestData.file(this, name);
         } catch (IOException e) {
-            LOGGER.warning("Unable to find file 2DLatLonCoverage.ncml");
+            warnNoFile(name);
+            return;
+        }
+        assertTrue(readerSpi.canDecodeInput(file));
+    }
+
+    @Test
+    public void testReadNC4() throws IOException {
+        NetCDFImageReaderSpi readerSpi = new NetCDFImageReaderSpi();
+        boolean isNC4available = NetCDFUtilities.isNC4CAvailable();
+        if (!isNC4available) {
+            LOGGER.warning("NetCDF4 reading test will be skipped due to " +
+                    "missing NetCDF C library.\nIf you want test to be executed, make sure you have "
+                    + "added the NetCDF C libraries location to the PATH environment variable" );
+            return;
+        }
+        String name = "temperatureisobaricNC4.nc";
+        File file = null;
+        try {
+            file = TestData.file(this, name);
+        } catch (IOException e) {
+            warnNoFile(name);
             return;
         }
         assertTrue(readerSpi.canDecodeInput(file));
@@ -676,13 +700,18 @@ public final class NetCDFBasicTest extends Assert {
     public void testReadCDL() throws IOException {
         NetCDFImageReaderSpi readerSpi = new NetCDFImageReaderSpi();
         File file = null;
+        String name = "2DLatLonCoverage.cdl";
         try {
-            file = TestData.file(this, "2DLatLonCoverage.cdl");
+            file = TestData.file(this, name);
         } catch (IOException e) {
-            LOGGER.warning("Unable to find file 2DLatLonCoverage.cdl");
+            warnNoFile(name);
             return;
         }
         assertFalse(readerSpi.canDecodeInput(file));
+    }
+
+    private void warnNoFile(String name) {
+        LOGGER.warning("Unable to find file " + name);
     }
 
     @Test

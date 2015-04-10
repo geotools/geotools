@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,10 +17,23 @@
 package org.geotools.coverage.processing.operation;
 
 // JAI dependencies (for javadoc)
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
+
+import java.awt.image.RenderedImage;
+import java.util.Collection;
+import java.util.Map;
+
+import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.AddDescriptor;
 
-import org.geotools.coverage.processing.OperationJAI;
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.processing.BaseMathOperationJAI;
 import org.geotools.util.NumberRange;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.util.InternationalString;
 
 
 /**
@@ -71,18 +84,24 @@ import org.geotools.util.NumberRange;
  * @see Add
  *
  */
-public class Add extends OperationJAI {
+public class Add extends BaseMathOperationJAI {
 
+    private static final String ALGEBRIC = "algebric";
+    private static final String ADD = "Add";
     /**
      * 
      */
     private static final long serialVersionUID = -4029879745691129215L;
 
     /**
-     * Constructs a default {@code "AddConst"} operation.
+     * Constructs a default {@code "Add"} operation.
      */
     public Add() {
-        super("Add");
+    	super(ADD, getOperationDescriptor(JAIExt.getOperationName(ADD)));
+    }
+    
+    public String getName() {
+        return ADD;
     }
 
     /**
@@ -105,5 +124,20 @@ public class Add extends OperationJAI {
         }
         return null;
     }
-   
+    
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        if(JAIExt.isJAIExtOperation(ALGEBRIC)){
+            parameters.set(Operator.SUM, 0);
+            Collection<GridCoverage2D> sources = (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
+            for(GridCoverage2D source : sources){
+                handleROINoDataInternal(parameters, source, ALGEBRIC, 1, 2);
+            }
+        }
+    }
+
+    protected Map<String, ?> getProperties(RenderedImage data, CoordinateReferenceSystem crs,
+            InternationalString name, MathTransform gridToCRS, GridCoverage2D[] sources,
+            Parameters parameters) {
+        return handleROINoDataProperties(null, parameters.parameters, sources[0], ALGEBRIC, 1, 2, 3);
+    }
 }

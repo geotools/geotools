@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -39,11 +39,11 @@ import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
-import javax.media.jai.operator.AffineDescriptor;
 
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -398,7 +398,9 @@ class Granule {
 					layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
 					localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT,layout));
 				}
-				return AffineDescriptor.create(raster, finalRaster2Model, nearest, null, localHints);
+				ImageWorker worker = new ImageWorker(raster).setRenderingHints(localHints);
+				worker.affine(finalRaster2Model, nearest, null);
+				return worker.getRenderedImage();
 			}
 		
 		} catch (IllegalStateException e) {

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -454,11 +454,6 @@ public class GridCoverageBuilder {
         private final Map<Integer,CharSequence> nodata;
 
         /**
-         * The "<cite>sample to geophysics</cite>" transform.
-         */
-        private MathTransform1D transform;
-
-        /**
          * The sample dimension. Will be created when first needed. May be reset to {@code null}
          * after creation if a new sample dimension need to be computed.
          */
@@ -476,51 +471,6 @@ public class GridCoverageBuilder {
             this.name   = name;
             this.units  = units;
             this.nodata = new TreeMap<Integer,CharSequence>();
-        }
-
-        /**
-         * Returns the "<cite>sample to geophysics</cite>" transform, or {@code null} if none.
-         */
-        public MathTransform1D getTransform() {
-            return transform;
-        }
-
-        /**
-         * Sets the "<cite>sample to geophysics</cite>" transform.
-         */
-        public void setTransform(final MathTransform1D transform) {
-            this.transform = transform;
-            sampleDimension = null;
-        }
-
-        /**
-         * Sets the "<cite>sample to geophysics</cite>" transform from a scale and an offset.
-         * The transformation formula will be:
-         *
-         * <blockquote>
-         * <var>geophysics</var> = {@code scale} &times; <var>sample</var> + {@code offset}
-         * </blockquote>
-         *
-         * @param scale  The {@code scale}  term in the linear equation.
-         * @param offset The {@code offset} term in the linear equation.
-         */
-        public void setLinearTransform(final double scale, final double offset) {
-            setTransform(LinearTransform1D.create(scale, offset));
-        }
-
-        /**
-         * Sets the "<cite>sample to geophysics</cite>" logarithmic transform
-         * from a scale and an offset. The transformation formula will be:
-         *
-         * <blockquote>
-         * <var>geophysics</var> = log<sub>{@code base}</sub>(<var>sample</var>) + {@code offset}
-         * </blockquote>
-         *
-         * @param base   The base of the logarithm (typically 10).
-         * @param offset The offset to add to the logarithm.
-         */
-        public void setLogarithmicTransform(final double base, final double offset) {
-            setTransform(LogarithmicTransform1D.create(base, offset));
         }
 
         /**
@@ -566,8 +516,7 @@ public class GridCoverageBuilder {
                     categories[i++] = new Category(entry.getValue(), null, sample);
                 }
                 range = NumberRange.create(lower, true, upper, false);
-                categories[i] = new Category(name, null, range, (transform != null) ?
-                                             transform : LinearTransform1D.IDENTITY);
+                categories[i] = new Category(name, null, range, true);
                 sampleDimension = new GridSampleDimension(name, categories, units);
             }
             return sampleDimension;

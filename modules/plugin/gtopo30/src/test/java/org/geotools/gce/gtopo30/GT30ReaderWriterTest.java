@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,6 @@ import javax.media.jai.ImageLayout;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
 import org.opengis.coverage.grid.GridCoverageWriter;
 
@@ -90,7 +89,6 @@ public class GT30ReaderWriterTest extends GT30TestBase {
 
 			// get a grid coverage
 			gc = ((GridCoverage2D) reader.read(null));
-			assertTrue(CoverageUtilities.hasRenderingCategories(gc));
 			if(TestData.isInteractiveTest())
 				gc.show();
 
@@ -114,7 +112,7 @@ public class GT30ReaderWriterTest extends GT30TestBase {
 
 			// read it again
 			reader = format.getReader(statURL);
-			gc = ((GridCoverage2D) reader.read(null));
+			GridCoverage2D gc1 = ((GridCoverage2D) reader.read(null));
 
 			/**
 			 * 
@@ -122,8 +120,6 @@ public class GT30ReaderWriterTest extends GT30TestBase {
 			 * everything is fine.
 			 * 
 			 */
-			// packed view for this coverage
-			GridCoverage2D gc1 = gc.geophysics(false);
 			if (TestData.isInteractiveTest()) {
 				gc1.show();
 				// logging some info

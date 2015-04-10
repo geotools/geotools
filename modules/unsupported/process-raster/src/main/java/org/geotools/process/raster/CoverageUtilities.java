@@ -1,4 +1,22 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.process.raster;
+
+import it.geosolutions.jaiext.range.RangeFactory;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -218,6 +236,45 @@ public class CoverageUtilities {
     return rltBuilder.build();
   }
 
+    public static it.geosolutions.jaiext.rlookup.RangeLookupTable getRangeLookupTableJAIEXT(
+            List<Range> classificationRanges, final int[] outputPixelValues,
+            final Number noDataValue, final int transferType) {
+        final it.geosolutions.jaiext.rlookup.RangeLookupTable.Builder rltBuilder = new it.geosolutions.jaiext.rlookup.RangeLookupTable.Builder();
+        final int size = classificationRanges.size();
+        final boolean useCustomOutputPixelValues = outputPixelValues != null
+                && outputPixelValues.length == size;
+
+        Class<? extends Number> noDataClass = it.geosolutions.jaiext.range.Range.DataType
+                .classFromType(transferType);
+
+        Class<? extends Number> widestClass = noDataClass;
+        for (int i = 0; i < size; i++) {
+            final Range range = classificationRanges.get(i);
+            final Class<? extends Number> rangeClass = range.getMin().getClass();
+
+            if (widestClass != rangeClass) {
+                widestClass = ClassChanger.getWidestClass(widestClass, rangeClass);
+            }
+            int rangeType = it.geosolutions.jaiext.range.Range.DataType
+                    .dataTypeFromClass(rangeClass);
+
+            final int reference = useCustomOutputPixelValues ? outputPixelValues[i] : i + 1;
+            it.geosolutions.jaiext.range.Range rangeJaiext = RangeFactory.convert(RangeFactory
+                    .create(range.getMin().doubleValue(), range.isMinIncluded(), range.getMax()
+                            .doubleValue(), range.isMaxIncluded()), rangeType);
+            rltBuilder.add(rangeJaiext, convert(reference, noDataClass));
+        }
+
+        // Add the largest range that contains the no data value
+        int rangeType = it.geosolutions.jaiext.range.Range.DataType.dataTypeFromClass(widestClass);
+        it.geosolutions.jaiext.range.Range rangeJaiext = RangeFactory.convert(
+                RangeFactory.create(getClassMinimum(widestClass).doubleValue(),
+                        getClassMaximum(widestClass).doubleValue()), rangeType);
+        rltBuilder.add(rangeJaiext, noDataValue);
+
+        return rltBuilder.build();
+    }
+  
   private static Number getClassMinimum(Class<? extends Number> numberClass) {
     if (numberClass == null) {
       return null;
@@ -270,26 +327,6 @@ public class CoverageUtilities {
     throw new UnsupportedOperationException("Class " + numberClass + " can't be used in a value Range");
   }
 
-//	@SuppressWarnings("unchecked")
-//	public static <T extends Number & Comparable> T guessNoDataValue(Class<T> type){
-//		if (type == null) {
-//	        return null;
-//	    } else if (Double.class.equals(type)) {
-//	        return (T) new Double(Double.NaN);
-//	    } else if (Float.class.equals(type)) {
-//	        return (T) new Float(Float.NaN);
-//	    } else if (Integer.class.equals(type)) {
-//	        return (T) Integer.valueOf(Integer.MIN_VALUE);
-//	    } else if (Byte.class.equals(type)) {
-//	        return (T) Byte.valueOf(0));
-//	    } else if (Short.class.equals(type)) {
-//	        return (T) Byte.valueOf(0));
-//	    } else {
-//	        throw new UnsupportedOperationException("Class " + type
-//	                + " can't be used in a value Range");
-//	    }
-//	}
-
 	public static Number convert(Number val, Class<? extends Number> type) {
 	    if (val == null) {
 	        return null;
@@ -323,31 +360,6 @@ public class CoverageUtilities {
 	                + " can't be used in a value Range");
 	    }
 	}
-
-//	public static <T extends Number & Comparable> Range<T> convertRange(Range src, Class<T> type) {
-//	    return new Range<T>(convert(src.getMin(), type), src.isMinIncluded(), convert(src.getMax(),
-//	            type), src.isMaxIncluded());
-//	}
-
-//	public static <T extends Number & Comparable<T>> Class<T> mapDataBufferType(int type) {
-//	
-//	    switch (type) {
-//	    case DataBuffer.TYPE_BYTE:
-//	        return (Class<T>)Byte.class;
-//	    case DataBuffer.TYPE_USHORT:
-//	        return (Class<T>)Short.class;
-//	    case DataBuffer.TYPE_SHORT:
-//	        return (Class<T>)Short.class;
-//	    case DataBuffer.TYPE_INT:
-//	        return (Class<T>)Integer.class;
-//	    case DataBuffer.TYPE_FLOAT:
-//	        return (Class<T>)Float.class;
-//	    case DataBuffer.TYPE_DOUBLE:
-//	        return (Class<T>) Double.class;
-//	    default:
-//	        throw new IllegalArgumentException("Unknown DataBuffer type " + type);
-//	    }
-//	}
 
     /**
      * Get the parameters of the region covered by the {@link GridCoverage2D coverage}.

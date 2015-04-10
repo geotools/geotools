@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,11 +16,14 @@
  */
 package org.geotools.coverage.processing;
 
+import it.geosolutions.jaiext.JAIExt;
+
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.media.jai.Interpolation;
-import javax.media.jai.KernelJAI;
 import javax.media.jai.Warp;
 
 import org.geotools.coverage.processing.operation.Resample;
@@ -720,42 +723,6 @@ public class Operations {
                 "Interpolation",     interpolation);
     }
 
-    /**
-     * Edge detector which computes the magnitude of the image gradient vector in two orthogonal
-     * directions. The default masks are the Sobel ones.
-     *
-     * @param source The source coverage.
-     * @throws CoverageProcessingException if the operation can't be applied.
-     *
-     * @see org.geotools.coverage.processing.operation.GradientMagnitude
-     */
-    public Coverage gradientMagnitude(final Coverage source)
-            throws CoverageProcessingException
-    {
-        return doOperation("GradientMagnitude", source);
-    }
-
-    /**
-     * Edge detector which computes the magnitude of the image gradient vector in two orthogonal
-     * directions.
-     *
-     * @param source The source coverage.
-     * @param mask1  The first mask.
-     * @param mask2  The second mask, orthogonal to the first one.
-     * @throws CoverageProcessingException if the operation can't be applied.
-     *
-     * @see org.geotools.coverage.processing.operation.GradientMagnitude
-     */
-    public Coverage gradientMagnitude(final Coverage source,
-                                      final KernelJAI mask1, final KernelJAI mask2)
-            throws CoverageProcessingException
-    {
-        return doOperation("GradientMagnitude", source, "mask1", mask1, "mask2", mask2);
-    }
-
-
-
-
     /////////////////////////////////////////////////////////////////////////////////
     ////////                                                                 ////////
     ////////                   H E L P E R   M E T H O D S                   ////////
@@ -777,7 +744,7 @@ public class Operations {
     {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
-        parameters.parameter("Source").setValue(source);
+        addSources(operationName, parameters, source);
         return processor.doOperation(parameters);
     }
     
@@ -798,8 +765,7 @@ public class Operations {
     {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
-        parameters.parameter("Source0").setValue(source0);
-        parameters.parameter("Source1").setValue(source1);
+        addSources(operationName, parameters, source0, source1);
         return processor.doOperation(parameters);
     }
 
@@ -823,7 +789,7 @@ public class Operations {
     {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
-        parameters.parameter("Source").setValue(source);
+        addSources(operationName, parameters, source);
         setParameterValue(parameters, argumentName1, argumentValue1);
         return processor.doOperation(parameters);
     }
@@ -851,7 +817,7 @@ public class Operations {
     {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
-        parameters.parameter("Source").setValue(source);
+        addSources(operationName, parameters, source);
         setParameterValue(parameters, argumentName1, argumentValue1);
         setParameterValue(parameters, argumentName2, argumentValue2);
         return processor.doOperation(parameters);
@@ -883,7 +849,7 @@ public class Operations {
     {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
-        parameters.parameter("Source").setValue(source);
+        addSources(operationName, parameters, source);
         setParameterValue(parameters, argumentName1, argumentValue1);
         setParameterValue(parameters, argumentName2, argumentValue2);
         setParameterValue(parameters, argumentName3, argumentValue3);
@@ -913,7 +879,7 @@ public class Operations {
     {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
-        parameters.parameter("Source").setValue(source);
+        addSources(operationName, parameters, source);
         setParameterValue(parameters, argumentName1, argumentValue1);
         setParameterValue(parameters, argumentName2, argumentValue2);
         setParameterValue(parameters, argumentName3, argumentValue3);
@@ -945,7 +911,7 @@ public class Operations {
     {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
-        parameters.parameter("Source").setValue(source);
+        addSources(operationName, parameters, source);
         setParameterValue(parameters, argumentName1, argumentValue1);
         setParameterValue(parameters, argumentName2, argumentValue2);
         setParameterValue(parameters, argumentName3, argumentValue3);
@@ -979,7 +945,7 @@ public class Operations {
     {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
-        parameters.parameter("Source").setValue(source);
+        addSources(operationName, parameters, source);
         setParameterValue(parameters, argumentName1, argumentValue1);
         setParameterValue(parameters, argumentName2, argumentValue2);
         setParameterValue(parameters, argumentName3, argumentValue3);
@@ -987,6 +953,21 @@ public class Operations {
         setParameterValue(parameters, argumentName5, argumentValue5);
         setParameterValue(parameters, argumentName6, argumentValue6);
         return processor.doOperation(parameters);
+    }
+
+    private void addSources(final String operationName, final ParameterValueGroup parameters,
+            final Coverage... sources) {
+        if (JAIExt.getOperationName(operationName).equalsIgnoreCase("algebric")) {
+            ArrayList<Coverage> sourceList = new ArrayList<>();
+            sourceList.addAll(Arrays.asList(sources));
+            parameters.parameter("Sources").setValue(sourceList);
+        } else if (sources.length == 1) {
+            parameters.parameter("Source").setValue(sources[0]);
+        } else {
+            for (int i = 0; i < sources.length; i++) {
+                parameters.parameter("Source" + i).setValue(sources[i]);
+            }
+        }
     }
 
     /**

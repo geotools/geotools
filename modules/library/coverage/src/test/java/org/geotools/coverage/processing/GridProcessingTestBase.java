@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,7 @@ import javax.media.jai.RenderedOp;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageTestBase;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
+
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.factory.Hints;
 import org.geotools.referencing.crs.DefaultDerivedCRS;
@@ -62,7 +62,7 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
         final MathTransform tr = ProjectiveTransform.create(atr);
         CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem();
         crs = new DefaultDerivedCRS("Rotation " + angle + "°", crs, tr, crs.getCoordinateSystem());
-        return project(coverage, crs, null, null, true);
+        return project(coverage, crs, null, null);
     }
 
     /**
@@ -72,16 +72,14 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
      * @param targetCRS The target CRS, or {@code null} if the same.
      * @param geometry  The target geometry, or {@code null} if the same.
      * @param hints     An optional set of hints, or {@code null} if none.
-     * @param useGeophysics {@code true} for projecting the geophysics view.
      * @return The operation name which was applied on the image, or {@code null} if none.
      */
     protected static GridCoverage2D project(GridCoverage2D            coverage,
                                       final CoordinateReferenceSystem targetCRS,
                                       final GridGeometry2D            geometry,
-                                      final Hints                     hints,
-                                      final boolean                   useGeophysics)
+                                      final Hints                     hints)
     {
-        return project(coverage, targetCRS, geometry, "bilinear", hints, useGeophysics);
+        return project(coverage, targetCRS, geometry, "bilinear", hints);
 
         
     }
@@ -94,18 +92,15 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
      * @param geometry  The target geometry, or {@code null} if the same.
      * @param interpolationType The target interpolation.
      * @param hints     An optional set of hints, or {@code null} if none.
-     * @param useGeophysics {@code true} for projecting the geophysics view.
      * @return The operation name which was applied on the image, or {@code null} if none.
      */
     protected static GridCoverage2D project(GridCoverage2D            coverage,
                                       final CoordinateReferenceSystem targetCRS,
                                       final GridGeometry2D            geometry,
                                       final String                    interpolationType,
-                                      final Hints                     hints,
-                                      final boolean                   useGeophysics)
+                                      final Hints                     hints)
     {
         final CoverageProcessor processor = CoverageProcessor.getInstance(hints);
-        coverage = coverage.view(useGeophysics ? ViewType.GEOPHYSICS : ViewType.PACKED);
         final ParameterValueGroup param = processor.getOperation("Resample").getParameters();
         param.parameter("Source").setValue(coverage);
         if (targetCRS != null) {
@@ -129,23 +124,20 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
      * @param targetCRS The target CRS, or {@code null} if the same.
      * @param geometry  The target geometry, or {@code null} if the same.
      * @param hints     An optional set of hints, or {@code null} if none.
-     * @param useGeophysics {@code true} for projecting the geophysics view.
      * @return The operation name which was applied on the image, or {@code null} if none.
      */
     protected static String showProjected(GridCoverage2D            coverage,
                                     final CoordinateReferenceSystem targetCRS,
                                     final GridGeometry2D            geometry,
-                                    final Hints                     hints,
-                                    final boolean                   useGeophysics)
+                                    final Hints                     hints)
     {
-        coverage = project(coverage, targetCRS, geometry, hints, useGeophysics);
+        coverage = project(coverage, targetCRS, geometry, hints);
         final RenderedImage image = coverage.getRenderedImage();
         String operation = null;
         if (image instanceof RenderedOp) {
             operation = ((RenderedOp) image).getOperationName();
             CoverageProcessor.LOGGER.fine("Applied \"" + operation + "\" JAI operation.");
         }
-        coverage = coverage.view(ViewType.PACKED);
         if (SHOW) {
             /*
              * Note: In current Resample implementation, simple affine transforms like
@@ -169,8 +161,6 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
      *          The coverage to apply the operation on.
      * @param hints
      *          An optional set of hints, or {@code null} if none.
-     * @param useGeophysics
-     *          {@code true} for performing the operation on the geophysics view.
      * @param asCRS
      *          The expected operation name if the resampling is performed as a CRS change.
      * @param asGG
@@ -178,7 +168,6 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
      */
     protected static void showTranslated(GridCoverage2D coverage,
                                    final Hints    hints,
-                                   final boolean  useGeophysics,
                                    final String   asCRS,
                                    final String   asGG)
     {
@@ -188,12 +177,12 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
         CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem();
         crs = new DefaultDerivedCRS("Translated", crs, tr, crs.getCoordinateSystem());
         assertEquals(asCRS,
-                showProjected(coverage, crs, null, hints, useGeophysics));
+                showProjected(coverage, crs, null, hints));
 
         // Same operation, given the translation in the GridGeometry argument rather than the CRS.
         final GridGeometry2D gg = new GridGeometry2D(null, tr, null);
         assertEquals(asGG,
-                showProjected(coverage, null, gg, hints, useGeophysics));
+                showProjected(coverage, null, gg, hints));
 
         // TODO: we should probably invoke "assertRasterEquals" with both coverages.
     }

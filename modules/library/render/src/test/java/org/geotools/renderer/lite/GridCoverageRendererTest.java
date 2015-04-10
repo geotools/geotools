@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -332,6 +332,26 @@ public class GridCoverageRendererTest  {
     }
 
     @Test
+    public void testInterpolationBicubic() throws Exception {
+        CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-20037508.34, 20037508.34,
+                -20037508.34, 20037508.34, googleMercator);
+        Rectangle screenSize = new Rectangle(200, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 200));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator, mapExtent,
+                screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        GridCoverage2D coverage = worldReader.read(null);
+        RenderedImage image = renderer.renderImage(coverage, rasterSymbolizer,
+                Interpolation.getInstance(Interpolation.INTERP_BICUBIC), Color.RED, 256, 256);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorBicubic.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    @Test
     public void testInvertedColors() throws Exception {
         MapContent content = new MapContent();
         content.getViewport().setBounds(
@@ -460,7 +480,7 @@ public class GridCoverageRendererTest  {
                 Color.RED, 256, 256);
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorBlackLine.png");
-        ImageAssert.assertEquals(reference, image, 0);
+        ImageAssert.assertEquals(reference, image, 5);
     }
 
     @Test
@@ -478,7 +498,7 @@ public class GridCoverageRendererTest  {
                 Color.RED, 256, 256);
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorTouchDateline.png");
-        ImageAssert.assertEquals(reference, image, 0);
+        ImageAssert.assertEquals(reference, image, 10);
     }
 
     @Test
@@ -497,7 +517,7 @@ public class GridCoverageRendererTest  {
                 Color.RED, 256, 256);
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/wrapDatelineNearest.png");
-        ImageAssert.assertEquals(reference, image, 0);
+        ImageAssert.assertEquals(reference, image, 20);
     }
 
     @Test
@@ -628,7 +648,7 @@ public class GridCoverageRendererTest  {
         assertNotNull(image);
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/north_polar.png");
-        ImageAssert.assertEquals(reference, image, 0);
+        ImageAssert.assertEquals(reference, image, 40);
     }
 
     @Test

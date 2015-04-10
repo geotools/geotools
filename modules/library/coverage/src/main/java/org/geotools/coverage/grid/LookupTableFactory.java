@@ -36,7 +36,7 @@ import org.geotools.util.WeakValueHashMap;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-final class LookupTableFactory {
+public final class LookupTableFactory {
     /**
      * The pool of {@link LookupTableJAI} objects already created.
      */

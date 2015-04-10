@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,9 +16,26 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import javax.media.jai.operator.WarpDescriptor;
+import java.awt.image.RenderedImage;
+import java.util.HashMap;
+import java.util.Map;
 
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.range.RangeFactory;
+import it.geosolutions.jaiext.warp.WarpDescriptor;
+
+import javax.media.jai.ParameterBlockJAI;
+import javax.media.jai.PropertyGenerator;
+import javax.media.jai.ROI;
+
+import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
+import org.geotools.resources.coverage.CoverageUtilities;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.util.InternationalString;
 
 
 /**
@@ -41,6 +58,39 @@ public class Warp extends BaseScaleOperationJAI {
      */
     public Warp() {
         super("Warp");
+    }
+    
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+        handleROINoDataInternal(parameters, source, "Warp", 3, 4);
+    }
+
+    protected Map<String, ?> getProperties(RenderedImage data, CoordinateReferenceSystem crs,
+            InternationalString name, MathTransform gridToCRS, GridCoverage2D[] sources,
+            Parameters parameters) {
+        Map props = sources[PRIMARY_SOURCE_INDEX].getProperties();
+
+        Map properties = new HashMap<>();
+        if (props != null) {
+            properties.putAll(props);
+        }
+
+        // Setting NoData property if needed
+        double[] background = (double[]) parameters.parameters.getObjectParameter(2);
+        if (parameters.parameters.getNumParameters() > 3
+                && parameters.parameters.getObjectParameter(4) != null) {
+            CoverageUtilities.setNoDataProperty(properties, background);
+        }
+        
+
+        // Setting ROI if present
+        PropertyGenerator propertyGenerator = new WarpDescriptor().getPropertyGenerators()[0];
+        Object roiProp = propertyGenerator.getProperty("roi", data);
+        if (roiProp != null && roiProp instanceof ROI) {
+            CoverageUtilities.setROIProperty(properties, (ROI) roiProp);
+        }
+
+        return properties;
     }
 
 }

@@ -19,6 +19,18 @@ package org.geotools.referencing.piecewise;
 import it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageReader;
 import it.geosolutions.imageio.plugins.arcgrid.spi.AsciiGridsImageReaderSpi;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import it.geosolutions.jaiext.piecewise.DefaultConstantPiecewiseTransformElement;
+import it.geosolutions.jaiext.piecewise.DefaultLinearPiecewiseTransform1DElement;
+import it.geosolutions.jaiext.piecewise.DefaultPassthroughPiecewiseTransform1DElement;
+import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1D;
+import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1DElement;
+import it.geosolutions.jaiext.piecewise.GenericPiecewiseOpImage;
+import it.geosolutions.jaiext.piecewise.MathTransformation;
+import it.geosolutions.jaiext.piecewise.PiecewiseUtilities;
+import it.geosolutions.jaiext.piecewise.Position;
+import it.geosolutions.jaiext.piecewise.SingleDimensionTransformation;
+import it.geosolutions.jaiext.piecewise.TransformationException;
+import it.geosolutions.jaiext.range.RangeFactory;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -31,23 +43,14 @@ import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.ExtremaDescriptor;
 
 import junit.framework.Assert;
 
 import org.geotools.TestData;
-import org.geotools.geometry.DirectPosition1D;
-import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.operation.transform.LinearTransform1D;
-import org.geotools.util.NumberRange;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.operation.MathTransform1D;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -62,14 +65,17 @@ public class TestPiecewise  {
 
 
 
-	/**
+	private static final String LOGGER = null;
+
+    /**
 	 * Testing {@link DefaultConstantPiecewiseTransformElement}.
 	 * 
 	 * @throws IOException
 	 * @throws TransformException
+	 * @throws TransformationException 
 	 */
 	@Test
-	public void linearTransform() throws IOException, TransformException {
+	public void linearTransform() throws IOException, TransformException, TransformationException {
 
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -77,7 +83,7 @@ public class TestPiecewise  {
 		//
 		// /////////////////////////////////////////////////////////////////////
 		DefaultPiecewiseTransform1DElement e0 = DefaultPiecewiseTransform1DElement
-				.create("zero", NumberRange.create(0,100),NumberRange.create(0,200));
+				.create("zero", RangeFactory.create(0,100),RangeFactory.create(0,200));
 		Assert.assertTrue(e0 instanceof DefaultLinearPiecewiseTransform1DElement);
 		// checks
 		Assert.assertEquals(((DefaultLinearPiecewiseTransform1DElement)e0).getOutputMinimum(), e0.transform(0),0.0);
@@ -101,12 +107,6 @@ public class TestPiecewise  {
 
 		// checks
 		Assert.assertEquals(0.0, transform.transform(0),0);
-		try{
-			Assert.assertFalse(transform.isIdentity());
-			Assert.assertTrue(false);
-		}catch (Exception e) {
-			// TODO: handle exception
-		}
 		Assert.assertEquals(1, transform.getSourceDimensions());
 		Assert.assertEquals(1, transform.getTargetDimensions());
 		
@@ -114,7 +114,7 @@ public class TestPiecewise  {
 
 	}
 	/**
-	 * Testing {@link MathTransform1DAdapter}.
+	 * Testing {@link MathTransformationAdapter}.
 	 * 
 	 * @throws IOException
 	 * @throws TransformException
@@ -122,13 +122,13 @@ public class TestPiecewise  {
 	@Test
 	public void mathTransform1DAdapter() throws IOException, TransformException {
 		//default adapter
-		final MathTransform1DAdapter defaultAdapter = new MathTransform1DAdapter();
+		final MathTransformationAdapter defaultAdapter = new MathTransformationAdapter();
 		Assert.assertEquals(defaultAdapter.getSourceDimensions(), 1);
 		Assert.assertEquals(defaultAdapter.getTargetDimensions(), 1);
 
 
 		try{
-			defaultAdapter.inverse();
+			defaultAdapter.inverseTransform();
 			Assert.assertFalse(true);
 		}catch (UnsupportedOperationException e) {
 			
@@ -141,58 +141,18 @@ public class TestPiecewise  {
 			
 		}
 		
-		try{
-			defaultAdapter.transform(new double[]{0},0,(double[])null,0,1);
-			Assert.assertFalse(true);
-		}catch (UnsupportedOperationException e) {
-			
-		}
 		
-		
-		try{
-			defaultAdapter.transform(new float[]{0},0,(float[])null,0,1);
-			Assert.assertFalse(true);
-		}catch (UnsupportedOperationException e) {
-			
-		}
-		
-		try{
-			defaultAdapter.derivative(0.0);
-			Assert.assertFalse(true);
-		}catch (UnsupportedOperationException e) {
-			
-		}
-		
-		try{
-			defaultAdapter.derivative(new DirectPosition1D(0));
-			Assert.assertFalse(true);
-		}catch (UnsupportedOperationException e) {
-			
-		}
-		
-		
-		try{
-			defaultAdapter.toWKT();
-			Assert.assertFalse(true);
-		}catch (UnsupportedOperationException e) {
-			
-		}
-		
-		try{
-			defaultAdapter.isIdentity();
-			Assert.assertFalse(true);
-		}catch (UnsupportedOperationException e) {
-			
-		}
 	}
 	/**
 	 * Testing {@link DefaultConstantPiecewiseTransformElement}.
 	 * 
 	 * @throws IOException
 	 * @throws TransformException
+	 * @throws TransformationException 
+	 * @throws it.geosolutions.jaiext.piecewise.NoninvertibleTransformException 
 	 */
 	@Test
-	public void constantTransform() throws IOException, TransformException {
+	public void constantTransform() throws IOException, TransformException, it.geosolutions.jaiext.piecewise.NoninvertibleTransformException, TransformationException {
 
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -202,7 +162,7 @@ public class TestPiecewise  {
 		DefaultPiecewiseTransform1DElement e0 = 
 		    DefaultPiecewiseTransform1DElement.create(
 		            "zero", 
-		            NumberRange.create(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY),
+		            RangeFactory.create(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY),
 		            ((byte) 0));
 		Assert.assertTrue(e0 instanceof DefaultConstantPiecewiseTransformElement);
 		// checks
@@ -221,12 +181,7 @@ public class TestPiecewise  {
 		// checks
 		Assert.assertEquals(0.0, transform.transform(0),0);
 		Assert.assertEquals( transform.transform(Double.POSITIVE_INFINITY),0.0,0.0);
-		try{
-			transform.inverse();
-			Assert.assertTrue(false);
-		}catch (Exception e) {
-			// TODO: handle exception
-		}
+
 
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -235,7 +190,7 @@ public class TestPiecewise  {
 		// /////////////////////////////////////////////////////////////////////
 		e0 = DefaultPiecewiseTransform1DElement.create(
 		        "zero", 
-		        NumberRange.create(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY),
+		        RangeFactory.create(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY),
 		        0);
 		Assert.assertTrue(e0 instanceof DefaultConstantPiecewiseTransformElement);
 		// checks
@@ -254,12 +209,6 @@ public class TestPiecewise  {
 		// checks
 		Assert.assertEquals(0.0, transform1.transform(0),0);
 		Assert.assertEquals( transform1.transform(Double.POSITIVE_INFINITY),0.0,0.0);
-		try{
-			transform1.inverse();
-			Assert.assertTrue(false);
-		}catch (Exception e) {
-			// TODO: handle exception
-		}
 		
 		//hashcode and equals
 		Assert.assertFalse(transform.equals(transform1));
@@ -275,7 +224,7 @@ public class TestPiecewise  {
 		// /////////////////////////////////////////////////////////////////////
 		e0 = DefaultPiecewiseTransform1DElement.create(
 		        "zero", 
-		        NumberRange.create(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY), 
+		        RangeFactory.create(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY), 
 		        0.0);
 		Assert.assertTrue(e0 instanceof DefaultConstantPiecewiseTransformElement);
 		// checks
@@ -294,12 +243,6 @@ public class TestPiecewise  {
 		// checks
 		Assert.assertEquals(0.0, transform.transform(0),0);
 		Assert.assertEquals( transform.transform(Double.POSITIVE_INFINITY),0.0,0.0);
-		try{
-			transform.inverse();
-			Assert.assertTrue(false);
-		}catch (Exception e) {
-			// TODO: handle exception
-		}
 		
 		
 		// /////////////////////////////////////////////////////////////////////
@@ -308,11 +251,11 @@ public class TestPiecewise  {
 		//
 		// /////////////////////////////////////////////////////////////////////
 		e0 = DefaultPiecewiseTransform1DElement
-				.create("zero", NumberRange.create(3, 3), 0.0);
+				.create("zero", RangeFactory.create(3, 3), 0.0);
 		Assert.assertTrue(e0 instanceof DefaultConstantPiecewiseTransformElement);
 		// checks
 		Assert.assertEquals(0.0, e0.transform(3),0.0);
-		Assert.assertEquals(3, e0.inverse().transform(new DirectPosition1D(0),null).getOrdinate(0),0);
+		Assert.assertEquals(3, e0.inverse().transform(new Position(0),null).getOrdinatePosition(),0);
 		
 		
 		transform = new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(new DefaultPiecewiseTransform1DElement[] {e0});
@@ -330,9 +273,10 @@ public class TestPiecewise  {
 	 * 
 	 * @throws IOException
 	 * @throws TransformException
+	 * @throws TransformationException 
 	 */
 	@Test
-	public void piecewiseLogarithm() throws IOException, TransformException {
+	public void piecewiseLogarithm() throws IOException, TransformException, TransformationException {
 
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -341,10 +285,10 @@ public class TestPiecewise  {
 		//
 		// /////////////////////////////////////////////////////////////////////
 		final DefaultPiecewiseTransform1DElement zero = DefaultPiecewiseTransform1DElement
-				.create("zero", NumberRange.create(0, 0), 0);
+				.create("zero", RangeFactory.create(0, 0), 0);
 		final DefaultPiecewiseTransform1DElement mainElement = new DefaultPiecewiseTransform1DElement(
-				"natural logarithm", NumberRange.create(0, false, 255, true),
-				new MathTransform1D() {
+				"natural logarithm", RangeFactory.create(0, false, 255, true),
+				new MathTransformation() {
 
 					public double derivative(double arg0)
 							throws TransformException {
@@ -352,16 +296,8 @@ public class TestPiecewise  {
 						return 1/arg0;
 					}
 
-					public double transform(double arg0)
-							throws TransformException {
+					public double transform(double arg0) {
 						return Math.log(arg0);
-					}
-
-					public Matrix derivative(DirectPosition arg0)
-							throws MismatchedDimensionException,
-							TransformException {
-						
-						return null;
 					}
 
 					public int getSourceDimensions() {
@@ -374,53 +310,24 @@ public class TestPiecewise  {
 						return 1;
 					}
 
-					public MathTransform1D inverse()
-							throws NoninvertibleTransformException {
-						
-						return null;
-					}
-
 					public boolean isIdentity() {
 						return false;
 					}
 
-					public String toWKT() throws UnsupportedOperationException {
-						
-						return null;
-					}
+                                        @Override
+                                        public MathTransformation inverseTransform() {
+                                            return null;
+                                        }
 
-					public DirectPosition transform(DirectPosition arg0,
-							DirectPosition arg1)
-							throws MismatchedDimensionException,
-							TransformException {
-						
-						return null;
-					}
-
-					public void transform(double[] arg0, int arg1,
-							double[] arg2, int arg3, int arg4)
-							throws TransformException {
-						
-						
-					}
-
-					public void transform(float[] arg0, int arg1, float[] arg2,
-							int arg3, int arg4) throws TransformException {
-						
-						
-					}
-
-					public void transform(float[] arg0, int arg1, double[] arg2,
-							int arg3, int arg4) throws TransformException {
-						
-						
-					}
-
-					public void transform(double[] arg0, int arg1, float[] arg2,
-							int arg3, int arg4) throws TransformException {
-						
-						
-					}
+                    @Override
+                    public Position transform(Position ptSrc, Position ptDst)
+                            throws TransformationException {
+                        if(ptDst == null){
+                            ptDst = new Position();
+                        }
+                        ptDst.setOrdinatePosition(transform(ptSrc.getOrdinatePosition()));
+                        return ptDst;
+                    }
 				});
 		DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement> transform = 
 		    new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(new DefaultPiecewiseTransform1DElement[] {zero,mainElement});
@@ -430,12 +337,14 @@ public class TestPiecewise  {
 		Assert.assertEquals(0.0, transform.transform(1),0);
 		Assert.assertEquals(Math.log(255.0), transform.transform(255),0);
 		Assert.assertEquals(Math.log(124.0), transform.transform(124),0);
+		
+		boolean exceptionFound = false;
 		try {
 			Assert.assertEquals(Math.log(255.0), transform.transform(256),0);
-			Assert.assertTrue(false);
-		} catch (TransformException e) {
-			
+		} catch (TransformationException e) {
+		    exceptionFound = true; 
 		}
+		Assert.assertTrue(exceptionFound);
 
 		
 		// /////////////////////////////////////////////////////////////////////
@@ -445,21 +354,24 @@ public class TestPiecewise  {
 		//
 		// /////////////////////////////////////////////////////////////////////
 		final DefaultPiecewiseTransform1DElement nodata = DefaultPiecewiseTransform1DElement
-				.create("no-data", NumberRange.create(-1, -1), Double.NaN);
+				.create("no-data", RangeFactory.create(-1, -1), Double.NaN);
 		transform = 
 		    new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(new DefaultPiecewiseTransform1DElement[] {zero,mainElement,nodata});
 
 		// checks
-		Assert.assertEquals(0.0, transform.transform(0),0);
-		Assert.assertEquals(0.0, transform.transform(1),0);
-		Assert.assertEquals(Math.log(255.0), transform.transform(255),0);
-		Assert.assertEquals(Math.log(124.0), transform.transform(124),0);
-		try {
-			Assert.assertTrue(Double.isNaN(transform.transform(256)));
-			Assert.assertTrue(false);
-		} catch (TransformException e) {
-			Assert.assertTrue(true);
-		}
+                Assert.assertEquals(0.0, transform.transform(0), 0);
+                Assert.assertEquals(0.0, transform.transform(1), 0);
+                Assert.assertEquals(Math.log(255.0), transform.transform(255), 0);
+                Assert.assertEquals(Math.log(124.0), transform.transform(124), 0);
+
+		exceptionFound = false;
+		
+                try {
+                    Assert.assertTrue(Double.isNaN(transform.transform(256)));
+                } catch (TransformationException e1) {
+                    exceptionFound = true; 
+                }
+		Assert.assertTrue(exceptionFound);
 		
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -467,17 +379,16 @@ public class TestPiecewise  {
 		//
 		// /////////////////////////////////////////////////////////////////////
 		final DefaultPiecewiseTransform1DElement overlap = DefaultPiecewiseTransform1DElement
-				.create("overlap", NumberRange.create(-100, 12), Double.NaN);
-		try {
-		transform = 
-		    new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(new DefaultPiecewiseTransform1DElement[] {zero,mainElement,overlap,nodata});
-				Assert.assertTrue(false);
-		} catch (Throwable e) {
-			Assert.assertTrue(true);
-		}
+				.create("overlap", RangeFactory.create(-100, 12), Double.NaN);
+                exceptionFound = false;
+                try {
+                    transform = new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(
+                            new DefaultPiecewiseTransform1DElement[] { zero, mainElement, overlap, nodata });
+                } catch (Throwable e) {
+                    exceptionFound = true;
+                }
+                Assert.assertTrue(exceptionFound);
 
-
-		
 	}
 
 		
@@ -486,43 +397,44 @@ public class TestPiecewise  {
 		 * 
 		 * @throws IOException
 		 * @throws TransformException
+		 * @throws TransformationException 
 		 */
 	@Test
 		public void defaultTransform() throws IOException,
-				TransformException {
+				TransformException, TransformationException {
 			////
 			//
 			// Create first element and test it
 			//
 			/////
 			DefaultPiecewiseTransform1DElement t0 = new DefaultPiecewiseTransform1DElement(
-					"t0", NumberRange.create(0.0, true, 1.0, true), PiecewiseUtilities
-							.createLinearTransform1D(NumberRange.create(0.0, true, 1.0,
-									true), NumberRange.create(200, 201)));
+					"t0", RangeFactory.create(0.0, true, 1.0, true), PiecewiseUtilities
+							.createLinearTransform1D(RangeFactory.create(0.0, true, 1.0,
+									true), RangeFactory.create(200, 201)));
 			Assert.assertEquals(t0.transform(0.5), 200.5, 0.0);
 			Assert.assertTrue(t0.contains(0.5));
-			Assert.assertTrue(t0.contains(NumberRange.create(0.1,0.9)));
+			Assert.assertTrue(t0.contains(RangeFactory.create(0.1,0.9)));
 			Assert.assertFalse(t0.contains(1.5));
-			Assert.assertFalse(t0.contains(NumberRange.create(0.1,1.9)));
+			Assert.assertFalse(t0.contains(RangeFactory.create(0.1,1.9)));
 			Assert.assertTrue(t0.equals(t0));
 			Assert.assertEquals(t0.transform(
-					new GeneralDirectPosition(new double[] { 0.5 }), null)
-					.getOrdinate(0), 200.5, 0.0);
+					new Position( 0.5 ), null)
+					.getOrdinatePosition(), 200.5, 0.0);
 			Assert.assertEquals(t0.inverse().transform(
-					new GeneralDirectPosition(new double[] { 200.5 }), null)
-					.getOrdinate(0), 0.5, 0.0);
-			Assert.assertEquals(t0.derivative(1.0), 1.0, 0.0);
+					new Position(200.5 ), null)
+					.getOrdinatePosition(), 0.5, 0.0);
+			//Assert.assertEquals(t0.derivative(1.0), 1.0, 0.0);
 			
-			t0 = DefaultPiecewiseTransform1DElement.create("t0", NumberRange.create(0.0, true, 1.0, true),  NumberRange.create(200, 201));
-			Assert.assertFalse(t0.equals(DefaultPiecewiseTransform1DElement.create("t0", NumberRange.create(0.0, true, 1.0, true),  NumberRange.create(200, 202))));
+			t0 = DefaultPiecewiseTransform1DElement.create("t0", RangeFactory.create(0.0, true, 1.0, true),  RangeFactory.create(200, 201));
+			Assert.assertFalse(t0.equals(DefaultPiecewiseTransform1DElement.create("t0", RangeFactory.create(0.0, true, 1.0, true),  RangeFactory.create(200, 202))));
 			Assert.assertEquals(t0.transform(0.5), 200.5, 0.0);
 			Assert.assertEquals(t0.transform(
-					new GeneralDirectPosition(new double[] { 0.5 }), null)
-					.getOrdinate(0), 200.5, 0.0);
+					new Position(0.5), null)
+					.getOrdinatePosition(), 200.5, 0.0);
 			Assert.assertEquals(t0.inverse().transform(
-					new GeneralDirectPosition(new double[] { 200.5 }), null)
-					.getOrdinate(0), 0.5, 0.0);
-			Assert.assertEquals(t0.derivative(1.0), 1.0, 0.0);
+					new Position(200.5), null)
+					.getOrdinatePosition(), 0.5, 0.0);
+			//Assert.assertEquals(t0.derivative(1.0), 1.0, 0.0);
 			
 			////
 			//
@@ -530,50 +442,37 @@ public class TestPiecewise  {
 			//
 			/////
 			DefaultPiecewiseTransform1DElement t1 = DefaultPiecewiseTransform1DElement.create(
-					"t1", NumberRange.create(1.0, false, 2.0, true), 201);
+					"t1", RangeFactory.create(1.0, false, 2.0, true), 201);
 			Assert.assertEquals(t1.transform(1.5), 201, 0.0);
 			Assert.assertEquals(t1.transform(1.6), 201, 0.0);
 			Assert.assertFalse(t0.equals(t1));
 			Assert.assertEquals(t1.transform(
-					new GeneralDirectPosition(new double[] { 1.8 }), null)
-					.getOrdinate(0), 201, 0.0);
-			try{
-				Assert.assertEquals(t1.inverse().transform(
-						new GeneralDirectPosition(new double[] { 201 }), null)
-						.getOrdinate(0), 0.5, 0.0);
-				Assert.assertTrue(false);
-			}catch (UnsupportedOperationException e) {
-			}
-			Assert.assertEquals(t1.derivative(2.0), 0.0, 0.0);
+					new Position( 1.8 ), null)
+					.getOrdinatePosition(), 201, 0.0);
+
+			//Assert.assertEquals(t1.derivative(2.0), 0.0, 0.0);
 			
 			t1 = new DefaultConstantPiecewiseTransformElement(
-					"t1", NumberRange.create(1.0, false, 2.0, true), 201);
+					"t1", RangeFactory.create(1.0, false, 2.0, true), 201);
 			Assert.assertEquals(t1.transform(1.5), 201, 0.0);
 			Assert.assertEquals(t1.transform(1.6), 201, 0.0);
 			Assert.assertEquals(t1.transform(
-					new GeneralDirectPosition(new double[] { 1.8 }), null)
-					.getOrdinate(0), 201, 0.0);
-			try{
-				Assert.assertEquals(t1.inverse().transform(
-						new GeneralDirectPosition(new double[] { 201 }), null)
-						.getOrdinate(0), 0.5, 0.0);
-				Assert.assertTrue(false);
-			}catch (UnsupportedOperationException e) {
-				// TODO: handle exception
-			}
-			Assert.assertEquals(t1.derivative(2.0), 0.0, 0.0);
+					new Position( 1.8 ), null)
+					.getOrdinatePosition(), 201, 0.0);
+
+			//Assert.assertEquals(t1.derivative(2.0), 0.0, 0.0);
 	
 
 	
 			DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement> transform = 
 			    new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(new DefaultPiecewiseTransform1DElement[] { t1 },12);
 			Assert.assertEquals(transform.getName().toString(),t1.getName().toString());
-			Assert.assertEquals(transform.getApproximateDomainRange().getMinimum(), 1.0, 0.0);
-			Assert.assertEquals(transform.getApproximateDomainRange().getMaximum(), 2.0, 0.0);
+			Assert.assertEquals(transform.getApproximateDomainRange().getMin().doubleValue(), 1.0, 0.0);
+			Assert.assertEquals(transform.getApproximateDomainRange().getMax().doubleValue(), 2.0, 0.0);
 			Assert.assertEquals(transform.transform(1.5), 201, 0.0);
 			Assert.assertEquals(transform.transform(
-					new GeneralDirectPosition(new double[] { 1.5 }), null)
-					.getOrdinate(0), 201, 0.0);
+					new Position( 1.5 ), null)
+					.getOrdinatePosition(), 201, 0.0);
 			Assert.assertEquals(transform.transform(2.5), 0.0, 12.0);
 			
 			
@@ -586,8 +485,8 @@ public class TestPiecewise  {
 			transform = new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(
 					new DefaultPiecewiseTransform1DElement[]{
 				DefaultLinearPiecewiseTransform1DElement.create("",
-						NumberRange.create(0, 100),
-						NumberRange.create(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY))});
+						RangeFactory.create(0, 100),
+						RangeFactory.create(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY))});
 				Assert.assertTrue(false);
 			}
 			catch (IllegalArgumentException e) {
@@ -601,62 +500,38 @@ public class TestPiecewise  {
 		 * 
 		 * @throws IOException
 		 * @throws TransformException
+		 * @throws TransformationException 
 		 */
 		@Test
 		public void passthroughTransform() throws IOException,
-				TransformException {
+				TransformException, TransformationException {
 			////
 			//
 			//testing the passthrough through direct instantion
 			//
 			////
 			final DefaultPassthroughPiecewiseTransform1DElement p0 = new DefaultPassthroughPiecewiseTransform1DElement(
-					"p0", NumberRange.create(0.0, true, 1.0, true));
+					"p0", RangeFactory.create(0.0, true, 1.0, true));
 			Assert.assertEquals(p0.getTargetDimensions(), 1);
 			Assert.assertEquals(p0.getSourceDimensions(), 1);
 			Assert.assertTrue(p0.isIdentity());
-			Assert.assertEquals(p0.inverse(), LinearTransform1D.IDENTITY);
+			Assert.assertEquals(p0.inverse(), SingleDimensionTransformation.IDENTITY);
 			Assert.assertEquals(p0.transform(0.5), 0.5, 0.0);
 			Assert.assertEquals(p0.transform(
-					new GeneralDirectPosition(new double[] { 0.5 }), null)
-					.getOrdinate(0), 0.5, 0.0);
+					new Position( 0.5), null)
+					.getOrdinatePosition(), 0.5, 0.0);
 			Assert.assertEquals(p0.inverse().transform(
-					new GeneralDirectPosition(new double[] { 0.5 }), null)
-					.getOrdinate(0), 0.5, 0.0);
-			Assert.assertEquals(p0.derivative(1.0), 1.0, 0.0);
-			final DirectPosition1D inDP = new DirectPosition1D(0.6);
-			final DirectPosition outDP= p0.transform(inDP, null);
-			Assert.assertTrue(outDP.getOrdinate(0)==0.6);
-			try{
-		
-				p0.transform(new double[]{0.5},0,(double[])null,0,0);
-				Assert.assertFalse(true);
-			}
-			catch (UnsupportedOperationException e) {
-				// TODO: handle exception
-			}
+					new Position( 0.5 ), null)
+					.getOrdinatePosition(), 0.5, 0.0);
+			//Assert.assertEquals(p0.derivative(1.0), 1.0, 0.0);
+			final Position inDP = new Position(0.6);
+			final Position outDP= p0.transform(inDP, null);
+			Assert.assertTrue(outDP.getOrdinatePosition()==0.6);
 			
-			try{
-		
-				p0.transform(new float[]{0.5f},0,(float[])null,0,0);
-				Assert.assertFalse(true);
-			}
-			catch (UnsupportedOperationException e) {
-				// TODO: handle exception
-			}
-			
-			
-			try{
-				p0.toWKT();
-				Assert.assertFalse(true);
-			}
-			catch (UnsupportedOperationException e) {
-				// TODO: handle exception
-			}
-			Matrix m= p0.derivative(inDP);
-			Assert.assertTrue(m.getNumCol()==1);
-			Assert.assertTrue(m.getNumRow()==1);
-			Assert.assertTrue(m.getElement(0, 0)==1);
+//			Matrix m= p0.derivative(inDP);
+//			Assert.assertTrue(m.getNumCol()==1);
+//			Assert.assertTrue(m.getNumRow()==1);
+//			Assert.assertTrue(m.getElement(0, 0)==1);
 			
 			////
 			//
@@ -666,48 +541,14 @@ public class TestPiecewise  {
 			final DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement> piecewise = 
 			    new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(new DefaultPiecewiseTransform1DElement[] { p0 },11);
 		
-			Assert.assertEquals(piecewise.getApproximateDomainRange().getMinimum(), 0.0, 0.0);
-			Assert.assertEquals(piecewise.getApproximateDomainRange().getMaximum(), 1.0, 0.0);
+			Assert.assertEquals(piecewise.getApproximateDomainRange().getMin().doubleValue(), 0.0, 0.0);
+			Assert.assertEquals(piecewise.getApproximateDomainRange().getMax().doubleValue(), 1.0, 0.0);
 			Assert.assertEquals(piecewise.transform(0.5), 0.5, 0.0);
 			Assert.assertEquals(piecewise.transform(
-					new GeneralDirectPosition(new double[] { 0.5 }), null)
-					.getOrdinate(0), 0.5, 0.0);
+					new Position(0.5), null)
+					.getOrdinatePosition(), 0.5, 0.0);
 			Assert.assertEquals(piecewise.transform(1.5), 0.0, 11.0);
 			
-			try{
-		
-				piecewise.transform(new double[]{0.5},0,(double[])null,0,0);
-				Assert.assertFalse(true);
-			}
-			catch (UnsupportedOperationException e) {
-				// TODO: handle exception
-			}
-			
-			try{
-		
-				piecewise.transform(new float[]{0.5f},0,(float[])null,0,0);
-				Assert.assertFalse(true);
-			}
-			catch (UnsupportedOperationException e) {
-				// TODO: handle exception
-			}
-			
-			
-			try{
-				piecewise.toWKT();
-				Assert.assertFalse(true);
-			}
-			catch (UnsupportedOperationException e) {
-				// TODO: handle exception
-			}
-			
-			try{
-				m= piecewise.derivative(inDP);
-				Assert.assertFalse(true);
-			}
-			catch (UnsupportedOperationException e) {
-				// TODO: handle exception
-			}
 			
 			////
 			//
@@ -719,49 +560,24 @@ public class TestPiecewise  {
 			Assert.assertEquals(p1.getTargetDimensions(), 1);
 			Assert.assertEquals(p1.getSourceDimensions(), 1);
 			Assert.assertTrue(p1.isIdentity());
-			Assert.assertEquals(p1.inverse(), LinearTransform1D.IDENTITY);
+			Assert.assertEquals(p1.inverse(), SingleDimensionTransformation.IDENTITY);
 			Assert.assertEquals(p1.transform(0.5), 0.5, 0.0);
 			Assert.assertEquals(p1.transform(111.5), 111.5, 0.0);
 			Assert.assertEquals(p1.transform(
-					new GeneralDirectPosition(new double[] { 123.5 }), null)
-					.getOrdinate(0), 123.5, 0.0);
+					new Position( 123.5 ), null)
+					.getOrdinatePosition(), 123.5, 0.0);
 			Assert.assertEquals(p1.inverse().transform(
-					new GeneralDirectPosition(new double[] { 657.5 }), null)
-					.getOrdinate(0), 657.5, 0.0);
-			Assert.assertEquals(p1.derivative(1.0), 1.0, 0.0);
-			final DirectPosition1D inDP1 = new DirectPosition1D(0.6);
-			final DirectPosition outDP1= p1.transform(inDP1, null);
-			Assert.assertTrue(outDP1.getOrdinate(0)==0.6);
-			try{
-		
-				p1.transform(new double[]{1233444.5},0,(double[])null,0,0);
-				Assert.assertFalse(true);
-			}
-			catch (UnsupportedOperationException e) {
-				// TODO: handle exception
-			}
-			
-			try{
-		
-				p1.transform(new float[]{6595.5f},0,(float[])null,0,0);
-				Assert.assertFalse(true);
-			}
-			catch (UnsupportedOperationException e) {
-				// TODO: handle exception
-			}
-			
-			
-			try{
-				p1.toWKT();
-				Assert.assertFalse(true);
-			}
-			catch (UnsupportedOperationException e) {
-				// TODO: handle exception
-			}
-			Matrix m1= p1.derivative(inDP1);
-			Assert.assertTrue(m1.getNumCol()==1);
-			Assert.assertTrue(m1.getNumRow()==1);
-			Assert.assertTrue(m1.getElement(0, 0)==1);
+					new Position( 657.5 ), null)
+					.getOrdinatePosition(), 657.5, 0.0);
+			//Assert.assertEquals(p1.derivative(1.0), 1.0, 0.0);
+			final Position inDP1 = new Position(0.6);
+			final Position outDP1= p1.transform(inDP1, null);
+			Assert.assertTrue(outDP1.getOrdinatePosition()==0.6);
+
+//			Matrix m1= p1.derivative(inDP1);
+//			Assert.assertTrue(m1.getNumCol()==1);
+//			Assert.assertTrue(m1.getNumRow()==1);
+//			Assert.assertTrue(m1.getElement(0, 0)==1);
 		
 		}
 
@@ -790,20 +606,22 @@ public class TestPiecewise  {
 				//
 				// /////////////////////////////////////////////////////////////////////
 				final DefaultPiecewiseTransform1DElement c1 = DefaultLinearPiecewiseTransform1DElement
-						.create("c1",NumberRange.create(1, 128), NumberRange.create(1, 255));
+						.create("c1",RangeFactory.create(1, 128), RangeFactory.create(1, 255));
 				final DefaultPiecewiseTransform1DElement c0 = DefaultLinearPiecewiseTransform1DElement
-				.create("c0", NumberRange.create(129, 255), NumberRange.create(255,255));
+				.create("c0", RangeFactory.create(129, 255), RangeFactory.create(255,255));
 				final DefaultPiecewiseTransform1DElement nodata = DefaultLinearPiecewiseTransform1DElement
-						.create("nodata", NumberRange.create(0, 0),
+						.create("nodata", RangeFactory.create(0, 0),
 								0);
 				final DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement> list = 
 				    new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(new DefaultPiecewiseTransform1DElement[] { c0 ,c1,nodata});
-				final ParameterBlockJAI pbj = new ParameterBlockJAI(
-						GenericPiecewise.OPERATION_NAME);
-				pbj.addSource(image);
-				pbj.setParameter("Domain1D", list);
-				final RenderedOp finalimage = JAI.create(
-						GenericPiecewise.OPERATION_NAME, pbj);
+				ImageWorker w = new ImageWorker(image);
+				//final ParameterBlockJAI pbj = new ParameterBlockJAI(
+						//GenericPiecewiseOpImage.OPERATION_NAME);
+				//pbj.addSource(image);
+				//pbj.setParameter("Domain1D", list);
+				//final RenderedOp finalimage = JAI.create(
+						//GenericPiecewiseOpImage.OPERATION_NAME, pbj);
+				final RenderedOp finalimage = w.piecewise(list, null).getRenderedOperation();
 		
 				if (TestData.isInteractiveTest())
 					ImageIOUtilities.visualize(finalimage, "testLookupByte");
@@ -826,16 +644,18 @@ public class TestPiecewise  {
 			final RenderedImage image = getSWAN();
 			if (TestData.isInteractiveTest())
 			    ImageIOUtilities.visualize(image, "testSWANLOGARITHMIC");
-			final RenderedOp statistics = ExtremaDescriptor.create(image, new ROI(new ImageWorker(image).binarize(0).getRenderedImage()),
-					new Integer(1), new Integer(1), Boolean.FALSE, new Integer(1),
-					null);
-			final double[] minimum=(double[]) statistics.getProperty("minimum");
-			final double[] maximum=(double[]) statistics.getProperty("maximum");
-			
+			ImageWorker w = new ImageWorker(image).setROI(new ROI(new ImageWorker(image).binarize(0).getRenderedImage()));
+			//final RenderedOp statistics = ExtremaDescriptor.create(image, new ROI(new ImageWorker(image).binarize(0).getRenderedImage()),
+					//new Integer(1), new Integer(1), Boolean.FALSE, new Integer(1),
+					//null);
+			//final double[] minimum=(double[]) statistics.getProperty("minimum");
+			//final double[] maximum=(double[]) statistics.getProperty("maximum");
+			final double[] minimum=w.getMinimums();
+			final double[] maximum=w.getMaximums();
 			
 			final DefaultPiecewiseTransform1DElement mainElement = new DefaultPiecewiseTransform1DElement(
-					"natural logarithm", NumberRange.create(minimum[0],  maximum[0]),
-					new MathTransform1DAdapter() {
+					"natural logarithm", RangeFactory.create(minimum[0],  maximum[0]),
+					new MathTransformationAdapter() {
 			
 						public double derivative(double arg0)
 								throws TransformException {
@@ -843,8 +663,7 @@ public class TestPiecewise  {
 							return 1/arg0;
 						}
 			
-						public double transform(double arg0)
-								throws TransformException {
+						public double transform(double arg0) {
 		
 							return minimum[0]+
 								1.2*Math.log(arg0/minimum[0])*
@@ -862,30 +681,35 @@ public class TestPiecewise  {
 			DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement> transform =
 			    new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(new DefaultPiecewiseTransform1DElement[] {mainElement},0);
 
-				final ParameterBlockJAI pbj = new ParameterBlockJAI(
-						GenericPiecewise.OPERATION_NAME);
-				pbj.addSource(image);
-				pbj.setParameter("Domain1D", transform);
-		
+				//final ParameterBlockJAI pbj = new ParameterBlockJAI(
+				        //GenericPiecewiseOpImage.OPERATION_NAME);
+				//pbj.addSource(image);
+				//pbj.setParameter("Domain1D", transform);
+			        boolean exceptionThrown = false;
 				try {
 					// //
 					// forcing a bad band selection ...
 					// //
-					pbj.setParameter("bandIndex", new Integer(2));
-					final RenderedOp d = JAI.create(
-							GenericPiecewise.OPERATION_NAME, pbj);
+					//pbj.setParameter("bandIndex", new Integer(2));
+					//final RenderedOp d = JAI.create(
+					        //GenericPiecewiseOpImage.OPERATION_NAME, pbj);
+                                        final RenderedOp d = w.piecewise(transform, new Integer(2)).
+                                                getRenderedOperation();
 					d.getTiles();
 					// we should not be here!
-					Assert.assertTrue(false);
 				} catch (Exception e) {
 					// //
 					// ... ok, Exception wanted!
 					// //
+				        exceptionThrown = true;
 				}
+				Assert.assertTrue(exceptionThrown);
 		
-				pbj.setParameter("bandIndex", new Integer(0));
-				final RenderedOp finalImage = JAI.create(
-						GenericPiecewise.OPERATION_NAME, pbj);
+				//pbj.setParameter("bandIndex", new Integer(0));
+				//final RenderedOp finalImage = JAI.create(
+						//GenericPiecewiseOpImage.OPERATION_NAME, pbj);
+				final RenderedOp finalImage = w.piecewise(transform, new Integer(0)).
+                                        getRenderedOperation();
 				if (TestData.isInteractiveTest())
 					ImageIOUtilities.visualize(finalImage, "testSWANLOGARITHMIC");
 				else
@@ -915,10 +739,10 @@ public class TestPiecewise  {
 		@Before
 		public void setUp() throws Exception {
 			try{
-				new ParameterBlockJAI(GenericPiecewise.OPERATION_NAME);
+				new ParameterBlockJAI(GenericPiecewiseOpImage.OPERATION_NAME);
 				
 			}catch (Exception e) {
-				GenericPiecewise.register(JAI.getDefaultInstance());
+				//GenericPiecewiseOpImage.register(JAI.getDefaultInstance());
 			}
 			
 			// check that it exisits

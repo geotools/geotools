@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,8 @@
  *
  */
 package org.geotools.gce.image;
+
+import it.geosolutions.jaiext.range.NoDataContainer;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.ComponentColorModel;
@@ -46,6 +48,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -330,15 +333,12 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
 					"A coverage must be provided in order for write to succeed!");
 		}
 
-		/**
-		 * Getting the non geophysics view of this grid coverage. the
-		 * geophysiscs view usually comes with an index color model for 3 bands,
-		 * since sometimes I get some problems with JAI encoders I select only
-		 * the first band, which by the way is the only band we use.
-		 */
-		RenderedImage image = (sourceCoverage).geophysics(false)
-				.getRenderedImage();
+		RenderedImage image = (sourceCoverage).getRenderedImage();
 		final ImageWorker worker = new ImageWorker(image);
+		// Setting NoData and ROI if present
+		worker.setROI(CoverageUtilities.getROIProperty(sourceCoverage));
+		NoDataContainer noDataProperty = CoverageUtilities.getNoDataProperty(sourceCoverage);
+                worker.setNoData(noDataProperty != null ? noDataProperty.getAsRange() : null);
 
 		// /////////////////////////////////////////////////////////////////////
 		//

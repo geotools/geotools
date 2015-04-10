@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,6 +15,8 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.coverage.io.netcdf;
+
+import it.geosolutions.jaiext.range.NoDataContainer;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -39,6 +41,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
+import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
@@ -53,16 +56,20 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
+import org.opengis.coverage.processing.Operation;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
+import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 public class NetCDFReaderTest extends Assert {
+
+    private static final double DELTA = 1E-6;
 
     /**
      * Test using this netcdf image:
@@ -78,7 +85,8 @@ public class NetCDFReaderTest extends Assert {
      *
      * @throws IOException
      */
-    @Test  public void testHDF5Image() throws IOException, FactoryException {
+    @Test
+    public void testHDF5Image() throws IOException, FactoryException {
         final File testURL = TestData.file(this, "2DLatLonCoverage.nc");
         // Get format
         //final AbstractGridFormat format = (AbstractGridFormat)
@@ -113,7 +121,8 @@ public class NetCDFReaderTest extends Assert {
         }
     }
 
-    @Test  public void testFullReadOnCoverageWithIncreasingLat() throws IOException, FactoryException {
+    @Test
+    public void testFullReadOnCoverageWithIncreasingLat() throws IOException, FactoryException {
         final File testURL = TestData.file(this, "O3-NO2.nc");
         // Get format
         //final AbstractGridFormat format = (AbstractGridFormat)
@@ -135,7 +144,6 @@ public class NetCDFReaderTest extends Assert {
             value = grid.evaluate((DirectPosition) new
                     DirectPosition2D(DefaultGeographicCRS.WGS84, 5, 45.125), new float[1]);
             assertEquals(52.7991f, value[0],0.000001);
-
 
         } finally {
             if (reader != null) {
@@ -725,6 +733,7 @@ public class NetCDFReaderTest extends Assert {
                 assertEquals("false", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
                 final String elevationMetadata = reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
                 assertNull(elevationMetadata);
+
             }
         } catch (Throwable t) {
             throw new RuntimeException(t);
@@ -739,7 +748,99 @@ public class NetCDFReaderTest extends Assert {
         }
     }
 
-    
+    @Test
+    public void NetCDFNoData() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+        File mosaic = new File(TestData.file(this,"."),"NetCDFGOME2");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        File file = TestData.file(this, "DUMMY.GOME2.NO2.PGL.nc");
+        FileUtils.copyFileToDirectory(file, mosaic);
+        file = new File(mosaic, "DUMMY.GOME2.NO2.PGL.nc");
+
+        final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        // Get format
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(),hints);
+        final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
+
+        assertNotNull(format);
+        try {
+            String[] names = reader.getGridCoverageNames();
+            names = new String[] { names[0] };
+            GridCoverage2D gc = reader.read(null);
+            Object noData = CoverageUtilities.getNoDataProperty(gc);
+            assertNotNull(noData);
+            assertTrue(noData instanceof NoDataContainer);
+            Double d =  ((NoDataContainer)noData).getAsSingleValue();
+            assertEquals(d, -999d, DELTA);
+
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    @Test
+    public void NetCDFNoDataOperation() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+        File mosaic = new File(TestData.file(this,"."),"NetCDFGOME2");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        File file = TestData.file(this, "DUMMY.GOME2.NO2.PGL.nc");
+        FileUtils.copyFileToDirectory(file, mosaic);
+        file = new File(mosaic, "DUMMY.GOME2.NO2.PGL.nc");
+
+        final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        // Get format
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(),hints);
+        final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
+
+        assertNotNull(format);
+        GridCoverage2D gc = null;
+        try {
+            String[] names = reader.getGridCoverageNames();
+            names = new String[] { names[0] };
+            gc = reader.read(null);
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+        // Checking NoData
+        Object noData = CoverageUtilities.getNoDataProperty(gc);
+        assertNotNull(noData);
+        assertTrue(noData instanceof NoDataContainer);
+        Double d =  ((NoDataContainer)noData).getAsSingleValue();
+        assertEquals(d, -999d, DELTA);
+        // Try to execute an operation on the NoData and check if the result contains also NoData
+        CoverageProcessor instance = CoverageProcessor.getInstance();
+        Operation scale = instance.getOperation("Scale");
+        ParameterValueGroup params = scale.getParameters();
+        params.parameter("Source0").setValue(gc);
+        params.parameter("backgroundValues").setValue(new double[]{0});
+        GridCoverage2D result = (GridCoverage2D) instance.doOperation(params);
+        noData = CoverageUtilities.getNoDataProperty(result);
+        assertNotNull(noData);
+        assertTrue(noData instanceof NoDataContainer);
+        d =  ((NoDataContainer)noData).getAsSingleValue();
+        assertEquals(d, 0d, DELTA);
+    }
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Test
     @Ignore

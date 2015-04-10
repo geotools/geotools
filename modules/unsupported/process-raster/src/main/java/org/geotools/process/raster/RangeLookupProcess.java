@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2001-2007 TOPP - www.openplans.org.
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,16 +17,16 @@
  */
 package org.geotools.process.raster;
 
+//import it.geosolutions.jaiext.rlookup.RangeLookupTable;
+
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.range.NoDataContainer;
+
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
-
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.BandSelectDescriptor;
 
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
@@ -38,15 +38,11 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.factory.GeoTools;
-import org.geotools.image.jai.Registry;
+import org.geotools.image.ImageWorker;
 import org.geotools.process.ProcessException;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.image.ColorUtilities;
-import org.geotools.util.logging.Logging;
-import org.jaitools.media.jai.rangelookup.RangeLookupDescriptor;
-import org.jaitools.media.jai.rangelookup.RangeLookupRIF;
-import org.jaitools.media.jai.rangelookup.RangeLookupTable;
 import org.jaitools.numeric.Range;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.ProgressListener;
@@ -66,12 +62,6 @@ import org.opengis.util.ProgressListener;
 public class RangeLookupProcess implements RasterProcess {
 	
     private final static double DEFAULT_NODATA = 0d;
-	
-	private final static Logger LOGGER = Logging.getLogger(RangeLookupProcess.class);
-	
-	static {
-        Registry.registerRIF(JAI.getDefaultInstance(), new RangeLookupDescriptor(), new RangeLookupRIF(), Registry.JAI_TOOLS_PRODUCT);
-    }
 
     @DescribeResult(name = "reclassified", description = "The reclassified raster")
     public GridCoverage2D execute(
@@ -93,9 +83,13 @@ public class RangeLookupProcess implements RasterProcess {
     		throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,"classificationRanges"));
     	}
     	double nd = DEFAULT_NODATA;
-    	if (noData != null){
-    	    nd = noData.doubleValue();
-    	}
+    	NoDataContainer noDataProperty = org.geotools.resources.coverage.CoverageUtilities.getNoDataProperty(coverage);
+        if (noData != null) {
+            nd = noData.doubleValue();
+        } else if (noDataProperty != null) {
+            nd = noDataProperty.getAsSingleValue();
+        }
+    	
     	if (outputPixelValues != null && outputPixelValues.length > 0){
     	    final int ranges = classificationRanges.size();
     	    if (ranges != outputPixelValues.length){
@@ -105,6 +99,8 @@ public class RangeLookupProcess implements RasterProcess {
 
         RenderedImage sourceImage = coverage.getRenderedImage();
     	
+        ImageWorker worker = new ImageWorker(sourceImage);
+        
         // parse the band
         if (classificationBand != null) {
             final int band = classificationBand;
@@ -113,8 +109,9 @@ public class RangeLookupProcess implements RasterProcess {
             	throw new ProcessException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,"band",band));
             }
             
-            if(band==0 && numbands>0 || band>0)
-            	sourceImage=BandSelectDescriptor.create(sourceImage, new int []{band}, null);
+            if(band==0 && numbands>0 || band>0){
+                worker.retainBands(new int []{band});
+            }
         }
 
 
@@ -122,29 +119,35 @@ public class RangeLookupProcess implements RasterProcess {
         // Check the number of ranges we have in order to decide which type we can use for the output values. 
         // Our goal is to use the smallest possible data type that can hold the image values.
         //
-        
-        // Builds the range lookup table
-        final RangeLookupTable lookupTable;
+        Object lookupTable;
         final int size=classificationRanges.size();
-        switch (ColorUtilities.getTransferType(size)) {
-		case DataBuffer.TYPE_BYTE:
-			lookupTable = CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, (byte) nd );
-			break;
-		case DataBuffer.TYPE_USHORT:
-			lookupTable = CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, (short) nd );
-			break;
-		case DataBuffer.TYPE_INT:
-			lookupTable = CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, nd );
-			break;			
-		default:
-			throw new IllegalArgumentException(org.geotools.resources.i18n.Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,
-			        "classification ranges size",size));
-		}
-        // reclassify the source image
-        ParameterBlockJAI pb = new ParameterBlockJAI("RangeLookup");
-        pb.setSource("source0", sourceImage);
-        pb.setParameter("table", lookupTable);
-        final RenderedOp indexedClassification = JAI.create("RangeLookup", pb);
+        int transferType = ColorUtilities.getTransferType(size);
+        if(JAIExt.isJAIExtOperation("RLookup")){
+            lookupTable = CoverageUtilities.getRangeLookupTableJAIEXT(classificationRanges, outputPixelValues, nd, transferType);
+        }else{
+            // Builds the range lookup table
+            //final RangeLookupTable lookupTable;
+
+            switch (transferType) {
+                    case DataBuffer.TYPE_BYTE:
+                            lookupTable = CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, (byte) nd );
+                            break;
+                    case DataBuffer.TYPE_USHORT:
+                            lookupTable = CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, (short) nd );
+                            break;
+                    case DataBuffer.TYPE_INT:
+                            lookupTable = CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, nd );
+                            break;                  
+                    default:
+                            throw new IllegalArgumentException(org.geotools.resources.i18n.Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,
+                                    "classification ranges size",size));
+                    }
+            
+        }
+        worker.setROI(org.geotools.resources.coverage.CoverageUtilities.getROIProperty(coverage));
+        worker.setBackground(new double[]{nd});
+        final RenderedOp indexedClassification = worker.rangeLookup(lookupTable)
+                .getRenderedOperation();
 
         
         //
@@ -154,13 +157,15 @@ public class RangeLookupProcess implements RasterProcess {
         
         // build the output sample dimensions, use the default value ( 0 ) as the no data
         final GridSampleDimension outSampleDimension = new GridSampleDimension("classification",
-                new Category[] { Category.NODATA }, null).geophysics(true);
+                new Category[] { Category.NODATA }, null);
         final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
+        HashMap<String,Object> properties = new HashMap<String,Object>(){{
+        	put(NoDataContainer.GC_NODATA,new NoDataContainer(0d));
+        }};
+        org.geotools.resources.coverage.CoverageUtilities.setROIProperty(properties, worker.getROI());
         final GridCoverage2D output = factory.create("reclassified", indexedClassification, coverage
                 .getGridGeometry(), new GridSampleDimension[] { outSampleDimension },
-                new GridCoverage[] { coverage }, new HashMap<String,Double>(){{
-                	put("GC_NODATA",0d);
-                }});
+                new GridCoverage[] { coverage }, properties);
         return output;
     }
     

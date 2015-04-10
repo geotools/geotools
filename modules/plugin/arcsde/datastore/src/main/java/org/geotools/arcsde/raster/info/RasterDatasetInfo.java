@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -168,8 +168,7 @@ public final class RasterDatasetInfo {
 
             final boolean geophysics = isGeoPhysics();
 
-            Category valuesCat = new Category("values", colorRange, sampleValueRange,
-                    LinearTransform1D.IDENTITY).geophysics(geophysics);
+            Category valuesCat = new Category("values", colorRange, sampleValueRange);
 
             Category[] categories;
             if (geophysics) {
@@ -199,8 +198,7 @@ public final class RasterDatasetInfo {
             // .geophysics(false) because our sample model always corresponds to the packed view
             // (whether it matches the underlying sample depth or we're promoting in order to make
             // room for the nodata value).
-            GridSampleDimension sampleDim = new GridSampleDimension(bandName, categories, null)
-                    .geophysics(false);
+            GridSampleDimension sampleDim = new GridSampleDimension(bandName, categories, null);
 
             dimensions.add(sampleDim);
         }

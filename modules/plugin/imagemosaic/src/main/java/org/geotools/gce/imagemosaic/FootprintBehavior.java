@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,6 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
-import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.MosaicDescriptor;
 
 import org.geotools.factory.Hints;
@@ -63,17 +62,17 @@ public enum FootprintBehavior {
             if (imageWorker.getRenderedImage().getColorModel().hasAlpha()) {
                 // if so we reuse it applying the ROI on top of it
                 RenderedImage alpha = imageWorker.retainLastBand().getRenderedImage();
-                RenderedOp maskedAlpha = MosaicDescriptor.create(
+                RenderedImage maskedAlpha = new ImageWorker(hints).
+                        mosaic(
                         new RenderedImage[] {alpha}, 
                         MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
                         null, 
                         new ROI[] {overallROI}, 
                         null, 
-                        null, 
-                        hints);
-                
+                        null).getRenderedImage();
+
                 imageWorker.retainBands(mosaic.getColorModel().getNumColorComponents());
-                imageWorker.addBand(maskedAlpha, false);
+                imageWorker.addBand(maskedAlpha, false, true, null);
             } else {
 
                 // turn the roi into a single band image and add it to the mosaic as transparency
@@ -95,18 +94,17 @@ public enum FootprintBehavior {
                     final SampleModel sampleModel = mosaic.getSampleModel();
                     layout.setTileHeight(sampleModel.getWidth()).setTileWidth(sampleModel.getHeight());
                     hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-                    
+
                     // correct bounds of the current image
-                    alpha=MosaicDescriptor.create(
+                    alpha = new ImageWorker(hints).mosaic(
                             new RenderedImage[] {alpha}, 
                             MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
                             null, 
                             new ROI[] {overallROI}, 
                             null, 
-                            null, 
-                            hints);
+                            null).getRenderedOperation();
                 }
-                imageWorker.addBand(alpha, false);
+                imageWorker.addBand(alpha, false, true, null);
             }
 
             RenderedImage result = imageWorker.getRenderedImage();

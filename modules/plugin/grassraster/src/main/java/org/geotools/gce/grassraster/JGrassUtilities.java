@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2010, HydroloGIS S.r.l.
  *
  *    This library is free software; you can redistribute it and/or
@@ -29,7 +29,6 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
-import java.awt.image.renderable.ParameterBlock;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -37,7 +36,6 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.media.jai.Interpolation;
-import javax.media.jai.JAI;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.iterator.RandomIterFactory;
 import javax.media.jai.iterator.RectIter;
@@ -52,6 +50,7 @@ import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -510,22 +509,13 @@ public class JGrassUtilities {
         if (interpolation == null) {
             interpolation = JGrassUtilities.interpolation;
         }
-
-        ParameterBlock block = new ParameterBlock();
-        block.addSource(translatedImage);
-        block.add((float) requestedCols / (float) translatedImage.getWidth());
-        block.add((float) requestedRows / (float) translatedImage.getHeight());
-        // this is the translation, we have set to 0, an alternative is to put
-        // the value
-        // of the
-        // above operation but the result is different because this operation
-        // use a
-        // special
-        // formula.
-        block.add(0F);
-        block.add(0F);
-        block.add(interpolation);
-        return JAI.create("scale", block);
+        ImageWorker worker = new ImageWorker(translatedImage);
+        worker.scale((float) requestedCols / (float) translatedImage.getWidth(),
+                (float) requestedRows / (float) translatedImage.getHeight(),
+                0F,
+                0F,
+                interpolation);
+        return worker.getRenderedOperation();
     }
 
     /**

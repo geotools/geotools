@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,25 +22,23 @@ import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
-import java.util.Arrays;
-import javax.measure.unit.Unit;
 
+import javax.measure.unit.Unit;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
-
-import org.opengis.coverage.ColorInterpretation;
-import org.opengis.coverage.SampleDimensionType;
-import org.opengis.util.InternationalString;
 
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.factory.Hints;
-import org.geotools.referencing.operation.transform.LinearTransform1D;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
+import org.opengis.coverage.ColorInterpretation;
+import org.opengis.coverage.SampleDimensionType;
+import org.opengis.coverage.grid.GridCoverage;
+import org.opengis.util.InternationalString;
 
 
 /**
@@ -119,11 +117,9 @@ final class RenderedSampleDimension extends GridSampleDimension {
         /*
          * Now, we know that the number of bands and the array length are consistent.
          * Search if there is any null SampleDimension. If any, replace the null value
-         * by a default SampleDimension. In all cases, count the number of geophysics
-         * and non-geophysics sample dimensions.
+         * by a default SampleDimension. 
          */
-        int countGeophysics = 0;
-        int countIndexed    = 0;
+        int count = 0;
         GridSampleDimension[] defaultSD = null;
         for (int i=0; i<numBands; i++) {
             GridSampleDimension sd = (src!=null) ? src[i] : null;
@@ -142,14 +138,10 @@ final class RenderedSampleDimension extends GridSampleDimension {
             }
             sd = new RenderedSampleDimension(sd, image, i);
             dst[i] = sd;
-            if (sd.geophysics(true ) == sd) countGeophysics++;
-            if (sd.geophysics(false) == sd) countIndexed++;
+            count++;
         }
-        if (countGeophysics == numBands) {
+        if (count == numBands) {
             return true;
-        }
-        if (countIndexed == numBands) {
-            return false;
         }
         throw new IllegalArgumentException(Errors.format(ErrorKeys.MIXED_CATEGORIES));
     }
@@ -166,9 +158,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
      *         bands, or {@code null} for a default color palette. If non-null, each arrays
      *         {@code colors[b]} may have any length; colors will be interpolated as needed.
      * @param  hints An optional set of rendering hints, or {@code null} if none. Those hints will
-     *         not affect the sample dimensions to be created. However, they may affect the sample
-     *         dimensions to be returned by <code>{@link #geophysics geophysics}(false)</code>, i.e.
-     *         the view to be used at rendering time. The optional hint
+     *         not affect the sample dimensions to be created. The optional hint
      *         {@link Hints#SAMPLE_DIMENSION_TYPE} specifies the {@link SampleDimensionType}
      *         to be used at rendering time, which can be one of
      *         {@link SampleDimensionType#UBYTE UBYTE} or
@@ -204,10 +194,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
      * @param  dst The array where to store sample dimensions. The array length must matches
      *         the number of bands.
      * @param  hints An optional set of rendering hints, or {@code null} if none.
-     *         Those hints will not affect the sample dimensions to be created. However,
-     *         they may affect the sample dimensions to be returned by
-     *         <code>{@link #geophysics geophysics}(false)</code>, i.e.
-     *         the view to be used at rendering time. The optional hint
+     *         Those hints will not affect the sample dimensions to be created. The optional hint
      *         {@link Hints#SAMPLE_DIMENSION_TYPE} specifies the {@link SampleDimensionType}
      *         to be used at rendering time, which can be one of
      *         {@link SampleDimensionType#UBYTE UBYTE} or
@@ -243,7 +230,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
          * STEP 2: Range of source (geophysics) values. It will be computed one block later.
          *
          * The target (sample) values will typically range from 0 to 255 or 0 to 65535, but the
-         * general case is handled as well. If the source (geophysics) raster uses floating point
+         * general case is handled as well. If the source raster uses floating point
          * numbers, then a "nodata" category may be added in order to handle NaN values. If the
          * source raster use integer numbers instead, then we will rescale samples only if they
          * would not fit in the target data type.
@@ -256,67 +243,11 @@ final class RenderedSampleDimension extends GridSampleDimension {
         }
         if (targetType == null) {
             // Default to TYPE_BYTE for floating point images only; otherwise keep unchanged.
-            targetType = sourceIsFloat ? SampleDimensionType.UNSIGNED_8BITS : sourceType;
+            targetType = sourceType;
         }
         // Default setting: no scaling
-        final boolean targetIsFloat = TypeMap.isFloatingPoint(targetType);
         NumberRange   targetRange   = TypeMap.getRange(targetType);
         Category[]    categories    = new Category[1];
-        final boolean needScaling;
-        if (targetIsFloat) {
-            // Never rescale if the target is floating point numbers.
-            needScaling = false;
-        } else if (sourceIsFloat) {
-            // Always rescale for "float to integer" conversions. In addition,
-            // Use 0 value as a "no data" category for unsigned data type only.
-            needScaling = true;
-            if (!TypeMap.isSigned(targetType)) {
-                categories    = new Category[2];
-                categories[1] = Category.NODATA;
-                targetRange   = TypeMap.getPositiveRange(targetType);
-            }
-        } else {
-            // In "integer to integer" conversions, rescale only if
-            // the target range is smaller than the source range.
-            needScaling = !targetRange.contains(TypeMap.getRange(sourceType));
-        }
-        /*
-         * Computes the minimal and maximal values, if not explicitely provided.
-         * This information is required for determining the range of geophysics
-         * values.
-         */
-        if (needScaling && (min==null || max==null)) {
-            final boolean computeMin;
-            final boolean computeMax;
-            if (computeMin = (min == null)) {
-                min = new double[numBands];
-                Arrays.fill(min, Double.POSITIVE_INFINITY);
-            }
-            if (computeMax = (max == null)) {
-                max = new double[numBands];
-                Arrays.fill(max, Double.NEGATIVE_INFINITY);
-            }
-            int b = 0;
-            iterator.startBands();
-            if (!iterator.finishedBands()) do {
-                iterator.startLines();
-                if (!iterator.finishedLines()) do {
-                    iterator.startPixels();
-                    if (!iterator.finishedPixels()) do {
-                        final double z = iterator.getSampleDouble();
-                        if (computeMin && z<min[b]) min[b]=z;
-                        if (computeMax && z>max[b]) max[b]=z;
-                    } while (!iterator.nextPixelDone());
-                } while (!iterator.nextLineDone());
-                if (computeMin && computeMax) {
-                    if (!(min[b] < max[b])) {
-                        min[b] = 0;
-                        max[b] = 1;
-                    }
-                }
-                b++;
-            } while (!iterator.nextBandDone());
-        }
         /*
          * Now, constructs the sample dimensions. We will inconditionnaly provides a "nodata"
          * category for floating point images targeting unsigned integers, since we don't know
@@ -327,13 +258,8 @@ final class RenderedSampleDimension extends GridSampleDimension {
         NumberRange sourceRange = TypeMap.getRange(sourceType);
         for (int b=0; b<numBands; b++) {
             final Color[] c = colors!=null ? colors[b] : null;
-            if (needScaling) {
-                sourceRange = NumberRange.create(min[b], max[b]).castTo(sourceRange.getElementClass());
-                categories[0] = new Category(n, c, targetRange, sourceRange);
-            } else {
-                categories[0] = new Category(n, c, targetRange, LinearTransform1D.IDENTITY);
-            }
-            dst[b] = new GridSampleDimension(name,categories, units).geophysics(true);
+                categories[0] = new Category(n, c, targetRange, true);
+            dst[b] = new GridSampleDimension(name,categories, units);
         }
     }
 

@@ -16,10 +16,16 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import it.geosolutions.jaiext.range.Range;
+
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.media.jai.ROI;
 
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -76,7 +82,9 @@ public class RasterSymbolizerHelper extends
 //			return output;
 		RenderedImage outputImage=output.getRenderedImage();
 		
-
+		// Getting NoData
+		Range nodata = CoverageUtilities.getNoDataProperty(output) != null ? CoverageUtilities.getNoDataProperty(output).getAsRange() : null;
+		ROI roiProp = CoverageUtilities.getROIProperty(output);
 		
 		///////////////////////////////////////////////////////////////////////
 		//
@@ -118,17 +126,27 @@ public class RasterSymbolizerHelper extends
 			case DataBuffer.TYPE_INT:
 			case DataBuffer.TYPE_SHORT:
 			//rescale to byte
+			    ImageWorker w = new ImageWorker(outputImage);
 			outputImage=
-				new ImageWorker(outputImage).setRenderingHints(this.getHints()).rescaleToBytes().getRenderedImage();
-				
+				w.setROI(roiProp).setNoData(nodata).setRenderingHints(this.getHints()).rescaleToBytes().getRenderedImage();
+			roiProp = w.getROI();
+			nodata = w.getNoData();
 		}
 		
 	        // ///////////////////////////////////////////////////////////////////
 	        // Apply opacity if needed
 	        // ///////////////////////////////////////////////////////////////////
 	        final RenderedImage finalImage;
+	        Map properties = output.getProperties();
+                if(properties == null){
+                    properties = new HashMap<>();
+                }
+                CoverageUtilities.setNoDataProperty(properties, nodata);
+                CoverageUtilities.setROIProperty(properties, roiProp);
 	        if(opacity < 1) {
 	            ImageWorker ow = new ImageWorker(outputImage);
+	            ow.setROI(roiProp);
+	            ow.setNoData(nodata);
 	            finalImage = ow.applyOpacity(opacity).getRenderedImage();
 	            
 	            numBands=finalImage.getSampleModel().getNumBands();
@@ -136,7 +154,9 @@ public class RasterSymbolizerHelper extends
 	            for(int i=0;i<numBands;i++) {
 	                sd[i]= new GridSampleDimension(TypeMap.getColorInterpretation(finalImage.getColorModel(), i).name());
 	            }
-	            
+
+	            CoverageUtilities.setNoDataProperty(properties, ow.getNoData());
+	            CoverageUtilities.setROIProperty(properties, ow.getROI());
                     // create a new grid coverage but preserve as much input as possible
                     return this.getCoverageFactory().create(
                             output.getName(), 
@@ -144,7 +164,7 @@ public class RasterSymbolizerHelper extends
                             (GridGeometry2D) output.getGridGeometry(), 
                             sd, 
                             new GridCoverage[] { output },
-                            output.getProperties());	            
+                            properties);	            
 	        }  
 	        
 		//create a new grid coverage but preserve as much input as possible
@@ -154,7 +174,7 @@ public class RasterSymbolizerHelper extends
 		        (GridGeometry2D)output.getGridGeometry(),
 		        sd, 
 		        new GridCoverage[]{output},
-		        output.getProperties());
+		        properties);
 	}
 
 

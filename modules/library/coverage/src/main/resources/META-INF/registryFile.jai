@@ -30,14 +30,9 @@
 #
 descriptor  org.geotools.image.palette.ColorReductionDescriptor
 descriptor  org.geotools.image.palette.ColorInversionDescriptor
-descriptor  org.geotools.image.palette.ColorIndexerDescriptor
-descriptor  org.geotools.image.crop.GTCropDescriptor
-
 
 #
 # "rendered" factory objects
 #
 rendered  org.geotools.image.palette.ColorReductionCRIF	org.geotools  org.geotools.ColorReduction ColorReduction
 rendered  org.geotools.image.palette.ColorInversionCRIF	org.geotools  org.geotools.ColorInversion ColorInversion
-rendered  org.geotools.image.palette.ColorIndexerCRIF org.geotools  org.geotools.ColorIndexer ColorIndexer
-rendered  org.geotools.image.crop.GTCropCRIF            org.geotools  GTCrop         GTCrop

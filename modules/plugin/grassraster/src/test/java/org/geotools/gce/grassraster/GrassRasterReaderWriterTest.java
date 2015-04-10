@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -94,7 +94,6 @@ public class GrassRasterReaderWriterTest extends TestCase {
         GridCoverageReader reader = format.getReader(fileToRead);
         GridCoverage2D gc = ((GridCoverage2D) reader.read(null));
         assertTrue(gc != null);
-        assertTrue(CoverageUtilities.hasRenderingCategories(gc));
 
         checkMatrixEqual(gc.getRenderedImage(), mapData, 0);
 

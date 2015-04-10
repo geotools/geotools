@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2008-2011 TOPP - www.openplans.org.
  *
  *    This library is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 public class CropCoverage implements RasterProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
-    private static final Operation CROP = PROCESSOR.getOperation("CoverageCrop");
+    //private static final Operation CROP = PROCESSOR.getOperation("CoverageCrop");
 
     @DescribeResult(name = "result", description = "Cropped raster")
     public GridCoverage2D execute(
@@ -73,7 +73,7 @@ public class CropCoverage implements RasterProcess {
         }
 
         // perform the crops
-        final ParameterValueGroup param = CROP.getParameters();
+        final ParameterValueGroup param = PROCESSOR.getOperation("CoverageCrop").getParameters();
         param.parameter("Source").setValue(coverage);
         param.parameter("Envelope").setValue(bounds);
         param.parameter("ROI").setValue(roi);

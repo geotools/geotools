@@ -19,6 +19,9 @@ package org.geotools.image.palette;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import it.geosolutions.jaiext.colorindexer.ColorIndexer;
+import it.geosolutions.jaiext.colorindexer.Quantizer;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -59,7 +62,7 @@ public class ColorIndexerTest {
     private RenderedImage quantize(RenderedImage image) {
         Quantizer q = new Quantizer(256);
         ColorIndexer indexer = q.buildColorIndexer(image);
-        RenderedImage indexed = ColorIndexerDescriptor.create(image, indexer, null);
+        RenderedImage indexed = new ImageWorker(image).colorIndex(indexer).getRenderedImage();
         return indexed;
     }
     

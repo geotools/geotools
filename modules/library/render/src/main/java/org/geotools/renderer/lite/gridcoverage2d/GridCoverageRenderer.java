@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,8 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 // J2SE dependencies
+import it.geosolutions.jaiext.range.Range;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -31,7 +33,9 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,6 +47,7 @@ import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.operator.ConstantDescriptor;
+import javax.media.jai.ROI;
 
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -51,7 +56,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
+
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
@@ -66,6 +71,7 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.crs.WrappingProjectionHandler;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ImageUtilities;
@@ -321,7 +327,6 @@ public final class GridCoverageRenderer {
         }
         // this prevents users from overriding lenient hint
         this.hints.put(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE);
-        this.hints.put(Hints.COVERAGE_PROCESSING_VIEW, ViewType.SAME);
         
         //SG add hints for the border extender
         this.hints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER,BorderExtender.createInstance(BorderExtender.BORDER_COPY)));
@@ -467,7 +472,7 @@ public final class GridCoverageRenderer {
             symbolizerGC = preSymbolizer;
         }
         if (DEBUG) {
-            writeRenderedImage( symbolizerGC.geophysics(false).getRenderedImage(),"postSymbolizer");
+            writeRenderedImage( symbolizerGC.getRenderedImage(),"postSymbolizer");
         }
         return symbolizerGC;
     }            	
@@ -499,9 +504,7 @@ public final class GridCoverageRenderer {
         }finally{
             if (DEBUG) {
                 if(afterReprojection!=null){
-                    writeRenderedImage(
-                            afterReprojection.geophysics(false).getRenderedImage(),
-                            "afterReprojection");
+                    writeRenderedImage(afterReprojection.getRenderedImage(), "afterReprojection");
                 }
             }
         }
@@ -566,9 +569,7 @@ public final class GridCoverageRenderer {
         }
 
         if (DEBUG) {
-            writeRenderedImage(
-                    outputCoverage.geophysics(false).getRenderedImage(),
-                    "crop");
+            writeRenderedImage(outputCoverage.getRenderedImage(), "crop");
         }
         return outputCoverage;
         
@@ -596,7 +597,10 @@ public final class GridCoverageRenderer {
         }
         final AffineTransform finalGCgridToWorld = new AffineTransform((AffineTransform) finalGCTransform);
 
-
+        // Getting NOData adn ROI
+        Range noData = CoverageUtilities.getNoDataProperty(input) != null ? CoverageUtilities.getNoDataProperty(input).getAsRange() : null;
+        ROI roi = CoverageUtilities.getROIProperty(input);
+        
         // //
         //
         // I am going to concatenate the final world to grid transform for the
@@ -627,8 +631,12 @@ public final class GridCoverageRenderer {
         try {
             ImageWorker iw = new ImageWorker(finalImage);
             iw.setRenderingHints(hints);
+            iw.setROI(roi);
+            iw.setNoData(noData);
             iw.affine(finalRasterTransformation, interpolation, bkgValues);
             im = iw.getRenderedImage();
+            roi = iw.getROI();
+            noData = iw.getNoData();
         } finally {
                 if(DEBUG){
                     writeRenderedImage(im, "postAffine");
@@ -641,16 +649,23 @@ public final class GridCoverageRenderer {
             sd[i]= new GridSampleDimension(TypeMap.getColorInterpretation(im.getColorModel(), i).name());
         }
         
+        Map properties = input.getProperties();
+        if(properties == null){
+            properties = new HashMap<>();
+        }
+        CoverageUtilities.setNoDataProperty(properties, noData);
+        CoverageUtilities.setROIProperty(properties, roi);
+        
         // create a new grid coverage but preserve as much input as possible
-       return this.gridCoverageFactory.create(
-               input.getName(), 
-                im,
-                new GridGeometry2D(
-                        new GridEnvelope2D(PlanarImage.wrapRenderedImage(im).getBounds()), 
-                        input.getEnvelope()), 
-                sd, 
-                new GridCoverage[] { input },
-                input.getProperties());    
+        return this.gridCoverageFactory.create(
+                   input.getName(), 
+                    im,
+                    new GridGeometry2D(
+                            new GridEnvelope2D(PlanarImage.wrapRenderedImage(im).getBounds()), 
+                            input.getEnvelope()), 
+                    sd, 
+                    new GridCoverage[] { input },
+                    properties);    
     }
 
 
@@ -999,7 +1014,7 @@ public final class GridCoverageRenderer {
         if (cropped == null) {
             return null;
         }
-
+        
         return cropped.getRenderedImage();
 
     }
@@ -1172,6 +1187,8 @@ public final class GridCoverageRenderer {
             LOGGER.fine(new StringBuilder("Drawing reader ").append(gridCoverageReader.toString())
                     .toString());
 
+        setupInterpolationHints(interpolation);
+        
         // Build the final image and the transformation
         RenderedImage finalImage = renderImage(gridCoverageReader, readParams, symbolizer,
                 interpolation, background);

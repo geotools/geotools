@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@ package org.geotools.coverage.processing;
 
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.util.Map;
 
@@ -33,7 +34,6 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -142,32 +142,6 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
 		// Do we need to explode the Palette to RGB(A)?
 		//
 		// /////////////////////////////////////////////////////////////////////
-		ViewType strategy = CoverageUtilities.preferredViewForOperation(
-				sourceCoverage, interpolation, false, parameters.hints);
-		switch (strategy) {
-		case PHOTOGRAPHIC:
-			// //
-			//
-			// In this case I do not require an explicit color expansion since I
-			// can leverage on the fact that the scale operation with latest
-			// versions of JAI is one of the operations that perform automatic
-			// color expansion.
-			//
-			// //
-			break;
-		case GEOPHYSICS:
-			// in this case we need to go back the geophysics view of the
-			// source coverage
-                        // fallthrough same code than PACKED.
-		case PACKED:
-			// in this case we work on the non geophysics version because it
-			// should be faster than working on the geophysics one. We are going
-			// to work on a single band indexed image.
-			sourceCoverage = sourceCoverage.view(strategy);
-			sourceImage = sourceCoverage.getRenderedImage();
-			break;
-		}
-	
 		// /////////////////////////////////////////////////////////////////////
 		//
 		// Managing Hints, especially for output coverage's layout purposes.
@@ -213,7 +187,8 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
 		// If we explicitly provide an ImageLayout built with the source image
 		// where the CM and the SM are valid. those will be employed overriding
 		// a the possibility to expand the color model.
-		if (strategy != ViewType.PHOTOGRAPHIC)
+		final boolean asPhotographicStrategy = sourceImage.getColorModel() instanceof IndexColorModel;
+		if (!(asPhotographicStrategy))
 			targetHints.add(ImageUtilities.DONT_REPLACE_INDEX_COLOR_MODEL);
 		else {
 			targetHints.add(ImageUtilities.REPLACE_INDEX_COLOR_MODEL);
@@ -291,17 +266,13 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
 	            .create(name,        // The grid coverage name
 	                    image,        // The underlying data
 	                    gg2D,
-	                    (GridSampleDimension[]) (strategy == ViewType.PHOTOGRAPHIC ? null
+	                    (GridSampleDimension[]) (asPhotographicStrategy ? null
 	    						: sourceCoverage.getSampleDimensions().clone()),  // The sample dimensions
 	                    sources,     // The source grid coverage.
 	                    properties); // Properties
 	
 		
 		// now let's see what we need to do in order to clean things up
-		if (strategy == ViewType.GEOPHYSICS)
-			return result.view(ViewType.PACKED);
-		if (strategy == ViewType.PACKED)
-			return result.view(ViewType.GEOPHYSICS);
 		return result;		
 	}
 

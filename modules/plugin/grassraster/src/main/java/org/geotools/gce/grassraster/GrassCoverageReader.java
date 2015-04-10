@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,6 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,7 +32,6 @@ import java.util.List;
 import javax.imageio.ImageReadParam;
 import javax.media.jai.BorderExtenderConstant;
 import javax.media.jai.Interpolation;
-import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 
 import org.geotools.coverage.Category;
@@ -55,6 +53,7 @@ import org.geotools.gce.grassraster.spi.GrassBinaryImageReaderSpi;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -491,7 +490,6 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
          * create the categories from the color rules
          */
         GridSampleDimension band = createGridSampleDimension(metaDataTable, range);
-        band = band.geophysics(true);
 
         // create a relationship between the real region in the world and the
         // jai space. N.B. the
@@ -512,21 +510,10 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
     }
 
     private RenderedImage setPadding( int xPaddingSx, int xPaddingDx, int yPaddingTop, int yPaddingBottom, RenderedImage image ) {
-        ParameterBlock block = new ParameterBlock();
-        block.addSource(image);
-        block.add(Math.abs(xPaddingSx));
-        block.add(Math.abs(0));
-        block.add(Math.abs(yPaddingTop));
-        block.add(Math.abs(0));
-        block.add(new BorderExtenderConstant(new double[]{Double.NaN}));
-        RenderedOp paddedImage = JAI.create("Border", block);
-
-        block = new ParameterBlock();
-        block.addSource(paddedImage);
-        block.add((float) -xPaddingSx);
-        block.add((float) -yPaddingTop);
-        return JAI.create("translate", block);
-
+        ImageWorker worker = new ImageWorker(image);
+        worker.border(Math.abs(xPaddingSx), Math.abs(0), Math.abs(yPaddingTop), Math.abs(0), new BorderExtenderConstant(new double[]{Double.NaN}));        
+        worker.translate((float)-xPaddingSx, (float)-yPaddingTop, null);
+        return worker.getRenderedImage();
     }
 
     private GridSampleDimension createGridSampleDimension( HashMap<String, String> metaDataTable, double[] range )
@@ -599,13 +586,13 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
                 }
                 previousUpper = upper;
 
-                Category dataCategory = new Category(sB.toString(), colors[i], lower, upper, scale, offSet);
+                Category dataCategory = new Category(sB.toString(), colors[i], lower, upper);
 
                 catsList.add(dataCategory);
             }
 
             Category[] array = (Category[]) catsList.toArray(new Category[catsList.size()]);
-            return new GridSampleDimension(name, array, null);
+            return new GridSampleDimension(name, array, scale, offSet);
         } else {
             return new GridSampleDimension(name, new Category[]{}, null);
         }
@@ -661,7 +648,6 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
     // coverage2D, interpolation);
     // System.out.println(interpolated.evaluate(point, buffer)[0]);
     //
-    // GridCoverage2D integerView = coverage2D.view(ViewType.RENDERED);
     // System.out.println(integerView.evaluate(point, buffer)[0]);
     //
     // RenderedImage renderedImage = integerView.getRenderedImage();
@@ -674,7 +660,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
     // // // GridGeometry2D g2d = new GridGeometry2D()
     // // // with GridGeometry I can control the target grid
     // //
-    // // ImageIO.write(geographic.view(ViewType.RENDERED).getRenderedImage(),
+    // // ImageIO.write(geographic.getRenderedImage(),
     // // "png", new File(
     // // "/home/moovida/Desktop/test2.png"));
     // //

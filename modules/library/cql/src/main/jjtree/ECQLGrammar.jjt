@@ -272,7 +272,7 @@ TOKEN [IGNORE_CASE]: /* Literals */
 
     < IDENTIFIER: (<LETTER> (<LETTER>|<DIGIT>)*) | <DOUBLE_QUOTE> (<ANY>)+ <DOUBLE_QUOTE> > |
 
-	< #ANY: ~[" "] > |
+	< #ANY: ~[" ","\""] > |
   	< #LETTER: [ "a"-"z", "A"-"Z" , "_"] > |
   	< #DIGIT: [ "0"-"9"] > |
   	< #EXPONENT: ["e","E"] (["+","-"])? (<DIGIT>)+ > |

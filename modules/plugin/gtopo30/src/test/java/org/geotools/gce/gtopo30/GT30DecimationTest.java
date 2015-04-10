@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,6 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
@@ -84,7 +83,6 @@ public class GT30DecimationTest extends GT30TestBase {
 					AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString()).setValue(
 							new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0, 640, 480)), reader.getOriginalEnvelope()));
 			gc = ((GridCoverage2D) reader.read((GeneralParameterValue[]) params.values().toArray(new GeneralParameterValue[1])));
-			assertTrue(CoverageUtilities.hasRenderingCategories(gc));
 			if(TestData.isInteractiveTest())
 			{
 //				 logging some info

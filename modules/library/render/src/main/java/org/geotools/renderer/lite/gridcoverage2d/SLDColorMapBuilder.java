@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,12 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import it.geosolutions.jaiext.classifier.LinearColorMap;
+import it.geosolutions.jaiext.classifier.LinearColorMap.LinearColorMapType;
+import it.geosolutions.jaiext.classifier.LinearColorMapElement;
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.range.RangeFactory;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +29,11 @@ import java.util.MissingResourceException;
 
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
-import org.geotools.renderer.lite.gridcoverage2d.LinearColorMap.LinearColorMapType;
 import org.geotools.renderer.style.ExpressionExtractor;
+
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.RasterSymbolizer;
-import org.geotools.util.NumberRange;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
@@ -253,7 +258,7 @@ public class SLDColorMapBuilder {
 			switch (linearColorMapType) {
 			case ColorMap.TYPE_RAMP:
 				colormapElements.add(LinearColorMapElement.create(label, newColorValue,
-						NumberRange.create(Double.NEGATIVE_INFINITY, false, q,
+				        RangeFactory.create(Double.NEGATIVE_INFINITY, false, q,
 								false), 0));
 				break;
 			case ColorMap.TYPE_VALUES:
@@ -262,7 +267,7 @@ public class SLDColorMapBuilder {
 				break;
 			case ColorMap.TYPE_INTERVALS:
 				colormapElements.add(LinearColorMapElement.create(label, newColorValue,
-						NumberRange.create(Double.NEGATIVE_INFINITY, false, q,
+				        RangeFactory.create(Double.NEGATIVE_INFINITY, false, q,
 								false), 0));
 				break;
 			default:
@@ -298,9 +303,9 @@ public class SLDColorMapBuilder {
 			case ColorMap.TYPE_RAMP:
 				colormapElements.add(LinearColorMapElement.create(label,
 						new Color[] { lastColorValue, newColorValue },
-						NumberRange.create(((NumberRange<? extends Number>) previous.getRange())
-								.getMaximum(), true, q, false),
-						NumberRange.create((int) previous.getOutputMaximum() ,
+						RangeFactory.create(((Range) previous.getRange())
+								.getMax().doubleValue(), true, q, false),
+								RangeFactory.create((int) previous.getOutputMaximum() ,
 								colorsPerColorMapElement
 										+ (int) previous.getOutputMaximum())));
 				break;
@@ -310,8 +315,8 @@ public class SLDColorMapBuilder {
 				break;
 			case ColorMap.TYPE_INTERVALS:
 				colormapElements.add(LinearColorMapElement.create(label,
-						newColorValue, NumberRange.create(((NumberRange<? extends Number>) previous
-								.getRange()).getMaximum(), true, q, false),
+						newColorValue, RangeFactory.create(((Range) previous
+								.getRange()).getMax().doubleValue(), true, q, false),
 						newColorMapElementIndex));
 				break;
 			default:
@@ -635,8 +640,8 @@ public class SLDColorMapBuilder {
 			//
 			// //
 			last=LinearColorMapElement.create(
-					"ColorMapEntry"+this.colormapElements.size(), lastColorValue, NumberRange.create(
-						 previous.getRange().getMaximum(),
+					"ColorMapEntry"+this.colormapElements.size(), lastColorValue, RangeFactory.create(
+						 previous.getRange().getMax().doubleValue(),
 							true, Double.POSITIVE_INFINITY, false),
 					(int) previous.getOutputMaximum());
 			this.colormapElements.add(last);
@@ -660,7 +665,7 @@ public class SLDColorMapBuilder {
 							org.geotools.resources.i18n.Vocabulary.format(
 									org.geotools.resources.i18n.VocabularyKeys.NODATA)+ Integer.toString(i + 1), 
 									preservedValuesColor, 
-									NumberRange.create( preservedValues.get(i), preservedValues.get(i)),
+									RangeFactory.create( preservedValues.get(i), preservedValues.get(i)),
 									value
 			);
 		}

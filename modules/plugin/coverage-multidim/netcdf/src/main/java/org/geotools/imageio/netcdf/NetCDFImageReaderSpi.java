@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,6 +42,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.logging.Logging;
 
@@ -54,13 +58,9 @@ import ucar.nc2.dataset.NetcdfDataset.Enhance;
 public class NetCDFImageReaderSpi extends ImageReaderSpi {
 
     public static final Class< ? >[] STANDARD_INPUT_TYPES = new Class[]{AccessibleStream.class, ImageInputStream.class,
-        File.class, URL.class, URI.class};   
+        File.class, URL.class, URI.class};
 
     public static final String VENDOR_NAME = "GeoTools";
-
-    static {
-         NetcdfDataset.setDefaultEnhanceMode(EnumSet.of(Enhance.CoordSystems));
-    }
 
     /** Default Logger * */
     private static final Logger LOGGER = Logging.getLogger(NetCDFImageReaderSpi.class);
@@ -99,19 +99,35 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
     static final String[] extraImageMetadataFormatNames = { null };
 
     static final String[] extraImageMetadataFormatClassNames = { null };
- 
 
-    static{
-        // If Grib Library is available, then the GRIB extension must be added to support
-        if(NetCDFUtilities.isGribAvailable()){
-            suffixes  = new String[]{ "nc", "NC", "grib", "grb", "grb2" };
-            formatNames = new String[]{ "netcdf", "NetCDF", "grib", "grib2", "GRIB", "GRIB2" };
-            MIMETypes = new String[]{ "application/x-netcdf", "image/netcdf", "image/x-netcdf", "image/x-nc" , "application/octet-stream" };
-        }else{
-            suffixes  = new String[]{ "nc", "NC" };
-            formatNames = new String[]{ "netcdf", "NetCDF" };
-            MIMETypes = new String[]{ "application/x-netcdf", "image/netcdf", "image/x-netcdf", "image/x-nc" };
+    static {
+        NetcdfDataset.setDefaultEnhanceMode(EnumSet.of(Enhance.CoordSystems));
+
+        // If Grib Library is available, then the GRIB extension must be added to support.
+        // If NC4 C Library is available, then the proper MIME Types must be added to support.
+        List<String> suffixesList = new ArrayList<String>();
+        Collections.addAll(suffixesList, "nc", "NC");
+
+        List<String> formatNamesList = new ArrayList<String>();
+        Collections.addAll(formatNamesList, "netcdf", "NetCDF", NetCDFUtilities.NETCDF_3);
+
+        List<String> mimeTypesList = new ArrayList<String>();
+        Collections.addAll(mimeTypesList, NetCDFUtilities.NETCDF3_MIMETYPE, "image/netcdf", "image/x-netcdf",
+                "image/x-nc");
+
+        if (NetCDFUtilities.isGribAvailable()) {
+            Collections.addAll(suffixesList, "grib", "grb", "grb2");
+            Collections.addAll(formatNamesList, "grib", "grib2", "GRIB", "GRIB2");
+            Collections.addAll(mimeTypesList, "application/octet-stream");
         }
+        if (NetCDFUtilities.isNC4CAvailable()) {
+            Collections.addAll(formatNamesList, NetCDFUtilities.NETCDF_4C, "NetCDF-4");
+            Collections.addAll(mimeTypesList, NetCDFUtilities.NETCDF4_MIMETYPE);
+        }
+
+        suffixes = suffixesList.toArray(new String[suffixesList.size()]);
+        formatNames = formatNamesList.toArray(new String[formatNamesList.size()]);
+        MIMETypes = mimeTypesList.toArray(new String[mimeTypesList.size()]);
     }
 
     
@@ -196,7 +212,7 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
                 if (!isNetCDF) {
                     return false;
                 }
-                file = NetcdfDataset.acquireDataset(input.getPath(), null);
+                file = NetcdfDataset.acquireDataset(DataUtilities.fileToURL(input).toString(), null);
                 if (file != null) {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine("File successfully opened");

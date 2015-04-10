@@ -66,6 +66,7 @@ class CompositingGroup {
                         clone.setQuery(layer.getQuery());
                         clone.setVisible(layer.isVisible());
                         clone.setSelected(layer.isSelected());
+                        clone.getUserData().putAll(layer.getUserData());
                         layers.add(clone);
                     }
                 }

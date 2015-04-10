@@ -46,7 +46,7 @@ public class CustomPaletteBuilderTest extends Assert {
     public void test2BandsBug() {
         // build a transparent image
         BufferedImage image = new BufferedImage(256,256,BufferedImage.TYPE_BYTE_GRAY);
-        image=new ImageWorker(image).addBand(image, true).getBufferedImage();
+        image=new ImageWorker(image).addBand(image, true, true, null).getBufferedImage();
         
         
         // create a palette out of it

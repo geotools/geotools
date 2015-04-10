@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 20011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,8 +27,8 @@ import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.TileCache;
-import javax.media.jai.operator.ScaleDescriptor;
 
+import org.geotools.image.ImageWorker;
 import org.geotools.resources.image.ImageUtilities;
 /**
  * Utilities methods for the {@link OverviewsEmbedder} class.
@@ -178,27 +178,13 @@ class Utils {
     		final RenderingHints newHints = new RenderingHints(JAI.KEY_TILE_CACHE,scaleTC);
     		newHints.add(ImageUtilities.DONT_REPLACE_INDEX_COLOR_MODEL);
     		newHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, borderExtender));
-    		
-    		return ScaleDescriptor.create(src, 
-    		        Float.valueOf(1.0f/downsampleStep), 
-    		        Float.valueOf(1.0f/downsampleStep), 
-    		        Float.valueOf(0.0f), 
-    		        Float.valueOf(0.0f), 
-    		        interpolation, 
-    		        newHints);
-    		
-    //		// using filtered subsample operator to do a subsampling
-    //		final ParameterBlockJAI pb = new ParameterBlockJAI("filteredsubsample");
-    //		pb.addSource(src);
-    //		pb.setParameter("scaleX", Integer.valueOf(downsampleStep));
-    //		pb.setParameter("scaleY", Integer.valueOf(downsampleStep));
-    //		pb.setParameter("qsFilterArray", new float[] { 1.0f });
-    //		pb.setParameter("Interpolation", interpolation);
-    //		// remember to add the hint to avoid replacement of the original
-    //		// IndexColorModel
-    //		// in future versions we might want to make this parametrix XXX TODO
-    //		// @task
-    //		return JAI.create("filteredsubsample", pb, newHints);
+    		ImageWorker w = new ImageWorker(src).setRenderingHints(newHints);
+    		w.scale(Float.valueOf(1.0f/downsampleStep),
+    		        Float.valueOf(1.0f/downsampleStep),
+    		        Float.valueOf(0.0f),
+    		        Float.valueOf(0.0f),
+    		        interpolation);
+    		return w.getRenderedOperation();
     	}
 
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,6 @@ package org.geotools.gce.arcgrid;
 
 import java.awt.image.Raster;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
@@ -32,7 +31,6 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterValue;
@@ -175,7 +173,6 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
 		/** Step 1: Reading the coverage */
 		GridCoverageReader reader = new ArcGridReader(rf,hints);
 		final GridCoverage2D gc1 = (GridCoverage2D) reader.read(null);
-		assertTrue(CoverageUtilities.hasRenderingCategories(gc1));
 
 		/** Step 2: Write grid coverage out to temp file */
 		final GridCoverageWriter writer = new ArcGridWriter(wf);
@@ -226,7 +223,6 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
 		/** Step 1: Reading the coverage */
 		GridCoverageReader reader = new ArcGridReader(rf,hints);
 		final GridCoverage2D gc1 = (GridCoverage2D) reader.read(null);
-		assertTrue(CoverageUtilities.hasRenderingCategories(gc1));
 
 		/** Step 2: Write grid coverage out to temp file */
 		final GridCoverageWriter writer = new ArcGridWriter(wf);

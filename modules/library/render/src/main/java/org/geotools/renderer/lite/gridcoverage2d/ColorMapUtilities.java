@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,9 +16,12 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import it.geosolutions.jaiext.classifier.ConstantColorMapElement;
+import it.geosolutions.jaiext.classifier.LinearColorMapElement;
+import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1DElement;
+
 import java.awt.Color;
 
-import org.geotools.referencing.piecewise.DefaultPiecewiseTransform1DElement;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.opengis.geometry.DirectPosition;

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -55,7 +55,6 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
@@ -633,8 +632,7 @@ public class Utilities {
     public static GridCoverage createCoverageFromImage(final GridCoverageFactory coverageFactory,
             final String coverageName, int imageIndex, PlanarImage image,
             MathTransform raster2Model, final CoordinateReferenceSystem spatialReferenceSystem2D,
-            GeneralEnvelope coverageEnvelope2D, final GridSampleDimension[] sampleDimensions,
-            final boolean getGeophysics) throws IOException {
+            GeneralEnvelope coverageEnvelope2D, final GridSampleDimension[] sampleDimensions) throws IOException {
         final GridSampleDimension[] bands = sampleDimensions;
 
         GridCoverage2D gridCoverage;
@@ -646,9 +644,6 @@ public class Utilities {
             gridCoverage = coverageFactory.create(coverageName, image, coverageEnvelope2D, bands,
                     null, null);
 
-        if (getGeophysics)
-            return gridCoverage.view(ViewType.GEOPHYSICS);
-        else
             return gridCoverage;
     }
 
@@ -853,13 +848,13 @@ public class Utilities {
                     image, ConcatenatedTransform.create(ProjectiveTransform
                             .create(new AffineTransform(scaleX, 0, 0, scaleY, translateX,
                                     translateY)), raster2Model), coordinateReferenceSystem,
-                    (GeneralEnvelope) null, sampleDimensions, true);
+                    (GeneralEnvelope) null, sampleDimensions);
         } else {
             // In case of no transformation is required (As an instance,
             // when reading the whole image)
             return Utilities.createCoverageFromImage(coverageFactory, coverageName, imageIndex,
                     image, (MathTransform) null, (CoordinateReferenceSystem) null,
-                    coverageEnvelope2D, sampleDimensions, true);
+                    coverageEnvelope2D, sampleDimensions);
         }
     }
 

@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -101,9 +101,10 @@ public class TestCaseSupport {
         // care, so I'll just delete everything
         final Iterator<File> f = tmpFiles.iterator();
         while (f.hasNext()) {
-            File targetFile = (File) f.next();
+            File targetFile = f.next();
 
             dieDieDIE(targetFile);
+            dieDieDIE(sibling(targetFile, "shp"));
             dieDieDIE(sibling(targetFile, "dbf"));
             dieDieDIE(sibling(targetFile, "shx"));
             // Quad tree index
@@ -203,7 +204,7 @@ public class TestCaseSupport {
         return tmpFile;
     }
 
-    private void markTempFile(File tmpFile) {
+    protected void markTempFile(File tmpFile) {
         tmpFiles.add(tmpFile);
     }
 

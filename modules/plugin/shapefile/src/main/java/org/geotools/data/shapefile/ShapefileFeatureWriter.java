@@ -16,7 +16,9 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.files.ShpFileType.*;
+import static org.geotools.data.shapefile.files.ShpFileType.DBF;
+import static org.geotools.data.shapefile.files.ShpFileType.SHP;
+import static org.geotools.data.shapefile.files.ShpFileType.SHX;
 
 import java.io.IOException;
 import java.nio.channels.FileChannel;
@@ -215,46 +217,48 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
             throw new IOException("Writer closed");
         }
 
-        // make sure to write the last feature...
-        if (currentFeature != null) {
-            write();
-        }
-        // make sure we also write whatever feature the reader might still have around
-        if(featureReader.nextFeature != null) {
-            currentFeature = featureReader.nextFeature ;
-            write();
-        }
-
-        // if the attribute reader is here, that means we may have some
-        // additional tail-end file flushing to do if the Writer was closed
-        // before the end of the file
-        if (featureReader != null) {
-            handler = shapeType.getShapeHandler(gf);
-
-            // handle the case where zero records have been written, but the
-            // stream is closed and the headers are not there
-            if (records == 0) {
-                shpWriter.writeHeaders(bounds, shapeType, 0, 0);
+        try {
+            // make sure to write the last feature...
+            if (currentFeature != null) {
+                write();
+            }
+            // make sure we also write whatever feature the reader might still have around
+            if (featureReader.nextFeature != null) {
+                currentFeature = featureReader.nextFeature;
+                write();
             }
 
-            // copy array for bounds
-            double[] env = new double[4];
+            // if the attribute reader is here, that means we may have some
+            // additional tail-end file flushing to do if the Writer was closed
+            // before the end of the file
+            if (featureReader != null) {
+                handler = shapeType.getShapeHandler(gf);
 
-            while (featureReader.filesHaveMore()) {
-                // transfer bytes from shapefile
-                shapefileLength += featureReader.shp.transferTo(shpWriter, ++records, env);
+                // handle the case where zero records have been written, but the
+                // stream is closed and the headers are not there
+                if (records == 0) {
+                    shpWriter.writeHeaders(bounds, shapeType, 0, 0);
+                }
 
-                // bounds update
-                bounds.expandToInclude(env[0], env[1]);
-                bounds.expandToInclude(env[2], env[3]);
+                // copy array for bounds
+                double[] env = new double[4];
 
-                // transfer dbf bytes
-                featureReader.dbf.transferTo(dbfWriter);
+                while (featureReader.filesHaveMore()) {
+                    // transfer bytes from shapefile
+                    shapefileLength += featureReader.shp.transferTo(shpWriter, ++records, env);
+
+                    // bounds update
+                    bounds.expandToInclude(env[0], env[1]);
+                    bounds.expandToInclude(env[2], env[3]);
+
+                    // transfer dbf bytes
+                    featureReader.dbf.transferTo(dbfWriter);
+                }
             }
+        } finally {
+            doClose();
+            clean();
         }
-
-        doClose();
-        clean();
     }
 
     protected void doClose() throws IOException {

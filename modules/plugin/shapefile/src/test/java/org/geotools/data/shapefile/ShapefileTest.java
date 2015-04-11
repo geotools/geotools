@@ -249,6 +249,7 @@ public class ShapefileTest extends TestCaseSupport {
 		// Write a point shapefile with one null geometry
 		Map<String, Serializable> params = new HashMap<String, Serializable>();
 		File tmp = File.createTempFile("test", ".dbf");
+        markTempFile(tmp);
 		if (!tmp.delete()) {
 			throw new IllegalStateException("Unable to clear temp file");
 		}

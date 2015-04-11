@@ -16,16 +16,9 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -66,7 +59,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -1202,17 +1194,17 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     private void writeFeatures(ShapefileDataStore s, SimpleFeatureCollection fc)
             throws Exception {
         s.createSchema(fc.features().next().getFeatureType());
-        FeatureWriter<SimpleFeatureType, SimpleFeature> fw = s.getFeatureWriter(s.getTypeNames()[0],
-                Transaction.AUTO_COMMIT);
-        SimpleFeatureIterator it = fc.features();
-        while (it.hasNext()) {
-            SimpleFeature feature = it.next();
-            SimpleFeature newFeature = fw.next();
-            newFeature.setAttributes(feature.getAttributes());
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> fw = s.getFeatureWriter(
+                s.getTypeNames()[0], Transaction.AUTO_COMMIT);
+                SimpleFeatureIterator it = fc.features()) {
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                SimpleFeature newFeature = fw.next();
+                newFeature.setAttributes(feature.getAttributes());
 
-            fw.write();
+                fw.write();
+            }
         }
-        fw.close();
     }
 
     private void runWriteReadTest(Geometry geom, boolean d3) throws Exception {
@@ -1226,7 +1218,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         DefaultFeatureCollection features = new DefaultFeatureCollection();
         SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
         for (int i = 0, ii = 20; i < ii; i++) {
-            build.set(0, (Geometry) geom.clone());
+            build.set(0, geom.clone());
             SimpleFeature feature = build.buildFeature(null);
 
             features.add(feature);
@@ -1467,7 +1459,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd Z");
         
-        Date date = (Date) dateFormatter.parse(str_date + " GMT");
+        Date date = dateFormatter.parse(str_date + " GMT");
 
         Calendar timestampCal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
        

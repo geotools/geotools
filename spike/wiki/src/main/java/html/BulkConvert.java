@@ -224,10 +224,12 @@ public class BulkConvert {
         //
         // Use http://www.regexplanet.com/advanced/java/index.html to work out
         //
-        // pattern: .. \|image(\d)\| image:: (download/attachments/.+?)/(.+)
-        // replace: .. |image$1| image:: /page/$3
+        // pattern: ![geotools.logo](attachments/592/111214597/2)
+        // <ac:image><ri:attachment ri:filename="resolve.png" /></ac:image>
+        // <ac:image><ri:attachment ri:filename="cache-MinimalConnection.jpg" /></ac:image>
+        // replace: ![geotools.logo](attachments/592/111214597/2)
         Pattern imagePattern = Pattern
-                .compile(".. \\|image(\\d+)\\| image:: (download/attachments/.+?)/(.+)");
+                .compile("([a-zA-Z\\-0-9]+)\\_(\\d+)\\.png");
         String imageReplace = ".. |image$1| image:: /images/" + page + "/$3";
 
         // BEFORE: .. |image10| image:: download/attachments/4523/delete_feature_mode.gif
@@ -414,19 +416,14 @@ public class BulkConvert {
     private void duplicateImage(File attachementImage, File pageImage) {
         String fileName = attachementImage.getName();
         
-        File liveImage = searchPluginImages(fileName);
-        if( liveImage != null ){
-            System.out.println("   Override attachment image from : "+ liveImage );
-            attachementImage = liveImage;
-        }
-        else if (!attachementImage.exists()) {
+        if (!attachementImage.exists()) {
             File otherAttachment = searchAllAttachments(fileName);
             if( otherAttachment != null ){
                 System.out.println("   Found attachment on another page " + otherAttachment );
                 attachementImage = otherAttachment; // okay we found it on another page
             }
             else {
-                System.out.println("   WARNING: Unable to locate " + attachementImage + " broken link!");                
+                System.out.println("   WARNING: Unable to locate " + attachementImage + " broken link!");
             }
         }
 
@@ -459,24 +456,6 @@ public class BulkConvert {
             }
         }
         return null; // not found!
-    }
-
-    private File searchPluginImages(String fileName) {
-        // search for live icons first!
-        File checkout = wikiDirectory.getParentFile().getParentFile().getParentFile();
-        File plugins = new File(checkout, "plugins");
-        if( plugins.exists() && plugins.isDirectory() ){
-            for (File plugin : plugins.listFiles()) {
-                File icons = new File(plugin, "icons");
-                if (icons.exists() && icons.isDirectory()) {
-                    File file = searchDirectory(icons, fileName);
-                    if (file != null) {
-                        return file; // found it!
-                    }
-                }
-            }
-        }
-        return null; // not found
     }
 
     private File searchDirectory(File dir, String fileName) {

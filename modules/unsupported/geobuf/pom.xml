@@ -46,27 +46,25 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <!--
-            Commented out to make building easier (no dependency on protoc executable.
-            To regenerate the org.geotools.data.geobuf.Geobuf Java file, place the new geobuf.proto
-            in src/main/protobuf and add package org.geotools.data.geobuf; to the first line. Then
-            uncomment the following plugin and run mvn clean install.  This will create a new Geobuf
-            Java file in target/generated-sources.
-            -->
-            <!--<plugin>
-                <groupId>com.github.igor-petruk.protobuf</groupId>
-                <artifactId>protobuf-maven-plugin</artifactId>
-                <version>0.6.3</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
-        </plugins>
-    </build>
+    <profiles>
+        <profile>
+            <id>protoc</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.igor-petruk.protobuf</groupId>
+                        <artifactId>protobuf-maven-plugin</artifactId>
+                        <version>0.6.3</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

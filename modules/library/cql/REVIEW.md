@@ -1,13 +1,16 @@
 # IP Review
 
+STATUS: CLEAN
+
 ## Initial Review
 
-    * Gabriel Roldan, November 26, 2006
+Review conducted by:
 
-    * Adrian Custer, June 6, 2008.
+ - Gabriel Roldan, November 26, 2006
 
+ - Adrian Custer, June 6, 2008
 
-STATUS: CLEAN
+Packages reviewed:
 
 ```
 org.geotools.filter.cql
@@ -26,8 +29,11 @@ Bizkaia, Departamento deOrdenación Territorial
 
 ## Code refactor to allow parsers
 
-Mauricio Pazos, Februray 04, 2008
+Review conducted by:
 
+ - Mauricio Pazos, Februray 04, 2008
+
+Packaged reviewed:
 
 ```
 org.geotools.filter.function

@@ -9,18 +9,20 @@ support all filter and expression possibilities.
 In this section are presented the ECQL's syntax rules. EBNF metalanguage
 is used to describe the grammar.
 
-##### Search conditions {#ECQLParserDesign-Searchconditions}
+##### Search conditions
 
-```    <sequence of search conditions> ::=
+```
+    <sequence of search conditions> ::=
                 <search condition>
                    |<sequence of search conditions> <semicolon> <search condition>
 
     <search condition> ::= <boolean value expression>
 ```
 
-##### Boolean Predicate {#ECQLParserDesign-BooleanPredicate}
+##### Boolean Predicate
 
-```    <boolean value expression> ::=
+```
+    <boolean value expression> ::=
         <boolean term>
         | <boolean value expression> OR <boolean term>
 
@@ -31,16 +33,15 @@ is used to describe the grammar.
     <boolean factor> ::= [ "NOT" ] <boolean primary>
 ```
 
-##### Boolean Primary Predicates {#ECQLParserDesign-BooleanPrimaryPredicates}
+##### Boolean Primary Predicates
 
 ```
     <boolean primary> ::=
         <predicate>
         | <left parent> <search condition> <right parent>
         | <left bracket> <search condition> <right bracket>
-```
 
-```    <predicate> ::=
+    <predicate> ::=
         <comparison predicate>
         | <like text predicate>
         | <null predicate>
@@ -52,9 +53,10 @@ is used to describe the grammar.
         | <include exclude predicate>
 ```
 
-##### Comparison Predicate {#ECQLParserDesign-ComparisonPredicate}
+##### Comparison Predicate
 
-```    <comparison predicate> ::= <expression> <comp op> <expression>
+```
+    <comparison predicate> ::= <expression> <comp op> <expression>
 
     <comp op> ::= <equals operator>
         | <not equals operator>
@@ -64,9 +66,10 @@ is used to describe the grammar.
         | <greater than or equals operator>
 ```
 
-##### Like Text Predicate {#ECQLParserDesign-LikeTextPredicate}
+##### Like Text Predicate
 
-```    <like text predicate> ::= <expression> [ "NOT" ] "LIKE" <character pattern>
+```
+    <like text predicate> ::= <expression> [ "NOT" ] "LIKE" <character pattern>
 
     <character pattern> ::= <character string literal>
 
@@ -80,26 +83,30 @@ is used to describe the grammar.
             attribute not like '%will_not_end_with_this' *)
 ```
 
-##### Null Predicate {#ECQLParserDesign-NullPredicate}
+##### Null Predicate
 
-```    <null predicate> ::= <expression> "IS" [ "NOT" ] "NULL"
+```
+    <null predicate> ::= <expression> "IS" [ "NOT" ] "NULL"
 ```
 
-##### Existence Predicate {#ECQLParserDesign-ExistencePredicate}
+##### Existence Predicate
 
-```    <existence_predicate> :=
+```
+    <existence_predicate> :=
           <attribute_name> "EXISTS"
         | <attribute_name> "DOES-NOT-EXIST"
 ```
 
-##### Between Predicate {#ECQLParserDesign-BetweenPredicate}
+##### Between Predicate
 
-```    <between predicate> ::= <expression> [ "NOT" ] "BETWEEN" <expression> "AND" <expression>
+```
+    <between predicate> ::= <expression> [ "NOT" ] "BETWEEN" <expression> "AND" <expression>
 ```
 
-##### Temporal Predicate {#ECQLParserDesign-TemporalPredicate}
+##### Temporal Predicate
 
-```    <temporal predicate> ::=
+```
+    <temporal predicate> ::=
           <expression> "BEFORE" <date-time expression>
         | <expression> "BEFORE" "OR" "DURING" <period>
         | <expression> "DURING" <period>
@@ -109,35 +116,40 @@ is used to describe the grammar.
     <date-time expression ::= <date-time> | <period>
 ```
 
-##### ID Predicate {#ECQLParserDesign-IDPredicate}
+##### ID Predicate
 
 Deprecated Syntax
 
-```    <id predicate> ::= [ "NOT" ] "IN" "(" <id> {"," <id> } ")"
+```
+    <id predicate> ::= [ "NOT" ] "IN" "(" <id> {"," <id> } ")"
     <id> ::=  <character string literal>
 ```
 
 New Syntax (since 2.7.rc1)
 
-```    <id predicate> ::= [ "NOT" ] "IN" "(" <id> {"," <id> } ")"
+```
+    <id predicate> ::= [ "NOT" ] "IN" "(" <id> {"," <id> } ")"
     <id> ::=  <character string literal> | <integer literal> 
 ```
 
-##### IN Predicate {#ECQLParserDesign-INPredicate}
+##### IN Predicate
 
-```    <in predicate>       ::=   <attribute-name> [  "NOT"  ]  "IN"  <in predicate value>
+```
+    <in predicate>       ::=   <attribute-name> [  "NOT"  ]  "IN"  <in predicate value>
     <in predicate value>    ::=   "(" <in value list> ")"
     <in value list>         ::=   <expression> {"," <expression>}
 ```
 
-##### INCLUDE/EXCLUDE Predicate {#ECQLParserDesign-INCLUDE/EXCLUDEPredicate}
+##### INCLUDE/EXCLUDE Predicate
 
-```    <include exclude predicate> ::= INCLUDE | EXCLUDE
+```
+    <include exclude predicate> ::= INCLUDE | EXCLUDE
 ```
 
-##### Expression {#ECQLParserDesign-Expression}
+##### Expression
 
-```    <expression> ::= <term> { <addition operator>  <term> } 
+```
+    <expression> ::= <term> { <addition operator>  <term> } 
                     | <geometry literal>
     <addition operator>::= <plus sign> | <minus sign>
 
@@ -167,9 +179,10 @@ New Syntax (since 2.7.rc1)
     <boolean literal> ::= "TRUE" | "FALSE" 
 ```
 
-##### Spatial Predicate {#ECQLParserDesign-SpatialPredicate}
+##### Spatial Predicate
 
-```    <geometry predicate> ::= <geoop name><georoutine argument list>
+```
+    <geometry predicate> ::= <geoop name><georoutine argument list>
         | <expression><relgeoop name><relgeoop argument list>
         | BBOX <bbox argument list>
 
@@ -182,20 +195,17 @@ New Syntax (since 2.7.rc1)
 
     <relgeoop argument list> ::= "(" <expression> "," <expression> "," <tolerance> ")"
 
-
     <tolerance> ::=<unsigned numeric literal><comma><distance units>
 
     <distance units> ::= = "feet" | "meters" | "statute miles" | "nautical miles" | "kilometers"
-```
-
-```    bbox argument list> ::= "(" <attribute>"," <min X>"," <min Y>"," <max X>"," <max Y> ["," <crs>] ")"
+    
+    bbox argument list> ::= "(" <attribute>"," <min X>"," <min Y>"," <max X>"," <max Y> ["," <crs>] ")"
         | "(" <expression>"," <min X>"," <min Y>"," <max X>"," <max Y> ["," <crs>] ")"
             | "(" <expression>"," <expression> ")"
 
     bbox argument list> ::= "(" <attribute>"," <min X>"," <min Y>"," <max X>"," <max Y> ["," <crs>]")"
         | "(" <expression>"," <min X>"," <min Y>"," <max X>"," <max Y> ["," <crs>] ")"
             | "(" <expression>, <expression> ")"
-
 
     <min X> ::= <signed numerical literal>
     <min Y> ::= <signed numerical literal>
@@ -204,9 +214,10 @@ New Syntax (since 2.7.rc1)
     <crs> ::=  ... (* default: EPSG:4326. *)
 ```
 
-##### Geometry Literal {#ECQLParserDesign-GeometryLiteral}
+##### Geometry Literal
 
-```    <geometry literal> :=
+```
+    <geometry literal> :=
         <Point Tagged Text>
         | <LineString Tagged Text>
         | <Polygon Tagged Text>
@@ -230,7 +241,6 @@ New Syntax (since 2.7.rc1)
 
     <GeometryCollection Tagged Text> ::=GEOMETRYCOLLECTION <GeometryCollection Text>
 
-
     <Point Text> := EMPTY | <left paren> <Point> <right paren>
     <Point> := <x><space><y>
     <x> := numeric literal
@@ -253,9 +263,7 @@ New Syntax (since 2.7.rc1)
     <EastBoundLongitude> ::= <numeric literal>
     <NorthBoundLatitude> ::= <numeric literal>
     <SouthBoundLatitude> ::= <numeric literal>
-```
 
-```
     <date-time> ::= <full-date> T <UTC-time>
     <full_date> ::= <date-year> <date-month> <date-day>
     <date-year> ::= <digit><digit><digit><digit>
@@ -280,9 +288,10 @@ New Syntax (since 2.7.rc1)
         | <duration> / <date-time>
 ```
 
-##### Lexical Rules {#ECQLParserDesign-LexicalRules}
+##### Lexical Rules
 
-```    <SQL terminal character> ::= <SQL language character>
+```
+    <SQL terminal character> ::= <SQL language character>
     <SQL language character> ::= <simple Latin letter>
 
     | <digit>
@@ -297,9 +306,7 @@ New Syntax (since 2.7.rc1)
            | p | q | r | s | t | u | v | w | x | y | z
     <digit> ::=
            0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-```
 
-```
     <SQL special character> ::= <space>
                                | <double quote>
                                | <percent>
@@ -363,18 +370,14 @@ New Syntax (since 2.7.rc1)
     <nondelimiter token> ::= <regular identifier>
                             | <key word>
                             | <unsigned numeric literal>
-```
 
-```
     <regular identifier> ::= <identifier body>
                             | <double quote> {"any character"} <double quote>
     <identifier body> ::= <identifier start> [ { <underscore> | <identifier part> }... ]
     <identifier start> ::= <simple latin letter>
     <identifier part> ::= <identifier start>
                          | <digit>
-```
 
-```
     <key word> ::= <reserved word>
     <reserved word> ::= NOT | AND | OR | LIKE |
                         IS | NULL |
@@ -385,9 +388,7 @@ New Syntax (since 2.7.rc1)
                         EQUALS | DISJOINT | INTERSECTS | TOUCHES | CROSSES | WITHIN | CONTAINS| OVERLAPS | RELATE | DWITHIN | BEYOND |
                         POINT | LINESTRING | POLYGON | 
                         MULTIPOINT | MULTILINESTRING | MULTIPOLYGON | GEOMETRYCOLLECTION
-```
 
-```
     <unsigned numeric literal> ::= <exact numeric literal>
                                   | <approximate numeric literal>
     <exact numeric literal> ::=
@@ -403,9 +404,7 @@ New Syntax (since 2.7.rc1)
           <quote> [ <character representation>... ] <quote>
     <character representation> ::= <nonquote character> | <quote symbol>
     <quote symbol> ::= <quote><quote>
-```
 
-```
     /*End of non delimiter tokens*/
     /* I have limited the delimiter tokens by eliminating, interval strings
     and delimited identifiers BNF and simplifying the legal character set to
@@ -422,9 +421,7 @@ New Syntax (since 2.7.rc1)
                          | <right arrow>
                          | <left bracket>
                          | <right bracket>
-```
 
-```
     <character string literal> ::=
                     <quote> [ <character representation>... ] <quote>
     <character representation> ::= <nonquote character> | <quote symbol>
@@ -432,9 +429,7 @@ New Syntax (since 2.7.rc1)
     <not equals operator> ::= <>
     <greater than or equals operator> ::= >=
     <less than or equals operator> ::= <=
-```
 
-```
     /*The following section is intended to give context for identifier and
     namespaces. It assumes that the default namespace is specified in the
     query request and does not allow any overrides of the namepace */
@@ -447,9 +442,7 @@ New Syntax (since 2.7.rc1)
     <compound attribute name> ::= <identifier><period>
                                   [{<identifier><period>}...]
                                   <simple attribute name>
-```
 
-```
     <integer literal> ::= ...
 
     <floating literal> ::= ...

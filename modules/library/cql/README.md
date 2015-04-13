@@ -1,15 +1,13 @@
 CQL Parser
 ==========
 
-* Contact: Mauricio Pazos
-* Email Help: Geotools-gt2-users@lists.sourceforge.net
-* Volunteer: geotools-devel@lists.sourceforge.net
-* User Guide: http://docs.geotools.org/stable/userguide/library/cql/index.html
+* User Guide: http://docs.geotools.org/latest/userguide/library/cql/index.html
 
 Resources:
 
 * [CQL Parser Design](CQL.md)
 * [ECQL Parser Design](ECQL.md)
+* [IP Review](Review.md_
 
 ## Status
 

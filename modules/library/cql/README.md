@@ -7,7 +7,7 @@ Resources:
 
 * [CQL Parser Design](CQL.md)
 * [ECQL Parser Design](ECQL.md)
-* [IP Review](Review.md_
+* [IP Review](Review.md)
 
 ## Status
 

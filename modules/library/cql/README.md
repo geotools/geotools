@@ -27,7 +27,7 @@ A module dedicated to fully support the OGC Common Query Language, version 2.0.1
 
 ## Motivation
 
-[Axios](http://www.axios.es) has developed, for the [Gipuzkoa Provincial
+Axios has developed, for the [Gipuzkoa Provincial
 Council](http://b5m.gipuzkoa.net), **Mobility and Land Planning
 Department**, an implementation of the OGC Catalog Service for Web 2.0.1
 specification, based on GeoAPI medatada interfaces and Geotools
@@ -60,11 +60,9 @@ An example usage would be:
 http://server/geoserver/ows?service=WMS&request=GetMap&...&CONSTRAINTLANGUAGE=CQL_TEXT&CONSTRAINT="the_geom bbox(0, 0, 180, 90, 'EPSG:4326')"
 ```
 
-> Ofcourse the quoted text after `CONSTRAINT=` should be properly
-> encoded for HTTP
+Of course the quoted text after `CONSTRAINT=` should be properly encoded for HTTP.
 
-History
-=======
+## History
 
 The module is derived from the old *ExpressionBuilder* parser by Ian Schneider.
 
@@ -78,8 +76,7 @@ in the CSW spec. This implies, among other improvements:
     `TOUCH(ATTR1, POINT(1 2))` instead of `TOUCHES(ATTR1, POINT(1 2))`
 -   temporal predicates (BEFORE, AFTER, DURING, etc)
 
-Design Overview
-===============
+## Design
 
 The diagram presents the cql module **published** interface. The showed
 classes, **CQL** and **ECQL**, implement the contract with the clients.
@@ -103,4 +100,3 @@ To know more about CQL module implementation, see the following links:
 
 -   [CQL Parser Design](CQL-Parser-Design.md)
 -   [ECQL Parser Design](ECQL-Parser-Design.md)
-

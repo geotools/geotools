@@ -94,7 +94,7 @@ public class AddConst extends OperationJAI {
      * Constructs a default {@code "AddConst"} operation.
      */
     public AddConst() {
-        super(JAIExt.getOperationName(ADD_CONST));
+        super(ADD_CONST, getOperationDescriptor(JAIExt.getOperationName(ADD_CONST)));
     }
     
     public String getName() {

@@ -168,6 +168,19 @@ public class ProjectionHandlerTest {
         assertEquals(29.73, va.getMaxY(), 0.01d);
     }
 
+    @Test
+    public void testCutGeometryLambertConformal() throws Exception {
+        // get a lambert conformal conic with
+        ReferencedEnvelope wgs84South = new ReferencedEnvelope(-180, -90, -40, 0, WGS84);
+        ReferencedEnvelope laeSouth = wgs84South.transform(CRS.decode("EPSG:2194"), true);
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(laeSouth, WGS84, true);
+        // a Geometry that crosses the opposite of the central meridian
+        Polygon geometry = JTS.toGeometry(new Envelope(5, 15, 0, 10));
+        Geometry preProcessed = handler.preProcess(geometry);
+        assertTrue("Should have sliced the geometry in two parts",
+                preProcessed instanceof MultiPolygon);
+    }
+
 
     @Test
     public void testQueryWrappingMercatorWorld() throws Exception {

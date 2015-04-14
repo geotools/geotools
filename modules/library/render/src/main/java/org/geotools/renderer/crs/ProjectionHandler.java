@@ -45,6 +45,8 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.prep.PreparedGeometry;
+import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
 import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
 
 /**
@@ -73,6 +75,8 @@ public class ProjectionHandler {
     
     final Geometry validArea;
     
+    final PreparedGeometry validaAreaTester;
+
     final CoordinateReferenceSystem sourceCRS;
 
     final CoordinateReferenceSystem targetCRS;
@@ -97,6 +101,7 @@ public class ProjectionHandler {
         this.validAreaBounds = validAreaBounds != null ? new ReferencedEnvelope(validAreaBounds,
                 DefaultGeographicCRS.WGS84) : null;
         this.validArea = null;
+        this.validaAreaTester = null;
     }
     
     /**
@@ -116,6 +121,7 @@ public class ProjectionHandler {
             this.validAreaBounds = new ReferencedEnvelope(validArea.getEnvelopeInternal(),
                     DefaultGeographicCRS.WGS84);
             this.validArea = null;
+            this.validaAreaTester = null;
         } else {
             this.renderingEnvelope = renderingEnvelope;
             this.sourceCRS = sourceCRS;
@@ -123,6 +129,7 @@ public class ProjectionHandler {
             this.validAreaBounds = new ReferencedEnvelope(validArea.getEnvelopeInternal(),
                     DefaultGeographicCRS.WGS84);
             this.validArea = validArea;
+            this.validaAreaTester = PreparedGeometryFactory.prepare(validArea);
         }
     }
 
@@ -405,7 +412,7 @@ public class ProjectionHandler {
             // just skip expensive cutting
             ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), geometryCRS);
             ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
-            if (validAreaBounds.contains((Envelope) geWGS84)) {
+            if (validaAreaTester.contains(JTS.toGeometry(geWGS84))) {
                 return geometry;
             }
 

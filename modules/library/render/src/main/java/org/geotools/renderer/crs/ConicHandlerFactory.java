@@ -40,7 +40,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @source $URL$
  */
-public class ConiclHandlerFactory implements ProjectionHandlerFactory {
+public class ConicHandlerFactory implements ProjectionHandlerFactory {
     
     static final double EPS = 0.1;
     static final double MAX_DISTANCE = 44;

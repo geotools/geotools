@@ -736,7 +736,7 @@ public class YsldEncodeCookbookTest {
         assertEquals("5.0 15.0", line.str("stroke-dasharray"));
         assertEquals(7.5, line.doub("stroke-dashoffset"), 0.1);
 
-        YamlMap g = line.map("stroke-graphic-stroke");
+        YamlMap g = line.map("stroke-graphic");
         assertEquals(5, g.integer("size").intValue());
         assertEquals("circle", g.seq("symbols").map(0).map("mark").str("shape"));
         assertThat(g.seq("symbols").map(0).map("mark").get("stroke-color"), isColor("000033"));
@@ -800,7 +800,7 @@ public class YsldEncodeCookbookTest {
         YamlMap line = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("line");
 
         assertEquals("4.0 6.0", line.str("stroke-dasharray"));
-        YamlMap g = line.map("stroke-graphic-stroke");
+        YamlMap g = line.map("stroke-graphic");
 
         assertEquals(4, g.integer("size").intValue());
         assertEquals("circle", g.seq("symbols").map(0).map("mark").str("shape"));
@@ -877,7 +877,7 @@ public class YsldEncodeCookbookTest {
         YamlMap style = encode("line", "railroad.sld");
 
         YamlMap line = style.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(1).map("line");
-        YamlMap mark = line.map("stroke-graphic-stroke").seq("symbols").map(0).map("mark");
+        YamlMap mark = line.map("stroke-graphic").seq("symbols").map(0).map("mark");
         assertEquals("shape://vertline", mark.str("shape"));
         assertThat(line.get("stroke-color"), isColor("333333"));
         assertEquals(1, mark.integer("stroke-width").intValue());

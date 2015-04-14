@@ -19,11 +19,11 @@ public class StrokeEncoder extends YsldEncodeHandler<Stroke> {
         put("stroke-dashoffset", nullIf(stroke.getDashOffset(), 0));
 
         if (stroke.getGraphicFill() != null) {
-            push("stroke-graphic").inline(new GraphicEncoder(stroke.getGraphicFill()));
+            push("stroke-graphic-fill").inline(new GraphicEncoder(stroke.getGraphicFill()));
         }
 
         if (stroke.getGraphicStroke() != null) {
-            push("stroke-graphic-stroke").inline(new GraphicEncoder(stroke.getGraphicStroke()));
+            push("stroke-graphic").inline(new GraphicEncoder(stroke.getGraphicStroke()));
         }
     }
 

@@ -6,6 +6,7 @@ import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LabelPlacement;
+import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
@@ -29,6 +30,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.style.ChannelSelection;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.Graphic;
 import org.opengis.style.GraphicalSymbol;
 import org.geotools.styling.RasterSymbolizer;
 import org.hamcrest.BaseMatcher;
@@ -591,6 +593,55 @@ public class YsldEncodeTest {
         assertThat(channelMap.map("blue").str("name"), equalTo("baz"));
         assertFalse(channelMap.map("blue").has("contrast-enhancement"));
         
+    }
+
+    @Test
+    public void testStrokeGraphic() throws Exception {
+        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        LineSymbolizer l = sf.createLineSymbolizer();
+        Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
+        Graphic g = sf.createGraphic(null, new Mark[]{mark}, null, null, null, null);
+        Stroke s = sf.createStroke(null, null);
+        s.setGraphicStroke(g);
+        l.setStroke(s);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(l), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap lineMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("line");
+        
+        assertThat(lineMap, yHasEntry("stroke-graphic",
+                yHasEntry("symbols",
+                        yHasItem(0,
+                                yHasEntry("mark", allOf(
+                                        yHasEntry("shape", equalTo("circle")),
+                                        yHasEntry("fill-color", equalTo("#995555"))))))));
+    }
+    @Test
+    public void testStrokeGraphicFill() throws Exception {
+        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        LineSymbolizer l = sf.createLineSymbolizer();
+        Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
+        Graphic g = sf.createGraphic(null, new Mark[]{mark}, null, null, null, null);
+        Stroke s = sf.createStroke(null, ff.literal(10));
+        s.setGraphicFill(g);
+        l.setStroke(s);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(l), out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap lineMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("line");
+        
+        assertThat(lineMap, yHasEntry("stroke-graphic-fill",
+                yHasEntry("symbols",
+                        yHasItem(0,
+                                yHasEntry("mark", allOf(
+                                        yHasEntry("shape", equalTo("circle")),
+                                        yHasEntry("fill-color", equalTo("#995555"))))))));
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })

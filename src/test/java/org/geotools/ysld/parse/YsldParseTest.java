@@ -1,7 +1,6 @@
 package org.geotools.ysld.parse;
 
 import org.easymock.classextension.EasyMock;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.process.function.ProcessFunction;
@@ -14,12 +13,10 @@ import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
-import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
 import org.hamcrest.BaseMatcher;
@@ -38,6 +35,8 @@ import org.opengis.filter.expression.PropertyName;
 import org.geotools.styling.ColorMap;
 import org.opengis.style.ContrastEnhancement;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.Graphic;
+import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.LinePlacement;
 import org.opengis.style.Mark;
 import org.opengis.style.PointPlacement;
@@ -1628,4 +1627,59 @@ public class YsldParseTest {
         assertThat(p, hasProperty("options", hasEntry("composite-base", "true")));
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test
+    public void testStrokeGraphic() throws Exception {
+        
+        String yaml =
+                "line:\n"+
+                "  stroke-graphic:\n"+
+                "    symbols:\n"+
+                "    - mark:\n"+
+                "        shape: circle\n"+
+                "        fill-color: '#995555'\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        
+        assertThat(p, hasProperty("stroke", hasProperty("graphicStroke")));
+        Graphic g = p.getStroke().getGraphicStroke();
+        List<GraphicalSymbol> symbols = g.graphicalSymbols();
+        ((Mark)symbols.get(0)).getFill().getColor();
+        assertThat(symbols, (Matcher)hasItems(allOf(
+                instanceOf(Mark.class),
+                hasProperty("wellKnownName", literal("circle")),
+                hasProperty("fill", hasProperty("color", literal(isColor("995555"))))
+                )));
+    }    
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test
+    public void testStrokeGraphicFill() throws Exception {
+        
+        String yaml =
+                "line:\n"+
+                "  stroke-graphic-fill:\n"+
+                "    symbols:\n"+
+                "    - mark:\n"+
+                "        shape: circle\n"+
+                "        fill-color: '#995555'\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        
+        assertThat(p, hasProperty("stroke", hasProperty("graphicFill")));
+        Graphic g = p.getStroke().getGraphicFill();
+        List<GraphicalSymbol> symbols = g.graphicalSymbols();
+        ((Mark)symbols.get(0)).getFill().getColor();
+        assertThat(symbols, (Matcher)hasItems(allOf(
+                instanceOf(Mark.class),
+                hasProperty("wellKnownName", literal("circle")),
+                hasProperty("fill", hasProperty("color", literal(isColor("995555"))))
+                )));
+    }
 }

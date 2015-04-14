@@ -237,6 +237,17 @@ public class MosaicTest extends GridProcessingTestBase {
         disposeCoveragePlanarImage(mosaic);
     }
 
+    // Simple test which tries to mosaic an input coverage without settings sources parameter
+    @Test(expected=ParameterNotFoundException.class)
+    public void testMosaicNoSource() {
+        /*
+         * Getting parameters
+         */
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
+        // Setting source0 parameter
+        param.parameter("source0").setValue(coverage1);
+    }
+
     // Simple test which mosaics two input coverages with a different value for the output nodata
     @Test
     public void testMosaicWithAnotherNoData() {

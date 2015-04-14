@@ -815,28 +815,24 @@ public class Mosaic extends OperationJAI {
 
         return properties;
     }
-    
+
     protected void extractSources(final ParameterValueGroup parameters,
             final Collection<GridCoverage2D> sources, final String[] sourceNames)
             throws ParameterNotFoundException, InvalidParameterValueException {
-        if (!JAIExt.isJAIExtOperation(JAIExt.getOperationName(getName()))) {
-            super.extractSources(parameters, sources, sourceNames);
-        } else {
-            Utilities.ensureNonNull("parameters", parameters);
-            Utilities.ensureNonNull("sources", sources);
+        Utilities.ensureNonNull("parameters", parameters);
+        Utilities.ensureNonNull("sources", sources);
 
-            // Extraction of the sources from the parameters
-            Object srcCoverages = parameters.parameter("Sources").getValue();
+        // Extraction of the sources from the parameters
+        Object srcCoverages = parameters.parameter("Sources").getValue();
 
-            if (!(srcCoverages instanceof Collection) || ((Collection) srcCoverages).isEmpty()
-                    || !(((Collection) srcCoverages).iterator().next() instanceof GridCoverage2D)) {
-                throw new InvalidParameterValueException(Errors.format(
-                        ErrorKeys.ILLEGAL_ARGUMENT_$1, "sources"), "sources", srcCoverages);
-            }
-            // Collection of the sources to use
-            Collection<GridCoverage2D> sourceCoverages = (Collection<GridCoverage2D>) srcCoverages;
-            sources.addAll(sourceCoverages);
+        if (!(srcCoverages instanceof Collection) || ((Collection) srcCoverages).isEmpty()
+                || !(((Collection) srcCoverages).iterator().next() instanceof GridCoverage2D)) {
+            throw new InvalidParameterValueException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1,
+                    "sources"), "sources", srcCoverages);
         }
+        // Collection of the sources to use
+        Collection<GridCoverage2D> sourceCoverages = (Collection<GridCoverage2D>) srcCoverages;
+        sources.addAll(sourceCoverages);
     }
 
     /**

@@ -14,7 +14,7 @@ Resources:
 The module is in good health. No self or transient issues preventing it from compiling and passing tests.
 
 * :star: IP Check: need to ensure all headers are in place
-* :star: Releasable: no
+* :star: Releasable: no blocking issues
 * :star: Quality Assurance: 84.9% test coverage reported by clover
 * :star: Stability: based on reviewed GeoAPI Filter interfaces and reviewed CSW 2.0.1 BNF for CQL
 * :star: [user](http://docs.geotools.org/stable/userguide/library/cql/index.html) and design docs. Module maintainer does watches user list, answers email.

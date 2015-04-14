@@ -1,15 +1,24 @@
-# IP Review:
-
- - Michael Bedward, September 2009
- - Jody Garnett, September 2009
-
-## STATUS
-
-Clean
+# Swing Extension
 
 The Swing Module is developed for Geotools and provides classes for
 GUI elements including a map display pane with associated cursor
 tools.
+
+### IP Review
+
+ - Jody Garnett, April 2015
+
+SwingWorker mentioned in the initial review is no longer included.
+
+Factored out icon LICENSE.txt as a distinct file.
+
+### IP Review
+
+ - Michael Bedward, September 2009
+ - Jody Garnett, September 2009
+
+STATUS: Clean
+
 
 ```
 org.getools.swing
@@ -103,4 +112,3 @@ org.jdesktop.swingworker
 
 SwingWorker class from https://swingworker.dev.java.net/ - under an LGPL license.
 This class is available in Java 6 but we cannot wait.
-

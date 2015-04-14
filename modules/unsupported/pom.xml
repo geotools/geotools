@@ -139,6 +139,15 @@
 	  </modules>
      </profile>
      <profile>
+      <id>geobuf</id>
+      <activation>
+         <property><name>all</name></property>
+       </activation>
+	  <modules>
+        <module>geobuf</module>
+	  </modules>
+     </profile>
+     <profile>
        <id>css</id>
        <activation>
          <property><name>all</name></property>

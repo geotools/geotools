@@ -2,7 +2,10 @@ package org.geotools.renderer.crs;
 
 import static org.junit.Assert.*;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -179,6 +182,39 @@ public class ProjectionHandlerTest {
         Geometry preProcessed = handler.preProcess(geometry);
         assertTrue("Should have sliced the geometry in two parts",
                 preProcessed instanceof MultiPolygon);
+    }
+
+    @Test
+    public void testRobustCutting() throws Exception {
+        String wkt = "PROJCS[\"Asia_South_Lambert_Conformal_Conic\", \n"
+                + "  GEOGCS[\"GCS_WGS_1984\", \n" + "    DATUM[\"WGS_1984\", \n"
+                + "      SPHEROID[\"WGS_1984\", 6378137.0, 298.257223563]], \n"
+                + "    PRIMEM[\"Greenwich\", 0.0], \n"
+                + "    UNIT[\"degree\", 0.017453292519943295], \n"
+                + "    AXIS[\"Longitude\", EAST], \n" + "    AXIS[\"Latitude\", NORTH]], \n"
+                + "  PROJECTION[\"Lambert_Conformal_Conic_2SP\"], \n"
+                + "  PARAMETER[\"central_meridian\", 125.0], \n"
+                + "  PARAMETER[\"latitude_of_origin\", -15.0], \n"
+                + "  PARAMETER[\"standard_parallel_1\", 7.0], \n"
+                + "  PARAMETER[\"false_easting\", 0.0], \n"
+                + "  PARAMETER[\"false_northing\", 0.0], \n"
+                + "  PARAMETER[\"scale_factor\", 1.0], \n"
+                + "  PARAMETER[\"standard_parallel_2\", -32.0], \n" + "  UNIT[\"m\", 1.0], \n"
+                + "  AXIS[\"x\", EAST], \n" + "  AXIS[\"y\", NORTH], \n"
+                + "  AUTHORITY[\"EPSG\",\"102030\"]]";
+        CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
+        Geometry geom;
+        try (Reader reader = new InputStreamReader(new GZIPInputStream(
+                ProjectionHandlerTest.class.getResourceAsStream("para.wkt.gz")))) {
+            geom = new WKTReader().read(reader);
+        }
+
+        ReferencedEnvelope re = new ReferencedEnvelope(1.2248782489837505E7, 2.0320948299686E7,
+                -4848266.752703998, 3223899.0571445003, crs);
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(re, WGS84, true);
+        // hard intersection, not even enhanced precision ops was able to make it
+        Geometry preprocessed = handler.preProcess(geom);
+        assertNotEquals(preprocessed, geom);
     }
 
 

@@ -39,6 +39,11 @@ import org.junit.Test;
 public class SchemaCacheOnlineTest extends OnlineTestSupport {
 
     /**
+     * System property used to set HTTPS protocols.
+     */
+    private static final String HTTPS_PROTOCOLS = "https.protocols";
+
+    /**
      * Downloaded files are stored in this directory. We intentionally use a non-canonical cache
      * directory to test that resolved locations are canonical.
      */
@@ -119,8 +124,21 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
      */
     @Test
     public void downloadHttps() throws Exception {
+        // save original system property
+        String httpsProtocols = System.getProperty(HTTPS_PROTOCOLS);
+        // force connection to use TLSv1.2 because OpenJDK 7 and Oracle JDK 7
+        // fail when connecting to this test server with TLSv1; perhaps because
+        // the test server renegotiates to TLSv1.2?
+        System.setProperty(HTTPS_PROTOCOLS, "TLSv1.2");
+        // test HTTPS download
         check(SchemaCache.download(new URI("https://www.seegrid.csiro.au"
                 + "/subversion/GeoSciML/tags/2.0.0/schema/GeoSciML/geosciml.xsd")));
+        // restore original system property
+        if (httpsProtocols == null) {
+            System.clearProperty(HTTPS_PROTOCOLS);
+        } else {
+            System.setProperty(HTTPS_PROTOCOLS, httpsProtocols);
+        }
     }
 
     /**

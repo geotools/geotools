@@ -360,6 +360,24 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         assertEquals("Band1", band1Name);
         assertEquals("Band2", band2Name);
     }
+
+    /**
+     * Test that the reader sets a Meters as default UoM definition for CRS with an undefined UoM definition
+     */
+    @Test
+    public void testUoMDefault() throws Exception {
+        // Reading file
+        final File file = TestData.file(GeoTiffReaderTest.class,"no_uom.tif");
+        assertNotNull(file);
+        final AbstractGridFormat format = new GeoTiffFormat();
+        GridCoverage2D coverage = format.getReader(file).read(null);
+        // Getting CRS
+        CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem();
+        // Getting its string definition
+        String crsDef = crs.toWKT();
+        // Ensure the Unit of Measure define is Meter
+        assertTrue(crsDef.contains("UNIT[\"m\", 1.0]"));
+    }
     
     /**
      * Test what we can do and what not with 

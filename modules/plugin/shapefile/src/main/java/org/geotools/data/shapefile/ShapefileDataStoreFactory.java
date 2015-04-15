@@ -89,12 +89,29 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
     public static final Param CREATE_SPATIAL_INDEX = new Param("create spatial index",
             Boolean.class, "enable/disable the automatic creation of spatial index", false, true,
             new KVP(Param.LEVEL, "advanced"));
-
+    
     /**
-     * Optional - Enable/disable the automatic use of the optional Recno field from the DBF file 
+     * Defines tha available Recno field indexing types
+     */
+    public enum RecnoIndexType {
+        /** Optional use of Recno field indexing is disabled */
+        DISABLED,
+        /** Optional use of Recno field indexing is enabled */
+        ENABLED,
+        /** Optional use of Recno field indexing is enabled and using pooled connections */
+        ENABLED_WITH_POOLED_CONNECTIONS
+    }
+        
+    /**
+     * Optional - Configure the automatic use of the optional Recno field from the DBF file 
      * to quickly execute Dbase filters.
      * 
-     * The FeatureStore previously checks if there is an avaliable a ODBC provider in the system 
+     * Available modes:
+     * 0 = Renco field indexing disabled even when there is available a compatible ODBC provider (Default).
+     * 1 = Renco field indexing enabled when there is available a compatible ODBC provider.
+     * 2 = Renco field indexing enabled when there is available a compatible ODBC provider and wrapped with a pool connection manager.
+     * 
+     * The FeatureStore previously checks if there is an available a ODBC provider in the system 
      * and compatible with the use of Recno fields of DBF files.
      * 
      * Now it only works for two ODBC drivers running in Windows SO's:
@@ -102,10 +119,10 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
      *  - Advantage StreamlineSQL ODBC driver (x86/x64).
      * It is feasible implement this using the 'Advantage StreamlineSQL ODBC' driver in Linux platforms.
      */
-    public static final Param USE_ODBC_DBASE_FILTERING = new Param("use a ODBC provider to fast execution of Dbase filters",
-            Boolean.class, "enable/disable the automatic use of an available ODBC provider to fast execution of Dbase filters", false, true,
+    public static final Param RECNO_INDEX_MODE = new Param("recno index mode",
+            RecnoIndexType.class, "configure to use an ODBC provider to fast execution of Dbase filters", false, RecnoIndexType.DISABLED,
             new KVP(Param.LEVEL, "advanced"));
-
+    
     /**
      * Optional - character used to decode strings from the DBF file
      */
@@ -164,7 +181,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
     }
 
     public Param[] getParametersInfo() {
-        return new Param[] { URLP, NAMESPACEP, ENABLE_SPATIAL_INDEX, CREATE_SPATIAL_INDEX, USE_ODBC_DBASE_FILTERING, DBFCHARSET, DBFTIMEZONE,
+        return new Param[] { URLP, NAMESPACEP, ENABLE_SPATIAL_INDEX, CREATE_SPATIAL_INDEX, RECNO_INDEX_MODE, DBFCHARSET, DBFTIMEZONE,
                 MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE, FSTYPE };
     }
 
@@ -189,10 +206,10 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             // should not be needed as default is TRUE
             isEnableSpatialIndex = Boolean.TRUE;
         }
-        Boolean isEnableOdbcFiltering = (Boolean) USE_ODBC_DBASE_FILTERING.lookUp(params);
-        if (isEnableOdbcFiltering == null) {
-            // should not be needed as default is TRUE
-            isEnableOdbcFiltering = true;
+        RecnoIndexType recnoIndexType = lookup(RECNO_INDEX_MODE, params, RecnoIndexType.class); 
+        if (recnoIndexType == null) {
+            // should not be needed as default is DISABLED
+            recnoIndexType = RecnoIndexType.DISABLED;
         }
         
         // are we creating a directory of shapefiles store, or a single one?
@@ -219,7 +236,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             store.setTimeZone(dbfTimeZone);
             store.setIndexed(enableIndex);
             store.setIndexCreationEnabled(createIndex);
-            store.setOdbcFilteringEnabled(isEnableOdbcFiltering);
+            store.setRecnoIndexed(recnoIndexType!=RecnoIndexType.DISABLED, recnoIndexType==RecnoIndexType.ENABLED_WITH_POOLED_CONNECTIONS);
             return store;
         }
     }

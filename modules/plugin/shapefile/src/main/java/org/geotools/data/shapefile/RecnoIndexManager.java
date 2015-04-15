@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.geotools.util.logging.Logging;
+import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.index.CloseableIterator;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.index.DataDefinition;
@@ -62,6 +63,9 @@ public class RecnoIndexManager
     // Describes the allowed filters we support for alphanumeric Dbase queries.
     static final FilterCapabilities filterCapabilities = new FilterCapabilities();
     
+    ShpFiles shpFiles;
+    ShapefileDataStore store;
+
     // Static constructor of RecnoIndexManager class.
     static 
     {
@@ -134,11 +138,41 @@ public class RecnoIndexManager
             filterCapabilities.addType(PropertyIsLike.class);
         }
     }
+    
+    // RecnoIndexManager constructor.
+    public RecnoIndexManager(ShpFiles shpFiles, ShapefileDataStore store) 
+    {
+        this.shpFiles = shpFiles;
+        this.store = store;
+    }
+    
+    /**
+     * Attempts to establish a connection to the given database URL.
+     * @throws ClassNotFoundException 
+     * @throws SQLException 
+     */
+    protected java.sql.Connection getConnection(String connectionString, java.nio.charset.Charset charSet) throws ClassNotFoundException, SQLException
+    {
+        java.util.Properties info = new java.util.Properties();
+        info.put("charSet", charSet.name());
+        info.put("user", "");
+        info.put("password", "");
         
+        Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+        return java.sql.DriverManager.getConnection(connectionString, info);
+    }
+    /**
+     * Attempts to close the specified connection managed.
+     */
+    protected void closeConnection(java.sql.Connection connection)
+    {
+        org.geotools.data.jdbc.JDBCUtils.close(connection, null, null);
+    }
+    
     /**
      * Returns the record index collection that matches with the specified filter using one super fast ODBC Driver.
      */
-    private static List<Integer> queryRecnoIndex(String shapeFileName, Filter filter, int maxFeatures) throws SQLException, ClassNotFoundException, IOException, FilterToSQLException
+    private List<Integer> queryRecnoIndex(String shapeFileName, Filter filter, java.nio.charset.Charset charSet, int maxFeatures) throws SQLException, ClassNotFoundException, IOException, FilterToSQLException
     {
         java.sql.Connection connection = null;
         java.sql.Statement stmt = null;
@@ -150,8 +184,7 @@ public class RecnoIndexManager
             File file = org.geotools.data.DataUtilities.urlToFile(new java.net.URL(shapeFileName));
             if (file==null) return null;
             
-            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-            String connectionString = null;            
+            String connectionString = null;
             String tablePath = file.getParentFile().getPath();
             String tableName = file.getName().substring(0, file.getName().lastIndexOf("."));    		
             String whereFilter = new RecnoFilterToSQL(filterCapabilities).encodeToString(filter);
@@ -165,7 +198,7 @@ public class RecnoIndexManager
                 connectionString = "jdbc:odbc:Driver={Advantage StreamlineSQL ODBC};DataDirectory="+tablePath+";DefaultType=FoxPro;ServerTypes=1;AdvantageLocking=OFF;Pooling=FALSE;ShowDeleted=FALSE;";
                 
                 // Read the Fid's from the specified Query with this Driver.
-                if ((connection = java.sql.DriverManager.getConnection(connectionString, "", ""))!=null)
+                if ((connection = getConnection(connectionString, charSet))!=null)
                 {
                     if ((stmt = connection.createStatement())!=null)
                     {
@@ -190,7 +223,7 @@ public class RecnoIndexManager
                 connectionString = "jdbc:odbc:Driver={Microsoft Visual FoxPro Driver};SourceType=DBF;SourceDB="+tablePath+";";
                 
                 // Read the Fid's from the specified Query with this Driver.
-                if ((connection = java.sql.DriverManager.getConnection(connectionString, "", ""))!=null)
+                if ((connection = getConnection(connectionString, charSet))!=null)
                 {
                     if ((stmt = connection.createStatement())!=null)
                     {
@@ -214,7 +247,8 @@ public class RecnoIndexManager
         {
             org.geotools.data.jdbc.JDBCUtils.close(rs);
             org.geotools.data.jdbc.JDBCUtils.close(stmt);
-            org.geotools.data.jdbc.JDBCUtils.close(connection, null, null);
+            
+            closeConnection(connection);            
         }
         return recnoList;
     }
@@ -238,6 +272,13 @@ public class RecnoIndexManager
     }
     
     /**
+     * Returns if the RECNO field index can be used.
+     */
+    public boolean hasRecnoIndex() 
+    {
+        return MICROSOFT_FOXPRO_DRIVER_INSTALLED || ADVANTAGE_ODBC_DRIVER_INSTALLED;
+    }    
+    /**
      * Uses the optional Recno field to quickly lookup the shp offset and the record number for the list of fids.
      * Now it only works for two ODBC drivers running in Windows SO's:
      *  - Microsoft ODBC FoxPro Driver (x86).
@@ -245,19 +286,19 @@ public class RecnoIndexManager
      * 
      * @todo It is feasible use the 'Advantage StreamlineSQL ODBC' in Linux platforms.
      */
-    public static CloseableIterator<Data> queryRecnoIndex(ShapefileDataStore featureStore, Filter filter, int maxFeatures, CloseableIterator<Data> goodRecs) throws SQLException, ClassNotFoundException, IOException, FilterToSQLException
-    {   	
-        if ((MICROSOFT_FOXPRO_DRIVER_INSTALLED || ADVANTAGE_ODBC_DRIVER_INSTALLED) && filter!=null && !Filter.INCLUDE.equals(filter) && !Filter.EXCLUDE.equals(filter) && filterCapabilities.fullySupports(filter))
+    public CloseableIterator<Data> queryRecnoIndex(Filter filter, int maxFeatures, CloseableIterator<Data> goodRecs) throws SQLException, ClassNotFoundException, IOException, FilterToSQLException
+    {
+        if (hasRecnoIndex() && filter!=null && !Filter.INCLUDE.equals(filter) && !Filter.EXCLUDE.equals(filter) && filterCapabilities.fullySupports(filter))
         {
-            String shapeFileName = featureStore.shpFiles.get(SHP);
-    		
-            List<Integer> recnoList = RecnoIndexManager.queryRecnoIndex(shapeFileName, filter, maxFeatures);
+            String shapeFileName = store.shpFiles.get(SHP);
+            
+            List<Integer> recnoList = queryRecnoIndex(shapeFileName, filter, store.charset, maxFeatures);
             List<Data> records = new ArrayList<Data>();
             if (recnoList==null) return goodRecs;
 
             if (recnoList.size()>0)
             {
-                IndexFile shx = featureStore.shpManager.openIndexFile();
+                IndexFile shx = store.shpManager.openIndexFile();
     				
                 try
                 {

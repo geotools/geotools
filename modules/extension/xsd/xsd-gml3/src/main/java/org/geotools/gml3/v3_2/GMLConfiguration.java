@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -92,6 +92,11 @@ public class GMLConfiguration extends Configuration {
      * srs dimension attribute.
      */
     public static final QName NO_SRS_DIMENSION = org.geotools.gml3.GMLConfiguration.NO_SRS_DIMENSION;
+
+    /**
+     * Property which engages "fast" gml encoding.
+     */
+    public static final QName OPTIMIZED_ENCODING = org.geotools.gml3.GMLConfiguration.OPTIMIZED_ENCODING;
 
     /**
      * gml3 configuration used to delegate to for configuration
@@ -282,5 +287,23 @@ public class GMLConfiguration extends Configuration {
         delegate.configureContext(container);
         container.unregisterComponent(GML3EncodingUtils.class);
         container.registerComponentInstance(new GML32EncodingUtils());
+    }
+
+    /**
+     * Returns the number of decimals that should be used for encoding coordinates (defaults to 6)
+     * 
+     * @return the numDecimals
+     */
+    public int getNumDecimals() {
+        return delegate.getNumDecimals();
+    }
+
+    /**
+     * Sets the number of decimals that should be used for encoding coordinates
+     * 
+     * @param numDecimals the numDecimals to set
+     */
+    public void setNumDecimals(int numDecimals) {
+        delegate.setNumDecimals(numDecimals);
     }
 } 

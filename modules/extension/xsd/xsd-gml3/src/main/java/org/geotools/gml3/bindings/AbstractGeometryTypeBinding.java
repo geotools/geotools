@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,11 +18,9 @@ package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml2.SrsSyntax;
-import org.geotools.gml2.bindings.GMLEncodingUtils;
+import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.GML;
-import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.ElementInstance;
@@ -137,21 +135,7 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
         }
 
         if ("srsDimension".equals(name.getLocalPart())) {
-            if (GMLEncodingUtils.isEmpty(geometry)) {
-                return null;
-            }
-            
-            //check if srsDimension is turned off
-            if (config.hasProperty(GMLConfiguration.NO_SRS_DIMENSION)) {
-                return null;
-            }
-
-            /**
-             * For the dimension, use the actual dimension of the geometry. Using
-             * the dimension of the CRS is not sufficient, since currently CRSes
-             * don't support 3D.
-             */
-            return CoordinateSequences.coordinateDimension(geometry);
+            return GML2EncodingUtils.getGeometryDimension(geometry, config);
         }
 
         // FIXME: should be gml:id, but which GML?

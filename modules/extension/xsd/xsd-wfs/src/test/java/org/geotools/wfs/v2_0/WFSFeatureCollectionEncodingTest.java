@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,24 +20,18 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import junit.framework.TestCase;
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
 import net.opengis.wfs20.Wfs20Factory;
 
 import org.geotools.data.memory.MemoryDataStore;
-import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
-import org.opengis.filter.Filter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -160,8 +154,6 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         e.setIndenting(true);
         
         Document d = e.encodeAsDOM( fc, WFS.FeatureCollection );
-        TransformerFactory.newInstance().newTransformer().transform(
-            new DOMSource(d), new StreamResult(System.out));
         
         assertEquals( 0, d.getElementsByTagName( "wfs:boundedBy" ).getLength() );
         assertEquals( 0, d.getElementsByTagName( "gml:boundedBy" ).getLength() );
@@ -185,8 +177,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         e.setIndenting(true);
         
         Document d = e.encodeAsDOM( fc, WFS.FeatureCollection );
-        //TransformerFactory.newInstance().newTransformer().transform(
-        //    new DOMSource(d), new StreamResult(System.out));
+        // XMLTestSupport.print(d);
         
         List<Element> members = getChildElementsByTagName( d.getDocumentElement(), "wfs:member" ); 
         assertEquals( 2, members.size() );

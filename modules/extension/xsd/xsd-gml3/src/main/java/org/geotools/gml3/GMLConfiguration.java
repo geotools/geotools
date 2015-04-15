@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -125,6 +125,11 @@ public class GMLConfiguration extends Configuration {
     public static final QName NO_SRS_DIMENSION = new QName( "org.geotools.gml", "noSrsDimension" );
 
     /**
+     * Property which engages "fast" gml encoding.
+     */
+    public static final QName OPTIMIZED_ENCODING = org.geotools.gml2.GMLConfiguration.OPTIMIZED_ENCODING;
+
+    /**
      * extended support for arcs and surface flag
      */
     boolean extArcSurfaceSupport = false;
@@ -133,6 +138,12 @@ public class GMLConfiguration extends Configuration {
      * Srs name style to encode srsName URI's with
      */
     protected SrsSyntax srsSyntax = SrsSyntax.OGC_URN_EXPERIMENTAL;
+
+    /**
+     * Number of decimals that should be used for formatting numbers
+     */
+    private int numDecimals = 6;;
+
 
     public GMLConfiguration() {
         this(false);
@@ -343,5 +354,23 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentInstance(new ArcParameters());
 
         container.registerComponentInstance(srsSyntax);
+    }
+
+    /**
+     * Returns the number of decimals that should be used for encoding coordinates (defaults to 6)
+     * 
+     * @return the numDecimals
+     */
+    public int getNumDecimals() {
+        return numDecimals;
+    }
+
+    /**
+     * Sets the number of decimals that should be used for encoding coordinates
+     * 
+     * @param numDecimals the numDecimals to set
+     */
+    public void setNumDecimals(int numDecimals) {
+        this.numDecimals = numDecimals;
     }
 }

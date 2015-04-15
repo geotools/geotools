@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools;
 
 import java.io.IOException;
@@ -41,21 +57,19 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.SchemaImpl;
 import org.geotools.gml.producer.FeatureTransformer;
+import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gtxml.GTXML;
 import org.geotools.referencing.CRS;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
-import org.geotools.xml.ParserDelegate;
 import org.geotools.xml.StreamingParser;
 import org.geotools.xml.XSD;
-import org.geotools.xml.XSDParserDelegate;
 import org.geotools.xs.XS;
 import org.geotools.xs.XSConfiguration;
 import org.geotools.xs.XSSchema;
@@ -296,7 +310,9 @@ public class GML {
             }
         }
         if (version == Version.WFS1_0) {
-            Encoder e = new Encoder(new org.geotools.wfs.v1_0.WFSConfiguration());
+            org.geotools.wfs.v1_0.WFSConfiguration configuration = new org.geotools.wfs.v1_0.WFSConfiguration();
+            configuration.getProperties().add(GMLConfiguration.OPTIMIZED_ENCODING);
+            Encoder e = new Encoder(configuration);
             e.getNamespaces().declarePrefix(prefix, namespace);
             e.setIndenting(true);
 
@@ -307,7 +323,9 @@ public class GML {
             e.encode(featureCollectionType, org.geotools.wfs.WFS.FeatureCollection, out);
         }
         if (version == Version.WFS1_1) {
-            Encoder e = new Encoder(new org.geotools.wfs.v1_1.WFSConfiguration());
+            org.geotools.wfs.v1_1.WFSConfiguration configuration = new org.geotools.wfs.v1_1.WFSConfiguration();
+            configuration.getProperties().add(GMLConfiguration.OPTIMIZED_ENCODING);
+            Encoder e = new Encoder(configuration);
             e.getNamespaces().declarePrefix(prefix, namespace);
             e.setIndenting(true);
 

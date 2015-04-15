@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,25 +16,16 @@
  */
 package org.geotools.wfs.bindings;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
 
 import org.eclipse.emf.ecore.EObject;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.gml3.GML;
-import org.geotools.wfs.CompositeFeatureCollection;
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-import org.opengis.feature.simple.SimpleFeature;
 
 
 /**
@@ -100,7 +91,8 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @source $URL$
  */
-public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
+public abstract class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
+
     public FeatureCollectionTypeBinding(WfsFactory factory) {
         super(factory);
     }
@@ -140,5 +132,6 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
             super.setProperty(eObject, property, value, lax);
         }
     }
+
     
 }

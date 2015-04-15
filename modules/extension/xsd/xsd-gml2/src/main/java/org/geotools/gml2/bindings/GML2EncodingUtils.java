@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,10 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml2.GML;
+import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
@@ -266,5 +269,42 @@ public class GML2EncodingUtils {
         return e.GeometryPropertyType_getProperties(geometry);
     }
     
+    /**
+     * Returns the geometry dimension, either as forced in the configuration, or the geometry
+     * natural one
+     * 
+     * @param geometry
+     * @param config
+     * @return
+     */
+    public static Integer getGeometryDimension(Geometry geometry, Configuration config) {
+        if (GMLEncodingUtils.isEmpty(geometry)) {
+            return null;
+        }
+
+        // check if srsDimension is turned off
+        if (config.hasProperty(GMLConfiguration.NO_SRS_DIMENSION)) {
+            return null;
+        }
+
+        /**
+         * For the dimension, use the actual dimension of the geometry. Using the dimension of the
+         * CRS is not sufficient, since currently CRSes don't support 3D.
+         */
+        return CoordinateSequences.coordinateDimension(geometry);
+    }
+
+    public static Integer getEnvelopeDimension(ReferencedEnvelope e, Configuration configuration) {
+        if (e == null || e.isNull() || e.getCoordinateReferenceSystem() == null) {
+            return null;
+        }
+
+        // check if srsDimension is turned off
+        if (configuration.hasProperty(GMLConfiguration.NO_SRS_DIMENSION)) {
+            return null;
+        }
+
+        return e.getCoordinateReferenceSystem().getCoordinateSystem().getDimension();
+    }
    
 }

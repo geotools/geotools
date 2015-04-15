@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,6 @@ import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
 
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.xml.Encoder;
@@ -70,6 +69,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         e.setIndenting(true);
 
         Document d = e.encodeAsDOM( fc, WFS.FeatureCollection );
+        // XMLTestSupport.print(d);
             
         assertEquals( 2, d.getElementsByTagName( "gml:Point" ).getLength() );
         assertTrue( d.getElementsByTagName( "gml:coord" ).getLength() > 2 );
@@ -86,6 +86,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         e.setIndenting(true);
         
         Document d = e.encodeAsDOM( fc, WFS.FeatureCollection );
+        // XMLTestSupport.print(d);
         assertEquals( 2, d.getElementsByTagName( "gml:Point" ).getLength() );
         assertEquals( 2, d.getElementsByTagName( "gml:pos" ).getLength() );
         assertEquals( 0, d.getElementsByTagName( "gml:coord" ).getLength() );

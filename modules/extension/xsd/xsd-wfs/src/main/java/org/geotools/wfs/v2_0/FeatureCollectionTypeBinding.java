@@ -1,14 +1,34 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.wfs.v2_0;
 
-import net.opengis.wfs20.FeatureCollectionType;
+import javax.xml.namespace.QName;
+
 import net.opengis.wfs20.Wfs20Factory;
 
 import org.eclipse.emf.ecore.EObject;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.wfs.bindings.WFSParsingUtils;
-import org.geotools.xml.*;
-
-import javax.xml.namespace.QName;
+import org.geotools.xml.AbstractComplexEMFBinding;
+import org.geotools.xml.Configuration;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Encoder;
+import org.geotools.xml.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs/2.0:FeatureCollectionType.
@@ -43,9 +63,17 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
     private static final String UNKNOWN = "unknown";
     boolean generateBounds;
 
+    private Encoder encoder;
+
     public FeatureCollectionTypeBinding(Wfs20Factory factory, Configuration configuration) {
+        this(factory, configuration, null);
+    }
+
+    public FeatureCollectionTypeBinding(Wfs20Factory factory, Configuration configuration,
+            Encoder encoder) {
         super(factory);
         this.generateBounds = true;
+        this.encoder = encoder;
         if(configuration != null) {
             this.generateBounds = !configuration.getProperties().contains(GMLConfiguration.NO_FEATURE_BOUNDS);
         }
@@ -76,6 +104,11 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
         Object result = null;
         if (!WFSParsingUtils.features((EObject) object).isEmpty()) {
             result  = WFSParsingUtils.FeatureCollectionType_getProperty((EObject) object, name);
+            if (result instanceof SimpleFeatureCollection
+                    && encoder.getConfiguration().hasProperty(GMLConfiguration.OPTIMIZED_ENCODING)) {
+                return new WFS20FeatureCollectionEncoderDelegate((SimpleFeatureCollection) result,
+                        encoder);
+            }
         }
         if(result == null) {
             result = super.getProperty(object, name);

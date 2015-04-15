@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,15 +16,6 @@
  */
 package org.geotools.xml.test;
 
-import junit.framework.TestCase;
-import org.eclipse.xsd.XSDSchema;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.helpers.NamespaceSupport;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -40,6 +32,10 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import junit.framework.TestCase;
+
+import org.eclipse.xsd.XSDSchema;
 import org.geotools.xml.Binding;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.DOMParser;
@@ -51,6 +47,13 @@ import org.geotools.xml.impl.BindingLoader;
 import org.geotools.xml.impl.BindingWalkerFactoryImpl;
 import org.geotools.xml.impl.NamespaceSupportWrapper;
 import org.geotools.xml.impl.SchemaIndexImpl;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.helpers.NamespaceSupport;
 
 
 /**
@@ -369,7 +372,7 @@ public abstract class XMLTestSupport extends TestCase {
      *
      *
      */
-    protected void print(Node dom) throws Exception {
+    public static void print(Node dom) throws Exception {
         TransformerFactory txFactory = TransformerFactory.newInstance();
         Transformer tx = txFactory.newTransformer();
         tx.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -453,7 +456,7 @@ public abstract class XMLTestSupport extends TestCase {
      *
      * @param xml A string of xml
      */
-    protected void buildDocument(String xml) throws Exception {
+    public void buildDocument(String xml) throws Exception {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         docFactory.setNamespaceAware(true);
 

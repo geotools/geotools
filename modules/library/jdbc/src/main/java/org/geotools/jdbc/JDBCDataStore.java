@@ -970,9 +970,7 @@ public final class JDBCDataStore extends ContentDataStore
         try {
             DatabaseMetaData metaData = cx.getMetaData();
             Set<String> availableTableTypes = new HashSet<String>();
-            String[] desiredTableTypes = new String[] {
-                "TABLE", "VIEW", "MATERIALIZED VIEW", "SYNONYM"
-            };
+            
             ResultSet tableTypes = null;
             try{
                 tableTypes = metaData.getTableTypes();
@@ -983,7 +981,7 @@ public final class JDBCDataStore extends ContentDataStore
                 closeSafe(tableTypes);
             }
             Set<String> queryTypes = new HashSet<String>();
-            for (String desiredTableType : desiredTableTypes) {
+            for (String desiredTableType : dialect.getDesiredTablesType()) {
                 if(availableTableTypes.contains(desiredTableType)){
                     queryTypes.add(desiredTableType);
                 }

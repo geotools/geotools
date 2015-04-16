@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,9 +16,6 @@
  */
 package org.geotools.coverage.io.grib;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,6 +26,7 @@ import java.util.List;
 
 import javax.imageio.spi.ImageReaderSpi;
 
+import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -40,7 +38,9 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.test.TestData;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.GeneralParameterValue;
@@ -49,7 +49,36 @@ import org.opengis.parameter.ParameterValue;
 /**
  * Unit test for testing Grib data.
  */
-public class GribTest {
+public class GribTest extends Assert{
+
+    @Before
+    public void setupForceCheck() {
+        System.setProperty("NETCDF_FORCE_OPEN_CHECK", "true");
+    }
+
+    @After
+    public void cleanup() {
+        System.clearProperty("NETCDF_FORCE_OPEN_CHECK");
+    }
+
+    @Test
+    public void testWeirdGribFileCanBeOpened() throws FileNotFoundException, IOException {
+        final String referenceDir = "testGrib";
+        final File workDir = new File(TestData.file(this, "."), referenceDir);
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        final File zipFile = new File(workDir, "weird.zip");
+        FileUtils.copyFile(TestData.file(this, "weird.zip"), zipFile);
+
+        TestData.unzipFile(this, referenceDir + "/weird.zip");
+        // This file is a valid GRIB file but it has wrong magic number and 
+        // it doesn't have a recognized grib extension
+        final File file = new File(workDir, "weird.model");
+        NetCDFImageReaderSpi spi = new NetCDFImageReaderSpi();
+        assertTrue(spi.canDecodeInput(file));
+    }
 
     /**
      * Test if the Grib format is accepted by the NetCDF reader

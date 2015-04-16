@@ -256,6 +256,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 			        GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
 			        GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey,
 			        SI.METER,
+			        SI.METER,
 			        metadata);
 		} catch (GeoTiffException e) {
 			linearUnit = null;
@@ -288,7 +289,9 @@ public final class GeoTiffMetadata2CRSAdapter {
 			// We have nothing to do with the unit of measure
 			//
 			// //
-			if (linearUnit == null 
+                        boolean isDefaultUnit = metadata.getGeoKey(GeoTiffPCSCodes.ProjLinearUnitsGeoKey) == null
+                                && linearUnit != null && linearUnit.equals(SI.METER);
+			if (linearUnit == null || isDefaultUnit
 			        || linearUnit.equals(pcrs.getCoordinateSystem().getAxis(0).getUnit())){
 			    return pcrs;
 			}
@@ -338,7 +341,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 		// lookup the angular units used in this geotiff image
 		Unit<?> angularUnit = null;
 		try {
-			angularUnit = createUnit(GeoTiffGCSCodes.GeogAngularUnitsGeoKey,GeoTiffGCSCodes.GeogAngularUnitSizeGeoKey, SI.RADIAN, metadata);
+			angularUnit = createUnit(GeoTiffGCSCodes.GeogAngularUnitsGeoKey,GeoTiffGCSCodes.GeogAngularUnitSizeGeoKey, SI.RADIAN, NonSI.DEGREE_ANGLE, metadata);
 		} catch (GeoTiffException e) {
 		        if(LOGGER.isLoggable(Level.FINE)){
 		            LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
@@ -352,7 +355,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 		// linear unit
 		Unit<?> linearUnit = null;
 		try {
-			linearUnit = createUnit(GeoTiffGCSCodes.GeogLinearUnitsGeoKey,GeoTiffGCSCodes.GeogLinearUnitSizeGeoKey, SI.METER, metadata);
+			linearUnit = createUnit(GeoTiffGCSCodes.GeogLinearUnitsGeoKey,GeoTiffGCSCodes.GeogLinearUnitSizeGeoKey, SI.METER, SI.METER, metadata);
 		} catch (GeoTiffException e) {
                     if(LOGGER.isLoggable(Level.FINE)){
                         LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
@@ -1757,7 +1760,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 	 *             <code>ProjLinearUnitSizeGeoKey</code> is either not defined
 	 *             or does not contain a number.
 	 */
-	private Unit<?> createUnit(int key, int userDefinedKey, Unit<?> base, 
+	private Unit<?> createUnit(int key, int userDefinedKey, Unit<?> base, Unit<?> def,
 			final GeoTiffIIOMetadataDecoder metadata) throws IOException {
 		final String unitCode = metadata.getGeoKey(key);
 
@@ -1767,7 +1770,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 		//
 		// //
 		if (unitCode == null) {
-			return null;
+			return def;
 		}
 		// //
 		//

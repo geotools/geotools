@@ -104,9 +104,9 @@ public enum TestUtils {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public
        static Matcher<Expression> attribute(String name) {
-           return (Matcher)allOf(
-                   instanceOf(PropertyName.class), 
-                   hasProperty("propertyName", equalTo(name))
+           return Matchers.<Expression>allOf(
+                   Matchers.<Expression>instanceOf(PropertyName.class), 
+                   Matchers.<Expression>hasProperty("propertyName", equalTo(name))
                    );
     }
     
@@ -190,21 +190,21 @@ public enum TestUtils {
              }
         };
     }
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
        public static Matcher<Object> isColor(Color c){
            String hex = String.format("#%06x",c.getRGB()&0x00FFFFFF);
            return Matchers.describedAs(
                    "is the colour %0 %1",
                    anyOf(
-                       allOf(
+                       (Matcher)allOf(
                            instanceOf(String.class),
                            asColor(equalTo(c))
                            ),
-                       allOf(
+                       (Matcher)allOf(
                            instanceOf(Color.class),
                            equalTo(c)
                        ),
-                       allOf(
+                       (Matcher)allOf(
                            instanceOf(Integer.class),
                            equalTo(c.getRGB()&0x00FFFFFF)
                        )

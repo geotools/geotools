@@ -48,6 +48,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -65,6 +66,7 @@ import static org.geotools.ysld.TestUtils.lexEqualTo;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.describedAs;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
@@ -192,22 +194,57 @@ public class YsldParseTest {
         assertNotNull(tx);
 
         ProcessFunction pf = (ProcessFunction) tx;
-        assertEquals(2, pf.getParameters().size());
-
-        Function e1 = (Function) pf.getParameters().get(0);
-        assertEquals(1, e1.getParameters().size());
-        assertTrue(e1.getParameters().get(0) instanceof Literal);
-        assertEquals("data", e1.getParameters().get(0).evaluate(null, String.class));
-
-        Function e2 = (Function) pf.getParameters().get(1);
-        assertEquals(4, e2.getParameters().size());
-        assertTrue(e2.getParameters().get(0) instanceof Literal);
-        assertEquals("levels", e2.getParameters().get(0).evaluate(null, String.class));
-        assertEquals(1000, e2.getParameters().get(1).evaluate(null, Integer.class).intValue());
-        assertEquals(1100, e2.getParameters().get(2).evaluate(null, Integer.class).intValue());
-        assertEquals(1200, e2.getParameters().get(3).evaluate(null, Integer.class).intValue());
+        
+        assertThat(pf, hasProperty("parameters", 
+                containsInAnyOrder(
+                        rtParam("data"), 
+                        rtParam("levels", 
+                                literal(1000), 
+                                literal(1100), 
+                                literal(1200)))));
     }
+    
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    Matcher<Function> rtParam (final String name, final Matcher<?>...values) {
+        return new BaseMatcher() {
 
+            @Override
+            public boolean matches(Object item) {
+                Function f = (Function) item;
+                List<Expression> parameters = f.getParameters();
+                Literal nameExpr = (Literal) parameters.get(0);
+                if(!nameExpr.getValue().equals(name)) {
+                    return false;
+                }
+                if(values.length!=parameters.size()-1) {
+                    return false;
+                }
+                for(int i=0; i<values.length; i++) {
+                    if(!values[i].matches(parameters.get(i+1))){
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Parameter named ");
+                description.appendValue(name);
+                if(values.length==0) {
+                    description.appendText(" with no values");
+                } else if(values.length==1) {
+                    description.appendText(" with value ");
+                    description.appendDescriptionOf(values[0]);
+                } else {
+                    description.appendText(" with values ").appendList("[", ", ", "]", Arrays.asList(values));
+                }
+            }
+            
+        };
+    }
+    
     @Test
     public void testRenderingTransformationHeatmap() throws IOException {
         String yaml =
@@ -230,19 +267,100 @@ public class YsldParseTest {
         assertNotNull(tx);
 
         ProcessFunction pf = (ProcessFunction) tx;
-        assertEquals(7, pf.getParameters().size());
 
-        Function e = (Function) pf.getParameters().get(0);
-        assertEquals(1, e.getParameters().size());
-        assertTrue(e.getParameters().get(0) instanceof Literal);
-        assertEquals("data", e.getParameters().get(0).evaluate(null, String.class));
-
-        e = (Function) pf.getParameters().get(1);
-        assertEquals(2, e.getParameters().size());
-        assertTrue(e.getParameters().get(0) instanceof Literal);
-        assertEquals("weightAttr", e.getParameters().get(0).evaluate(null, String.class));
-        assertEquals("pop2000", e.getParameters().get(1).evaluate(null, String.class));
+        assertThat(pf, hasProperty("parameters", 
+                containsInAnyOrder(
+                        rtParam("data"),
+                        rtParam("weightAttr", literal("pop2000")),
+                        rtParam("radius", literal(100)),
+                        rtParam("pixelsPerCell", literal(10)),
+                        rtParam("outputBBOX", attribute("wms_bbox")),
+                        rtParam("outputWidth", attribute("wms_width")),
+                        rtParam("outputHeight", attribute("wms_height"))
+                        )));
     }
+    
+    @Test
+    public void testRenderingTransformationAlternateInputParam() throws IOException {
+        String yaml =
+        "feature-styles: \n"+
+        "- transform:\n" +
+        "    input: foo\n"+
+        "    name: ras:Contour\n" +
+        "    params:\n" +
+        "      levels:\n" +
+        "      - 1000\n" +
+        "      - 1100\n" +
+        "      - 1200\n";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+
+        Expression tx = fs.getTransformation();
+        assertNotNull(tx);
+
+        ProcessFunction pf = (ProcessFunction) tx;
+        
+        assertThat(pf, hasProperty("parameters", 
+                containsInAnyOrder(
+                        rtParam("foo"), 
+                        rtParam("levels", 
+                                literal(1000), 
+                                literal(1100), 
+                                literal(1200)))));
+    }
+
+    @Test
+    public void testNestedRenderingTransformation() throws IOException {
+        String yaml =
+          "feature-styles:\n"+
+          "- transform:\n"+
+          "    name: ras:Contour\n"+
+          "    params:\n"+
+          "      data: \n"+
+          "        name: vec:BarnesSurface\n"+
+          "        input: data\n"+
+          "        params:\n"+
+          "          valuAttr: MxTmp\n"+
+          "      levels:\n"+
+          "      - -5\n"+
+          "      - 0\n"+
+          "      - 5\n"+
+          "";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+
+        Expression tx = fs.getTransformation();
+        assertNotNull(tx);
+
+        ProcessFunction pf = (ProcessFunction) tx;
+        
+        assertThat(pf, hasProperty("name", equalTo("ras:Contour")));
+        Function param1 = (Function)pf.getParameters().get(1);
+        Function param0 = (Function)pf.getParameters().get(0);
+        assertThat(param1, rtParam("levels", 
+                literal(-5), 
+                literal(0), 
+                literal(5)));
+        assertThat(param0, rtParam("data",
+                allOf(
+                        hasProperty("name", equalTo("vec:BarnesSurface"))
+                )));
+        
+        assertThat(pf, hasProperty("parameters", 
+                containsInAnyOrder(
+                        rtParam("data",
+                                allOf(
+                                        instanceOf(ProcessFunction.class),
+                                        hasProperty("name", equalTo("vec:BarnesSurface")))
+                                ), 
+                        rtParam("levels", 
+                                literal(-5), 
+                                literal(0), 
+                                literal(5)))));
+    }
+
     
     @Test
     public void testLabelShield() throws Exception {

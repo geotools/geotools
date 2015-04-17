@@ -5,6 +5,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.expression.Expression;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class ProcessUtil {
     }
 
     public static FunctionFactory loadProcessFunctionFactory() {
-        Class functionFactoryClass = null;
+        Class<?> functionFactoryClass = null;
         try {
             functionFactoryClass =
                     Class.forName("org.geotools.process.function.ProcessFunctionFactory");
@@ -47,15 +48,28 @@ public class ProcessUtil {
         return null;
     }
 
-    public static Map<String,Parameter> loadProcessInfo(Name name) {
-        Class processorsClass = null;
+    @SuppressWarnings("unchecked")
+    public static Map<String,Parameter<?>> loadProcessInfo(Name name) {
+        Class<?> processorsClass = null;
         try {
             processorsClass = Class.forName("org.geotools.process.Processors");
             Method getParameterInfo = processorsClass.getMethod("getParameterInfo", Name.class);
-            return (Map<String,Parameter>) getParameterInfo.invoke(null, name);
+            return (Map<String,Parameter<?>>) getParameterInfo.invoke(null, name);
         }
         catch(Exception e) {
             throw new RuntimeException("Error looking up process info", e);
         }
+    }
+    
+    public static boolean isProcess(Expression expr) {
+        Class<?> processClass = null;
+        try {
+            processClass = Class.forName("org.geotools.process.function.ProcessFunction");
+            return processClass.isAssignableFrom(expr.getClass());
+        }
+        catch(Exception e) {
+            throw new RuntimeException("Error looking up process info", e);
+        }
+
     }
 }

@@ -75,7 +75,8 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     YsldEncodeHandler<T> put(String key, Object val) {
         if (val != null) {
-            stack.peek().put(key, val);
+            Map<String, Object> peek = stack.peek();
+            peek.put(key, val);
         }
         return this;
     }

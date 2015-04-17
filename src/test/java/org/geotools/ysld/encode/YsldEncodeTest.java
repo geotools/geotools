@@ -118,11 +118,68 @@ public class YsldEncodeTest {
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         YamlMap tx = obj.seq("feature-styles").map(0).map("transform");
-        assertEquals("ras:Contour", tx.get("name"));
-        YamlSeq levels = tx.map("params").seq("levels");
-        assertEquals("1000", levels.str(0));
-        assertEquals("1100", levels.str(1));
-        assertEquals("1200", levels.str(2));
+        assertThat(tx, yHasEntry("name", lexEqualTo("ras:Contour")));
+        assertThat(tx, not(yHasEntry("input")));
+        assertThat(tx, yHasEntry("params",
+                allOf(
+                    not(yHasEntry("data")),
+                    yHasEntry("levels", 
+                        allOf(
+                            yHasItem(0, lexEqualTo(1000)),
+                            yHasItem(1, lexEqualTo(1100)),
+                            yHasItem(2, lexEqualTo(1200))
+                        )
+                    )
+                    
+                    
+                )));
+    }
+    
+    @Test
+    public void testRenderingTransformationInput() throws IOException {
+
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+
+        UserLayer layer = styleFactory.createUserLayer();
+        sld.layers().add(layer);
+
+        Style style = styleFactory.createStyle();
+        layer.userStyles().add(style);
+
+        FeatureTypeStyle featureStyle = styleFactory.createFeatureTypeStyle();
+        style.featureTypeStyles().add(featureStyle);
+
+        Function p1 = filterFactory.function("parameter", filterFactory.literal("alternateInput"));
+        Function p2 = filterFactory.function("parameter", filterFactory.literal("levels"), filterFactory.literal(1000),
+            filterFactory.literal(1100), filterFactory.literal(1200));
+
+        Function rt = filterFactory.function("ras:Contour", p1, p2);
+        featureStyle.setTransformation(rt);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap tx = obj.seq("feature-styles").map(0).map("transform");
+        assertThat(tx, yHasEntry("name", lexEqualTo("ras:Contour")));
+        assertThat(tx, yHasEntry("input", lexEqualTo("alternateInput")));
+        assertThat(tx, yHasEntry("params",
+                allOf(
+                    not(yHasEntry("data")),
+                    not(yHasEntry("alternateInput")),
+                    yHasEntry("levels", 
+                        allOf(
+                            yHasItem(0, lexEqualTo(1000)),
+                            yHasItem(1, lexEqualTo(1100)),
+                            yHasItem(2, lexEqualTo(1200))
+                        )
+                    )
+                    
+                    
+                )));
     }
 
     @Test
@@ -171,6 +228,69 @@ public class YsldEncodeTest {
         YamlMap ruleMap = obj.seq("feature-styles").map(0).seq("rules").map(0);
         assertThat(ruleMap.str("name"), equalTo("Za'Ha'Dum"));
     }
+    
+    @Test
+    public void testRenderingTransformationNested() throws IOException {
+
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+
+        UserLayer layer = styleFactory.createUserLayer();
+        sld.layers().add(layer);
+
+        Style style = styleFactory.createStyle();
+        layer.userStyles().add(style);
+
+        FeatureTypeStyle featureStyle = styleFactory.createFeatureTypeStyle();
+        style.featureTypeStyles().add(featureStyle);
+
+        
+        Function p1_1 = filterFactory.function("parameter", filterFactory.literal("data"));
+        Function p1_2 = filterFactory.function("parameter", filterFactory.literal("valueAttr"), filterFactory.literal("foo"));
+        Function rt1 = filterFactory.function("vec:BarnesSurface", p1_1, p1_2);
+
+        Function p2_1 = filterFactory.function("parameter", filterFactory.literal("data"), rt1);
+        Function p2_2 = filterFactory.function("parameter", filterFactory.literal("levels"), filterFactory.literal(1000),
+            filterFactory.literal(1100), filterFactory.literal(1200));
+
+        Function rt2 = filterFactory.function("ras:Contour", p2_1, p2_2);
+        featureStyle.setTransformation(rt2);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap tx = obj.seq("feature-styles").map(0).map("transform");
+        
+        assertThat(tx, yHasEntry("name", lexEqualTo("ras:Contour")));
+        assertThat(tx, not(yHasEntry("input")));
+        assertThat(tx, yHasEntry("params",
+                allOf(
+                    yHasEntry("data",
+                        allOf(
+                            yHasEntry("name", equalTo("vec:BarnesSurface")),
+                            yHasEntry("input", equalTo("data")), // Specify the input parameter
+                            yHasEntry("params", allOf(
+                                    yHasEntry("valueAttr", equalTo("foo")),
+                                    not(yHasEntry("data")) // Indicated by the input parameter above
+                                )
+                            )
+                        )
+                    ),
+                    yHasEntry("levels", 
+                        allOf(
+                            yHasItem(0, lexEqualTo(1000)),
+                            yHasItem(1, lexEqualTo(1100)),
+                            yHasItem(2, lexEqualTo(1200))
+                        )
+                    )
+                    
+                    
+                )));
+    }
+
     
     @Test
     public void testLabelShield() throws IOException {

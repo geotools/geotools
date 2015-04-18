@@ -13,3 +13,4 @@ org.geotools.util.QNameConverterFactory
 org.geotools.util.MeasureConverterFactory
 org.geotools.temporal.TemporalConverterFactory
 org.geotools.util.NameConverterFactory
+org.geotools.util.XMLDocumentConverterFactory

@@ -34,6 +34,7 @@ import org.geotools.feature.type.DateUtil;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml.producer.GeometryTransformer.GeometryTranslator;
 import org.geotools.referencing.CRS;
+import org.geotools.util.Converters;
 import org.geotools.xml.XMLUtils;
 import org.geotools.xml.transform.TransformerBase;
 import org.opengis.feature.Feature;
@@ -46,6 +47,13 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -802,6 +810,8 @@ public class FeatureTransformer extends TransformerBase {
                                 text = DateUtil.serializeDateTime((Date) value);
                             contentHandler.characters(text.toCharArray(), 0,
                                     text.length());
+                        } else if(value instanceof Node) {
+                            handleNode((Node)value);
                         } else {
                             String text = XMLUtils.removeXMLInvalidChars(value.toString());
 
@@ -817,6 +827,66 @@ public class FeatureTransformer extends TransformerBase {
                 //but OGC people are fine with just leaving it out.       
             } catch (Exception e) {
                 throw new IllegalStateException("Could not transform "+descriptor.getName()+":"+e, e );
+            }
+        }
+        
+        /**
+         * Handles sax for a W3C Node.
+         *
+         * @param n Node being encoded
+         *
+         * @throws RuntimeException Used to report any troubles during encoding
+         */
+        public void handleNode(Node n) {
+            try { 
+                if (n instanceof DocumentFragment) {
+                    
+                    NodeList children = n.getChildNodes();
+                    
+                    for (int i = 0; i < children.getLength(); i++) {
+                        handleNode(children.item(i));
+                    }
+                } else if (n instanceof Text) {
+                    String text = ((Text)n).getWholeText();
+                    contentHandler.characters(text.toCharArray(), 0,text.length());
+                    
+                } else {
+                    if (n instanceof Document) {
+                        n = ((Document) n).getDocumentElement();
+                    }
+                    AttributesImpl attributes = new AttributesImpl();
+                    NamedNodeMap nnm = n.getAttributes();
+                    if (nnm != null) {
+                        for (int i = 0; i < nnm.getLength(); i++) {
+                            Attr attribute = (Attr)nnm.item(i);
+                            
+                            attributes.addAttribute(
+                                    attribute.getNamespaceURI(),
+                                    attribute.getLocalName(),
+                                    attribute.getName(),
+                                    attribute.getSchemaTypeInfo().getTypeName(),
+                                    attribute.getValue());
+                        }
+                    }
+                    contentHandler.startElement(
+                            n.getNamespaceURI(),
+                            n.getLocalName(),
+                            n.getNodeName(),
+                            attributes);
+                    
+                    NodeList children = n.getChildNodes();
+                    
+                    for (int i = 0; i < children.getLength(); i++) {
+                        handleNode(children.item(i));
+                    }
+                    
+                    contentHandler.endElement(
+                            n.getNamespaceURI(),
+                            n.getLocalName(),
+                            n.getNodeName());
+                }
+            }  catch (Exception e) {
+                throw new IllegalStateException("Could not transform "+n.getNodeName()+":"+e, e );
             }
         }
 

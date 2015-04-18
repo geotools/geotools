@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -219,6 +219,7 @@ public final class XS extends XSD {
         proper.add(name(INTEGER)); //BigInteger.class
         proper.add(name(DECIMAL)); //BigDecimal.class
         proper.add(name(ANYURI)); //URI.class
+        proper.add(name(ANYTYPE)); 
         Schema profile = schema.profile( proper );
         
         return profile;

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -62,6 +62,9 @@ import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
+import org.w3c.dom.Node;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -296,6 +299,8 @@ public abstract class SQLDialect {
         mappings.put(new Integer(Types.BINARY), byte[].class);
         mappings.put(new Integer(Types.CLOB), String.class);
         
+        mappings.put(new Integer(Types.SQLXML), Node.class);
+        
         mappings.put(new Integer(Types.VARBINARY), byte[].class);
 
         //subclasses should extend to provide additional
@@ -337,6 +342,10 @@ public abstract class SQLDialect {
         mappings.put(Timestamp.class, new Integer(Types.TIMESTAMP));
         
         mappings.put(byte[].class, new Integer(Types.BLOB));
+        
+        mappings.put(Node.class, new Integer(Types.SQLXML));
+        mappings.put(Document.class, new Integer(Types.SQLXML));
+        mappings.put(DocumentFragment.class, new Integer(Types.SQLXML));
 
         //subclasses should extend and provide additional
     }

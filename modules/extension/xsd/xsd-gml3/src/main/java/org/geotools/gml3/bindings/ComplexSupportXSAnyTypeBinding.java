@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -409,7 +409,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
         } else if(!isPlaceholderObject(object)) {
             GML3EncodingUtils.encodeAsText(document, value, object);
         }
-        return value;
+        return super.encode(object, document, value);
     }
 
     /**

@@ -21,6 +21,8 @@ import org.opengis.metadata.citation.OnLineResource;
 import static org.opengis.annotation.Obligation.*;
 import static org.opengis.annotation.Specification.*;
 
+import org.opengis.filter.expression.Expression;
+
 /**
  * Represents a style that applies to features or coverage.
  *
@@ -127,7 +129,16 @@ public interface FeatureTypeStyle {
      * 
      * @return OnlineResource or null
      */
+    @XmlElement("OnlineResource")
     OnLineResource getOnlineResource();
+    
+    /**
+     * gets the transformation as expression
+     * 
+     * @return Transformation or null
+     */
+    @XmlElement("Transformation")
+    Expression getTransformation();
     
     /**
      * calls the visit method of a StyleVisitor

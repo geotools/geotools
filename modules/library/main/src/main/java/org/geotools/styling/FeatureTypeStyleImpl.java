@@ -76,7 +76,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
     private DescriptionImpl description = new DescriptionImpl();
     private String name = "name";
     private OnLineResource online = null;
-    private Expression transformation;
+    private Expression transformation = null;
 
     protected Map<String, String> options;
 
@@ -113,6 +113,8 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
             }
         }
         this.semantics = new LinkedHashSet<SemanticType>(fts.semanticTypeIdentifiers());
+        this.online = fts.getOnlineResource();
+        this.transformation = fts.getTransformation();
     }
     
     public List<Rule> rules() {

@@ -26,6 +26,9 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.util.Cloneable;
 
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.metadata.iso.citation.OnLineResourceImpl;
+import org.opengis.metadata.citation.OnLineResource;
 
 /**
  * Tests style cloning
@@ -387,5 +390,31 @@ public class StyleObjectTest extends TestCase {
         int testHash = test.hashCode();
         assertTrue("Equal objects should return equal hashcodes",
             controlEqHash == testHash);
+    }
+    
+    public void testFeatureStyleImplCopy() throws Exception {
+    	//create FeatureTypeStyleImpl
+        FeatureTypeStyle fts = new FeatureTypeStyleImpl(); 
+        assertNull( fts.getTransformation() );
+        assertNull( fts.getOnlineResource() );   
+        
+        //Create OnlineResource and transformation
+        OnLineResource impl = new OnLineResourceImpl();
+        Expression style = filterFactory.literal("square");
+        
+        //set OnlineResource and transformation
+        fts.setTransformation(style);
+        fts.setOnlineResource(impl);
+        
+        //test if set
+        assertEquals( fts.getTransformation(),filterFactory.literal("square") );
+        assertEquals(fts.getOnlineResource(), new OnLineResourceImpl());
+        
+        //create copy fts2 from fts
+        FeatureTypeStyleImpl fts2 = new FeatureTypeStyleImpl(fts);
+        
+        //test if values are equal and thus copied
+        assertEquals( fts.getTransformation(),fts2.getTransformation() );
+        assertEquals( fts.getOnlineResource(), fts2.getOnlineResource());
     }
 }

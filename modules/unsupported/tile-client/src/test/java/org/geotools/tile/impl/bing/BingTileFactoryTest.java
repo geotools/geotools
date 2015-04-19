@@ -85,11 +85,16 @@ public class BingTileFactoryTest extends TileFactoryTest {
                 .getExtentFromTileName(tileId);
 
         Assert.assertEquals(tile.getExtent(), env);
-        ReferencedEnvelope envRaw = new ReferencedEnvelope(-67.5, -56.25,
-                31.95216223802496, 40.97989806962013,
-                DefaultGeographicCRS.WGS84);
 
-        Assert.assertEquals(envRaw, env);
+        ReferencedEnvelope expectedEnv = new ReferencedEnvelope(-67.5, -56.25,
+                31.9521622380, 40.9798980, DefaultGeographicCRS.WGS84);
+
+        Assert.assertEquals(env.getMinX(), expectedEnv.getMinX(), 0.000001);
+        Assert.assertEquals(env.getMinY(), expectedEnv.getMinY(), 0.000001);
+        Assert.assertEquals(env.getMaxX(), expectedEnv.getMaxX(), 0.000001);
+        Assert.assertEquals(env.getMaxY(), expectedEnv.getMaxY(), 0.000001);
+
+        // Assert.assertEquals(envRaw, env);
 
     }
 

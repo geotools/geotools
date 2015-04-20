@@ -3642,7 +3642,8 @@ public final class JDBCDataStore extends ContentDataStore
             ? JoinInfo.create(query, featureType, this) : null;
 
         boolean queryLimitOffset = checkLimitOffset(query.getStartIndex(), query.getMaxFeatures());
-        boolean visitorLimitOffset = visitor == null ? false : checkLimitOffset(visitor.getStartIndex(), visitor.getMaxFeatures());
+        boolean visitorLimitOffset = visitor == null ? false : visitor.hasLimits()
+                && dialect.isLimitOffsetSupported();
         if(queryLimitOffset && !visitorLimitOffset) {
             if (join != null) {
                 //don't select * to avoid ambigous result set

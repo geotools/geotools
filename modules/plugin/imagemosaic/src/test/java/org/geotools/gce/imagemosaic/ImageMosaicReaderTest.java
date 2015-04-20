@@ -20,7 +20,6 @@ import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.JAIExt;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -3282,8 +3281,62 @@ public class ImageMosaicReaderTest extends Assert{
         reader.dispose();
 
     }
+    
+    /**
+     * Tests the {@link ImageMosaicReader} with external overviews (Actually only TIFF is supported) 
+     */
+    @Test
+    public void externalOverviews() throws Exception {
+        // Delete test folder if present
+        final File workDir = new File(TestData.file(this, "."), "mosaic-ext-ovr");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        // Populate again the test folder
+        FileUtils.copyDirectory(TestData.file(this, "ext-overview"), workDir);
 
-    @AfterClass
+        // create url from file
+        URL dirURL = DataUtilities.fileToURL(workDir);
+        final AbstractGridFormat format = TestUtils.getFormat(dirURL);
+        final ImageMosaicReader reader = TestUtils.getReader(dirURL, format);
+
+        // limit yourself to reading just a bit of it
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final Dimension dim = new Dimension();
+        dim.setSize(reader.getOriginalGridRange().getSpan(0) / 2.0, reader.getOriginalGridRange()
+                .getSpan(1) / 2.0);
+        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        rasterArea.setSize(dim);
+        final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+        gg.setValue(new GridGeometry2D(range, envelope));
+
+        // use imageio with defined tiles
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        useJai.setValue(false);
+
+        final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE
+                .createValue();
+        tileSize.setValue("128,128");
+
+        // Test the output coverage
+        GeneralParameterValue[] values = new GeneralParameterValue[] { gg, useJai, tileSize };
+        final GridCoverage2D coverage = TestUtils.checkCoverage(reader, values,
+                "external overviews test");
+
+        // Checking Overview Path
+        Object fileLocation = coverage
+                .getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
+        assertNotNull(fileLocation);
+        assertTrue(fileLocation instanceof String);
+        String path = (String) fileLocation;
+        assertTrue(!path.isEmpty());
+        assertTrue(path.endsWith(".ovr"));
+    }
+
+        @AfterClass
 	public static void close(){
 		System.clearProperty("org.geotools.referencing.forceXY");
 	        CRS.reset("all");

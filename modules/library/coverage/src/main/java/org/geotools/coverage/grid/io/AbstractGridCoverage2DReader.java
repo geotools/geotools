@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.grid.io;
 
+import it.geosolutions.imageio.maskband.DatasetLayout;
+
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -162,6 +164,9 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     protected ImageInputStreamSpi inStreamSPI;
 
     private ImageLayout imageLayout;
+    
+    /** Coverage {@link DatasetLayout} containing information about Overviews and Mask management*/
+    protected DatasetLayout dtLayout;
 
     /**
      * Default protected constructor. Useful for wrappers.
@@ -1079,13 +1084,31 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
             throw new IllegalArgumentException("The specified coverageName " + coverageName
                     + "is not supported");
         }
-        return overViewResolutions != null ? overViewResolutions.length : 0;
+        if (dtLayout == null) {
+            // Back to the default
+            return numOverviews;
+        }
+        return dtLayout.getNumInternalOverviews()
+                + (dtLayout.getNumExternalOverviews() > 0 ? dtLayout.getNumExternalOverviews() : 0);
     }
 
     @Override
     public int getNumOverviews() {
         // Default implementation for backwards compatibility
         return getNumOverviews(coverageName);
+    }
+
+    public DatasetLayout getDatasetLayout() {
+        // Default implementation for backwards compatibility
+        return getDatasetLayout(coverageName);
+    }
+
+    public DatasetLayout getDatasetLayout(String coverageName) {
+        if (!checkName(coverageName)) {
+            throw new IllegalArgumentException("The specified coverageName " + coverageName
+                    + "is not supported");
+        }
+        return dtLayout;
     }
 
     public GridEnvelope getOverviewGridEnvelope(int overviewIndex) throws IOException {

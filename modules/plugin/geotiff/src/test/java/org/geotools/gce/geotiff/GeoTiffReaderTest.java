@@ -17,6 +17,7 @@
  */
 package org.geotools.gce.geotiff;
 
+import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 
@@ -33,7 +34,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.media.jai.ImageLayout;
+import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.ROI;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -44,9 +47,12 @@ import org.geotools.coverage.grid.io.GroundControlPoints;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
+import org.geotools.coverage.processing.CoverageProcessor;
+import org.geotools.coverage.processing.operation.Scale;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -56,10 +62,12 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
+import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -416,6 +424,160 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         // Ensure the Unit of Measure define is Meter
         assertTrue(crsDef.contains("UNIT[\"m\", 1.0]"));
     }
+
+    /**
+     * Test that the reader sets a ROI property based on the input internal masks
+     */
+    @Test
+    public void testMasking() throws Exception {
+        // Reading file
+        final File file = TestData.file(GeoTiffReaderTest.class, "mask/masked.tif");
+        assertNotNull(file);
+        final AbstractGridFormat format = new GeoTiffFormat();
+        AbstractGridCoverage2DReader reader = format.getReader(file);
+        GridCoverage2D coverage = reader.read(null);
+        // Checking if ROI is present
+        checkCoverageROI(coverage);
+        // Getting DatasetLayout and testing it
+        DatasetLayout layout = reader.getDatasetLayout();
+        Assert.assertEquals(5, layout.getNumInternalMasks());
+        Assert.assertEquals(-1, layout.getNumExternalMasks());
+        Assert.assertEquals(4, layout.getNumInternalOverviews());
+        Assert.assertEquals(-1, layout.getNumExternalOverviews());
+        Assert.assertEquals(-1, layout.getNumExternalMaskOverviews());
+        Assert.assertNull(layout.getExternalMasks());
+        Assert.assertNull(layout.getExternalOverviews());
+        Assert.assertNull(layout.getExternalMaskOverviews());
+
+        // Doing a minor Operation in order to make ROI available
+        CoverageProcessor processor = CoverageProcessor.getInstance();
+        Scale scaleOp = (Scale) processor.getOperation("Scale");
+        // getting operation parameters
+        ParameterValueGroup parameters = scaleOp.getParameters();
+        // Setting the parameters
+        parameters.parameter("Source").setValue(coverage);
+        parameters.parameter("xScale").setValue(Float.valueOf(3f));
+        parameters.parameter("yScale").setValue(Float.valueOf(3f));
+        parameters.parameter("xTrans").setValue(Float.valueOf(0.0f));
+        parameters.parameter("yTrans").setValue(Float.valueOf(0.0f));
+        parameters.parameter("Interpolation").setValue(
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        // Executing operation
+        coverage = (GridCoverage2D) scaleOp.doOperation(parameters, null);
+        // Checking if ROI is present
+        checkCoverageROI(coverage);
+
+        // Evaluate results
+        byte[] results = new byte[3];
+        DirectPosition2D position = new DirectPosition2D();
+        // Should be 0
+        position.setLocation(-87.517, 25.302);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        // Should be > 0
+        position.setLocation(-87.005, 26.336);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        // Should be 0
+        position.setLocation(-87.891, 26.159);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        // Should be > 0
+        position.setLocation(-86.401, 26.297);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        // Should be 0
+        position.setLocation(-87.411, 27.289);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+    }
+
+    /**
+     * Test that the reader sets a ROI property based on the input external masks
+     */
+    @Test
+    public void testMaskingExternal() throws Exception {
+        // Reading file
+        final File file = TestData.file(GeoTiffReaderTest.class, "mask/external.tif");
+        assertNotNull(file);
+        final AbstractGridFormat format = new GeoTiffFormat();
+        AbstractGridCoverage2DReader reader = format.getReader(file);
+        GridCoverage2D coverage = reader.read(null);
+        // Checking if ROI is present
+        checkCoverageROI(coverage);
+        // Getting DatasetLayout and testing it
+        DatasetLayout layout = reader.getDatasetLayout();
+        Assert.assertEquals(0, layout.getNumInternalMasks());
+        Assert.assertEquals(1, layout.getNumExternalMasks());
+        Assert.assertEquals(4, layout.getNumInternalOverviews());
+        Assert.assertEquals(0, layout.getNumExternalOverviews());
+        Assert.assertEquals(0, layout.getNumExternalMaskOverviews());
+        Assert.assertTrue(!layout.getExternalMasks().getAbsolutePath().isEmpty());
+        Assert.assertNull(layout.getExternalOverviews());
+        Assert.assertNull(layout.getExternalMaskOverviews());
+
+        // Doing a minor Operation in order to make ROI available
+        CoverageProcessor processor = CoverageProcessor.getInstance();
+        Scale scaleOp = (Scale) processor.getOperation("Scale");
+        // getting operation parameters
+        ParameterValueGroup parameters = scaleOp.getParameters();
+        // Setting the parameters
+        parameters.parameter("Source").setValue(coverage);
+        parameters.parameter("xScale").setValue(Float.valueOf(3f));
+        parameters.parameter("yScale").setValue(Float.valueOf(3f));
+        parameters.parameter("xTrans").setValue(Float.valueOf(0.0f));
+        parameters.parameter("yTrans").setValue(Float.valueOf(0.0f));
+        parameters.parameter("Interpolation").setValue(
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        // Executing operation
+        coverage = (GridCoverage2D) scaleOp.doOperation(parameters, null);
+        // Checking if ROI is present
+        checkCoverageROI(coverage);
+
+        // Evaluate results
+        byte[] results = new byte[3];
+        DirectPosition2D position = new DirectPosition2D();
+        // Should be 0
+        position.setLocation(-87.517, 25.302);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        // Should be > 0
+        position.setLocation(-87.005, 26.336);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        // Should be 0
+        position.setLocation(-87.891, 26.159);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        // Should be > 0
+        position.setLocation(-86.401, 26.297);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        // Should be 0
+        position.setLocation(-87.411, 27.289);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+    }
     
     /**
      * Test that the reader can read a GeoTIFF with GCPs (even if it cannot reference it)
@@ -471,7 +633,118 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     }
 
     /**
-     * Test what we can do and what not with
+     * Test that the reader sets a ROI property based on the input external masks with external overviews
+     */
+    @Test
+    public void testMaskingExternalOverviews() throws Exception {
+        // Reading file
+        final File file = TestData.file(GeoTiffReaderTest.class, "mask/external2.tif");
+        assertNotNull(file);
+        final AbstractGridFormat format = new GeoTiffFormat();
+        AbstractGridCoverage2DReader reader = format.getReader(file);
+        GeneralParameterValue[] params = new GeneralParameterValue[2];
+        // Define a GridGeometry in order to reduce the output
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final Dimension dim = new Dimension();
+        dim.setSize(reader.getOriginalGridRange().getSpan(0) / 2.0, reader.getOriginalGridRange()
+                .getSpan(1) / 2.0);
+        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        rasterArea.setSize(dim);
+        final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+        gg.setValue(new GridGeometry2D(range, envelope));
+        params[0] = gg;
+        // Define Overview Policy
+        final ParameterValue<OverviewPolicy> policy = AbstractGridFormat.OVERVIEW_POLICY
+                .createValue();
+        policy.setValue(OverviewPolicy.NEAREST);
+        params[1] = policy;
+        GridCoverage2D coverage = reader.read(params);
+        // Checking if ROI is present
+        checkCoverageROI(coverage);
+        // Getting DatasetLayout and testing it
+        DatasetLayout layout = reader.getDatasetLayout();
+        Assert.assertEquals(0, layout.getNumInternalMasks());
+        Assert.assertEquals(1, layout.getNumExternalMasks());
+        Assert.assertEquals(4, layout.getNumInternalOverviews());
+        Assert.assertEquals(0, layout.getNumExternalOverviews());
+        Assert.assertEquals(4, layout.getNumExternalMaskOverviews());
+        Assert.assertTrue(!layout.getExternalMasks().getAbsolutePath().isEmpty());
+        Assert.assertNull(layout.getExternalOverviews());
+        Assert.assertTrue(!layout.getExternalMaskOverviews().getAbsolutePath().isEmpty());
+
+        // Doing a minor Operation in order to make ROI available
+        CoverageProcessor processor = CoverageProcessor.getInstance();
+        Scale scaleOp = (Scale) processor.getOperation("Scale");
+        // getting operation parameters
+        ParameterValueGroup parameters = scaleOp.getParameters();
+        // Setting the parameters
+        parameters.parameter("Source").setValue(coverage);
+        parameters.parameter("xScale").setValue(Float.valueOf(3f));
+        parameters.parameter("yScale").setValue(Float.valueOf(3f));
+        parameters.parameter("xTrans").setValue(Float.valueOf(0.0f));
+        parameters.parameter("yTrans").setValue(Float.valueOf(0.0f));
+        parameters.parameter("Interpolation").setValue(
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        // Executing operation
+        coverage = (GridCoverage2D) scaleOp.doOperation(parameters, null);
+        // Checking if ROI is present
+        checkCoverageROI(coverage);
+        // Evaluate results
+        byte[] results = new byte[3];
+        DirectPosition2D position = new DirectPosition2D();
+        // Should be 0
+        position.setLocation(-87.517, 25.302);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        // Should be > 0
+        position.setLocation(-87.005, 26.336);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        // Should be 0
+        position.setLocation(-87.891, 26.159);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        // Should be > 0
+        position.setLocation(-86.401, 26.297);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        // Should be 0
+        position.setLocation(-87.411, 27.289);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+    }
+
+    /**
+     * Private method for checking if ROI size and image size are equals
+     * 
+     *  @param coverage Input {@link GridCoverage2D} to test
+     */
+    private void checkCoverageROI(GridCoverage2D coverage) {
+        ROI roi = CoverageUtilities.getROIProperty(coverage);
+        assertNotNull(roi);
+        // Ensure has the same size of the input image
+        Rectangle roiBounds = roi.getBounds();
+        Rectangle imgBounds = coverage.getGridGeometry().getGridRange2D();
+        assertEquals(imgBounds.x, roiBounds.x);
+        assertEquals(imgBounds.y, roiBounds.y);
+        assertEquals(imgBounds.width, roiBounds.width);
+        assertEquals(imgBounds.height, roiBounds.height);
+    }
+
+    /**
+     * Test what we can do and what not with 
      */
     @Test
 //    @Ignore

@@ -477,7 +477,12 @@ class RasterLayerResponse{
 
                    // path management
                    File inputFile = DataUtilities.urlToFile(result.granuleUrl);
-                   String canonicalPath = inputFile.getCanonicalPath();                   
+                   String canonicalPath = inputFile.getCanonicalPath();
+                   // Remove ovr extension if present
+                   String fileCanonicalPath = canonicalPath;
+                   if (canonicalPath.endsWith(".ovr")) {
+                       fileCanonicalPath = canonicalPath.substring(0, canonicalPath.length() - 4);
+                   }
                    paths.append(canonicalPath).append(",");
                    
                    // add to the mosaic collection, with preprocessing
@@ -485,7 +490,7 @@ class RasterLayerResponse{
                    MosaicElement input = preProcessGranuleRaster(
                                            loadedImage,
                                            result,
-                                           canonicalPath);  
+                                           fileCanonicalPath);  
                    returnValues.add(input);
                    
                 } catch (Exception e) {
@@ -1239,8 +1244,14 @@ class RasterLayerResponse{
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Support for alpha on final mosaic");
             }
-            return new MosaicOutput(new ImageWorker(mosaickedImage.image).makeColorTransparent(
-                    finalTransparentColor).getRenderedImage(), mosaickedImage.pamDataset);
+            // Keep ROI as property
+            ImageWorker imageWorker = new ImageWorker(mosaickedImage.image);
+            imageWorker.makeColorTransparent(finalTransparentColor);
+            RenderedOp image = imageWorker.getRenderedOperation();
+            if (imageWorker.getROI() != null) {
+                image.setProperty("ROI", imageWorker.getROI());
+            }
+            return new MosaicOutput(image, mosaickedImage.pamDataset);
 
         }
 
@@ -1627,10 +1638,6 @@ class RasterLayerResponse{
                         Float.valueOf(rasterBounds.y), 
                         Interpolation.getInstance(Interpolation.INTERP_NEAREST));
                 finalImage = w.getRenderedImage();
-                
-                //finalImage = TranslateDescriptor.create(finalImage, Float.valueOf(rasterBounds.x),
-                        //Float.valueOf(rasterBounds.y),
-                        //Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
             }
 
             // impose the color model and samplemodel as the constant operation does not take them
@@ -1669,10 +1676,6 @@ class RasterLayerResponse{
                         getMosaicThreshold(il.getSampleModel(null).getDataType()) } },
                         new Range[]{RangeFactory.create(0, 0)});
             finalImage = w.getRenderedImage();
-            //finalImage = MosaicDescriptor.create(new RenderedImage[0],
-                    //MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, null,
-                    //new double[][] { { CoverageUtilities.getMosaicThreshold(il.getSampleModel(null)
-                            //.getDataType()) } }, bkgValues, renderingHints);
         }
         if (footprintBehavior != null) {
             finalImage = footprintBehavior.postProcessBlankResponse(finalImage, renderingHints);
@@ -1816,6 +1819,11 @@ class RasterLayerResponse{
         // Setting NoData as the NoData for the first Band
         ImageWorker w = new ImageWorker(image);
         CoverageUtilities.setNoDataProperty(properties, w.getNoData());
+        // Setting ROI property
+        Object property = image.getProperty("ROI");
+        if (property != null && property instanceof ROI) {
+            CoverageUtilities.setROIProperty(properties, (ROI) property);
+        }
         
         return coverageFactory.create(
                 rasterManager.getCoverageIdentifier(),

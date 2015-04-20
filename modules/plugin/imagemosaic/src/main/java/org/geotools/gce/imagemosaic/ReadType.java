@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -43,13 +43,13 @@ import com.sun.media.jai.operator.ImageReadDescriptor;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  *
  */
-enum ReadType {
+public enum ReadType {
 
 
     DIRECT_READ{
     	
 		@Override
-		RenderedImage read(
+                public RenderedImage read(
 				final ImageReadParam readParameters, 
 				final int imageIndex,
 				final URL granuleUrl, 
@@ -109,7 +109,7 @@ enum ReadType {
     
     JAI_IMAGEREAD{
 		@Override
-		RenderedImage read(
+		public RenderedImage read(
 				final ImageReadParam readParameters, 
 				final int imageIndex,
 				final URL granuleUrl, 
@@ -169,7 +169,7 @@ enum ReadType {
     
     UNSPECIFIED{
 		@Override
-		RenderedImage read(
+		public RenderedImage read(
 				final ImageReadParam readParameters, 
 				final int imageIndex,
 				final URL granuleUrl, 
@@ -213,7 +213,7 @@ enum ReadType {
          * @throws IOException
          *             in case something bad occurs during the decoding process.
          */
-	abstract RenderedImage read(
+	public abstract RenderedImage read(
 			final ImageReadParam readParameters, 
 			final int imageIndex,
 			final URL granuleUrl, 

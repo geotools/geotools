@@ -644,6 +644,12 @@ public class ImageWorker {
      */
     public final ImageWorker setROI(final ROI roi) {
         this.roi = roi;
+        // If ROI == null remove it also from the image properties
+        if (roi == null) {
+            PlanarImage pl = getPlanarImage();
+            pl.removeProperty("ROI");
+            image = pl;
+        }
         invalidateStatistics();
         return this;
     }
@@ -3859,56 +3865,120 @@ public class ImageWorker {
                         PlanarImage sourceImage = op.getSourceImage(0);
                         final ParameterBlock paramBlk = new ParameterBlock().addSource(sourceImage);
                         Object property = sourceImage.getProperty("ROI");
-                        if ((property == null) || property.equals(java.awt.Image.UndefinedProperty)
-                                || !(property instanceof ROI)) {
+                        // Boolean indicating if optional ROI may be reprojected back to the initial image
+                        boolean canProcessROI = true;
+                        // Boolean indicating if NoData are the same as for the source operation or are not present
+                        Range oldNoData = (Range) (op.getParameterBlock().getNumParameters() > 3 ? op
+                                .getParameterBlock().getObjectParameter(4) : null);
+                        double[] oldBkg = (double[]) (op.getParameterBlock().getObjectParameter(2) != null ? op
+                                .getParameterBlock().getObjectParameter(2) : null);
+                        boolean hasSameNodata = oldNoData == null
+                                || (oldBkg != null && nodata != null && oldBkg.length > 0 && oldBkg[0] == nodata
+                                        .getMin().doubleValue());
+                        if (((property == null) || property.equals(java.awt.Image.UndefinedProperty)
+                                || !(property instanceof ROI))) {
                             paramBlk.add(warp).add(interpolation).add(bgValues);
-                            paramBlk.set(nodata, 4);
-                            if(isNoDataNeeded() && bgValues != null && bgValues.length > 0){
+                            if (oldNoData != null) {
+                                paramBlk.set(oldNoData, 4);
+                            }
+                            // Try to reproject ROI after Warp
+                            ROI newROI = null;
+                            if (roi != null) {
+                                ROI reprojectedROI = roi;
+                                try {
+                                    MathTransform inverse = originalTransform.inverse();
+                                    if (inverse instanceof AffineTransform) {
+                                        AffineTransform inv = (AffineTransform) inverse;
+                                        newROI = reprojectedROI.transform(inv);
+                                    }
+                                } catch (Exception e) {
+                                    if (LOGGER.isLoggable(Level.WARNING)) {
+                                        LOGGER.log(
+                                                Level.WARNING,
+                                                "Unable to compute the inverse of the new ROI provided",
+                                                e);
+                                    }
+                                    // Skip Warp Affine reduction
+                                    canProcessROI = false;
+                                }
+                            }
+
+                            if (newROI != null) {
+                                setROI(newROI);
+                                paramBlk.set(newROI, 3);
+                            }
+                            if (((isNoDataNeeded() || newROI != null || oldNoData != null) && bgValues != null && bgValues.length > 0)
+                                    && hasSameNodata) {
                                 setNoData(RangeFactory.create(bgValues[0], bgValues[0]));
                             }
                         } else {
                             // Intersect ROIs
                             ROI newROI = null;
                             if (roi != null) {
-                                newROI = roi.intersect((ROI) property);
+                                // Try to reproject ROI after Warp
+                                ROI reprojectedROI = roi;
+                                try {
+                                    MathTransform inverse = originalTransform.inverse();
+                                    if (inverse instanceof AffineTransform) {
+                                        AffineTransform inv = (AffineTransform) inverse;
+                                        reprojectedROI = reprojectedROI.transform(inv);
+                                        newROI = reprojectedROI.intersect((ROI) property);
+                                    }
+                                } catch (Exception e) {
+                                    if (LOGGER.isLoggable(Level.WARNING)) {
+                                        LOGGER.log(
+                                                Level.WARNING,
+                                                "Unable to compute the inverse of the new ROI provided",
+                                                e);
+                                    }
+                                    // Skip Warp Affine reduction
+                                    canProcessROI = false;
+                                }
                             } else {
                                 newROI = (ROI) property;
                             }
                             setROI(newROI);
-                            paramBlk.add(warp).add(interpolation).add(bgValues).add(newROI)
-                                    .add(nodata);
-                            if((isNoDataNeeded() || newROI != null) && bgValues != null && bgValues.length > 0){
+                            paramBlk.add(warp).add(interpolation).add(bgValues).add(newROI);
+                            if (oldNoData != null) {
+                                paramBlk.set(oldNoData, 4);
+                            }
+                            if (((isNoDataNeeded() || newROI != null || oldNoData != null) && bgValues != null && bgValues.length > 0)
+                                    && hasSameNodata) {
                                 setNoData(RangeFactory.create(bgValues[0], bgValues[0]));
                             }
                         }
 
+                        // Checks if ROI can be processed
+                        if(canProcessROI && hasSameNodata){
+                            // force in the image layout, this way we get exactly the same
+                            // as the affine we're eliminating
+                            Hints localHints = new Hints(commonHints);
+                            localHints.remove(JAI.KEY_IMAGE_LAYOUT);
+                            ImageLayout il = new ImageLayout();
+                            il.setMinX(targetBB.x);
+                            il.setMinY(targetBB.y);
+                            il.setWidth(targetBB.width);
+                            il.setHeight(targetBB.height);
 
-                        // force in the image layout, this way we get exactly the same
-                        // as the affine we're eliminating
-                        Hints localHints = new Hints(commonHints);
-                        localHints.remove(JAI.KEY_IMAGE_LAYOUT);
-                        ImageLayout il = new ImageLayout();
-                        il.setMinX(targetBB.x);
-                        il.setMinY(targetBB.y);
-                        il.setWidth(targetBB.width);
-                        il.setHeight(targetBB.height);
-                        
-                        il.setTileHeight(op.getTileHeight());
-                        il.setTileWidth(op.getTileWidth());
-                        il.setTileGridXOffset(0);
-                        il.setTileGridYOffset(0);
-                        localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
+                            il.setTileHeight(op.getTileHeight());
+                            il.setTileWidth(op.getTileWidth());
+                            il.setTileGridXOffset(0);
+                            il.setTileGridYOffset(0);
+                            localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
 
-                        RenderedOp result = JAI.create("Warp", paramBlk, localHints);
-                        result.setProperty("MathTransform", chained);
-                        image = result;
-                        // getting the new ROI property
-                        PropertyGenerator gen = new WarpDescriptor().getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
-                        Object prop = gen.getProperty("roi", image);
-                        if(prop != null && prop instanceof ROI){
-                            setROI((ROI) prop);
+                            RenderedOp result = JAI.create("Warp", paramBlk, localHints);
+                            result.setProperty("MathTransform", chained);
+                            image = result;
+                            // getting the new ROI property
+                            PropertyGenerator gen = new WarpDescriptor().getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
+                            Object prop = gen.getProperty("roi", image);
+                            if(prop != null && prop instanceof ROI){
+                                setROI((ROI) prop);
+                            } else {
+                                setROI(null);
+                            }
+                            return this;
                         }
-                        return this;
                     }
                 } catch (Exception e) {
                     LOGGER.log(
@@ -3931,6 +4001,7 @@ public class ImageWorker {
                 Range nodata = null;
                 ROI r = null;
                 boolean similarROI = true;
+                boolean hasSameNodata = true;
                 // Minor checks on ROI and NoData
                 if(paramBlock.getNumParameters() > 3){
                     nodata = (Range) paramBlock.getObjectParameter(6);
@@ -3943,12 +4014,14 @@ public class ImageWorker {
                         } catch (NoninvertibleTransformException e) {
                             LOGGER.log(Level.SEVERE, e.getMessage(), e);
                         }
-
+                        hasSameNodata = nodata == null
+                                || (sBgValues != null && this.nodata != null && sBgValues.length > 0 && sBgValues[0] == this.nodata
+                                        .getMin().doubleValue());
                     }
                 }
 
                 if ((sInterp == interpolation && Arrays.equals(sBgValues, bgValues))
-                        && ((nodata == null || nodata.equals(this.nodata)) && (r == null || similarROI))) {
+                        && ((nodata == null || hasSameNodata) && (r == null || similarROI))) {
                     // we can replace it
                     AffineTransform concat = new AffineTransform(tx);
                     concat.concatenate(sTx);
@@ -3962,6 +4035,9 @@ public class ImageWorker {
                         } catch (NoninvertibleTransformException e) {
                             LOGGER.log(Level.SEVERE, e.getMessage(), e);
                         }
+                    }
+                    if (hasSameNodata && nodata != null) {
+                        setNoData(nodata);
                     }
                 }
             } else if ("Scale".equals(opName)) {
@@ -3977,10 +4053,12 @@ public class ImageWorker {
                 Range nodata = null;
                 ROI r = null;
                 boolean similarROI = true;
+                boolean hasSameNodata =true;
                 // Minor checks on ROI and NoData
                 if(paramBlock.getNumParameters() > 5){
                     nodata = (Range) paramBlock.getObjectParameter(7);
                     r = (ROI)paramBlock.getObjectParameter(5);
+                    double[] sBgValues = (double[]) paramBlock.getObjectParameter(8);
                     if(r != null){
                         try {
                             AffineTransform sTx = AffineTransform.getScaleInstance(xScale, yScale);
@@ -3992,9 +4070,12 @@ public class ImageWorker {
                             LOGGER.log(Level.SEVERE, e.getMessage(), e);
                         }
                     }
+                    hasSameNodata  = nodata == null
+                            || (sBgValues != null && this.nodata != null && sBgValues.length > 0 && sBgValues[0] == this.nodata
+                                    .getMin().doubleValue());
                 }
 
-                if (sInterp == interpolation && ((nodata == null || nodata.equals(this.nodata)) && (r == null || similarROI))) {
+                if (sInterp == interpolation && ((nodata == null || hasSameNodata) && (r == null || similarROI))) {
                     // we can replace it
                     AffineTransform concat = new AffineTransform(tx);
                     concat.concatenate(new AffineTransform(xScale, 0, 0, yScale, xTrans, yTrans));
@@ -4010,6 +4091,9 @@ public class ImageWorker {
                         } catch (NoninvertibleTransformException e) {
                             LOGGER.log(Level.SEVERE, e.getMessage(), e);
                         }
+                    }
+                    if (hasSameNodata && nodata != null) {
+                        setNoData(nodata);
                     }
                 }
             }
@@ -4059,6 +4143,8 @@ public class ImageWorker {
                     Object prop = gen.getProperty("roi", image);
                     if(prop != null && prop instanceof ROI){
                         setROI((ROI) prop);
+                    }  else {
+                        setROI(null);
                     }
                 }
 
@@ -4085,6 +4171,8 @@ public class ImageWorker {
                     Object prop = gen.getProperty("roi", image);
                     if (prop != null && prop instanceof ROI) {
                         setROI((ROI) prop);
+                    }  else {
+                        setROI(null);
                     }
                 }
             }
@@ -4108,6 +4196,8 @@ public class ImageWorker {
                 Object prop = gen.getProperty("roi", image);
                 if (prop != null && prop instanceof ROI) {
                     setROI((ROI) prop);
+                }  else {
+                    setROI(null);
                 }
             }
         }
@@ -4368,6 +4458,8 @@ public class ImageWorker {
         Object prop = gen.getProperty("roi", image);
         if(prop != null && prop instanceof ROI){
             setROI((ROI) prop);
+        }  else {
+            setROI(null);
         }
 
         return this;
@@ -4401,6 +4493,8 @@ public class ImageWorker {
         Object prop = gen.getProperty("roi", image);
         if(prop != null && prop instanceof ROI){
             setROI((ROI) prop);
+        }  else {
+            setROI(null);
         }
         return this;
     }

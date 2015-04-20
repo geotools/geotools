@@ -20,8 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import it.geosolutions.rendered.viewer.RenderedImageBrowser;
-
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
@@ -32,16 +30,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
-import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
-import javax.media.jai.ROIShape;
+import javax.media.jai.ROI;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.Interpolator2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
@@ -51,6 +47,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderFactory;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.CRS;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.junit.AfterClass;
@@ -93,10 +90,9 @@ public class ImageMosaicFootprintsTest {
         File mosaicSource = TestData.file(this,"rgb");
         FileUtils.copyDirectory(mosaicSource, testMosaic);
         testMosaicUrl = DataUtilities.fileToURL(testMosaic);
-
+        
         // footprint source
         footprintsSource = TestData.file(this,"rgb-footprints");
-
     }
 
     @Test
@@ -499,5 +495,280 @@ public class ImageMosaicFootprintsTest {
         coverage.evaluate(new DirectPosition2D(8, 45), pixel);
         assertTrue(pixel[0] + pixel[1] + pixel[2] > 0);
         disposeCoverage(coverage);
+    }
+
+    @Test
+    public void testRasterFootprintExternal() throws Exception {
+        // Raster
+        File testMosaicRaster = new File(TestData.file(this, "."), "footprintRaster");
+        if (testMosaicRaster.exists()) {
+            FileUtils.deleteDirectory(testMosaicRaster);
+        }
+        // Reading Coverage with Raster footprint
+        GridCoverage2D coverage = readRasterFootprint("rastermask", testMosaicRaster, false);
+        
+        // Evaluate results
+        byte[] results = new byte[4];
+        DirectPosition2D position = new DirectPosition2D();
+        // Should be 0
+        position.setLocation(-86.724, 25.085);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        assertEquals(results[3], 0);
+        // Should be > 0
+        position.setLocation(-86.252, 27.7984);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        assertTrue(results[3] != 0);
+        // Should be 0
+        position.setLocation(-87.937, 26.144);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        assertEquals(results[3], 0);
+        // Should be > 0
+        position.setLocation(-89.084, 27.133);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        assertTrue(results[3] != 0);
+        // Should be 0
+        position.setLocation(-89.763, 25.167);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        assertEquals(results[3], 0);
+    }
+
+    @Test
+    public void testRasterFootprintInternal() throws Exception {
+        // Raster
+        File testMosaicRaster = new File(TestData.file(this, "."), "footprintRaster");
+        if (testMosaicRaster.exists()) {
+            FileUtils.deleteDirectory(testMosaicRaster);
+        }
+
+        // Reading Coverage with Raster footprint
+        GridCoverage2D coverage = readRasterFootprint("rastermask2", testMosaicRaster, false);
+        
+        // Evaluate results
+        byte[] results = new byte[4];
+        DirectPosition2D position = new DirectPosition2D();
+        // Should be 0
+        position.setLocation(-86.724, 25.085);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        assertEquals(results[3], 0);
+        // Should be > 0
+        position.setLocation(-86.252, 27.7984);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        assertTrue(results[3] != 0);
+        // Should be 0
+        position.setLocation(-87.937, 26.144);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        assertEquals(results[3], 0);
+        // Should be > 0
+        position.setLocation(-89.084, 27.133);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        assertTrue(results[3] != 0);
+        // Should be 0
+        position.setLocation(-89.763, 25.167);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        assertEquals(results[3], 0);
+    }
+
+    @Test
+    public void testRasterFootprintExternalMask() throws Exception {
+        // Raster
+        File testMosaicRaster = new File(TestData.file(this, "."), "footprintRaster");
+        if (testMosaicRaster.exists()) {
+            FileUtils.deleteDirectory(testMosaicRaster);
+        }
+
+        // Reading Coverage with Raster footprint
+        GridCoverage2D coverage = readRasterFootprint("rastermask", testMosaicRaster, true);
+        
+        // Evaluate results
+        byte[] results = new byte[4];
+        DirectPosition2D position = new DirectPosition2D();
+        // Should be 0 but since the mask is subsampled, it may happen that the
+        // final pixel is not masked
+        position.setLocation(-86.724, 25.085);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        assertTrue(results[3] != 0);
+        // Should be > 0
+        position.setLocation(-86.252, 27.7984);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        assertTrue(results[3] != 0);
+        // Should be  0 but since the mask is subsampled, it may happen that the
+        // final pixel is not masked
+        position.setLocation(-87.937, 26.144);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        assertTrue(results[3] != 0);
+        // Should be > 0
+        position.setLocation(-89.084, 27.133);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        assertTrue(results[3] != 0);
+        // Should be 0 
+        position.setLocation(-89.763, 25.167);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        assertEquals(results[3], 0);
+    }
+
+    @Test
+    public void testRasterFootprintInternalMaskAndOverviews() throws Exception {
+        // Raster
+        File testMosaicRaster = new File(TestData.file(this, "."), "footprintRaster");
+        if (testMosaicRaster.exists()) {
+            FileUtils.deleteDirectory(testMosaicRaster);
+        }
+
+        // Reading Coverage with Raster footprint
+        GridCoverage2D coverage = readRasterFootprint("rastermask2", testMosaicRaster, true);
+        
+        // Evaluate results
+        byte[] results = new byte[4];
+        DirectPosition2D position = new DirectPosition2D();
+        // Should be 0
+        position.setLocation(-86.724, 25.085);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        assertEquals(results[3], 0);
+        // Should be > 0
+        position.setLocation(-86.252, 27.7984);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        assertTrue(results[3] != 0);
+        // Should be  0
+        position.setLocation(-87.937, 26.144);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        assertEquals(results[3], 0);
+        // Should be > 0
+        position.setLocation(-89.084, 27.133);
+        results = coverage.evaluate(position, results);
+        assertTrue(results[0] != 0);
+        assertTrue(results[1] != 0);
+        assertTrue(results[2] != 0);
+        assertTrue(results[3] != 0);
+        // Should be 0
+        position.setLocation(-89.763, 25.167);
+        results = coverage.evaluate(position, results);
+        assertEquals(results[0], 0);
+        assertEquals(results[1], 0);
+        assertEquals(results[2], 0);
+        assertEquals(results[3], 0);
+    }
+
+    private GridCoverage2D readRasterFootprint(String path, File testMosaicRaster,
+            boolean testOverviews) throws Exception {
+        // create the base mosaic we are going to use
+        File mosaicSourceRaster = TestData.file(this, path);
+        FileUtils.copyDirectory(mosaicSourceRaster, testMosaicRaster);
+        URL testMosaicRasterUrl = DataUtilities.fileToURL(testMosaicRaster);
+        // copy the footprints mosaic properties
+        Properties p = new Properties();
+        // Setting Raster property
+        p.put(MultiLevelROIProviderFactory.SOURCE_PROPERTY, "raster");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(new File(testMosaicRaster, "footprints.properties"));
+            p.store(fos, null);
+        } finally {
+            IOUtils.closeQuietly(fos);
+        }
+        final AbstractGridFormat format = TestUtils.getFormat(testMosaicRasterUrl);
+        final ImageMosaicReader reader = TestUtils.getReader(testMosaicRasterUrl, format);
+
+        // activate footprint management
+        GeneralParameterValue[] params = new GeneralParameterValue[3];
+        ParameterValue<String> footprintManagement = ImageMosaicFormat.FOOTPRINT_BEHAVIOR
+                .createValue();
+        footprintManagement.setValue(FootprintBehavior.Transparent.name());
+        params[0] = footprintManagement;
+
+        // this prevents us from having problems with link to files still open.
+        ParameterValue<Boolean> jaiImageRead = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+        jaiImageRead.setValue(false);
+        params[1] = jaiImageRead;
+
+        // limit yourself to reading just a bit of it
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        if (testOverviews) {
+            Dimension dim = new Dimension();
+            dim.setSize(8, 8);
+            rasterArea.setSize(dim);
+            final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+            gg.setValue(new GridGeometry2D(range, reader.getOriginalEnvelope()));
+            params[2] = gg;
+        } else {
+            final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+            gg.setValue(new GridGeometry2D(range, PixelInCell.CELL_CENTER, reader
+                    .getOriginalGridToWorld(PixelInCell.CELL_CENTER), reader
+                    .getCoordinateReferenceSystem(), null));
+            params[2] = gg;
+        }
+        // Read the coverage
+        GridCoverage2D coverage = reader.read(params);
+        reader.dispose();
+        assertNotNull(coverage);
+        // Check if ROI is present
+        ROI roi = CoverageUtilities.getROIProperty(coverage);
+        assertNotNull(roi);
+
+        // Checking ROI Bounds
+        // Ensure has the same size of the input image
+        Rectangle roiBounds = roi.getBounds();
+        Rectangle imgBounds = coverage.getGridGeometry().getGridRange2D();
+        assertEquals(imgBounds.x, roiBounds.x);
+        assertEquals(imgBounds.y, roiBounds.y);
+        assertEquals(imgBounds.width, roiBounds.width);
+        assertEquals(imgBounds.height, roiBounds.height);
+
+        return coverage;
     }
 }

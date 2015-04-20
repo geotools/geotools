@@ -423,7 +423,7 @@ public final class GridCoverageRenderer {
         //
         // /////////////////////////////////////////////////////////////////////
         final GridCoverage2D preReprojection = crop(gridCoverage, destinationEnvelope,
-                doReprojection);
+                doReprojection, bkgValues);
         if (preReprojection == null) {
             // nothing to render, the AOI does not overlap
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -514,13 +514,14 @@ public final class GridCoverageRenderer {
 
     /**
      * @param destinationEnvelope 
+     * @param backgroundValues
      * @param gridCoverage
      * @return
      */
     private GridCoverage2D crop(
             final GridCoverage2D inputCoverage, 
             final GeneralEnvelope destinationEnvelope,
-            final boolean doReprojection) {
+            final boolean doReprojection, double[] backgroundValues) {
         
         // //
         //
@@ -554,7 +555,7 @@ public final class GridCoverageRenderer {
             // Cropping for real
             //
             /////
-            outputCoverage = GridCoverageRendererUtilities.crop(inputCoverage, cropEnvelope, hints);
+            outputCoverage = GridCoverageRendererUtilities.crop(inputCoverage, cropEnvelope, backgroundValues, hints);
         }catch (Throwable t) {
                 ////
                 //
@@ -1010,7 +1011,7 @@ public final class GridCoverageRenderer {
 
         // at this point, we might have a coverage that's still slightly larger
         // than the one requested, crop as needed
-        GridCoverage2D cropped = crop(mosaicked, destinationEnvelope, false);
+        GridCoverage2D cropped = crop(mosaicked, destinationEnvelope, false, bgValues);
         if (cropped == null) {
             return null;
         }

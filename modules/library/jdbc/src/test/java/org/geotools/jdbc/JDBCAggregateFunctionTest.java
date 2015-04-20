@@ -318,6 +318,37 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
         assertEquals("one", result.iterator().next());
     }
     
+    public void testStoreChecksVisitorLimits() throws Exception {
+        
+        if (!dataStore.getSQLDialect().isLimitOffsetSupported() || !dataStore.getSQLDialect().isAggregatedSortSupported("distinct")) {
+            return;
+        }
+        
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property( aname("stringProperty") );
+        
+        UniqueVisitor v = new MyUniqueVisitor(p) {
+            @Override
+            public boolean hasLimits() {
+                // forced to return true, to check that the JDBCDataStore
+                // asks the visitor if it has limits, and if answered true
+                // it ignores query limits
+                return true;
+            }
+            
+        };
+        v.setPreserveOrder(true);
+        
+        Query q = new Query( tname("ft1"));
+        q.setMaxFeatures(1);
+        q.setSortBy(new SortBy[] { new SortByImpl(p, SortOrder.ASCENDING)});
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        assertFalse(visited);
+        Set result = v.getResult().toSet();
+        assertEquals(3, result.size());
+        assertEquals("one", result.iterator().next());
+    }
+    
     public void testUniqueWithLimitOffsetOnVisitor() throws Exception {
         
         if (!dataStore.getSQLDialect().isLimitOffsetSupported() || !dataStore.getSQLDialect().isAggregatedSortSupported("distinct")) {

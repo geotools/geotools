@@ -13,7 +13,7 @@ Allows the GeoTools library to work with ESRI shapefiles.
    
    <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-shape</artifactId>
+      <artifactId>gt-shapefile</artifactId>
       <version>${geotools.version}</version>
     </dependency>
     
@@ -90,49 +90,30 @@ This style of file format (from the dawn of time) is referred to as "sidecar" fi
 Access
 ''''''
 
-Working with an Existing Shapefile::
-  
-  File file = new File("example.shp");
-  Map map = new HashMap();
-  map.put( "url", file.toURL() );
-  DataStore dataStore = DataStoreFinder.getDataStore( Map map );
-  String typeName = dataStore.getTypeNames()[0];
-  
-  FeatureSource source = dataStore( typeName );
-  
-  Filter filter = CQL.toFilter("BBOX(THE_GEOM, 10,20,30,40)");
-  FeatureCollection collection = source.getFeatures( filter );
-  FeatureIterator iterator = collection.iterator();
-  try {
-      while( iterator.hasNext() ){
-           Feature feature = (Feature) iterator.next();
-           ...
-      }
-  }
-  finally {
-     collection.close( iterator );
-  }
+Working with an Existing Shapefile:
+
+.. literalinclude:: /../src/main/java/org/geotools/data/ShapefileExample.java
+   :language: java
+   :start-after: // start use
+   :end-before: // end use
+
 
 Creating
 ''''''''
 
-Here is a quick example::
-  
-  FileDataStoreFactorySpi factory = new IndexedShapefileDataStoreFactory();
-  
-  File file = new File("my.shp");
-  Map map = Collections.singletonMap( "url", file.toURL() );
-  
-  DataStore myData = factory.createNewDataStore( map );
-  FeatureType featureType = DataUtilities.createType( "my", "geom:Point,name:String,age:Integer,description:String" );
-  myData.createSchema( featureType );
+Here is a quick example:
+
+.. literalinclude:: /../src/main/java/org/geotools/data/ShapefileExample.java
+   :language: java
+   :start-after: // start create
+   :end-before: // end create
 
 The featureType created above was just done quickly, in your application you may wish to use a DefaultFeatureTypeBuilder.
 
 Supports:
 
 * attribute names must be 15 characters or you will get a warning:
-* a single geometry column (stored in the SHP file)
+* a single geometry column named "the_geom" (stored in the SHP file)
   * LineString, MultiLineString - Files occasionally contain invalid lines with one point
   * Polygon, MultiPolygon 
   * Point, MultiPoint*
@@ -144,7 +125,7 @@ Supports:
   * Double 
   * Boolean
   * Date - TimeStamp interpretation that is both date and time
-	 
+
 Limitations:
 
 * only work with MultiLineStrings, MultiPolygon or MultiPoint. GIS data often travels
@@ -191,6 +172,11 @@ Reading DBF
 ^^^^^^^^^^^
 
 A shapefile is actually comprised of a core "shp" file and a number of "sidecar" files. One of the sidecar files is a "dbf" file used to record attributes. This is the original DBF file format provided by one of the original grandfather databases "DBase".
+
+.. literalinclude:: /../src/main/java/org/geotools/data/ShapefileExample.java
+   :language: java
+   :start-after: // start read
+   :end-before: // end read
 
 The GeoTools library includes just enough DBF file format support to get out of bed in the morning; indeed you should considered these facilities an internal detail to our shapefile reading code.
 

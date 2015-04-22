@@ -119,7 +119,12 @@ public final class Logging {
                     || imagingListener.getClass().getName().contains("ImagingListenerImpl")) {
                 // Client code has not provided an ImagingListener so we can use our own
                 // Custom GeoTools ImagingListener used to ignore common warnings
-                jai.setImagingListener(new LoggingImagingListener());
+                Class jaiClass = Class.forName("javax.media.jai.JAI");
+                Class[] args = new Class[]{Class.forName("javax.media.jai.util.ImagingListener")};
+                LoggingImagingListener gtlogger = new LoggingImagingListener();
+
+                Method setImagingListener = jaiClass.getMethod("setImagingListener", args);
+                setImagingListener.invoke(jai, gtlogger);
                 // System.out.println("Logging JAI messages: javax.media.jai logger redirected");
             } else {
                 // System.out.println("Logging JAI messages: ImagingListener already in use: "+ imagingListener);

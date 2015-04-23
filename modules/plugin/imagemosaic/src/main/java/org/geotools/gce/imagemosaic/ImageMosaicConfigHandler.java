@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -201,7 +201,6 @@ public class ImageMosaicConfigHandler {
                 }
             }
         }
-        
     }
 
     private void updateConfigurationHints(final CatalogBuilderConfiguration configuration,
@@ -569,6 +568,9 @@ public class ImageMosaicConfigHandler {
         if (props.containsKey(Prop.CAN_BE_EMPTY)) {
             IndexerUtils.setParam(parameters, props, Prop.CAN_BE_EMPTY);
         }
+        if (props.containsKey(Prop.WRAP_STORE)) {
+            IndexerUtils.setParam(parameters, props, Prop.WRAP_STORE);
+        }
         if (props.containsKey(Prop.USE_EXISTING_SCHEMA)) {
             IndexerUtils.setParam(parameters, props, Prop.USE_EXISTING_SCHEMA);
         }
@@ -641,6 +643,11 @@ public class ImageMosaicConfigHandler {
                 Boolean.toString(mosaicConfiguration.isCheckAuxiliaryMetadata()));
         properties.setProperty(Utils.Prop.HETEROGENEOUS,
                 Boolean.toString(catalogConfigurationBean.isHeterogeneous()));
+        boolean wrapStore = catalogConfigurationBean.isWrapStore();
+        if (wrapStore) {
+            // Avoid setting this property when false, since it's default
+            properties.setProperty(Utils.Prop.WRAP_STORE, Boolean.toString(wrapStore));
+        }
 
         if (cachedReaderSPI != null) {
             // suggested spi
@@ -811,9 +818,10 @@ public class ImageMosaicConfigHandler {
 
             catalogConfigurationBean.setLocationAttribute(IndexerUtils.getParameter(
                     Prop.LOCATION_ATTRIBUTE, indexer));
-            
+            catalogConfigurationBean.setWrapStore(IndexerUtils.getParameterAsBoolean(
+                    Prop.WRAP_STORE, indexer));
+
             catalogConfigurationBean.setTypeName(coverageName);
-            
             configBuilder.setCatalogConfigurationBean(catalogConfigurationBean);
             configBuilder.setCheckAuxiliaryMetadata(IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));
 

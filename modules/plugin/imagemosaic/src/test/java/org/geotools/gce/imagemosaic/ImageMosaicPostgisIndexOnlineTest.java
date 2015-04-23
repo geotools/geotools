@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -47,6 +47,7 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
 import org.geotools.data.postgis.PostgisNGDataStoreFactory;
@@ -89,7 +90,10 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
     static final String tempFolderName3 = "waterTempPG3";
     
     static final String tempFolderName4 = "waterTempPGCD";
-    
+
+    static final String tempFolderNameWrap = "waterTempPGWrap";
+
+    static final String VERY_LONG_NAME = "very_very_long_name_with_number_of_chars_greater_than_64_to_test_the_postgis_wrapper";
 	/**
 	 * Simple Class for better testing raster manager
 	 * @author Simone Giannecchini, GeoSolutions SAS
@@ -557,11 +561,126 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         }
     }
 
+    /**
+     * Complex test for Postgis store wrapping.
+     * 
+     * @throws Exception
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test
+    public void testPostgisWrapping() throws Exception {
+        final File workDir = new File(TestData.file(this, "."), tempFolderNameWrap);
+        assertTrue(workDir.mkdir());
+        FileUtils
+                .copyFile(TestData.file(this, "watertemplongnames.zip"), new File(workDir, "watertemplongnames.zip"));
+        TestData.unzipFile(this, tempFolderNameWrap + "/watertemplongnames.zip");
+        final URL dataUrl = TestData.url(this, tempFolderNameWrap);
+
+        // place datastore.properties file in the dir for the indexing
+        FileWriter out = null;
+        try {
+            out = new FileWriter(new File(TestData.file(this, "."), tempFolderNameWrap
+                    + "/datastore.properties"));
+
+            final Set<Object> keyset = fixture.keySet();
+            for (Object key : keyset) {
+                final String key_ = (String) key;
+                final String value = fixture.getProperty(key_);
+
+                out.write(key_.replace(" ", "\\ ") + "=" + value.replace(" ", "\\ ") + "\n");
+            }
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
+
+        // now start the test
+        final AbstractGridFormat format = TestUtils.getFormat(dataUrl, null);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(dataUrl, format, null);
+        assertNotNull(reader);
+
+        final String[] metadataNames = reader.getMetadataNames();
+        String[] coverageNames = reader.getGridCoverageNames();
+        String coverageName = coverageNames[0];
+        assertEquals(VERY_LONG_NAME, coverageName);
+        List<DimensionDescriptor> descriptors = reader.getDimensionDescriptors(coverageName);
+        for (DimensionDescriptor descriptor: descriptors) {
+            String name = descriptor.getName();
+            if (name.equalsIgnoreCase("time")) {
+                assertTrue(descriptor.getStartAttribute().length() > 64);
+                break;
+            }
+        }
+
+        assertNotNull(metadataNames);
+        assertEquals(12, metadataNames.length);
+
+        assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+        final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
+        assertNotNull(timeMetadata);
+        assertEquals(2, timeMetadata.split(",").length);
+        assertEquals(timeMetadata.split(",")[0], reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
+        assertEquals(timeMetadata.split(",")[1], reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
+
+        assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
+        final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
+        assertNotNull(elevationMetadata);
+        assertEquals(2, elevationMetadata.split(",").length);
+        assertEquals(Double.parseDouble(elevationMetadata.split(",")[0]),
+                Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM")), 1E-6);
+        assertEquals(Double.parseDouble(elevationMetadata.split(",")[1]),
+                Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM")), 1E-6);
+
+        // limit yourself to reading just a bit of it
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final Dimension dim = new Dimension();
+        dim.setSize(reader.getOriginalGridRange().getSpan(0) / 2.0, reader.getOriginalGridRange()
+                .getSpan(1) / 2.0);
+        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        rasterArea.setSize(dim);
+        final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+        gg.setValue(new GridGeometry2D(range, envelope));
+
+        // use imageio with defined tiles
+        final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+        final List<Date> timeValues = new ArrayList<Date>();
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+        Date date = sdf.parse("2008-10-31T00:00:00.000Z");
+        timeValues.add(date);
+        time.setValue(timeValues);
+
+        final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
+        bkg.setValue(new double[] { -9999.0 });
+
+        final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+        direct.setValue(false);
+
+        final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
+        elevation.setValue(Arrays.asList(100.0));
+
+        // Test the output coverage
+        assertNotNull(reader.read(new GeneralParameterValue[] { gg, time, bkg, elevation, direct }));
+        TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,
+                direct }, "Time-Elevation Test");
+
+        // Test the output coverage
+        reader = TestUtils.getReader(dataUrl, format, null);
+        elevation.setValue(Arrays.asList(NumberRange.create(0.0, 10.0)));
+        TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,
+                direct }, "Time-Elevation Test");
+    }
+
 	@Override
 	protected void tearDownInternal() throws Exception {
 	  
         // delete tables
-        dropTables(new String[] { tempFolderName1, tempFolderName2, noGeomLast, noGeomFirst, tempFolderName3 });
+        dropTables(new String[] { tempFolderName1, tempFolderName2, noGeomLast, noGeomFirst, tempFolderName3, VERY_LONG_NAME.substring(0, 63) });
 
         System.clearProperty("org.geotools.referencing.forceXY");
 	        
@@ -580,11 +699,12 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
             if(directory.isDirectory()&&directory.exists()){
                 FileUtils.deleteDirectory(directory );
             }
-        }		
-
-        
-		super.tearDownInternal();
-        
-	}
+            directory = new File(parent, tempFolderNameWrap);
+            if (directory.isDirectory() && directory.exists()) {
+                FileUtils.deleteDirectory(directory);
+            }
+        }
+        super.tearDownInternal();
+    }
 
 }

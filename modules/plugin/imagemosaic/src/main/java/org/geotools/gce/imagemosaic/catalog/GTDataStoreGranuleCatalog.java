@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -55,6 +55,7 @@ import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.oracle.OracleDatastoreWrapper;
+import org.geotools.gce.imagemosaic.catalog.postgis.PostgisDatastoreWrapper;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.DefaultProgressListener;
 import org.geotools.util.Utilities;
@@ -106,6 +107,8 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
 
     boolean heterogeneous;
 
+    boolean wrapstore = false;
+
     public GTDataStoreGranuleCatalog(final Properties params, final boolean create,
             final DataStoreFactorySpi spi, final Hints hints) {
         super(hints);
@@ -122,17 +125,21 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             if (params.containsKey(Utils.Prop.HETEROGENEOUS)) {
                 this.heterogeneous = (Boolean) params.get(Utils.Prop.HETEROGENEOUS);
             }
+            if (params.containsKey(Utils.Prop.WRAP_STORE)) {
+                this.wrapstore = (Boolean) params.get(Utils.Prop.WRAP_STORE);
+            }
 
             // creating a store, this might imply creating it for an existing underlying store or
             // creating a brand new one
             Map<String, Serializable> dastastoreParams = Utils.filterDataStoreParams(params, spi);
 
+            boolean isPostgis = Utils.isPostgisStore(spi); 
             // H2 workadound
             if (Utils.isH2Store(spi)) {
                 Utils.fixH2DatabaseLocation(dastastoreParams, parentLocation);
                 Utils.fixH2MVCCParam(dastastoreParams);
             }
-            if (Utils.isPostgisStore(spi)) {
+            if (isPostgis) {
                 Utils.fixPostgisDBCreationParams(dastastoreParams);
             }
 
@@ -148,9 +155,10 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 }
             }
 
-            if(Utils.isOracleStore(spi)) {
-                tileIndexStore = new OracleDatastoreWrapper(tileIndexStore,
-                        FilenameUtils.getFullPath(parentLocation));
+            if (isPostgis && wrapstore) {
+                tileIndexStore = new PostgisDatastoreWrapper(tileIndexStore, FilenameUtils.getFullPath(parentLocation));
+            } else if (Utils.isOracleStore(spi)) {
+                tileIndexStore = new OracleDatastoreWrapper(tileIndexStore, FilenameUtils.getFullPath(parentLocation));
             }
 
             // is this a new store? If so we do not set any properties

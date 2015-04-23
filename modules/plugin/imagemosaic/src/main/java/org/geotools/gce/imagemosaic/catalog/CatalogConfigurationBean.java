@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -39,6 +39,13 @@ public class CatalogConfigurationBean {
     private boolean caching = Utils.DEFAULT_CONFIGURATION_CACHING;
 
     private boolean heterogeneous;
+
+    /**
+     * Whether the specified store should be wrapped.
+     * Only PostGis stores support this parameter.
+     * (Oracle stores are wrapped by default).  
+     */
+    private boolean wrapStore = false;
 
     /**
      * <code>true</code> it tells us if the mosaic points to absolute paths or to relative ones. (in case of <code>false</code>).
@@ -116,5 +123,13 @@ public class CatalogConfigurationBean {
 
     public void setAbsolutePath(final boolean absolutePath) {
         this.absolutePath = absolutePath;
+    }
+
+    public boolean isWrapStore() {
+        return wrapStore;
+    }
+
+    public void setWrapStore(boolean wrapStore) {
+        this.wrapStore = wrapStore;
     }
 }

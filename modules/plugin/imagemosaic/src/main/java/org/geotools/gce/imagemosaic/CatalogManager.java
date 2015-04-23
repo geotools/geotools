@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
@@ -60,15 +61,18 @@ import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.DefaultProgressListener;
 import org.geotools.util.Utilities;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.geometry.Envelope;
+import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -125,7 +129,8 @@ public class CatalogManager {
         // GranuleCatalog catalog = null;
         if (Utils.checkFileReadable(datastoreProperties)) {
             // read the properties file
-            catalog = createGranuleCatalogFromDatastore(parent, datastoreProperties, create,runConfiguration.getHints());
+            catalog = createGranuleCatalogFromDatastore(parent, datastoreProperties, create, 
+                    Boolean.parseBoolean(runConfiguration.getParameter(Utils.Prop.WRAP_STORE)), runConfiguration.getHints());
         } else {
 
             // we do not have a datastore properties file therefore we continue with a shapefile datastore
@@ -176,6 +181,10 @@ public class CatalogManager {
         return properties;
     }
 
+    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, Hints hints) throws IOException {
+        return createGranuleCatalogFromDatastore(parent, datastoreProperties, create, false, hints);
+    }
+
     /**
      * Create a granule catalog from a datastore properties file
      * @param parent
@@ -185,7 +194,7 @@ public class CatalogManager {
      * @return
      * @throws IOException
      */
-    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, Hints hints) throws IOException {
+    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, boolean wraps, Hints hints) throws IOException {
         GranuleCatalog catalog = null;
         Utilities.ensureNonNull("datastoreProperties", datastoreProperties);
         Properties properties = createGranuleCatalogProperties(datastoreProperties);
@@ -198,6 +207,9 @@ public class CatalogManager {
             // set ParentLocation parameter since for embedded database like H2 we must change the database
             // to incorporate the path where to write the db
             properties.put("ParentLocation", DataUtilities.fileToURL(parent).toExternalForm());
+            if (wraps) {
+                properties.put(Utils.Prop.WRAP_STORE, wraps);
+            }
 
             catalog = GranuleCatalogFactory.createGranuleCatalog(properties, false, create, spi,hints);
             MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
@@ -248,6 +260,17 @@ public class CatalogManager {
                 // override the crs in case the provided one was wrong or absent
                 indexSchema = DataUtilities.createSubType(indexSchema,
                         DataUtilities.attributeNames(indexSchema), actualCRS);
+                if (actualCRS != null) {
+                    Set<ReferenceIdentifier> identifiers = actualCRS.getIdentifiers();
+                    if (identifiers == null || identifiers.isEmpty()) {
+                        GeometryDescriptor geometryDescriptor = indexSchema.getGeometryDescriptor();
+                        if (geometryDescriptor != null) {
+                            Map<Object, Object> userData = geometryDescriptor.getUserData();
+                            userData.put(JDBCDataStore.JDBC_NATIVE_SRID,0);
+                        }
+                    }
+                }
+                
             } catch (Throwable e) {
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);

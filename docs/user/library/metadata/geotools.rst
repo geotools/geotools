@@ -90,3 +90,14 @@ Here are a couple of examples of setting things up:
   
   This is a good approach if you are making use of Eclipse
   and would like to check bundle "trace" settings.
+  
+JAI
+^^^
+
+GeoTools Logging will listen to **JAI** errors and log them appropriately. It does this by first checking if your application has registered an ImagingListener, and if not it will register a *LoggingImagingListener* to redirect JAI warnings. Common **JAI** errors (such as "Continuing in pure Java mode") are logged as Level.TRACE messages, all other errors are logged as Level.INFO.
+
+If you would like to check this bootstrapping process use the system property `-DLOGGING_TRACE=true`.
+
+To completely filter JAI messages from your application set `javax.media.jai` group to Level.WARNING::
+   
+   Logging.getLogger("javax.media.jai").setLevel(Level.WARNING);

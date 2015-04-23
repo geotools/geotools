@@ -24,9 +24,6 @@ import java.util.logging.LogRecord;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
-import javax.media.jai.JAI;
-import javax.media.jai.util.ImagingListener;
-
 import org.geotools.resources.XArray;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.Errors;
@@ -67,7 +64,7 @@ public final class Logging {
     };
 
     /**
-     * An empty array of loggings. Also used for locks.
+     * An empty array of logging. Also used for locks.
      */
     private static final Logging[] EMPTY = new Logging[0];
 
@@ -111,22 +108,35 @@ public final class Logging {
     
     // Register LoggingImagingListener if JAI is available
     static {
+        final boolean LOGGING_TRACE = Boolean.getBoolean("LOGGING_TRACE");
         try {
-            Class.forName("javax.media.jai.JAI");
-            JAI jai = JAI.getDefaultInstance();
-            ImagingListener imagingListener = jai.getImagingListener();
+            final Class<?> JAI = Class.forName("javax.media.jai.JAI");
+            final Class<?> IMAGING_LISTENER = Class.forName("javax.media.jai.util.ImagingListener");
+            Method getDefaultInstance = JAI.getMethod("getDefaultInstance");
+            Method getImagingListener = JAI.getMethod("getImagingListener");
+            Method setImagingListener = JAI.getMethod("setImagingListener", IMAGING_LISTENER);
+            
+            Object jai = getDefaultInstance.invoke(null, null);
+            Object imagingListener = getImagingListener.invoke(jai, null);
+
             if (imagingListener == null
                     || imagingListener.getClass().getName().contains("ImagingListenerImpl")) {
                 // Client code has not provided an ImagingListener so we can use our own
                 // Custom GeoTools ImagingListener used to ignore common warnings
-                jai.setImagingListener(new LoggingImagingListener());
-                // System.out.println("Logging JAI messages: javax.media.jai logger redirected");
+                setImagingListener.invoke(jai, new LoggingImagingListener());
+                if( LOGGING_TRACE ){
+                    System.out.println("Logging JAI messages: javax.media.jai logger redirected");
+                }
             } else {
-                // System.out.println("Logging JAI messages: ImagingListener already in use: "+ imagingListener);
+                if( LOGGING_TRACE ){
+                    System.out.println("Logging JAI messages: ImagingListener already in use: "+ imagingListener);
+                }
             }
         } catch (Throwable ignore) {
             // JAI not available so no need to redirect logging messages
-            // System.out.println("Logging JAI messages: Unable to redirect to javax.media.jai");
+            if( LOGGING_TRACE ){
+                System.out.println("Logging JAI messages: Unable to redirect to javax.media.jai");
+            }
         }
     }
 

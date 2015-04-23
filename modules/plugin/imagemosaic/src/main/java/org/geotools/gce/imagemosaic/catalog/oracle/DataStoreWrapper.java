@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -65,15 +65,15 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public abstract class DataStoreWrapper implements DataStore {
 
-    static final String HIDDEN_FOLDER = ".mosaic";
+    protected static final String HIDDEN_FOLDER = ".mosaic";
 
-    static final String NAME = "NAME";
+    protected static final String NAME = "NAME";
 
-    static final String MAPPEDNAME = "MAPPEDNAME";
+    protected static final String MAPPEDNAME = "MAPPEDNAME";
 
-    static final String SCHEMA = "SCHEMA";
+    protected static final String SCHEMA = "SCHEMA";
 
-    static final String COORDINATE_REFERENCE_SYSTEM = "CRS";
+    protected static final String COORDINATE_REFERENCE_SYSTEM = "CRS";
 
     protected final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DataStoreWrapper.class);
 

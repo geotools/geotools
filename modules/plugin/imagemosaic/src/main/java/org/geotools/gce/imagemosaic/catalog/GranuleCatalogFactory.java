@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,9 +17,7 @@
 package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.File;
-import java.io.Serializable;
 import java.net.URL;
-import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -85,6 +83,7 @@ public abstract class GranuleCatalogFactory {
 		    params.put(Utils.Prop.SUGGESTED_SPI, catalogConfigurationBean.getSuggestedSPI());
 		
 		params.put(Utils.Prop.HETEROGENEOUS, catalogConfigurationBean.isHeterogeneous());
+		params.put(Utils.Prop.WRAP_STORE, catalogConfigurationBean.isWrapStore());
 		if(sourceURL!=null){
 			File parentDirectory=DataUtilities.urlToFile(sourceURL);
 			if(parentDirectory.isFile())

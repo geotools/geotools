@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,6 +15,14 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.xml.impl;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
 
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -30,16 +38,6 @@ import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.XSDVariety;
 import org.eclipse.xsd.XSDWhiteSpace;
 import org.eclipse.xsd.XSDWhiteSpaceFacet;
-import org.picocontainer.MutablePicoContainer;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.namespace.QName;
-
-import org.geotools.xml.AttributeInstance;
 import org.geotools.xml.Binding;
 import org.geotools.xml.ComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -49,6 +47,7 @@ import org.geotools.xml.Schemas;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.BindingWalker.Visitor;
 import org.geotools.xs.facets.Whitespace;
+import org.picocontainer.MutablePicoContainer;
 
 
 /**
@@ -99,7 +98,9 @@ public class ParseExecutor implements Visitor {
                     binding = parser.getBindingLoader().loadBinding(bindingTarget,bindingClass,context);
                 }
                 if ( binding.getClass() != bindingClass ) {
-                    throw new IllegalStateException( "Reloaded binding resulted in different type");
+                    throw new IllegalStateException(
+                            "Reloaded binding resulted in different type, from " + bindingClass
+                                    + " to " + binding.getClass());
                 }
             }    
         }

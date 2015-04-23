@@ -24,7 +24,6 @@ import org.geotools.wfs.bindings.BaseRequestTypeBinding;
 import org.geotools.wfs.bindings.Base_TypeNameListTypeBinding;
 import org.geotools.wfs.bindings.DeleteElementTypeBinding;
 import org.geotools.wfs.bindings.DescribeFeatureTypeTypeBinding;
-import org.geotools.wfs.bindings.FeatureCollectionTypeBinding;
 import org.geotools.wfs.bindings.FeatureTypeListTypeBinding;
 import org.geotools.wfs.bindings.FeatureTypeTypeBinding;
 import org.geotools.wfs.bindings.FeatureTypeType_NoSRSBinding;
@@ -38,28 +37,22 @@ import org.geotools.wfs.bindings.GetFeatureWithLockTypeBinding;
 import org.geotools.wfs.bindings.GetGmlObjectTypeBinding;
 import org.geotools.wfs.bindings.IdentifierGenerationOptionTypeBinding;
 import org.geotools.wfs.bindings.InsertElementTypeBinding;
-import org.geotools.wfs.bindings.InsertResultsTypeBinding;
 import org.geotools.wfs.bindings.InsertedFeatureTypeBinding;
-import org.geotools.wfs.bindings.LockFeatureResponseTypeBinding;
 import org.geotools.wfs.bindings.LockFeatureTypeBinding;
 import org.geotools.wfs.bindings.LockTypeBinding;
 import org.geotools.wfs.bindings.MetadataURLTypeBinding;
 import org.geotools.wfs.bindings.NativeTypeBinding;
 import org.geotools.wfs.bindings.OperationTypeBinding;
-import org.geotools.wfs.bindings.OperationsTypeBinding;
 import org.geotools.wfs.bindings.OutputFormatListTypeBinding;
 import org.geotools.wfs.bindings.PropertyTypeBinding;
 import org.geotools.wfs.bindings.QueryTypeBinding;
 import org.geotools.wfs.bindings.ResultTypeTypeBinding;
-import org.geotools.wfs.bindings.TransactionResponseTypeBinding;
-import org.geotools.wfs.bindings.TransactionResultsTypeBinding;
 import org.geotools.wfs.bindings.TransactionSummaryTypeBinding;
 import org.geotools.wfs.bindings.TransactionTypeBinding;
 import org.geotools.wfs.bindings.TypeNameListTypeBinding;
 import org.geotools.wfs.bindings.UpdateElementTypeBinding;
 import org.geotools.wfs.bindings.WFS_CapabilitiesTypeBinding;
 import org.geotools.wfs.bindings._XlinkPropertyNameBinding;
-import org.geotools.wfs.v2_0.bindings.QueryExpressionTextDelegate;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.XSD;
 import org.picocontainer.MutablePicoContainer;
@@ -107,8 +100,6 @@ public abstract class WFSConfiguration extends Configuration {
             DeleteElementTypeBinding.class);
         container.registerComponentImplementation(WFS.DescribeFeatureTypeType,
             DescribeFeatureTypeTypeBinding.class);
-        container.registerComponentImplementation(WFS.FeatureCollectionType,
-            FeatureCollectionTypeBinding.class);
         container.registerComponentImplementation(WFS.FeaturesLockedType,
             FeaturesLockedTypeBinding.class);
         container.registerComponentImplementation(WFS.FeaturesNotLockedType,

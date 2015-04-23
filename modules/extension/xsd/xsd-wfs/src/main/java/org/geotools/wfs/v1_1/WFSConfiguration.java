@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,6 @@ import org.geotools.wfs.bindings.LockFeatureResponseTypeBinding;
 import org.geotools.wfs.bindings.OperationsTypeBinding;
 import org.geotools.wfs.bindings.TransactionResponseTypeBinding;
 import org.geotools.wfs.bindings.TransactionResultsTypeBinding;
-import org.geotools.wfs.v1_0.QueryTypeBinding;
 
 /**
  * Parser configuration for the wfs 1.1 schema.
@@ -59,6 +58,10 @@ public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
         container.registerComponentImplementation(WFS.LockFeatureResponseType,
                 LockFeatureResponseTypeBinding.class);
         container.registerComponentImplementation(WFS.OperationsType, OperationsTypeBinding.class);
+
+        // override feature collection binding
+        container.registerComponentImplementation(WFS.FeatureCollectionType,
+                FeatureCollectionTypeBinding.class);
     }
     
 }

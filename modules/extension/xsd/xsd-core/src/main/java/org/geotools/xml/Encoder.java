@@ -75,6 +75,7 @@ import org.geotools.xml.impl.NamespaceSupportWrapper;
 import org.geotools.xml.impl.SchemaIndexImpl;
 import org.geotools.xs.XS;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -196,11 +197,17 @@ public class Encoder {
     private Logger logger;
 
     /**
+     * The configuration used by the encoder
+     */
+    private Configuration configuration;
+
+    /**
      * Creates an encoder from a configuration.
      * <p>
-     * This constructor calls through to {@link #Encoder(Configuration, XSDSchema)}
-     * obtaining the schema instance from {@link Configuration#schema()}.
+     * This constructor calls through to {@link #Encoder(Configuration, XSDSchema)} obtaining the
+     * schema instance from {@link Configuration#schema()}.
      * </p>
+     * 
      * @param configuration The encoder configuration.
      */
     public Encoder(Configuration configuration) {
@@ -215,6 +222,7 @@ public class Encoder {
      * @param schema The schema instance.
      */
     public Encoder(Configuration configuration, XSDSchema schema) {
+        this.configuration = configuration;
         this.schema = schema;
 
         index = new SchemaIndexImpl(new XSDSchema[] { schema });
@@ -224,6 +232,7 @@ public class Encoder {
 
         //create the context
         context = new DefaultPicoContainer();
+        context.registerComponentInstance(this);
 
         //register the binding factory in the context
         BindingFactory bindingFactory = new BindingFactoryImpl(bindingLoader);
@@ -580,7 +589,7 @@ public class Encoder {
             throw new IllegalStateException( msg );
         }
         
-        //create the document seriaizer
+        // create the document serializer
         SAXTransformerFactory txFactory = 
             (SAXTransformerFactory) SAXTransformerFactory.newInstance();
         
@@ -1431,5 +1440,32 @@ O:
         public String getValue(String uri, String localName) {
             return getValue(getIndex(uri, localName));
         }
+    }
+
+    /**
+     * Returns the configuration used by the encoder
+     * 
+     * @return the configuration
+     */
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    /**
+     * Returns the object used to load xml bindings in this encoder
+     * 
+     * @return
+     */
+    public BindingLoader getBindingLoader() {
+        return bindingLoader;
+    }
+
+    /**
+     * Returns the Pico context used by this encoder
+     * 
+     * @return
+     */
+    public PicoContainer getContext() {
+        return context;
     }
 }

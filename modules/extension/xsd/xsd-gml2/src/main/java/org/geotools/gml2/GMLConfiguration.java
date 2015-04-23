@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -84,9 +84,26 @@ public class GMLConfiguration extends Configuration {
     public static final QName ENCODE_FEATURE_MEMBER = new QName( "org.geotools.gml", "encodeFeatureMember" );
 
     /**
+     * Boolean property which controls whether geometry and envelope objects are encoded with an srs
+     * dimension attribute (not really used for GML2, added for compatibility with GML3)
+     */
+    public static final QName NO_SRS_DIMENSION = new QName("org.geotools.gml", "noSrsDimension");
+
+    /**
+     * Property which engages "fast" gml encoding.
+     */
+    public static final QName OPTIMIZED_ENCODING = new QName("org.geotools.gml",
+            "optimizedEncoding");
+
+    /**
      * Srs name style to encode srsName URI's with
      */
     protected SrsSyntax srsSyntax = SrsSyntax.OGC_HTTP_URL;
+
+    /**
+     * Number of decimals in the output
+     */
+    protected int numDecimals = 6;
 
     /**
      * Creates the new gml configuration, with a depenendency
@@ -206,5 +223,23 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentImplementation(DefaultFeatureCollections.class);
 
         container.registerComponentInstance(srsSyntax);
+    }
+
+    /**
+     * Returns the number of decimals that should be used for encoding coordinates (defaults to 6)
+     * 
+     * @return the numDecimals
+     */
+    public int getNumDecimals() {
+        return numDecimals;
+    }
+
+    /**
+     * Sets the number of decimals that should be used for encoding coordinates
+     * 
+     * @param numDecimals the numDecimals to set
+     */
+    public void setNumDecimals(int numDecimals) {
+        this.numDecimals = numDecimals;
     }
 }

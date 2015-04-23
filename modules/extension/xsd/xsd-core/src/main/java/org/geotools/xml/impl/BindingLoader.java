@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,15 +18,13 @@ package org.geotools.xml.impl;
 
 import java.util.Map;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
-import org.picocontainer.defaults.InstanceComponentAdapter;
-
 import javax.xml.namespace.QName;
+
 import org.geotools.xml.Binding;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
+import org.picocontainer.defaults.InstanceComponentAdapter;
 
 
 /**
@@ -52,7 +50,7 @@ public class BindingLoader {
      * no such binding could be created.
      *
      */
-    public Binding loadBinding(QName qName, MutablePicoContainer context) {
+    public Binding loadBinding(QName qName, PicoContainer context) {
         Object o = bindings.get( qName );
         if ( o == null ) {
             return null;
@@ -78,7 +76,7 @@ public class BindingLoader {
      * no such binding could be created.
      *
      */
-    public Binding loadBinding(QName qName, Class bindingClass, MutablePicoContainer context) {
+    public Binding loadBinding(QName qName, Class bindingClass, PicoContainer context) {
         //instantiate within the given context
         ComponentAdapter adapter = 
             new ConstructorInjectionComponentAdapter( qName, bindingClass );

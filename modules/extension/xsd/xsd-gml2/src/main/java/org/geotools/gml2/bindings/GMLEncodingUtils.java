@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.gml2.bindings;
 
 import java.util.ArrayList;
@@ -27,7 +43,6 @@ import org.geotools.gml2.GMLConfiguration;
 import org.geotools.util.logging.Logging;
 import org.geotools.xlink.XLINK;
 import org.geotools.xml.Configuration;
-import org.geotools.xml.Encoder;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.Schemas;
 import org.geotools.xml.XSD;
@@ -226,7 +241,8 @@ public class GMLEncodingUtils {
         return properties;
     }
     
-    public XSDTypeDefinition createXmlTypeFromFeatureType(SimpleFeatureType featureType, SchemaIndex schemaIndex, Set<String> toFilter ) { 
+    public XSDTypeDefinition createXmlTypeFromFeatureType(SimpleFeatureType featureType,
+            SchemaIndex schemaIndex, Set<String> toFilter) {
         XSDFactory f = XSDFactory.eINSTANCE;
         Document dom;
         try {
@@ -239,7 +255,7 @@ public class GMLEncodingUtils {
         type.setTargetNamespace( featureType.getName().getNamespaceURI() );
         type.setName( featureType.getTypeName() + "Type" );
         type.setDerivationMethod(XSDDerivationMethod.EXTENSION_LITERAL);
-        type.setBaseTypeDefinition(schemaIndex.getTypeDefinition( gml.qName("AbstractFeatureType") ) );
+        type.setBaseTypeDefinition(schemaIndex.getTypeDefinition(gml.qName("AbstractFeatureType")));
                 
         XSDModelGroup group = f.createXSDModelGroup();
         group.setCompositor(XSDCompositor.SEQUENCE_LITERAL);
@@ -260,31 +276,39 @@ public class GMLEncodingUtils {
             if ( attribute instanceof GeometryDescriptor ) {
                 Class binding = attribute.getType().getBinding();
                 if ( Point.class.isAssignableFrom( binding ) ) {
-                    element.setTypeDefinition( schemaIndex.getTypeDefinition(gml.qName("PointPropertyType")));
+                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
+                            .qName("PointPropertyType")));
                 }
                 else if ( LineString.class.isAssignableFrom( binding ) ) {
-                    element.setTypeDefinition( schemaIndex.getTypeDefinition(gml.qName("LineStringPropertyType")));
+                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
+                            .qName("LineStringPropertyType")));
                 }
                 else if ( Polygon.class.isAssignableFrom( binding) ) {
-                    element.setTypeDefinition( schemaIndex.getTypeDefinition(gml.qName("PolygonPropertyType")));
+                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
+                            .qName("PolygonPropertyType")));
                 }
                 else if ( MultiPoint.class.isAssignableFrom( binding ) ) {
-                    element.setTypeDefinition( schemaIndex.getTypeDefinition(gml.qName("MultiPointPropertyType")));
+                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
+                            .qName("MultiPointPropertyType")));
                 }
                 else if ( MultiLineString.class.isAssignableFrom( binding ) ) {
-                    element.setTypeDefinition( schemaIndex.getTypeDefinition(gml.qName("MultiLineStringPropertyType")));
+                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
+                            .qName("MultiLineStringPropertyType")));
                 }
                 else if ( MultiPolygon.class.isAssignableFrom( binding) ) {
-                    element.setTypeDefinition( schemaIndex.getTypeDefinition(gml.qName("MultiPolygonPropertyType")));
+                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
+                            .qName("MultiPolygonPropertyType")));
                 }
                 else {
-                    element.setTypeDefinition( schemaIndex.getTypeDefinition(gml.qName("GeometryPropertyType")));
+                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
+                            .qName("GeometryPropertyType")));
                 }
             }
             else {
                 //TODO: do a proper mapping
                 element.setTypeDefinition(schemaIndex.getTypeDefinition(XS.STRING));
             }
+            element.setTargetNamespace(featureType.getName().getNamespaceURI());
             
 
             XSDParticle particle = f.createXSDParticle();
@@ -520,6 +544,51 @@ public class GMLEncodingUtils {
         if (g.getUserData() instanceof Map) {
             ((Map) g.getUserData()).put(metadata, value);
         }
+    }
+
+    /**
+     * Checks if a feature is a joined one
+     * 
+     * @param obj
+     * @return
+     */
+    public static boolean isJoinedFeature(Object obj) {
+        if (!(obj instanceof SimpleFeature)) {
+            return false;
+        }
+
+        SimpleFeature feature = (SimpleFeature) obj;
+        for (Object att : feature.getAttributes()) {
+            if (att != null && att instanceof SimpleFeature) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Splits a joined feature into its components
+     * 
+     * @param obj
+     * @return
+     */
+    public static SimpleFeature[] splitJoinedFeature(Object obj) {
+        SimpleFeature feature = (SimpleFeature) obj;
+        List features = new ArrayList();
+        features.add(feature);
+        for (int i = 0; i < feature.getAttributeCount(); i++) {
+            Object att = feature.getAttribute(i);
+            if (att != null && att instanceof SimpleFeature) {
+                features.add(att);
+
+                // TODO: come up with a better approcach user, use user data or something to mark
+                // the attribute as encoded
+                feature.setAttribute(i, null);
+            }
+        }
+
+        return (SimpleFeature[]) features.toArray(new SimpleFeature[features.size()]);
     }
 
 }

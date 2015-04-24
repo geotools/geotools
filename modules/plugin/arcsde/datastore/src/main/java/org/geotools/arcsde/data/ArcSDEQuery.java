@@ -591,69 +591,77 @@ class ArcSDEQuery {
             colNames.add(geomCol);
         }
         
-        final SeQueryInfo qInfo = filters.getQueryInfo(colNames.toArray(new String[colNames.size()]));
-
+        final SeQueryInfo queryInfo = filters.getQueryInfo(colNames.toArray(new String[colNames.size()]));
         final SeFilter[] spatialFilters = filters.getSpatialFilters();
+        final boolean hasSpatialFilter = spatialFilters != null && spatialFilters.length > 0;
 
-        final Command<Integer> countCmd = new Command<Integer>() {
-            @Override
-            public Integer execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
+    final Command<Integer> countCmd = new Command<Integer>() {
+        final boolean calcMasks = true; // use the spatial query to calculate
 
-                final SeQueryInfo queryInfo = qInfo;
+        // statistics.
+        final short searchOrder = SeQuery.SE_OPTIMIZE;
 
-                SeQuery query = new SeQuery(connection);
+        @Override
+        public Integer execute(ISession session, SeConnection connection)
+                throws SeException, IOException {
+            SeQuery query = new SeQuery(connection);
 
-                try {
-                    versioningHandler.setUpStream(session, query);
+            try {
+                versioningHandler.setUpStream(session, query);
 
-                    if (spatialFilters != null && spatialFilters.length > 0) {
-
-                        final boolean calcMasks = true;// use the spatial query to calculate
-                        // statistics.
-                        final short searchOrder = SeQuery.SE_OPTIMIZE;
-                        query.setSpatialConstraints(searchOrder, calcMasks, spatialFilters);
-
-                        final SeDBMSInfo dbmsInfo = connection.getDBMSInfo();
-                        final boolean unsupported = versioningHandler != ArcSdeVersionHandler.NONVERSIONED_HANDLER
-                                && dbmsInfo.dbmsId == SeDBMSInfo.SE_DBMS_IS_ORACLE;
-
-                        if (unsupported) {
-                            LOGGER.fine("ArcSDE on Oracle can't calculate count statistics "
-                                    + "on versioned layers with spatial filters");
-                            /*
-                             * Despite the FeatureSource.getCount() contract saying it's ok to
-                             * return -1 if count is too expensive to calculate, the GeoServer
-                             * codebase is plagued of FeatureCollection.size() calls depending on
-                             * actual result counts or some operations don't work at all. return -1;
-                             */
-
-                            query.prepareQueryInfo(queryInfo);
-                            query.execute();
-                            int count = 0;
-                            while (query.fetch() != null) {
-                                count++;
-                            }
-                            return count;
-                        }
+                if (hasSpatialFilter) {
+                    /*
+                     * Despite the FeatureSource.getCount() contract saying it's
+                     * ok to return -1 if count is too expensive to calculate,
+                     * the GeoServer codebase is plagued of
+                     * FeatureCollection.size() calls depending on actual result
+                     * counts or some operations don't work at all. return -1;
+                     */
+                    /*
+                     * On Oracle at least, calculateTableStatistics can be VERY
+                     * slow, so compute result count directly
+                     */
+                    final SeDBMSInfo dbmsInfo = connection.getDBMSInfo();
+                    final boolean isStatsUnsupportedOrSlow = dbmsInfo.dbmsId == SeDBMSInfo.SE_DBMS_IS_ORACLE;
+                    if (isStatsUnsupportedOrSlow) {
+                        LOGGER.fine("Calculating count statistics by running query");
+                        return computeCountByQueryRun(query, queryInfo);
                     }
-
-                    final int defaultMaxDistinctValues = 0;
-                    final SeTable.SeTableStats tableStats;
-                    final String statsCol = colNames.get(0);
-                    tableStats = query.calculateTableStatistics(statsCol,
-                            SeTable.SeTableStats.SE_COUNT_STATS, queryInfo, defaultMaxDistinctValues);
-
-                    int actualCount = tableStats.getCount();
-                    return new Integer(actualCount);
-                } finally {
-                    query.close();
+                    // otherwise, set the spatial filter for use in calculateTableStatistics
+                    query.setSpatialConstraints(searchOrder, calcMasks,
+                            spatialFilters);
                 }
+                final int defaultMaxDistinctValues = 0;
+                final String statsCol = colNames.get(0);
+                final SeTable.SeTableStats tableStats = query
+                        .calculateTableStatistics(statsCol,
+                                SeTable.SeTableStats.SE_COUNT_STATS, queryInfo,
+                                defaultMaxDistinctValues);
+                int count = tableStats.getCount();
+                return new Integer(count);
+            } finally {
+                query.close();
             }
-        };
+        }
 
-        final Integer count = session.issue(countCmd);
-        return count.intValue();
+        private int computeCountByQueryRun(SeQuery query,
+                final SeQueryInfo queryInfo) throws SeException {
+            /*
+             * Spatial constraints must be set AFTER prepareQueryInfo
+             * (undocumented SDE API quirk)
+             */
+            query.prepareQueryInfo(queryInfo);
+            query.setSpatialConstraints(searchOrder, calcMasks, spatialFilters);
+            query.execute();
+            int count = 0;
+            while (query.fetch() != null) {
+                count++;
+            }
+            return count;
+        }
+    };
+    final Integer count = session.issue(countCmd);
+    return count.intValue();
     }
 
     /**

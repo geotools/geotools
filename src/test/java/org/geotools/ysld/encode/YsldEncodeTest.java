@@ -17,6 +17,7 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
+import org.geotools.styling.UomOgcMapping;
 import org.geotools.styling.UserLayer;
 import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.YamlMap;
@@ -24,6 +25,7 @@ import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 import org.geotools.ysld.Ysld;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -45,6 +47,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.measure.unit.NonSI;
+import javax.measure.unit.SI;
+import javax.measure.unit.Unit;
+
 import static org.geotools.ysld.TestUtils.isColor;
 import static org.geotools.ysld.TestUtils.lexEqualTo;
 import static org.hamcrest.Matchers.allOf;
@@ -58,6 +64,9 @@ import static org.junit.Assert.assertTrue;
 public class YsldEncodeTest {
 
     private static final double EPSILON = 0.0000000001;
+    
+    @org.junit.Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testFunction() throws Exception {
@@ -1057,5 +1066,65 @@ public class YsldEncodeTest {
         YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point");
         
         assertThat(result.str("x-foo"), equalTo("bar"));
+    }
+    @Test
+    public void testSymbolizerUoMMetre() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyle fts = fts(p);
+        p.setUnitOfMeasure(UomOgcMapping.METRE.getUnit());
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(fts), out);
+        
+        System.out.append(out.toString());
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point");
+        
+        assertThat(result.str("uom"), equalTo("metre"));
+    }
+    @Test
+    public void testSymbolizerUoMFoot() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyle fts = fts(p);
+        p.setUnitOfMeasure(UomOgcMapping.FOOT.getUnit());
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(fts), out);
+        
+        System.out.append(out.toString());
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point");
+        
+        assertThat(result.str("uom"), equalTo("foot"));
+    }
+    @Test
+    public void testSymbolizerUoMPixel() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyle fts = fts(p);
+        p.setUnitOfMeasure(UomOgcMapping.PIXEL.getUnit());
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(fts), out);
+        
+        System.out.append(out.toString());
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("point");
+        
+        assertThat(result.str("uom"), equalTo("pixel"));
+    }
+    
+    @Test
+    public void testSymbolizerUoMOther() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyle fts = fts(p);
+        p.setUnitOfMeasure(NonSI.LIGHT_YEAR);
+        
+        StringWriter out = new StringWriter();
+        
+        exception.expect(IllegalArgumentException.class);
+        Ysld.encode(sld(fts), out);
     }
 }

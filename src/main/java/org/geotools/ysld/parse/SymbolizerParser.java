@@ -2,7 +2,7 @@ package org.geotools.ysld.parse;
 
 import org.geotools.styling.Rule;
 import org.geotools.styling.Symbolizer;
-import org.geotools.styling.UomOgcMapping;
+import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
@@ -22,8 +22,9 @@ public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
         if (map.has("geometry")) {
             sym.setGeometry(Util.expression(map.str("geometry"), factory));
         }
+        UomMapper uomMapper = (UomMapper) context.getDocHint(UomMapper.KEY);
         if (map.has("uom")) {
-            sym.setUnitOfMeasure(UomOgcMapping.get(map.str("uom")).getUnit());
+            sym.setUnitOfMeasure(uomMapper.getUnit(map.str("uom")));
         }
         sym.getOptions().putAll(Util.vendorOptions(map));
     }

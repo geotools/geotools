@@ -17,6 +17,7 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
+import org.geotools.styling.UomOgcMapping;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
 import org.hamcrest.BaseMatcher;
@@ -53,6 +54,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.measure.unit.SI;
+
 import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.easymock.classextension.EasyMock.replay;
@@ -76,6 +79,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -1799,5 +1803,95 @@ public class YsldParseTest {
                 hasProperty("wellKnownName", literal("circle")),
                 hasProperty("fill", hasProperty("color", literal(isColor("995555"))))
                 )));
+    }
+    
+    @Test
+    public void testUomMetre() throws Exception {
+        
+        String yaml =
+                "line:\n"+
+                "  uom: metre\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        
+        assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.METRE.getUnit())));
+    }
+    
+    @Test
+    public void testUomFoot() throws Exception {
+        
+        String yaml =
+                "line:\n"+
+                "  uom: foot\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        
+        assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.FOOT.getUnit())));
+    }
+    
+    @Test
+    public void testUomPixel() throws Exception {
+        
+        String yaml =
+                "line:\n"+
+                "  uom: pixel\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        
+        assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.PIXEL.getUnit())));
+    }
+    
+    @Test
+    public void testUomSymbol() throws Exception {
+        
+        String yaml =
+                "line:\n"+
+                "  uom: m\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        
+        assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.METRE.getUnit())));
+    }
+    
+    @Test
+    public void testUomSEURL() throws Exception {
+        
+        String yaml =
+                "line:\n"+
+                "  uom: "+UomOgcMapping.FOOT.getSEString()+"\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        
+        assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.FOOT.getUnit())));
+    }
+    
+    @Test
+    public void testUomAmerican() throws Exception {
+        
+        String yaml =
+                "line:\n"+
+                "  uom: meter\n"+
+                "";
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        
+        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        
+        assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.METRE.getUnit())));
     }
 }

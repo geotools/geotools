@@ -2,6 +2,7 @@ package org.geotools.ysld.parse;
 
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.ysld.UomMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +10,9 @@ import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Parses a Yaml/Ysld stream into GeoTools style objects.
@@ -17,6 +20,7 @@ import java.util.List;
 public class YsldParser extends YamlParser {
     
     List<ZoomContextFinder> zCtxtFinders = Collections.emptyList();
+    UomMapper uomMapper = new UomMapper();
     ResourceLocator locator = new ResourceLocator() {
 
         @Override
@@ -45,10 +49,16 @@ public class YsldParser extends YamlParser {
         this.locator = locator;
     }
     
-    public StyledLayerDescriptor parse() throws IOException {
+    public void setUomMapper(UomMapper uomMapper) {
+        this.uomMapper = uomMapper;
+    }
 
+    public StyledLayerDescriptor parse() throws IOException {
+        Map<String, Object> hints = new HashMap();
+        hints.put("resourceLocator", locator);
+        hints.put(UomMapper.KEY, uomMapper);
         return super.parse(
                 new RootParser(zCtxtFinders),
-                Collections.<String, Object>singletonMap("resourceLocator", locator)).sld();
+                hints).sld();
     }
 }

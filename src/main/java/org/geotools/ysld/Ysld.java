@@ -109,7 +109,6 @@ public class Ysld {
             in.close();
         }
     }
-
     /**
      * Parses a Ysld stream into GeoTools style objects.
      *
@@ -119,6 +118,17 @@ public class Ysld {
      * @return The GeoTools SLD object.
      */
     public static StyledLayerDescriptor parse(Object ysld, @Nullable List<ZoomContextFinder> zCtxtFinders, @Nullable ResourceLocator locator) throws IOException {
+        return parse(ysld, zCtxtFinders, locator, new UomMapper());
+    }
+    /**
+     * Parses a Ysld stream into GeoTools style objects.
+     *
+     * @param ysld The Ysld content, anything accepted by {@link #reader(Object)}.
+     * @param locator Resource locator for resolving relative URIs.
+     *
+     * @return The GeoTools SLD object.
+     */
+    public static StyledLayerDescriptor parse(Object ysld, @Nullable List<ZoomContextFinder> zCtxtFinders, @Nullable ResourceLocator locator, @Nullable UomMapper uomMapper) throws IOException {
         YsldInput in = reader(ysld);
         try {
             YsldParser parser = new YsldParser(in.reader);
@@ -128,7 +138,10 @@ public class Ysld {
             if(locator!=null) {
                 parser.setResourceLocator(locator);
             }
-            return parser.parse();
+            if(uomMapper!=null) {
+                parser.setUomMapper(uomMapper);
+            }
+           return parser.parse();
         }
         finally {
             in.close();
@@ -142,7 +155,7 @@ public class Ysld {
      * @return The GeoTools SLD object.
      */
     public static StyledLayerDescriptor parse(Object ysld) throws IOException {
-        return parse(ysld, (List<ZoomContextFinder>)null, (ResourceLocator)null);
+        return parse(ysld, (List<ZoomContextFinder>)null, (ResourceLocator)null, new UomMapper());
     }
 
     /**
@@ -152,7 +165,17 @@ public class Ysld {
      * @param output The output object, anything accepted by {@link #writer(Object)}
      */
     public static void encode(StyledLayerDescriptor sld, Object output) throws IOException {
-        YsldEncoder e = new YsldEncoder(writer(output));
+        encode(sld, output, new UomMapper());
+    }
+    
+    /**
+     * Encodes a GeoTools style object as Ysld.
+     *
+     * @param sld The sld to encode.
+     * @param output The output object, anything accepted by {@link #writer(Object)}
+     */
+    public static void encode(StyledLayerDescriptor sld, Object output, UomMapper uomMapper) throws IOException {
+        YsldEncoder e = new YsldEncoder(writer(output), uomMapper);
         e.encode(sld);
     }
 
@@ -195,7 +218,7 @@ public class Ysld {
      */
     public static List<MarkedYAMLException> validate(Object ysld) throws IOException {
         
-        return validate(ysld, Collections.<ZoomContextFinder>emptyList());
+        return validate(ysld, Collections.<ZoomContextFinder>emptyList(), new UomMapper());
         
     }
     
@@ -207,7 +230,7 @@ public class Ysld {
      * 
      * @return List of marked exceptions corresponding to validation errors.
      */
-    public static List<MarkedYAMLException> validate(Object ysld, List<ZoomContextFinder> zContextFinders) throws IOException {
+    public static List<MarkedYAMLException> validate(Object ysld, List<ZoomContextFinder> zContextFinders, UomMapper uomMapper) throws IOException {
         YsldInput in = reader(ysld);
         try {
             YsldValidator validator = new YsldValidator();

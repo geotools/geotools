@@ -3,6 +3,7 @@ package org.geotools.ysld.encode;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.SLDParser;
 import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
@@ -1732,7 +1733,7 @@ public class YsldEncodeCookbookTest {
         StyledLayerDescriptor sld = sldParser.parseSLD();
 
         StringWriter w = new StringWriter();
-        YsldEncoder ysldEncoder = new YsldEncoder(w);
+        YsldEncoder ysldEncoder = new YsldEncoder(w, new UomMapper());
         ysldEncoder.encode(sld);
 
         //System.out.println(w.toString());

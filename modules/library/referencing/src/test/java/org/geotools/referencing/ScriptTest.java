@@ -287,6 +287,15 @@ public final class ScriptTest {
     public void testSinusoidal() throws Exception {
         runScript("scripts/Sinusoidal.txt");
     }
+
+    /**
+     * Run "Gnomonic.txt"
+     * @throws Exception 
+     */
+    @Test
+    public void testGnomonic() throws Exception {
+        runScript("scripts/Gnomonic.txt");
+    }
     
     /**
      * Run "WagnerIV.txt". Disabled as the projection is not really

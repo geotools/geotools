@@ -24,8 +24,10 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.projection.EquatorialOrthographic;
 import org.geotools.referencing.operation.projection.EquidistantCylindrical;
+import org.geotools.referencing.operation.projection.Gnomonic;
 import org.geotools.referencing.operation.projection.ObliqueOrthographic;
 import org.geotools.referencing.operation.projection.PolarOrthographic;
+import org.geotools.referencing.operation.projection.Stereographic;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.metadata.citation.Citation;
@@ -133,5 +135,41 @@ public final class AUTOTest {
         String stdParallel1Code = EquidistantCylindrical.Provider.STANDARD_PARALLEL_1.getName().getCode();
         double stdParallel1 = eqc.getConversionFromBase().getParameterValues().parameter(stdParallel1Code).doubleValue();
         assertEquals(35.0, stdParallel1, 1e-9);
+    }
+
+    @Test
+    public void test97001() throws FactoryException {
+        ProjectedCRS crs = factory.createProjectedCRS("AUTO:97001,9001,-17.0,23.0");
+        assertEquals ("Gnomonic", crs.getConversionFromBase().getMethod().getName().getCode());
+        assertTrue(crs.getConversionFromBase().getMathTransform() instanceof Gnomonic);
+
+        String centreLatCode = Gnomonic.Provider.LATITUDE_OF_CENTRE.getName().getCode();
+        double centreLat = crs.getConversionFromBase().getParameterValues().parameter(centreLatCode).doubleValue();
+        assertEquals(23.0, centreLat, 1e-9);
+        
+        String centreLongCode = Gnomonic.Provider.LONGITUDE_OF_CENTRE.getName().getCode();
+        double centreLong = crs.getConversionFromBase().getParameterValues().parameter(centreLongCode).doubleValue();
+        assertEquals(-17.0, centreLong, 1e-9);
+    }
+
+    @Test
+    public void test97002() throws FactoryException {
+        ProjectedCRS crs = factory.createProjectedCRS("AUTO:97002,9001,-17.0,23.0");
+        assertEquals ("Stereographic", crs.getConversionFromBase().getMethod().getName().getCode());
+        assertTrue(crs.getConversionFromBase().getMathTransform() instanceof Stereographic);
+
+        String centreLatCode = Stereographic.Provider.LATITUDE_OF_ORIGIN.getName().getCode();
+        double centreLat = crs.getConversionFromBase().getParameterValues().parameter(centreLatCode).doubleValue();
+        assertEquals(23.0, centreLat, 1e-9);
+        
+        String centreLongCode = Stereographic.Provider.CENTRAL_MERIDIAN.getName().getCode();
+        double centreLong = crs.getConversionFromBase().getParameterValues().parameter(centreLongCode).doubleValue();
+        assertEquals(-17.0, centreLong, 1e-9);
+        
+        String semiMajorString = Stereographic.Provider.SEMI_MAJOR.getName().getCode();
+        double semiMajor = crs.getConversionFromBase().getParameterValues().parameter(semiMajorString).doubleValue();
+        String semiMinorString = Stereographic.Provider.SEMI_MINOR.getName().getCode();
+        double semiMinor = crs.getConversionFromBase().getParameterValues().parameter(semiMinorString).doubleValue();
+        assertEquals(semiMajor, semiMinor, 1e-9);
     }
 }

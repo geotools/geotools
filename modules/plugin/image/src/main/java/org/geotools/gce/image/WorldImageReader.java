@@ -18,7 +18,6 @@
 package org.geotools.gce.image;
 
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.BufferedReader;
@@ -291,7 +290,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
 		final Iterator<ImageReader> it = ImageIO.getImageReaders(inStream);
 		if (!it.hasNext())
 			throw new DataSourceException("No reader avalaible for this source");
-		final ImageReader reader = (ImageReader) it.next();
+		final ImageReader reader = it.next();
 		readerSPI = reader.getOriginatingProvider();
 		reader.setInput(inStream);
 		
@@ -456,7 +455,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
 //				.createImageInputStream(((URL) source).openStream()) : ImageIO
 //				.createImageInputStream(source);
 //		
-		final Hints newHints = (Hints) hints.clone();
+		final Hints newHints = hints.clone();
 //		if (!wmsRequest) {
 //			reader.setInput(inStream);
 //			if (!reader.isImageTiled(imageChoice.intValue())) {
@@ -487,7 +486,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
 		pbjRead.add(readP);
 		pbjRead.add(readerSPI.createReaderInstance());
 		final RenderedOp coverageRaster=JAI.create("ImageRead", pbjRead,
-                        (RenderingHints) newHints);
+                        newHints);
 
 		// /////////////////////////////////////////////////////////////////////
                 //
@@ -520,7 +519,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
                 final double scaleY = originalGridRange.getSpan(1) / (1.0 * ssHeight);
                 final AffineTransform tempRaster2Model = new AffineTransform((AffineTransform) raster2Model);
                 tempRaster2Model.concatenate(new AffineTransform(scaleX, 0, 0, scaleY, 0, 0));
-                return createImageCoverage(coverageRaster, ProjectiveTransform.create((AffineTransform) tempRaster2Model));
+                return createImageCoverage(coverageRaster, ProjectiveTransform.create(tempRaster2Model));
 
 
 	}
@@ -709,7 +708,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
 			if(!it.hasNext())
 				throw new DataSourceException("Unable to parse extension "+extension);
 			do{
-			file2Parse = new File(new StringBuffer(base).append((String)it.next()
+			file2Parse = new File(new StringBuffer(base).append(it.next()
 					).toString());
 			}while(!file2Parse.exists()&&it.hasNext());
 			
@@ -727,15 +726,9 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
 					parseMetaFile(file2Parse);
 					metaFile = true;
 				} else {
-					final IOException ex = new IOException(
-							"No file with meta information found!");
-					LOGGER
-							.logp(
-									Level.SEVERE,
-									WorldImageReader.class.toString(),
-									"private void prepareWorldImage2Model() throws IOException",
-									ex.getLocalizedMessage(), ex);
-					throw ex;
+                    LOGGER.warning("Could not find a world transform file for " + coverageName
+                            + ", assuming the identity transform");
+                    raster2Model = ProjectiveTransform.create(new AffineTransform());
 				}
 			}
 		}

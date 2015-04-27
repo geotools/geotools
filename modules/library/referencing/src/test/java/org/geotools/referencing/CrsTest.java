@@ -326,4 +326,43 @@ public final class CrsTest {
         assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.parseWKT(wkt)));
         assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.parseWKT(wkt), true));
     }
+
+    @Test
+    public void testReprojectEnvelope() throws Exception {
+        String wkt = "GEOGCS[\"WGS84(DD)\"," + "DATUM[\"WGS84\", "
+                + "SPHEROID[\"WGS84\", 6378137.0, 298.257223563]]," + "PRIMEM[\"Greenwich\", 0.0],"
+                + "UNIT[\"degree\", 0.017453292519943295]," + "AXIS[\"Geodetic longitude\", EAST],"
+                + "AXIS[\"Geodetic latitude\", NORTH]]";
+        CoordinateReferenceSystem wgs84 = CRS.parseWKT(wkt);
+        wkt = "PROJCS[\"WGS 84 / UTM zone 32N\", \n" + 
+                "  GEOGCS[\"WGS 84\", \n" + 
+                "    DATUM[\"World Geodetic System 1984\", \n" + 
+                "      SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n" + 
+                "      AUTHORITY[\"EPSG\",\"6326\"]], \n" + 
+                "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n" + 
+                "    UNIT[\"degree\", 0.017453292519943295], \n" + 
+                "    AXIS[\"Geodetic longitude\", EAST], \n" + 
+                "    AXIS[\"Geodetic latitude\", NORTH], \n" + 
+                "    AUTHORITY[\"EPSG\",\"4326\"]], \n" + 
+                "  PROJECTION[\"Transverse Mercator\", AUTHORITY[\"EPSG\",\"9807\"]], \n" + 
+                "  PARAMETER[\"central_meridian\", 9.0], \n" + 
+                "  PARAMETER[\"latitude_of_origin\", 0.0], \n" + 
+                "  PARAMETER[\"scale_factor\", 0.9996], \n" + 
+                "  PARAMETER[\"false_easting\", 500000.0], \n" + 
+                "  PARAMETER[\"false_northing\", 0.0], \n" + 
+                "  UNIT[\"m\", 1.0], \n" + 
+                "  AXIS[\"Easting\", EAST], \n" + 
+                "  AXIS[\"Northing\", NORTH], \n" + 
+                "  AUTHORITY[\"EPSG\",\"32632\"]]";
+        CoordinateReferenceSystem utm32n = CRS.parseWKT(wkt);
+
+        GeneralEnvelope envelope = new GeneralEnvelope(utm32n);
+        envelope.setEnvelope(895817.968, 4439270.710, 1081186.865, 4617454.766);
+        // used to throw an exception here
+        GeneralEnvelope transformed = CRS.transform(envelope, wgs84);
+        assertEquals(13.63, transformed.getMinimum(0), 0.01);
+        assertEquals(39.9, transformed.getMinimum(1), 0.01);
+        assertEquals(15.96, transformed.getMaximum(0), 0.01);
+        assertEquals(41.61, transformed.getMaximum(1), 0.01);
+    }
 }

@@ -23,7 +23,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -249,43 +248,7 @@ public final class WorldImageFormat extends AbstractGridFormat implements
 			return false;
 		}
 
-		// check the presence of the world file
-		final File source = new File(pathname);
-		if (!source.exists())
-			return false;
-		String suffix;
-		String fileName;
-
-		boolean answer = false;
-		final File parentDir = source.getParentFile();
-		if (parentDir != null) {
-			final int dotIndex = pathname.lastIndexOf('.');
-			if (dotIndex != -1) {
-				fileName = pathname.substring(0, dotIndex);
-				suffix = pathname.substring(dotIndex + 1, pathname.length());
-				final Set<String> suffixes = WorldImageFormat.getWorldExtension(suffix);
-				final Iterator<String> it = suffixes.iterator();
-				StringBuffer buff = new StringBuffer(fileName);
-				do {
-					answer = new File(buff.append(it.next()).toString()).exists();
-					buff = new StringBuffer(fileName);
-				} while (!answer && it.hasNext());
-				if (!answer) {
-					buff.setLength(0);
-					buff.append(fileName);
-					buff.append(".wld");
-					answer = new File(buff.toString()).exists();
-				}
-				if (!answer) {
-					buff.setLength(0);
-					buff.append(fileName);
-					buff.append(".meta");
-					answer = new File(buff.toString()).exists();
-				}
-			}
-
-		}
-		return answer;
+        return true;
 	}
 
 	/**

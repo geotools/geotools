@@ -35,8 +35,10 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.opengis.parameter.GeneralParameterValue;
@@ -122,6 +124,18 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
 //		this.read(url);
 	}
 	
+    public void testNoWorldFile() throws IOException {
+        final File file = TestData.file(this, "box_gcp.tif");
+        WorldImageReader wiReader = new WorldImageReader(file);
+        assertEquals(DefaultEngineeringCRS.GENERIC_2D, wiReader.getCoordinateReferenceSystem());
+        GeneralEnvelope ge = wiReader.getOriginalEnvelope();
+        assertEquals(0, ge.getMinimum(0));
+        assertEquals(0, ge.getMinimum(1));
+        assertEquals(300, ge.getSpan(0));
+        assertEquals(300, ge.getSpan(0));
+        wiReader.dispose();
+    }
+
 	public void testOverviewsNearest() throws IOException {
         final File file = TestData.file(this, "etopo.tif");
         
@@ -160,7 +174,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         //
         ///////////////////////////////////////////////////////////////////////
         wiReader = new WorldImageReader(file);
-		final ParameterValue policy = (ParameterValue) ((AbstractGridFormat) wiReader
+		final ParameterValue policy = ((AbstractGridFormat) wiReader
 				.getFormat()).OVERVIEW_POLICY.createValue();	
 		policy.setValue(OverviewPolicy.NEAREST);
 
@@ -215,7 +229,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         //parameter ovverrides hints
         hints.put(Hints.OVERVIEW_POLICY, OverviewPolicy.NEAREST);
         wiReader = new WorldImageReader(file, hints);
-		final ParameterValue policy = (ParameterValue) ((AbstractGridFormat) wiReader
+		final ParameterValue policy = ((AbstractGridFormat) wiReader
 				.getFormat()).OVERVIEW_POLICY.createValue();	
 		policy.setValue(OverviewPolicy.QUALITY);
 		
@@ -257,7 +271,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         //parameter overrides hints
         hints.put(Hints.OVERVIEW_POLICY, OverviewPolicy.NEAREST);
         wiReader = new WorldImageReader(file, hints);
-		final ParameterValue policy = (ParameterValue) ((AbstractGridFormat) wiReader
+		final ParameterValue policy = ((AbstractGridFormat) wiReader
 				.getFormat()).OVERVIEW_POLICY.createValue();	
 		policy.setValue(OverviewPolicy.SPEED);
         // between 16 and 9, any value should report the match of 16
@@ -283,7 +297,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
 				new java.awt.Rectangle(size, (int) (164.0 / 125.0 * size))),
 				new ReferencedEnvelope(118.8, 134.56, 47.819, 63.142,
 						DefaultGeographicCRS.WGS84)));
-		final GridCoverage2D coverage = (GridCoverage2D) wiReader
+		final GridCoverage2D coverage = wiReader
 				.read(policy != null ? new GeneralParameterValue[] { readGG,
 						policy } : new GeneralParameterValue[] { readGG });
 		assertNotNull(coverage);
@@ -336,7 +350,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
                 assertTrue(layout.getTileWidth(null) > 0);
 
 		// get the coverage
-		final GridCoverage2D coverage = (GridCoverage2D) wiReader.read(null);
+		final GridCoverage2D coverage = wiReader.read(null);
 
 		// test the coverage
 		assertNotNull(coverage);

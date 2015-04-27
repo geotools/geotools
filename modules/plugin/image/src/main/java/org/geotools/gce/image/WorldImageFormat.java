@@ -18,14 +18,20 @@
 package org.geotools.gce.image;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
@@ -247,8 +253,14 @@ public final class WorldImageFormat extends AbstractGridFormat implements
 				.endsWith(".bmp"))) {
 			return false;
 		}
-
-        return true;
+		
+        // check it's a valid input file
+        try (ImageInputStream is = ImageIO.createImageInputStream(new File(pathname))) {
+            Iterator<ImageReader> readers = ImageIO.getImageReaders(is);
+            return readers.hasNext();
+        } catch (IOException e) {
+            return false;
+        }
 	}
 
 	/**

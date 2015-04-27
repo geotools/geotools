@@ -87,7 +87,7 @@ public final class GridFormatFinder {
 			getServiceProviders(GridFormatFactorySpi.class, true);
 		final Set<GridFormatFactorySpi> formats= new HashSet<GridFormatFactorySpi>();
 		while (it.hasNext()) {
-			final GridFormatFactorySpi spi = (GridFormatFactorySpi) it.next();
+			final GridFormatFactorySpi spi = it.next();
 			if (spi.isAvailable())
 				formats.add(spi);
 
@@ -144,10 +144,10 @@ public final class GridFormatFinder {
 		final Set<GridFormatFactorySpi> formats = GridFormatFinder.getAvailableFormats();
 		final List<Format> formatSet = new ArrayList<Format>(formats.size());
 		for (Iterator<GridFormatFactorySpi> iter = formats.iterator(); iter.hasNext();) {
-			final GridFormatFactorySpi element = (GridFormatFactorySpi) iter.next();
+			final GridFormatFactorySpi element = iter.next();
 			formatSet.add(element.createFormat());
 		}
-		return (Format[]) formatSet.toArray(new Format[formatSet.size()]);
+		return formatSet.toArray(new Format[formatSet.size()]);
 	}
 
 	/**
@@ -180,12 +180,12 @@ public final class GridFormatFinder {
  		final Iterator<GridFormatFactorySpi> it = availaibleFormats.iterator();
  		while (it.hasNext()) {
  			// get the factory
- 			final GridFormatFactorySpi spi = (GridFormatFactorySpi) it.next();
+ 			final GridFormatFactorySpi spi = it.next();
  			// create a format for it
  			final AbstractGridFormat retVal = spi.createFormat();
  			// check if we can accept it
  			if (retVal instanceof AbstractGridFormat) {
- 				if (((AbstractGridFormat) retVal).accepts(o,hints))
+ 				if (retVal.accepts(o,hints))
  					formats.add(retVal);
  			}
 
@@ -217,33 +217,36 @@ public final class GridFormatFinder {
 
 	}
         
-    	/**
-    	 * Returns a {@link Format} that is able to read a certain object. If no
-    	 * {@link Format} is able to read such an {@link Object} we return an
-    	 * {@link UnknownFormat} object.
-    	 *
-    	 * <p>
-    	 * It is worth to point out that this method will try to convert each format
-    	 * implementation to {@link AbstractGridFormat} because the original
-    	 * {@link Format} interface did not allow for an accept method hence we had
-    	 * to subclass the interface to add such method and we did so by the
-    	 * {@link AbstractGridFormat} abstract class.
-    	 *
-    	 * @param o
-    	 *            the object to check for acceptance.
-    	 * @param hints 
-    	 * 			   the {@link Hints} to control the format search.
-    	 * @return an {@link AbstractGridFormat} that has stated to accept this
-    	 *         {@link Object} o or <code>null</code> in no plugins was able to
-    	 *         accept it.
-    	 */
-         public static synchronized AbstractGridFormat findFormat(Object o, Hints hints) {
-    		final Set<AbstractGridFormat> formats = findFormats(o,hints);
-    		final Iterator<AbstractGridFormat> it = formats.iterator();
-    		if (it.hasNext()){
-    			return (AbstractGridFormat) it.next();
-    		}
-    		return new UnknownFormat();
+    /**
+     * Returns a {@link Format} that is able to read a certain object. If no {@link Format} is able
+     * to read such an {@link Object} we return an {@link UnknownFormat} object.
+     *
+     * <p>
+     * It is worth to point out that this method will try to convert each format implementation to
+     * {@link AbstractGridFormat} because the original {@link Format} interface did not allow for an
+     * accept method hence we had to subclass the interface to add such method and we did so by the
+     * {@link AbstractGridFormat} abstract class.
+     *
+     * @param o the object to check for acceptance.
+     * @param hints the {@link Hints} to control the format search.
+     * @return an {@link AbstractGridFormat} that has stated to accept this {@link Object} o or
+     *         <code>null</code> in no plugins was able to accept it.
+     */
+    public static synchronized AbstractGridFormat findFormat(Object o, Hints hints) {
+        final Set<AbstractGridFormat> formats = findFormats(o, hints);
+        // world image and geotiff can both open tif files, give priority to geotiff
+        for (AbstractGridFormat f : formats) {
+            if ("GeoTIFF".equals(f.getName())) {
+                return f;
+            }
+        }
 
-    	}        
+        // otherwise just pick the first
+        final Iterator<AbstractGridFormat> it = formats.iterator();
+        if (it.hasNext()) {
+            return it.next();
+        }
+        return new UnknownFormat();
+
+    }
 }

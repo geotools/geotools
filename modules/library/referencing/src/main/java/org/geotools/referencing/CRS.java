@@ -1617,7 +1617,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                 targetPt.setOrdinate(i, extremum);
                 try {
                     sourcePt = mt.transform(targetPt, sourcePt);
-                } catch (TransformException e) {
+                } catch (Exception e) {
                     /*
                      * This exception may be normal. For example we are sure to get this exception
                      * when trying to project the latitude extremums with a cylindrical Mercator

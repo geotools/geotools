@@ -52,6 +52,7 @@ import javax.imageio.stream.ImageInputStream;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
+import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.MapInfoFileReader;
@@ -201,17 +202,27 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
 			// analyze georeferencing
 			//
 			// do we have verything as geotiff?
-			if(metadataAdapter.hasModelTrasformation()|| (metadataAdapter.hasPixelScales()&&metadataAdapter.hasTiePoints()))
+            if (metadataAdapter.hasModelTrasformation()
+                    || (metadataAdapter.hasPixelScales() && metadataAdapter.hasTiePoints()))
 			    return true;
 			
 			// now look for info into a WLD file or TAB file
             MathTransform raster2Model = GeoTiffReader.parseWorldFile(o);
             if (raster2Model == null) {
-                raster2Model = GeoTiffReader.parseMapInfoFile(o).getTransform();
+                MapInfoFileReader mif = GeoTiffReader.parseMapInfoFile(o);
+                if (mif != null) {
+                    raster2Model = mif.getTransform();
+                }
             }
-            if (raster2Model != null)
+            if (raster2Model != null) {
                 return true;
-            else{
+            } else {
+                // see if we have GCPs at least
+                TiePoint[] modelTiePoints = metadataAdapter.getModelTiePoints();
+                if (modelTiePoints != null && modelTiePoints.length > 1) {
+                    return true;
+                }
+
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine("Unable to find georeferencing for this tif file");
                 return false;

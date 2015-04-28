@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.channels.FileChannel;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -77,9 +78,11 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.coverage.grid.io.GroundControlPoints;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
+import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.MapInfoFileReader;
@@ -90,6 +93,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -145,6 +149,11 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
     private ImageInputStreamSpi ovrInStreamSPI = null;
 
     private int extOvrImgChoice = -1;
+
+    /**
+     * The ground control points, populated if there is no grid to world transformation
+     */
+    private GroundControlPoints gcps;
 
 	/**
 	 * Creates a new instance of GeoTiffReader
@@ -368,7 +377,15 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             }
 
             if (this.raster2Model == null) {
-                throw new DataSourceException("Raster to Model Transformation is not available");
+                TiePoint[] modelTiePoints = metadata.getModelTiePoints();
+                if (modelTiePoints != null && modelTiePoints.length > 1) {
+                    // use a unit transform and expose the GCPs
+                    gcps = new GroundControlPoints(Arrays.asList(modelTiePoints), crs);
+                    raster2Model = ProjectiveTransform.create(new AffineTransform());
+                    crs = DefaultEngineeringCRS.GENERIC_2D;
+                } else {
+                    throw new DataSourceException("Raster to Model Transformation is not available");
+                }
             }
 
             // create envelope using corner transformation
@@ -539,7 +556,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 		//
         Hints newHints = null;
 		if(suggestedTileSize!=null){
-		    newHints= (Hints) hints.clone();
+		    newHints= hints.clone();
             final ImageLayout layout = new ImageLayout();
             layout.setTileGridXOffset(0);
             layout.setTileGridYOffset(0);
@@ -600,7 +617,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         final AffineTransform tempRaster2Model = new AffineTransform((AffineTransform) raster2Model);
         tempRaster2Model.concatenate(new AffineTransform(scaleX, 0, 0, scaleY, 0, 0));
         try{
-        	return createCoverage(coverageRaster, ProjectiveTransform.create((AffineTransform) tempRaster2Model));
+        	return createCoverage(coverageRaster, ProjectiveTransform.create(tempRaster2Model));
         }catch(Exception e){
         	// dispose and close file
         	ImageUtilities.disposePlanarImageChain(coverageRaster);
@@ -884,5 +901,10 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 	public int getGridCoverageCount() {
 		return 1;
 	}
+
+    @Override
+    public GroundControlPoints getGroundControlPoints() {
+        return gcps;
+    }
 
 }

@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.media.jai.ImageLayout;
@@ -34,16 +35,20 @@ import javax.media.jai.PlanarImage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GroundControlPoints;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
+import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.test.TestData;
 import org.junit.After;
 import org.junit.Before;
@@ -53,6 +58,8 @@ import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
@@ -174,9 +181,10 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         assertTrue(format.accepts(noCrs));
         GeoTiffReader reader = (GeoTiffReader) format.getReader(noCrs);
         CoordinateReferenceSystem crs=reader.getCoordinateReferenceSystem();
-        assertTrue(CRS.equalsIgnoreMetadata(crs, DefaultEngineeringCRS.GENERIC_2D));
+        assertTrue(CRS.equalsIgnoreMetadata(crs, AbstractGridFormat.getDefaultCRS()));
         GridCoverage2D coverage=reader.read(null);
-        assertTrue(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), DefaultEngineeringCRS.GENERIC_2D));
+        assertTrue(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(),
+                AbstractGridFormat.getDefaultCRS()));
         
 
         // hint for CRS
@@ -320,6 +328,11 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     				    PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
     				}
     				
+                    if (reader.getGroundControlPoints() != null) {
+                        // we cannot write GCPs yet
+                        continue;
+                    }
+
     				// write and read back
     				final File destFile = File.createTempFile("test", ".tif",writeDirectory);				
     				final GeoTiffWriter writer= new GeoTiffWriter(destFile);
@@ -380,7 +393,60 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     }
     
     /**
-     * Test what we can do and what not with 
+     * Test that the reader can read a GeoTIFF with GCPs (even if it cannot reference it)
+     */
+    @Test
+    public void testGCPs() throws Exception {
+        // Reading file
+        final File file = TestData.file(GeoTiffReaderTest.class, "box_gcp.tif");
+        assertNotNull(file);
+        final AbstractGridFormat format = new GeoTiffFormat();
+        assertTrue(format.accepts(file));
+        AbstractGridCoverage2DReader reader = format.getReader(file);
+        GridCoverage2D coverage = reader.read(null);
+
+        // Get CRS and transform, they should be 404000 and
+        CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem();
+        assertEquals(AbstractGridFormat.getDefaultCRS(), crs);
+        assertEquals(ProjectiveTransform.create(new AffineTransform()), coverage.getGridGeometry()
+                .getGridToCRS());
+        // Getting its string definition
+        String crsDef = crs.toWKT();
+        // Ensure the Unit of Measure define is Meter
+        assertTrue(crsDef.contains("UNIT[\"m\", 1.0]"));
+
+        // Ground control points
+        GroundControlPoints gcps = reader.getGroundControlPoints();
+        assertNotNull(gcps);
+        // the tie point CRS has the same size as WGS84)
+        GeographicCRS gcrs = (GeographicCRS) gcps.getCoordinateReferenceSystem();
+        Ellipsoid ellipsoid = gcrs.getDatum().getEllipsoid();
+        assertEquals(ellipsoid.getSemiMajorAxis(), DefaultGeographicCRS.WGS84.getDatum()
+                .getEllipsoid().getSemiMajorAxis(), 1e-6);
+        assertEquals(ellipsoid.getInverseFlattening(), DefaultGeographicCRS.WGS84.getDatum()
+                .getEllipsoid().getInverseFlattening(), 1e-6);
+        // check the tie points
+        final double EPS = 1e-9;
+        List<TiePoint> tiePoints = gcps.getTiePoints();
+        // t1
+        assertEquals(49.5005, tiePoints.get(0).getValueAt(0), EPS);
+        assertEquals(250.909, tiePoints.get(0).getValueAt(1), EPS);
+        assertEquals(-84, tiePoints.get(0).getValueAt(3), EPS);
+        assertEquals(33, tiePoints.get(0).getValueAt(4), EPS);
+        // t2
+        assertEquals(49.5005, tiePoints.get(1).getValueAt(0), EPS);
+        assertEquals(51.8182, tiePoints.get(1).getValueAt(1), EPS);
+        assertEquals(-84, tiePoints.get(1).getValueAt(3), EPS);
+        assertEquals(34, tiePoints.get(1).getValueAt(4), EPS);
+        // t3
+        assertEquals(248.824, tiePoints.get(2).getValueAt(0), EPS);
+        assertEquals(51.8182, tiePoints.get(2).getValueAt(1), EPS);
+        assertEquals(-83, tiePoints.get(2).getValueAt(3), EPS);
+        assertEquals(34, tiePoints.get(2).getValueAt(4), EPS);
+    }
+
+    /**
+     * Test what we can do and what not with
      */
     @Test
 //    @Ignore
@@ -553,8 +619,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
 
 		try {
 
-			@SuppressWarnings("unused")
-			GeoTiffReader reader = new GeoTiffReader(file);
+			new GeoTiffReader(file);
 			assertTrue(false);
 		} catch (Exception e) {
 			assertTrue(true);
@@ -578,7 +643,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         file.setReadable(false);
 
         try {
-            GeoTiffReader reader = new GeoTiffReader(file);
+            new GeoTiffReader(file);
         } catch (DataSourceException e) {
             if(e.getCause() instanceof IOException) {
                 IOException ioException = (IOException) e.getCause();
@@ -604,7 +669,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         file.setReadable(false);
 
         try {
-            GeoTiffReader reader = new GeoTiffReader(file);
+            new GeoTiffReader(file);
         } catch (DataSourceException e) {
             // Throw the inner exception
             throw e.getCause();

@@ -1196,6 +1196,28 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     double[] getHighestRes() {
 		return getHighestRes(coverageName);
 	}
+    
+    /**
+     * Return the ground control points for the default coverage, or null if there are none
+     * 
+     * @return
+     */
+    public GroundControlPoints getGroundControlPoints() {
+        return null;
+    }
+
+    /**
+     * Return the ground control points for the specified, or null if there are none
+     * 
+     * @return
+     */
+    public GroundControlPoints getGroundControlPoints(String coverageName) {
+        if (!checkName(coverageName)) {
+            throw new IllegalArgumentException("The specified coverageName " + coverageName
+                    + "is not supported");
+        }
+        return null;
+    }
 
     
     /**

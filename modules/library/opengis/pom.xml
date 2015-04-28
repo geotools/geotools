@@ -178,12 +178,6 @@
     </dependency>
     
     <dependency>
-      <groupId>java3d</groupId>
-      <artifactId>vecmath</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-    </dependency>
-    
-    <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
       <!-- The version number is specified in the parent POM. -->

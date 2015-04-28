@@ -175,11 +175,6 @@
   <dependencies>
     <!-- NOTE: The referencing module does not depends on JTS. -->
     <dependency>
-      <groupId>java3d</groupId>
-      <artifactId>vecmath</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-    </dependency>
-    <dependency>
       <groupId>com.googlecode.efficient-java-matrix-library</groupId>
       <artifactId>core</artifactId>
       <!-- The version number is specified in the parent POM. -->

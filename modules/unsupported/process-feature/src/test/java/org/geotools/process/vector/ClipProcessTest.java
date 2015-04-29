@@ -341,6 +341,33 @@ public class ClipProcessTest extends Assert {
 
     }
 
+    @Test
+    public void testEmptyLines() throws Exception {
+        SimpleFeatureCollection features = fsLines.getFeatures();
+        ClipProcess cp = new ClipProcess();
+        // to reproduce the issue we need a non rectangular clip polygon,
+        // whose bbox will intersect the bbox of the geometry, but whose intersection is actually
+        // emtpy
+        SimpleFeatureCollection result = cp.execute(features,
+                new WKTReader().read("POLYGON((-8 -7, -8 3, 2 3, -8 -7))"), true);
+        assertEquals(0, result.size());
+        SimpleFeatureIterator fi = result.features();
+        assertFalse(fi.hasNext());
+        fi.close();
+    }
+
+    @Test
+    public void testEmptyMultiLines() throws Exception {
+        SimpleFeatureCollection features = fsMultilines.getFeatures();
+        ClipProcess cp = new ClipProcess();
+        SimpleFeatureCollection result = cp.execute(features,
+                new WKTReader().read("POLYGON((-10 -10, -10 -5, -5 -5, -5 -10, -10 -10))"), true);
+        assertEquals(0, result.size());
+        SimpleFeatureIterator fi = result.features();
+        assertFalse(fi.hasNext());
+        fi.close();
+    }
+
     private void assertOrdinates(double x, double y, double z, CoordinateSequence cs, int index) {
         assertEquals(x, cs.getOrdinate(index, 0), 0d);
         assertEquals(y, cs.getOrdinate(index, 1), 0d);

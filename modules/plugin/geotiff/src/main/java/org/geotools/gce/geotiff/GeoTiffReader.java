@@ -93,7 +93,6 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -382,7 +381,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                     // use a unit transform and expose the GCPs
                     gcps = new GroundControlPoints(Arrays.asList(modelTiePoints), crs);
                     raster2Model = ProjectiveTransform.create(new AffineTransform());
-                    crs = DefaultEngineeringCRS.GENERIC_2D;
+                    crs = AbstractGridFormat.getDefaultCRS();
                 } else {
                     throw new DataSourceException("Raster to Model Transformation is not available");
                 }

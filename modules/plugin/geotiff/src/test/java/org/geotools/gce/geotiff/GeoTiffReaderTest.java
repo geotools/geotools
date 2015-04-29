@@ -49,7 +49,6 @@ import org.geotools.data.PrjFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
@@ -186,9 +185,10 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         assertTrue(format.accepts(noCrs));
         GeoTiffReader reader = (GeoTiffReader) format.getReader(noCrs);
         CoordinateReferenceSystem crs=reader.getCoordinateReferenceSystem();
-        assertTrue(CRS.equalsIgnoreMetadata(crs, DefaultEngineeringCRS.GENERIC_2D));
+        assertTrue(CRS.equalsIgnoreMetadata(crs, AbstractGridFormat.getDefaultCRS()));
         GridCoverage2D coverage=reader.read(null);
-        assertTrue(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), DefaultEngineeringCRS.GENERIC_2D));
+        assertTrue(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(),
+                AbstractGridFormat.getDefaultCRS()));
         
 
         // hint for CRS
@@ -432,7 +432,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
 
         // Get CRS and transform, they should be 404000 and
         CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem();
-        assertEquals(DefaultEngineeringCRS.GENERIC_2D, crs);
+        assertEquals(AbstractGridFormat.getDefaultCRS(), crs);
         assertEquals(ProjectiveTransform.create(new AffineTransform()), coverage.getGridGeometry()
                 .getGridToCRS());
         // Getting its string definition

@@ -74,7 +74,7 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
  * @source $URL$
  */
 @DescribeProcess(title = "Clip", description = "Clips (crops) features to a given geometry")
-public class ClipProcess implements VectorProcess{
+public class ClipProcess implements VectorProcess {
 
 	static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     
@@ -265,7 +265,7 @@ public class ClipProcess implements VectorProcess{
             }
             
             // empty intersection?
-            if(clipped == null || clipped.getNumGeometries() == 0) {
+            if (clipped == null || clipped.isEmpty() || clipped.getNumGeometries() == 0) {
                 return null;
             }
             
@@ -289,7 +289,7 @@ public class ClipProcess implements VectorProcess{
                 if(geoms.size() == 0) {
                     result = null;
                 } else {
-                    LineString[] lsArray = (LineString[]) geoms.toArray(new LineString[geoms.size()]);
+                    LineString[] lsArray = geoms.toArray(new LineString[geoms.size()]);
                     result = geom.getFactory().createMultiLineString(lsArray);
                 }
             } else if(MultiPolygon.class.isAssignableFrom(target) || Polygon.class.isAssignableFrom(target)) {
@@ -306,7 +306,7 @@ public class ClipProcess implements VectorProcess{
                 if(geoms.size() == 0) {
                     result = null;
                 } else {
-                    Polygon[] lsArray = (Polygon[]) geoms.toArray(new Polygon[geoms.size()]);
+                    Polygon[] lsArray = geoms.toArray(new Polygon[geoms.size()]);
                     result = geom.getFactory().createMultiPolygon(lsArray);
                 }
             } else {

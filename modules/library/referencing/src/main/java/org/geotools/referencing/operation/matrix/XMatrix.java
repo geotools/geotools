@@ -16,7 +16,6 @@
  */
 package org.geotools.referencing.operation.matrix;
 
-import javax.vecmath.SingularMatrixException;
 import org.opengis.referencing.operation.Matrix;
 
 

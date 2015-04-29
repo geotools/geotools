@@ -16,9 +16,8 @@
  */
 package org.geotools.math;
 
+import java.awt.geom.Point2D;
 import java.io.Serializable;
-import javax.vecmath.MismatchedSizeException;
-import javax.vecmath.Point3d;
 
 import org.opengis.util.Cloneable;
 
@@ -45,6 +44,86 @@ import org.opengis.util.Cloneable;
  * @author Howard Freeland, for algorithmic inspiration
  */
 public class Plane implements Cloneable, Serializable {
+    
+    /** Point3d data structure used to define Plane. */
+    public static class Point3d {
+        double x,y,z;
+        public Point3d( double x, double y, double z){
+            this.x=x;
+            this.y=y;
+            this.z=z;
+        }
+        public Point3d( double array[]) throws IllegalArgumentException {
+            if( array == null){
+                throw new NullPointerException("Vector array required");
+            }
+            if( array.length == 2 ){
+                this.x = array[0];
+                this.y = array[1];
+                this.z = Double.NaN;
+            }
+            else if( array.length == 3 ){
+                this.x = array[0];
+                this.y = array[1];
+                this.z = array[2];
+            }
+            else {
+                throw new IllegalArgumentException("Vector array (length " + array.length +") is not expected length of 3");
+            }
+        }
+        public Point3d( Point2D point ){
+            this.x = point.getX();
+            this.y = point.getY();
+            this.z = Double.NaN;
+        }
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            long temp;
+            temp = Double.doubleToLongBits(x);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(y);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(z);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            return result;
+        }
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            Point3d other = (Point3d) obj;
+            if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
+                return false;
+            if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
+                return false;
+            if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z))
+                return false;
+            return true;
+        }
+        @Override
+        public String toString() {
+            return "Point3d [x=" + x + ", y=" + y + ", z=" + z + "]";
+        }
+        /**
+         * Cartesian distance between two points.
+         * 
+         * @param pt second point
+         * @return cartesian distance between two points
+         */
+        public double distance(Point3d pt) {
+            double dX = Math.abs(this.x-pt.x);
+            double dY = Math.abs(this.y-pt.y);
+            double dZ = Math.abs(this.z-pt.z);
+            
+            return Math.sqrt( dX*dX + dY*dY + dZ*dZ);
+        }
+    }
     /**
      * Serial number for compatibility with different versions.
      */
@@ -157,11 +236,12 @@ public class Plane implements Cloneable, Serializable {
      *         don't have the same length.
      */
     public void setPlane(final double[] x, final double[] y, final double[] z)
-            throws MismatchedSizeException
+            throws IllegalArgumentException
     {
         final int N = x.length;
         if (N!=y.length || N!=z.length) {
-            throw new MismatchedSizeException();
+            throw new IllegalArgumentException("Vector x (length " + N + "), Vector y (length:"
+                    + y.length + ") and Vector (length:" + z.length + ") are not the same length");
         }
         double sum_x  = 0;
         double sum_y  = 0;

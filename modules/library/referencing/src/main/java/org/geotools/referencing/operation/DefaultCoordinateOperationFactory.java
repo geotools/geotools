@@ -22,12 +22,12 @@ package org.geotools.referencing.operation;
 import java.util.Map;
 import java.util.List;
 import java.util.Collections;
+
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Duration;
-import javax.vecmath.SingularMatrixException;
 
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -36,7 +36,6 @@ import org.opengis.referencing.cs.*;
 import org.opengis.referencing.crs.*;
 import org.opengis.referencing.datum.*;
 import org.opengis.referencing.operation.*;
-
 import org.geotools.factory.Hints;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.DefaultCompoundCRS;
@@ -46,6 +45,7 @@ import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
+import org.geotools.referencing.operation.matrix.SingularMatrixException;
 import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.referencing.operation.matrix.Matrix4;
 import org.geotools.referencing.operation.matrix.MatrixFactory;

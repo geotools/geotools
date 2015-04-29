@@ -19,7 +19,6 @@ package org.geotools.math;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
-import javax.vecmath.MismatchedSizeException;
 
 import org.opengis.util.Cloneable;
 
@@ -180,10 +179,11 @@ public class Line implements Cloneable, Serializable {
      *
      * @throws MismatchedSizeException if <var>x</var> and <var>y</var> don't have the same length.
      */
-    public double setLine(final double[] x, final double[] y) throws MismatchedSizeException {
+    public double setLine(final double[] x, final double[] y) throws IllegalArgumentException {
         final int N = x.length;
         if (N != y.length) {
-            throw new MismatchedSizeException();
+            throw new IllegalArgumentException("Vector x (length " + N + ") and Vector y (length:"
+                    + y.length + ") are not the same length");
         }
         int    count  = 0;
         double mean_x = 0;

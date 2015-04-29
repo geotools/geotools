@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Serializable;
 
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.operation.Matrix;
@@ -53,7 +54,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  *
  * @see java.awt.geom.AffineTransform
  */
-public class GeneralMatrix implements XMatrix {
+public class GeneralMatrix implements XMatrix, Serializable {
     /**
      * Serial number for interoperability with different versions.
      */
@@ -431,7 +432,10 @@ public class GeneralMatrix implements XMatrix {
      */
     @Override
     public void invert() {
-        CommonOps.invert(mat);
+        boolean success = CommonOps.invert(mat);
+        if(!success){
+            throw new SingularMatrixException("Could not invert, possible singular matrix?");
+        }
     }
 
     /**

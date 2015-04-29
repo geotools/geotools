@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.vecmath.MismatchedSizeException;
-
 import junit.framework.Assert;
 
 import org.geotools.geometry.DirectPosition2D;
@@ -208,7 +206,7 @@ public final class MathTransformBuilderTest {
      * Test for MismatchedSizeException.
      * @throws TransformException
      */
-    @Test(expected = MismatchedSizeException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testMismatchedSizeException() throws TransformException {
         // The exception should be thrown when the number of points is less than necessary
         List<MappedPosition> pts = generateCoords(2, 2453655);

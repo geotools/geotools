@@ -25,8 +25,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import javax.vecmath.MismatchedSizeException;
-import javax.vecmath.SingularMatrixException;
 import javax.measure.unit.NonSI;
 
 import org.opengis.parameter.ParameterDescriptor;
@@ -503,7 +501,7 @@ public class ProjectiveTransform extends AbstractMathTransform implements Linear
                 final XMatrix matrix = getGeneralMatrix();
                 try {
                     matrix.invert();
-                } catch (SingularMatrixException|IllegalArgumentException exception) {
+                } catch (IllegalArgumentException exception) {
                     throw new NoninvertibleTransformException(Errors.format(
                               ErrorKeys.NONINVERTIBLE_TRANSFORM), exception);
                 }

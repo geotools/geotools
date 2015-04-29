@@ -16,20 +16,18 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import javax.vecmath.Point3d;
-
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-
+import org.geotools.math.Plane.Point3d;
 import org.geotools.referencing.crs.DefaultGeocentricCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.operation.TransformTestBase;
-
 import org.junit.*;
+
 import static org.junit.Assert.*;
 
 

@@ -17,7 +17,6 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.io.Serializable;
-import javax.vecmath.SingularMatrixException;
 import org.opengis.referencing.operation.Matrix;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -27,11 +26,12 @@ import org.geotools.resources.i18n.ErrorKeys;
  * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size.
  *
  * @since 2.2
- *
+ * @version 13.0
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
+ * @deprecated Use GeneralMatrix
  */
 public class Matrix2 implements XMatrix, Serializable {
     /** Serial number for interoperability with different versions. */
@@ -209,7 +209,7 @@ public class Matrix2 implements XMatrix, Serializable {
     public final void invert() {
         final double det = m00*m11 - m01*m10;
         if (det == 0) {
-            throw new SingularMatrixException();
+            throw new SingularMatrixException("Determinate is zero, cannot invert matrix");
         }
         final double swap = m00;
         m00 =  m11 / det;

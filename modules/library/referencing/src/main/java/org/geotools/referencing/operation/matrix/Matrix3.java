@@ -16,29 +16,27 @@
  */
 package org.geotools.referencing.operation.matrix;
 
-import javax.vecmath.Matrix3d;
 import java.awt.geom.AffineTransform;
 import org.opengis.referencing.operation.Matrix;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
 
-
 /**
- * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size. This specialized matrix provides
- * better accuracy than {@link GeneralMatrix} for matrix inversion and multiplication.
+ * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size.
  *
  * @since 2.2
- *
- *
+ * @version 13.0
+ * 
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
+ * @deprecated Use GeneralMatrix
  */
-public class Matrix3 extends Matrix3d implements XMatrix {
+public class Matrix3 extends GeneralMatrix implements XMatrix {
     /**
      * Serial number for interoperability with different versions.
      */
-    private static final long serialVersionUID = 8902061778871586611L;
+    private static final long serialVersionUID = 8902061778871586612L;
 
     /**
      * The matrix size, which is {@value}.
@@ -49,6 +47,7 @@ public class Matrix3 extends Matrix3d implements XMatrix {
      * Creates a new identity matrix.
      */
     public Matrix3() {
+        super(SIZE);
         setIdentity();
     }
 
@@ -59,15 +58,19 @@ public class Matrix3 extends Matrix3d implements XMatrix {
                    double m10, double m11, double m12,
                    double m20, double m21, double m22)
     {
-        super(m00, m01, m02,
-              m10, m11, m12,
-              m20, m21, m22);
+        super(SIZE,SIZE,
+              new double[]{
+                 m00, m01, m02,
+                 m10, m11, m12,
+                 m20, m21, m22}
+        );
     }
 
     /**
      * Constructs a 3&times;3 matrix from the specified affine transform.
      */
     public Matrix3(final AffineTransform transform) {
+        super(SIZE);
         setMatrix(transform);
     }
 
@@ -76,6 +79,7 @@ public class Matrix3 extends Matrix3d implements XMatrix {
      * The specified matrix size must be {@value #SIZE}&times;{@value #SIZE}.
      */
     public Matrix3(final Matrix matrix) {
+        super(SIZE);
         if (matrix.getNumRow()!=SIZE || matrix.getNumCol()!=SIZE) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
         }
@@ -103,55 +107,14 @@ public class Matrix3 extends Matrix3d implements XMatrix {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public final boolean isIdentity() {
-        for (int j=0; j<SIZE; j++) {
-            for (int i=0; i<SIZE; i++) {
-                if (getElement(j,i) != ((i==j) ? 1 : 0)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public final boolean isIdentity(double tolerance) {
-    	return GeneralMatrix.isIdentity(this, tolerance);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public final boolean isAffine() {
-        return m20==0 && m21==0 && m22==1;
-    }
-
-    /**
      * Returns {@code true} if at least one value is {@code NaN}.
      *
      * @since 2.3
      */
     public final boolean isNaN() {
-        return Double.isNaN(m00) || Double.isNaN(m01) || Double.isNaN(m02) ||
-               Double.isNaN(m10) || Double.isNaN(m11) || Double.isNaN(m12) ||
-               Double.isNaN(m20) || Double.isNaN(m21) || Double.isNaN(m22);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public final void multiply(final Matrix matrix) {
-        final Matrix3d m;
-        if (matrix instanceof Matrix3d) {
-            m = (Matrix3d) matrix;
-        } else {
-            m = new Matrix3(matrix);
-        }
-        mul(m);
+        return Double.isNaN(mat.data[0]) || Double.isNaN(mat.data[1]) || Double.isNaN(mat.data[2]) ||
+               Double.isNaN(mat.data[3]) || Double.isNaN(mat.data[4]) || Double.isNaN(mat.data[5]) ||
+               Double.isNaN(mat.data[6]) || Double.isNaN(mat.data[7]) || Double.isNaN(mat.data[8]);
     }
 
     /**
@@ -160,9 +123,9 @@ public class Matrix3 extends Matrix3d implements XMatrix {
      * @since 2.3
      */
     public void setMatrix(final AffineTransform transform) {
-        m00=transform.getScaleX(); m01=transform.getShearX(); m02=transform.getTranslateX();
-        m10=transform.getShearY(); m11=transform.getScaleY(); m12=transform.getTranslateY();
-        m20=0;                     m21=0;                     m22=1;
+        mat.data[0]=transform.getScaleX(); mat.data[1]=transform.getShearX(); mat.data[2]=transform.getTranslateX();
+        mat.data[3]=transform.getShearY(); mat.data[4]=transform.getScaleY(); mat.data[5]=transform.getTranslateY();
+        mat.data[6]=0;                     mat.data[7]=0;                     mat.data[8]=1;
     }
 
     /**
@@ -171,9 +134,9 @@ public class Matrix3 extends Matrix3d implements XMatrix {
      * @since 2.3
      */
     public boolean equalsAffine(final AffineTransform transform) {
-        return m00==transform.getScaleX() && m01==transform.getShearX() && m02==transform.getTranslateX() &&
-               m10==transform.getShearY() && m11==transform.getScaleY() && m12==transform.getTranslateY() &&
-               m20==0                     && m21==0                     && m22==1;
+        return mat.data[0]==transform.getScaleX() && mat.data[1]==transform.getShearX() && mat.data[2]==transform.getTranslateX() &&
+               mat.data[3]==transform.getShearY() && mat.data[4]==transform.getScaleY() && mat.data[5]==transform.getTranslateY() &&
+               mat.data[6]==0                     && mat.data[7]==0                     && mat.data[8]==1;
     }
 
     /**

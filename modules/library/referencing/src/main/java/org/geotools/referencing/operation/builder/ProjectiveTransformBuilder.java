@@ -25,8 +25,6 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.geometry.MismatchedReferenceSystemException;
 import java.util.List;
-import javax.vecmath.MismatchedSizeException;
-
 
 /**
  * Builds {@linkplain MathTransform
@@ -88,7 +86,7 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
      *                 {@linkplain MappedPosition MappedPosition}
      */
     public ProjectiveTransformBuilder(List <MappedPosition> vectors)
-        throws MismatchedSizeException, MismatchedDimensionException,
+        throws IllegalArgumentException, MismatchedDimensionException,
             MismatchedReferenceSystemException {
         super.setMappedPositions(vectors);
     }

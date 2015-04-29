@@ -27,7 +27,6 @@ import java.io.Writer;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.NumberFormat;
-import javax.vecmath.MismatchedSizeException;
 
 import org.opengis.util.InternationalString;
 import org.opengis.referencing.FactoryException;
@@ -202,13 +201,13 @@ public abstract class MathTransformBuilder {
     /**
      * Set the list of mapped positions.
      *
-     * @throws MismatchedSizeException if the list doesn't have the expected number of points.
+     * @throws IllegalArgumentException if the list doesn't have the expected number of points.
      * @throws MismatchedDimensionException if some points doesn't have the
      *         {@linkplain #getDimension expected number of dimensions}.
      * @throws MismatchedReferenceSystemException if CRS is not the same for all points.
      */
     public void setMappedPositions(final List<MappedPosition> positions)
-            throws MismatchedSizeException, MismatchedDimensionException,
+            throws IllegalArgumentException, MismatchedDimensionException,
                    MismatchedReferenceSystemException
     {
         final CoordinateReferenceSystem source, target;
@@ -249,15 +248,15 @@ public abstract class MathTransformBuilder {
      * @param target {@code false} for setting the source points,
      *        or {@code true} for setting the target points.
      *
-     * @throws MismatchedSizeException if the array doesn't have the expected number of points.
+     * @throws IllegalArgumentException if the array doesn't have the expected number of points.
      */
     private void setPoints(final DirectPosition[] points, final boolean target)
-            throws MismatchedSizeException
+            throws IllegalArgumentException
     {
         transform = null;
         final boolean add = positions.isEmpty();
         if (!add && points.length != positions.size()) {
-            throw new MismatchedSizeException(Errors.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
         }
         final int dimension = getDimension();
         for (int i=0; i<points.length; i++) {
@@ -292,13 +291,13 @@ public abstract class MathTransformBuilder {
      * in mapped positions.
      *
      * @param  points The source points.
-     * @throws MismatchedSizeException if the list doesn't have the expected number of points.
+     * @throws IllegalArgumentException if the list doesn't have the expected number of points.
      * @throws MismatchedDimensionException if some points doesn't have the
      *         {@linkplain #getDimension expected number of dimensions}.
      * @throws MismatchedReferenceSystemException if CRS is not the same for all points.
      */
     public void setSourcePoints(final DirectPosition[] points)
-            throws MismatchedSizeException, MismatchedDimensionException,
+            throws IllegalArgumentException, MismatchedDimensionException,
                    MismatchedReferenceSystemException
     {
         // Set the points only after we checked them.
@@ -321,13 +320,13 @@ public abstract class MathTransformBuilder {
      * in mapped positions.
      *
      * @param  points The target points.
-     * @throws MismatchedSizeException if the list doesn't have the expected number of points.
+     * @throws IllegalArgumentException if the list doesn't have the expected number of points.
      * @throws MismatchedDimensionException if some points doesn't have the
      *         {@linkplain #getDimension expected number of dimensions}.
      * @throws MismatchedReferenceSystemException if CRS is not the same for all points.
      */
     public void setTargetPoints(final DirectPosition[] points)
-            throws MismatchedSizeException, MismatchedDimensionException,
+            throws IllegalArgumentException, MismatchedDimensionException,
                    MismatchedReferenceSystemException
     {
         // Set the points only after we checked them.
@@ -350,48 +349,49 @@ public abstract class MathTransformBuilder {
         }
         final NumberFormat source = getNumberFormat(locale, false);
         final NumberFormat target = getNumberFormat(locale, true);
-        final TableWriter  table  = new TableWriter(out, TableWriter.SINGLE_VERTICAL_LINE);
-        table.setAlignment(TableWriter.ALIGN_CENTER);
-        table.writeHorizontalSeparator();
-        try {
-            final CoordinateSystem sourceCS = getSourceCRS().getCoordinateSystem();
-            final CoordinateSystem targetCS = getTargetCRS().getCoordinateSystem();
-            int dimension = sourceCS.getDimension();
-            for (int i=0; i<dimension; i++) {
-                table.write(sourceCS.getAxis(i).getName().getCode());
-                table.nextColumn();
+        try( TableWriter  table  = new TableWriter(out, TableWriter.SINGLE_VERTICAL_LINE)){
+            table.setAlignment(TableWriter.ALIGN_CENTER);
+            table.writeHorizontalSeparator();
+            try {
+                final CoordinateSystem sourceCS = getSourceCRS().getCoordinateSystem();
+                final CoordinateSystem targetCS = getTargetCRS().getCoordinateSystem();
+                int dimension = sourceCS.getDimension();
+                for (int i=0; i<dimension; i++) {
+                    table.write(sourceCS.getAxis(i).getName().getCode());
+                    table.nextColumn();
+                }
+                dimension = targetCS.getDimension();
+                for (int i=0; i<dimension; i++) {
+                    table.write(targetCS.getAxis(i).getName().getCode());
+                    table.nextColumn();
+                }
+                table.writeHorizontalSeparator();
+            } catch (FactoryException e) {
+                /*
+                 * Ignore. The only consequences is that the table will not
+                 * contains a title line.
+                 */
             }
-            dimension = targetCS.getDimension();
-            for (int i=0; i<dimension; i++) {
-                table.write(targetCS.getAxis(i).getName().getCode());
-                table.nextColumn();
+            table.setAlignment(TableWriter.ALIGN_RIGHT);
+            for (final Iterator <MappedPosition> it=getMappedPositions().iterator(); it.hasNext();) {
+                final MappedPosition mp = (MappedPosition) it.next();
+                DirectPosition point = mp.getSource();
+                int dimension = point.getDimension();
+                for (int i=0; i<dimension; i++) {
+                    table.write(source.format(point.getOrdinate(i)));
+                    table.nextColumn();
+                }
+                point = mp.getTarget();
+                dimension = point.getDimension();
+                for (int i=0; i<dimension; i++) {
+                    table.write(target.format(point.getOrdinate(i)));
+                    table.nextColumn();
+                }
+                table.nextLine();
             }
             table.writeHorizontalSeparator();
-        } catch (FactoryException e) {
-            /*
-             * Ignore. The only consequences is that the table will not
-             * contains a title line.
-             */
+            table.flush();
         }
-        table.setAlignment(TableWriter.ALIGN_RIGHT);
-        for (final Iterator <MappedPosition> it=getMappedPositions().iterator(); it.hasNext();) {
-            final MappedPosition mp = (MappedPosition) it.next();
-            DirectPosition point = mp.getSource();
-            int dimension = point.getDimension();
-            for (int i=0; i<dimension; i++) {
-                table.write(source.format(point.getOrdinate(i)));
-                table.nextColumn();
-            }
-            point = mp.getTarget();
-            dimension = point.getDimension();
-            for (int i=0; i<dimension; i++) {
-                table.write(target.format(point.getOrdinate(i)));
-                table.nextColumn();
-            }
-            table.nextLine();
-        }
-        table.writeHorizontalSeparator();
-        table.flush();
     }
 
     /**
@@ -589,7 +589,7 @@ public abstract class MathTransformBuilder {
      * @param points The points to check.
      * @param label  The argument name, used for formatting error message only.
      *
-     * @throws MismatchedSizeException if the list doesn't have the expected number of points.
+     * @throws IllegalArgumentException if the list doesn't have the expected number of points.
      * @throws MismatchedDimensionException if some points doesn't have the
      *         {@linkplain #getDimension expected number of dimensions}.
      * @throws MismatchedReferenceSystemException if CRS is not the same for all points.
@@ -597,12 +597,12 @@ public abstract class MathTransformBuilder {
      */
     private CoordinateReferenceSystem ensureValid(final DirectPosition[] points,
                                                   final String label)
-            throws MismatchedSizeException, MismatchedDimensionException,
+            throws IllegalArgumentException, MismatchedDimensionException,
                    MismatchedReferenceSystemException
     {
         final int necessaryNumber = getMinimumPointCount();
         if (points.length < necessaryNumber) {
-            throw new MismatchedSizeException(Errors.format(ErrorKeys.INSUFFICIENT_POINTS_$2,
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.INSUFFICIENT_POINTS_$2,
                         points.length, necessaryNumber));
         }
         CoordinateReferenceSystem crs = null;

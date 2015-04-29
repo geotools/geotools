@@ -27,7 +27,6 @@ import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.transform.GeocentricTranslation;
 
 import java.util.List;
-import javax.vecmath.GMatrix;
 
 
 /**

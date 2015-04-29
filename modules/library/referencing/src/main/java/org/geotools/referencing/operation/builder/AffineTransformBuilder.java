@@ -22,8 +22,6 @@ import org.opengis.geometry.MismatchedReferenceSystemException;
 
 // J2SE and extensions
 import java.util.List;
-import javax.vecmath.MismatchedSizeException;
-
 
 /**
  * Builds {@linkplain org.opengis.referencing.operation.MathTransform
@@ -68,7 +66,7 @@ public class AffineTransformBuilder extends ProjectiveTransformBuilder {
      * MappedPosition MappedPosition}
      */
     public AffineTransformBuilder(List <MappedPosition> vectors)
-        throws MismatchedSizeException, MismatchedDimensionException,
+        throws IllegalArgumentException, MismatchedDimensionException,
             MismatchedReferenceSystemException {
         super.setMappedPositions(vectors);
     }

@@ -22,8 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.vecmath.MismatchedSizeException;
-
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.opengis.geometry.DirectPosition;
@@ -74,7 +72,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
      * @throws TriangulationException
      */
     public RubberSheetBuilder(List <MappedPosition> vectors, List <DirectPosition> vertices)
-        throws MismatchedSizeException, MismatchedDimensionException, MismatchedReferenceSystemException, TriangulationException {
+        throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException, TriangulationException {
         
         //Validates the vectors parameter while setting it
         super.setMappedPositions(vectors);

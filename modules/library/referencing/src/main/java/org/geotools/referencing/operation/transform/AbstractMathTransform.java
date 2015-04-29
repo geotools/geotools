@@ -26,7 +26,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.IllegalPathStateException;
-import javax.vecmath.SingularMatrixException;
+
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 
@@ -44,9 +44,9 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterValueGroup;
-
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.referencing.wkt.Formattable;
+import org.geotools.referencing.operation.matrix.SingularMatrixException;
 import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.referencing.operation.matrix.Matrix1;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;

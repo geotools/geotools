@@ -16,6 +16,7 @@
  */
 package org.geotools.math;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -348,10 +349,14 @@ public class Statistics implements Cloneable, Serializable {
                 count(), minimum(), maximum(), mean(), rms(), standardDeviation(false)
         });
         if (!tabulations) {
-            final TableWriter tmp = new TableWriter(null, 1);
-            tmp.write(text);
-            tmp.setColumnAlignment(1, TableWriter.ALIGN_RIGHT);
-            text = tmp.toString();
+            try (final TableWriter tmp = new TableWriter(null, 1)){
+                tmp.write(text);
+                tmp.setColumnAlignment(1, TableWriter.ALIGN_RIGHT);
+                text = tmp.toString();
+            }
+            catch( IOException ignore){
+                // from implicit close
+            }
         }
         return text;
     }

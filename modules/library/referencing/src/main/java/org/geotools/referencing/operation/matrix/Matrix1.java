@@ -17,7 +17,6 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.io.Serializable;
-import javax.vecmath.SingularMatrixException;
 import org.opengis.referencing.operation.Matrix;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -161,7 +160,7 @@ public class Matrix1 implements XMatrix, Serializable {
      */
     public final void invert() {
         if (m00 == 0) {
-            throw new SingularMatrixException();
+            throw new SingularMatrixException("1 dimensional matirx is singular");
         }
         m00 = 1/m00;
     }

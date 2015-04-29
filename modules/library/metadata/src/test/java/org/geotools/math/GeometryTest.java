@@ -19,9 +19,10 @@ package org.geotools.math;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Random;
-import javax.vecmath.Point3d;
 
+import org.geotools.math.Plane.Point3d;
 import org.junit.*;
+
 import static org.junit.Assert.*;
 
 

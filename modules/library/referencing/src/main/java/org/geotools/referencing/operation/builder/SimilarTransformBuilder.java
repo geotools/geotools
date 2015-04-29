@@ -21,10 +21,6 @@ import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.geometry.MismatchedReferenceSystemException;
 import java.util.List;
 
-// J2SE and extensions
-import javax.vecmath.MismatchedSizeException;
-
-
 /**
  * Builds {@linkplain org.opengis.referencing.operation.MathTransform
  * MathTransform} setup as Similar transformation from a list of {@linkplain
@@ -65,7 +61,7 @@ public class SimilarTransformBuilder extends ProjectiveTransformBuilder {
      * org.geotools.referencing.operation.builder.MappedPosition MappedPosition}
      */
     public SimilarTransformBuilder(List <MappedPosition> vectors)
-        throws MismatchedSizeException, MismatchedDimensionException,
+        throws IllegalArgumentException, MismatchedDimensionException,
             MismatchedReferenceSystemException {
         super.setMappedPositions(vectors);
     }

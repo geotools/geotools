@@ -19,7 +19,6 @@ package org.geotools.referencing.operation.builder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.vecmath.MismatchedSizeException;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.geometry.MismatchedReferenceSystemException;
 import org.opengis.referencing.FactoryException;
@@ -104,7 +103,7 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
      * @param vectors GCPs
      */
     public AdvancedAffineBuilder(final List<MappedPosition> vectors)
-        throws MismatchedSizeException, MismatchedDimensionException,
+        throws IllegalArgumentException, MismatchedDimensionException,
             MismatchedReferenceSystemException, FactoryException {
         /**
          * use constructor with approximate values taken from 6 parameters of affine transform
@@ -123,7 +122,7 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
      * @throws FactoryException
      */
     public AdvancedAffineBuilder(final List<MappedPosition> vectors, AffineTransform2D affineTrans)
-        throws MismatchedSizeException, MismatchedDimensionException,
+        throws IllegalArgumentException, MismatchedDimensionException,
             MismatchedReferenceSystemException, FactoryException {
         super.setMappedPositions(vectors);
 

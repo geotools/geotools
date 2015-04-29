@@ -16,29 +16,28 @@
  */
 package org.geotools.referencing.operation.matrix;
 
-import javax.vecmath.Matrix4d;
-import org.opengis.referencing.operation.Matrix;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
+import org.opengis.referencing.operation.Matrix;
 
 
 /**
- * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size. This specialized matrix provides
- * better accuracy than {@link GeneralMatrix} for matrix inversion and multiplication. It is used
+ * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size. It is used
  * primarily for supporting datum shifts.
  *
  * @since 2.2
- *
+ * @version 13.0
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
+ * @deprecated Use GeneralMatrix
  */
-public class Matrix4 extends Matrix4d implements XMatrix {
+public class Matrix4 extends GeneralMatrix implements XMatrix {
     /**
      * Serial number for interoperability with different versions.
      */
-    private static final long serialVersionUID = 5685762518066856310L;
+    private static final long serialVersionUID = 5685762518066856311L;
 
     /**
      * The matrix size, which is {@value}.
@@ -49,6 +48,7 @@ public class Matrix4 extends Matrix4d implements XMatrix {
      * Creates a new identity matrix.
      */
     public Matrix4() {
+        super(SIZE);
         setIdentity();
     }
 
@@ -60,10 +60,13 @@ public class Matrix4 extends Matrix4d implements XMatrix {
                    double m20, double m21, double m22, double m23,
                    double m30, double m31, double m32, double m33)
     {
-        super(m00, m01, m02, m03,
-              m10, m11, m12, m13,
-              m20, m21, m22, m23,
-              m30, m31, m32, m33);
+        super(SIZE,SIZE,
+              new double[]{
+                m00, m01, m02, m03,
+                m10, m11, m12, m13,
+                m20, m21, m22, m23,
+                m30, m31, m32, m33}
+        );
     }
 
     /**
@@ -71,6 +74,7 @@ public class Matrix4 extends Matrix4d implements XMatrix {
      * The specified matrix size must be {@value #SIZE}&times;{@value #SIZE}.
      */
     public Matrix4(final Matrix matrix) {
+        super(SIZE);
         if (matrix.getNumRow()!=SIZE || matrix.getNumCol()!=SIZE) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
         }
@@ -95,63 +99,6 @@ public class Matrix4 extends Matrix4d implements XMatrix {
      */
     public final int getNumCol() {
         return SIZE;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public final boolean isIdentity() {
-        for (int j=0; j<SIZE; j++) {
-            for (int i=0; i<SIZE; i++) {
-                if (getElement(j,i) != ((i==j) ? 1 : 0)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public final boolean isIdentity(double tolerance) {
-    	return GeneralMatrix.isIdentity(this, tolerance);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public final boolean isAffine() {
-        return m30==0 && m31==0 && m32==0 && m33==1;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public final void multiply(final Matrix matrix) {
-        final Matrix4d m;
-        if (matrix instanceof Matrix4d) {
-            m = (Matrix4d) matrix;
-        } else {
-            m = new Matrix4(matrix);
-        }
-        mul(m);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean equals(final Matrix matrix, final double tolerance) {
-        return GeneralMatrix.epsilonEquals(this, matrix, tolerance);
-    }
-
-    /**
-     * Returns a string representation of this matrix. The returned string is implementation
-     * dependent. It is usually provided for debugging purposes only.
-     */
-    @Override
-    public String toString() {
-        return GeneralMatrix.toString(this);
     }
 
     /**

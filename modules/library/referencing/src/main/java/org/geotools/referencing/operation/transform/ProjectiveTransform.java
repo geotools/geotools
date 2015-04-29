@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.measure.unit.NonSI;
 
 import org.opengis.parameter.ParameterDescriptor;
@@ -36,7 +37,6 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.Matrix;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.geometry.DirectPosition;
-
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.MatrixParameterDescriptors;
 import org.geotools.parameter.MatrixParameters;
@@ -45,6 +45,7 @@ import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.MathTransformProvider;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
+import org.geotools.referencing.operation.matrix.SingularMatrixException;
 import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.resources.i18n.Vocabulary;
@@ -501,7 +502,7 @@ public class ProjectiveTransform extends AbstractMathTransform implements Linear
                 final XMatrix matrix = getGeneralMatrix();
                 try {
                     matrix.invert();
-                } catch (IllegalArgumentException exception) {
+                } catch (SingularMatrixException|IllegalArgumentException exception) {
                     throw new NoninvertibleTransformException(Errors.format(
                               ErrorKeys.NONINVERTIBLE_TRANSFORM), exception);
                 }

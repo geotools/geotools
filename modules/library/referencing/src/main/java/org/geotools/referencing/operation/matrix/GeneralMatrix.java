@@ -521,7 +521,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
         }
         for (int j=0; j<numRow; j++) {
             for (int i=0; i<numCol; i++) {
-                if (getElement(j,i) != (i==j ? 1 : 0)) {
+                if (getElement(j,i) != (i==j ? 1.0 : 0.0)) {
                     return false;
                 }
             }

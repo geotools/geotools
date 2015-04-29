@@ -926,7 +926,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
          * This shorter path is essential for proper working of
          * createOperationStep(GeographicCRS,ProjectedCRS).
          */
-        final Matrix linear = createLinearConversion(sourceCRS, targetCRS, EPS);
+        final Matrix linear = createLinearConversion(sourceCRS, targetCRS, 1E-9);
         if (linear != null) {
             return createFromAffineTransform(AXIS_CHANGES, sourceCRS, targetCRS, linear);
         }

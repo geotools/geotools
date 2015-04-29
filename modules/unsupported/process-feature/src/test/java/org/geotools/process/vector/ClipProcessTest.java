@@ -1,6 +1,5 @@
 package org.geotools.process.vector;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -22,7 +21,6 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
 public class ClipProcessTest extends Assert {
@@ -341,6 +339,33 @@ public class ClipProcessTest extends Assert {
         assertOrdinates(2000, 2000, 2.0, cs, 2);
         assertOrdinates(2000, 2100, 2.1, cs, 3);
 
+    }
+
+    @Test
+    public void testEmptyLines() throws Exception {
+        SimpleFeatureCollection features = fsLines.getFeatures();
+        ClipProcess cp = new ClipProcess();
+        // to reproduce the issue we need a non rectangular clip polygon,
+        // whose bbox will intersect the bbox of the geometry, but whose intersection is actually
+        // emtpy
+        SimpleFeatureCollection result = cp.execute(features,
+                new WKTReader().read("POLYGON((-8 -7, -8 3, 2 3, -8 -7))"), true);
+        assertEquals(0, result.size());
+        SimpleFeatureIterator fi = result.features();
+        assertFalse(fi.hasNext());
+        fi.close();
+    }
+
+    @Test
+    public void testEmptyMultiLines() throws Exception {
+        SimpleFeatureCollection features = fsMultilines.getFeatures();
+        ClipProcess cp = new ClipProcess();
+        SimpleFeatureCollection result = cp.execute(features,
+                new WKTReader().read("POLYGON((-10 -10, -10 -5, -5 -5, -5 -10, -10 -10))"), true);
+        assertEquals(0, result.size());
+        SimpleFeatureIterator fi = result.features();
+        assertFalse(fi.hasNext());
+        fi.close();
     }
 
     private void assertOrdinates(double x, double y, double z, CoordinateSequence cs, int index) {

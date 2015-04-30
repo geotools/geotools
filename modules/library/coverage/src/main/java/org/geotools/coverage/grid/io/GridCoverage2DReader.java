@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,6 +15,8 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.coverage.grid.io;
+
+import it.geosolutions.imageio.maskband.DatasetLayout;
 
 import java.awt.image.ColorModel;
 import java.awt.image.SampleModel;
@@ -273,6 +275,7 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      * 
      * @return The number of predetermined overviews for the default coverage. Zero if none are available, -1 if infinite are available, otherwise a
      *         positive number.
+     * @deprecated It should be used getDatasetLayout().getNumInternalOverviews() instead
      */
     int getNumOverviews();
 
@@ -285,8 +288,24 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      *         positive number.
      * @throws NullPointerException if the specified coverageName is <code>null</code>
      * @throws IllegalArgumentException if the specified coverageName does not exist
+     * @deprecated It should be used getDatasetLayout().getNumInternalOverviews() instead
      */
     int getNumOverviews(String coverageName);
+
+    /**
+     * Returns the {@link DatasetLayout} for the coverage.
+     * 
+     * @return a {@link DatasetLayout} object containing info about Overview number and Image masks.
+     */
+    DatasetLayout getDatasetLayout();
+
+    /**
+     * Returns the {@link DatasetLayout} for the specified coverage.
+     * 
+     * @param coverageName the name of the coverage for which we do want to get the {@link DatasetLayout}
+     * @return a {@link DatasetLayout} object containing info about Overview number and Image masks.
+     */
+    DatasetLayout getDatasetLayout(String coverageName);
 
     /**
      * Retrieve the {@link ImageLayout} for the default coverage.

@@ -434,7 +434,7 @@ public class Crop extends Operation2D {
 		//
 		// //
 		final double tolerance = XAffineTransform.getScale(sourceCornerGridToWorld);
-		if (internalROI != null || cropRoi != null || !intersectionEnvelope.equals(sourceEnvelope, tolerance / 2.0, false)) {
+		if (cropRoi != null || !intersectionEnvelope.equals(sourceEnvelope, tolerance / 2.0, false)) {
             cropEnvelope = intersectionEnvelope.clone();
 			return buildResult(
 			                internalROI,
@@ -598,13 +598,11 @@ public class Crop extends Operation2D {
 			//
 			// //
 			final PlanarImage croppedImage;
-			//final ParameterBlock pbj = new ParameterBlock();
 			ImageWorker worker = new ImageWorker();
-			//pbj.addSource(sourceImage);
 			java.awt.Polygon rasterSpaceROI=null;
 			double[] background = destnodata != null ? destnodata : CoverageUtilities.getBackgroundValues(sourceCoverage);
             String operatioName=null;
-            if (!isSimpleTransform || cropROI!=null) {
+            if (!isSimpleTransform || cropROI!=null || nodata != null) {
                 // /////////////////////////////////////////////////////////////////////
                 //
                 // We don't have a simple scale and translate transform, JAI
@@ -622,6 +620,9 @@ public class Crop extends Operation2D {
 				// //
 				final List<Point2D> points = new ArrayList<Point2D>(5);
 				rasterSpaceROI = FeatureUtilities.convertPolygonToPointArray(modelSpaceROI, ProjectiveTransform.create(sourceWorldToGridTransform), points);
+                                if (isSimpleTransform && cropROI == null) {
+                                    rasterSpaceROI = rectangleToPolygon(finalRasterArea);
+                                }
 				if(rasterSpaceROI==null||rasterSpaceROI.getBounds().isEmpty())
 		            if(finalRasterArea.isEmpty())
 		            	throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
@@ -685,6 +686,7 @@ public class Crop extends Operation2D {
             if(operatioName==null) {
                 // executing the crop
                 worker.setImage(sourceImage);
+                worker.setNoData(null);
                 worker.setRenderingHints(targetHints);
                 worker.crop((float) minX, (float) minY, (float) width, (float) height);
                 operatioName = "Crop";
@@ -847,4 +849,15 @@ public class Crop extends Operation2D {
         return doMosaic;
     }
 
+    /**
+     * Converts the rectangle into a java.awt.Polygon.
+     */
+    public static java.awt.Polygon rectangleToPolygon(Rectangle rect) {
+        java.awt.Polygon result = new java.awt.Polygon();
+        result.addPoint(rect.x, rect.y);
+        result.addPoint(rect.x + rect.width, rect.y);
+        result.addPoint(rect.x + rect.width, rect.y + rect.height);
+        result.addPoint(rect.x, rect.y + rect.height);
+        return result;
+    }
 }

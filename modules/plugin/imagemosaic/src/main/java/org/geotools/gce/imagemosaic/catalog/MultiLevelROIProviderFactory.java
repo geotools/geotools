@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.File;
@@ -5,18 +21,21 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.Converters;
-import org.geotools.util.logging.Logging;
 import org.opengis.filter.Filter;
 
+/**
+ * Factory class used for returning a {@link MultiLevelROIProvider} based on the input footprint properties
+ * and files
+ * 
+ * @author Andrea Aime GeoSolutions
+ * @author Nicola Lagomarsini GeoSolutions
+ */
 public class MultiLevelROIProviderFactory {
-
-    private final static Logger LOGGER = Logging.getLogger(MultiLevelROIProviderFactory.class);
 
     // well known properties
     public static final String SOURCE_PROPERTY = "footprint_source";
@@ -29,6 +48,8 @@ public class MultiLevelROIProviderFactory {
 
     // store types
     private static final String TYPE_SIDECAR = "sidecar";
+    
+    private static final String TYPE_RASTER = "raster";
 
     private MultiLevelROIProviderFactory() {
     }
@@ -51,7 +72,7 @@ public class MultiLevelROIProviderFactory {
 
         // load the type of config file
         String source = (String) properties.get(SOURCE_PROPERTY);
-        FootprintGeometryProvider provider;
+        FootprintGeometryProvider provider = null;
         if (source == null) {
             // see if we have the default whole mosaic footprint
             File defaultShapefileFootprint = new File(mosaicFolder, "footprints.shp");
@@ -65,15 +86,19 @@ public class MultiLevelROIProviderFactory {
             provider = new SidecarFootprintProvider(mosaicFolder);
         } else if (source.toLowerCase().endsWith(".shp")) {
             provider = buildShapefileSource(mosaicFolder, source, properties);
+        } else if(TYPE_RASTER.equals(source)){
+            // Raster masking
+            return new MultiLevelROIRasterProvider(mosaicFolder);
         } else {
             throw new IllegalArgumentException("Invalid source type, it should be a reference "
                     + "to a shapefile or 'sidecar', but was '" + source + "' instead");
         }
-
+        
+        // Create the provider
         // handle inset if necessary
         double inset = getInset(properties);
         FootprintInsetPolicy insetPolicy = getInsetPolicy(properties);
-        return new MultiLevelROIProvider(provider, inset, insetPolicy);
+        return new MultiLevelROIGeometryProvider(provider, inset, insetPolicy);
     }
 
     private static FootprintInsetPolicy getInsetPolicy(Properties properties) {

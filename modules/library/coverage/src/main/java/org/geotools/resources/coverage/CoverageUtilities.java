@@ -269,8 +269,13 @@ public final class CoverageUtilities {
      * @param roi {@link ROI} instance to set
      */
     public static void setROIProperty(Map<String, Object> properties, ROI roi) {
-        // If no ROI or no properties are defined, nothing is done
-        if (roi == null || properties == null) {
+        // If no properties is defined, nothing is done
+        if (properties == null) {
+            return;
+        }
+        // If No ROI is defined we remove ROI property from the property map
+        if (roi == null) {
+            properties.remove("GC_ROI");
             return;
         }
         // Otherwise ROI is set

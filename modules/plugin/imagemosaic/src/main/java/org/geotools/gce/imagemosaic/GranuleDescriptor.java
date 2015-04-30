@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
@@ -57,6 +58,10 @@ import javax.media.jai.TileScheduler;
 
 import org.apache.commons.beanutils.MethodUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROI;
@@ -112,6 +117,9 @@ public class GranuleDescriptor {
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GranuleDescriptor.class);
 
     private static final String AUXFILE_EXT = ".aux.xml";
+
+    /** Hints to use for avoiding to search for the ImageMosaic format*/
+    public static final Hints EXCLUDE_MOSAIC = new Hints(Utils.EXCLUDE_MOSAIC, true);
 
     static {
         try {
@@ -294,7 +302,13 @@ public class GranuleDescriptor {
         private GridToEnvelopeMapper geMapper;
 
         private boolean singleDimensionalGranule;
-        
+
+        /** {@link DatasetLayout} object containing information about granule internal structure*/
+        private DatasetLayout layout;
+
+        /** {@link MaskOverviewProvider} used for handling external ROIs and Overviews*/
+        private MaskOverviewProvider ovrProvider;
+
 	private void init(final BoundingBox granuleBBOX, final URL granuleUrl,
 			final ImageReaderSpi suggestedSPI, final MultiLevelROI roiProvider,
 			final boolean heterogeneousGranules, final boolean handleArtifactsFiltering, final Hints hints) {
@@ -304,8 +318,15 @@ public class GranuleDescriptor {
 		this.singleDimensionalGranule = true;
 		this.handleArtifactsFiltering = handleArtifactsFiltering;
     		filterMe = handleArtifactsFiltering && roiProvider != null;
-                
-		
+
+                // When looking for formats which may parse this file, make sure to exclude the ImageMosaicFormat as return
+                File granuleFile = DataUtilities.urlToFile(granuleUrl);
+                AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(granuleFile,
+                        EXCLUDE_MOSAIC);
+                AbstractGridCoverage2DReader gcReader = format.getReader(granuleFile);
+                // Getting Dataset Layout
+                layout = gcReader.getDatasetLayout();
+
 		// create the base grid to world transformation
 		ImageInputStream inStream = null;
 		ImageReader reader = null;
@@ -313,10 +334,11 @@ public class GranuleDescriptor {
 			//
 			//get info about the raster we have to read
 			//
+		        ovrProvider = new MaskOverviewProvider(layout, granuleFile, suggestedSPI);
 			
 			// get a stream
 		        if(cachedStreamSPI==null){
-		            cachedStreamSPI = Utils.getInputStreamSPIFromURL(granuleUrl);
+		            cachedStreamSPI = ovrProvider.getInputStreamSpi();
 		        }
 		        assert cachedStreamSPI!=null:"no cachedStreamSPI available!";
 			inStream = cachedStreamSPI.createInputStreamInstance(granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
@@ -332,8 +354,7 @@ public class GranuleDescriptor {
 			
 			// get a reader and try to cache the suggested SPI first
 			if(cachedReaderSPI == null){
-			    cachedReaderSPI = Utils.getReaderSpiFromStream(suggestedSPI, inStream);
-				
+			    cachedReaderSPI = ovrProvider.getImageReaderSpi();
 			}
 			if (reader == null) {
 			    if (cachedReaderSPI == null) {
@@ -361,6 +382,7 @@ public class GranuleDescriptor {
 			this.granuleLevels.put(Integer.valueOf(0), new GranuleOverviewLevelDescriptor(1, 1, originalDimension.width, originalDimension.height));
 			
 			////////////////////// Setting overviewController ///////////////////////
+			
 			if (heterogeneousGranules) {
 			    // //
 			    //
@@ -374,20 +396,17 @@ public class GranuleDescriptor {
                             final GranuleOverviewLevelDescriptor baseOverviewLevelDescriptor = granuleLevels.get(0);
 
                             // Variables initialization
-			    final int numberOfOvervies = reader.getNumImages(true) - 1;
+                            final int numberOfOvervies = ovrProvider.getNumOverviews();
 			    final AffineTransform2D baseG2W = baseOverviewLevelDescriptor.getGridToWorldTransform();
 			    final int width = baseOverviewLevelDescriptor.getWidth();
 			    final int height = baseOverviewLevelDescriptor.getHeight();
 			    final double resX = AffineTransform2D.getScaleX0(baseG2W);
 			    final double resY = AffineTransform2D.getScaleY0(baseG2W);
 			    final double[] highestRes = new double[]{resX, resY};
-			    final double[][] overviewsResolution = new double[numberOfOvervies][2];
 			    
 			    // Populating overviews and initializing overviewsController
-			    for (int i = 0; i < numberOfOvervies; i++){
-			        overviewsResolution[i][0]= (highestRes[0] * width) / reader.getWidth(i + 1);
-			        overviewsResolution[i][1]= (highestRes[1] * height) / reader.getHeight(i + 1);
-			    }
+                            final double[][] overviewsResolution = ovrProvider.getOverviewResolutions(
+                                    highestRes[0] * width, highestRes[1] * height);
 			    overviewsController = new OverviewsController(highestRes, numberOfOvervies, overviewsResolution);
 			}
                         //////////////////////////////////////////////////////////////////////////
@@ -707,8 +726,8 @@ public class GranuleDescriptor {
 			customizeReaderInitialization(reader, hints);
 			reader.setInput(inStream);
 			
-            // Checking for heterogeneous granules and if the mosaic is not multidimensional
-            if (request.isHeterogeneousGranules() && singleDimensionalGranule) {
+                        // Checking for heterogeneous granules and if the mosaic is not multidimensional
+                        if (request.isHeterogeneousGranules() && singleDimensionalGranule) {
 			    // create read parameters
 			    readParameters = new ImageReadParam();
 			    
@@ -724,17 +743,58 @@ public class GranuleDescriptor {
 			    imageIndex = index;
 			    readParameters = imageReadParameters;
 			}
-			
+                        // Defining an Overview Index value
+                        int ovrIndex = imageIndex;
+                        boolean isExternal = ovrProvider.isExternalOverview(imageIndex);
+                        // Define a new URL to use (it may change if using external overviews)
+                        URL granuleURLUpdated = granuleUrl;
+                        // If the file is external we must update the Granule elements
+                        if(isExternal){
+                            // Disposing File Reader and Stream
+                            try {
+                                if (inStream != null) {
+                                    inStream.close();
+                                }
+                            } finally {
+                                if (reader != null) {
+                                    reader.dispose();
+                                }
+                            }
+                            granuleURLUpdated = ovrProvider.getOvrURL();
+                            assert ovrProvider.getExternalOverviewInputStreamSpi() != null : "no cachedStreamSPI available for external overview!";
+                            inStream = ovrProvider.getExternalOverviewInputStreamSpi().createInputStreamInstance(granuleURLUpdated,
+                                    ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+                            // get a reader and try to cache the relevant SPI
+                            reader = ovrProvider.getImageReaderSpi().createReaderInstance();
+                            if (reader == null) {
+                                if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
+                                    LOGGER.warning(new StringBuilder(
+                                            "Unable to get s reader for granuleDescriptor ")
+                                            .append(this.toString()).append(" with request ")
+                                            .append(request.toString())
+                                            .append(" Resulting in no granule loaded: Empty result").toString());
+                                }
+                                return null;
+                            }
+                            // set input
+                            reader.setInput(inStream, false, false);
+                            // External Overview index
+                            ovrIndex = ovrProvider.getOverviewIndex(imageIndex);
+                            
+                        } else {
+                            ovrIndex = ovrProvider.getOverviewIndex(imageIndex);
+                        }
+
 			//get selected level and base level dimensions
-			final GranuleOverviewLevelDescriptor selectedlevel= getLevel(imageIndex,reader);
+			final GranuleOverviewLevelDescriptor selectedlevel= getLevel(ovrIndex,reader,imageIndex, isExternal);
 	
 			
 			// now create the crop grid to world which can be used to decide
 			// which source area we need to crop in the selected level taking
 			// into account the scale factors imposed by the selection of this
 			// level together with the base level grid to world transformation
-            AffineTransform2D cropWorldToGrid= new AffineTransform2D(selectedlevel.gridToWorldTransformCorner);
-            cropWorldToGrid=(AffineTransform2D) cropWorldToGrid.inverse();
+                        AffineTransform2D cropWorldToGrid= new AffineTransform2D(selectedlevel.gridToWorldTransformCorner);
+                        cropWorldToGrid=(AffineTransform2D) cropWorldToGrid.inverse();
 			// computing the crop source area which lives into the
 			// selected level raster space, NOTICE that at the end we need to
 			// take into account the fact that we might also decimate therefore
@@ -783,7 +843,7 @@ public class GranuleDescriptor {
 			RenderedImage raster;
 			try {
 				// read
-				raster= request.getReadType().read(readParameters,imageIndex, granuleUrl, selectedlevel.rasterDimensions, reader, hints,false);
+				raster= request.getReadType().read(readParameters,ovrIndex, granuleURLUpdated, selectedlevel.rasterDimensions, reader, hints,false);
 				
 			} catch (Throwable e) {
 				if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
@@ -833,13 +893,27 @@ public class GranuleDescriptor {
             // adjust roi
             if (useFootprint) {
 
-                ROIGeometry transformed;
+                ROI transformed;
                 try {
-                    transformed = roiProvider.getTransformedROI(finalRaster2Model.createInverse());
-                    if (transformed.getAsGeometry().isEmpty()) {
+                    // Getting Image Bounds
+                    Rectangle imgBounds = new Rectangle(raster.getMinX(), raster.getMinY(),
+                            raster.getWidth(), raster.getHeight());
+                    // Getting Transformed ROI
+                    transformed = roiProvider.getTransformedROI(finalRaster2Model.createInverse(),
+                            imageIndex, imgBounds, readParameters, request.getReadType());
+                    // Check for vectorial ROI
+                    if (transformed instanceof ROIGeometry
+                            && ((ROIGeometry) transformed).getAsGeometry().isEmpty()) {
                         // inset might have killed the geometry fully
                         return null;
-                    } 
+                    }
+                    // Check for Raster ROI
+                    if (transformed == null || transformed.getBounds().isEmpty()) {
+                        if (LOGGER.isLoggable(java.util.logging.Level.INFO))
+                            LOGGER.info("Unable to create a granuleDescriptor " + this.toString()
+                                    + " due to a problem when managing the ROI");
+                        return null;
+                    }
 
                     PlanarImage pi = PlanarImage.wrapRenderedImage(raster);
                     if(!transformed.intersects(pi.getBounds())) {
@@ -880,7 +954,7 @@ public class GranuleDescriptor {
 			// apply the affine transform  conserving indexed color model
 			final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, interpolation instanceof InterpolationNearest? Boolean.FALSE:Boolean.TRUE);
 			if(XAffineTransform.isIdentity(finalRaster2Model,Utils.AFFINE_IDENTITY_EPS)) {
-			    return new GranuleLoadingResult(raster, null, granuleUrl, doFiltering, pamDataset);
+			    return new GranuleLoadingResult(raster, null, granuleURLUpdated, doFiltering, pamDataset);
 			} else {
 				//
 				// In case we are asked to use certain tile dimensions we tile
@@ -929,9 +1003,11 @@ public class GranuleDescriptor {
                 iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());
                         RenderedImage renderedImage = iw.getRenderedImage();
                         Object roi = renderedImage.getProperty("ROI");
-				if( useFootprint && roi instanceof ROIGeometry && ((ROIGeometry) roi).getAsGeometry().isEmpty()){
+				if( useFootprint 
+				        && (roi instanceof ROIGeometry && ((ROIGeometry) roi).getAsGeometry().isEmpty())
+				        || (roi instanceof ROI && ((ROI)roi).getBounds().isEmpty())){
 				    //JAI not only transforms the ROI, but may also apply clipping to the image boundary
-				    //this results in an empty geometry in some edge cases
+				    //this results in an empty ROI in some edge cases
                 		    return null;
                 		}
 				// Propagate NoData
@@ -940,7 +1016,7 @@ public class GranuleDescriptor {
 				    t.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(iw.getNoData()));
 				    renderedImage = t;
 				}
-				return new GranuleLoadingResult(renderedImage, null, granuleUrl, doFiltering, pamDataset);
+				return new GranuleLoadingResult(renderedImage, null, granuleURLUpdated, doFiltering, pamDataset);
 			}
 		
 		} catch (IllegalStateException e) {
@@ -975,13 +1051,14 @@ public class GranuleDescriptor {
                 }
             }
 
-	private GranuleOverviewLevelDescriptor getLevel(final int index, final ImageReader reader) {
-
-		if(reader==null)
+	private GranuleOverviewLevelDescriptor getLevel(final int index, final ImageReader reader, final int imageIndex, final boolean external) {
+	    // Level index may change if using external overviews
+	    int indexValue = external ? imageIndex : index;
+	    if(reader==null)
 			throw new NullPointerException("Null reader passed to the internal GranuleOverviewLevelDescriptor method");		
 		synchronized (granuleLevels) {
-			if(granuleLevels.containsKey(Integer.valueOf(index)))
-				return granuleLevels.get(Integer.valueOf(index));
+			if(granuleLevels.containsKey(Integer.valueOf(indexValue)))
+				return granuleLevels.get(Integer.valueOf(indexValue));
 			else
 			{
 				//load level
@@ -1000,7 +1077,7 @@ public class GranuleDescriptor {
 					
 					// add the base level
 					final GranuleOverviewLevelDescriptor newLevel=new GranuleOverviewLevelDescriptor(scaleX,scaleY,levelDimension.width,levelDimension.height);
-					this.granuleLevels.put(Integer.valueOf(index),newLevel);
+					this.granuleLevels.put(Integer.valueOf(indexValue),newLevel);
 					
 					return newLevel;
 					
@@ -1044,7 +1121,7 @@ public class GranuleDescriptor {
 				reader.setInput(inStream, false, ignoreMetadata);
 				
 				// call internal method which will close everything
-				return getLevel(index, reader);
+				return getLevel(index, reader, index, false);
 
 			} catch (IllegalStateException e) {
 				

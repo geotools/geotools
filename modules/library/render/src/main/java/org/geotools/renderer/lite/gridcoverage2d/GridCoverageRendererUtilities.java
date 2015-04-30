@@ -317,6 +317,7 @@ final class GridCoverageRendererUtilities {
     static GridCoverage2D crop(
             GridCoverage2D gc,
             GeneralEnvelope envelope, 
+            double[] background,
             final Hints hints) {
         final GeneralEnvelope oldEnvelope = (GeneralEnvelope) gc.getEnvelope();
         // intersect the envelopes in order to prepare for cropping the coverage
@@ -335,6 +336,7 @@ final class GridCoverageRendererUtilities {
         final ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters().clone();
         param.parameter("source").setValue(gc);
         param.parameter("Envelope").setValue(intersectionEnvelope);
+        param.parameter("destNoData").setValue(background);
         return (GridCoverage2D) ((Crop)processor.getOperation("CoverageCrop")).doOperation(param, hints);
     
     }

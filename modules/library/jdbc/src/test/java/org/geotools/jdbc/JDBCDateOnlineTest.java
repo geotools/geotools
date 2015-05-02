@@ -35,7 +35,7 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
         FeatureSource fs = dataStore.getFeatureSource( tname("dates") );
         
         FilterFactory ff = dataStore.getFilterFactory();
-    
+        
         DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
     
         TimeZone[] zones = { TimeZone.getTimeZone("Etc/GMT+12"),
@@ -60,32 +60,32 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
     }
 
     public void testFilterByTimeStamp() throws Exception {
-        FeatureSource fs = dataStore.getFeatureSource(tname("dates"));
+        FeatureSource fs = dataStore.getFeatureSource( tname("dates"));
     
         FilterFactory ff = dataStore.getFilterFactory();
     
         // equal to
-        Filter f = ff.equals(ff.property(aname("dt")),
+        Filter f = ff.equals( ff.property(aname("dt")),
                 ff.literal("2009-06-28 15:12:41"));
-        assertEquals(1, fs.getCount(new DefaultQuery(tname("dates"), f)));
+        assertEquals(1, fs.getCount(new DefaultQuery( tname("dates"), f)));
     
         f = ff.equals(ff.property(aname("dt")), ff.literal(new SimpleDateFormat(
                 "HH:mm:ss,dd-yyyy-MM").parse("15:12:41,28-2009-06")));
-        assertEquals(1, fs.getCount(new DefaultQuery(tname("dates"), f)));
+        assertEquals( 1, fs.getCount(new DefaultQuery( tname("dates"), f)));
     }
     
     public void testFilterByTime() throws Exception {
-        FeatureSource fs = dataStore.getFeatureSource(tname("dates"));
+        FeatureSource fs = dataStore.getFeatureSource( tname("dates") );
     
         FilterFactory ff = dataStore.getFilterFactory();
     
         // greather than or equal to
         Filter f = ff.greaterOrEqual(ff.property(aname("t")),
                 ff.literal("13:10:12"));
-        assertEquals(3, fs.getCount(new DefaultQuery(tname("dates"), f)));
+        assertEquals(3, fs.getCount(new DefaultQuery( tname("dates"), f)));
     
-        f = ff.greaterOrEqual(ff.property(aname("t")),
-                ff.literal(new SimpleDateFormat("ss:HH:mm").parse("12:13:10")));
-        assertEquals(3, fs.getCount(new DefaultQuery(tname("dates"), f)));
+        f = ff.greaterOrEqual( ff.property(aname("t")),
+                ff.literal( new SimpleDateFormat("ss:HH:mm").parse("12:13:10")));
+        assertEquals(3, fs.getCount(new DefaultQuery( tname("dates"), f)));
     }
 }

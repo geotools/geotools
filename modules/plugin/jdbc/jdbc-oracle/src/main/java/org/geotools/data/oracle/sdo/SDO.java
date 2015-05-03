@@ -2774,6 +2774,16 @@ public final class SDO {
             coordSeq = CoordinateSequences.ensureValidRing(
                     gf.getCoordinateSequenceFactory(), coordSeq);
             ring = gf.createLinearRing(coordSeq);
+        } else if (INTERPRETATION == 2) {
+            CoordinateSequence coordSeq = subList(gf.getCoordinateSequenceFactory(), coords, GTYPE,
+                    elemInfo, triplet, false);
+            // not calling ensureValidRing, according to Oracle docs tolerance is not considered:
+            // For example, five coordinates are used to describe a polygon made up of two connected
+            // circular arcs. Points 1, 2, and 3 define the first arc, and points 3, 4, and 5 define
+            // the second arc. The coordinates for points 1 and 5 must be the same
+            // (tolerance is not considered), and point 3 is not repeated.
+
+            ring = (LinearRing) gf.createCurvedGeometry(coordSeq);
         } else if (INTERPRETATION == 3) {
             // rectangle does not maintain measures
             //

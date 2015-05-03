@@ -82,6 +82,10 @@ public class OracleCurvesTestSetup extends JDBCDelegatingTestSetup {
                 + " sdo_elem_info_array(1,1005,2, 1,2,1, 5,2,2,  11,2005,2, 11,2,1, 15,2,2, 21,1005,2, 21,2,1, 25,2,2),"
                 + " sdo_ordinate_array(6,10, 10,1, 14,10, 10,14,  6,10, 13,10, 10,2,  7,10, 10,13, 13,10, 106,110, 110,101, 114,110, 110,114,106,110)))";
         run(sql);
+
+        sql = "INSERT INTO CURVES VALUES (9, 'Compound polygon 2', "
+                + "sdo_geometry (2003, 32632, null, sdo_elem_info_array(1,1003,2), sdo_ordinate_array(15, 145, 20, 150, 15, 155, 10, 150, 15, 145)))";
+        run(sql);
     }
 
     private void dropCurveTable() throws Exception {

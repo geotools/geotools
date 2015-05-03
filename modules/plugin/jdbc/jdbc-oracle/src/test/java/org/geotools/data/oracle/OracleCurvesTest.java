@@ -16,7 +16,7 @@
  */
 package org.geotools.data.oracle;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 import java.util.List;
 
@@ -196,6 +196,27 @@ public class OracleCurvesTest extends JDBCTestSupport {
 
         CircularString cs = (CircularString) components.get(1);
         assertArrayEquals(new double[] { 14, 10, 10, 14, 6, 10 }, cs.getControlPoints(), 0d);
+    }
+
+    @Test
+    public void testCompoundPolygon2() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")),
+                ff.literal("Compound polygon 2"), true);
+        ContentFeatureCollection fc = fs.getFeatures(filter);
+        assertEquals(1, fc.size());
+        SimpleFeature feature = DataUtilities.first(fc);
+        Geometry g = (Geometry) feature.getDefaultGeometry();
+        assertNotNull(g);
+        assertTrue(g instanceof Polygon);
+        Polygon p = (Polygon) g;
+        assertEquals(0, p.getNumInteriorRing());
+        assertTrue(p.getExteriorRing() instanceof CircularRing);
+        CircularRing shell = (CircularRing) p.getExteriorRing();
+
+        assertArrayEquals(new double[] { 15, 145, 20, 150, 15, 155, 10, 150, 15, 145 },
+                shell.getControlPoints(), 0d);
     }
 
     @Test

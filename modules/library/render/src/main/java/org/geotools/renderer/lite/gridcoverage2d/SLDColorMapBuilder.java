@@ -24,11 +24,13 @@ import java.util.MissingResourceException;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.lite.gridcoverage2d.LinearColorMap.LinearColorMapType;
+import org.geotools.renderer.style.ExpressionExtractor;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.util.NumberRange;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 
 /**
  * Builder facility for creating a        {@link LinearColorMap}        using elements from       {@link RasterSymbolizer}               {@link ColorMapTransform}        element. <p> This class is not intended to be thread safe.
@@ -445,9 +447,13 @@ public class SLDColorMapBuilder {
 	private static Color getColor(ColorMapEntry entry)
 			throws NumberFormatException {
 		ColorMapUtilities.ensureNonNull("ColorMapEntry",entry);
-		final Expression color = entry.getColor();
+		Expression color = entry.getColor();
 		ColorMapUtilities.ensureNonNull("color",color);
-		final String  colorString= (String) color.evaluate(null, String.class);
+		String  colorString= (String) color.evaluate(null, String.class);
+		if(colorString != null && colorString.startsWith("${")) {
+                    color = ExpressionExtractor.extractCqlExpressions(colorString);
+                    colorString = color.evaluate(null, String.class);
+                }
 		ColorMapUtilities.ensureNonNull("colorString",colorString);
 		return Color.decode(colorString);
 	}
@@ -479,6 +485,11 @@ public class SLDColorMapBuilder {
 			opacityValue = (Double) opacity.evaluate(null, Double.class);
 		else
 			return 1.0;
+		if(opacityValue == null && opacity instanceof Literal) {
+                    String opacityExp = opacity.evaluate(null, String.class);
+                    opacity = ExpressionExtractor.extractCqlExpressions(opacityExp);
+                    opacityValue = opacity.evaluate(null, Double.class);
+                }
 		if ((opacityValue.doubleValue() - 1) > 0
 				|| opacityValue.doubleValue() < 0) {
 			throw new IllegalArgumentException(Errors.format(
@@ -496,6 +507,11 @@ public class SLDColorMapBuilder {
 		Expression quantity = entry.getQuantity();
 		ColorMapUtilities.ensureNonNull("quantity",quantity);
 		Double quantityString = (Double) quantity.evaluate(null, Double.class);
+		if(quantityString == null && quantity instanceof Literal) {
+		    String quantityExp = quantity.evaluate(null, String.class);
+		    quantity = ExpressionExtractor.extractCqlExpressions(quantityExp);
+		    quantityString = quantity.evaluate(null, Double.class);
+		}
 		ColorMapUtilities.ensureNonNull("quantityString",quantityString);
 		double q = quantityString.doubleValue();
 		return q;

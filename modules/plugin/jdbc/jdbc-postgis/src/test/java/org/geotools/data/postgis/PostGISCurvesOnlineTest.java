@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.Hints;
@@ -292,6 +293,18 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
 
         CircularString cs = (CircularString) mls.getGeometryN(1);
         assertArrayEquals(new double[] { 4, 0, 4, 4, 8, 4 }, cs.getControlPoints(), 0d);
+
+    }
+
+    @Test
+    public void testSimplify() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
+        Query q = new Query();
+        q.getHints().put(Hints.GEOMETRY_SIMPLIFICATION, new Double(0.1));
+        ContentFeatureCollection fc = fs.getFeatures(q);
+        try (SimpleFeatureIterator fi = fc.features()) {
+            // check they have not been simplified
+        }
 
     }
 

@@ -246,7 +246,7 @@ public final class Decimator {
                     if(elements == null) {
                         elements = new Geometry[collection.getNumGeometries()];
                         for (int j = 0; j < i; j++) {
-                            Geometry element = source.getGeometryN(j);
+                            Geometry element = collection.getGeometryN(j);
                             elements[j] = element;
                             accumulateGeometryType(elementType, element);
                         }
@@ -320,7 +320,8 @@ public final class Decimator {
                 spanx = -1;
                 spany = -1;
             }
-            LiteCoordinateSequence seq = (LiteCoordinateSequence) ls.getCoordinateSequence();
+            LiteCoordinateSequence seq = LiteCoordinateSequenceFactory.lite(ls
+                    .getCoordinateSequence());
             boolean loop = ls instanceof LinearRing;
             if (!loop && seq.size() > 1) {
                 double x0 = seq.getOrdinate(0, 0);

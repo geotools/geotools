@@ -1,6 +1,23 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.geometry.jts;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Rectangle;
@@ -16,6 +33,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.Point;
 
 /**
@@ -27,6 +45,8 @@ public class DecimatorTest {
 
     GeometryFactory gf = new GeometryFactory();
     LiteCoordinateSequenceFactory csf = new LiteCoordinateSequenceFactory();
+
+    private MathTransform identity = new AffineTransform2D(new AffineTransform());
 
     /**
      * http://jira.codehaus.org/browse/GEOT-1923
@@ -106,8 +126,6 @@ public class DecimatorTest {
     public void testDistance() throws Exception {
         LineString ls = gf.createLineString(csf.create(new double[] {0,0,1,1,2,2,3,3,4,4,5,5}));
         
-        MathTransform identity = new AffineTransform2D(new AffineTransform());
-        
         Decimator d = new Decimator(identity, new Rectangle(0,0,5,5), 0.8);
         d.decimateTransformGeneralize((Geometry) ls.clone(), identity);
         assertEquals(6, ls.getNumPoints());
@@ -125,8 +143,6 @@ public class DecimatorTest {
     public void testDecimate3DPoint() throws Exception {
         Point p = gf.createPoint(csf.create(new double[] {0,1,2}, 3));
         
-        MathTransform identity = new AffineTransform2D(new AffineTransform());
-        
         Decimator d = new Decimator(identity, new Rectangle(0,0,5,5), 0.8);
         d.decimateTransformGeneralize(p, identity);
         assertEquals(1, p.getNumPoints());
@@ -137,8 +153,6 @@ public class DecimatorTest {
     public void testDecimate3DLine() throws Exception {
     	LineString ls = gf.createLineString(csf.create(new double[] {0,0,1, 1,2,1, 3,3,4 ,4,5,5}, 3));
     	assertEquals(4, ls.getNumPoints());
-        
-        MathTransform identity = new AffineTransform2D(new AffineTransform());
         
         Decimator d = new Decimator(identity, new Rectangle(0,0,5,5), 0.8);
         d.decimateTransformGeneralize(ls, identity);
@@ -180,5 +194,19 @@ public class DecimatorTest {
         double[] dx = Decimator.computeGeneralizationDistances(mt, new Rectangle(10, 10), 1);
         assertEquals(10, dx[0], 0d);
         assertEquals(10, dx[1], 0d);
+    }
+
+    @Test
+    public void testDecimateCollection() throws Exception {
+        WKTReader2 reader = new WKTReader2();
+        MultiLineString origin = (MultiLineString) reader
+                .read("MULTICURVE((0 0, 5 5),CIRCULARSTRING(4 0, 4 4, 8 4))");
+        Decimator d = new Decimator(0.1, 0.1);
+        MultiLineString simplified = (MultiLineString) d.decimateTransformGeneralize(origin,
+                identity);
+        assertEquals(origin.getGeometryN(0), simplified.getGeometryN(0));
+        assertNotEquals(origin.getGeometryN(1), simplified.getGeometryN(1));
+        assertEquals("CircularString", origin.getGeometryN(1).getGeometryType());
+        assertEquals("LineString", simplified.getGeometryN(1).getGeometryType());
     }
 }

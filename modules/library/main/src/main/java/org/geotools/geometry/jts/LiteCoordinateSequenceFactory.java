@@ -71,4 +71,28 @@ public class LiteCoordinateSequenceFactory implements CoordinateSequenceFactory 
     public CoordinateSequence create(double[] points, int dimension) {
         return new LiteCoordinateSequence(points, dimension);
     }
+
+    /**
+     * Cast to a {@link LiteCoordinateSequence}
+     * <p>
+     * This method first checks if <tt>cs</tt> is an instanceof {@link LiteCoordinateSequence}, if
+     * it is, itself is returned. If not, <tt>cs</tt> is cloned into a new
+     * {@link LiteCoordinateSequence}
+     * </p>
+     * <p>
+     * If cs is null, null is returned.
+     * </p>
+     * 
+     * @param cs The source {@link CoordinateSequence}. Can be null.
+     * @return A LiteCoordinateSequence, or null if <tt>cs</tt> was null.
+     */
+    public static LiteCoordinateSequence lite(CoordinateSequence cs) {
+        if (cs instanceof LiteCoordinateSequence) {
+            return (LiteCoordinateSequence) cs;
+        } else if (cs == null) {
+            return null;
+        } else {
+            return new LiteCoordinateSequence(cs.toCoordinateArray());
+        }
+    }
 }

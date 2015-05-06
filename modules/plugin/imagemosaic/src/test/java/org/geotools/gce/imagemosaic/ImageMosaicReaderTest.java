@@ -336,27 +336,19 @@ public class ImageMosaicReaderTest extends Assert{
     	TestData.unzipFile(this, "water_temp3/watertemp.zip");
 	    final URL timeElevURL = TestData.url(this, "water_temp3");
 	    
-	    //place H2 file in the dir
-	    FileWriter out=null;
-	    try{
-	    	out = new FileWriter(new File(TestData.file(this, "."),"/water_temp3/datastore.properties"));
-	    	out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n");
-	    	out.write("database=imagemosaic\n");
-	    	out.write("dbtype=h2\n");
-	    	out.write("Loose\\ bbox=true #important for performances\n");
-	    	out.write("Estimated\\ extends=false #important for performances\n");
-	    	out.write("user=geosolutions\n");
-	    	out.write("passwd=geosolutions\n");
-	    	out.write("validate \\connections=true #important for avoiding errors\n");
-	    	out.write("Connection\\ timeout=3600\n");
-	    	out.write("max \\connections=10 #important for performances, internal pooling\n");
-	    	out.write("min \\connections=5  #important for performances, internal pooling\n");
-	    	out.flush();
-	    } finally {
-	    	if(out!=null){
-	    		IOUtils.closeQuietly(out);
-	    	}
-	    }
+        // place H2 file in the dir
+        FileWriter out = null;
+        try {
+            out = new FileWriter(new File(TestData.file(this, "."),
+                    "/water_temp3/datastore.properties"));
+            out.write("database=imagemosaic\n");
+            out.write(H2_SAMPLE_PROPERTIES);
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
 	    
 	    
 	    // now start the test
@@ -458,17 +450,8 @@ public class ImageMosaicReaderTest extends Assert{
         try {
             out = new FileWriter(new File(TestData.file(this, "."),
                     "/water_temp5/datastore.properties"));
-            out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n");
             out.write("database=imagemosaic\n");
-            out.write("dbtype=h2\n");
-            out.write("Loose\\ bbox=true #important for performances\n");
-            out.write("Estimated\\ extends=false #important for performances\n");
-            out.write("user=geosolutions\n");
-            out.write("passwd=geosolutions\n");
-            out.write("validate\\ connections=true #important for avoiding errors\n");
-            out.write("Connection\\ timeout=3600\n");
-            out.write("max\\ connections=10 #important for performances, internal pooling\n");
-            out.write("min\\ connections=5  #important for performances, internal pooling\n");
+            out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
         } finally {
             if (out != null) {
@@ -970,21 +953,19 @@ public class ImageMosaicReaderTest extends Assert{
         File zipFile = new File(workDir,"temperature.zip");
         FileUtils.copyFile(TestData.file(this, "temperature.zip"), zipFile);
         TestData.unzipFile(this, "emptyMosaic/temperature.zip");
-        FileWriter out = new FileWriter(new File(TestData.file(this, "."),"/emptyMosaic/datastore.properties"));
-        out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n");
-        out.write("database=imagemosaic\n");
-        out.write("dbtype=h2\n");
-        out.write("Loose\\ bbox=true #important for performances\n");
-        out.write("Estimated\\ extends=false #important for performances\n");
-        out.write("user=geosolutions\n");
-        out.write("passwd=geosolutions\n");
-        out.write("validate\\ connections=true #important for avoiding errors\n");
-        out.write("Connection\\ timeout=3600\n");
-        out.write("max\\ connections=10 #important for performances, internal pooling\n");
-        out.write("min\\ connections=5  #important for performances, internal pooling\n");
-        out.flush();
-        out.close();
-        
+        FileWriter out = null;
+        try {
+            out = new FileWriter(new File(TestData.file(this, "."),
+                    "/emptyMosaic/datastore.properties"));
+            out.write("database=imagemosaic\n");
+            out.write(H2_SAMPLE_PROPERTIES);
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
+
         FileUtils.deleteQuietly(zipFile);
         
         final URL emptyMosaicURL = TestData.url(this, "emptyMosaic");
@@ -1039,6 +1020,105 @@ public class ImageMosaicReaderTest extends Assert{
                 fi.close();
             }
             
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    /**
+     * Simple test method to test emptyMosaic creation support followed by harvesting
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testEmpytMosaicXML() throws Exception {
+
+        final File workDir = new File(TestData.file(this, "."), "emptyMosaicXML");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        File zipFile = new File(workDir, "temperature2.zip");
+        FileUtils.copyFile(TestData.file(this, "temperature2.zip"), zipFile);
+        TestData.unzipFile(this, "emptyMosaicXML/temperature2.zip");
+        FileWriter out = null;
+        try {
+            out = new FileWriter(new File(TestData.file(this, "."),
+                    "/emptyMosaicXML/datastore.properties"));
+            out.write("database=imagemosaic\n");
+            out.write(H2_SAMPLE_PROPERTIES);
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
+
+        FileUtils.deleteQuietly(zipFile);
+
+        final URL emptyMosaicURL = TestData.url(this, "emptyMosaicXML");
+        final AbstractGridFormat mosaicFormat = TestUtils.getFormat(emptyMosaicURL);
+        ImageMosaicReader reader = TestUtils.getReader(emptyMosaicURL, mosaicFormat);
+
+        String[] metadataNames = reader.getMetadataNames();
+        assertNull(metadataNames);
+
+        final File tempDir = new File(TestData.file(this, "."), "water_temp4");
+        if (!tempDir.mkdir()) {
+            FileUtils.deleteDirectory(tempDir);
+            assertTrue("Unable to create workdir:" + tempDir, tempDir.mkdir());
+        }
+        FileUtils
+                .copyFile(TestData.file(this, "watertemp.zip"), new File(tempDir, "watertemp.zip"));
+        TestData.unzipFile(this, "water_temp4/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, "water_temp4");
+        File source = DataUtilities.urlToFile(timeElevURL);
+        File testDataDir = TestData.file(this, ".");
+        File directory1 = new File(testDataDir, "singleHarvest2");
+        if (directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        FileUtils.copyDirectory(source, directory1);
+
+        // ok, let's create a mosaic with a single granule and check its times
+        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        File renamed = new File(directory1, "NCOM_wattemp_000_20081031T0000000_12.tiff");
+
+        try {
+            // now go and harvest the other file
+            List<HarvestedSource> summary = reader.harvest(null, renamed, null);
+            assertEquals(1, summary.size());
+            HarvestedSource hf = summary.get(0);
+            assertEquals(renamed.getCanonicalFile(), ((File) hf.getSource()).getCanonicalFile());
+            assertTrue(hf.success());
+
+            // the harvest put the file in the same coverage
+            reader = TestUtils.getReader(emptyMosaicURL, mosaicFormat);
+            assertEquals(1, reader.getGridCoverageNames().length);
+            metadataNames = reader.getMetadataNames();
+            assertNotNull(metadataNames);
+            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            assertEquals("2008-10-31T00:00:00.000Z",
+                    reader.getMetadataValue(metadataNames[0]));
+
+            // check the granule catalog
+            String coverageName = reader.getGridCoverageNames()[0];
+            GranuleSource granules = reader.getGranules(coverageName, true);
+            assertEquals(1, granules.getCount(Query.ALL));
+            Query q = new Query(Query.ALL);
+            SimpleFeatureIterator fi = granules.getGranules(q).features();
+            try {
+                assertTrue(fi.hasNext());
+                SimpleFeature f = fi.next();
+                String expected = "../singleHarvest2/NCOM_wattemp_000_20081031T0000000_12.tiff"
+                        .replace('/', File.separatorChar);
+                assertEquals(expected, f.getAttribute("location"));
+                assertEquals("2008-10-31T00:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+            } finally {
+                fi.close();
+            }
+
         } finally {
             reader.dispose();
         }
@@ -3100,17 +3180,8 @@ public class ImageMosaicReaderTest extends Assert{
         try {
             out = new FileWriter(
                     new File(TestData.file(this, "."), "/stop-it/datastore.properties"));
-            out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n");
             out.write("database=imagemosaic\n");
-            out.write("dbtype=h2\n");
-            out.write("Loose\\ bbox=true #important for performances\n");
-            out.write("Estimated\\ extends=false #important for performances\n");
-            out.write("user=geosolutions\n");
-            out.write("passwd=geosolutions\n");
-            out.write("validate \\connections=true #important for avoiding errors\n");
-            out.write("Connection\\ timeout=3600\n");
-            out.write("max \\connections=10 #important for performances, internal pooling\n");
-            out.write("min \\connections=5  #important for performances, internal pooling\n");
+            out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
         } finally {
             if (out != null) {

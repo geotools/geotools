@@ -84,7 +84,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
     /**
      * Small number for floating point comparaisons.
      */
-    private static final double EPS = 1E-10;
+    private static final double EPS = 1E-9;
 
     /**
      * A unit of one millisecond.
@@ -926,7 +926,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
          * This shorter path is essential for proper working of
          * createOperationStep(GeographicCRS,ProjectedCRS).
          */
-        final Matrix linear = createLinearConversion(sourceCRS, targetCRS, 1E-9);
+        final Matrix linear = createLinearConversion(sourceCRS, targetCRS, EPS);
         if (linear != null) {
             return createFromAffineTransform(AXIS_CHANGES, sourceCRS, targetCRS, linear);
         }

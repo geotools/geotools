@@ -609,7 +609,19 @@ public class GeneralMatrix implements XMatrix, Serializable {
     public boolean equals(final Matrix matrix, final double tolerance) {
         return epsilonEquals(this, matrix, tolerance);
     }
-
+    
+    static int hashCode( final Matrix m ){
+        final int prime = 31;
+        int result = 1;
+        
+        if( m == null ){
+            return prime * result;
+        }
+        result = prime * result + m.getNumRow();
+        result = prime * result + m.getNumCol();
+        result = prime * result + (int) m.getElement(0, 0);
+        return result;
+    }
     /**
      * Compares the element values.
      */

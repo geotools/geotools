@@ -82,7 +82,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
     static final int PRIORITY = NORMAL_PRIORITY;
 
     /**
-     * Small number for floating point comparaisons.
+     * Small number for floating point comparisons.
      */
     private static final double EPS = 1E-9;
 

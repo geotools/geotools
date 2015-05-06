@@ -17,6 +17,7 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.awt.geom.AffineTransform;
+
 import org.opengis.referencing.operation.Matrix;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -139,6 +140,10 @@ public class Matrix3 extends GeneralMatrix implements XMatrix {
                mat.data[6]==0                     && mat.data[7]==0                     && mat.data[8]==1;
     }
 
+     @Override
+    public int hashCode() {
+        return GeneralMatrix.hashCode(this);
+    }
     /**
      * {@inheritDoc}
      */
@@ -160,6 +165,6 @@ public class Matrix3 extends GeneralMatrix implements XMatrix {
      */
     @Override
     public Matrix3 clone() {
-        return (Matrix3) super.clone();
+        return new Matrix3(this);
     }
 }

@@ -219,6 +219,35 @@ public class GeneralMatrixTest {
         gma.invert();
         GeneralMatrix gma2 = new GeneralMatrix(arrayA);
         GeneralMatrix.epsilonEquals(gma, gma2, EPSILON_TOLERANCE);
+        
+        // the following is a regression noticed during change to EJML
+        // OrderedAxisAuthorityFactoryTest relies on DefaultCoordinateOperationFactory checking inverse
+        // accuracy to 1E-9, previously vecmath accomplished 1E-10
+        GeneralMatrix matrix = new GeneralMatrix(
+                new double[][]{
+                    {1.0000000000000002, 0.0, -1.1641532182693481E-10},
+                    {0.0, 1.0000000000000002, 0.0},
+                    {0.0, 0.0, 1.0}});
+        
+        GeneralMatrix inverse = matrix.clone();
+        inverse.invert();
+        matrix.mul( inverse );
+
+        
+        GeneralMatrix sourceScale = new GeneralMatrix( new double[][]{
+                {0.9996, 0.0, 500000.0},
+                {0.0, 0.9996, 0.0},
+                {0.0, 0.0, 1.0}});
+        GeneralMatrix targetScale = new GeneralMatrix( new double[][]{
+                {0.9996, 0.0, 500000.0},
+                {0.0, 0.9996, 0.0},
+                {0.0, 0.0, 1.0}});
+        sourceScale.invert();
+        targetScale.multiply(sourceScale);
+        
+        assertFalse("inverse exact", targetScale.isIdentity());
+        assertFalse("inverse 1E-10", targetScale.isIdentity(1E-10));
+        assertTrue("inverse 1E-9", targetScale.isIdentity(1E-9));
     }
 
     @Test

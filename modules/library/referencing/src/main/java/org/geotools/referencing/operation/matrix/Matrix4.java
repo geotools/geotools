@@ -106,6 +106,6 @@ public class Matrix4 extends GeneralMatrix implements XMatrix {
      */
     @Override
     public Matrix4 clone() {
-        return (Matrix4) super.clone();
+        return new Matrix4( this );
     }
 }

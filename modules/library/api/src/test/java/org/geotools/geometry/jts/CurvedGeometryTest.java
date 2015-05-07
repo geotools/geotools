@@ -16,7 +16,9 @@
  */
 package org.geotools.geometry.jts;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
@@ -27,6 +29,8 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 public class CurvedGeometryTest {
@@ -267,6 +271,90 @@ public class CurvedGeometryTest {
         assertEquals(
                 "COMPOUNDCURVE(CIRCULARSTRING(10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 10.0 10.0))",
                 wkt);
+    }
+
+    @Test
+    public void testCurvePolygons() {
+        CurvePolygon curved = buildCurvePolygon();
+
+        // envelope check
+        Envelope env = curved.getEnvelopeInternal();
+        assertEnvelopeEquals(new Envelope(-10, 10, -10, 10), env);
+
+        // check linearization
+        assertEquals(CircularArc.BASE_SEGMENTS_QUADRANT * 4 + 1 + 5, curved.getNumPoints());
+
+        // check cloning
+        CurvePolygon cloned = (CurvePolygon) curved.clone();
+        assertEquals(curved, cloned);
+
+        // check perimeter, not enough control points to have a accurate estimate
+        assertEquals(2 * 10 * Math.PI + 8, curved.getLength(), 1e-1);
+
+        // topological operation check
+        assertTrue(curved.intersects(JTS.toGeometry(new Envelope(0, 10, 5, 15))));
+        assertTrue(curved.intersects(JTS.toGeometry(new Envelope(8, 12, -2, 2))));
+
+        // check curved WKT generation
+        String wkt = curved.toCurvedText();
+        assertEquals(
+                "CURVEPOLYGON(CIRCULARSTRING(-10.0 0.0, 0.0 10.0, 10.0 0.0, 0.0 -10.0, -10.0 0.0), (-1.0 -1.0, -1.0 1.0, 1.0 1.0, 1.0 -1.0, -1.0 -1.0))",
+                wkt);
+    }
+
+    @Test
+    public void testMultiSurface() {
+        CurvePolygon p1 = buildCurvePolygon();
+
+        LinearRing shell = new LinearRing(new CoordinateArraySequence(new Coordinate[] {
+                new Coordinate(20, 20), new Coordinate(24, 20), new Coordinate(24, 24),
+                new Coordinate(20, 24), new Coordinate(20, 20) }), GEOMETRY_FACTORY);
+        LinearRing hole = new LinearRing(new CoordinateArraySequence(new Coordinate[] {
+                new Coordinate(22, 22), new Coordinate(23, 22), new Coordinate(23, 23),
+                new Coordinate(23, 22), new Coordinate(22, 22) }), GEOMETRY_FACTORY);
+        Polygon p2 = new Polygon(shell, new LinearRing[] { hole }, GEOMETRY_FACTORY);
+        
+        MultiSurface ms = new MultiSurface(new Polygon[] {p1, p2}, GEOMETRY_FACTORY,
+                Double.MAX_VALUE);
+
+        // envelope check
+        Envelope env = ms.getEnvelopeInternal();
+        assertEnvelopeEquals(new Envelope(-10, 24, -10, 24), env);
+
+        // check linearization
+        assertEquals((CircularArc.BASE_SEGMENTS_QUADRANT * 4 + 1 + 5) + (5 + 5), ms.getNumPoints());
+
+        // check cloning
+        MultiSurface cloned = (MultiSurface) ms.clone();
+        assertEquals(ms, cloned);
+
+        // check perimeter, not enough control points to have a accurate estimate
+        assertEquals((2 * 10 * Math.PI + 8) + (16 + 4), ms.getLength(), 1e-1);
+
+        // topological operation check
+        assertTrue(ms.intersects(JTS.toGeometry(new Envelope(0, 10, 5, 15))));
+        assertTrue(ms.intersects(JTS.toGeometry(new Envelope(8, 12, -2, 2))));
+
+        // check curved WKT generation
+        String wkt = ms.toCurvedText();
+        assertEquals(
+                "MULTISURFACE(CURVEPOLYGON(CIRCULARSTRING(-10.0 0.0, 0.0 10.0, 10.0 0.0, 0.0 -10.0, -10.0 0.0), "
+                        + "(-1.0 -1.0, -1.0 1.0, 1.0 1.0, 1.0 -1.0, -1.0 -1.0)), ((20.0 20.0, 24.0 20.0, 24.0 24.0, 20.0 24.0, 20.0 20.0), "
+                        + "(22.0 22.0, 23.0 22.0, 23.0 23.0, 23.0 22.0, 22.0 22.0)))",
+                wkt);
+    }
+
+    private CurvePolygon buildCurvePolygon() {
+        double[] circleControlPoints = new double[] { -10, 0, 0, 10, 10, 0, 0, -10, -10, 0 };
+        CircularRing shell = new CircularRing(circleControlPoints, GEOMETRY_FACTORY,
+                Double.MAX_VALUE);
+
+        LinearRing hole = new LinearRing(new CoordinateArraySequence(new Coordinate[] {
+                new Coordinate(-1, -1), new Coordinate(-1, 1), new Coordinate(1, 1),
+                new Coordinate(1, -1), new Coordinate(-1, -1) }), GEOMETRY_FACTORY);
+        CurvePolygon curved = new CurvePolygon(shell, new LinearRing[] { hole }, GEOMETRY_FACTORY,
+                Double.MAX_VALUE);
+        return curved;
     }
 
     private void assertEnvelopeEquals(Envelope envelope, Envelope env) {

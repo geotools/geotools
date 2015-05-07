@@ -19,6 +19,7 @@ package org.geotools.geometry.jts;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
@@ -26,6 +27,7 @@ import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryComponentFilter;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
@@ -59,6 +61,20 @@ public class CurvedGeometryFactory extends GeometryFactory {
     }
 
     /**
+     * Creates a {@link CircularString}
+     * 
+     * @param dimension Number of dimensions in the control point array. For the time being, any
+     *        value other than 2 will cause a IllegalArgumentException
+     */
+    public LineString createCircularString(int dimension, double... controlPoints) {
+        if (dimension != 2) {
+            throw new IllegalArgumentException(
+                    "Invalid dimension value, right now only 2 dimensional curves are supported");
+        }
+        return new CircularString(controlPoints, this, tolerance);
+    }
+
+    /**
      * Creates a {@link CircularString} or a {@link CircularRing} depending on whether the points
      * are forming a closed ring, or not
      * 
@@ -76,6 +92,13 @@ public class CurvedGeometryFactory extends GeometryFactory {
         } else {
             return new CircularString(controlPoints, this, tolerance);
         }
+    }
+
+    /**
+     * Creates a {@link CircularString}
+     */
+    public LineString createCircularString(CoordinateSequence cs) {
+        return new CircularString(cs, this, tolerance);
     }
 
     /**
@@ -206,6 +229,9 @@ public class CurvedGeometryFactory extends GeometryFactory {
     }
 
     public MultiPolygon createMultiPolygon(Polygon[] polygons) {
+        if (containsCurves(polygons)) {
+            return new MultiSurface(polygons, this, tolerance);
+        }
         return delegate.createMultiPolygon(polygons);
     }
 
@@ -230,7 +256,11 @@ public class CurvedGeometryFactory extends GeometryFactory {
     }
 
     public Polygon createPolygon(LinearRing shell, LinearRing[] holes) {
-        return delegate.createPolygon(shell, holes);
+        if (shell instanceof CurvedGeometry || containsCurves(holes)) {
+            return new CurvePolygon(shell, holes, this, tolerance);
+        } else {
+            return delegate.createPolygon(shell, holes);
+        }
     }
 
     public Polygon createPolygon(CoordinateSequence coordinates) {
@@ -242,7 +272,11 @@ public class CurvedGeometryFactory extends GeometryFactory {
     }
 
     public Polygon createPolygon(LinearRing shell) {
-        return delegate.createPolygon(shell);
+        if (shell instanceof CurvedGeometry) {
+            return new CurvePolygon(shell, (LinearRing[]) null, this, tolerance);
+        } else {
+            return delegate.createPolygon(shell);
+        }
     }
 
     public Geometry buildGeometry(Collection geomList) {
@@ -268,5 +302,45 @@ public class CurvedGeometryFactory extends GeometryFactory {
     public CoordinateSequenceFactory getCoordinateSequenceFactory() {
         return delegate.getCoordinateSequenceFactory();
     }
+
+    /**
+     * Returns true if the geometry is a curved geometry, or contains curved geometries
+     * 
+     * @param g
+     * @return
+     */
+    public boolean hasCurves(Geometry g) {
+        if (g instanceof CurvedGeometry) {
+            return true;
+        }
+
+        final AtomicBoolean hasCurves = new AtomicBoolean(false);
+        g.apply(new GeometryComponentFilter() {
+            
+            @Override
+            public void filter(Geometry geom) {
+                if(geom instanceof CurvedGeometry) {
+                    hasCurves.set(true);
+                }
+                
+            }
+        });
+        
+        return hasCurves.get();
+    }
+
+    private boolean containsCurves(Geometry... geometries) {
+        if (geometries == null) {
+            return false;
+        }
+        for (Geometry g : geometries) {
+            if (hasCurves(g)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 }

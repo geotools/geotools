@@ -44,6 +44,7 @@ import java.util.List;
 import org.geotools.geometry.jts.CircularArc;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.CoordinateSequences;
@@ -113,7 +114,7 @@ public class WKBReader {
 
     private static final String INVALID_GEOM_TYPE_MSG = "Invalid geometry type encountered in ";
 
-    private GeometryFactory factory;
+    private CurvedGeometryFactory factory;
 
     private CoordinateSequenceFactory csFactory;
 
@@ -136,12 +137,14 @@ public class WKBReader {
 
     private double[] ordValues;
 
+    private boolean insideCurvePolygon = false;
+
     public WKBReader() {
         this(new GeometryFactory());
     }
 
     public WKBReader(GeometryFactory geometryFactory) {
-        this.factory = geometryFactory;
+        this.factory = getCurvedGeometryFactory(geometryFactory);
         precisionModel = factory.getPrecisionModel();
         csFactory = factory.getCoordinateSequenceFactory();
     }
@@ -275,7 +278,12 @@ public class WKBReader {
     private Geometry readCircularString() throws IOException {
         int size = dis.readInt();
         CoordinateSequence pts = readCoordinateSequenceCircularString(size);
-        return getCurvedGeometryFactory(factory).createCurvedGeometry(pts);
+        if (insideCurvePolygon) {
+            return factory.createCurvedGeometry(pts);
+        } else {
+            return factory.createCircularString(pts);
+        }
+
     }
 
     private Geometry readCompoundCurve() throws IOException, ParseException {
@@ -287,7 +295,15 @@ public class WKBReader {
                 throw new ParseException(INVALID_GEOM_TYPE_MSG + "CompoundCurve");
             geoms.add((LineString) g);
         }
-        return getCurvedGeometryFactory(factory).createCurvedGeometry(geoms);
+        if (insideCurvePolygon && !isStrict) {
+            Coordinate start = geoms.get(0).getCoordinateN(0);
+            LineString lastGeom = geoms.get(geoms.size() - 1);
+            Coordinate end = lastGeom.getCoordinateN((lastGeom.getNumPoints() - 1));
+            if(!start.equals(end)) {
+                geoms.add(factory.createLineString(new Coordinate[] {start, end}));
+            }
+        }
+        return factory.createCurvedGeometry(geoms);
     }
 
     private LinearRing readLinearRing() throws IOException {
@@ -310,16 +326,22 @@ public class WKBReader {
     }
 
     protected Polygon readCurvePolygon() throws IOException, ParseException {
-        int numRings = dis.readInt();
-        LinearRing[] holes = null;
-        if (numRings > 1)
-            holes = new LinearRing[numRings - 1];
+        try {
+            insideCurvePolygon = true;
 
-        LinearRing shell = (LinearRing) readGeometry();
-        for (int i = 0; i < numRings - 1; i++) {
-            holes[i] = (LinearRing) readGeometry();
+            int numRings = dis.readInt();
+            LinearRing[] holes = null;
+            if (numRings > 1)
+                holes = new LinearRing[numRings - 1];
+
+            LinearRing shell = (LinearRing) readGeometry();
+            for (int i = 0; i < numRings - 1; i++) {
+                holes[i] = (LinearRing) readGeometry();
+            }
+            return factory.createPolygon(shell, holes);
+        } finally {
+            insideCurvePolygon = false;
         }
-        return factory.createPolygon(shell, holes);
     }
 
     private MultiPoint readMultiPoint() throws IOException, ParseException {

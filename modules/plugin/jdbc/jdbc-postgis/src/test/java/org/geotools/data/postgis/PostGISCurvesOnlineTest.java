@@ -30,6 +30,7 @@ import org.geotools.geometry.jts.CircularArc;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundCurvedGeometry;
+import org.geotools.geometry.jts.CurvePolygon;
 import org.geotools.geometry.jts.CurvedGeometries;
 import org.geotools.geometry.jts.SingleCurvedGeometry;
 import org.geotools.jdbc.JDBCTestSetup;
@@ -182,7 +183,7 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
         SimpleFeature feature = DataUtilities.first(fc);
         Geometry g = (Geometry) feature.getDefaultGeometry();
         assertNotNull(g);
-        assertTrue(g instanceof Polygon);
+        assertTrue(g instanceof CurvePolygon);
         Polygon p = (Polygon) g;
         assertEquals(0, p.getNumInteriorRing());
         assertTrue(p.getExteriorRing() instanceof CompoundCurvedGeometry<?>);

@@ -28,6 +28,7 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +37,13 @@ import java.util.logging.Level;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.jts.CircularRing;
+import org.geotools.geometry.jts.CircularString;
+import org.geotools.geometry.jts.CompoundCurve;
+import org.geotools.geometry.jts.CompoundRing;
+import org.geotools.geometry.jts.CurvePolygon;
+import org.geotools.geometry.jts.MultiCurve;
+import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.ColumnMetadata;
@@ -88,7 +96,27 @@ public class PostGISDialect extends BasicSQLDialect {
             put("MULTIPOLYGONM", MultiPolygon.class);
             put("GEOMETRYCOLLECTION", GeometryCollection.class);
             put("GEOMETRYCOLLECTIONM", GeometryCollection.class);
+            put("COMPOUNDCURVE", CompoundCurve.class);
+            put("MULTICURVE", MultiCurve.class);
+            put("CURVEPOLYGON", CurvePolygon.class);
+            put("CIRCULARSTRING", CircularString.class);
+            put("MULTISURFACE", MultiSurface.class);
             put("BYTEA", byte[].class);
+        }
+    };
+    
+    // geometry types that will not contain curves (we map to curved types
+    // if the db type is supposed to contain curves, that leaves out
+    // geometry and geometry collection as potential curve containers)
+    final static Set<Class> NON_CURVED_GEOMETRY_CLASSES = new HashSet<Class>() {
+        {
+            add(Point.class);
+            add(MultiPoint.class);
+            add(LineString.class);
+            add(LinearRing.class);
+            add(MultiLineString.class);
+            add(Polygon.class);
+            add(MultiPolygon.class);
         }
     };
 
@@ -103,6 +131,11 @@ public class PostGISDialect extends BasicSQLDialect {
             put(MultiLineString.class, "MULTILINESTRING");
             put(MultiPolygon.class, "MULTIPOLYGON");
             put(GeometryCollection.class, "GEOMETRYCOLLECTION");
+            put(CircularString.class, "CIRCULARSTRING");
+            put(CircularRing.class, "CIRCULARSTRING");
+            put(MultiCurve.class, "MULTICURVE");
+            put(CompoundCurve.class, "COMPOUNDCURVE");
+            put(CompoundRing.class, "COMPOUNDCURVE");
             put(byte[].class, "BYTEA");
         }
     };
@@ -284,9 +317,23 @@ public class PostGISDialect extends BasicSQLDialect {
                 encodeColumnName(prefix, gatt.getLocalName(), sql);
                 sql.append("),'base64')");
             } else {
-                sql.append("encode(ST_AsBinary(ST_Simplify(ST_Force_2D(");
-                encodeColumnName(prefix, gatt.getLocalName(), sql);
-                sql.append("), "  + distance + ")),'base64')");
+                if (NON_CURVED_GEOMETRY_CLASSES.contains(gatt.getType().getBinding())) {
+                    sql.append("encode(ST_AsBinary(ST_Simplify(ST_Force_2D(");
+                    encodeColumnName(prefix, gatt.getLocalName(), sql);
+                    sql.append("), " + distance + ")),'base64')");
+                } else {
+                    // we can have curves mixed in
+                    sql.append("encode(ST_AsBinary(");
+                    sql.append("CASE WHEN ST_HasArc(");
+                    encodeColumnName(prefix, gatt.getLocalName(), sql);
+                    sql.append(") THEN ");
+                    encodeColumnName(prefix, gatt.getLocalName(), sql);
+                    sql.append(" ELSE ");
+                    sql.append("ST_Simplify(ST_Force_2D(");
+                    encodeColumnName(prefix, gatt.getLocalName(), sql);
+                    sql.append("), " + distance + ") END),'base64')");
+                }
+
             }
         }
     }

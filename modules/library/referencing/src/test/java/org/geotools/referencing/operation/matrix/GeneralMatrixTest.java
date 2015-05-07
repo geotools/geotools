@@ -219,7 +219,9 @@ public class GeneralMatrixTest {
         gma.invert();
         GeneralMatrix gma2 = new GeneralMatrix(arrayA);
         GeneralMatrix.epsilonEquals(gma, gma2, EPSILON_TOLERANCE);
-        
+    }
+    
+    public void invertAccuracyTest(){
         // the following is a regression noticed during change to EJML
         // OrderedAxisAuthorityFactoryTest relies on DefaultCoordinateOperationFactory checking inverse
         // accuracy to 1E-9, previously vecmath accomplished 1E-10

@@ -69,8 +69,8 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
             LineString prev = components.get(0);
             for (int i = 1; i < components.size(); i++) {
                 LineString curr = components.get(i);
-                Point endPoint = prev.getEndPoint();
-                Point startPoint = curr.getStartPoint();
+                Coordinate endPoint = prev.getCoordinateN(prev.getNumPoints() - 1);
+                Coordinate startPoint = curr.getCoordinateN(0);
                 if (!endPoint.equals(startPoint)) {
                     throw new IllegalArgumentException(
                             "Found two elements that are not connected, " + prev + " and " + curr);

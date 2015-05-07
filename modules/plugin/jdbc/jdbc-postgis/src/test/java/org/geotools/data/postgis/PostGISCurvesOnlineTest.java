@@ -29,6 +29,7 @@ import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.CircularArc;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
+import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CompoundCurvedGeometry;
 import org.geotools.geometry.jts.CurvePolygon;
 import org.geotools.geometry.jts.CurvedGeometries;
@@ -306,7 +307,34 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
         try (SimpleFeatureIterator fi = fc.features()) {
             // check they have not been simplified
         }
-
     }
+
+    @Test
+    public void testClosedCircularString() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("circularStrings"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Circle"), true);
+        ContentFeatureCollection fc = fs.getFeatures(filter);
+        assertEquals(1, fc.size());
+        SimpleFeature feature = DataUtilities.first(fc);
+        Geometry g = (Geometry) feature.getDefaultGeometry();
+        assertNotNull(g);
+        assertTrue(g instanceof CircularString);
+    }
+
+    @Test
+    public void testClosedCompoundCurve() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("compoundCurves"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")),
+                ff.literal("ClosedHalfCircle"), true);
+        ContentFeatureCollection fc = fs.getFeatures(filter);
+        assertEquals(1, fc.size());
+        SimpleFeature feature = DataUtilities.first(fc);
+        Geometry g = (Geometry) feature.getDefaultGeometry();
+        assertNotNull(g);
+        assertTrue(g instanceof CompoundCurve);
+    }
+
 
 }

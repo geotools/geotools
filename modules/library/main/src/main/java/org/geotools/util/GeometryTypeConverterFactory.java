@@ -25,6 +25,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.factory.Hints;
+import org.geotools.geometry.jts.CircularRing;
+import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CompoundRing;
 import org.geotools.geometry.jts.CurvedGeometry;
@@ -96,6 +98,16 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                             GeometryFactory factory = ((Geometry) source).getFactory();
                             result = new MultiCurve(components, factory, tolerance);
                         }
+                    } else if (source instanceof CircularRing
+                            && CircularString.class.isAssignableFrom(target)) {
+                        CircularRing cr = (CircularRing) source;
+                        result = new CircularString(cr.getControlPoints(), cr.getFactory(),
+                                cr.getTolerance());
+                    } else if (source instanceof CompoundRing
+                            && CompoundCurve.class.isAssignableFrom(target)) {
+                        CompoundRing cr = (CompoundRing) source;
+                        result = new CompoundCurve(cr.getComponents(), cr.getFactory(),
+                                cr.getTolerance());
                     } else {
                         LineString converted = Converters.convert(source, LineString.class);
                         if (converted.isEmpty()) {

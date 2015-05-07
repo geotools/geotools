@@ -26,8 +26,31 @@ public class PostGISCurvesTestSetup extends JDBCDelegatingTestSetup {
 
     @Override
     protected void setUpData() throws Exception {
+        dropCompoundCurvesTable();
+        dropCircularRingsTable();
         dropCurveTable();
         createCurvesTable();
+        createCircularRingsTable();
+        createCompoundCurvesTable();
+    }
+
+
+    private void createCircularRingsTable() throws Exception {
+        String sql = "CREATE TABLE \"circularStrings\" ("
+                + "\"id\" INT, \"name\" VARCHAR, \"geometry\" geometry(CIRCULARSTRING), PRIMARY KEY(id))";
+        run(sql);
+
+        sql = "INSERT INTO \"circularStrings\" VALUES (0, 'Circle', ST_geometryFromText('CIRCULARSTRING(10 150, 15 145, 20 150, 15 155, 10 150)'))";
+        run(sql);
+    }
+
+    private void createCompoundCurvesTable() throws Exception {
+        String sql = "CREATE TABLE \"compoundCurves\" ("
+                + "\"id\" INT, \"name\" VARCHAR, \"geometry\" geometry(COMPOUNDCURVE), PRIMARY KEY(id))";
+        run(sql);
+
+        sql = "INSERT INTO \"compoundCurves\" VALUES (0, 'ClosedHalfCircle', ST_geometryFromText('COMPOUNDCURVE(CIRCULARSTRING(-10 0, 0 10, 10 0 ),(10 0, -10 0))'))";
+        run(sql);
     }
 
     private void createCurvesTable() throws Exception {
@@ -70,11 +93,18 @@ public class PostGISCurvesTestSetup extends JDBCDelegatingTestSetup {
 
         sql = "INSERT INTO CURVES VALUES (8, 'Multicurve', ST_geometryFromText('MULTICURVE((0 0, 5 5),CIRCULARSTRING(4 0, 4 4, 8 4))'))";
         run(sql);
-
     }
 
     private void dropCurveTable() throws Exception {
         runSafe("DROP TABLE \"curves\" cascade");
+    }
+
+    private void dropCircularRingsTable() {
+        runSafe("DROP TABLE \"circularStrings\" cascade");
+    }
+
+    private void dropCompoundCurvesTable() {
+        runSafe("DROP TABLE \"compoundCurves\" cascade");
     }
 
 }

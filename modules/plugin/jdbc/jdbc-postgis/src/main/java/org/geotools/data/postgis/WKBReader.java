@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geotools.geometry.jts.CircularArc;
+import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -136,8 +137,6 @@ public class WKBReader {
     private ByteOrderDataInStream dis = new ByteOrderDataInStream();
 
     private double[] ordValues;
-
-    private boolean insideCurvePolygon = false;
 
     public WKBReader() {
         this(new GeometryFactory());
@@ -278,12 +277,7 @@ public class WKBReader {
     private Geometry readCircularString() throws IOException {
         int size = dis.readInt();
         CoordinateSequence pts = readCoordinateSequenceCircularString(size);
-        if (insideCurvePolygon) {
-            return factory.createCurvedGeometry(pts);
-        } else {
-            return factory.createCircularString(pts);
-        }
-
+        return factory.createCurvedGeometry(pts);
     }
 
     private Geometry readCompoundCurve() throws IOException, ParseException {
@@ -294,14 +288,6 @@ public class WKBReader {
             if (!(g instanceof LineString))
                 throw new ParseException(INVALID_GEOM_TYPE_MSG + "CompoundCurve");
             geoms.add((LineString) g);
-        }
-        if (insideCurvePolygon && !isStrict) {
-            Coordinate start = geoms.get(0).getCoordinateN(0);
-            LineString lastGeom = geoms.get(geoms.size() - 1);
-            Coordinate end = lastGeom.getCoordinateN((lastGeom.getNumPoints() - 1));
-            if(!start.equals(end)) {
-                geoms.add(factory.createLineString(new Coordinate[] {start, end}));
-            }
         }
         return factory.createCurvedGeometry(geoms);
     }
@@ -326,21 +312,36 @@ public class WKBReader {
     }
 
     protected Polygon readCurvePolygon() throws IOException, ParseException {
-        try {
-            insideCurvePolygon = true;
+        int numRings = dis.readInt();
+        LinearRing[] holes = null;
+        if (numRings > 1)
+            holes = new LinearRing[numRings - 1];
 
-            int numRings = dis.readInt();
-            LinearRing[] holes = null;
-            if (numRings > 1)
-                holes = new LinearRing[numRings - 1];
+        LinearRing shell = readRing();
+        for (int i = 0; i < numRings - 1; i++) {
+            holes[i] = readRing();
+        }
+        return factory.createPolygon(shell, holes);
+    }
 
-            LinearRing shell = (LinearRing) readGeometry();
-            for (int i = 0; i < numRings - 1; i++) {
-                holes[i] = (LinearRing) readGeometry();
-            }
-            return factory.createPolygon(shell, holes);
-        } finally {
-            insideCurvePolygon = false;
+    private LinearRing readRing() throws IOException, ParseException {
+        LineString ls = (LineString) readGeometry();
+        if (ls instanceof LinearRing) {
+            return (LinearRing) ls;
+        } else if (ls instanceof CompoundCurve) {
+            CompoundCurve cc = (CompoundCurve) ls;
+            List<LineString> components = cc.getComponents();
+            Coordinate start = components.get(0).getCoordinateN(0);
+            LineString lastGeom = components.get(components.size() - 1);
+            Coordinate end = lastGeom.getCoordinateN((lastGeom.getNumPoints() - 1));
+            components.add(factory.createLineString(new Coordinate[] { start, end }));
+            return (LinearRing) factory.createCurvedGeometry(components);
+        } else {
+            Coordinate start = ls.getCoordinateN(0);
+            Coordinate end = ls.getCoordinateN((ls.getNumPoints() - 1));
+            // turn it into a compound and add the segment that closes it
+            LineString closer = factory.createLineString(new Coordinate[] { start, end });
+            return (LinearRing) factory.createCurvedGeometry(ls, closer);
         }
     }
 

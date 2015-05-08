@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Curve srsName="urn:x-ogc:def:crs:EPSG:32632" srsDimension="2">
+  <segments>
+    <LineStringSegment interpolation="linear">
+      <posList>10 45 20 45</posList>
+    </LineStringSegment>
+    <ArcString interpolation="circularArc3Points">
+      <posList>20 45 23 48 20 51</posList>
+    </ArcString>
+    <LineStringSegment interpolation="linear">
+      <posList>20 51 10 51</posList>
+    </LineStringSegment>
+  </segments>
+</Curve>

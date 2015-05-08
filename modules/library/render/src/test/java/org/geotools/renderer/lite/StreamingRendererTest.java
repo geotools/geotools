@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,8 +36,12 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.media.jai.Interpolation;
+import javax.media.jai.JAI;
+
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.Query;
 import org.geotools.data.collection.CollectionFeatureSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -47,26 +51,32 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
+import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
+import org.geotools.renderer.lite.StreamingRenderer.RenderCoverageReaderRequest;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
+import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -138,6 +148,76 @@ public class StreamingRendererTest {
     private Style createPointStyle() {
         StyleBuilder sb = new StyleBuilder();
         return sb.createStyle(sb.createPointSymbolizer());
+    }
+    
+    @Test
+    public void testInterpolationByLayer() throws Exception {
+        StreamingRenderer sr = new StreamingRenderer();
+        Layer layer = new FeatureLayer(createLineCollection(), createLineStyle());
+        // default is nearest neighbor
+        assertEquals(sr.getRenderingInterpolation(layer),
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        
+        // test all possible values
+        layer.getUserData().put(StreamingRenderer.BYLAYER_INTERPOLATION,
+                Interpolation.getInstance(Interpolation.INTERP_BICUBIC));
+        assertEquals(sr.getRenderingInterpolation(layer),
+                Interpolation.getInstance(Interpolation.INTERP_BICUBIC));
+        layer.getUserData().put(StreamingRenderer.BYLAYER_INTERPOLATION,
+                Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
+        assertEquals(sr.getRenderingInterpolation(layer),
+                Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
+        layer.getUserData().put(StreamingRenderer.BYLAYER_INTERPOLATION,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        assertEquals(sr.getRenderingInterpolation(layer),
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+    }
+    
+    @Test
+    public void testDrawIntepolation() throws Exception {
+        
+        MapContent mc = new MapContent();
+        ReferencedEnvelope reWgs = new ReferencedEnvelope(new Envelope(-180,
+                180, -90, 90), DefaultGeographicCRS.WGS84);
+        
+        BufferedImage testImage = new BufferedImage(200, 200, BufferedImage.TYPE_4BYTE_ABGR);
+        
+        GridCoverage2D testCoverage = new GridCoverageFactory().create("test", testImage, reWgs);
+        GridCoverage2D coverage = new GridCoverage2D("test", testCoverage);
+        
+        // mocking a GridCoverageReader to wrap the testing coverage 
+        GridCoverage2DReader gridCoverageReader = Mockito.mock(GridCoverage2DReader.class);
+        Mockito.when(gridCoverageReader.getOriginalEnvelope()).thenReturn(new GeneralEnvelope(reWgs));
+        Mockito.when(gridCoverageReader.getCoordinateReferenceSystem()).thenReturn(DefaultGeographicCRS.WGS84);
+        Mockito.when(gridCoverageReader.read(Mockito.any(GeneralParameterValue[].class))).thenReturn(coverage);
+                
+        Layer layer = new FeatureLayer(FeatureUtilities.wrapGridCoverageReader(gridCoverageReader,
+                new GeneralParameterValue[] {}), createRasterStyle());
+        layer.getUserData().put(StreamingRenderer.BYLAYER_INTERPOLATION,
+                Interpolation.getInstance(Interpolation.INTERP_BICUBIC));
+        mc.addLayer(layer);
+        
+
+        BufferedImage image = new BufferedImage(200, 200,BufferedImage.TYPE_4BYTE_ABGR);
+
+        StreamingRenderer sr = new StreamingRenderer();
+        sr.setMapContent(mc);
+        
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        
+        sr.paint(graphics, new Rectangle(200, 200),reWgs);
+        // test right interpolation hint is set on Graphics2D
+        assertEquals(graphics.getRenderingHint(JAI.KEY_INTERPOLATION),
+                Interpolation.getInstance(Interpolation.INTERP_BICUBIC));
+        
+        layer.getUserData().put(StreamingRenderer.BYLAYER_INTERPOLATION,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        
+        sr.paint(graphics, new Rectangle(200, 200),reWgs);
+        // test right interpolation hint is set on Graphics2D
+        assertEquals(graphics.getRenderingHint(JAI.KEY_INTERPOLATION),
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        
     }
 
     @Test

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -55,6 +55,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
@@ -85,6 +86,7 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 import org.geotools.map.MapLayer;
 import org.geotools.map.StyleLayer;
+import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -283,7 +285,7 @@ public class StreamingRenderer implements GTRenderer {
     private List<RenderListener> renderListeners = new CopyOnWriteArrayList<RenderListener>();
 
     private RenderingHints java2dHints;
-
+    
     private int renderingBufferDEFAULT = 0;
 
     private String scaleComputationMethodDEFAULT = SCALE_OGC;
@@ -367,6 +369,7 @@ public class StreamingRenderer implements GTRenderer {
     public static final String DPI_KEY = "dpi";
     public static final String DECLARED_SCALE_DENOM_KEY = "declaredScaleDenominator";
     public static final String SCALE_COMPUTATION_METHOD_KEY = "scaleComputationMethod";
+    public static final String BYLAYER_INTERPOLATION = "byLayerInterpolation";
 
     /**
      * "vectorRenderingEnabled"      - Boolean  yes/no (see default vectorRenderingEnabledDEFAULT)
@@ -799,6 +802,7 @@ public class StreamingRenderer implements GTRenderer {
     
                 if (renderingStopRequested) {
                     return;
+
                 }
                 labelCache.startLayer(i+"");
                 
@@ -812,12 +816,12 @@ public class StreamingRenderer implements GTRenderer {
                     }
                     
                 } else {
-                    MapLayer currLayer = new MapLayer(layer);
+                    
                     try {
 
                         // extract the feature type stylers from the style object
                         // and process them
-                        processStylers(graphics, currLayer, worldToScreenTransform,
+                        processStylers(graphics, layer, worldToScreenTransform,
                                 destinationCrs, mapExtent, screenSize, i + "");
                     } catch (Throwable t) {
                         fireErrorEvent(t);
@@ -1921,7 +1925,7 @@ public class StreamingRenderer implements GTRenderer {
      * @throws IllegalFilterException
      */
     private void processStylers(final Graphics2D graphics,
-            MapLayer currLayer, AffineTransform at,
+            final Layer layer, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, Envelope mapArea,
             Rectangle screenSize, String layerId) throws Exception {
         /*
@@ -1935,6 +1939,7 @@ public class StreamingRenderer implements GTRenderer {
         // Preparing feature information and styles
         //
         // /////////////////////////////////////////////////////////////////////
+        final MapLayer currLayer = new MapLayer(layer);        
         final Style style = currLayer.getStyle();
         final FeatureSource featureSource = currLayer.getFeatureSource();
 
@@ -1995,7 +2000,7 @@ public class StreamingRenderer implements GTRenderer {
                         @Override
                         protected GridCoverage2D readCoverage(GridCoverage2DReader reader, Object params, GridGeometry2D readGG) throws IOException {
                             GeneralParameterValue[] readParams = (GeneralParameterValue[]) params;
-                            Interpolation interpolation = getRenderingInterpolation();
+                            Interpolation interpolation = getRenderingInterpolation(layer);
                             GridCoverageReaderHelper helper;
                             try {
                                 helper = new GridCoverageReaderHelper(reader,
@@ -2563,6 +2568,7 @@ public class StreamingRenderer implements GTRenderer {
             CoordinateReferenceSystem destinationCrs, String layerId)
             throws Exception {
         int paintCommands = 0;
+        
         for (Symbolizer symbolizer : symbolizers) {
 
             // /////////////////////////////////////////////////////////////////
@@ -2594,7 +2600,8 @@ public class StreamingRenderer implements GTRenderer {
                                 .evaluate(drawMe.content);
                         GridCoverage2DReader reader = (GridCoverage2DReader) grid;
                         requests.put(new RenderCoverageReaderRequest(graphics, reader, params,
-                                (RasterSymbolizer) symbolizer, destinationCrs, at));
+                                (RasterSymbolizer) symbolizer, destinationCrs, at,
+                                getRenderingInterpolation(drawMe.layer != null ? drawMe.layer.toLayer() : null)));
                     }
                 } catch (IllegalArgumentException e) {
                     LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
@@ -2975,7 +2982,10 @@ public class StreamingRenderer implements GTRenderer {
         return null;
     }
     
-    Interpolation getRenderingInterpolation() {
+    Interpolation getRenderingInterpolation(Layer currLayer) {
+        if (currLayer != null && currLayer.getUserData().containsKey(BYLAYER_INTERPOLATION)) {
+            return (Interpolation) currLayer.getUserData().get(BYLAYER_INTERPOLATION);
+        }
         if(java2dHints == null) {
             return Interpolation.getInstance(Interpolation.INTERP_NEAREST);
         }
@@ -3415,21 +3425,25 @@ public class StreamingRenderer implements GTRenderer {
         private AffineTransform worldToScreen;
 
         private GeneralParameterValue[] readParams;
+        
+        private Interpolation interpolation;
 
         public RenderCoverageReaderRequest(Graphics2D graphics, GridCoverage2DReader reader,
                 GeneralParameterValue[] readParams,
                 RasterSymbolizer symbolizer, CoordinateReferenceSystem destinationCRS,
-                AffineTransform worldToScreen) {
+                AffineTransform worldToScreen, Interpolation interpolation) {
             this.graphics = graphics;
             this.reader = reader;
             this.readParams = readParams;
             this.symbolizer = symbolizer;
             this.destinationCRS = destinationCRS;
             this.worldToScreen = worldToScreen;
+            this.interpolation = interpolation;
         }
 
         @Override
         void execute() {
+            
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Rendering reader " + reader);
             }
@@ -3445,7 +3459,6 @@ public class StreamingRenderer implements GTRenderer {
                 final GridCoverageRenderer gcr = new GridCoverageRenderer(destinationCRS,
                         originalMapExtent, screenSize, worldToScreen, java2dHints);
 
-                Interpolation interpolation = getRenderingInterpolation();
 
                 // Checks on the Reprojection parameters
                 gcr.setAdvancedProjectionHandlingEnabled(isAdvancedProjectionHandlingEnabled());
@@ -3461,6 +3474,7 @@ public class StreamingRenderer implements GTRenderer {
                 fireErrorEvent(e);
             }
         }
+
 
     }
 

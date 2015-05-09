@@ -19,12 +19,9 @@
  */
 package org.geotools.referencing.datum;
 
-import java.io.Serializable;
 import static java.lang.Double.doubleToLongBits;
 
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.util.Cloneable;
+import java.io.Serializable;
 
 import org.geotools.referencing.operation.matrix.Matrix4;
 import org.geotools.referencing.operation.matrix.XMatrix;
@@ -33,6 +30,9 @@ import org.geotools.referencing.wkt.Formatter;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
+import org.opengis.referencing.datum.GeodeticDatum;
+import org.opengis.referencing.operation.Matrix;
+import org.opengis.util.Cloneable;
 
 
 /**
@@ -161,7 +161,8 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
             throw new IllegalArgumentException("Illegal matrix size.");
         }
         for (int i=0; i<4; i++) {
-            if (matrix.getElement(3,i) != (i==3 ? 1 : 0)) {
+            double difference = matrix.getElement(3, i) - (i == 3 ? 1 : 0);
+            if (Math.abs(difference) > eps) {
                 throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_AFFINE_TRANSFORM));
             }
         }

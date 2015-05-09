@@ -24,7 +24,6 @@ import java.io.IOException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.ResourceInfo;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.integration.AbstractIntegrationTest;
@@ -113,7 +112,7 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
         assertTrue(info.getKeywords().contains("sfRoads roads"));
         assertEquals("roads_Type", info.getTitle());
         assertEquals("http://www.openplans.org/spearfish", info.getSchema().toString());
-        assertEquals(589242.03, info.getBounds().getMinX(),0.01);
+        assertEquals(589275.24, info.getBounds().getMinX(), 0.01);
         assertEquals("EPSG:NAD27 / UTM zone 13N", info.getCRS().getName().toString());
     }
     

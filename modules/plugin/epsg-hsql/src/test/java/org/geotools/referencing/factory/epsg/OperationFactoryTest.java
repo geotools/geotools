@@ -23,26 +23,26 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.geotools.factory.Hints;
+import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.TransformedDirectPosition;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.operation.AbstractCoordinateOperation;
+import org.geotools.referencing.operation.AuthorityBackedFactory;
+import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
+import org.geotools.resources.Arguments;
+import org.geotools.resources.Classes;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.ConcatenatedOperation;
 import org.opengis.referencing.operation.Conversion;
-import org.opengis.referencing.operation.Transformation;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.ConcatenatedOperation;
-import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
-import org.geotools.referencing.operation.AbstractCoordinateOperation;
-import org.geotools.referencing.operation.AuthorityBackedFactory;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.factory.Hints;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.TransformedDirectPosition;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.Classes;
+import org.opengis.referencing.operation.Transformation;
 
 
 /**
@@ -200,11 +200,13 @@ public class OperationFactoryTest extends TestCase {
                         Boolean.TRUE));
         arbitraryToInternal.transform(position);
         
-        DirectPosition expected = new DirectPosition2D(targetCRS, 214636.7447572897,  27218.077500249085);
+        DirectPosition expected = new DirectPosition2D(targetCRS, 214741.10238960697,
+                26957.60506898933);
         
         // geoserver vecmath:  TransformedDirectPosition[214741.10238960697, 26957.60506898933]
         // geoserver    ejml:  TransformedDirectPosition[214636.7447572897,  27218.077500249085]
         // geotools     ejml:  TransformedDirectPosition[214636.7447572897,  27218.077500249085]
-        assertEquals( expected, arbitraryToInternal);
+        assertEquals(expected.getOrdinate(0), arbitraryToInternal.getOrdinate(0), 1e-9);
+        assertEquals(expected.getOrdinate(1), arbitraryToInternal.getOrdinate(1), 1e-9);
     }
 }

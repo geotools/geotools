@@ -755,7 +755,14 @@ public class FeatureJSON {
         }
 
         public void close() {
-            reader = null;
+            if(reader != null) {
+                try {
+                    reader.close();
+                } catch(IOException e) {
+                    // nothing to do
+                }
+                reader = null;
+            }
             parser = null;
             handler = null;
         }

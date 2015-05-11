@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -112,7 +112,7 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
                     "Invalid number of ordinates, must be even, but it is " + length + " instead");
         }
         int pointCount = length / 2;
-        if (pointCount < 3 || (pointCount > 3 && (pointCount % 2) == 0)) {
+        if ((pointCount != 0 && pointCount < 3) || (pointCount > 3 && (pointCount % 2) == 0)) {
             throw new IllegalArgumentException("Invalid number of points, a circular string"
                     + "is always made of an odd number of points, with a mininum of 3, "
                     + "and adding 2 for each extra circular arc in the sequence");
@@ -207,7 +207,7 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
     }
 
     public boolean isEmpty() {
-        return false;
+        return controlPoints.length == 0;
     }
 
     public String getGeometryType() {
@@ -339,14 +339,19 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
     }
 
     public String toCurvedText() {
-        StringBuilder sb = new StringBuilder("CIRCULARSTRING(");
-        for (int i = 0; i < controlPoints.length;) {
-            sb.append(controlPoints[i++] + " " + controlPoints[i++]);
-            if (i < controlPoints.length) {
-                sb.append(", ");
+        StringBuilder sb = new StringBuilder("CIRCULARSTRING ");
+        if(isEmpty()) {
+            sb.append("EMPTY");
+        } else {
+            sb.append("(");
+            for (int i = 0; i < controlPoints.length;) {
+                sb.append(controlPoints[i++] + " " + controlPoints[i++]);
+                if (i < controlPoints.length) {
+                    sb.append(", ");
+                }
             }
+            sb.append(")");
         }
-        sb.append(")");
         return sb.toString();
     }
 

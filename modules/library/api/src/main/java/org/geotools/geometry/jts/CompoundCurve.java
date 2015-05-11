@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -334,10 +334,10 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     }
 
     public String toCurvedText() {
-        StringBuilder sb = new StringBuilder("COMPOUNDCURVE");
+        StringBuilder sb = new StringBuilder("COMPOUNDCURVE ");
 
         if (components.size() == 0) {
-            sb.append(" EMPTY");
+            sb.append("EMPTY");
         } else {
             sb.append("(");
             for (int k = 0; k < components.size(); k++) {

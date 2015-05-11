@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 1998-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 1998-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Random;
 
-import org.geotools.math.Plane.Point3d;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -106,13 +105,17 @@ public final class GeometryTest {
     public void testPlaneFit() {
         final Random  rd = new Random(457821698762354L);
         final Plane plan = new Plane();
-        final Point3d P1 = new Point3d(100*rd.nextDouble()+25, 100*rd.nextDouble()+25, Math.rint(100*rd.nextDouble()+40));
-        final Point3d P2 = new Point3d(100*rd.nextDouble()+25, 100*rd.nextDouble()+25, Math.rint(100*rd.nextDouble()+40));
-        final Point3d P3 = new Point3d(100*rd.nextDouble()+25, 100*rd.nextDouble()+25, Math.rint(100*rd.nextDouble()+40));
-        plan.setPlane(P1, P2, P3);
-        assertEquals("P1", P1.z, plan.z(P1.x,P1.y), EPS);
-        assertEquals("P2", P2.z, plan.z(P2.x,P2.y), EPS);
-        assertEquals("P3", P3.z, plan.z(P3.x,P3.y), EPS);
+        final double[] P1 = new double[]{100*rd.nextDouble()+25, 100*rd.nextDouble()+25, Math.rint(100*rd.nextDouble()+40)};
+        final double[] P2 = new double[]{100*rd.nextDouble()+25, 100*rd.nextDouble()+25, Math.rint(100*rd.nextDouble()+40)};
+        final double[] P3 = new double[]{100*rd.nextDouble()+25, 100*rd.nextDouble()+25, Math.rint(100*rd.nextDouble()+40)};
+        double points[][] = new double[][]{P1,P2,P3};
+
+        plan.setPlane( new double[][]{P1,P2,P3} );
+        
+        final int X=0, Y=1,Z=2;
+        assertEquals("P1", P1[Z], plan.z(P1[X],P1[Y]), EPS);
+        assertEquals("P2", P2[Z], plan.z(P2[X],P2[Y]), EPS);
+        assertEquals("P3", P3[Z], plan.z(P3[X],P3[Y]), EPS);
 
         final double[] x = new double[4000];
         final double[] y = new double[4000];

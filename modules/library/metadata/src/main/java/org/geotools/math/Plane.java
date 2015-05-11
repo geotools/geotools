@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 1998-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 1998-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -44,86 +44,7 @@ import org.opengis.util.Cloneable;
  * @author Howard Freeland, for algorithmic inspiration
  */
 public class Plane implements Cloneable, Serializable {
-    
-    /** Point3d data structure used to define Plane. */
-    public static class Point3d {
-        double x,y,z;
-        public Point3d( double x, double y, double z){
-            this.x=x;
-            this.y=y;
-            this.z=z;
-        }
-        public Point3d( double array[]) throws IllegalArgumentException {
-            if( array == null){
-                throw new NullPointerException("Vector array required");
-            }
-            if( array.length == 2 ){
-                this.x = array[0];
-                this.y = array[1];
-                this.z = Double.NaN;
-            }
-            else if( array.length == 3 ){
-                this.x = array[0];
-                this.y = array[1];
-                this.z = array[2];
-            }
-            else {
-                throw new IllegalArgumentException("Vector array (length " + array.length +") is not expected length of 3");
-            }
-        }
-        public Point3d( Point2D point ){
-            this.x = point.getX();
-            this.y = point.getY();
-            this.z = Double.NaN;
-        }
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            long temp;
-            temp = Double.doubleToLongBits(x);
-            result = prime * result + (int) (temp ^ (temp >>> 32));
-            temp = Double.doubleToLongBits(y);
-            result = prime * result + (int) (temp ^ (temp >>> 32));
-            temp = Double.doubleToLongBits(z);
-            result = prime * result + (int) (temp ^ (temp >>> 32));
-            return result;
-        }
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            Point3d other = (Point3d) obj;
-            if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
-                return false;
-            if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
-                return false;
-            if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z))
-                return false;
-            return true;
-        }
-        @Override
-        public String toString() {
-            return "Point3d [x=" + x + ", y=" + y + ", z=" + z + "]";
-        }
-        /**
-         * Cartesian distance between two points.
-         * 
-         * @param pt second point
-         * @return cartesian distance between two points
-         */
-        public double distance(Point3d pt) {
-            double dX = Math.abs(this.x-pt.x);
-            double dY = Math.abs(this.y-pt.y);
-            double dZ = Math.abs(this.z-pt.z);
-            
-            return Math.sqrt( dX*dX + dY*dY + dZ*dZ);
-        }
-    }
+
     /**
      * Serial number for compatibility with different versions.
      */
@@ -203,24 +124,45 @@ public class Plane implements Cloneable, Serializable {
 
     /**
      * Computes the plane's coefficients from the specified points.  Three points
-     * are enough for determining exactly the plan, providing that the points are
+     * are enough for determining exactly the plane, providing that the points are
      * not colinear.
-     *
+     * 
+     * This method allows points to be provided in Z,Y,Z order:
+     * <code><pre> double[] P1 = new double[]{ a.getX(), a.getY(), a.getZ() );
+     * double[] P2 = new double[]{ b.getX(), b.getY(), b.getZ() ); 
+     * double[] P3 = new double[]{ c.getX(), c.getY(), c.getZ() ); 
+     * plane.setPlane( new double[][]{ P1, P2, P3 } );</pre><code>
+     * 
+     * 
+     * @param points Array of three points
      * @throws ArithmeticException If the three points are colinear.
      */
-    public void setPlane(final Point3d P1, final Point3d P2, final Point3d P3)
+    public void setPlane(final double[][] points)
             throws ArithmeticException
     {
-        final double m00 = P2.x*P3.y - P3.x*P2.y;
-        final double m01 = P3.x*P1.y - P1.x*P3.y;
-        final double m02 = P1.x*P2.y - P2.x*P1.y;
+        if( points == null ){
+            throw new NullPointerException("Points array required");
+        }
+        if( points.length != 3 ){
+            throw new IllegalArgumentException("Three points are required to determine plane");
+        }
+        double[] P1=points[0];
+        double[] P2=points[1];
+        double[] P3=points[2];
+        if( P1.length != 3 || P2.length != 3 || P3.length != 3 ){
+            throw new IllegalArgumentException("3D points required");
+        }
+        final int X=0, Y=1,Z=2;
+        final double m00 = P2[X]*P3[Y] - P3[X]*P2[Y];
+        final double m01 = P3[X]*P1[Y] - P1[X]*P3[Y];
+        final double m02 = P1[X]*P2[Y] - P2[X]*P1[Y];
         final double det = m00 + m01 + m02;
         if (det == 0) {
             throw new ArithmeticException("Points are colinear");
         }
-        c  = ((   m00   )*P1.z + (   m01   )*P2.z + (   m02   )*P3.z) / det;
-        cx = ((P2.y-P3.y)*P1.z + (P3.y-P1.y)*P2.z + (P1.y-P2.y)*P3.z) / det;
-        cy = ((P3.x-P2.x)*P1.z + (P1.x-P3.x)*P2.z + (P2.x-P1.x)*P3.z) / det;
+        c  = ((    m00    )*P1[Z] + (    m01    )*P2[Z] + (    m02    )*P3[Z]) / det;
+        cx = ((P2[Y]-P3[Y])*P1[Z] + (P3[Y]-P1[Y])*P2[Z] + (P1[Y]-P2[Y])*P3[Z]) / det;
+        cy = ((P3[X]-P2[X])*P1[Z] + (P1[X]-P3[X])*P2[Z] + (P2[X]-P1[X])*P3[Z]) / det;
     }
 
     /**
@@ -228,6 +170,12 @@ public class Plane implements Cloneable, Serializable {
      * a linear regression in the least-square sense. Result is undertermined
      * if all points are colinear.
      *
+     * This method allows points to be provided as a series of X,Y and Z arrays:
+     * <code><pre> double[] X = new double[]{ a.getX(), b.getX(), c.getX() );
+     * double[] Y = new double[]{ a.getX(), b.getX(), c.getX() ); 
+     * double[] Z = new double[]{ a.getZ(), b.getZ(), c.getZ() ); 
+     * plane.setPlane( X, Y, Z  );</pre><code>
+     * 
      * @param x vector of <var>x</var> coordinates
      * @param y vector of <var>y</var> coordinates
      * @param z vector of <var>z</var> values

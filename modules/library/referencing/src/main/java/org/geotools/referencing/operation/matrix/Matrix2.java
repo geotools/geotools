@@ -19,6 +19,7 @@ package org.geotools.referencing.operation.matrix;
 import java.io.Serializable;
 
 import org.opengis.referencing.operation.Matrix;
+import org.ejml.alg.fixed.FixedOps3;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
 
@@ -323,6 +324,24 @@ public class Matrix2 implements XMatrix, Serializable {
     }
 
     @Override
+    public void getRow(int row, double[] array) {
+        if (array.length != SIZE) {
+            throw new IllegalArgumentException("Call getRow received an array of length "
+                    + array.length + ".  " + "The dimensions of the matrix is 2 by 2.");
+        }
+        if (row == 0) {
+            array[0] = m00;
+            array[1] = m01;
+        } else if (row == 1) {
+            array[0] = m10;
+            array[1] = m11;
+        } else {
+            throw new IllegalArgumentException("Specified element is out of bounds: (" +row
+                    + ", 0)");
+        }
+    }
+    
+    @Override
     public void setRow(int row, double... values) {
         if (values.length != SIZE) {
             throw new IllegalArgumentException("Call setRow received an array of length "
@@ -332,14 +351,32 @@ public class Matrix2 implements XMatrix, Serializable {
             m00 = values[0];
             m01 = values[1];
         } else if (row == 1) {
-            m10 = values[2];
-            m11 = values[3];
+            m10 = values[0];
+            m11 = values[1];
         } else {
             throw new IllegalArgumentException("Specified element is out of bounds: (" + row
                     + " , 0)");
         }
     }
 
+    @Override
+    public void getColumn(int column, double[] array) {
+        if (array.length != SIZE) {
+            throw new IllegalArgumentException("Call getColumn received an array of length "
+                    + array.length + ".  " + "The dimensions of the matrix is 2 by 2.");
+        }
+        if (column == 0) {
+            array[0] = m00;
+            array[1] = m10;
+        } else if (column == 1) {
+            array[0] = m01;
+            array[1] = m11;
+        } else {
+            throw new IllegalArgumentException("Specified element is out of bounds: (0 , " + column
+                    + ")");
+        }
+    }
+    
     @Override
     public void setColumn(int column, double... values) {
         if (values.length != SIZE) {
@@ -350,8 +387,8 @@ public class Matrix2 implements XMatrix, Serializable {
             m00 = values[0];
             m10 = values[1];
         } else if (column == 1) {
-            m01 = values[2];
-            m11 = values[3];
+            m01 = values[0];
+            m11 = values[1];
         } else {
             throw new IllegalArgumentException("Specified element is out of bounds: (0 , " + column
                     + ")");
@@ -369,10 +406,10 @@ public class Matrix2 implements XMatrix, Serializable {
     @Override
     public void add(double scalar, XMatrix matrix) {
         final Matrix2 k = internal( matrix );
-        m00 = scalar * k.m00;
-        m01 = scalar * k.m01;
-        m10 = scalar * k.m10;
-        m11 = scalar * k.m11;
+        m00 = scalar + k.m00;
+        m01 = scalar + k.m01;
+        m10 = scalar + k.m10;
+        m11 = scalar + k.m11;
     }
 
     @Override

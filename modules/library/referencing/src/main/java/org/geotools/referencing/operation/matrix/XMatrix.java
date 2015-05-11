@@ -50,12 +50,27 @@ public interface XMatrix extends Matrix {
     double getElement(int row, int column);
 
     /**
+     * Extract row to provided array
+     * @param row
+     * @param array
+     */
+    void getRow(int row, double[] array);
+
+    /**
      * Sets the value of the row using an array of values.
      * @param row
      * @param values
      */
     void setRow(int row, double ... values);
 
+    /**
+     * Extract col to provided array.
+     * 
+     * @param col
+     * @param array
+     */
+    public void getColumn(int col, double[] array);
+    
     /**
      * Sets the value of the column using an array of values.
      * @param column
@@ -110,11 +125,15 @@ public interface XMatrix extends Matrix {
     boolean isAffine();
 
     /**
-     * Negates the value of this matrix: {@code this} = {@code -this}.
+     * Negates the value of this matrix: {@code this = -this}.
      */
     void negate();
 
-    
+    /**
+     * Negates the value of this matrix: {@code this = -matrix}.
+     * @param matrix Matrix to negated
+     * 
+     */
     void negate( Matrix matrix );
 
     /**

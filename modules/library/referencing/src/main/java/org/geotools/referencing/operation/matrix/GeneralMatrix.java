@@ -353,6 +353,29 @@ public class GeneralMatrix implements XMatrix, Serializable {
         assert (srcAxis.length != dstAxis.length) || isAffine() : this;
     }
 
+    //
+    // In-place operations
+    //
+    /**
+     * Cast (or convert) Matrix to internal DenseMatrix64F representation required for CommonOps.
+     * @param matrix
+     * @return
+     */
+    private DenseMatrix64F internal( Matrix matrix ){
+        if( matrix instanceof GeneralMatrix ){
+            return ((GeneralMatrix)matrix).mat;
+        }
+        else {
+            DenseMatrix64F a = new DenseMatrix64F(matrix.getNumRow(), matrix.getNumCol());
+            for (int j = 0; j < a.numRows; j++) {
+                for (int i = 0; i < a.numCols; i++) {
+                    a.set(j, i, matrix.getElement(j, i));
+                }
+            }
+            return a;
+        }
+    }
+
     /**
      * Convenience method for checking object dimension validity.
      * This method is usually invoked for argument checking.
@@ -644,7 +667,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
         result = prime * result + mat.numCols;
         for (double d : mat.data) {
             long bits = Double.doubleToRawLongBits(d);
-            result = prime * ((int)(bits ^ (bits >>> 32)));
+            result = prime * result + ((int)(bits ^ (bits >>> 32)));
         }
         return result;
     }
@@ -865,35 +888,13 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param row
      * @param array
      */
-    private void getRow(int row, double[] array) {
+    public void getRow(int row, double[] array) {
         for (int i = 0; i < array.length; i++) {
             array[i] = mat.get(row, i);
         }
     }
 
     
-    //
-    // In-place operations
-    //
-    /**
-     * Cast (or convert) Matrix to internal DenseMatrix64F representation required for CommonOps.
-     * @param matrix
-     * @return
-     */
-    private DenseMatrix64F internal( Matrix matrix ){
-        if( matrix instanceof GeneralMatrix ){
-            return ((GeneralMatrix)matrix).mat;
-        }
-        else {
-            DenseMatrix64F a = new DenseMatrix64F(matrix.getNumRow(), matrix.getNumCol());
-            for (int j = 0; j < a.numRows; j++) {
-                for (int i = 0; i < a.numCols; i++) {
-                    a.set(j, i, matrix.getElement(j, i));
-                }
-            }
-            return a;
-        }
-    }
     /**
      * In-place multiply with provided matrix.
      * @param matrix

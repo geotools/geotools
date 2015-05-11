@@ -31,7 +31,6 @@ import org.opengis.referencing.operation.Matrix;
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @deprecated Use GeneralMatrix
  */
 public class Matrix4 extends GeneralMatrix implements XMatrix {
     /**

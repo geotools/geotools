@@ -187,6 +187,9 @@ public class Matrix1 implements XMatrix, Serializable {
         if (matrix.getNumRow()!=SIZE || matrix.getNumCol()!=SIZE) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
         }
+        if (matrix.getElement(0, 0) == 0) {
+            throw new SingularMatrixException("1 dimensional matrix is singular");
+        }
         m00 = 1.0/matrix.getElement(0, 0);
     }
 
@@ -251,12 +254,38 @@ public class Matrix1 implements XMatrix, Serializable {
     }
 
     @Override
+    public void getRow(int row, double[] array){
+        if (array.length != 1) {
+            throw new IllegalArgumentException("Call getRow received an array of length "
+                    + array.length + ".  " + "The dimensions of the matrix is 1 by 1.");
+        }
+        if( row != 0 ){
+            throw new IllegalArgumentException("Specified element is out of bounds: (" + row
+                    + " , 0)");
+        }
+        array[0] = m00;
+    }
+
+    @Override
     public void setRow(int row, double... values) {
         if (values.length != 1) {
             throw new IllegalArgumentException("Call setRow received an array of length "
                     + values.length + ".  " + "The dimensions of the matrix is 1 by 1.");
         }
         m00 = values[0];
+    }
+
+    @Override
+    public void getColumn(int column, double[] array){
+        if (array.length != 1) {
+            throw new IllegalArgumentException("Call getColumn received an array of length "
+                    + array.length + ".  " + "The dimensions of the matrix is 1 by 1.");
+        }
+        if( column != 0 ){
+            throw new IllegalArgumentException("Specified element is out of bounds: (0 , " + column
+                    + ")");
+        }
+        array[0] = m00;
     }
 
     @Override
@@ -337,18 +366,6 @@ public class Matrix1 implements XMatrix, Serializable {
         }
         m00 = matrix1.getElement(0, 0) * matrix2.getElement(0, 0);
     }
-
-//    @Override
-//    public void normalize() {
-//        m00 = 1.0;
-//    }
-//
-//    @Override
-//    public void normalize(Matrix matrix) {
-//        if (matrix.getNumRow()!=SIZE || matrix.getNumCol()!=SIZE) {
-//            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
-//        }
-//    }
 
     @Override
     public void sub(double scalar) {

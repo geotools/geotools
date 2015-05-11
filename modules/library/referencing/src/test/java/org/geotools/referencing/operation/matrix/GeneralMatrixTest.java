@@ -163,11 +163,6 @@ public class GeneralMatrixTest {
         GeneralMatrix affineGeneralMatrix = new GeneralMatrix(affineTransform);
         double [][] affineMatrixarray = affineGeneralMatrix.getElements();
         assertArrayEquals(affineMatrixarray, affineMatrix);
-
-
-        // TODO: Test for  public GeneralMatrix(final Envelope srcRegion, final Envelope dstRegion)
-        // TODO: Test for  public GeneralMatrix(final AxisDirection[] srcAxis, final AxisDirection[] dstAxis)
-        // TODO: Test for  public GeneralMatrix(final Envelope srcRegion, final AxisDirection[] srcAxis, final Envelope dstRegion, final AxisDirection[] dstAxis)
     }
 
     @Test
@@ -220,6 +215,8 @@ public class GeneralMatrixTest {
         gma.invert();
         GeneralMatrix gma2 = new GeneralMatrix(arrayA);
         GeneralMatrix.epsilonEquals(gma, gma2, EPSILON_TOLERANCE);
+        
+        
     }
     
     public void invertAccuracyTest(){

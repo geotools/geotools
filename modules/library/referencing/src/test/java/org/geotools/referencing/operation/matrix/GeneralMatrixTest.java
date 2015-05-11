@@ -15,15 +15,6 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Tests {@link org.geotools.referencing.operation.matrix.GeneralMatrix}.
- *
- *
- *
- * @source $URL$
- * @version $Id$
- * @author James Hughes
- */
 package org.geotools.referencing.operation.matrix;
 
 import org.junit.Test;
@@ -32,6 +23,16 @@ import java.awt.geom.AffineTransform;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test functionality GeneralMatrix 
+ * Tests {@link org.geotools.referencing.operation.matrix.GeneralMatrix}.
+ *
+ *
+ *
+ * @source $URL$
+ * @version $Id$
+ * @author James Hughes
+ */
 public class GeneralMatrixTest {
 
     private static double EPSILON_TOLERANCE = 0.000001;
@@ -302,18 +303,6 @@ public class GeneralMatrixTest {
         assertTrue(gm1.equals(gm2, 0.001));
         assertTrue(GeneralMatrix.epsilonEquals(gm1, gm2, 0.001));
         assertFalse(gm1.equals(gm2));
-
-        assertEquals(gm1.hashCode(), gm2.hashCode());  // JNH: This is an implementation detail.
-    }
-
-    //@Test
-    public void loadTest() {
-        //TODO test load functions
-    }
-
-    //@Test
-    public void toStringTest() {
-        // TODO test toString
     }
 
     @Test
@@ -332,23 +321,6 @@ public class GeneralMatrixTest {
 
         big.copySubMatrix(0, 0, 2, 2, 0, 0, second);
         assertTrue(m22.equals(second));
-
-        // TODO test getCol/Row?
-    }
-
-    //@Test
-    public void multiplicationTests() {
-        // TODO Test, multiply, mul(GM), mul(GM,GM)
-    }
-
-    //@Test
-    public void setSizeTest() {
-
-    }
-
-    //@Test
-    public void subTests() {
-
     }
 
 }

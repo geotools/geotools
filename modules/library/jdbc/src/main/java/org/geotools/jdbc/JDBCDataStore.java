@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -4049,19 +4049,17 @@ public final class JDBCDataStore extends ContentDataStore
         }
         
         // check if the geometry has anything
-        if (srid <= 0) {
+        if (srid <= 0 && g.getUserData() instanceof CoordinateReferenceSystem) {
             // check for crs object
             CoordinateReferenceSystem crs = (CoordinateReferenceSystem) g
                 .getUserData();
 
-            if (crs != null) {
-                try {
-                    Integer candidate = CRS.lookupEpsgCode(crs, false);
-                    if(candidate != null)
-                        srid = candidate;
-                } catch(Exception e) {
-                    // ok, we tried...
-                }
+            try {
+                Integer candidate = CRS.lookupEpsgCode(crs, false);
+                if (candidate != null)
+                    srid = candidate;
+            } catch (Exception e) {
+                // ok, we tried...
             }
         }
         

@@ -42,9 +42,11 @@ import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CompoundRing;
 import org.geotools.geometry.jts.CurvePolygon;
+import org.geotools.geometry.jts.CurvedRing;
 import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.WKTWriter2;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.ColumnMetadata;
 import org.geotools.jdbc.JDBCDataStore;
@@ -1022,12 +1024,12 @@ public class PostGISDialect extends BasicSQLDialect {
     	if (value == null || value.isEmpty()) {
             sql.append("NULL");
         } else {
-            if (value instanceof LinearRing) {
+            if (value instanceof LinearRing && !(value instanceof CurvedRing)) {
                 //postgis does not handle linear rings, convert to just a line string
                 value = value.getFactory().createLineString(((LinearRing) value).getCoordinateSequence());
             }
             
-            WKTWriter writer = new WKTWriter(dimension);
+            WKTWriter writer = new WKTWriter2(dimension);
             String wkt = writer.write(value);
             sql.append("ST_GeomFromText('" + wkt + "', " + srid + ")");
         }

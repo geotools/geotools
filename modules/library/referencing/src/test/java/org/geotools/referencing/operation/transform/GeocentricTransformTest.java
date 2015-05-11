@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-import org.geotools.math.Plane.Point3d;
 import org.geotools.referencing.crs.DefaultGeocentricCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.datum.DefaultEllipsoid;
@@ -182,9 +181,14 @@ public final class GeocentricTransformTest extends TransformTestBase {
          */
         for (int i=0; i<array0.length/6; i++) {
             final int base = i*6;
-            final Point3d  pt1 = new Point3d(array1[base+0], array1[base+1], array1[base+2]);
-            final Point3d  pt2 = new Point3d(array1[base+3], array1[base+4], array1[base+5]);
-            final double cartesian = pt1.distance(pt2);
+            final double[]  pt1 = new double[]{array1[base+0], array1[base+1], array1[base+2]};
+            final double[]  pt2 = new double[]{array1[base+3], array1[base+4], array1[base+5]};
+            
+            double dX = Math.abs(pt1[0]-pt2[0]);
+            double dY = Math.abs(pt1[1]-pt2[1]);
+            double dZ = Math.abs(pt1[2]-pt2[2]);
+            
+            final double cartesian = Math.sqrt( dX*dX + dY*dY + dZ*dZ); 
             if (i < cartesianDistance.length) {
                 assertEquals("Cartesian distance["+i+']', cartesianDistance[i], cartesian, 0.1);
             }

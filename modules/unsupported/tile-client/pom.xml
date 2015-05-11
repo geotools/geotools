@@ -9,38 +9,9 @@
 
   <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>geotools</artifactId>
-    <version>13-SNAPSHOT</version>
+    <artifactId>unsupported</artifactId>
+    <version>14-SNAPSHOT</version>
   </parent>
-
-
-
-  <!-- =========================================================== -->
-  <!-- Properties and Profiles -->
-  <!-- explanation of their effect. -->
-  <!-- -->
-  <!-- Available profiles are: -->
-  <!-- -->
-  <!-- nameOfprofile Explantion of what the profile does -->
-  <!-- for the user. -->
-  <!-- -->
-  <!-- Example: mvn -PnameOfprofile install -->
-  <!-- -->
-  <!-- Note ... -->
-  <!-- =========================================================== -->
-  <!-- Default setting of properties -->
-  <!-- <properties> <nameOfproperty>valueOfsetting</nameOfproperty> </properties> -->
-
-  <!-- Profiles set on the command-line to override default properties. -->
-  <!-- <profiles> <profile> <id>nameOfprofile</id> <properties> <nameOfproperty>valueOfsetting</nameOfproperty> 
-    </properties> </profile> </profiles> -->
-
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- use the latest snapshot -->
-        <geotools.version>13-SNAPSHOT</geotools.version>
-    </properties>
 
   <!-- =========================================================== -->
   <!-- Module Description -->
@@ -48,16 +19,11 @@
   <groupId>org.geotools</groupId>
   <artifactId>gt-tile-client</artifactId>
   <packaging>jar</packaging>
-  <name>tile-client</name>
+  <name>Tile Client</name>
   <description>
     This module provides access to tile services, notably OpenStreetMap and Bing Maps.
     It includes a TileLayer, for displaying tiles into a GeoTools map.
   </description>
-
-  <organization>
-    <name></name>
-    <url></url>
-  </organization>
 
   <!-- for your project. -->
   <inceptionYear>2015</inceptionYear>
@@ -118,51 +84,11 @@
       <artifactId>gt-coverage</artifactId>
       <version>${project.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-swing</artifactId>
-      <version>${geotools.version}</version>
+      <version>${project.version}</version>
     </dependency>
-   
   </dependencies>
-
-
-  <!-- =========================================================== -->
-  <!-- Build Configuration -->
-  <!-- copies all JARs in a single directory. -->
-  <!-- =========================================================== -->
-  <build>
-
-    <plugins>
-      <!-- ==== Compilation ============================== -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <!-- ==== Switch commenting to skip tests = -->
-          <skip>${allow.test.skip}</skip>
-          <!-- skip>true</skip> -->
-          <includes>
-            <include></include>
-          </includes>
-          <excludes>
-            <exclude></exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-
-      <!-- ==== Testing ============================== -->
-      <!-- ==== Code Formatting ============================== -->
-      <!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>jalopy-maven-plugin</artifactId> 
-        <executions> <execution> <goals> <goal>format</goal> </goals> </execution> 
-        </executions> </plugin> -->
-      <!-- ==== Code Coverage ============================== -->
-      <!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-clover-plugin</artifactId> 
-        <executions> <execution> <goals> <goal></goal> </goals> </execution> </executions> 
-        </plugin> -->
-    </plugins>
-
-  </build>
 
 </project>

@@ -157,6 +157,12 @@
        </modules>
      </profile>
      <profile>
+       <id>tile</id>
+       <modules>
+         <module>tile-client</module>
+       </modules>
+     </profile>
+     <profile>
        <id>unsupported</id>
        <activation>
          <property><name>all</name></property>

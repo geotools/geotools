@@ -231,7 +231,7 @@
   <!-- =========================================================== -->
   <issueManagement>
     <system>JIRA</system>
-    <url>https://osgeo-org.atlassian.net/projects/GEOS</url>
+    <url>https://osgeo-org.atlassian.net/projects/GEOT</url>
   </issueManagement>
 
   <!-- =========================================================== -->
@@ -239,7 +239,7 @@
   <!-- =========================================================== -->
   <ciManagement>
     <system>jenkins</system>
-    <url>http://ares.opengeo.org/jenkins/view/geoserver/</url>
+    <url>http://ares.opengeo.org/jenkins/view/geotools/</url>
   </ciManagement>
 
   <mailingLists>

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,7 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.io.Serializable;
+
 import org.opengis.referencing.operation.Matrix;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -31,7 +32,6 @@ import org.geotools.resources.i18n.ErrorKeys;
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @deprecated Use GeneralMatrix
  */
 public class Matrix2 implements XMatrix, Serializable {
     /** Serial number for interoperability with different versions. */
@@ -83,6 +83,18 @@ public class Matrix2 implements XMatrix, Serializable {
         m01 = matrix.getElement(0,1);
         m10 = matrix.getElement(1,0);
         m11 = matrix.getElement(1,1);
+    }
+
+    /** Used to cast/copy matrix to Matrix2 */
+    Matrix2 internal( Matrix matrix ){
+        if (matrix instanceof Matrix2) {
+            return (Matrix2) matrix;
+        } else {
+            if (matrix.getNumRow()!=SIZE || matrix.getNumCol()!=SIZE) {
+                throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+            }
+            return new Matrix2(matrix);
+        }
     }
 
     /**
@@ -194,6 +206,15 @@ public class Matrix2 implements XMatrix, Serializable {
         m11 = -m11;
     }
 
+    @Override
+    public void negate(Matrix matrix) {
+        Matrix2 k = internal( matrix );
+        m00 = -k.m00;
+        m01 = -k.m01;
+        m10 = -k.m10;
+        m11 = -k.m11; 
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -201,6 +222,15 @@ public class Matrix2 implements XMatrix, Serializable {
         final double swap = m10;
         m10 = m01;
         m01 = swap;
+    }
+
+    @Override
+    public void transpose(Matrix matrix) {
+        Matrix2 k = internal( matrix );
+        m00 = k.m00;
+        m01 = k.m10;
+        m10 = k.m01;
+        m11 = k.m11; 
     }
 
     /**
@@ -217,24 +247,22 @@ public class Matrix2 implements XMatrix, Serializable {
         m10 = -m10 / det;
         m01 = -m01 / det;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public final void multiply(final Matrix matrix) {
-        final Matrix2 k;
-        if (matrix instanceof Matrix2) {
-            k = (Matrix2) matrix;
-        } else {
-            k = new Matrix2(matrix);
+    
+    @Override
+    public void invert(Matrix matrix) throws SingularMatrixException {
+        Matrix2 k = internal( matrix );
+        final double det = k.m00*k.m11 - k.m01*k.m10;
+        if (det == 0) {
+            throw new SingularMatrixException("Determinate is zero, cannot invert matrix");
         }
-        double m0, m1;
-        m0=m00; m1=m01;
-        m00 = m0*k.m00 + m1*k.m10;
-        m01 = m0*k.m01 + m1*k.m11;
-        m0=m10; m1=m11;
-        m10 = m0*k.m00 + m1*k.m10;
-        m11 = m0*k.m01 + m1*k.m11;
+        m00 = k.m11 / det;
+        m11 = k.m00 / det;
+        m10 = -k.m10 / det;
+        m01 = -k.m01 / det;
+    }
+
+    public final void multiply(final Matrix matrix) {
+        mul(matrix);
     }
 
     /**
@@ -293,4 +321,158 @@ public class Matrix2 implements XMatrix, Serializable {
             throw new AssertionError(e);
         }
     }
+
+    @Override
+    public void setRow(int row, double... values) {
+        if (values.length != SIZE) {
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length + ".  " + "The dimensions of the matrix is 2 by 2.");
+        }
+        if (row == 0) {
+            m00 = values[0];
+            m01 = values[1];
+        } else if (row == 1) {
+            m10 = values[2];
+            m11 = values[3];
+        } else {
+            throw new IllegalArgumentException("Specified element is out of bounds: (" + row
+                    + " , 0)");
+        }
+    }
+
+    @Override
+    public void setColumn(int column, double... values) {
+        if (values.length != SIZE) {
+            throw new IllegalArgumentException("Call setColumn received an array of length "
+                    + values.length + ".  " + "The dimensions of the matrix is 2 by 2.");
+        }
+        if (column == 0) {
+            m00 = values[0];
+            m10 = values[1];
+        } else if (column == 1) {
+            m01 = values[2];
+            m11 = values[3];
+        } else {
+            throw new IllegalArgumentException("Specified element is out of bounds: (0 , " + column
+                    + ")");
+        }
+    }
+
+    @Override
+    public void add(double scalar) {
+        m00 += scalar;
+        m01 += scalar;
+        m10 += scalar;
+        m11 += scalar;
+    }
+
+    @Override
+    public void add(double scalar, XMatrix matrix) {
+        final Matrix2 k = internal( matrix );
+        m00 = scalar * k.m00;
+        m01 = scalar * k.m01;
+        m10 = scalar * k.m10;
+        m11 = scalar * k.m11;
+    }
+
+    @Override
+    public void add(XMatrix matrix) {
+        final Matrix2 k = internal(matrix);
+        m00 += k.m00;
+        m01 += k.m01;
+        m10 += k.m10;
+        m11 += k.m11;
+    }
+    @Override
+    public void add(XMatrix matrix1, XMatrix matrix2) {
+        final Matrix2 a = internal(matrix1);
+        final Matrix2 b = internal(matrix2);
+        m00 = a.m00 + b.m00;
+        m01 = a.m01 + b.m01;
+        m10 = a.m10 + b.m10;
+        m11 = a.m11 + b.m11;
+    }
+    
+    @Override
+    public double determinate() {
+        return (m00 * m11) - (m01 * m10);
+    }
+
+    @Override
+    public void mul(double scalar) {
+        m00 *= scalar;
+        m01 *= scalar;
+        m10 *= scalar;
+        m11 *= scalar;
+    }
+
+    @Override
+    public void mul(double scalar, Matrix matrix) {
+        final Matrix2 k = internal(matrix);
+        m00 = scalar * k.m00;
+        m01 = scalar * k.m01;
+        m10 = scalar * k.m10;
+        m11 = scalar * k.m11;
+    }
+
+    @Override
+    public void mul(Matrix matrix) {
+        final Matrix2 k = internal(matrix);
+        double m0, m1;
+        m0 = m00;
+        m1 = m01;
+        m00 = m0 * k.m00 + m1 * k.m10;
+        m01 = m0 * k.m01 + m1 * k.m11;
+        m0 = m10;
+        m1 = m11;
+        m10 = m0 * k.m00 + m1 * k.m10;
+        m11 = m0 * k.m01 + m1 * k.m11;
+    }
+
+    @Override
+    public void mul(Matrix matrix1, Matrix matrix2) {
+        final Matrix2 a = internal(matrix1);
+        final Matrix2 b = internal(matrix2);
+        m00 = a.m00 * b.m00 + a.m10 * b.m01;
+        m01 = a.m00 * b.m10 + a.m10 * b.m11;
+        m10 = a.m01 * b.m00 + a.m11 * b.m01;
+        m11 = a.m01 * b.m10 + a.m11 * b.m11;
+    }
+
+    @Override
+    public void sub(double scalar) {
+        m00 -= scalar;
+        m01 -= scalar;
+        m10 -= scalar;
+        m11 -= scalar;
+    }
+
+    @Override
+    public void sub(double scalar, Matrix matrix) {
+        final Matrix2 k = internal( matrix );
+        m00 = scalar - k.m00;
+        m01 = scalar - k.m01;
+        m10 = scalar - k.m10;
+        m11 = scalar - k.m11;
+    }
+
+    @Override
+    public void sub(Matrix matrix) {
+        final Matrix2 k = internal( matrix );
+        m00 -= k.m00;
+        m01 -= k.m01;
+        m10 -= k.m10;
+        m11 -= k.m11;
+    }
+
+    @Override
+    public void sub(Matrix matrix1, Matrix matrix2) {
+        final Matrix2 a = internal(matrix1);
+        final Matrix2 b = internal(matrix2);
+        m00 = a.m00 - b.m00;
+        m01 = a.m01 - b.m01;
+        m10 = a.m10 - b.m10;
+        m11 = a.m11 - b.m11;
+    }
+
 }

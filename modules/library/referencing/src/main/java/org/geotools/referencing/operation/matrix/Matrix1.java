@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,7 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.io.Serializable;
+
 import org.opengis.referencing.operation.Matrix;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -148,6 +149,14 @@ public class Matrix1 implements XMatrix, Serializable {
         m00 = -m00;
     }
 
+    @Override
+    public void negate(Matrix matrix) {
+        if (matrix.getNumRow()!=SIZE || matrix.getNumCol()!=SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        m00 = -matrix.getElement(0,0);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -155,14 +164,30 @@ public class Matrix1 implements XMatrix, Serializable {
         // Nothing to do for a 1x1 matrix.
     }
 
+    @Override
+    public void transpose(Matrix matrix) {
+        if (matrix.getNumRow()!=SIZE || matrix.getNumCol()!=SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        m00 = matrix.getElement(0, 0);
+    }
+
     /**
      * Inverts this matrix in place.
      */
     public final void invert() {
         if (m00 == 0) {
-            throw new SingularMatrixException("1 dimensional matirx is singular");
+            throw new SingularMatrixException("1 dimensional m is singular");
         }
-        m00 = 1/m00;
+        m00 = 1.0/m00;
+    }
+
+    @Override
+    public void invert(Matrix matrix) throws SingularMatrixException {
+        if (matrix.getNumRow()!=SIZE || matrix.getNumCol()!=SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        m00 = 1.0/matrix.getElement(0, 0);
     }
 
     /**
@@ -224,4 +249,137 @@ public class Matrix1 implements XMatrix, Serializable {
             throw new AssertionError(e);
         }
     }
+
+    @Override
+    public void setRow(int row, double... values) {
+        if (values.length != 1) {
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length + ".  " + "The dimensions of the matrix is 1 by 1.");
+        }
+        m00 = values[0];
+    }
+
+    @Override
+    public void setColumn(int column, double... values) {
+        if (values.length != 0) {
+            throw new IllegalArgumentException("Call setColumn received an array of length "
+                    + values.length + ".  " + "The dimensions of the matrix is 1 by 1.");
+        }
+        m00 = values[0];
+    }
+
+    @Override
+    public void add(double scalar) {
+        m00 += scalar;
+    }
+
+    @Override
+    public void add(double scalar, XMatrix matrix) {
+        if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        m00 = scalar + matrix.getElement(0, 0);
+    }
+
+    @Override
+    public void add(XMatrix matrix) {
+        if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        m00 += matrix.getElement(0, 0);
+    }
+    
+    @Override
+    public void add(XMatrix matrix1,XMatrix matrix2) {
+        if (matrix1.getNumRow() != SIZE || matrix1.getNumCol() != SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        if (matrix2.getNumRow() != SIZE || matrix2.getNumCol() != SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        m00 = matrix1.getElement(0, 0) + matrix2.getElement(0, 0);
+    }
+    
+
+    @Override
+    public double determinate() {
+        return m00; // trivial 1x1 matrix
+    }
+
+    @Override
+    public void mul(double scalar) {
+        m00 *= scalar;
+    }
+
+    @Override
+    public void mul(double scalar, Matrix matrix) {
+        if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        m00 = scalar * matrix.getElement(0, 0);
+    }
+
+    @Override
+    public void mul(Matrix matrix) {
+        if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        m00 *= matrix.getElement(0, 0);
+    }
+
+    @Override
+    public void mul(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getNumRow() != SIZE || matrix1.getNumCol() != SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        if (matrix2.getNumRow() != SIZE || matrix2.getNumCol() != SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        m00 = matrix1.getElement(0, 0) * matrix2.getElement(0, 0);
+    }
+
+//    @Override
+//    public void normalize() {
+//        m00 = 1.0;
+//    }
+//
+//    @Override
+//    public void normalize(Matrix matrix) {
+//        if (matrix.getNumRow()!=SIZE || matrix.getNumCol()!=SIZE) {
+//            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+//        }
+//    }
+
+    @Override
+    public void sub(double scalar) {
+        m00 -= scalar;
+    }
+    
+    @Override
+    public void sub(Matrix matrix) {
+        if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        m00 -= matrix.getElement(0, 0);
+    }
+
+    @Override
+    public void sub(double scalar, Matrix matrix) {
+        if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        m00 = scalar - matrix.getElement(0, 0);
+    }
+
+    @Override
+    public void sub(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getNumRow() != SIZE || matrix1.getNumCol() != SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        if (matrix2.getNumRow() != SIZE || matrix2.getNumCol() != SIZE) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+        }
+        m00 = matrix1.getElement(0, 0) - matrix2.getElement(0, 0);
+    }
+
 }

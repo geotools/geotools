@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,19 +16,17 @@
  */
 package org.geotools.referencing.operation.matrix;
 
+import org.opengis.annotation.Extension;
 import org.opengis.referencing.operation.Matrix;
 
 
 /**
- * A matrix capables to perform some matrix operations. The basic {@link Matrix} interface
+ * A matrix capable of some matrix operations. The basic {@link Matrix} interface
  * is basically just a two dimensional array of numbers. The {@code XMatrix} interface add
  * {@linkplain #invert inversion} and {@linkplain #multiply multiplication} capabilities.
- * It is used as a bridge across various matrix implementations in Java3D
- * ({@link javax.vecmath.Matrix3f}, {@link javax.vecmath.Matrix3d}, {@link javax.vecmath.Matrix4f},
- * {@link javax.vecmath.Matrix4d}, {@link javax.vecmath.GMatrix}).
  *
  * @since 2.2
- *
+ * @version 14
  *
  * @source $URL$
  * @version $Id$
@@ -52,9 +50,19 @@ public interface XMatrix extends Matrix {
     double getElement(int row, int column);
 
     /**
-     * Set the element at the specified index.
+     * Sets the value of the row using an array of values.
+     * @param row
+     * @param values
      */
-    void setElement(int row, int column, double value);
+    void setRow(int row, double ... values);
+
+    /**
+     * Sets the value of the column using an array of values.
+     * @param column
+     * @param values
+     */
+    @Extension
+    public void setColumn( int column, double ... values );
 
     /**
      * Sets all the values in this matrix to zero.
@@ -65,11 +73,6 @@ public interface XMatrix extends Matrix {
      * Sets this matrix to the identity matrix.
      */
     void setIdentity();
-
-    /**
-     * Returns {@code true} if this matrix is an identity matrix.
-     */
-    boolean isIdentity();
 
     /**
      * Returns {@code true} if this matrix is an identity matrix using the provided tolerance.
@@ -86,6 +89,18 @@ public interface XMatrix extends Matrix {
     boolean isIdentity(double tolerance);
 
     /**
+     * Compares the element values.
+     *
+     * @param matrix    The matrix to compare.
+     * @param tolerance The tolerance value.
+     * @return {@code true} if this matrix is close enough to the given matrix
+     *         given the tolerance value.
+     *
+     * @since 2.5
+     */
+    boolean equals(Matrix matrix, double tolerance);
+    
+    /**
      * Returns {@code true} if this matrix is an affine transform.
      * A transform is affine if the matrix is square and last row contains
      * only zeros, except in the last column which contains 1.
@@ -99,11 +114,20 @@ public interface XMatrix extends Matrix {
      */
     void negate();
 
+    
+    void negate( Matrix matrix );
+
     /**
      * Sets the value of this matrix to its transpose.
      */
     void transpose();
 
+    /**
+     * Set to the transpose of the provided matrix.
+     * @param matrix The original matrix.  Not modified.
+     */
+    void transpose( Matrix matrix );
+    
     /**
      * Inverts this matrix in place.
      *
@@ -111,6 +135,48 @@ public interface XMatrix extends Matrix {
      */
     void invert() throws SingularMatrixException;
 
+    /**
+     * Set to the inverse of the provided matrix.
+     * 
+     * @param matrix The matrix that is to be inverted. Not modified.
+     * @throws SingularMatrixException if this matrix is not invertible.
+     */
+    void invert( Matrix matrix ) throws SingularMatrixException;
+    
+    /**
+     * Performs an in-place scalar addition.
+     *
+     * @param scalar The value that's added to each element.
+     */
+    void add( double scalar );
+    
+    /**
+     * Set to the scalar addition of <code>scalar+matrix<code>
+     *
+     * @param scalar The value that's added to each element.
+     * @param matrix The matrix that is to be added. Not modified.
+     */
+    void add( double scalar, XMatrix matrix );
+    
+    /**
+     * Set to the matrix addition of <code>this+matrix</code>.
+     * 
+     * @param scalar The scalar to be added. Not modified.
+     * @param matrix The matrix that is to be added. Not modified.
+     */
+    void add( XMatrix matrix );
+    
+    /**
+     * Set to the matrix addition of <code>matrix1+matrix2</code>.
+     * 
+     * @param matrix1 First matrix to be added. Not modified.
+     * @param matrix2 Second matrix to be added. Not modified.
+     */
+    void add(XMatrix matrix1, XMatrix matrix2);
+    
+    /** Computes the determinant */
+    double determinate();
+    
     /**
      * Sets the value of this matrix to the result of multiplying itself with the specified matrix.
      * In other words, performs {@code this} = {@code this} &times; {@code matrix}. In the context
@@ -124,17 +190,66 @@ public interface XMatrix extends Matrix {
     void multiply(Matrix matrix);
 
     /**
-     * Compares the element values regardless the object class. This is similar to a call to
-     * <code>{@linkplain javax.vecmath.GMatrix#epsilonEquals GMatrix.epsilonEquals}(matrix,
-     * tolerance)</code>. The method name is intentionally different in order to avoid
-     * ambiguities at compile-time.
-     *
-     * @param matrix    The matrix to compare.
-     * @param tolerance The tolerance value.
-     * @return {@code true} if this matrix is close enough to the given matrix
-     *         given the tolerance value.
-     *
-     * @since 2.5
+     * Sets this matrix to the result of multiplying itself with the provided scalar.
+     * 
+     * @param scalar
      */
-    boolean equals(Matrix matrix, double tolerance);
+    void mul(double scalar);
+
+    /**
+     * Sets the value of this matrix to the result of multiplying the provided scalar and matrix.
+     * @param scalar
+     * @param matrix
+     */
+    void mul(double scalar, Matrix matrix);
+
+    /**
+     * Sets the value of this matrix to the result of multiplying itself with the specified matrix.
+     * In other words, performs {@code this} = {@code this} &times; {@code matrix}. In the context
+     * of coordinate transformations, this is equivalent to
+     * <code>{@linkplain java.awt.geom.AffineTransform#concatenate AffineTransform.concatenate}</code>:
+     * first transforms by the supplied transform and then transform the result by the original
+     * transform.
+     *
+     * @param matrix The matrix to multiply to this matrix.
+     */
+    void mul(Matrix matrix);
+
+    /**
+     * Sets the value of this matrix to the result of multiplying matrix1 and matrix2.
+     * @param matrix1
+     * @param matrix2 
+     */
+    void mul(Matrix matrix1, Matrix matrix2);
+
+    /**
+     * In-place matrix subtraction: <code>this - scalar</code>.
+     * 
+     * @param scalar
+     */
+    void sub(double scalar);
+
+    /**
+     * Set to the difference of <code>scalar - matrix2</code>.
+     * 
+     * @param scalar
+     * @param matrix2 matrix, not modified
+     */
+    void sub(double scalar, Matrix matrix);
+
+    /**
+     * In-place matrix subtraction: <code>this - matrix</code>.
+     * 
+     * @param b m by n matrix. Not modified.
+     */
+    void sub(Matrix matrix);
+
+    /**
+     * Set to the difference of <code>matrix1 - matrix2</code>.
+     * 
+     * @param matrix1 matrix, not modified
+     * @param matrix2 matrix, not modified
+     */
+    void sub(Matrix matrix1, Matrix matrix2);
+
 }

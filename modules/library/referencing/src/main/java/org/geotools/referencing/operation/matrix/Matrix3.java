@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,6 @@ import org.geotools.resources.i18n.ErrorKeys;
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @deprecated Use GeneralMatrix
  */
 public class Matrix3 extends GeneralMatrix implements XMatrix {
     /**
@@ -138,26 +137,6 @@ public class Matrix3 extends GeneralMatrix implements XMatrix {
         return mat.data[0]==transform.getScaleX() && mat.data[1]==transform.getShearX() && mat.data[2]==transform.getTranslateX() &&
                mat.data[3]==transform.getShearY() && mat.data[4]==transform.getScaleY() && mat.data[5]==transform.getTranslateY() &&
                mat.data[6]==0                     && mat.data[7]==0                     && mat.data[8]==1;
-    }
-
-     @Override
-    public int hashCode() {
-        return GeneralMatrix.hashCode(this);
-    }
-    /**
-     * {@inheritDoc}
-     */
-    public boolean equals(final Matrix matrix, final double tolerance) {
-        return GeneralMatrix.epsilonEquals(this, matrix, tolerance);
-    }
-
-    /**
-     * Returns a string representation of this matrix. The returned string is implementation
-     * dependent. It is usually provided for debugging purposes only.
-     */
-    @Override
-    public String toString() {
-        return GeneralMatrix.toString(this);
     }
 
     /**

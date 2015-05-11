@@ -231,14 +231,15 @@
   <!-- =========================================================== -->
   <issueManagement>
     <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/GEOT</url>
+    <url>https://osgeo-org.atlassian.net/projects/GEOS</url>
   </issueManagement>
 
   <!-- =========================================================== -->
   <!--    Continuous Integration                                   -->
   <!-- =========================================================== -->
   <ciManagement>
-    <system>continuum</system>
+    <system>jenkins</system>
+    <url>http://ares.opengeo.org/jenkins/view/geoserver/</url>
   </ciManagement>
 
   <mailingLists>

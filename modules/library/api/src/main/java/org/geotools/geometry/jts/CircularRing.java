@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -247,16 +247,7 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     }
 
     public String toCurvedText() {
-        StringBuilder sb = new StringBuilder("CIRCULARSTRING(");
-        double[] controlPoints = delegate.controlPoints;
-        for (int i = 0; i < controlPoints.length;) {
-            sb.append(controlPoints[i++] + " " + controlPoints[i++]);
-            if (i < controlPoints.length) {
-                sb.append(", ");
-            }
-        }
-        sb.append(")");
-        return sb.toString();
+        return delegate.toCurvedText();
     }
 
     public boolean equalsNorm(Geometry g) {

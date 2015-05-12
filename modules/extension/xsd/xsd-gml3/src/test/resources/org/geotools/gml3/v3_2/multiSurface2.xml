@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MultiSurface srsName="urn:x-ogc:def:crs:EPSG:32632"
+  srsDimension="2">
+  <surfaceMember>
+    <Polygon>
+      <exterior>
+        <Ring>
+          <curveMember>
+            <LineString>
+              <posList>6 10 10 1 14 10</posList>
+            </LineString>
+          </curveMember>
+          <curveMember>
+            <Curve>
+              <segments>
+                <ArcString interpolation="circularArc3Points">
+                  <posList>14 10 10 14 6 10</posList>
+                </ArcString>
+              </segments>
+            </Curve>
+          </curveMember>
+        </Ring>
+      </exterior>
+      <interior>
+        <Ring>
+          <curveMember>
+            <LineString>
+              <posList>13 10 10 2 7 10</posList>
+            </LineString>
+          </curveMember>
+          <curveMember>
+            <Curve>
+              <segments>
+                <ArcString interpolation="circularArc3Points">
+                  <posList>7 10 10 13 13 10</posList>
+                </ArcString>
+              </segments>
+            </Curve>
+          </curveMember>
+        </Ring>
+      </interior>
+    </Polygon>
+  </surfaceMember>
+  <surfaceMember>
+    <Polygon>
+      <exterior>
+        <Ring>
+          <curveMember>
+            <LineString>
+              <posList>106 110 110 101 114 110</posList>
+            </LineString>
+          </curveMember>
+          <curveMember>
+            <Curve>
+              <segments>
+                <ArcString interpolation="circularArc3Points">
+                  <posList>114 110 110 114 106 110</posList>
+                </ArcString>
+              </segments>
+            </Curve>
+          </curveMember>
+        </Ring>
+      </exterior>
+    </Polygon>
+  </surfaceMember>
+</MultiSurface>

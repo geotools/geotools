@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,6 +36,15 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 public class CurvedGeometryTest {
 
     private static final GeometryFactory GEOMETRY_FACTORY = new GeometryFactory();
+
+    @Test
+    public void testCircularStringEmpty() {
+        CircularString cs = new CircularString(new double[0], GEOMETRY_FACTORY, Double.MAX_VALUE);
+        assertTrue(cs.isEmpty());
+        assertEquals("CIRCULARSTRING EMPTY", cs.toCurvedText());
+        assertEquals(0, cs.getNumArcs());
+        assertEquals(0, cs.getNumPoints());
+    }
 
     @Test
     public void testCircularStringSingleCurve() {
@@ -73,7 +82,7 @@ public class CurvedGeometryTest {
         // check curved WKT generation
         String wkt = cs.toCurvedText();
         assertEquals(
-                "CIRCULARSTRING(6.123233995736766E-16 10.0, 7.0710678118654755 7.071067811865475, 10.0 0.0)",
+                "CIRCULARSTRING (6.123233995736766E-16 10.0, 7.0710678118654755 7.071067811865475, 10.0 0.0)",
                 wkt);
 
         // check reversing
@@ -126,7 +135,7 @@ public class CurvedGeometryTest {
         // check curved WKT generation
         String wkt = cs.toCurvedText();
         assertEquals(
-                "CIRCULARSTRING(6.123233995736766E-16 10.0, 7.0710678118654755 7.071067811865475, 10.0 0.0, 12.928932188134524 7.0710678118654755, 20.0 10.0)",
+                "CIRCULARSTRING (6.123233995736766E-16 10.0, 7.0710678118654755 7.071067811865475, 10.0 0.0, 12.928932188134524 7.0710678118654755, 20.0 10.0)",
                 wkt);
 
         // check reversing
@@ -182,7 +191,7 @@ public class CurvedGeometryTest {
         // check curved WKT generation
         String wkt = cr.toCurvedText();
         assertEquals(
-                "CIRCULARSTRING(10.0 0.0, 6.123233995736766E-16 10.0, -10.0 1.2246467991473533E-15, -1.8369701987210296E-15 -10.0, 10.0 0.0)",
+                "CIRCULARSTRING (10.0 0.0, 6.123233995736766E-16 10.0, -10.0 1.2246467991473533E-15, -1.8369701987210296E-15 -10.0, 10.0 0.0)",
                 wkt);
 
         // check reversing
@@ -234,7 +243,7 @@ public class CurvedGeometryTest {
         // check curved WKT generation
         String wkt = curve.toCurvedText();
         assertEquals(
-                "COMPOUNDCURVE(CIRCULARSTRING(10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 10.0 10.0))",
+                "COMPOUNDCURVE (CIRCULARSTRING (10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 10.0 10.0))",
                 wkt);
     }
 
@@ -269,7 +278,7 @@ public class CurvedGeometryTest {
         // check curved WKT generation
         String wkt = ring.toCurvedText();
         assertEquals(
-                "COMPOUNDCURVE(CIRCULARSTRING(10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 10.0 10.0))",
+                "COMPOUNDCURVE (CIRCULARSTRING (10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 10.0 10.0))",
                 wkt);
     }
 
@@ -298,7 +307,7 @@ public class CurvedGeometryTest {
         // check curved WKT generation
         String wkt = curved.toCurvedText();
         assertEquals(
-                "CURVEPOLYGON(CIRCULARSTRING(-10.0 0.0, 0.0 10.0, 10.0 0.0, 0.0 -10.0, -10.0 0.0), (-1.0 -1.0, -1.0 1.0, 1.0 1.0, 1.0 -1.0, -1.0 -1.0))",
+                "CURVEPOLYGON (CIRCULARSTRING (-10.0 0.0, 0.0 10.0, 10.0 0.0, 0.0 -10.0, -10.0 0.0), (-1.0 -1.0, -1.0 1.0, 1.0 1.0, 1.0 -1.0, -1.0 -1.0))",
                 wkt);
     }
 
@@ -338,7 +347,7 @@ public class CurvedGeometryTest {
         // check curved WKT generation
         String wkt = ms.toCurvedText();
         assertEquals(
-                "MULTISURFACE(CURVEPOLYGON(CIRCULARSTRING(-10.0 0.0, 0.0 10.0, 10.0 0.0, 0.0 -10.0, -10.0 0.0), "
+                "MULTISURFACE (CURVEPOLYGON (CIRCULARSTRING (-10.0 0.0, 0.0 10.0, 10.0 0.0, 0.0 -10.0, -10.0 0.0), "
                         + "(-1.0 -1.0, -1.0 1.0, 1.0 1.0, 1.0 -1.0, -1.0 -1.0)), ((20.0 20.0, 24.0 20.0, 24.0 24.0, 20.0 24.0, 20.0 20.0), "
                         + "(22.0 22.0, 23.0 22.0, 23.0 23.0, 23.0 22.0, 22.0 22.0)))",
                 wkt);

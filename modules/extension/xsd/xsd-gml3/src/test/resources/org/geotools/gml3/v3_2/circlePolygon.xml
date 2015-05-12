@@ -1,0 +1,15 @@
+<Polygon srsName="urn:x-ogc:def:crs:EPSG:32632" srsDimension="2">
+  <exterior>
+    <Ring>
+      <curveMember>
+        <Curve>
+          <segments>
+            <ArcString interpolation="circularArc3Points">
+              <posList>10 150 15 145 20 150 15 155 10 150</posList>
+            </ArcString>
+          </segments>
+        </Curve>
+      </curveMember>
+    </Ring>
+  </exterior>
+</Polygon>

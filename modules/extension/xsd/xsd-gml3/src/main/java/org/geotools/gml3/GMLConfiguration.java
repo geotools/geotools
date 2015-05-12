@@ -142,7 +142,12 @@ public class GMLConfiguration extends Configuration {
     /**
      * Number of decimals that should be used for formatting numbers
      */
-    private int numDecimals = 6;;
+    private int numDecimals = 6;
+
+    /**
+     * The factory used to create geometries
+     */
+    private GeometryFactory geometryFactory;
 
 
     public GMLConfiguration() {
@@ -347,7 +352,8 @@ public class GMLConfiguration extends Configuration {
         //factories
         container.registerComponentInstance(CoordinateSequenceFactory.class,
             CoordinateArraySequenceFactory.instance());
-        container.registerComponentImplementation(GeometryFactory.class);
+        container.registerComponentInstance(geometryFactory == null ? new GeometryFactory()
+                : geometryFactory);
         
         container.registerComponentInstance(new GML3EncodingUtils());
         
@@ -373,4 +379,23 @@ public class GMLConfiguration extends Configuration {
     public void setNumDecimals(int numDecimals) {
         this.numDecimals = numDecimals;
     }
+
+    /**
+     * Retrieves the geometry factory used to build geometries
+     * 
+     * @return the geometryFactory
+     */
+    public GeometryFactory getGeometryFactory() {
+        return geometryFactory;
+    }
+
+    /**
+     * Sets the geometry factory used to build geometry
+     * 
+     * @param geometryFactory the geometryFactory to set
+     */
+    public void setGeometryFactory(GeometryFactory geometryFactory) {
+        this.geometryFactory = geometryFactory;
+    }
+
 }

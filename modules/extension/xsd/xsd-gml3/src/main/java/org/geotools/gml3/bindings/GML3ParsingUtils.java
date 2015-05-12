@@ -19,9 +19,9 @@ package org.geotools.gml3.bindings;
 import java.util.List;
 
 import org.eclipse.xsd.XSDElementDeclaration;
+import org.geotools.geometry.jts.CircularArc;
 import org.geotools.geometry.jts.CurvedGeometries;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
-import org.geotools.geometry.jts.CircularArc;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml2.bindings.GML2ParsingUtils;
 import org.geotools.gml3.ArcParameters;
@@ -202,7 +202,9 @@ public class GML3ParsingUtils {
     public static CurvedGeometryFactory getCurvedGeometryFactory(ArcParameters arcParameters,
             GeometryFactory gFactory, CoordinateSequence cs) {
         CurvedGeometryFactory factory;
-        if (arcParameters != null && arcParameters.getLinearizationTolerance() != null) {
+        if (gFactory instanceof CurvedGeometryFactory) {
+            factory = (CurvedGeometryFactory) gFactory;
+        } else if (arcParameters != null && arcParameters.getLinearizationTolerance() != null) {
             double tolerance = Double.MAX_VALUE;
             if (cs != null) {
                 CircularArc arc = CurvedGeometries.getArc(cs, 0);
@@ -210,8 +212,6 @@ public class GML3ParsingUtils {
                 tolerance = arcParameters.getLinearizationTolerance().getTolerance(c);
             }
             factory = new CurvedGeometryFactory(gFactory, tolerance);
-        } else if (gFactory instanceof CurvedGeometryFactory) {
-            factory = (CurvedGeometryFactory) gFactory;
         } else {
             factory = new CurvedGeometryFactory(gFactory, Double.MAX_VALUE);
         }

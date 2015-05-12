@@ -18,6 +18,7 @@ package org.geotools.data.postgis;
 
 import static org.junit.Assert.assertArrayEquals;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.geotools.data.DataUtilities;
@@ -25,6 +26,7 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.CircularArc;
 import org.geotools.geometry.jts.CircularRing;
@@ -38,6 +40,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
@@ -57,15 +60,7 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testSingleArc() throws Exception {
-        ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Single arc"),
-                true);
-        Query q = new Query(tname("curves"), filter);
-        q.getHints().put(Hints.LINEARIZATION_TOLERANCE, 0.1);
-        ContentFeatureCollection fc = fs.getFeatures(q);
-        assertEquals(1, fc.size());
-        SimpleFeature feature = DataUtilities.first(fc);
+        SimpleFeature feature = getSingleFeatureByName("Single arc");
         Geometry g = (Geometry) feature.getDefaultGeometry();
         assertNotNull(g);
         assertTrue(g instanceof SingleCurvedGeometry);
@@ -75,15 +70,23 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
         assertEquals(0.1, curved.getTolerance(), 0d);
     }
 
+    /**
+     * All write tests follow the same pattern: grab the feature we want, delete everything, insert
+     * back, and run its read test again
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testWriteSingleArc() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("Single arc");
+        ContentFeatureStore fs = cleanTable("curves");
+        fs.addFeatures(DataUtilities.collection(feature));
+        testSingleArc();
+    }
+
     @Test
     public void testCircularString() throws Exception {
-        ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Arc string"),
-                true);
-        ContentFeatureCollection fc = fs.getFeatures(filter);
-        assertEquals(1, fc.size());
-        SimpleFeature feature = DataUtilities.first(fc);
+        SimpleFeature feature = getSingleFeatureByName("Arc string");
         Geometry g = (Geometry) feature.getDefaultGeometry();
         assertNotNull(g);
         assertTrue(g instanceof SingleCurvedGeometry);
@@ -93,14 +96,16 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
     }
 
     @Test
+    public void testWriteCircularString() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("Arc string");
+        ContentFeatureStore fs = cleanTable("curves");
+        fs.addFeatures(DataUtilities.collection(feature));
+        testCircularString();
+    }
+
+    @Test
     public void testCompoundOpen() throws Exception {
-        ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")),
-                ff.literal("Compound line string"), true);
-        ContentFeatureCollection fc = fs.getFeatures(filter);
-        assertEquals(1, fc.size());
-        SimpleFeature feature = DataUtilities.first(fc);
+        SimpleFeature feature = getSingleFeatureByName("Compound line string");
         Geometry g = (Geometry) feature.getDefaultGeometry();
         assertNotNull(g);
         assertTrue(g instanceof CompoundCurvedGeometry<?>);
@@ -124,14 +129,16 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
     }
 
     @Test
+    public void testWriteCompoundOpen() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("Compound line string");
+        ContentFeatureStore fs = cleanTable("curves");
+        fs.addFeatures(DataUtilities.collection(feature));
+        testCompoundOpen();
+    }
+
+    @Test
     public void testCompoundClosed() throws Exception {
-        ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")),
-                ff.literal("Closed mixed line"), true);
-        ContentFeatureCollection fc = fs.getFeatures(filter);
-        assertEquals(1, fc.size());
-        SimpleFeature feature = DataUtilities.first(fc);
+        SimpleFeature feature = getSingleFeatureByName("Closed mixed line");
         Geometry g = (Geometry) feature.getDefaultGeometry();
         assertNotNull(g);
         assertTrue(g instanceof CompoundCurvedGeometry<?>);
@@ -151,13 +158,16 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
     }
 
     @Test
+    public void testWriteCompoundClosed() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("Closed mixed line");
+        ContentFeatureStore fs = cleanTable("curves");
+        fs.addFeatures(DataUtilities.collection(feature));
+        testCompoundClosed();
+    }
+
+    @Test
     public void testCircle() throws Exception {
-        ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Circle"), true);
-        ContentFeatureCollection fc = fs.getFeatures(filter);
-        assertEquals(1, fc.size());
-        SimpleFeature feature = DataUtilities.first(fc);
+        SimpleFeature feature = getSingleFeatureByName("Circle");
         Geometry g = (Geometry) feature.getDefaultGeometry();
         assertNotNull(g);
         assertTrue(g instanceof Polygon);
@@ -174,14 +184,16 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
     }
 
     @Test
+    public void testWriteCircle() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("Circle");
+        ContentFeatureStore fs = cleanTable("curves");
+        fs.addFeatures(DataUtilities.collection(feature));
+        testCircle();
+    }
+
+    @Test
     public void testCompoundPolygon() throws Exception {
-        ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")),
-                ff.literal("Compound polygon"), true);
-        ContentFeatureCollection fc = fs.getFeatures(filter);
-        assertEquals(1, fc.size());
-        SimpleFeature feature = DataUtilities.first(fc);
+        SimpleFeature feature = getSingleFeatureByName("Compound polygon");
         Geometry g = (Geometry) feature.getDefaultGeometry();
         assertNotNull(g);
         assertTrue(g instanceof CurvePolygon);
@@ -203,14 +215,16 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
     }
 
     @Test
+    public void testWriteCompoundPolygon() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("Compound polygon");
+        ContentFeatureStore fs = cleanTable("curves");
+        fs.addFeatures(DataUtilities.collection(feature));
+        testCompoundPolygon();
+    }
+
+    @Test
     public void testCompoundPolygonWithHole() throws Exception {
-        ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")),
-                ff.literal("Compound polygon with hole"), true);
-        ContentFeatureCollection fc = fs.getFeatures(filter);
-        assertEquals(1, fc.size());
-        SimpleFeature feature = DataUtilities.first(fc);
+        SimpleFeature feature = getSingleFeatureByName("Compound polygon with hole");
         Geometry g = (Geometry) feature.getDefaultGeometry();
         assertNotNull(g);
         assertTrue(g instanceof Polygon);
@@ -247,14 +261,16 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
     }
 
     @Test
+    public void testWriteCompoundPolygonWithHole() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("Compound polygon with hole");
+        ContentFeatureStore fs = cleanTable("curves");
+        fs.addFeatures(DataUtilities.collection(feature));
+        testCompoundPolygonWithHole();
+    }
+
+    @Test
     public void testMultipolygon() throws Exception {
-        ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")),
-                ff.literal("Multipolygon with curves"), true);
-        ContentFeatureCollection fc = fs.getFeatures(filter);
-        assertEquals(1, fc.size());
-        SimpleFeature feature = DataUtilities.first(fc);
+        SimpleFeature feature = getSingleFeatureByName("Multipolygon with curves");
         Geometry g = (Geometry) feature.getDefaultGeometry();
         assertNotNull(g);
         assertTrue(g instanceof MultiPolygon);
@@ -274,14 +290,16 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
     }
     
     @Test
+    public void testWriteMultipolygon() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("Multipolygon with curves");
+        ContentFeatureStore fs = cleanTable("curves");
+        fs.addFeatures(DataUtilities.collection(feature));
+        testMultipolygon();
+    }
+
+    @Test
     public void testMulticurve() throws Exception {
-        ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")),
-                ff.literal("Multicurve"), true);
-        ContentFeatureCollection fc = fs.getFeatures(filter);
-        assertEquals(1, fc.size());
-        SimpleFeature feature = DataUtilities.first(fc);
+        SimpleFeature feature = getSingleFeatureByName("Multicurve");
         Geometry g = (Geometry) feature.getDefaultGeometry();
         assertNotNull(g);
         assertTrue(g instanceof MultiLineString);
@@ -295,7 +313,14 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
 
         CircularString cs = (CircularString) mls.getGeometryN(1);
         assertArrayEquals(new double[] { 4, 0, 4, 4, 8, 4 }, cs.getControlPoints(), 0d);
+    }
 
+    @Test
+    public void testWriteMulticurve() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("Multicurve");
+        ContentFeatureStore fs = cleanTable("curves");
+        fs.addFeatures(DataUtilities.collection(feature));
+        testMulticurve();
     }
 
     @Test
@@ -311,29 +336,57 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testClosedCircularString() throws Exception {
-        ContentFeatureSource fs = dataStore.getFeatureSource(tname("circularStrings"));
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Circle"), true);
-        ContentFeatureCollection fc = fs.getFeatures(filter);
-        assertEquals(1, fc.size());
-        SimpleFeature feature = DataUtilities.first(fc);
+        SimpleFeature feature = getSingleFeatureByName("circularStrings", "Circle");
         Geometry g = (Geometry) feature.getDefaultGeometry();
         assertNotNull(g);
         assertTrue(g instanceof CircularString);
     }
 
     @Test
+    public void testWriteClosedCircularString() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("circularStrings", "Circle");
+        ContentFeatureStore fs = cleanTable("circularStrings");
+        fs.addFeatures(DataUtilities.collection(feature));
+        testCircularString();
+    }
+
+    @Test
     public void testClosedCompoundCurve() throws Exception {
-        ContentFeatureSource fs = dataStore.getFeatureSource(tname("compoundCurves"));
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")),
-                ff.literal("ClosedHalfCircle"), true);
-        ContentFeatureCollection fc = fs.getFeatures(filter);
-        assertEquals(1, fc.size());
-        SimpleFeature feature = DataUtilities.first(fc);
+        SimpleFeature feature = getSingleFeatureByName("compoundCurves", "ClosedHalfCircle");
         Geometry g = (Geometry) feature.getDefaultGeometry();
         assertNotNull(g);
         assertTrue(g instanceof CompoundCurve);
+    }
+
+    @Test
+    public void testWriteClosedCompoundCurve() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("compoundCurves", "ClosedHalfCircle");
+        ContentFeatureStore fs = cleanTable("compoundCurves");
+        fs.addFeatures(DataUtilities.collection(feature));
+        testClosedCompoundCurve();
+    }
+
+    private SimpleFeature getSingleFeatureByName(String name) throws IOException {
+        return getSingleFeatureByName("curves", name);
+    }
+
+    private SimpleFeature getSingleFeatureByName(String tableName, String name) throws IOException {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname(tableName));
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal(name), true);
+        Query q = new Query(tname("curves"), filter);
+        q.getHints().put(Hints.LINEARIZATION_TOLERANCE, 0.1);
+        ContentFeatureCollection fc = fs.getFeatures(q);
+        assertEquals(1, fc.size());
+        SimpleFeature feature = DataUtilities.first(fc);
+        return feature;
+    }
+
+    private ContentFeatureStore cleanTable(String tableName) throws IOException {
+        ContentFeatureStore store = (ContentFeatureStore) dataStore
+                .getFeatureSource(tname(tableName));
+        store.removeFeatures(Filter.INCLUDE);
+        return store;
     }
 
 

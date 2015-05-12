@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004 - 2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -107,7 +107,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
      */
     public LineString createCurvedGeometry(CoordinateSequence cs) {
         int lastCoordinate = cs.size() - 1;
-        if (cs.getOrdinate(0, 0) == cs.getOrdinate(lastCoordinate, 0)
+        if (cs.size() > 0 && cs.getOrdinate(0, 0) == cs.getOrdinate(lastCoordinate, 0)
                 && cs.getOrdinate(0, 1) == cs.getOrdinate(lastCoordinate, 1)) {
             return new CircularRing(cs, this, tolerance);
         } else {
@@ -132,10 +132,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
     public LineString createCurvedGeometry(List<LineString> components) {
         if (components.isEmpty()) {
             // return an empty lineString?
-            return createLineString(new Coordinate[] {});
-        }
-        if (components.size() == 1) {
-            return components.get(0);
+            return new CompoundCurve(components, this, tolerance);
         }
         LineString first = components.get(0);
         LineString last = components.get(components.size() - 1);
@@ -144,6 +141,37 @@ public class CurvedGeometryFactory extends GeometryFactory {
         } else {
             return new CompoundCurve(components, this, tolerance);
         }
+    }
+
+    /**
+     * Explicitly creates a {@link CurvePolygon}
+     * 
+     * @param shell
+     * @param holes
+     * @return
+     */
+    public Polygon createCurvePolygon(LinearRing shell, LinearRing[] holes) {
+        return new CurvePolygon(shell, holes, this, tolerance);
+    }
+
+    /**
+     * Explicitly creates a {@link MultiSurface}
+     * 
+     * @param polygons
+     * @return
+     */
+    public MultiPolygon createMultiSurface(List<Polygon> polygons) {
+        return new MultiSurface(polygons, this, tolerance);
+    }
+
+    /**
+     * Explicitly creates a {@link MultiCurve}
+     * 
+     * @param components
+     * @return
+     */
+    public MultiCurve createMultiCurve(List<LineString> components) {
+        return new MultiCurve(components, this, tolerance);
     }
 
     @Override
@@ -341,7 +369,6 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
         return false;
     }
-
 
 
 }

@@ -115,8 +115,8 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
 
         if(segments.length == 0) {
             return null;
-        } else if(segments.length > 1) {
-            return segments[1];
+        } else if (segments.length == 1) {
+            return segments[0];
         } else {
             LineString curved = null;
             for (LineString ls : segments) {

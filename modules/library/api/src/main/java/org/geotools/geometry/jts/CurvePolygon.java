@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -72,15 +72,20 @@ public class CurvePolygon extends Polygon implements CurvedGeometry<Polygon> {
     }
 
     public String toCurvedText() {
-        StringBuilder sb = new StringBuilder("CURVEPOLYGON(");
-        writeRing(sb, getExteriorRing());
-        int holeNum = getNumInteriorRing();
-        for (int k = 0; k < holeNum; k++) {
-            sb.append(", ");
-            LineString component = getInteriorRingN(k);
-            writeRing(sb, component);
+        StringBuilder sb = new StringBuilder("CURVEPOLYGON ");
+        if (isEmpty()) {
+            sb.append(" EMTPY");
+        } else {
+            sb.append("(");
+            writeRing(sb, getExteriorRing());
+            int holeNum = getNumInteriorRing();
+            for (int k = 0; k < holeNum; k++) {
+                sb.append(", ");
+                LineString component = getInteriorRingN(k);
+                writeRing(sb, component);
+            }
+            sb.append(")");
         }
-        sb.append(")");
         return sb.toString();
     }
 

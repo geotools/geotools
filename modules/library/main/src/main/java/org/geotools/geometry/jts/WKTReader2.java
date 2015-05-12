@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *   (C) 2009 - 2014, Open Source Geospatial Foundation (OSGeo)
+ *   (C) 2009 - 2015, Open Source Geospatial Foundation (OSGeo)
  *   (C) 2001, Vivid Solutions
  *   
  *    This library is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@
  *    This is a port of the JTS WKTReader to handle SQL MM types such as Curve.
  *    We have subclassed so that our implementation can be used anywhere 
  *    a WKTReader is needed. We would of tried for more code reuse  except
- *    the base class has reduced everything to privatee methods.
+ *    the base class has reduced everything to private methods.
  *    
  *    This class also contains code written by Mark Leslie for PostGIS while working
- *    at Refractions Reserach with whom we have a code contribution agreement.
+ *    at Refractions Research with whom we have a code contribution agreement.
  */
 package org.geotools.geometry.jts;
 
@@ -48,20 +48,15 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
-import com.vividsolutions.jts.io.WKTWriter;
 import com.vividsolutions.jts.util.Assert;
 import com.vividsolutions.jts.util.AssertionFailedException;
+
 /**
  * Create a geometry from SQL Multi-Media Extension Well-Known Text which allows curves.
- * <p>
- * 
- * 
- *
- *
  *
  * @source $URL$
  * @version 1.7
- * @see WKTWriter
+ * @see WKTWriter2
  */
 public class WKTReader2 extends WKTReader {
     private static final String EMPTY = "EMPTY";
@@ -421,6 +416,8 @@ public class WKTReader2 extends WKTReader {
             return readCompoundCurveText();
         } else if (type.equalsIgnoreCase("CURVEPOLYGON")) {
             return readCurvePolygonText();
+        } else if (type.equalsIgnoreCase("MULTISURFACE")) {
+            return readMultiSurfaceText();
         }
         throw new ParseException("Unknown geometry type: " + type);
     }
@@ -467,7 +464,8 @@ public class WKTReader2 extends WKTReader {
     private LineString readCircularStringText() throws IOException, ParseException {
         List<Coordinate> coordinates = getCoordinateList( true );
         if (coordinates.size() == 0) {
-            return geometryFactory.createLineString(new Coordinate[0]);
+            return geometryFactory.createCurvedGeometry(new LiteCoordinateSequence(
+                    new Coordinate[0]));
         } else if (coordinates.size() < 3) {
             throw new ParseException("A CIRCULARSTRING must contain at least 3 control points");
         } else {
@@ -675,14 +673,14 @@ public class WKTReader2 extends WKTReader {
     
     private MultiLineString readMultiCurveText() throws IOException, ParseException {
         List<LineString> lineStrings = getLineStrings();
-        LineString[] array = (LineString[]) lineStrings.toArray(new LineString[lineStrings.size()]);
-        return geometryFactory.createMultiLineString(array);
+        return geometryFactory.createMultiCurve(lineStrings);
     }
     
     private Polygon readCurvePolygonText() throws IOException, ParseException {
         String nextToken = getNextEmptyOrOpener();
         if (nextToken.equals(EMPTY)) {
-            return geometryFactory.createPolygon(geometryFactory
+            return geometryFactory.createCurvePolygon(
+                    geometryFactory
                     .createLinearRing(new Coordinate[] {}), new LinearRing[] {});
         }
         if( !nextToken.equals( L_PAREN )){
@@ -697,7 +695,7 @@ public class WKTReader2 extends WKTReader {
             nextToken = getNextCloserOrComma();
         }
         LinearRing[] array = new LinearRing[holes.size()];
-        return geometryFactory.createPolygon(shell, (LinearRing[]) holes.toArray(array));
+        return geometryFactory.createCurvePolygon(shell, (LinearRing[]) holes.toArray(array));
     }
     
     /**
@@ -755,6 +753,39 @@ public class WKTReader2 extends WKTReader {
         }
         Polygon[] array = new Polygon[polygons.size()];
         return geometryFactory.createMultiPolygon((Polygon[]) polygons.toArray(array));
+    }
+
+    /**
+     * Creates a <code>MultiSurface</code> using the next token in the stream.
+     * 
+     * @return a <code>MultiSurface</code> specified by the next token in the stream, or if if the
+     *         coordinates used to create the <code>Polygon</code> shells and holes do not form
+     *         closed linestrings.
+     * @throws IOException if an I/O error occurs
+     * @throws ParseException if an unexpected token was encountered
+     */
+    private MultiPolygon readMultiSurfaceText() throws IOException, ParseException {
+        String nextToken = getNextEmptyOrOpener();
+        if (nextToken.equals(EMPTY)) {
+            return geometryFactory.createMultiSurface(new ArrayList<Polygon>());
+        }
+        ArrayList polygons = new ArrayList();
+        // must be an opener!
+        String nextWord = COMMA;
+        while( nextWord.equals( COMMA )){
+            nextWord = getNextWord();
+            if( nextWord.equals(L_PAREN) ){
+                Polygon polygon = readPolygonText();
+                polygons.add(polygon);
+            } else if (nextWord.equalsIgnoreCase("CURVEPOLYGON")) {
+                Polygon polygon = readCurvePolygonText();
+                polygons.add(polygon);
+            }
+
+            nextWord = getNextCloserOrComma();
+        }
+        
+        return geometryFactory.createMultiSurface(polygons);
     }
 
     /**

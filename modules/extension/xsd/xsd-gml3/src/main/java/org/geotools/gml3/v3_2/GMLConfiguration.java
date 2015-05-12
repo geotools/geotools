@@ -76,6 +76,8 @@ import org.geotools.xml.Configuration;
 import org.geotools.xs.XS;
 import org.picocontainer.MutablePicoContainer;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
+
 /**
  * Parser configuration for the http://www.opengis.net/gml/3.2 schema.
  *
@@ -305,5 +307,23 @@ public class GMLConfiguration extends Configuration {
      */
     public void setNumDecimals(int numDecimals) {
         delegate.setNumDecimals(numDecimals);
+    }
+
+    /**
+     * Retrieves the geometry factory used to build geometries
+     * 
+     * @return the geometryFactory
+     */
+    public GeometryFactory getGeometryFactory() {
+        return delegate.getGeometryFactory();
+    }
+
+    /**
+     * Sets the geometry factory used to build geometry
+     * 
+     * @param geometryFactory the geometryFactory to set
+     */
+    public void setGeometryFactory(GeometryFactory geometryFactory) {
+        delegate.setGeometryFactory(geometryFactory);
     }
 } 

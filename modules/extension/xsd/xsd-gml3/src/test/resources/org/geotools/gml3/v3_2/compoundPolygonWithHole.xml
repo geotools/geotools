@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Polygon srsName="urn:x-ogc:def:crs:EPSG:32632" srsDimension="2">
+  <exterior>
+    <Ring>
+      <curveMember>
+        <LineString>
+          <posList>20 30 11 30 7 22 7 15 11 10 21 10 27 30</posList>
+        </LineString>
+      </curveMember>
+      <curveMember>
+        <Curve>
+          <segments>
+            <ArcString interpolation="circularArc3Points">
+              <posList>27 30 25 27 20 30</posList>
+            </ArcString>
+          </segments>
+        </Curve>
+      </curveMember>
+    </Ring>
+  </exterior>
+  <interior>
+    <Ring>
+      <curveMember>
+        <Curve>
+          <segments>
+            <ArcString interpolation="circularArc3Points">
+              <posList>10 17 15 12 20 17 15 22 10 17</posList>
+            </ArcString>
+          </segments>
+        </Curve>
+      </curveMember>
+    </Ring>
+  </interior>
+</Polygon>

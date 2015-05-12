@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -66,30 +66,35 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
     }
 
     public String toCurvedText() {
-        StringBuilder sb = new StringBuilder("MULTISURFACE(");
+        StringBuilder sb = new StringBuilder("MULTISURFACE ");
         int numGeometries = getNumGeometries();
-        for (int k = 0; k < numGeometries; k++) {
-            Polygon component = (Polygon) getGeometryN(k);
-            if (component instanceof CurvedGeometry<?>) {
-                CurvedGeometry<?> curved = (CurvedGeometry<?>) component;
-                sb.append(curved.toCurvedText());
-            } else {
-                // straight lines polygon
-                sb.append("(");
-                writeCoordinateSequence(sb, component.getExteriorRing().getCoordinateSequence());
-                int numHoles = component.getNumInteriorRing();
-                for (int i = 0; i < numHoles; i++) {
-                    sb.append(", ");
-                    writeCoordinateSequence(sb, component.getInteriorRingN(i)
-                            .getCoordinateSequence());
+        if (numGeometries == 0) {
+            sb.append("EMPTY");
+        } else {
+            sb.append("(");
+            for (int k = 0; k < numGeometries; k++) {
+                Polygon component = (Polygon) getGeometryN(k);
+                if (component instanceof CurvedGeometry<?>) {
+                    CurvedGeometry<?> curved = (CurvedGeometry<?>) component;
+                    sb.append(curved.toCurvedText());
+                } else {
+                    // straight lines polygon
+                    sb.append("(");
+                    writeCoordinateSequence(sb, component.getExteriorRing().getCoordinateSequence());
+                    int numHoles = component.getNumInteriorRing();
+                    for (int i = 0; i < numHoles; i++) {
+                        sb.append(", ");
+                        writeCoordinateSequence(sb, component.getInteriorRingN(i)
+                                .getCoordinateSequence());
+                    }
+                    sb.append(")");
                 }
-                sb.append(")");
+                if (k < numGeometries - 1) {
+                    sb.append(", ");
+                }
             }
-            if (k < numGeometries - 1) {
-                sb.append(", ");
-            }
+            sb.append(")");
         }
-        sb.append(")");
         return sb.toString();
     }
 

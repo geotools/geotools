@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -33,12 +33,14 @@ import org.geotools.data.store.ContentState;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.WKTWriter2;
 import org.geotools.util.Converters;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.WKTWriter;
 
 /**
  * Uses PropertyAttributeWriter to generate a property file on disk.
@@ -55,6 +57,8 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     File read;
     private PropertyFeatureReader delegate;
     File write;
+
+    WKTWriter wktWriter = new WKTWriter2();
     BufferedWriter writer;
     SimpleFeatureType type;
     
@@ -148,7 +152,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
             writer.write( txt );            
         } else if (attribute instanceof Geometry) {
             Geometry geometry = (Geometry) attribute;
-            writer.write( geometry.toText() );
+            wktWriter.write(geometry, writer);
         } else {
             String txt = Converters.convert( attribute, String.class );
             if( txt == null ){ // could not convert?

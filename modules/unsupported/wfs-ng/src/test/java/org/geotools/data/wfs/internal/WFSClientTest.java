@@ -60,7 +60,10 @@ public class WFSClientTest {
 
         WFSClient client = newClient(resource);
         WFSGetCapabilities capabilities = client.getCapabilities();
-
+        // GEOT-5113 (should not throw NPE)
+        if(!client.getRemoteTypeNames().isEmpty()) {
+            client.supportsTransaction(client.getRemoteTypeNames().iterator().next());
+        }
         Assert.assertEquals(expectedVersion, capabilities.getVersion());
         return client;
     }
@@ -102,6 +105,7 @@ public class WFSClientTest {
         testInit("CubeWerx_4.12.6/1.1.0/GetCapabilities.xml", "1.1.0");
         testInit("CubeWerx_4.7.5/1.1.0/GetCapabilities.xml", "1.1.0");
         testInit("CubeWerx_5.6.3/1.1.0/GetCapabilities.xml", "1.1.0");
+        testInit("Deegree_ri/1.1.0/GetCapabilities.xml", "1.1.0");
         testInit("Deegree_unknown/1.1.0/GetCapabilities.xml", "1.1.0");
         testInit("Ionic_unknown/1.1.0/GetCapabilities.xml", "1.1.0");
         testInit("MapServer_5.6.5/1.1.0/GetCapabilities.xml", "1.1.0");

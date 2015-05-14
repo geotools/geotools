@@ -57,7 +57,6 @@ import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.complex.xml.XmlFeatureSource;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.factory.Hints;
-import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.filter.expression.FeaturePropertyAccessorFactory;
@@ -544,8 +543,8 @@ public class AppSchemaDataAccessConfigurator {
 
         final List schemaFiles = config.getTargetSchemasUris();
 
-        EmfAppSchemaReader schemaParser;
-        schemaParser = EmfAppSchemaReader.newInstance();
+        EmfComplexFeatureReader schemaParser;
+        schemaParser = EmfComplexFeatureReader.newInstance();
         schemaParser.setResolver(buildResolver());
 
         // create a single type registry for all the schemas in the config

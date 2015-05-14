@@ -21,12 +21,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import org.geotools.data.complex.config.Types;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.Types;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;

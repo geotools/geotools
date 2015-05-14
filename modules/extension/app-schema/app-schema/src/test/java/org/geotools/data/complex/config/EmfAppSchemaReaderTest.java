@@ -24,10 +24,10 @@ import java.util.List;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.geotools.feature.Types;
 import org.geotools.feature.type.ComplexFeatureTypeImpl;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
+import org.geotools.gml3.complex.GmlFeatureTypeRegistryConfiguration;
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.AppSchemaConfiguration;
@@ -71,7 +71,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
         String res = "/test-data/simpleFeature.xsd";
         URL resource = getClass().getResource(res);
 
-        SchemaIndex schemaIndex = EmfAppSchemaReader.newInstance().parse(resource);
+        SchemaIndex schemaIndex = EmfComplexFeatureReader.newInstance().parse(resource);
 
         AppSchemaFeatureTypeRegistry parsedTypes = new AppSchemaFeatureTypeRegistry();
         
@@ -135,7 +135,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
         Assert.assertEquals(typeName, type.getName());
         Assert.assertEquals(binding, type.getBinding());
         // they're prebuilt types, does not contains the emf information
-        // assertTrue(type.getUserData(EmfAppSchemaReader.EMF_USERDATA_KEY)
+        // assertTrue(type.getUserData(EmfComplexFeatureReader.EMF_USERDATA_KEY)
         // instanceof XSDTypeDefinition);
     }
 
@@ -143,7 +143,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
     public void testComplexFeatureType() throws Exception {
         String res = "/test-data/complexFeature.xsd";
         URL resource = getClass().getResource(res);
-        SchemaIndex schemaIndex = EmfAppSchemaReader.newInstance().parse(resource);
+        SchemaIndex schemaIndex = EmfComplexFeatureReader.newInstance().parse(resource);
         
         AppSchemaFeatureTypeRegistry typeRegistry = new AppSchemaFeatureTypeRegistry();
         try {
@@ -225,7 +225,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
     public void testSimpleAttributeFromComplexDeclaration() throws Exception {
         String res = "/test-data/complexFeature.xsd";
         URL resource = getClass().getResource(res);
-        SchemaIndex schemaIndex = EmfAppSchemaReader.newInstance().parse(resource);
+        SchemaIndex schemaIndex = EmfComplexFeatureReader.newInstance().parse(resource);
 
         AppSchemaFeatureTypeRegistry registry = new AppSchemaFeatureTypeRegistry();
         try {
@@ -257,7 +257,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
         AppSchemaConfiguration configuration = new AppSchemaConfiguration(
                 "urn:cgi:xmlns:CGI:GeoSciML:2.0",
                 "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd", new SchemaResolver());
-        Configuration gmlConfiguration = EmfAppSchemaReader.findGmlConfiguration(configuration);
+        Configuration gmlConfiguration = GmlFeatureTypeRegistryConfiguration.findGmlConfiguration(configuration);
         Assert.assertNotNull(gmlConfiguration);
         Assert.assertEquals(new GMLConfiguration(), gmlConfiguration);
     }
@@ -271,7 +271,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
                 "urn:cgi:xmlns:CGI:GeoSciML-Core:3.0.0",
                 "https://www.seegrid.csiro.au/subversion/GeoSciML/branches/3.0.0_rc1_gml3.2/geosciml-core/3.0.0/xsd/geosciml-core.xsd",
                 new SchemaResolver());
-        Configuration gmlConfiguration = EmfAppSchemaReader.findGmlConfiguration(configuration);
+        Configuration gmlConfiguration = GmlFeatureTypeRegistryConfiguration.findGmlConfiguration(configuration);
         Assert.assertNotNull(gmlConfiguration);
         Assert.assertEquals(new org.geotools.gml3.v3_2.GMLConfiguration(), gmlConfiguration);
     }
@@ -287,7 +287,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
 				"http://www.opengis.net/swe/2.0",
 				"http://schemas.opengis.net/sweCommon/2.0/swe.xsd",
 				new SchemaResolver(catalog));
-		Configuration gmlConfiguration = EmfAppSchemaReader
+		Configuration gmlConfiguration = GmlFeatureTypeRegistryConfiguration
 				.findGmlConfiguration(configuration);
 		// Null should be returned, not exception
 		// Warning message should be in the log

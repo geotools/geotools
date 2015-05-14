@@ -17,10 +17,11 @@
 
 package org.geotools.data.complex.filter;
 
-import org.geotools.feature.Types;
+import org.geotools.data.complex.config.Types;
 import org.geotools.gml3.GMLSchema;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.Test;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

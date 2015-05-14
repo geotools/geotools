@@ -18,10 +18,11 @@ package org.geotools.filter.expression;
 
 import java.io.IOException;
 import java.net.URL;
-import org.geotools.data.complex.config.EmfAppSchemaReader;
+
 import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
+import org.geotools.data.complex.config.EmfComplexFeatureReader;
+import org.geotools.data.complex.config.Types;
 import org.geotools.factory.Hints;
-import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xml.SchemaIndex;
@@ -31,6 +32,7 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.xml.sax.helpers.NamespaceSupport;
+
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -73,7 +75,7 @@ public class AppSchemaFeaturePropertyAccessorTest extends AppSchemaTestSupport {
      * @return 
      */
     private SchemaIndex loadSchema(final String location) throws IOException {
-        EmfAppSchemaReader reader = EmfAppSchemaReader.newInstance();
+        EmfComplexFeatureReader reader = EmfComplexFeatureReader.newInstance();
         final URL catalogLocation = getClass().getResource(schemaBase + "mappedPolygons.oasis.xml");
         reader.setResolver(catalogLocation);
         return reader.parse(new URL(location));

@@ -22,17 +22,19 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
+
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.FeatureSource;
-import org.geotools.feature.Types;
+import org.geotools.data.complex.config.Types;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.After;
 import org.junit.Before;

@@ -29,13 +29,13 @@ import net.opengis.wfs20.ResolveValueType;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
+import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.AppSchemaFeatureFactoryImpl;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.Types;
 import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.filter.identity.FeatureIdImpl;

@@ -36,17 +36,17 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
+import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.Step;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.data.joining.JoiningQuery;
-import org.geotools.feature.AttributeBuilder;
+import org.geotools.feature.AppSchemaAttributeBuilder;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
@@ -973,7 +973,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         final Name targetNodeName = targetFeature.getName();
 
-        AttributeBuilder builder = new AttributeBuilder(attf);
+        AppSchemaAttributeBuilder builder = new AppSchemaAttributeBuilder(attf);
         builder.setDescriptor(targetFeature);
         Feature target = (Feature) builder.build(id);
 

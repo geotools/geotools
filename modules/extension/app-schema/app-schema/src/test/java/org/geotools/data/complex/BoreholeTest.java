@@ -28,22 +28,24 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
-import org.geotools.data.complex.config.EmfAppSchemaReader;
 import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
+import org.geotools.data.complex.config.EmfComplexFeatureReader;
+import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.Types;
 import org.geotools.feature.type.ComplexFeatureTypeImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.test.AppSchemaTestSupport;
@@ -98,7 +100,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
     final Name typeName = new NameImpl(XMMLNS, "Borehole");
 
-    private static EmfAppSchemaReader reader;
+    private static EmfComplexFeatureReader reader;
 
     private FeatureSource source;
 
@@ -115,7 +117,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
         mappingDataStore = DataAccessFinder.getDataStore(dsParams);
         assertNotNull(mappingDataStore);
 
-        reader = EmfAppSchemaReader.newInstance();
+        reader = EmfComplexFeatureReader.newInstance();
     }
         
     /**

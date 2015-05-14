@@ -19,7 +19,7 @@ package org.geotools.filter;
 
 import org.geotools.data.ComplexTestData;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.AttributeBuilder;
+import org.geotools.feature.AppSchemaAttributeBuilder;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.test.AppSchemaTestSupport;
@@ -55,7 +55,7 @@ public class IDFunctionExpressionTest extends AppSchemaTestSupport {
     public void setUp() throws Exception {
         FeatureTypeFactory typeFactory = new UniqueNameFeatureTypeFactoryImpl();
         FeatureType type = ComplexTestData.createExample02MultipleMultivalued(typeFactory);
-        AttributeBuilder ab = new AttributeBuilder(new ValidatingFeatureFactoryImpl());
+        AppSchemaAttributeBuilder ab = new AppSchemaAttributeBuilder(new ValidatingFeatureFactoryImpl());
         ab.setType(type);
         feature = (Feature) ab.build("test-id");
         idExpr = CommonFactoryFinder.getFilterFactory(null).function("getID", new org.opengis.filter.expression.Expression[0]);

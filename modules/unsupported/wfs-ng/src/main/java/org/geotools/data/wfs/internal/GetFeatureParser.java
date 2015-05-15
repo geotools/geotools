@@ -19,9 +19,6 @@ package org.geotools.data.wfs.internal;
 import java.io.IOException;
 
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.FeatureType;
-
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Interface to abstract out the parsing of features coming from a GetFeature request from the
@@ -31,32 +28,18 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @version $Id$
  * @since 2.5.x
  * 
- * 
+ * @Deprecated instead of using GetFeatureParser, just implement GetParser&lt;SimpleFeature&gt; directly. 
  * 
  * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/protocol/wfs/GetFeatureParser.java $
  */
-public interface GetFeatureParser {
-
-    /**
-     * Returns the number of features if advertised by the server and the parser was able to get
-     * that information for example from the {@code wfs:FeatureCollection} "numberOfFeatures" xml
-     * attribute, or {@code -1} if unknown.
-     * 
-     * @return number of features advertised by server, or {@code -1} if unknown
-     */
-    public int getNumberOfFeatures();
-
+@Deprecated
+public interface GetFeatureParser extends GetParser<SimpleFeature>{
     /**
      * @return the next feature in the stream or {@code null} if there are no more features to
      *         parse.
      */
+	@Deprecated
     SimpleFeature parse() throws IOException;
-
-    void close() throws IOException;
-
-    public FeatureType getFeatureType();
-
-    public void setGeometryFactory(GeometryFactory geometryFactory);
 }

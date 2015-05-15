@@ -626,7 +626,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
                 parser.nextTag();
                 tagName = parser.getName();
                 eventType = parser.getEventType();
-            } while (eventType == START_TAG && tagName == GML.pos.getLocalPart());
+            } while (eventType == START_TAG && GML.pos.getLocalPart().equals(tagName));
 
             lineCoords = coords.toArray(new Coordinate[coords.size()]);
 

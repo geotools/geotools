@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection 
+	numberOfFeatures="2"
+	timeStamp="2012-03-07T08:37:45.280+08:00" 
+	xmlns:wfs="http://www.opengis.net/wfs" 
+	xmlns:ex="urn:org:example"
+	xmlns:gml="http://www.opengis.net/gml"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<gml:featureMembers>
+		<ex:Mine gml:id="er.mine.S0000005">
+			<!--
+				This is only being done to allow for testing of the internal xlink. The
+				structure of this document dosen't really make sense; it's saying that
+				the Mine has two mineNames... both of which are exactly the same. It's
+				OK for testing, though! -->
+			<ex:mineName xlink:href="#mineName_Aspacia" />
+			<ex:mineName gml:id="mineName_Aspacia">
+				<ex:MineName>
+					<ex:isPreferred>false</ex:isPreferred>
+					<ex:mineName>Aspacia</ex:mineName>
+				</ex:MineName>
+			</ex:mineName>
+		</ex:Mine>
+	</gml:featureMembers>
+</wfs:FeatureCollection>

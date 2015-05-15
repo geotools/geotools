@@ -133,7 +133,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     
     @Override
     public String[] getGridCoverageNames() {
-        return (String[]) names.toArray(new String[]{});
+        return names.toArray(new String[]{});
     }
 
     /** Logger. */
@@ -217,7 +217,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
             }
         }, FILE_COLLECTION {
             @Override
-            public void harvest(String defaultCoverage, Object source, Hints hints, final List<HarvestedSource> result, ImageMosaicReader reader) {
+            public void harvest(String defaultCoverage, Object source, Hints hints,
+                    final List<HarvestedSource> result, final ImageMosaicReader reader) {
                 // I have already checked that it is a Collection of File objects
                 Collection<File> files = (Collection<File>) source;
                 
@@ -250,8 +251,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 
                 // run the walker and collect information
                 ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
-                final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration,
-                        eventHandler);
+                final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(
+                        configuration, eventHandler) {
+                    protected GranuleCatalog buildCatalog() throws IOException {
+                        return reader.granuleCatalog;
+                    };
+                };
                 // Creation of the Walker for the File List
                 ImageMosaicFileCollectionWalker walker = new ImageMosaicFileCollectionWalker(catalogHandler, eventHandler,files);
                 eventHandler.addProcessingEventListener(new ImageMosaicEventHandlers.ProcessingEventListener() {
@@ -360,7 +365,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
              * @param filter
              */
             private static void harvestCalculation(String defaultCoverage,
-                    final List<HarvestedSource> result, ImageMosaicReader reader, File directory, IOFileFilter filter) {
+                final List<HarvestedSource> result, final ImageMosaicReader reader, File directory,
+                IOFileFilter filter) {
                 // prepare the walker configuration
                 CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
                 configuration.setParameter(Prop.ABSOLUTE_PATH, Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
@@ -383,7 +389,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 // run the walker and collect information
                 ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
                 final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration,
-                        eventHandler);
+                        eventHandler) {
+                @Override
+                protected GranuleCatalog buildCatalog() throws IOException {
+                    return reader.granuleCatalog;
+                }
+            };
                 // build the index
                 ImageMosaicDirectoryWalker walker = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler,filter);
                 eventHandler.addProcessingEventListener(new ImageMosaicEventHandlers.ProcessingEventListener() {

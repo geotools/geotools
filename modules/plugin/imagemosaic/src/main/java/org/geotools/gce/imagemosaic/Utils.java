@@ -1113,7 +1113,7 @@ public class Utils {
                 if (!sourceFile.isDirectory())
                         // real file, can only be a shapefile at this stage or a
                         // datastore.properties file
-                        sourceURL = DataUtilities.fileToURL((File) sourceFile);
+                        sourceURL = DataUtilities.fileToURL(sourceFile);
                 else {
                         // it's a DIRECTORY, let's look for a possible properties files
                         // that we want to load

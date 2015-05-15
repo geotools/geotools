@@ -84,6 +84,7 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils.Prop;
+import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
@@ -971,6 +972,7 @@ public class ImageMosaicReaderTest extends Assert{
         final URL emptyMosaicURL = TestData.url(this, "emptyMosaic");
         final AbstractGridFormat mosaicFormat = TestUtils.getFormat(emptyMosaicURL);
         ImageMosaicReader reader = TestUtils.getReader(emptyMosaicURL, mosaicFormat);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
 
         String[] metadataNames = reader.getMetadataNames();
         assertNull(metadataNames);
@@ -991,6 +993,7 @@ public class ImageMosaicReaderTest extends Assert{
         try {
             // now go and harvest the other file
             List<HarvestedSource> summary = reader.harvest(null, renamed, null);
+            assertSame(originalCatalog, reader.granuleCatalog);
             assertEquals(1, summary.size());
             HarvestedSource hf = summary.get(0);
             assertEquals(renamed.getCanonicalFile(), ((File) hf.getSource()).getCanonicalFile());
@@ -1059,6 +1062,7 @@ public class ImageMosaicReaderTest extends Assert{
         final URL emptyMosaicURL = TestData.url(this, "emptyMosaicXML");
         final AbstractGridFormat mosaicFormat = TestUtils.getFormat(emptyMosaicURL);
         ImageMosaicReader reader = TestUtils.getReader(emptyMosaicURL, mosaicFormat);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
 
         String[] metadataNames = reader.getMetadataNames();
         assertNull(metadataNames);
@@ -1087,6 +1091,7 @@ public class ImageMosaicReaderTest extends Assert{
         try {
             // now go and harvest the other file
             List<HarvestedSource> summary = reader.harvest(null, renamed, null);
+            assertSame(originalCatalog, reader.granuleCatalog);
             assertEquals(1, summary.size());
             HarvestedSource hf = summary.get(0);
             assertEquals(renamed.getCanonicalFile(), ((File) hf.getSource()).getCanonicalFile());
@@ -1564,7 +1569,7 @@ public class ImageMosaicReaderTest extends Assert{
 		    LOGGER.info("Testing Invalid location attribute. (A DataSourceException should be catched) ");
 //			reader=(AbstractGridCoverage2DReader) new ImageMosaicReader(rgbURL, new Hints(Hints.MOSAIC_LOCATION_ATTRIBUTE, "aaaa")); 
 			        
-			reader =         ((AbstractGridFormat) GridFormatFinder.findFormat(rgbURL,hints))
+			reader =         GridFormatFinder.findFormat(rgbURL,hints)
 					.getReader(rgbURL, new Hints(Hints.MOSAIC_LOCATION_ATTRIBUTE, "aaaa"));
 			Assert.assertNull(reader);
 		} catch (Throwable e) {
@@ -1579,7 +1584,7 @@ public class ImageMosaicReaderTest extends Assert{
 		
 
 		try {
-			reader=(AbstractGridCoverage2DReader) ((AbstractGridFormat) GridFormatFinder.findFormat(rgbURL,hints)).getReader(rgbURL, new Hints(Hints.MOSAIC_LOCATION_ATTRIBUTE, "location"));
+			reader=GridFormatFinder.findFormat(rgbURL,hints).getReader(rgbURL, new Hints(Hints.MOSAIC_LOCATION_ATTRIBUTE, "location"));
 			Assert.assertNotNull(reader);
 			reader.dispose();
 			Assert.assertTrue(true);
@@ -1603,12 +1608,12 @@ public class ImageMosaicReaderTest extends Assert{
 		////
 		// error for num tiles
 		try {
-			reader=(AbstractGridCoverage2DReader) ((AbstractGridFormat) GridFormatFinder.findFormat(rgbURL)).getReader(rgbURL,new Hints(Hints.MAX_ALLOWED_TILES, Integer.valueOf(2)));
+			reader=GridFormatFinder.findFormat(rgbURL).getReader(rgbURL,new Hints(Hints.MAX_ALLOWED_TILES, Integer.valueOf(2)));
 			Assert.assertNotNull(reader);
 			
 			//read the coverage
 			@SuppressWarnings("unused")
-			GridCoverage2D gc = (GridCoverage2D) reader.read(null);
+			GridCoverage2D gc = reader.read(null);
 			Assert.fail("MAX_ALLOWED_TILES was not respected");
 		} catch (Throwable e) {
 
@@ -1619,10 +1624,10 @@ public class ImageMosaicReaderTest extends Assert{
 		}
 
 		try {
-			reader=(AbstractGridCoverage2DReader) ((AbstractGridFormat) GridFormatFinder.findFormat(rgbURL)).getReader(rgbURL,new Hints(Hints.MAX_ALLOWED_TILES,Integer.valueOf(1000)));
+			reader=GridFormatFinder.findFormat(rgbURL).getReader(rgbURL,new Hints(Hints.MAX_ALLOWED_TILES,Integer.valueOf(1000)));
 			Assert.assertNotNull(reader);
 			//read the coverage
-			GridCoverage2D gc = (GridCoverage2D) reader.read(null);
+			GridCoverage2D gc = reader.read(null);
 			Assert.assertTrue(true);
 			gc.dispose(true);
 			reader.dispose();
@@ -2081,6 +2086,7 @@ public class ImageMosaicReaderTest extends Assert{
         URL harvestSingleURL = DataUtilities.fileToURL(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
             String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);
@@ -2089,6 +2095,7 @@ public class ImageMosaicReaderTest extends Assert{
             
             // now go and harvest the other file
             List<HarvestedSource> summary = reader.harvest(null, renamed, null);
+            assertSame(originalCatalog, reader.granuleCatalog);
             assertEquals(1, summary.size());
             HarvestedSource hf = summary.get(0);
             assertEquals(renamed.getCanonicalFile(), ((File) hf.getSource()).getCanonicalFile());
@@ -2153,10 +2160,12 @@ public class ImageMosaicReaderTest extends Assert{
         URL harvestSingleURL = DataUtilities.fileToURL(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
 
             // now go and harvest the other file
             List<HarvestedSource> summary = reader.harvest(null, renamed, null);
+            assertSame(originalCatalog, reader.granuleCatalog);
             assertEquals(1, summary.size());
             HarvestedSource hf = summary.get(0);
             assertEquals(renamed.getCanonicalFile(), ((File) hf.getSource()).getCanonicalFile());
@@ -2216,6 +2225,7 @@ public class ImageMosaicReaderTest extends Assert{
         URL harvestSingleURL = DataUtilities.fileToURL(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
             String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);
@@ -2224,6 +2234,7 @@ public class ImageMosaicReaderTest extends Assert{
             
             // now go and harvest the other directory
             List<HarvestedSource> summary = reader.harvest(null, files, null);
+            assertSame(originalCatalog, reader.granuleCatalog);
             assertEquals(2, summary.size());
             for (HarvestedSource hf : summary) {
                 assertTrue(hf.success());
@@ -2270,6 +2281,7 @@ public class ImageMosaicReaderTest extends Assert{
         URL harvestSingleURL = DataUtilities.fileToURL(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
             String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);
@@ -2278,6 +2290,7 @@ public class ImageMosaicReaderTest extends Assert{
             
             // now go and harvest the other directory
             List<HarvestedSource> summary = reader.harvest(null, directory2, null);
+            assertSame(originalCatalog, reader.granuleCatalog);
             assertEquals(2, summary.size());
             for (HarvestedSource hf : summary) {
                 assertTrue(hf.success());
@@ -2327,6 +2340,7 @@ public class ImageMosaicReaderTest extends Assert{
         URL harvestSingleURL = DataUtilities.fileToURL(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
             String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);
@@ -2335,6 +2349,7 @@ public class ImageMosaicReaderTest extends Assert{
 
             // now go and harvest the file list
             List<HarvestedSource> summary = reader.harvest(null, files, null);
+            assertSame(originalCatalog, reader.granuleCatalog);
             assertEquals(2, summary.size());
             for (HarvestedSource hf : summary) {
                 assertTrue(hf.success());
@@ -2388,6 +2403,7 @@ public class ImageMosaicReaderTest extends Assert{
         URL harvestSingleURL = DataUtilities.fileToURL(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
             String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);
@@ -2396,6 +2412,7 @@ public class ImageMosaicReaderTest extends Assert{
 
             // now go and harvest the other file
             List<HarvestedSource> summary = reader.harvest(null, files, null);
+            assertSame(originalCatalog, reader.granuleCatalog);
             assertEquals(1, summary.size());
             HarvestedSource hf = summary.get(0);
             assertEquals(renamed.getCanonicalFile(), ((File) hf.getSource()).getCanonicalFile());
@@ -2657,6 +2674,7 @@ public class ImageMosaicReaderTest extends Assert{
         URL harvestSingleURL = DataUtilities.fileToURL(directory);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
             String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);
@@ -2667,6 +2685,7 @@ public class ImageMosaicReaderTest extends Assert{
             File bogus = new File(directory, "test.tiff");
             assertTrue(bogus.createNewFile());
             List<HarvestedSource> summary = reader.harvest(null, bogus, null);
+            assertSame(originalCatalog, reader.granuleCatalog);
             assertEquals(1, summary.size());
             HarvestedSource hf = summary.get(0);
             assertFalse(hf.success());
@@ -2735,6 +2754,7 @@ public class ImageMosaicReaderTest extends Assert{
         URL harvestSingleURL = DataUtilities.fileToURL(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
             String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);
@@ -2743,6 +2763,7 @@ public class ImageMosaicReaderTest extends Assert{
 
             // now go and harvest the other file
             List<HarvestedSource> summary = reader.harvest(null, renamed, null);
+            assertSame(originalCatalog, reader.granuleCatalog);
             assertEquals(1, summary.size());
             HarvestedSource hf = summary.get(0);
             assertEquals(renamed.getCanonicalFile(), ((File) hf.getSource()).getCanonicalFile());

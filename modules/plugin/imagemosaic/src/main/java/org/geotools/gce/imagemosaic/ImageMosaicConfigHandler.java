@@ -98,7 +98,7 @@ public class ImageMosaicConfigHandler {
      */
     private volatile boolean stop = false;
 
-    private GranuleCatalog catalog;
+    protected GranuleCatalog catalog;
 
     private CatalogBuilderConfiguration runConfiguration;
 
@@ -149,7 +149,7 @@ public class ImageMosaicConfigHandler {
         String ancillaryFile = null;
         if (Utils.checkFileReadable(indexerFile)) {
             try {
-                indexer = (Indexer) Utils.unmarshal(indexerFile);
+                indexer = Utils.unmarshal(indexerFile);
                 if (indexer != null) {
                     copyDefaultParams(params, indexer);
                 }
@@ -266,7 +266,6 @@ public class ImageMosaicConfigHandler {
         eventHandler.removeAllProcessingEventListeners();
         // clear stop
         stop = false;
-        closeIndexObjects();
 
         // fileIndex = 0;
         runConfiguration = null;
@@ -283,11 +282,7 @@ public class ImageMosaicConfigHandler {
 
     void indexingPreamble() throws IOException {
 
-        //
-        // create the index
-        //
-        catalog = CatalogManager.createCatalog(runConfiguration, !useExistingSchema);
-        getParentReader().granuleCatalog = catalog;
+        this.catalog = buildCatalog();
 
         //
         // IMPOSED ENVELOPE
@@ -305,6 +300,12 @@ public class ImageMosaicConfigHandler {
         // load property collectors
         //
         loadPropertyCollectors();
+    }
+
+    protected GranuleCatalog buildCatalog() throws IOException {
+        GranuleCatalog catalog = CatalogManager.createCatalog(runConfiguration, !useExistingSchema);
+        getParentReader().granuleCatalog = catalog;
+        return catalog;
     }
 
     /**
@@ -430,7 +431,6 @@ public class ImageMosaicConfigHandler {
             // processing information
             eventHandler.fireEvent(Level.FINE, "Canceled!!!", 100);
         }
-        closeIndexObjects();
     }
 
     /**
@@ -576,21 +576,6 @@ public class ImageMosaicConfigHandler {
             IndexerUtils.setParam(parameters, props, Prop.CHECK_AUXILIARY_METADATA);
         }
         return indexer;
-    }
-
-    private void closeIndexObjects() {
-
-//        // TODO: We may consider avoid disposing the catalog to allow the reader to use the already available catalog
-//        try {
-//            if (catalog != null) {
-//                catalog.dispose();
-//            }
-//        } catch (Throwable e) {
-//            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//        }
-//
-//        catalog = null;
-//        getParentReader().granuleCatalog = null;
     }
 
     /**
@@ -751,7 +736,7 @@ public class ImageMosaicConfigHandler {
         // the builder
         final MosaicBeanBuilder configBuilder = new MosaicBeanBuilder();
 
-        final GeneralEnvelope envelope = (GeneralEnvelope) coverageReader
+        final GeneralEnvelope envelope = coverageReader
                 .getOriginalEnvelope(inputCoverageName);
         final CoordinateReferenceSystem actualCRS = coverageReader
                 .getCoordinateReferenceSystem(inputCoverageName);

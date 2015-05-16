@@ -43,8 +43,10 @@ import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.feature.type.Types;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.Configuration;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.Schemas;
+import org.geotools.xml.complex.FeatureTypeRegistryConfiguration;
 import org.geotools.xs.XSSchema;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -88,7 +90,7 @@ public class FeatureTypeRegistry {
 
     private FeatureTypeFactory typeFactory;
 
-    private FeatureTypeRegistryHelper helper;
+    private FeatureTypeRegistryConfiguration helper;
     
     private boolean includeAttributes;
     
@@ -100,15 +102,15 @@ public class FeatureTypeRegistry {
      */
     private Stack<Name> processingTypes;
 
-    public FeatureTypeRegistry(FeatureTypeFactory typeFactory, FeatureTypeRegistryHelper helper) {
+    public FeatureTypeRegistry(FeatureTypeFactory typeFactory, FeatureTypeRegistryConfiguration helper) {
         this(null, typeFactory,helper);
     }
     
-    public FeatureTypeRegistry(NamespaceSupport namespaces, FeatureTypeFactory typeFactory, FeatureTypeRegistryHelper helper) {
+    public FeatureTypeRegistry(NamespaceSupport namespaces, FeatureTypeFactory typeFactory, FeatureTypeRegistryConfiguration helper) {
         this(namespaces, typeFactory, helper, false);
     }
 
-    public FeatureTypeRegistry(NamespaceSupport namespaces, FeatureTypeFactory typeFactory, FeatureTypeRegistryHelper helper, boolean includeAttributes) {
+    public FeatureTypeRegistry(NamespaceSupport namespaces, FeatureTypeFactory typeFactory, FeatureTypeRegistryConfiguration helper, boolean includeAttributes) {
 
         schemas = new ArrayList<SchemaIndex>();
         this.typeFactory = typeFactory;
@@ -617,18 +619,18 @@ public class FeatureTypeRegistry {
                 return;
             }
             
-            Schema schema;
-            schema = new XSSchema();
-            importSchema(schema);
+            importSchema(new XSSchema());
             
-            onCreateFoundationTypes();
+            for (Schema schema : helper.getSchemas()) {
+                importSchema(schema);
+            }
+            
+            for (Configuration config : helper.getConfigurations()) {
+                addSchemas(Schemas.findSchemas(config));
+            }            
            
             FOUNDATION_TYPES.putAll(typeRegistry);
         }
-    }
-    
-    protected void onCreateFoundationTypes(){
-        
     }
 
     @SuppressWarnings("unchecked")

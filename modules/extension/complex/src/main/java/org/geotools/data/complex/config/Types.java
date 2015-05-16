@@ -15,12 +15,11 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.feature;
+package org.geotools.data.complex.config;
 
 import java.util.Map;
 
 import org.eclipse.xsd.XSDElementDeclaration;
-import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.xs.XSSchema;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
@@ -93,8 +92,8 @@ public class Types extends org.geotools.feature.type.Types {
         if (type instanceof GeometryType) {
             return true;
         }
-        if (type instanceof NonFeatureTypeProxy) {
-            if (((NonFeatureTypeProxy) type).getSubject() instanceof GeometryType) {
+        if (type instanceof ComplexTypeProxy) {
+            if (((ComplexTypeProxy) type).getSubject() instanceof GeometryType) {
                 return true;
             }
         }

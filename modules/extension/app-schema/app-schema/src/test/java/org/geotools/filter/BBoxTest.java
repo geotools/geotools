@@ -19,17 +19,19 @@ package org.geotools.filter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.complex.config.Types;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.Types;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -32,22 +32,24 @@ import java.util.TimeZone;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
-import org.geotools.data.complex.config.EmfAppSchemaReader;
+import org.geotools.data.complex.config.EmfComplexFeatureReader;
 import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
+import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.Types;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.gml3.GML;
 import org.geotools.test.AppSchemaTestSupport;
@@ -100,7 +102,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
 
     final String schemaBase = "/test-data/";
 
-    EmfAppSchemaReader reader;
+    EmfComplexFeatureReader reader;
 
     private FeatureSource<FeatureType, Feature> source;
 
@@ -112,7 +114,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
      */
     @Before
     public void setUp() throws Exception {
-        reader = EmfAppSchemaReader.newInstance();
+        reader = EmfComplexFeatureReader.newInstance();
 
         // Logging.GEOTOOLS.forceMonolineConsoleOutput(Level.FINEST);
     }

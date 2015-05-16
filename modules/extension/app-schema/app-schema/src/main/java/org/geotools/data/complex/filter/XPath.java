@@ -29,9 +29,9 @@ import javax.xml.namespace.QName;
 
 import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
+import org.geotools.data.complex.config.Types;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AppSchemaAttributeBuilder;
-import org.geotools.feature.Types;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.GeometryAttributeImpl;

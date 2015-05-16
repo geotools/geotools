@@ -34,13 +34,11 @@ import org.geotools.data.complex.AppSchemaDataAccess;
 import org.geotools.data.complex.DataAccessRegistry;
 import org.geotools.data.complex.FeatureChainingTest;
 import org.geotools.data.complex.XmlDataStoreTest;
+import org.geotools.data.complex.config.Types;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.Types;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
-
 import org.junit.BeforeClass;
-
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;

@@ -20,6 +20,7 @@ package org.geotools.data.complex;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
@@ -29,18 +30,19 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
-import org.geotools.data.complex.config.EmfAppSchemaReader;
+import org.geotools.data.complex.config.EmfComplexFeatureReader;
 import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
+import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.Types;
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xml.SchemaIndex;
 import org.junit.BeforeClass;
@@ -73,7 +75,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
 
     private static final String schemaBase = "/test-data/";
 
-    private static EmfAppSchemaReader reader;
+    private static EmfComplexFeatureReader reader;
 
     private FeatureSource source;
 
@@ -87,7 +89,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
         dsParams.put("url", url.toExternalForm());
         mappingDataStore = DataAccessFinder.getDataStore(dsParams);
 
-        reader = EmfAppSchemaReader.newInstance();
+        reader = EmfComplexFeatureReader.newInstance();
         // Logging.GEOTOOLS.forceMonolineConsoleOutput(Level.FINEST);
     }
 

@@ -27,11 +27,11 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.geotools.data.FeatureSource;
+import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.Step;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
-import org.geotools.feature.Types;
 import org.geotools.gml3.GML;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;

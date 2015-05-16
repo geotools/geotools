@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataSourceException;
@@ -39,7 +41,7 @@ import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.config.SourceDataStore;
 import org.geotools.data.complex.config.TypeMapping;
-import org.geotools.feature.Types;
+import org.geotools.data.complex.config.Types;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;

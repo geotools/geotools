@@ -18,12 +18,13 @@
 package org.geotools.data.complex;
 
 import com.vividsolutions.jts.util.Stopwatch;
+
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.complex.config.Types;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.Types;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;

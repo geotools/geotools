@@ -11,6 +11,7 @@ import org.geotools.xml.resolver.SchemaResolver;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
@@ -37,7 +38,7 @@ public class AppSchemaFeatureTypeRegistryTest extends AppSchemaTestSupport {
         SchemaResolver resolver = new SchemaResolver();
         String schemalocation = SchemaResolver
                 .resolveClasspathLocation("http://schemas.geosciml.org/borehole/3.2/borehole.xsd");
-        EmfAppSchemaReader schemaParser = EmfAppSchemaReader.newInstance();
+        EmfComplexFeatureReader schemaParser = EmfComplexFeatureReader.newInstance();
         schemaParser.setResolver(resolver);
         schemaIndex = schemaParser.parse(BOREHOLE_NS, schemalocation);
         // namespace support with GML32 declared

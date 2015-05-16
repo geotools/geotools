@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection 
+	xmlns:wfs="http://www.opengis.net/wfs" 
+	xmlns:ogc="http://www.opengis.net/ogc"
+	xmlns:sa="http://www.opengis.net/sampling/1.0"
+	xmlns:om="http://www.opengis.net/om/1.0" 
+	xmlns:nvcl="http://www.auscope.org/nvcl"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:gsml="urn:cgi:xmlns:CGI:GeoSciML:2.0"
+	xmlns:ows="http://www.opengis.net/ows"
+	xmlns:gml="http://www.opengis.net/gml"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	numberOfFeatures="1"
+	timeStamp="2012-08-30T13:09:48.873+10:00"
+	xsi:schemaLocation="urn:cgi:xmlns:CGI:GeoSciML:2.0 http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+	<gml:featureMembers>
+		<gsml:Borehole gml:id="gsml.borehole.rd001">
+			<gml:name codeSpace="http://www.ietf.org/rfc/rfc2616">http://nvclwebservices.vm.csiro.au/resource/feature/CSIRO/borehole/rd001</gml:name>
+			<gml:name codeSpace="http://www.csiro.au">rd001</gml:name>
+			<sa:sampledFeature xlink:href="http://www.opengis.net/def/nil/OGC/0/unknown" xlink:role="http://www.geosciml.org/geosciml/2.0/doc/GeoSciML/GeologicUnit/GeologicUnit.html" xlink:title="unknown"/>
+			<sa:shape xlink:href="#gsml.borehole.rd001.linestring"/>
+			<gsml:collarLocation>
+				<gsml:BoreholeCollar gml:id="gsml.borehole.collar.rd001">
+					<gsml:elevation axisLabels="Gravity-related height" srsDimension="1" srsName="http://www.opengis.net/gml/srs/epsg.xml#5711" uomLabels="m">0.0</gsml:elevation>
+				</gsml:BoreholeCollar>
+			</gsml:collarLocation>
+			<gsml:indexData>
+				<gsml:BoreholeDetails>
+					<gsml:driller xlink:href="http://www.opengis.net/def/nil/OGC/0/unknown" xlink:role="http://www.geosciml.org/geosciml/2.0/doc/GeoSciML/Borehole/BoreholeDetails.html#driller" xlink:title="DET CRC"/>
+					<gsml:drillingMethod>Diamond</gsml:drillingMethod>
+					<gsml:startPoint>natural ground surface</gsml:startPoint>
+					<gsml:inclinationType>vertical</gsml:inclinationType>
+					<gsml:coredInterval>
+						<gml:Envelope axisLabels="core envelope" srsDimension="1" srsName="#gsml.borehole.rd001.linestring" uomLabels="m">
+							<gml:lowerCorner>0.0</gml:lowerCorner>
+							<gml:upperCorner>324.6</gml:upperCorner>
+						</gml:Envelope>
+					</gsml:coredInterval>
+					<gsml:coreCustodian xlink:href="http://www.opengis.net/def/nil/OGC/0/unknown" xlink:role="http://www.geosciml.org/geosciml/2.0/doc/GeoSciML/Borehole/BoreholeDetails.html#coreCustodian" xlink:title="CSIRO"/>
+				</gsml:BoreholeDetails>
+			</gsml:indexData>
+		</gsml:Borehole>
+	</gml:featureMembers>
+</wfs:FeatureCollection>

@@ -21,11 +21,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.geotools.data.FeatureSource;
+import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.TypeBuilder;
-import org.geotools.feature.Types;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;

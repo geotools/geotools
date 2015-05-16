@@ -28,7 +28,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 /**
  * This class provides some common functionality for builders and defines an abstraction
  * for Feature builders' public interfaces. 
- * @author bro879
+ * @author Adam Brown (Curtin University of Technology)
  *  
  * @param <FT>
  * 		The kind of FeatureType whose feature the builder will build. Allows you to enforce a stricter specialist type; eg. SimpleFeatureType.

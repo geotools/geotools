@@ -84,7 +84,7 @@ public class ProjectionHandlerFinder {
     public static ProjectionHandler getHandler(ReferencedEnvelope renderingArea, CoordinateReferenceSystem sourceCrs, boolean wrap) throws FactoryException {
         if (renderingArea.getCoordinateReferenceSystem() == null)
             return null;
-
+        
         for (ProjectionHandlerFactory factory : factories) {
             ProjectionHandler handler = factory.getHandler(renderingArea, sourceCrs, wrap, WRAP_LIMIT);
             if (handler != null)

@@ -52,6 +52,7 @@ public class ProjectionHandlerFinder {
         factories.add(new PolarStereographicHandlerFactory());
         factories.add(new LambertAzimuthalEqualAreaHandlerFactory());
         factories.add(new ConicHandlerFactory());
+        factories.add(new WorldVanDerGrintenIHandlerFactory());
         
         String wrapLimit = System.getProperty(WRAP_LIMIT_KEY);
         int limit = 10;

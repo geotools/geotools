@@ -134,6 +134,10 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                             rs = st.executeQuery(sb.toString());
                             metadataTableExists = true;
                         } catch(Exception e) {
+                            // clean up the transaction status in case we are in auto-commit mode
+                            if (e instanceof SQLException && !cx.getAutoCommit()) {
+                                cx.rollback();
+                            }
                             metadataTableExists = false;
                         } finally {
                             store.closeSafe(rs);

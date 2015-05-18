@@ -33,6 +33,7 @@ import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
 import org.geotools.referencing.operation.projection.LambertConformal1SP;
+import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -653,5 +654,40 @@ public class CRSTest extends TestCase {
         assertEquals(transformed.getSpan(0), transformed.getSpan(1), 1d);
 
         assertEquals(transformed.getMaximum(0), 1.2309982175378662E7, 1d);
+    }
+    
+    public void testTransformWorldVanDerGrintenI() throws Exception {
+        try {
+            MapProjection.SKIP_SANITY_CHECKS = true;
+            // @formatter:off
+            String wkt = "PROJCS[\"World_Van_der_Grinten_I\", \n" + 
+                    "  GEOGCS[\"GCS_WGS_1984\", \n" + 
+                    "    DATUM[\"D_WGS_1984\", \n" + 
+                    "      SPHEROID[\"WGS_1984\", 6378137.0, 298.257223563]], \n" + 
+                    "    PRIMEM[\"Greenwich\", 0.0], \n" + 
+                    "    UNIT[\"degree\", 0.017453292519943295], \n" + 
+                    "    AXIS[\"Longitude\", EAST], \n" + 
+                    "    AXIS[\"Latitude\", NORTH]], \n" + 
+                    "  PROJECTION[\"World_Van_der_Grinten_I\"], \n" + 
+                    "  PARAMETER[\"central_meridian\", 0.0], \n" + 
+                    "  PARAMETER[\"false_easting\", 0.0], \n" + 
+                    "  PARAMETER[\"false_northing\", 0.0], \n" + 
+                    "  UNIT[\"m\", 1.0], \n" + 
+                    "  AXIS[\"x\", EAST], \n" + 
+                    "  AXIS[\"y\", NORTH], \n" + 
+                    "  AUTHORITY[\"EPSG\",\"54029\"]]";
+            // @formatter:on
+    
+            CoordinateReferenceSystem worldVanDerGrinten = CRS.parseWKT(wkt);
+    
+            Envelope2D envelope = new Envelope2D(worldVanDerGrinten);
+            envelope.add(-39842778.796051726, -42306552.87521737);
+            envelope.add(40061162.89695589, 37753756.60975308);
+    
+            Envelope transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
+            System.out.println(transformed);
+        } finally {
+            MapProjection.SKIP_SANITY_CHECKS = false;
+        }
     }
 }

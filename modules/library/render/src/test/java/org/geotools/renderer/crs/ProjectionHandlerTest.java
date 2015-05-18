@@ -147,6 +147,39 @@ public class ProjectionHandlerTest {
     }
     
     @Test
+    public void testValidAreaWorldVanDerGrinten() throws Exception {
+        String wkt = "PROJCS[\"World_Van_der_Grinten_I\", \n" + 
+                "  GEOGCS[\"GCS_WGS_1984\", \n" + 
+                "    DATUM[\"D_WGS_1984\", \n" + 
+                "      SPHEROID[\"WGS_1984\", 6378137.0, 298.257223563]], \n" + 
+                "    PRIMEM[\"Greenwich\", 0.0], \n" + 
+                "    UNIT[\"degree\", 0.017453292519943295], \n" + 
+                "    AXIS[\"Longitude\", EAST], \n" + 
+                "    AXIS[\"Latitude\", NORTH]], \n" + 
+                "  PROJECTION[\"World_Van_der_Grinten_I\"], \n" + 
+                "  PARAMETER[\"central_meridian\", 0.0], \n" + 
+                "  PARAMETER[\"false_easting\", 0.0], \n" + 
+                "  PARAMETER[\"false_northing\", 0.0], \n" + 
+                "  UNIT[\"m\", 1.0], \n" + 
+                "  AXIS[\"x\", EAST], \n" + 
+                "  AXIS[\"y\", NORTH], \n" + 
+                "  AUTHORITY[\"EPSG\",\"54029\"]]";
+        
+        // check valid area for the north case
+        ReferencedEnvelope envelopeWgs84 = new ReferencedEnvelope(-180, 180, -90, 90, WGS84);
+        ReferencedEnvelope envelope = envelopeWgs84.transform(CRS.parseWKT(wkt), true);
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(envelope, WGS84, true);
+        ReferencedEnvelope va = handler.validAreaBounds;
+        assertNotNull(va);
+        assertEquals(va.getCoordinateReferenceSystem(), WGS84);
+        assertEquals(-Double.MAX_VALUE, va.getMinX(), 0d);
+        assertEquals(Double.MAX_VALUE, va.getMaxX(), 0d);
+        assertEquals(-90, va.getMinY(), 0d);
+        assertEquals(90, va.getMaxY(), 0d);
+    }
+
+    
+    @Test
     public void testValidAreaLambertConformal() throws Exception {
         // check valid area for the north case
         ReferencedEnvelope wgs84north = new ReferencedEnvelope(-120, 0, 45, 90, WGS84);

@@ -18,6 +18,8 @@
 package org.geotools.gce.image;
 
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -281,6 +283,27 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         assertEquals(1, getChosenOverview(12,wiReader,policy));
         assertEquals(1, getChosenOverview(11,wiReader,policy));
         assertEquals(1, getChosenOverview(10,wiReader,policy));
+    }
+
+    public void testOverviewEnvelope() throws Exception {
+        final File file = TestData.file(this, "etopo.tif");
+        WorldImageReader reader = new WorldImageReader(file);
+
+        // prepare to read an overview
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final Dimension dim = new Dimension();
+        dim.setSize(reader.getOriginalGridRange().getSpan(0) / 64.0, reader.getOriginalGridRange()
+                .getSpan(1) / 64.0);
+        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        rasterArea.setSize(dim);
+        final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+        GridGeometry2D gridGeometry = new GridGeometry2D(range, envelope);
+        gg.setValue(gridGeometry);
+
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { gg });
+        assertEquals(coverage.getEnvelope(), reader.getOriginalEnvelope());
     }
 
     private int getChosenOverview(final int size, WorldImageReader wiReader)

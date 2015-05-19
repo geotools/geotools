@@ -695,7 +695,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         byte[] results = new byte[3];
         DirectPosition2D position = new DirectPosition2D();
         // Should be 0
-        position.setLocation(-87.517, 25.302);
+        position.setLocation(-87.517, 25.25);
         results = coverage.evaluate(position, results);
         assertEquals(results[0], 0);
         assertEquals(results[1], 0);
@@ -853,6 +853,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         gg.setValue(gridGeometry);
 
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
+        assertEquals(reader.getOriginalEnvelope(), coverage.getEnvelope());
         RenderedImage image = coverage.getRenderedImage();
         assertEquals(image.getWidth(), 2);
         assertEquals(image.getHeight(), 2);

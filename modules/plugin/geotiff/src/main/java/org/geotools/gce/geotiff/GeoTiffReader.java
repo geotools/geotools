@@ -649,18 +649,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 		    coverageRaster= new ImageWorker(coverageRaster).setRenderingHints(newHints).makeColorTransparent(inputTransparentColor).getRenderedOperation();
 		}
 		
-		//
-		// BUILDING COVERAGE
-		//
-        // I need to calculate a new transformation (raster2Model)
-        // between the cropped image and the required
-        // adjustedRequestEnvelope
-        final int ssWidth = coverageRaster.getWidth();
-        final int ssHeight = coverageRaster.getHeight();
-        if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE, "Coverage read: width = " + ssWidth+ " height = " + ssHeight);
-        }
-
         //
         // External/Internal Masking
         //
@@ -684,36 +672,22 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             }
         }
 
-        // //
         //
-        // setting new coefficients to define a new affineTransformation
-        // to be applied to the grid to world transformation
-        // -----------------------------------------------------------------------------------
+        // BUILDING COVERAGE
         //
-        // With respect to the original envelope, the obtained planarImage
-        // needs to be rescaled. The scaling factors are computed as the
-        // ratio between the cropped source region sizes and the read
-        // image sizes.
-        //
-        // //
-        final double scaleX = originalGridRange.getSpan(0) / (1.0 * ssWidth);
-        final double scaleY = originalGridRange.getSpan(1) / (1.0 * ssHeight);
-        final AffineTransform tempRaster2Model = new AffineTransform((AffineTransform) raster2Model);
-        tempRaster2Model.concatenate(new AffineTransform(scaleX, 0, 0, scaleY, 0, 0));
-        try{
-        	return createCoverage(coverageRaster, ProjectiveTransform.create(tempRaster2Model), roi);
-        }catch(Exception e){
-        	// dispose and close file
-        	ImageUtilities.disposePlanarImageChain(coverageRaster);
-        	
-        	// rethrow
-        	if(e instanceof DataSourceException){
-        		throw (DataSourceException)e;
-        	}
-        	throw new DataSourceException(e);
+        AffineTransform rasterToModel = getRescaledRasterToModel(coverageRaster);
+        try {
+            return createCoverage(coverageRaster, ProjectiveTransform.create(rasterToModel), roi);
+        } catch (Exception e) {
+            // dispose and close file
+            ImageUtilities.disposePlanarImageChain(coverageRaster);
+
+            // rethrow
+            if (e instanceof DataSourceException) {
+                throw (DataSourceException) e;
+            }
+            throw new DataSourceException(e);
         }
-
-
 	}
 
     /**

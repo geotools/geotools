@@ -139,12 +139,12 @@ public class GeoTiffReaderTest extends org.junit.Assert {
 		        
 		        if(TestData.isInteractiveTest()){
                             IIOMetadataDumper iIOMetadataDumper = new IIOMetadataDumper(
-                                            ((GeoTiffReader) reader).getMetadata()
+                                            reader.getMetadata()
                                                             .getRootNode());
                             System.out.println(iIOMetadataDumper.getMetadata());		        
 		        }
 		        // reading the coverage
-		        GridCoverage2D coverage1 = (GridCoverage2D) reader.read(null);
+		        GridCoverage2D coverage1 = reader.read(null);
 
 		        // check coverage and crs
 		        assertNotNull(coverage1);
@@ -188,7 +188,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         reader = new GeoTiffReader(noCrs, hint);
 
         // reading the coverage
-        GridCoverage2D coverage1 = (GridCoverage2D) reader.read(null);
+        GridCoverage2D coverage1 = reader.read(null);
 
         // check coverage and crs
         assertNotNull(coverage1);
@@ -207,7 +207,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         reader = new GeoTiffReader(wldprjFile);
 
         // reading the coverage
-        GridCoverage2D coverage2 = (GridCoverage2D) reader.read(null);
+        GridCoverage2D coverage2 = reader.read(null);
 
         // check coverage and crs
         assertNotNull(coverage2);
@@ -226,7 +226,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         reader = new GeoTiffReader(wldFile, hint);
 
         // reading the coverage
-        GridCoverage2D coverage3 = (GridCoverage2D) reader.read(null);
+        GridCoverage2D coverage3 = reader.read(null);
 
         // check coverage and crs
         assertNotNull(coverage3);
@@ -278,7 +278,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     			if (reader != null) {
     
     				// reading the coverage
-    			        final GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+    			        final GridCoverage2D coverage = reader.read(null);
     
     				// Crs and envelope
     				if (TestData.isInteractiveTest()) {
@@ -291,7 +291,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     				// display metadata
     				if (org.geotools.TestData.isExtensiveTest()) {
     					IIOMetadataDumper iIOMetadataDumper = new IIOMetadataDumper(
-    							((GeoTiffReader) reader).getMetadata()
+    							reader.getMetadata()
     									.getRootNode());
     					buffer.append("TIFF metadata: ").append(
     							iIOMetadataDumper.getMetadata()).append("\n");
@@ -329,7 +329,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     				// read back
     				assertTrue(format.accepts(destFile));
     				reader = new GeoTiffReader(destFile, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
-    				final GridCoverage2D destCoverage = (GridCoverage2D) reader.read(null);
+    				final GridCoverage2D destCoverage = reader.read(null);
     				reader.dispose();
     				
     				final double eps=XAffineTransform.getScaleX0((AffineTransform)coverage.getGridGeometry().getGridToCRS())*1E-2;
@@ -394,12 +394,12 @@ public class GeoTiffReaderTest extends org.junit.Assert {
             GeoTiffReader reader = new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
             if (reader != null) {
                 // reading the coverage
-                GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+                GridCoverage2D coverage = reader.read(null);
                 assertNotNull(coverage);
                 assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 1);
                 final ParameterValue<Color> colorPV = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
                 colorPV.setValue(Color.BLACK);
-                coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { colorPV });
+                coverage = reader.read(new GeneralParameterValue[] { colorPV });
                 assertNotNull(coverage);
                 assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 2);
 
@@ -421,12 +421,12 @@ public class GeoTiffReaderTest extends org.junit.Assert {
             GeoTiffReader reader = new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
             if (reader != null) {
                 // reading the coverage
-                GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+                GridCoverage2D coverage = reader.read(null);
                 assertNotNull(coverage);
                 assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 3);
                 final ParameterValue<Color> colorPV = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
                 colorPV.setValue(new Color(34,53,87));
-                coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { colorPV });
+                coverage = reader.read(new GeneralParameterValue[] { colorPV });
                 assertNotNull(coverage);
                 assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 4);
 
@@ -448,13 +448,13 @@ public class GeoTiffReaderTest extends org.junit.Assert {
             GeoTiffReader reader = new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
             if (reader != null) {
                 // reading the coverage
-                GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+                GridCoverage2D coverage = reader.read(null);
                 assertNotNull(coverage);
                 assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 2);
                 final ParameterValue<Color> colorPV = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
                 colorPV.setValue(new Color(34,53,87));
                 try{
-                    coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { colorPV });
+                    coverage = reader.read(new GeneralParameterValue[] { colorPV });
                     assertFalse(true); // we should not get here
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -489,6 +489,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         gg.setValue(gridGeometry);
 
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
+        assertEquals(coverage.getEnvelope(), reader.getOriginalEnvelope());
         RenderedImage image = coverage.getRenderedImage();
         assertEquals(image.getWidth(), 2);
         assertEquals(image.getHeight(), 2);

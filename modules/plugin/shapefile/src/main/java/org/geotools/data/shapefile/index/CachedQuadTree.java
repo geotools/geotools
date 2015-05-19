@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,8 @@ package org.geotools.data.shapefile.index;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
+
+import org.geotools.data.CloseableIterator;
 
 import org.geotools.data.shapefile.index.quadtree.Node;
 import org.geotools.data.shapefile.index.quadtree.QuadTree;

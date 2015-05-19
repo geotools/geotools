@@ -29,7 +29,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,6 +55,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
 import org.geotools.factory.Hints;
@@ -679,96 +683,117 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
                 } else {
                     LOGGER.warning("Could not find a world transform file for " + coverageName
                             + ", assuming the identity transform");
-                    raster2Model = ProjectiveTransform.create(
-                            new AffineTransform(1, 0, 0, -1, 0, originalGridRange.getHigh(1)));
-                }
-            }
-        }
-    }
+                    raster2Model = ProjectiveTransform.create(new AffineTransform());
+				}
+			}
+		}
+	}
 
-    /**
-     * This method is responsible for parsing a META file which is nothing more than another format
-     * of a WorldFile used by the GIDB database.
-     * 
-     * @param file2Parse
-     * 
-     * 
-     * @throws NumberFormatException
-     * @throws IOException
-     * 
-     * @task move me to a separate implementation
-     */
-    private void parseMetaFile(File file2Parse) throws NumberFormatException, IOException {
-        double xMin = 0.0;
-        double yMax = 0.0;
-        double xMax = 0.0;
-        double yMin = 0.0;
+	/**
+	 * This method is responsible for parsing a META file which is nothing more
+	 * than another format of a WorldFile used by the GIDB database.
+	 * 
+	 * @param file2Parse
+	 *            
+	 * 
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 * 
+	 * @task move me to a separate implementation
+	 */
+	private void parseMetaFile(File file2Parse) throws NumberFormatException,
+			IOException {
+		double xMin = 0.0;
+		double yMax = 0.0;
+		double xMax = 0.0;
+		double yMin = 0.0;
 
-        // getting a buffered reader
-        final BufferedReader in = new BufferedReader(new FileReader(file2Parse));
+		// getting a buffered reader
+		final BufferedReader in = new BufferedReader(new FileReader(file2Parse));
 
-        // parsing the lines
-        String str = null;
-        int index = 0;
-        double value = 0;
+		// parsing the lines
+		String str = null;
+		int index = 0;
+		double value = 0;
 
-        while ((str = in.readLine()) != null) {
-            switch (index) {
-            case 1:
-                value = Double.parseDouble(str.substring("Origin Longitude = ".intern().length()));
-                xMin = value;
+		while ((str = in.readLine()) != null) {
+			switch (index) {
+			case 1:
+				value = Double.parseDouble(str.substring("Origin Longitude = "
+						.intern().length()));
+				xMin = value;
 
-                break;
+				break;
 
-            case 2:
-                value = Double.parseDouble(str.substring("Origin Latitude = ".intern().length()));
-                yMin = value;
+			case 2:
+				value = Double.parseDouble(str.substring("Origin Latitude = "
+						.intern().length()));
+				yMin = value;
 
-                break;
+				break;
 
-            case 3:
-                value = Double.parseDouble(str.substring("Corner Longitude = ".intern().length()));
-                xMax = value;
+			case 3:
+				value = Double.parseDouble(str.substring("Corner Longitude = "
+						.intern().length()));
+				xMax = value;
 
-                break;
+				break;
 
-            case 4:
-                value = Double.parseDouble(str.substring("Corner Latitude = ".intern().length()));
-                yMax = value;
+			case 4:
+				value = Double.parseDouble(str.substring("Corner Latitude = "
+						.intern().length()));
+				yMax = value;
 
-                break;
+				break;
 
-            default:
-                break;
-            }
+			default:
+				break;
+			}
 
-            index++;
-        }
+			index++;
+		}
 
-        in.close();
+		in.close();
 
-        // building up envelope of this coverage
-        originalEnvelope = new GeneralEnvelope(new double[] { xMin, yMin },
-                new double[] { xMax, yMax });
-        originalEnvelope.setCoordinateReferenceSystem(crs);
-    }
+		// building up envelope of this coverage
+		originalEnvelope = new GeneralEnvelope(new double[] { xMin, yMin },
+				new double[] { xMax, yMax });
+		originalEnvelope.setCoordinateReferenceSystem(crs);
+	}
+	
+	/**
+	 * Number of coverages for this reader is 1
+	 * 
+	 * @return the number of coverages for this reader.
+	 */
+	@Override
+	public int getGridCoverageCount() {
+		return 1;
+	}
 
-    /**
-     * Number of coverages for this reader is 1
-     * 
-     * @return the number of coverages for this reader.
-     */
+	/**
+	 * Returns the file extension of the image. 
+	 * 
+	 * @since 2.7
+	 */
+	public String getExtension() {
+	    return extension;
+	}
+
     @Override
-    public int getGridCoverageCount() {
-        return 1;
-    }
+    protected List<FileGroup> getFiles() {
+        File file = getSourceAsFile();
+        if (file == null) {
+            return null;
+        }
 
-    /**
-     * Returns the file extension of the image.
-     * 
-     * @since 2.7
-     */
-    public String getExtension() {
-        return extension;
+        List<File> files = new ArrayList<>();
+        List<String> extensions = new ArrayList<>();
+        extensions.add(".prj");
+        Set<String> worldExtensions = WorldImageFormat.getWorldExtension(getExtension());
+        extensions.addAll(worldExtensions);
+        String[] siblingExtensions = worldExtensions.toArray(new String[worldExtensions.size()]);
+        addAllSiblings(file, files, siblingExtensions);
+        return Collections.singletonList(new FileGroup(file, files, null));
     }
 }

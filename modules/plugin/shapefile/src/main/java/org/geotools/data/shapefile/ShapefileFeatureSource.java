@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.CloseableIterator;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
@@ -43,7 +44,6 @@ import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.fid.IndexedFidReader;
 import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFiles;
-import org.geotools.data.shapefile.index.CloseableIterator;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.index.TreeException;
 import org.geotools.data.shapefile.shp.IndexFile;

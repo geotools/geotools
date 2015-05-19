@@ -303,7 +303,7 @@ public class RasterManager {
         /**
          * @return the domainaParameterDescriptor
          */
-        private DefaultParameterDescriptor<List> getDomainaParameterDescriptor() {
+        private DefaultParameterDescriptor<List> getDomainParameterDescriptor() {
             return domainParameterDescriptor;
         }
 
@@ -514,7 +514,7 @@ public class RasterManager {
     }
 
     /**
-     * An {@link DomainManager} class which allows to deal with additional domains
+     * A {@link DomainManager} class which allows to deal with additional domains
      * (if any) defined inside the mosaic. It provides DOMAIN_ALIAS <--to--> original attribute mapping
      * capabilities, metadata retrieval, filter creation, and domain support check
      * 
@@ -721,7 +721,7 @@ public class RasterManager {
         public boolean isParameterSupported(final Identifier name) {
             if (!domainsMap.isEmpty()) {
                 for (DomainDescriptor domain : domainsMap.values()) {
-                    final ReferenceIdentifier nameLoc = domain.getDomainaParameterDescriptor()
+                    final ReferenceIdentifier nameLoc = domain.getDomainParameterDescriptor()
                             .getName();
                     if (nameLoc.equals(name)) {
                         return true;
@@ -824,7 +824,7 @@ public class RasterManager {
             Set<ParameterDescriptor<List>> dynamicParameters = new HashSet<ParameterDescriptor<List>>();
             if (!domainsMap.isEmpty()) {
                 for (DomainDescriptor domain : domainsMap.values()) {
-                    dynamicParameters.add(domain.getDomainaParameterDescriptor());
+                    dynamicParameters.add(domain.getDomainParameterDescriptor());
                 }
             }
             // return
@@ -1222,7 +1222,7 @@ public class RasterManager {
      * @return a comma separated list of values as a {@link String}.
      * @throws IOException
      */
-    private Set extractDomain(final String attribute) throws IOException {
+    Set extractDomain(final String attribute) throws IOException {
         Query query = new Query(typeName);
         query.setPropertyNames(Arrays.asList(attribute));
         final UniqueVisitor visitor = new UniqueVisitor(attribute);

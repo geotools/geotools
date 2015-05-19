@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.geotools.data.shapefile.index.CloseableIterator;
+import org.geotools.data.CloseableIterator;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.index.DataDefinition;
 import org.geotools.data.shapefile.shp.IndexFile;

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
@@ -843,6 +844,9 @@ public class RasterManager {
     /** Default {@link SampleModel}. */
     SampleModel defaultSM;
 
+    /** Default palette */
+    byte[][] defaultPalette;
+    
     /**
      * The name of the input coverage TODO consider URI
      */
@@ -935,7 +939,10 @@ public class RasterManager {
             if (defaultCM == null) {
                 defaultCM = configuration.getColorModel();
             }
-            
+            if (defaultPalette == null) {
+                defaultPalette = configuration.getPalette();
+            }
+
             if (defaultSM != null && defaultCM != null && defaultImageLayout == null) {
                 defaultImageLayout= new ImageLayout().setColorModel(defaultCM).setSampleModel(defaultSM);
             }
@@ -1068,6 +1075,9 @@ public class RasterManager {
 				// load SM and CM
 				defaultCM= sampleImage.getColorModel();
 				defaultSM= sampleImage.getSampleModel();
+				if (defaultCM instanceof IndexColorModel) {
+				    defaultPalette = Utils.extractPalette((IndexColorModel) defaultCM);
+				}
 				
 				// default ImageLayout
 				defaultImageLayout= new ImageLayout().setColorModel(defaultCM).setSampleModel(defaultSM);

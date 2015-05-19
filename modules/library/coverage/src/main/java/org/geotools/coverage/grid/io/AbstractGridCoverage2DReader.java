@@ -20,6 +20,7 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
+import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,8 +59,10 @@ import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
+import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
@@ -102,6 +105,11 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 
     /** The {@link Logger} for this {@link AbstractGridCoverage2DReader}. */
     private final static Logger LOGGER = Logging.getLogger("org.geotools.data.coverage.grid");
+
+    /**
+     * Small number used for double comparisons
+     */
+    protected static double EPS = 1e-6;
 
     /**
      * This contains the number of overviews.aaa
@@ -1188,5 +1196,46 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     double[] getHighestRes() {
 		return getHighestRes(coverageName);
 	}
+
+    
+    /**
+     * Computes the raster to model of a rescaled output raster, based on the original transform and
+     * output raster scaling factor
+     * 
+     * @param coverageRaster
+     * @return
+     */
+    protected AffineTransform getRescaledRasterToModel(RenderedImage coverageRaster) {
+        final int ssWidth = coverageRaster.getWidth();
+        final int ssHeight = coverageRaster.getHeight();
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.log(Level.FINE, "Coverage read: width = " + ssWidth + " height = " + ssHeight);
+        }
+    
+        // //
+        //
+        // setting new coefficients to define a new affineTransformation
+        // to be applied to the grid to world transformation
+        // -----------------------------------------------------------------------------------
+        //
+        // With respect to the original envelope, the obtained planarImage
+        // needs to be rescaled. The scaling factors are computed as the
+        // ratio between the output raster sizes and the original sizes
+        // (this correctly accounts for odd sized overviews)
+        // //
+        final double scaleX = originalGridRange.getSpan(0) / (1.0 * ssWidth);
+        final double scaleY = originalGridRange.getSpan(1) / (1.0 * ssHeight);
+        final AffineTransform tempRaster2Model = new AffineTransform((AffineTransform) raster2Model);
+        AffineTransform scale = new AffineTransform(scaleX, 0, 0, scaleY, 0, 0);
+        if (!XAffineTransform.isIdentity(scale, EPS)) {
+            // the transformation includes the pixel is center shift, we need to
+            // remove it before rescaling, and then apply it back later
+            tempRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+            tempRaster2Model.concatenate(scale);
+            tempRaster2Model.concatenate(CoverageUtilities.CORNER_TO_CENTER);
+        }
+    
+        return tempRaster2Model;
+    }
 
 }

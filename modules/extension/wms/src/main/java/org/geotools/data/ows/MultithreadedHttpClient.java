@@ -107,22 +107,22 @@ public class MultithreadedHttpClient implements HTTPClient {
             LOGGER.fine("Found 'http.proxyHost' Java System property. Using it as proxy server. Port: "
                     + proxyPort);
             HostConfiguration hostConfig = client.getHostConfiguration();
-            hostConfig.setProxy(proxyHost, proxyPort);
-            
             if(nonProxyHostProp != null){
-				if (nonProxyHostProp.startsWith("\"")) {
-					nonProxyHostProp = nonProxyHostProp.substring(1);
-				}
-				if (nonProxyHostProp.endsWith("\"")) {
-					nonProxyHostProp = nonProxyHostProp.substring(0, nonProxyHostProp.length() - 1);
-				}
+            	if (nonProxyHostProp.startsWith("\"")) {
+            		nonProxyHostProp = nonProxyHostProp.substring(1);
+            	}
+            	if (nonProxyHostProp.endsWith("\"")) {
+            		nonProxyHostProp = nonProxyHostProp.substring(0, nonProxyHostProp.length() - 1);
+            	}
             	hostConfigNoProxy = (HostConfiguration) hostConfig.clone();
             	StringTokenizer tokenizer = new StringTokenizer(nonProxyHostProp, "|");
             	while(tokenizer.hasMoreTokens()){
             		nonProxyHosts.add(tokenizer.nextToken().trim().toLowerCase());
             	}
-    			LOGGER.fine("Initialized with nonProxyHosts: " + nonProxyHosts);
+            	LOGGER.fine("Initialized with nonProxyHosts: " + nonProxyHosts);
             }
+            hostConfig.setProxy(proxyHost, proxyPort);
+            
         }
 
         final String proxyUser = System.getProperty("http.proxyUser");

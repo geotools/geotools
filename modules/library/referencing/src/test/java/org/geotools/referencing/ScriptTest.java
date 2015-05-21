@@ -268,7 +268,16 @@ public final class ScriptTest {
     public void testWagnerIV() throws Exception {
         runScript("scripts/WagnerIV.txt");
     }
-    
+
+    /**
+     * Run "GeneralOblique.txt"
+     * @throws Exception
+     */
+    @Test
+    public void testGeneralOblique() throws Exception {
+        runScript("scripts/GeneralOblique.txt");
+    }    
+
     /**
      * Run "WorldVanDerGrintenI.txt"
      *

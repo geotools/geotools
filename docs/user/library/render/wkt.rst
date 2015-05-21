@@ -120,6 +120,32 @@ The weather symbols, which are create using Java code, should be prefixed by the
   .. image:: /images/sarrow.png
   
 
+A customizable arrow shape is also available, that can generate different arrows based on different values
+of three optional parameters:
+
+  * t: thickness of the arrow base, between 0 and 1, default is 0.2
+  * hr: height over width ratio, a positive number, default is 2
+  * ab: arrow head base ration, between 0 and 1, default is 0.5 
+
+The general syntax is::
+     
+     <WellKnownName>extshape://arrow?hr=[hrValue]&t=[tValue]&ab=[abValue]</WellKnownName> 
+  
+Changing the thickness between 0 and 1 generates:
+  
+  .. image:: /images/arrowThickness.png
+  
+Changing the height ratio between 0.2 and 2 generates:
+  
+  .. image:: /images/arrowHeight.png
+  
+Finally, changing the arrow base between 0 and 1 generates:
+
+  .. image:: /images/arrowBase.png
+  
+All of the above pictures have been taken using an anchor point of (0.5,0), that is, anchoring
+the arrow to its base, instead of its center, which would be its natural position. 
+
 More complex symbols like Wind Barbs can be created with the **windbarbs://** prefix. This is an example::
 
 	 <WellKnownName>windbarbs://default(15)[kts]</WellKnownName>

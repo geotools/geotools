@@ -74,7 +74,9 @@ class CompareImageDialog extends JDialog {
         title.setAlignmentX(0.5f);
         title.setBorder(new LineBorder(Color.BLACK));
         panel.add(title, BorderLayout.NORTH);
-        panel.add(new ScrollingImagePanel(expected, 400, 400), BorderLayout.CENTER);
+        panel.add(
+                new ScrollingImagePanel(expected, Math.min(400, expected.getWidth()), Math.min(400,
+                        expected.getHeight())), BorderLayout.CENTER);
         return panel;
     }
 

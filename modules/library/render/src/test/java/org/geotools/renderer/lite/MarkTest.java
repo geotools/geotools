@@ -11,6 +11,7 @@ import java.util.Collections;
 
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
@@ -37,6 +38,10 @@ public class MarkTest {
 
     SimpleFeatureSource pointRotationFS;
 
+    ContentFeatureSource arrowBasesFS;
+
+    ReferencedEnvelope arrowBounds;
+
     @BeforeClass
     public static void setupClass() {
         System.clearProperty("org.geotools.referencing.forceXY");
@@ -51,7 +56,9 @@ public class MarkTest {
         pointFS = ds.getFeatureSource("point");
         lineFS = ds.getFeatureSource("line");
         pointRotationFS = ds.getFeatureSource("pointRotation");
+        arrowBasesFS = ds.getFeatureSource("arrowBases");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
+        arrowBounds = new ReferencedEnvelope(-1, 5, -1, 11, CRS.decode("EPSG:4326"));
         
         // load font
         Font f = Font.createFont(Font.TRUETYPE_FONT, TestData.getResource(this, "recreate.ttf").openStream());
@@ -117,6 +124,74 @@ public class MarkTest {
         BufferedImage image = RendererBaseTest.showRender("Rotate north arrow", renderer, TIME,
                 bounds);
         ImageAssert.assertEquals(file("rotatePenIcon"), image, 100);
+    }
+
+    @Test
+    public void testArrowThickness() throws Exception {
+        Style pStyle = RendererBaseTest.loadStyle(this, "arrowThickness.sld");
+        Style dotStyle = RendererBaseTest.loadStyle(this, "dot.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(arrowBasesFS, pStyle));
+        mc.addLayer(new FeatureLayer(arrowBasesFS, dotStyle));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+
+        BufferedImage image = RendererBaseTest.renderImage(renderer, arrowBounds, null, 600, 100);
+        ImageAssert.assertEquals(file("arrowThickness"), image, 50);
+    }
+
+    @Test
+    public void testArrowHeight() throws Exception {
+        Style pStyle = RendererBaseTest.loadStyle(this, "arrowHeight.sld");
+        Style dotStyle = RendererBaseTest.loadStyle(this, "dot.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(arrowBasesFS, pStyle));
+        mc.addLayer(new FeatureLayer(arrowBasesFS, dotStyle));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+
+        BufferedImage image = RendererBaseTest.renderImage(renderer, arrowBounds, null, 600, 100);
+        ImageAssert.assertEquals(file("arrowHeight"), image, 50);
+    }
+
+    @Test
+    public void testArrowHeightRotation() throws Exception {
+        Style pStyle = RendererBaseTest.loadStyle(this, "arrowHeightRotation.sld");
+        Style dotStyle = RendererBaseTest.loadStyle(this, "dot.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(arrowBasesFS, pStyle));
+        mc.addLayer(new FeatureLayer(arrowBasesFS, dotStyle));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+
+        BufferedImage image = RendererBaseTest.renderImage(renderer, arrowBounds, null, 600, 100);
+        ImageAssert.assertEquals(file("arrowHeightRotation"), image, 50);
+    }
+
+    @Test
+    public void testArrowBase() throws Exception {
+        Style pStyle = RendererBaseTest.loadStyle(this, "arrowBase.sld");
+        Style dotStyle = RendererBaseTest.loadStyle(this, "dot.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(arrowBasesFS, pStyle));
+        mc.addLayer(new FeatureLayer(arrowBasesFS, dotStyle));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+
+        BufferedImage image = RendererBaseTest.renderImage(renderer, arrowBounds, null, 600, 100);
+        ImageAssert.assertEquals(file("arrowBase"), image, 50);
     }
 
     @Test

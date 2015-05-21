@@ -173,6 +173,11 @@ public abstract class RendererBaseTest {
             RenderListener listener) {
         int w = 300;
         int h = 300;
+        return renderImage(renderer, bounds, listener, w, h);
+    }
+
+    public static BufferedImage renderImage(GTRenderer renderer, ReferencedEnvelope bounds,
+            RenderListener listener, int w, int h) {
         final BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
         g.setColor(Color.white);

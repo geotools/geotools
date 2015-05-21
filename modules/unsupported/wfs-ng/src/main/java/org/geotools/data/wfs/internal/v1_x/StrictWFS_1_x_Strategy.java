@@ -373,10 +373,10 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
             return false;
         }
 
-        OperationsType operations = this.capabilities.getFeatureTypeList().getOperations();
-        if (operations == null) {
-            return false;
-        }
+		OperationsType operations = this.capabilities.getFeatureTypeList().getOperations();
+		if (operations == null) {
+			return false;
+		}
 
         @SuppressWarnings("unchecked")
         List<net.opengis.wfs.OperationType> operation = operations.getOperation();

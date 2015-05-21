@@ -226,12 +226,13 @@ public class Utils {
         public static final String CHECK_AUXILIARY_METADATA = "CheckAuxiliaryMetadata";
 
         //Indexer Properties specific properties
-        public  static final String RECURSIVE = "Recursive";
+        public static final String RECURSIVE = "Recursive";
         public static final String WILDCARD = "Wildcard";
         public static final String SCHEMA = "Schema";
         public static final String RESOLUTION_LEVELS = "ResolutionLevels";
         public static final String PROPERTY_COLLECTORS = "PropertyCollectors";
         public final static String CACHING= "Caching";
+        public static final String WRAP_STORE = "WrapStore";
     }
         /**
      * Extracts a bbox from a filter in case there is at least one.
@@ -588,6 +589,12 @@ public class Utils {
 			retValue.setExpandToRGB(expandMe);
 		}
 		
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.WRAP_STORE)) {
+            final boolean wrapStore = Boolean.valueOf(properties.getProperty(Prop.WRAP_STORE,
+                    "false").trim());
+            catalogConfigurationBean.setWrapStore(wrapStore);
+        }
+
 		// 
 		// Is heterogeneous granules mosaic
 		//

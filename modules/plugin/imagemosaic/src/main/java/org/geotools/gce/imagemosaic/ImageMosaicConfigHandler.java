@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -771,14 +771,7 @@ public class ImageMosaicConfigHandler {
             // Checking palette
             if (defaultCM instanceof IndexColorModel) {
                 IndexColorModel icm = (IndexColorModel) defaultCM;
-                int numBands = defaultCM.getNumColorComponents();
-                byte[][] defaultPalette = new byte[3][icm.getMapSize()];
-                icm.getReds(defaultPalette[0]);
-                icm.getGreens(defaultPalette[0]);
-                icm.getBlues(defaultPalette[0]);
-                if (numBands == 4) {
-                    icm.getAlphas(defaultPalette[0]);
-                }
+                byte[][] defaultPalette = Utils.extractPalette(icm);
                 configBuilder.setPalette(defaultPalette);
             }
 
@@ -904,8 +897,10 @@ public class ImageMosaicConfigHandler {
             byte[][] palette = mosaicConfiguration.getPalette();
             ColorModel colorModel = mosaicConfiguration.getColorModel();
             if (colorModel == null) {
-                palette = rasterManager.getConfiguration().getPalette();
                 colorModel = rasterManager.defaultCM;
+            }
+            if (palette == null) {
+                palette = rasterManager.defaultPalette;
             }
             if (Utils.checkColorModels(colorModel, palette, mosaicConfiguration, actualCM)) {
                 // if (checkColorModels(defaultCM, defaultPalette, actualCM)) {

@@ -136,6 +136,8 @@ public class ImageMosaicReaderTest extends Assert{
 
 	private URL indexURL;
 
+	private URL index2URL;
+
 	private URL indexAlphaURL;
 
 	private URL grayURL;
@@ -1831,7 +1833,7 @@ public class ImageMosaicReaderTest extends Assert{
 		oneBitURL=TestData.url(this, "onebit/");
 		
 		indexURL = TestData.url(this, "index/");
-		
+		index2URL = TestData.url(this, "index_palette_2/");
 		indexAlphaURL = TestData.url(this, "index_alpha/");
 		
 		grayURL = TestData.url(this, "gray/");
@@ -2252,6 +2254,58 @@ public class ImageMosaicReaderTest extends Assert{
         }
     }
 
+    @Test
+    public void testHarvestPalette() throws Exception {
+        File source = DataUtilities.urlToFile(index2URL);
+        File testDataDir = TestData.file(this, ".");
+        File directory1 = new File(testDataDir,"mosaic");
+        File directory2 = new File(testDataDir,"singleHarvest");
+        if (directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        FileUtils.copyDirectory(source, directory1);
+        for (File file : FileUtils.listFiles(directory1, FileFilterUtils.prefixFileFilter("c"), null)) {
+            assertTrue(file.delete());
+        }
+
+        if (directory2.exists()) {
+            FileUtils.deleteDirectory(directory2);
+        } 
+        FileUtils.copyDirectory(source, directory2);
+        for (File file : FileUtils.listFiles(directory2, FileFilterUtils.notFileFilter(FileFilterUtils.prefixFileFilter("c")), null)) {
+            assertTrue(file.delete());
+        }
+        
+        // ok, let's create a mosaic 
+        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL, null);
+        ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
+        try {
+            // now go and harvest the other files
+            Collection<File> files = new ArrayList<File>();
+            for (File file : FileUtils.listFiles(directory2, FileFilterUtils.prefixFileFilter("c"), null)) {
+                files.add(file);
+            }
+
+            List<HarvestedSource> summary = reader.harvest(null, files, null);
+            assertSame(originalCatalog, reader.granuleCatalog);
+            assertEquals(1, summary.size());
+            HarvestedSource hf = summary.get(0);
+            assertTrue(hf.success());
+            RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
+
+            // Palette should have been successfully loaded
+            assertNotNull(manager.defaultPalette);
+
+            // Different palettes requires color Expansion
+            assertTrue(manager.expandMe);
+
+        } finally {
+            reader.dispose();
+        }
+    }
+    
     
     @Test
     public void testHarvestDirectory() throws Exception {

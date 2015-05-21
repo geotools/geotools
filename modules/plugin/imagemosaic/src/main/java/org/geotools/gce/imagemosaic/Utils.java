@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -2017,5 +2017,25 @@ public class Utils {
                             + granuleUrl.toString());
         }
         return streamSPI;
+    }
+
+    /**
+     * Extract the palette from an {@link IndexColorModel}.
+     * 
+     * @param indexColorModel
+     * @return
+     */
+    public static byte[][] extractPalette(IndexColorModel indexColorModel) {
+        Utilities.ensureNonNull("indexColorModel", indexColorModel);
+        byte[][] palette = new byte[3][indexColorModel.getMapSize()];
+        int numBands = indexColorModel.getNumColorComponents();
+
+        indexColorModel.getReds(palette[0]);
+        indexColorModel.getGreens(palette[0]);
+        indexColorModel.getBlues(palette[0]);
+        if (numBands == 4) {
+            indexColorModel.getAlphas(palette[0]);
+        }
+        return palette;
     }
 }

@@ -219,9 +219,6 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 			
 			//load the feature from the shapefile and create JTS index
 			it = features.iterator();
-			if (!it.hasNext()) 
-				throw new IllegalArgumentException(
-						"The provided SimpleFeatureCollection  or empty, it's impossible to create an index!");
 			
 			// now build the index
 			// TODO make it configurable as far the index is involved
@@ -356,8 +353,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 			// intersection
 			final Envelope intersection = requestedBBox.intersection(ReferencedEnvelope.reference(bbox));
 			
-			// create intersection
-			final ReferencedEnvelope referencedEnvelope= new ReferencedEnvelope(intersection,bbox.getCoordinateReferenceSystem());
+			// create intersection and return it
+			requestedBBox = new ReferencedEnvelope(intersection,bbox.getCoordinateReferenceSystem());
 		}
 		else{
 		    return ReferencedEnvelope.reference(bbox);

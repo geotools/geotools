@@ -246,13 +246,18 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 header.read(buffer, true);
 
                 SimpleFeatureType schema = getSchema();
-                ReferencedEnvelope bounds = new ReferencedEnvelope(
-                        schema.getCoordinateReferenceSystem());
-                bounds.include(header.minX(), header.minY());
-                bounds.include(header.minX(), header.minY());
-
-                Envelope env = new Envelope(header.minX(), header.maxX(), header.minY(),
+                
+                Envelope env;
+                
+                // Hendrik Peilke: if it is a shapefile without any data (file length equals 50), 
+                // return an empty envelope as expected
+                if(header.getFileLength() == 50) {
+                    env = new Envelope();
+                }
+                else {
+                    env = new Envelope(header.minX(), header.maxX(), header.minY(),
                         header.maxY());
+                }
 
                 CoordinateReferenceSystem crs = null;
                 if (schema != null) {

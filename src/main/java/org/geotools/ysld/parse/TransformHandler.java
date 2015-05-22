@@ -3,6 +3,7 @@ package org.geotools.ysld.parse;
 import org.geotools.data.Parameter;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.ysld.ProcessUtil;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.opengis.feature.type.Name;
@@ -12,6 +13,7 @@ import org.opengis.filter.expression.Function;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +43,10 @@ public class TransformHandler extends YsldParseHandler {
         Function function = process(map);
         featureStyle.setTransformation(function);
     }
-
+    Expression envVar(String name) {
+        return factory.filter.function("env", factory.filter.literal(name));
+    }
+    
     private Function process(YamlMap map) {
         processes++; // Found a new process in the chain.
         
@@ -59,20 +64,28 @@ public class TransformHandler extends YsldParseHandler {
         if (processInfo == null) {
             throw new IllegalArgumentException("No such process: " + name);
         }
+        
+        boolean wmsParams = ProcessUtil.hasWMSParams(processInfo);
 
         FilterFactory filterFactory = factory.filter;
 
         // turn properties into inputs for ProcessFunction
         List<Expression> processArgs = new ArrayList<>();
+        
+        Expression outputBBOX = null;
+        Expression outputWidth = null;
+        Expression outputHeight = null;
+        if(wmsParams) {
+            outputBBOX =paramExpression("outputBBOX", Collections.singletonList(envVar("wms_bbox")));
+            outputWidth = paramExpression("outputWidth", Collections.singletonList(envVar("wms_width")));
+            outputHeight = paramExpression("outputHeight", Collections.singletonList(envVar("wms_height")));
+        }
 
         YamlMap params = map.map("params");
         if (params != null) {
             for (Map.Entry<String, Object> e : params.raw().entrySet()) {
                 String key = e.getKey();
                 Object val = e.getValue();
-
-                List<Expression> paramArgs = new ArrayList<Expression>();
-                paramArgs.add(factory.filter.literal(key));
 
                 List<Expression> valueArgs = new ArrayList<>();
 
@@ -96,10 +109,19 @@ public class TransformHandler extends YsldParseHandler {
                 if (valueArgs.isEmpty()) {
                     valueArgs.add(factory.filter.literal(val));
                 }
-
-                paramArgs.addAll(valueArgs);
-
-                processArgs.add(filterFactory.function("parameter", paramArgs.toArray(new Expression[paramArgs.size()])));
+                switch(key) {
+                case "outputBBOX":
+                    outputBBOX = paramExpression(key, valueArgs);
+                    break;
+                case "outputWidth":
+                    outputWidth = paramExpression(key, valueArgs);
+                    break;
+                case "outputHeight":
+                    outputHeight = paramExpression(key, valueArgs);
+                    break;
+                default:
+                    processArgs.add(paramExpression(key, valueArgs));
+                }
             }
         }
         // If this process is the only one, and no input parameter was specified, use data by default
@@ -107,10 +129,26 @@ public class TransformHandler extends YsldParseHandler {
             input = "data";
         }
         if( input != null) {
-            processArgs.add(filterFactory.function("parameter", filterFactory.literal(input)));
+            processArgs.add(paramExpression(input, Collections.<Expression> emptyList()));
+        }
+        if(outputBBOX!=null) {
+            processArgs.add(outputBBOX);
+        }
+        if(outputWidth!=null) {
+            processArgs.add(outputWidth);
+        }
+        if(outputHeight!=null) {
+            processArgs.add(outputHeight);
         }
         Function function = functionFactory.function(processName(name), processArgs, null);
         return function;
+    }
+
+    private Function paramExpression(String name, List<Expression> valueArgs) {
+        List<Expression> paramArgs = new ArrayList<Expression>(valueArgs.size()+1);
+        paramArgs.add(factory.filter.literal(name));
+        paramArgs.addAll(valueArgs);
+        return factory.filter.function("parameter", paramArgs.toArray(new Expression[paramArgs.size()]));
     }
 
     void convertAndAdd(Object val, Parameter<?> p, List<Expression> valueArgs) {

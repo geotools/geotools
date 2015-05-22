@@ -3,6 +3,7 @@ package org.geotools.ysld;
 import org.geotools.data.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFactory;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
@@ -71,5 +72,20 @@ public class ProcessUtil {
             throw new RuntimeException("Error looking up process info", e);
         }
 
+    }
+
+    private static boolean hasWMSParam(Map<String,Parameter<?>> processInfo, String name, Class<?> type) {
+        Parameter<?> param = processInfo.get(name);
+        if(param==null) return false;
+        if(!param.getName().equals(name)) return false;
+        if(!param.isRequired()) return false;
+        if(!type.isAssignableFrom(param.getType())) return false;
+        return true;
+    }
+
+    public static boolean hasWMSParams(Map<String,Parameter<?>> processInfo) {
+        return hasWMSParam(processInfo, "outputBBOX", ReferencedEnvelope.class)
+            && hasWMSParam(processInfo, "outputWidth", Integer.class)
+            && hasWMSParam(processInfo, "outputHeight", Integer.class);
     }
 }

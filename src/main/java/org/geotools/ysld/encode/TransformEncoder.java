@@ -45,7 +45,8 @@ public class TransformEncoder extends YsldEncodeHandler<Expression> {
             FeatureStyleEncoder.LOG.warning("Skipping transform, unable to locate process named: " + ftx.getName());
             return;
         }
-
+        boolean wmsParams = ProcessUtil.hasWMSParams(paramInfo);
+        
         put("name", ftx.getName());
 
         Map<String,Object> simpleParams = new LinkedHashMap<String, Object>();
@@ -78,8 +79,12 @@ public class TransformEncoder extends YsldEncodeHandler<Expression> {
                 }
                 paramValue = l;
             }
-            
-            simpleParams.put(paramName, paramValue);
+            // If the process is a rendering transformation and the parameter is one of the WMS 
+            // environment parameters with its default values, then skip it as it will be filled in
+            // when parsed.
+            if(!(wmsParams && isDefaultWMSParam(paramName, paramValue))){
+                simpleParams.put(paramName, paramValue);
+            }
         }
         
         if(input!=null && (chained || !input.equals("data"))) {
@@ -87,6 +92,13 @@ public class TransformEncoder extends YsldEncodeHandler<Expression> {
         }
         
         push("params").inline(simpleParams);
+    }
+
+    private boolean isDefaultWMSParam(String paramName, final Object paramValue) {
+        if (paramName.equals("outputBBOX")&&paramValue.equals("${env('wms_bbox')}")) return true;
+        if (paramName.equals("outputWidth")&&paramValue.equals("${env('wms_width')}")) return true;
+        if (paramName.equals("outputHeight")&&paramValue.equals("${env('wms_height')}")) return true;
+        return false;
     }
     
     Object intermediateExpression(Expression e) {

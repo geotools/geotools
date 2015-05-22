@@ -214,8 +214,17 @@ public class YsldEncodeTest {
                 filterFactory.literal("radius"), filterFactory.literal("100"));
         Function p4 = filterFactory.function("parameter",
                 filterFactory.literal("pixelsPerCell"), filterFactory.literal(10));
+        Function p5 = filterFactory.function("parameter",
+                filterFactory.literal("outputBBOX"), 
+                filterFactory.function("env", filterFactory.literal("wms_bbox")));
+        Function p6 = filterFactory.function("parameter",
+                filterFactory.literal("outputWidth"), 
+                filterFactory.function("env", filterFactory.literal("wms_width")));
+        Function p7 = filterFactory.function("parameter",
+                filterFactory.literal("outputHeight"), 
+                filterFactory.function("env", filterFactory.literal("wms_height")));
 
-        Function rt = filterFactory.function("vec:Heatmap", p1, p2, p3, p4);
+        Function rt = filterFactory.function("vec:Heatmap", p1, p2, p3, p4, p5, p6, p7);
         featureStyle.setTransformation(rt);
 
         Rule rule = styleFactory.createRule();
@@ -230,9 +239,131 @@ public class YsldEncodeTest {
         assertEquals("vec:Heatmap", tx.get("name"));
 
         YamlMap params = tx.map("params");
-        assertEquals("pop2000", params.get("weightAttr"));
-        assertEquals("100", params.str("radius"));
-        assertEquals("10", params.str("pixelsPerCell"));
+        assertThat(params, yHasEntry("weightAttr", lexEqualTo("pop2000")));
+        assertThat(params, yHasEntry("radius", lexEqualTo(100)));
+        assertThat(params, yHasEntry("pixelsPerCell", lexEqualTo(10)));
+        
+        assertThat(params, not(yHasEntry("outputBBOX")));
+        assertThat(params, not(yHasEntry("outputWidth")));
+        assertThat(params, not(yHasEntry("outputHeight")));
+        
+        YamlMap ruleMap = obj.seq("feature-styles").map(0).seq("rules").map(0);
+        assertThat(ruleMap.str("name"), equalTo("Za'Ha'Dum"));
+    }
+    @Test
+    public void testRenderingTransformationHeatmapAltBBOX() throws IOException {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+
+        UserLayer layer = styleFactory.createUserLayer();
+        sld.layers().add(layer);
+
+        Style style = styleFactory.createStyle();
+        layer.userStyles().add(style);
+
+        FeatureTypeStyle featureStyle = styleFactory.createFeatureTypeStyle();
+        style.featureTypeStyles().add(featureStyle);
+
+        Function p1 = filterFactory.function("parameter", filterFactory.literal("data"));
+        Function p2 = filterFactory.function("parameter",
+            filterFactory.literal("weightAttr"), filterFactory.literal("pop2000"));
+        Function p3 = filterFactory.function("parameter",
+                filterFactory.literal("radius"), filterFactory.literal("100"));
+        Function p4 = filterFactory.function("parameter",
+                filterFactory.literal("pixelsPerCell"), filterFactory.literal(10));
+        Function p5 = filterFactory.function("parameter",
+                filterFactory.literal("outputBBOX"), 
+                filterFactory.function("env", filterFactory.literal("something_else")));
+        Function p6 = filterFactory.function("parameter",
+                filterFactory.literal("outputWidth"), 
+                filterFactory.function("env", filterFactory.literal("wms_width")));
+        Function p7 = filterFactory.function("parameter",
+                filterFactory.literal("outputHeight"), 
+                filterFactory.function("env", filterFactory.literal("wms_height")));
+
+        Function rt = filterFactory.function("vec:Heatmap", p1, p2, p3, p4, p5, p6, p7);
+        featureStyle.setTransformation(rt);
+
+        Rule rule = styleFactory.createRule();
+        rule.setName("Za'Ha'Dum");
+        featureStyle.rules().add(rule);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap tx = obj.seq("feature-styles").map(0).map("transform");
+        assertEquals("vec:Heatmap", tx.get("name"));
+
+        YamlMap params = tx.map("params");
+        assertThat(params, yHasEntry("weightAttr", lexEqualTo("pop2000")));
+        assertThat(params, yHasEntry("radius", lexEqualTo(100)));
+        assertThat(params, yHasEntry("pixelsPerCell", lexEqualTo(10)));
+        
+        assertThat(params, yHasEntry("outputBBOX", equalTo("${env('something_else')}")));
+        assertThat(params, not(yHasEntry("outputWidth")));
+        assertThat(params, not(yHasEntry("outputHeight")));
+        
+        YamlMap ruleMap = obj.seq("feature-styles").map(0).seq("rules").map(0);
+        assertThat(ruleMap.str("name"), equalTo("Za'Ha'Dum"));
+    }
+    
+    @Test
+    public void testRenderingTransformationSimplifyWithWMSParams() throws IOException {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+
+        UserLayer layer = styleFactory.createUserLayer();
+        sld.layers().add(layer);
+
+        Style style = styleFactory.createStyle();
+        layer.userStyles().add(style);
+
+        FeatureTypeStyle featureStyle = styleFactory.createFeatureTypeStyle();
+        style.featureTypeStyles().add(featureStyle);
+
+        Function p1 = filterFactory.function("parameter", filterFactory.literal("features"));
+        Function p2 = filterFactory.function("parameter",
+            filterFactory.literal("distance"), filterFactory.literal(10.0));
+        Function p3 = filterFactory.function("parameter",
+                filterFactory.literal("preserveTopology"), filterFactory.literal(true));
+
+        Function p5 = filterFactory.function("parameter",
+                filterFactory.literal("outputBBOX"), 
+                filterFactory.function("env", filterFactory.literal("wms_bbox")));
+        Function p6 = filterFactory.function("parameter",
+                filterFactory.literal("outputWidth"), 
+                filterFactory.function("env", filterFactory.literal("wms_width")));
+        Function p7 = filterFactory.function("parameter",
+                filterFactory.literal("outputHeight"), 
+                filterFactory.function("env", filterFactory.literal("wms_height")));
+
+        Function rt = filterFactory.function("vec:Simplify", p1, p2, p3,  p5, p6, p7);
+        featureStyle.setTransformation(rt);
+
+        Rule rule = styleFactory.createRule();
+        rule.setName("Za'Ha'Dum");
+        featureStyle.rules().add(rule);
+        
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap tx = obj.seq("feature-styles").map(0).map("transform");
+        assertThat(tx, yHasEntry("name", equalTo("vec:Simplify")));
+        assertThat(tx, yHasEntry("input", equalTo("features")));
+        
+        YamlMap params = tx.map("params");
+        assertThat(params, yHasEntry("distance", lexEqualTo(10.0)));
+        assertThat(params, yHasEntry("preserveTopology", lexEqualTo(true)));
+        
+        assertThat(params, yHasEntry("outputBBOX", equalTo("${env('wms_bbox')}")));
+        assertThat(params, yHasEntry("outputWidth", equalTo("${env('wms_width')}")));
+        assertThat(params, yHasEntry("outputHeight", equalTo("${env('wms_height')}")));
         
         YamlMap ruleMap = obj.seq("feature-styles").map(0).seq("rules").map(0);
         assertThat(ruleMap.str("name"), equalTo("Za'Ha'Dum"));

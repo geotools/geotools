@@ -62,6 +62,7 @@ import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
 import static org.geotools.ysld.TestUtils.appliesToScale;
 import static org.geotools.ysld.TestUtils.attribute;
+import static org.geotools.ysld.TestUtils.function;
 import static org.geotools.ysld.TestUtils.isColor;
 import static org.geotools.ysld.TestUtils.literal;
 import static org.geotools.ysld.TestUtils.nilExpression;
@@ -259,9 +260,9 @@ public class YsldParseTest {
             "      weightAttr: pop2000\n" +
             "      radius: 100\n" +
             "      pixelsPerCell: 10\n" +
-            "      outputBBOX: ${wms_bbox}\n" +
-            "      outputWidth: ${wms_width}\n" +
-            "      outputHeight: ${wms_height}\n";
+            "      outputBBOX: ${env('wms_bbox')}\n" +
+            "      outputWidth: ${env('wms_width')}\n" +
+            "      outputHeight: ${env('wms_height')}\n";
 
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -278,9 +279,9 @@ public class YsldParseTest {
                         rtParam("weightAttr", literal("pop2000")),
                         rtParam("radius", literal(100)),
                         rtParam("pixelsPerCell", literal(10)),
-                        rtParam("outputBBOX", attribute("wms_bbox")),
-                        rtParam("outputWidth", attribute("wms_width")),
-                        rtParam("outputHeight", attribute("wms_height"))
+                        rtParam("outputBBOX", function("env", literal("wms_bbox"))),
+                        rtParam("outputWidth", function("env", literal("wms_width"))),
+                        rtParam("outputHeight", function("env", literal("wms_height")))
                         )));
     }
     
@@ -313,7 +314,70 @@ public class YsldParseTest {
                                 literal(1100), 
                                 literal(1200)))));
     }
+    
+    @Test
+    public void testRenderingTransformationWMSAuto() throws IOException {
+        String yaml =
+            "feature-styles: \n"+
+            "- transform:\n" +
+            "    name: vec:Heatmap\n" +
+            "    params:\n" +
+            "      weightAttr: pop2000\n" +
+            "      radius: 100\n" +
+            "      pixelsPerCell: 10\n";
 
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+
+        Expression tx = fs.getTransformation();
+        assertNotNull(tx);
+
+        ProcessFunction pf = (ProcessFunction) tx;
+
+        assertThat(pf, hasProperty("parameters", 
+                containsInAnyOrder(
+                        rtParam("data"),
+                        rtParam("weightAttr", literal("pop2000")),
+                        rtParam("radius", literal(100)),
+                        rtParam("pixelsPerCell", literal(10)),
+                        rtParam("outputBBOX", function("env", literal("wms_bbox"))),
+                        rtParam("outputWidth", function("env", literal("wms_width"))),
+                        rtParam("outputHeight", function("env", literal("wms_height")))
+                        )));
+    }
+    
+    @Test
+    public void testRenderingTransformationWMSAutoMixed() throws IOException {
+        String yaml =
+            "feature-styles: \n"+
+            "- transform:\n" +
+            "    name: vec:Heatmap\n" +
+            "    params:\n" +
+            "      weightAttr: pop2000\n" +
+            "      radius: 100\n" +
+            "      pixelsPerCell: 10\n" +
+            "      outputBBOX: ${env('test')}\n";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+
+        Expression tx = fs.getTransformation();
+        assertNotNull(tx);
+
+        ProcessFunction pf = (ProcessFunction) tx;
+
+        assertThat(pf, hasProperty("parameters", 
+                containsInAnyOrder(
+                        rtParam("data"),
+                        rtParam("weightAttr", literal("pop2000")),
+                        rtParam("radius", literal(100)),
+                        rtParam("pixelsPerCell", literal(10)),
+                        rtParam("outputBBOX", function("env", literal("test"))),
+                        rtParam("outputWidth", function("env", literal("wms_width"))),
+                        rtParam("outputHeight", function("env", literal("wms_height")))
+                        )));
+    }
+    
     @Test
     public void testNestedRenderingTransformation() throws IOException {
         String yaml =

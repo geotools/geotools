@@ -676,7 +676,7 @@ public class SimpleFeatureTypeBuilder {
             // if no crs was set, set to defaultCRS
             if (!attributeBuilder.isCRSSet()) {
                 if( defaultCrs == null && !defaultCrsSet){
-                    LOGGER.warning("Creating "+name+" with null CoordinateReferenceSystem - did you mean to setCRS?");
+                    LOGGER.fine("Creating "+name+" with null CoordinateReferenceSystem - did you mean to setCRS?");
                 }
                 attributeBuilder.setCRS(defaultCrs);
             }

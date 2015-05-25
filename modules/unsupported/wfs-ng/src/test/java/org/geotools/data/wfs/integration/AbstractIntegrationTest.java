@@ -179,7 +179,7 @@ public abstract class AbstractIntegrationTest {
         try {
             data = createDataStore();
         } catch (Exception e) {
-            LOGGER.log(Level.INFO, "exception while making schema", e);
+            LOGGER.log(Level.SEVERE, "Exception while making schema", e);
             throw e;
         }
 
@@ -197,78 +197,80 @@ public abstract class AbstractIntegrationTest {
     public void testFeatureEvents() throws Exception {
         SimpleFeatureStore store1 = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
         SimpleFeatureStore store2 = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
-        store1.setTransaction(new DefaultTransaction());
-        class Listener implements FeatureListener {
-
-            List<FeatureEvent> events = new ArrayList<FeatureEvent>();
-
-            public void changed(FeatureEvent featureEvent) {
-                this.events.add(featureEvent);
+        try( DefaultTransaction transaction = new DefaultTransaction() ){
+            store1.setTransaction(transaction);
+            class Listener implements FeatureListener {
+    
+                List<FeatureEvent> events = new ArrayList<FeatureEvent>();
+    
+                public void changed(FeatureEvent featureEvent) {
+                    this.events.add(featureEvent);
+                }
+    
+                FeatureEvent getEvent(int i) {
+                    return (FeatureEvent) events.get(i);
+                }
             }
-
-            FeatureEvent getEvent(int i) {
-                return (FeatureEvent) events.get(i);
-            }
+    
+            Listener listener1 = new Listener();
+            Listener listener2 = new Listener();
+    
+            store1.addFeatureListener(listener1);
+            store2.addFeatureListener(listener2);
+    
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    
+            // test that only the listener listening with the current transaction gets the event.
+            final SimpleFeature feature = first.features[0];
+            Id fidFilter = ff.id(feature.getIdentifier());
+    
+            store1.removeFeatures(fidFilter);
+    
+            assertEquals(1, listener1.events.size());
+            assertEquals(0, listener2.events.size());
+    
+            FeatureEvent event = listener1.getEvent(0);
+            assertEquals(feature.getBounds(), event.getBounds());
+            assertEquals(FeatureEvent.Type.REMOVED, event.getType());
+    
+            // test that commit only sends events to listener2.
+            listener1.events.clear();
+            listener2.events.clear();
+    
+            store1.getTransaction().commit();
+    
+            assertEquals(0, listener1.events.size());
+            assertEquals(3, listener2.events.size());
+    
+            event = listener2.getEvent(0);
+            assertEquals(feature.getBounds(), event.getBounds());
+            assertEquals(FeatureEvent.Type.REMOVED, event.getType());
+    
+            // test add same as modify
+            listener1.events.clear();
+            listener2.events.clear();
+    
+            store1.addFeatures(DataUtilities.collection(feature));
+    
+            assertEquals(1, listener1.events.size());
+            event = listener1.getEvent(0);
+            assertEquals(feature.getBounds(), event.getBounds());
+            assertEquals(FeatureEvent.Type.ADDED, event.getType());
+            assertEquals(0, listener2.events.size());
+    
+            // test that rollback only sends events to listener1.
+            listener1.events.clear();
+            listener2.events.clear();
+    
+            store1.getTransaction().rollback();
+    
+            assertEquals(1, listener1.events.size());
+            event = listener1.getEvent(0);
+            assertNull(event.getBounds());
+            assertEquals(FeatureEvent.Type.CHANGED, event.getType());
+    
+            assertEquals(0, listener2.events.size());
         }
-
-        Listener listener1 = new Listener();
-        Listener listener2 = new Listener();
-
-        store1.addFeatureListener(listener1);
-        store2.addFeatureListener(listener2);
-
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-
-        // test that only the listener listening with the current transaction gets the event.
-        final SimpleFeature feature = first.features[0];
-        Id fidFilter = ff.id(feature.getIdentifier());
-
-        store1.removeFeatures(fidFilter);
-
-        assertEquals(1, listener1.events.size());
-        assertEquals(0, listener2.events.size());
-
-        FeatureEvent event = listener1.getEvent(0);
-        assertEquals(feature.getBounds(), event.getBounds());
-        assertEquals(FeatureEvent.Type.REMOVED, event.getType());
-
-        // test that commit only sends events to listener2.
-        listener1.events.clear();
-        listener2.events.clear();
-
-        store1.getTransaction().commit();
-
-        assertEquals(0, listener1.events.size());
-        assertEquals(3, listener2.events.size());
-
-        event = listener2.getEvent(0);
-        assertEquals(feature.getBounds(), event.getBounds());
-        assertEquals(FeatureEvent.Type.REMOVED, event.getType());
-
-        // test add same as modify
-        listener1.events.clear();
-        listener2.events.clear();
-
-        store1.addFeatures(DataUtilities.collection(feature));
-
-        assertEquals(1, listener1.events.size());
-        event = listener1.getEvent(0);
-        assertEquals(feature.getBounds(), event.getBounds());
-        assertEquals(FeatureEvent.Type.ADDED, event.getType());
-        assertEquals(0, listener2.events.size());
-
-        // test that rollback only sends events to listener1.
-        listener1.events.clear();
-        listener2.events.clear();
-
-        store1.getTransaction().rollback();
-
-        assertEquals(1, listener1.events.size());
-        event = listener1.getEvent(0);
-        assertNull(event.getBounds());
-        assertEquals(FeatureEvent.Type.CHANGED, event.getType());
-
-        assertEquals(0, listener2.events.size());
     }
 
     @Test
@@ -595,49 +597,50 @@ public abstract class AbstractIntegrationTest {
 
     @Test
     public void testGetFeatureReaderFilterTransaction() throws Exception {
-        Transaction t = new DefaultTransaction();
-        SimpleFeatureType type = data.getSchema(first.typeName);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-
-        reader = data.getFeatureReader(new Query(first.typeName, Filter.EXCLUDE), t);
-
-        assertEquals(type, reader.getFeatureType());
-        assertEquals(0, count(reader));
-
-        reader = data.getFeatureReader(new Query(first.typeName), t);
-        assertTrue(reader instanceof DiffFeatureReader);
-        assertEquals(type, reader.getFeatureType());
-        assertEquals(first.features.length, count(reader));
-
-        reader = data.getFeatureReader(new Query(first.typeName, first.feat1Filter), t);
-
-        // assertTrue(reader instanceof DiffFeatureReader);//Currently wrapped by a filtering
-        // feature reader
-        assertEquals(type, reader.getFeatureType());
-        assertEquals(1, count(reader));
-
-        SimpleFeatureStore store = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
-        store.setTransaction(t);
-        store.removeFeatures(first.feat1Filter);
-
-        reader = data.getFeatureReader(new Query(first.typeName, Filter.EXCLUDE), t);
-        assertEquals(0, count(reader));
-
-        reader = data.getFeatureReader(new Query(first.typeName), t);
-        assertEquals(first.features.length - 1, count(reader));
-
-        reader = data.getFeatureReader(new Query(first.typeName, first.feat1Filter), t);
-        assertEquals(0, count(reader));
-
-        t.rollback();
-        reader = data.getFeatureReader(new Query(first.typeName, Filter.EXCLUDE), t);
-        assertEquals(0, count(reader));
-
-        reader = data.getFeatureReader(new Query(first.typeName), t);
-        assertEquals(first.features.length, count(reader));
-
-        reader = data.getFeatureReader(new Query(first.typeName, first.feat1Filter), t);
-        assertEquals(1, count(reader));
+        try( Transaction t = new DefaultTransaction() ){
+            SimpleFeatureType type = data.getSchema(first.typeName);
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+    
+            reader = data.getFeatureReader(new Query(first.typeName, Filter.EXCLUDE), t);
+    
+            assertEquals(type, reader.getFeatureType());
+            assertEquals(0, count(reader));
+    
+            reader = data.getFeatureReader(new Query(first.typeName), t);
+            assertTrue(reader instanceof DiffFeatureReader);
+            assertEquals(type, reader.getFeatureType());
+            assertEquals(first.features.length, count(reader));
+    
+            reader = data.getFeatureReader(new Query(first.typeName, first.feat1Filter), t);
+    
+            // assertTrue(reader instanceof DiffFeatureReader);//Currently wrapped by a filtering
+            // feature reader
+            assertEquals(type, reader.getFeatureType());
+            assertEquals(1, count(reader));
+    
+            SimpleFeatureStore store = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
+            store.setTransaction(t);
+            store.removeFeatures(first.feat1Filter);
+    
+            reader = data.getFeatureReader(new Query(first.typeName, Filter.EXCLUDE), t);
+            assertEquals(0, count(reader));
+    
+            reader = data.getFeatureReader(new Query(first.typeName), t);
+            assertEquals(first.features.length - 1, count(reader));
+    
+            reader = data.getFeatureReader(new Query(first.typeName, first.feat1Filter), t);
+            assertEquals(0, count(reader));
+    
+            t.rollback();
+            reader = data.getFeatureReader(new Query(first.typeName, Filter.EXCLUDE), t);
+            assertEquals(0, count(reader));
+    
+            reader = data.getFeatureReader(new Query(first.typeName), t);
+            assertEquals(first.features.length, count(reader));
+    
+            reader = data.getFeatureReader(new Query(first.typeName, first.feat1Filter), t);
+            assertEquals(1, count(reader));
+        }
     }
 
     void assertCovered(SimpleFeature[] features,
@@ -779,7 +782,7 @@ public abstract class AbstractIntegrationTest {
         try {
             while (reader.hasNext()) {
                 feature = reader.next();
-                System.out.println(count + " feature:" + feature);
+                LOGGER.fine(count + " feature:" + feature);
                 count++;
             }
         } finally {
@@ -789,7 +792,7 @@ public abstract class AbstractIntegrationTest {
 
     void dump(Object[] array) {
         for (int i = 0; i < array.length; i++) {
-            System.out.println(i + " feature:" + array[i]);
+            LOGGER.fine(i + " feature:" + array[i]);
         }
     }
 
@@ -925,128 +928,128 @@ public abstract class AbstractIntegrationTest {
      */
     @Test
     public void testGetFeatureWriterTransaction() throws Exception {
-        Transaction t1 = new DefaultTransaction();
-        Transaction t2 = new DefaultTransaction();
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer1 = data.getFeatureWriter(
-                first.typeName, first.feat1Filter, t1);
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer2 = data.getFeatureWriterAppend(
-                first.typeName, t2);
-
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        SimpleFeature feature;
-        SimpleFeature[] ORIGIONAL = first.features;
-        SimpleFeature[] REMOVE = new SimpleFeature[ORIGIONAL.length - 1];
-        SimpleFeature[] ADD = new SimpleFeature[ORIGIONAL.length + 1];
-        SimpleFeature[] FINAL = new SimpleFeature[ORIGIONAL.length];
-        int i;
-        int index;
-        index = 0;
-
-        for (i = 0; i < ORIGIONAL.length; i++) {
-            feature = ORIGIONAL[i];
-
-            if (!feature.getID().equals(first.features[0].getID())) {
-                REMOVE[index++] = feature;
+        try (Transaction t1 = new DefaultTransaction(); Transaction t2 = new DefaultTransaction()) {
+            FeatureWriter<SimpleFeatureType, SimpleFeature> writer1 = data.getFeatureWriter(
+                    first.typeName, first.feat1Filter, t1);
+            FeatureWriter<SimpleFeatureType, SimpleFeature> writer2 = data.getFeatureWriterAppend(
+                    first.typeName, t2);
+    
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+            SimpleFeature feature;
+            SimpleFeature[] ORIGIONAL = first.features;
+            SimpleFeature[] REMOVE = new SimpleFeature[ORIGIONAL.length - 1];
+            SimpleFeature[] ADD = new SimpleFeature[ORIGIONAL.length + 1];
+            SimpleFeature[] FINAL = new SimpleFeature[ORIGIONAL.length];
+            int i;
+            int index;
+            index = 0;
+    
+            for (i = 0; i < ORIGIONAL.length; i++) {
+                feature = ORIGIONAL[i];
+    
+                if (!feature.getID().equals(first.features[0].getID())) {
+                    REMOVE[index++] = feature;
+                }
             }
+    
+            for (i = 0; i < ORIGIONAL.length; i++) {
+                ADD[i] = ORIGIONAL[i];
+            }
+    
+            ADD[i] = first.newFeature;
+    
+            for (i = 0; i < REMOVE.length; i++) {
+                FINAL[i] = REMOVE[i];
+            }
+    
+            FINAL[i] = first.newFeature;
+    
+            // start of with ORIGINAL
+            final Query allRoadsQuery = new Query(first.typeName);
+            reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
+            assertTrue(covers(reader, ORIGIONAL));
+    
+            // writer 1 removes road.rd1 on t1
+            // -------------------------------
+            // - tests transaction independence from DataStore
+            while (writer1.hasNext()) {
+                feature = (SimpleFeature) writer1.next();
+                assertEquals(first.features[0].getID(), feature.getID());
+                writer1.remove();
+            }
+    
+            // still have ORIGIONAL and t1 has REMOVE
+            reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
+    
+            assertTrue(covers(reader, ORIGIONAL));
+    
+            reader = data.getFeatureReader(allRoadsQuery, t1);
+            assertTrue(covers(reader, REMOVE));
+    
+            // close writer1
+            // --------------
+            // ensure that modification is left up to transaction commmit
+            writer1.close();
+    
+            // We still have ORIGIONAL and t1 has REMOVE
+            reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
+            assertTrue(covers(reader, ORIGIONAL));
+            reader = data.getFeatureReader(allRoadsQuery, t1);
+            assertTrue(covers(reader, REMOVE));
+    
+            // writer 2 adds road.rd4 on t2
+            // ----------------------------
+            // - tests transaction independence from each other
+            feature = (SimpleFeature) writer2.next();
+            feature.setAttributes(first.newFeature.getAttributes());
+            writer2.write();
+    
+            // We still have ORIGIONAL and t2 has ADD
+            reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
+            assertTrue(covers(reader, ORIGIONAL));
+            reader = data.getFeatureReader(allRoadsQuery, t2);
+            assertTrue(coversLax(reader, ADD));
+    
+            // close writer2
+            // -------------
+            // ensure that modification is left up to transaction commmit
+            writer2.close();
+    
+            // Still have ORIGIONAL and t2 has ADD
+            reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
+            assertTrue(covers(reader, ORIGIONAL));
+            reader = data.getFeatureReader(allRoadsQuery, t2);
+            assertTrue(coversLax(reader, ADD));
+    
+            // commit t1
+            // ---------
+            // -ensure that delayed writing of transactions takes place
+            //
+            t1.commit();
+    
+            // We now have REMOVE, as does t1 (which has not additional diffs)
+            // t2 will have FINAL
+            reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
+            assertTrue(covers(reader, REMOVE));
+            reader = data.getFeatureReader(allRoadsQuery, t1);
+            assertTrue(covers(reader, REMOVE));
+            reader = data.getFeatureReader(allRoadsQuery, t2);
+            assertTrue(coversLax(reader, FINAL));
+    
+            // commit t2
+            // ---------
+            // -ensure that everyone is FINAL at the end of the day
+            t2.commit();
+    
+            // We now have Number( remove one and add one)
+            reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
+            reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
+            assertTrue(coversLax(reader, FINAL));
+            reader = data.getFeatureReader(allRoadsQuery, t1);
+            assertTrue(coversLax(reader, FINAL));
+            reader = data.getFeatureReader(allRoadsQuery, t2);
+            assertTrue(coversLax(reader, FINAL));
         }
-
-        for (i = 0; i < ORIGIONAL.length; i++) {
-            ADD[i] = ORIGIONAL[i];
-        }
-
-        ADD[i] = first.newFeature;
-
-        for (i = 0; i < REMOVE.length; i++) {
-            FINAL[i] = REMOVE[i];
-        }
-
-        FINAL[i] = first.newFeature;
-
-        // start of with ORIGINAL
-        final Query allRoadsQuery = new Query(first.typeName);
-        reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
-        assertTrue(covers(reader, ORIGIONAL));
-
-        // writer 1 removes road.rd1 on t1
-        // -------------------------------
-        // - tests transaction independence from DataStore
-        while (writer1.hasNext()) {
-            feature = (SimpleFeature) writer1.next();
-            assertEquals(first.features[0].getID(), feature.getID());
-            writer1.remove();
-        }
-
-        // still have ORIGIONAL and t1 has REMOVE
-        reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
-
-        assertTrue(covers(reader, ORIGIONAL));
-
-        reader = data.getFeatureReader(allRoadsQuery, t1);
-        assertTrue(covers(reader, REMOVE));
-
-        // close writer1
-        // --------------
-        // ensure that modification is left up to transaction commmit
-        writer1.close();
-
-        // We still have ORIGIONAL and t1 has REMOVE
-        reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
-        assertTrue(covers(reader, ORIGIONAL));
-        reader = data.getFeatureReader(allRoadsQuery, t1);
-        assertTrue(covers(reader, REMOVE));
-
-        // writer 2 adds road.rd4 on t2
-        // ----------------------------
-        // - tests transaction independence from each other
-        feature = (SimpleFeature) writer2.next();
-        feature.setAttributes(first.newFeature.getAttributes());
-        writer2.write();
-
-        // We still have ORIGIONAL and t2 has ADD
-        reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
-        assertTrue(covers(reader, ORIGIONAL));
-        reader = data.getFeatureReader(allRoadsQuery, t2);
-        assertTrue(coversLax(reader, ADD));
-
-        // close writer2
-        // -------------
-        // ensure that modification is left up to transaction commmit
-        writer2.close();
-
-        // Still have ORIGIONAL and t2 has ADD
-        reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
-        assertTrue(covers(reader, ORIGIONAL));
-        reader = data.getFeatureReader(allRoadsQuery, t2);
-        assertTrue(coversLax(reader, ADD));
-
-        // commit t1
-        // ---------
-        // -ensure that delayed writing of transactions takes place
-        //
-        t1.commit();
-
-        // We now have REMOVE, as does t1 (which has not additional diffs)
-        // t2 will have FINAL
-        reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
-        assertTrue(covers(reader, REMOVE));
-        reader = data.getFeatureReader(allRoadsQuery, t1);
-        assertTrue(covers(reader, REMOVE));
-        reader = data.getFeatureReader(allRoadsQuery, t2);
-        assertTrue(coversLax(reader, FINAL));
-
-        // commit t2
-        // ---------
-        // -ensure that everyone is FINAL at the end of the day
-        t2.commit();
-
-        // We now have Number( remove one and add one)
-        reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
-        reader = data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT);
-        assertTrue(coversLax(reader, FINAL));
-        reader = data.getFeatureReader(allRoadsQuery, t1);
-        assertTrue(coversLax(reader, FINAL));
-        reader = data.getFeatureReader(allRoadsQuery, t2);
-        assertTrue(coversLax(reader, FINAL));
     }
     
     public void testGetFeatureSource(TestDataType test) throws Exception {
@@ -1165,90 +1168,90 @@ public abstract class AbstractIntegrationTest {
 
     @Test
     public void testGetFeatureStoreTransactionSupport() throws Exception {
-        Transaction t1 = new DefaultTransaction();
-        Transaction t2 = new DefaultTransaction();
-
-        SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
-        SimpleFeatureStore road1 = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
-        SimpleFeatureStore road2 = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
-
-        road1.setTransaction(t1);
-        road2.setTransaction(t2);
-
-        SimpleFeature feature;
-        SimpleFeature[] ORIGINAL = first.features;
-        SimpleFeature[] REMOVE = new SimpleFeature[ORIGINAL.length - 1];
-        SimpleFeature[] ADD = new SimpleFeature[ORIGINAL.length + 1];
-        SimpleFeature[] FINAL = new SimpleFeature[ORIGINAL.length];
-        int i;
-        int index;
-        index = 0;
-
-        for (i = 0; i < ORIGINAL.length; i++) {
-            feature = ORIGINAL[i];
-
-            if (!feature.getID().equals(first.features[0].getID())) {
-                REMOVE[index++] = feature;
+        try (Transaction t1 = new DefaultTransaction(); Transaction t2 = new DefaultTransaction()) {
+    
+            SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
+            SimpleFeatureStore road1 = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
+            SimpleFeatureStore road2 = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
+    
+            road1.setTransaction(t1);
+            road2.setTransaction(t2);
+    
+            SimpleFeature feature;
+            SimpleFeature[] ORIGINAL = first.features;
+            SimpleFeature[] REMOVE = new SimpleFeature[ORIGINAL.length - 1];
+            SimpleFeature[] ADD = new SimpleFeature[ORIGINAL.length + 1];
+            SimpleFeature[] FINAL = new SimpleFeature[ORIGINAL.length];
+            int i;
+            int index;
+            index = 0;
+    
+            for (i = 0; i < ORIGINAL.length; i++) {
+                feature = ORIGINAL[i];
+    
+                if (!feature.getID().equals(first.features[0].getID())) {
+                    REMOVE[index++] = feature;
+                }
             }
+    
+            for (i = 0; i < ORIGINAL.length; i++) {
+                ADD[i] = ORIGINAL[i];
+            }
+    
+            ADD[i] = first.newFeature;
+    
+            for (i = 0; i < REMOVE.length; i++) {
+                FINAL[i] = REMOVE[i];
+            }
+    
+            FINAL[i] = first.newFeature;
+    
+            // start of with ORIGINAL
+            assertTrue(covers(road.getFeatures().features(), ORIGINAL));
+    
+            // road1 removes road.rd1 on t1
+            // -------------------------------
+            // - tests transaction independence from DataStore
+            road1.removeFeatures(first.feat1Filter);
+    
+            // still have ORIGIONAL and t1 has REMOVE
+            assertTrue(covers(road.getFeatures().features(), ORIGINAL));
+            assertTrue(covers(road1.getFeatures().features(), REMOVE));
+    
+            // road2 adds road.rd4 on t2
+            // ----------------------------
+            // - tests transaction independence from each other
+            SimpleFeatureCollection collection = DataUtilities
+                    .collection(new SimpleFeature[] { first.newFeature, });
+            road2.addFeatures(collection);
+    
+            // We still have ORIGIONAL, t1 has REMOVE, and t2 has ADD
+            assertTrue(covers(road.getFeatures().features(), ORIGINAL));
+            assertTrue(covers(road1.getFeatures().features(), REMOVE));
+            assertTrue(coversLax(road2.getFeatures().features(), ADD));
+    
+            // commit t1
+            // ---------
+            // -ensure that delayed writing of transactions takes place
+            //
+            t1.commit();
+    
+            // We now have REMOVE, as does t1 (which has not additional diffs)
+            // t2 will have FINAL
+            assertTrue(covers(road.getFeatures().features(), REMOVE));
+            assertTrue(covers(road1.getFeatures().features(), REMOVE));
+            assertTrue(coversLax(road2.getFeatures().features(), FINAL));
+    
+            // commit t2
+            // ---------
+            // -ensure that everyone is FINAL at the end of the day
+            t2.commit();
+    
+            // We now have Number( remove one and add one)
+            assertTrue(coversLax(road.getFeatures().features(), FINAL));
+            assertTrue(coversLax(road1.getFeatures().features(), FINAL));
+            assertTrue(coversLax(road2.getFeatures().features(), FINAL));
         }
-
-        for (i = 0; i < ORIGINAL.length; i++) {
-            ADD[i] = ORIGINAL[i];
-        }
-
-        ADD[i] = first.newFeature;
-
-        for (i = 0; i < REMOVE.length; i++) {
-            FINAL[i] = REMOVE[i];
-        }
-
-        FINAL[i] = first.newFeature;
-
-        // start of with ORIGINAL
-        assertTrue(covers(road.getFeatures().features(), ORIGINAL));
-
-        // road1 removes road.rd1 on t1
-        // -------------------------------
-        // - tests transaction independence from DataStore
-        road1.removeFeatures(first.feat1Filter);
-
-        // still have ORIGIONAL and t1 has REMOVE
-        assertTrue(covers(road.getFeatures().features(), ORIGINAL));
-        assertTrue(covers(road1.getFeatures().features(), REMOVE));
-
-        // road2 adds road.rd4 on t2
-        // ----------------------------
-        // - tests transaction independence from each other
-        SimpleFeatureCollection collection = DataUtilities
-                .collection(new SimpleFeature[] { first.newFeature, });
-        road2.addFeatures(collection);
-
-        // We still have ORIGIONAL, t1 has REMOVE, and t2 has ADD
-        assertTrue(covers(road.getFeatures().features(), ORIGINAL));
-        assertTrue(covers(road1.getFeatures().features(), REMOVE));
-        assertTrue(coversLax(road2.getFeatures().features(), ADD));
-
-        // commit t1
-        // ---------
-        // -ensure that delayed writing of transactions takes place
-        //
-        t1.commit();
-
-        // We now have REMOVE, as does t1 (which has not additional diffs)
-        // t2 will have FINAL
-        assertTrue(covers(road.getFeatures().features(), REMOVE));
-        assertTrue(covers(road1.getFeatures().features(), REMOVE));
-        assertTrue(coversLax(road2.getFeatures().features(), FINAL));
-
-        // commit t2
-        // ---------
-        // -ensure that everyone is FINAL at the end of the day
-        t2.commit();
-
-        // We now have Number( remove one and add one)
-        assertTrue(coversLax(road.getFeatures().features(), FINAL));
-        assertTrue(coversLax(road1.getFeatures().features(), FINAL));
-        assertTrue(coversLax(road2.getFeatures().features(), FINAL));
     }
 
     boolean isLocked(String typeName, String fid) {
@@ -1301,17 +1304,18 @@ public abstract class AbstractIntegrationTest {
         } catch (IOException expected) {
         }
 
-        Transaction t = new DefaultTransaction();
-        road.setTransaction(t);
-
-        try {
+        try( Transaction t = new DefaultTransaction(); ){
+            road.setTransaction(t);
+    
+            try {
+                road.unLockFeatures();
+                fail("unlock should fail due lack of authorization");
+            } catch (IOException expected) {
+            }
+    
+            t.addAuthorization(lock.getAuthorization());
             road.unLockFeatures();
-            fail("unlock should fail due lack of authorization");
-        } catch (IOException expected) {
         }
-
-        t.addAuthorization(lock.getAuthorization());
-        road.unLockFeatures();
     }
 
     @SuppressWarnings("unchecked")
@@ -1319,70 +1323,70 @@ public abstract class AbstractIntegrationTest {
     public void testLockFeatureInteraction() throws IOException {
         FeatureLock lockA = new FeatureLock("LockA", 3600);
         FeatureLock lockB = new FeatureLock("LockB", 3600);
-        Transaction t1 = new DefaultTransaction();
-        Transaction t2 = new DefaultTransaction();
-        FeatureLocking<SimpleFeatureType, SimpleFeature> road1;
-        FeatureLocking<SimpleFeatureType, SimpleFeature> road2;
-
-        {
-            SimpleFeatureSource source = data.getFeatureSource(first.typeName);
-            if (!(source instanceof FeatureLocking)) {
-                LOGGER.info("testLockFeatureInteraction ignored, store does not support locking");
-                return;
+        try (Transaction t1 = new DefaultTransaction(); Transaction t2 = new DefaultTransaction()) {
+            FeatureLocking<SimpleFeatureType, SimpleFeature> road1;
+            FeatureLocking<SimpleFeatureType, SimpleFeature> road2;
+    
+            {
+                SimpleFeatureSource source = data.getFeatureSource(first.typeName);
+                if (!(source instanceof FeatureLocking)) {
+                    LOGGER.info("testLockFeatureInteraction ignored, store does not support locking");
+                    return;
+                }
+    
+                road1 = (FeatureLocking<SimpleFeatureType, SimpleFeature>) source;
+    
+                source = data.getFeatureSource(first.typeName);
+                if (!(source instanceof FeatureLocking)) {
+                    LOGGER.info("testLockFeatureInteraction ignored, store does not support locking");
+                    return;
+                }
+                road2 = (FeatureLocking<SimpleFeatureType, SimpleFeature>) source;
             }
-
-            road1 = (FeatureLocking<SimpleFeatureType, SimpleFeature>) source;
-
-            source = data.getFeatureSource(first.typeName);
-            if (!(source instanceof FeatureLocking)) {
-                LOGGER.info("testLockFeatureInteraction ignored, store does not support locking");
-                return;
+            road1.setTransaction(t1);
+            road2.setTransaction(t2);
+            road1.setFeatureLock(lockA);
+            road2.setFeatureLock(lockB);
+    
+            assertFalse(isLocked(first.typeName, first.features[0].getID()));
+            assertFalse(isLocked(first.typeName, first.features[1].getID()));
+            assertFalse(isLocked(first.typeName, first.features[2].getID()));
+    
+            road1.lockFeatures(first.feat1Filter);
+            assertTrue(isLocked(first.typeName, first.features[0].getID()));
+            assertFalse(isLocked(first.typeName, first.features[1].getID()));
+            assertFalse(isLocked(first.typeName, first.features[2].getID()));
+    
+            road2.lockFeatures(first.feat2Filter);
+            assertTrue(isLocked(first.typeName, first.features[0].getID()));
+            assertTrue(isLocked(first.typeName, first.features[1].getID()));
+            assertFalse(isLocked(first.typeName, first.features[2].getID()));
+    
+            try {
+                road1.unLockFeatures(first.feat1Filter);
+                fail("need authorization");
+            } catch (IOException expected) {
             }
-            road2 = (FeatureLocking<SimpleFeatureType, SimpleFeature>) source;
-        }
-        road1.setTransaction(t1);
-        road2.setTransaction(t2);
-        road1.setFeatureLock(lockA);
-        road2.setFeatureLock(lockB);
-
-        assertFalse(isLocked(first.typeName, first.features[0].getID()));
-        assertFalse(isLocked(first.typeName, first.features[1].getID()));
-        assertFalse(isLocked(first.typeName, first.features[2].getID()));
-
-        road1.lockFeatures(first.feat1Filter);
-        assertTrue(isLocked(first.typeName, first.features[0].getID()));
-        assertFalse(isLocked(first.typeName, first.features[1].getID()));
-        assertFalse(isLocked(first.typeName, first.features[2].getID()));
-
-        road2.lockFeatures(first.feat2Filter);
-        assertTrue(isLocked(first.typeName, first.features[0].getID()));
-        assertTrue(isLocked(first.typeName, first.features[1].getID()));
-        assertFalse(isLocked(first.typeName, first.features[2].getID()));
-
-        try {
+    
+            t1.addAuthorization(lockA.getAuthorization());
+    
+            try {
+                road1.unLockFeatures(first.feat2Filter);
+                fail("need correct authorization");
+            } catch (IOException expected) {
+            }
+    
             road1.unLockFeatures(first.feat1Filter);
-            fail("need authorization");
-        } catch (IOException expected) {
+            assertFalse(isLocked(first.typeName, first.features[0].getID()));
+            assertTrue(isLocked(first.typeName, first.features[1].getID()));
+            assertFalse(isLocked(first.typeName, first.features[2].getID()));
+    
+            t2.addAuthorization(lockB.getAuthorization());
+            road2.unLockFeatures(first.feat2Filter);
+            assertFalse(isLocked(first.typeName, first.features[0].getID()));
+            assertFalse(isLocked(first.typeName, first.features[1].getID()));
+            assertFalse(isLocked(first.typeName, first.features[2].getID()));
         }
-
-        t1.addAuthorization(lockA.getAuthorization());
-
-        try {
-            road1.unLockFeatures(first.feat2Filter);
-            fail("need correct authorization");
-        } catch (IOException expected) {
-        }
-
-        road1.unLockFeatures(first.feat1Filter);
-        assertFalse(isLocked(first.typeName, first.features[0].getID()));
-        assertTrue(isLocked(first.typeName, first.features[1].getID()));
-        assertFalse(isLocked(first.typeName, first.features[2].getID()));
-
-        t2.addAuthorization(lockB.getAuthorization());
-        road2.unLockFeatures(first.feat2Filter);
-        assertFalse(isLocked(first.typeName, first.features[0].getID()));
-        assertFalse(isLocked(first.typeName, first.features[1].getID()));
-        assertFalse(isLocked(first.typeName, first.features[2].getID()));
     }
 
     @SuppressWarnings("unchecked")

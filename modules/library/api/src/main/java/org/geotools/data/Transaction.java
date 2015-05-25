@@ -16,6 +16,7 @@
  */
 package org.geotools.data;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.Set;
 
@@ -122,7 +123,7 @@ import org.opengis.feature.type.Name;
  * @source $URL$
  * @version $Id$
  */
-public interface Transaction {
+public interface Transaction extends Closeable {
     /** 
      * Represents AUTO_COMMIT mode as opposed to operations with commit/rollback
      * control under a user-supplied transaction.

@@ -21,6 +21,10 @@ import java.util.logging.Logger;
 
 import org.geotools.util.logging.Logging;
 
+/**
+ * Internal utility class providing static constants for
+ * Loggers used during WFSDataStore operation.
+ */
 public final class Loggers {
 
     private Loggers() {
@@ -39,15 +43,15 @@ public final class Loggers {
 
     public static final Level MODULE_INFO_LEVEL = Level.INFO;
 
-    public static final Level REQUEST_TRACE_LEVEL = Level.INFO;// TODO: lower this
+    public static final Level REQUEST_TRACE_LEVEL = Level.FINE;
 
-    public static final Level REQUEST_DEBUG_LEVEL = Level.INFO;// TODO: lower this
+    public static final Level REQUEST_DEBUG_LEVEL = Level.FINER;
 
     public static final Level REQUEST_INFO_LEVEL = Level.INFO;
 
-    public static final Level RESPONSES_TRACE_LEVEL = Level.INFO;// TODO: lower this
+    public static final Level RESPONSES_TRACE_LEVEL = Level.FINE;
 
-    public static final Level RESPONSES_DEBUG_LEVEL = Level.INFO;// TODO: lower this
+    public static final Level RESPONSES_DEBUG_LEVEL = Level.FINER;
 
     public static void trace(Object... message) {
         log(MODULE, MODULE_TRACE_LEVEL, message);

@@ -277,7 +277,7 @@ public class GML2ParsingUtils {
 
             if (bindings.isEmpty()) {
                 // could not find a binding, use the defaults
-                LOGGER.warning( "Could not find binding for " + property.getQName() + ", using XSAnyTypeBinding." );
+                LOGGER.fine( "Could not find binding for " + property.getQName() + ", using XSAnyTypeBinding." );
                 bindings.add( new XSAnyTypeBinding() );
             }
 

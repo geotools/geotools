@@ -88,6 +88,8 @@ public class ProjectionHandler {
 
     double radius = Double.NaN;
 
+    boolean queryAcrossDateline;
+
     /**
      * Initializes a projection handler 
      * 
@@ -105,6 +107,11 @@ public class ProjectionHandler {
                 DefaultGeographicCRS.WGS84) : null;
         this.validArea = null;
         this.validaAreaTester = null;
+        // query across dateline only in case of reprojection, Oracle won't use the spatial index
+        // with two or-ed bboxes and fixing the issue at the store level requires more
+        // time/resources than we presently have
+        this.queryAcrossDateline = !CRS.equalsIgnoreMetadata(sourceCRS,
+                renderingEnvelope.getCoordinateReferenceSystem());
     }
     
     /**
@@ -154,6 +161,10 @@ public class ProjectionHandler {
     public List<ReferencedEnvelope> getQueryEnvelopes()
             throws TransformException, FactoryException {
         CoordinateReferenceSystem renderingCRS = renderingEnvelope.getCoordinateReferenceSystem();
+        if (!queryAcrossDateline) {
+            return Collections.singletonList(transformEnvelope(renderingEnvelope, sourceCRS));
+        }
+
         if(renderingCRS instanceof GeographicCRS && !CRS.equalsIgnoreMetadata(renderingCRS, WGS84)) {
             // special case, if we just transform the coordinates are going to be wrapped by the referencing
             // subsystem directly

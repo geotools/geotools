@@ -188,7 +188,6 @@
     <module>swing</module>
     <module>swt</module>
     <module>process</module>
-    <module>wfs</module>
     <module>geojson</module>
     <module>geopkg</module>
     <module>mbtiles</module>

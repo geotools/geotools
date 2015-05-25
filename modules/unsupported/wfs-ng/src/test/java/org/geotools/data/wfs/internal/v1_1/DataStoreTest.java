@@ -45,6 +45,8 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.Polygon;
+
 /**
  * Unit test suite for WFSContentDataStore
  * 
@@ -129,7 +131,9 @@ public class DataStoreTest {
         featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
         while(featureReader.hasNext()) {
             SimpleFeature feature = featureReader.next();
-            System.out.println(feature.getDefaultGeometry());
+            Object geometry = feature.getDefaultGeometry();
+            assertNotNull( geometry );
+            assertTrue( geometry instanceof Polygon);
         }
         GetFeatureRequest request = wfs.getRequest();
         assertEquals("text/xml; subtype=gml/2.1.2", request.getOutputFormat());

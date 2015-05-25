@@ -16,7 +16,7 @@
  */
 package org.geotools.data.wfs;
 
-import static org.geotools.data.wfs.internal.Loggers.info;
+import static org.geotools.data.wfs.internal.Loggers.trace;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -129,7 +129,7 @@ class WFSRemoteTransactionState implements State {
         List<FeatureId> insertedFids = transactionResponse.getInsertedFids();
         int deleteCount = transactionResponse.getDeleteCount();
         int updatedCount = transactionResponse.getUpdatedCount();
-        info(getClass().getSimpleName(), "::commit(): Updated: ", updatedCount, ", Deleted: ",
+        trace(getClass().getSimpleName(), "::commit(): Updated: ", updatedCount, ", Deleted: ",
                 deleteCount, ", Inserted: ", insertedFids);
 
         if (requestedInsertFids.size() != insertedFids.size()) {

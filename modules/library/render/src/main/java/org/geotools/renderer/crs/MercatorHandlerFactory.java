@@ -51,11 +51,6 @@ public class MercatorHandlerFactory implements ProjectionHandlerFactory {
                 handler = new ProjectionHandler(sourceCrs, VALID_AREA, renderingEnvelope);
                 handler.setCentralMeridian(centralMeridian);
             }
-            if (!wrap) {
-                // for this projection, if wrapping is not enabled, do not query across the
-                // dateline
-                handler.queryAcrossDateline = false;
-            }
             return handler;
         }
 

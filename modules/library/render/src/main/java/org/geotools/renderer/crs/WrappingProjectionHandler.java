@@ -56,8 +56,6 @@ public class WrappingProjectionHandler extends ProjectionHandler {
             ReferencedEnvelope validArea, CoordinateReferenceSystem sourceCrs, double centralMeridian, int maxWraps) throws FactoryException {
         super(sourceCrs, validArea, renderingEnvelope);
         this.maxWraps = maxWraps;
-        // if we are wrapping, we query across the dateline no matter what
-        this.queryAcrossDateline = true;
         // this will compute the radius
         setCentralMeridian(centralMeridian);
     }

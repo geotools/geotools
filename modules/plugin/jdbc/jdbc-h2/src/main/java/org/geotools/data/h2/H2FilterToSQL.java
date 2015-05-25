@@ -19,6 +19,7 @@ package org.geotools.data.h2;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.geotools.data.jdbc.FilterToSQL;
@@ -217,7 +218,7 @@ public class H2FilterToSQL extends FilterToSQL {
         if (literal instanceof Date) {
             out.write("PARSEDATETIME(");
             if (literal instanceof java.sql.Date) {
-                out.write("'" + DATE_FORMAT.format(literal) + "', 'yyyy-MM-dd'");
+                out.write("'" + DATE_FORMAT.format(literal) + "', 'yyyy-MM-dd', '"+Locale.getDefault()+"', 'GMT'");
             }
             else {
                 out.write("'" + DATETIME_FORMAT.format(literal) + "', 'yyyy-MM-dd HH:mm:ss.SSSZ'");

@@ -84,6 +84,29 @@ public class TemporalConverterFactory implements ConverterFactory {
         }
         
         if (Date.class.isAssignableFrom(source)) {
+            if (java.sql.Date.class.isAssignableFrom(target)){
+                //as we need to convert to GMT (which is by truncation) add the difference between 
+                //GMT and the Locale of the date.
+                return new Converter() {
+                    public Object convert(Object source, Class target) throws Exception {
+                        
+                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                        Date d = (Date) source;
+                        
+                        long offset = Calendar.getInstance().getTimeZone().getOffset(d.getTime());
+                        d.setHours(0);
+                        d.setMinutes(0);
+                        d.setSeconds(0);                
+                        //adjust for the local timezone 
+                        calendar.setTimeInMillis(d.getTime()+offset);
+                       
+                        java.sql.Date date = new java.sql.Date(calendar.getTimeInMillis());
+                        return date;
+                    }
+                };
+                
+                
+            }
             // handle all of (java.util.Date,java.sql.Timestamp,and java.sql.Time) ->
             // java.util.Calendar
             if (Calendar.class.isAssignableFrom(target)) {
@@ -265,8 +288,10 @@ public class TemporalConverterFactory implements ConverterFactory {
     	if(Timestamp.class.isAssignableFrom(target)) {
         	return new Timestamp(time);
         } else if(java.sql.Date.class.isAssignableFrom(target)) {
-        	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        	cal.setTimeInMillis(time);
+                Calendar cal = new GregorianCalendar();
+                cal.setTimeInMillis(time);
+        	cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        	
         	cal.set(Calendar.HOUR_OF_DAY, 0);
         	cal.set(Calendar.MINUTE, 0);
         	cal.set(Calendar.SECOND, 0);

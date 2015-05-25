@@ -24,7 +24,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -42,7 +41,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/
  *         filter/function/FunctionTestSupport.java $
  */
-public class FunctionTestSupport extends TestCase {
+public abstract class FunctionTestSupport extends TestCase {
 
     protected SimpleFeatureCollection featureCollection, jenksCollection;
 
@@ -92,9 +91,5 @@ public class FunctionTestSupport extends TestCase {
                     new Object[] { new Integer(i + 1), new Double(jenks71[i])},"jenks"+i));
         }
         jenksCollection = features;
-    }
-
-    public void testEmpty() {
-        // to make tests pass
     }
 }

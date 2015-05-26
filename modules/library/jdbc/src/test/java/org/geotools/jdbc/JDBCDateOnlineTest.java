@@ -32,7 +32,9 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
     }
     
     public void testFiltersByDate() throws Exception {
-        FeatureSource fs = dataStore.getFeatureSource( tname("dates") );
+        
+        
+        
         
         FilterFactory ff = dataStore.getFilterFactory();
     
@@ -43,10 +45,17 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
                 TimeZone.getTimeZone("GMT"), TimeZone.getTimeZone("CET"),
                 TimeZone.getTimeZone("Etc/GMT-12"),
                 TimeZone.getTimeZone("Etc/GMT-14") };
+        
         for (TimeZone zone : zones) {
-            df.setTimeZone(zone);
+           
+            FeatureSource fs = dataStore.getFeatureSource( tname("dates") );
+        
             // set JVM time zone
             TimeZone.setDefault(zone);
+            //regenerate the database table using the new JVM Timezone
+            
+            setup.setUpData();
+            df.setTimeZone(zone);
             // less than
             Filter f = ff.lessOrEqual(ff.property(aname("d")),
                     ff.literal(df.parse("2009-28-06")));
@@ -56,6 +65,7 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
             f = ff.lessOrEqual(ff.property(aname("d")),
                     ff.literal(df.parse("2009-28-06")));
             assertEquals("wrong number of records for "+zone.getDisplayName(),2, fs.getCount(new DefaultQuery(tname("dates"), f)));
+            
         }
     }
 

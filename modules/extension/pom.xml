@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>14-SNAPSHOT</version>
+    <version>14-M0</version>
   </parent>
   
 

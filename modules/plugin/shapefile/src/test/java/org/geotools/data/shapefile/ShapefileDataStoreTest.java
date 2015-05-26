@@ -1794,19 +1794,4 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         return new String(array);
     }
     
-    /**
-     * A test method testing the correct bounds of shapefiles without any data, but having
-     * [0:0,0:0] in their header. The bounds must pass the isEmpty() and isNull() tests. 
-     *
-     * @throws IOException, if the shapefile can not be read
-     * @author Hendrik Peilke (IBYKUS AG)
-     */
-    @Test
-    public void testBoundsEmpty() throws IOException {
-        File file = TestData.file(TestCaseSupport.class, "empty-shapefile/empty-shapefile.shp");
-        ShapefileDataStore dataStore = new ShapefileDataStore(file.toURI().toURL());
-        ReferencedEnvelope bounds = dataStore.getFeatureSource().getBounds();
-        assertTrue("bounds of a shapefile without any data must be empty",bounds.isEmpty() && bounds.isNull());
-    }
-    
 }

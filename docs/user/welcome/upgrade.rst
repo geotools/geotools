@@ -41,9 +41,6 @@ Users may now decide to choose between JAI and JAI-EXT operations by simply usin
 
 A more detailed tutorial on how to use JAI-EXT may be found at the following :ref:`JAI-EXT Tutorial Page<jaiext>`.
 
-ShapefileDataStore representing shapefiles without any data, now return empty bounds on getBounds() instead of the bounds inside the shapefile header (mostly [0:0,0:0]). So bounds.isEmpty() and bounds.isNull() will return true for empty shapefiles.
-
-
 GeoTools 13.0
 -------------
 As of GeoTools 13.0, the CoverageViewType classes have been removed. The AbstractDataStore class is also now deprecated. Extensive work has been done to bring in ContentDataStore as its replacement. There is a `ContentDataStore Tutorial <http://docs.geotools.org/latest/userguide/tutorial/datastore/index.html>`_ to help with migration from AbstractDataStore.

@@ -134,22 +134,7 @@ public class TemporalConverterFactory implements ConverterFactory {
                     }
                 };
             }
-            // if ( String.class.equals( target ) ) {
-            // final DateFormat fFormat;
-            // if ( dateFormat != null ) {
-            // fFormat = dateFormat;
-            // }
-            // else {
-            // //create a default
-            // fFormat = DateFormat.getDateInstance();
-            // }
-            //				
-            // return new Converter() {
-            // public Object convert(Object source, Class target) throws Exception {
-            // return fFormat.format( (Date)source );
-            // }
-            // };
-            // }
+            
         }
 
         // this should handle java.util.Calendar to
@@ -165,7 +150,7 @@ public class TemporalConverterFactory implements ConverterFactory {
                     public Object convert(Object source, Class target) throws Exception {
                         Calendar calendar = (Calendar) source;
 
-                        return timeMillisToDate(calendar.getTimeInMillis(), target);
+                        return timeMillisToDate(calendar.getTimeInMillis(), target, calendar.getTimeZone());
                     }
                 };
             }
@@ -181,23 +166,7 @@ public class TemporalConverterFactory implements ConverterFactory {
                     }
                 };
             }
-            // if ( String.class.equals( target ) ) {
-            // final DateFormat fFormat;
-            // if ( dateTimeFormat != null ) {
-            // fFormat = dateTimeFormat;
-            // }
-            // else {
-            // //create a default
-            // fFormat = DateFormat.getDateTimeInstance();
-            // }
-            //				
-            // return new Converter() {
-            // public Object convert(Object source, Class target) throws Exception {
-            // Date date = ((Calendar)source).getTime();
-            // return fFormat.format( date );
-            // }
-            // };
-            // }
+            
         }
 
         if (XMLGregorianCalendar.class.isAssignableFrom(source)) {
@@ -262,18 +231,21 @@ public class TemporalConverterFactory implements ConverterFactory {
      * @return
      */
     Date timeMillisToDate(long time, Class target) {
+        return timeMillisToDate(time, target, TimeZone.getDefault());
+    }
+    Date timeMillisToDate(long time, Class target, TimeZone zone) {
     	if(Timestamp.class.isAssignableFrom(target)) {
         	return new Timestamp(time);
         } else if(java.sql.Date.class.isAssignableFrom(target)) {
-        	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        	Calendar cal = Calendar.getInstance(zone);
         	cal.setTimeInMillis(time);
-        	cal.set(Calendar.HOUR_OF_DAY, 0);
+        	cal.set(Calendar.HOUR, 0);
         	cal.set(Calendar.MINUTE, 0);
         	cal.set(Calendar.SECOND, 0);
         	cal.set(Calendar.MILLISECOND, 0);
          	return new java.sql.Date(cal.getTimeInMillis());
         } else if(java.sql.Time.class.isAssignableFrom(target)) {
-        	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        	Calendar cal = Calendar.getInstance(zone);
         	cal.setTimeInMillis(time);
         	cal.set(Calendar.YEAR, 0);
         	cal.set(Calendar.MONTH, 0);

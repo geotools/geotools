@@ -33,9 +33,6 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
     
     public void testFiltersByDate() throws Exception {
         
-        
-        
-        
         FilterFactory ff = dataStore.getFilterFactory();
     
         DateFormat df = new SimpleDateFormat("yyyy-dd-MM");

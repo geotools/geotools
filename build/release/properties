@@ -2,8 +2,8 @@
 # as environment variables
 
 # constants
-SVN_ROOT=http://svn.osgeo.org/geotools
-JIRA_REST=http://jira.codehaus.org/rest/api/latest
+GIT_ROOT=http://github.com/geotools/geotools
+JIRA_REST=https://osgeo-org.atlassian.net/rest/api/latest
 JIRA_PROJ=GEOT
 SF_HOST=frs.sourceforge.net
 

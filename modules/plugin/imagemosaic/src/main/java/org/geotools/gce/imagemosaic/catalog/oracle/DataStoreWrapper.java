@@ -95,10 +95,20 @@ public abstract class DataStoreWrapper implements DataStore {
      * @param auxFolderPath
      */
     public DataStoreWrapper(DataStore datastore, String auxFolderPath) {
-        this.datastore = datastore;
-        initMapping(auxFolderPath  + File.separatorChar + HIDDEN_FOLDER);
+        this(datastore, auxFolderPath, HIDDEN_FOLDER);
     }
 
+    /**
+     * Base constructor with custom hidden folder 
+     * @param datastore
+     * @param auxFolderPath
+     * @param subFolderName
+     */
+    public DataStoreWrapper(DataStore datastore, String auxFolderPath, String subFolderName) {
+        this.datastore = datastore;
+        initMapping(auxFolderPath  + File.separatorChar + subFolderName);
+    }
+    
     /**
      * Initialize the mapping by creating proper {@link FeatureTypeMapper}s on top of the available property files
      * which contain mapping information.

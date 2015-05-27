@@ -24,6 +24,8 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -96,37 +98,21 @@ public class MaskOverviewProvider {
     private ImageReaderSpi maskOvrReaderSpi;
 
     public MaskOverviewProvider(DatasetLayout layout, File inputFile) throws IOException {
-        this(layout, inputFile, null);
+        this(layout, inputFile, (ImageReaderSpi) null);
     }
 
     public MaskOverviewProvider(DatasetLayout layout, File inputFile, ImageReaderSpi suggestedSPI)
             throws IOException {
-        this.fileURL = DataUtilities.fileToURL(inputFile);
+        this (layout, inputFile, new SpiHelper(inputFile, suggestedSPI));
+    }
+
+    public MaskOverviewProvider(DatasetLayout layout, File inputFile, SpiHelper spiProvider) throws IOException {
+        ImageReaderSpi suggestedSPI = spiProvider.getSuggestedSpi();
+        readerSpi = spiProvider.getReaderSpi();
+        streamSpi = spiProvider.getStreamSpi();
+        this.fileURL = spiProvider.getFileURL();
         this.layout = layout;
-        // Creating cached SPIs
-        streamSpi = getInputStreamSPIFromURL(fileURL);
-        ImageInputStream stream = null;
-        try {
-            stream = streamSpi.createInputStreamInstance(fileURL, ImageIO.getUseCache(),
-                    ImageIO.getCacheDirectory());
-            readerSpi = getReaderSpiFromStream(suggestedSPI, stream);
-        } catch (Exception e) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING,
-                        "Unable to create a Reader for File: " + inputFile.getCanonicalPath(), e);
-            }
-            throw new IllegalArgumentException(e);
-        } finally {
-            if (stream != null) {
-                try {
-                    stream.close();
-                } catch (Exception e) {
-                    if (LOGGER.isLoggable(Level.SEVERE)) {
-                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                    }
-                }
-            }
-        }
+
         // Handling Overviews
         File overviewFile = new File(inputFile.getAbsolutePath() + OVR_EXTENSION);
         hasDatasetLayout = layout != null;
@@ -176,7 +162,7 @@ public class MaskOverviewProvider {
             numExternalOverviews = layout.getNumExternalOverviews() > 0 ? layout
                     .getNumExternalOverviews() : 0;
             numOverviews = numInternalOverviews + numExternalOverviews;
-        } else {
+        } else if (!spiProvider.isMultidim()){
             // Reading image number
             ImageInputStream imageStream = null;
             ImageReader reader = null;
@@ -686,5 +672,84 @@ public class MaskOverviewProvider {
 
         public ImageInputStreamSpi streamSpi;
 
+    }
+
+    /**
+     * Helper class containing previous code used to get 
+     * streamSPI and readerSPI for an input file.
+     */
+    public static class SpiHelper {
+
+        private final static Set<String> MULTIDIM_SERVICE_PROVIDERS;
+
+        static {
+            MULTIDIM_SERVICE_PROVIDERS = new HashSet<String>();
+            MULTIDIM_SERVICE_PROVIDERS.add("org.geotools.imageio.netcdf.NetCDFImageReaderSpi");
+        }
+
+        private ImageReaderSpi suggestedSpi;
+
+        private ImageReaderSpi readerSpi;
+
+        private ImageInputStreamSpi streamSpi;
+
+        private URL fileURL;
+
+        /** 
+         * Reporting whether the SPI is for a multidim reader or not.
+         * GRIB/NetCDF and other multidim format doesn't have overviews 
+         */
+        private boolean isMultidim;
+
+        public SpiHelper(File inputFile, ImageReaderSpi suggestedSPI) throws IOException {
+            this.suggestedSpi = suggestedSPI;
+            this.fileURL = DataUtilities.fileToURL(inputFile);
+
+            // Creating cached SPIs
+            streamSpi = getInputStreamSPIFromURL(fileURL);
+            ImageInputStream stream = null;
+            try {
+                stream = streamSpi.createInputStreamInstance(fileURL, ImageIO.getUseCache(),
+                        ImageIO.getCacheDirectory());
+                readerSpi = getReaderSpiFromStream(suggestedSPI, stream);
+                isMultidim = readerSpi != null && MULTIDIM_SERVICE_PROVIDERS.contains(readerSpi.getClass().getName());
+            } catch (Exception e) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING,
+                            "Unable to create a Reader for File: " + inputFile.getCanonicalPath(), e);
+                }
+                throw new IllegalArgumentException(e);
+            } finally {
+                if (stream != null) {
+                    try {
+                        stream.close();
+                    } catch (Exception e) {
+                        if (LOGGER.isLoggable(Level.SEVERE)) {
+                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                        }
+                    }
+                }
+            }
+        }
+
+        public boolean isMultidim() {
+            return isMultidim;
+        }
+
+        public ImageReaderSpi getReaderSpi() {
+            return readerSpi;
+        }
+
+        public ImageInputStreamSpi getStreamSpi() {
+            return streamSpi;
+        }
+
+        public URL getFileURL() {
+            return fileURL;
+        }
+
+        public ImageReaderSpi getSuggestedSpi() {
+            return suggestedSpi;
+        }
     }
 }

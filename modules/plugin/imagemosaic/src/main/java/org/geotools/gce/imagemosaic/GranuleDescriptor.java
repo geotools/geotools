@@ -62,8 +62,10 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
+import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.SpiHelper;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
+import org.geotools.factory.Hints.Key;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROI;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -323,7 +325,7 @@ public class GranuleDescriptor {
                 File granuleFile = DataUtilities.urlToFile(granuleUrl);
                 AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(granuleFile,
                         EXCLUDE_MOSAIC);
-                AbstractGridCoverage2DReader gcReader = format.getReader(granuleFile);
+                AbstractGridCoverage2DReader gcReader = format.getReader(granuleFile, hints);
                 // Getting Dataset Layout
                 layout = gcReader.getDatasetLayout();
 
@@ -334,7 +336,10 @@ public class GranuleDescriptor {
 			//
 			//get info about the raster we have to read
 			//
-		        ovrProvider = new MaskOverviewProvider(layout, granuleFile, suggestedSPI);
+		        SpiHelper spiProvider = new SpiHelper(granuleFile, suggestedSPI);
+	                boolean isMultidim = spiProvider.isMultidim();
+
+		        ovrProvider = new MaskOverviewProvider(layout, granuleFile, spiProvider);
 			
 			// get a stream
 		        if(cachedStreamSPI==null){
@@ -365,7 +370,8 @@ public class GranuleDescriptor {
 			
 			if(reader == null)
 				throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleUrl.toString());
-			boolean ignoreMetadata = customizeReaderInitialization(reader, hints);
+			
+			boolean ignoreMetadata = isMultidim ? customizeReaderInitialization(reader, hints) : false;
 			reader.setInput(inStream, false, ignoreMetadata);
 			//get selected level and base level dimensions
 			final Rectangle originalDimension = Utils.getDimension(0, reader);
@@ -452,33 +458,44 @@ public class GranuleDescriptor {
     }
 
     private boolean customizeReaderInitialization(ImageReader reader, Hints hints) {
-            String classString = reader.getClass().getSuperclass().getName();
-            // Special Management for NetCDF readers to set external Auxiliary File
-            if (hints != null && hints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
-                if (classString.equalsIgnoreCase("org.geotools.imageio.GeoSpatialImageReader")) {
-                    try {
-                        String auxiliaryFilePath = (String) hints.get(Utils.AUXILIARY_FILES_PATH);
-                        if (hints.containsKey(Utils.PARENT_DIR)) {
-                            String parentDir = (String) hints.get(Utils.PARENT_DIR);
-                            // if the path stars with the parentDir, it's already absolute (old configuration file)
-                            if (!auxiliaryFilePath.startsWith(parentDir)) {
-                                auxiliaryFilePath = parentDir + File.separatorChar + auxiliaryFilePath;
-                            }
-                        }
-                        MethodUtils.invokeMethod(reader, "setAuxiliaryFilesPath", auxiliaryFilePath);
-                        singleDimensionalGranule = false;
-                        return true;
-                    } catch (NoSuchMethodException e) {
-                        throw new RuntimeException(e);
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    } catch (InvocationTargetException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+
+        // Special Management for NetCDF readers to set external Auxiliary File
+        if (hints != null
+                && (hints.containsKey(Utils.AUXILIARY_FILES_PATH) || hints
+                        .containsKey(Utils.AUXILIARY_DATASTORE_PATH))) {
+            try {
+                updateReaderWithAuxiliaryPath(hints, reader, Utils.AUXILIARY_FILES_PATH,
+                        "setAuxiliaryFilesPath");
+                updateReaderWithAuxiliaryPath(hints, reader, Utils.AUXILIARY_DATASTORE_PATH,
+                        "setAuxiliaryDatastorePath");
+                singleDimensionalGranule = false;
+                return true;
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(e);
             }
+
+        }
             return false;
         
+    }
+
+    private void updateReaderWithAuxiliaryPath(Hints hints, ImageReader reader, Key key,
+            String method) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        String filePath = (String) hints.get(key);
+        if (filePath != null && hints.containsKey(Utils.PARENT_DIR)) {
+            String parentDir = (String) hints.get(Utils.PARENT_DIR);
+            // if the path starts with the parentDir, it's already absolute (old configuration file)
+            if (!filePath.startsWith(parentDir)) {
+                filePath = parentDir + File.separatorChar + filePath;
+            }
+        }
+        if (filePath != null) {
+            MethodUtils.invokeMethod(reader, method, filePath);
+        }
     }
 
     public GranuleDescriptor(

@@ -39,6 +39,10 @@ public class PostgisDatastoreWrapper extends DataStoreWrapper {
 
     static final String SRID = "SRID";
 
+    public PostgisDatastoreWrapper(DataStore datastore, String location, String subFolderName) {
+        super(datastore, location, subFolderName);
+    }
+
     public PostgisDatastoreWrapper(DataStore datastore, String location) {
         super(datastore, location);
     }

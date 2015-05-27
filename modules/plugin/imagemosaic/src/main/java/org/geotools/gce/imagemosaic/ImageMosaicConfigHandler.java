@@ -47,6 +47,7 @@ import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.factory.Hints;
+import org.geotools.factory.Hints.Key;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
@@ -147,6 +148,7 @@ public class ImageMosaicConfigHandler {
 
         Hints hints = configuration.getHints();
         String ancillaryFile = null;
+        String datastoreFile = null;
         if (Utils.checkFileReadable(indexerFile)) {
             try {
                 indexer = Utils.unmarshal(indexerFile);
@@ -169,9 +171,15 @@ public class ImageMosaicConfigHandler {
         if (indexer != null) {
             // Overwrite default indexer only when indexer is available
             configuration.setIndexer(indexer);
-            String param = IndexerUtils.getParameter(Utils.Prop.AUXILIARY_FILE, indexer);
-            if (param != null) {
-                ancillaryFile = param;
+            String auxiliaryFileParam = IndexerUtils.getParameter(Utils.Prop.AUXILIARY_FILE, indexer);
+            if (auxiliaryFileParam != null) {
+                ancillaryFile = auxiliaryFileParam;
+            }
+            String datastoreFileParam = IndexerUtils.getParameter(Utils.Prop.AUXILIARY_DATASTORE_FILE, indexer);
+            if (datastoreFileParam != null) {
+                datastoreFile = datastoreFileParam;
+            }
+            if (datastoreFileParam != null || auxiliaryFileParam != null) {
                 setReader(hints, false);
             }
             if (IndexerUtils.getParameterAsBoolean(Utils.Prop.USE_EXISTING_SCHEMA, indexer)) {
@@ -179,7 +187,7 @@ public class ImageMosaicConfigHandler {
             }
         }
 
-        updateConfigurationHints(configuration, hints, ancillaryFile,
+        updateConfigurationHints(configuration, hints, ancillaryFile, datastoreFile, 
                 IndexerUtils.getParam(params, Prop.ROOT_MOSAIC_DIR));
 
         // check config
@@ -204,27 +212,37 @@ public class ImageMosaicConfigHandler {
     }
 
     private void updateConfigurationHints(final CatalogBuilderConfiguration configuration,
-            Hints hints, final String ancillaryFile, final String rootMosaicDir) {
-        String ancillaryFilePath = null;
-        if (ancillaryFile != null) {
-            final boolean absolutePath = Boolean.parseBoolean(configuration.getParameter(Prop.ABSOLUTE_PATH));
-            if (absolutePath) {
-                ancillaryFilePath = rootMosaicDir + File.separatorChar + ancillaryFile;
+            Hints hints, final String ancillaryFile, final String datastoreFile, final String rootMosaicDir) {
+        final boolean isAbsolutePath = Boolean.parseBoolean(configuration.getParameter(Prop.ABSOLUTE_PATH));
+        hints = updateHints(ancillaryFile, isAbsolutePath, 
+                rootMosaicDir, configuration, hints, Utils.AUXILIARY_FILES_PATH);
+        hints = updateHints(datastoreFile, isAbsolutePath, 
+                rootMosaicDir, configuration, hints, Utils.AUXILIARY_DATASTORE_PATH);
+        setReader(hints, true);
+    }
+
+    private Hints updateHints(String filePath, boolean isAbsolutePath, 
+            String rootMosaicDir, CatalogBuilderConfiguration configuration, 
+            Hints hints, Key key) {
+        String updatedFilePath = null;
+        if (filePath != null) {
+            if (isAbsolutePath) {
+                updatedFilePath = rootMosaicDir + File.separatorChar + filePath;
             } else {
-                ancillaryFilePath = ancillaryFile;
+                updatedFilePath = filePath;
             }
 
             if (hints != null) {
-                hints.put(Utils.AUXILIARY_FILES_PATH, ancillaryFilePath);
+                hints.put(key, updatedFilePath);
             } else {
-                hints = new Hints(Utils.AUXILIARY_FILES_PATH, ancillaryFilePath);
+                hints = new Hints(key, updatedFilePath);
                 configuration.setHints(hints);
             }
-            if (!absolutePath) {
+            if (!isAbsolutePath) {
                 hints.put(Utils.PARENT_DIR, rootMosaicDir);
             }
         }
-        setReader(hints, true);
+        return hints;
     }
 
     /**
@@ -565,6 +583,9 @@ public class ImageMosaicConfigHandler {
         if (props.containsKey(Prop.AUXILIARY_FILE)) {
             IndexerUtils.setParam(parameters, props, Prop.AUXILIARY_FILE);
         }
+        if (props.containsKey(Prop.AUXILIARY_DATASTORE_FILE)) {
+            IndexerUtils.setParam(parameters, props, Prop.AUXILIARY_DATASTORE_FILE);
+        }
         if (props.containsKey(Prop.CAN_BE_EMPTY)) {
             IndexerUtils.setParam(parameters, props, Prop.CAN_BE_EMPTY);
         }
@@ -666,6 +687,10 @@ public class ImageMosaicConfigHandler {
         if (mosaicConfiguration.getAuxiliaryFilePath() != null) {
             properties.setProperty(Utils.Prop.AUXILIARY_FILE,
                     mosaicConfiguration.getAuxiliaryFilePath());
+        }
+        if (mosaicConfiguration.getAuxiliaryDatastorePath() != null) {
+            properties.setProperty(Utils.Prop.AUXILIARY_DATASTORE_FILE,
+                    mosaicConfiguration.getAuxiliaryDatastorePath());
         }
 
         OutputStream outStream = null;
@@ -796,10 +821,18 @@ public class ImageMosaicConfigHandler {
                     Utils.ADDITIONAL_DOMAIN, indexer));
 
             final Hints runHints = getRunConfiguration().getHints();
-            if (runHints != null && runHints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
-                String auxiliaryFilePath = (String) runHints.get(Utils.AUXILIARY_FILES_PATH);
-                if (auxiliaryFilePath != null && auxiliaryFilePath.trim().length() > 0) {
-                    configBuilder.setAuxiliaryFilePath(auxiliaryFilePath);
+            if (runHints != null) {
+                if (runHints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
+                    String auxiliaryFilePath = (String) runHints.get(Utils.AUXILIARY_FILES_PATH);
+                    if (auxiliaryFilePath != null && auxiliaryFilePath.trim().length() > 0) {
+                        configBuilder.setAuxiliaryFilePath(auxiliaryFilePath);
+                    }
+                }
+                if (runHints.containsKey(Utils.AUXILIARY_DATASTORE_PATH)) {
+                    String auxiliaryDatastorePath = (String) runHints.get(Utils.AUXILIARY_DATASTORE_PATH);
+                    if (auxiliaryDatastorePath != null && auxiliaryDatastorePath.trim().length() > 0) {
+                        configBuilder.setAuxiliaryDatastorePath(auxiliaryDatastorePath);
+                    }
                 }
             }
 

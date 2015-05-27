@@ -71,7 +71,8 @@ public class MosaicBeanBuilder {
     private String additionalDomainAttributes;
 
     private String auxiliaryFilePath;
-    
+
+    private String auxiliaryDatastorePath;
     /**
      * mosaic's dummy sample model useful to store dataType and number of bands. All the other fields shouldn't be queried since they are meaningless
      * for the whole mosaic (width, height, ...)
@@ -222,6 +223,14 @@ public class MosaicBeanBuilder {
         bean = null;
     }
 
+    public String getAuxiliaryDatastorePath() {
+        return auxiliaryDatastorePath;
+    }
+
+    public void setAuxiliaryDatastorePath(String auxiliaryDatastorePath) {
+        this.auxiliaryDatastorePath = auxiliaryDatastorePath;
+    }
+
     @Override
     public String toString() {
         return "MosaicConfigurationBean [expandToRGB=" + expandToRGB + ", levels="
@@ -246,6 +255,7 @@ public class MosaicBeanBuilder {
             bean.setLevelsNum(levelsNum);
             bean.setName(name);
             bean.setAuxiliaryFilePath(auxiliaryFilePath);
+            bean.setAuxiliaryDatastorePath(auxiliaryDatastorePath);
             bean.setCheckAuxiliaryMetadata(checkAuxiliaryMetadata);
         }
         return bean;

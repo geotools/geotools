@@ -141,6 +141,8 @@ public class Utils {
     public final static Key CHECK_AUXILIARY_METADATA = new Key(Boolean.class);
 
     public final static Key AUXILIARY_FILES_PATH = new Key(String.class);
+    
+    public final static Key AUXILIARY_DATASTORE_PATH = new Key(String.class);
 
     public final static Key PARENT_DIR = new Key(String.class);
 
@@ -201,6 +203,7 @@ public class Utils {
         public final static String EXP_RGB = "ExpandToRGB";
         public final static String ABSOLUTE_PATH = "AbsolutePath";
         public final static String AUXILIARY_FILE = "AuxiliaryFile";
+        public final static String AUXILIARY_DATASTORE_FILE = "AuxiliaryDatastoreFile";
         public final static String NAME = "Name";
         public final static String INDEX_NAME = "Name";
         public final static String FOOTPRINT_MANAGEMENT = "FootprintManagement";
@@ -468,9 +471,11 @@ public class Utils {
 				
 		}
 		
-		if (!ignoreSome
-                        || !ignorePropertiesSet.contains(Prop.AUXILIARY_FILE)) {
-                    retValue.setAuxiliaryFilePath(properties.getProperty(Prop.AUXILIARY_FILE));
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.AUXILIARY_FILE)) {
+            retValue.setAuxiliaryFilePath(properties.getProperty(Prop.AUXILIARY_FILE));
+        }
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.AUXILIARY_DATASTORE_FILE)) {
+            retValue.setAuxiliaryDatastorePath(properties.getProperty(Prop.AUXILIARY_DATASTORE_FILE));
         }
 
                 if (!ignoreSome || !ignorePropertiesSet.contains(Prop.CHECK_AUXILIARY_METADATA)) {

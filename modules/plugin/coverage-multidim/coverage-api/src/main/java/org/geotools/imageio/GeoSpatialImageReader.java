@@ -31,6 +31,8 @@ import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
+import org.geotools.coverage.io.catalog.CoverageSlicesCatalog.WrappedCoverageSlicesCatalog;
+import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.data.Query;
 import org.opengis.feature.type.Name;
 
@@ -42,12 +44,21 @@ import org.opengis.feature.type.Name;
  */
 public abstract class GeoSpatialImageReader extends ImageReader implements FileSetManager{
 
-    /** the coverage slices slicesCatalog currently stored as H2 DB */
+    /** The source file */
+    protected File file;
+
+    /** the coverage slices slicesCatalog */
     private CoverageSlicesCatalog slicesCatalog;
 
     protected int numImages = -1;
 
     private String auxiliaryFilesPath = null;
+
+    /** 
+     * Path of the auxiliary datastore properties file, used as 
+     * low level granules index 
+     */
+    private String auxiliaryDatastorePath = null;
 
     protected GeoSpatialImageReader(ImageReaderSpi originatingProvider) {
         super(originatingProvider);
@@ -120,7 +131,6 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
      */
     public abstract CoverageSourceDescriptor getCoverageDescriptor(Name name);
 
-    
     protected void setCatalog(CoverageSlicesCatalog catalog) {
         if(slicesCatalog!=null){
             slicesCatalog.dispose();
@@ -155,6 +165,14 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
         this.auxiliaryFilesPath = auxiliaryFilesPath;
     }
 
+    public String getAuxiliaryDatastorePath() {
+        return auxiliaryDatastorePath;
+    }
+
+    public void setAuxiliaryDatastorePath(String auxiliaryDatastorePath) {
+        this.auxiliaryDatastorePath = auxiliaryDatastorePath;
+    }
+
     /**
      * Returns the underlying slicesCatalog. 
      * 
@@ -163,16 +181,30 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     public CoverageSlicesCatalog getCatalog() {
         return slicesCatalog;
     }
-    
+
     /**
      * Init the slicesCatalog based on the provided parameters
      * 
      * @param parentLocation 
      * @param databaseName 
      * @throws IOException
+     * 
+     * @deprecated: use the {@link #initCatalog(DataStoreConfiguration)} instead 
      */
     protected void initCatalog(File parentLocation, String databaseName) throws IOException {
         slicesCatalog = new CoverageSlicesCatalog(databaseName, parentLocation);
+    }
+
+    /**
+     * Initialize a slicesCatalog on top of the provided {@link DataStoreConfiguration} 
+     * instance
+     * @param datastoreConfig
+     * @throws IOException
+     */
+    protected void initCatalog(DataStoreConfiguration datastoreConfig) throws IOException {
+        slicesCatalog = datastoreConfig.isShared() ?
+                new WrappedCoverageSlicesCatalog(datastoreConfig, file) :
+                    new CoverageSlicesCatalog(datastoreConfig);
     }
 
     @Override

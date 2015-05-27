@@ -103,6 +103,8 @@ public class MosaicConfigurationBean {
     
     private String auxiliaryFilePath;
     
+    private String auxiliaryDatastorePath;
+    
     private CatalogConfigurationBean catalogConfigurationBean;
 
     public ReferencedEnvelope getEnvelope() {
@@ -225,6 +227,14 @@ public class MosaicConfigurationBean {
 
     public void setAuxiliaryFilePath(String auxiliaryFilePath) {
         this.auxiliaryFilePath = auxiliaryFilePath;
+    }
+
+    public String getAuxiliaryDatastorePath() {
+        return auxiliaryDatastorePath;
+    }
+
+    public void setAuxiliaryDatastorePath(String auxiliaryDatastorePath) {
+        this.auxiliaryDatastorePath = auxiliaryDatastorePath;
     }
 
     @Override

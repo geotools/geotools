@@ -41,6 +41,7 @@ import java.util.logging.Logger;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
+import org.geotools.referencing.operation.projection.MapProjection;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -83,6 +84,37 @@ public class NetCDFUtilities {
     public static final String NETCDF_4C = "NetCDF-4C";
 
     public static final String NETCDF_3 = "NetCDF-3";
+
+    public static final String STANDARD_PARALLEL_1 = MapProjection.AbstractProvider.STANDARD_PARALLEL_1
+    .getName().getCode();
+
+    public static final String STANDARD_PARALLEL_2 = MapProjection.AbstractProvider.STANDARD_PARALLEL_2
+    .getName().getCode();
+
+    public static final String CENTRAL_MERIDIAN = MapProjection.AbstractProvider.CENTRAL_MERIDIAN
+    .getName().getCode();
+
+    public static final String LATITUDE_OF_ORIGIN = MapProjection.AbstractProvider.LATITUDE_OF_ORIGIN
+    .getName().getCode();
+
+    public static final String SCALE_FACTOR = MapProjection.AbstractProvider.SCALE_FACTOR.getName()
+    .getCode();
+
+    public static final String FALSE_EASTING = MapProjection.AbstractProvider.FALSE_EASTING
+    .getName().getCode();
+
+    public static final String FALSE_NORTHING = MapProjection.AbstractProvider.FALSE_NORTHING
+    .getName().getCode();
+
+    public static final String SEMI_MINOR = MapProjection.AbstractProvider.SEMI_MINOR
+    .getName().getCode();
+
+    public static final String SEMI_MAJOR = MapProjection.AbstractProvider.SEMI_MAJOR
+    .getName().getCode();
+
+    public static final String INVERSE_FLATTENING = "inverse_flattening";
+
+    public static final String UNKNOWN = "unknown";
 
 
     private NetCDFUtilities() {
@@ -463,9 +495,8 @@ public class NetCDFUtilities {
         }
     }
 
-
     /**
-     * NetCDF files may contains a wide set of coverageDescriptorsCache. Some of them are
+     * NetCDF files may contain a wide set of coverageDescriptorsCache. Some of them are
      * unuseful for our purposes. The method returns {@code true} if the
      * specified variable is accepted.
      */
@@ -685,7 +716,7 @@ public class NetCDFUtilities {
         }
         //TODO: Improve me:
         //Handle timeZone
-        pattern += appendZ?"'Z'":"";
+        pattern += appendZ ? "'Z'" : "";
         final DateFormat format = new SimpleDateFormat(pattern, Locale.CANADA);
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
         return format;

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -37,10 +37,12 @@ import org.geotools.coverage.io.range.RangeType;
 import org.geotools.coverage.io.util.DateRangeTreeSet;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.imageio.netcdf.VariableAdapter;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
@@ -126,11 +128,23 @@ class NetCDFRequest extends CoverageReadRequest{
         final CoverageProperties properties = new CoverageProperties();
         properties.setCrs2D(spatialReferenceSystem2D);
         properties.setFullResolution(coverageFullResolution);
-        
-        // Note that currently, we only support geographic CRS
         properties.setBbox(referencedEnvelope);
-        properties.setGeographicBBox(referencedEnvelope);
-        properties.setGeographicCRS2D(spatialReferenceSystem2D);
+
+        ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(bbox);
+        try {
+            wgs84Envelope =  wgs84Envelope.transform(DefaultGeographicCRS.WGS84, true);
+        } catch (TransformException e) {
+            IOException ioe = new IOException();
+            ioe.initCause(e);
+            throw ioe;
+        } catch (FactoryException e) {
+            IOException ioe = new IOException();
+            ioe.initCause(e);
+            throw ioe;
+        }
+
+        properties.setGeographicBBox(wgs84Envelope);
+        properties.setGeographicCRS2D(wgs84Envelope.getCoordinateReferenceSystem());
         properties.setGridToWorld2D((MathTransform2D)raster2Model);
         properties.setRasterArea(rasterArea);
         spatialRequestHelper.setCoverageProperties(properties);
@@ -146,22 +160,21 @@ class NetCDFRequest extends CoverageReadRequest{
         //
         // //
         Rectangle requestedRasterArea = request.getRasterArea();
-        VariableAdapter.UnidataSpatialDomain horizontalDomain = (VariableAdapter.UnidataSpatialDomain)source.getSpatialDomain();
+        VariableAdapter.UnidataSpatialDomain horizontalDomain = (VariableAdapter.UnidataSpatialDomain) source.getSpatialDomain();
         VariableAdapter.UnidataTemporalDomain temporalDomain = (VariableAdapter.UnidataTemporalDomain) source.getTemporalDomain();
         VariableAdapter.UnidataVerticalDomain verticalDomain = (VariableAdapter.UnidataVerticalDomain) source.getVerticalDomain();
-        
-        
+
         if (requestedRasterArea == null || requestedBoundingBox == null) {
             boolean bothNull = true;
             if (requestedRasterArea == null) {
                 requestedRasterArea = horizontalDomain.getGridGeometry().getGridRange2D().getBounds();
-            }else{
+            } else {
                 bothNull = false;
             }
             if (requestedBoundingBox == null) {
                 requestedBoundingBox = horizontalDomain.getReferencedEnvelope();
 
-            }else{
+            } else {
                 bothNull = false;
             }
 

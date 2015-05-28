@@ -184,7 +184,7 @@ public class SQLServerFilterToSQL extends FilterToSQL {
         return extraData;
     }
 
-    static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     
     @Override
     protected void writeLiteral(Object literal) throws IOException {

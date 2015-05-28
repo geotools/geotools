@@ -827,7 +827,7 @@ public class GeoPackage {
 
     void addGeoPackageContentsEntry(Entry e) throws IOException {
         final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd'T'HH:MM:ss.SSS'Z'");
-//            DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
         addCRS(e.getSrid());
 
         StringBuilder sb = new StringBuilder();
@@ -1836,7 +1836,7 @@ public class GeoPackage {
         try {
             final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd'T'HH:MM:ss.SSS'Z'");
             
-            //    DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+            DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
             
             e.setLastChange(DATE_FORMAT.parse(rs.getString("last_change")));
         } catch (ParseException ex) {

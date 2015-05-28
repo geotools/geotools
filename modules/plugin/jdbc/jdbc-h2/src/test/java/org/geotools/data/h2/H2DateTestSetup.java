@@ -38,7 +38,7 @@ public class H2DateTestSetup extends JDBCDateTestSetup {
 
     @Override
     protected void dropDateTable() throws Exception {
-        run( "DROP TABLE \"geotools\".\"dates\"" );
+        runSafe( "DROP TABLE \"geotools\".\"dates\"" );
     }
 
 }

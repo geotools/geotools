@@ -46,7 +46,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
 public class ValueCollectionTypeBindingTest extends WFSTestSupport {
 
-    static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2();
 
     @Override

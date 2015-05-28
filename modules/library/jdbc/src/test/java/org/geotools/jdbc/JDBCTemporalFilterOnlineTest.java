@@ -196,7 +196,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(q, "2009-06-28 15:12:41", "2009-09-29 17:54:23", "2009-09-29 17:54:23");
     }
 
-    static DateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    DateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     protected Date date(String date) throws ParseException {
         return FORMAT.parse(date);

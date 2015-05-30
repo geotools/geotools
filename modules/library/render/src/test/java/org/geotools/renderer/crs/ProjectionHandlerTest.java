@@ -50,12 +50,15 @@ public class ProjectionHandlerTest {
 
     static CoordinateReferenceSystem ED50;
 
+    static CoordinateReferenceSystem OSM;
+
     @BeforeClass
     public static void setup() throws Exception {
         WGS84 = DefaultGeographicCRS.WGS84;
         UTM32N = CRS.decode("EPSG:32632", true);
         MERCATOR_SHIFTED = CRS.decode("EPSG:3349", true);
         MERCATOR = CRS.decode("EPSG:3395", true);
+        OSM = CRS.decode("EPSG:3857", true);
         ED50 = CRS.decode("EPSG:4230", true);
         ED50_LATLON = CRS.decode("urn:x-ogc:def:crs:EPSG:4230", false);
     }
@@ -709,4 +712,67 @@ public class ProjectionHandlerTest {
         // Ensure the result is null
         assertNull(preProcessed);
     }
+
+    @Test
+    public void testQueryEnvelopesNonWrappingWGS84() throws Exception {
+        // dateline crossing request
+        ReferencedEnvelope request = new ReferencedEnvelope(170, 190, -40, 40, WGS84);
+
+        // grab a non wrapping handler
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(request, WGS84, false);
+        List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
+        assertEquals(1, envelopes.size());
+        assertEquals(request, envelopes.get(0));
+    }
+
+    @Test
+    public void testQueryEnvelopesNonWrapping3857() throws Exception {
+        // dateline crossing request
+        ReferencedEnvelope requestWgs84 = new ReferencedEnvelope(170, 190, -40, 40, WGS84);
+        ReferencedEnvelope request = requestWgs84.transform(OSM, true);
+
+        // grab a non wrapping handler
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(request, WGS84, false);
+        List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
+        assertEquals(1, envelopes.size());
+        assertEnvelopesEqual(requestWgs84, envelopes.get(0), EPS);
+    }
+
+    private void assertEnvelopesEqual(ReferencedEnvelope re1, ReferencedEnvelope re2, double eps) {
+        assertEquals(re1.getCoordinateReferenceSystem(), re2.getCoordinateReferenceSystem());
+        assertEquals(re1.getMinX(), re2.getMinX(), eps);
+        assertEquals(re1.getMinY(), re2.getMinY(), eps);
+        assertEquals(re1.getMaxX(), re2.getMaxX(), eps);
+        assertEquals(re1.getMaxY(), re2.getMaxY(), eps);
+    }
+
+    @Test
+    public void testQueryEnvelopesWrappingWGS84() throws Exception {
+        // dateline crossing request
+        ReferencedEnvelope request = new ReferencedEnvelope(170, 190, -40, 40, WGS84);
+
+        // grab a non wrapping handler
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(request, WGS84, true);
+        List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
+        assertEquals(2, envelopes.size());
+        assertTrue(envelopes.contains(new ReferencedEnvelope(170, 180, -40, 40, WGS84)));
+        assertTrue(envelopes.contains(new ReferencedEnvelope(-180, -170, -40, 40, WGS84)));
+    }
+
+    @Test
+    public void testQueryEnvelopesWrapping3857() throws Exception {
+        // dateline crossing request
+        ReferencedEnvelope requestWgs84 = new ReferencedEnvelope(170, 190, -40, 40, WGS84);
+        ReferencedEnvelope request = requestWgs84.transform(OSM, true);
+
+        // grab a non wrapping handler
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(request, WGS84, true);
+        List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
+        assertEquals(2, envelopes.size());
+        assertEnvelopesEqual(new ReferencedEnvelope(170, 180, -40, 40, WGS84), envelopes.get(0),
+                EPS);
+        assertEnvelopesEqual(new ReferencedEnvelope(-180, -170, -40, 40, WGS84), envelopes.get(1),
+                EPS);
+    }
+
 }

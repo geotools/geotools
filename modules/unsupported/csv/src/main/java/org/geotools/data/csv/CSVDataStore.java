@@ -50,7 +50,11 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
     }
 
     public Name getTypeName() {
-        return new NameImpl(csvFileState.getTypeName());
+        if (namespaceURI != null) {
+            return new NameImpl(namespaceURI, csvFileState.getTypeName());
+        } else {
+            return new NameImpl(csvFileState.getTypeName());
+        }
     }
 
     @Override

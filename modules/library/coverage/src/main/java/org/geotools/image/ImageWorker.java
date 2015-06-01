@@ -24,6 +24,7 @@ import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -3096,14 +3097,14 @@ public class ImageWorker {
                 float sWidth = paramBlock.getFloatParameter(2);
                 float sHeight = paramBlock.getFloatParameter(3);
 
-                // merge the two (just need to sum the two origins)
-                if (sx > 0) {
-                    x = sx + x;
-                }
-                if (sy > 0) {
-                    y = sy + y;
-                }
+                Rectangle2D.Float sourceBounds = new Rectangle2D.Float(sx, sy, sWidth, sHeight);
+                Rectangle2D.Float bounds = new Rectangle.Float(x, y, width, height);
+                Rectangle2D intersection = bounds.createIntersection(sourceBounds);
 
+                x = (float) intersection.getMinX();
+                y = (float) intersection.getMinY();
+                width = (float) intersection.getWidth();
+                height = (float) intersection.getHeight();
             }
         }
 

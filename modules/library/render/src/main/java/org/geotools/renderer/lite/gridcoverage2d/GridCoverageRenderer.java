@@ -781,6 +781,41 @@ public final class GridCoverageRenderer {
             }
             coverages = rh.readCoverages(readParams, handler);
         }
+
+        // check if we have to reproject
+        boolean reprojectionNeeded = false;
+        for (GridCoverage2D coverage : coverages) {
+            if (coverage == null) {
+                continue;
+            }
+            final CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem();
+            if (!CRS.equalsIgnoreMetadata(coverageCRS, destinationCRS)) {
+                reprojectionNeeded = true;
+                break;
+            }
+        }
+
+        // if we need to reproject, we need to ensure that none of the pixels go out of
+        // the projection valid area, not even slightly
+        double[] bgValues = GridCoverageRendererUtilities.colorToArray(background);
+        if (reprojectionNeeded && handler != null && handler.getValidAreaBounds() != null) {
+            List<GridCoverage2D> cropped = new ArrayList<>();
+            ReferencedEnvelope validArea = handler.getValidAreaBounds();
+            GridGeometryReducer reducer = new GridGeometryReducer(validArea);
+            for (GridCoverage2D coverage : coverages) {
+                GridGeometry2D gg = coverage.getGridGeometry();
+                GridGeometry2D reduced = reducer.reduce(gg);
+                if (!reduced.equals(gg)) {
+                    GeneralEnvelope cutEnvelope = reducer.getCutEnvelope(reduced);
+                    GridCoverage2D croppedCoverage = crop(coverage, cutEnvelope, false);
+                    cropped.add(croppedCoverage);
+                } else {
+                    cropped.add(coverage);
+                }
+            }
+            coverages = cropped;
+        }
+
         /////////////////////////////////////////////////////
         //
         // Check if Mosaiking and reprojection must be done,
@@ -788,37 +823,22 @@ public final class GridCoverageRenderer {
         // mosaiking issues
         //
         /////////////////////////////////////////////////////
+        // TODO optimize by checking if reprojection adds rotational elements
         List<GridCoverage2D> alphaCoverages = new ArrayList<GridCoverage2D>();
-        if (coverages.size() > 1) {
-            boolean reprojectionNeeded = false;
+        if (coverages.size() > 1 && reprojectionNeeded) {
+            // Apply the alpha band
             for (GridCoverage2D coverage : coverages) {
                 if (coverage == null) {
                     continue;
                 }
-                final CoordinateReferenceSystem coverageCRS = coverage
-                        .getCoordinateReferenceSystem();
-                if (!CRS.equalsIgnoreMetadata(coverageCRS, destinationCRS)) {
-                    reprojectionNeeded = true;
-                    break;
-                }
-            }
-            // TODO OPTIMIZE BY CHECKING IF THE REPROJECTION ADD ROTATION ELEMENTS
-            if (reprojectionNeeded) {
                 // Apply the alpha band
-                for (GridCoverage2D coverage : coverages) {
-                    if (coverage == null) {
-                        continue;
-                    }
-                    // Apply the alpha band
-                    GridCoverage2D alphaCoverage = createAlphaBand(coverage);
-                    // Add to the list
-                    alphaCoverages.add(alphaCoverage);
-                }
+                GridCoverage2D alphaCoverage = createAlphaBand(coverage);
+                // Add to the list
+                alphaCoverages.add(alphaCoverage);
             }
         }
 
         // reproject if needed
-        double[] bgValues = GridCoverageRendererUtilities.colorToArray(background);
         List<GridCoverage2D> reprojectedCoverages = new ArrayList<GridCoverage2D>();
         List<GridCoverage2D> reprojectedAlphas = new ArrayList<GridCoverage2D>();
         boolean alphaAdded = alphaCoverages.size() > 1;

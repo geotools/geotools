@@ -1128,5 +1128,28 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertEquals(ushortCoverage.getRenderedImage().getTileWidth(), reduced.getTileWidth());
         assertEquals(ushortCoverage.getRenderedImage().getTileHeight(), reduced.getTileHeight());
     }
-    
+
+    @Test
+    public void testDoubleCrop() {
+        ImageWorker iw = new ImageWorker(gray);
+        iw.crop(10, 10, 50, 50);
+        RenderedImage ri1 = iw.getRenderedImage();
+
+        assertEquals(10, ri1.getMinX());
+        assertEquals(10, ri1.getMinY());
+        assertEquals(50, ri1.getWidth());
+        assertEquals(50, ri1.getHeight());
+
+        // the crop area overlaps with the image
+        iw.crop(30, 30, 60, 60);
+        RenderedImage ri2 = iw.getRenderedImage();
+        assertEquals(30, ri2.getMinX());
+        assertEquals(30, ri2.getMinY());
+        assertEquals(30, ri2.getWidth());
+        assertEquals(30, ri2.getHeight());
+
+        // check intermediate crop elimination
+        RenderedOp op = (RenderedOp) ri2;
+        assertEquals(gray, op.getSourceObject(0));
+    }
 }

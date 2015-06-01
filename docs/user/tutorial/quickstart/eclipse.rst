@@ -424,24 +424,33 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
 
 1. Download Maven from http://maven.apache.org/download.html 
    
-   The last version we tested with was: Maven 2.2.1
+   The last version we tested with was: Maven 3.3.3
    
-2. Unzip the file apache-maven-2.2.1-bin.zip to C:\java\apache-maven-2.2.1
+2. Unzip the file apache-maven-2.2.1-bin.zip to C:\java\apache-maven-3.3.3
 3. You need to have a couple of environmental variables set for maven to work. Use
-   :menuselection:`Control Panel --> System --> Advanced --> Environmental Variables` to set the following.
+   :menuselection:`Control Panel --> System --> Advanced --> Environmental Variables` to set the following System Variables:
 
-   * JAVA_HOME = :file:`C:\Program Files\Java\jdk1.6.0_16`
-   * M2_HOME = :file:`C:\java\apache-maven-2.2.1`
-   * PATH = :file:`%JAVA_HOME%\bin;%M2_HOME%\bin`
-
+   Add the following system variables:
+   
+   * JAVA_HOME = :file:`C:\\Program Files (x86)\\Java\\jdk1.7.0_67`
+   * M2_HOME = :file:`C:\\java\\apache-maven-3.2.3`
+   
+   And add the following to your PATH:
+   
+   * PATH = :file:`%JAVA_HOME%\\bin;%M2_HOME%\\bin`
+   
    .. image:: images/env-variables.png
       :scale: 60
    
 4. Open up a commands prompt :menuselection:`Accessories --> Command Prompt`
 5. Type the following command to confirm you are set up correctly::
    
-      C:java> mvn -version
+      C:\\java> mvn -version
+   
+   If the `mvn` command is not found check your path using::
       
+      C:\\java> echo %PATH%
+   
 6. This should produce the following output
 
    .. image:: images/maven-version.png

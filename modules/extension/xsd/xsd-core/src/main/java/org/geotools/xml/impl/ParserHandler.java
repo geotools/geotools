@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -73,6 +73,21 @@ import org.xml.sax.helpers.DefaultHandler;
  * @source $URL$
  */
 public class ParserHandler extends DefaultHandler {
+
+    
+    /**
+     * 
+     * Customize the context, after the configuration has set up the context before the document is parsed.
+     * 
+     * @author Niels Charlier
+     *
+     */
+    public interface ContextCustomizer {
+        void customizeContext(MutablePicoContainer context);
+        
+    }
+    
+    
     /** execution stack **/
     protected Stack handlers;
 
@@ -135,12 +150,19 @@ public class ParserHandler extends DefaultHandler {
     /** entity resolver */
     EntityResolver entityResolver;
     
+    /** context customizer **/
+    ContextCustomizer contextCustomizer;
+    
     public ParserHandler(Configuration config) {
         this.config = config;
         namespaces = new ParserNamespaceSupport();
         validating = false;
         validator = new ValidatorHandler();
         uriHandlers.add(new HTTPURIHandler());
+    }
+    
+    public void setContextCustomizer(ContextCustomizer contextCustomizer) {
+        this.contextCustomizer = contextCustomizer;
     }
 
     public Configuration getConfiguration() {
@@ -273,6 +295,9 @@ public class ParserHandler extends DefaultHandler {
 
         context = new DefaultPicoContainer();
         context = config.setupContext(context);
+        if (contextCustomizer != null) {
+            contextCustomizer.customizeContext(context);
+        }
 
         docHandler.setContext(context);
 

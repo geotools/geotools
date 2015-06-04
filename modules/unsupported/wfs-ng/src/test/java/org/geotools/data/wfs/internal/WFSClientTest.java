@@ -60,7 +60,10 @@ public class WFSClientTest {
 
         WFSClient client = newClient(resource);
         WFSGetCapabilities capabilities = client.getCapabilities();
-
+        // GEOT-5113 (should not throw NPE)
+        if(!client.getRemoteTypeNames().isEmpty()) {
+            client.supportsTransaction(client.getRemoteTypeNames().iterator().next());
+        }
         Assert.assertEquals(expectedVersion, capabilities.getVersion());
         return client;
     }

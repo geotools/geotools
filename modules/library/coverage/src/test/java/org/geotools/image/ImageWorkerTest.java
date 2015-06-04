@@ -16,12 +16,7 @@
  */
 package org.geotools.image;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.jaiext.lookup.LookupTable;
@@ -1220,5 +1215,29 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // Ensuring minimum is 0 and maximum 50
         assertEquals(min, 0, 1E-7);
         assertEquals(max, 50, 1E-7);
+    }
+
+    @Test
+    public void testDoubleCrop() {
+        ImageWorker iw = new ImageWorker(gray);
+        iw.crop(10, 10, 50, 50);
+        RenderedImage ri1 = iw.getRenderedImage();
+
+        assertEquals(10, ri1.getMinX());
+        assertEquals(10, ri1.getMinY());
+        assertEquals(50, ri1.getWidth());
+        assertEquals(50, ri1.getHeight());
+
+        // the crop area overlaps with the image
+        iw.crop(30, 30, 60, 60);
+        RenderedImage ri2 = iw.getRenderedImage();
+        assertEquals(30, ri2.getMinX());
+        assertEquals(30, ri2.getMinY());
+        assertEquals(30, ri2.getWidth());
+        assertEquals(30, ri2.getHeight());
+
+        // check intermediate crop elimination
+        RenderedOp op = (RenderedOp) ri2;
+        assertEquals(gray, op.getSourceObject(0));
     }
 }

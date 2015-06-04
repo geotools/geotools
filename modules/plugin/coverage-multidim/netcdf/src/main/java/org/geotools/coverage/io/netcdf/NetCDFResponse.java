@@ -147,7 +147,6 @@ class NetCDFResponse extends CoverageResponse{
     public CoverageResponse createResponse() throws IOException {
         processRequest();
         return this;
-
     }
 
     /**
@@ -228,7 +227,11 @@ class NetCDFResponse extends CoverageResponse{
 
         Map<String, Set<?>> domainsSubset = readRequest.getAdditionalDomainsSubset();
         Filter requestFilter = request.originalRequest.getFilter();
-
+        double[] noData = null;
+        if (sampleDimensions != null && sampleDimensions.length > 0) {
+            GridSampleDimension sampleDimension = sampleDimensions[0];
+            noData = sampleDimension.getNoDataValues();
+        }
         // handling date and time
         for (DateRange timeRange : tempSubset) {
             for (NumberRange<Double> elevation : vertSubset) {
@@ -257,12 +260,12 @@ class NetCDFResponse extends CoverageResponse{
                 }
                 int imageIndex = indexes.get(0);
                 final RenderedImage image = loadRaster(baseReadParameters, imageIndex, targetBBox,
-                        finalWorldToGridCorner, hints);
+                        finalWorldToGridCorner, hints, noData);
 
                 // postproc
-                RenderedImage finalRaster = postProcessRaster(image);
+                RenderedImage finalRaster = postProcessRaster(image, noData);
                 // create the coverage
-                GridCoverage2D gridCoverage = prepareCoverage(finalRaster, sampleDimensions);
+                GridCoverage2D gridCoverage = prepareCoverage(finalRaster, sampleDimensions, noData);
 
                 // Adding coverage domain
                 if (gridCoverage != null) {
@@ -327,7 +330,7 @@ class NetCDFResponse extends CoverageResponse{
             Query query,
             Filter requestFilter, String timeFilterAttribute, String elevationFilterAttribute) {
         final List<Filter> filters = new ArrayList<Filter>();
-        
+
         // //
         // Setting up time filter
         // //
@@ -340,7 +343,7 @@ class NetCDFResponse extends CoverageResponse{
                     FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(timeFilterAttribute),
                             FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinValue()))));
         }
-        
+
         // //
         // Setting up elevation filter
         // //
@@ -362,7 +365,7 @@ class NetCDFResponse extends CoverageResponse{
         query.setFilter(filter);
     }
 
-    private RenderedImage postProcessRaster(RenderedImage image) {
+    private RenderedImage postProcessRaster(RenderedImage image, double[] noData) {
         // alpha on the final mosaic
 
         if (!request.spatialRequestHelper.isNeedsReprojection()) {
@@ -392,7 +395,7 @@ class NetCDFResponse extends CoverageResponse{
 
             ImageWorker iw = new ImageWorker(image);
             iw.setRenderingHints(localHints);
-            iw.affine(targetWorldToGrid, request.getInterpolation(), DEFAULT_BACKGROUND_VALUES);
+            iw.affine(targetWorldToGrid, request.getInterpolation(), noData);
             image = iw.getRenderedImage();
         }
         return image;
@@ -412,7 +415,7 @@ class NetCDFResponse extends CoverageResponse{
 
             // === init raster bounds
             initRasterBounds();
-            
+
             // === init targetGrid2World
             initTargetTransformation();
 
@@ -440,7 +443,6 @@ class NetCDFResponse extends CoverageResponse{
 
         // update final grid to world
         finalGridToWorldCorner = new AffineTransform2D(targetGridToWorld);
-        
     }
 
     /**
@@ -456,12 +458,15 @@ class NetCDFResponse extends CoverageResponse{
         // than what we need. The code below is a bit better since it uses a proper logic (see GridEnvelope
         // Javadoc)
         // rasterBounds = new GridEnvelope2D(new Envelope2D(tempRasterBounds), PixelInCell.CELL_CORNER);
-        if (rasterBounds.width == 0)
+        if (rasterBounds.width == 0) {
             rasterBounds.width++;
-        if (rasterBounds.height == 0)
+        }
+        if (rasterBounds.height == 0) {
             rasterBounds.height++;
-        if (oversampledRequest)
+        }
+        if (oversampledRequest) {
             rasterBounds.grow(2, 2);
+        }
     }
 
     /**
@@ -492,7 +497,7 @@ class NetCDFResponse extends CoverageResponse{
             // SG going back to working on a per level basis to do the composition
             // g2w = new AffineTransform(request.getRequestedGridToWorld());
             g2w.concatenate(AffineTransform.getScaleInstance(baseReadParameters.getSourceXSubsampling(), baseReadParameters.getSourceYSubsampling()));
-        }   
+        }
         // move it to the corner
         finalGridToWorldCorner = new AffineTransform2D(g2w);
         finalWorldToGridCorner = finalGridToWorldCorner.inverse();// compute raster bounds
@@ -522,16 +527,12 @@ class NetCDFResponse extends CoverageResponse{
      * @return
      * @throws IOException
      */
-    private GridCoverage2D prepareCoverage(RenderedImage image, GridSampleDimension[] sampleDimensions) throws IOException {
+    private GridCoverage2D prepareCoverage(RenderedImage image, GridSampleDimension[] sampleDimensions, double[] noData) throws IOException {
 
         Map<String, Object> properties = null;
-        if (sampleDimensions != null && sampleDimensions.length > 0) {
-            GridSampleDimension sampleDimension = sampleDimensions[0];
-            double[] noData = sampleDimension.getNoDataValues();
-            if (noData != null && noData.length > 0) {
-                properties = new HashMap<String, Object>();  
-                CoverageUtilities.setNoDataProperty(properties, noData[0]);
-            }
+        if (noData != null && noData.length > 0) {
+            properties = new HashMap<String, Object>();
+            CoverageUtilities.setNoDataProperty(properties, noData[0]);
         }
         return COVERAGE_FACTORY.create(request.name, image, new GridGeometry2D(new GridEnvelope2D(PlanarImage.wrapRenderedImage(image)
                         .getBounds()), PixelInCell.CELL_CORNER, finalGridToWorldCorner,
@@ -549,12 +550,13 @@ class NetCDFResponse extends CoverageResponse{
      * @param mosaicWorldToGrid the cropping grid to world transform.
      * @param request the incoming request to satisfy.
      * @param hints {@link Hints} to be used for creating this raster.
+     * @param noData 
      * @return a specified a raster as a portion of the granule describe by this {@link DefaultGranuleDescriptor}.
      * @throws IOException in case an error occurs.
      */
     private RenderedImage loadRaster(final ImageReadParam imageReadParameters, final int index,
             final ReferencedEnvelope cropBBox, final MathTransform2D mosaicWorldToGrid,
-            final Hints hints) throws IOException {
+            final Hints hints, double[] noData) throws IOException {
 
         if (LOGGER.isLoggable(java.util.logging.Level.FINER)) {
             final String name = Thread.currentThread().getName();
@@ -740,7 +742,7 @@ class NetCDFResponse extends CoverageResponse{
 
             ImageWorker iw = new ImageWorker(raster);
             iw.setRenderingHints(localHints);
-            iw.affine(finalRaster2Model, interpolation, DEFAULT_BACKGROUND_VALUES);
+            iw.affine(finalRaster2Model, interpolation, noData);
             return iw.getRenderedImage();
 
         } catch (IllegalStateException e) {

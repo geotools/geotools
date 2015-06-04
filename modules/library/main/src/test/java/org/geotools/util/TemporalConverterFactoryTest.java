@@ -103,7 +103,7 @@ public class TemporalConverterFactoryTest extends TestCase {
 	}
 	
 	public void testCalendarToTime() throws Exception {
-		Calendar calendar = Calendar.getInstance( TimeZone.getTimeZone("GMT") );
+		Calendar calendar = Calendar.getInstance( /*TimeZone.getTimeZone("GMT")*/ );
 		calendar.clear();
 		calendar.set(Calendar.HOUR_OF_DAY, 17);
 		calendar.set(Calendar.MINUTE, 0);
@@ -171,8 +171,8 @@ public class TemporalConverterFactoryTest extends TestCase {
 		Time time = (Time) factory.createConverter( Date.class, Time.class, null )
 			.convert( date, Time.class );
 		assertNotNull( time );
-		// need to remove the date part, use GMT as Date.getTime() is always GMT
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		// need to remove the date part
+		Calendar cal = Calendar.getInstance(/*TimeZone.getTimeZone("GMT")*/);
 		cal.setTime(date);
     	cal.set(Calendar.YEAR, 0);
     	cal.set(Calendar.MONTH, 0);

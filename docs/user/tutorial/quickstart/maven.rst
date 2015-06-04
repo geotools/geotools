@@ -88,8 +88,13 @@ Installing Maven
 #. You need to have a couple of environmental variables set for maven to work. Navigate to
    :menuselection:`Control Panel --> System --> Advanced`. Change to the :guilabel:`Advanced` tab and click :guilabel:`Environmental Variables` button.
    
+   Add the following system variables:
+   
    * JAVA_HOME = :file:`C:\\Program Files (x86)\\Java\\jdk1.7.0_67`
    * M2_HOME = :file:`C:\\java\\apache-maven-3.2.3`
+   
+   And add the following to your PATH:
+   
    * PATH = :file:`%JAVA_HOME%\\bin;%M2_HOME%\\bin`
    
    .. image:: images/env-variables.png

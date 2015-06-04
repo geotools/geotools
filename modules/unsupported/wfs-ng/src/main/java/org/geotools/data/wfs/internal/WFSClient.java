@@ -211,8 +211,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                 throw new IllegalArgumentException("Unsupported version: " + capsVersion);
             }
         }
-        LOGGER.info("Using WFS Strategy: " + strategy.getClass().getName());
-        
+        LOGGER.finer("Using WFS Strategy: " + strategy.getClass().getName());
         strategy.setConfig(config);
         
         return strategy;

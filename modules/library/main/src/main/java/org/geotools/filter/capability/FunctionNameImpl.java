@@ -93,11 +93,11 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
         this.args = copy.getArguments();
     }
 
-    public FunctionNameImpl( String name, Class returnType, Parameter<?>... arguments) {
+    public FunctionNameImpl( String name, Class<?> returnType, Parameter<?>... arguments) {
         this(new NameImpl(name), returnType, arguments);
     }
 
-    public FunctionNameImpl( Name name, Class returnType, Parameter<?>... arguments) {
+    public FunctionNameImpl( Name name, Class<?> returnType, Parameter<?>... arguments) {
         this(name, parameter(name.getLocalPart(), returnType), Arrays.asList(arguments));
     }
 
@@ -182,7 +182,7 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
      * This is a fixed length list the same size as getArgumentCount(). 
      */
     public List<String> getArgumentNames() {
-        List<String> names = new ArrayList();
+        List<String> names = new ArrayList<String>();
         for (Parameter<?> arg : args) {
             names.add(arg.getName());
         }
@@ -205,7 +205,7 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
      * </ul> 
      */
     private static List<Parameter<?>> generateArguments(int count) {
-        List<Parameter<?>> args = new ArrayList();
+        List<Parameter<?>> args = new ArrayList<Parameter<?>>();
         if (count < 0) {
             //negative count used to represent variable arguments, create a single argument 
             // with minOccurs == abs(count)
@@ -221,7 +221,7 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
     }
     
     private static List<Parameter<?>> generateArguments(List<String> names) {
-        List<Parameter<?>> args = new ArrayList();
+        List<Parameter<?>> args = new ArrayList<Parameter<?>>();
 
         for(String name : names) {
             args.add(parameter(name, Object.class, 1, 1));
@@ -230,11 +230,35 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
         return args;
     }
     
-    public static Parameter<?> parameter(String name, Class type) {
-        return parameter(name, type, 1, 1);
+    /**
+     * Named parameter (argument or result).
+     * @param name name of parameter
+     * @param type type of parameter
+     * @return parameter description
+     */
+    public static <T> Parameter<T> parameter(String name, Class<T> type) {
+        return new org.geotools.data.Parameter<T>(name, type);
     }
-    
-    public static Parameter<?> parameter(String name, Class type, int min, int max) {
-        return new org.geotools.data.Parameter(name, type, min, max);
+    /**
+     * Named parameter (argument or result).
+     * @param name name of parameter
+     * @param type type of parameter
+     * @param min multiplicity 
+     * @param max multiplicity
+     * @return parameter description
+     */
+    public static <T> Parameter<T> parameter(String name, Class<T> type, int min, int max) {
+        return new org.geotools.data.Parameter<T>(name, type, min, max);
+    }
+    /**
+     * 
+     * @param name name of parameter
+     * @param type type of parameter
+     * @param title human readable title
+     * @param description human readable description
+     * @return parameter description
+     */
+    public static <T> Parameter<T> parameter(String name, Class<T> type, String title, String description) {
+        return new org.geotools.data.Parameter<T>(name, type, title, description );
     }
 }

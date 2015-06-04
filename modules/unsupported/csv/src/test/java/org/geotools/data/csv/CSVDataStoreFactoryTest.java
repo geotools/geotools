@@ -1,15 +1,11 @@
-/* (c) 2014 Open Source Geospatial Foundation - all rights reserved
+/* (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
  * (c) 2001 - 2013 OpenPlans
  * This code is licensed under the GPL 2.0 license, available at the root
  * application directory.
  */
 package org.geotools.data.csv;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -191,5 +187,17 @@ public class CSVDataStoreFactoryTest {
         CSVDataStore datastore = (CSVDataStore) csvDataStoreFactory.createDataStore(params);
         CSVStrategy csvStrategy = datastore.getCSVStrategy();
         assertEquals("Unexpected strategy", CSVSpecifiedWKTStrategy.class, csvStrategy.getClass());
+    }
+
+    @Test
+    public void testNamespace() throws IOException {
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        String namespaceURI = "http://www.geotools.org/csv";
+        params.put("namespace", namespaceURI);
+        params.put("wktField", "whatever");
+        params.put("file", file);
+        CSVDataStore datastore = (CSVDataStore) csvDataStoreFactory.createDataStore(params);
+        assertEquals(namespaceURI, datastore.getNamespaceURI());
+        assertEquals(namespaceURI, datastore.getTypeName().getNamespaceURI());
     }
 }

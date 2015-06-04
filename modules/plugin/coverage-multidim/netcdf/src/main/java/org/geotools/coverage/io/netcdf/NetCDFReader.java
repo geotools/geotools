@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -301,10 +301,15 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
                         }
                     }
                     return "false";
-                    
+                } else if (name.contains(DATATYPE_SUFFIX)) {
+                    for (AdditionalDomain additionalDomain: additionalDomains) {
+                        if (name.toUpperCase().startsWith(additionalDomain.getName().toUpperCase() + DOMAIN_SUFFIX + DATATYPE_SUFFIX)) {
+                            return parseDomain(name, additionalDomain);
+                        }
+                    }
                 } else if (name.contains(DOMAIN_SUFFIX)) {
                     for (AdditionalDomain additionalDomain: additionalDomains) {
-                        if (name.toUpperCase().startsWith(additionalDomain.getName().toUpperCase() + "_DOMAIN")) {
+                        if (name.toUpperCase().startsWith(additionalDomain.getName().toUpperCase() + DOMAIN_SUFFIX)) {
                             return parseDomain(name, additionalDomain);
                         }
                     }
@@ -398,6 +403,15 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
             if (name.endsWith("domain")) {
                 Set<Object> elements = additionalDomain.getElements(false, null);
                 return buildElementsList(elements);
+            } else if (name.endsWith("datatype")) {
+                switch (additionalDomain.getType()) {
+                    case NUMBER:
+                        return Double.class.getName();
+                    case DATE:
+                        return Date.class.getName();
+                    default:
+                        return String.class.getName();
+                }
             } else {
                 // min or max requests
                 Set<Object> elements = additionalDomain.getElements(true, null);

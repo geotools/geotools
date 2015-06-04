@@ -16,10 +16,13 @@
  */
 package org.geotools.data.ows;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
@@ -27,6 +30,7 @@ import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.HttpState;
@@ -51,9 +55,10 @@ import org.geotools.util.logging.Logging;
  * </p>
  * 
  * @author groldan
+ * @author awaterme
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
-public class MultithreadedHttpClient implements HTTPClient, Closeable {
+public class MultithreadedHttpClient implements HTTPClient {
 
     private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
     
@@ -66,6 +71,11 @@ public class MultithreadedHttpClient implements HTTPClient, Closeable {
     private String password;
     
     private boolean tryGzip = true;
+    
+    /** Available if a proxy was specified as system property */
+    private HostConfiguration hostConfigNoProxy;
+    
+    private Set<String> nonProxyHosts = new HashSet<String>();
 
     public MultithreadedHttpClient() {
         connectionManager = new MultiThreadedHttpConnectionManager();
@@ -78,21 +88,41 @@ public class MultithreadedHttpClient implements HTTPClient, Closeable {
         
         connectionManager.setParams(params);
 
-        client = new HttpClient(connectionManager);
+        client = createHttpClient();
         
         applySystemProxySettings();
+    }
+
+    // package private to support testing
+	HttpClient createHttpClient() {
+	    return new HttpClient(connectionManager);
     }
 
     private void applySystemProxySettings() {
         final String proxyHost = System.getProperty("http.proxyHost");
         final int proxyPort = Integer.parseInt(System.getProperty("http.proxyPort", "80"));
-        // String nonProxyHost = System.getProperty("http.nonProxyHosts");
+        String nonProxyHostProp = System.getProperty("http.nonProxyHosts");
 
         if (proxyHost != null) {
             LOGGER.fine("Found 'http.proxyHost' Java System property. Using it as proxy server. Port: "
                     + proxyPort);
             HostConfiguration hostConfig = client.getHostConfiguration();
+            if(nonProxyHostProp != null){
+            	if (nonProxyHostProp.startsWith("\"")) {
+            		nonProxyHostProp = nonProxyHostProp.substring(1);
+            	}
+            	if (nonProxyHostProp.endsWith("\"")) {
+            		nonProxyHostProp = nonProxyHostProp.substring(0, nonProxyHostProp.length() - 1);
+            	}
+            	hostConfigNoProxy = (HostConfiguration) hostConfig.clone();
+            	StringTokenizer tokenizer = new StringTokenizer(nonProxyHostProp, "|");
+            	while(tokenizer.hasMoreTokens()){
+            		nonProxyHosts.add(tokenizer.nextToken().trim().toLowerCase());
+            	}
+            	LOGGER.fine("Initialized with nonProxyHosts: " + nonProxyHosts);
+            }
             hostConfig.setProxy(proxyHost, proxyPort);
+            
         }
 
         final String proxyUser = System.getProperty("http.proxyUser");
@@ -131,7 +161,7 @@ public class MultithreadedHttpClient implements HTTPClient, Closeable {
         RequestEntity requestEntity = new InputStreamRequestEntity(postContent);
         postMethod.setRequestEntity(requestEntity);
 
-        int responseCode = client.executeMethod(postMethod);
+        int responseCode = executeMethod(postMethod);
         if (200 != responseCode) {
             postMethod.releaseConnection();
             throw new IOException("Server returned HTTP error code " + responseCode + " for URL "
@@ -141,6 +171,23 @@ public class MultithreadedHttpClient implements HTTPClient, Closeable {
         return new HttpMethodResponse(postMethod);
     }
 
+	/**
+	 * @param method
+	 * @return the http status code of the execution
+	 * @throws IOException
+	 * @throws HttpException
+	 */
+	private int executeMethod(HttpMethod method) throws IOException, HttpException {
+		String host = method.getURI().getHost();
+		if (host != null && nonProxyHosts.contains(host.toLowerCase())) {
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Bypassing proxy config due to nonProxyHosts for " + method.getURI().toString());
+			}
+			return client.executeMethod(hostConfigNoProxy, method);
+		}
+		return client.executeMethod(method);
+	}
+
     @Override
     public HTTPResponse get(final URL url) throws IOException {
 
@@ -149,7 +196,7 @@ public class MultithreadedHttpClient implements HTTPClient, Closeable {
         if (tryGzip) {
             getMethod.setRequestHeader("Accept-Encoding", "gzip");
         }
-        int responseCode = client.executeMethod(getMethod);
+        int responseCode = executeMethod(getMethod);
         if (200 != responseCode) {
             getMethod.releaseConnection();
             throw new IOException("Server returned HTTP error code " + responseCode + " for URL "
@@ -303,13 +350,5 @@ public class MultithreadedHttpClient implements HTTPClient, Closeable {
     @Override
     public boolean isTryGzip() {
         return tryGzip;
-    }
-
-    /**
-     * Disposes the client, releasing the pooled HTTP connections
-     */
-    @Override
-    public void close() {
-        connectionManager.shutdown();
     }
 }

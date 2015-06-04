@@ -63,7 +63,7 @@ public class AttributeEncodeExecutor implements BindingWalker.Visitor {
     public void visit(Binding binding) {
         //ensure the object type matches the type declared on the bindign
         if (binding.getType() == null) {
-            logger.warning("Binding: " + binding.getTarget() + " does not declare a target type");
+            logger.fine("Binding: " + binding.getTarget() + " does not declare a target type");
 
             return;
         }
@@ -75,7 +75,7 @@ public class AttributeEncodeExecutor implements BindingWalker.Visitor {
             if (converted != null) {
                 object = converted;
             } else {
-                logger.warning(object + "[ " + object.getClass() + " ] is not of type "
+                logger.fine(object + "[ " + object.getClass() + " ] is not of type "
                     + binding.getType());
 
                 return;

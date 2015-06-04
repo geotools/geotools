@@ -130,6 +130,7 @@ Things to note as we create the shapefile:
 
 * Use of DataStoreFactory with a parameter indicating we want a spatial index
 * The use of createSchema( SimpleFeatureType ) method to set up the shapefile
+  (We will create the getNewShapeFile method in the next section)
  
   .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
      :language: java

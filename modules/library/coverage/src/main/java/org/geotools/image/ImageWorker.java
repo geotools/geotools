@@ -44,6 +44,7 @@ import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -99,9 +100,16 @@ import javax.media.jai.TileCache;
 import javax.media.jai.Warp;
 import javax.media.jai.WarpAffine;
 import javax.media.jai.WarpGrid;
+import javax.media.jai.operator.AddDescriptor;
 import javax.media.jai.operator.ConstantDescriptor;
+import javax.media.jai.operator.ExtremaDescriptor;
+import javax.media.jai.operator.HistogramDescriptor;
+import javax.media.jai.operator.InvertDescriptor;
+import javax.media.jai.operator.MeanDescriptor;
 import javax.media.jai.operator.MosaicType;
+import javax.media.jai.operator.MultiplyConstDescriptor;
 import javax.media.jai.operator.SubtractDescriptor;
+import javax.media.jai.operator.XorConstDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.factory.Hints;
@@ -4234,14 +4242,14 @@ public class ImageWorker {
                 float sWidth = paramBlock.getFloatParameter(2);
                 float sHeight = paramBlock.getFloatParameter(3);
 
-                // merge the two (just need to sum the two origins)
-                if (sx > 0) {
-                    x = sx + x;
-                }
-                if (sy > 0) {
-                    y = sy + y;
-                }
+                Rectangle2D.Float sourceBounds = new Rectangle2D.Float(sx, sy, sWidth, sHeight);
+                Rectangle2D.Float bounds = new Rectangle.Float(x, y, width, height);
+                Rectangle2D intersection = bounds.createIntersection(sourceBounds);
 
+                x = (float) intersection.getMinX();
+                y = (float) intersection.getMinY();
+                width = (float) intersection.getWidth();
+                height = (float) intersection.getHeight();
             }
         }
 

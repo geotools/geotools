@@ -864,7 +864,7 @@ class RasterLayerResponse{
                     images[i++] = roi.getAsImage();
                 }
 
-                ROI[] roisArray = (ROI[]) rois.toArray(new ROI[rois.size()]);
+                ROI[] roisArray = rois.toArray(new ROI[rois.size()]);
                 RenderedImage overallROI = new ImageWorker(hints)
                         .setBackground(new double[] { 0.0 })
                         .mosaic(images, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, roisArray,
@@ -1656,12 +1656,16 @@ class RasterLayerResponse{
             }
             // impose the color model and samplemodel as the constant operation does not take them
             // into account!
+            ColorModel cm;
             if (rasterManager.defaultCM != null) {
-                il.setColorModel(rasterManager.defaultCM);
-                il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(
-                        tileSize.width, tileSize.height));
-
+                cm = rasterManager.defaultCM;
+            } else {
+                byte[] arr = { (byte) 0, (byte) 0xff };
+                cm = new IndexColorModel(1, 2, arr, arr, arr);
             }
+            il.setColorModel(cm);
+            il.setSampleModel(cm.createCompatibleSampleModel(tileSize.width, tileSize.height));
+
             final double[] bkgValues = new double[values.length];
             for (int i = 0; i < values.length; i++) {
                 bkgValues[i] = values[i].doubleValue();

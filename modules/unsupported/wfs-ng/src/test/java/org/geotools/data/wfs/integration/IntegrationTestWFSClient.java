@@ -374,7 +374,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         String encodedTransactionResponse = enc.encodeAsString(tr, 
                 "1.0.0".equals(getStrategy().getVersion()) ? org.geotools.wfs.v1_0.WFS.WFS_TransactionResponse :
                     WFS.TransactionResponse);
-        System.err.println(encodedTransactionResponse);
+        // System.err.println(encodedTransactionResponse);
         return encodedTransactionResponse;
     }
 }

@@ -36,12 +36,10 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,7 +63,6 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
 import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.imageio.GeoSpatialImageReader;
 import org.geotools.imageio.netcdf.cv.CoordinateVariable;
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
@@ -79,16 +76,16 @@ import org.opengis.coverage.SampleDimension;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import ucar.ma2.Array;
 import ucar.ma2.IndexIterator;
 import ucar.ma2.InvalidRangeException;
 import ucar.ma2.Range;
 import ucar.ma2.Section;
+import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
-import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
-import ucar.nc2.dataset.CoordinateAxis1D;
 import ucar.nc2.dataset.CoordinateSystem;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.VariableDS;
@@ -141,23 +138,17 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
      */
     private NetcdfDataset dataset;
 
-    final Map<String, CoordinateVariable<?>> coordinatesVariables = new HashMap<String, CoordinateVariable<?>>();
+    NetCDFGeoreferenceManager georeferencing;
 
     private CheckType checkType = CheckType.UNSET;
 
     /** Internal Cache for CoverageSourceDescriptor.**/
     private final SoftValueHashMap<String, VariableAdapter> coverageSourceDescriptorsCache= new SoftValueHashMap<String, VariableAdapter>();
 
-    final Map<String, String> dimensionsMapping = new HashMap<String, String> ();
-
     /** The source file */
     private File file;
 
-    ReferencedEnvelope boundingBox;
-
-    /** Boolean indicating if the input file needs flipping or not*/
-        private boolean needsFlipping = false;
-
+    
     public NetCDFImageReader(ImageReaderSpi originatingProvider ) {
         super(originatingProvider);
     }
@@ -395,42 +386,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         }
     }
 
-    private void initMapping(List<CoordinateAxis> coordinateAxis) {
-        // check other dimensions
-        for (CoordinateAxis axis : coordinateAxis) {
-            // get from coordinate vars
-            final CoordinateVariable<?> cv = coordinatesVariables.get(axis.getFullName());
-            if (cv != null) {
-                final String name = cv.getName();
-                switch(cv.getAxisType()){
-                    case GeoX: case GeoY: case Lat: case Lon:
-                        continue;
-                    case Height: case Pressure: case RadialElevation: case RadialDistance: case GeoZ:
-                        if (NetCDFCRSUtilities.VERTICAL_AXIS_NAMES.contains(name) && !dimensionsMapping.containsKey(NetCDFUtilities.ELEVATION_DIM)) {
-                            // Main elevation dimension
-                            dimensionsMapping.put(NetCDFUtilities.ELEVATION_DIM, name);
-                        } else {
-                            // additional elevation dimension
-                            dimensionsMapping.put(name.toUpperCase(), name);
-                        }
-                        break;
-                    case Time:
-                        if (!dimensionsMapping.containsKey(NetCDFUtilities.TIME_DIM)) {
-                            // Main time dimension
-                            dimensionsMapping.put(NetCDFUtilities.TIME_DIM, name);
-                        } else {
-                            // additional time dimension
-                            dimensionsMapping.put(name.toUpperCase(), name);
-                        }
-                        break;
-                }
-            }else {
-                if (LOGGER.isLoggable(Level.SEVERE)) {
-                    LOGGER.severe("Null coordinate variable: '" + axis.getFullName() + "' while processing input: " + this.getInput());
-                }
-            }
-        }
-    }
+
 
     private Name getCoverageName(String varName) {
         Name coverageName = ancillaryFileManager.getCoverageName(varName);
@@ -442,33 +398,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         return coverageName;
     }
 
-    private void extractCoordinatesVariable( ) throws IOException {
-        // get the coordinate variables
-        for( CoordinateAxis axis : dataset.getCoordinateAxes() ) {
-            if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null) {
-                coordinatesVariables.put(axis.getFullName(), CoordinateVariable.create((CoordinateAxis1D)axis));
-            } else {
-                // Workaround for Unsupported Axes
-                Set<String> unsupported = NetCDFUtilities.getUnsupportedDimensions();
-                if (axis instanceof CoordinateAxis1D && unsupported.contains(axis.getFullName())) {
-                    axis.setAxisType(AxisType.GeoZ);
-                    coordinatesVariables.put(axis.getFullName(),
-                            CoordinateVariable.create((CoordinateAxis1D) axis));
-                // Workaround for files that have a time dimension, but in a format that could not be parsed
-                } else if ("time".equals(axis.getFullName())) {
-                    LOGGER.warning("Detected unparseable unit string in time axis: '"
-                            + axis.getUnitsString() + "'.");
-                    axis.setAxisType(AxisType.Time);
-                    coordinatesVariables.put(axis.getFullName(),
-                            CoordinateVariable.create((CoordinateAxis1D) axis));
-                } else {
-                    LOGGER.warning("Unsupported axis: " + axis + " in input: " + this.getInput()
-                            + " has been found");
-                }
-            }
-        }
-        initMapping(dataset.getCoordinateAxes());
-    }
+ 
 
     @Override
     public void dispose() {
@@ -479,7 +409,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         super.dispose();
         checkType = CheckType.UNSET;
 
-        coordinatesVariables.clear();
+        georeferencing.dispose();
         numImages = -1;
         try {
             if (dataset != null) {
@@ -512,8 +442,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                 checkType = NetCDFUtilities.getCheckType(dataset);
 
                 // get the coordinate variables
-                extractCoordinatesVariable();
-                extractBBOX();
+                georeferencing = new NetCDFGeoreferenceManager(dataset);
                 final File slicesIndexFile = ancillaryFileManager.getSlicesIndexFile();
 
                 if (slicesIndexFile != null) {
@@ -555,67 +484,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         setNumImages(numImages);
     }
 
-    /**
-     * @throws IOException 
-     * 
-     */
-    private void extractBBOX() throws IOException {
-        double [] lon= new double[2];
-        double [] lat= new double[2];
-        byte set=0;
-        for (CoordinateVariable<?> cv : coordinatesVariables.values()) {
-            if (cv.isNumeric()) {
 
-                // is it lat or lon?
-                AxisType type = cv.getAxisType();
-                switch (type) {
-                case GeoY: case Lat:
-                    if (cv.isRegular()) {
-                        lat[0] = cv.getStart() - (cv.getIncrement() / 2d);
-                        lat[1] = lat[0] + cv.getIncrement() * (cv.getSize());
-                    } else {
-                        double min = ((Number) cv.getMinimum()).doubleValue();
-                        double max = ((Number) cv.getMaximum()).doubleValue();
-                        double incr = (max - min) / (cv.getSize() - 1);
-                        lat[0] = min - (incr / 2d);
-                        lat[1] = max + (incr / 2d);
-                    }
-                    if(lat[1] > lat[0]){
-                        needsFlipping  = true;
-                    }else{
-                        needsFlipping = false;
-                    }
-                    set++;
-                    break;
-                case GeoX:
-                case Lon:
-                    if (cv.isRegular()) {
-                        lon[0] = cv.getStart() - (cv.getIncrement() / 2d);
-                        lon[1] = lon[0] + cv.getIncrement() * (cv.getSize());
-                    } else {
-                        double min = ((Number) cv.getMinimum()).doubleValue();
-                        double max = ((Number) cv.getMaximum()).doubleValue();
-                        double incr = (max - min) / (cv.getSize() - 1);
-                        lon[0] = min - (incr / 2d);
-                        lon[1] = max + (incr / 2d);
-                    }
-                    set++;
-                    break;
-                default:
-                    break;
-                }
-            }
-            if (set == 2) {
-                break;
-            }
-        }
-        // create the envelope
-        if (set != 2) {
-            throw new IllegalStateException("Unable to create envelope for this dataset");
-        }
-        boundingBox = new ReferencedEnvelope(lon[0], lon[1], lat[0], lat[1], NetCDFCRSUtilities.WGS84);
-        
-    }
 
     /**
      * Wraps a generic exception into a {@link IIOException}.
@@ -718,7 +587,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
          * since it is a convenient way to get the number of destination bands.
          */
         final int width = wrapper.getWidth();
-        final int height        = wrapper.getHeight();
+        final int height = wrapper.getHeight();
         /*
          * Computes the source region (in the NetCDF file) and the destination
          * region (in the buffered image). Copies those informations into UCAR
@@ -730,8 +599,8 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
         // Flipping is needed only when the input latitude coordinate is ordered
         // from min to max
-        if(needsFlipping){
-                flipVertically(param, height, srcRegion);
+        if (georeferencing.isNeedsFlipping()) {
+            flipVertically(param, height, srcRegion);
         }
         int destWidth = destRegion.x + destRegion.width;
         int destHeight = destRegion.y + destRegion.height;
@@ -786,7 +655,8 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         Hashtable<String, Object> properties = getNoDataProperties(wrapper);
         final BufferedImage image = new BufferedImage(colorModel, raster, colorModel.isAlphaPremultiplied(), properties);
 
-        CoordinateAxis axis = wrapper.variableDS.getCoordinateSystems().get(0).getLatAxis();
+        CoordinateSystem cs = wrapper.variableDS.getCoordinateSystems().get(0);
+        CoordinateAxis axis = georeferencing.isLonLat() ? cs.getLatAxis() : cs.getYaxis();
         boolean flipYAxis = false;
         try {
             Array yAxisStart = axis.read(new Section().appendRange(2));
@@ -798,9 +668,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         } catch (InvalidRangeException e) {
             throw new RuntimeException(e);
         }
-        /*
-         * Reads the requested sub-region only.
-         */
+        // Reads the requested sub-region only.
         processImageStarted(imageIndex);
         final int numDstBands = 1;
         final float toPercent = 100f / numDstBands;
@@ -815,8 +683,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
             final Array array;
             try {
                 // TODO leak through
-                array = 
-                    wrapper.variableDS.read(section);
+                array = wrapper.variableDS.read(section);
             } catch (InvalidRangeException e) {
                 throw netcdfFailure(e);
             }
@@ -848,8 +715,8 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                         }
                     }
                 }
-            }else{
-                switch( type ) {
+            } else {
+                switch (type) {
                     case DataBuffer.TYPE_DOUBLE: {
                         DoubleBuffer doubleBuffer = array.getDataAsByteBuffer().asDoubleBuffer();
                         double[] samples = new double[destRegion.width * destRegion.height];
@@ -882,9 +749,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                         }
                         break;
                     }
-
                 }
-
             }
             /*
              * Checks for abort requests after reading. It would be a waste of a
@@ -957,7 +822,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
             }
         }
     }
-    
+
     /** 
      * Create the schema in case not already defined
      * @param indexSchema
@@ -981,31 +846,33 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     }
 
     public SimpleFeatureType getIndexSchema(Name coverageName, CoordinateSystem coordinateSystem) throws Exception {
-                // get the name for this variable to check his coveragename
+        // get the name for this variable to check his coveragename
         final String _coverageName = coverageName.toString();
         // get the coverage definition for this variable, at this stage this exists otherwise we would have skipped it!
         final Coverage coverage = ancillaryFileManager.coveragesMapping.get(_coverageName);
-        
+
         // now check the schema creation
         SchemaType schema = coverage.getSchema();
         String schemaDef=schema!=null?schema.getAttributes():null;
-        
+
         // no schema was defined yet, let's create a default one
         if (schema == null||schema.getAttributes()==null) {
             // TODO incapsulate in coveragedescriptor
             schemaDef = suggestSchemaFromCoordinateSystem(coverage, coordinateSystem);
-            
+
             //set the schema name to be the coverageName
-            ancillaryFileManager.setSchema(coverage,coverage.getName(),schemaDef);   
+            ancillaryFileManager.setSchema(coverage,coverage.getName(),schemaDef);
             schema = coverage.getSchema();
         } 
-        
+        String variableName = ancillaryFileManager.variablesMap.get(coverageName);
+        CoordinateReferenceSystem crs = georeferencing.getCoordinateReferenceSystem(variableName);
+
         // create featuretype, the name is the CoverageName
-        final SimpleFeatureType indexSchema = NetCDFUtilities.createFeatureType(coverage.getName(),schemaDef,NetCDFCRSUtilities.WGS84);
-        
-        // create 
+        final SimpleFeatureType indexSchema = NetCDFUtilities.createFeatureType(coverage.getName(), schemaDef, crs);
+
+        // create
         forceSchemaCreation(indexSchema);
-        
+
         // return
         return indexSchema;
     }
@@ -1024,7 +891,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         // check other dimensions
         for (CoordinateAxis axis:cs.getCoordinateAxes()) {
             // get from coordinate vars
-            final CoordinateVariable<?> cv = coordinatesVariables.get(axis.getFullName()); 
+            final CoordinateVariable<?> cv = georeferencing.getCoordinateVariable(axis.getFullName()); 
             final String name = cv.getName();
             switch(cv.getAxisType()){
             case GeoX: case GeoY: case Lat: case Lon:
@@ -1033,6 +900,13 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
             schemaAttributes+=("," + name + ":" + cv.getType().getName());
         }
         return schemaAttributes;
+    }
+
+    List<Attribute> getGlobalAttributes() {
+        if (dataset != null) {
+            return dataset.getGlobalAttributes();
+        }
+        return null;
     }
 
     @Override
@@ -1056,4 +930,5 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         ancillaryFileManager.purge();
     }
   
+
 }

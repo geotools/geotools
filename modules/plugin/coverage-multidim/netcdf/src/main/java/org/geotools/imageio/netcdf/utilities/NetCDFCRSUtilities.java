@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -71,11 +71,11 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 public class NetCDFCRSUtilities {
 
     private final static java.util.logging.Logger LOGGER = Logger.getLogger(NetCDFCRSUtilities.class.toString());
-    
+
     public static final ReferencingFactoryContainer FACTORY_CONTAINER = ReferencingFactoryContainer.instance(GeoTools.getDefaultHints());
-    
+
     final static PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
-   
+
     public final static GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
 
     /**
@@ -125,7 +125,7 @@ public class NetCDFCRSUtilities {
      *       completed.
      */
     private static final String[] SECONDS = {"second", "sec", "seconds since"};
-    
+
     public final static Set<String> VERTICAL_AXIS_NAMES = new HashSet<String>();
     /**
      * The mapping between UCAR axis type and ISO axis directions.
@@ -147,14 +147,13 @@ public class NetCDFCRSUtilities {
         VERTICAL_AXIS_NAMES.add("z");
         VERTICAL_AXIS_NAMES.add("depth");
         VERTICAL_AXIS_NAMES.add("pressure");
-        
     }
 
     /**
      * The object to use for parsing and formatting units.
      */
     private final static UnitFormat UNIT_FORMAT = UnitFormat.getInstance();
-    
+
     /**
      * Adds a mapping between UCAR type and ISO direction.
      */
@@ -200,7 +199,6 @@ public class NetCDFCRSUtilities {
         return new String[]{units, direction};
     }
 
-    
     /**
      * Get the {@link AxisDirection} object related to the specified direction
      * 
@@ -251,10 +249,11 @@ public class NetCDFCRSUtilities {
                         v_datumType = "geoidal";
                         v_crsName = new Identification("mean sea level height", null, null, "EPSG:5714").getName();
                     }
-                } else if (axisType == AxisType.Pressure)
+                } else if (axisType == AxisType.Pressure) {
                     v_datumType = "barometric";
-                else
+                } else {
                     v_datumType = "other_surface";
+                }
 
                 /*
                  * Gets the axis direction, taking in account the possible reversal or

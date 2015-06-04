@@ -46,7 +46,10 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderFactory;
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
@@ -278,6 +281,51 @@ public class ImageMosaicFootprintsTest {
         assertNotNull(coverage);
     }
     
+    @Test
+    public void testRequestHole() throws Exception {
+        // copy the footprints mosaic over
+        FileUtils.copyDirectory(footprintsSource, testMosaic);
+        Properties p = new Properties();
+        p.put(MultiLevelROIProviderFactory.INSET_PROPERTY, "0.1");
+        saveFootprintProperties(p);
+        final AbstractGridFormat format = TestUtils.getFormat(testMosaicUrl);
+        ImageMosaicReader reader = TestUtils.getReader(testMosaicUrl, format);
+        reader.dispose();
+        // get rid of the sample image
+        File sampleImage = new File(testMosaic, "sample_image");
+        sampleImage.delete();
+        // a new reader without the sample image, in normal conditions it can actually produce
+        // output
+        reader = TestUtils.getReader(testMosaicUrl, format);
+
+        // activate footprint management
+        GeneralParameterValue[] params = new GeneralParameterValue[3];
+        ParameterValue<String> footprintManagement = ImageMosaicFormat.FOOTPRINT_BEHAVIOR
+                .createValue();
+        footprintManagement.setValue(FootprintBehavior.Transparent.name());
+        params[0] = footprintManagement;
+
+        // this prevents us from having problems with link to files still open.
+        ParameterValue<Boolean> jaiImageRead = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+        jaiImageRead.setValue(false);
+        params[1] = jaiImageRead;
+
+        // limit yourself to reading just a bit of it
+        MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
+        ReferencedEnvelope readEnvelope = new ReferencedEnvelope(8.3, 9.6, 43, 44,
+                DefaultGeographicCRS.WGS84);
+        Envelope2D rasterEnvelope = new Envelope2D(CRS.transform(mt, readEnvelope));
+        GridEnvelope2D ge = new GridEnvelope2D(6, 44, 1, 1);
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        gg.setValue(new GridGeometry2D(ge, mt, DefaultGeographicCRS.WGS84));
+        params[2] = gg;
+
+        GridCoverage2D coverage = reader.read(params);
+        reader.dispose();
+        assertNotNull(coverage);
+    }
+
     @Test
     public void testInsetsFull() throws Exception {
         // copy the footprints mosaic over

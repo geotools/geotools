@@ -1,0 +1,153 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
+ *    
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+package org.geotools.data.ows;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.apache.commons.httpclient.HostConfiguration;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethod;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * Tests for {@link MultithreadedHttpClient}.
+ * 
+ * @author awaterme
+ */
+public class MultithreadedHttpClientTest {
+
+	private static final String SYS_PROP_KEY_NONPROXYHOSTS = "http.nonProxyHosts";
+	private static final String SYS_PROP_KEY_HOST = "http.proxyHost";
+
+	private String[] sysPropOriginalValue = new String[2];
+
+	private final class MultithreadedHttpTestClient extends MultithreadedHttpClient {
+		@Override
+		HttpClient createHttpClient() {
+			return mockHttpClient;
+		}
+	};
+
+	private HttpClient mockHttpClient = mock(HttpClient.class);
+	private HostConfiguration mockHostConfiguration = mock(HostConfiguration.class);
+
+	@Before
+	public void setupMocks() {
+		when(mockHttpClient.getHostConfiguration()).thenReturn(mockHostConfiguration);
+	}
+
+	/**
+	 * Verifies that the default configuration (with proxy settings) is used
+	 * when a GET is executed, matching no nonProxyHost.
+	 * 
+	 * @throws IOException
+	 * @throws MalformedURLException
+	 */
+	@Test
+	public void testGetWithNoMatchingNonProxyHost() throws MalformedURLException, IOException {
+		System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
+		System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "localhost");
+		MultithreadedHttpClient sut = new MultithreadedHttpTestClient();
+		when(mockHttpClient.executeMethod(any(HttpMethod.class))).thenReturn(200);
+		sut.get(new URL("http://www.geotools.org"));
+		// HttpClient.executeMethod(HttpMethod) has to be called (w/o
+		// HostConfig)
+		verify(mockHttpClient, times(1)).executeMethod(any(HttpMethod.class));
+	}
+
+	/**
+	 * Verifies that method is executed without specifying nonProxyHosts.
+	 * 
+	 * @throws IOException
+	 * @throws MalformedURLException
+	 */
+	@Test
+	public void testGetWithoutNonProxyHost() throws MalformedURLException, IOException {
+		MultithreadedHttpClient sut = new MultithreadedHttpTestClient();
+		when(mockHttpClient.executeMethod(any(HttpMethod.class))).thenReturn(200);
+		sut.get(new URL("http://www.geotools.org"));
+		
+		System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
+		sut = new MultithreadedHttpTestClient();
+		sut.get(new URL("http://www.geotools.org"));
+
+		// HttpClient.executeMethod(HttpMethod) has to be called (w/o
+		// HostConfig)
+		verify(mockHttpClient, times(2)).executeMethod(any(HttpMethod.class));
+	}
+
+	/**
+	 * Verifies that the nonProxyConfig is used when a GET is executed, matching
+	 * a nonProxyHost.
+	 * 
+	 * @throws IOException
+	 * @throws HttpException
+	 */
+	@Test
+	public void testGetWithMatchingNonProxyHost() throws HttpException, IOException {
+		System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
+		System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "localhost");
+		MultithreadedHttpClient sut = new MultithreadedHttpTestClient();
+		when(mockHttpClient.executeMethod(any(HostConfiguration.class), any(HttpMethod.class))).thenReturn(200);
+		sut.get(new URL("http://localhost"));
+		
+		System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "\"localhost|www.geotools.org\"");
+		sut = new MultithreadedHttpTestClient();
+		sut.get(new URL("http://localhost"));
+		// HttpClient.executeMethod(HostConfig, HttpMethod) has to be called
+		// (with HostConfig)
+		verify(mockHttpClient, times(2)).executeMethod(any(HostConfiguration.class), any(HttpMethod.class));
+	}
+
+	/**
+	 * Save original system properties for later restore to avoid affecting
+	 * other tests.
+	 */
+	@Before
+	public void setupSaveOriginalSysPropValue() {
+		sysPropOriginalValue[0] = System.getProperty(SYS_PROP_KEY_NONPROXYHOSTS);
+		sysPropOriginalValue[1] = System.getProperty(SYS_PROP_KEY_HOST);
+	}
+
+	/**
+	 * Restore original system properties to avoid affecting other tests.
+	 */
+	@After
+	public void setupRestoreOriginalSysPropValue() {
+		if (sysPropOriginalValue[0] == null) {
+			System.clearProperty(SYS_PROP_KEY_NONPROXYHOSTS);
+		} else {
+			System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, sysPropOriginalValue[0]);
+		}
+		if (sysPropOriginalValue[1] == null) {
+			System.clearProperty(SYS_PROP_KEY_HOST);
+		} else {
+			System.setProperty(SYS_PROP_KEY_HOST, sysPropOriginalValue[1]);
+		}
+	}
+}

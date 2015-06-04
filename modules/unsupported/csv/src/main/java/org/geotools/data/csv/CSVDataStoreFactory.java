@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *    
- * 	  (c) 2014 Open Source Geospatial Foundation - all rights reserved
+ * 	  (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
  * 	  (c) 2012 - 2014 OpenPlans
  *
  *    This library is free software; you can redistribute it and/or
@@ -35,7 +35,11 @@ import org.geotools.data.csv.parse.CSVAttributesOnlyStrategy;
 import org.geotools.data.csv.parse.CSVLatLonStrategy;
 import org.geotools.data.csv.parse.CSVSpecifiedWKTStrategy;
 import org.geotools.data.csv.parse.CSVStrategy;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.util.KVP;
+
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
 
@@ -61,7 +65,8 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
     public static final Param WKTP = new Param("wktField", String.class,
             "WKT field. Assumes a CSVSpecifiedWKTStrategy", false);
 
-    public static final Param[] parametersInfo = new Param[] { FILE_PARAM };
+    public static final Param[] parametersInfo = new Param[] { FILE_PARAM, NAMESPACEP, STRATEGYP,
+            LATFIELDP, LnGFIELDP, WKTP };
 
     @Override
     public String getDisplayName() {
@@ -178,7 +183,15 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         } else {
             csvStrategy = new CSVAttributesOnlyStrategy(csvFileState);
         }
-        return new CSVDataStore(csvFileState, csvStrategy);
+        CSVDataStore store = new CSVDataStore(csvFileState, csvStrategy);
+        if (namespace != null) {
+            store.setNamespaceURI(namespace.toString());
+        }
+        store.setDataStoreFactory(this);
+        store.setGeometryFactory(new GeometryFactory());
+        store.setFeatureTypeFactory(new FeatureTypeFactoryImpl());
+        store.setFeatureFactory(CommonFactoryFinder.getFeatureFactory(null));
+        return store;
     }
 
     @Override

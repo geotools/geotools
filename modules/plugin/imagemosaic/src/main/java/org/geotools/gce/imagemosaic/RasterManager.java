@@ -1436,10 +1436,6 @@ public class RasterManager {
             initDomains(configuration);
         }
 
-        if (bounds.isEmpty()) {
-            throw new IllegalArgumentException("Cannot create a mosaic out of an empty index");
-        }
-
         // we might have an imposed bbox
         CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
         GeneralEnvelope originalEnvelope = null;

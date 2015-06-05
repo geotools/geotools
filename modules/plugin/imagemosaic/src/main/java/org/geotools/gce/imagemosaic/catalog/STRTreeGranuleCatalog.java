@@ -356,8 +356,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 			// intersection
 			final Envelope intersection = requestedBBox.intersection(ReferencedEnvelope.reference(bbox));
 			
-			// create intersection
-			final ReferencedEnvelope referencedEnvelope= new ReferencedEnvelope(intersection,bbox.getCoordinateReferenceSystem());
+			// create intersection and return it
+			requestedBBox = new ReferencedEnvelope(intersection,bbox.getCoordinateReferenceSystem());
 		}
 		else{
 		    return ReferencedEnvelope.reference(bbox);

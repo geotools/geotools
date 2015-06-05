@@ -89,6 +89,7 @@ public class OracleNGOCIDataStoreFactory extends OracleNGDataStoreFactory {
         
         parameters.put(OracleNGDataStoreFactory.ESTIMATED_EXTENTS.key, OracleNGDataStoreFactory.ESTIMATED_EXTENTS);
         parameters.put(OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE.key, OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE);
+        parameters.put(METADATA_BBOX.key, METADATA_BBOX);
 
     }
 }

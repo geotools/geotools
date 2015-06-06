@@ -35,6 +35,8 @@ import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import oracle.jdbc.OracleConnection;
+import oracle.sql.ARRAY;
+import oracle.sql.Datum;
 import oracle.sql.STRUCT;
 
 import org.geotools.data.jdbc.FilterToSQL;
@@ -184,6 +186,11 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      * @param dataStore
      */
     String geometryMetadataTable;
+    
+    /**
+     * Whether to use metadata tables to get bbox
+     */
+    boolean metadataBboxEnabled = false;
 
     public OracleDialect(JDBCDataStore dataStore) {
         super(dataStore);
@@ -850,7 +857,98 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     @Override
     public List<ReferencedEnvelope> getOptimizedBounds(String schema, SimpleFeatureType featureType,
             Connection cx) throws SQLException, IOException {
-        if (!estimatedExtentsEnabled || dataStore.getVirtualTables().get(featureType.getTypeName()) != null)
+        if (dataStore.getVirtualTables().get(featureType.getTypeName()) != null)
+            return null;
+        
+        // get the bounds very fast from SDO_GEOM_METADATA, if not use SDO_TUNE.EXTENT_OF
+        if(metadataBboxEnabled) {
+            String tableName = featureType.getTypeName();
+        
+            Statement st = null;
+            ResultSet rs = null;
+         
+            List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
+            Savepoint savePoint = null;
+            try {
+                st = cx.createStatement();
+                if(!cx.getAutoCommit()) {
+                    savePoint = cx.setSavepoint();
+                }
+    
+                for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
+                    if (att instanceof GeometryDescriptor) {
+                        String columnName = att.getName().getLocalPart();
+                        StringBuffer sql = new StringBuffer();
+                        // check if we can access the MDSYS.USER_SDO_GEOM_METADATA table
+                        if (canAccessUserViews(cx)) {
+                            sql.append("SELECT DIMINFO FROM MDSYS.USER_SDO_GEOM_METADATA WHERE ");
+                            sql.append( "TABLE_NAME='").append( tableName.toUpperCase() ).append("' AND ");
+                            sql.append( "COLUMN_NAME='").append( columnName.toUpperCase() ).append( "'");
+                            
+                            rs = st.executeQuery(sql.toString());
+                            
+                            if (rs.next()) {
+                                // decode the dimension info
+                                Envelope env = decodeDiminfoEnvelope(rs, 1);
+        
+                                // reproject and merge
+                                if (env != null && !env.isNull()) {
+                                    CoordinateReferenceSystem crs = ((GeometryDescriptor) att)
+                                            .getCoordinateReferenceSystem();
+                                    result.add(new ReferencedEnvelope(env, crs));
+                                    rs.close();
+                                    continue;
+                                }
+                            }
+                            rs.close();
+                        }
+                        // if we could not retrieve the envelope from USER_SDO_GEOM_METADATA,
+                        // try from ALL_SDO_GEOM_METADATA
+                        sql = new StringBuffer("SELECT DIMINFO FROM MDSYS.ALL_SDO_GEOM_METADATA WHERE ");
+                        sql.append( "TABLE_NAME='").append( tableName.toUpperCase() ).append("' AND ");
+                        sql.append( "COLUMN_NAME='").append( columnName.toUpperCase() ).append( "'");
+                        if(schema != null)
+                            sql.append(" AND OWNER='" + schema + "'");                  
+                                
+                        rs = st.executeQuery(sql.toString());
+
+                        if (rs.next()) {
+                            // decode the dimension info
+                            Envelope env = decodeDiminfoEnvelope(rs, 1);
+    
+                            // reproject and merge
+                            if (env != null && !env.isNull()) {
+                                CoordinateReferenceSystem crs = ((GeometryDescriptor) att)
+                                        .getCoordinateReferenceSystem();
+                                result.add(new ReferencedEnvelope(env, crs));
+                            }
+                        }
+                        rs.close();
+                    }
+                }
+            } catch(SQLException e) {
+                if(savePoint != null) {
+                    cx.rollback(savePoint);
+                }
+                LOGGER.log(Level.WARNING, "Failed to use METADATA DIMINFO, falling back on SDO_TUNE.EXTENT_OF", e);
+                return getOptimizedBoundsSDO_TUNE(schema, featureType, cx);
+            } finally {
+                if(savePoint != null) {
+                    cx.rollback(savePoint);
+                }
+                dataStore.closeSafe(rs);
+                dataStore.closeSafe(st);
+            }
+            return result;
+        }
+        // could not retrieve bounds from SDO_GEOM_METADATA table or did not want to
+        // falling back on SDO_TUNE.EXTENT_OF
+        return getOptimizedBoundsSDO_TUNE(schema, featureType, cx);
+    }
+    
+    public List<ReferencedEnvelope> getOptimizedBoundsSDO_TUNE(String schema, SimpleFeatureType featureType,
+            Connection cx) throws SQLException, IOException {
+        if (!estimatedExtentsEnabled)
             return null;
 
         String tableName;
@@ -1257,6 +1355,48 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      */
     public void setGeometryMetadataTable(String geometryMetadataTable) {
         this.geometryMetadataTable = geometryMetadataTable;
+    }
+    
+    /**
+     * Sets the decision if the table MDSYS.USER_SDO_GEOM_METADATA can be used for index calculation
+     * @param geometryMetadataTable
+     */
+    public void setMetadataBboxEnabled(boolean metadataBboxEnabled) {
+        this.metadataBboxEnabled = metadataBboxEnabled;
+    }
+    
+    /**
+     * 
+     * @param rs result set of the dimension info query
+     * @param column column of the dimension info
+     * @return the envelope out of the dimension info 
+     *         (assumption: x before y or longitude before latitude)
+     *         or null, if no data is in the specified column
+     * @throws SQLException if dimension info can not be parsed
+     * @author Hendrik Peilke
+     */
+    private Envelope decodeDiminfoEnvelope(ResultSet rs, int column) throws SQLException
+    {
+        ARRAY returnArray = (ARRAY) rs.getObject(column);
+        
+        if(returnArray == null) {
+            throw new SQLException("no data inside the specified column");
+        }
+        
+        Datum data[] = returnArray.getOracleArray();
+        
+        if(data.length < 2) {
+            throw new SQLException("too little dimension information found in sdo_geom_metadata");
+        }
+        
+        Datum[] xInfo = ((STRUCT) data[0]).getOracleAttributes();
+        Datum[] yInfo = ((STRUCT) data[1]).getOracleAttributes();
+        Double minx = xInfo[1].doubleValue();
+        Double maxx = xInfo[2].doubleValue();
+        Double miny = yInfo[1].doubleValue();
+        Double maxy = yInfo[2].doubleValue();
+        
+        return new Envelope(minx,maxx,miny,maxy);
     }
 
 }

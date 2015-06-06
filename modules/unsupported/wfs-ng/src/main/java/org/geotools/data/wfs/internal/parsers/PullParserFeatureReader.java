@@ -25,8 +25,10 @@ import javax.xml.stream.XMLStreamException;
 import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.PullParser;
+import org.geotools.xml.impl.ParserHandler.ContextCustomizer;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.FeatureType;
+import org.picocontainer.MutablePicoContainer;
 import org.xml.sax.SAXException;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -37,7 +39,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * 
  * @author Niels Charlier
  */
-class PullParserFeatureReader implements GetFeatureParser {
+public class PullParserFeatureReader implements GetFeatureParser {
 
     private PullParser parser;
 
@@ -99,5 +101,10 @@ class PullParserFeatureReader implements GetFeatureParser {
     public void setGeometryFactory(GeometryFactory geometryFactory) {     
         //TODO implement?
     }
+    
+    public void setContextCustomizer(ContextCustomizer contextCustomizer) {
+        parser.setContextCustomizer(contextCustomizer);
+    }
+    
 
 }

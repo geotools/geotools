@@ -18,7 +18,7 @@ Unlike most external libraries used in GeoTools, we cannot redistribute this jar
 1. Download the Oracle JDBC Driver: http://otn.oracle.com/software/tech/java/sqlj_jdbc/content.html
 2. Once you download the jar, you should place them in the Oracle Maven repository directory::
       
-      mvn install:install-file -Dfile=ojdbc14.jar -DgroupId=com.oracle -D artifactId=ojdbc14 -Dversion=10.2.0.3.0 -Dpackaging=jar
+      mvn install:install-file -Dfile=ojdbc7.jar -DgroupId=com.oracle -DartifactId=ojdbc7 -Dversion=12.1.0.2 -Dpackaging=jar -DgeneratePom=true
 
 Switching between Oracle Profiles with oracle.jdbc property
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

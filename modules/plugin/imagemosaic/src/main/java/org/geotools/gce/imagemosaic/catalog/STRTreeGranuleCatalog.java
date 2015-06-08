@@ -219,9 +219,6 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 			
 			//load the feature from the shapefile and create JTS index
 			it = features.iterator();
-			if (!it.hasNext()) 
-				throw new IllegalArgumentException(
-						"The provided SimpleFeatureCollection  or empty, it's impossible to create an index!");
 			
 			// now build the index
 			// TODO make it configurable as far the index is involved

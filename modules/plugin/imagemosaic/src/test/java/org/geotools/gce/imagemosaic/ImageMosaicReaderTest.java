@@ -49,6 +49,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -83,11 +84,14 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultProjectedCRS;
+import org.geotools.referencing.wkt.Parser;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
@@ -101,6 +105,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
+import org.opengis.filter.IncludeFilter;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
@@ -108,6 +114,11 @@ import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.datum.PixelInCell;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Testing {@link ImageMosaicReader}.
@@ -3487,6 +3498,161 @@ public class ImageMosaicReaderTest extends Assert{
 		System.clearProperty("org.geotools.referencing.forceXY");
 	        CRS.reset("all");
 	}
+        
+    /**
+     * Test if empty mosaic can be read and granules can be added and read
+     * @author Hendrik Peilke
+     */
+    @Test
+    public void testEmptyShapefileMosaic() throws Exception
+    {
+        // get some test data
+        final File testMosaic = TestData.file(this, "/empty_mosaic/empty_mosaic.shp");
+        assertTrue(testMosaic.exists());
+
+        ImageMosaicReader reader = (ImageMosaicReader) new ImageMosaicFormat()
+                .getReader(testMosaic);
+        
+        // remove cached granules on error and reload
+        reader.granuleCatalog.removeGranules(new Query("empty_mosaic", Filter.INCLUDE));
+        reader.dispose();
+        reader = (ImageMosaicReader) new ImageMosaicFormat().getReader(testMosaic);
+        
+        // manager should have an empty bbox
+        final RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
+        assertTrue(manager.spatialDomainManager.coverageBBox.isEmpty());
+        
+        // reading the mosaic with its own envelope (should be empty, so the request will be emtpy)
+        // this should return an empty coverage
+        ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        Rectangle rasterArea=(( GridEnvelope2D)reader.getOriginalGridRange());
+        GridEnvelope2D range= new GridEnvelope2D(rasterArea);
+        gg.setValue(new GridGeometry2D(range,envelope));
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
+        assertNull(coverage);
+        
+        // read without parameters, should also give null, since the bbox of the coverage is used
+        coverage = reader.read(null);
+        assertNull(coverage);
+        
+        
+        // use more complex parameters and own bbox --> should also return null coverage   
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        useJai.setValue(false);
+        final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
+        tileSize.setValue("128,128");
+        final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
+        bkg.setValue(new double[]{-9999.0});
+        gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 0, 0, 1000, 1000);
+        GridGeometry2D gg2D = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Envelope) env);
+        gg.setValue(gg2D);
+        coverage = reader.read(new GeneralParameterValue[] {bkg ,gg, useJai, tileSize});
+        assertNull(coverage);
+        
+        // now add a granule, reinitialize and test the opposite...
+        SimpleFeatureType granuleType = 
+                reader.granuleCatalog.getType(reader.granuleCatalog.getTypeNames()[0]);
+        GeometryFactory gf = new GeometryFactory();
+        SimpleFeatureBuilder sFB = new SimpleFeatureBuilder(granuleType);
+        SimpleFeature f = sFB.buildFeature(null);
+        f.setAttribute("location","addedGranule.tif");
+        LinearRing shell = gf.createLinearRing(new Coordinate[]{
+               new Coordinate(0,0),
+               new Coordinate(0,5903),
+               new Coordinate(5662,5903),
+               new Coordinate(5662,0),
+               new Coordinate(0,0)
+        });
+        f.setDefaultGeometry(gf.createPolygon(shell));
+        List<SimpleFeature> granules = new LinkedList<SimpleFeature>();
+        granules.add(f);
+        reader.granuleCatalog.addGranules("empty_mosaic", granules, null);
+        manager.initialize(false);
+        
+        // manager should now have no empty bbox
+        assertFalse(manager.spatialDomainManager.coverageBBox.isEmpty());
+        
+        // read without parameters, should give back the whole coverage
+        coverage = reader.read(null);
+        assertNotNull(coverage);
+        assertNotNull(coverage.getRenderedImage());
+        coverage.dispose(true);
+        
+        // use more complex parameters and own bbox --> should also return a coverage  
+        coverage = reader.read(new GeneralParameterValue[] {bkg ,gg, useJai, tileSize});
+        assertNotNull(coverage);
+        assertNotNull(coverage.getRenderedImage());
+        coverage.dispose(true);
+        
+        // now remove granule, reinitialize and test the first tests again
+        reader.granuleCatalog.removeGranules(new Query("empty_mosaic", Filter.INCLUDE));
+        manager.initialize(false);
+        
+        // manager should have an empty bbox
+        assertTrue(manager.spatialDomainManager.coverageBBox.isEmpty());
+        
+        // read without parameters, should give back a null coverage
+        coverage = reader.read(null);
+        assertNull(coverage);
+        
+        // use more complex parameters and own bbox --> should also return a null coverage 
+        coverage = reader.read(new GeneralParameterValue[] {bkg ,gg, useJai, tileSize});
+        assertNull(coverage);
+        
+        reader.dispose();
+    }
+    
+    /**
+     * Test if empty mosaic with caching can be read
+     * @author Hendrik Peilke
+     */
+    @Test
+    public void testEmptyShapefileMosaicWithCaching() throws Exception
+    {
+        // get some test data
+        final File testMosaic = TestData.file(this, "/empty_mosaic/empty_mosaic_with_caching.shp");
+        assertTrue(testMosaic.exists());
+
+        final ImageMosaicReader reader = (ImageMosaicReader) new ImageMosaicFormat()
+                .getReader(testMosaic);
+        
+        // manager should have an empty bbox
+        final RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
+        assertTrue(manager.spatialDomainManager.coverageBBox.isEmpty());
+        
+        // reading the mosaic with its own envelope (should be empty, so the request will be emtpy)
+        // this should return an empty coverage
+        ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        Rectangle rasterArea=(( GridEnvelope2D)reader.getOriginalGridRange());
+        GridEnvelope2D range= new GridEnvelope2D(rasterArea);
+        gg.setValue(new GridGeometry2D(range,envelope));
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
+        assertNull(coverage);
+        
+        // read without parameters, should also give null, since the bbox of the coverage is used
+        coverage = reader.read(null);
+        assertNull(coverage);
+        
+        
+        // use more complex parameters and own bbox        
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        useJai.setValue(false);
+        final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
+        tileSize.setValue("128,128");
+        final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
+        bkg.setValue(new double[]{-9999.0});
+        gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 0, 0, 1000, 1000);
+        GridGeometry2D gg2D = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Envelope) env);
+        gg.setValue(gg2D);
+        coverage = reader.read(new GeneralParameterValue[] {bkg ,gg, useJai, tileSize});
+        assertNull(coverage);
+        
+        reader.dispose();
+    }
 
 
 }

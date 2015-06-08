@@ -217,6 +217,9 @@ public class SpatialRequestHelper {
             computedRasterArea = (Rectangle) coverageProperties.rasterArea.clone();
             // TODO harmonize the various types of transformations
             computedGridToWorld= requestedGridToWorld = (AffineTransform) coverageProperties.gridToWorld2D;
+            // account for an empty coverage --> set request empty
+            if(requestedBBox.isEmpty())
+                emptyRequest = true;
             return;
         }
 

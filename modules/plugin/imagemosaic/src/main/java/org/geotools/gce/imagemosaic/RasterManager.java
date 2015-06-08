@@ -208,7 +208,12 @@ public class RasterManager {
                 coverageBBox = new ReferencedEnvelope(bbox);
             } else {
                 // it is already a bbox
-                coverageBBox = new ReferencedEnvelope(coverageEnvelope);
+                // workaraound for empty bbox, because conversion from OGC envelope to 
+                // JTS Envelope looses emptiness (min/max get switched)
+                if(coverageEnvelope.isEmpty())
+                    coverageBBox = new ReferencedEnvelope(coverageEnvelope.getCoordinateReferenceSystem());
+                else
+                    coverageBBox = new ReferencedEnvelope(coverageEnvelope);
             }
         }
         

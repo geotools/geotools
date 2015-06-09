@@ -719,6 +719,11 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
 
     /**
      * Creates a new envelope from an existing bounding box.
+     * 
+     * <p> NOTE: if the bounding box is empty, the resulting ReferencedEnvelope will not be. In 
+     *           case this is needed use {@link #create(org.opengis.geometry.Envelope, 
+     *           CoordinateReferenceSystem) ReferencedEnvelope.create(bbox,
+     *           bbox.getCoordinateReferenceSystem())}
      *
      * @param bbox The bounding box to initialize from.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
@@ -747,6 +752,11 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
     
     /**
      * Creates a new envelope from an existing OGC envelope.
+     *
+     * <p> NOTE: if the envelope is empty, the resulting ReferencedEnvelope will not be. In 
+     *           case this is needed use {@link #create(org.opengis.geometry.Envelope, 
+     *           CoordinateReferenceSystem) ReferencedEnvelope.create(envelope,
+     *           envelope.getCoordinateReferenceSystem())}
      *
      * @param envelope The envelope to initialize from.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.

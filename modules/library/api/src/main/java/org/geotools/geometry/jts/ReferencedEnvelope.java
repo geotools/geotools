@@ -21,13 +21,10 @@ import java.awt.geom.Rectangle2D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.operation.TransformPathNotFoundException;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
-import org.geotools.util.Utilities;
 import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.BoundingBox3D;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.geometry.MismatchedReferenceSystemException;
@@ -181,6 +178,11 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
 
     /**
      * Creates an envelope for a Java2D rectangle.
+     * 
+     * <p> NOTE: if the rectangle is empty, the resulting ReferencedEnvelope will not be. In 
+     *           case this is needed use {@link #create(Rectangle2D, 
+     *           CoordinateReferenceSystem) ReferencedEnvelope.create(rectangle,
+     *           crs)}
      *
      * @param rectangle The rectangle.
      * @param crs The coordinate reference system.
@@ -211,10 +213,12 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
 
     /**
      * Creates a new envelope from an existing bounding box.
-     *
+     * <p> NOTE: if the bounding box is empty, the resulting ReferencedEnvelope will not be. In 
+     *           case this is needed use {@link #create(org.opengis.geometry.Envelope, 
+     *           CoordinateReferenceSystem) ReferencedEnvelope.create(bbox,
+     *           bbox.getCoordinateReferenceSystem())}
      * @param bbox The bounding box to initialize from.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
-     *
      * @since 2.4
      */
     public ReferencedEnvelope(final BoundingBox bbox) throws MismatchedDimensionException {
@@ -224,6 +228,11 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
 
     /**
      * Creates a new envelope from an existing OGC envelope.
+     * 
+     * <p> NOTE: if the envelope is empty, the resulting ReferencedEnvelope will not be. In 
+     *           case this is needed use {@link #create(org.opengis.geometry.Envelope, 
+     *           CoordinateReferenceSystem) ReferencedEnvelope.create(envelope,
+     *           envelope.getCoordinateReferenceSystem())}
      *
      * @param envelope The envelope to initialize from.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
@@ -271,7 +280,8 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
         if (bbox instanceof Envelope) {
             return (Envelope) bbox;
         }        
-        return new ReferencedEnvelope(bbox);
+        // safe creation if empty bounds
+        return ReferencedEnvelope.create(bbox, bbox.getCoordinateReferenceSystem());
     }
 
     /**
@@ -776,14 +786,14 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
     /**
      * Factory method to create the correct ReferencedEnvelope.
      * 
-     * @param origional ReferencedEnvelope being duplicated
+     * @param original ReferencedEnvelope being duplicated
      * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
      */
-    public static ReferencedEnvelope create( ReferencedEnvelope origional ){
-        if( origional instanceof ReferencedEnvelope3D ){
-            return new ReferencedEnvelope3D( (ReferencedEnvelope3D) origional );
+    public static ReferencedEnvelope create( ReferencedEnvelope original ){
+        if( original instanceof ReferencedEnvelope3D ){
+            return new ReferencedEnvelope3D( (ReferencedEnvelope3D) original );
         }
-        return new ReferencedEnvelope( origional );
+        return new ReferencedEnvelope( original );
     }
     /**
      * Factory method to create the correct ReferencedEnvelope implementation
@@ -804,7 +814,9 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
      * supporting 2d as well as 3d envelopes (returning the right class).
      * 
      * @param env The opgenis Envelope object
-     * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
+     * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d,<br>
+     *         results in a null/an empty envelope, if input envelope was a null/an empty envelope
+     * @see {@link #reference(org.opengis.geometry.Envelope)}
      */
     public static ReferencedEnvelope create(org.opengis.geometry.Envelope env,
             CoordinateReferenceSystem crs) {
@@ -814,6 +826,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
         }
 
         if (env.getDimension() >= 3) {
+            // emptiness test is inside reference-method 
             return new ReferencedEnvelope3D((ReferencedEnvelope3D) reference(env), crs);
         }
 
@@ -834,21 +847,30 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
      * supporting 2d as well as 3d envelopes (returning the right class).
      * 
      * @param env The JTS Envelope object
-     * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
+     * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d,<br>
+     *         results in a null/an empty envelope, if input envelope was a null/an empty envelope
      */
     public static ReferencedEnvelope create(Envelope env, CoordinateReferenceSystem crs) {
         if (env == null) {
             return null;
         }
         if (crs.getCoordinateSystem().getDimension() >= 3) {
-            return new ReferencedEnvelope3D( env.getMinX(), env.getMaxX(), env.getMinY(), env.getMaxY(), Double.NaN, Double.NaN, crs );
+            if(env.isNull()) {
+                return new ReferencedEnvelope3D(crs);
+            } else {
+                return new ReferencedEnvelope3D( env.getMinX(), env.getMaxX(), env.getMinY(), env.getMaxY(), Double.NaN, Double.NaN, crs );
+            }
         }
         
-        return new ReferencedEnvelope( env, crs );
+        if(env.isNull()) {
+            return new ReferencedEnvelope(crs);
+        } else {
+            return new ReferencedEnvelope( env, crs );
+        }
     }
 
     /**
-     * Cast to a ReferencedEnvelope (used to ensure that an Envelope if a ReferencedEnvelope).
+     * Cast to a ReferencedEnvelope (used to ensure that an Envelope is a ReferencedEnvelope).
      * <p>
      * This method first checks if <tt>e</tt> is an instanceof {@link ReferencedEnvelope},
      * if it is, itself is returned. If not <code>new ReferencedEnvelpe(e,null)</code>
@@ -875,21 +897,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
             return new ReferencedEnvelope(e, null);
         }
     }
-
-    /**
-     * Cast to a ReferencedEnvelope (used to ensure that an Envelope if a ReferencedEnvelope).
-     * <p>
-     * This method first checks if <tt>e</tt> is an instanceof {@link ReferencedEnvelope},
-     * if it is, itself is returned. If not <code>new ReferencedEnvelpe(e)</code>
-     * is returned.
-     * </p>
-     * @param e The envelope.
-     * @return
-     */
-    public static ReferencedEnvelope reference(BoundingBox e) {
-        return reference( (org.opengis.geometry.Envelope) e);
-    }
-
+    
     /**
      * Utility method to ensure that an BoundingBox in a ReferencedEnvelope.
      * <p>
@@ -909,7 +917,9 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
      * Supporting 2d as well as 3d envelopes (returning the right class).
      * 
      * @param env The opgenis Envelope object
-     * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
+     * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d,<br>
+     *         results in a null/an empty envelope, if input envelope was a null/an empty envelope
+     *         (by JTS Envelope definition: getMaximum(0) < getMinimum(0))
      */
     public static ReferencedEnvelope reference(org.opengis.geometry.Envelope env) {
     
@@ -925,10 +935,36 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
             return (ReferencedEnvelope) env;
         }
     
-        if (env.getDimension() == 3) {
-            return new ReferencedEnvelope3D(env);
+        if (env.getDimension() >= 3) {
+            // emptiness test according to com.vividsolutions.jts.geom.Envelope
+            if(env.getMaximum(0) < env.getMinimum(0)) {
+                return new ReferencedEnvelope3D(env.getCoordinateReferenceSystem());
+            } else {
+                return new ReferencedEnvelope3D(env);
+            }
         }
     
+        // emptiness test according to com.vividsolutions.jts.geom.Envelope
+        if(env.getMaximum(0) < env.getMinimum(0))
+            return new ReferencedEnvelope(env.getCoordinateReferenceSystem());
+        
         return new ReferencedEnvelope(env);
+    }
+    
+    /**
+     * Utility method to create a ReferencedEnvelope from a Java2D Rectangle class,
+     * supporting empty rectangles.
+     * 
+     * @param rectangle The Java2D Rectangle object
+     * @return ReferencedEnvelope,<br>
+     *         results in a null/an empty envelope, if input rectangle was empty
+     */
+    public static ReferencedEnvelope create(Rectangle2D rectangle,
+            CoordinateReferenceSystem crs) {
+        if(rectangle.isEmpty()) {
+            return new ReferencedEnvelope(crs);
+        } else {
+            return new ReferencedEnvelope(rectangle, crs);
+        }
     }
 }

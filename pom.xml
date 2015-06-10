@@ -1851,6 +1851,11 @@
   <!-- ================================================================== -->
   <repositories>
     <repository>
+      <id>central.maven.org</id>
+      <name>Central Maven repository</name>
+      <url>http://central.maven.org/maven2</url>
+    </repository>
+    <repository>
       <id>maven2-repository.dev.java.net</id>
       <name>Java.net repository</name>
       <url>http://download.java.net/maven/2</url>

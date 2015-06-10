@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection numberMatched="3" numberReturned="3"
+  timeStamp="2015-05-24T15:53:46.492Z"  
+  xmlns:wfs="http://www.opengis.net/wfs/2.0"
+  xmlns:gml="http://www.opengis.net/gml/3.2"
+  xmlns:sf="http://www.openplans.org/spearfish"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd http://www.openplans.org/spearfish DescribeFeatureType_roads.xsd http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd">  
+  <wfs:member>
+    <sf:roads gml:id="roads.1">
+      <!-- <gml:boundedBy> <gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713"> <gml:lowerCorner>598340 
+        4914058</gml:lowerCorner> <gml:upperCorner>598659 4915118</gml:upperCorner> </gml:Envelope> </gml:boundedBy> -->
+      <sf:the_geom>
+        <gml:MultiCurve srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
+          <gml:curveMember>
+            <gml:LineString>
+              <gml:posList>
+                598566 4914058 598557 4914085 598346
+                4915117
+              </gml:posList>
+            </gml:LineString>
+          </gml:curveMember>
+        </gml:MultiCurve>
+      </sf:the_geom>
+      <sf:cat>5</sf:cat>
+      <sf:label>unimproved road</sf:label>
+    </sf:roads>
+  </wfs:member>
+  <wfs:member>
+    <sf:roads gml:id="roads.2">
+      <sf:the_geom>
+        <gml:MultiCurve srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
+          <gml:curveMember>
+            <gml:LineString>
+              <gml:posList>
+                598576.84589417 4915259.42699958 598570.11829199 4915276.49062597
+                598529.91614234 4915308.7347222
+              </gml:posList>
+            </gml:LineString>
+          </gml:curveMember>
+        </gml:MultiCurve>
+      </sf:the_geom>
+      <sf:cat>5</sf:cat>
+      <sf:label>unimproved road</sf:label>
+    </sf:roads>
+  </wfs:member>
+  <wfs:member>
+    <sf:roads gml:id="roads.3">
+      <sf:the_geom>
+        <gml:MultiCurve srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
+          <gml:curveMember>
+            <gml:LineString>
+              <gml:posList>
+                598576.84589417 4915259.42699958 598570.11829199 4915276.49062597
+                598529.91614234 4915308.7347222
+              </gml:posList>
+            </gml:LineString>
+          </gml:curveMember>
+        </gml:MultiCurve>
+      </sf:the_geom>
+      <sf:cat>5</sf:cat>
+      <sf:label>unimproved road</sf:label>
+    </sf:roads>
+  </wfs:member>
+</wfs:FeatureCollection>

@@ -61,7 +61,14 @@ Advanced
 | "Geometry metadata  | An alternative table where geometry            |
 | table"              | metadata information can be looked up          |
 +---------------------+------------------------------------------------+
-
+| "Metadata bbox"     | Flag controlling the use of                    |
+|                     | MDSYS.USER_SDO_GEOM_METADATA or                |
+|                     | MDSYS.ALL_SDO_GEOM_METADATA table for bounding |
+|                     | box calculations, this brings a better         |
+|                     | performance if the views access is fast and    |
+|                     | the bounds are configured right in the tables  |
+|                     | default is false                               |
++---------------------+------------------------------------------------+
 
 Example use::
   
@@ -100,7 +107,7 @@ The table has the following structure (the table name is free, just indicate the
 	   UNIQUE(F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN),
 	   CHECK(TYPE IN ('POINT','LINE', 'POLYGON', 'COLLECTION', 'MULTIPOINT', 'MULTILINE', 'MULTIPOLYGON', 'GEOMETRY') ));
 	   
-When the table is present the store wil first search it for information about each geometry column
+When the table is present the store will first search it for information about each geometry column
 to be classified, and fall back on the MDSYS views only if such table does not contain any information.
 
 Setup

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.wfs.integration.v1_1;
+package org.geotools.data.wfs.integration.v2_0;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -53,7 +53,7 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
 
     private WFSClient mockUpWfsClient() throws Exception {
         WFSConfig config = new WFSConfig();
-        String baseDirectory = "GeoServer_2.0/1.1.0/";
+        String baseDirectory = "GeoServer_2.2.x/2.0.0/";
 
         return new IntegrationTestWFSClient(baseDirectory, config);
     }
@@ -90,7 +90,7 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
         testDataType.featureType = DataUtilities.createType(
                 "archsitesType", "the_geom:Point,cat:java.lang.Long,str1:String");
         testDataType.featureType = DataUtilities.createSubType(testDataType.featureType, null,
-                CRS.decode("EPSG:26713", true));
+                CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:26713", true));
         
         testDataType.stringAttribute = "str1";
         testDataType.numberOfFeatures = 3;

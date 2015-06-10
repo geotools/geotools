@@ -24,6 +24,7 @@ import java.util.Map;
 import oracle.jdbc.OracleConnection;
 
 import org.geotools.data.Transaction;
+import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -33,7 +34,7 @@ import org.geotools.jdbc.SQLDialect;
  * 
  * @author Justin Deoliveira, OpenGEO
  * @author Andrea Aime, OpenGEO
- *
+ * @author Hendrik Peilke
  *
  *
  * @source $URL$
@@ -62,6 +63,9 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     /** Metadata table providing information about primary keys **/
     public static final Param GEOMETRY_METADATA_TABLE = new Param("Geometry metadata table", String.class,
             "The optional table containing geometry metadata (geometry type and srid). Can be expressed as 'schema.name' or just 'name'", false);
+    
+    /** parameter for getting bbox from MDSYS.USER_SDO_GEOM_METADATA or MDSYS.ALL_SDO_GEOM_METADATA table */
+    public static final Param METADATA_BBOX = new Param("Metadata bbox", Boolean.class, "Get data bounds quickly from MDSYS.USER_SDO_GEOM_METADATA or MDSYS.ALL_SDO_GEOM_METADATA table", false, Boolean.FALSE);
     
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
@@ -129,6 +133,10 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         String metadataTable = (String) GEOMETRY_METADATA_TABLE.lookUp(params);
         dialect.setGeometryMetadataTable(metadataTable);
         
+        // check the metadata bbox option
+        Boolean metadateBbox = (Boolean) METADATA_BBOX.lookUp(params);
+        dialect.setMetadataBboxEnabled(Boolean.TRUE.equals(metadateBbox));
+        
         if (dataStore.getFetchSize() <= 0) {
             // Oracle is dead slow with the fetch size at 0, let's have a sane default
             dataStore.setFetchSize(200);
@@ -182,6 +190,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(DATABASE.key, DATABASE);
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(GEOMETRY_METADATA_TABLE.key, GEOMETRY_METADATA_TABLE);
+        parameters.put(METADATA_BBOX.key, METADATA_BBOX);
     }
     
     @Override

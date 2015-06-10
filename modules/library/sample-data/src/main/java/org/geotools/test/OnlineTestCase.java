@@ -137,8 +137,8 @@ public abstract class OnlineTestCase extends TestCase {
         } else {
             String fixtureId = getFixtureId();
             // do an online/offline check
-            Boolean available = (Boolean) online.get(fixtureId);
-            if (available == null || available.booleanValue()) {
+            Boolean available = online.get(fixtureId);
+            if (available == null) {
                 // test the connection
                 try {
                     available = isOnline();

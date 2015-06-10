@@ -30,7 +30,7 @@
   
 
   <scm>
-    <connection>
+    <connection> q
       scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-postgis
     </connection>
     <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-postgis</url>
@@ -76,7 +76,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>postgresql</groupId>
+      <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
   </dependencies>

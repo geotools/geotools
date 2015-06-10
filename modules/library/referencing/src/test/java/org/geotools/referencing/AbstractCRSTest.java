@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,14 +15,9 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.referencing;
-
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
@@ -35,6 +30,7 @@ import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
 import org.geotools.referencing.operation.projection.LambertConformal1SP;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.TransverseMercator;
+import org.geotools.test.OnlineTestCase;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.metadata.citation.Citation;
@@ -51,6 +47,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 
+
 /**
  * Tests if the CRS utility class is functioning correctly when using HSQL datastore.
  *
@@ -62,34 +59,13 @@ import org.opengis.referencing.operation.TransformException;
  * @author Martin Desruisseaux
  * @author Andrea Aime
  */
-public class CRSTest extends TestCase {
+public abstract class AbstractCRSTest extends OnlineTestCase {
     /**
      * {@code true} for tracing operations on the standard output.
      */
     private static boolean verbose = false;
 
-    /**
-     * Run the suite from the command line.
-     */
-    public static void main(final String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    /**
-     * Returns the test suite.
-     */
-    public static Test suite() {
-        return new TestSuite(CRSTest.class);
-    }
-
-    /**
-     * Constructs a test case with the given name.
-     */
-    public CRSTest(final String name) {
-        super(name);
-    }
-
-    protected void tearDown() throws Exception {
+    protected void tearDownInternal() throws Exception {
         System.clearProperty("org.geotools.referencing.forceXY");
         Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
         CRS.reset("all");
@@ -152,11 +128,9 @@ public class CRSTest extends TestCase {
             final CoordinateSystem cs = crs.getCoordinateSystem();
             assertEquals(2, cs.getDimension());
 
-            CoordinateSystemAxis axis0  = cs.getAxis(0);
-//            assertEquals("forceXY did not work", "Long", axis0.getAbbreviation());
+            cs.getAxis(0);
 
-            CoordinateSystemAxis axis1  = cs.getAxis(1);
-//            assertEquals("forceXY did not work", "Lat", axis1.getAbbreviation());
+            cs.getAxis(1);
         } finally {
             System.clearProperty(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
         }
@@ -688,6 +662,17 @@ public class CRSTest extends TestCase {
             System.out.println(transformed);
         } finally {
             MapProjection.SKIP_SANITY_CHECKS = false;
+        }
+    }
+
+    @Override
+    protected boolean isOnline() throws Exception {
+        try {
+            CRS.decode("EPSG:4326");
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

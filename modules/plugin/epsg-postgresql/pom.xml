@@ -107,7 +107,7 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>postgresql</groupId>
+      <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>

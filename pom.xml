@@ -102,7 +102,7 @@
     <fork.javac>true</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <postgresql.jdbc.version>8.4-701.jdbc3</postgresql.jdbc.version>
+    <postgresql.jdbc.version>9.4-1201-jdbc41</postgresql.jdbc.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -917,7 +917,7 @@
         <version>1.0</version>
       </dependency>
       <dependency>
-        <groupId>postgresql</groupId>
+        <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
         <version>${postgresql.jdbc.version}</version>
       </dependency>
@@ -1850,6 +1850,11 @@
   <!--     Maven repository is implicit and doesn't need to be specified. -->
   <!-- ================================================================== -->
   <repositories>
+    <repository>
+      <id>central.maven.org</id>
+      <name>Central Maven repository</name>
+      <url>http://central.maven.org/maven2</url>
+    </repository>
     <repository>
       <id>maven2-repository.dev.java.net</id>
       <name>Java.net repository</name>

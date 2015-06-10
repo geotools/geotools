@@ -1,14 +1,14 @@
 MODULE MongoDB
 ~~~~~~~~~~~~~~
 
-  Module Maintainer: Alan Mangan
+Module contents replaced by Jody Garnett with implementation developed by Tom Kunicki for Boundless.
 
-  IP Review:
+* org.geotools.mongodb
+  ~~~~~~~~~~~~~~~~~~~~
+  
+  Provided under LGPL by Boundless, via OSGeo corporate license agreement.
 
-
-  STATUS: New
-
-  This module was added to the GeoTools project by Alan Mangan under the LGPL license.
+Initial module was added to the GeoTools project by Alan Mangan under the LGPL license.
 
 * org.geotools.mongodb
   ~~~~~~~~~~~~~~~~~~~~

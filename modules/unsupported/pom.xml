@@ -163,6 +163,12 @@
        </modules>
      </profile>
      <profile>
+       <id>mongodb</id>
+       <modules>
+         <module>mongodb</module>
+       </modules>
+     </profile>
+     <profile>
        <id>unsupported</id>
        <activation>
          <property><name>all</name></property>

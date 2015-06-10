@@ -917,7 +917,7 @@
         <version>1.0</version>
       </dependency>
       <dependency>
-        <groupId>org.postgresql</groupId>
+        <groupId>postgresql</groupId>
         <artifactId>postgresql</artifactId>
         <version>${postgresql.jdbc.version}</version>
       </dependency>

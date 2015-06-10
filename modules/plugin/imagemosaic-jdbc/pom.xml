@@ -141,7 +141,7 @@
 
     <!-- Test dependencies -->
     <dependency>
-      <groupId>org.postgresql</groupId>
+      <groupId>postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <scope>test</scope>      
     </dependency>

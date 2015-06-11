@@ -1,181 +1,238 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014-2015, Boundless
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.mongodb;
 
-import java.awt.RenderingHints;
-import java.util.Collections;
-import java.util.Set;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.geotools.data.DataStore;
-import org.geotools.data.FeatureListener;
+import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
-import org.geotools.data.QueryCapabilities;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.simple.FilteringSimpleFeatureReader;
+import org.geotools.data.simple.SimpleFeatureReader;
+import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.logging.Logging;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 
-/**
- * 
- * @author Gerald Gay, Data Tactics Corp.
- * @author Alan Mangan, Data Tactics Corp.
- * @source $URL$
- * 
- *         (C) 2011, Open Source Geospatial Foundation (OSGeo)
- * 
- * @see The GNU Lesser General Public License (LGPL)
- */
-/* This library is free software; you can redistribute it and/or modify it under the terms of the
- * GNU Lesser General Public License as published by the Free Software Foundation; either version
- * 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
- * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License along with this library;
- * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- * 02110-1301 USA */
-public class MongoFeatureSource implements SimpleFeatureSource
-{
+public class MongoFeatureSource extends ContentFeatureSource {
 
-    private MongoDataStore    store;
-    private MongoLayer        layer     = null;
-    private MongoResultSet    results   = null;
-    private MongoQueryCaps    queryCaps = new MongoQueryCaps();
-    private MongoResourceInfo info      = null;
+    static Logger LOG = Logging.getLogger("org.geotools.data.mongodb");
 
-    public MongoFeatureSource (MongoDataStore store, MongoLayer layer)
-    {
-        init( store, layer, null );
+    final DBCollection collection;
+
+    CollectionMapper mapper;
+
+    public MongoFeatureSource(ContentEntry entry, Query query, DBCollection collection) {
+        super(entry, query);
+        this.collection = collection;
+        initMapper();
     }
 
-    public MongoFeatureSource (MongoDataStore store, MongoLayer layer, BasicDBObject dbo)
-    {
-        init( store, layer, dbo );
+    final void initMapper() {
+        // use schema with mapping info if it exists
+        SimpleFeatureType type = entry.getState(null).getFeatureType();
+        setMapper(type != null ? new MongoSchemaMapper(type) : new MongoInferredMapper());
     }
 
-    private void init (MongoDataStore store, MongoLayer layer, BasicDBObject dbo)
-    {
-        this.store = store;
-        this.layer = layer;
-        BasicDBObject query = dbo;
-        if (query == null)
-        {
-            query = new BasicDBObject();
-        }
-        results = new MongoResultSet( layer, query );
-        info = new MongoResourceInfo( this );
+    public DBCollection getCollection() {
+        return collection;
     }
 
-    public MongoLayer getLayer ()
-    {
-        return layer;
+    public CollectionMapper getMapper() {
+        return mapper;
     }
 
-    public ReferencedEnvelope getBounds ()
-    {
-        return results.getBounds();
+    public void setMapper(CollectionMapper mapper) {
+        this.mapper = mapper;
     }
 
-    public Set<String> getKeywords ()
-    {
-        return layer.getKeywords();
+    @Override
+    protected SimpleFeatureType buildFeatureType() throws IOException {
+        SimpleFeatureType type = mapper.buildFeatureType(entry.getName(), collection);
+        getDataStore().getSchemaStore().storeSchema(type);
+        return type;
     }
 
-    public final Set<RenderingHints.Key> getSupportedHints ()
-    {
-        return Collections.emptySet();
+    @Override
+    public MongoDataStore getDataStore() {
+        return (MongoDataStore) super.getDataStore();
     }
 
-    public final int getCount (final Query query)
-    {
-        int res = 0;
-        FilterToMongoQuery f2m = new FilterToMongoQuery();
-        Filter filter = query.getFilter();
-        BasicDBObject dbo = (BasicDBObject) filter.accept( f2m, null );
-        MongoResultSet rs = new MongoResultSet( layer, dbo );
-        res = rs.getCount();
-        return res;
-    }
-
-    public final ReferencedEnvelope getBounds (final Query query)
-    {
-        FilterToMongoQuery f2m = new FilterToMongoQuery();
-        Filter filter = query.getFilter();
-        BasicDBObject dbo = (BasicDBObject) filter.accept( f2m, null );
-        MongoResultSet rs = new MongoResultSet( layer, dbo );
-        return rs.getBounds();
-    }
-
-    public final SimpleFeatureCollection getFeatures ()
-    {
-        return new MongoFeatureCollection( results );
-    }
-
-    public final SimpleFeatureCollection getFeatures (final Filter filter)
-    {
-        FilterToMongoQuery f2m = new FilterToMongoQuery();
-        BasicDBObject dbo = (BasicDBObject) filter.accept( f2m, null );
-        MongoResultSet rs = new MongoResultSet( layer, dbo );
-        return new MongoFeatureCollection( rs );
-    }
-
-    public final SimpleFeatureCollection getFeatures (final Query query)
-    {
-        FilterToMongoQuery f2m = new FilterToMongoQuery();
-        Filter filter = query.getFilter();
-        BasicDBObject dbo = (BasicDBObject) filter.accept( f2m, null );
-        MongoResultSet rs = new MongoResultSet( layer, dbo );
-        // check for paging; maxFeatures and/or startIndex
-        int maxFeatures = query.getMaxFeatures();
-        if (maxFeatures > 0)
-        {
-            int startIndex = 0;
-            if (query.getStartIndex() != null)
-            {
-                startIndex = query.getStartIndex().intValue();
+    @Override
+    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
+        // TODO: crs?
+        FeatureReader<SimpleFeatureType, SimpleFeature> r = getReader(query);
+        try {
+            ReferencedEnvelope e = new ReferencedEnvelope();
+            if (r.hasNext()) {
+                e.init(r.next().getBounds());
             }
-            rs.paginateFeatures( startIndex, maxFeatures );
+            while (r.hasNext()) {
+                e.include(r.next().getBounds());
+            }
+            return e;
+        } finally {
+            r.close();
         }
-        return new MongoFeatureCollection( rs );
     }
 
-    public final SimpleFeatureType getSchema ()
-    {
-        return layer.getSchema();
+    @Override
+    protected int getCountInternal(Query query) throws IOException {
+        Filter f = query.getFilter();
+        if (isAll(f)) {
+            LOG.fine("count(all)");
+            return (int) collection.count();
+        }
+
+        Filter[] split = splitFilter(f);
+        if (!isAll(split[1])) {
+            return -1;
+        }
+
+        DBObject q = toQuery(f);
+        if (LOG.isLoggable(Level.FINE)) {
+            LOG.fine("count(" + q + ")");
+        }
+        return (int) collection.count(q);
     }
 
-    public final void addFeatureListener (final FeatureListener listener)
-    {
-        store.addListener( this, listener );
+    @Override
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
+            throws IOException {
+
+        List<Filter> postFilter = new ArrayList<Filter>();
+        DBCursor cursor = toCursor(query, postFilter);
+        SimpleFeatureReader r = new MongoFeatureReader(cursor, this);
+
+        if (!postFilter.isEmpty()) {
+            r = new FilteringSimpleFeatureReader(r, postFilter.get(0));
+        }
+        return r;
     }
 
-    public final void removeFeatureListener (final FeatureListener listener)
-    {
-        store.removeListener( this, listener );
+    @Override
+    protected boolean canOffset() {
+        return true;
     }
 
-    public final DataStore getDataStore ()
-    {
-        return store;
+    @Override
+    protected boolean canLimit() {
+        return true;
     }
 
-    public QueryCapabilities getQueryCapabilities ()
-    {
-        return queryCaps;
+    @Override
+    protected boolean canRetype() {
+        return true;
     }
 
-    public ResourceInfo getInfo ()
-    {
-        return info;
+    @Override
+    protected boolean canSort() {
+        return true;
     }
 
-    public Name getName ()
-    {
-        return layer.getSchema().getName();
+    @Override
+    protected boolean canFilter() {
+        return true;
     }
+
+    DBCursor toCursor(Query q, List<Filter> postFilter) {
+        DBObject query = new BasicDBObject();
+
+        Filter f = q.getFilter();
+        if (!isAll(f)) {
+            Filter[] split = splitFilter(f);
+            query = toQuery(split[0]);
+            if (!isAll(split[1])) {
+                postFilter.add(split[1]);
+            }
+        }
+
+        DBCursor c;
+        if (q.getPropertyNames() != Query.ALL_NAMES) {
+            BasicDBObject keys = new BasicDBObject();
+            for (String p : q.getPropertyNames()) {
+                keys.put(mapper.getPropertyPath(p), 1);
+            }
+            if (!keys.containsField(mapper.getGeometryPath())) {
+                keys.put(mapper.getGeometryPath(), 1);
+            }
+            if (LOG.isLoggable(Level.FINE)) {
+                LOG.fine(String.format("find(%s, %s)", query, keys));
+            }
+            c = collection.find(query, keys);
+        } else {
+            if (LOG.isLoggable(Level.FINE)) {
+                LOG.fine(String.format("find(%s)", query));
+            }
+            c = collection.find(query);
+        }
+
+        if (q.getStartIndex() != null && q.getStartIndex() != 0) {
+            c = c.skip(q.getStartIndex());
+        }
+        if (q.getMaxFeatures() != Integer.MAX_VALUE) {
+            c = c.limit(q.getMaxFeatures());
+        }
+
+        if (q.getSortBy() != null) {
+            BasicDBObject orderBy = new BasicDBObject();
+            for (SortBy sortBy : q.getSortBy()) {
+                String propName = sortBy.getPropertyName().getPropertyName();
+                orderBy.append(propName, sortBy.getSortOrder() == SortOrder.ASCENDING ? 1 : -1);
+            }
+            c = c.sort(orderBy);
+        }
+
+        return c;
+    }
+
+    DBObject toQuery(Filter f) {
+        if (isAll(f)) {
+            return new BasicDBObject();
+        }
+
+        return (DBObject) f.accept(new FilterToMongo(mapper), null);
+    }
+
+    boolean isAll(Filter f) {
+        return f == null || f == Filter.INCLUDE;
+    }
+
+    @SuppressWarnings("deprecation")
+    Filter[] splitFilter(Filter f) {
+        PostPreProcessFilterSplittingVisitor splitter = new PostPreProcessFilterSplittingVisitor(
+                getDataStore().getFilterCapabilities(), null, null);
+        f.accept(splitter, null);
+        return new Filter[] { splitter.getFilterPre(), splitter.getFilterPost() };
+    }
+
 }

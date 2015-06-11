@@ -206,18 +206,11 @@ public class H2FilterToSQL extends FilterToSQL {
         return extraData;
     }
 
-    static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    
-    static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
     
     @Override
     protected void writeLiteral(Object literal) throws IOException {
-        if(TimeZone.getDefault()!=DATE_FORMAT.getTimeZone()) {
-            //if someone changes the JVM time zone we need to rebuild these formatters so that
-            //they use the new TimeZone or bad things will happen.
-            DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-            DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
-        }
+        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
 
         if (literal instanceof Date) {
             out.write("PARSEDATETIME(");

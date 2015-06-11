@@ -220,8 +220,8 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
     
     static class DateConverter implements Converter {
-        private static SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.S a" );
-        private static SimpleDateFormat format2 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ssa" );
+        private SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.S a" );
+        private SimpleDateFormat format2 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ssa" );
         
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if( source == null ) return null;

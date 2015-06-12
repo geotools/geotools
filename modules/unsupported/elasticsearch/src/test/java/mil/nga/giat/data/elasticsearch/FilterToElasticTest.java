@@ -29,23 +29,7 @@ import org.elasticsearch.common.geo.builders.LineStringBuilder;
 import org.elasticsearch.common.geo.builders.PolygonBuilder;
 import org.elasticsearch.common.geo.builders.ShapeBuilder;
 import org.elasticsearch.common.unit.DistanceUnit;
-import org.elasticsearch.index.query.AndFilterBuilder;
-import org.elasticsearch.index.query.ExistsFilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.GeoBoundingBoxFilterBuilder;
-import org.elasticsearch.index.query.GeoDistanceFilterBuilder;
-import org.elasticsearch.index.query.GeoPolygonFilterBuilder;
-import org.elasticsearch.index.query.GeoShapeFilterBuilder;
-import org.elasticsearch.index.query.IdsFilterBuilder;
-import org.elasticsearch.index.query.IdsQueryBuilder;
-import org.elasticsearch.index.query.MatchAllFilterBuilder;
-import org.elasticsearch.index.query.MissingFilterBuilder;
-import org.elasticsearch.index.query.NotFilterBuilder;
-import org.elasticsearch.index.query.OrFilterBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.QueryFilterBuilder;
-import org.elasticsearch.index.query.RangeFilterBuilder;
-import org.elasticsearch.index.query.TermFilterBuilder;
+import org.elasticsearch.index.query.*;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
@@ -253,6 +237,26 @@ public class FilterToElasticTest {
         builder.visit(filter, null);
         assertTrue(builder.createFilterCapabilities().fullySupports(filter));
         assertTrue(builder.getFilterBuilder().toString().equals(expected.toString()));
+    }
+
+    @Test
+    public void testNestedPropertyIsEqualToString() {
+        PropertyIsEqualTo filter = ff.equals(ff.property("nested.hej"), ff.literal("value"));
+        NestedFilterBuilder expected = FilterBuilders.nestedFilter("nested", FilterBuilders.termFilter("nested.hej", "value"));
+
+        builder.visit(filter, null);
+        assertTrue(builder.createFilterCapabilities().fullySupports(filter));
+        assertEquals(builder.getFilterBuilder().toString(),expected.toString());
+    }
+
+    @Test
+    public void testNestedPropertyIsGreaterThanDouble() {
+        PropertyIsEqualTo filter = ff.equals(ff.property("nested.hej"), ff.literal(1.0d));
+        NestedFilterBuilder expected = FilterBuilders.nestedFilter("nested", FilterBuilders.termFilter("nested.hej", 1.0d));
+
+        builder.visit(filter, null);
+        assertTrue(builder.createFilterCapabilities().fullySupports(filter));
+        assertEquals(builder.getFilterBuilder().toString(),expected.toString());
     }
 
     @Test
@@ -515,7 +519,7 @@ public class FilterToElasticTest {
     @Test
     public void testCql() throws CQLException, FilterToElasticException {
         Filter filter = ECQL.toFilter("\"object.field\"='value'");
-        TermFilterBuilder expected = FilterBuilders.termFilter("object.field", "value");
+        NestedFilterBuilder expected = FilterBuilders.nestedFilter("object", FilterBuilders.termFilter("object.field", "value"));
 
         builder.encode(filter);
         assertTrue(builder.createFilterCapabilities().fullySupports(filter));

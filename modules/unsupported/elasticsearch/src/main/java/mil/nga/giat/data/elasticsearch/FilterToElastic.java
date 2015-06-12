@@ -611,6 +611,9 @@ public class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             } else if (type.equals("<=")) {
                 filterBuilder = FilterBuilders.rangeFilter(key).lte(field);
             }
+            if(key.contains(".")) {
+                filterBuilder = FilterBuilders.nestedFilter(key.substring(0,key.indexOf('.')),filterBuilder);
+            }
         }
         else {
             // should never get here

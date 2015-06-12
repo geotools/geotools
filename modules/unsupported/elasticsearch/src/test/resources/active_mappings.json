@@ -1,9 +1,9 @@
-{  
+{
     "active" : {
         "properties" : {
           "geo" : {
             "type" : "geo_point",
-	    "store": "true"
+	      "store": "true"
           },
           "geo2" : {
             "type" : "geo_shape",
@@ -23,18 +23,21 @@
             "type" : "date",
             "format" : "dateOptionalTime"
           },
+          "installed_td" : {
+            "type" : "date"
+          },
           "modem_b" : {
             "type" : "boolean",
-	    "store": "true"
+	      "store": "true"
           },
           "security_ss" : {
             "type" : "string",
             "index":    "not_analyzed",
-	    "store": "true"
+	      "store": "true"
           },
           "speed_is" : {
             "type" : "integer",
-	    "store": "true"
+	      "store": "true"
           },
           "standard_ss" : {
             "type" : "string",

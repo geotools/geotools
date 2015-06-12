@@ -24,11 +24,49 @@ import java.util.Date;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.temporal.Period;
 
 public class ElasticTemporalTest extends ElasticTestSupport {
+
+    @Test
+    public void testLessDateFilterLong() throws Exception {
+        init();
+        Date testDate = new Date(1005912798000l);
+        FilterFactory ff = dataStore.getFilterFactory();
+
+        Filter f = ff.lessOrEqual(ff.property("installed_td"), ff.literal(testDate.getTime()));
+        SimpleFeatureCollection features = featureSource.getFeatures(f);
+        assertEquals(4, features.size());
+        SimpleFeatureIterator it = features.features();
+        while (it.hasNext()) {
+            SimpleFeature next = it.next();
+            Date date = (Date) next.getAttribute("installed_td");
+            assertTrue(date.before(testDate) || date.equals(testDate));
+        }
+        it.close();
+    }
+
+
+    @Test
+    public void testGreaterDateFilterLong() throws Exception {
+        init();
+        Date testDate = new Date(1005912798000l);
+        FilterFactory ff = dataStore.getFilterFactory();
+
+        Filter f = ff.greaterOrEqual(ff.property("installed_td"), ff.literal(testDate.getTime()));
+        SimpleFeatureCollection features = featureSource.getFeatures(f);
+        assertEquals(7, features.size());
+        SimpleFeatureIterator it = features.features();
+        while (it.hasNext()) {
+            SimpleFeature next = it.next();
+            Date date = (Date) next.getAttribute("installed_td");
+            assertTrue(date.after(testDate) || date.equals(testDate));
+        }
+        it.close();
+    }
 
     @Test
     public void testCompareDateFilter() throws Exception {

@@ -81,7 +81,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         try {
             while(it.hasNext()) {
                 SimpleFeature f = it.next();
-                Date expected = FORMAT.parse(dates[i++]);
+                Date expected = date(dates[i++]);
 
                 assertEquals(Converters.convert(expected, Timestamp.class), f.getAttribute(aname("dt")));
             }
@@ -196,9 +196,10 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(q, "2009-06-28 15:12:41", "2009-09-29 17:54:23", "2009-09-29 17:54:23");
     }
 
-    static DateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    DateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     protected Date date(String date) throws ParseException {
+        //System.out.println("Format timezone "+FORMAT.getTimeZone().getDisplayName());
         return FORMAT.parse(date);
     }
 

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.simple.FilteringSimpleFeatureReader;
@@ -181,6 +182,15 @@ public class MongoFeatureSource extends ContentFeatureSource {
             BasicDBObject keys = new BasicDBObject();
             for (String p : q.getPropertyNames()) {
                 keys.put(mapper.getPropertyPath(p), 1);
+            }
+            // add properties from post filters
+            for (Filter filter: postFilter) {
+                String[] postFilterAttributes = DataUtilities.attributeNames(filter);
+                for (String attrName: postFilterAttributes) {
+                    if (attrName != null && !attrName.isEmpty() && !keys.containsField(attrName)) {
+                        keys.put(mapper.getPropertyPath(attrName), 1);
+                    }
+                }
             }
             if (!keys.containsField(mapper.getGeometryPath())) {
                 keys.put(mapper.getGeometryPath(), 1);

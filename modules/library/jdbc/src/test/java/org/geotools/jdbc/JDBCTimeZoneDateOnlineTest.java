@@ -20,14 +20,15 @@ public abstract class JDBCTimeZoneDateOnlineTest extends JDBCTestSupport {
     
     @Override
     protected abstract JDBCDateTestSetup createTestSetup();
-    
+    TimeZone originalTimeZone;
     public void setTimeZone(TimeZone zone) {
+        originalTimeZone = TimeZone.getDefault();
         // set JVM time zone
         TimeZone.setDefault(zone);
     }
     
     public void testFiltersByDate() throws Exception {
-    
+        setup.setUpData();
         FilterFactory ff = dataStore.getFilterFactory();
     
         DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
@@ -38,6 +39,7 @@ public abstract class JDBCTimeZoneDateOnlineTest extends JDBCTestSupport {
         assertEquals("wrong number of records for "
                 + TimeZone.getDefault().getDisplayName(), 2,
                 fs.getCount(new DefaultQuery(tname("dates"), f)));
-    
+        TimeZone.setDefault(originalTimeZone);
+        setup.setUpData();
     }
 }

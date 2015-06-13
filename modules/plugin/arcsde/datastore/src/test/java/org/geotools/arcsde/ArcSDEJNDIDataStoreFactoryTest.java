@@ -66,6 +66,12 @@ public class ArcSDEJNDIDataStoreFactoryTest {
 
     private static TestData testData;
 
+    static final String IC_FACTORY_PROPERTY = "java.naming.factory.initial";
+
+    static final String JNDI_ROOT = "org.osjava.sj.root";
+
+    static final String JNDI_DELIM = "org.osjava.jndi.delimiter";
+
     /**
      * @throws java.lang.Exception
      */
@@ -84,6 +90,11 @@ public class ArcSDEJNDIDataStoreFactoryTest {
         // as a consequence
         Context ctx = GeoTools.getInitialContext(GeoTools.getDefaultHints());
         ctx.close();
+
+        // clean up system properties too
+        System.clearProperty(IC_FACTORY_PROPERTY);
+        System.clearProperty(JNDI_DELIM);
+        System.clearProperty(JNDI_ROOT);
     }
 
     @Test
@@ -216,10 +227,6 @@ public class ArcSDEJNDIDataStoreFactoryTest {
 
         File jndi = new File("target/jndi");
         jndi.mkdirs();
-
-        final String IC_FACTORY_PROPERTY = "java.naming.factory.initial";
-        final String JNDI_ROOT = "org.osjava.sj.root";
-        final String JNDI_DELIM = "org.osjava.jndi.delimiter";
 
         if (System.getProperty(IC_FACTORY_PROPERTY) == null) {
             System.setProperty(IC_FACTORY_PROPERTY, "org.osjava.sj.SimpleContextFactory");

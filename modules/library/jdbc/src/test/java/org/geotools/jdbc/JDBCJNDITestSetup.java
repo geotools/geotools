@@ -36,6 +36,12 @@ import org.geotools.factory.GeoTools;
  */
 public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
 
+    static final String IC_FACTORY_PROPERTY = "java.naming.factory.initial";
+
+    static final String JNDI_ROOT = "org.osjava.sj.root";
+
+    static final String JNDI_DELIM = "org.osjava.jndi.delimiter";
+
     public JDBCJNDITestSetup(JDBCTestSetup delegate) {
         super(delegate);
     }
@@ -59,9 +65,6 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
         out.flush();
         out.close();
         
-        String IC_FACTORY_PROPERTY = "java.naming.factory.initial";
-        String JNDI_ROOT = "org.osjava.sj.root";
-        String JNDI_DELIM = "org.osjava.jndi.delimiter";
 
         if (System.getProperty(IC_FACTORY_PROPERTY) == null) {
             System.setProperty(IC_FACTORY_PROPERTY, "org.osjava.sj.SimpleContextFactory");
@@ -107,6 +110,10 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
         } finally {
             Context ctx = GeoTools.getInitialContext(GeoTools.getDefaultHints());
             ctx.close();
+
+            System.clearProperty(IC_FACTORY_PROPERTY);
+            System.clearProperty(JNDI_DELIM);
+            System.clearProperty(JNDI_ROOT);
         }
     }
 

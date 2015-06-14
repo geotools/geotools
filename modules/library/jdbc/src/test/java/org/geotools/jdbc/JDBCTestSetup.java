@@ -16,7 +16,7 @@
  */
 package org.geotools.jdbc;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -176,7 +176,16 @@ public abstract class JDBCTestSetup {
      */
     protected Connection getConnection() throws SQLException, IOException {
         Connection conn = getDataSource().getConnection();
-        createDataStoreFactory().createSQLDialect(new JDBCDataStore()).initializeConnection(conn);
+        JDBCDataStore store = null;
+        try {
+            store = new JDBCDataStore();
+            createDataStoreFactory().createSQLDialect(store).initializeConnection(conn);
+        } finally {
+            if (store != null) {
+                store.dispose();
+            }
+        }
+
         return conn;
     }
 

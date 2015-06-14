@@ -503,6 +503,7 @@ public abstract class ContentDataStore implements DataStore {
         for ( ContentEntry entry :  entries.values() ) {
             entry.dispose();
         }
+        entries.clear();
     }
     
     /**

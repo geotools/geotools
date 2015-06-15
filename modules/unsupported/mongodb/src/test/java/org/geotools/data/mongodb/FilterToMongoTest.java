@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.spatial.BBOX;
 
 import com.mongodb.BasicDBObject;
@@ -54,4 +55,13 @@ public class FilterToMongoTest extends TestCase {
         assertNotNull(obj);
         System.out.println(obj);
     }
+
+    public void testLike() throws Exception {
+        PropertyIsLike like = ff.like(ff.property("stringProperty"), "on%", "%", "_", "\\");
+        BasicDBObject obj = (BasicDBObject) like.accept(filterToMongo, null);
+
+        assertNotNull(obj);
+        System.out.println(obj);
+    }
+
 }

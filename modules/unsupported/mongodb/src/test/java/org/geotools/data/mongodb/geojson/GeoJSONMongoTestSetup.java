@@ -17,20 +17,13 @@
  */
 package org.geotools.data.mongodb.geojson;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import org.geotools.data.mongodb.MongoDataStore;
+import org.geotools.data.mongodb.MongoTestSetup;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.vividsolutions.jts.geom.Point;
-
-import org.geotools.data.mongodb.MongoDataStore;
-import org.geotools.data.mongodb.MongoTestSetup;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 public class GeoJSONMongoTestSetup extends MongoTestSetup {
 

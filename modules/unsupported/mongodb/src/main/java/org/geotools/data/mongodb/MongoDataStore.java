@@ -53,6 +53,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.Not;
 import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Intersects;
@@ -160,6 +161,7 @@ public class MongoDataStore extends ContentDataStore {
         capabilities.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
         capabilities.addType(PropertyIsNull.class);
         capabilities.addType(PropertyIsBetween.class);
+        capabilities.addType(PropertyIsLike.class);
        
         capabilities.addType(BBOX.class);
         capabilities.addType(Intersects.class);

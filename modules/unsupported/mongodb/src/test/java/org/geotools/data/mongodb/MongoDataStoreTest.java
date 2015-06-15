@@ -127,6 +127,5 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
 
         source = dataStore.getFeatureSource("ft2");
         assertEquals(1, source.getCount(new Query("ft2")));
-        
     }
 }

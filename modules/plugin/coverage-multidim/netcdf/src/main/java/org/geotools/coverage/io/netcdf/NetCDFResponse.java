@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,6 @@ package org.geotools.coverage.io.netcdf;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
@@ -125,8 +124,6 @@ class NetCDFResponse extends CoverageResponse{
     private AffineTransform baseGridToWorld;
 
     private Hints hints;
-
-    private AffineTransform targetWorldToGrid;
 
     /**
      * Construct a {@code RasterLayerResponse} given a specific {@link RasterLayerRequest}, a {@code GridCoverageFactory} to produce
@@ -258,10 +255,8 @@ class NetCDFResponse extends CoverageResponse{
                 final RenderedImage image = loadRaster(baseReadParameters, imageIndex, targetBBox,
                         finalWorldToGridCorner, hints);
 
-                // postproc
-                RenderedImage finalRaster = postProcessRaster(image);
                 // create the coverage
-                GridCoverage2D gridCoverage = prepareCoverage(finalRaster, sampleDimensions);
+                GridCoverage2D gridCoverage = prepareCoverage(image, sampleDimensions);
 
                 // Adding coverage domain
                 if (gridCoverage != null) {
@@ -361,42 +356,6 @@ class NetCDFResponse extends CoverageResponse{
         query.setFilter(filter);
     }
 
-    private RenderedImage postProcessRaster(RenderedImage image) {
-        // alpha on the final mosaic
-
-        if (!request.spatialRequestHelper.isNeedsReprojection()) {
-
-            //
-            // Check and see if the affine transform is doing a copy.
-            // If so call the copy operation.
-            //
-            // we are in raster space here, so 1E-3 is safe
-            if (XAffineTransform.isIdentity(targetWorldToGrid, EPS))
-                return image;
-
-            // create final image
-            //
-            // In case we are asked to use certain tile dimensions we tile
-            // also at this stage in case the read type is Direct since
-            // buffered images comes up untiled and this can affect the
-            // performances of the subsequent affine operation.
-            //
-            final Hints localHints = new Hints(hints);
-            if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
-                final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
-                if (!(extender != null && extender instanceof BorderExtender)) {
-                    localHints.add(ImageUtilities.EXTEND_BORDER_BY_COPYING);
-                }
-            }
-
-            ImageWorker iw = new ImageWorker(image);
-            iw.setRenderingHints(localHints);
-            iw.affine(targetWorldToGrid, request.getInterpolation(), DEFAULT_BACKGROUND_VALUES);
-            image = iw.getRenderedImage();
-        }
-        return image;
-    }
-
     private void prepareParams() throws DataSourceException {
 
         try {
@@ -411,35 +370,10 @@ class NetCDFResponse extends CoverageResponse{
 
             // === init raster bounds
             initRasterBounds();
-            
-            // === init targetGrid2World
-            initTargetTransformation();
 
         } catch (Exception e) {
             throw new DataSourceException("Unable to create this mosaic", e);
         }
-    }
-
-    private void initTargetTransformation() throws NoninvertibleTransformException {
-        // creating source grid to world corrected to the pixel corner
-        final AffineTransform sourceGridToWorld = new AffineTransform(
-                (AffineTransform) finalGridToWorldCorner);
-
-        // AffineTransform finalGridToWorldCorner = new AffineTransform((AffineTransform) finalGridToWorldCorner);
-
-        // target world to grid at the corner
-        final AffineTransform targetGridToWorld = new AffineTransform(
-                request.spatialRequestHelper.getRequestedGridToWorld());
-        targetGridToWorld.concatenate(CoverageUtilities.CENTER_TO_CORNER);
-
-        // target world to grid at the corner
-        targetWorldToGrid = targetGridToWorld.createInverse();
-        // final complete transformation
-        targetWorldToGrid.concatenate(sourceGridToWorld);
-
-        // update final grid to world
-        finalGridToWorldCorner = new AffineTransform2D(targetGridToWorld);
-        
     }
 
     /**

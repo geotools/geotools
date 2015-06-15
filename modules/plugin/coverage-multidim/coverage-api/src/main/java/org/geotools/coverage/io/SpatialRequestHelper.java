@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -317,34 +317,37 @@ public class SpatialRequestHelper {
         // now transform the requested envelope to source crs
         if (destinationToSourceTransform != null && destinationToSourceTransform.isIdentity()) {
             destinationToSourceTransform = null;// the CRS is basically the same
-        } else if (destinationToSourceTransform instanceof AffineTransform) {
+        } else {
             needsReprojection = true;
-            //
-            // k, the transformation between the various CRS is not null or the
-            // Identity, let's see if it is an affine transform, which case we
-            // can incorporate it into the requested grid to world
-            //
-            // we should not have any problems with regards to BBOX reprojection
-            // update the requested grid to world transformation by pre concatenating the destination to source transform
-            AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld.clone();
-            mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
-
-            // update the requested envelope
-            try {
-                final MathTransform tempTransform = PixelTranslation.translate(
-                        ProjectiveTransform.create(mutableTransform), PixelInCell.CELL_CENTER,
-                        PixelInCell.CELL_CORNER);
-                requestedBBox = new ReferencedEnvelope(CRS.transform(tempTransform,
-                        new GeneralEnvelope(requestedRasterArea)));
-
-            } catch (MismatchedDimensionException e) {
-                throw new DataSourceException("Unable to inspect request CRS", e);
-            } catch (TransformException e) {
-                throw new DataSourceException("Unable to inspect request CRS", e);
+            if (destinationToSourceTransform instanceof AffineTransform) {
+                //
+                // k, the transformation between the various CRS is not null or the
+                // Identity, let's see if it is an affine transform, which case we
+                // can incorporate it into the requested grid to world
+                //
+                // we should not have any problems with regards to BBOX reprojection
+                // update the requested grid to world transformation by pre concatenating the destination to source transform
+                AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld.clone();
+                mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
+    
+                // update the requested envelope
+                try {
+                    final MathTransform tempTransform = PixelTranslation.translate(
+                            ProjectiveTransform.create(mutableTransform), PixelInCell.CELL_CENTER,
+                            PixelInCell.CELL_CORNER);
+                    requestedBBox = new ReferencedEnvelope(CRS.transform(tempTransform,
+                            new GeneralEnvelope(requestedRasterArea)));
+    
+                } catch (MismatchedDimensionException e) {
+                    throw new DataSourceException("Unable to inspect request CRS", e);
+                } catch (TransformException e) {
+                    throw new DataSourceException("Unable to inspect request CRS", e);
+                }
+    
+                // now clean up all the traces of the transformations
+                destinationToSourceTransform = null;
+                needsReprojection = false;
             }
-
-            // now clean up all the traces of the transformations
-            destinationToSourceTransform = null;
         }
 
     }

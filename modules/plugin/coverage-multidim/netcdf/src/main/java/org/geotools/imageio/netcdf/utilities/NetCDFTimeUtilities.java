@@ -18,6 +18,8 @@ package org.geotools.imageio.netcdf.utilities;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +32,42 @@ public class NetCDFTimeUtilities {
     public static final int JGREG = 15 + 31 * (10 + 12 * 1582);
 
     public final static TimeZone UTC_TIMEZONE = TimeZone.getTimeZone("GMT");
+
+    public final static Set<String> MONTH_SET = new HashSet<String>();
+
+    public final static Set<String> DAY_SET = new HashSet<String>();
+
+    public final static Set<String> HOUR_SET = new HashSet<String>();
+
+    public final static Set<String> MINUTE_SET = new HashSet<String>();
+
+    public final static Set<String> SECOND_SET = new HashSet<String>();
+
+    static {
+        MONTH_SET.add("month");
+        MONTH_SET.add("months");
+
+        DAY_SET.add("d");
+        DAY_SET.add("day");
+        DAY_SET.add("days");
+
+        HOUR_SET.add("h");
+        HOUR_SET.add("hr");
+        HOUR_SET.add("hrs");
+        HOUR_SET.add("hour");
+        HOUR_SET.add("hours");
+
+        MINUTE_SET.add("min");
+        MINUTE_SET.add("mins");
+        MINUTE_SET.add("minute");
+        MINUTE_SET.add("minutes");
+
+        SECOND_SET.add("s");
+        SECOND_SET.add("sec");
+        SECOND_SET.add("secs");
+        SECOND_SET.add("second");
+        SECOND_SET.add("seconds");
+    }
 
     /**
      * 
@@ -110,74 +148,52 @@ public class NetCDFTimeUtilities {
      * 
      */
     public static int getTimeSubUnitsValue(String units, Double vd) {
-        if ("days".equalsIgnoreCase(units) || "day".equalsIgnoreCase(units)) {
+        if (units == null || units.isEmpty()) {
+            return 0;
+        }
+        String unit = units.toLowerCase();
+        if (DAY_SET.contains(unit)) {
             int subUnit = getTimeUnits(units, vd);
             if (subUnit == Calendar.HOUR) {
                 double hours = vd * 24;
                 return (int) hours;
+            } else if (subUnit == Calendar.MINUTE) {
+                double minutes = vd * 24 * 60;
+                return (int) minutes;
+            } else if (subUnit == Calendar.SECOND) {
+                double seconds = vd * 24 * 60 * 60;
+                return (int) seconds;
+            } else if (subUnit == Calendar.MILLISECOND) {
+                double milliseconds = vd * 24 * 60 * 60 * 1000;
+                return (int) milliseconds;
             }
-
-            if (subUnit == Calendar.MINUTE) {
-                double hours = vd * 24 * 60;
-                return (int) hours;
-            }
-
-            if (subUnit == Calendar.SECOND) {
-                double hours = vd * 24 * 60 * 60;
-                return (int) hours;
-            }
-
-            if (subUnit == Calendar.MILLISECOND) {
-                double hours = vd * 24 * 60 * 60 * 1000;
-                return (int) hours;
-            }
-
-            return 0;
-        }
-
-        if ("hours".equalsIgnoreCase(units) || "hour".equalsIgnoreCase(units)) {
+        } else if (HOUR_SET.contains(unit)) {
             int subUnit = getTimeUnits(units, vd);
             if (subUnit == Calendar.MINUTE) {
-                double hours = vd * 24 * 60;
-                return (int) hours;
+                double minutes = vd * 60;
+                return (int) minutes;
+            } else if (subUnit == Calendar.SECOND) {
+                double seconds = vd * 60 * 60;
+                return (int) seconds;
+            } else if (subUnit == Calendar.MILLISECOND) {
+                double milliseconds = vd * 60 * 60 * 1000;
+                return (int) milliseconds;
             }
-
-            if (subUnit == Calendar.SECOND) {
-                double hours = vd * 24 * 60 * 60;
-                return (int) hours;
-            }
-
-            if (subUnit == Calendar.MILLISECOND) {
-                double hours = vd * 24 * 60 * 60 * 1000;
-                return (int) hours;
-            }
-
-            return 0;
-        }
-
-        if ("minutes".equalsIgnoreCase(units) || "minute".equalsIgnoreCase(units)) {
+        } else if (MINUTE_SET.contains(unit)) {
             int subUnit = getTimeUnits(units, vd);
             if (subUnit == Calendar.SECOND) {
-                double hours = vd * 24 * 60 * 60;
-                return (int) hours;
+                double seconds = vd * 60;
+                return (int) seconds;
+            } else if (subUnit == Calendar.MILLISECOND) {
+                double milliseconds = vd * 60 * 1000;
+                return (int) milliseconds;
             }
-
-            if (subUnit == Calendar.MILLISECOND) {
-                double hours = vd * 24 * 60 * 60 * 1000;
-                return (int) hours;
-            }
-
-            return 0;
-        }
-
-        if ("seconds".equalsIgnoreCase(units) || "second".equalsIgnoreCase(units)) {
+        } else if (SECOND_SET.contains(unit)) {
             int subUnit = getTimeUnits(units, vd);
             if (subUnit == Calendar.MILLISECOND) {
-                double hours = vd * 24 * 60 * 60 * 1000;
-                return (int) hours;
+                double milliseconds = vd * 1000;
+                return (int) milliseconds;
             }
-
-            return 0;
         }
 
         return 0;
@@ -191,14 +207,18 @@ public class NetCDFTimeUtilities {
      * @return int
      */
     public static int getTimeUnits(String units, Double vd) {
-        if ("months".equalsIgnoreCase(units) || "month".equalsIgnoreCase(units)) {
+        if (units == null || units.isEmpty()) {
+            return -1;
+        }
+        String unit = units.toLowerCase();
+        if (MONTH_SET.contains(unit)) {
             if (vd == null || vd == 0.0)
                 // if no day, it is the first day
                 return Calendar.MONTH; 
             else {
                 // TODO: FIXME
             }
-        } else if ("days".equalsIgnoreCase(units) || "day".equalsIgnoreCase(units)) {
+        } else if (DAY_SET.contains(unit)) {
             if (vd == null || vd == 0.0)
                 return Calendar.DATE;
             else {
@@ -216,34 +236,31 @@ public class NetCDFTimeUtilities {
 
                 return Calendar.MILLISECOND;
             }
-        }
-        if ("hours".equalsIgnoreCase(units) || "hour".equalsIgnoreCase(units)) {
+        } else if (HOUR_SET.contains(unit)) {
             if (vd == null || vd == 0.0)
                 return Calendar.HOUR;
             else {
-                double minutes = vd * 24 * 60;
+                double minutes = vd * 60;
                 if (minutes - Math.floor(minutes) == 0.0)
                     return Calendar.MINUTE;
 
-                double seconds = vd * 24 * 60 * 60;
+                double seconds = vd * 60 * 60;
                 if (seconds - Math.floor(seconds) == 0.0)
                     return Calendar.SECOND;
 
                 return Calendar.MILLISECOND;
             }
-        }
-        if ("minutes".equalsIgnoreCase(units) || "minute".equalsIgnoreCase(units)) {
+        } else if (MINUTE_SET.contains(unit)) {
             if (vd == null || vd == 0.0)
                 return Calendar.MINUTE;
             else {
-                double seconds = vd * 24 * 60 * 60;
+                double seconds = vd * 60;
                 if (seconds - Math.floor(seconds) == 0.0)
                     return Calendar.SECOND;
 
                 return Calendar.MILLISECOND;
             }
-        }
-        if ("seconds".equalsIgnoreCase(units) || "second".equalsIgnoreCase(units)) {
+        } else if (SECOND_SET.contains(unit)) {
             if (vd == null || vd == 0.0)
                 return Calendar.SECOND;
             else {

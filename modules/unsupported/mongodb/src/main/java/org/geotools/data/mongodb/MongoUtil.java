@@ -17,9 +17,11 @@
  */
 package org.geotools.data.mongodb;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -35,7 +37,7 @@ import java.util.Set;
  * @author tkunicki@boundlessgeo.com
  */
 public class MongoUtil {
-    
+	
     public static Object getDBOValue(DBObject dbo, String path) {
         return getDBOValue(dbo, Arrays.asList(path.split("\\.")).iterator());
     }
@@ -48,6 +50,14 @@ public class MongoUtil {
         if (path.hasNext()) {
             if (current instanceof DBObject) {
                 String key = path.next();
+                //If we are in an array, key must be an int
+            	if (current instanceof BasicDBList) {
+            		try {
+            			Integer.parseInt(key);
+            		} catch (NumberFormatException e) {
+            			return null;
+            		}
+            	}
                 Object value = ((DBObject)current).get(key);
                 return getDBOValueInternal(path, value);
             }
@@ -130,9 +140,13 @@ public class MongoUtil {
                 String field = (String)k;
                 Object v = e.getValue();
                 if (v instanceof DBObject) {
-                    for (Map.Entry<String, Class<?>> childEntry : doFindMappableFields((DBObject)v).entrySet()) {
-                        map.put(field + "." + childEntry.getKey(), childEntry.getValue());
-                    }
+                	if (v instanceof BasicDBList) {
+                		//No list support
+                	} else {
+	                    for (Map.Entry<String, Class<?>> childEntry : doFindMappableFields((DBObject)v).entrySet()) {
+	                        map.put(field + "." + childEntry.getKey(), childEntry.getValue());
+	                    }
+                	}
                 } else if (v instanceof List) {
                     // this is here as documentation/placeholder.  no array/list support yet.
                 } else {

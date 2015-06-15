@@ -21,11 +21,15 @@ package org.geotools.data.mongodb;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.vividsolutions.jts.geom.Geometry;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
@@ -95,6 +99,18 @@ public class MongoInferredMapper extends AbstractCollectionMapper {
                     break;
                 }
             }
+        }
+        
+        //Examine the DBO and remove any invalid indexed fields (such as arrays)
+        DBObject dbo = collection.findOne();
+        if (dbo != null) {
+        	Iterator<String> indexedIterator = indexedFields.iterator();
+        	while (indexedIterator.hasNext()) {
+        		Object value = MongoUtil.getDBOValue(dbo, indexedIterator.next());
+        		if (value == null) {
+        			indexedIterator.remove();
+        		}
+        	}
         }
         
         SimpleFeatureTypeBuilder ftBuilder = new SimpleFeatureTypeBuilder();

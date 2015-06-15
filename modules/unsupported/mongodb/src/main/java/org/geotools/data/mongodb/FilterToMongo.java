@@ -262,13 +262,13 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     @Override
     public Object visit(PropertyIsLike filter, Object extraData) {
         BasicDBObject output = asDBObject(extraData);
-        String expr = convert(filter.accept(this, null), String.class);
+        String expr = convert(filter.getExpression().accept(this, null), String.class);
 
         String multi = filter.getWildCard();
         String single = filter.getSingleChar();
         int flags = (filter.isMatchingCase()) ? 0 : Pattern.CASE_INSENSITIVE;
 
-        String regex = filter.getLiteral().replaceAll(multi, ".*").replaceAll(single, ".");
+        String regex = filter.getLiteral().replace(multi, ".*").replace(single, ".");
         Pattern p = Pattern.compile(regex, flags);
         output.put((String) expr, p);
 

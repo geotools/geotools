@@ -17,12 +17,13 @@
  */
 package org.geotools.data.mongodb.geojson;
 
+import org.geotools.data.mongodb.MongoDataStore;
+import org.geotools.data.mongodb.MongoTestSetup;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import org.geotools.data.mongodb.MongoDataStore;
-import org.geotools.data.mongodb.MongoTestSetup;
 
 public class GeoJSONMongoTestSetup extends MongoTestSetup {
 
@@ -73,7 +74,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
             .pop()
         .get());
 
-        ft1.ensureIndex(new BasicDBObject("geometry.coordinates", "2d"));
+        ft1.ensureIndex(new BasicDBObject("geometry", "2dsphere"));
 
         DBCollection ft2 = db.getCollection("ft2");
         ft2.drop();

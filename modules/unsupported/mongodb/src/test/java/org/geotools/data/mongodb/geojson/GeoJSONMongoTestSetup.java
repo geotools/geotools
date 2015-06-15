@@ -17,18 +17,26 @@
  */
 package org.geotools.data.mongodb.geojson;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.vividsolutions.jts.geom.Point;
+
 import org.geotools.data.mongodb.MongoDataStore;
 import org.geotools.data.mongodb.MongoTestSetup;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 public class GeoJSONMongoTestSetup extends MongoTestSetup {
 
     @Override
     protected void setUpDataStore(MongoDataStore dataStore) {
-
+        
     }
 
     @Override
@@ -73,10 +81,11 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
             .pop()
         .get());
 
-        ft1.ensureIndex(new BasicDBObject("geometry.coordinates", "2d"));
+        ft1.ensureIndex(new BasicDBObject("geometry", "2dsphere"));
 
         DBCollection ft2 = db.getCollection("ft2");
         ft2.drop();
+        
     }
 
 }

@@ -101,12 +101,11 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     public void testCreateSchema() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("ft2");
+        tb.setCRS(DefaultGeographicCRS.WGS84);
+        tb.add("geometry", Point.class);
         tb.add("intProperty", Integer.class);
         tb.add("doubleProperty", Double.class);
         tb.add("stringProperty", String.class);
-        
-        tb.setCRS(DefaultGeographicCRS.WGS84);
-        tb.add("geometry", Point.class);
 
         List<String> typeNames = Arrays.asList(dataStore.getTypeNames());
         assertFalse(typeNames.contains("ft2"));

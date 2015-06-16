@@ -23,7 +23,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
@@ -43,7 +43,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
       Query q = new Query("ft1", f);
       assertEquals(1, source.getCount(q));
-      assertEquals(new ReferencedEnvelope(1d,1d,1d,1d,CRS.decode("EPSG:4326", true)), source.getBounds(q));
+      assertEquals(new ReferencedEnvelope(1d,1d,1d,1d,DefaultGeographicCRS.WGS84), source.getBounds(q));
 
       SimpleFeatureCollection features = source.getFeatures(q);
       SimpleFeatureIterator it = features.features();
@@ -64,7 +64,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         Query q = new Query("ft1", f);
         
         assertEquals(1, source.getCount(q));
-        assertEquals(new ReferencedEnvelope(2d,2d,2d,2d,CRS.decode("EPSG:4326", true)), source.getBounds(q));
+        assertEquals(new ReferencedEnvelope(2d,2d,2d,2d,DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         SimpleFeatureIterator it = features.features();
@@ -85,7 +85,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         Query q = new Query("ft1", f);
 
         assertEquals(1, source.getCount(q));
-        assertEquals(new ReferencedEnvelope(1d,1d,1d,1d,CRS.decode("EPSG:4326", true)), source.getBounds(q));
+        assertEquals(new ReferencedEnvelope(1d,1d,1d,1d,DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         SimpleFeatureIterator it = features.features();

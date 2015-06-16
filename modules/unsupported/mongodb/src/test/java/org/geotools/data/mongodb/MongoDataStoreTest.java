@@ -28,7 +28,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -99,9 +99,11 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     public void testCreateSchema() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("ft2");
-        tb.setCRS(CRS.decode("EPSG:4326", true));
+        tb.setCRS(DefaultGeographicCRS.WGS84);
         tb.add("geometry", Point.class);
         tb.add("intProperty", Integer.class);
+        tb.add("doubleProperty", Double.class);
+        tb.add("stringProperty", String.class);
 
         List<String> typeNames = Arrays.asList(dataStore.getTypeNames());
         assertFalse(typeNames.contains("ft2"));

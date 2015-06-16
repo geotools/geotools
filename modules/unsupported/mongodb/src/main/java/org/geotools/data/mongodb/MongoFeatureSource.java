@@ -25,11 +25,12 @@ import java.util.logging.Logger;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
-import org.geotools.data.simple.FilteringSimpleFeatureReader;
-import org.geotools.data.simple.SimpleFeatureReader;
+import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
@@ -116,7 +117,9 @@ public class MongoFeatureSource extends ContentFeatureSource {
 
         Filter[] split = splitFilter(f);
         if (!isAll(split[1])) {
-            return -1;
+            // calculate manually, don't use datastore optimization
+            return countManually(query);
+            //return -1;
         }
 
         DBObject q = toQuery(f);
@@ -126,16 +129,45 @@ public class MongoFeatureSource extends ContentFeatureSource {
         return (int) collection.count(q);
     }
 
+    private int countManually(Query query) throws IOException {
+        getDataStore().getLogger().fine("Calculating size manually");
+
+        int count = 0;
+        //grab a reader
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader( query );
+        try {
+            while (reader.hasNext()) {
+                reader.next();
+                count++;
+            }
+        } finally {
+            reader.close();
+        }
+
+        return count;
+    }
+
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
 
-        List<Filter> postFilter = new ArrayList<Filter>();
-        DBCursor cursor = toCursor(query, postFilter);
-        SimpleFeatureReader r = new MongoFeatureReader(cursor, this);
+        List<Filter> postFilterList = new ArrayList<Filter>();
+        List<String> postFilterAttributes = new ArrayList<String>();
+        DBCursor cursor = toCursor(query, postFilterList, postFilterAttributes);
+        FeatureReader<SimpleFeatureType, SimpleFeature> r = new MongoFeatureReader(cursor, this);
 
-        if (!postFilter.isEmpty()) {
-            r = new FilteringSimpleFeatureReader(r, postFilter.get(0));
+        if (!postFilterList.isEmpty() && !isAll(postFilterList.get(0))) {
+            r = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(r, postFilterList.get(0));
+
+            // check whether attributes not present in the original query have been
+            // added to the set of retrieved attributes for the sake of
+            // post-filters; if so, wrap the FeatureReader in a ReTypeFeatureReader
+            if (!postFilterAttributes.isEmpty()) {
+                // build the feature type returned by this query
+                SimpleFeatureType returnedSchema = SimpleFeatureTypeBuilder.retype(
+                        getSchema(), query.getPropertyNames());
+                r = new ReTypeFeatureReader(r, returnedSchema);
+            }
         }
         return r;
     }
@@ -165,7 +197,7 @@ public class MongoFeatureSource extends ContentFeatureSource {
         return true;
     }
 
-    DBCursor toCursor(Query q, List<Filter> postFilter) {
+    DBCursor toCursor(Query q, List<Filter> postFilter, List<String> postFilterAttrs) {
         DBObject query = new BasicDBObject();
 
         Filter f = q.getFilter();
@@ -185,10 +217,11 @@ public class MongoFeatureSource extends ContentFeatureSource {
             }
             // add properties from post filters
             for (Filter filter: postFilter) {
-                String[] postFilterAttributes = DataUtilities.attributeNames(filter);
-                for (String attrName: postFilterAttributes) {
+                String[] attributeNames = DataUtilities.attributeNames(filter);
+                for (String attrName: attributeNames) {
                     if (attrName != null && !attrName.isEmpty() && !keys.containsField(attrName)) {
                         keys.put(mapper.getPropertyPath(attrName), 1);
+                        postFilterAttrs.add(attrName);
                     }
                 }
             }

@@ -82,19 +82,25 @@ public abstract class MongoTestSupport extends OnlineTestCase {
     }
     
     protected void assertFeature(SimpleFeature f, int i) {
+        assertFeature(f, i, true);
+    }
+
+    protected void assertFeature(SimpleFeature f, int i, boolean checkAttributes) {
         assertNotNull(f.getDefaultGeometry());
+
         Point p = (Point) f.getDefaultGeometry();
-
-        assertNotNull(f.getAttribute("properties.intProperty"));
-
         assertEquals((double)i, p.getX(), 0.1);
         assertEquals((double)i, p.getY(), 0.1);
 
-        assertNotNull(f.getAttribute("properties.doubleProperty"));
-        assertEquals(i + i*0.1, (Double)f.getAttribute("properties.doubleProperty"), 0.1);
+        if (checkAttributes) {
+            assertNotNull(f.getAttribute("properties.intProperty"));
 
-        assertNotNull(f.getAttribute("properties.stringProperty"));
-        assertEquals(toString(i), (String)f.getAttribute("properties.stringProperty"));
+            assertNotNull(f.getAttribute("properties.doubleProperty"));
+            assertEquals(i + i*0.1, (Double)f.getAttribute("properties.doubleProperty"), 0.1);
+
+            assertNotNull(f.getAttribute("properties.stringProperty"));
+            assertEquals(toString(i), (String)f.getAttribute("properties.stringProperty"));
+        }
     }
 
     protected String toString(int i) {

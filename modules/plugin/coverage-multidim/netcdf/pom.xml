@@ -100,7 +100,12 @@
     </dependency>
     <dependency>
       <groupId>edu.ucar</groupId>
-      <artifactId>netcdf</artifactId> 
+      <artifactId>cdm</artifactId> 
+      <version>${netcdf.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.ucar</groupId>
+      <artifactId>netcdf4</artifactId> 
       <version>${netcdf.version}</version>
     </dependency>
     <dependency>

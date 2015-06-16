@@ -734,6 +734,9 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         
         // range type
         String description = variableDS.getDescription();
+        if (description == null) {
+            description = "";
+        }
         final StringBuilder sb = new StringBuilder();
         final Set<SampleDimension> sampleDims = new HashSet<SampleDimension>();
         sampleDims.add(new GridSampleDimension(description + ":sd", (Category[]) null, null));
@@ -743,7 +746,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             desc = new SimpleInternationalString(description);
         }
         final FieldType fieldType = new DefaultFieldType(new NameImpl(getName()), desc, sampleDims);
-        sb.append(description != null ? description.toString() + "," : "");
+        sb.append(!description.isEmpty() ? description.toString() + "," : description);
         final RangeType range = new DefaultRangeType(getName(), description, fieldType);
         this.setRangeType(range);
     }

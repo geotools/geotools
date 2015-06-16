@@ -90,13 +90,14 @@ import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
 
 /**
+ * Visitor responsible for generating a BasicDBObject to use as a MongoDB query.
+ * 
  * @author Gerald Gay, Data Tactics Corp.
  * @author Alan Mangan, Data Tactics Corp.
  * @author Tom Kunicki, Boundless Spatial Inc.
  * @source $URL$ (C) 2011, Open Source Geospatial Foundation (OSGeo)
  * @see The GNU Lesser General Public License (LGPL)
  */
-
 public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
     final CollectionMapper mapper;
@@ -258,19 +259,22 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         return encodeBinaryComparisonOp(filter, "$lte", extraData);
     }
 
-    // Mongo doesn't have LIKE but it does have Regex. So
-    // I'm converting it like this:
-    //
-    // filter.getWildCard() returns SQL-like '%'
-    // filter.getSingleChar() returns SQL-like '_'
-    // So I'm converting "foo_bar%" to /foo.bar.*/
+    /**
+     * Encode LIKE using MongoDB Regex.
+     * 
+     * <ul>
+     * <li>filter.getWildCard() returns SQL-like '%'</li>
+     * <li>filter.getSingleChar() returns SQL-like '_'</li>
+     * </ul>
+     * As an example "foo_bar%" converts to foo.bar.*
+     */
     @Override
     public Object visit(PropertyIsLike filter, Object extraData) {
         BasicDBObject output = asDBObject(extraData);
         Expression filterExpression = filter.getExpression();
         // Mongo's $regex operator only works on fields
         if (!(filterExpression instanceof PropertyName)) {
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException("LIKE only works with propertyName");
         }
 
         String expr = convert(filterExpression.accept(this, null), String.class);

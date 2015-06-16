@@ -37,6 +37,8 @@ import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
@@ -253,7 +255,37 @@ public class MongoFeatureSource extends ContentFeatureSource {
     @SuppressWarnings("deprecation")
     Filter[] splitFilter(Filter f) {
         PostPreProcessFilterSplittingVisitor splitter = new PostPreProcessFilterSplittingVisitor(
-                getDataStore().getFilterCapabilities(), null, null);
+                getDataStore().getFilterCapabilities(), null, null){
+            public Object visit(PropertyIsLike filter, Object notUsed) {
+                if (original == null)
+                    original = filter;
+
+                if (!fcs.supports(PropertyIsLike.class)) {
+                    // MongoDB can only encode like expressions using propertyName
+                    postStack.push(filter);
+                    return null;
+                }
+                if(!(filter.getExpression() instanceof PropertyName)){
+                    // MongoDB can only encode like expressions using propertyName
+                    postStack.push(filter);
+                    return null;
+                }
+                
+                int i = postStack.size();
+                filter.getExpression().accept(this, null);
+
+                if (i < postStack.size()) {
+                    postStack.pop();
+                    postStack.push(filter);
+
+                    return null;
+                }
+
+                preStack.pop(); // value
+                preStack.push(filter);
+                return null;
+            }
+        };
         f.accept(splitter, null);
         return new Filter[] { splitter.getFilterPre(), splitter.getFilterPost() };
     }

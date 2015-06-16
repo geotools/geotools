@@ -219,7 +219,7 @@ public class MongoDataStore extends ContentDataStore {
         incoming.getUserData().put(KEY_collection, incoming.getTypeName());
         
         // Collection needs to exist (with index) so that it's returned with createTypeNames()
-        createCollection(incoming.getTypeName(), new BasicDBObject()).ensureIndex(new BasicDBObject(geometryMapping, "2dsphere"));
+        dataStoreDB.createCollection(incoming.getTypeName(), new BasicDBObject()).ensureIndex(new BasicDBObject(geometryMapping, "2dsphere"));
        
         // Store FeatureType instance since it can't be inferred (no documents)
         ContentEntry entry = entry (incoming.getName());

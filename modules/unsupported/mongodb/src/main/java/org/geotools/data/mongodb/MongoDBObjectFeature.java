@@ -100,8 +100,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
 
     @Override
     public Object getDefaultGeometry() {
-        Object o = mapper.getGeometry(featureDBO);
-        return o instanceof Geometry ? o : null;
+        return mapper.getGeometry(featureDBO);
     }
 
     @Override

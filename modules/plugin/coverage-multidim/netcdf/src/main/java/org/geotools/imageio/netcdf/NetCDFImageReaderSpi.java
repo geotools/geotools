@@ -100,6 +100,19 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
 
     static final String[] extraImageMetadataFormatClassNames = { null };
 
+    private static final String FORCE_OPEN_CHECK = "NETCDF_FORCE_OPEN_CHECK";
+
+    /** 
+     * There are some grib files which are mal-formed. 
+     * As an instance they contain some trailing bytes 
+     * before the magic number.
+     * 
+     * We may want to try to check if the NetCDF readers 
+     * may access them anyway. NOTE that this behaviour
+     * will be applied to any input dataset.
+     */
+    private static boolean forceOpenCheck;
+
     static {
         NetcdfDataset.setDefaultEnhanceMode(EnumSet.of(Enhance.CoordSystems));
 
@@ -128,6 +141,7 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
         suffixes = suffixesList.toArray(new String[suffixesList.size()]);
         formatNames = formatNamesList.toArray(new String[formatNamesList.size()]);
         MIMETypes = mimeTypesList.toArray(new String[mimeTypesList.size()]);
+        forceOpenCheck = Boolean.getBoolean(FORCE_OPEN_CHECK);
     }
 
     
@@ -209,7 +223,7 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
                         isNetCDF = false;
                     }
                 }
-                if (!isNetCDF) {
+                if (!isNetCDF && !forceOpenCheck) {
                     return false;
                 }
                 file = NetcdfDataset.acquireDataset(DataUtilities.fileToURL(input).toString(), null);

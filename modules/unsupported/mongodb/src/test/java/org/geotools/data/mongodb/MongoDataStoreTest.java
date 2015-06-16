@@ -25,11 +25,10 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.simple.SimpleFeatureWriter;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -90,9 +89,9 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
 
         GeometryBuilder gb = new GeometryBuilder();
         f.setDefaultGeometry(gb.point(3, 3));
-        f.setAttribute("intProperty", 3);
-        f.setAttribute("doubleProperty", 3.3);
-        f.setAttribute("stringProperty", "three");
+        f.setAttribute("properties.intProperty", 3);
+        f.setAttribute("properties.doubleProperty", 3.3);
+        f.setAttribute("properties.stringProperty", "three");
         w.write();
         w.close();
     }
@@ -100,6 +99,11 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     public void testCreateSchema() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("ft2");
+        tb.setCRS(DefaultGeographicCRS.WGS84);
+        tb.add("geometry", Point.class);
+        tb.add("intProperty", Integer.class);
+        tb.add("doubleProperty", Double.class);
+        tb.add("stringProperty", String.class);
 
         List<String> typeNames = Arrays.asList(dataStore.getTypeNames());
         assertFalse(typeNames.contains("ft2"));
@@ -120,6 +124,5 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
 
         source = dataStore.getFeatureSource("ft2");
         assertEquals(1, source.getCount(new Query("ft2")));
-        
     }
 }

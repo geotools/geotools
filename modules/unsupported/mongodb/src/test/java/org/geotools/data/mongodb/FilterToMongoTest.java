@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.spatial.BBOX;
 
 import com.mongodb.BasicDBObject;
@@ -52,6 +53,34 @@ public class FilterToMongoTest extends TestCase {
         BasicDBObject obj = (BasicDBObject) bbox.accept(filterToMongo, null);
         
         assertNotNull(obj);
-        System.out.println(obj);
     }
+
+    public void testLike() throws Exception {
+        PropertyIsLike like = ff.like(ff.property("stringProperty"), "on%", "%", "_", "\\");
+        BasicDBObject obj = (BasicDBObject) like.accept(filterToMongo, null);
+
+        assertNotNull(obj);
+    }
+
+    public void testLikeUnsupported() throws Exception {
+        PropertyIsLike likeLiteral = ff.like(ff.literal("once upon a time"), "on%", "%", "_", "\\");
+        PropertyIsLike likeFunction = ff.like(
+                ff.function("Concatenate", ff.property("stringProperty"),
+                        ff.literal("test")), "on%", "%", "_", "\\");
+
+        try {
+            likeLiteral.accept(filterToMongo, null);
+            fail("Expected UnsupportedOperationException not thrown");
+        } catch (Exception e) {
+            assertTrue(e instanceof UnsupportedOperationException);
+        }
+
+        try {
+            likeFunction.accept(filterToMongo, null);
+            fail("Expected UnsupportedOperationException not thrown");
+        } catch (Exception e) {
+            assertTrue(e instanceof UnsupportedOperationException);
+        }
+    }
+
 }

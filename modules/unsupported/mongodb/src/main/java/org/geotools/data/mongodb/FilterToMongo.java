@@ -23,12 +23,16 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+
 import org.bson.types.ObjectId;
+
 import static org.geotools.util.Converters.convert;
+
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.ExcludeFilter;
@@ -50,6 +54,7 @@ import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -262,13 +267,19 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     @Override
     public Object visit(PropertyIsLike filter, Object extraData) {
         BasicDBObject output = asDBObject(extraData);
-        String expr = convert(filter.accept(this, null), String.class);
+        Expression filterExpression = filter.getExpression();
+        // Mongo's $regex operator only works on fields
+        if (!(filterExpression instanceof PropertyName)) {
+            throw new UnsupportedOperationException();
+        }
+
+        String expr = convert(filterExpression.accept(this, null), String.class);
 
         String multi = filter.getWildCard();
         String single = filter.getSingleChar();
         int flags = (filter.isMatchingCase()) ? 0 : Pattern.CASE_INSENSITIVE;
 
-        String regex = filter.getLiteral().replaceAll(multi, ".*").replaceAll(single, ".");
+        String regex = filter.getLiteral().replace(multi, ".*").replace(single, ".");
         Pattern p = Pattern.compile(regex, flags);
         output.put((String) expr, p);
 

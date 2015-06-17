@@ -112,7 +112,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         Query q = new Query("ft1", f, new String[] { "geometry" });
 
         // filter should match just one feature
-        assertEquals(1, source.getCount(q));
+        assertEquals(1, source.getFeatures(q).size());
         assertEquals(new ReferencedEnvelope(1d,1d,1d,1d,DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);

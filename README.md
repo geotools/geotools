@@ -26,7 +26,7 @@ for more details.
 ## Bugs
 
 GeoTools uses [JIRA](https://osgeo-org.atlassian.net/browse/GEOT), hosted by 
-[atlassian](https://www.atlassian.com/), for issue tracking.
+[Atlassian](https://www.atlassian.com/), for issue tracking.
 
 ## Mailing Lists
 

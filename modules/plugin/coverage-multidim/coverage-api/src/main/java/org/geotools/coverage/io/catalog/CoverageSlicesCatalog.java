@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -55,7 +55,6 @@ import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -142,8 +141,6 @@ public class CoverageSlicesCatalog {
 
     /** The feature type name */
     private Set<String> typeNames = new HashSet<String>();
-
-    private String geometryPropertyName;
 
     public final static String IMAGE_INDEX_ATTR = "imageindex";
 
@@ -282,24 +279,6 @@ public class CoverageSlicesCatalog {
                 }
             }
         }
-
-        final SimpleFeatureSource featureSource = slicesIndexStore.getFeatureSource(typeName);
-        if (featureSource == null){
-            throw new IOException(
-                    "BBOXFilterExtractor::extractBasicProperties(): unable to get a featureSource for the qualified name"
-                            + typeName);
-        }
-
-        final FeatureType schema = featureSource.getSchema();
-        if (schema != null) {
-            geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): geometryPropertyName is set to \'"
-                        + geometryPropertyName + "\'.");
-        } else {
-            throw new IOException(
-                    "BBOXFilterExtractor::extractBasicProperties(): unable to get a schema from the featureSource");
-        }
     }
 
     private void addTypeName(String typeName, final boolean check) {
@@ -314,6 +293,10 @@ public class CoverageSlicesCatalog {
             return (String[]) this.typeNames.toArray(new String[]{});
         }
         return null;
+    }
+
+    public boolean hasTypeName(String typeName) {
+        return typeNames != null && typeNames.contains(typeName);
     }
 
     private final ReadWriteLock rwLock = new ReentrantReadWriteLock(true);
@@ -483,17 +466,18 @@ public class CoverageSlicesCatalog {
 
             // Add existence checks
             Name name = featureType.getName();
-            try {
-                // Check the store doesn't already exists
-                existing = slicesIndexStore.getSchema(name);
-            } catch (IOException ioe) {
-
-                // Logs existence check at finer level 
-                if (LOGGER.isLoggable(Level.FINER)) {
-                    LOGGER.finer(ioe.getLocalizedMessage());
+            if (this instanceof WrappedCoverageSlicesCatalog) {
+                try {
+                    // Check the store doesn't already exists
+                    existing = slicesIndexStore.getSchema(name);
+                } catch (IOException ioe) {
+    
+                    // Logs existence check at finer level 
+                    if (LOGGER.isLoggable(Level.FINER)) {
+                        LOGGER.finer(ioe.getLocalizedMessage());
+                    }
                 }
             }
-
             if (existing == null) {
                 slicesIndexStore.createSchema(featureType);
             } else {

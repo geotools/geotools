@@ -16,7 +16,6 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-// J2SE dependencies
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -612,8 +611,8 @@ public final class GridCoverageRenderer {
         //paranoiac check to avoid that JAI freaks out when computing its internal layouT on images that are too small
         Rectangle2D finalLayout= GridCoverageRendererUtilities.layoutHelper(
                         finalImage, 
-                        (float)finalRasterTransformation.getScaleX(), 
-                        (float)finalRasterTransformation.getScaleY(), 
+                        (float) Math.abs(finalRasterTransformation.getScaleX()),
+                        (float) Math.abs(finalRasterTransformation.getScaleY()),
                         (float)finalRasterTransformation.getTranslateX(), 
                         (float)finalRasterTransformation.getTranslateY(), 
                         interpolation);

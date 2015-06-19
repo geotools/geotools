@@ -3039,6 +3039,8 @@ public class ImageWorker {
         hasTranslateY = Math.abs(tx.getTranslateY()) > RS_EPS;
         boolean intTranslateX = Math.abs((tx.getTranslateX() - Math.round(tx.getTranslateX()))) < RS_EPS;
         boolean intTranslateY = Math.abs((tx.getTranslateY() - Math.round(tx.getTranslateY()))) < RS_EPS;
+        boolean nonNegativeScaleX = tx.getScaleX() >= 0;
+        boolean nonNegativeScaleY = tx.getScaleY() >= 0;
 
         // did it become a identity after the combination?
         if (!hasScaleX && !hasScaleY && !hasShearX && !hasShearY && !hasTranslateX
@@ -3047,9 +3049,10 @@ public class ImageWorker {
             return this;
         }
 
-        if (!hasShearX && !hasShearY) {
+        if (!hasShearX && !hasShearY && nonNegativeScaleX && nonNegativeScaleY) {
             if (!hasScaleX && !hasScaleY && intTranslateX && intTranslateY) {
-                // this will do an integer translate, but to get there we need to remove the image layout
+                // this will do an integer translate, but to get there we need to remove the image
+                // layout
                 Hints localHints = new Hints(commonHints);
                 localHints.remove(JAI.KEY_IMAGE_LAYOUT);
                 image = ScaleDescriptor.create(source, 1.0f, 1.0f,

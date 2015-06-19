@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,8 +17,6 @@
 package org.geotools.image;
 
 import static org.junit.Assert.*;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -65,6 +63,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
+
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
 
 /**
@@ -1087,9 +1090,20 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertEquals(0, t2.getMinX());
         assertEquals(0, t2.getMinY());
         assertSame(bi, t2);
-        
     }
     
+    @Test
+    public void testAffineNegative() throws Exception {
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        ImageWorker iw = new ImageWorker(bi);
+
+        // flipping tx, not a scale, used to blow
+        AffineTransform at = AffineTransform.getScaleInstance(-1, -1);
+        iw.affine(at, null, null);
+        RenderedImage t1 = iw.getRenderedImage();
+        assertEquals(-100, t1.getMinX());
+        assertEquals(-100, t1.getMinY());
+    }
     
     @Test
     public void testOptimizedWarp() throws Exception {

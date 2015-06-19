@@ -284,6 +284,8 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         int flags = (filter.isMatchingCase()) ? 0 : Pattern.CASE_INSENSITIVE;
 
         String regex = filter.getLiteral().replace(multi, ".*").replace(single, ".");
+        // force full string match
+        regex = "^" + regex + "$";
         Pattern p = Pattern.compile(regex, flags);
         output.put((String) expr, p);
 

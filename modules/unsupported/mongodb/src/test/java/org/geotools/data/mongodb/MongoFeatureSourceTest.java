@@ -97,6 +97,15 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         finally {
             it.close();
         }
+
+        // check full string match
+        f = ff.like(ff.property("properties.stringProperty"), "n%", "%", "_", "\\");
+
+        source = dataStore.getFeatureSource("ft1");
+        q = new Query("ft1", f);
+
+        // no feature should match
+        assertEquals(0, source.getCount(q));
     }
 
     public void testLikePostFilter() throws Exception {

@@ -4116,6 +4116,8 @@ public class ImageWorker {
         hasTranslateY = Math.abs(tx.getTranslateY()) > RS_EPS;
         boolean intTranslateX = Math.abs((tx.getTranslateX() - Math.round(tx.getTranslateX()))) < RS_EPS;
         boolean intTranslateY = Math.abs((tx.getTranslateY() - Math.round(tx.getTranslateY()))) < RS_EPS;
+        boolean nonNegativeScaleX = tx.getScaleX() >= 0;
+        boolean nonNegativeScaleY = tx.getScaleY() >= 0;
 
         // did it become a identity after the combination?
         if (!hasScaleX && !hasScaleY && !hasShearX && !hasShearY && !hasTranslateX
@@ -4125,9 +4127,10 @@ public class ImageWorker {
         }
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(source, 0);
-        if (!hasShearX && !hasShearY) {
+        if (!hasShearX && !hasShearY && nonNegativeScaleX && nonNegativeScaleY) {
             if (!hasScaleX && !hasScaleY && intTranslateX && intTranslateY) {
-                // this will do an integer translate, but to get there we need to remove the image layout
+                // this will do an integer translate, but to get there we need to remove the image
+                // layout
                 Hints localHints = new Hints(commonHints);
                 localHints.remove(JAI.KEY_IMAGE_LAYOUT);
                 pb.set(1.0f, 0);
@@ -4146,12 +4149,13 @@ public class ImageWorker {
                 }
                 image = JAI.create("Scale", pb, localHints);
                 // getting the new ROI property
-                if(roi != null){
-                    PropertyGenerator gen = new ScaleDescriptor().getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
+                if (roi != null) {
+                    PropertyGenerator gen = new ScaleDescriptor()
+                            .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
                     Object prop = gen.getProperty("roi", image);
-                    if(prop != null && prop instanceof ROI){
+                    if (prop != null && prop instanceof ROI) {
                         setROI((ROI) prop);
-                    }  else {
+                    } else {
                         setROI(null);
                     }
                 }
@@ -4179,7 +4183,7 @@ public class ImageWorker {
                     Object prop = gen.getProperty("roi", image);
                     if (prop != null && prop instanceof ROI) {
                         setROI((ROI) prop);
-                    }  else {
+                    } else {
                         setROI(null);
                     }
                 }

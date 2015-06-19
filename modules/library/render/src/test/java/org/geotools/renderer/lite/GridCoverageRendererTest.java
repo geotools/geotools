@@ -788,4 +788,31 @@ public class GridCoverageRendererTest  {
         ImageAssert.assertEquals(reference, image, 0);
     }
 
+    @Test
+    public void testFlippedAffine() throws Exception {
+        // get the source data
+        File coverageFile = TestData.copy(this, "geotiff/float64.tif");
+        assertTrue(coverageFile.exists());
+        GridCoverage2DReader reader = new GeoTiffReader(coverageFile);
+
+        // Apply the symbolizer
+        Style style = RendererBaseTest.loadStyle(this, "float64.sld");
+        RasterSymbolizer rasterSymbolizer = (RasterSymbolizer) style.featureTypeStyles().get(0)
+                .rules().get(0).symbolizers().get(0);
+
+        // Render, used to return a white image
+        ReferencedEnvelope mapExtent = ReferencedEnvelope.reference(reader.getOriginalEnvelope());
+        Rectangle screenSize = new Rectangle(50, 50);
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(
+                reader.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+        RenderedImage image = renderer.renderImage(reader, null, rasterSymbolizer,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.RED, 256, 256);
+        assertNotNull(image);
+        // Check the image
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/flippedAffine.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
 }

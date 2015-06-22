@@ -50,7 +50,31 @@
           "vendor_s" : {
             "type" : "string",
             "index":    "not_analyzed"
-          }
+          },
+          "object": {
+            "properties": {
+              "hejda" : {
+                "type" : "double"
+              }
+            }
+	  },
+          "nested": {
+            "type": "nested",
+            "properties": {
+              "hej" : {
+                "type" : "double"
+              },
+              "parent": {
+                "type": "nested",
+                "properties": {
+                  "child": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                  }
+                }
+              }
+            }
+	  }
         }
       }
     }

@@ -18,10 +18,10 @@ import java.util.Map;
 public class ElasticDataStoreFactory implements DataStoreFactorySpi {
 
     /** Cluster hostname. **/
-    public static final Param HOSTNAME = new Param("elasticsearch_host", String.class, "Elasticsearch host", true, "localhost");
+    public static final Param HOSTNAME = new Param("elasticsearch_host", String.class, "Elasticsearch host", false, "localhost");
 
     /** Cluster transport client port. **/
-    public static final Param HOSTPORT = new Param("elasticsearch_port", Integer.class, "Elasticsearch port", true, 9300);
+    public static final Param HOSTPORT = new Param("elasticsearch_port", Integer.class, "Elasticsearch port", false, 9300);
 
     /** Index name. **/
     public static final Param INDEX_NAME = new Param("index_name", String.class, "Index defining type", true);
@@ -36,34 +36,47 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
 
     public static final Param STORE_DATA = new Param("store_data", Boolean.class, "Store data in local node", false, false);
 
+    public static final Param DATA_PATH = new Param("data_path", String.class, "Data path (for testing)", false);
+    
+    protected static final Param[] PARAMS = {
+        HOSTNAME, HOSTPORT, INDEX_NAME, SEARCH_INDICES, CLUSTERNAME, LOCAL_NODE, STORE_DATA
+    };
+    
+    protected static final String DISPLAY_NAME = "Elasticsearch";
+    
+    protected static final String DESCRIPTION = "Elasticsearch Index";
+    
     @Override
     public String getDisplayName() {
-        return "Elasticsearch";
+        return DISPLAY_NAME;
     }
 
     @Override
     public String getDescription() {
-        return "Elasticsearch Index";
+        return DESCRIPTION;
     }
 
     @Override
     public Param[] getParametersInfo() {
-        return new Param[]{HOSTNAME, HOSTPORT, INDEX_NAME, SEARCH_INDICES, CLUSTERNAME, LOCAL_NODE, STORE_DATA};
+        return PARAMS;
     }
 
     @Override
     public boolean canProcess(Map<String, Serializable> params) {
+        boolean result = false;
         try {
             final String searchHost = (String) HOSTNAME.lookUp(params);
             final String indexName = (String) INDEX_NAME.lookUp(params);
             final Integer hostport = (Integer) HOSTPORT.lookUp(params);
-            if (searchHost != null && hostport != null && indexName != null) {
-                return true;
+            final String dataPath = (String) DATA_PATH.lookUp(params);
+            
+            if ((searchHost != null && hostport != null || dataPath != null) && indexName != null) {
+                result = true;
             }
         } catch (IOException e) {
             // ignore
         }
-        return false;
+        return result;
     }
 
     @Override
@@ -85,7 +98,9 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
         final String clusterName = (String) getValue(CLUSTERNAME, params);
         final Boolean storeData = (Boolean) getValue(STORE_DATA, params);
         final Boolean localNode = (Boolean) getValue(LOCAL_NODE, params);
-        return new ElasticDataStore(searchHost, hostPort, indexName, searchIndices, clusterName, localNode, storeData);
+        final String dataPath = (String) getValue(DATA_PATH, params);
+        return new ElasticDataStore(searchHost, hostPort, indexName, searchIndices, 
+                clusterName, localNode, storeData, dataPath);
     }
 
     @Override

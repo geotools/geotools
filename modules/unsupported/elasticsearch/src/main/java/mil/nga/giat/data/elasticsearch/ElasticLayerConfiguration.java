@@ -40,28 +40,37 @@ public class ElasticLayerConfiguration implements Serializable {
     public static final String ANALYZED = "analyzed";
     
     /**
+     * Key used in the feature type user data to indicate whether the field is nested.
+     */
+    public static final String NESTED = "nested";
+
+    /**
      * Key to identify the Elasticsearch layer configuration.
      */
     public static final String KEY = "ElasticLayerConfiguration";
-
+    
+    private String docType;
+    
     private String layerName;
-
-    private List<ElasticAttribute> attributes;
-
-    public ElasticLayerConfiguration() {
-        attributes = new ArrayList<ElasticAttribute>();
+    
+    private final List<ElasticAttribute> attributes;
+    
+    public ElasticLayerConfiguration(String docType) {
+        this.docType = docType;
+        this.layerName = docType;
+        this.attributes = new ArrayList<>();
+    }
+    
+    public ElasticLayerConfiguration(ElasticLayerConfiguration other) {
+        this(other.docType);
+        setLayerName(other.layerName);
+        for (final ElasticAttribute attribute : other.attributes) {
+            attributes.add(new ElasticAttribute(attribute));
+        }
     }
 
-    public ElasticLayerConfiguration(ArrayList<ElasticAttribute> attributes) {
-        this.attributes = attributes;
-    }
-
-    public List<ElasticAttribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<ElasticAttribute> attributes) {
-        this.attributes = attributes;
+    public String getDocType() {
+        return docType;
     }
 
     public String getLayerName() {
@@ -70,6 +79,10 @@ public class ElasticLayerConfiguration implements Serializable {
 
     public void setLayerName(String layerName) {
         this.layerName = layerName;
+    }
+
+    public List<ElasticAttribute> getAttributes() {
+        return attributes;
     }
 
 }

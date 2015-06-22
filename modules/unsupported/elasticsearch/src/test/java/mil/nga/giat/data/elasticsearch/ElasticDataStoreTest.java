@@ -51,5 +51,17 @@ public class ElasticDataStoreTest extends ElasticTestSupport {
         String searchIndices = ((ElasticDataStore) dataStore).getSearchIndices();
         assertTrue(searchIndices.equals(indexName));
     }
+    
+    @Test
+    public void testLayerConfigClone() {
+        ElasticLayerConfiguration layerConfig = new ElasticLayerConfiguration("d");
+        layerConfig.setLayerName("ln");
+        layerConfig.getAttributes().add(new ElasticAttribute("a1"));
+        
+        ElasticLayerConfiguration layerConfig2 = new ElasticLayerConfiguration(layerConfig);
+        assertTrue(layerConfig.getDocType().equals(layerConfig2.getDocType()));
+        assertTrue(layerConfig.getLayerName().equals(layerConfig2.getLayerName()));
+        assertTrue(layerConfig.getAttributes().equals(layerConfig2.getAttributes()));
+    }
 
 }

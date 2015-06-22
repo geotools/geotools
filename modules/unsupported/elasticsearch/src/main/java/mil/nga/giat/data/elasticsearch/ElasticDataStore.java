@@ -17,19 +17,20 @@ import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.joda.Joda;
 import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.ImmutableSettings.Builder;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.util.logging.Logging;
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -58,7 +59,7 @@ import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
  */
 public class ElasticDataStore extends ContentDataStore {
 
-    private final static Logger LOGGER = Logger.getLogger(ElasticDataStoreFactory.class.getName());
+    private final static Logger LOGGER = Logging.getLogger(ElasticDataStoreFactory.class);
 
     private final String indexName;
 
@@ -67,18 +68,18 @@ public class ElasticDataStore extends ContentDataStore {
     private final Node node;
 
     private final Client client;
+    
+    private final boolean isLocal;
 
-    private final ImmutableList<Name> cachedTypeNames;
+    private final List<Name> baseTypeNames;
+    
+    private final Map<Name, String> docTypes;
 
-    // Attributes present in Elasticsearch schema
-    private List<ElasticAttribute> elasticAttributes = new ArrayList<>();
-
-    // Attributes configurations of the store entries
-    private Map<String, ElasticLayerConfiguration> elasticConfigurations = new ConcurrentHashMap<>();
-
+    private Map<String, ElasticLayerConfiguration> layerConfigurations;
+    
     public ElasticDataStore(String searchHost, Integer hostPort, 
             String indexName, String searchIndices, String clusterName,
-            boolean localNode, boolean storeData) {
+            boolean localNode, boolean storeData, String dataPath) {
 
         LOGGER.fine("initializing data store " + searchHost + ":" + hostPort + "/" + indexName);
 
@@ -90,38 +91,48 @@ public class ElasticDataStore extends ContentDataStore {
             this.searchIndices = indexName;
         }
 
-        if (localNode) {
-            final NodeBuilder nodeBuilder;
-            nodeBuilder = nodeBuilder().data(storeData)
-                    .local(false)
-                    .client(false)
-                    .clusterName(clusterName);
-            this.node = nodeBuilder.build();
-            node.start();
-            this.client = node.client();
+        if (dataPath != null) {
+            Settings build = ImmutableSettings.builder()
+                    .put("path.data", dataPath)
+                    .put("http.enabled", false)
+                    .build();
+            node = nodeBuilder()
+                    .settings(build)
+                    .local(true)
+                    .clusterName(clusterName)
+                    .node();
+            client = node.client();
+            isLocal = true;
+        } else if (localNode) {
+            node = nodeBuilder()
+                    .data(storeData)
+                    .clusterName(clusterName)
+                    .node();
+            client = node.client();
+            isLocal = false;
         } else {
-            this.node = null;
             final TransportAddress address;
             address = new InetSocketTransportAddress(searchHost, hostPort);
             Builder settings = ImmutableSettings.settingsBuilder()
                     .put("cluster.name", clusterName);
-            this.client = new TransportClient(settings);
+            client = new TransportClient(settings);
             ((TransportClient) client).addTransportAddress(address);
+            node = null;
+            isLocal = false;
         }
         LOGGER.fine("client connection established");
 
         final ClusterStateRequest clusterStateRequest;
         clusterStateRequest = Requests.clusterStateRequest()
-                .routingTable(true)
-                .nodes(true)
+                .local(isLocal)
                 .indices(indexName);
 
+        LOGGER.fine("querying cluster state");
         final ClusterState state;
         state = client.admin()
                 .cluster()
                 .state(clusterStateRequest)
                 .actionGet().getState();
-        LOGGER.fine("obtained cluster state");
 
         IndexMetaData metadata = state.metaData().index(indexName);
         if (metadata != null) {
@@ -132,15 +143,21 @@ public class ElasticDataStore extends ContentDataStore {
             while (elasticTypes.hasNext()) {
                 names.add(new NameImpl(elasticTypes.next()));
             }
-            cachedTypeNames = ImmutableList.copyOf(names);
+            baseTypeNames = names;
         } else {
-            cachedTypeNames = ImmutableList.copyOf(new ArrayList<Name>());
+            baseTypeNames = new ArrayList<>();
         }
+        
+        layerConfigurations = new ConcurrentHashMap<>();
+        docTypes = new HashMap<>();
     }
 
     @Override
-    protected List<Name> createTypeNames() throws IOException {
-        return this.cachedTypeNames;
+    protected List<Name> createTypeNames() {
+        final List<Name> names = new ArrayList<>();
+        names.addAll(baseTypeNames);
+        names.addAll(docTypes.keySet());
+        return ImmutableList.copyOf(names);
     }
 
     @Override
@@ -149,39 +166,42 @@ public class ElasticDataStore extends ContentDataStore {
     }
 
     @Override
-    public ContentFeatureSource getFeatureSource(Name typeName, Transaction tx)
+    public ContentFeatureSource getFeatureSource(Name name, Transaction tx)
             throws IOException {
 
-        if (typeName.getNamespaceURI() != null) {
-            // shouldn't have a namespace but remove it if present
-            typeName = new NameImpl(typeName.getLocalPart());
+        ElasticLayerConfiguration layerConfig = layerConfigurations.get(name.getLocalPart());
+        if (layerConfig != null) {
+            docTypes.put(name, layerConfig.getDocType());
         }
-        ContentFeatureSource featureSource = super.getFeatureSource(typeName, tx);
+        ContentFeatureSource featureSource = super.getFeatureSource(name, tx);
+        featureSource.getEntry().getState(Transaction.AUTO_COMMIT).flush();
+        
         return featureSource;
     }
 
     @Override
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, Transaction tx) throws IOException {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, 
+            Transaction tx) throws IOException {
         return super.getFeatureReader(query, tx);
     }
 
-    public void addConfiguration(String layerName) throws IOException {
-        if (elasticConfigurations.get(layerName) == null) {
-            final ElasticLayerConfiguration configuration;
-            configuration = new ElasticLayerConfiguration();
-            configuration.setAttributes(getElasticAttributes(layerName));
-            elasticConfigurations.put(layerName, configuration);
-        }
-    }
-
-    public List<ElasticAttribute> getElasticAttributes(String layerName) throws IOException {
-        if (elasticConfigurations.get(layerName) == null) {
-            elasticAttributes = new ArrayList<ElasticAttribute>();
+    public List<ElasticAttribute> getElasticAttributes(Name layerName) throws IOException {
+        final String localPart = layerName.getLocalPart();
+        ElasticLayerConfiguration layerConfig = layerConfigurations.get(localPart);
+        final List<ElasticAttribute> elasticAttributes;
+        if (layerConfig == null || layerConfig.getAttributes().isEmpty()) {
+            final String docType;
+            if (docTypes.containsKey(layerName)) {
+                docType = docTypes.get(layerName);
+            } else {
+                docType = localPart;
+            }
 
             final ClusterStateRequest clusterStateRequest;
             clusterStateRequest = Requests.clusterStateRequest()
                     .routingTable(true)
                     .nodes(true)
+                    .local(isLocal)
                     .indices(indexName);
 
             final ClusterState state;
@@ -189,7 +209,7 @@ public class ElasticDataStore extends ContentDataStore {
                     .state(clusterStateRequest).actionGet().getState();
             final MappingMetaData metadata;
             metadata = state.metaData().index(indexName)
-                    .mapping(layerName);
+                    .mapping(docType);
 
             final byte[] mappingSource = metadata.source().uncompressed();
             final XContentParser parser;
@@ -197,18 +217,19 @@ public class ElasticDataStore extends ContentDataStore {
                     .createParser(mappingSource);
 
             Map<String, Object> mapping = parser.map();
-            if (mapping.size() == 1 && mapping.containsKey(layerName)) {
+            if (mapping.size() == 1 && mapping.containsKey(docType)) {
                 // the type name is the root value, reduce it
-                mapping = (Map<String, Object>) mapping.get(layerName);
+                mapping = (Map<String, Object>) mapping.get(docType);
             }
 
-            add("_id", "string", mapping);
-            add("_index", "string", mapping);
-            add("_type", "string", mapping);
-            add("_score", "float", mapping);
-            add("_relative_score", "float", mapping);
+            elasticAttributes = new ArrayList<ElasticAttribute>();
+            add(elasticAttributes, "_id", "string", mapping, false);
+            add(elasticAttributes, "_index", "string", mapping, false);
+            add(elasticAttributes, "_type", "string", mapping, false);
+            add(elasticAttributes, "_score", "float", mapping, false);
+            add(elasticAttributes, "_relative_score", "float", mapping, false);
 
-            walk(mapping, "", false);
+            walk(elasticAttributes, mapping, "", false, false);
 
             // add default geometry and short name and count duplicate short names
             final Map<String,Integer> counts = new HashMap<>();
@@ -235,12 +256,13 @@ public class ElasticDataStore extends ContentDataStore {
                 }
             }
         } else {
-            elasticAttributes = elasticConfigurations.get(layerName).getAttributes();
+            elasticAttributes = layerConfig.getAttributes();
         }
         return elasticAttributes;
     }
 
-    private void walk(Map<String,Object> map, String propertyKey, boolean startType) {
+    private void walk(List<ElasticAttribute> elasticAttributes, Map<String,Object> map, 
+            String propertyKey, boolean startType, boolean nested) {
         for (final Map.Entry<String, Object> entry : map.entrySet()) {
             final String key = entry.getKey();
             final Object value = entry.getValue();
@@ -254,16 +276,20 @@ public class ElasticDataStore extends ContentDataStore {
                     newPropertyKey = propertyKey + "." + key;
                 }
                 startType = !startType && key.equals("properties");
-                walk((Map) value, newPropertyKey, startType);
-            } else if (key.equals("type")) {
-                add(propertyKey, (String) value, map);
+                if (!nested && map.containsKey("type")) {
+                    nested = map.get("type").equals("nested");
+                }
+                walk(elasticAttributes, (Map) value, newPropertyKey, startType, nested);
+            } else if (key.equals("type") && !value.equals("nested")) {
+                add(elasticAttributes, propertyKey, (String) value, map, nested);
             } else if (key.equals("_timestamp")) {
-                add("_timestamp", "date", map);
+                add(elasticAttributes, "_timestamp", "date", map, nested);
             }
         }
     }
 
-    private void add(String propertyKey, String propertyType, Map<String,Object> map) {
+    private void add(List<ElasticAttribute> elasticAttributes, String propertyKey, 
+            String propertyType, Map<String,Object> map, boolean nested) {
         if (propertyKey != null) {
             final ElasticAttribute elasticAttribute = new ElasticAttribute(propertyKey);
             final Class<?> binding;
@@ -328,6 +354,7 @@ public class ElasticDataStore extends ContentDataStore {
                 }
                 elasticAttribute.setStored(stored);
                 elasticAttribute.setType(binding);
+                elasticAttribute.setNested(nested);
                 elasticAttributes.add(elasticAttribute);
             }
         }
@@ -335,13 +362,12 @@ public class ElasticDataStore extends ContentDataStore {
 
     @Override
     public void dispose() {
+        LOGGER.fine("disposing");
         this.client.close();
         if (this.node != null) {
-            this.node.stop();
             this.node.close();
         }
         super.dispose();
-        LOGGER.fine("disposed");
     }
 
     public String getIndexName() {
@@ -356,19 +382,27 @@ public class ElasticDataStore extends ContentDataStore {
         return client;
     }
 
-    /**
-     * Gets the attributes configuration for the types in this datastore
-     */
-    public Map<String, ElasticLayerConfiguration> getElasticConfigurations() {
-        return elasticConfigurations;
+	public Map<String, ElasticLayerConfiguration> getLayerConfigurations() {
+        return layerConfigurations;
     }
 
-    /**
-     * Add the type configuration to this datastore
-     */
-    public void setElasticConfigurations(ElasticLayerConfiguration configuration) {
-        entries.remove(new NameImpl(namespaceURI, configuration.getLayerName()));
-        this.elasticConfigurations.put(configuration.getLayerName(), configuration);
+    public void setLayerConfiguration(ElasticLayerConfiguration layerConfig) {
+        final String layerName = layerConfig.getLayerName();
+        this.layerConfigurations.put(layerName, layerConfig);
+	}
+    
+    public Map<Name, String> getDocTypes() {
+        return docTypes;
+    }
+
+    public String getDocType(Name typeName) {
+        final String docType;
+        if (docTypes.containsKey(typeName)) {
+            docType = docTypes.get(typeName);
+        } else {
+            docType = typeName.getLocalPart();
+        }
+        return docType;
     }
 
 }

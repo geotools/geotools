@@ -4,6 +4,7 @@
  */
 package mil.nga.giat.data.elasticsearch;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,10 +12,12 @@ import static mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration.ANALYZED
 import static mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration.DATE_FORMAT;
 import static mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration.FULL_NAME;
 import static mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration.GEOMETRY_TYPE;
+import static mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration.NESTED;
 import mil.nga.giat.data.elasticsearch.ElasticAttribute.ElasticGeometryType;
 
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
@@ -28,20 +31,20 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class ElasticFeatureTypeBuilder extends SimpleFeatureTypeBuilder {
 
-    private final static Logger LOGGER = Logger.getLogger(ElasticFeatureTypeBuilder.class.getName());
+    private final static Logger LOGGER = Logging.getLogger(ElasticFeatureTypeBuilder.class);
 
-    private ElasticLayerConfiguration layerConfiguration;
+    private List<ElasticAttribute> attributes;
 
-    public ElasticFeatureTypeBuilder(ElasticLayerConfiguration layerConfiguration, Name name) {
+    public ElasticFeatureTypeBuilder(List<ElasticAttribute> attributes, Name name) {
         setName(name);
-        this.layerConfiguration = layerConfiguration;
+        this.attributes = attributes;
     }
 
     @Override
     public SimpleFeatureType buildFeatureType() {
-        if (layerConfiguration != null) {
+        if (attributes != null) {
             String defaultGeometryName = null;
-            for (ElasticAttribute attribute : layerConfiguration.getAttributes()) {
+            for (ElasticAttribute attribute : attributes) {
                 if (attribute.isUse()) {
                     final String attributeName;
                     if (attribute.getUseShortName()) {
@@ -84,6 +87,7 @@ public class ElasticFeatureTypeBuilder extends SimpleFeatureTypeBuilder {
                     if (att != null) {
                         att.getUserData().put(FULL_NAME, attribute.getName());
                         att.getUserData().put(ANALYZED, attribute.getAnalyzed());
+                        att.getUserData().put(NESTED, attribute.isNested());
                         add(att);
                     }
                 }

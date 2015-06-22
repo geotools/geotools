@@ -16,7 +16,6 @@
  */
 package mil.nga.giat.data.elasticsearch;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,8 +55,6 @@ import com.vividsolutions.jts.geom.Polygon;
 
 class FilterToElasticHelper {
 
-    protected static final String IO_ERROR = "io problem writing filter";
-
     /**
      * Conversion factor from common units to meter
      */
@@ -87,16 +84,13 @@ class FilterToElasticHelper {
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter,
             PropertyName property, Literal geometry, boolean swapped,
             Object extraData) {
-        try {
-            if (filter instanceof DistanceBufferOperator) {
-                visitDistanceSpatialOperator((DistanceBufferOperator) filter,
-                        property, geometry, swapped, extraData);
-            } else {
-                visitComparisonSpatialOperator(filter, property, geometry,
-                        swapped, extraData);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(IO_ERROR, e);
+
+        if (filter instanceof DistanceBufferOperator) {
+            visitDistanceSpatialOperator((DistanceBufferOperator) filter,
+                    property, geometry, swapped, extraData);
+        } else {
+            visitComparisonSpatialOperator(filter, property, geometry,
+                    swapped, extraData);
         }
         return extraData;
     }
@@ -104,17 +98,13 @@ class FilterToElasticHelper {
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
             Expression e2, Object extraData) {
 
-        try {
-            visitBinarySpatialOperator(filter, e1, e2, false, extraData);
-        } catch (IOException e) {
-            throw new RuntimeException(IO_ERROR, e);
-        }
+        visitBinarySpatialOperator(filter, e1, e2, false, extraData);
         return extraData;
     }
 
     void visitDistanceSpatialOperator(DistanceBufferOperator filter,
             PropertyName property, Literal geometry, boolean swapped,
-            Object extraData) throws IOException {
+            Object extraData) {
 
         property.accept(delegate, extraData);
         final String key = (String) delegate.field;
@@ -152,8 +142,7 @@ class FilterToElasticHelper {
     }
 
     void visitComparisonSpatialOperator(BinarySpatialOperator filter,
-            PropertyName property, Literal geometry, boolean swapped, Object extraData)
-                    throws IOException {
+            PropertyName property, Literal geometry, boolean swapped, Object extraData) {
 
         // if geography case, sanitize geometry first
         if(isCurrentGeography()) {
@@ -176,14 +165,11 @@ class FilterToElasticHelper {
     }
 
     void visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, Expression e2, 
-            boolean swapped, Object extraData) throws IOException {
+            boolean swapped, Object extraData) {
 
         AttributeDescriptor attType;
-        if (!swapped) {
-            attType = (AttributeDescriptor)e1.evaluate(delegate.featureType);
-        } else {
-            attType = (AttributeDescriptor)e2.evaluate(delegate.featureType);
-        }
+        attType = (AttributeDescriptor)e1.evaluate(delegate.featureType);
+
         ElasticGeometryType geometryType;
         geometryType = (ElasticGeometryType) attType.getUserData().get(GEOMETRY_TYPE);
         if (geometryType == ElasticGeometryType.GEO_POINT) {
@@ -194,7 +180,7 @@ class FilterToElasticHelper {
     }
 
     void visitGeoShapeBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, Expression e2, 
-            boolean swapped, Object extraData) throws IOException {
+            boolean swapped, Object extraData) {
 
         final ShapeRelation shapeRelation;
         if (filter instanceof Disjoint) {
@@ -223,7 +209,7 @@ class FilterToElasticHelper {
     }
 
     void visitGeoPointBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, Expression e2, 
-            boolean swapped, Object extraData) throws IOException {
+            boolean swapped, Object extraData) {
 
         e1.accept(delegate, extraData);
         final String key = (String) delegate.field;
@@ -349,13 +335,14 @@ class FilterToElasticHelper {
      * @return
      */
     private boolean isWorld(Literal geometry) {
+        boolean result = false;
         if(geometry != null) {
             Geometry g = geometry.evaluate(null, Geometry.class);
             if(g != null) {
-                return JTS.toGeometry(WORLD).equalsTopo(g.union());
+                result = JTS.toGeometry(WORLD).equalsTopo(g.union());
             }
         }
-        return false;
+        return result;
     }
 
     /**
@@ -364,11 +351,12 @@ class FilterToElasticHelper {
      * @return
      */
     private boolean isEmpty(Literal geometry) {
+        boolean result = false;
         if(geometry != null) {
             Geometry g = geometry.evaluate(null, Geometry.class);
-            return g == null || g.isEmpty();
+            result = g == null || g.isEmpty();
         }
-        return false;
+        return result;
     }
 
 }

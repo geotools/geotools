@@ -71,7 +71,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
-import org.opengis.geometry.Envelope;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -129,8 +128,15 @@ public class CatalogManager {
         // GranuleCatalog catalog = null;
         if (Utils.checkFileReadable(datastoreProperties)) {
             // read the properties file
-            catalog = createGranuleCatalogFromDatastore(parent, datastoreProperties, create, 
-                    Boolean.parseBoolean(runConfiguration.getParameter(Utils.Prop.WRAP_STORE)), runConfiguration.getHints());
+            Properties properties = createGranuleCatalogProperties(datastoreProperties);
+            // pass the typename from the indexer, if one is available
+            String indexerTypeName = runConfiguration.getParameter(Utils.Prop.TYPENAME);
+            if(indexerTypeName != null && properties.getProperty(Utils.Prop.TYPENAME) == null) {
+                properties.put(Utils.Prop.TYPENAME, indexerTypeName);
+            }
+            catalog = createGranuleCatalogFromDatastore(parent, properties, create,
+                    Boolean.parseBoolean(runConfiguration.getParameter(Utils.Prop.WRAP_STORE)),
+                    runConfiguration.getHints());
         } else {
 
             // we do not have a datastore properties file therefore we continue with a shapefile datastore
@@ -187,17 +193,16 @@ public class CatalogManager {
 
     /**
      * Create a granule catalog from a datastore properties file
-     * @param parent
-     * @param datastoreProperties
-     * @param create
-     * @param hints 
-     * @return
-     * @throws IOException
      */
     public static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, boolean wraps, Hints hints) throws IOException {
-        GranuleCatalog catalog = null;
         Utilities.ensureNonNull("datastoreProperties", datastoreProperties);
         Properties properties = createGranuleCatalogProperties(datastoreProperties);
+        return createGranuleCatalogFromDatastore(parent, properties, create, wraps, hints);
+    }
+
+    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent,
+            Properties properties, boolean create, boolean wraps, Hints hints) throws IOException {
+        GranuleCatalog catalog = null;
         // SPI
         final String SPIClass = properties.getProperty("SPI");
         try {
@@ -422,7 +427,7 @@ public class CatalogManager {
             // Case B: old style reader, proceed with classic way, using properties collectors 
             // 
             feature.setAttribute(indexSchema.getGeometryDescriptor().getLocalName(),
-                    GEOM_FACTORY.toGeometry(new ReferencedEnvelope((Envelope) envelope)));
+                    GEOM_FACTORY.toGeometry(new ReferencedEnvelope(envelope)));
             feature.setAttribute(locationAttribute, fileLocation);
             
             updateAttributesFromCollectors(feature, fileBeingProcessed, inputReader, propertiesCollectors);

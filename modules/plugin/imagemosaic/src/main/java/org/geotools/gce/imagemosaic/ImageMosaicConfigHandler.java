@@ -476,6 +476,12 @@ public class ImageMosaicConfigHandler {
             coverage.setName(props.getProperty(Prop.NAME));
         }
 
+        // type name
+        if (props.containsKey(Prop.TYPENAME)) {
+            IndexerUtils.setParam(parameters, props, Prop.TYPENAME);
+            coverage.setName(props.getProperty(Prop.TYPENAME));
+        }
+
         // absolute
         if (props.containsKey(Prop.ABSOLUTE_PATH))
             IndexerUtils.setParam(parameters, props, Prop.ABSOLUTE_PATH);
@@ -636,7 +642,11 @@ public class ImageMosaicConfigHandler {
         }
         properties.setProperty(Utils.Prop.LEVELS, levels.toString());
         properties.setProperty(Utils.Prop.NAME, mosaicConfiguration.getName());
-        properties.setProperty(Utils.Prop.TYPENAME, mosaicConfiguration.getName());
+        String typeName = mosaicConfiguration.getCatalogConfigurationBean().getTypeName();
+        if (typeName == null) {
+            typeName = mosaicConfiguration.getName();
+        }
+        properties.setProperty(Utils.Prop.TYPENAME, typeName);
         properties.setProperty(Utils.Prop.EXP_RGB,
                 Boolean.toString(mosaicConfiguration.isExpandToRGB()));
         properties.setProperty(Utils.Prop.CHECK_AUXILIARY_METADATA,
@@ -814,7 +824,12 @@ public class ImageMosaicConfigHandler {
             catalogConfigurationBean.setWrapStore(IndexerUtils.getParameterAsBoolean(
                     Prop.WRAP_STORE, indexer));
 
-            catalogConfigurationBean.setTypeName(coverageName);
+            String configuredTypeName = IndexerUtils.getParameter(Prop.TYPENAME, indexer);
+            if (configuredTypeName != null) {
+                catalogConfigurationBean.setTypeName(configuredTypeName);
+            } else {
+                catalogConfigurationBean.setTypeName(coverageName);
+            }
             configBuilder.setCatalogConfigurationBean(catalogConfigurationBean);
             configBuilder.setCheckAuxiliaryMetadata(IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));
 

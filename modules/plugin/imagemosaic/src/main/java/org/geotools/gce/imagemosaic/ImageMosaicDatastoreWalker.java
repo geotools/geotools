@@ -11,6 +11,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * This class is responsible for walking through the target schema and check all the located granules.
@@ -52,7 +53,14 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker {
 
             // start looking into catalog
             final GranuleCatalog catalog = configHandler.getCatalog();
+            String locationAttrName = configHandler.getRunConfiguration().getParameter(
+                    Prop.LOCATION_ATTRIBUTE);
+            String requestedTypeName = configHandler.getRunConfiguration().getParameter(
+                    Prop.TYPENAME);
             for (String typeName : catalog.getTypeNames()) {
+                if (requestedTypeName != null && !requestedTypeName.equals(typeName)) {
+                    continue;
+                }
 
                 // how many rows for this feature type?
                 final Query query = new Query(typeName);
@@ -66,6 +74,18 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker {
 
                 // cool, now let's walk over the features
                 final SimpleFeatureCollection coll = catalog.getGranules(query);
+
+                SimpleFeatureType schema = coll.getSchema();
+                if (schema.getDescriptor(locationAttrName) == null) {
+                    LOGGER.fine("Skipping feature type " + typeName + " as the location attribute "
+                            + locationAttrName + " is not part of the schema");
+                    continue;
+                } else if (schema.getGeometryDescriptor() == null) {
+                    LOGGER.fine("Skipping feature type " + typeName
+                            + " as it does not have a footprint column");
+                    continue;
+                }
+
                 // create an iterator
                 it = coll.features();
                 // TODO setup index name
@@ -74,10 +94,6 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker {
                     // get next element
                     final SimpleFeature feature = it.next();
 
-                    // String
-                    // locationAttrName=config.getCatalogConfigurationBean().getLocationAttribute();
-                    String locationAttrName = configHandler.getRunConfiguration().getParameter(
-                            Prop.LOCATION_ATTRIBUTE);
                     Object locationAttrObj = feature.getAttribute(locationAttrName);
                     File file = null;
                     if (locationAttrObj instanceof String) {

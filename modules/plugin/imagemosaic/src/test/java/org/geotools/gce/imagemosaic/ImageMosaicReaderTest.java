@@ -36,12 +36,15 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,14 +82,17 @@ import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.grid.io.UnknownFormat;
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
@@ -3480,6 +3486,72 @@ public class ImageMosaicReaderTest extends Assert{
         String path = (String) fileLocation;
         assertTrue(!path.isEmpty());
         assertTrue(path.endsWith(".ovr"));
+    }
+
+    @Test
+    public void testInitFromExistingStore() throws Exception {
+        File testMosaic = new File(TestData.file(this, "."), "existingStore");
+        if (testMosaic.exists()) {
+            FileUtils.deleteDirectory(testMosaic);
+        }
+        File mosaicSource = TestData.file(this, "rgb");
+        FileUtils.copyDirectory(mosaicSource, testMosaic);
+
+        // create the base mosaic we are going to use
+        cleanConfigurationFiles(testMosaic, "rgb");
+        URL testMosaicUrl = DataUtilities.fileToURL(testMosaic);
+
+        // place H2 file in the dir
+        File dataStoreProperties = new File(testMosaic, "datastore.properties");
+        try (FileWriter out = new FileWriter(dataStoreProperties)) {
+            out.write("database=imagemosaic\n");
+            out.write(H2_SAMPLE_PROPERTIES);
+            out.flush();
+        } 
+
+        // force its initialization the "normal" way
+        final AbstractGridFormat format = TestUtils.getFormat(testMosaicUrl);
+        final ImageMosaicReader reader = TestUtils.getReader(testMosaicUrl, format);
+        reader.dispose();
+
+        // cleanup configuration, test image, and so on
+        cleanConfigurationFiles(testMosaic, "existingStore");
+
+        // rename the table
+        Properties h2Connection = new Properties();
+        try (FileReader fr = new FileReader(dataStoreProperties)) {
+            h2Connection.load(fr);
+        }
+        h2Connection.put("database", new File(testMosaic, "imagemosaic").getCanonicalPath());
+        JDBCDataStore store = (JDBCDataStore) DataStoreFinder.getDataStore(h2Connection);
+        try (Connection c = store.getConnection(Transaction.AUTO_COMMIT);
+                Statement st = c.createStatement()) {
+            st.execute("ALTER TABLE \"existingStore\" RENAME TO \"testMosaic\"");
+            st.execute("UPDATE GEOMETRY_COLUMNS SET F_TABLE_NAME = 'testMosaic'");
+        }
+        store.dispose();
+
+        // force it to use the existing schema
+        Properties indexer = new Properties();
+        indexer.put(Utils.Prop.USE_EXISTING_SCHEMA, "true");
+        indexer.put(Utils.Prop.TYPENAME, "testMosaic");
+        try (FileOutputStream fos = new FileOutputStream(new File(testMosaic, "indexer.properties"))) {
+            indexer.store(fos, null);
+        }
+
+        // now read again, see if the config gets read properly
+        final ImageMosaicReader reader2 = TestUtils.getReader(testMosaicUrl, format);
+        GridCoverage2D coverage = reader2.read(null);
+        coverage.dispose(true);
+        reader2.dispose();
+    }
+
+    private void cleanConfigurationFiles(File testMosaic, String mosaicName) {
+        new File(testMosaic, "sample_image").delete();
+        for (File configFile : testMosaic.listFiles((FileFilter) FileFilterUtils
+                .prefixFileFilter(mosaicName))) {
+            configFile.delete();
+        }
     }
 
         @AfterClass

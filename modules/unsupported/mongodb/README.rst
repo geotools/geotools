@@ -12,7 +12,7 @@ To publish a collection:
 
 * When examining compliant collections, the schema store will be queried for an existing schema by using the collection name as the schema name. If a schema exists it is utilized otherwise it is inferred from the collection and cached to the schema store for reuse.
 
-* A collection must have its underlying coordinate system set to EPSG:4326 (WGS84, latitude/longitude order).
+* Location data is stored in a collection as GeoJSON objects. The coordinate reference system for GeoJSON uses the WGS84 datum with axis order longitude/latitude. Therefore, the geometry attribute descriptor in a schema must specify EPSG:4326 as CRS (always true for inferred schemas).
 
 * A new collection can be created using createSchema method. This should not be utilized to manually define a schema for an existing collection.
 
@@ -120,9 +120,9 @@ Implementation Notes
 
 * Multigeometry support requires MongoDB versions 2.5 and newer
 
-* Self-intersecting polygons is a common data problem preventing MongoDBDataStore from functioning.
+* Self-intersecting polygons is a common data problem preventing MongoDBDataStore from functioning. Please note that self-intersections may arise due to the transformation to WGS84 coordinates (which is a necessary preliminary step for importing data into MongoDB), even if they didn't exist in the original dataset.
 
-* All 2dsphere indexes and spatial operations assume the WGS84 ellipsoid. All indexed GeoJSON data stored in a MongoDB document collection is assumed to be referenced with the WGS84 coordinate reference system.
+* All 2dsphere indexes and spatial operations assume the WGS84 datum. All indexed GeoJSON data stored in a MongoDB document collection is assumed to be referenced with the WGS84 coordinate reference system.
 
 * MongoDB versions tested through 2.4.9 do not support more than one operation on a spatial index nested in an $or operation (so splitting a query into two across the dateline will not work).
 

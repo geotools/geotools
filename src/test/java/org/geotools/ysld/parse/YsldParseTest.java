@@ -459,7 +459,7 @@ public class YsldParseTest {
             "feature-styles: \n"+
             "- name: name\n"+
             "  rules:\n"+
-            "  - zoom: (0,0)\n";
+            "  - zoom: "+tuple(0,0)+"\n";
         
         
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -482,7 +482,7 @@ public class YsldParseTest {
             "feature-styles: \n"+
             "- name: name\n"+
             "  rules:\n"+
-            "  - zoom: (1,2)\n";
+            "  - zoom: "+tuple(1,2)+"\n";
         
         
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -506,8 +506,8 @@ public class YsldParseTest {
             "feature-styles: \n"+
             "- name: name\n"+
             "  rules:\n"+
-            "  - zoom: (0,0)\n"+
-            "  - zoom: (3,3)\n";
+            "  - zoom: "+tuple(0,0)+"\n"+
+            "  - zoom: "+tuple(3,3)+"\n";
         
         
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -541,8 +541,8 @@ public class YsldParseTest {
             "feature-styles: \n"+
             "- name: name\n"+
             "  rules:\n"+
-            "  - zoom: (0,0)\n"+
-            "  - zoom: (2,2)\n";
+            "  - zoom: "+tuple(0,0)+"\n"+
+            "  - zoom: "+tuple(2,2)+"\n";
         
         
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -575,8 +575,8 @@ public class YsldParseTest {
             "feature-styles: \n"+
             "- name: name\n"+
             "  rules:\n"+
-            "  - zoom: (3,3)\n"+
-            "  - zoom: (5,5)\n";
+            "  - zoom: "+tuple(3,3)+"\n"+
+            "  - zoom: "+tuple(5,5)+"\n";
         
         
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -611,9 +611,9 @@ public class YsldParseTest {
             "feature-styles: \n"+
             "- name: name\n"+
             "  rules:\n"+
-            "  - zoom: (,1)\n"+
-            "  - zoom: (2,3)\n"+
-            "  - zoom: (4,)\n";
+            "  - zoom: "+tuple("",1)+"\n"+
+            "  - zoom: "+tuple(2,3)+"\n"+
+            "  - zoom: "+tuple(4,"")+"\n";
         
         
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -648,69 +648,69 @@ public class YsldParseTest {
         
     }
     final static String GOOGLE_MERCATOR_TEST_RULES=
-            "  - zoom: (0,0)\n"+
-            "  - zoom: (1,1)\n"+
-            "  - zoom: (2,2)\n"+
-            "  - zoom: (3,3)\n"+
-            "  - zoom: (4,4)\n"+
-            "  - zoom: (5,5)\n"+
-            "  - zoom: (6,6)\n"+
-            "  - zoom: (7,7)\n"+
-            "  - zoom: (8,8)\n"+
-            "  - zoom: (9,9)\n"+
-            "  - zoom: (10,10)\n"+
-            "  - zoom: (11,11)\n"+
-            "  - zoom: (12,12)\n"+
-            "  - zoom: (13,13)\n"+
-            "  - zoom: (14,14)\n"+
-            "  - zoom: (15,15)\n"+
-            "  - zoom: (16,16)\n"+
-            "  - zoom: (17,17)\n"+
-            "  - zoom: (18,18)\n"+
-            "  - zoom: (19,19)\n";
+            "  - zoom: "+tuple(0,0)+"\n"+
+            "  - zoom: "+tuple(1,1)+"\n"+
+            "  - zoom: "+tuple(2,2)+"\n"+
+            "  - zoom: "+tuple(3,3)+"\n"+
+            "  - zoom: "+tuple(4,4)+"\n"+
+            "  - zoom: "+tuple(5,5)+"\n"+
+            "  - zoom: "+tuple(6,6)+"\n"+
+            "  - zoom: "+tuple(7,7)+"\n"+
+            "  - zoom: "+tuple(8,8)+"\n"+
+            "  - zoom: "+tuple(9,9)+"\n"+
+            "  - zoom: "+tuple(10,10)+"\n"+
+            "  - zoom: "+tuple(11,11)+"\n"+
+            "  - zoom: "+tuple(12,12)+"\n"+
+            "  - zoom: "+tuple(13,13)+"\n"+
+            "  - zoom: "+tuple(14,14)+"\n"+
+            "  - zoom: "+tuple(15,15)+"\n"+
+            "  - zoom: "+tuple(16,16)+"\n"+
+            "  - zoom: "+tuple(17,17)+"\n"+
+            "  - zoom: "+tuple(18,18)+"\n"+
+            "  - zoom: "+tuple(19,19)+"\n";
     
     final static String WGS84_TEST_RULES=
-            "  - zoom: (0,0)\n"+
+            "  - zoom: "+tuple(0,0)+"\n"+
             "    name: WGS84:00\n"+
-            "  - zoom: (1,1)\n"+
+            "  - zoom: "+tuple(1,1)+"\n"+
             "    name: WGS84:01\n"+
-            "  - zoom: (2,2)\n"+
+            "  - zoom: "+tuple(2,2)+"\n"+
             "    name: WGS84:02\n"+
-            "  - zoom: (3,3)\n"+
+            "  - zoom: "+tuple(3,3)+"\n"+
             "    name: WGS84:03\n"+
-            "  - zoom: (4,4)\n"+
+            "  - zoom: "+tuple(4,4)+"\n"+
             "    name: WGS84:04\n"+
-            "  - zoom: (5,5)\n"+
+            "  - zoom: "+tuple(5,5)+"\n"+
             "    name: WGS84:05\n"+
-            "  - zoom: (6,6)\n"+
+            "  - zoom: "+tuple(6,6)+"\n"+
             "    name: WGS84:06\n"+
-            "  - zoom: (7,7)\n"+
+            "  - zoom: "+tuple(7,7)+"\n"+
             "    name: WGS84:07\n"+
-            "  - zoom: (8,8)\n"+
+            "  - zoom: "+tuple(8,8)+"\n"+
             "    name: WGS84:08\n"+
-            "  - zoom: (9,9)\n"+
+            "  - zoom: "+tuple(9,9)+"\n"+
             "    name: WGS84:09\n"+
-            "  - zoom: (10,10)\n"+
+            "  - zoom: "+tuple(10,10)+"\n"+
             "    name: WGS84:10\n"+
-            "  - zoom: (11,11)\n"+
+            "  - zoom: "+tuple(11,11)+"\n"+
             "    name: WGS84:11\n"+
-            "  - zoom: (12,12)\n"+
+            "  - zoom: "+tuple(12,12)+"\n"+
             "    name: WGS84:12\n"+
-            "  - zoom: (13,13)\n"+
+            "  - zoom: "+tuple(13,13)+"\n"+
             "    name: WGS84:13\n"+
-            "  - zoom: (14,14)\n"+
+            "  - zoom: "+tuple(14,14)+"\n"+
             "    name: WGS84:14\n"+
-            "  - zoom: (15,15)\n"+
+            "  - zoom: "+tuple(15,15)+"\n"+
             "    name: WGS84:15\n"+
-            "  - zoom: (16,16)\n"+
+            "  - zoom: "+tuple(16,16)+"\n"+
             "    name: WGS84:16\n"+
-            "  - zoom: (17,17)\n"+
+            "  - zoom: "+tuple(17,17)+"\n"+
             "    name: WGS84:17\n"+
-            "  - zoom: (18,18)\n"+
+            "  - zoom: "+tuple(18,18)+"\n"+
             "    name: WGS84:18\n"+
-            "  - zoom: (19,19)\n"+
+            "  - zoom: "+tuple(19,19)+"\n"+
             "    name: WGS84:19\n"+
-            "  - zoom: (20,20)\n"+
+            "  - zoom: "+tuple(20,20)+"\n"+
             "    name: WGS84:20\n";
     
     // m/px
@@ -897,7 +897,7 @@ public class YsldParseTest {
             "feature-styles: \n"+
             "- name: name\n"+
             "  rules:\n"+
-            "  - zoom: (0,0)";
+            "  - zoom: "+tuple(0,0);
         
         ZoomContextFinder finder = createMock(ZoomContextFinder.class);
         ZoomContext context = createMock(ZoomContext.class);
@@ -949,7 +949,7 @@ public class YsldParseTest {
                 "feature-styles: \n"+
                 "- name: name\n"+
                 "  rules:\n"+
-                "  - zoom: (0,0)";
+                "  - zoom: "+tuple(0,0);
             
             ZoomContextFinder finder = createMock(ZoomContextFinder.class);
             ZoomContext context = createMock(ZoomContext.class);
@@ -991,7 +991,25 @@ public class YsldParseTest {
         assertEquals(Color.BLUE, SLD.color(SLD.stroke(p)));
         assertNull(SLD.fill(p));
     }
-
+    
+    static String tuple(Object... values) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("(");
+        String join = "";
+        for(Object o: values) {
+            builder.append(join);
+            join = ", ";
+            String s = o.toString();
+            if(s.startsWith("#")){
+                builder.append(String.format("'%s'", s));
+            } else {
+                builder.append(s);
+            }
+        }
+        builder.append(")");
+        return builder.toString();
+    }
+    
     @Test
     public void testColourMap() throws Exception {
         String yaml =
@@ -999,9 +1017,9 @@ public class YsldParseTest {
                 "  color-map:\n" +
                 "    type: values\n" +
                 "    entries:\n" +
-                "    - ('#ff0000, 1.0, 0, start)\n" +
-                "    - ('#00ff00', 1.0, 500, middle)\n" +
-                "    - ('#0000ff', 1.0, 1000, end)\n" +
+                "    - "+tuple("#ff0000", "1.0", "0", "start")+"\n" +
+                "    - "+tuple("#00ff00", "1.0", "500", "middle")+"\n" +
+                "    - "+tuple("#0000ff", "1.0", "1000", "end")+"\n" +
                 "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -1525,7 +1543,7 @@ public class YsldParseTest {
    public void testPointDisplacement() throws Exception {
        String yaml =
                "point: \n"+
-               "  displacement: (10, 42)\n"+
+               "  displacement: "+tuple(10, 42)+"\n"+
                "  symbols: \n" +
                "  - mark: \n" +
                "      fill-color: '#FF0000'\n";
@@ -1543,7 +1561,7 @@ public class YsldParseTest {
    public void testPointAnchor() throws Exception {
        String yaml =
                "point: \n"+
-               "  anchor: (0.75, 0.25)\n"+
+               "  anchor: "+tuple(0.75, 0.25)+"\n"+
                "  symbols: \n" +
                "  - mark: \n" +
                "      fill-color: '#FF0000'\n";
@@ -1562,7 +1580,7 @@ public class YsldParseTest {
    public void testTextDisplacement() throws Exception {
        String yaml =
                "text: \n"+
-               "  displacement: (10, 42)\n";
+               "  displacement: "+tuple(10, 42)+"\n";
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);
        
@@ -1577,7 +1595,7 @@ public class YsldParseTest {
    public void testTextAnchor() throws Exception {
        String yaml =
                "text: \n"+
-               "  anchor: (0.75, 0.25)\n";
+               "  anchor: "+tuple(0.75, 0.25)+"\n";
        
        StyledLayerDescriptor sld = Ysld.parse(yaml);
        
@@ -1609,9 +1627,9 @@ public class YsldParseTest {
        String yaml =
                "text:\n"+
                "    label: ${name}\n"+
-               "    displacement: (42,64)\n"+
+               "    displacement: "+tuple(42,64)+"\n"+
                "    graphic:\n"+
-               "      displacement: (10,15)\n"+
+               "      displacement: "+tuple(10,15)+"\n"+
                "      symbols:\n"+
                "      - mark:\n"+
                "          shape: circle\n"+

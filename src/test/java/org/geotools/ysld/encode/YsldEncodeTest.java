@@ -1,14 +1,37 @@
 package org.geotools.ysld.encode;
 
 
+import static org.geotools.ysld.TestUtils.fakeString;
+import static org.geotools.ysld.TestUtils.isColor;
+import static org.geotools.ysld.TestUtils.lexEqualTo;
+import static org.geotools.ysld.TestUtils.numEqualTo;
+import static org.geotools.ysld.TestUtils.yHasEntry;
+import static org.geotools.ysld.TestUtils.yHasItem;
+import static org.geotools.ysld.TestUtils.yTuple;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import javax.measure.unit.NonSI;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
@@ -19,11 +42,9 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.styling.UserLayer;
-import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.YamlMap;
-import org.geotools.ysld.YamlObject;
-import org.geotools.ysld.YamlSeq;
 import org.geotools.ysld.Ysld;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.opengis.filter.FilterFactory;
@@ -34,32 +55,7 @@ import org.opengis.style.ChannelSelection;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.Graphic;
 import org.opengis.style.GraphicalSymbol;
-import org.geotools.styling.RasterSymbolizer;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.yaml.snakeyaml.Yaml;
-
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
-
-import static org.geotools.ysld.TestUtils.isColor;
-import static org.geotools.ysld.TestUtils.lexEqualTo;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class YsldEncodeTest {
 
@@ -497,8 +493,8 @@ public class YsldEncodeTest {
         YamlMap yaml = new YamlMap(new Yaml().load(out.toString()));
         
         assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("placement", equalTo("point")) );
-        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("displacement", equalTo("(10,15)")) );
-        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("anchor", equalTo("(0.75,0.25)")) );
+        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("displacement", yTuple(numEqualTo(10), numEqualTo(15))));
+        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("anchor", yTuple(numEqualTo(0.75, EPSILON), numEqualTo(0.25, EPSILON))) );
         assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("rotation", equalTo(90)) );
     }
     
@@ -562,7 +558,6 @@ public class YsldEncodeTest {
         assertFalse(symbMap.has("contrast-enhancement"));
     }
     
-    @SuppressWarnings("unchecked")
     @Test
     public void testColorMap() throws Exception {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
@@ -586,8 +581,54 @@ public class YsldEncodeTest {
         YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
 
         assertThat(symbMap, yHasEntry("color-map", yHasEntry("entries", allOf(
-                yHasItem(0, equalTo("('#000011',,0.0,)")),
-                yHasItem(1, equalTo("('#0000EE',,1.0,)"))))));
+                yHasItem(0, yTuple(
+                        fakeString("#000011"), 
+                        lexEqualTo(""), 
+                        numEqualTo(0.0, EPSILON), 
+                        lexEqualTo(""))),
+                yHasItem(1, yTuple(
+                        fakeString("#0000EE"), 
+                        lexEqualTo(""), 
+                        numEqualTo(1.0, EPSILON), 
+                        lexEqualTo("")))
+                        ))));
+    }
+    
+    @Ignore // Currently broken
+    @Test
+    public void testColorMapWithExpression() throws Exception {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
+
+        RasterSymbolizer symb = styleFactory.createRasterSymbolizer();
+        ColorMapEntry e1 = styleFactory.createColorMapEntry();
+        e1.setColor(filterFactory.literal("#000011"));
+        e1.setQuantity(filterFactory.literal(0.0d));
+        ColorMapEntry e2 = styleFactory.createColorMapEntry();
+        e2.setColor(filterFactory.literal("#0000EE"));
+        e2.setQuantity(filterFactory.function("pow", filterFactory.literal(1.2d), filterFactory.literal(2.0d)));
+        symb.getColorMap().addColorMapEntry(e1);
+        symb.getColorMap().addColorMapEntry(e2);
+        StyledLayerDescriptor sld = sld(symb);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
+
+        assertThat(symbMap, yHasEntry("color-map", yHasEntry("entries", allOf(
+                yHasItem(0, yTuple(
+                        fakeString("#000011"), 
+                        lexEqualTo(""), 
+                        numEqualTo(0.0, EPSILON), 
+                        lexEqualTo(""))),
+                yHasItem(1, yTuple(
+                        fakeString("#0000EE"), 
+                        lexEqualTo(""), 
+                        equalTo("${pow(1.2,2.0)}"), 
+                        lexEqualTo("")))
+                        ))));
     }
     
     @Test
@@ -904,69 +945,6 @@ public class YsldEncodeTest {
                                         yHasEntry("fill-color", equalTo("#995555"))))))));
     }
     
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    Matcher<Object> yHasItem(final int i, final Matcher<? extends Object> m) {
-        return new BaseMatcher() {
-
-            @Override
-            public boolean matches(Object arg0) {
-                if(!(arg0 instanceof YamlSeq)) return false;
-                YamlSeq seq = (YamlSeq) arg0;
-                
-                Object value = null;
-                try {
-                    value = seq.map(i);
-                } catch (IllegalArgumentException ex1) {
-                    try {
-                        value = seq.seq(i);
-                    } catch (IllegalArgumentException ex2) {
-                        value = seq.get(i);
-                    }
-                }
-                return (m.matches(value));
-            }
-
-            @Override
-            public void describeTo(Description arg0) {
-                arg0.appendText("YamlSeq with item ").appendValue(i).appendText(" that ").appendDescriptionOf(m);
-            }
-            
-        };
-    }    
-    
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    Matcher<Object> yHasEntry(final String key, final Matcher<? extends Object> m) {
-        return new BaseMatcher() {
-
-            @Override
-            public boolean matches(Object arg0) {
-                if(!(arg0 instanceof YamlMap)) return false;
-                YamlMap map = (YamlMap) arg0;
-                
-                if(! map.has(key)) return false;
-                Object value = null;
-                try {
-                    value = map.map(key);
-                } catch (IllegalArgumentException ex1) {
-                    try {
-                        value = map.seq(key);
-                    } catch (IllegalArgumentException ex2) {
-                        value = map.get(key);
-                    }
-                }
-                return (m.matches(value));
-            }
-
-            @Override
-            public void describeTo(Description arg0) {
-                arg0.appendText("YamlMap with entry ").appendValue(key).appendText(" and value ").appendDescriptionOf(m);
-            }
-            
-        };
-    }
-    Matcher<Object> yHasEntry(final String key) { 
-        return yHasEntry(key, Matchers.any(Object.class));
-    }
     @Test
     public void testGrayBandSelectionWithContrast() throws Exception {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();

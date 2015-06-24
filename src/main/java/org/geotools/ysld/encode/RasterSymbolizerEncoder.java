@@ -81,7 +81,7 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         }
     }
 
-    class ColorMapEntryIterator implements Iterator<String> {
+    class ColorMapEntryIterator implements Iterator<Tuple> {
 
         Iterator<ColorMapEntry> entries;
 
@@ -95,11 +95,11 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         }
 
         @Override
-        public String next() {
+        public Tuple next() {
             ColorMapEntry entry = entries.next();
 
             return Tuple.of(toColorOrNull(entry.getColor()), toObjOrNull(entry.getOpacity()),
-                toObjOrNull(entry.getQuantity()), entry.getLabel()).toString();
+                toObjOrNull(entry.getQuantity()), entry.getLabel());
         }
 
         @Override

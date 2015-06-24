@@ -61,22 +61,26 @@ public class RuleParser extends YsldParseHandler {
 
     private @Nullable ScaleRange parseScale(YamlMap r) {
         if (r.has("scale")) {
-            String value = r.str("scale");
+            Object value = r.get("scale");
             Tuple t = null;
             try {
                 t = Tuple.of(2).parse(value);
             }
             catch(IllegalArgumentException e) {
                 throw new IllegalArgumentException(
-                    String.format("Bad scale value: '%s', must be of form (<min>,<max>)", value), e);
+                    String.format("Bad scale value: '%s', must be of form [<min>,<max>]", value), e);
             } 
             double min = 0;
             double max = Double.POSITIVE_INFINITY;
             if (t.at(0) != null) {
-                min = Double.parseDouble(t.strAt(0));
+                if (!t.strAt(0).equalsIgnoreCase("min")){
+                    min = Double.parseDouble(t.strAt(0));
+                }
             }
             if (t.at(1) != null) {
-                max = Double.parseDouble(t.strAt(1));
+                if (!t.strAt(1).equalsIgnoreCase("max")){
+                    max = Double.parseDouble(t.strAt(1));
+                }
             }
             return new ScaleRange(min, max);
         } else  {
@@ -87,22 +91,26 @@ public class RuleParser extends YsldParseHandler {
     private ScaleRange parseZoom(YamlMap r, YamlParseContext context) {
         if (r.has("zoom")) {
             ZoomContext zCtxt = getZoomContext(context);
-            String value = r.str("zoom");
+            Object value = r.get("zoom");
             Tuple t = null;
             try {
                 t = Tuple.of(2).parse(value);
             }
             catch(IllegalArgumentException e) {
                 throw new IllegalArgumentException(
-                        String.format("Bad zoom value: '%s', must be of form (<min>,<max>)", value), e);
+                        String.format("Bad zoom value: '%s', must be of form [<min>,<max>]", value), e);
             }
             @Nullable Integer min = null;
             @Nullable Integer max = null;
             if (t.at(0) != null) {
-                min = Integer.parseInt(t.strAt(0));
+                if (!t.strAt(0).equalsIgnoreCase("min")){
+                    min = Integer.parseInt(t.strAt(0));
+                }
             }
             if (t.at(1) != null) {
-                max =  Integer.parseInt(t.strAt(1));
+                if (!t.strAt(1).equalsIgnoreCase("max")){
+                    max =  Integer.parseInt(t.strAt(1));
+                }
             }
             return zCtxt.getRange(min, max);
         } else {

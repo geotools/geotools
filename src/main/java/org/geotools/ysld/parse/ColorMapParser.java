@@ -52,15 +52,14 @@ public abstract class ColorMapParser extends YsldParseHandler {
         public void handle(YamlObject<?> obj, YamlParseContext context) {
             YamlSeq seq = obj.seq();
             for (Object o : seq.raw()) {
-                String val = o.toString();
 
                 Tuple q = null;
                 try {
-                    q = Tuple.of(4).parse(val);
+                    q = Tuple.of(4).parse(o);
                 }
                 catch(IllegalArgumentException e) {
                     throw new IllegalArgumentException(String.format(
-                            "Bad entry: '%s', must be of form (<color>,[<opacity>],[<value>],[<label>])", val), e);
+                            "Bad entry: '%s', must be of form [<color>,[<opacity>],[<value>],[<label>]]", o.toString()), e);
                 }
 
                 ColorMapEntry e = factory.style.createColorMapEntry();

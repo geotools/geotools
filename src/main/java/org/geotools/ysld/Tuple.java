@@ -1,7 +1,9 @@
 package org.geotools.ysld;
 
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,7 +45,9 @@ public class Tuple {
         this.pattern = pattern;
     }
 
+    @Deprecated
     public Tuple parse(String str) throws IllegalArgumentException {
+        // TODO Log a warning that this is deprecated
         Matcher m = pattern.matcher(str);
         if (!m.matches()) {
             throw new IllegalArgumentException();
@@ -56,6 +60,32 @@ public class Tuple {
             }
         }
         return this;
+    }
+    
+    public Tuple parse(List<?> seq) throws IllegalArgumentException {
+        
+        if (seq.size()!=values.length) {
+            throw new IllegalArgumentException();
+        }
+        
+        for (int i = 0; i < values.length; i++) {
+            Object val = seq.get(i);
+            if (val != null && !"".equals(val)) {
+                values[i] = val.toString();
+            }
+        }
+        return this;
+    }
+    
+    public Tuple parse(Object obj) throws IllegalArgumentException {
+        if (obj instanceof List) {
+            return parse((List<?>) obj);
+        } else if (obj instanceof String) {
+            return parse((String) obj);
+        } else if (obj instanceof YamlObject) {
+            return parse(((YamlObject<?>) obj).raw());
+        } 
+        throw new IllegalArgumentException();
     }
 
     public Object at(int i) {
@@ -84,6 +114,10 @@ public class Tuple {
         }
         sb.setLength(sb.length()-1);
         return sb.append(")").toString();
+    }
+    
+    public List<?> toList() {
+        return Arrays.asList(values);
     }
 
     public boolean isNull() {

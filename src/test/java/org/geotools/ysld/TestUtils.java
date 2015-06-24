@@ -147,6 +147,9 @@ public enum TestUtils {
             
             @Override
             public boolean matches(Object arg0) {
+                if(arg0==null) {
+                    arg0="";
+                }
                 return arg0.toString().equals(value.toString());
             }
             
@@ -355,44 +358,32 @@ public enum TestUtils {
     private static final Pattern TUPLE_STRIP= Pattern.compile("^\\s*\\(([^)]*)\\)\\s*$");
     private static final Pattern TUPLE_SPLIT= Pattern.compile("\\s*,\\s*");
     
+    
     /**
-     * Matches a YSLD Tuple with values matching the given matchers.
+     * Matches a YamlSeq
      * @param matchers
      * @return
      */
     @SafeVarargs
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static Matcher<? extends Object> yTuple(final Matcher<? extends Object>... matchers) {
+    public static Matcher<? extends Object> yContains(final Matcher<? extends Object>... matchers) {
         return new BaseMatcher() {
             
             @Override
             public boolean matches(Object obj) {
-                String str;
-                if(obj instanceof  String) {
-                    str = (String) obj;
-                } else if(obj instanceof YamlObject) {
-                    try {
-                        str = ((YamlObject<String>)obj).raw();
-                    } catch (ClassCastException ex) {
-                        return false;
-                    }
+                YamlSeq seq;
+                if(obj instanceof YamlSeq) {
+                    seq = (YamlSeq) obj;
                 } else {
                     return false;
                 }
                 
-                java.util.regex.Matcher m = TUPLE_STRIP.matcher(str);
-                if(!m.matches()) {
+                if(seq.raw().size()!=matchers.length) {
                     return false;
                 }
                 
-                String[] values = TUPLE_SPLIT.split(m.group(1), -1); // -1 to not ignore empty substrings
-                
-                if(values.length!=matchers.length) {
-                    return false;
-                }
-                
-                for(int i=0; i<values.length; i++) {
-                    if(!matchers[i].matches(values[i])) {
+                for(int i=0; i<matchers.length; i++) {
+                    if(!matchers[i].matches(seq.get(i))) {
                         return false;
                     }
                 }
@@ -402,10 +393,20 @@ public enum TestUtils {
     
             @Override
             public void describeTo(Description desc) {
-                desc.appendList("A YSLD Tuple with values [", ", ", "]", Arrays.asList(matchers));
+                desc.appendList("Yaml Sequence with values [", ", ", "]", Arrays.asList(matchers));
             }
             
         };
+    }
+    
+    /**
+     * Matches a YSLD Tuple with values matching the given matchers.
+     * @param matchers
+     * @return
+     */
+    @SafeVarargs
+    public static Matcher<? extends Object> yTuple(final Matcher<? extends Object>... matchers) {
+        return yContains(matchers);
     }
     
     /**

@@ -178,7 +178,7 @@ public class YsldEncodeCookbookTest {
 
         YamlMap rule = style.seq("feature-styles").map(0).seq("rules").map(0);
         assertThat(rule, yHasEntry("name", equalTo("Large")));
-        assertThat(rule, yHasEntry("scale", yTuple(lexEqualTo(""), numEqualTo(1.6E8,0.1))));
+        assertThat(rule, yHasEntry("scale", yTuple(equalTo("min"), numEqualTo(1.6E8,0.1))));
 
         rule = style.seq("feature-styles").map(0).seq("rules").map(1);
         assertThat(rule, yHasEntry("name", equalTo("Medium")));
@@ -186,7 +186,7 @@ public class YsldEncodeCookbookTest {
 
         rule = style.seq("feature-styles").map(0).seq("rules").map(2);
         assertThat(rule, yHasEntry("name", equalTo("Small")));
-        assertThat(rule, yHasEntry("scale", yTuple(numEqualTo(3.2E8,0.1), lexEqualTo(""))));
+        assertThat(rule, yHasEntry("scale", yTuple(numEqualTo(3.2E8,0.1), equalTo("max"))));
     }
 
     @Test
@@ -919,7 +919,7 @@ public class YsldEncodeCookbookTest {
 
         YamlMap rule = style.seq("feature-styles").map(0).seq("rules").map(0);
         assertThat(rule, yHasEntry("name", equalTo("Large")));
-        assertThat(rule, yHasEntry("scale", yTuple(lexEqualTo(""), numEqualTo(1.8E8, 0.1))));
+        assertThat(rule, yHasEntry("scale", yTuple(equalTo("min"), numEqualTo(1.8E8, 0.1))));
 
         YamlMap line = rule.seq("symbolizers").map(0).map("line");
         assertThat(line.get("stroke-color"), isColor("009933"));
@@ -935,7 +935,7 @@ public class YsldEncodeCookbookTest {
 
         rule = style.seq("feature-styles").map(0).seq("rules").map(2);
         assertThat(rule, yHasEntry("name", equalTo("Small")));
-        assertThat(rule, yHasEntry("scale", yTuple(numEqualTo(3.6E8, 0.1),lexEqualTo(""))));
+        assertThat(rule, yHasEntry("scale", yTuple(numEqualTo(3.6E8, 0.1),equalTo("max"))));
 
         line = rule.seq("symbolizers").map(0).map("line");
         assertThat(line.get("stroke-color"), isColor("009933"));
@@ -1477,7 +1477,7 @@ public class YsldEncodeCookbookTest {
 
         YamlMap rule = obj.seq("feature-styles").map(0).seq("rules").map(0);
         assertThat(rule, yHasEntry("name", equalTo("Large")));
-        assertThat(rule, yHasEntry("scale", yTuple(lexEqualTo(""), numEqualTo(1.0E8, 0.1))));
+        assertThat(rule, yHasEntry("scale", yTuple(equalTo("min"), numEqualTo(1.0E8, 0.1))));
 
         YamlMap poly = rule.seq("symbolizers").map(0).map("polygon");
         assertThat(poly.get("fill-color"), isColor("0000CC"));
@@ -1507,7 +1507,7 @@ public class YsldEncodeCookbookTest {
 
         rule = obj.seq("feature-styles").map(0).seq("rules").map(2);
         assertThat(rule, yHasEntry("name", equalTo("Small")));
-        assertThat(rule, yHasEntry("scale", yTuple(numEqualTo(2.0E8, 0.1), lexEqualTo(""))));
+        assertThat(rule, yHasEntry("scale", yTuple(numEqualTo(2.0E8, 0.1), equalTo("max"))));
 
         poly = rule.seq("symbolizers").map(0).map("polygon");
         poly = rule.seq("symbolizers").map(0).map("polygon");
@@ -1534,9 +1534,13 @@ public class YsldEncodeCookbookTest {
 
         YamlMap obj = encode("raster", "alpha-channel.sld");
         YamlMap raster = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers").map(0).map("raster");
-
-        assertEquals("('#008000',,70,)", raster.map("color-map").seq("entries").str(0));
-        assertEquals("('#008000',0,256,)", raster.map("color-map").seq("entries").str(1));
+        
+        assertThat(raster.map("color-map").seq("entries"),
+                yHasItem(0, yTuple(fakeString(equalTo("#008000")), lexEqualTo(""), numEqualTo(70), lexEqualTo("")))
+                );
+        assertThat(raster.map("color-map").seq("entries"),
+                yHasItem(1, yTuple(fakeString(equalTo("#008000")), numEqualTo(0), numEqualTo(256), lexEqualTo("")))
+                );
     }
 
     @Test

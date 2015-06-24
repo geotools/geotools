@@ -18,6 +18,7 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
+import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
 import org.hamcrest.BaseMatcher;
@@ -611,9 +612,9 @@ public class YsldParseTest {
             "feature-styles: \n"+
             "- name: name\n"+
             "  rules:\n"+
-            "  - zoom: "+tuple("",1)+"\n"+
+            "  - zoom: "+tuple(null,1)+"\n"+
             "  - zoom: "+tuple(2,3)+"\n"+
-            "  - zoom: "+tuple(4,"")+"\n";
+            "  - zoom: "+tuple(4,null)+"\n";
         
         
         StyledLayerDescriptor sld = Ysld.parse(yaml);
@@ -647,6 +648,144 @@ public class YsldParseTest {
                 ));
         
     }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testZoomListWithMinMaxKeywords() throws IOException {
+        String yaml =
+            "grid:\n"+
+            "  scales:\n"+
+            "  - 5000000\n"+
+            "  - 2000000\n"+
+            "  - 1000000\n"+
+            "  - 500000\n"+
+            "  - 200000\n"+
+            "  - 100000\n"+
+            "feature-styles: \n"+
+            "- name: name\n"+
+            "  rules:\n"+
+            "  - zoom: "+tuple("min",1)+"\n"+
+            "  - zoom: "+tuple(2,3)+"\n"+
+            "  - zoom: "+tuple(4,"max")+"\n";
+        
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        
+        assertThat((Iterable<Rule>)fs.rules(), hasItems(
+                allOf(
+                        appliesToScale(5000000d),
+                        appliesToScale(2000000d),
+                        not(appliesToScale(1000000d)),
+                        not(appliesToScale(500000d)),
+                        not(appliesToScale(200000d)),
+                        not(appliesToScale(100000d))
+                        ),
+                allOf(
+                        not(appliesToScale(5000000d)),
+                        not(appliesToScale(2000000d)),
+                        appliesToScale(1000000d),
+                        appliesToScale(500000d),
+                        not(appliesToScale(200000d)),
+                        not(appliesToScale(100000d))
+                        ),
+                allOf(
+                        not(appliesToScale(5000000d)),
+                        not(appliesToScale(2000000d)),
+                        not(appliesToScale(1000000d)),
+                        not(appliesToScale(500000d)),
+                        appliesToScale(200000d),
+                        appliesToScale(100000d)
+                        )
+                ));
+        
+    }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testScaleWithMinMaxKeywords() throws IOException {
+        String yaml =
+            "feature-styles: \n"+
+            "- name: name\n"+
+            "  rules:\n"+
+            "  - scale: "+tuple(1500000, "max")+"\n"+
+            "  - scale: "+tuple(300000, 1500000)+"\n"+
+            "  - scale: "+tuple("min", 300000)+"\n";
+        
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        
+        assertThat((Iterable<Rule>)fs.rules(), hasItems(
+                allOf(
+                        appliesToScale(5000000d),
+                        appliesToScale(2000000d),
+                        not(appliesToScale(1000000d)),
+                        not(appliesToScale(500000d)),
+                        not(appliesToScale(200000d)),
+                        not(appliesToScale(100000d))
+                        ),
+                allOf(
+                        not(appliesToScale(5000000d)),
+                        not(appliesToScale(2000000d)),
+                        appliesToScale(1000000d),
+                        appliesToScale(500000d),
+                        not(appliesToScale(200000d)),
+                        not(appliesToScale(100000d))
+                        ),
+                allOf(
+                        not(appliesToScale(5000000d)),
+                        not(appliesToScale(2000000d)),
+                        not(appliesToScale(1000000d)),
+                        not(appliesToScale(500000d)),
+                        appliesToScale(200000d),
+                        appliesToScale(100000d)
+                        )
+                ));
+        
+    }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testScaleWithNull() throws IOException {
+        String yaml =
+            "feature-styles: \n"+
+            "- name: name\n"+
+            "  rules:\n"+
+            "  - scale: "+tuple(1500000, null)+"\n"+
+            "  - scale: "+tuple(300000, 1500000)+"\n"+
+            "  - scale: "+tuple(null, 300000)+"\n";
+        
+        
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        
+        assertThat((Iterable<Rule>)fs.rules(), hasItems(
+                allOf(
+                        appliesToScale(5000000d),
+                        appliesToScale(2000000d),
+                        not(appliesToScale(1000000d)),
+                        not(appliesToScale(500000d)),
+                        not(appliesToScale(200000d)),
+                        not(appliesToScale(100000d))
+                        ),
+                allOf(
+                        not(appliesToScale(5000000d)),
+                        not(appliesToScale(2000000d)),
+                        appliesToScale(1000000d),
+                        appliesToScale(500000d),
+                        not(appliesToScale(200000d)),
+                        not(appliesToScale(100000d))
+                        ),
+                allOf(
+                        not(appliesToScale(5000000d)),
+                        not(appliesToScale(2000000d)),
+                        not(appliesToScale(1000000d)),
+                        not(appliesToScale(500000d)),
+                        appliesToScale(200000d),
+                        appliesToScale(100000d)
+                        )
+                ));
+        
+    }
+    
     final static String GOOGLE_MERCATOR_TEST_RULES=
             "  - zoom: "+tuple(0,0)+"\n"+
             "  - zoom: "+tuple(1,1)+"\n"+
@@ -994,19 +1133,23 @@ public class YsldParseTest {
     
     static String tuple(Object... values) {
         StringBuilder builder = new StringBuilder();
-        builder.append("(");
+        builder.append("[");
         String join = "";
         for(Object o: values) {
             builder.append(join);
             join = ", ";
-            String s = o.toString();
-            if(s.startsWith("#")){
-                builder.append(String.format("'%s'", s));
+            if(o == null) {
+                builder.append("null");
             } else {
-                builder.append(s);
+                String s = o.toString();
+                if(s.isEmpty() || s.startsWith("#") || s.equalsIgnoreCase("null")){
+                    builder.append(String.format("'%s'", s));
+                } else {
+                    builder.append(s);
+                }
             }
         }
-        builder.append(")");
+        builder.append("]");
         return builder.toString();
     }
     
@@ -1020,6 +1163,56 @@ public class YsldParseTest {
                 "    - "+tuple("#ff0000", "1.0", "0", "start")+"\n" +
                 "    - "+tuple("#00ff00", "1.0", "500", "middle")+"\n" +
                 "    - "+tuple("#0000ff", "1.0", "1000", "end")+"\n" +
+                "";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        RasterSymbolizer symb = (RasterSymbolizer) fs.rules().get(0).symbolizers().get(0);
+
+        // need to use the geotools.styling interface as it provides the accessors for the entries.
+        ColorMap map = (ColorMap) symb.getColorMap();
+
+        Color colour1 = (Color) map.getColorMapEntry(0).getColor().evaluate(null);
+        Color colour2 = (Color) map.getColorMapEntry(1).getColor().evaluate(null);
+        Color colour3 = (Color) map.getColorMapEntry(2).getColor().evaluate(null);
+
+        assertThat(colour1, is(Color.RED));
+        assertThat(colour2, is(Color.GREEN));
+        assertThat(colour3, is(Color.BLUE));
+    }
+    
+    @Test
+    public void testColourMapExpression() throws Exception {
+        String yaml =
+                "raster: \n" +
+                "  color-map:\n" +
+                "    type: values\n" +
+                "    entries:\n" +
+                "    - "+tuple("#ff0000", "1.0", "0", "start")+"\n" +
+                "    - "+tuple("#00ff00", "1.0", "500", "middle")+"\n" +
+                "    - "+tuple("#0000ff", "'${pow(0.75, 1.2)}'", "1000", "end")+"\n" + // Expression containing comma needs to be quoted
+                "";
+
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
+        RasterSymbolizer symb = (RasterSymbolizer) fs.rules().get(0).symbolizers().get(0);
+
+        // need to use the geotools.styling interface as it provides the accessors for the entries.
+        ColorMap map = (ColorMap) symb.getColorMap();
+        
+        assertThat(map.getColorMapEntry(2).getOpacity(), function("pow", literal(0.75), literal(1.2)));
+    }
+    
+    @Test
+    public void testColourMapEmpty() throws Exception {
+        String yaml =
+                "raster: \n" +
+                "  color-map:\n" +
+                "    type: values\n" +
+                "    entries:\n" +
+                "    - "+tuple("#ff0000", "1.0", "0", "start")+"\n" +
+                "    - "+tuple("#00ff00", "", "500", "middle")+"\n" +
+                "    - "+tuple("#0000ff", null, "1000", "end")+"\n" +
                 "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);

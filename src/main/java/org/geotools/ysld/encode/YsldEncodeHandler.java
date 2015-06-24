@@ -104,7 +104,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     YsldEncodeHandler<T> put(String key, Expression e1, Expression e2) {
         Tuple t = Tuple.of(toObjOrNull(e1, false), toObjOrNull(e2, false));
         if (!t.isNull()) {
-            put(key, t.toString());
+            put(key, t);
         }
         return this;
     }

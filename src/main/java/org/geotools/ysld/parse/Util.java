@@ -110,7 +110,7 @@ public class Util {
     /**
      * Parses an anchor tuple.
      */
-    public static AnchorPoint anchor(String value, Factory factory) {
+    public static AnchorPoint anchor(Object value, Factory factory) {
         Tuple t = null;
         try {
             t = Tuple.of(2).parse(value);
@@ -127,7 +127,7 @@ public class Util {
     /**
      * Parses an displacement tuple.
      */
-    public static Displacement displacement(String value, Factory factory) {
+    public static Displacement displacement(Object value, Factory factory) {
         Tuple t = null;
         try {
             t = Tuple.of(2).parse(value);

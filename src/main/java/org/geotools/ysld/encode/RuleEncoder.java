@@ -25,16 +25,16 @@ public class RuleEncoder extends YsldEncodeHandler<Rule> {
             put("else", true);
         }
         
-        Tuple t = Tuple.of(toStringOrNull(rule.getMinScaleDenominator()), toStringOrNull(rule.getMaxScaleDenominator()));
+        Tuple t = Tuple.of(toStringOrNull(rule.getMinScaleDenominator(), "min"), toStringOrNull(rule.getMaxScaleDenominator(), "max"));
         if (!t.isNull()) {
-            put("scale", t.toString());
+            put("scale", t);
         }
         
         //legend:?
         put("symbolizers", new SymbolizersEncoder(rule));
     }
     
-    String toStringOrNull(double d) {
-        return d > 0 && !Double.isNaN(d) && !Double.isInfinite(d) ? String.valueOf(d) : null;
+    String toStringOrNull(double d, String nullKeyword) {
+        return d > 0 && !Double.isNaN(d) && !Double.isInfinite(d) ? String.valueOf(d) : nullKeyword;
     }
 }

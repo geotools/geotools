@@ -129,10 +129,10 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
                 line.setPerpendicularOffset(Util.expression(map.str("offset"), factory));
             }
             if (map.has("anchor")) {
-                point.setAnchorPoint(Util.anchor(map.str("anchor"), factory));
+                point.setAnchorPoint(Util.anchor(map.get("anchor"), factory));
             }
             if (map.has("displacement")) {
-                point.setDisplacement(Util.displacement(map.str("displacement"), factory));
+                point.setDisplacement(Util.displacement(map.get("displacement"), factory));
             }
             if (map.has("rotation")) {
                 point.setRotation(Util.expression(map.str("rotation"), factory));

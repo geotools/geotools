@@ -43,6 +43,7 @@ import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.styling.UserLayer;
 import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlSeq;
 import org.geotools.ysld.Ysld;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -489,13 +490,15 @@ public class YsldEncodeTest {
         
         StringWriter out = new StringWriter();
         Ysld.encode(sld, out);
-
+        System.out.println(out.toString());
         YamlMap yaml = new YamlMap(new Yaml().load(out.toString()));
         
         assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("placement", equalTo("point")) );
         assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("displacement", yTuple(numEqualTo(10), numEqualTo(15))));
         assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("anchor", yTuple(numEqualTo(0.75, EPSILON), numEqualTo(0.25, EPSILON))) );
         assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"), yHasEntry("rotation", equalTo(90)) );
+        
+        assertThat(kvpLine(out.toString(),"displacement"), equalTo("[10, 15]"));
     }
     
     @Test
@@ -594,7 +597,6 @@ public class YsldEncodeTest {
                         ))));
     }
     
-    @Ignore // Currently broken
     @Test
     public void testColorMapWithExpression() throws Exception {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
@@ -815,6 +817,81 @@ public class YsldEncodeTest {
         YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0);
         
         assertThat(result, yHasEntry("filter", equalTo("${foo < '\\}\\$'}")));
+    }
+    
+    @Test
+    public void testScale() throws Exception {
+        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+        
+        UserLayer layer = styleFactory.createUserLayer();
+        sld.layers().add(layer);
+        
+        Style style = styleFactory.createStyle();
+        layer.userStyles().add(style);
+        
+        style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
+
+        Rule rule = styleFactory.createRule();
+        
+        rule.setMinScaleDenominator(5_000_000);
+        rule.setMaxScaleDenominator(10_000_000);
+        
+        style.featureTypeStyles().get(0).rules().add(rule);
+        
+        rule = styleFactory.createRule();
+        
+        rule.setMinScaleDenominator(2_000_000);
+        rule.setMaxScaleDenominator(5_000_000);
+        
+        style.featureTypeStyles().get(0).rules().add(rule);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlSeq result = obj.seq("feature-styles").map(0).seq("rules");
+        
+        assertThat(result, yHasItem(0, yHasEntry("scale", yTuple(numEqualTo(5_000_000, 0.1),numEqualTo(10_000_000, 0.1)))));
+        assertThat(result, yHasItem(1, yHasEntry("scale", yTuple(numEqualTo(2_000_000, 0.1),numEqualTo(5_000_000, 0.1)))));
+    }
+    @Test
+    public void testScaleMinMaxKeywords() throws Exception {
+        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+        
+        UserLayer layer = styleFactory.createUserLayer();
+        sld.layers().add(layer);
+        
+        Style style = styleFactory.createStyle();
+        layer.userStyles().add(style);
+        
+        style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
+
+        Rule rule = styleFactory.createRule();
+        
+        rule.setMinScaleDenominator(5_000_000);
+        
+        style.featureTypeStyles().get(0).rules().add(rule);
+        
+        rule = styleFactory.createRule();
+        
+        rule.setMaxScaleDenominator(5_000_000);
+        
+        style.featureTypeStyles().get(0).rules().add(rule);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+        
+        YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
+        YamlSeq result = obj.seq("feature-styles").map(0).seq("rules");
+        
+        assertThat(result, yHasItem(0, yHasEntry("scale", yTuple(numEqualTo(5_000_000, 0.1),equalTo("max")))));
+        assertThat(result, yHasItem(1, yHasEntry("scale", yTuple(equalTo("min"),numEqualTo(5_000_000, 0.1)))));
     }
     
     @Test

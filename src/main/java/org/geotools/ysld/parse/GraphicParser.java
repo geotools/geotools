@@ -28,7 +28,7 @@ public class GraphicParser extends YsldParseHandler {
         YamlMap map = obj.map();
 
         if (map.has("anchor")) {
-            g.setAnchorPoint(Util.anchor(map.str("anchor"), factory));
+            g.setAnchorPoint(Util.anchor(map.get("anchor"), factory));
         }
 
         if (map.has("opacity")) {
@@ -40,7 +40,7 @@ public class GraphicParser extends YsldParseHandler {
         }
 
         if (map.has("displacement")) {
-            g.setDisplacement(Util.displacement(map.str("displacement"), factory));
+            g.setDisplacement(Util.displacement(map.get("displacement"), factory));
         }
 
         if (map.has("rotation")) {

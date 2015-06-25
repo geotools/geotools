@@ -93,6 +93,9 @@ public class PostGISCurvesTestSetup extends JDBCDelegatingTestSetup {
 
         sql = "INSERT INTO CURVES VALUES (8, 'Multicurve', ST_geometryFromText('MULTICURVE((0 0, 5 5),CIRCULARSTRING(4 0, 4 4, 8 4))'))";
         run(sql);
+
+        sql = "INSERT INTO CURVES VALUES (9, 'SquareHole2Points', ST_geometryFromText('CURVEPOLYGON((-10 -10, -10 -8, -8 -8, -8 -10, -10 -10), CIRCULARSTRING(-9 -8.5, -9 -9.5, -9 -8.5))'))";
+        run(sql);
     }
 
     private void dropCurveTable() throws Exception {

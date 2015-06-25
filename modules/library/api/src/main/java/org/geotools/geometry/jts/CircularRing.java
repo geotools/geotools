@@ -135,6 +135,46 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
         return delegate.getDimension();
     }
 
+    /**
+     * Returns a normalized ring (one that does not have a single arc closing on itself)
+     * 
+     * @return
+     */
+    public CircularRing normalizeRing() {
+        if (!isClosed() || getNumArcs() > 1) {
+            return this;
+        }
+
+        // Single arc with only two points case, we need to create two arcs, trying to
+        // preserve the original points
+
+        CircularArc arc = getArcN(0);
+        Coordinate center = arc.getCenter();
+        double radius = arc.getRadius();
+        double[] cp = arc.getControlPoints();
+        double angle1 = Math.atan2(cp[1] - center.y, cp[0] - center.x);
+        double angle2 = Math.atan2(cp[3] - center.y, cp[2] - center.x);
+
+        // compute the two mid points
+        double am1 = (angle1 + angle2) / 2;
+        double am2 = am1 + Math.PI;
+
+        // generate the new control points sequence
+        double[] ncp = new double[10];
+        ncp[0] = cp[0];
+        ncp[1] = cp[1];
+        ncp[2] = center.x + radius * Math.cos(am1);
+        ncp[3] = center.y + radius * Math.sin(am1);
+        ncp[4] = cp[2];
+        ncp[5] = cp[3];
+        ncp[6] = center.x + radius * Math.cos(am2);
+        ncp[7] = center.y + radius * Math.sin(am2);
+        ncp[8] = cp[0];
+        ncp[9] = cp[1];
+        
+        return new CircularRing(ncp, factory, delegate.getTolerance());
+    }
+
     public Geometry reverse() {
         double[] controlPoints = delegate.controlPoints;
         GrowableOrdinateArray array = new GrowableOrdinateArray();

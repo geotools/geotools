@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -351,6 +352,19 @@ public class CurvedGeometryTest {
                         + "(-1.0 -1.0, -1.0 1.0, 1.0 1.0, 1.0 -1.0, -1.0 -1.0)), ((20.0 20.0, 24.0 20.0, 24.0 24.0, 20.0 24.0, 20.0 20.0), "
                         + "(22.0 22.0, 23.0 22.0, 23.0 23.0, 23.0 22.0, 22.0 22.0)))",
                 wkt);
+    }
+
+    @Test
+    public void testNormalize() {
+        double[] circleControlPoints = new double[] { 0, 0, 0, 10, 0, 0 };
+        CircularRing circle = new CircularRing(circleControlPoints, GEOMETRY_FACTORY, 1e-6);
+
+        CircularRing normalized = circle.normalizeRing();
+        assertEquals(2, normalized.getNumArcs());
+        CircularArc a1 = normalized.getArcN(0);
+        assertArrayEquals(new double[] { 0, 0, 5, 5, 0, 10 }, a1.getControlPoints(), 1e-6);
+        CircularArc a2 = normalized.getArcN(1);
+        assertArrayEquals(new double[] { 0, 10, -5, 5, 0, 0 }, a2.getControlPoints(), 1e-6);
     }
 
     private CurvePolygon buildCurvePolygon() {

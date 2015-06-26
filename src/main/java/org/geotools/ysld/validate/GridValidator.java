@@ -20,8 +20,12 @@ public class GridValidator extends YsldValidateHandler {
         @Override
         protected String validate(String value, ScalarEvent evt,
                 YsldValidateContext context) {
-            if(Util.getNamedZoomContext(value, context.zCtxtFinders)!=null) return null;
-            return String.format("Unknown Grid: %s", value);
+            try {
+                if(Util.getNamedZoomContext(value, context.zCtxtFinders)!=null) return null;
+                return String.format("Unknown Grid: %s", value);
+            } catch (IllegalArgumentException ex) {
+                return ex.getMessage();
+            }
         }
         
     }

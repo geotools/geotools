@@ -1,6 +1,10 @@
 package org.geotools.ysld.validate;
 
+import org.easymock.classextension.EasyMock;
+import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.Ysld;
+import org.geotools.ysld.parse.ZoomContext;
+import org.geotools.ysld.parse.ZoomContextFinder;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -8,8 +12,13 @@ import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.classextension.EasyMock.replay;
+import static org.easymock.classextension.EasyMock.verify;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
@@ -151,6 +160,48 @@ public class YsldValidateTest {
         
         assertThat(errors.get(0).getProblemMark(), problemOn(2));
     }
+    
+    @Test
+    public void testExtendedZoomContext() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "grid:\n"+
+                "  name: SIGMA:957\n");
+        
+        ZoomContextFinder finder = createMock("finder", ZoomContextFinder.class);
+        ZoomContext zctxt = createMock("zctxt", ZoomContext.class);
+        
+        expect(finder.get("SIGMA:957")).andStubReturn(zctxt);
+        
+        replay(finder, zctxt);
+        
+        List<MarkedYAMLException> errors = validate(builder.toString(),Collections.singletonList(finder));
+        assertThat(errors.size(), is(0));
+        
+        verify(finder, zctxt);
+    }
+    
+    @Test
+    public void testZoomContextEPSG4326IsBad() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "grid:\n"+
+                "  name: EPSG:4326\n");
+        
+        ZoomContextFinder finder = createMock("finder", ZoomContextFinder.class);
+        ZoomContext zctxt = createMock("zctxt", ZoomContext.class);
+        
+        expect(finder.get("EPSG:4326")).andStubReturn(zctxt);
+        
+        replay(finder, zctxt);
+        
+        List<MarkedYAMLException> errors = validate(builder.toString(),Collections.singletonList(finder));
+        assertThat(errors.size(), is(1));
+        
+        assertThat(errors.get(0).getProblemMark(), problemOn(2));
+        
+        verify(finder, zctxt);
+    }
 
     List<MarkedYAMLException> dump(List<MarkedYAMLException> errors) {
         for (MarkedYAMLException e : errors) {
@@ -174,6 +225,10 @@ public class YsldValidateTest {
 
     List<MarkedYAMLException> validate(String ysld) throws IOException {
         //return dump(Ysld.validate(ysld));
-        return Ysld.validate(ysld);
+        return this.validate(ysld, Collections.<ZoomContextFinder> emptyList());
+    }
+    List<MarkedYAMLException> validate(String ysld, List<ZoomContextFinder> ctxts) throws IOException {
+        //return dump(Ysld.validate(ysld));
+        return Ysld.validate(ysld, ctxts, new UomMapper());
     }
 }

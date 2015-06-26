@@ -16,7 +16,7 @@ public class ColorValidator extends ScalarValidator {
             if (expr instanceof Literal) {
                 Color col = expr.evaluate(null, Color.class);
                 if (col == null) {
-                    return "Invalid color, must be one of: 0xrrggbb, rgb(r,g,b), or expression";
+                    return "Invalid color, must be one of: '#RRGGBB', rgb(r,g,b), or expression";
                 }
             }
             return null;

@@ -178,7 +178,8 @@ public class Util {
     static Color parseColorAsHex(Matcher m) {
         String hex = m.group(1);
         if (hex.length() == 3) {
-            hex += hex;
+            return new Color(0x11*Integer.parseInt(hex.substring(0,1), 16),
+                    0x11*Integer.parseInt(hex.substring(1,2), 16), 0x11*Integer.parseInt(hex.substring(2,3), 16));
         }
 
         return new Color(Integer.parseInt(hex.substring(0,2), 16),

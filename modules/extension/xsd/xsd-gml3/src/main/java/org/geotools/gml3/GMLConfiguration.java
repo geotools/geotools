@@ -159,10 +159,10 @@ public class GMLConfiguration extends Configuration {
 
         this.extArcSurfaceSupport = extArcSurfaceSupport;
         
-        //add xlink cdependency
+        //add xlink dependency
         addDependency(new XLINKConfiguration());
 
-        //add smil depenedncy
+        //add smil dependency
         addDependency(new SMIL20Configuration());
         addDependency(new SMIL20LANGConfiguration());
 

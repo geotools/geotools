@@ -28,15 +28,13 @@ import java.util.logging.Logger;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.RenderedOp;
 
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
@@ -45,6 +43,9 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
+
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
 
 
 /**
@@ -135,6 +136,12 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         assertEquals(0, ge.getMinimum(1));
         assertEquals(300, ge.getSpan(0));
         assertEquals(300, ge.getSpan(0));
+        GridCoverage2D gc = wiReader.read(null);
+        Envelope2D envelope = gc.getEnvelope2D();
+        assertEquals(0, envelope.getMinimum(0));
+        assertEquals(0, envelope.getMinimum(1));
+        assertEquals(300, envelope.getSpan(0));
+        assertEquals(300, envelope.getSpan(0));
         wiReader.dispose();
     }
 

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@ package org.geotools.data;
 import java.util.Collections;
 import java.util.Map;
 
+import org.geotools.referencing.CRS;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.util.InternationalString;
 
@@ -151,6 +152,11 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T>{
      * </ul>
      */
     public static final String LEVEL = "level";
+    
+    /**
+     * Set parameter to deprecated - true, false ;can be used to conditional show the parameter based on deprecated value
+     */
+    public static final String DEPRECATED = "deprecated";
     
     /**
      * Refinement of type; such as the FeatureType of a FeatureCollection, or component type of a List.
@@ -333,6 +339,21 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T>{
         return metadata != null && Boolean.TRUE.equals(metadata.get(IS_PASSWORD));
     }
  
+    /**
+     * Easy access to check the {@link #DEPRECATED} metadata
+     * @return provided deprecated or false by default
+     */
+    public Boolean isDeprecated(){
+        if( metadata == null ){
+            return false;
+        }
+        Boolean deprecated = (Boolean) metadata.get(DEPRECATED);
+        if( deprecated == null ){
+            return false;
+        }
+        return deprecated;        
+    }
+    
     /**
      * Easy access to check the {@link #LEVEL} metadata
      * @return provided level or "user" by default

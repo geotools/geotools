@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -47,14 +47,14 @@ public class SolrDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final Param LAYER_MAPPER = new Param("layer_mapper", String.class,
             "Controls how documents in the solr index are mapped to layers" + SolrLayerMapper.Type.values(),
-            false, Type.FIELD.name(), new KVP(Param.LEVEL, "user"));
+            false, Type.FIELD.name(), new KVP(Param.LEVEL, "user", Param.DEPRECATED, true));
 
     /**
      * SOLR field that holds the layers names, used by {@link SolrLayerMapper.Type#FIELD}.
      */
     public static final Param FIELD = new Param("layer_name_field", String.class,
-            "Field used in SOLR that holds the layer names", false, "layer_type", new KVP(
-                    Param.LEVEL, "user"));
+            "Field used in SOLR that holds the layer names", false, "", new KVP(
+                    Param.LEVEL, "user", Param.DEPRECATED, true));
 
     /**
      * Field that holds the namespace
@@ -67,12 +67,18 @@ public class SolrDataStoreFactory extends AbstractDataStoreFactory {
         URL url = (URL) URL.lookUp(params);
         String namespace = (String) NAMESPACE.lookUp(params);
         String mapperName = (String) LAYER_MAPPER.lookUp(params);
-
-        // create the layer mapper (FIELD is the default)
-        SolrLayerMapper.Type mapperType = SolrLayerMapper.Type.FIELD;
-        if (mapperName != null) {
-            mapperType = SolrLayerMapper.Type.valueOf(mapperName.toUpperCase());
-        }
+        String fieldName = (String) FIELD.lookUp(params);
+        
+        SolrLayerMapper.Type mapperType = SolrLayerMapper.Type.SINGLE;
+        
+        // if field name is populated, than the store is of type FIELD (deprecated)
+        if(fieldName!=null && !fieldName.isEmpty()){
+            // create the layer mapper (FIELD is the default)
+            mapperType = SolrLayerMapper.Type.FIELD;
+            if (mapperName != null) {
+                mapperType = SolrLayerMapper.Type.valueOf(mapperName.toUpperCase());
+            }
+        }       
 
         SolrLayerMapper mapper = mapperType.createMapper(params);
 

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 1999-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 1999-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,14 +21,13 @@
 package org.geotools.referencing.operation.projection;
 
 import java.awt.geom.Point2D;
+import java.util.logging.Level;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
-//import org.geotools.resources.i18n.ErrorKeys;
-//import org.geotools.resources.i18n.Errors;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.metadata.iso.citation.Citations;
 
@@ -184,7 +183,8 @@ public class GeneralOblique extends MapProjection {
                  * However, enabling this dirty hack below allows to convert to and from WGS84 coordinates with much better accuracy. One possible
                  * reason is that Geotools omits additional transformation between spherical and ellipsoidal coordinates which is not really needed here.
                  */
-                // throw new FactoryException(Errors.format(ErrorKeys.ELLIPTICAL_NOT_SUPPORTED));
+            	LOGGER.log(Level.FINE, "GeoTools GeneralOblique transformation is defined only on the sphere, " +
+                        "we're going to use spherical equations even if the projection is using an ellipsoid");
                 return new GeneralOblique(parameters);
             }
         }

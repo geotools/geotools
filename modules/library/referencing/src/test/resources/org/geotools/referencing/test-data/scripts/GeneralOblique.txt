@@ -1,6 +1,6 @@
 // Test points for the GeneralOblique projection
 //
-// (C) 2014, Open Source Geospatial Foundation (OSGeo)
+// (C) 2015, Open Source Geospatial Foundation (OSGeo)
 //
 // The following test points were calculated with eqtoll and proj.4 tools.
 // "eqtoll" is a part of the MetOffice Unified Model suite 

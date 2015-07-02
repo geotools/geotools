@@ -1663,10 +1663,29 @@ class RasterLayerResponse{
                     new double[][] { { CoverageUtilities.getMosaicThreshold(il.getSampleModel(null)
                             .getDataType()) } }, bkgValues, renderingHints);
         }
-        if (footprintBehavior != null) {
+        //
+        // TRANSPARENT COLOR MANAGEMENT
+        //
+        Color inputTransparentColor = request.getInputTransparentColor();
+        boolean hasAlpha;
+        if (inputTransparentColor != null && (footprintBehavior == null || !footprintBehavior.handleFootprints())) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Support for alpha on blank image" );
+            }
+            finalImage = new ImageWorker(finalImage).makeColorTransparent(inputTransparentColor).getRenderedImage();
+            hasAlpha = finalImage.getColorModel().hasAlpha();
+            if (!hasAlpha) {
+                // if the resulting image has no transparency (can happen with IndexColorModel then we need to try component
+                // color model
+                finalImage = new ImageWorker(finalImage).forceComponentColorModel(true).makeColorTransparent(inputTransparentColor).getRenderedImage();
+                hasAlpha = finalImage.getColorModel().hasAlpha();
+            }
+            assert hasAlpha;
+
+        } else if (footprintBehavior != null && !footprintBehavior.handleFootprints()) {
             finalImage = footprintBehavior.postProcessBlankResponse(finalImage, renderingHints);
         }
-        
+
         return new MosaicOutput(finalImage, null);
     }
 

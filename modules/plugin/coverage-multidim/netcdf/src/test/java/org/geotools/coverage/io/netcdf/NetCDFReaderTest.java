@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -44,6 +45,7 @@ import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -56,11 +58,15 @@ import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.Envelope;
+import org.opengis.metadata.extent.Extent;
+import org.opengis.metadata.extent.GeographicExtent;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class NetCDFReaderTest extends Assert {
 
@@ -739,6 +745,66 @@ public class NetCDFReaderTest extends Assert {
         }
     }
 
+    @Test
+    public void NetCDFProjectedEnvelopeTest() throws NoSuchAuthorityCodeException,
+            FactoryException, IOException, ParseException {
+        File mosaic = new File(TestData.file(this, "."), "NetCDFProjection");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        File file = TestData.file(this, "wind.nc");
+        FileUtils.copyFileToDirectory(file, mosaic);
+        file = new File(mosaic, "wind.nc");
+        // Get format
+
+        final NetCDFReader reader = new NetCDFReader(file, null);
+        try {
+            String[] names = reader.getGridCoverageNames();
+            String coverageName = names[0];
+
+            // subsetting the envelope
+            final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                    .createValue();
+            final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
+            final CoordinateReferenceSystem epsg3857 = CRS.decode("EPSG:3857", true);
+            final GeneralEnvelope projectedEnvelope = CRS.transform(originalEnvelope, epsg3857);
+
+            gg.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0, 30, 30)),
+                    projectedEnvelope));
+
+            GeneralParameterValue[] values = new GeneralParameterValue[] { gg };
+            GridCoverage2D coverage = reader.read(coverageName, values);
+
+            // reader doesn't perform reprojection. It simply transforms reprojected envelope
+            // to native envelope so BBOX and CRS should be wgs84
+            CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem();
+            final int code = CRS.lookupEpsgCode(coverageCRS, false);
+            assertEquals(4326, code);
+            Extent extent = coverageCRS.getDomainOfValidity();
+            Collection<? extends GeographicExtent> geoElements = extent.getGeographicElements();
+            GeographicExtent geographicExtent = geoElements.iterator().next();
+            GeographicBoundingBoxImpl impl = (GeographicBoundingBoxImpl) geographicExtent;
+
+            // Getting the coverage Envelope for coordinates check
+            Envelope coverageEnvelope = coverage.getEnvelope();
+            assertTrue(impl.getEastBoundLongitude() >= coverageEnvelope.getMaximum(0));
+            assertTrue(impl.getWestBoundLongitude() <= coverageEnvelope.getMinimum(0));
+            assertTrue(impl.getNorthBoundLatitude() >= coverageEnvelope.getMaximum(1));
+            assertTrue(impl.getSouthBoundLatitude() <= coverageEnvelope.getMinimum(1));
+
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Test

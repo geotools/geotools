@@ -414,7 +414,9 @@ public final class LabelCacheImpl implements LabelCache {
             }
             paintLabels(graphics, displayArea);
         } finally {
+          if(antialiasing!=null){
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antialiasing);
+          }
         }
     }
 

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -223,6 +223,7 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
                 .nameFileFilter("error.txt"), FileFilterUtils.nameFileFilter("error.txt.lck"),
                 FileFilterUtils.suffixFileFilter("properties"), FileFilterUtils
                         .suffixFileFilter("svn-base"), FileFilterUtils.suffixFileFilter("ncx"), 
+                        FileFilterUtils.suffixFileFilter("ncx2"),FileFilterUtils.suffixFileFilter("ncx3"),
                         FileFilterUtils.suffixFileFilter("gbx9"));
         filesFilter = FileFilterUtils.or(filesFilter,
                 FileFilterUtils.nameFileFilter("indexer.properties"));

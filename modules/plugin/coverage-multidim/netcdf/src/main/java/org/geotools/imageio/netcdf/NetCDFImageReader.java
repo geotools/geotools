@@ -892,6 +892,12 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         for (CoordinateAxis axis:cs.getCoordinateAxes()) {
             // get from coordinate vars
             final CoordinateVariable<?> cv = georeferencing.getCoordinateVariable(axis.getFullName()); 
+            if (cv == null) { 
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Unable to find a coordinate variable for " + axis.getFullName());
+                }
+                continue;
+            }
             final String name = cv.getName();
             switch(cv.getAxisType()){
             case GeoX: case GeoY: case Lat: case Lon:

@@ -679,6 +679,12 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         final List<CoordinateVariable<?>> otherAxes = new ArrayList<CoordinateVariable<?>>();
         for(CoordinateAxis axis :coordinateSystem.getCoordinateAxes()){
             CoordinateVariable<?> cv=reader.georeferencing.getCoordinateVariable(axis.getShortName());
+            if (cv == null) { 
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Unable to find a coordinate variable for " + axis.getFullName());
+                }
+                continue;
+            }
             switch(cv.getAxisType()){
             case Time:case RunTime:
                 initTemporalDomain(cv, dimensions);

@@ -1,7 +1,17 @@
 package org.geotools.geometry.jts;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.awt.geom.Rectangle2D;
+
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -10,7 +20,6 @@ import org.opengis.geometry.MismatchedReferenceSystemException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import java.awt.geom.Rectangle2D;
 
 /**
  * 
@@ -142,7 +151,7 @@ public class ReferencedEnvelopeTest {
     @Test
     public void testFactoryMethod() throws Exception {
         try {
-            ReferencedEnvelope bounds = new ReferencedEnvelope( DefaultGeographicCRS.WGS84_3D );
+            new ReferencedEnvelope( DefaultGeographicCRS.WGS84_3D );
             fail("ReferencedEnvelope should not be able to represent 3D CRS such as GDA94");
         }
         catch (Exception expected){
@@ -187,5 +196,34 @@ public class ReferencedEnvelopeTest {
         assertTrue(r2.isNull());
         r1.expandToInclude(r2);
         assertTrue(r1.isNull());
+    }
+    
+    /**
+     * Tests that the conversion of different bound types to ReferencedEnvelope does not lose
+     * the emptiness property 
+     * @throws Exception
+     */
+    @Test
+    public void testEmptyEnvelopeConversion() throws Exception {
+        // conversion of an empty OGC envelope should stay empty
+        GeneralEnvelope ge = new GeneralEnvelope(new double[]{0,0}, new double[]{-1,-1});
+        assertTrue(ge.isEmpty());
+        assertTrue(ReferencedEnvelope.create(ge, ge.getCoordinateReferenceSystem()).isEmpty());
+        assertTrue(ReferencedEnvelope.reference(ge).isEmpty());
+        
+        // conversion of an empty Java Rectangle 2D should stay empty
+        Rectangle2D r2d = new Rectangle2D.Double(0, 0, -1, -1);
+        assertTrue(r2d.isEmpty());
+        assertTrue(ReferencedEnvelope.create(r2d,null).isEmpty());
+        
+        // conversion of an empty ReferencedEnvelope should stay empty
+        ReferencedEnvelope re = new ReferencedEnvelope();
+        assertTrue(re.isEmpty());
+        assertTrue(ReferencedEnvelope.create(re).isEmpty());
+        assertTrue(ReferencedEnvelope.create(re, re.getCoordinateReferenceSystem()).isEmpty());
+        assertTrue(ReferencedEnvelope.reference(re).isEmpty());
+        
+        
+        
     }
 }

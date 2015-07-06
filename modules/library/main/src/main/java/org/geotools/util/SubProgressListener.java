@@ -76,6 +76,7 @@ public class SubProgressListener extends DelegateProgressListener {
 
     public void started() {
         progress = 0.0f;
+        super.started();
     }
     public void complete() {
         delegate.progress( start + amount );        

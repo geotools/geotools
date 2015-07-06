@@ -1059,6 +1059,8 @@
      </similarity>
     -->
     
-	<xi:include href="custom_schema.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+	<field name="geo" type="location_rpt" indexed="true" stored="true" multiValued="true" />  
+    <field name="geo2" type="location_rpt" indexed="true" stored="true" multiValued="true" />
+    <field name="geo3" type="bbox" indexed="true" stored="true" multiValued="true" />
 	
 </schema>

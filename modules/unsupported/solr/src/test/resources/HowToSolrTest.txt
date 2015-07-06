@@ -1,6 +1,6 @@
 How to configure test cases:
 
-- Install Solr server as described in https://lucene.apache.org/solr/4_9_0/tutorial.html
+- Install Solr server as described in https://lucene.apache.org/solr/4_10_0/tutorial.html (version 4.10 is the minimum one able to run bbox related tests)
 
 - After WAR deployment is done downlaod JTS (http://sourceforge.net/projects/jts-topo-suite/) and copy all JTS <lib> folder JARs into WEB-INF/lib of Solr web application (this enable WKT for Solr 4 Spatial as descripted in https://cwiki.apache.org/confluence/display/solr/Spatial+Search)
 

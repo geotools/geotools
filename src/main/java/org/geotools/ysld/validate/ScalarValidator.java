@@ -1,6 +1,5 @@
 package org.geotools.ysld.validate;
 
-import org.yaml.snakeyaml.error.MarkedYAMLException;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
 public abstract class ScalarValidator extends YsldValidateHandler {

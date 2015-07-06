@@ -29,7 +29,10 @@ public class RootValidator extends YsldValidateHandler {
             context.push(new ExpressionValidator());
         }  else if ("grid".equals(key)) {
             context.push(new GridValidator());
+        } else if ("zoom".equals(key)) {
+            context.push(new ZoomValidator());
         }
+        
     }
     
 }

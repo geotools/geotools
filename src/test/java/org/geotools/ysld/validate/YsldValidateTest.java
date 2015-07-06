@@ -1,6 +1,5 @@
 package org.geotools.ysld.validate;
 
-import org.easymock.classextension.EasyMock;
 import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.parse.ZoomContext;
@@ -20,6 +19,8 @@ import static org.easymock.classextension.EasyMock.createMock;
 import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -80,7 +81,6 @@ public class YsldValidateTest {
         assertEquals(0, errors.size());
     }
     
-    @SuppressWarnings("unchecked")
     Matcher<Mark> problemAt(int line, int column) {
         return Matchers.describedAs("Problem at Line %0 Column %1", allOf(
                   Matchers.<Mark>hasProperty("line", is(line-1)),
@@ -208,6 +208,125 @@ public class YsldValidateTest {
             System.out.println(e.toString());
         }
         return errors;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testZoomWithDefaultGridValidateOrder() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "rules:\n"+          // 1
+                "- zoom: [0,1]\n"+ // 2 OK
+                "- zoom: [1,2]\n"+ // 3 OK
+                "- zoom: [-1,2]\n"+ // 4 OK
+                "- zoom: [1, 0]\n"+ // 5 Bad
+                "- zoom: [100, 10]\n"+ // 6 Bad
+                "- zoom: [-2, -10]\n"+ // 7 Bad
+                "- zoom: [2, -2]\n"); // 8 Bad
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, contains(
+                hasProperty("problemMark", problemOn(5)),
+                hasProperty("problemMark", problemOn(6)),
+                hasProperty("problemMark", problemOn(7)),
+                hasProperty("problemMark", problemOn(8))
+                ));
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testZoomWithDefaultGridTupleSize() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "rules:\n"+          // 1
+                "- zoom: [0,0]\n"+ // 2 OK
+                "- zoom: []\n"+ // 3 Bad
+                "- zoom: [0]\n"+ // 4 Bad
+                "- zoom: [0,0,0]\n"); // 5 Bad
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, contains(
+                hasProperty("problemMark", problemOn(3)),
+                hasProperty("problemMark", problemOn(4)),
+                hasProperty("problemMark", problemOn(5))
+                ));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testZoomWithDefaultGridValidateRange() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "rules:\n"+          // 1
+                "- zoom: [0,max]\n"+ // 2 OK
+                "- zoom: [min,0]\n"+ // 3 OK
+                "- zoom: [19,max]\n"+ // 4 OK
+                "- zoom: [min,19]\n"+ // 5 OK
+                "- zoom: [-1, max]\n"+ // 6 OK, RatioZoomContext allows negative
+                "- zoom: [min, -1]\n"+ // 7 OK, RatioZoomContext allows negative
+                "- zoom: [min, foo]\n"+ // 8 Bad
+                "- zoom: [foo, max]\n"+ // 9 Bad
+                "- zoom: [0.5, max]\n"+ // 10 Bad
+                "- zoom: [min, 0.5]\n"); // 11 Bad
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, contains(
+                hasProperty("problemMark", problemOn(8)),
+                hasProperty("problemMark", problemOn(9)),
+                hasProperty("problemMark", problemOn(10)),
+                hasProperty("problemMark", problemOn(11))
+                ));
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testZoomWithExtendedGridValidateRange() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "grid:\n"+           // 1
+                "  name: SIGMA:957\n"+// 2
+                "rules:\n"+          // 3
+                "- zoom: [0,max]\n"+ // 4 OK
+                "- zoom: [min,0]\n"+ // 5 OK
+                "- zoom: [2,max]\n"+ // 6 OK
+                "- zoom: [min,2]\n"+ // 7 OK
+                "- zoom: [5,max]\n"+ // 8 OK
+                "- zoom: [min,5]\n"+ // 9 OK
+                "- zoom: [6, max]\n"+ // 10 Bad, Out of Range
+                "- zoom: [min, 6]\n"+ // 11 Bad, Out of Range
+                "- zoom: [-1, max]\n"+ // 12 Bad, Out of Range
+                "- zoom: [min, -1]\n"+ // 13 Bad, Out of Range
+                "- zoom: [min, foo]\n"+ // 14 Bad
+                "- zoom: [foo, max]\n"+ // 15 Bad
+                "- zoom: [0.5, max]\n"+ // 16 Bad
+                "- zoom: [min, 0.5]\n"); // 17 Bad
+        
+        ZoomContextFinder finder = createMock("finder", ZoomContextFinder.class);
+        ZoomContext zctxt = createMock("zctxt", ZoomContext.class);
+        
+        expect(finder.get("SIGMA:957")).andStubReturn(zctxt);
+        
+        expect(zctxt.isInRange(0)).andStubReturn(true);
+        expect(zctxt.isInRange(2)).andStubReturn(true);
+        expect(zctxt.isInRange(5)).andStubReturn(true);
+        expect(zctxt.isInRange(-1)).andStubReturn(false);
+        expect(zctxt.isInRange(6)).andStubReturn(false);
+       
+        replay(finder, zctxt);
+        
+        List<MarkedYAMLException> errors = validate(builder.toString(),Collections.singletonList(finder));
+        assertThat(errors, contains(
+                hasProperty("problemMark", problemOn(10)),
+                hasProperty("problemMark", problemOn(11)),
+                hasProperty("problemMark", problemOn(12)),
+                hasProperty("problemMark", problemOn(13)),
+                hasProperty("problemMark", problemOn(14)),
+                hasProperty("problemMark", problemOn(15)),
+                hasProperty("problemMark", problemOn(16)),
+                hasProperty("problemMark", problemOn(17))
+                ));
+        
+        verify(finder, zctxt);
     }
     
     @Test

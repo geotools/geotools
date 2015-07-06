@@ -16,17 +16,18 @@
  */
 package org.geotools.data.solr;
 
+import static java.lang.Double.parseDouble;
+
+import java.util.Locale;
+
+import org.geotools.geometry.jts.JTS;
+import org.opengis.feature.type.GeometryDescriptor;
+
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
-import org.geotools.geometry.jts.JTS;
-import org.opengis.feature.type.GeometryDescriptor;
-
-import java.io.IOException;
-
-import static java.lang.Double.parseDouble;
 
 /**
  * Strategy interface for interacting with solr spatial types.
@@ -70,7 +71,8 @@ public abstract class SolrSpatialStrategy {
         @Override
         public String encode(Geometry geometry) {
             Envelope env = geometry.getEnvelopeInternal();
-            return String.format("%f %f %f %f", env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY());
+            return String.format(Locale.ENGLISH, "%f %f %f %f", env.getMinX(), env.getMinY(),
+                    env.getMaxX(), env.getMaxY());
         }
 
         @Override

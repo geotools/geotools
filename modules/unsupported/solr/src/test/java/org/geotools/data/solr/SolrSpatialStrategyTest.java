@@ -16,9 +16,13 @@
  */
 package org.geotools.data.solr;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import org.geotools.data.solr.SolrSpatialStrategy.BBoxStrategy;
 import org.geotools.data.solr.SolrSpatialStrategy.DefaultStrategy;
 import org.geotools.feature.NameImpl;
@@ -28,11 +32,9 @@ import org.opengis.feature.type.FeatureTypeFactory;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
 
-import java.text.NumberFormat;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 public class SolrSpatialStrategyTest {
 
@@ -70,7 +72,7 @@ public class SolrSpatialStrategyTest {
         assertTrue(g instanceof Polygon);
 
         String[] bbox = ss.encode(g).split("\\s+");
-        NumberFormat format = NumberFormat.getInstance();
+        NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
         assertEquals(1.0, format.parse(bbox[0]).doubleValue(), 0.1);
         assertEquals(2.0, format.parse(bbox[1]).doubleValue(), 0.1);
         assertEquals(3.0, format.parse(bbox[2]).doubleValue(), 0.1);

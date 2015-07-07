@@ -26,4 +26,11 @@ public interface ZoomContext {
      * @return
      */
     public ScaleRange getRange(@Nullable Integer min, @Nullable Integer max);
+    
+    /**
+     * Is the given level within the range for which the context has clearly defined scales.
+     * @param level
+     * @return
+     */
+    public boolean isInRange(int level);
 }

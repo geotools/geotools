@@ -37,6 +37,7 @@ public class WellKnownZoomContextFinder implements ZoomContextFinder {
         contexts.put("EPSG:3857".toUpperCase(), googleMercatorExtended);
         contexts.put("EPSG:3785".toUpperCase(), googleMercatorExtended);
         contexts.put("OSGEO:41001".toUpperCase(), googleMercatorExtended);
+        contexts.put("DEFAULT".toUpperCase(), googleMercatorExtended);
         canonicalNames.add("EPSG:3857");
         
         // WGS84 Plate Carrée starting with one 256x256 tile at 96 DPI
@@ -46,7 +47,6 @@ public class WellKnownZoomContextFinder implements ZoomContextFinder {
         contexts.put("PlateCarrée".toUpperCase(), plateCarree);
         contexts.put("WGS84".toUpperCase(), plateCarree);
         contexts.put("CRS84".toUpperCase(), plateCarree);
-        contexts.put("DEFAULT".toUpperCase(), plateCarree);
         contexts.put("GoogleCRS84Quad".toUpperCase(), plateCarree); // The Name used by GWC
         canonicalNames.add("WGS84");
         

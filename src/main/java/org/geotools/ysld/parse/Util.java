@@ -93,7 +93,9 @@ public class Util {
      * </p>
      */
     public static Expression expression(String value, boolean safe, Factory factory) {
-        
+        if(value.isEmpty()) {
+            return null;
+        }
         Expression expr = ExpressionExtractor.extractCqlExpressions(value);
         
         
@@ -230,6 +232,12 @@ public class Util {
     }
 
     public static @Nullable ZoomContext getNamedZoomContext(String name, List<ZoomContextFinder> zCtxtFinders){
+        if(name.equalsIgnoreCase("EPSG:4326")) {
+            throw new IllegalArgumentException("Should not use EPSG code to refer to WGS84 zoom levels as it causes ambiguities");
+        }
+        if(name.equalsIgnoreCase("EPSG:3857") || name.equalsIgnoreCase("EPSG:900913")) {
+            throw new IllegalArgumentException("Should not use EPSG code to refer to WebMercator zoom levels");
+        }
         for(ZoomContextFinder finder: zCtxtFinders) {
             ZoomContext found = finder.get(name);
             if(found!=null) {

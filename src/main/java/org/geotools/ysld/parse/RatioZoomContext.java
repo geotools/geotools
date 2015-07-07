@@ -51,4 +51,9 @@ public class RatioZoomContext extends ContinuousZoomContext implements ZoomConte
     protected double getMedialScale(int level) {
         return getScaleDenominator(level+0.5d);
     }
+
+    @Override
+    public boolean isInRange(int level) {
+        return true;
+    }
 }

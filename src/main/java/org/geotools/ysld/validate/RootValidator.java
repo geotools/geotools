@@ -2,6 +2,7 @@ package org.geotools.ysld.validate;
 
 import org.yaml.snakeyaml.events.ScalarEvent;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +30,33 @@ public class RootValidator extends YsldValidateHandler {
             context.push(new ExpressionValidator());
         }  else if ("grid".equals(key)) {
             context.push(new GridValidator());
+        } else if ("zoom".equals(key)) {
+            context.push(new ZoomValidator());
+        } else if ("scale".equals(key)) {
+            context.push(new ScaleValidator());
+        } else if ("anchor".equals(key) || "displacement".equals(key)) {
+            context.push(new TupleValidator(Arrays.asList(new ExpressionValidator(), new ExpressionValidator())));
+        } else if ("entries".equals(key)) {
+            context.push(new SequenceValidator(
+                    new TupleValidator(
+                            Arrays.asList(
+                                new ColorValidator(),  // Colour
+                                new ExpressionValidator(), // Opacity
+                                new ExpressionValidator(), // Quantity
+                                new ScalarValidator(){ // Label (arbitrary string, not an expression)
+
+                                    @Override
+                                    protected String validate(String value,
+                                            ScalarEvent evt,
+                                            YsldValidateContext context) {
+                                        return null;
+                                    }
+                                
+                            }
+                            ))
+                    ));
         }
+        
     }
     
 }

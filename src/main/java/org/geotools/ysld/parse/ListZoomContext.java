@@ -58,4 +58,8 @@ public class ListZoomContext extends MedialZoomContext {
         return Math.sqrt(scale*nextScale); // Geometric mean as zoom levels are usually exponential
     }
     
+    @Override
+    public boolean isInRange(int level) {
+        return level >= initial && level-initial < scales.size();
+    }
 }

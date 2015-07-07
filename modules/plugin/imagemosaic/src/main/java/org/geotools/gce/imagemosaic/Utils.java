@@ -322,8 +322,10 @@ public class Utils {
                 eventHandler);
         final ImageMosaicWalker walker;
         if (catalogHandler.isUseExistingSchema()) {
+            // walks existing granules in the origin store
             walker = new ImageMosaicDatastoreWalker(catalogHandler, eventHandler);
         } else {
+            // collects granules from the file system
             walker = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler);
         }
 

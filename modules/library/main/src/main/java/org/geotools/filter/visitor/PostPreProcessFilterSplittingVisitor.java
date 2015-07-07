@@ -165,7 +165,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
          */
 	    protected FilterCapabilities fcs = null;
 	    private SimpleFeatureType parent = null;
-		private Filter original = null;
+	    protected Filter original = null;
         
         /**
          * If we're in the middle of a client-side transaction, this object

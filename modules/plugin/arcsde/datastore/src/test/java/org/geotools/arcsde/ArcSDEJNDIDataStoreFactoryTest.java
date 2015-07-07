@@ -16,12 +16,7 @@
  */
 package org.geotools.arcsde;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +26,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -46,6 +42,7 @@ import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Transaction;
 import org.geotools.factory.GeoTools;
 import org.geotools.util.logging.Logging;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -69,6 +66,12 @@ public class ArcSDEJNDIDataStoreFactoryTest {
 
     private static TestData testData;
 
+    static final String IC_FACTORY_PROPERTY = "java.naming.factory.initial";
+
+    static final String JNDI_ROOT = "org.osjava.sj.root";
+
+    static final String JNDI_DELIM = "org.osjava.jndi.delimiter";
+
     /**
      * @throws java.lang.Exception
      */
@@ -79,6 +82,19 @@ public class ArcSDEJNDIDataStoreFactoryTest {
         testData = new TestData();
         testData.setUp();
         testData.getConProps();
+    }
+
+    @AfterClass
+    public static void cleanupAfterClass() throws Exception {
+        // clean up the context, otherwise other tests in other JNDI tests might fail
+        // as a consequence
+        Context ctx = GeoTools.getInitialContext(GeoTools.getDefaultHints());
+        ctx.close();
+
+        // clean up system properties too
+        System.clearProperty(IC_FACTORY_PROPERTY);
+        System.clearProperty(JNDI_DELIM);
+        System.clearProperty(JNDI_ROOT);
     }
 
     @Test
@@ -211,10 +227,6 @@ public class ArcSDEJNDIDataStoreFactoryTest {
 
         File jndi = new File("target/jndi");
         jndi.mkdirs();
-
-        final String IC_FACTORY_PROPERTY = "java.naming.factory.initial";
-        final String JNDI_ROOT = "org.osjava.sj.root";
-        final String JNDI_DELIM = "org.osjava.jndi.delimiter";
 
         if (System.getProperty(IC_FACTORY_PROPERTY) == null) {
             System.setProperty(IC_FACTORY_PROPERTY, "org.osjava.sj.SimpleContextFactory");

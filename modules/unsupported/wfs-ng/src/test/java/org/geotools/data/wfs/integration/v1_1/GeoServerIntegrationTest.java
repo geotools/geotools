@@ -39,9 +39,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 
-/**
- * works only partially, type names in test data don't match with the expected ones.
- */
 public class GeoServerIntegrationTest extends AbstractIntegrationTest {
 
     protected WFSClient wfs;

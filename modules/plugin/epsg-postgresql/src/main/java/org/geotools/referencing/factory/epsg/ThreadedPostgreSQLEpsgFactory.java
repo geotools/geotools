@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,24 +18,21 @@ package org.geotools.referencing.factory.epsg;
 
 // J2SE dependencies
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.FileInputStream;
-import java.util.Properties;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
-// Geotools dependencies
-import org.geotools.util.logging.Logging;
 import org.geotools.factory.Hints;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
-
+// Geotools dependencies
+import org.geotools.util.logging.Logging;
+import org.postgresql.ds.PGSimpleDataSource;
 // PostgreSQL dependencies
 import org.postgresql.ds.common.BaseDataSource;
-import org.postgresql.jdbc3.Jdbc3SimpleDataSource;
 
 
 /**
@@ -156,10 +153,16 @@ public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
         final Properties p = new Properties();
         File file = new File(CONFIGURATION_FILE);
         if (!file.isFile()) {
-            file = new File(System.getProperty("user.home", "."), CONFIGURATION_FILE);
+            File home = new File(System.getProperty("user.home", "."));
+            file = new File(home, CONFIGURATION_FILE);
             if (!file.isFile()) {
-                // Returns an empty set of properties.
-                return p;
+                // support online testing
+                File epsgFixtures = new File(new File(home, ".geotools"), "epsg");
+                file = new File(epsgFixtures, "postgresql.properties");
+                if (!file.isFile()) {
+                    // Returns an empty set of properties.
+                    return p;
+                }
             }
         }
         try {
@@ -183,7 +186,7 @@ public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
             // Any kind of DataSource from the PostgreSQL driver.
             return candidate;
         }
-        final Jdbc3SimpleDataSource source = new Jdbc3SimpleDataSource();
+        final PGSimpleDataSource source = new PGSimpleDataSource();
         final Properties p = load();
         int portNumber;
         try {
@@ -198,6 +201,7 @@ public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
         source.setDatabaseName(p.getProperty("databaseName", "EPSG"     ));
         source.setUser        (p.getProperty("user",         "Geotools" ));
         source.setPassword    (p.getProperty("password",     "Geotools" ));
+        source.setProperty("stringtype", "unspecified");
         schema = p.getProperty("schema", null);
         return source;
     }

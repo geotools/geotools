@@ -16,7 +16,7 @@
  */
 package org.geotools.data.oracle;
 
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
@@ -35,6 +35,24 @@ public class OracleFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new OracleTestSetup();
+    }
+    
+    /**
+     * Test if the fast retrieval of bounds out of oracle metadata tables works
+     * @throws Exception
+     * @author Hendrik Peilke
+     */
+    public void testSDOGeomMetadataBounds() throws Exception {
+        // enable fast bounds retrieval from SDO_GEOM_METADATA table
+        ((OracleDialect) ((JDBCDataStore) dataStore).getSQLDialect()).setMetadataBboxEnabled(true);;
+        
+        ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("ft1")).getBounds();
+        assertEquals(-180l, Math.round(bounds.getMinX()));
+        assertEquals(-90l, Math.round(bounds.getMinY()));
+        assertEquals(180l, Math.round(bounds.getMaxX()));
+        assertEquals(90l, Math.round(bounds.getMaxY()));
+    
+        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
     }
     
     public void testEstimatedBounds() throws Exception {
@@ -57,7 +75,7 @@ public class OracleFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo filter = ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
 
-        DefaultQuery query = new DefaultQuery();
+        Query query = new Query();
         query.setFilter(filter);
 
         ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("ft1")).getBounds(query);

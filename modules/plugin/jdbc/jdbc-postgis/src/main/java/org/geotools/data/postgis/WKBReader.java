@@ -43,6 +43,7 @@ import java.util.List;
 
 import org.geotools.geometry.jts.CircularArc;
 import org.geotools.geometry.jts.CompoundCurve;
+import org.geotools.geometry.jts.CompoundRing;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -326,23 +327,37 @@ public class WKBReader {
 
     private LinearRing readRing() throws IOException, ParseException {
         LineString ls = (LineString) readGeometry();
-        if (ls instanceof LinearRing) {
-            return (LinearRing) ls;
-        } else if (ls instanceof CompoundCurve) {
-            CompoundCurve cc = (CompoundCurve) ls;
-            List<LineString> components = cc.getComponents();
-            Coordinate start = components.get(0).getCoordinateN(0);
-            LineString lastGeom = components.get(components.size() - 1);
-            Coordinate end = lastGeom.getCoordinateN((lastGeom.getNumPoints() - 1));
-            components.add(factory.createLineString(new Coordinate[] { start, end }));
-            return (LinearRing) factory.createCurvedGeometry(components);
-        } else {
-            Coordinate start = ls.getCoordinateN(0);
-            Coordinate end = ls.getCoordinateN((ls.getNumPoints() - 1));
-            // turn it into a compound and add the segment that closes it
-            LineString closer = factory.createLineString(new Coordinate[] { start, end });
-            return (LinearRing) factory.createCurvedGeometry(ls, closer);
+        if (!(ls instanceof LinearRing)) {
+            if (!ls.isClosed()) {
+                if (ls instanceof CompoundCurve) {
+                    CompoundCurve cc = (CompoundCurve) ls;
+                    List<LineString> components = cc.getComponents();
+                    Coordinate start = components.get(0).getCoordinateN(0);
+                    LineString lastGeom = components.get(components.size() - 1);
+                    Coordinate end = lastGeom.getCoordinateN((lastGeom.getNumPoints() - 1));
+                    components.add(factory.createLineString(new Coordinate[] { start, end }));
+                    ls = factory.createCurvedGeometry(components);
+                } else {
+                    Coordinate start = ls.getCoordinateN(0);
+                    Coordinate end = ls.getCoordinateN((ls.getNumPoints() - 1));
+                    // turn it into a compound and add the segment that closes it
+                    LineString closer = factory.createLineString(new Coordinate[] { start, end });
+                    ls = factory.createCurvedGeometry(ls, closer);
+                }
+            } else {
+                if (ls instanceof CompoundCurve) {
+                    // this case should never happen, but let's be robust against
+                    // alternative geometry factories not behaving as expected
+                    CompoundCurve cc = (CompoundCurve) ls;
+                    ls = new CompoundRing(cc.getComponents(), cc.getFactory(), cc.getTolerance());
+                } else {
+                    ls = new LinearRing(ls.getCoordinateSequence(), ls.getFactory());
+                }
+            }
         }
+        
+        return (LinearRing) ls;
+
     }
 
     private MultiPoint readMultiPoint() throws IOException, ParseException {

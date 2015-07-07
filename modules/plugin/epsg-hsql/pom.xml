@@ -138,6 +138,13 @@
       <artifactId>commons-dbcp</artifactId>
       <scope>test</scope>
     </dependency>    
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   
   

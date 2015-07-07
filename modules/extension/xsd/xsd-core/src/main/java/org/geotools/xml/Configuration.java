@@ -146,7 +146,7 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  * An instance of {@link org.eclipse.xsd.util.XSDSchemaLocationResolver} can be
  * used to override a schemaLocation referencing another schema. This can be useful
  * when the entity parsing an instance document stores schemas in a location
- * unkown to the entity providing hte instance document.
+ * unknown to the entity providing the instance document.
  * </p>
  *
  * <p>
@@ -184,7 +184,7 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  *
  * In which (namespace,location) tuples are listed. For each each namespace
  * encountered when parsing the schemaLocation attribute, an appropriate
- * resolver / locator is looked up. If an override is not aviable, the framework
+ * resolver / locator is looked up. If an override is not available, the framework
  * attempts to resolve the location part of the tuple into a schema.
  *
  * The second scenario occurs when the parsing of a schema encounters an
@@ -204,7 +204,7 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  *  </code>
  *        </pre>
  *
- *        respectivley. Similar to above, the schemaLocation (and namespace in the
+ *        respectively. Similar to above, the schemaLocation (and namespace in the
  *        case of an import) are used to find an override. If not found they are
  *        resolved directly.
  * </p>
@@ -240,7 +240,7 @@ public abstract class Configuration {
     /**
      * Creates a new configuration.
      * <p>
-     * Any dependent schemas should be added in sublcass constructor. The xml schema
+     * Any dependent schemas should be added in subclass constructor. The xml schema
      * dependency does not have to be added.
      * </p>
      *
@@ -294,7 +294,7 @@ public abstract class Configuration {
     }
     
     /**
-     * Searches the configuration and all dependent configuration for the speciifed property.
+     * Searches the configuration and all dependent configuration for the specified property.
      *
      */
     public final boolean hasProperty( QName property ) {
@@ -313,7 +313,7 @@ public abstract class Configuration {
      * <p>
      * The return list contains no duplicates.
      * </p>
-     * @return All dependencies in teh configuration dependency tree.
+     * @return All dependencies in the configuration dependency tree.
      */
     public final List allDependencies() {
         LinkedList unpacked = new LinkedList();
@@ -417,7 +417,7 @@ public abstract class Configuration {
     }
 
     /**
-     * Returns the url to the file definiing hte schema.
+     * Returns the url to the file defining the schema.
      * <p>
      * For schema which are defined by multiple files, this method should return the base schema
      * which includes all other files that define the schema.
@@ -433,7 +433,7 @@ public abstract class Configuration {
      * uri's encountered in an instance document.
      * <p>
      * This method should be overridden to return such an instance. The default
-     * implemntation returns <code>null</code>
+     * implementation returns <code>null</code>
      * </p>
      * @return The schema location resolver, or <code>null</code>
      * @deprecated
@@ -447,8 +447,8 @@ public abstract class Configuration {
      * Returns a schema locator, used to create imported and included schemas
      * when parsing an instance document.
      * <p>
-     * This method may be overriden to return such an instance. The default
-     * delegates to {@link #createSchemaLocator()} to and caches the restult. This method
+     * This method may be overridden to return such an instance. The default
+     * delegates to {@link #createSchemaLocator()} to and caches the result. This method
      * may return <code>null</code> to indicate that no such locator should be used.
      * </p>
      * @return The schema locator, or <code>null</code>
@@ -478,7 +478,7 @@ public abstract class Configuration {
      * while parsing.
      * <p>
      * This context is provided to allow for placing values in the parsing context
-     * without having to sublcass.
+     * without having to subclass.
      * </p>
      * @return The context.
      */
@@ -508,7 +508,7 @@ public abstract class Configuration {
 
    /**
     * Creates the map of QName to Binding which is used during parsing to attach
-    * bindinds to an element,attribute, or type.
+    * bindings to an element,attribute, or type.
     *
     * @return A map of Qname,[Class|Object] 
     */
@@ -590,7 +590,7 @@ public abstract class Configuration {
      * This method is intended to provide the "default" bindings for a configuration
      * and is not intended to be subclassed by client code. Client code should use
      * {@link #configureBindings(MutablePicoContainer)} to override/remove/add new 
-     * bindings on teh fly.
+     * bindings on the fly.
      * </p>
      * <p>
      * The key of the <tt>bindings</tt> map is of type {@link QName}. The value 
@@ -684,11 +684,11 @@ public abstract class Configuration {
     /**
      * Configures the root context to be used when parsing elements.
      * <p>
-     * The context satisifies any depenencencies needed by a binding. This is
+     * The context satisfies any dependencies needed by a binding. This is
      * often a factory used to create something.
      * </p>
      * <p>
-     * This method should be overriden. The default implementation does nothing.
+     * This method should be overridden. The default implementation does nothing.
      * </p>
      *
      * @param container The container representing the context.
@@ -717,7 +717,7 @@ public abstract class Configuration {
     }
     
     /**
-     * Equals override, equality is based soley on {@link #getNamespaceURI()}.
+     * Equals override, equality is based solely on {@link #getNamespaceURI()}.
      */
     public final boolean equals(Object obj) {
         if (obj instanceof Configuration) {

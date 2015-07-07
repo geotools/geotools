@@ -25,7 +25,7 @@
   <groupId>org.geotools.xsd</groupId>
   <artifactId>gt-xsd-wms</artifactId>
   <packaging>jar</packaging>
-  <name>WFS XML Support</name>
+  <name>WMS XML Support</name>
   
 
   <scm>

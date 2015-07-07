@@ -21,7 +21,7 @@ import org.geotools.xml.impl.BindingWalker;
 
 
 /**
- * Factory made available to bindings to walk over a bindign execution chain.
+ * Factory made available to bindings to walk over a binding execution chain.
  *
  * @author Justin Deoliveira, The Open Planning Project
  *

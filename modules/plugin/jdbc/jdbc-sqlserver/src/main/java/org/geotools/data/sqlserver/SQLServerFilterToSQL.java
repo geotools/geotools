@@ -17,8 +17,6 @@
 package org.geotools.data.sqlserver;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
@@ -183,15 +181,5 @@ public class SQLServerFilterToSQL extends FilterToSQL {
         
         return extraData;
     }
-
-    static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     
-    @Override
-    protected void writeLiteral(Object literal) throws IOException {
-        if (literal instanceof Date) {
-            out.write("'" + DATETIME_FORMAT.format(literal) + "'");
-        } else {
-            super.writeLiteral(literal);
-        }
-    }
 }

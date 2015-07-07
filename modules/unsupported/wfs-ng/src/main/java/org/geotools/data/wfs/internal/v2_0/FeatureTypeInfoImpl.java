@@ -79,8 +79,8 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
     @Override
     public String getDescription() {
-        return eType.getAbstract() == null || eType.getAbstract().isEmpty() ? null : String
-                .valueOf(eType.getAbstract().get(0));
+        return eType.getAbstract() == null || eType.getAbstract().isEmpty() ? null : 
+                eType.getAbstract().get(0).getValue();
     }
 
     @Override

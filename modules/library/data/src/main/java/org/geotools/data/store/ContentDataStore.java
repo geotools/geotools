@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -503,6 +503,7 @@ public abstract class ContentDataStore implements DataStore {
         for ( ContentEntry entry :  entries.values() ) {
             entry.dispose();
         }
+        entries.clear();
     }
     
     /**
@@ -560,8 +561,8 @@ public abstract class ContentDataStore implements DataStore {
         ContentEntry entry = null;
 
         boolean found = entries.containsKey(name);
-        if (!found && name.getNamespaceURI() == null
-                && this.namespaceURI != null) {
+        boolean unqualifiedSearch = name.getNamespaceURI() == null;
+        if (!found && unqualifiedSearch && this.namespaceURI != null) {
             Name defaultNsName = new NameImpl(namespaceURI, name.getLocalPart());
             if (entries.containsKey(defaultNsName)) {
                 name = defaultNsName;
@@ -569,34 +570,28 @@ public abstract class ContentDataStore implements DataStore {
             }
         }
 
-        // try a namespace-less match (createTypeNames() can be expensive, we leave it as last
-        // resort)
         if (!found) {
+            // refresh the entries (calling createTypeNames() can be quite expensive,
+            // make it count) and do namespace-less matches as required
             List<Name> typeNames = createTypeNames();
-            found = typeNames.contains(name);
-            if (!found && name.getNamespaceURI() == null) {
-                for (Name typeName : typeNames) {
-                    if (typeName.getLocalPart().equals(name.getLocalPart())) {
-                        name = typeName;
-                        found = true;
-                        break;
+
+            for (Name tn : typeNames) {
+                synchronized (this) {
+                    if (!entries.containsKey(tn)) {
+                        entry = new ContentEntry(this, tn);
+                        entries.put(tn, entry);
                     }
                 }
-            }
-        }
 
-        if (found) {
-            // yes, create an entry for it
-            synchronized (this) {
-                if (!entries.containsKey(name)) {
-                    entry = new ContentEntry(this, name);
-                    entries.put(name, entry);
+                // do namespace-less matching if necessary
+                if (!found
+                        && (tn.equals(name) || (unqualifiedSearch && tn.getLocalPart()
+                                .equals(name.getLocalPart())))) {
+                    name = tn;
+                    found = true;
                 }
             }
-
-            entry = entries.get(name);
         }
-
 
         return entries.get(name);
     }

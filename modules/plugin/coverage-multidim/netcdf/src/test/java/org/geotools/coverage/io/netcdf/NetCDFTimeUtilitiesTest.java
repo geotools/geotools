@@ -86,14 +86,22 @@ public final class NetCDFTimeUtilitiesTest {
         assertEquals(Calendar.HOUR, NetCDFTimeUtilities.getTimeUnits("days", 1.5d));
         assertEquals(36, NetCDFTimeUtilities.getTimeSubUnitsValue("days", 1.5d));
 
-        assertEquals(Calendar.SECOND, NetCDFTimeUtilities.getTimeUnits("days", 1.42d));
-        assertEquals(122688, NetCDFTimeUtilities.getTimeSubUnitsValue("days", 1.42d));
+        assertEquals(Calendar.SECOND, NetCDFTimeUtilities.getTimeUnits("day", 1.42d));
+        assertEquals(122688, NetCDFTimeUtilities.getTimeSubUnitsValue("d", 1.42d));
 
         assertEquals(Calendar.MINUTE, NetCDFTimeUtilities.getTimeUnits("hours", 1.5d));
+        assertEquals(Calendar.SECOND, NetCDFTimeUtilities.getTimeUnits("hour", 1.52d));
+        assertEquals(Calendar.MILLISECOND, NetCDFTimeUtilities.getTimeUnits("hrs", 1.522d));
+        assertEquals(5479200, NetCDFTimeUtilities.getTimeSubUnitsValue("hr", 1.522d));
 
-        assertEquals(Calendar.MILLISECOND, NetCDFTimeUtilities.getTimeUnits("hours", 1.523d));
-        assertEquals(131587199, NetCDFTimeUtilities.getTimeSubUnitsValue("hours", 1.523d));
+        assertEquals(Calendar.SECOND, NetCDFTimeUtilities.getTimeUnits("minutes", 2.5d));
+        assertEquals(150, NetCDFTimeUtilities.getTimeSubUnitsValue("minute", 2.5d));
+        assertEquals(90, NetCDFTimeUtilities.getTimeSubUnitsValue("mins", 1.5d));
+        assertEquals(72, NetCDFTimeUtilities.getTimeSubUnitsValue("min", 1.2d));
 
         assertEquals(Calendar.MILLISECOND, NetCDFTimeUtilities.getTimeUnits("seconds", 1.5d));
+        assertEquals(1600, NetCDFTimeUtilities.getTimeSubUnitsValue("second", 1.6d));
+        assertEquals(1450, NetCDFTimeUtilities.getTimeSubUnitsValue("sec", 1.45d));
+        assertEquals(1200, NetCDFTimeUtilities.getTimeSubUnitsValue("secs", 1.2d));
     }
 }

@@ -42,6 +42,9 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     /** optional user parameter */
     public static final Param USER = new Param(JDBCDataStoreFactory.USER.key, JDBCDataStoreFactory.USER.type, 
             JDBCDataStoreFactory.USER.description, false, JDBCDataStoreFactory.USER.sample);
+    
+    /** parameter for database instance */
+    public static final Param DATABASE = new Param("database", File.class, "Database", true );
 
     /**
      * base location to store database files
@@ -94,11 +97,14 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
 
     @Override
     protected String getJDBCUrl(Map params) throws IOException {
-        String db = (String) DATABASE.lookUp(params);
+        File db = (File) DATABASE.lookUp(params);
+        if (db.getPath().startsWith("file:")) {
+            db = new File(db.getPath().substring(5));
+        }
         if (baseDirectory != null) {
             // check for a relative path
-            if (!new File(db).isAbsolute()) {
-                db = new File(baseDirectory, db).getAbsolutePath();
+            if (!db.isAbsolute()) {
+                db = new File(baseDirectory, db.getPath());
             }
         }
         return "jdbc:sqlite:" + db;
@@ -112,15 +118,13 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         parameters.remove(HOST.key);
         parameters.remove(PORT.key);
         parameters.remove(SCHEMA.key);
-
-        //remove user and password temporarily in order to make username optional
-        parameters.remove(JDBCDataStoreFactory.USER.key);
-        parameters.put(USER.key, USER);
         
-        //add user 
-        //add additional parameters
+        //replace database with File database
+        parameters.put(DATABASE.key, DATABASE);
+        //replace user to make optional
+        parameters.put(USER.key, USER);
+        //replace dbtype
         parameters.put(DBTYPE.key, DBTYPE);
-
     }
 
     @Override
@@ -162,4 +166,5 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
             dataSource.addConnectionProperty((String)e.getKey(), (String)e.getValue());
         }
     }
+
 }

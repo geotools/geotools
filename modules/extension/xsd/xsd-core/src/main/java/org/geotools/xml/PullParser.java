@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2012-2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.xml;
 
 import java.io.IOException;
@@ -14,6 +30,8 @@ import javax.xml.stream.XMLStreamReader;
 import org.geotools.xml.impl.ElementHandler;
 import org.geotools.xml.impl.NodeImpl;
 import org.geotools.xml.impl.ParserHandler;
+import org.geotools.xml.impl.ParserHandler.ContextCustomizer;
+import org.picocontainer.MutablePicoContainer;
 import org.xml.sax.SAXException;
 
 /**
@@ -45,6 +63,10 @@ public class PullParser {
     public PullParser(Configuration config, InputStream input, PullParserHandler handler) {
         this.handler = handler;
         pp = createPullParser(input);
+    }
+    
+    public void setContextCustomizer(ContextCustomizer contextCustomizer) {
+        handler.setContextCustomizer(contextCustomizer);
     }
 
     public Object parse() throws XMLStreamException, IOException, SAXException {

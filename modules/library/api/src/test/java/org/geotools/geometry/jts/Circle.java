@@ -16,8 +16,9 @@
  */
 package org.geotools.geometry.jts;
 
-import static java.lang.Math.*;
-import static org.junit.Assert.*;
+import static java.lang.Math.atan2;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import com.vividsolutions.jts.geom.CoordinateSequence;
 
@@ -87,11 +88,11 @@ class Circle {
             double dy = y - cy;
             double d = Math.sqrt(dx * dx + dy * dy);
             double distanceFromCircle = Math.abs(radius - d);
-            if (distanceFromCircle > Circle.EPS) {
+            if (distanceFromCircle > tolerance) {
                 fail("Found a point " + x + "," + y + " that's not on the circle with distance "
                         + distanceFromCircle + " from it");
             }
-            assertEquals(radius, d, Circle.EPS);
+            assertEquals(radius, d, tolerance);
             double angle = atan2(dy, dx);
 
             if (i > 1) {

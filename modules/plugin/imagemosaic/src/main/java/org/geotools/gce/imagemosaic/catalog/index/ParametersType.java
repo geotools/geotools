@@ -18,10 +18,10 @@ package org.geotools.gce.imagemosaic.catalog.index;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -91,6 +91,7 @@ public class ParametersType {
         }
         return this.parameter;
     }
+
 
 
     /**
@@ -172,6 +173,26 @@ public class ParametersType {
             this.name = value;
         }
 
+        /*
+         * (non-Javadoc)
+         * 
+         * @see java.lang.Object#toString()
+         */
+        @Override
+        public String toString() {
+            return "Parameter [value=" + value + ", name=" + name + "]";
+        }
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "ParametersType [" + parameter + "]";
     }
 
 }

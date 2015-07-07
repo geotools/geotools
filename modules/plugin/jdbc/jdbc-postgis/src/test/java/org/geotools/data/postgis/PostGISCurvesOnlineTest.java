@@ -366,6 +366,30 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
         testClosedCompoundCurve();
     }
 
+    @Test
+    public void testSquareHole2Points() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("SquareHole2Points");
+        Geometry g = (Geometry) feature.getDefaultGeometry();
+        assertNotNull(g);
+        assertTrue(g instanceof Polygon);
+
+        Polygon p = (Polygon) g;
+
+        LineString ls = p.getExteriorRing();
+        assertEquals(5, ls.getNumPoints());
+        assertEquals(new Coordinate(-10, -10), ls.getCoordinateN(0));
+        assertEquals(new Coordinate(-10, -8), ls.getCoordinateN(1));
+        assertEquals(new Coordinate(-8, -8), ls.getCoordinateN(2));
+        assertEquals(new Coordinate(-8, -10), ls.getCoordinateN(3));
+        assertEquals(new Coordinate(-10, -10), ls.getCoordinateN(4));
+
+        // check the interior ring has been normalized
+        assertEquals(1, p.getNumInteriorRing());
+        CircularRing hole = (CircularRing) p.getInteriorRingN(0);
+        assertArrayEquals(new double[] { -9.0, -8.5, -9.0, -9.5, -9.0, -8.5 },
+                hole.getControlPoints(), 1e-6);
+    }
+
     private SimpleFeature getSingleFeatureByName(String name) throws IOException {
         return getSingleFeatureByName("curves", name);
     }

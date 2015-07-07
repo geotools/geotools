@@ -280,6 +280,51 @@ public class YsldValidateTest {
     
     @SuppressWarnings("unchecked")
     @Test
+    public void testScaleTupleSize() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "rules:\n"+          // 1
+                "- scale: [0.0,0.0]\n"+ // 2 OK
+                "- scale: []\n"+ // 3 Bad
+                "- scale: [0.0]\n"+ // 4 Bad
+                "- scale: [0.0,0.0,0.0]\n"); // 5 Bad
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, contains(
+                hasProperty("problemMark", problemOn(3)),
+                hasProperty("problemMark", problemOn(4)),
+                hasProperty("problemMark", problemOn(5))
+                ));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testScaleValidateRange() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "rules:\n"+          // 1
+                "- scale: [100000,max]\n"+ // 2 OK
+                "- scale: [min,100000]\n"+ // 3 OK
+                "- scale: [10000000,max]\n"+ // 4 OK
+                "- scale: [min,10000000]\n"+ // 5 OK
+                "- scale: [-1, max]\n"+ // 6 Bad
+                "- scale: [min, -1]\n"+ // 7 Bad
+                "- scale: [min, foo]\n"+ // 8 Bad
+                "- scale: [foo, max]\n"+ // 9 Bad
+                "- scale: [100000.1, max]\n"+ // 10 OK
+                "- scale: [min, 100000.1]\n"); // 11 OK
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, contains(
+                hasProperty("problemMark", problemOn(6)),
+                hasProperty("problemMark", problemOn(7)),
+                hasProperty("problemMark", problemOn(8)),
+                hasProperty("problemMark", problemOn(9))
+                ));
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
     public void testZoomWithExtendedGridValidateRange() throws Exception {
         StringBuilder builder =  new StringBuilder();
         builder.append(
@@ -329,6 +374,169 @@ public class YsldValidateTest {
         verify(finder, zctxt);
     }
     
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testAnchorTupleSize() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "rules:\n");
+        builder.append(
+                "- point: \n"+
+                "    anchor: [0.75, 0.25]\n" // 3 OK
+                );
+        builder.append(
+                "- point: \n"+
+                "    anchor: []\n" // 5 Bad
+                );
+        builder.append(
+                "- point: \n"+
+                "    anchor: [0.0]\n" // 7 Bad
+                );
+        builder.append(
+                "- point: \n"+
+                "    anchor: [0.0, 0.0, 0.0]\n" // 9 Bad
+                );
+
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, contains(
+                hasProperty("problemMark", problemOn(5)),
+                hasProperty("problemMark", problemOn(7)),
+                hasProperty("problemMark", problemOn(9))
+                ));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testAnchorValidateValues() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "rules:\n");
+        builder.append(
+                "- point: \n"+
+                "    anchor: [0.75, 0.25]\n" // 3 OK
+                );
+        builder.append(
+                "- point: \n"+
+                "    anchor: [-1000, -0.0001]\n" // 5 OK
+                );
+        builder.append(
+                "- point: \n"+
+                "    anchor: [\"${round([len]/1000)}\", 0.0]\n" // 7 OK
+                );
+        builder.append(
+                "- point: \n"+
+                "    anchor: [0.0, \"${round([len]/1000)}\"]\n" // 9 OK
+                );
+        builder.append(
+                "- point: \n"+
+                "    anchor: [\"${round([len] 1000)}\", 0.0]\n" // 11 Bad, invalid expression
+                );
+        builder.append(
+                "- point: \n"+
+                "    anchor: [0.0, \"${round([len] 1000)}\"]\n" // 13 Bad invalid expression
+                );
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, contains(
+                hasProperty("problemMark", problemOn(11)),
+                hasProperty("problemMark", problemOn(13))
+                ));
+    }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testDisplacementTupleSize() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "rules:\n");
+        builder.append(
+                "- point: \n"+
+                "    displacement: [0, 0]\n" // 3 OK
+                );
+        builder.append(
+                "- point: \n"+
+                "    displacement: []\n" // 5 Bad
+                );
+        builder.append(
+                "- point: \n"+
+                "    displacement: [0]\n" // 7 Bad
+                );
+        builder.append(
+                "- point: \n"+
+                "    displacement: [0, 0, 0]\n" // 9 Bad
+                );
+
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, contains(
+                hasProperty("problemMark", problemOn(5)),
+                hasProperty("problemMark", problemOn(7)),
+                hasProperty("problemMark", problemOn(9))
+                ));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testDisplacementValidateValues() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append(
+                "rules:\n");
+        builder.append(
+                "- point: \n"+
+                "    displacement: [1, 1]\n" // 3 OK
+                );
+        builder.append(
+                "- point: \n"+
+                "    displacement: [-1, -2]\n" // 5 OK
+                );
+        builder.append(
+                "- point: \n"+
+                "    displacement: [\"${round([len]/1000)}\", 0]\n" // 7 OK
+                );
+        builder.append(
+                "- point: \n"+
+                "    displacement: [0, \"${round([len]/1000)}\"]\n" // 9 OK
+                );
+        builder.append(
+                "- point: \n"+
+                "    displacement: [\"${round([len] 1000)}\", 0]\n" // 11 Bad, invalid expression
+                );
+        builder.append(
+                "- point: \n"+
+                "    displacement: [0, \"${round([len] 1000)}\"]\n" // 13 Bad invalid expression
+                );
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, contains(
+                hasProperty("problemMark", problemOn(11)),
+                hasProperty("problemMark", problemOn(13))
+                ));
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testColourMapEntries() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append("raster: \n"+
+                "  color-map:\n" +
+                "    type: values\n" +
+                "    entries:\n");
+        builder.append("    - [\"#ff0000\", 1.0, 0, \"start\"]\n");  // 5 OK
+        builder.append("    - [red, 1, 0, \"blah\"]\n");             // 6 OK
+        builder.append("    - [\"rgb(0,0,0)\", null, 0, \"start\"]\n");  // 7 OK
+        builder.append("    - [\"#ff0000\", '', 0, null]\n");        // 8 OK
+        builder.append("    - [\"${[something]}\", \"${[something]}\", \"${[something]}\", null]\n");        // 9 OK
+        
+        builder.append("    - [\"#ff0000\", \"${round([len] 1000)}\", 0, \"start\"]\n");  // 10 Bad opacity
+        builder.append("    - [\"#ff0000\", 1.0, \"${round([len] 1000)}\", \"start\"]\n");  // 11 Bad quantity
+        
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, contains(
+                hasProperty("problemMark", problemOn(10)),
+                hasProperty("problemMark", problemOn(11))
+                ));
+    }
     @Test
     public void testWellKnownZoomContextWithOtherError() throws Exception {
         // Making sure that doing the grid validation doesn't screw up other validation later

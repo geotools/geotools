@@ -24,7 +24,7 @@ public class ExpressionValidator extends ScalarValidator {
             if(e.getCause() instanceof CQLException) {
                 return ((CQLException) e.getCause()).getSyntaxError();
             } else {
-                throw e;
+                return e.getMessage();
             }
         }
     }

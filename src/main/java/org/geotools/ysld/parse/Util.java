@@ -93,7 +93,9 @@ public class Util {
      * </p>
      */
     public static Expression expression(String value, boolean safe, Factory factory) {
-        
+        if(value.isEmpty()) {
+            return null;
+        }
         Expression expr = ExpressionExtractor.extractCqlExpressions(value);
         
         

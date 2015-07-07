@@ -204,16 +204,10 @@ public class RasterManager {
                 final MathTransform transform = CRS.findMathTransform(coverageCRS,
                         (CoordinateReferenceSystem) coverageCRS2D);
                 final GeneralEnvelope bbox = CRS.transform(transform, coverageEnvelope);
-                bbox.setCoordinateReferenceSystem(coverageCRS2D);
-                coverageBBox = new ReferencedEnvelope(bbox);
+                coverageBBox = ReferencedEnvelope.create(bbox,coverageCRS2D);
             } else {
                 // it is already a bbox
-                // workaraound for empty bbox, because conversion from OGC envelope to 
-                // JTS Envelope looses emptiness (min/max get switched)
-                if(coverageEnvelope.isEmpty())
-                    coverageBBox = new ReferencedEnvelope(coverageEnvelope.getCoordinateReferenceSystem());
-                else
-                    coverageBBox = new ReferencedEnvelope(coverageEnvelope);
+                coverageBBox = ReferencedEnvelope.create(coverageEnvelope,coverageEnvelope.getCoordinateReferenceSystem());
             }
         }
         

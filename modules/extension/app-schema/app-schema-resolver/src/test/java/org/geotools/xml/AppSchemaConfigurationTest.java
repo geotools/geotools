@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.data.DataUtilities;

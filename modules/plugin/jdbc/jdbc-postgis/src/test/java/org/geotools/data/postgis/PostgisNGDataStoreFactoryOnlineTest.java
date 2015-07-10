@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -133,6 +133,40 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
             dialect.addSupportedHints(baseHints);
             assertFalse(baseHints.isEmpty());
             assertTrue(baseHints.contains(Hints.GEOMETRY_SIMPLIFICATION));
+        } finally {
+            store.dispose();
+        }
+    }
+    
+    public void testEncodeBBOXParameter() throws Exception {
+        PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
+        Properties db = fixture;
+        
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(HOST.key, db.getProperty(HOST.key));
+        params.put(DATABASE.key, db.getProperty(DATABASE.key));
+        params.put(PORT.key, db.getProperty(PORT.key));
+        params.put(USER.key, db.getProperty(USER.key));
+        params.put(PASSWD.key, db.getProperty(PASSWD.key));
+        
+        JDBCDataStore store = factory.createDataStore(params);
+        assertNotNull(store);
+        try {
+            // check dialect
+            PostGISDialect dialect = (PostGISDialect) store.getSQLDialect();
+            assertFalse(dialect.isEncodeBBOXFilterAsEnvelope());
+        } finally {
+            store.dispose();
+        }
+        
+        params.put(PostgisNGDataStoreFactory.ENCODE_BBOX_FILTER_USING_ENVELOPE.key, Boolean.TRUE);
+        
+        store = factory.createDataStore(params);
+        assertNotNull(store);
+        try {
+            // check dialect
+            PostGISDialect dialect = (PostGISDialect) store.getSQLDialect();
+            assertTrue(dialect.isEncodeBBOXFilterAsEnvelope());
         } finally {
             store.dispose();
         }

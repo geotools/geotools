@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -85,6 +85,12 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param SIMPLIFY = new Param("Support on the fly geometry simplification", Boolean.class, 
             "When enabled, operations such as map rendering will pass a hint that will enable the usage of ST_Simplify", false, Boolean.TRUE);
     
+    /**
+     * Enables usage of ST_Envelope to wrap geometries on Overlap filters, to speed up queries (GEOT-5167)
+     */
+    public static final Param ENCODE_BBOX_FILTER_USING_ENVELOPE = new Param("Wrap geometries with Envelope function in Overlap filters", Boolean.class, 
+            "When enabled, ST_Envelope is wrapper around geometries in overlap queries, to speed-up some edge use cases", false, Boolean.FALSE);
+    
     
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
@@ -156,6 +162,11 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         // check geometry simplification (on by default)
         Boolean simplify = (Boolean) SIMPLIFY.lookUp(params);
         dialect.setSimplifyEnabled(simplify == null || simplify);
+        
+        // encode BBOX filter with wrapping ST_Envelope (GEOT-5167)
+        Boolean encodeBBOXAsEnvelope = (Boolean) ENCODE_BBOX_FILTER_USING_ENVELOPE.lookUp(params);
+        dialect.setEncodeBBOXFilterAsEnvelope(encodeBBOXAsEnvelope != null
+                && Boolean.TRUE.equals(encodeBBOXAsEnvelope));
 
         return dataStore;
     }
@@ -174,6 +185,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
         parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
         parameters.put(SIMPLIFY.key, SIMPLIFY);
+        parameters.put(ENCODE_BBOX_FILTER_USING_ENVELOPE.key, ENCODE_BBOX_FILTER_USING_ENVELOPE);
         parameters.put(CREATE_DB_IF_MISSING.key, CREATE_DB_IF_MISSING);
         parameters.put(CREATE_PARAMS.key, CREATE_PARAMS);
     }

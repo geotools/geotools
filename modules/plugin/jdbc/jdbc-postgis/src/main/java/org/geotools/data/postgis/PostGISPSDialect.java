@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -198,6 +198,14 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
         delegate.setLooseBBOXEnabled(looseBBOXEnabled);
     }
 
+    public boolean isEncodeBBOXFilterAsEnvelope() {
+        return delegate.isEncodeBBOXFilterAsEnvelope();
+    }
+
+    public void setEncodeBBOXFilterAsEnvelope(boolean encodeBBOXFilterAsEnvelope) {
+        delegate.setEncodeBBOXFilterAsEnvelope(encodeBBOXFilterAsEnvelope);
+    }
+    
     @Override
     public void prepareGeometryValue(Geometry g, int dimension, int srid, Class binding,
             StringBuffer sql) {
@@ -228,6 +236,7 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     public PreparedFilterToSQL createPreparedFilterToSQL() {
         PostgisPSFilterToSql fts = new PostgisPSFilterToSql(this);
         fts.setLooseBBOXEnabled(delegate.isLooseBBOXEnabled());
+        fts.setEncodeBBOXFilterAsEnvelope(delegate.isEncodeBBOXFilterAsEnvelope());
         return fts;
     }
 

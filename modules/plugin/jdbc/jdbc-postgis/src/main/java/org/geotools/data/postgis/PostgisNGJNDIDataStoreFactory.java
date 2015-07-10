@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -46,5 +46,6 @@ public class PostgisNGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
         parameters.put(PREPARED_STATEMENTS.key, PREPARED_STATEMENTS);
         parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
         parameters.put(SIMPLIFY.key, SIMPLIFY);
+        parameters.put(ENCODE_BBOX_FILTER_USING_ENVELOPE.key, ENCODE_BBOX_FILTER_USING_ENVELOPE);
     }
 }

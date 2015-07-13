@@ -16,11 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
-import it.geosolutions.imageio.pam.PAMParser;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -60,9 +55,6 @@ import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
-
-import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -114,6 +106,13 @@ import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.datum.PixelInCell;
+
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMParser;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import junit.framework.JUnit4TestAdapter;
+import junit.textui.TestRunner;
 
 /**
  * Testing {@link ImageMosaicReader}.
@@ -504,6 +503,83 @@ public class ImageMosaicReaderTest extends Assert{
         if (!INTERACTIVE) {
             FileUtils.deleteDirectory(TestData.file(this, "water_temp5"));
         }
+    }
+
+    /**
+     * This test is used to check backward compatibility with old imagemosaics wich does not include
+     * the TypeName=MOSAICNAME into the generated MOSAICNAME.properties file
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testMixedTables() throws Exception {
+        String mosaicName = "water_temp6";
+        final File workDir = new File(TestData.file(this, "."), mosaicName);
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        FileUtils.copyFile(TestData.file(this, "watertemp.zip"),
+                new File(workDir, "watertemp.zip"));
+        TestData.unzipFile(this, mosaicName + "/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, mosaicName);
+
+        // place H2 file in the dir
+        File datastoreProperties = new File(workDir, "datastore.properties");
+        try (FileWriter out = new FileWriter(datastoreProperties)) {
+            out.write("database=imagemosaic\n");
+            out.write(H2_SAMPLE_PROPERTIES);
+            out.flush();
+        }
+
+        // make it fill the tables
+        AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+        reader.dispose();
+        format = null;
+
+        // setup the typename in the indexer
+        File indexerProperties = new File(workDir, "indexer.properties");
+        Properties indexer = new Properties();
+        // tell it to use the existing schema
+        indexer.put("UseExistingSchema", "true");
+        indexer.put("TypeName", "customIndex");
+        try (OutputStream os = new FileOutputStream(indexerProperties)) {
+            indexer.store(os, null);
+        }
+
+        // get a connection to the db to create a few extra tables
+        Properties props = new Properties();
+        try (InputStream is = new FileInputStream(datastoreProperties)) {
+            props.load(is);
+        }
+        props.put("database", new File(workDir, "imagemosaic").getPath());
+        JDBCDataStore store = (JDBCDataStore) DataStoreFinder.getDataStore(props);
+        // H2 seems to return the table names in alphabetical order
+        store.createSchema(DataUtilities.createType("aaa_noFootprint", "a:String,b:Integer"));
+        store.createSchema(DataUtilities.createType("bbb_noLocation", "geom:Polygon,b:String"));
+        try (Connection conn = store.getConnection(Transaction.AUTO_COMMIT);
+                Statement st = conn.createStatement();) {
+            st.execute("alter table \"" + mosaicName + "\" rename to \"customIndex\"");
+            st.execute("UPDATE GEOMETRY_COLUMNS SET F_TABLE_NAME = 'customIndex'");
+        }
+        store.dispose();
+
+        // remove all mosaic related files
+        for (File file : FileUtils.listFiles(workDir, new RegexFileFilter(mosaicName + ".*"),
+                null)) {
+            assertTrue(file.delete());
+        }
+
+        // see that we can create the reader again
+        format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+        reader.dispose();
+        format = null;
     }
 
 	@Test
@@ -3067,8 +3143,6 @@ public class ImageMosaicReaderTest extends Assert{
                 .copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
         TestData.unzipFile(this, "water_temp4/watertemp.zip");
         final URL timeElevURL = TestData.url(this, "water_temp4");
-//
-
 
         // now start the test
         AbstractGridFormat format = TestUtils.getFormat(timeElevURL);

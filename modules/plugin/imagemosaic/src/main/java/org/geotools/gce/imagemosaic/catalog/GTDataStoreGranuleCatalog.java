@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -56,12 +55,12 @@ import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.oracle.OracleDatastoreWrapper;
 import org.geotools.gce.imagemosaic.catalog.postgis.PostgisDatastoreWrapper;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.DefaultProgressListener;
 import org.geotools.util.Utilities;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
@@ -94,8 +93,6 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
     Set<String> typeNames = new HashSet<String>();
 
     private String geometryPropertyName;
-
-    private Map<String, ReferencedEnvelope> bounds = new ConcurrentHashMap<String, ReferencedEnvelope>();
 
     PathType pathType;
 
@@ -182,17 +179,47 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 String[] typeNames = tileIndexStore.getTypeNames();
                 if (typeNames != null) {
                     for (String tn : typeNames) {
-                        this.typeNames.add(tn);
+                        if (isValidMosaicSchema(tn)) {
+                            this.typeNames.add(tn);
+                        }
                     }
                 }
             } else if (typeName != null) {
+                checkMosaicSchema(typeName);
                 addTypeName(typeName, false);
+            } else {
+                // pick the first suitable type name
+                String[] typeNames = tileIndexStore.getTypeNames();
+                if (typeNames != null) {
+                    for (String tn : typeNames) {
+                        if (isValidMosaicSchema(tn)) {
+                            addTypeName(tn, false);
+                            break;
+                        }
+                    }
+                }
             }
+            
+            // if we got here and there is not typename in the list, we could not find one
+            if(this.typeNames.size() == 0) {
+                throw new IllegalArgumentException("Could not find a suitable mosaic type "
+                        + "(with a footprint and a location attribute named "
+                        + getLocationAttributeName() + " in the store");
+            }
+
             if (this.typeNames.size() > 0) {
                 extractBasicProperties(typeNames.iterator().next());
+            } else if (typeName != null && typeName.contains(",")) {
+                String[] typeNames = typeName.split(",");
+                for (String tn : typeNames) {
+                    extractBasicProperties(tn);
+                }
+            } else if (typeName != null) {
+                extractBasicProperties(typeName);
             } else {
                 extractBasicProperties(typeName);
             }
+
         } catch (Throwable e) {
             try {
                 if (tileIndexStore != null)
@@ -210,6 +237,68 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     /**
+     * Returns true if the type is usable as a mosaic index, that is, it has a geometry and the
+     * expected location property
+     */
+    private boolean isValidMosaicSchema(String typeName) throws IOException {
+        SimpleFeatureType schema = tileIndexStore.getSchema(typeName);
+
+        return isValidMosaicSchema(schema);
+    }
+
+    /**
+     * Returns true if the type is usable as a mosaic index, that is, it has a geometry and the
+     * expected location property
+     */
+    private boolean isValidMosaicSchema(SimpleFeatureType schema) {
+        // does it have a geometry?
+        if (schema.getGeometryDescriptor() == null) {
+            return false;
+        }
+
+        // does it have the location property
+        String locationName = getLocationAttributeName();
+        AttributeDescriptor location = schema.getDescriptor(locationName);
+        return location != null
+                && CharSequence.class.isAssignableFrom(location.getType().getBinding());
+    }
+
+    private String getLocationAttributeName() {
+        if (locationAttribute == null) {
+            return "location";
+        } else {
+            return locationAttribute;
+        }
+    }
+
+    /**
+     * Checks the provided schema, and throws an exception if not valid
+     * 
+     * @param schema
+     * @throws IOException
+     */
+    private void checkMosaicSchema(String typeName) throws IOException {
+        SimpleFeatureType schema = tileIndexStore.getSchema(typeName);
+        if (schema == null) {
+            throw new IllegalArgumentException("Could not find typename " + schema);
+        } else {
+            checkMosaicSchema(schema);
+        }
+    }
+
+    /**
+     * Checks the provided schema, and throws an exception if not valid
+     * 
+     * @param schema
+     */
+    private void checkMosaicSchema(SimpleFeatureType schema) {
+        if(!isValidMosaicSchema(schema)) {
+            throw new IllegalArgumentException("Invalid mosaic schema " + schema + ", "
+                    + "it should have a geometry and a location property of name " + locationAttribute);
+        }
+    }
+
+    /**
      * If the underlying store has been disposed we throw an {@link IllegalStateException}.
      * <p>
      * We need to arrive here with at least a read lock!
@@ -223,12 +312,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     private void extractBasicProperties(String typeName) throws IOException {
-        if (typeName != null && typeName.contains(",")) {
-            String[] typeNames = typeName.split(",");
-            for (String tn : typeNames) {
-                extractBasicProperties(tn);
-            }
-        } else {
+        
             if (typeName == null) {
                 final String[] typeNames = tileIndexStore.getTypeNames();
                 if (typeNames == null || typeNames.length <= 0)
@@ -281,7 +365,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 throw new IOException(
                         "BBOXFilterExtractor::extractBasicProperties(): unable to get a schema from the featureSource");
             }
-        }
+
     }
 
     private final ReadWriteLock rwLock = new ReentrantReadWriteLock(true);
@@ -328,9 +412,6 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 final int retVal = fs.getCount(query);
                 fs.removeFeatures(query.getFilter());
 
-                // update bounds
-                bounds.put(typeName, tileIndexStore.getFeatureSource(typeName).getBounds());
-
                 return retVal;
 
             } catch (Throwable e) {
@@ -370,11 +451,6 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 fids.add(ff.featureId(f.getID()));
             }
             store.addFeatures(featureCollection);
-
-            // update bounds
-            if (bounds.containsKey(typeName)) {
-                bounds.remove(typeName);
-            }
 
         } finally {
             lock.unlock();
@@ -485,25 +561,17 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
     @Override
     public BoundingBox getBounds(final String typeName) {
         final Lock lock = rwLock.readLock();
-        ReferencedEnvelope bound = null;
         try {
             lock.lock();
             checkStore();
-            if (bounds.containsKey(typeName)) {
-                bound = bounds.get(typeName);
-            } else {
-                bound = this.tileIndexStore.getFeatureSource(typeName).getBounds();
-                bounds.put(typeName, bound);
-            }
+            return this.tileIndexStore.getFeatureSource(typeName).getBounds();
         } catch (IOException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
-            bounds.remove(typeName);
         } finally {
             lock.unlock();
         }
 
-        // return bounds;
-        return bound;
+        return null;
     }
 
     public void createType(String namespace, String typeName, String typeSpec) throws IOException,
@@ -518,6 +586,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
 
             final SimpleFeatureType featureType = DataUtilities.createType(namespace, typeName,
                     typeSpec);
+            checkMosaicSchema(featureType);
             tileIndexStore.createSchema(featureType);
             type = featureType.getTypeName();
             if (typeName != null) {
@@ -546,13 +615,14 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
     @Override
     public String[] getTypeNames() {
         if (this.typeNames != null && !this.typeNames.isEmpty()) {
-            return (String[]) this.typeNames.toArray(new String[] {});
+            return this.typeNames.toArray(new String[] {});
         }
         return null;
     }
 
     public void createType(SimpleFeatureType featureType) throws IOException {
         Utilities.ensureNonNull("featureType", featureType);
+        checkMosaicSchema(featureType);
         final Lock lock = rwLock.writeLock();
         String typeName = null;
         try {
@@ -598,6 +668,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             checkStore();
             final SimpleFeatureType featureType = DataUtilities
                     .createType(identification, typeSpec);
+            checkMosaicSchema(featureType);
             tileIndexStore.createSchema(featureType);
             typeName = featureType.getTypeName();
             if (typeName != null) {

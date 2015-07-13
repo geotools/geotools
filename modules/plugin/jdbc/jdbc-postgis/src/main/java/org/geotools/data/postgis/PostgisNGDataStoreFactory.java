@@ -86,10 +86,10 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
             "When enabled, operations such as map rendering will pass a hint that will enable the usage of ST_Simplify", false, Boolean.TRUE);
     
     /**
-     * Enables usage of ST_Envelope to wrap geometries on Overlap filters, to speed up queries (GEOT-5167)
+     * Enables usage of ST_Envelope to wrap geometries on non disjoint spatial filters, to speed up queries against large geometries (GEOT-5167)
      */
-    public static final Param ENCODE_BBOX_FILTER_USING_ENVELOPE = new Param("Wrap geometries with Envelope function in Overlap filters", Boolean.class, 
-            "When enabled, ST_Envelope is wrapper around geometries in overlap queries, to speed-up some edge use cases", false, Boolean.FALSE);
+    public static final Param LARGE_GEOMETRIES_OPTIMIZATION = new Param("large geometries optimization", Boolean.class, 
+            "Wrap geometry attribute with ST_Envelope for all non disjoint spatial filters to speed up queries against large geometries", false, Boolean.FALSE);
     
     
     @Override
@@ -164,7 +164,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         dialect.setSimplifyEnabled(simplify == null || simplify);
         
         // encode BBOX filter with wrapping ST_Envelope (GEOT-5167)
-        Boolean encodeBBOXAsEnvelope = (Boolean) ENCODE_BBOX_FILTER_USING_ENVELOPE.lookUp(params);
+        Boolean encodeBBOXAsEnvelope = (Boolean) LARGE_GEOMETRIES_OPTIMIZATION.lookUp(params);
         dialect.setEncodeBBOXFilterAsEnvelope(encodeBBOXAsEnvelope != null
                 && Boolean.TRUE.equals(encodeBBOXAsEnvelope));
 
@@ -185,7 +185,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
         parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
         parameters.put(SIMPLIFY.key, SIMPLIFY);
-        parameters.put(ENCODE_BBOX_FILTER_USING_ENVELOPE.key, ENCODE_BBOX_FILTER_USING_ENVELOPE);
+        parameters.put(LARGE_GEOMETRIES_OPTIMIZATION.key, LARGE_GEOMETRIES_OPTIMIZATION);
         parameters.put(CREATE_DB_IF_MISSING.key, CREATE_DB_IF_MISSING);
         parameters.put(CREATE_PARAMS.key, CREATE_PARAMS);
     }

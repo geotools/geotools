@@ -159,7 +159,7 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
             store.dispose();
         }
         
-        params.put(PostgisNGDataStoreFactory.ENCODE_BBOX_FILTER_USING_ENVELOPE.key, Boolean.TRUE);
+        params.put(PostgisNGDataStoreFactory.LARGE_GEOMETRIES_OPTIMIZATION.key, Boolean.TRUE);
         
         store = factory.createDataStore(params);
         assertNotNull(store);

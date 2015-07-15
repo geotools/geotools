@@ -136,11 +136,22 @@ public class GMLEncodingUtils {
                         .getUserData().get(XSDElementDeclaration.class);
                 if (e != null) {
                     type = e.getTypeDefinition();
-                } else {
-                    throw new RuntimeException("Could not find type for " + qualifiedTypeName
-                            + " in schema");
+                } else if (element != null) {
+                    // as a last resort, use type definition from element declaration
+                    XSDTypeDefinition elementTypeDef = element.getTypeDefinition();
+                    QName qualifiedElementTypeName = new QName(
+                            elementTypeDef.getTargetNamespace(),
+                            elementTypeDef.getName());
+                    if (qualifiedTypeName.equals(qualifiedElementTypeName)) {
+                        type = elementTypeDef;
+                    }
                 }
             }
+        }
+
+        if (type == null) {
+            throw new RuntimeException("Could not find type for " + qualifiedTypeName
+                    + " in schema");
         }
 
         List particles = Schemas.getChildElementParticles(type, true);

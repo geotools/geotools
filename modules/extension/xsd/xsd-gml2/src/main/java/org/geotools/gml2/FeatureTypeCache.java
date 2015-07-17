@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,7 @@
  */
 package org.geotools.gml2;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
@@ -29,28 +29,19 @@ import org.opengis.feature.type.Name;
  * @source $URL$
  */
 public class FeatureTypeCache {
-    HashMap<Name, FeatureType> map = new HashMap<Name, FeatureType>();
+    ConcurrentHashMap<Name, FeatureType> map = new ConcurrentHashMap<Name, FeatureType>();
 
     public FeatureType get(Name name) {
-        synchronized (this) {
-            return map.get(name);
-        }
+    	return map.get(name);
     }
 
     public void put(FeatureType type) {
-        synchronized (this) {
-            if (map.get(type.getName()) != null) {
-                FeatureType other = map.get(type.getName());
-
-                if (!other.equals(type)) {
-                    String msg = "Type with same name already exists in cache.";
-                    throw new IllegalArgumentException(msg);
-                }
-
-                return;
-            }
-
-            map.put(type.getName(), type);
-        }
+    	FeatureType other = map.putIfAbsent(type.getName(), type);
+    	if(other != null) {
+    	    if(!other.equals(type)) {
+    	        String msg = "Type with same name already exists in cache.";
+                throw new IllegalArgumentException(msg);
+    	    }
+    	}
     }
 }

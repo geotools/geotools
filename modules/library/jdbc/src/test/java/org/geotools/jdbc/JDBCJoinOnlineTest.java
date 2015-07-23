@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,10 @@ import org.geotools.data.Join.Type;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.store.ContentDataStore;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
@@ -40,6 +43,24 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
     public void testSimpleJoin() throws Exception {
         doTestSimpleJoin(false);
         doTestSimpleJoin(true);
+    }
+
+    public void testJoinSchema() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        Query q = new Query(tname("ft1"));
+        Join join = new Join(tname("ftjoin"),
+                ff.equal(ff.property(aname("stringProperty")), ff.property(aname("name")), true));
+        join.setAlias("b");
+        q.getJoins().add(join);
+
+        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        SimpleFeatureType schema = features.getSchema();
+        AttributeDescriptor ad = schema.getDescriptor("b");
+        assertNotNull(ad);
+        assertEquals(SimpleFeature.class, ad.getType().getBinding());
+        SimpleFeatureType joinedSchema = (SimpleFeatureType) ad.getUserData()
+                .get(ContentDataStore.JOINED_FEATURE_TYPE);
+        assertEquals(dataStore.getSchema(tname("ftjoin")), joinedSchema);
     }
 
     void doTestSimpleJoin(boolean exposePrimaryKeys) throws Exception {

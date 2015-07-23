@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -104,7 +104,16 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
             tb.init(this.featureType);
 
             for (Join join : query.getJoins()) {
+                try {
+                    String typeName = join.getTypeName();
+                    tb.userData(ContentDataStore.JOINED_FEATURE_TYPE,
+                            featureSource.getDataStore().getSchema(typeName));
+                } catch (Exception e) {
+                    LOGGER.log(Level.WARNING, "Failed to retrieve the joined feature type");
+                }
+
                 tb.add(join.attributeName(), SimpleFeature.class);
+
             }
             this.featureType = tb.buildFeatureType();
         }

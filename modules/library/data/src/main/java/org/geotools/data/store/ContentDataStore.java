@@ -102,6 +102,12 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  */
 public abstract class ContentDataStore implements DataStore {
 
+    /**
+     * When joining feature types, the UserData of the joined attribute descriptors will contain
+     * their full feature type under this key
+     */
+    public static final String JOINED_FEATURE_TYPE = "JoinedFeatureType";
+
     /** Flag writer for adding new content */
     protected final static int WRITER_ADD = 0x01<<0;
     /** Flag writer for updating content in place */

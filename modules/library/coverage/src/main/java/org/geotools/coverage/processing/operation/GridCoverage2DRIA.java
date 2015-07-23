@@ -540,17 +540,14 @@ public class GridCoverage2DRIA extends GeometricOpImage {
     /**
      * Warps a rectangle.
      * 
-     * Copied and adapted from WarpGeneralOpImage
+     * Offers Improved performance with support for no data and region of interest.
      */
     @Override
     protected void computeRect(PlanarImage[] sources, WritableRaster dest, Rectangle destRect) {
-        // Retrieve format tags.
-        RasterFormatTag[] formatTags = getFormatTags();
-
-        RasterAccessor d = new RasterAccessor(dest, destRect, formatTags[1], getColorModel());
+        RasterFormatTag formatTag = getFormatTags()[1];
+        RasterAccessor d = new RasterAccessor(dest, destRect, formatTag, getColorModel());
 
         ROI roiTile = null;
-
         RandomIter roiIter = null;
 
         boolean roiContainsTile = false;
@@ -581,7 +578,6 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             }
             srcRectExpanded = new Rectangle((int)minX, (int)minY, (int)(maxX - minX) + 1, (int)(maxY - minY) + 1);
             
-            
             // The tile dimension is extended for avoiding border errors
             srcRectExpanded.setRect(
                     srcRectExpanded.getMinX() - interp.getLeftPadding(), 
@@ -611,30 +607,35 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             return;
         }
 
-        switch (d.getDataType()) {
-        case DataBuffer.TYPE_BYTE:
-            computeRectByte(sources[0], d, roiIter, roiContainsTile);
-            break;
-        case DataBuffer.TYPE_USHORT:
-            computeRectUShort(sources[0], d, roiIter, roiContainsTile);
-            break;
-        case DataBuffer.TYPE_SHORT:
-            computeRectShort(sources[0], d, roiIter, roiContainsTile);
-            break;
-        case DataBuffer.TYPE_INT:
-            computeRectInt(sources[0], d, roiIter, roiContainsTile);
-            break;
-        case DataBuffer.TYPE_FLOAT:
-            computeRectFloat(sources[0], d, roiIter, roiContainsTile);
-            break;
-        case DataBuffer.TYPE_DOUBLE:
-            computeRectDouble(sources[0], d, roiIter, roiContainsTile);
-            break;
-        }
+        computeRect(sources[0], d, roiIter, roiContainsTile);
 
         if (d.isDataCopy()) {
             d.clampDataArrays();
             d.copyDataToRaster();
+        }
+    }
+
+    private void computeRect(PlanarImage source, RasterAccessor d, RandomIter roiIter,
+            boolean roiContainsTile) {
+        switch (d.getDataType()) {
+        case DataBuffer.TYPE_BYTE:
+            computeRectByte(source, d, roiIter, roiContainsTile);
+            break;
+        case DataBuffer.TYPE_USHORT:
+            computeRectUShort(source, d, roiIter, roiContainsTile);
+            break;
+        case DataBuffer.TYPE_SHORT:
+            computeRectShort(source, d, roiIter, roiContainsTile);
+            break;
+        case DataBuffer.TYPE_INT:
+            computeRectInt(source, d, roiIter, roiContainsTile);
+            break;
+        case DataBuffer.TYPE_FLOAT:
+            computeRectFloat(source, d, roiIter, roiContainsTile);
+            break;
+        case DataBuffer.TYPE_DOUBLE:
+            computeRectDouble(source, d, roiIter, roiContainsTile);
+            break;
         }
     }
 

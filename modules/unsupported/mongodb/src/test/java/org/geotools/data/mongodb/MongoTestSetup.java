@@ -18,6 +18,8 @@
 package org.geotools.data.mongodb;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 
@@ -29,6 +31,8 @@ public abstract class MongoTestSetup {
     public abstract void setUp(DB db);
 
     protected abstract void setUpDataStore(MongoDataStore dataStore);
+
+    protected abstract Date getDateProperty(int featureIdx);
 
     public MongoDataStore createDataStore(Properties fixture) throws IOException {
         MongoDataStore dataStore = new MongoDataStoreFactory().createDataStore((Map)fixture);
@@ -43,4 +47,17 @@ public abstract class MongoTestSetup {
         }
         return list;
     }
+
+    /**
+     * @param dateAsString ISO-8601 formatted date
+     * @return the parsed date
+     */
+    protected static Date parseDate(String dateAsString) {
+        try {
+            return FilterToMongo.ISO8601_SDF.parse(dateAsString);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Failed to parse string as ISO-8601 formatted date", e);
+        }
+    }
+
 }

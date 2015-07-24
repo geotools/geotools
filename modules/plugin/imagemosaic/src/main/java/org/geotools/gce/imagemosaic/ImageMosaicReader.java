@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)5
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -1102,8 +1102,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     }
 
     @Override
-    public GranuleSource getGranules(final String coverageName, final boolean readOnly) throws IOException,
+    public GranuleSource getGranules(String coverageName, final boolean readOnly)
+            throws IOException,
             UnsupportedOperationException {
+        if (coverageName == null) {
+            coverageName = defaultName;
+        }
         RasterManager manager = getRasterManager(coverageName);
         if (manager == null) {
             // Consider creating a new GranuleStore
@@ -1259,6 +1263,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         }
         // Harvesting of the input source
         resource.harvest(defaultCoverage, source, hints, result, this);
+        String coverage = defaultCoverage != null ? defaultCoverage : this.defaultName;
+        // rebuild the raster manager for this coverage, as the spatial and dimensional domains
+        // have probably changed
+        RasterManager rasterManager = rasterManagers.get(coverage);
+        rasterManager.initialize(true);
 
         return result;
     }

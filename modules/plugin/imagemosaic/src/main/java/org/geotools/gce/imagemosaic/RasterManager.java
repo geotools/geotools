@@ -202,7 +202,7 @@ public class RasterManager {
             assert coverageCRS2D.getCoordinateSystem().getDimension() == 2;
             if (coverageCRS.getCoordinateSystem().getDimension() != 2) {
                 final MathTransform transform = CRS.findMathTransform(coverageCRS,
-                        (CoordinateReferenceSystem) coverageCRS2D);
+                        coverageCRS2D);
                 final GeneralEnvelope bbox = CRS.transform(transform, coverageEnvelope);
                 bbox.setCoordinateReferenceSystem(coverageCRS2D);
                 coverageBBox = new ReferencedEnvelope(bbox);
@@ -1328,11 +1328,11 @@ public class RasterManager {
                 delete = !checkForReferences(coverageName);
                 
             }
-            AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(rasterPath, excludeMosaicHints);
+            AbstractGridFormat format = GridFormatFinder.findFormat(rasterPath, excludeMosaicHints);
             if (format != null) {
                 GridCoverage2DReader coverageReader = null;
                 try {
-                    coverageReader = (GridCoverage2DReader) format.getReader(rasterPath, hints);
+                    coverageReader = format.getReader(rasterPath, hints);
                     if (coverageReader instanceof StructuredGridCoverage2DReader) {
                         StructuredGridCoverage2DReader reader = (StructuredGridCoverage2DReader) coverageReader;
                         if (delete) {
@@ -1388,7 +1388,7 @@ public class RasterManager {
                 return granuleSource;
             } else {
                 if (granuleStore == null) {
-                    granuleStore = new GranuleCatalogStore(granuleCatalog, typeName, hints);
+                    granuleStore = new GranuleCatalogStore(this, granuleCatalog, typeName, hints);
                 }
                 return granuleStore;
             }
@@ -1430,7 +1430,7 @@ public class RasterManager {
         }
     }
 
-    void initialize(final boolean checkDomains) throws IOException {
+    public void initialize(final boolean checkDomains) throws IOException {
         final BoundingBox bounds = granuleCatalog.getBounds(typeName);
         if (checkDomains) {
             initDomains(configuration);
@@ -1464,7 +1464,7 @@ public class RasterManager {
 
         try {
             spatialDomainManager = new SpatialDomainManager(originalEnvelope,
-                    (GridEnvelope2D) originalGridRange, crs, raster2Model, overviewsController);
+                    originalGridRange, crs, raster2Model, overviewsController);
         } catch (TransformException e) {
             throw new IOException("Exception occurred while initializing the SpatialDomainManager", e);
         } catch (FactoryException e) {

@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -94,8 +93,6 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
     Set<String> typeNames = new HashSet<String>();
 
     private String geometryPropertyName;
-
-    private Map<String, ReferencedEnvelope> bounds = new ConcurrentHashMap<String, ReferencedEnvelope>();
 
     PathType pathType;
 
@@ -328,9 +325,6 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 final int retVal = fs.getCount(query);
                 fs.removeFeatures(query.getFilter());
 
-                // update bounds
-                bounds.put(typeName, tileIndexStore.getFeatureSource(typeName).getBounds());
-
                 return retVal;
 
             } catch (Throwable e) {
@@ -370,12 +364,6 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 fids.add(ff.featureId(f.getID()));
             }
             store.addFeatures(featureCollection);
-
-            // update bounds
-            if (bounds.containsKey(typeName)) {
-                bounds.remove(typeName);
-            }
-
         } finally {
             lock.unlock();
 
@@ -489,15 +477,9 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
         try {
             lock.lock();
             checkStore();
-            if (bounds.containsKey(typeName)) {
-                bound = bounds.get(typeName);
-            } else {
-                bound = this.tileIndexStore.getFeatureSource(typeName).getBounds();
-                bounds.put(typeName, bound);
-            }
+            bound = this.tileIndexStore.getFeatureSource(typeName).getBounds();
         } catch (IOException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
-            bounds.remove(typeName);
         } finally {
             lock.unlock();
         }
@@ -546,7 +528,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
     @Override
     public String[] getTypeNames() {
         if (this.typeNames != null && !this.typeNames.isEmpty()) {
-            return (String[]) this.typeNames.toArray(new String[] {});
+            return this.typeNames.toArray(new String[] {});
         }
         return null;
     }

@@ -16,11 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
-import it.geosolutions.imageio.pam.PAMParser;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -58,9 +53,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -74,6 +66,7 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
+import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
@@ -83,11 +76,13 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
+import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
@@ -108,6 +103,15 @@ import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.datum.PixelInCell;
+import org.opengis.referencing.operation.MathTransform;
+
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMParser;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import junit.framework.JUnit4TestAdapter;
+import junit.textui.TestRunner;
+
 
 /**
  * Testing {@link ImageMosaicReader}.
@@ -2170,6 +2174,74 @@ public class ImageMosaicReaderTest extends Assert{
         } finally {
             reader.dispose();
         }
+    }
+
+    @Test
+    public void testHarvestSpatial() throws Exception {
+        File source = DataUtilities.urlToFile(rgbURL);
+        File testDataDir = TestData.file(this, ".");
+        File directory1 = new File(testDataDir, "rgbHarvest1");
+        File directory2 = new File(testDataDir, "rgbHarvest2");
+        if (directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        FileUtils.copyDirectory(source, directory1);
+        // remove all mosaic related files
+        for (File file : FileUtils.listFiles(directory1, new RegexFileFilter("rgb.*"), null)) {
+            assertTrue(file.delete());
+        }
+        // move all files except global_mosaic_0 to the second dir
+        directory2.mkdirs();
+        for (File file : FileUtils.listFiles(directory1,
+                new RegexFileFilter("global_mosaic_[^0].*"), null)) {
+            assertTrue(file.renameTo(new File(directory2, file.getName())));
+        }
+
+        // crate a mosaic
+        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
+        ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        GeneralEnvelope singleGranuleEnvelope = reader.getOriginalEnvelope();
+        // System.out.println(singleGranuleEnvelope);
+
+        // now push back all the files, and harvest them
+        for (File file : directory2.listFiles()) {
+            assertTrue(file.renameTo(new File(directory1, file.getName())));
+        }
+        reader.harvest(null, directory1, null);
+
+        // the envelope should have been updated
+        GeneralEnvelope fullEnvelope = reader.getOriginalEnvelope();
+        assertTrue(fullEnvelope.contains(singleGranuleEnvelope, true));
+        assertTrue(fullEnvelope.getSpan(0) > singleGranuleEnvelope.getSpan(0));
+        assertTrue(fullEnvelope.getSpan(1) > singleGranuleEnvelope.getSpan(1));
+        
+        // make a request in a bbox that's outside of the original envelope
+        MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        Envelope env = new Envelope2D(DefaultGeographicCRS.WGS84, 10, 40, 15, 45);
+        GridEnvelope2D rasterEnvelope = new GridEnvelope2D(
+                new Envelope2D(CRS.transform(mt.inverse(), env)), PixelInCell.CELL_CORNER);
+        GridGeometry2D gg = new GridGeometry2D(rasterEnvelope, env);
+        final ParameterValue<GridGeometry2D> ggParameter = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        ggParameter.setValue(gg);
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { ggParameter });
+        assertNotNull(coverage);
+        coverage.dispose(true);
+
+        // remove all the granules on the east side
+        GranuleStore store = (GranuleStore) reader.getGranules(null, false);
+        store.removeGranules(ECQL.toFilter("location = 'global_mosaic_19.png' "
+                + "OR location = 'global_mosaic_14.png' " + "OR location = 'global_mosaic_9.png' "
+                + "OR location = 'global_mosaic_4.png'"));
+
+        GeneralEnvelope reducedEnvelope = reader.getOriginalEnvelope();
+        assertTrue(fullEnvelope.contains(reducedEnvelope, true));
+        assertTrue(reducedEnvelope.contains(singleGranuleEnvelope, true));
+        assertTrue(fullEnvelope.getSpan(0) > reducedEnvelope.getSpan(0));
+        assertEquals(fullEnvelope.getSpan(1), reducedEnvelope.getSpan(1), 0d);
+
+        reader.dispose();
     }
 
     @Test

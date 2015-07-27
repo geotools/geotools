@@ -49,25 +49,26 @@ Connect using DataStore finder:
 Advanced
 ^^^^^^^^
 
-+----------------------------------+------------------------------------------------+
-| Parameter                        | Description                                    |
-+==================================+================================================+
-| "loose bbox"                     | Flag controlling loose bbox comparisons,       |
-|                                  | default is true                                |
-+----------------------------------+------------------------------------------------+
-| "preparedStatements"             | Flag controlling wether prepared statements    |
-|                                  | are used, default is false                     |
-+----------------------------------+------------------------------------------------+
-| "large geometries optimization"  | Flag controlling wether not disjoint spatial   |
-|                                  | queries should have the the geometry attribute |
-|                                  | wrapped by the ST_Envelope function, to        |
-|                                  | optimize the query when a feature has very     |
-|                                  | large geometries (this is needed due to a      |
-|                                  | PostGIS bug in query planner)                  |
-+----------------------------------+------------------------------------------------+
++----------------------+------------------------------------------------+
+| Parameter            | Description                                    |
++======================+================================================+
+| "loose bbox"         | Flag controlling loose bbox comparisons,       |
+|                      | default is true                                |
++----------------------+------------------------------------------------+
+| "preparedStatements" | Flag controlling wether prepared statements    |
+|                      | are used, default is false                     |
++----------------------+------------------------------------------------+
 
 Example use::
   
   params.put(PostgisDataStoreFactory.LOOSEBBOX, true );
   params.put(PostgisDataStoreFactory.PREPARED_STATEMENTS, true );
-  params.put(PostgisDataStoreFactory.LARGE_GEOMETRIES_OPTIMIZATION, true );
+  
+Configuration Flags
+^^^^^^^^^^^^^^^^^^^
+
+By default, an optimization on spatial queries is applied, to avoid a bug with PostGIS query planner with big geometries and small bboxes.
+
+This optimization can be disabled using a system-wide default from the command line::
+  
+  java -Dorg.geotools.data.postgis.largeGeometriesOptimize=false

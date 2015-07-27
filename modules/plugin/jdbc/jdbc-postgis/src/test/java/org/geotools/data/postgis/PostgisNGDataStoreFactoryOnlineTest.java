@@ -152,24 +152,29 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         JDBCDataStore store = factory.createDataStore(params);
         assertNotNull(store);
         try {
-            // check dialect
             PostGISDialect dialect = (PostGISDialect) store.getSQLDialect();
-            assertFalse(dialect.isEncodeBBOXFilterAsEnvelope());
+            assertTrue(dialect.isEncodeBBOXFilterAsEnvelope());
         } finally {
             store.dispose();
         }
-        
-        params.put(PostgisNGDataStoreFactory.LARGE_GEOMETRIES_OPTIMIZATION.key, Boolean.TRUE);
+        System.setProperty("org.geotools.data.postgis.largeGeometriesOptimize", "false");
         
         store = factory.createDataStore(params);
         assertNotNull(store);
         try {
             // check dialect
             PostGISDialect dialect = (PostGISDialect) store.getSQLDialect();
-            assertTrue(dialect.isEncodeBBOXFilterAsEnvelope());
+            assertFalse(dialect.isEncodeBBOXFilterAsEnvelope());
         } finally {
             store.dispose();
         }
     }
+
+    @Override
+    protected void tearDownInternal() throws Exception {
+        System.clearProperty("org.geotools.data.postgis.largeGeometriesOptimize");
+    }
+    
+    
 
 }

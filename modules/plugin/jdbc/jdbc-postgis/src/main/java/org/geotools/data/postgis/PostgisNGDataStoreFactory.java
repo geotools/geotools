@@ -85,13 +85,6 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param SIMPLIFY = new Param("Support on the fly geometry simplification", Boolean.class, 
             "When enabled, operations such as map rendering will pass a hint that will enable the usage of ST_Simplify", false, Boolean.TRUE);
     
-    /**
-     * Enables usage of ST_Envelope to wrap geometries on non disjoint spatial filters, to speed up queries against large geometries (GEOT-5167)
-     */
-    public static final Param LARGE_GEOMETRIES_OPTIMIZATION = new Param("large geometries optimization", Boolean.class, 
-            "Wrap geometry attribute with ST_Envelope for all non disjoint spatial filters to speed up queries against large geometries", false, Boolean.FALSE);
-    
-    
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
         return new PostGISDialect(dataStore);
@@ -164,7 +157,11 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         dialect.setSimplifyEnabled(simplify == null || simplify);
         
         // encode BBOX filter with wrapping ST_Envelope (GEOT-5167)
-        Boolean encodeBBOXAsEnvelope = (Boolean) LARGE_GEOMETRIES_OPTIMIZATION.lookUp(params);
+        Boolean encodeBBOXAsEnvelope = true;
+        String largeGeometriesOptimized = System.getProperty("org.geotools.data.postgis.largeGeometriesOptimize");
+        if(largeGeometriesOptimized != null) {
+            encodeBBOXAsEnvelope = largeGeometriesOptimized.toLowerCase().equals("true");
+        }
         dialect.setEncodeBBOXFilterAsEnvelope(encodeBBOXAsEnvelope != null
                 && Boolean.TRUE.equals(encodeBBOXAsEnvelope));
 
@@ -185,7 +182,6 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
         parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
         parameters.put(SIMPLIFY.key, SIMPLIFY);
-        parameters.put(LARGE_GEOMETRIES_OPTIMIZATION.key, LARGE_GEOMETRIES_OPTIMIZATION);
         parameters.put(CREATE_DB_IF_MISSING.key, CREATE_DB_IF_MISSING);
         parameters.put(CREATE_PARAMS.key, CREATE_PARAMS);
     }

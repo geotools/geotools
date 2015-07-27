@@ -63,3 +63,12 @@ Example use::
   
   params.put(PostgisDataStoreFactory.LOOSEBBOX, true );
   params.put(PostgisDataStoreFactory.PREPARED_STATEMENTS, true );
+  
+Configuration Flags
+^^^^^^^^^^^^^^^^^^^
+
+By default, an optimization on spatial queries is applied, to avoid a bug with PostGIS query planner with big geometries and small bboxes.
+
+This optimization can be disabled using a system-wide default from the command line::
+  
+  java -Dorg.geotools.data.postgis.largeGeometriesOptimize=false

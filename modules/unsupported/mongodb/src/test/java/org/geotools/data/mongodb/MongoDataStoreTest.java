@@ -18,6 +18,7 @@
 package org.geotools.data.mongodb;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.geotools.data.FeatureWriter;
@@ -25,8 +26,6 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.simple.SimpleFeatureWriter;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -94,6 +93,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         f.setAttribute("properties.intProperty", 3);
         f.setAttribute("properties.doubleProperty", 3.3);
         f.setAttribute("properties.stringProperty", "three");
+        f.setAttribute("properties.dateProperty", MongoTestSetup.parseDate("2015-01-24T14:28:16.000+01:00"));
         w.write();
         w.close();
     }
@@ -106,6 +106,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         tb.add("intProperty", Integer.class);
         tb.add("doubleProperty", Double.class);
         tb.add("stringProperty", String.class);
+        tb.add("dateProperty", Date.class);
 
         List<String> typeNames = Arrays.asList(dataStore.getTypeNames());
         assertFalse(typeNames.contains("ft2"));

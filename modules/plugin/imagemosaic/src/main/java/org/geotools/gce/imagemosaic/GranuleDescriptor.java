@@ -16,12 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.imageio.maskband.DatasetLayout;
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMParser;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.range.NoDataContainer;
-
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -84,11 +78,18 @@ import org.jaitools.media.jai.vectorbinarize.VectorBinarizeDescriptor;
 import org.jaitools.media.jai.vectorbinarize.VectorBinarizeRIF;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Geometry;
+
+import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMParser;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import it.geosolutions.jaiext.range.NoDataContainer;
 
 /**
  * A granuleDescriptor is a single piece of the mosaic, with its own overviews and
@@ -309,7 +310,7 @@ public class GranuleDescriptor {
         /** {@link MaskOverviewProvider} used for handling external ROIs and Overviews*/
         private MaskOverviewProvider ovrProvider;
 
-	private void init(final BoundingBox granuleBBOX, final URL granuleUrl,
+    protected void init(final BoundingBox granuleBBOX, final URL granuleUrl,
 			final ImageReaderSpi suggestedSPI, final MultiLevelROI roiProvider,
 			final boolean heterogeneousGranules, final boolean handleArtifactsFiltering, final Hints hints) {
 		this.granuleBBOX = ReferencedEnvelope.reference(granuleBBOX);
@@ -321,7 +322,7 @@ public class GranuleDescriptor {
 
                 // When looking for formats which may parse this file, make sure to exclude the ImageMosaicFormat as return
                 File granuleFile = DataUtilities.urlToFile(granuleUrl);
-                AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(granuleFile,
+                AbstractGridFormat format = GridFormatFinder.findFormat(granuleFile,
                         EXCLUDE_MOSAIC);
                 AbstractGridCoverage2DReader gcReader = format.getReader(granuleFile);
                 // Getting Dataset Layout
@@ -618,7 +619,7 @@ public class GranuleDescriptor {
 			final Hints hints) {
 		// Get location and envelope of the image to load.
 		final String granuleLocation = (String) feature.getAttribute(locationAttribute);
-		final ReferencedEnvelope granuleBBox = ReferencedEnvelope.reference(feature.getBounds());
+        final ReferencedEnvelope granuleBBox = getFeatureBounds(feature);
 		
 
 		// If the granuleDescriptor is not there, dump a message and continue
@@ -635,6 +636,23 @@ public class GranuleDescriptor {
 		
 		
 	}
+
+    /**
+     * Extracts the referenced envelope of the default geometry (used to be feature.getBounds, but
+     * that method returns the bounds of all geometries in the feature)
+     * 
+     * @param feature
+     * @return
+     */
+    private ReferencedEnvelope getFeatureBounds(final SimpleFeature feature) {
+        Geometry g = (Geometry) feature.getDefaultGeometry();
+        if (g == null) {
+            return null;
+        }
+        CoordinateReferenceSystem crs = feature.getFeatureType().getCoordinateReferenceSystem();
+        ReferencedEnvelope granuleBBox = new ReferencedEnvelope(g.getEnvelopeInternal(), crs);
+        return granuleBBox;
+    }
 
     /**
 	 * Load a specified a raster as a portion of the granule describe by this {@link GranuleDescriptor}.
@@ -978,18 +996,18 @@ public class GranuleDescriptor {
 				if (hints != null && hints.containsKey(JAI.KEY_TILE_CACHE)){
 				    final Object cache = hints.get(JAI.KEY_TILE_CACHE);
 				    if (cache != null && cache instanceof TileCache)
-				        localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, (TileCache) cache));
+				        localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, cache));
 				}
 				if (hints != null && hints.containsKey(JAI.KEY_TILE_SCHEDULER)){
                                     final Object scheduler = hints.get(JAI.KEY_TILE_SCHEDULER);
                                     if (scheduler != null && scheduler instanceof TileScheduler)
-                                        localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, (TileScheduler) scheduler));
+                                        localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, scheduler));
                                 }
 				boolean addBorderExtender = true;
                 if (hints != null && hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
                     final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
                     if (extender != null && extender instanceof BorderExtender) {
-                        localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, (BorderExtender) extender));
+                        localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, extender));
                         addBorderExtender = false;
                     }
                 }

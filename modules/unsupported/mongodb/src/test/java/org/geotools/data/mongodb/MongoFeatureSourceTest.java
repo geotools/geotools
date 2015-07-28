@@ -26,7 +26,10 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsGreaterThan;
+import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.spatial.BBOX;
 
@@ -139,4 +142,118 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         }
     }
 
+    public void testDateGreaterComparison() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyIsGreaterThan gt = ff.greater(
+                ff.property("properties.dateProperty"),
+                ff.literal("2015-01-01T11:30:00.000Z"));
+
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", gt);
+
+        assertEquals(1, source.getCount(q));
+        assertEquals(new ReferencedEnvelope(1d,1d,1d,1d,DefaultGeographicCRS.WGS84), source.getBounds(q));
+
+        SimpleFeatureCollection features = source.getFeatures(q);
+        SimpleFeatureIterator it = features.features();
+        try {
+            assertTrue(it.hasNext());
+            assertFeature(it.next(), 1);
+        }
+        finally {
+            it.close();
+        }
+
+        // test again passing Date object as literal
+        gt = ff.greater(
+                ff.property("properties.dateProperty"),
+                ff.literal(MongoTestSetup.parseDate("2015-01-01T11:30:00.000Z")));
+        q = new Query("ft1", gt);
+
+        assertEquals(1, source.getCount(q));
+        assertEquals(new ReferencedEnvelope(1d,1d,1d,1d,DefaultGeographicCRS.WGS84), source.getBounds(q));
+        it = source.getFeatures(q).features();
+        try {
+            assertTrue(it.hasNext());
+            assertFeature(it.next(), 1);
+        }
+        finally {
+            it.close();
+        }
+
+        // test no-match filter
+        gt = ff.greater(
+                ff.property("properties.dateProperty"),
+                ff.literal("2015-01-01T17:30:00.000Z"));
+        q = new Query("ft1", gt);
+
+        // no feature should match
+        assertEquals(0, source.getCount(q));
+    }
+
+    public void testDateLessComparison() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyIsLessThan lt = ff.less(
+                ff.property("properties.dateProperty"),
+                ff.literal("2015-01-01T00:00:00.000Z"));
+
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", lt);
+
+        assertEquals(1, source.getCount(q));
+        assertEquals(new ReferencedEnvelope(2d,2d,2d,2d,DefaultGeographicCRS.WGS84), source.getBounds(q));
+
+        SimpleFeatureCollection features = source.getFeatures(q);
+        SimpleFeatureIterator it = features.features();
+        try {
+            assertTrue(it.hasNext());
+            assertFeature(it.next(), 2);
+        }
+        finally {
+            it.close();
+        }
+
+        // test no-match filter
+        lt = ff.less(
+                ff.property("properties.dateProperty"),
+                ff.literal("0000-00-00T01:00:00.000Z"));
+        q = new Query("ft1", lt);
+
+        // no feature should match
+        assertEquals(0, source.getCount(q));
+    }
+
+    public void testDateBetweenComparison() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyIsBetween lt = ff.between(
+                ff.property("properties.dateProperty"),
+                ff.literal("2014-12-31T23:59:00.000Z"),
+                ff.literal("2015-01-01T00:01:00.000Z"));
+
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", lt);
+
+        assertEquals(1, source.getCount(q));
+        assertEquals(new ReferencedEnvelope(0d,0d,0d,0d,DefaultGeographicCRS.WGS84), source.getBounds(q));
+
+        SimpleFeatureCollection features = source.getFeatures(q);
+        SimpleFeatureIterator it = features.features();
+        try {
+            assertTrue(it.hasNext());
+            assertFeature(it.next(), 0);
+        }
+        finally {
+            it.close();
+        }
+
+        // test no-match filter
+        lt = ff.between(
+                ff.property("properties.dateProperty"),
+                ff.literal("2014-12-31T23:59:00.000Z"),
+                ff.literal("2014-12-31T23:59:59.000Z"));
+        q = new Query("ft1", lt);
+
+        // no feature should match
+        assertEquals(0, source.getCount(q));
+    }
 }

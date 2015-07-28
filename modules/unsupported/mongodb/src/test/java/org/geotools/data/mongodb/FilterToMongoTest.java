@@ -17,17 +17,27 @@
  */
 package org.geotools.data.mongodb;
 
+import java.util.Date;
+
 import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsGreaterThan;
+import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.spatial.BBOX;
 
 import com.mongodb.BasicDBObject;
+import com.vividsolutions.jts.geom.Point;
 
 public class FilterToMongoTest extends TestCase {
+
+    static final String DATE_LITERAL = "2015-07-01T00:00:00.000+01:00";
 
     FilterFactory2 ff;
     FilterToMongo filterToMongo;
@@ -37,6 +47,13 @@ public class FilterToMongoTest extends TestCase {
         super.setUp();
         ff = CommonFactoryFinder.getFilterFactory2();
         filterToMongo = new FilterToMongo(new GeoJSONMapper());
+
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("ftTest");
+        tb.setCRS(DefaultGeographicCRS.WGS84);
+        tb.add("geometry", Point.class);
+        tb.add("dateProperty", Date.class);
+        filterToMongo.setFeatureType(tb.buildFeatureType());
     }
 
     public void testEqualTo() throws Exception {
@@ -81,6 +98,44 @@ public class FilterToMongoTest extends TestCase {
         } catch (Exception e) {
             assertTrue(e instanceof UnsupportedOperationException);
         }
+    }
+
+    public void testDateGreaterComparison() {
+        PropertyIsGreaterThan gt = ff.greater(ff.property("dateProperty"),
+                ff.literal(DATE_LITERAL));
+        BasicDBObject obj = (BasicDBObject) gt.accept(filterToMongo, null);
+
+        assertNotNull(obj);
+        BasicDBObject filter = (BasicDBObject) obj.get("properties.dateProperty");
+        assertNotNull(filter);
+        assertEquals(MongoTestSetup.parseDate(DATE_LITERAL), filter.get("$gt"));
+    }
+
+    public void testDateLessComparison() {
+        PropertyIsLessThan lt = ff.less(ff.property("dateProperty"),
+                ff.literal(DATE_LITERAL));
+        BasicDBObject obj = (BasicDBObject) lt.accept(filterToMongo, null);
+
+        assertNotNull(obj);
+        BasicDBObject filter = (BasicDBObject) obj.get("properties.dateProperty");
+        assertNotNull(filter);
+        assertEquals(MongoTestSetup.parseDate(DATE_LITERAL), filter.get("$lt"));
+    }
+
+    public void testDateBetweenComparison() {
+        final String LOWER_BOUND = DATE_LITERAL;
+        final String UPPER_BOUND = "2015-07-31T00:00:00.000+01:00";
+
+        PropertyIsBetween lt = ff.between(ff.property("dateProperty"),
+                ff.literal(LOWER_BOUND),
+                ff.literal(UPPER_BOUND));
+        BasicDBObject obj = (BasicDBObject) lt.accept(filterToMongo, null);
+
+        assertNotNull(obj);
+        BasicDBObject filter = (BasicDBObject) obj.get("properties.dateProperty");
+        assertNotNull(filter);
+        assertEquals(MongoTestSetup.parseDate(LOWER_BOUND), filter.get("$gte"));
+        assertEquals(MongoTestSetup.parseDate(UPPER_BOUND), filter.get("$lte"));
     }
 
 }

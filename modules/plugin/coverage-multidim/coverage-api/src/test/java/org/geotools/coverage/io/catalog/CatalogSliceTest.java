@@ -31,6 +31,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.h2.H2DataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -55,6 +56,8 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  *
  */
 public class CatalogSliceTest extends Assert{
+
+    private H2DataStoreFactory INTERNAL_STORE_SPI = new H2DataStoreFactory();
 
     private final FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
 
@@ -219,12 +222,12 @@ public class CatalogSliceTest extends Assert{
         params.put("user", "geotools");
         params.put("passwd", "geotools");
 
-        assertTrue(CoverageSlicesCatalog.INTERNAL_STORE_SPI.canProcess(params));
+        assertTrue(INTERNAL_STORE_SPI.canProcess(params));
         DataStore ds = null;
         SimpleFeatureIterator it = null;
         try {
             // create the store
-            ds = CoverageSlicesCatalog.INTERNAL_STORE_SPI.createDataStore(params);
+            ds = INTERNAL_STORE_SPI.createDataStore(params);
             assertNotNull(ds);
 
             // load typenames

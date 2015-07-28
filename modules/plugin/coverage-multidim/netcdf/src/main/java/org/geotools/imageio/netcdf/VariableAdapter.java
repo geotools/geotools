@@ -1172,9 +1172,9 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             feature.setAttribute(timeAttribute, date);
         }
 
+        List<AttributeDescriptor> descriptors = indexSchema.getAttributeDescriptors();
         // ELEVATION or other dimension
         if (!Double.isNaN(verticalValue.doubleValue())) {
-            List<AttributeDescriptor> descriptors = indexSchema.getAttributeDescriptors();
             String attribute = null;
             final String elevationCVName = reader.georeferencing.getDimension(NetCDFUtilities.ELEVATION_DIM);
             // Once we don't deal anymore with old coverage APIs, we can consider directly use the dimension name as attribute
@@ -1199,6 +1199,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             }
             feature.setAttribute(attribute, verticalValue);
         }
+
         return feature;
     }
 

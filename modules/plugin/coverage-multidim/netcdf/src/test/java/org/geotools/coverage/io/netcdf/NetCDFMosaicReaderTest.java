@@ -198,7 +198,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             reader.dispose();
         }
     }
-    
+
     @Test
     public void testReHarvest() throws Exception {
         // prepare a "mosaic" with just one NetCDF

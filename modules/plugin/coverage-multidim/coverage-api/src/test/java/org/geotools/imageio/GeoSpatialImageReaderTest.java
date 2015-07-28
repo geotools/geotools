@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -358,7 +358,6 @@ public class GeoSpatialImageReaderTest {
 
         @Override
         public String getDescription(Locale locale) {
-            // TODO Auto-generated method stub
             return null;
         }
     }
